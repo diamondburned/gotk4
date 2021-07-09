@@ -219,7 +219,7 @@ func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) *PictureClass {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
 
 	_cret = C.gtk_picture_new_for_pixbuf(_arg1)
 
@@ -260,7 +260,7 @@ func (s *PictureClass) AlternativeText() string {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_picture_get_alternative_text(_arg0)
 
@@ -276,7 +276,7 @@ func (s *PictureClass) CanShrink() bool {
 	var _arg0 *C.GtkPicture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_picture_get_can_shrink(_arg0)
 
@@ -295,7 +295,7 @@ func (s *PictureClass) KeepAspectRatio() bool {
 	var _arg0 *C.GtkPicture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_picture_get_keep_aspect_ratio(_arg0)
 
@@ -320,7 +320,7 @@ func (s *PictureClass) SetAlternativeText(alternativeText string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(alternativeText))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -342,7 +342,7 @@ func (s *PictureClass) SetCanShrink(canShrink bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&s).Native()))
 	if canShrink {
 		_arg1 = C.TRUE
 	}
@@ -357,7 +357,7 @@ func (s *PictureClass) SetFilename(filename string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -376,7 +376,7 @@ func (s *PictureClass) SetKeepAspectRatio(keepAspectRatio bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&s).Native()))
 	if keepAspectRatio {
 		_arg1 = C.TRUE
 	}
@@ -393,8 +393,8 @@ func (s *PictureClass) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.GdkPixbuf  // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
 
 	C.gtk_picture_set_pixbuf(_arg0, _arg1)
 }
@@ -407,7 +407,7 @@ func (s *PictureClass) SetResource(resourcePath string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 

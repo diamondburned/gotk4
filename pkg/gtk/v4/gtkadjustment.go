@@ -189,7 +189,7 @@ func (a *AdjustmentClass) ClampPage(lower float64, upper float64) {
 	var _arg1 C.double         // out
 	var _arg2 C.double         // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.double(lower)
 	_arg2 = C.double(upper)
 
@@ -211,7 +211,7 @@ func (a *AdjustmentClass) Configure(value float64, lower float64, upper float64,
 	var _arg5 C.double         // out
 	var _arg6 C.double         // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.double(value)
 	_arg2 = C.double(lower)
 	_arg3 = C.double(upper)
@@ -227,7 +227,7 @@ func (a *AdjustmentClass) Lower() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.double         // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_adjustment_get_lower(_arg0)
 
@@ -243,7 +243,7 @@ func (a *AdjustmentClass) MinimumIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.double         // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_adjustment_get_minimum_increment(_arg0)
 
@@ -259,7 +259,7 @@ func (a *AdjustmentClass) PageIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.double         // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_adjustment_get_page_increment(_arg0)
 
@@ -275,7 +275,7 @@ func (a *AdjustmentClass) PageSize() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.double         // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_adjustment_get_page_size(_arg0)
 
@@ -291,7 +291,7 @@ func (a *AdjustmentClass) StepIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.double         // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_adjustment_get_step_increment(_arg0)
 
@@ -307,7 +307,7 @@ func (a *AdjustmentClass) Upper() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.double         // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_adjustment_get_upper(_arg0)
 
@@ -323,7 +323,7 @@ func (a *AdjustmentClass) Value() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.double         // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_adjustment_get_value(_arg0)
 
@@ -350,7 +350,7 @@ func (a *AdjustmentClass) SetLower(lower float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.double(lower)
 
 	C.gtk_adjustment_set_lower(_arg0, _arg1)
@@ -365,7 +365,7 @@ func (a *AdjustmentClass) SetPageIncrement(pageIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.double(pageIncrement)
 
 	C.gtk_adjustment_set_page_increment(_arg0, _arg1)
@@ -380,7 +380,7 @@ func (a *AdjustmentClass) SetPageSize(pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.double(pageSize)
 
 	C.gtk_adjustment_set_page_size(_arg0, _arg1)
@@ -395,7 +395,7 @@ func (a *AdjustmentClass) SetStepIncrement(stepIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.double(stepIncrement)
 
 	C.gtk_adjustment_set_step_increment(_arg0, _arg1)
@@ -413,7 +413,7 @@ func (a *AdjustmentClass) SetUpper(upper float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.double(upper)
 
 	C.gtk_adjustment_set_upper(_arg0, _arg1)
@@ -431,7 +431,7 @@ func (a *AdjustmentClass) SetValue(value float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.double(value)
 
 	C.gtk_adjustment_set_value(_arg0, _arg1)

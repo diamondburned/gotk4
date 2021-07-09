@@ -159,7 +159,7 @@ func NewLockButton(permission gio.Permission) *LockButtonClass {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in
 
-	_arg1 = (*C.GPermission)(unsafe.Pointer((&gio.Permission).Native()))
+	_arg1 = (*C.GPermission)(unsafe.Pointer((&permission).Native()))
 
 	_cret = C.gtk_lock_button_new(_arg1)
 
@@ -176,7 +176,7 @@ func (b *LockButtonClass) Permission() *gio.PermissionClass {
 	var _arg0 *C.GtkLockButton // out
 	var _cret *C.GPermission   // in
 
-	_arg0 = (*C.GtkLockButton)(unsafe.Pointer((&LockButton).Native()))
+	_arg0 = (*C.GtkLockButton)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_lock_button_get_permission(_arg0)
 
@@ -193,8 +193,8 @@ func (b *LockButtonClass) SetPermission(permission gio.Permission) {
 	var _arg0 *C.GtkLockButton // out
 	var _arg1 *C.GPermission   // out
 
-	_arg0 = (*C.GtkLockButton)(unsafe.Pointer((&LockButton).Native()))
-	_arg1 = (*C.GPermission)(unsafe.Pointer((&gio.Permission).Native()))
+	_arg0 = (*C.GtkLockButton)(unsafe.Pointer((&b).Native()))
+	_arg1 = (*C.GPermission)(unsafe.Pointer((&permission).Native()))
 
 	C.gtk_lock_button_set_permission(_arg0, _arg1)
 }

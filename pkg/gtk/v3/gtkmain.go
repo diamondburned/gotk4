@@ -39,7 +39,7 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 
 	grabWidget = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(arg0))).(*WidgetClass)
-	event = (*gdk.EventKey)(unsafe.Pointer(*C.GdkEventKey))
+	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
 	funcData = box.Get(uintptr(arg2))
 
 	fn := v.(KeySnoopFunc)
@@ -96,8 +96,8 @@ func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
 	var _arg2 *C.GdkDevice // out
 	var _arg3 C.gboolean   // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 	if blockOthers {
 		_arg3 = C.TRUE
 	}
@@ -112,8 +112,8 @@ func DeviceGrabRemove(widget Widget, device gdk.Device) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 
 	C.gtk_device_grab_remove(_arg1, _arg2)
 }
@@ -213,7 +213,7 @@ func GetCurrentEventState() (gdk.ModifierType, bool) {
 	var _state gdk.ModifierType // out
 	var _ok bool                // out
 
-	_state = (gdk.ModifierType)(C.GdkModifierType)
+	_state = (gdk.ModifierType)(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -249,7 +249,7 @@ func GetDefaultLanguage() *pango.Language {
 
 	var _language *pango.Language // out
 
-	_language = (*pango.Language)(unsafe.Pointer(*C.PangoLanguage))
+	_language = (*pango.Language)(unsafe.Pointer(_cret))
 
 	return _language
 }
@@ -294,7 +294,7 @@ func GetLocaleDirection() TextDirection {
 
 	var _textDirection TextDirection // out
 
-	_textDirection = (TextDirection)(C.GtkTextDirection)
+	_textDirection = (TextDirection)(_cret)
 
 	return _textDirection
 }
@@ -374,7 +374,7 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 
 	var _optionGroup *glib.OptionGroup // out
 
-	_optionGroup = (*glib.OptionGroup)(unsafe.Pointer(*C.GOptionGroup))
+	_optionGroup = (*glib.OptionGroup)(unsafe.Pointer(_cret))
 	C.g_option_group_ref(_cret)
 	runtime.SetFinalizer(_optionGroup, func(v *glib.OptionGroup) {
 		C.g_option_group_unref((*C.GOptionGroup)(unsafe.Pointer(v)))

@@ -168,8 +168,8 @@ func (c *UnixConnectionClass) ReceiveCredentials(cancellable Cancellable) (*Cred
 	var _cret *C.GCredentials    // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&UnixConnection).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	_cret = C.g_unix_connection_receive_credentials(_arg0, _arg1, &_cerr)
 
@@ -197,8 +197,8 @@ func (c *UnixConnectionClass) ReceiveCredentialsAsync(cancellable Cancellable, c
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&UnixConnection).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -213,8 +213,8 @@ func (c *UnixConnectionClass) ReceiveCredentialsFinish(result AsyncResult) (*Cre
 	var _cret *C.GCredentials    // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&UnixConnection).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	_cret = C.g_unix_connection_receive_credentials_finish(_arg0, _arg1, &_cerr)
 
@@ -239,8 +239,8 @@ func (c *UnixConnectionClass) ReceiveFd(cancellable Cancellable) (int, error) {
 	var _cret C.gint             // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&UnixConnection).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	_cret = C.g_unix_connection_receive_fd(_arg0, _arg1, &_cerr)
 
@@ -275,8 +275,8 @@ func (c *UnixConnectionClass) SendCredentials(cancellable Cancellable) error {
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&UnixConnection).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	C.g_unix_connection_send_credentials(_arg0, _arg1, &_cerr)
 
@@ -301,8 +301,8 @@ func (c *UnixConnectionClass) SendCredentialsAsync(cancellable Cancellable, call
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&UnixConnection).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -316,8 +316,8 @@ func (c *UnixConnectionClass) SendCredentialsFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&UnixConnection).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	C.g_unix_connection_send_credentials_finish(_arg0, _arg1, &_cerr)
 
@@ -340,9 +340,9 @@ func (c *UnixConnectionClass) SendFd(fd int, cancellable Cancellable) error {
 	var _arg2 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&UnixConnection).Native()))
+	_arg0 = (*C.GUnixConnection)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(fd)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	C.g_unix_connection_send_fd(_arg0, _arg1, _arg2, &_cerr)
 

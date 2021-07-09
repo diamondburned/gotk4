@@ -112,8 +112,8 @@ func (a *ActionMapInterface) AddAction(action Action) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer((&ActionMap).Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer((&action).Native()))
 
 	C.g_action_map_add_action(_arg0, _arg1)
 }
@@ -126,7 +126,7 @@ func (a *ActionMapInterface) LookupAction(actionName string) *ActionInterface {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer((&ActionMap).Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer((&a).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -147,7 +147,7 @@ func (a *ActionMapInterface) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer((&ActionMap).Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer((&a).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 

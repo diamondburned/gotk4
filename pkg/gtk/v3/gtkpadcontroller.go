@@ -125,9 +125,9 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) *Pad
 	var _arg3 *C.GdkDevice        // out
 	var _cret *C.GtkPadController // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer((&gio.ActionGroup).Native()))
-	_arg3 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&window).Native()))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer((&group).Native()))
+	_arg3 = (*C.GdkDevice)(unsafe.Pointer((&pad).Native()))
 
 	_cret = C.gtk_pad_controller_new(_arg1, _arg2, _arg3)
 
@@ -160,7 +160,7 @@ func (p *PadActionEntry) Native() unsafe.Pointer {
 // Type: the type of pad feature that will trigger this action entry.
 func (p *PadActionEntry) Type() PadActionType {
 	var v PadActionType // out
-	v = (PadActionType)(C.GtkPadActionType)
+	v = (PadActionType)(p.native._type)
 	return v
 }
 

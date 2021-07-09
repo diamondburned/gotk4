@@ -78,7 +78,7 @@ func (c *ColorChooserInterface) UseAlpha() bool {
 	var _arg0 *C.GtkColorChooser // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer((&ColorChooser).Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_color_chooser_get_use_alpha(_arg0)
 
@@ -96,8 +96,8 @@ func (c *ColorChooserInterface) SetRGBA(color *gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 *C.GdkRGBA         // out
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer((&ColorChooser).Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(*gdk.RGBA))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color))
 
 	C.gtk_color_chooser_set_rgba(_arg0, _arg1)
 }
@@ -108,7 +108,7 @@ func (c *ColorChooserInterface) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer((&ColorChooser).Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer((&c).Native()))
 	if useAlpha {
 		_arg1 = C.TRUE
 	}

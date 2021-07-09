@@ -118,13 +118,13 @@ func (e *ThemingEngineClass) Direction() TextDirection {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkTextDirection  // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_theming_engine_get_direction(_arg0)
 
 	var _textDirection TextDirection // out
 
-	_textDirection = (TextDirection)(C.GtkTextDirection)
+	_textDirection = (TextDirection)(_cret)
 
 	return _textDirection
 }
@@ -136,13 +136,13 @@ func (e *ThemingEngineClass) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkJunctionSides  // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_theming_engine_get_junction_sides(_arg0)
 
 	var _junctionSides JunctionSides // out
 
-	_junctionSides = (JunctionSides)(C.GtkJunctionSides)
+	_junctionSides = (JunctionSides)(_cret)
 
 	return _junctionSides
 }
@@ -154,13 +154,13 @@ func (e *ThemingEngineClass) Path() *WidgetPath {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GtkWidgetPath    // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_theming_engine_get_path(_arg0)
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(unsafe.Pointer(*C.GtkWidgetPath))
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
 	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
@@ -176,7 +176,7 @@ func (e *ThemingEngineClass) Screen() *gdk.ScreenClass {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GdkScreen        // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_theming_engine_get_screen(_arg0)
 
@@ -195,13 +195,13 @@ func (e *ThemingEngineClass) State() StateFlags {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkStateFlags     // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_theming_engine_get_state(_arg0)
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = (StateFlags)(C.GtkStateFlags)
+	_stateFlags = (StateFlags)(_cret)
 
 	return _stateFlags
 }
@@ -215,7 +215,7 @@ func (e *ThemingEngineClass) HasClass(styleClass string) bool {
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&e).Native()))
 	_arg1 = (*C.gchar)(C.CString(styleClass))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -241,7 +241,7 @@ func (e *ThemingEngineClass) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg2 C.GtkRegionFlags    // in
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&e).Native()))
 	_arg1 = (*C.gchar)(C.CString(styleRegion))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -250,7 +250,7 @@ func (e *ThemingEngineClass) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _flags RegionFlags // out
 	var _ok bool           // out
 
-	_flags = (RegionFlags)(C.GtkRegionFlags)
+	_flags = (RegionFlags)(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}

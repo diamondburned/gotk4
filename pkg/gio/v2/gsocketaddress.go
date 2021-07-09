@@ -121,13 +121,13 @@ func (a *SocketAddressClass) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer((&SocketAddress).Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_socket_address_get_family(_arg0)
 
 	var _socketFamily SocketFamily // out
 
-	_socketFamily = (SocketFamily)(C.GSocketFamily)
+	_socketFamily = (SocketFamily)(_cret)
 
 	return _socketFamily
 }
@@ -138,7 +138,7 @@ func (a *SocketAddressClass) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.gssize          // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer((&SocketAddress).Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_socket_address_get_native_size(_arg0)
 
@@ -161,7 +161,7 @@ func (a *SocketAddressClass) ToNative(dest interface{}, destlen uint) error {
 	var _arg2 C.gsize           // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer((&SocketAddress).Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer((&a).Native()))
 	_arg1 = (C.gpointer)(box.Assign(dest))
 	_arg2 = C.gsize(destlen)
 

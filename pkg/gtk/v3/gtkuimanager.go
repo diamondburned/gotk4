@@ -471,7 +471,7 @@ func (m *UIManagerClass) AddUiFromFile(filename string) (uint, error) {
 	var _cret C.guint         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -496,7 +496,7 @@ func (m *UIManagerClass) AddUiFromResource(resourcePath string) (uint, error) {
 	var _cret C.guint         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -523,7 +523,7 @@ func (m *UIManagerClass) AddUiFromString(buffer string, length int) (uint, error
 	var _cret C.guint         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 	_arg1 = (*C.gchar)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
@@ -558,7 +558,7 @@ func (m *UIManagerClass) AddUiFromString(buffer string, length int) (uint, error
 func (m *UIManagerClass) EnsureUpdate() {
 	var _arg0 *C.GtkUIManager // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 
 	C.gtk_ui_manager_ensure_update(_arg0)
 }
@@ -570,7 +570,7 @@ func (m *UIManagerClass) AccelGroup() *AccelGroupClass {
 	var _arg0 *C.GtkUIManager  // out
 	var _cret *C.GtkAccelGroup // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_ui_manager_get_accel_group(_arg0)
 
@@ -591,7 +591,7 @@ func (m *UIManagerClass) Action(path string) *ActionClass {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkAction    // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -613,7 +613,7 @@ func (m *UIManagerClass) AddTearoffs() bool {
 	var _arg0 *C.GtkUIManager // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_ui_manager_get_add_tearoffs(_arg0)
 
@@ -633,7 +633,7 @@ func (m *UIManagerClass) Ui() string {
 	var _arg0 *C.GtkUIManager // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_ui_manager_get_ui(_arg0)
 
@@ -665,7 +665,7 @@ func (m *UIManagerClass) Widget(path string) *WidgetClass {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -692,8 +692,8 @@ func (m *UIManagerClass) InsertActionGroup(actionGroup ActionGroup, pos int) {
 	var _arg1 *C.GtkActionGroup // out
 	var _arg2 C.gint            // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
-	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer((&actionGroup).Native()))
 	_arg2 = C.gint(pos)
 
 	C.gtk_ui_manager_insert_action_group(_arg0, _arg1, _arg2)
@@ -707,7 +707,7 @@ func (m *UIManagerClass) NewMergeID() uint {
 	var _arg0 *C.GtkUIManager // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_ui_manager_new_merge_id(_arg0)
 
@@ -726,8 +726,8 @@ func (m *UIManagerClass) RemoveActionGroup(actionGroup ActionGroup) {
 	var _arg0 *C.GtkUIManager   // out
 	var _arg1 *C.GtkActionGroup // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
-	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer((&actionGroup).Native()))
 
 	C.gtk_ui_manager_remove_action_group(_arg0, _arg1)
 }
@@ -739,7 +739,7 @@ func (m *UIManagerClass) RemoveUi(mergeId uint) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 	_arg1 = C.guint(mergeId)
 
 	C.gtk_ui_manager_remove_ui(_arg0, _arg1)
@@ -756,7 +756,7 @@ func (m *UIManagerClass) SetAddTearoffs(addTearoffs bool) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&UIManager).Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer((&m).Native()))
 	if addTearoffs {
 		_arg1 = C.TRUE
 	}

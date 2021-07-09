@@ -176,7 +176,7 @@ func (p *PanedClass) EndChild() *WidgetClass {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_end_child(_arg0)
 
@@ -193,7 +193,7 @@ func (p *PanedClass) Position() int {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_position(_arg0)
 
@@ -209,7 +209,7 @@ func (p *PanedClass) ResizeEndChild() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_resize_end_child(_arg0)
 
@@ -227,7 +227,7 @@ func (p *PanedClass) ResizeStartChild() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_resize_start_child(_arg0)
 
@@ -245,7 +245,7 @@ func (p *PanedClass) ShrinkEndChild() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_shrink_end_child(_arg0)
 
@@ -263,7 +263,7 @@ func (p *PanedClass) ShrinkStartChild() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_shrink_start_child(_arg0)
 
@@ -283,7 +283,7 @@ func (p *PanedClass) StartChild() *WidgetClass {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_start_child(_arg0)
 
@@ -300,7 +300,7 @@ func (p *PanedClass) WideHandle() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
 
@@ -318,8 +318,8 @@ func (p *PanedClass) SetEndChild(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_paned_set_end_child(_arg0, _arg1)
 }
@@ -329,7 +329,7 @@ func (p *PanedClass) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.int       // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 	_arg1 = C.int(position)
 
 	C.gtk_paned_set_position(_arg0, _arg1)
@@ -340,7 +340,7 @@ func (p *PanedClass) SetResizeEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 	if resize {
 		_arg1 = C.TRUE
 	}
@@ -353,7 +353,7 @@ func (p *PanedClass) SetResizeStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 	if resize {
 		_arg1 = C.TRUE
 	}
@@ -366,7 +366,7 @@ func (p *PanedClass) SetShrinkEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 	if resize {
 		_arg1 = C.TRUE
 	}
@@ -379,7 +379,7 @@ func (p *PanedClass) SetShrinkStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 	if resize {
 		_arg1 = C.TRUE
 	}
@@ -392,8 +392,8 @@ func (p *PanedClass) SetStartChild(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_paned_set_start_child(_arg0, _arg1)
 }
@@ -403,7 +403,7 @@ func (p *PanedClass) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 	if wide {
 		_arg1 = C.TRUE
 	}

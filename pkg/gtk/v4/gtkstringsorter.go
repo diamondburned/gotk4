@@ -77,7 +77,7 @@ func NewStringSorter(expression Expression) *StringSorterClass {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringSorter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
 
 	_cret = C.gtk_string_sorter_new(_arg1)
 
@@ -95,7 +95,7 @@ func (s *StringSorterClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkStringSorter // out
 	var _cret *C.GtkExpression   // in
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&StringSorter).Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_string_sorter_get_expression(_arg0)
 
@@ -112,7 +112,7 @@ func (s *StringSorterClass) IgnoreCase() bool {
 	var _arg0 *C.GtkStringSorter // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&StringSorter).Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_string_sorter_get_ignore_case(_arg0)
 
@@ -133,8 +133,8 @@ func (s *StringSorterClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 *C.GtkExpression   // out
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&StringSorter).Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
 
 	C.gtk_string_sorter_set_expression(_arg0, _arg1)
 }
@@ -144,7 +144,7 @@ func (s *StringSorterClass) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&StringSorter).Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&s).Native()))
 	if ignoreCase {
 		_arg1 = C.TRUE
 	}

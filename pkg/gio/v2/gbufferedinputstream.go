@@ -190,7 +190,7 @@ func NewBufferedInputStream(baseStream InputStream) *BufferedInputStreamClass {
 	var _arg1 *C.GInputStream // out
 	var _cret *C.GInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((&InputStream).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((&baseStream).Native()))
 
 	_cret = C.g_buffered_input_stream_new(_arg1)
 
@@ -209,7 +209,7 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) *BufferedInp
 	var _arg2 C.gsize         // out
 	var _cret *C.GInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((&InputStream).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((&baseStream).Native()))
 	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_input_stream_new_sized(_arg1, _arg2)
@@ -253,9 +253,9 @@ func (s *BufferedInputStreamClass) Fill(count int, cancellable Cancellable) (int
 	var _cret C.gssize                // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&BufferedInputStream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.gssize(count)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	_cret = C.g_buffered_input_stream_fill(_arg0, _arg1, _arg2, &_cerr)
 
@@ -282,10 +282,10 @@ func (s *BufferedInputStreamClass) FillAsync(count int, ioPriority int, cancella
 	var _arg4 C.GAsyncReadyCallback   // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&BufferedInputStream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.gssize(count)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -299,8 +299,8 @@ func (s *BufferedInputStreamClass) FillFinish(result AsyncResult) (int, error) {
 	var _cret C.gssize                // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&BufferedInputStream).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	_cret = C.g_buffered_input_stream_fill_finish(_arg0, _arg1, &_cerr)
 
@@ -318,7 +318,7 @@ func (s *BufferedInputStreamClass) Available() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&BufferedInputStream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.g_buffered_input_stream_get_available(_arg0)
 
@@ -334,7 +334,7 @@ func (s *BufferedInputStreamClass) BufferSize() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&BufferedInputStream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.g_buffered_input_stream_get_buffer_size(_arg0)
 
@@ -354,7 +354,7 @@ func (s *BufferedInputStreamClass) Peek(buffer []byte, offset uint) uint {
 	var _arg2 C.gsize // out
 	var _cret C.gsize // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&BufferedInputStream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&s).Native()))
 	_arg3 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg2 = C.gsize(offset)
@@ -387,8 +387,8 @@ func (s *BufferedInputStreamClass) ReadByte(cancellable Cancellable) (int, error
 	var _cret C.int                   // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&BufferedInputStream).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	_cret = C.g_buffered_input_stream_read_byte(_arg0, _arg1, &_cerr)
 
@@ -408,7 +408,7 @@ func (s *BufferedInputStreamClass) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gsize                 // out
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&BufferedInputStream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.gsize(size)
 
 	C.g_buffered_input_stream_set_buffer_size(_arg0, _arg1)

@@ -171,7 +171,7 @@ func (s *AppChooserWidgetClass) DefaultText() string {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret *C.char                // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
 
@@ -188,7 +188,7 @@ func (s *AppChooserWidgetClass) ShowAll() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
 
@@ -207,7 +207,7 @@ func (s *AppChooserWidgetClass) ShowDefault() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
 
@@ -226,7 +226,7 @@ func (s *AppChooserWidgetClass) ShowFallback() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
 
@@ -245,7 +245,7 @@ func (s *AppChooserWidgetClass) ShowOther() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
 
@@ -264,7 +264,7 @@ func (s *AppChooserWidgetClass) ShowRecommended() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
 
@@ -283,7 +283,7 @@ func (s *AppChooserWidgetClass) SetDefaultText(text string) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -296,7 +296,7 @@ func (s *AppChooserWidgetClass) SetShowAll(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -310,7 +310,7 @@ func (s *AppChooserWidgetClass) SetShowDefault(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -324,7 +324,7 @@ func (s *AppChooserWidgetClass) SetShowFallback(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -338,7 +338,7 @@ func (s *AppChooserWidgetClass) SetShowOther(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -352,7 +352,7 @@ func (s *AppChooserWidgetClass) SetShowRecommended(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&AppChooserWidget).Native()))
+	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer((&s).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

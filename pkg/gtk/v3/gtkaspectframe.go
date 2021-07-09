@@ -125,7 +125,7 @@ func (a *AspectFrameClass) Set(xalign float32, yalign float32, ratio float32, ob
 	var _arg3 C.gfloat          // out
 	var _arg4 C.gboolean        // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer((&AspectFrame).Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 	_arg3 = C.gfloat(ratio)

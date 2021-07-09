@@ -86,7 +86,7 @@ func (g *GestureZoomClass) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out
 	var _cret C.double          // in
 
-	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer((&GestureZoom).Native()))
+	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer((&g).Native()))
 
 	_cret = C.gtk_gesture_zoom_get_scale_delta(_arg0)
 

@@ -127,7 +127,7 @@ func (p *PadActionEntry) Native() unsafe.Pointer {
 // Type: the type of pad feature that will trigger this action entry.
 func (p *PadActionEntry) Type() PadActionType {
 	var v PadActionType // out
-	v = (PadActionType)(C.GtkPadActionType)
+	v = (PadActionType)(p.native._type)
 	return v
 }
 

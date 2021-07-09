@@ -72,7 +72,7 @@ func NewMountOperation(parent Window) *MountOperationClass {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&parent).Native()))
 
 	_cret = C.gtk_mount_operation_new(_arg1)
 
@@ -89,7 +89,7 @@ func (o *MountOperationClass) Parent() *WindowClass {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GtkWindow         // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&MountOperation).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.gtk_mount_operation_get_parent(_arg0)
 
@@ -106,7 +106,7 @@ func (o *MountOperationClass) Screen() *gdk.ScreenClass {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GdkScreen         // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&MountOperation).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.gtk_mount_operation_get_screen(_arg0)
 
@@ -124,7 +124,7 @@ func (o *MountOperationClass) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&MountOperation).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.gtk_mount_operation_is_showing(_arg0)
 
@@ -142,8 +142,8 @@ func (o *MountOperationClass) SetParent(parent Window) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&MountOperation).Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&parent).Native()))
 
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)
 }
@@ -153,8 +153,8 @@ func (o *MountOperationClass) SetScreen(screen gdk.Screen) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkScreen         // out
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&MountOperation).Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&gdk.Screen).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer((&o).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&screen).Native()))
 
 	C.gtk_mount_operation_set_screen(_arg0, _arg1)
 }

@@ -505,12 +505,13 @@ func (value *ValueConverted) isPtr(wantC int) bool {
 // 	return
 // }
 
+// InNamePtr returns the name with the pointer prefixed using InPtr.
 func (value *ValueConverted) InNamePtr(want int) string {
 	ptr := value.InPtr(want)
 	if ptr == "" {
-		return value.In.Type
+		return value.InName
 	}
-	return fmt.Sprintf("(%s%s)", ptr, value.In.Type)
+	return fmt.Sprintf("(%s%s)", ptr, value.InName)
 }
 
 func (value *ValueConverted) InPtr(want int) string {
@@ -518,6 +519,8 @@ func (value *ValueConverted) InPtr(want int) string {
 	return value._ptr(has, want)
 }
 
+// OutCast returns the left-hand side consisting of the pointer dereference and
+// the pointer-prefixed type.
 func (value *ValueConverted) OutCast(want int) string {
 	ptr := value.OutPtr(want)
 	return fmt.Sprintf("%s(%s%s)", ptr, ptr, value.Out.Type)

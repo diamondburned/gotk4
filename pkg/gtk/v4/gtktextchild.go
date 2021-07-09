@@ -87,7 +87,7 @@ func (a *TextChildAnchorClass) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer((&TextChildAnchor).Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 

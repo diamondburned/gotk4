@@ -166,7 +166,7 @@ func (s *GridViewClass) EnableRubberband() bool {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_grid_view_get_enable_rubberband(_arg0)
 
@@ -184,7 +184,7 @@ func (s *GridViewClass) Factory() *ListItemFactoryClass {
 	var _arg0 *C.GtkGridView        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_grid_view_get_factory(_arg0)
 
@@ -201,7 +201,7 @@ func (s *GridViewClass) MaxColumns() uint {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_grid_view_get_max_columns(_arg0)
 
@@ -217,7 +217,7 @@ func (s *GridViewClass) MinColumns() uint {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_grid_view_get_min_columns(_arg0)
 
@@ -234,7 +234,7 @@ func (s *GridViewClass) SingleClickActivate() bool {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_grid_view_get_single_click_activate(_arg0)
 
@@ -253,7 +253,7 @@ func (s *GridViewClass) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
 	if enableRubberband {
 		_arg1 = C.TRUE
 	}
@@ -266,8 +266,8 @@ func (s *GridViewClass) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkGridView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((&ListItemFactory).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((&factory).Native()))
 
 	C.gtk_grid_view_set_factory(_arg0, _arg1)
 }
@@ -282,7 +282,7 @@ func (s *GridViewClass) SetMaxColumns(maxColumns uint) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.guint(maxColumns)
 
 	C.gtk_grid_view_set_max_columns(_arg0, _arg1)
@@ -298,7 +298,7 @@ func (s *GridViewClass) SetMinColumns(minColumns uint) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.guint(minColumns)
 
 	C.gtk_grid_view_set_min_columns(_arg0, _arg1)
@@ -310,7 +310,7 @@ func (s *GridViewClass) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&GridView).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer((&s).Native()))
 	if singleClickActivate {
 		_arg1 = C.TRUE
 	}

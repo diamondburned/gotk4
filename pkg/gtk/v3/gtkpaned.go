@@ -153,8 +153,8 @@ func (p *PanedClass) Add1(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_paned_add1(_arg0, _arg1)
 }
@@ -165,8 +165,8 @@ func (p *PanedClass) Add2(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_paned_add2(_arg0, _arg1)
 }
@@ -176,7 +176,7 @@ func (p *PanedClass) Child1() *WidgetClass {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_child1(_arg0)
 
@@ -193,7 +193,7 @@ func (p *PanedClass) Child2() *WidgetClass {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_child2(_arg0)
 
@@ -212,7 +212,7 @@ func (p *PanedClass) HandleWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_handle_window(_arg0)
 
@@ -229,7 +229,7 @@ func (p *PanedClass) Position() int {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_position(_arg0)
 
@@ -245,7 +245,7 @@ func (p *PanedClass) WideHandle() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
 
@@ -265,8 +265,8 @@ func (p *PanedClass) Pack1(child Widget, resize bool, shrink bool) {
 	var _arg2 C.gboolean   // out
 	var _arg3 C.gboolean   // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 	if resize {
 		_arg2 = C.TRUE
 	}
@@ -284,8 +284,8 @@ func (p *PanedClass) Pack2(child Widget, resize bool, shrink bool) {
 	var _arg2 C.gboolean   // out
 	var _arg3 C.gboolean   // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 	if resize {
 		_arg2 = C.TRUE
 	}
@@ -301,7 +301,7 @@ func (p *PanedClass) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gint      // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 	_arg1 = C.gint(position)
 
 	C.gtk_paned_set_position(_arg0, _arg1)
@@ -312,7 +312,7 @@ func (p *PanedClass) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&Paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer((&p).Native()))
 	if wide {
 		_arg1 = C.TRUE
 	}

@@ -49,7 +49,7 @@ func NewQuadAlloc() *Quad {
 
 	var _quad *Quad // out
 
-	_quad = (*Quad)(unsafe.Pointer(*C.graphene_quad_t))
+	_quad = (*Quad)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_quad, func(v *Quad) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -69,8 +69,8 @@ func (q *Quad) Contains(p *Point) bool {
 	var _arg1 *C.graphene_point_t // out
 	var _cret C._Bool             // in
 
-	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(*Quad))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
+	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
 
 	_cret = C.graphene_quad_contains(_arg0, _arg1)
 
@@ -87,7 +87,7 @@ func (q *Quad) Contains(p *Point) bool {
 func (q *Quad) free() {
 	var _arg0 *C.graphene_quad_t // out
 
-	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(*Quad))
+	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q))
 
 	C.graphene_quad_free(_arg0)
 }
@@ -98,14 +98,14 @@ func (q *Quad) Point(index_ uint) *Point {
 	var _arg1 C.uint              // out
 	var _cret *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(*Quad))
+	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q))
 	_arg1 = C.uint(index_)
 
 	_cret = C.graphene_quad_get_point(_arg0, _arg1)
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(*C.graphene_point_t))
+	_point = (*Point)(unsafe.Pointer(_cret))
 
 	return _point
 }
@@ -119,17 +119,17 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 	var _arg4 *C.graphene_point_t // out
 	var _cret *C.graphene_quad_t  // in
 
-	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(*Quad))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
-	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
-	_arg4 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
+	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p1))
+	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(p2))
+	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(p3))
+	_arg4 = (*C.graphene_point_t)(unsafe.Pointer(p4))
 
 	_cret = C.graphene_quad_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _quad *Quad // out
 
-	_quad = (*Quad)(unsafe.Pointer(*C.graphene_quad_t))
+	_quad = (*Quad)(unsafe.Pointer(_cret))
 
 	return _quad
 }
@@ -141,14 +141,14 @@ func (q *Quad) InitFromRect(r *Rect) *Quad {
 	var _arg1 *C.graphene_rect_t // out
 	var _cret *C.graphene_quad_t // in
 
-	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(*Quad))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(*Rect))
+	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
 	_cret = C.graphene_quad_init_from_rect(_arg0, _arg1)
 
 	var _quad *Quad // out
 
-	_quad = (*Quad)(unsafe.Pointer(*C.graphene_quad_t))
+	_quad = (*Quad)(unsafe.Pointer(_cret))
 
 	return _quad
 }

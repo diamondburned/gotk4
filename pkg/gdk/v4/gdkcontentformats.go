@@ -67,7 +67,7 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 
 	var _contentFormatsBuilder *ContentFormatsBuilder // out
 
-	_contentFormatsBuilder = (*ContentFormatsBuilder)(unsafe.Pointer(*C.GdkContentFormatsBuilder))
+	_contentFormatsBuilder = (*ContentFormatsBuilder)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_builder_ref(_cret)
 	runtime.SetFinalizer(_contentFormatsBuilder, func(v *ContentFormatsBuilder) {
 		C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(unsafe.Pointer(v)))
@@ -87,8 +87,8 @@ func (b *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 *C.GdkContentFormats        // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(*ContentFormatsBuilder))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(*ContentFormats))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
+	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
 
 	C.gdk_content_formats_builder_add_formats(_arg0, _arg1)
 }
@@ -98,8 +98,8 @@ func (b *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 C.GType                     // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(*ContentFormatsBuilder))
-	_arg1 = (C.GType)(externglib.Type)
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
+	_arg1 = (C.GType)(typ)
 
 	C.gdk_content_formats_builder_add_gtype(_arg0, _arg1)
 }
@@ -109,7 +109,7 @@ func (b *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 *C.char                     // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(*ContentFormatsBuilder))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 	_arg1 = (*C.char)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -124,13 +124,13 @@ func (b *ContentFormatsBuilder) ref() *ContentFormatsBuilder {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _cret *C.GdkContentFormatsBuilder // in
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(*ContentFormatsBuilder))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 
 	_cret = C.gdk_content_formats_builder_ref(_arg0)
 
 	var _contentFormatsBuilder *ContentFormatsBuilder // out
 
-	_contentFormatsBuilder = (*ContentFormatsBuilder)(unsafe.Pointer(*C.GdkContentFormatsBuilder))
+	_contentFormatsBuilder = (*ContentFormatsBuilder)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_builder_ref(_cret)
 	runtime.SetFinalizer(_contentFormatsBuilder, func(v *ContentFormatsBuilder) {
 		C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(unsafe.Pointer(v)))
@@ -150,13 +150,13 @@ func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _cret *C.GdkContentFormats        // in
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(*ContentFormatsBuilder))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 
 	_cret = C.gdk_content_formats_builder_to_formats(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(*C.GdkContentFormats))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
@@ -169,7 +169,7 @@ func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
 func (b *ContentFormatsBuilder) unref() {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(*ContentFormatsBuilder))
+	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 
 	C.gdk_content_formats_builder_unref(_arg0)
 }

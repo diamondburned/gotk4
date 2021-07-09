@@ -48,8 +48,8 @@ func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	var _arg1 *C.graphene_point_t // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(*graphene.Point))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point))
 
 	_cret = C.gsk_rounded_rect_contains_point(_arg0, _arg1)
 
@@ -69,8 +69,8 @@ func (s *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	var _arg1 *C.graphene_rect_t // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(*graphene.Rect))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect))
 
 	_cret = C.gsk_rounded_rect_contains_rect(_arg0, _arg1)
 
@@ -96,18 +96,18 @@ func (s *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRig
 	var _arg5 *C.graphene_size_t // out
 	var _cret *C.GskRoundedRect  // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(*graphene.Rect))
-	_arg2 = (*C.graphene_size_t)(unsafe.Pointer(*graphene.Size))
-	_arg3 = (*C.graphene_size_t)(unsafe.Pointer(*graphene.Size))
-	_arg4 = (*C.graphene_size_t)(unsafe.Pointer(*graphene.Size))
-	_arg5 = (*C.graphene_size_t)(unsafe.Pointer(*graphene.Size))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg2 = (*C.graphene_size_t)(unsafe.Pointer(topLeft))
+	_arg3 = (*C.graphene_size_t)(unsafe.Pointer(topRight))
+	_arg4 = (*C.graphene_size_t)(unsafe.Pointer(bottomRight))
+	_arg5 = (*C.graphene_size_t)(unsafe.Pointer(bottomLeft))
 
 	_cret = C.gsk_rounded_rect_init(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(*C.GskRoundedRect))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -121,14 +121,14 @@ func (s *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	var _arg1 *C.GskRoundedRect // out
 	var _cret *C.GskRoundedRect // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
-	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
+	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(src))
 
 	_cret = C.gsk_rounded_rect_init_copy(_arg0, _arg1)
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(*C.GskRoundedRect))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -141,15 +141,15 @@ func (s *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Round
 	var _arg2 C.float            // out
 	var _cret *C.GskRoundedRect  // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(*graphene.Rect))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
 	_arg2 = C.float(radius)
 
 	_cret = C.gsk_rounded_rect_init_from_rect(_arg0, _arg1, _arg2)
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(*C.GskRoundedRect))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -161,8 +161,8 @@ func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	var _arg1 *C.graphene_rect_t // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(*graphene.Rect))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect))
 
 	_cret = C.gsk_rounded_rect_intersects_rect(_arg0, _arg1)
 
@@ -184,7 +184,7 @@ func (s *RoundedRect) IsRectilinear() bool {
 	var _arg0 *C.GskRoundedRect // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
 
 	_cret = C.gsk_rounded_rect_is_rectilinear(_arg0)
 
@@ -205,13 +205,13 @@ func (s *RoundedRect) Normalize() *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _cret *C.GskRoundedRect // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
 
 	_cret = C.gsk_rounded_rect_normalize(_arg0)
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(*C.GskRoundedRect))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -225,7 +225,7 @@ func (s *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	var _arg2 C.float           // out
 	var _cret *C.GskRoundedRect // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
 	_arg1 = C.float(dx)
 	_arg2 = C.float(dy)
 
@@ -233,7 +233,7 @@ func (s *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(*C.GskRoundedRect))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }
@@ -254,7 +254,7 @@ func (s *RoundedRect) Shrink(top float32, right float32, bottom float32, left fl
 	var _arg4 C.float           // out
 	var _cret *C.GskRoundedRect // in
 
-	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(*RoundedRect))
+	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s))
 	_arg1 = C.float(top)
 	_arg2 = C.float(right)
 	_arg3 = C.float(bottom)
@@ -264,7 +264,7 @@ func (s *RoundedRect) Shrink(top float32, right float32, bottom float32, left fl
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(*C.GskRoundedRect))
+	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
 
 	return _roundedRect
 }

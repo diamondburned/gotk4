@@ -111,7 +111,7 @@ func (s *RootInterface) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkRoot    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer((&Root).Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_root_get_display(_arg0)
 
@@ -132,7 +132,7 @@ func (s *RootInterface) Focus() *WidgetClass {
 	var _arg0 *C.GtkRoot   // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer((&Root).Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_root_get_focus(_arg0)
 
@@ -155,8 +155,8 @@ func (s *RootInterface) SetFocus(focus Widget) {
 	var _arg0 *C.GtkRoot   // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer((&Root).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&focus).Native()))
 
 	C.gtk_root_set_focus(_arg0, _arg1)
 }

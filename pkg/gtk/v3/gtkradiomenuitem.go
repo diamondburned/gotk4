@@ -170,7 +170,7 @@ func NewRadioMenuItemFromWidget(group RadioMenuItem) *RadioMenuItemClass {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&RadioMenuItem).Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&group).Native()))
 
 	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
 
@@ -190,7 +190,7 @@ func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItem, label string) *Rad
 	var _arg2 *C.gchar            // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&RadioMenuItem).Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&group).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -215,7 +215,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItem, label string) *
 	var _arg2 *C.gchar            // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&RadioMenuItem).Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&group).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -253,8 +253,8 @@ func (r *RadioMenuItemClass) JoinGroup(groupSource RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _arg1 *C.GtkRadioMenuItem // out
 
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&RadioMenuItem).Native()))
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&RadioMenuItem).Native()))
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&r).Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((&groupSource).Native()))
 
 	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
 }

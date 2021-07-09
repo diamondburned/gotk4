@@ -72,7 +72,7 @@ func NewGestureDrag(widget Widget) *GestureDragClass {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_gesture_drag_new(_arg1)
 
@@ -93,7 +93,7 @@ func (g *GestureDragClass) Offset() (x float64, y float64, ok bool) {
 	var _arg2 C.gdouble         // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer((&GestureDrag).Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer((&g).Native()))
 
 	_cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
 
@@ -118,7 +118,7 @@ func (g *GestureDragClass) StartPoint() (x float64, y float64, ok bool) {
 	var _arg2 C.gdouble         // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer((&GestureDrag).Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer((&g).Native()))
 
 	_cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
 

@@ -118,10 +118,10 @@ func (p *ProxyInterface) ConnectProxy(connection IOStream, proxyAddress ProxyAdd
 	var _cret *C.GIOStream     // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer((&Proxy).Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
-	_arg2 = (*C.GProxyAddress)(unsafe.Pointer((&ProxyAddress).Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((&connection).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer((&proxyAddress).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	_cret = C.g_proxy_connect(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -144,10 +144,10 @@ func (p *ProxyInterface) ConnectAsync(connection IOStream, proxyAddress ProxyAdd
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer((&Proxy).Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
-	_arg2 = (*C.GProxyAddress)(unsafe.Pointer((&ProxyAddress).Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((&connection).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer((&proxyAddress).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -161,8 +161,8 @@ func (p *ProxyInterface) ConnectFinish(result AsyncResult) (*IOStreamClass, erro
 	var _cret *C.GIOStream    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer((&Proxy).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	_cret = C.g_proxy_connect_finish(_arg0, _arg1, &_cerr)
 
@@ -186,7 +186,7 @@ func (p *ProxyInterface) SupportsHostname() bool {
 	var _arg0 *C.GProxy  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer((&Proxy).Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.g_proxy_supports_hostname(_arg0)
 

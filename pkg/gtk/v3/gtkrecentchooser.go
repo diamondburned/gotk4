@@ -77,12 +77,12 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 	var b *RecentInfo        // out
 	var userData interface{} // out
 
-	a = (*RecentInfo)(unsafe.Pointer(*C.GtkRecentInfo))
+	a = (*RecentInfo)(unsafe.Pointer(arg0))
 	C.gtk_recent_info_ref(arg0)
 	runtime.SetFinalizer(a, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
-	b = (*RecentInfo)(unsafe.Pointer(*C.GtkRecentInfo))
+	b = (*RecentInfo)(unsafe.Pointer(arg1))
 	C.gtk_recent_info_ref(arg1)
 	runtime.SetFinalizer(b, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
@@ -241,8 +241,8 @@ func (c *RecentChooserInterface) AddFilter(filter RecentFilter) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.GtkRecentFilter  // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
-	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer((&RecentFilter).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer((&filter).Native()))
 
 	C.gtk_recent_chooser_add_filter(_arg0, _arg1)
 }
@@ -252,13 +252,13 @@ func (c *RecentChooserInterface) CurrentItem() *RecentInfo {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GtkRecentInfo    // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_current_item(_arg0)
 
 	var _recentInfo *RecentInfo // out
 
-	_recentInfo = (*RecentInfo)(unsafe.Pointer(*C.GtkRecentInfo))
+	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
 	C.gtk_recent_info_ref(_cret)
 	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
@@ -272,7 +272,7 @@ func (c *RecentChooserInterface) CurrentURI() string {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.gchar            // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_current_uri(_arg0)
 
@@ -290,7 +290,7 @@ func (c *RecentChooserInterface) Filter() *RecentFilterClass {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GtkRecentFilter  // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_filter(_arg0)
 
@@ -308,7 +308,7 @@ func (c *RecentChooserInterface) Limit() int {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gint              // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_limit(_arg0)
 
@@ -325,7 +325,7 @@ func (c *RecentChooserInterface) LocalOnly() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_local_only(_arg0)
 
@@ -343,7 +343,7 @@ func (c *RecentChooserInterface) SelectMultiple() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_select_multiple(_arg0)
 
@@ -361,7 +361,7 @@ func (c *RecentChooserInterface) ShowIcons() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_icons(_arg0)
 
@@ -380,7 +380,7 @@ func (c *RecentChooserInterface) ShowNotFound() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_not_found(_arg0)
 
@@ -399,7 +399,7 @@ func (c *RecentChooserInterface) ShowPrivate() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_private(_arg0)
 
@@ -418,7 +418,7 @@ func (c *RecentChooserInterface) ShowTips() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_tips(_arg0)
 
@@ -436,13 +436,13 @@ func (c *RecentChooserInterface) SortType() RecentSortType {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.GtkRecentSortType // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_recent_chooser_get_sort_type(_arg0)
 
 	var _recentSortType RecentSortType // out
 
-	_recentSortType = (RecentSortType)(C.GtkRecentSortType)
+	_recentSortType = (RecentSortType)(_cret)
 
 	return _recentSortType
 }
@@ -453,8 +453,8 @@ func (c *RecentChooserInterface) RemoveFilter(filter RecentFilter) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.GtkRecentFilter  // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
-	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer((&RecentFilter).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer((&filter).Native()))
 
 	C.gtk_recent_chooser_remove_filter(_arg0, _arg1)
 }
@@ -464,7 +464,7 @@ func (c *RecentChooserInterface) RemoveFilter(filter RecentFilter) {
 func (c *RecentChooserInterface) SelectAll() {
 	var _arg0 *C.GtkRecentChooser // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_recent_chooser_select_all(_arg0)
 }
@@ -475,7 +475,7 @@ func (c *RecentChooserInterface) SelectURI(uri string) error {
 	var _arg1 *C.gchar            // out
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -494,7 +494,7 @@ func (c *RecentChooserInterface) SetCurrentURI(uri string) error {
 	var _arg1 *C.gchar            // out
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -513,8 +513,8 @@ func (c *RecentChooserInterface) SetFilter(filter RecentFilter) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.GtkRecentFilter  // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
-	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer((&RecentFilter).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer((&filter).Native()))
 
 	C.gtk_recent_chooser_set_filter(_arg0, _arg1)
 }
@@ -525,7 +525,7 @@ func (c *RecentChooserInterface) SetLimit(limit int) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gint              // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(limit)
 
 	C.gtk_recent_chooser_set_limit(_arg0, _arg1)
@@ -539,7 +539,7 @@ func (c *RecentChooserInterface) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	if localOnly {
 		_arg1 = C.TRUE
 	}
@@ -552,7 +552,7 @@ func (c *RecentChooserInterface) SetSelectMultiple(selectMultiple bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	if selectMultiple {
 		_arg1 = C.TRUE
 	}
@@ -566,7 +566,7 @@ func (c *RecentChooserInterface) SetShowIcons(showIcons bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	if showIcons {
 		_arg1 = C.TRUE
 	}
@@ -580,7 +580,7 @@ func (c *RecentChooserInterface) SetShowNotFound(showNotFound bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	if showNotFound {
 		_arg1 = C.TRUE
 	}
@@ -594,7 +594,7 @@ func (c *RecentChooserInterface) SetShowPrivate(showPrivate bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	if showPrivate {
 		_arg1 = C.TRUE
 	}
@@ -608,7 +608,7 @@ func (c *RecentChooserInterface) SetShowTips(showTips bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	if showTips {
 		_arg1 = C.TRUE
 	}
@@ -620,7 +620,7 @@ func (c *RecentChooserInterface) SetShowTips(showTips bool) {
 func (c *RecentChooserInterface) UnselectAll() {
 	var _arg0 *C.GtkRecentChooser // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_recent_chooser_unselect_all(_arg0)
 }
@@ -630,7 +630,7 @@ func (c *RecentChooserInterface) UnselectURI(uri string) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&RecentChooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 

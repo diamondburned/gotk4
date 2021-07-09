@@ -70,7 +70,7 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 
 	var _tabArray *TabArray // out
 
-	_tabArray = (*TabArray)(unsafe.Pointer(*C.PangoTabArray))
+	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -88,13 +88,13 @@ func (s *TabArray) Copy() *TabArray {
 	var _arg0 *C.PangoTabArray // out
 	var _cret *C.PangoTabArray // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(*TabArray))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(s))
 
 	_cret = C.pango_tab_array_copy(_arg0)
 
 	var _tabArray *TabArray // out
 
-	_tabArray = (*TabArray)(unsafe.Pointer(*C.PangoTabArray))
+	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -106,7 +106,7 @@ func (s *TabArray) Copy() *TabArray {
 func (t *TabArray) free() {
 	var _arg0 *C.PangoTabArray // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(*TabArray))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 
 	C.pango_tab_array_free(_arg0)
 }
@@ -117,7 +117,7 @@ func (t *TabArray) PositionsInPixels() bool {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(*TabArray))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 
 	_cret = C.pango_tab_array_get_positions_in_pixels(_arg0)
 
@@ -135,7 +135,7 @@ func (t *TabArray) Size() int {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gint           // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(*TabArray))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 
 	_cret = C.pango_tab_array_get_size(_arg0)
 
@@ -153,7 +153,7 @@ func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg2 C.PangoTabAlign  // in
 	var _arg3 C.gint           // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(*TabArray))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 	_arg1 = C.gint(tabIndex)
 
 	C.pango_tab_array_get_tab(_arg0, _arg1, &_arg2, &_arg3)
@@ -161,7 +161,7 @@ func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _alignment TabAlign // out
 	var _location int       // out
 
-	_alignment = (TabAlign)(C.PangoTabAlign)
+	_alignment = (TabAlign)(_arg2)
 	_location = int(_arg3)
 
 	return _alignment, _location
@@ -175,7 +175,7 @@ func (t *TabArray) Resize(newSize int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(*TabArray))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
 	_arg1 = C.gint(newSize)
 
 	C.pango_tab_array_resize(_arg0, _arg1)

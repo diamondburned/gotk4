@@ -93,7 +93,7 @@ func QueryVisualTypes() []VisualType {
 		src := unsafe.Slice(_arg1, _arg2)
 		_visualTypes = make([]VisualType, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_visualTypes[i] = (VisualType)(C.GdkVisualType)
+			_visualTypes[i] = (VisualType)(src[i])
 		}
 	}
 
@@ -184,7 +184,7 @@ func (v *VisualClass) BitsPerRGB() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&Visual).Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&v).Native()))
 
 	_cret = C.gdk_visual_get_bits_per_rgb(_arg0)
 
@@ -207,7 +207,7 @@ func (v *VisualClass) BluePixelDetails() (mask uint32, shift int, precision int)
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&Visual).Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&v).Native()))
 
 	C.gdk_visual_get_blue_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -232,13 +232,13 @@ func (v *VisualClass) ByteOrder() ByteOrder {
 	var _arg0 *C.GdkVisual   // out
 	var _cret C.GdkByteOrder // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&Visual).Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&v).Native()))
 
 	_cret = C.gdk_visual_get_byte_order(_arg0)
 
 	var _byteOrder ByteOrder // out
 
-	_byteOrder = (ByteOrder)(C.GdkByteOrder)
+	_byteOrder = (ByteOrder)(_cret)
 
 	return _byteOrder
 }
@@ -252,7 +252,7 @@ func (v *VisualClass) ColormapSize() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&Visual).Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&v).Native()))
 
 	_cret = C.gdk_visual_get_colormap_size(_arg0)
 
@@ -268,7 +268,7 @@ func (v *VisualClass) Depth() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&Visual).Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&v).Native()))
 
 	_cret = C.gdk_visual_get_depth(_arg0)
 
@@ -291,7 +291,7 @@ func (v *VisualClass) GreenPixelDetails() (mask uint32, shift int, precision int
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&Visual).Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&v).Native()))
 
 	C.gdk_visual_get_green_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -317,7 +317,7 @@ func (v *VisualClass) RedPixelDetails() (mask uint32, shift int, precision int) 
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&Visual).Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&v).Native()))
 
 	C.gdk_visual_get_red_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -337,7 +337,7 @@ func (v *VisualClass) Screen() *ScreenClass {
 	var _arg0 *C.GdkVisual // out
 	var _cret *C.GdkScreen // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&Visual).Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&v).Native()))
 
 	_cret = C.gdk_visual_get_screen(_arg0)
 
@@ -354,13 +354,13 @@ func (v *VisualClass) VisualType() VisualType {
 	var _arg0 *C.GdkVisual    // out
 	var _cret C.GdkVisualType // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&Visual).Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer((&v).Native()))
 
 	_cret = C.gdk_visual_get_visual_type(_arg0)
 
 	var _visualType VisualType // out
 
-	_visualType = (VisualType)(C.GdkVisualType)
+	_visualType = (VisualType)(_cret)
 
 	return _visualType
 }

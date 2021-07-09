@@ -41,8 +41,8 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	var err error            // out
 	var userData interface{} // out
 
-	start = (*ParseLocation)(unsafe.Pointer(*C.GskParseLocation))
-	end = (*ParseLocation)(unsafe.Pointer(*C.GskParseLocation))
+	start = (*ParseLocation)(unsafe.Pointer(arg0))
+	end = (*ParseLocation)(unsafe.Pointer(arg1))
 	err = gerror.Take(unsafe.Pointer(arg2))
 	userData = box.Get(uintptr(arg3))
 
@@ -125,8 +125,8 @@ func (n *RenderNodeClass) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
 
 	C.gsk_render_node_draw(_arg0, _arg1)
 }
@@ -136,13 +136,13 @@ func (n *RenderNodeClass) NodeType() RenderNodeType {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret C.GskRenderNodeType // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
 
 	_cret = C.gsk_render_node_get_node_type(_arg0)
 
 	var _renderNodeType RenderNodeType // out
 
-	_renderNodeType = (RenderNodeType)(C.GskRenderNodeType)
+	_renderNodeType = (RenderNodeType)(_cret)
 
 	return _renderNodeType
 }
@@ -152,7 +152,7 @@ func (n *RenderNodeClass) ref() *RenderNodeClass {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
 
 	_cret = C.gsk_render_node_ref(_arg0)
 
@@ -171,7 +171,7 @@ func (n *RenderNodeClass) ref() *RenderNodeClass {
 func (n *RenderNodeClass) unref() {
 	var _arg0 *C.GskRenderNode // out
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
 
 	C.gsk_render_node_unref(_arg0)
 }
@@ -188,7 +188,7 @@ func (n *RenderNodeClass) WriteToFile(filename string) error {
 	var _arg1 *C.char          // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&n).Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 

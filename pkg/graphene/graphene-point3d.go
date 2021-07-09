@@ -46,7 +46,7 @@ func NewPoint3DAlloc() *Point3D {
 
 	var _point3D *Point3D // out
 
-	_point3D = (*Point3D)(unsafe.Pointer(*C.graphene_point3d_t))
+	_point3D = (*Point3D)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_point3D, func(v *Point3D) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -86,8 +86,8 @@ func (a *Point3D) Dot(b *Point3D) float32 {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C.float               // in
 
-	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b))
 
 	_cret = C.graphene_point3d_dot(_arg0, _arg1)
 
@@ -104,8 +104,8 @@ func (a *Point3D) Equal(b *Point3D) bool {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C._Bool               // in
 
-	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b))
 
 	_cret = C.graphene_point3d_equal(_arg0, _arg1)
 
@@ -122,7 +122,7 @@ func (a *Point3D) Equal(b *Point3D) bool {
 func (p *Point3D) free() {
 	var _arg0 *C.graphene_point3d_t // out
 
-	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
 
 	C.graphene_point3d_free(_arg0)
 }
@@ -135,7 +135,7 @@ func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 	var _arg3 C.float               // out
 	var _cret *C.graphene_point3d_t // in
 
-	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
 	_arg1 = C.float(x)
 	_arg2 = C.float(y)
 	_arg3 = C.float(z)
@@ -144,7 +144,7 @@ func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 
 	var _point3D *Point3D // out
 
-	_point3D = (*Point3D)(unsafe.Pointer(*C.graphene_point3d_t))
+	_point3D = (*Point3D)(unsafe.Pointer(_cret))
 
 	return _point3D
 }
@@ -156,14 +156,14 @@ func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret *C.graphene_point3d_t // in
 
-	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(src))
 
 	_cret = C.graphene_point3d_init_from_point(_arg0, _arg1)
 
 	var _point3D *Point3D // out
 
-	_point3D = (*Point3D)(unsafe.Pointer(*C.graphene_point3d_t))
+	_point3D = (*Point3D)(unsafe.Pointer(_cret))
 
 	return _point3D
 }
@@ -175,14 +175,14 @@ func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 	var _arg1 *C.graphene_vec3_t    // out
 	var _cret *C.graphene_point3d_t // in
 
-	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 
 	_cret = C.graphene_point3d_init_from_vec3(_arg0, _arg1)
 
 	var _point3D *Point3D // out
 
-	_point3D = (*Point3D)(unsafe.Pointer(*C.graphene_point3d_t))
+	_point3D = (*Point3D)(unsafe.Pointer(_cret))
 
 	return _point3D
 }
@@ -193,7 +193,7 @@ func (p *Point3D) Length() float32 {
 	var _arg0 *C.graphene_point3d_t // out
 	var _cret C.float               // in
 
-	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
 
 	_cret = C.graphene_point3d_length(_arg0)
 
@@ -212,8 +212,8 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 	var _arg2 C.float               // out
 	var _cret C._Bool               // in
 
-	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b))
 	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_point3d_near(_arg0, _arg1, _arg2)

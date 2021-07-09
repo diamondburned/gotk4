@@ -49,7 +49,7 @@ func NewFrustumAlloc() *Frustum {
 
 	var _frustum *Frustum // out
 
-	_frustum = (*Frustum)(unsafe.Pointer(*C.graphene_frustum_t))
+	_frustum = (*Frustum)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_frustum, func(v *Frustum) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -69,8 +69,8 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C._Bool               // in
 
-	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
 
 	_cret = C.graphene_frustum_contains_point(_arg0, _arg1)
 
@@ -89,8 +89,8 @@ func (a *Frustum) Equal(b *Frustum) bool {
 	var _arg1 *C.graphene_frustum_t // out
 	var _cret C._Bool               // in
 
-	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
-	_arg1 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
+	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_frustum_t)(unsafe.Pointer(b))
 
 	_cret = C.graphene_frustum_equal(_arg0, _arg1)
 
@@ -107,7 +107,7 @@ func (a *Frustum) Equal(b *Frustum) bool {
 func (f *Frustum) free() {
 	var _arg0 *C.graphene_frustum_t // out
 
-	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
+	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f))
 
 	C.graphene_frustum_free(_arg0)
 }
@@ -124,19 +124,19 @@ func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5
 	var _arg6 *C.graphene_plane_t   // out
 	var _cret *C.graphene_frustum_t // in
 
-	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
-	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
-	_arg2 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
-	_arg3 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
-	_arg4 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
-	_arg5 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
-	_arg6 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
+	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f))
+	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(p0))
+	_arg2 = (*C.graphene_plane_t)(unsafe.Pointer(p1))
+	_arg3 = (*C.graphene_plane_t)(unsafe.Pointer(p2))
+	_arg4 = (*C.graphene_plane_t)(unsafe.Pointer(p3))
+	_arg5 = (*C.graphene_plane_t)(unsafe.Pointer(p4))
+	_arg6 = (*C.graphene_plane_t)(unsafe.Pointer(p5))
 
 	_cret = C.graphene_frustum_init(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _frustum *Frustum // out
 
-	_frustum = (*Frustum)(unsafe.Pointer(*C.graphene_frustum_t))
+	_frustum = (*Frustum)(unsafe.Pointer(_cret))
 
 	return _frustum
 }
@@ -148,14 +148,14 @@ func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 	var _arg1 *C.graphene_frustum_t // out
 	var _cret *C.graphene_frustum_t // in
 
-	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
-	_arg1 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
+	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f))
+	_arg1 = (*C.graphene_frustum_t)(unsafe.Pointer(src))
 
 	_cret = C.graphene_frustum_init_from_frustum(_arg0, _arg1)
 
 	var _frustum *Frustum // out
 
-	_frustum = (*Frustum)(unsafe.Pointer(*C.graphene_frustum_t))
+	_frustum = (*Frustum)(unsafe.Pointer(_cret))
 
 	return _frustum
 }
@@ -166,14 +166,14 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 	var _arg1 *C.graphene_matrix_t  // out
 	var _cret *C.graphene_frustum_t // in
 
-	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(*Matrix))
+	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix))
 
 	_cret = C.graphene_frustum_init_from_matrix(_arg0, _arg1)
 
 	var _frustum *Frustum // out
 
-	_frustum = (*Frustum)(unsafe.Pointer(*C.graphene_frustum_t))
+	_frustum = (*Frustum)(unsafe.Pointer(_cret))
 
 	return _frustum
 }
@@ -185,8 +185,8 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 	var _arg1 *C.graphene_box_t     // out
 	var _cret C._Bool               // in
 
-	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
-	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
+	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(box))
 
 	_cret = C.graphene_frustum_intersects_box(_arg0, _arg1)
 
@@ -206,8 +206,8 @@ func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 	var _arg1 *C.graphene_sphere_t  // out
 	var _cret C._Bool               // in
 
-	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(*Frustum))
-	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(*Sphere))
+	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f))
+	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(sphere))
 
 	_cret = C.graphene_frustum_intersects_sphere(_arg0, _arg1)
 

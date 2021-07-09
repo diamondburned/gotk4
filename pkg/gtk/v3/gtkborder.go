@@ -49,7 +49,7 @@ func NewBorder() *Border {
 
 	var _border *Border // out
 
-	_border = (*Border)(unsafe.Pointer(*C.GtkBorder))
+	_border = (*Border)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_border, func(v *Border) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -95,13 +95,13 @@ func (b *Border) Copy() *Border {
 	var _arg0 *C.GtkBorder // out
 	var _cret *C.GtkBorder // in
 
-	_arg0 = (*C.GtkBorder)(unsafe.Pointer(*Border))
+	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b))
 
 	_cret = C.gtk_border_copy(_arg0)
 
 	var _border *Border // out
 
-	_border = (*Border)(unsafe.Pointer(*C.GtkBorder))
+	_border = (*Border)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_border, func(v *Border) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -113,7 +113,7 @@ func (b *Border) Copy() *Border {
 func (b *Border) free() {
 	var _arg0 *C.GtkBorder // out
 
-	_arg0 = (*C.GtkBorder)(unsafe.Pointer(*Border))
+	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b))
 
 	C.gtk_border_free(_arg0)
 }

@@ -256,7 +256,7 @@ func (l *PixbufLoaderClass) Close() error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&PixbufLoader).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
 
 	C.gdk_pixbuf_loader_close(_arg0, &_cerr)
 
@@ -280,7 +280,7 @@ func (l *PixbufLoaderClass) Animation() *PixbufAnimationClass {
 	var _arg0 *C.GdkPixbufLoader    // out
 	var _cret *C.GdkPixbufAnimation // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&PixbufLoader).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_animation(_arg0)
 
@@ -311,7 +311,7 @@ func (l *PixbufLoaderClass) Pixbuf() *PixbufClass {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbuf       // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&PixbufLoader).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_pixbuf(_arg0)
 
@@ -336,7 +336,7 @@ func (l *PixbufLoaderClass) SetSize(width int, height int) {
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&PixbufLoader).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 
@@ -350,7 +350,7 @@ func (l *PixbufLoaderClass) Write(buf []byte) error {
 	var _arg2 C.gsize
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&PixbufLoader).Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer((&l).Native()))
 	_arg2 = C.gsize(len(buf))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&buf[0]))
 

@@ -47,7 +47,7 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 	var _arg3 C.gpointer
 	var _arg4 *C.GError // out
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&gextras.Objector).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 	_arg4 = (*C.GError)(gerror.New(err))
@@ -339,7 +339,7 @@ func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCall
 	var _arg4 C.gpointer            // out
 	var _cret *C.GSimpleAsyncResult // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&gextras.Objector).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 	_arg4 = (C.gpointer)(box.Assign(sourceTag))
@@ -364,7 +364,7 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 	var _arg4 *C.GError             // out
 	var _cret *C.GSimpleAsyncResult // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&gextras.Objector).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 	_arg4 = (*C.GError)(gerror.New(err))
@@ -391,7 +391,7 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 func (s *SimpleAsyncResultClass) Complete() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
 
 	C.g_simple_async_result_complete(_arg0)
 }
@@ -408,7 +408,7 @@ func (s *SimpleAsyncResultClass) Complete() {
 func (s *SimpleAsyncResultClass) CompleteInIdle() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
 
 	C.g_simple_async_result_complete_in_idle(_arg0)
 }
@@ -421,7 +421,7 @@ func (s *SimpleAsyncResultClass) OpResGboolean() bool {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.g_simple_async_result_get_op_res_gboolean(_arg0)
 
@@ -441,7 +441,7 @@ func (s *SimpleAsyncResultClass) OpResGssize() int {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gssize              // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.g_simple_async_result_get_op_res_gssize(_arg0)
 
@@ -464,7 +464,7 @@ func (s *SimpleAsyncResultClass) PropagateError() error {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
 
 	C.g_simple_async_result_propagate_error(_arg0, &_cerr)
 
@@ -496,8 +496,8 @@ func (s *SimpleAsyncResultClass) SetCheckCancellable(checkCancellable Cancellabl
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GCancellable       // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&checkCancellable).Native()))
 
 	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
 }
@@ -509,7 +509,7 @@ func (s *SimpleAsyncResultClass) SetFromError(err error) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GError             // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.g_simple_async_result_set_from_error(_arg0, _arg1)
@@ -527,7 +527,7 @@ func (s *SimpleAsyncResultClass) SetHandleCancellation(handleCancellation bool) 
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
 	if handleCancellation {
 		_arg1 = C.TRUE
 	}
@@ -543,7 +543,7 @@ func (s *SimpleAsyncResultClass) SetOpResGboolean(opRes bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
 	if opRes {
 		_arg1 = C.TRUE
 	}
@@ -559,7 +559,7 @@ func (s *SimpleAsyncResultClass) SetOpResGssize(opRes int) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gssize              // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&SimpleAsyncResult).Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.gssize(opRes)
 
 	C.g_simple_async_result_set_op_res_gssize(_arg0, _arg1)

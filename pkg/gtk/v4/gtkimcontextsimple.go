@@ -93,7 +93,7 @@ func (c *IMContextSimpleClass) AddComposeFile(composeFile string) {
 	var _arg0 *C.GtkIMContextSimple // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer((&IMContextSimple).Native()))
+	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.char)(C.CString(composeFile))
 	defer C.free(unsafe.Pointer(_arg1))
 

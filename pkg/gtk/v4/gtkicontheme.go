@@ -116,7 +116,7 @@ func (s *IconPaintableClass) IconName() string {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer((&IconPaintable).Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_icon_paintable_get_icon_name(_arg0)
 
@@ -138,7 +138,7 @@ func (s *IconPaintableClass) IsSymbolic() bool {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer((&IconPaintable).Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_icon_paintable_is_symbolic(_arg0)
 
@@ -288,7 +288,7 @@ func (s *IconThemeClass) AddResourcePath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -302,7 +302,7 @@ func (s *IconThemeClass) AddSearchPath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -314,7 +314,7 @@ func (s *IconThemeClass) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.GdkDisplay   // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_icon_theme_get_display(_arg0)
 
@@ -331,7 +331,7 @@ func (s *IconThemeClass) IconNames() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_icon_theme_get_icon_names(_arg0)
 
@@ -365,7 +365,7 @@ func (s *IconThemeClass) IconSizes(iconName string) []int {
 	var _arg1 *C.char         // out
 	var _cret *C.int
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -397,7 +397,7 @@ func (s *IconThemeClass) ResourcePath() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_icon_theme_get_resource_path(_arg0)
 
@@ -428,7 +428,7 @@ func (s *IconThemeClass) SearchPath() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_icon_theme_get_search_path(_arg0)
 
@@ -459,7 +459,7 @@ func (s *IconThemeClass) ThemeName() string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_icon_theme_get_theme_name(_arg0)
 
@@ -477,7 +477,7 @@ func (s *IconThemeClass) HasIcon(iconName string) bool {
 	var _arg1 *C.char         // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -510,7 +510,7 @@ func (s *IconThemeClass) SetSearchPath(path []string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 **C.char
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(path)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
@@ -533,7 +533,7 @@ func (s *IconThemeClass) SetThemeName(themeName string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(themeName))
 	defer C.free(unsafe.Pointer(_arg1))
 

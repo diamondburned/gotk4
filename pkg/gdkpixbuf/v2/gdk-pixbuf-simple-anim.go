@@ -85,8 +85,8 @@ func (a *PixbufSimpleAnimClass) AddFrame(pixbuf Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer((&PixbufSimpleAnim).Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&Pixbuf).Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
 
 	C.gdk_pixbuf_simple_anim_add_frame(_arg0, _arg1)
 }
@@ -97,7 +97,7 @@ func (a *PixbufSimpleAnimClass) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer((&PixbufSimpleAnim).Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gdk_pixbuf_simple_anim_get_loop(_arg0)
 
@@ -116,7 +116,7 @@ func (a *PixbufSimpleAnimClass) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer((&PixbufSimpleAnim).Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer((&a).Native()))
 	if loop {
 		_arg1 = C.TRUE
 	}

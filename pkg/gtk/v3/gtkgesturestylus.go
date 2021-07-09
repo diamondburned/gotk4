@@ -67,7 +67,7 @@ func NewGestureStylus(widget Widget) *GestureStylusClass {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_gesture_stylus_new(_arg1)
 
@@ -87,7 +87,7 @@ func (g *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
 	var _arg0 *C.GtkGestureStylus // out
 	var _cret *C.GdkDeviceTool    // in
 
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer((&GestureStylus).Native()))
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer((&g).Native()))
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
 

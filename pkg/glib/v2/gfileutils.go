@@ -291,7 +291,7 @@ func FileErrorFromErrno(errNo int) FileError {
 
 	var _fileError FileError // out
 
-	_fileError = (FileError)(C.GFileError)
+	_fileError = (FileError)(_cret)
 
 	return _fileError
 }

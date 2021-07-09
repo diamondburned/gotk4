@@ -19,7 +19,7 @@ func ShowURI(parent Window, uri string, timestamp uint32) {
 	var _arg2 *C.char      // out
 	var _arg3 C.guint32    // out
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&parent).Native()))
 	_arg2 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)

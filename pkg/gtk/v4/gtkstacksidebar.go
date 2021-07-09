@@ -113,7 +113,7 @@ func (s *StackSidebarClass) Stack() *StackClass {
 	var _arg0 *C.GtkStackSidebar // out
 	var _cret *C.GtkStack        // in
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer((&StackSidebar).Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
 
@@ -133,8 +133,8 @@ func (s *StackSidebarClass) SetStack(stack Stack) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer((&StackSidebar).Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer((&Stack).Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer((&stack).Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 }

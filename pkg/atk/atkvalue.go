@@ -239,7 +239,7 @@ func (o *ValueInterface) Increment() float64 {
 	var _arg0 *C.AtkValue // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&Value).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.atk_value_get_increment(_arg0)
 
@@ -255,13 +255,13 @@ func (o *ValueInterface) Range() *Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.AtkRange // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&Value).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.atk_value_get_range(_arg0)
 
 	var __range *Range // out
 
-	__range = (*Range)(unsafe.Pointer(*C.AtkRange))
+	__range = (*Range)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(__range, func(v *Range) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -277,7 +277,7 @@ func (o *ValueInterface) ValueAndText() (float64, string) {
 	var _arg1 C.gdouble   // in
 	var _arg2 *C.gchar    // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&Value).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
 
 	C.atk_value_get_value_and_text(_arg0, &_arg1, &_arg2)
 
@@ -299,8 +299,8 @@ func (o *ValueInterface) SetCurrentValue(value externglib.Value) bool {
 	var _arg1 *C.GValue   // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&Value).Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
 
 	_cret = C.atk_value_set_current_value(_arg0, _arg1)
 
@@ -329,7 +329,7 @@ func (o *ValueInterface) SetValue(newValue float64) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // out
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer((&Value).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer((&o).Native()))
 	_arg1 = C.gdouble(newValue)
 
 	C.atk_value_set_value(_arg0, _arg1)

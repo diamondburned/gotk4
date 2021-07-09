@@ -237,7 +237,7 @@ func (k *KeymapClass) CapsLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&Keymap).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
 
 	_cret = C.gdk_keymap_get_caps_lock_state(_arg0)
 
@@ -255,13 +255,13 @@ func (k *KeymapClass) Direction() pango.Direction {
 	var _arg0 *C.GdkKeymap     // out
 	var _cret C.PangoDirection // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&Keymap).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
 
 	_cret = C.gdk_keymap_get_direction(_arg0)
 
 	var _direction pango.Direction // out
 
-	_direction = (pango.Direction)(C.PangoDirection)
+	_direction = (pango.Direction)(_cret)
 
 	return _direction
 }
@@ -271,7 +271,7 @@ func (k *KeymapClass) ModifierState() uint {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.guint      // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&Keymap).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
 
 	_cret = C.gdk_keymap_get_modifier_state(_arg0)
 
@@ -287,7 +287,7 @@ func (k *KeymapClass) NumLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&Keymap).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
 
 	_cret = C.gdk_keymap_get_num_lock_state(_arg0)
 
@@ -305,7 +305,7 @@ func (k *KeymapClass) ScrollLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&Keymap).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
 
 	_cret = C.gdk_keymap_get_scroll_lock_state(_arg0)
 
@@ -324,7 +324,7 @@ func (k *KeymapClass) HaveBidiLayouts() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&Keymap).Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
 
 	_cret = C.gdk_keymap_have_bidi_layouts(_arg0)
 
@@ -346,8 +346,8 @@ func (k *KeymapClass) LookupKey(key *KeymapKey) uint {
 	var _arg1 *C.GdkKeymapKey // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&Keymap).Native()))
-	_arg1 = (*C.GdkKeymapKey)(unsafe.Pointer(*KeymapKey))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer((&k).Native()))
+	_arg1 = (*C.GdkKeymapKey)(unsafe.Pointer(key))
 
 	_cret = C.gdk_keymap_lookup_key(_arg0, _arg1)
 

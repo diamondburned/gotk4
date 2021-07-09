@@ -50,8 +50,8 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 
 	model = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(arg0))).(*TreeModelInterface)
-	a = (*TreeIter)(unsafe.Pointer(*C.GtkTreeIter))
-	b = (*TreeIter)(unsafe.Pointer(*C.GtkTreeIter))
+	a = (*TreeIter)(unsafe.Pointer(arg1))
+	b = (*TreeIter)(unsafe.Pointer(arg2))
 	userData = box.Get(uintptr(arg3))
 
 	fn := v.(TreeIterCompareFunc)
@@ -134,7 +134,7 @@ func (s *TreeSortableInterface) SortColumnID() (int, SortType, bool) {
 	var _arg2 C.GtkSortType      // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer((&TreeSortable).Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_tree_sortable_get_sort_column_id(_arg0, &_arg1, &_arg2)
 
@@ -143,7 +143,7 @@ func (s *TreeSortableInterface) SortColumnID() (int, SortType, bool) {
 	var _ok bool          // out
 
 	_sortColumnId = int(_arg1)
-	_order = (SortType)(C.GtkSortType)
+	_order = (SortType)(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -158,7 +158,7 @@ func (s *TreeSortableInterface) HasDefaultSortFunc() bool {
 	var _arg0 *C.GtkTreeSortable // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer((&TreeSortable).Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_tree_sortable_has_default_sort_func(_arg0)
 
@@ -176,7 +176,7 @@ func (s *TreeSortableInterface) HasDefaultSortFunc() bool {
 func (s *TreeSortableInterface) SortColumnChanged() {
 	var _arg0 *C.GtkTreeSortable // out
 
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer((&TreeSortable).Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_tree_sortable_sort_column_changed(_arg0)
 }

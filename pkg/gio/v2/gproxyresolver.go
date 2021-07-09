@@ -129,7 +129,7 @@ func (r *ProxyResolverInterface) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer((&ProxyResolver).Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.g_proxy_resolver_is_supported(_arg0)
 
@@ -161,10 +161,10 @@ func (r *ProxyResolverInterface) Lookup(uri string, cancellable Cancellable) ([]
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer((&ProxyResolver).Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer((&r).Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
 
@@ -199,10 +199,10 @@ func (r *ProxyResolverInterface) LookupAsync(uri string, cancellable Cancellable
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer((&ProxyResolver).Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer((&r).Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -218,8 +218,8 @@ func (r *ProxyResolverInterface) LookupFinish(result AsyncResult) ([]string, err
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer((&ProxyResolver).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer((&r).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
 

@@ -146,7 +146,7 @@ func NewRadioToolButtonFromWidget(group RadioToolButton) *RadioToolButtonClass {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _cret *C.GtkToolItem        // in
 
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((&RadioToolButton).Native()))
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((&group).Native()))
 
 	_cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
 
@@ -168,7 +168,7 @@ func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string
 	var _arg2 *C.gchar              // out
 	var _cret *C.GtkToolItem        // in
 
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((&RadioToolButton).Native()))
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((&group).Native()))
 	_arg2 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg2))
 

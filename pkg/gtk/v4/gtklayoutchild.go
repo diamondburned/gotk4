@@ -66,7 +66,7 @@ func (l *LayoutChildClass) ChildWidget() *WidgetClass {
 	var _arg0 *C.GtkLayoutChild // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer((&LayoutChild).Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer((&l).Native()))
 
 	_cret = C.gtk_layout_child_get_child_widget(_arg0)
 
@@ -84,7 +84,7 @@ func (l *LayoutChildClass) LayoutManager() *LayoutManagerClass {
 	var _arg0 *C.GtkLayoutChild   // out
 	var _cret *C.GtkLayoutManager // in
 
-	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer((&LayoutChild).Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer((&l).Native()))
 
 	_cret = C.gtk_layout_child_get_layout_manager(_arg0)
 

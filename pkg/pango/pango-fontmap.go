@@ -137,7 +137,7 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 func (f *FontMapClass) Changed() {
 	var _arg0 *C.PangoFontMap // out
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
 
 	C.pango_font_map_changed(_arg0)
 }
@@ -154,7 +154,7 @@ func (f *FontMapClass) CreateContext() *ContextClass {
 	var _arg0 *C.PangoFontMap // out
 	var _cret *C.PangoContext // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.pango_font_map_create_context(_arg0)
 
@@ -172,7 +172,7 @@ func (f *FontMapClass) Family(name string) *FontFamilyClass {
 	var _arg1 *C.char            // out
 	var _cret *C.PangoFontFamily // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -202,7 +202,7 @@ func (f *FontMapClass) Serial() uint {
 	var _arg0 *C.PangoFontMap // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.pango_font_map_get_serial(_arg0)
 
@@ -219,7 +219,7 @@ func (f *FontMapClass) ListFamilies() []*FontFamilyClass {
 	var _arg1 **C.PangoFontFamily
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
 
 	C.pango_font_map_list_families(_arg0, &_arg1, &_arg2)
 
@@ -245,9 +245,9 @@ func (f *FontMapClass) LoadFont(context Context, desc *FontDescription) *FontCla
 	var _arg2 *C.PangoFontDescription // out
 	var _cret *C.PangoFont            // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
-	_arg1 = (*C.PangoContext)(unsafe.Pointer((&Context).Native()))
-	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 
 	_cret = C.pango_font_map_load_font(_arg0, _arg1, _arg2)
 
@@ -268,10 +268,10 @@ func (f *FontMapClass) LoadFontset(context Context, desc *FontDescription, langu
 	var _arg3 *C.PangoLanguage        // out
 	var _cret *C.PangoFontset         // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
-	_arg1 = (*C.PangoContext)(unsafe.Pointer((&Context).Native()))
-	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
-	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&f).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
 	_cret = C.pango_font_map_load_fontset(_arg0, _arg1, _arg2, _arg3)
 

@@ -73,7 +73,7 @@ func NewGestureSwipe(widget Widget) *GestureSwipeClass {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_gesture_swipe_new(_arg1)
 
@@ -94,7 +94,7 @@ func (g *GestureSwipeClass) Velocity() (velocityX float64, velocityY float64, ok
 	var _arg2 C.gdouble          // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer((&GestureSwipe).Native()))
+	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer((&g).Native()))
 
 	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
 

@@ -154,7 +154,7 @@ func (c *PrintContextClass) CreatePangoContext() *pango.ContextClass {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoContext    // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_create_pango_context(_arg0)
 
@@ -172,7 +172,7 @@ func (c *PrintContextClass) CreatePangoLayout() *pango.LayoutClass {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoLayout     // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_create_pango_layout(_arg0)
 
@@ -190,13 +190,13 @@ func (c *PrintContextClass) CairoContext() *cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.cairo_t         // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_get_cairo_context(_arg0)
 
 	var _ret *cairo.Context // out
 
-	_ret = (*cairo.Context)(unsafe.Pointer(*C.cairo_t))
+	_ret = (*cairo.Context)(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -206,7 +206,7 @@ func (c *PrintContextClass) DPIX() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.gdouble          // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_get_dpi_x(_arg0)
 
@@ -222,7 +222,7 @@ func (c *PrintContextClass) DPIY() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.gdouble          // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_get_dpi_y(_arg0)
 
@@ -243,7 +243,7 @@ func (c *PrintContextClass) HardMargins() (top float64, bottom float64, left flo
 	var _arg4 C.gdouble          // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -269,7 +269,7 @@ func (c *PrintContextClass) Height() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.gdouble          // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_get_height(_arg0)
 
@@ -286,7 +286,7 @@ func (c *PrintContextClass) PageSetup() *PageSetupClass {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.GtkPageSetup    // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_get_page_setup(_arg0)
 
@@ -304,7 +304,7 @@ func (c *PrintContextClass) PangoFontmap() *pango.FontMapClass {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoFontMap    // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_get_pango_fontmap(_arg0)
 
@@ -321,7 +321,7 @@ func (c *PrintContextClass) Width() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.gdouble          // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_print_context_get_width(_arg0)
 
@@ -343,8 +343,8 @@ func (c *PrintContextClass) SetCairoContext(cr *cairo.Context, dpiX float64, dpi
 	var _arg2 C.double           // out
 	var _arg3 C.double           // out
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&PrintContext).Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg2 = C.double(dpiX)
 	_arg3 = C.double(dpiY)
 

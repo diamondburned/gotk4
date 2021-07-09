@@ -367,8 +367,8 @@ func (a *ActivatableInterface) DoSetRelatedAction(action Action) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&Activatable).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((&action).Native()))
 
 	C.gtk_activatable_do_set_related_action(_arg0, _arg1)
 }
@@ -380,7 +380,7 @@ func (a *ActivatableInterface) RelatedAction() *ActionClass {
 	var _arg0 *C.GtkActivatable // out
 	var _cret *C.GtkAction      // in
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&Activatable).Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_activatable_get_related_action(_arg0)
 
@@ -401,7 +401,7 @@ func (a *ActivatableInterface) UseActionAppearance() bool {
 	var _arg0 *C.GtkActivatable // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&Activatable).Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_activatable_get_use_action_appearance(_arg0)
 
@@ -424,8 +424,8 @@ func (a *ActivatableInterface) SetRelatedAction(action Action) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&Activatable).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((&action).Native()))
 
 	C.gtk_activatable_set_related_action(_arg0, _arg1)
 }
@@ -443,7 +443,7 @@ func (a *ActivatableInterface) SetUseActionAppearance(useAppearance bool) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&Activatable).Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&a).Native()))
 	if useAppearance {
 		_arg1 = C.TRUE
 	}
@@ -461,8 +461,8 @@ func (a *ActivatableInterface) SyncActionProperties(action Action) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&Activatable).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((&action).Native()))
 
 	C.gtk_activatable_sync_action_properties(_arg0, _arg1)
 }

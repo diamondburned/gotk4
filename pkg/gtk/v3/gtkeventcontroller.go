@@ -66,13 +66,13 @@ func (c *EventControllerClass) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 
 	var _propagationPhase PropagationPhase // out
 
-	_propagationPhase = (PropagationPhase)(C.GtkPropagationPhase)
+	_propagationPhase = (PropagationPhase)(_cret)
 
 	return _propagationPhase
 }
@@ -82,7 +82,7 @@ func (c *EventControllerClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
@@ -100,7 +100,7 @@ func (c *EventControllerClass) Widget() *WidgetClass {
 func (c *EventControllerClass) Reset() {
 	var _arg0 *C.GtkEventController // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_event_controller_reset(_arg0)
 }

@@ -99,7 +99,7 @@ func marshalMisc(p uintptr) (interface{}, error) {
 func (m *MiscClass) ThreadsEnter() {
 	var _arg0 *C.AtkMisc // out
 
-	_arg0 = (*C.AtkMisc)(unsafe.Pointer((&Misc).Native()))
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer((&m).Native()))
 
 	C.atk_misc_threads_enter(_arg0)
 }
@@ -117,7 +117,7 @@ func (m *MiscClass) ThreadsEnter() {
 func (m *MiscClass) ThreadsLeave() {
 	var _arg0 *C.AtkMisc // out
 
-	_arg0 = (*C.AtkMisc)(unsafe.Pointer((&Misc).Native()))
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer((&m).Native()))
 
 	C.atk_misc_threads_leave(_arg0)
 }

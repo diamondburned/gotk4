@@ -109,7 +109,7 @@ func (t *TextTagClass) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer((&TextTag).Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer((&t).Native()))
 	if sizeChanged {
 		_arg1 = C.TRUE
 	}
@@ -122,7 +122,7 @@ func (t *TextTagClass) Priority() int {
 	var _arg0 *C.GtkTextTag // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer((&TextTag).Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer((&t).Native()))
 
 	_cret = C.gtk_text_tag_get_priority(_arg0)
 
@@ -147,7 +147,7 @@ func (t *TextTagClass) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gint        // out
 
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer((&TextTag).Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer((&t).Native()))
 	_arg1 = C.gint(priority)
 
 	C.gtk_text_tag_set_priority(_arg0, _arg1)

@@ -109,7 +109,7 @@ func NewMenuBarFromModel(model gio.MenuModel) *MenuBarClass {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&gio.MenuModel).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&model).Native()))
 
 	_cret = C.gtk_menu_bar_new_from_model(_arg1)
 
@@ -127,13 +127,13 @@ func (m *MenuBarClass) ChildPackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer((&MenuBar).Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_bar_get_child_pack_direction(_arg0)
 
 	var _packDirection PackDirection // out
 
-	_packDirection = (PackDirection)(C.GtkPackDirection)
+	_packDirection = (PackDirection)(_cret)
 
 	return _packDirection
 }
@@ -144,13 +144,13 @@ func (m *MenuBarClass) PackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer((&MenuBar).Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_bar_get_pack_direction(_arg0)
 
 	var _packDirection PackDirection // out
 
-	_packDirection = (PackDirection)(C.GtkPackDirection)
+	_packDirection = (PackDirection)(_cret)
 
 	return _packDirection
 }

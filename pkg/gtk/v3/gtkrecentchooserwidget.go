@@ -116,7 +116,7 @@ func NewRecentChooserWidgetForManager(manager RecentManager) *RecentChooserWidge
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((&RecentManager).Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((&manager).Native()))
 
 	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
 

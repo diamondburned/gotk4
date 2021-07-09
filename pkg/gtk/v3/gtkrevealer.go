@@ -152,7 +152,7 @@ func (r *RevealerClass) ChildRevealed() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_revealer_get_child_revealed(_arg0)
 
@@ -175,7 +175,7 @@ func (r *RevealerClass) RevealChild() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_revealer_get_reveal_child(_arg0)
 
@@ -194,7 +194,7 @@ func (r *RevealerClass) TransitionDuration() uint {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_revealer_get_transition_duration(_arg0)
 
@@ -211,13 +211,13 @@ func (r *RevealerClass) TransitionType() RevealerTransitionType {
 	var _arg0 *C.GtkRevealer              // out
 	var _cret C.GtkRevealerTransitionType // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_revealer_get_transition_type(_arg0)
 
 	var _revealerTransitionType RevealerTransitionType // out
 
-	_revealerTransitionType = (RevealerTransitionType)(C.GtkRevealerTransitionType)
+	_revealerTransitionType = (RevealerTransitionType)(_cret)
 
 	return _revealerTransitionType
 }
@@ -230,7 +230,7 @@ func (r *RevealerClass) SetRevealChild(revealChild bool) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&r).Native()))
 	if revealChild {
 		_arg1 = C.TRUE
 	}
@@ -243,7 +243,7 @@ func (r *RevealerClass) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&r).Native()))
 	_arg1 = C.guint(duration)
 
 	C.gtk_revealer_set_transition_duration(_arg0, _arg1)

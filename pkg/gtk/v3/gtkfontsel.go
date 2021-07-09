@@ -169,7 +169,7 @@ func (f *FontSelectionClass) Face() *pango.FontFaceClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFace    // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_face(_arg0)
 
@@ -189,7 +189,7 @@ func (f *FontSelectionClass) FaceList() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_face_list(_arg0)
 
@@ -208,7 +208,7 @@ func (f *FontSelectionClass) Family() *pango.FontFamilyClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFamily  // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_family(_arg0)
 
@@ -228,7 +228,7 @@ func (f *FontSelectionClass) FamilyList() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_family_list(_arg0)
 
@@ -254,7 +254,7 @@ func (f *FontSelectionClass) FontName() string {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.gchar            // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_font_name(_arg0)
 
@@ -273,7 +273,7 @@ func (f *FontSelectionClass) PreviewEntry() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_preview_entry(_arg0)
 
@@ -292,7 +292,7 @@ func (f *FontSelectionClass) PreviewText() string {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.gchar            // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_preview_text(_arg0)
 
@@ -310,7 +310,7 @@ func (f *FontSelectionClass) Size() int {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret C.gint              // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_size(_arg0)
 
@@ -329,7 +329,7 @@ func (f *FontSelectionClass) SizeEntry() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_size_entry(_arg0)
 
@@ -348,7 +348,7 @@ func (f *FontSelectionClass) SizeList() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_get_size_list(_arg0)
 
@@ -372,7 +372,7 @@ func (f *FontSelectionClass) SetFontName(fontname string) bool {
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 	_arg1 = (*C.gchar)(C.CString(fontname))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -395,7 +395,7 @@ func (f *FontSelectionClass) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelection // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&f).Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -523,7 +523,7 @@ func (f *FontSelectionDialogClass) CancelButton() *WidgetClass {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_cancel_button(_arg0)
 
@@ -549,7 +549,7 @@ func (f *FontSelectionDialogClass) FontName() string {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.gchar                  // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_font_name(_arg0)
 
@@ -568,7 +568,7 @@ func (f *FontSelectionDialogClass) FontSelection() *WidgetClass {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_font_selection(_arg0)
 
@@ -587,7 +587,7 @@ func (f *FontSelectionDialogClass) OkButton() *WidgetClass {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_ok_button(_arg0)
 
@@ -606,7 +606,7 @@ func (f *FontSelectionDialogClass) PreviewText() string {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.gchar                  // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_preview_text(_arg0)
 
@@ -625,7 +625,7 @@ func (f *FontSelectionDialogClass) SetFontName(fontname string) bool {
 	var _arg1 *C.gchar                  // out
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&f).Native()))
 	_arg1 = (*C.gchar)(C.CString(fontname))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -647,7 +647,7 @@ func (f *FontSelectionDialogClass) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _arg1 *C.gchar                  // out
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&f).Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 

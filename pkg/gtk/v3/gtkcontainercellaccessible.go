@@ -84,8 +84,8 @@ func (c *ContainerCellAccessibleClass) AddChild(child CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer((&ContainerCellAccessible).Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
 }
@@ -94,8 +94,8 @@ func (c *ContainerCellAccessibleClass) RemoveChild(child CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer((&ContainerCellAccessible).Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
 }

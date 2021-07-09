@@ -200,7 +200,7 @@ func (c *StyleContextClass) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.char)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -222,8 +222,8 @@ func (c *StyleContextClass) AddProvider(provider StyleProvider, priority uint) {
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((&StyleProvider).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((&provider).Native()))
 	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
@@ -234,7 +234,7 @@ func (c *StyleContextClass) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GdkDisplay      // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_style_context_get_display(_arg0)
 
@@ -251,7 +251,7 @@ func (c *StyleContextClass) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.int              // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
 
@@ -272,13 +272,13 @@ func (c *StyleContextClass) State() StateFlags {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkStateFlags    // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_style_context_get_state(_arg0)
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = (StateFlags)(C.GtkStateFlags)
+	_stateFlags = (StateFlags)(_cret)
 
 	return _stateFlags
 }
@@ -289,7 +289,7 @@ func (c *StyleContextClass) HasClass(className string) bool {
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.char)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -309,7 +309,7 @@ func (c *StyleContextClass) RemoveClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.char)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -321,8 +321,8 @@ func (c *StyleContextClass) RemoveProvider(provider StyleProvider) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((&StyleProvider).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((&provider).Native()))
 
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
@@ -333,7 +333,7 @@ func (c *StyleContextClass) RemoveProvider(provider StyleProvider) {
 func (c *StyleContextClass) Restore() {
 	var _arg0 *C.GtkStyleContext // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_style_context_restore(_arg0)
 }
@@ -350,7 +350,7 @@ func (c *StyleContextClass) Restore() {
 func (c *StyleContextClass) Save() {
 	var _arg0 *C.GtkStyleContext // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_style_context_save(_arg0)
 }
@@ -366,8 +366,8 @@ func (c *StyleContextClass) SetDisplay(display gdk.Display) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkDisplay      // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&gdk.Display).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
 
 	C.gtk_style_context_set_display(_arg0, _arg1)
 }
@@ -377,7 +377,7 @@ func (c *StyleContextClass) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.int              // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.int(scale)
 
 	C.gtk_style_context_set_scale(_arg0, _arg1)

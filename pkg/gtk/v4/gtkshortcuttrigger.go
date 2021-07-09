@@ -78,8 +78,8 @@ func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) *Alter
 	var _arg2 *C.GtkShortcutTrigger // out
 	var _cret *C.GtkShortcutTrigger // in
 
-	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&ShortcutTrigger).Native()))
-	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&ShortcutTrigger).Native()))
+	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&first).Native()))
+	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&second).Native()))
 
 	_cret = C.gtk_alternative_trigger_new(_arg1, _arg2)
 
@@ -98,7 +98,7 @@ func (s *AlternativeTriggerClass) First() *ShortcutTriggerClass {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
 
-	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer((&AlternativeTrigger).Native()))
+	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_alternative_trigger_get_first(_arg0)
 
@@ -118,7 +118,7 @@ func (s *AlternativeTriggerClass) Second() *ShortcutTriggerClass {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
 
-	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer((&AlternativeTrigger).Native()))
+	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_alternative_trigger_get_second(_arg0)
 
@@ -168,7 +168,7 @@ func (s *KeyvalTriggerClass) Keyval() uint {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.guint             // in
 
-	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer((&KeyvalTrigger).Native()))
+	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_keyval_trigger_get_keyval(_arg0)
 
@@ -185,13 +185,13 @@ func (s *KeyvalTriggerClass) Modifiers() gdk.ModifierType {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.GdkModifierType   // in
 
-	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer((&KeyvalTrigger).Native()))
+	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_keyval_trigger_get_modifiers(_arg0)
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(C.GdkModifierType)
+	_modifierType = (gdk.ModifierType)(_cret)
 
 	return _modifierType
 }
@@ -255,7 +255,7 @@ func (s *MnemonicTriggerClass) Keyval() uint {
 	var _arg0 *C.GtkMnemonicTrigger // out
 	var _cret C.guint               // in
 
-	_arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer((&MnemonicTrigger).Native()))
+	_arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_mnemonic_trigger_get_keyval(_arg0)
 
@@ -399,8 +399,8 @@ func (s *ShortcutTriggerClass) ToLabel(display gdk.Display) string {
 	var _arg1 *C.GdkDisplay         // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&ShortcutTrigger).Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&gdk.Display).Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
 
 	_cret = C.gtk_shortcut_trigger_to_label(_arg0, _arg1)
 
@@ -420,7 +420,7 @@ func (s *ShortcutTriggerClass) String() string {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&ShortcutTrigger).Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_shortcut_trigger_to_string(_arg0)
 
@@ -439,8 +439,8 @@ func (s *ShortcutTriggerClass) Trigger(event gdk.Event, enableMnemonics bool) gd
 	var _arg2 C.gboolean            // out
 	var _cret C.GdkKeyMatch         // in
 
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&ShortcutTrigger).Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((&gdk.Event).Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer((&event).Native()))
 	if enableMnemonics {
 		_arg2 = C.TRUE
 	}
@@ -449,7 +449,7 @@ func (s *ShortcutTriggerClass) Trigger(event gdk.Event, enableMnemonics bool) gd
 
 	var _keyMatch gdk.KeyMatch // out
 
-	_keyMatch = (gdk.KeyMatch)(C.GdkKeyMatch)
+	_keyMatch = (gdk.KeyMatch)(_cret)
 
 	return _keyMatch
 }

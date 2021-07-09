@@ -547,8 +547,8 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _arg1 *C.GdkRectangle // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(*Rectangle))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(*Rectangle))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2))
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 

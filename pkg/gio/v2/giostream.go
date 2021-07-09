@@ -197,7 +197,7 @@ func marshalIOStream(p uintptr) (interface{}, error) {
 func (s *IOStreamClass) ClearPending() {
 	var _arg0 *C.GIOStream // out
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&s).Native()))
 
 	C.g_io_stream_clear_pending(_arg0)
 }
@@ -239,8 +239,8 @@ func (s *IOStreamClass) Close(cancellable Cancellable) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	C.g_io_stream_close(_arg0, _arg1, &_cerr)
 
@@ -267,9 +267,9 @@ func (s *IOStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, call
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -282,8 +282,8 @@ func (s *IOStreamClass) CloseFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	C.g_io_stream_close_finish(_arg0, _arg1, &_cerr)
 
@@ -299,7 +299,7 @@ func (s *IOStreamClass) InputStream() *InputStreamClass {
 	var _arg0 *C.GIOStream    // out
 	var _cret *C.GInputStream // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.g_io_stream_get_input_stream(_arg0)
 
@@ -317,7 +317,7 @@ func (s *IOStreamClass) OutputStream() *OutputStreamClass {
 	var _arg0 *C.GIOStream     // out
 	var _cret *C.GOutputStream // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.g_io_stream_get_output_stream(_arg0)
 
@@ -334,7 +334,7 @@ func (s *IOStreamClass) HasPending() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.g_io_stream_has_pending(_arg0)
 
@@ -352,7 +352,7 @@ func (s *IOStreamClass) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.g_io_stream_is_closed(_arg0)
 
@@ -371,7 +371,7 @@ func (s *IOStreamClass) SetPending() error {
 	var _arg0 *C.GIOStream // out
 	var _cerr *C.GError    // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&s).Native()))
 
 	C.g_io_stream_set_pending(_arg0, &_cerr)
 

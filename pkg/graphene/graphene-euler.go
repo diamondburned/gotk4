@@ -127,7 +127,7 @@ func NewEulerAlloc() *Euler {
 
 	var _euler *Euler // out
 
-	_euler = (*Euler)(unsafe.Pointer(*C.graphene_euler_t))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_euler, func(v *Euler) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -146,8 +146,8 @@ func (a *Euler) Equal(b *Euler) bool {
 	var _arg1 *C.graphene_euler_t // out
 	var _cret C._Bool             // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
-	_arg1 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_euler_t)(unsafe.Pointer(b))
 
 	_cret = C.graphene_euler_equal(_arg0, _arg1)
 
@@ -164,7 +164,7 @@ func (a *Euler) Equal(b *Euler) bool {
 func (e *Euler) free() {
 	var _arg0 *C.graphene_euler_t // out
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
 	C.graphene_euler_free(_arg0)
 }
@@ -177,7 +177,7 @@ func (e *Euler) Alpha() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
 	_cret = C.graphene_euler_get_alpha(_arg0)
 
@@ -196,7 +196,7 @@ func (e *Euler) Beta() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
 	_cret = C.graphene_euler_get_beta(_arg0)
 
@@ -215,7 +215,7 @@ func (e *Euler) Gamma() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
 	_cret = C.graphene_euler_get_gamma(_arg0)
 
@@ -236,13 +236,13 @@ func (e *Euler) Order() EulerOrder {
 	var _arg0 *C.graphene_euler_t      // out
 	var _cret C.graphene_euler_order_t // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
 	_cret = C.graphene_euler_get_order(_arg0)
 
 	var _eulerOrder EulerOrder // out
 
-	_eulerOrder = (EulerOrder)(C.graphene_euler_order_t)
+	_eulerOrder = (EulerOrder)(_cret)
 
 	return _eulerOrder
 }
@@ -252,7 +252,7 @@ func (e *Euler) X() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
 	_cret = C.graphene_euler_get_x(_arg0)
 
@@ -268,7 +268,7 @@ func (e *Euler) Y() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
 	_cret = C.graphene_euler_get_y(_arg0)
 
@@ -284,7 +284,7 @@ func (e *Euler) Z() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
 	_cret = C.graphene_euler_get_z(_arg0)
 
@@ -305,7 +305,7 @@ func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 	var _arg3 C.float             // out
 	var _cret *C.graphene_euler_t // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 	_arg1 = C.float(x)
 	_arg2 = C.float(y)
 	_arg3 = C.float(z)
@@ -314,7 +314,7 @@ func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 
 	var _euler *Euler // out
 
-	_euler = (*Euler)(unsafe.Pointer(*C.graphene_euler_t))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 
 	return _euler
 }
@@ -329,14 +329,14 @@ func (e *Euler) InitFromEuler(src *Euler) *Euler {
 	var _arg1 *C.graphene_euler_t // out
 	var _cret *C.graphene_euler_t // in
 
-	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
-	_arg1 = (*C.graphene_euler_t)(unsafe.Pointer(*Euler))
+	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
+	_arg1 = (*C.graphene_euler_t)(unsafe.Pointer(src))
 
 	_cret = C.graphene_euler_init_from_euler(_arg0, _arg1)
 
 	var _euler *Euler // out
 
-	_euler = (*Euler)(unsafe.Pointer(*C.graphene_euler_t))
+	_euler = (*Euler)(unsafe.Pointer(_cret))
 
 	return _euler
 }

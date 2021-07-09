@@ -172,13 +172,13 @@ func (p *ProgressBarClass) Ellipsize() pango.EllipsizeMode {
 	var _arg0 *C.GtkProgressBar    // out
 	var _cret C.PangoEllipsizeMode // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_progress_bar_get_ellipsize(_arg0)
 
 	var _ellipsizeMode pango.EllipsizeMode // out
 
-	_ellipsizeMode = (pango.EllipsizeMode)(C.PangoEllipsizeMode)
+	_ellipsizeMode = (pango.EllipsizeMode)(_cret)
 
 	return _ellipsizeMode
 }
@@ -188,7 +188,7 @@ func (p *ProgressBarClass) Fraction() float64 {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gdouble         // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_progress_bar_get_fraction(_arg0)
 
@@ -204,7 +204,7 @@ func (p *ProgressBarClass) Inverted() bool {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_progress_bar_get_inverted(_arg0)
 
@@ -223,7 +223,7 @@ func (p *ProgressBarClass) PulseStep() float64 {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gdouble         // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_progress_bar_get_pulse_step(_arg0)
 
@@ -240,7 +240,7 @@ func (p *ProgressBarClass) ShowText() bool {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_progress_bar_get_show_text(_arg0)
 
@@ -260,7 +260,7 @@ func (p *ProgressBarClass) Text() string {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_progress_bar_get_text(_arg0)
 
@@ -279,7 +279,7 @@ func (p *ProgressBarClass) Text() string {
 func (p *ProgressBarClass) Pulse() {
 	var _arg0 *C.GtkProgressBar // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 
 	C.gtk_progress_bar_pulse(_arg0)
 }
@@ -290,7 +290,7 @@ func (p *ProgressBarClass) SetFraction(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gdouble         // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 	_arg1 = C.gdouble(fraction)
 
 	C.gtk_progress_bar_set_fraction(_arg0, _arg1)
@@ -302,7 +302,7 @@ func (p *ProgressBarClass) SetInverted(inverted bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 	if inverted {
 		_arg1 = C.TRUE
 	}
@@ -316,7 +316,7 @@ func (p *ProgressBarClass) SetPulseStep(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gdouble         // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 	_arg1 = C.gdouble(fraction)
 
 	C.gtk_progress_bar_set_pulse_step(_arg0, _arg1)
@@ -333,7 +333,7 @@ func (p *ProgressBarClass) SetShowText(showText bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 	if showText {
 		_arg1 = C.TRUE
 	}
@@ -354,7 +354,7 @@ func (p *ProgressBarClass) SetText(text string) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&ProgressBar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer((&p).Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 

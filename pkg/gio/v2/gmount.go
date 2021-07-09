@@ -285,7 +285,7 @@ func (m *MountInterface) CanEject() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_can_eject(_arg0)
 
@@ -303,7 +303,7 @@ func (m *MountInterface) CanUnmount() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_can_unmount(_arg0)
 
@@ -326,8 +326,8 @@ func (m *MountInterface) EjectFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	C.g_mount_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -346,8 +346,8 @@ func (m *MountInterface) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	C.g_mount_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -365,7 +365,7 @@ func (m *MountInterface) DefaultLocation() *FileInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_get_default_location(_arg0)
 
@@ -385,7 +385,7 @@ func (m *MountInterface) Drive() *DriveInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GDrive // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_get_drive(_arg0)
 
@@ -402,7 +402,7 @@ func (m *MountInterface) Icon() *IconInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_get_icon(_arg0)
 
@@ -419,7 +419,7 @@ func (m *MountInterface) Name() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_get_name(_arg0)
 
@@ -436,7 +436,7 @@ func (m *MountInterface) Root() *FileInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_get_root(_arg0)
 
@@ -453,7 +453,7 @@ func (m *MountInterface) SortKey() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.gchar  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_get_sort_key(_arg0)
 
@@ -469,7 +469,7 @@ func (m *MountInterface) SymbolicIcon() *IconInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
 
@@ -488,7 +488,7 @@ func (m *MountInterface) UUID() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_get_uuid(_arg0)
 
@@ -505,7 +505,7 @@ func (m *MountInterface) Volume() *VolumeInterface {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_get_volume(_arg0)
 
@@ -535,11 +535,11 @@ func (m *MountInterface) GuessContentType(forceRescan bool, cancellable Cancella
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -556,8 +556,8 @@ func (m *MountInterface) GuessContentTypeFinish(result AsyncResult) ([]string, e
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
 
@@ -599,11 +599,11 @@ func (m *MountInterface) GuessContentTypeSync(forceRescan bool, cancellable Canc
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	_cret = C.g_mount_guess_content_type_sync(_arg0, _arg1, _arg2, &_cerr)
 
@@ -653,7 +653,7 @@ func (m *MountInterface) IsShadowed() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_mount_is_shadowed(_arg0)
 
@@ -674,8 +674,8 @@ func (m *MountInterface) RemountFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	C.g_mount_remount_finish(_arg0, _arg1, &_cerr)
 
@@ -693,7 +693,7 @@ func (m *MountInterface) RemountFinish(result AsyncResult) error {
 func (m *MountInterface) Shadow() {
 	var _arg0 *C.GMount // out
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	C.g_mount_shadow(_arg0)
 }
@@ -708,8 +708,8 @@ func (m *MountInterface) UnmountFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	C.g_mount_unmount_finish(_arg0, _arg1, &_cerr)
 
@@ -728,8 +728,8 @@ func (m *MountInterface) UnmountWithOperationFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&result).Native()))
 
 	C.g_mount_unmount_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -747,7 +747,7 @@ func (m *MountInterface) UnmountWithOperationFinish(result AsyncResult) error {
 func (m *MountInterface) Unshadow() {
 	var _arg0 *C.GMount // out
 
-	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&m).Native()))
 
 	C.g_mount_unshadow(_arg0)
 }

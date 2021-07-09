@@ -489,7 +489,7 @@ func SettingGet(name string, value externglib.Value) bool {
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
 
 	_cret = C.gdk_setting_get(_arg1, _arg2)
 
@@ -522,7 +522,7 @@ func (e *EventAny) Native() unsafe.Pointer {
 // Type: the type of the event.
 func (e *EventAny) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -585,7 +585,7 @@ func (e *EventButton) Native() unsafe.Pointer {
 // GDK_3BUTTON_PRESS or GDK_BUTTON_RELEASE).
 func (e *EventButton) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -637,7 +637,7 @@ func (e *EventButton) Axes() *float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventButton) State() ModifierType {
 	var v ModifierType // out
-	v = (ModifierType)(C.GdkModifierType)
+	v = (ModifierType)(e.native.state)
 	return v
 }
 
@@ -693,7 +693,7 @@ func (e *EventConfigure) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_CONFIGURE).
 func (e *EventConfigure) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -759,7 +759,7 @@ func (e *EventCrossing) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_ENTER_NOTIFY or GDK_LEAVE_NOTIFY).
 func (e *EventCrossing) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -828,7 +828,7 @@ func (e *EventCrossing) YRoot() float64 {
 // never native.
 func (e *EventCrossing) Mode() CrossingMode {
 	var v CrossingMode // out
-	v = (CrossingMode)(C.GdkCrossingMode)
+	v = (CrossingMode)(e.native.mode)
 	return v
 }
 
@@ -837,7 +837,7 @@ func (e *EventCrossing) Mode() CrossingMode {
 // GDK_NOTIFY_NONLINEAR_VIRTUAL).
 func (e *EventCrossing) Detail() NotifyType {
 	var v NotifyType // out
-	v = (NotifyType)(C.GdkNotifyType)
+	v = (NotifyType)(e.native.detail)
 	return v
 }
 
@@ -854,7 +854,7 @@ func (e *EventCrossing) Focus() bool {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventCrossing) State() ModifierType {
 	var v ModifierType // out
-	v = (ModifierType)(C.GdkModifierType)
+	v = (ModifierType)(e.native.state)
 	return v
 }
 
@@ -878,7 +878,7 @@ func (e *EventDND) Native() unsafe.Pointer {
 // GDK_DRAG_STATUS, GDK_DROP_START or GDK_DROP_FINISHED).
 func (e *EventDND) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -948,7 +948,7 @@ func (e *EventExpose) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_EXPOSE or GDK_DAMAGE).
 func (e *EventExpose) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -970,7 +970,7 @@ func (e *EventExpose) SendEvent() int8 {
 // Region: the region that needs to be redrawn.
 func (e *EventExpose) Region() *cairo.Region {
 	var v *cairo.Region // out
-	v = (*cairo.Region)(unsafe.Pointer(*C.cairo_region_t))
+	v = (*cairo.Region)(unsafe.Pointer(e.native.region))
 	return v
 }
 
@@ -1003,7 +1003,7 @@ func (e *EventFocus) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_FOCUS_CHANGE).
 func (e *EventFocus) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1053,7 +1053,7 @@ func (e *EventGrabBroken) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_GRAB_BROKEN)
 func (e *EventGrabBroken) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1120,7 +1120,7 @@ func (e *EventKey) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_KEY_PRESS or GDK_KEY_RELEASE).
 func (e *EventKey) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1150,7 +1150,7 @@ func (e *EventKey) Time() uint32 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventKey) State() ModifierType {
 	var v ModifierType // out
-	v = (ModifierType)(C.GdkModifierType)
+	v = (ModifierType)(e.native.state)
 	return v
 }
 
@@ -1217,7 +1217,7 @@ func (e *EventMotion) Native() unsafe.Pointer {
 // Type: the type of the event.
 func (e *EventMotion) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1269,7 +1269,7 @@ func (e *EventMotion) Axes() *float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventMotion) State() ModifierType {
 	var v ModifierType // out
-	v = (ModifierType)(C.GdkModifierType)
+	v = (ModifierType)(e.native.state)
 	return v
 }
 
@@ -1325,7 +1325,7 @@ func (e *EventOwnerChange) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_OWNER_CHANGE).
 func (e *EventOwnerChange) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1355,7 +1355,7 @@ func (e *EventOwnerChange) Owner() *WindowClass {
 // Reason: the reason for the ownership change as a OwnerChange value
 func (e *EventOwnerChange) Reason() OwnerChange {
 	var v OwnerChange // out
-	v = (OwnerChange)(C.GdkOwnerChange)
+	v = (OwnerChange)(e.native.reason)
 	return v
 }
 
@@ -1393,7 +1393,7 @@ func (e *EventPadAxis) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PAD_RING or GDK_PAD_STRIP).
 func (e *EventPadAxis) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1470,7 +1470,7 @@ func (e *EventPadButton) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PAD_BUTTON_PRESS or GDK_PAD_BUTTON_RELEASE).
 func (e *EventPadButton) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1539,7 +1539,7 @@ func (e *EventPadGroupMode) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PAD_GROUP_MODE).
 func (e *EventPadGroupMode) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1600,7 +1600,7 @@ func (e *EventProperty) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PROPERTY_NOTIFY).
 func (e *EventProperty) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1630,7 +1630,7 @@ func (e *EventProperty) Time() uint32 {
 // (GDK_PROPERTY_DELETE).
 func (e *EventProperty) State() PropertyState {
 	var v PropertyState // out
-	v = (PropertyState)(C.GdkPropertyState)
+	v = (PropertyState)(e.native.state)
 	return v
 }
 
@@ -1661,7 +1661,7 @@ func (e *EventProximity) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PROXIMITY_IN or GDK_PROXIMITY_OUT).
 func (e *EventProximity) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1721,7 +1721,7 @@ func (e *EventScroll) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_SCROLL).
 func (e *EventScroll) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1765,7 +1765,7 @@ func (e *EventScroll) Y() float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventScroll) State() ModifierType {
 	var v ModifierType // out
-	v = (ModifierType)(C.GdkModifierType)
+	v = (ModifierType)(e.native.state)
 	return v
 }
 
@@ -1773,7 +1773,7 @@ func (e *EventScroll) State() ModifierType {
 // GDK_SCROLL_LEFT, GDK_SCROLL_RIGHT or GDK_SCROLL_SMOOTH).
 func (e *EventScroll) Direction() ScrollDirection {
 	var v ScrollDirection // out
-	v = (ScrollDirection)(C.GdkScrollDirection)
+	v = (ScrollDirection)(e.native.direction)
 	return v
 }
 
@@ -1835,7 +1835,7 @@ func (e *EventSelection) Native() unsafe.Pointer {
 // GDK_SELECTION_REQUEST).
 func (e *EventSelection) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1908,7 +1908,7 @@ func (e *EventSetting) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_SETTING).
 func (e *EventSetting) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -1931,7 +1931,7 @@ func (e *EventSetting) SendEvent() int8 {
 // GDK_SETTING_ACTION_CHANGED or GDK_SETTING_ACTION_DELETED).
 func (e *EventSetting) Action() SettingAction {
 	var v SettingAction // out
-	v = (SettingAction)(C.GdkSettingAction)
+	v = (SettingAction)(e.native.action)
 	return v
 }
 
@@ -1970,7 +1970,7 @@ func (e *EventTouch) Native() unsafe.Pointer {
 // GDK_TOUCH_END, GDK_TOUCH_CANCEL)
 func (e *EventTouch) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -2022,14 +2022,14 @@ func (e *EventTouch) Axes() *float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType
 func (e *EventTouch) State() ModifierType {
 	var v ModifierType // out
-	v = (ModifierType)(C.GdkModifierType)
+	v = (ModifierType)(e.native.state)
 	return v
 }
 
 // Sequence: the event sequence that the event belongs to
 func (e *EventTouch) Sequence() *EventSequence {
 	var v *EventSequence // out
-	v = (*EventSequence)(unsafe.Pointer(*C.GdkEventSequence))
+	v = (*EventSequence)(unsafe.Pointer(e.native.sequence))
 	return v
 }
 
@@ -2085,7 +2085,7 @@ func (e *EventTouchpadPinch) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_TOUCHPAD_PINCH)
 func (e *EventTouchpadPinch) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -2187,7 +2187,7 @@ func (e *EventTouchpadPinch) YRoot() float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventTouchpadPinch) State() ModifierType {
 	var v ModifierType // out
-	v = (ModifierType)(C.GdkModifierType)
+	v = (ModifierType)(e.native.state)
 	return v
 }
 
@@ -2210,7 +2210,7 @@ func (e *EventTouchpadSwipe) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_TOUCHPAD_SWIPE)
 func (e *EventTouchpadSwipe) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -2296,7 +2296,7 @@ func (e *EventTouchpadSwipe) YRoot() float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventTouchpadSwipe) State() ModifierType {
 	var v ModifierType // out
-	v = (ModifierType)(C.GdkModifierType)
+	v = (ModifierType)(e.native.state)
 	return v
 }
 
@@ -2321,7 +2321,7 @@ func (e *EventVisibility) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_VISIBILITY_NOTIFY).
 func (e *EventVisibility) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -2344,7 +2344,7 @@ func (e *EventVisibility) SendEvent() int8 {
 // GDK_VISIBILITY_PARTIAL or GDK_VISIBILITY_UNOBSCURED).
 func (e *EventVisibility) State() VisibilityState {
 	var v VisibilityState // out
-	v = (VisibilityState)(C.GdkVisibilityState)
+	v = (VisibilityState)(e.native.state)
 	return v
 }
 
@@ -2367,7 +2367,7 @@ func (e *EventWindowState) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_WINDOW_STATE).
 func (e *EventWindowState) Type() EventType {
 	var v EventType // out
-	v = (EventType)(C.GdkEventType)
+	v = (EventType)(e.native._type)
 	return v
 }
 
@@ -2389,13 +2389,13 @@ func (e *EventWindowState) SendEvent() int8 {
 // ChangedMask: mask specifying what flags have changed.
 func (e *EventWindowState) ChangedMask() WindowState {
 	var v WindowState // out
-	v = (WindowState)(C.GdkWindowState)
+	v = (WindowState)(e.native.changed_mask)
 	return v
 }
 
 // NewWindowState: the new window state, a combination of WindowState bits.
 func (e *EventWindowState) NewWindowState() WindowState {
 	var v WindowState // out
-	v = (WindowState)(C.GdkWindowState)
+	v = (WindowState)(e.native.new_window_state)
 	return v
 }

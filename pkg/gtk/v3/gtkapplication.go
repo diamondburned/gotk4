@@ -367,12 +367,12 @@ func (a *ApplicationClass) AddAccelerator(accelerator string, actionName string,
 	var _arg2 *C.gchar          // out
 	var _arg3 *C.GVariant       // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 	_arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(parameter))
 
 	C.gtk_application_add_accelerator(_arg0, _arg1, _arg2, _arg3)
 }
@@ -395,8 +395,8 @@ func (a *ApplicationClass) AddWindow(window Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&window).Native()))
 
 	C.gtk_application_add_window(_arg0, _arg1)
 }
@@ -408,7 +408,7 @@ func (a *ApplicationClass) AccelsForAction(detailedActionName string) []string {
 	var _arg1 *C.gchar          // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 	_arg1 = (*C.gchar)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -453,7 +453,7 @@ func (a *ApplicationClass) ActionsForAccel(accel string) []string {
 	var _arg1 *C.gchar          // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 	_arg1 = (*C.gchar)(C.CString(accel))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -489,7 +489,7 @@ func (a *ApplicationClass) ActiveWindow() *WindowClass {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GtkWindow      // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_application_get_active_window(_arg0)
 
@@ -507,7 +507,7 @@ func (a *ApplicationClass) AppMenu() *gio.MenuModelClass {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_application_get_app_menu(_arg0)
 
@@ -526,7 +526,7 @@ func (a *ApplicationClass) MenuByID(id string) *gio.MenuClass {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GMenu          // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 	_arg1 = (*C.gchar)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -546,7 +546,7 @@ func (a *ApplicationClass) Menubar() *gio.MenuModelClass {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_application_get_menubar(_arg0)
 
@@ -567,7 +567,7 @@ func (a *ApplicationClass) WindowByID(id uint) *WindowClass {
 	var _arg1 C.guint           // out
 	var _cret *C.GtkWindow      // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.guint(id)
 
 	_cret = C.gtk_application_get_window_by_id(_arg0, _arg1)
@@ -586,7 +586,7 @@ func (a *ApplicationClass) ListActionDescriptions() []string {
 	var _arg0 *C.GtkApplication // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_application_list_action_descriptions(_arg0)
 
@@ -644,7 +644,7 @@ func (a *ApplicationClass) PrefersAppMenu() bool {
 	var _arg0 *C.GtkApplication // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_application_prefers_app_menu(_arg0)
 
@@ -666,10 +666,10 @@ func (a *ApplicationClass) RemoveAccelerator(actionName string, parameter *glib.
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GVariant       // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
 
 	C.gtk_application_remove_accelerator(_arg0, _arg1, _arg2)
 }
@@ -684,8 +684,8 @@ func (a *ApplicationClass) RemoveWindow(window Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&window).Native()))
 
 	C.gtk_application_remove_window(_arg0, _arg1)
 }
@@ -704,7 +704,7 @@ func (a *ApplicationClass) SetAccelsForAction(detailedActionName string, accels 
 	var _arg1 *C.gchar          // out
 	var _arg2 **C.gchar
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 	_arg1 = (*C.gchar)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(accels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -739,8 +739,8 @@ func (a *ApplicationClass) SetAppMenu(appMenu gio.MenuModel) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&gio.MenuModel).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&appMenu).Native()))
 
 	C.gtk_application_set_app_menu(_arg0, _arg1)
 }
@@ -766,8 +766,8 @@ func (a *ApplicationClass) SetMenubar(menubar gio.MenuModel) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&gio.MenuModel).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&menubar).Native()))
 
 	C.gtk_application_set_menubar(_arg0, _arg1)
 }
@@ -779,7 +779,7 @@ func (a *ApplicationClass) Uninhibit(cookie uint) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&Application).Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.guint(cookie)
 
 	C.gtk_application_uninhibit(_arg0, _arg1)

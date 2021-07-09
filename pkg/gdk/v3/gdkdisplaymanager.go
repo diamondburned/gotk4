@@ -92,7 +92,7 @@ func (m *DisplayManagerClass) DefaultDisplay() *DisplayClass {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GdkDisplay        // in
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer((&DisplayManager).Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_display_manager_get_default_display(_arg0)
 
@@ -110,7 +110,7 @@ func (m *DisplayManagerClass) OpenDisplay(name string) *DisplayClass {
 	var _arg1 *C.gchar             // out
 	var _cret *C.GdkDisplay        // in
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer((&DisplayManager).Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer((&m).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -129,8 +129,8 @@ func (m *DisplayManagerClass) SetDefaultDisplay(display Display) {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.GdkDisplay        // out
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer((&DisplayManager).Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&display).Native()))
 
 	C.gdk_display_manager_set_default_display(_arg0, _arg1)
 }

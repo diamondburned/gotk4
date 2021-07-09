@@ -49,7 +49,7 @@ func NewItem() *Item {
 
 	var _item *Item // out
 
-	_item = (*Item)(unsafe.Pointer(*C.PangoItem))
+	_item = (*Item)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_item, func(v *Item) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -97,8 +97,8 @@ func (i *Item) ApplyAttrs(iter *AttrIterator) {
 	var _arg0 *C.PangoItem         // out
 	var _arg1 *C.PangoAttrIterator // out
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(*Item))
-	_arg1 = (*C.PangoAttrIterator)(unsafe.Pointer(*AttrIterator))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))
+	_arg1 = (*C.PangoAttrIterator)(unsafe.Pointer(iter))
 
 	C.pango_item_apply_attrs(_arg0, _arg1)
 }
@@ -108,13 +108,13 @@ func (i *Item) Copy() *Item {
 	var _arg0 *C.PangoItem // out
 	var _cret *C.PangoItem // in
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(*Item))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))
 
 	_cret = C.pango_item_copy(_arg0)
 
 	var _ret *Item // out
 
-	_ret = (*Item)(unsafe.Pointer(*C.PangoItem))
+	_ret = (*Item)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Item) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -126,7 +126,7 @@ func (i *Item) Copy() *Item {
 func (i *Item) free() {
 	var _arg0 *C.PangoItem // out
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(*Item))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))
 
 	C.pango_item_free(_arg0)
 }
@@ -147,7 +147,7 @@ func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _arg2 C.int        // out
 	var _cret *C.PangoItem // in
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(*Item))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(o))
 	_arg1 = C.int(splitIndex)
 	_arg2 = C.int(splitOffset)
 
@@ -155,7 +155,7 @@ func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 
 	var _item *Item // out
 
-	_item = (*Item)(unsafe.Pointer(*C.PangoItem))
+	_item = (*Item)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_item, func(v *Item) {
 		C.free(unsafe.Pointer(v))
 	})

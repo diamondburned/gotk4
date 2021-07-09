@@ -127,7 +127,7 @@ func (o *SocketClass) Embed(plugId string) {
 	var _arg0 *C.AtkSocket // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.AtkSocket)(unsafe.Pointer((&Socket).Native()))
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer((&o).Native()))
 	_arg1 = (*C.gchar)(C.CString(plugId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -139,7 +139,7 @@ func (o *SocketClass) IsOccupied() bool {
 	var _arg0 *C.AtkSocket // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AtkSocket)(unsafe.Pointer((&Socket).Native()))
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.atk_socket_is_occupied(_arg0)
 

@@ -262,7 +262,7 @@ func NewPageSetupUnixDialog(title string, parent Window) *PageSetupUnixDialogCla
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer((&parent).Native()))
 
 	_cret = C.gtk_page_setup_unix_dialog_new(_arg1, _arg2)
 
@@ -279,7 +279,7 @@ func (d *PageSetupUnixDialogClass) PageSetup() *PageSetupClass {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _cret *C.GtkPageSetup           // in
 
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&PageSetupUnixDialog).Native()))
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gtk_page_setup_unix_dialog_get_page_setup(_arg0)
 
@@ -296,7 +296,7 @@ func (d *PageSetupUnixDialogClass) PrintSettings() *PrintSettingsClass {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _cret *C.GtkPrintSettings       // in
 
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&PageSetupUnixDialog).Native()))
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gtk_page_setup_unix_dialog_get_print_settings(_arg0)
 
@@ -314,8 +314,8 @@ func (d *PageSetupUnixDialogClass) SetPageSetup(pageSetup PageSetup) {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _arg1 *C.GtkPageSetup           // out
 
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&PageSetupUnixDialog).Native()))
-	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer((&pageSetup).Native()))
 
 	C.gtk_page_setup_unix_dialog_set_page_setup(_arg0, _arg1)
 }
@@ -326,8 +326,8 @@ func (d *PageSetupUnixDialogClass) SetPrintSettings(printSettings PrintSettings)
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _arg1 *C.GtkPrintSettings       // out
 
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&PageSetupUnixDialog).Native()))
-	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer((&PrintSettings).Native()))
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&d).Native()))
+	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer((&printSettings).Native()))
 
 	C.gtk_page_setup_unix_dialog_set_print_settings(_arg0, _arg1)
 }

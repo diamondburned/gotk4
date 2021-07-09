@@ -61,7 +61,7 @@ func NewEventControllerMotion(widget Widget) *EventControllerMotionClass {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_event_controller_motion_new(_arg1)
 

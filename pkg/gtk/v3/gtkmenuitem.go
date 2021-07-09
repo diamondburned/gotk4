@@ -252,7 +252,7 @@ func NewMenuItemWithMnemonic(label string) *MenuItemClass {
 func (m *MenuItemClass) Activate() {
 	var _arg0 *C.GtkMenuItem // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 
 	C.gtk_menu_item_activate(_arg0)
 }
@@ -261,7 +261,7 @@ func (m *MenuItemClass) Activate() {
 func (m *MenuItemClass) Deselect() {
 	var _arg0 *C.GtkMenuItem // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 
 	C.gtk_menu_item_deselect(_arg0)
 }
@@ -274,7 +274,7 @@ func (m *MenuItemClass) AccelPath() string {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_item_get_accel_path(_arg0)
 
@@ -290,7 +290,7 @@ func (m *MenuItemClass) Label() string {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_item_get_label(_arg0)
 
@@ -307,7 +307,7 @@ func (m *MenuItemClass) ReserveIndicator() bool {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_item_get_reserve_indicator(_arg0)
 
@@ -328,7 +328,7 @@ func (m *MenuItemClass) RightJustified() bool {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_item_get_right_justified(_arg0)
 
@@ -347,7 +347,7 @@ func (m *MenuItemClass) Submenu() *WidgetClass {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_item_get_submenu(_arg0)
 
@@ -365,7 +365,7 @@ func (m *MenuItemClass) UseUnderline() bool {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_item_get_use_underline(_arg0)
 
@@ -382,7 +382,7 @@ func (m *MenuItemClass) UseUnderline() bool {
 func (m *MenuItemClass) Select() {
 	var _arg0 *C.GtkMenuItem // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 
 	C.gtk_menu_item_select(_arg0)
 }
@@ -409,7 +409,7 @@ func (m *MenuItemClass) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.gchar       // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 	_arg1 = (*C.gchar)(C.CString(accelPath))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -421,7 +421,7 @@ func (m *MenuItemClass) SetLabel(label string) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.gchar       // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -436,7 +436,7 @@ func (m *MenuItemClass) SetReserveIndicator(reserve bool) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 	if reserve {
 		_arg1 = C.TRUE
 	}
@@ -455,7 +455,7 @@ func (m *MenuItemClass) SetRightJustified(rightJustified bool) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 	if rightJustified {
 		_arg1 = C.TRUE
 	}
@@ -469,8 +469,8 @@ func (m *MenuItemClass) SetSubmenu(submenu Menu) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Menu).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&submenu).Native()))
 
 	C.gtk_menu_item_set_submenu(_arg0, _arg1)
 }
@@ -481,7 +481,7 @@ func (m *MenuItemClass) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -495,7 +495,7 @@ func (m *MenuItemClass) ToggleSizeAllocate(allocation int) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gint         // out
 
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&MenuItem).Native()))
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer((&m).Native()))
 	_arg1 = C.gint(allocation)
 
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)

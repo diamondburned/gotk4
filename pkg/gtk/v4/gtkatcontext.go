@@ -61,7 +61,7 @@ func (s *ATContextClass) Accessible() *AccessibleInterface {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
 
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer((&ATContext).Native()))
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_at_context_get_accessible(_arg0)
 
@@ -78,13 +78,13 @@ func (s *ATContextClass) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkATContext     // out
 	var _cret C.GtkAccessibleRole // in
 
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer((&ATContext).Native()))
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_at_context_get_accessible_role(_arg0)
 
 	var _accessibleRole AccessibleRole // out
 
-	_accessibleRole = (AccessibleRole)(C.GtkAccessibleRole)
+	_accessibleRole = (AccessibleRole)(_cret)
 
 	return _accessibleRole
 }

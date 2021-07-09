@@ -99,7 +99,7 @@ func (d *ContentDeserializerClass) Cancellable() *gio.CancellableClass {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret *C.GCancellable           // in
 
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&ContentDeserializer).Native()))
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_content_deserializer_get_cancellable(_arg0)
 
@@ -116,13 +116,13 @@ func (d *ContentDeserializerClass) GType() externglib.Type {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.GType                   // in
 
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&ContentDeserializer).Native()))
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_content_deserializer_get_gtype(_arg0)
 
 	var _gType externglib.Type // out
 
-	_gType = externglib.Type(C.GType)
+	_gType = externglib.Type(_cret)
 
 	return _gType
 }
@@ -134,7 +134,7 @@ func (d *ContentDeserializerClass) InputStream() *gio.InputStreamClass {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret *C.GInputStream           // in
 
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&ContentDeserializer).Native()))
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_content_deserializer_get_input_stream(_arg0)
 
@@ -151,7 +151,7 @@ func (d *ContentDeserializerClass) MIMEType() string {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret *C.char                   // in
 
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&ContentDeserializer).Native()))
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_content_deserializer_get_mime_type(_arg0)
 
@@ -169,7 +169,7 @@ func (d *ContentDeserializerClass) Priority() int {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.int                     // in
 
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&ContentDeserializer).Native()))
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_content_deserializer_get_priority(_arg0)
 
@@ -187,7 +187,7 @@ func (d *ContentDeserializerClass) TaskData() interface{} {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.gpointer                // in
 
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&ContentDeserializer).Native()))
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_content_deserializer_get_task_data(_arg0)
 
@@ -204,7 +204,7 @@ func (d *ContentDeserializerClass) UserData() interface{} {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.gpointer                // in
 
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&ContentDeserializer).Native()))
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_content_deserializer_get_user_data(_arg0)
 
@@ -222,7 +222,7 @@ func (d *ContentDeserializerClass) ReturnError(err error) {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _arg1 *C.GError                 // out
 
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&ContentDeserializer).Native()))
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&d).Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.gdk_content_deserializer_return_error(_arg0, _arg1)
@@ -233,7 +233,7 @@ func (d *ContentDeserializerClass) ReturnError(err error) {
 func (d *ContentDeserializerClass) ReturnSuccess() {
 	var _arg0 *C.GdkContentDeserializer // out
 
-	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&ContentDeserializer).Native()))
+	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer((&d).Native()))
 
 	C.gdk_content_deserializer_return_success(_arg0)
 }

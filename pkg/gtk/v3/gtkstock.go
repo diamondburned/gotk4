@@ -79,7 +79,7 @@ func (s *StockItem) Label() string {
 // Modifier type for keyboard accelerator
 func (s *StockItem) Modifier() gdk.ModifierType {
 	var v gdk.ModifierType // out
-	v = (gdk.ModifierType)(C.GdkModifierType)
+	v = (gdk.ModifierType)(s.native.modifier)
 	return v
 }
 
@@ -105,7 +105,7 @@ func (s *StockItem) TranslationDomain() string {
 func (i *StockItem) free() {
 	var _arg0 *C.GtkStockItem // out
 
-	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(*StockItem))
+	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(i))
 
 	C.gtk_stock_item_free(_arg0)
 }

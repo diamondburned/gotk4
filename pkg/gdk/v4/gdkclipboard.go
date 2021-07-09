@@ -105,7 +105,7 @@ func (c *ClipboardClass) Content() *ContentProviderClass {
 	var _arg0 *C.GdkClipboard       // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&Clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_clipboard_get_content(_arg0)
 
@@ -122,7 +122,7 @@ func (c *ClipboardClass) Display() *DisplayClass {
 	var _arg0 *C.GdkClipboard // out
 	var _cret *C.GdkDisplay   // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&Clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_clipboard_get_display(_arg0)
 
@@ -140,13 +140,13 @@ func (c *ClipboardClass) Formats() *ContentFormats {
 	var _arg0 *C.GdkClipboard      // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&Clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_clipboard_get_formats(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(*C.GdkContentFormats))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
@@ -166,7 +166,7 @@ func (c *ClipboardClass) IsLocal() bool {
 	var _arg0 *C.GdkClipboard // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&Clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_clipboard_is_local(_arg0)
 
@@ -195,8 +195,8 @@ func (c *ClipboardClass) SetContent(provider ContentProvider) bool {
 	var _arg1 *C.GdkContentProvider // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&Clipboard).Native()))
-	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer((&ContentProvider).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer((&provider).Native()))
 
 	_cret = C.gdk_clipboard_set_content(_arg0, _arg1)
 
@@ -214,8 +214,8 @@ func (c *ClipboardClass) SetValue(value externglib.Value) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GValue       // out
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&Clipboard).Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
 
 	C.gdk_clipboard_set_value(_arg0, _arg1)
 }

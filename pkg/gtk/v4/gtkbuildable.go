@@ -96,7 +96,7 @@ func (b *BuildableInterface) BuildableID() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer((&Buildable).Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_buildable_get_buildable_id(_arg0)
 

@@ -63,7 +63,7 @@ func NewEventControllerKey(widget Widget) *EventControllerKeyClass {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_event_controller_key_new(_arg1)
 
@@ -80,8 +80,8 @@ func (c *EventControllerKeyClass) Forward(widget Widget) bool {
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&EventControllerKey).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
 
@@ -98,7 +98,7 @@ func (c *EventControllerKeyClass) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&EventControllerKey).Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_key_get_group(_arg0)
 
@@ -114,7 +114,7 @@ func (c *EventControllerKeyClass) ImContext() *IMContextClass {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&EventControllerKey).Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_key_get_im_context(_arg0)
 
@@ -130,8 +130,8 @@ func (c *EventControllerKeyClass) SetImContext(imContext IMContext) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&EventControllerKey).Native()))
-	_arg1 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkIMContext)(unsafe.Pointer((&imContext).Native()))
 
 	C.gtk_event_controller_key_set_im_context(_arg0, _arg1)
 }

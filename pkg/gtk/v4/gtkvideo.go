@@ -153,7 +153,7 @@ func NewVideoForMediaStream(stream MediaStream) *VideoClass {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((&MediaStream).Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((&stream).Native()))
 
 	_cret = C.gtk_video_new_for_media_stream(_arg1)
 
@@ -191,7 +191,7 @@ func (s *VideoClass) Autoplay() bool {
 	var _arg0 *C.GtkVideo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&Video).Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_video_get_autoplay(_arg0)
 
@@ -209,7 +209,7 @@ func (s *VideoClass) Loop() bool {
 	var _arg0 *C.GtkVideo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&Video).Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_video_get_loop(_arg0)
 
@@ -227,7 +227,7 @@ func (s *VideoClass) MediaStream() *MediaStreamClass {
 	var _arg0 *C.GtkVideo       // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&Video).Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_video_get_media_stream(_arg0)
 
@@ -245,7 +245,7 @@ func (s *VideoClass) SetAutoplay(autoplay bool) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&Video).Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&s).Native()))
 	if autoplay {
 		_arg1 = C.TRUE
 	}
@@ -260,7 +260,7 @@ func (s *VideoClass) SetFilename(filename string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&Video).Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -272,7 +272,7 @@ func (s *VideoClass) SetLoop(loop bool) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&Video).Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&s).Native()))
 	if loop {
 		_arg1 = C.TRUE
 	}
@@ -292,8 +292,8 @@ func (s *VideoClass) SetMediaStream(stream MediaStream) {
 	var _arg0 *C.GtkVideo       // out
 	var _arg1 *C.GtkMediaStream // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&Video).Native()))
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((&MediaStream).Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((&stream).Native()))
 
 	C.gtk_video_set_media_stream(_arg0, _arg1)
 }
@@ -305,7 +305,7 @@ func (s *VideoClass) SetResource(resourcePath string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&Video).Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 

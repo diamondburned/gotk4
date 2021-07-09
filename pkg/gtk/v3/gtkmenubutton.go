@@ -275,7 +275,7 @@ func (m *MenuButtonClass) AlignWidget() *WidgetClass {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_button_get_align_widget(_arg0)
 
@@ -292,13 +292,13 @@ func (m *MenuButtonClass) Direction() ArrowType {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret C.GtkArrowType   // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_button_get_direction(_arg0)
 
 	var _arrowType ArrowType // out
 
-	_arrowType = (ArrowType)(C.GtkArrowType)
+	_arrowType = (ArrowType)(_cret)
 
 	return _arrowType
 }
@@ -308,7 +308,7 @@ func (m *MenuButtonClass) MenuModel() *gio.MenuModelClass {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GMenuModel    // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_button_get_menu_model(_arg0)
 
@@ -326,7 +326,7 @@ func (m *MenuButtonClass) Popover() *PopoverClass {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkPopover    // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_button_get_popover(_arg0)
 
@@ -344,7 +344,7 @@ func (m *MenuButtonClass) Popup() *MenuClass {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkMenu       // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_button_get_popup(_arg0)
 
@@ -362,7 +362,7 @@ func (m *MenuButtonClass) UsePopover() bool {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_menu_button_get_use_popover(_arg0)
 
@@ -386,8 +386,8 @@ func (m *MenuButtonClass) SetAlignWidget(alignWidget Widget) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&alignWidget).Native()))
 
 	C.gtk_menu_button_set_align_widget(_arg0, _arg1)
 }
@@ -406,8 +406,8 @@ func (m *MenuButtonClass) SetMenuModel(menuModel gio.MenuModel) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GMenuModel    // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&gio.MenuModel).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&menuModel).Native()))
 
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
@@ -421,8 +421,8 @@ func (m *MenuButtonClass) SetPopover(popover Widget) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&popover).Native()))
 
 	C.gtk_menu_button_set_popover(_arg0, _arg1)
 }
@@ -436,8 +436,8 @@ func (m *MenuButtonClass) SetPopup(menu Widget) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&menu).Native()))
 
 	C.gtk_menu_button_set_popup(_arg0, _arg1)
 }
@@ -449,7 +449,7 @@ func (m *MenuButtonClass) SetUsePopover(usePopover bool) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&MenuButton).Native()))
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer((&m).Native()))
 	if usePopover {
 		_arg1 = C.TRUE
 	}

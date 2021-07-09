@@ -139,7 +139,7 @@ func (s *WindowControlsClass) DecorationLayout() string {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer((&WindowControls).Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_window_controls_get_decoration_layout(_arg0)
 
@@ -155,7 +155,7 @@ func (s *WindowControlsClass) Empty() bool {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer((&WindowControls).Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_window_controls_get_empty(_arg0)
 
@@ -173,13 +173,13 @@ func (s *WindowControlsClass) Side() PackType {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret C.GtkPackType        // in
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer((&WindowControls).Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_window_controls_get_side(_arg0)
 
 	var _packType PackType // out
 
-	_packType = (PackType)(C.GtkPackType)
+	_packType = (PackType)(_cret)
 
 	return _packType
 }
@@ -202,7 +202,7 @@ func (s *WindowControlsClass) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkWindowControls // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer((&WindowControls).Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(layout))
 	defer C.free(unsafe.Pointer(_arg1))
 

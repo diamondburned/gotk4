@@ -159,7 +159,7 @@ func (s *StatusbarClass) ContextID(contextDescription string) uint {
 	var _arg1 *C.gchar        // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&Statusbar).Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.gchar)(C.CString(contextDescription))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -177,7 +177,7 @@ func (s *StatusbarClass) MessageArea() *BoxClass {
 	var _arg0 *C.GtkStatusbar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&Statusbar).Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_statusbar_get_message_area(_arg0)
 
@@ -198,7 +198,7 @@ func (s *StatusbarClass) Pop(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&Statusbar).Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_pop(_arg0, _arg1)
@@ -211,7 +211,7 @@ func (s *StatusbarClass) Push(contextId uint, text string) uint {
 	var _arg2 *C.gchar        // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&Statusbar).Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.guint(contextId)
 	_arg2 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -232,7 +232,7 @@ func (s *StatusbarClass) Remove(contextId uint, messageId uint) {
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&Statusbar).Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.guint(contextId)
 	_arg2 = C.guint(messageId)
 
@@ -245,7 +245,7 @@ func (s *StatusbarClass) RemoveAll(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&Statusbar).Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_remove_all(_arg0, _arg1)

@@ -222,7 +222,7 @@ func (s *FileChooserNativeClass) AcceptLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer((&FileChooserNative).Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
 
@@ -238,7 +238,7 @@ func (s *FileChooserNativeClass) CancelLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer((&FileChooserNative).Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
 
@@ -261,7 +261,7 @@ func (s *FileChooserNativeClass) SetAcceptLabel(acceptLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out
 
-	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer((&FileChooserNative).Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(acceptLabel))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -280,7 +280,7 @@ func (s *FileChooserNativeClass) SetCancelLabel(cancelLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out
 
-	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer((&FileChooserNative).Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(cancelLabel))
 	defer C.free(unsafe.Pointer(_arg1))
 

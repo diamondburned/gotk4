@@ -172,7 +172,7 @@ func (d *MessageDialogClass) Image() *WidgetClass {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gtk_message_dialog_get_image(_arg0)
 
@@ -193,7 +193,7 @@ func (m *MessageDialogClass) MessageArea() *WidgetClass {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 
@@ -212,8 +212,8 @@ func (d *MessageDialogClass) SetImage(image Widget) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&d).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&image).Native()))
 
 	C.gtk_message_dialog_set_image(_arg0, _arg1)
 }
@@ -224,7 +224,7 @@ func (m *MessageDialogClass) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&m).Native()))
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 

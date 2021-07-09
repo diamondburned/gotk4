@@ -136,7 +136,7 @@ func (s *DragIconClass) Child() *WidgetClass {
 	var _arg0 *C.GtkDragIcon // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer((&DragIcon).Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_drag_icon_get_child(_arg0)
 
@@ -153,8 +153,8 @@ func (s *DragIconClass) SetChild(child Widget) {
 	var _arg0 *C.GtkDragIcon // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer((&DragIcon).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
 }

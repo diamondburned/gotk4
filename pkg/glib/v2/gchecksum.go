@@ -72,13 +72,13 @@ func (c *Checksum) Copy() *Checksum {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.GChecksum // in
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(*Checksum))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 
 	_cret = C.g_checksum_copy(_arg0)
 
 	var _ret *Checksum // out
 
-	_ret = (*Checksum)(unsafe.Pointer(*C.GChecksum))
+	_ret = (*Checksum)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Checksum) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -90,7 +90,7 @@ func (c *Checksum) Copy() *Checksum {
 func (c *Checksum) free() {
 	var _arg0 *C.GChecksum // out
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(*Checksum))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 
 	C.g_checksum_free(_arg0)
 }
@@ -105,7 +105,7 @@ func (c *Checksum) String() string {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(*Checksum))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 
 	_cret = C.g_checksum_get_string(_arg0)
 
@@ -120,7 +120,7 @@ func (c *Checksum) String() string {
 func (c *Checksum) Reset() {
 	var _arg0 *C.GChecksum // out
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(*Checksum))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 
 	C.g_checksum_reset(_arg0)
 }
@@ -133,7 +133,7 @@ func (c *Checksum) Update(data []byte) {
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(*Checksum))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
 	_arg2 = C.gssize(len(data))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
 

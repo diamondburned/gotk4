@@ -66,7 +66,7 @@ func (l *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
 
 	_cret = C.pango_language_get_sample_string(_arg0)
 
@@ -88,7 +88,7 @@ func (l *Language) Matches(rangeList string) bool {
 	var _arg1 *C.char          // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
 	_arg1 = (*C.char)(C.CString(rangeList))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -108,7 +108,7 @@ func (l *Language) String() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
 
 	_cret = C.pango_language_to_string(_arg0)
 

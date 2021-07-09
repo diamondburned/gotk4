@@ -206,8 +206,8 @@ func (i *InitableInterface) Init(cancellable Cancellable) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInitable)(unsafe.Pointer((&Initable).Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GInitable)(unsafe.Pointer((&i).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	C.g_initable_init(_arg0, _arg1, &_cerr)
 

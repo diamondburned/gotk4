@@ -125,7 +125,7 @@ func (i *SeparatorToolItemClass) Draw() bool {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer((&SeparatorToolItem).Native()))
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer((&i).Native()))
 
 	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
 
@@ -145,7 +145,7 @@ func (i *SeparatorToolItemClass) SetDraw(draw bool) {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer((&SeparatorToolItem).Native()))
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer((&i).Native()))
 	if draw {
 		_arg1 = C.TRUE
 	}

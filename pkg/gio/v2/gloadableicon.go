@@ -101,9 +101,9 @@ func (i *LoadableIconInterface) Load(size int, cancellable Cancellable) (string,
 	var _cret *C.GInputStream  // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer((&LoadableIcon).Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer((&i).Native()))
 	_arg1 = C.int(size)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 
 	_cret = C.g_loadable_icon_load(_arg0, _arg1, &_arg2, _arg3, &_cerr)
 
@@ -130,9 +130,9 @@ func (i *LoadableIconInterface) LoadAsync(size int, cancellable Cancellable, cal
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer((&LoadableIcon).Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer((&i).Native()))
 	_arg1 = C.int(size)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&cancellable).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -148,8 +148,8 @@ func (i *LoadableIconInterface) LoadFinish(res AsyncResult) (string, *InputStrea
 	var _cret *C.GInputStream  // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer((&LoadableIcon).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer((&i).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&res).Native()))
 
 	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)
 

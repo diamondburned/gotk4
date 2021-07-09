@@ -54,7 +54,7 @@ func NewToplevelLayout() *ToplevelLayout {
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(*C.GdkToplevelLayout))
+	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
 	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
@@ -73,13 +73,13 @@ func (l *ToplevelLayout) Copy() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 
 	_cret = C.gdk_toplevel_layout_copy(_arg0)
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(*C.GdkToplevelLayout))
+	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
 	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
@@ -94,8 +94,8 @@ func (l *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	var _arg1 *C.GdkToplevelLayout // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
-	_arg1 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
+	_arg1 = (*C.GdkToplevelLayout)(unsafe.Pointer(other))
 
 	_cret = C.gdk_toplevel_layout_equal(_arg0, _arg1)
 
@@ -116,7 +116,7 @@ func (l *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var _arg1 C.gboolean           // in
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 
 	_cret = C.gdk_toplevel_layout_get_fullscreen(_arg0, &_arg1)
 
@@ -139,7 +139,7 @@ func (l *ToplevelLayout) FullscreenMonitor() *MonitorClass {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkMonitor        // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 
 	_cret = C.gdk_toplevel_layout_get_fullscreen_monitor(_arg0)
 
@@ -159,7 +159,7 @@ func (l *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var _arg1 C.gboolean           // in
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 
 	_cret = C.gdk_toplevel_layout_get_maximized(_arg0, &_arg1)
 
@@ -182,7 +182,7 @@ func (l *ToplevelLayout) Resizable() bool {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 
 	_cret = C.gdk_toplevel_layout_get_resizable(_arg0)
 
@@ -200,13 +200,13 @@ func (l *ToplevelLayout) ref() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 
 	_cret = C.gdk_toplevel_layout_ref(_arg0)
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(*C.GdkToplevelLayout))
+	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
 	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
@@ -222,11 +222,11 @@ func (l *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitor) {
 	var _arg1 C.gboolean           // out
 	var _arg2 *C.GdkMonitor        // out
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 	if fullscreen {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg2 = (*C.GdkMonitor)(unsafe.Pointer((&monitor).Native()))
 
 	C.gdk_toplevel_layout_set_fullscreen(_arg0, _arg1, _arg2)
 }
@@ -237,7 +237,7 @@ func (l *ToplevelLayout) SetMaximized(maximized bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 	if maximized {
 		_arg1 = C.TRUE
 	}
@@ -251,7 +251,7 @@ func (l *ToplevelLayout) SetResizable(resizable bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 	if resizable {
 		_arg1 = C.TRUE
 	}
@@ -263,7 +263,7 @@ func (l *ToplevelLayout) SetResizable(resizable bool) {
 func (l *ToplevelLayout) unref() {
 	var _arg0 *C.GdkToplevelLayout // out
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(*ToplevelLayout))
+	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l))
 
 	C.gdk_toplevel_layout_unref(_arg0)
 }

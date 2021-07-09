@@ -101,7 +101,7 @@ func (v *VolumeMonitorClass) MountForUUID(uuid string) *MountInterface {
 	var _arg1 *C.char           // out
 	var _cret *C.GMount         // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer((&VolumeMonitor).Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer((&v).Native()))
 	_arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -121,7 +121,7 @@ func (v *VolumeMonitorClass) VolumeForUUID(uuid string) *VolumeInterface {
 	var _arg1 *C.char           // out
 	var _cret *C.GVolume        // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer((&VolumeMonitor).Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer((&v).Native()))
 	_arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(_arg1))
 

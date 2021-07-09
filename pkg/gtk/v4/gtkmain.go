@@ -40,7 +40,7 @@ func GetDefaultLanguage() *pango.Language {
 
 	var _language *pango.Language // out
 
-	_language = (*pango.Language)(unsafe.Pointer(*C.PangoLanguage))
+	_language = (*pango.Language)(unsafe.Pointer(_cret))
 
 	return _language
 }
@@ -70,7 +70,7 @@ func GetLocaleDirection() TextDirection {
 
 	var _textDirection TextDirection // out
 
-	_textDirection = (TextDirection)(C.GtkTextDirection)
+	_textDirection = (TextDirection)(_cret)
 
 	return _textDirection
 }

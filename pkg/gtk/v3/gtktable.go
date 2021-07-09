@@ -220,8 +220,8 @@ func (t *TableClass) AttachDefaults(widget Widget, leftAttach uint, rightAttach 
 	var _arg4 C.guint      // out
 	var _arg5 C.guint      // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 	_arg2 = C.guint(leftAttach)
 	_arg3 = C.guint(rightAttach)
 	_arg4 = C.guint(topAttach)
@@ -239,7 +239,7 @@ func (t *TableClass) ColSpacing(column uint) uint {
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 	_arg1 = C.guint(column)
 
 	_cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
@@ -260,7 +260,7 @@ func (t *TableClass) DefaultColSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 
 	_cret = C.gtk_table_get_default_col_spacing(_arg0)
 
@@ -280,7 +280,7 @@ func (t *TableClass) DefaultRowSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 
 	_cret = C.gtk_table_get_default_row_spacing(_arg0)
 
@@ -299,7 +299,7 @@ func (t *TableClass) Homogeneous() bool {
 	var _arg0 *C.GtkTable // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 
 	_cret = C.gtk_table_get_homogeneous(_arg0)
 
@@ -321,7 +321,7 @@ func (t *TableClass) RowSpacing(row uint) uint {
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 	_arg1 = C.guint(row)
 
 	_cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
@@ -341,7 +341,7 @@ func (t *TableClass) Size() (rows uint, columns uint) {
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 
 	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
 
@@ -363,7 +363,7 @@ func (t *TableClass) Resize(rows uint, columns uint) {
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 	_arg1 = C.guint(rows)
 	_arg2 = C.guint(columns)
 
@@ -379,7 +379,7 @@ func (t *TableClass) SetColSpacing(column uint, spacing uint) {
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 	_arg1 = C.guint(column)
 	_arg2 = C.guint(spacing)
 
@@ -394,7 +394,7 @@ func (t *TableClass) SetColSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_table_set_col_spacings(_arg0, _arg1)
@@ -408,7 +408,7 @@ func (t *TableClass) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -425,7 +425,7 @@ func (t *TableClass) SetRowSpacing(row uint, spacing uint) {
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 	_arg1 = C.guint(row)
 	_arg2 = C.guint(spacing)
 
@@ -439,7 +439,7 @@ func (t *TableClass) SetRowSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&t).Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_table_set_row_spacings(_arg0, _arg1)

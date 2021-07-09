@@ -82,7 +82,7 @@ func (c *DTLSClientConnectionInterface) ServerIdentity() *SocketConnectableInter
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer((&DTLSClientConnection).Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
 
@@ -99,13 +99,13 @@ func (c *DTLSClientConnectionInterface) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret C.GTlsCertificateFlags   // in
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer((&DTLSClientConnection).Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_dtls_client_connection_get_validation_flags(_arg0)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
-	_tlsCertificateFlags = (TLSCertificateFlags)(C.GTlsCertificateFlags)
+	_tlsCertificateFlags = (TLSCertificateFlags)(_cret)
 
 	return _tlsCertificateFlags
 }
@@ -118,8 +118,8 @@ func (c *DTLSClientConnectionInterface) SetServerIdentity(identity SocketConnect
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 *C.GSocketConnectable    // out
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer((&DTLSClientConnection).Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((&SocketConnectable).Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((&identity).Native()))
 
 	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
 }

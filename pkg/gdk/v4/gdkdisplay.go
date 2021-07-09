@@ -172,7 +172,7 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 func (d *DisplayClass) Beep() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	C.gdk_display_beep(_arg0)
 }
@@ -183,7 +183,7 @@ func (d *DisplayClass) Beep() {
 func (d *DisplayClass) Close() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	C.gdk_display_close(_arg0)
 }
@@ -195,8 +195,8 @@ func (d *DisplayClass) DeviceIsGrabbed(device Device) bool {
 	var _arg1 *C.GdkDevice  // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 
 	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
 
@@ -222,7 +222,7 @@ func (d *DisplayClass) DeviceIsGrabbed(device Device) bool {
 func (d *DisplayClass) Flush() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	C.gdk_display_flush(_arg0)
 }
@@ -233,7 +233,7 @@ func (d *DisplayClass) AppLaunchContext() *AppLaunchContextClass {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_get_app_launch_context(_arg0)
 
@@ -250,7 +250,7 @@ func (d *DisplayClass) Clipboard() *ClipboardClass {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_get_clipboard(_arg0)
 
@@ -270,7 +270,7 @@ func (d *DisplayClass) DefaultSeat() *SeatClass {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_get_default_seat(_arg0)
 
@@ -291,8 +291,8 @@ func (d *DisplayClass) MonitorAtSurface(surface Surface) *MonitorClass {
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((&Surface).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((&surface).Native()))
 
 	_cret = C.gdk_display_get_monitor_at_surface(_arg0, _arg1)
 
@@ -309,7 +309,7 @@ func (d *DisplayClass) Name() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_get_name(_arg0)
 
@@ -328,7 +328,7 @@ func (d *DisplayClass) PrimaryClipboard() *ClipboardClass {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_get_primary_clipboard(_arg0)
 
@@ -348,10 +348,10 @@ func (d *DisplayClass) Setting(name string, value externglib.Value) bool {
 	var _arg2 *C.GValue     // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
 
 	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
 
@@ -370,7 +370,7 @@ func (d *DisplayClass) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_get_startup_notification_id(_arg0)
 
@@ -386,7 +386,7 @@ func (d *DisplayClass) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_is_closed(_arg0)
 
@@ -413,7 +413,7 @@ func (d *DisplayClass) IsComposited() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_is_composited(_arg0)
 
@@ -440,7 +440,7 @@ func (d *DisplayClass) IsRGBA() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_is_rgba(_arg0)
 
@@ -464,7 +464,7 @@ func (d *DisplayClass) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 	_arg1 = (*C.char)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -480,8 +480,8 @@ func (d *DisplayClass) PutEvent(event Event) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkEvent   // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((&Event).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer((&event).Native()))
 
 	C.gdk_display_put_event(_arg0, _arg1)
 }
@@ -496,7 +496,7 @@ func (d *DisplayClass) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_display_supports_input_shapes(_arg0)
 
@@ -522,7 +522,7 @@ func (d *DisplayClass) SupportsInputShapes() bool {
 func (d *DisplayClass) Sync() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&d).Native()))
 
 	C.gdk_display_sync(_arg0)
 }

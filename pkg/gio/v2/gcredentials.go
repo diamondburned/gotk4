@@ -145,7 +145,7 @@ func (c *CredentialsClass) UnixPid() (int, error) {
 	var _cret C.pid_t         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_credentials_get_unix_pid(_arg0, &_cerr)
 
@@ -168,7 +168,7 @@ func (c *CredentialsClass) UnixUser() (uint, error) {
 	var _cret C.uid_t         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_credentials_get_unix_user(_arg0, &_cerr)
 
@@ -189,8 +189,8 @@ func (c *CredentialsClass) IsSameUser(otherCredentials Credentials) error {
 	var _arg1 *C.GCredentials // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
-	_arg1 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer((&otherCredentials).Native()))
 
 	C.g_credentials_is_same_user(_arg0, _arg1, &_cerr)
 
@@ -212,7 +212,7 @@ func (c *CredentialsClass) SetUnixUser(uid uint) error {
 	var _arg1 C.uid_t         // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.uid_t(uid)
 
 	C.g_credentials_set_unix_user(_arg0, _arg1, &_cerr)
@@ -231,7 +231,7 @@ func (c *CredentialsClass) String() string {
 	var _arg0 *C.GCredentials // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_credentials_to_string(_arg0)
 

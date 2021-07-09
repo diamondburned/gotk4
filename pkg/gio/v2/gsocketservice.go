@@ -142,7 +142,7 @@ func (s *SocketServiceClass) IsActive() bool {
 	var _arg0 *C.GSocketService // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer((&SocketService).Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.g_socket_service_is_active(_arg0)
 
@@ -164,7 +164,7 @@ func (s *SocketServiceClass) IsActive() bool {
 func (s *SocketServiceClass) Start() {
 	var _arg0 *C.GSocketService // out
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer((&SocketService).Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer((&s).Native()))
 
 	C.g_socket_service_start(_arg0)
 }
@@ -187,7 +187,7 @@ func (s *SocketServiceClass) Start() {
 func (s *SocketServiceClass) Stop() {
 	var _arg0 *C.GSocketService // out
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer((&SocketService).Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer((&s).Native()))
 
 	C.g_socket_service_stop(_arg0)
 }

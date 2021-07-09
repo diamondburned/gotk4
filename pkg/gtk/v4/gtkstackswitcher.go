@@ -122,7 +122,7 @@ func (s *StackSwitcherClass) Stack() *StackClass {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _cret *C.GtkStack         // in
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer((&StackSwitcher).Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_stack_switcher_get_stack(_arg0)
 
@@ -139,8 +139,8 @@ func (s *StackSwitcherClass) SetStack(stack Stack) {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _arg1 *C.GtkStack         // out
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer((&StackSwitcher).Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer((&Stack).Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer((&stack).Native()))
 
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
 }

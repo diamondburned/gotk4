@@ -82,8 +82,8 @@ func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) *ShortcutClass 
 	var _arg2 *C.GtkShortcutAction  // out
 	var _cret *C.GtkShortcut        // in
 
-	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&ShortcutTrigger).Native()))
-	_arg2 = (*C.GtkShortcutAction)(unsafe.Pointer((&ShortcutAction).Native()))
+	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&trigger).Native()))
+	_arg2 = (*C.GtkShortcutAction)(unsafe.Pointer((&action).Native()))
 
 	_cret = C.gtk_shortcut_new(_arg1, _arg2)
 
@@ -100,7 +100,7 @@ func (s *ShortcutClass) Action() *ShortcutActionClass {
 	var _arg0 *C.GtkShortcut       // out
 	var _cret *C.GtkShortcutAction // in
 
-	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&Shortcut).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_shortcut_get_action(_arg0)
 
@@ -117,13 +117,13 @@ func (s *ShortcutClass) Arguments() *glib.Variant {
 	var _arg0 *C.GtkShortcut // out
 	var _cret *C.GVariant    // in
 
-	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&Shortcut).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_shortcut_get_arguments(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -137,7 +137,7 @@ func (s *ShortcutClass) Trigger() *ShortcutTriggerClass {
 	var _arg0 *C.GtkShortcut        // out
 	var _cret *C.GtkShortcutTrigger // in
 
-	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&Shortcut).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_shortcut_get_trigger(_arg0)
 
@@ -154,8 +154,8 @@ func (s *ShortcutClass) SetAction(action ShortcutAction) {
 	var _arg0 *C.GtkShortcut       // out
 	var _arg1 *C.GtkShortcutAction // out
 
-	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&Shortcut).Native()))
-	_arg1 = (*C.GtkShortcutAction)(unsafe.Pointer((&ShortcutAction).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkShortcutAction)(unsafe.Pointer((&action).Native()))
 
 	C.gtk_shortcut_set_action(_arg0, _arg1)
 }
@@ -165,8 +165,8 @@ func (s *ShortcutClass) SetArguments(args *glib.Variant) {
 	var _arg0 *C.GtkShortcut // out
 	var _arg1 *C.GVariant    // out
 
-	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&Shortcut).Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(args))
 
 	C.gtk_shortcut_set_arguments(_arg0, _arg1)
 }
@@ -176,8 +176,8 @@ func (s *ShortcutClass) SetTrigger(trigger ShortcutTrigger) {
 	var _arg0 *C.GtkShortcut        // out
 	var _arg1 *C.GtkShortcutTrigger // out
 
-	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&Shortcut).Native()))
-	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&ShortcutTrigger).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((&trigger).Native()))
 
 	C.gtk_shortcut_set_trigger(_arg0, _arg1)
 }

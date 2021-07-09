@@ -145,7 +145,7 @@ func NewRecentChooserMenuForManager(manager RecentManager) *RecentChooserMenuCla
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((&RecentManager).Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((&manager).Native()))
 
 	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
 
@@ -163,7 +163,7 @@ func (m *RecentChooserMenuClass) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer((&RecentChooserMenu).Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
 
@@ -184,7 +184,7 @@ func (m *RecentChooserMenuClass) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer((&RecentChooserMenu).Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer((&m).Native()))
 	if showNumbers {
 		_arg1 = C.TRUE
 	}

@@ -82,7 +82,7 @@ func (b *BinClass) Child() *WidgetClass {
 	var _arg0 *C.GtkBin    // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkBin)(unsafe.Pointer((&Bin).Native()))
+	_arg0 = (*C.GtkBin)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_bin_get_child(_arg0)
 

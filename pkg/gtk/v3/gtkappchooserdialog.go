@@ -113,7 +113,7 @@ func (s *AppChooserDialogClass) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer((&AppChooserDialog).Native()))
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
 
@@ -129,7 +129,7 @@ func (s *AppChooserDialogClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.GtkWidget           // in
 
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer((&AppChooserDialog).Native()))
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
 
@@ -147,7 +147,7 @@ func (s *AppChooserDialogClass) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer((&AppChooserDialog).Native()))
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.gchar)(C.CString(heading))
 	defer C.free(unsafe.Pointer(_arg1))
 

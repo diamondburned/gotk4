@@ -144,7 +144,7 @@ func (s *SocketClass) PlugWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkSocket // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkSocket)(unsafe.Pointer((&Socket).Native()))
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_socket_get_plug_window(_arg0)
 

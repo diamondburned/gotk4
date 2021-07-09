@@ -158,7 +158,7 @@ func (c *SocketConnectableInterface) Enumerate() *SocketAddressEnumeratorClass {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&SocketConnectable).Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_socket_connectable_enumerate(_arg0)
 
@@ -179,7 +179,7 @@ func (c *SocketConnectableInterface) ProxyEnumerate() *SocketAddressEnumeratorCl
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&SocketConnectable).Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_socket_connectable_proxy_enumerate(_arg0)
 
@@ -202,7 +202,7 @@ func (c *SocketConnectableInterface) String() string {
 	var _arg0 *C.GSocketConnectable // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&SocketConnectable).Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_socket_connectable_to_string(_arg0)
 

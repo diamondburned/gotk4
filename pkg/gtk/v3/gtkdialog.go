@@ -96,7 +96,7 @@ func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
 	var _arg1 *C.GdkScreen // out
 	var _cret C.gboolean   // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&gdk.Screen).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&screen).Native()))
 
 	_cret = C.gtk_alternative_dialog_button_order(_arg1)
 
@@ -409,8 +409,8 @@ func (d *DialogClass) AddActionWidget(child Widget, responseId int) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 	_arg2 = C.gint(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
@@ -426,7 +426,7 @@ func (d *DialogClass) AddButton(buttonText string, responseId int) *WidgetClass 
 	var _arg2 C.gint       // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 	_arg1 = (*C.gchar)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(responseId)
@@ -448,7 +448,7 @@ func (d *DialogClass) ActionArea() *BoxClass {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gtk_dialog_get_action_area(_arg0)
 
@@ -465,7 +465,7 @@ func (d *DialogClass) ContentArea() *BoxClass {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gtk_dialog_get_content_area(_arg0)
 
@@ -483,7 +483,7 @@ func (d *DialogClass) HeaderBar() *HeaderBarClass {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gtk_dialog_get_header_bar(_arg0)
 
@@ -502,8 +502,8 @@ func (d *DialogClass) ResponseForWidget(widget Widget) int {
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 
@@ -521,7 +521,7 @@ func (d *DialogClass) WidgetForResponse(responseId int) *WidgetClass {
 	var _arg1 C.gint       // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 	_arg1 = C.gint(responseId)
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
@@ -542,7 +542,7 @@ func (d *DialogClass) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 	_arg1 = C.gint(responseId)
 
 	C.gtk_dialog_response(_arg0, _arg1)
@@ -594,7 +594,7 @@ func (d *DialogClass) Run() int {
 	var _arg0 *C.GtkDialog // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gtk_dialog_run(_arg0)
 
@@ -620,7 +620,7 @@ func (d *DialogClass) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	var _arg2 *C.gint
 	var _arg1 C.gint
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 	_arg1 = C.gint(len(newOrder))
 	_arg2 = (*C.gint)(unsafe.Pointer(&newOrder[0]))
 
@@ -634,7 +634,7 @@ func (d *DialogClass) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 	_arg1 = C.gint(responseId)
 
 	C.gtk_dialog_set_default_response(_arg0, _arg1)
@@ -648,7 +648,7 @@ func (d *DialogClass) SetResponseSensitive(responseId int, setting bool) {
 	var _arg1 C.gint       // out
 	var _arg2 C.gboolean   // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&d).Native()))
 	_arg1 = C.gint(responseId)
 	if setting {
 		_arg2 = C.TRUE

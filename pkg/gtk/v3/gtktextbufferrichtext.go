@@ -41,7 +41,7 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 		externglib.Take(unsafe.Pointer(arg0))).(*TextBufferClass)
 	contentBuffer = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(arg1))).(*TextBufferClass)
-	iter = (*TextIter)(unsafe.Pointer(*C.GtkTextIter))
+	iter = (*TextIter)(unsafe.Pointer(arg2))
 	data = make([]byte, arg4)
 	copy(data, unsafe.Slice((*byte)(unsafe.Pointer(arg3)), arg4))
 	if arg5 != 0 {
@@ -80,8 +80,8 @@ func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer,
 		externglib.Take(unsafe.Pointer(arg0))).(*TextBufferClass)
 	contentBuffer = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(arg1))).(*TextBufferClass)
-	start = (*TextIter)(unsafe.Pointer(*C.GtkTextIter))
-	end = (*TextIter)(unsafe.Pointer(*C.GtkTextIter))
+	start = (*TextIter)(unsafe.Pointer(arg2))
+	end = (*TextIter)(unsafe.Pointer(arg3))
 	userData = box.Get(uintptr(arg5))
 
 	fn := v.(TextBufferSerializeFunc)

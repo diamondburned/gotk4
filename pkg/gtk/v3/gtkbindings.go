@@ -26,8 +26,8 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 	var _arg2 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&gextras.Objector).Native()))
-	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(*gdk.EventKey))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
+	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event))
 
 	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
 
@@ -60,7 +60,7 @@ func (b *BindingArg) Native() unsafe.Pointer {
 // ArgType: implementation detail
 func (b *BindingArg) ArgType() externglib.Type {
 	var v externglib.Type // out
-	v = externglib.Type(C.GType)
+	v = externglib.Type(b.native.arg_type)
 	return v
 }
 
@@ -91,28 +91,28 @@ func (b *BindingEntry) Keyval() uint {
 // Modifiers: key modifiers to match
 func (b *BindingEntry) Modifiers() gdk.ModifierType {
 	var v gdk.ModifierType // out
-	v = (gdk.ModifierType)(C.GdkModifierType)
+	v = (gdk.ModifierType)(b.native.modifiers)
 	return v
 }
 
 // SetNext: linked list of entries maintained by binding set
 func (b *BindingEntry) SetNext() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(*C.GtkBindingEntry))
+	v = (*BindingEntry)(unsafe.Pointer(b.native.set_next))
 	return v
 }
 
 // HashNext: implementation detail
 func (b *BindingEntry) HashNext() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(*C.GtkBindingEntry))
+	v = (*BindingEntry)(unsafe.Pointer(b.native.hash_next))
 	return v
 }
 
 // Signals: action signals of this entry
 func (b *BindingEntry) Signals() *BindingSignal {
 	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(*C.GtkBindingSignal))
+	v = (*BindingSignal)(unsafe.Pointer(b.native.signals))
 	return v
 }
 
@@ -136,7 +136,7 @@ func (b *BindingSignal) Native() unsafe.Pointer {
 // Next: implementation detail
 func (b *BindingSignal) Next() *BindingSignal {
 	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(*C.GtkBindingSignal))
+	v = (*BindingSignal)(unsafe.Pointer(b.native.next))
 	return v
 }
 

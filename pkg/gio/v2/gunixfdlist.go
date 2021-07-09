@@ -151,7 +151,7 @@ func (l *UnixFDListClass) Append(fd int) (int, error) {
 	var _cret C.gint         // in
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer((&UnixFDList).Native()))
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer((&l).Native()))
 	_arg1 = C.gint(fd)
 
 	_cret = C.g_unix_fd_list_append(_arg0, _arg1, &_cerr)
@@ -181,7 +181,7 @@ func (l *UnixFDListClass) Get(index_ int) (int, error) {
 	var _cret C.gint         // in
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer((&UnixFDList).Native()))
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer((&l).Native()))
 	_arg1 = C.gint(index_)
 
 	_cret = C.g_unix_fd_list_get(_arg0, _arg1, &_cerr)
@@ -201,7 +201,7 @@ func (l *UnixFDListClass) Length() int {
 	var _arg0 *C.GUnixFDList // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer((&UnixFDList).Native()))
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer((&l).Native()))
 
 	_cret = C.g_unix_fd_list_get_length(_arg0)
 

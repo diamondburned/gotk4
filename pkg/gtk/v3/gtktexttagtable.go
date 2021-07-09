@@ -146,8 +146,8 @@ func (t *TextTagTableClass) Add(tag TextTag) bool {
 	var _arg1 *C.GtkTextTag      // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&TextTagTable).Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&TextTag).Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&t).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&tag).Native()))
 
 	_cret = C.gtk_text_tag_table_add(_arg0, _arg1)
 
@@ -168,7 +168,7 @@ func (t *TextTagTableClass) Foreach(fn TextTagTableForeach) {
 	var _arg1 C.GtkTextTagTableForeach // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&TextTagTable).Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&t).Native()))
 	_arg1 = (*[0]byte)(C.gotk4_TextTagTableForeach)
 	_arg2 = C.gpointer(box.Assign(fn))
 
@@ -180,7 +180,7 @@ func (t *TextTagTableClass) Size() int {
 	var _arg0 *C.GtkTextTagTable // out
 	var _cret C.gint             // in
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&TextTagTable).Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&t).Native()))
 
 	_cret = C.gtk_text_tag_table_get_size(_arg0)
 
@@ -197,7 +197,7 @@ func (t *TextTagTableClass) Lookup(name string) *TextTagClass {
 	var _arg1 *C.gchar           // out
 	var _cret *C.GtkTextTag      // in
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&TextTagTable).Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&t).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -218,8 +218,8 @@ func (t *TextTagTableClass) Remove(tag TextTag) {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&TextTagTable).Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&TextTag).Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer((&t).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((&tag).Native()))
 
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
 }

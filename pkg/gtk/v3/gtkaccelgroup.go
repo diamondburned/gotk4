@@ -53,7 +53,7 @@ func AcceleratorGetDefaultModMask() gdk.ModifierType {
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(C.GdkModifierType)
+	_modifierType = (gdk.ModifierType)(_cret)
 
 	return _modifierType
 }
@@ -83,7 +83,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg2)
-	_acceleratorMods = (gdk.ModifierType)(C.GdkModifierType)
+	_acceleratorMods = (gdk.ModifierType)(_arg3)
 
 	return _acceleratorKey, _acceleratorMods
 }
@@ -130,7 +130,7 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 			_acceleratorCodes[i] = uint(src[i])
 		}
 	}
-	_acceleratorMods = (gdk.ModifierType)(C.GdkModifierType)
+	_acceleratorMods = (gdk.ModifierType)(_arg4)
 
 	return _acceleratorKey, _acceleratorCodes, _acceleratorMods
 }
@@ -210,7 +210,7 @@ func (a *AccelGroupClass) IsLocked() bool {
 	var _arg0 *C.GtkAccelGroup // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&AccelGroup).Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_accel_group_get_is_locked(_arg0)
 
@@ -229,13 +229,13 @@ func (a *AccelGroupClass) ModifierMask() gdk.ModifierType {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _cret C.GdkModifierType // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&AccelGroup).Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_accel_group_get_modifier_mask(_arg0)
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(C.GdkModifierType)
+	_modifierType = (gdk.ModifierType)(_cret)
 
 	return _modifierType
 }
@@ -251,7 +251,7 @@ func (a *AccelGroupClass) ModifierMask() gdk.ModifierType {
 func (a *AccelGroupClass) Lock() {
 	var _arg0 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&AccelGroup).Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&a).Native()))
 
 	C.gtk_accel_group_lock(_arg0)
 }
@@ -260,7 +260,7 @@ func (a *AccelGroupClass) Lock() {
 func (a *AccelGroupClass) Unlock() {
 	var _arg0 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&AccelGroup).Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer((&a).Native()))
 
 	C.gtk_accel_group_unlock(_arg0)
 }
@@ -290,6 +290,6 @@ func (a *AccelKey) AccelKey() uint {
 // AccelMods: the accelerator modifiers
 func (a *AccelKey) AccelMods() gdk.ModifierType {
 	var v gdk.ModifierType // out
-	v = (gdk.ModifierType)(C.GdkModifierType)
+	v = (gdk.ModifierType)(a.native.accel_mods)
 	return v
 }

@@ -135,7 +135,7 @@ func NewColumnViewColumn(title string, factory ListItemFactory) *ColumnViewColum
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer((&ListItemFactory).Native()))
+	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer((&factory).Native()))
 
 	_cret = C.gtk_column_view_column_new(_arg1, _arg2)
 
@@ -154,7 +154,7 @@ func (s *ColumnViewColumnClass) ColumnView() *ColumnViewClass {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret *C.GtkColumnView       // in
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_column_view_column_get_column_view(_arg0)
 
@@ -171,7 +171,7 @@ func (s *ColumnViewColumnClass) Expand() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_column_view_column_get_expand(_arg0)
 
@@ -190,7 +190,7 @@ func (s *ColumnViewColumnClass) Factory() *ListItemFactoryClass {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret *C.GtkListItemFactory  // in
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_column_view_column_get_factory(_arg0)
 
@@ -207,7 +207,7 @@ func (s *ColumnViewColumnClass) FixedWidth() int {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret C.int                  // in
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_column_view_column_get_fixed_width(_arg0)
 
@@ -224,7 +224,7 @@ func (s *ColumnViewColumnClass) HeaderMenu() *gio.MenuModelClass {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret *C.GMenuModel          // in
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_column_view_column_get_header_menu(_arg0)
 
@@ -241,7 +241,7 @@ func (s *ColumnViewColumnClass) Resizable() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_column_view_column_get_resizable(_arg0)
 
@@ -259,7 +259,7 @@ func (s *ColumnViewColumnClass) Sorter() *SorterClass {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret *C.GtkSorter           // in
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_column_view_column_get_sorter(_arg0)
 
@@ -276,7 +276,7 @@ func (s *ColumnViewColumnClass) Title() string {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret *C.char                // in
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_column_view_column_get_title(_arg0)
 
@@ -292,7 +292,7 @@ func (s *ColumnViewColumnClass) Visible() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_column_view_column_get_visible(_arg0)
 
@@ -313,7 +313,7 @@ func (s *ColumnViewColumnClass) SetExpand(expand bool) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 	if expand {
 		_arg1 = C.TRUE
 	}
@@ -327,8 +327,8 @@ func (s *ColumnViewColumnClass) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GtkListItemFactory  // out
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((&ListItemFactory).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((&factory).Native()))
 
 	C.gtk_column_view_column_set_factory(_arg0, _arg1)
 }
@@ -342,7 +342,7 @@ func (s *ColumnViewColumnClass) SetFixedWidth(fixedWidth int) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.int                  // out
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.int(fixedWidth)
 
 	C.gtk_column_view_column_set_fixed_width(_arg0, _arg1)
@@ -354,8 +354,8 @@ func (s *ColumnViewColumnClass) SetHeaderMenu(menu gio.MenuModel) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GMenuModel          // out
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&gio.MenuModel).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&menu).Native()))
 
 	C.gtk_column_view_column_set_header_menu(_arg0, _arg1)
 }
@@ -365,7 +365,7 @@ func (s *ColumnViewColumnClass) SetResizable(resizable bool) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 	if resizable {
 		_arg1 = C.TRUE
 	}
@@ -387,8 +387,8 @@ func (s *ColumnViewColumnClass) SetSorter(sorter Sorter) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GtkSorter           // out
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer((&Sorter).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer((&sorter).Native()))
 
 	C.gtk_column_view_column_set_sorter(_arg0, _arg1)
 }
@@ -401,7 +401,7 @@ func (s *ColumnViewColumnClass) SetTitle(title string) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -413,7 +413,7 @@ func (s *ColumnViewColumnClass) SetVisible(visible bool) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&s).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}

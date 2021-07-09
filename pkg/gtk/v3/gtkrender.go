@@ -30,8 +30,8 @@ func RenderActivity(context StyleContext, cr *cairo.Context, x float64, y float6
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 	_arg5 = C.gdouble(width)
@@ -53,8 +53,8 @@ func RenderArrow(context StyleContext, cr *cairo.Context, angle float64, x float
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(angle)
 	_arg4 = C.gdouble(x)
 	_arg5 = C.gdouble(y)
@@ -77,8 +77,8 @@ func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y floa
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 	_arg5 = C.gdouble(width)
@@ -104,8 +104,8 @@ func RenderCheck(context StyleContext, cr *cairo.Context, x float64, y float64, 
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 	_arg5 = C.gdouble(width)
@@ -129,8 +129,8 @@ func RenderExpander(context StyleContext, cr *cairo.Context, x float64, y float6
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 	_arg5 = C.gdouble(width)
@@ -153,8 +153,8 @@ func RenderFocus(context StyleContext, cr *cairo.Context, x float64, y float64, 
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 	_arg5 = C.gdouble(width)
@@ -178,8 +178,8 @@ func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, 
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 	_arg5 = C.gdouble(width)
@@ -202,8 +202,8 @@ func RenderHandle(context StyleContext, cr *cairo.Context, x float64, y float64,
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 	_arg5 = C.gdouble(width)
@@ -228,9 +228,9 @@ func RenderIcon(context StyleContext, cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf
 	var _arg4 C.gdouble          // out
 	var _arg5 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
-	_arg3 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg3 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
 	_arg4 = C.gdouble(x)
 	_arg5 = C.gdouble(y)
 
@@ -247,8 +247,8 @@ func RenderIconPixbuf(context StyleContext, source *IconSource, size int) *gdkpi
 	var _arg3 C.GtkIconSize      // out
 	var _cret *C.GdkPixbuf       // in
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.GtkIconSource)(unsafe.Pointer(*IconSource))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.GtkIconSource)(unsafe.Pointer(source))
 	_arg3 = C.GtkIconSize(size)
 
 	_cret = C.gtk_render_icon_pixbuf(_arg1, _arg2, _arg3)
@@ -270,9 +270,9 @@ func RenderIconSurface(context StyleContext, cr *cairo.Context, surface *cairo.S
 	var _arg4 C.gdouble          // out
 	var _arg5 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
-	_arg3 = (*C.cairo_surface_t)(unsafe.Pointer(*cairo.Surface))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg3 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
 	_arg4 = C.gdouble(x)
 	_arg5 = C.gdouble(y)
 
@@ -287,11 +287,11 @@ func RenderLayout(context StyleContext, cr *cairo.Context, x float64, y float64,
 	var _arg4 C.gdouble          // out
 	var _arg5 *C.PangoLayout     // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
-	_arg5 = (*C.PangoLayout)(unsafe.Pointer((&pango.Layout).Native()))
+	_arg5 = (*C.PangoLayout)(unsafe.Pointer((&layout).Native()))
 
 	C.gtk_render_layout(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -305,8 +305,8 @@ func RenderLine(context StyleContext, cr *cairo.Context, x0 float64, y0 float64,
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x0)
 	_arg4 = C.gdouble(y0)
 	_arg5 = C.gdouble(x1)
@@ -330,8 +330,8 @@ func RenderOption(context StyleContext, cr *cairo.Context, x float64, y float64,
 	var _arg5 C.gdouble          // out
 	var _arg6 C.gdouble          // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 	_arg5 = C.gdouble(width)

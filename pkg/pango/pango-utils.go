@@ -55,7 +55,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg5 *C.char    // in
 	var _cret C.gboolean // in
 
-	_arg1 = (C.GType)(externglib.Type)
+	_arg1 = (C.GType)(typ)
 	_arg2 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg2))
 	if warn {
@@ -101,7 +101,7 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _stretch Stretch // out
 	var _ok bool         // out
 
-	_stretch = (Stretch)(C.PangoStretch)
+	_stretch = (Stretch)(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -130,7 +130,7 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 	var _style Style // out
 	var _ok bool     // out
 
-	_style = (Style)(C.PangoStyle)
+	_style = (Style)(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -159,7 +159,7 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _variant Variant // out
 	var _ok bool         // out
 
-	_variant = (Variant)(C.PangoVariant)
+	_variant = (Variant)(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -188,7 +188,7 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _weight Weight // out
 	var _ok bool       // out
 
-	_weight = (Weight)(C.PangoWeight)
+	_weight = (Weight)(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}

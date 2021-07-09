@@ -123,7 +123,7 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	fn := v.(DBusProxyTypeFunc)
 	gType := fn(manager, objectPath, interfaceName, userData)
 
-	cret = (C.GType)(externglib.Type)
+	cret = (C.GType)(gType)
 
 	return cret
 }
@@ -145,7 +145,7 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 
 	datagramBased = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(arg0))).(*DatagramBasedInterface)
-	condition = (glib.IOCondition)(C.GIOCondition)
+	condition = (glib.IOCondition)(arg1)
 	userData = box.Get(uintptr(arg2))
 
 	fn := v.(DatagramBasedSourceFunc)
@@ -314,7 +314,7 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 
 	socket = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(arg0))).(*SocketClass)
-	condition = (glib.IOCondition)(C.GIOCondition)
+	condition = (glib.IOCondition)(arg1)
 	userData = box.Get(uintptr(arg2))
 
 	fn := v.(SocketSourceFunc)
@@ -355,7 +355,7 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(*C.GFileAttributeMatcher))
+	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
 	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
@@ -380,7 +380,7 @@ func (m *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	var _arg1 *C.char                  // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(*FileAttributeMatcher))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
 	_arg1 = (*C.char)(C.CString(ns))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -400,7 +400,7 @@ func (m *FileAttributeMatcher) EnumerateNext() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(*FileAttributeMatcher))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
 
 	_cret = C.g_file_attribute_matcher_enumerate_next(_arg0)
 
@@ -419,7 +419,7 @@ func (m *FileAttributeMatcher) Matches(attribute string) bool {
 	var _arg1 *C.char                  // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(*FileAttributeMatcher))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -441,7 +441,7 @@ func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _arg1 *C.char                  // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(*FileAttributeMatcher))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -461,13 +461,13 @@ func (m *FileAttributeMatcher) ref() *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(*FileAttributeMatcher))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
 
 	_cret = C.g_file_attribute_matcher_ref(_arg0)
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(*C.GFileAttributeMatcher))
+	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
 	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
@@ -488,14 +488,14 @@ func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAtt
 	var _arg1 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(*FileAttributeMatcher))
-	_arg1 = (*C.GFileAttributeMatcher)(unsafe.Pointer(*FileAttributeMatcher))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
+	_arg1 = (*C.GFileAttributeMatcher)(unsafe.Pointer(subtract))
 
 	_cret = C.g_file_attribute_matcher_subtract(_arg0, _arg1)
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(*C.GFileAttributeMatcher))
+	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
 	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
@@ -512,7 +512,7 @@ func (m *FileAttributeMatcher) String() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(*FileAttributeMatcher))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
 
 	_cret = C.g_file_attribute_matcher_to_string(_arg0)
 
@@ -529,7 +529,7 @@ func (m *FileAttributeMatcher) String() string {
 func (m *FileAttributeMatcher) unref() {
 	var _arg0 *C.GFileAttributeMatcher // out
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(*FileAttributeMatcher))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
 
 	C.g_file_attribute_matcher_unref(_arg0)
 }
@@ -670,7 +670,7 @@ func (o *OutputMessage) Address() *SocketAddressClass {
 // Vectors: pointer to an array of output vectors
 func (o *OutputMessage) Vectors() *OutputVector {
 	var v *OutputVector // out
-	v = (*OutputVector)(unsafe.Pointer(*C.GOutputVector))
+	v = (*OutputVector)(unsafe.Pointer(o.native.vectors))
 	return v
 }
 
@@ -902,13 +902,13 @@ func (r *Resource) ref() *Resource {
 	var _arg0 *C.GResource // out
 	var _cret *C.GResource // in
 
-	_arg0 = (*C.GResource)(unsafe.Pointer(*Resource))
+	_arg0 = (*C.GResource)(unsafe.Pointer(r))
 
 	_cret = C.g_resource_ref(_arg0)
 
 	var _ret *Resource // out
 
-	_ret = (*Resource)(unsafe.Pointer(*C.GResource))
+	_ret = (*Resource)(unsafe.Pointer(_cret))
 	C.g_resource_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Resource) {
 		C.g_resource_unref((*C.GResource)(unsafe.Pointer(v)))
@@ -923,7 +923,7 @@ func (r *Resource) ref() *Resource {
 func (r *Resource) unref() {
 	var _arg0 *C.GResource // out
 
-	_arg0 = (*C.GResource)(unsafe.Pointer(*Resource))
+	_arg0 = (*C.GResource)(unsafe.Pointer(r))
 
 	C.g_resource_unref(_arg0)
 }
@@ -973,7 +973,7 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 
 	var _srvTarget *SrvTarget // out
 
-	_srvTarget = (*SrvTarget)(unsafe.Pointer(*C.GSrvTarget))
+	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -991,13 +991,13 @@ func (t *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.GSrvTarget // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(*SrvTarget))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
 
 	_cret = C.g_srv_target_copy(_arg0)
 
 	var _srvTarget *SrvTarget // out
 
-	_srvTarget = (*SrvTarget)(unsafe.Pointer(*C.GSrvTarget))
+	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -1009,7 +1009,7 @@ func (t *SrvTarget) Copy() *SrvTarget {
 func (t *SrvTarget) free() {
 	var _arg0 *C.GSrvTarget // out
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(*SrvTarget))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
 
 	C.g_srv_target_free(_arg0)
 }
@@ -1022,7 +1022,7 @@ func (t *SrvTarget) Hostname() string {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(*SrvTarget))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
 
 	_cret = C.g_srv_target_get_hostname(_arg0)
 
@@ -1038,7 +1038,7 @@ func (t *SrvTarget) Port() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(*SrvTarget))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
 
 	_cret = C.g_srv_target_get_port(_arg0)
 
@@ -1055,7 +1055,7 @@ func (t *SrvTarget) Priority() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(*SrvTarget))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
 
 	_cret = C.g_srv_target_get_priority(_arg0)
 
@@ -1072,7 +1072,7 @@ func (t *SrvTarget) Weight() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(*SrvTarget))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
 
 	_cret = C.g_srv_target_get_weight(_arg0)
 

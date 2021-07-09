@@ -65,7 +65,7 @@ func NewGestureZoom(widget Widget) *GestureZoomClass {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_gesture_zoom_new(_arg1)
 
@@ -84,7 +84,7 @@ func (g *GestureZoomClass) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out
 	var _cret C.gdouble         // in
 
-	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer((&GestureZoom).Native()))
+	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer((&g).Native()))
 
 	_cret = C.gtk_gesture_zoom_get_scale_delta(_arg0)
 

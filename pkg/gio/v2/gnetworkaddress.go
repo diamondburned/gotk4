@@ -134,7 +134,7 @@ func (a *NetworkAddressClass) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer((&NetworkAddress).Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_network_address_get_hostname(_arg0)
 
@@ -150,7 +150,7 @@ func (a *NetworkAddressClass) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret C.guint16          // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer((&NetworkAddress).Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_network_address_get_port(_arg0)
 
@@ -166,7 +166,7 @@ func (a *NetworkAddressClass) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer((&NetworkAddress).Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_network_address_get_scheme(_arg0)
 

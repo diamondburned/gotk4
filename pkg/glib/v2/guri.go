@@ -272,7 +272,7 @@ func (u *URI) AuthParams() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_auth_params(_arg0)
 
@@ -288,13 +288,13 @@ func (u *URI) Flags() URIFlags {
 	var _arg0 *C.GUri     // out
 	var _cret C.GUriFlags // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_flags(_arg0)
 
 	var _uriFlags URIFlags // out
 
-	_uriFlags = (URIFlags)(C.GUriFlags)
+	_uriFlags = (URIFlags)(_cret)
 
 	return _uriFlags
 }
@@ -305,7 +305,7 @@ func (u *URI) Fragment() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_fragment(_arg0)
 
@@ -329,7 +329,7 @@ func (u *URI) Host() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_host(_arg0)
 
@@ -347,7 +347,7 @@ func (u *URI) Password() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_password(_arg0)
 
@@ -364,7 +364,7 @@ func (u *URI) Path() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_path(_arg0)
 
@@ -380,7 +380,7 @@ func (u *URI) Port() int {
 	var _arg0 *C.GUri // out
 	var _cret C.gint  // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_port(_arg0)
 
@@ -400,7 +400,7 @@ func (u *URI) Query() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_query(_arg0)
 
@@ -417,7 +417,7 @@ func (u *URI) Scheme() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_scheme(_arg0)
 
@@ -436,7 +436,7 @@ func (u *URI) User() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_user(_arg0)
 
@@ -453,7 +453,7 @@ func (u *URI) Userinfo() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_get_userinfo(_arg0)
 
@@ -479,7 +479,7 @@ func (u *URI) String() string {
 	var _arg0 *C.GUri // out
 	var _cret *C.char // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(*URI))
+	_arg0 = (*C.GUri)(unsafe.Pointer(u))
 
 	_cret = C.g_uri_to_string(_arg0)
 
@@ -530,7 +530,7 @@ func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var _arg2 *C.gchar          // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(*URIParamsIter))
+	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i))
 
 	C.g_uri_params_iter_next(_arg0, &_arg1, &_arg2, &_cerr)
 

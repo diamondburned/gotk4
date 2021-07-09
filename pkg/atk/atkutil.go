@@ -76,7 +76,7 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 	var event *KeyEventStruct // out
 	var userData interface{}  // out
 
-	event = (*KeyEventStruct)(unsafe.Pointer(*C.AtkKeyEventStruct))
+	event = (*KeyEventStruct)(unsafe.Pointer(arg0))
 	userData = box.Get(uintptr(arg1))
 
 	fn := v.(KeySnoopFunc)
@@ -94,7 +94,7 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 func FocusTrackerNotify(object Object) {
 	var _arg1 *C.AtkObject // out
 
-	_arg1 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((&object).Native()))
 
 	C.atk_focus_tracker_notify(_arg1)
 }

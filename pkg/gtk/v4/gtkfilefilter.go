@@ -146,7 +146,7 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilterClass {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant))
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
@@ -163,7 +163,7 @@ func (f *FileFilterClass) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&FileFilter).Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&f).Native()))
 	_arg1 = (*C.char)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -175,7 +175,7 @@ func (f *FileFilterClass) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&FileFilter).Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&f).Native()))
 	_arg1 = (*C.char)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -190,7 +190,7 @@ func (f *FileFilterClass) AddPattern(pattern string) {
 func (f *FileFilterClass) AddPixbufFormats() {
 	var _arg0 *C.GtkFileFilter // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&FileFilter).Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&f).Native()))
 
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
@@ -204,7 +204,7 @@ func (f *FileFilterClass) Attributes() []string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&FileFilter).Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_file_filter_get_attributes(_arg0)
 
@@ -234,7 +234,7 @@ func (f *FileFilterClass) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&FileFilter).Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
 
@@ -253,7 +253,7 @@ func (f *FileFilterClass) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&FileFilter).Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&f).Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -265,13 +265,13 @@ func (f *FileFilterClass) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&FileFilter).Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))

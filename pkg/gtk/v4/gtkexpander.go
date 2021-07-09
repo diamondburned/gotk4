@@ -240,7 +240,7 @@ func (e *ExpanderClass) Child() *WidgetClass {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_expander_get_child(_arg0)
 
@@ -259,7 +259,7 @@ func (e *ExpanderClass) Expanded() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_expander_get_expanded(_arg0)
 
@@ -282,7 +282,7 @@ func (e *ExpanderClass) Label() string {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_expander_get_label(_arg0)
 
@@ -298,7 +298,7 @@ func (e *ExpanderClass) LabelWidget() *WidgetClass {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_expander_get_label_widget(_arg0)
 
@@ -316,7 +316,7 @@ func (e *ExpanderClass) ResizeToplevel() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_expander_get_resize_toplevel(_arg0)
 
@@ -334,7 +334,7 @@ func (e *ExpanderClass) UseMarkup() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_expander_get_use_markup(_arg0)
 
@@ -352,7 +352,7 @@ func (e *ExpanderClass) UseUnderline() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_expander_get_use_underline(_arg0)
 
@@ -370,8 +370,8 @@ func (e *ExpanderClass) SetChild(child Widget) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_expander_set_child(_arg0, _arg1)
 }
@@ -384,7 +384,7 @@ func (e *ExpanderClass) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 	if expanded {
 		_arg1 = C.TRUE
 	}
@@ -399,7 +399,7 @@ func (e *ExpanderClass) SetLabel(label string) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -413,8 +413,8 @@ func (e *ExpanderClass) SetLabelWidget(labelWidget Widget) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&labelWidget).Native()))
 
 	C.gtk_expander_set_label_widget(_arg0, _arg1)
 }
@@ -425,7 +425,7 @@ func (e *ExpanderClass) SetResizeToplevel(resizeToplevel bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 	if resizeToplevel {
 		_arg1 = C.TRUE
 	}
@@ -438,7 +438,7 @@ func (e *ExpanderClass) SetUseMarkup(useMarkup bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 	if useMarkup {
 		_arg1 = C.TRUE
 	}
@@ -451,7 +451,7 @@ func (e *ExpanderClass) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&Expander).Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer((&e).Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

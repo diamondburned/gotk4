@@ -86,7 +86,7 @@ func (i *HyperlinkImplInterface) Hyperlink() *HyperlinkClass {
 	var _arg0 *C.AtkHyperlinkImpl // out
 	var _cret *C.AtkHyperlink     // in
 
-	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer((&HyperlinkImpl).Native()))
+	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer((&i).Native()))
 
 	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
 

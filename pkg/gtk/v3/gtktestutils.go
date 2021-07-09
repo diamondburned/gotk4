@@ -56,7 +56,7 @@ func TestFindLabel(widget Widget, labelPattern string) *WidgetClass {
 	var _arg2 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 	_arg2 = (*C.gchar)(C.CString(labelPattern))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -81,8 +81,8 @@ func TestFindSibling(baseWidget Widget, widgetType externglib.Type) *WidgetClass
 	var _arg2 C.GType      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
-	_arg2 = (C.GType)(externglib.Type)
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&baseWidget).Native()))
+	_arg2 = (C.GType)(widgetType)
 
 	_cret = C.gtk_test_find_sibling(_arg1, _arg2)
 
@@ -107,10 +107,10 @@ func TestFindWidget(widget Widget, labelPattern string, widgetType externglib.Ty
 	var _arg3 C.GType      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 	_arg2 = (*C.gchar)(C.CString(labelPattern))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.GType)(externglib.Type)
+	_arg3 = (C.GType)(widgetType)
 
 	_cret = C.gtk_test_find_widget(_arg1, _arg2, _arg3)
 
@@ -139,7 +139,7 @@ func TestSliderGetValue(widget Widget) float64 {
 	var _arg1 *C.GtkWidget // out
 	var _cret C.double     // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_test_slider_get_value(_arg1)
 
@@ -160,7 +160,7 @@ func TestSliderSetPerc(widget Widget, percentage float64) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 	_arg2 = C.double(percentage)
 
 	C.gtk_test_slider_set_perc(_arg1, _arg2)
@@ -177,7 +177,7 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 	var _arg3 C.gboolean       // out
 	var _cret C.gboolean       // in
 
-	_arg1 = (*C.GtkSpinButton)(unsafe.Pointer((&SpinButton).Native()))
+	_arg1 = (*C.GtkSpinButton)(unsafe.Pointer((&spinner).Native()))
 	_arg2 = C.guint(button)
 	if upwards {
 		_arg3 = C.TRUE
@@ -202,7 +202,7 @@ func TestTextGet(widget Widget) string {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.gchar     // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_test_text_get(_arg1)
 
@@ -222,7 +222,7 @@ func TestTextSet(widget Widget, _string string) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 	_arg2 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -238,7 +238,7 @@ func TestTextSet(widget Widget, _string string) {
 func TestWidgetWaitForDraw(widget Widget) {
 	var _arg1 *C.GtkWidget // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	C.gtk_test_widget_wait_for_draw(_arg1)
 }

@@ -59,7 +59,7 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	err, variant := fn(connection, sender, objectPath, interfaceName, propertyName, userData)
 
 	*arg5 = (*C.GError)(gerror.New(err))
-	cret = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
+	cret = (*C.GVariant)(unsafe.Pointer(variant))
 
 	return cret
 }
@@ -90,7 +90,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
 	methodName = C.GoString(arg4)
-	parameters = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
+	parameters = (*glib.Variant)(unsafe.Pointer(arg5))
 	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -128,7 +128,7 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
 	propertyName = C.GoString(arg4)
-	value = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
+	value = (*glib.Variant)(unsafe.Pointer(arg5))
 	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(value, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -231,7 +231,7 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 	fn := v.(DBusMessageFilterFunction)
 	dBusMessage := fn(connection, message, incoming, userData)
 
-	cret = (*C.GDBusMessage)(unsafe.Pointer((&DBusMessage).Native()))
+	cret = (*C.GDBusMessage)(unsafe.Pointer((&dBusMessage).Native()))
 
 	return cret
 }
@@ -261,7 +261,7 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
 	signalName = C.GoString(arg4)
-	parameters = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
+	parameters = (*glib.Variant)(unsafe.Pointer(arg5))
 	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -305,7 +305,7 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	outUserData, dBusInterfaceVTable := fn(connection, sender, objectPath, interfaceName, node, userData)
 
 	*arg5 = (C.gpointer)(box.Assign(outUserData))
-	cret = (*C.GDBusInterfaceVTable)(unsafe.Pointer(*DBusInterfaceVTable))
+	cret = (*C.GDBusInterfaceVTable)(unsafe.Pointer(dBusInterfaceVTable))
 
 	return cret
 }
@@ -403,7 +403,7 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 	{
 		out := unsafe.Slice(cret, len(dBusInterfaceInfos))
 		for i := range dBusInterfaceInfos {
-			out[i] = (*C.GDBusInterfaceInfo)(unsafe.Pointer(*DBusInterfaceInfo))
+			out[i] = (*C.GDBusInterfaceInfo)(unsafe.Pointer(dBusInterfaceInfos[i]))
 		}
 	}
 
@@ -424,7 +424,7 @@ func BusGetFinish(res AsyncResult) (*DBusConnectionClass, error) {
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&res).Native()))
 
 	_cret = C.g_bus_get_finish(_arg1, &_cerr)
 

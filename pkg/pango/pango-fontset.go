@@ -126,7 +126,7 @@ func (f *FontsetClass) Foreach(fn FontsetForeachFunc) {
 	var _arg1 C.PangoFontsetForeachFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer((&Fontset).Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer((&f).Native()))
 	_arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
 	_arg2 = C.gpointer(box.Assign(fn))
 
@@ -140,7 +140,7 @@ func (f *FontsetClass) Font(wc uint) *FontClass {
 	var _arg1 C.guint         // out
 	var _cret *C.PangoFont    // in
 
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer((&Fontset).Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer((&f).Native()))
 	_arg1 = C.guint(wc)
 
 	_cret = C.pango_fontset_get_font(_arg0, _arg1)
@@ -158,13 +158,13 @@ func (f *FontsetClass) Metrics() *FontMetrics {
 	var _arg0 *C.PangoFontset     // out
 	var _cret *C.PangoFontMetrics // in
 
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer((&Fontset).Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.pango_fontset_get_metrics(_arg0)
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = (*FontMetrics)(unsafe.Pointer(*C.PangoFontMetrics))
+	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
 	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
@@ -213,7 +213,7 @@ func NewFontsetSimple(language *Language) *FontsetSimpleClass {
 	var _arg1 *C.PangoLanguage      // out
 	var _cret *C.PangoFontsetSimple // in
 
-	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
+	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
 	_cret = C.pango_fontset_simple_new(_arg1)
 
@@ -230,8 +230,8 @@ func (f *FontsetSimpleClass) Append(font Font) {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _arg1 *C.PangoFont          // out
 
-	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer((&FontsetSimple).Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer((&Font).Native()))
+	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer((&f).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer((&font).Native()))
 
 	C.pango_fontset_simple_append(_arg0, _arg1)
 }
@@ -241,7 +241,7 @@ func (f *FontsetSimpleClass) Size() int {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer((&FontsetSimple).Native()))
+	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer((&f).Native()))
 
 	_cret = C.pango_fontset_simple_size(_arg0)
 

@@ -107,7 +107,7 @@ func (p *PlugClass) ID() string {
 	var _arg0 *C.AtkPlug // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer((&Plug).Native()))
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.atk_plug_get_id(_arg0)
 
@@ -132,8 +132,8 @@ func (p *PlugClass) SetChild(child Object) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer((&Plug).Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((&child).Native()))
 
 	C.atk_plug_set_child(_arg0, _arg1)
 }

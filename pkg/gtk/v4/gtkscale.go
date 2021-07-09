@@ -254,7 +254,7 @@ func marshalScale(p uintptr) (interface{}, error) {
 func (s *ScaleClass) ClearMarks() {
 	var _arg0 *C.GtkScale // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_scale_clear_marks(_arg0)
 }
@@ -264,7 +264,7 @@ func (s *ScaleClass) Digits() int {
 	var _arg0 *C.GtkScale // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_scale_get_digits(_arg0)
 
@@ -281,7 +281,7 @@ func (s *ScaleClass) DrawValue() bool {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_scale_get_draw_value(_arg0)
 
@@ -299,7 +299,7 @@ func (s *ScaleClass) HasOrigin() bool {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_scale_get_has_origin(_arg0)
 
@@ -320,7 +320,7 @@ func (s *ScaleClass) Layout() *pango.LayoutClass {
 	var _arg0 *C.GtkScale    // out
 	var _cret *C.PangoLayout // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_scale_get_layout(_arg0)
 
@@ -345,7 +345,7 @@ func (s *ScaleClass) LayoutOffsets() (x int, y int) {
 	var _arg1 C.int       // in
 	var _arg2 C.int       // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_scale_get_layout_offsets(_arg0, &_arg1, &_arg2)
 
@@ -363,13 +363,13 @@ func (s *ScaleClass) ValuePos() PositionType {
 	var _arg0 *C.GtkScale       // out
 	var _cret C.GtkPositionType // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_scale_get_value_pos(_arg0)
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(C.GtkPositionType)
+	_positionType = (PositionType)(_cret)
 
 	return _positionType
 }
@@ -390,7 +390,7 @@ func (s *ScaleClass) SetDigits(digits int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.int       // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.int(digits)
 
 	C.gtk_scale_set_digits(_arg0, _arg1)
@@ -402,7 +402,7 @@ func (s *ScaleClass) SetDrawValue(drawValue bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 	if drawValue {
 		_arg1 = C.TRUE
 	}
@@ -419,7 +419,7 @@ func (s *ScaleClass) SetHasOrigin(hasOrigin bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&s).Native()))
 	if hasOrigin {
 		_arg1 = C.TRUE
 	}

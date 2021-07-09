@@ -120,7 +120,7 @@ func (c *CoverageClass) Copy() *CoverageClass {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&Coverage).Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.pango_coverage_copy(_arg0)
 
@@ -138,14 +138,14 @@ func (c *CoverageClass) Get(index_ int) CoverageLevel {
 	var _arg1 C.int                // out
 	var _cret C.PangoCoverageLevel // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&Coverage).Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.int(index_)
 
 	_cret = C.pango_coverage_get(_arg0, _arg1)
 
 	var _coverageLevel CoverageLevel // out
 
-	_coverageLevel = (CoverageLevel)(C.PangoCoverageLevel)
+	_coverageLevel = (CoverageLevel)(_cret)
 
 	return _coverageLevel
 }
@@ -159,8 +159,8 @@ func (c *CoverageClass) Max(other Coverage) {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.PangoCoverage // out
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&Coverage).Native()))
-	_arg1 = (*C.PangoCoverage)(unsafe.Pointer((&Coverage).Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.PangoCoverage)(unsafe.Pointer((&other).Native()))
 
 	C.pango_coverage_max(_arg0, _arg1)
 }
@@ -170,7 +170,7 @@ func (c *CoverageClass) ref() *CoverageClass {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&Coverage).Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.pango_coverage_ref(_arg0)
 
@@ -190,7 +190,7 @@ func (c *CoverageClass) ToBytes() []byte {
 	var _arg1 *C.guchar
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&Coverage).Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&c).Native()))
 
 	C.pango_coverage_to_bytes(_arg0, &_arg1, &_arg2)
 
@@ -210,7 +210,7 @@ func (c *CoverageClass) ToBytes() []byte {
 func (c *CoverageClass) unref() {
 	var _arg0 *C.PangoCoverage // out
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&Coverage).Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer((&c).Native()))
 
 	C.pango_coverage_unref(_arg0)
 }

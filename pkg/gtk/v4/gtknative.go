@@ -96,7 +96,7 @@ func (s *NativeInterface) Renderer() *gsk.RendererClass {
 	var _arg0 *C.GtkNative   // out
 	var _cret *C.GskRenderer // in
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_native_get_renderer(_arg0)
 
@@ -113,7 +113,7 @@ func (s *NativeInterface) Surface() *gdk.SurfaceClass {
 	var _arg0 *C.GtkNative  // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_native_get_surface(_arg0)
 
@@ -134,7 +134,7 @@ func (s *NativeInterface) SurfaceTransform() (x float64, y float64) {
 	var _arg1 C.double     // in
 	var _arg2 C.double     // in
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_native_get_surface_transform(_arg0, &_arg1, &_arg2)
 
@@ -153,7 +153,7 @@ func (s *NativeInterface) SurfaceTransform() (x float64, y float64) {
 func (s *NativeInterface) Realize() {
 	var _arg0 *C.GtkNative // out
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_native_realize(_arg0)
 }
@@ -164,7 +164,7 @@ func (s *NativeInterface) Realize() {
 func (s *NativeInterface) Unrealize() {
 	var _arg0 *C.GtkNative // out
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_native_unrealize(_arg0)
 }

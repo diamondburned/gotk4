@@ -50,7 +50,7 @@ func NewVec3Alloc() *Vec3 {
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = (*Vec3)(unsafe.Pointer(*C.graphene_vec3_t))
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_vec3, func(v *Vec3) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -69,8 +69,8 @@ func (a *Vec3) Dot(b *Vec3) float32 {
 	var _arg1 *C.graphene_vec3_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(a))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(b))
 
 	_cret = C.graphene_vec3_dot(_arg0, _arg1)
 
@@ -87,8 +87,8 @@ func (v *Vec3) Equal(v2 *Vec3) bool {
 	var _arg1 *C.graphene_vec3_t // out
 	var _cret C._Bool            // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v2))
 
 	_cret = C.graphene_vec3_equal(_arg0, _arg1)
 
@@ -105,7 +105,7 @@ func (v *Vec3) Equal(v2 *Vec3) bool {
 func (v *Vec3) free() {
 	var _arg0 *C.graphene_vec3_t // out
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 
 	C.graphene_vec3_free(_arg0)
 }
@@ -115,7 +115,7 @@ func (v *Vec3) X() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 
 	_cret = C.graphene_vec3_get_x(_arg0)
 
@@ -131,7 +131,7 @@ func (v *Vec3) Y() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 
 	_cret = C.graphene_vec3_get_y(_arg0)
 
@@ -147,7 +147,7 @@ func (v *Vec3) Z() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 
 	_cret = C.graphene_vec3_get_z(_arg0)
 
@@ -168,7 +168,7 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 	var _arg3 C.float            // out
 	var _cret *C.graphene_vec3_t // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 	_arg1 = C.float(x)
 	_arg2 = C.float(y)
 	_arg3 = C.float(z)
@@ -177,7 +177,7 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = (*Vec3)(unsafe.Pointer(*C.graphene_vec3_t))
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
 
 	return _vec3
 }
@@ -188,14 +188,14 @@ func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 	var _arg1 *C.float
 	var _cret *C.graphene_vec3_t // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 	_arg1 = (*C.float)(unsafe.Pointer(&src))
 
 	_cret = C.graphene_vec3_init_from_float(_arg0, _arg1)
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = (*Vec3)(unsafe.Pointer(*C.graphene_vec3_t))
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
 
 	return _vec3
 }
@@ -207,14 +207,14 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 	var _arg1 *C.graphene_vec3_t // out
 	var _cret *C.graphene_vec3_t // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(src))
 
 	_cret = C.graphene_vec3_init_from_vec3(_arg0, _arg1)
 
 	var _vec3 *Vec3 // out
 
-	_vec3 = (*Vec3)(unsafe.Pointer(*C.graphene_vec3_t))
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
 
 	return _vec3
 }
@@ -224,7 +224,7 @@ func (v *Vec3) Length() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 
 	_cret = C.graphene_vec3_length(_arg0)
 
@@ -243,8 +243,8 @@ func (v *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 	var _arg2 C.float            // out
 	var _cret C._Bool            // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v2))
 	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_vec3_near(_arg0, _arg1, _arg2)
@@ -263,7 +263,7 @@ func (v *Vec3) ToFloat() [3]float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 [3]C.float
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 
 	C.graphene_vec3_to_float(_arg0, &_arg1[0])
 

@@ -100,7 +100,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.PixbufClas
 	var _cret *C.GdkPixbuf  // in
 	var _cerr *C.GError     // in
 
-	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(*Pixdata))
+	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata))
 	if copyPixels {
 		_arg2 = C.TRUE
 	}
@@ -208,7 +208,7 @@ func (p *Pixdata) Deserialize(stream []byte) error {
 	var _arg1 C.guint
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(*Pixdata))
+	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p))
 	_arg1 = C.guint(len(stream))
 	_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
 

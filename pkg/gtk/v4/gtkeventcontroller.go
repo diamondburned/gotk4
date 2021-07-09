@@ -91,7 +91,7 @@ func (c *EventControllerClass) CurrentEvent() *gdk.EventClass {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkEvent           // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_current_event(_arg0)
 
@@ -109,7 +109,7 @@ func (c *EventControllerClass) CurrentEventDevice() *gdk.DeviceClass {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkDevice          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_device(_arg0)
 
@@ -127,13 +127,13 @@ func (c *EventControllerClass) CurrentEventState() gdk.ModifierType {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GdkModifierType     // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_state(_arg0)
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(C.GdkModifierType)
+	_modifierType = (gdk.ModifierType)(_cret)
 
 	return _modifierType
 }
@@ -144,7 +144,7 @@ func (c *EventControllerClass) CurrentEventTime() uint32 {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.guint32             // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_time(_arg0)
 
@@ -160,7 +160,7 @@ func (c *EventControllerClass) Name() string {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_name(_arg0)
 
@@ -176,13 +176,13 @@ func (c *EventControllerClass) PropagationLimit() PropagationLimit {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationLimit // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_limit(_arg0)
 
 	var _propagationLimit PropagationLimit // out
 
-	_propagationLimit = (PropagationLimit)(C.GtkPropagationLimit)
+	_propagationLimit = (PropagationLimit)(_cret)
 
 	return _propagationLimit
 }
@@ -193,13 +193,13 @@ func (c *EventControllerClass) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 
 	var _propagationPhase PropagationPhase // out
 
-	_propagationPhase = (PropagationPhase)(C.GtkPropagationPhase)
+	_propagationPhase = (PropagationPhase)(_cret)
 
 	return _propagationPhase
 }
@@ -209,7 +209,7 @@ func (c *EventControllerClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
@@ -225,7 +225,7 @@ func (c *EventControllerClass) Widget() *WidgetClass {
 func (c *EventControllerClass) Reset() {
 	var _arg0 *C.GtkEventController // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_event_controller_reset(_arg0)
 }
@@ -235,7 +235,7 @@ func (c *EventControllerClass) SetName(name string) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 

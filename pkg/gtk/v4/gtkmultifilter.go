@@ -201,8 +201,8 @@ func (s *MultiFilterClass) Append(filter Filter) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer((&MultiFilter).Native()))
-	_arg1 = (*C.GtkFilter)(unsafe.Pointer((&Filter).Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer((&filter).Native()))
 
 	C.gtk_multi_filter_append(_arg0, _arg1)
 }
@@ -216,7 +216,7 @@ func (s *MultiFilterClass) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer((&MultiFilter).Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)

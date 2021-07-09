@@ -162,7 +162,7 @@ func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetupClass {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPageSetup // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant))
 
 	_cret = C.gtk_page_setup_new_from_gvariant(_arg1)
 
@@ -185,7 +185,7 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 	var _cret *C.GtkPageSetup // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(*glib.KeyFile))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -206,7 +206,7 @@ func (o *PageSetupClass) Copy() *PageSetupClass {
 	var _arg0 *C.GtkPageSetup // out
 	var _cret *C.GtkPageSetup // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.gtk_page_setup_copy(_arg0)
 
@@ -223,13 +223,13 @@ func (s *PageSetupClass) Orientation() PageOrientation {
 	var _arg0 *C.GtkPageSetup      // out
 	var _cret C.GtkPageOrientation // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_page_setup_get_orientation(_arg0)
 
 	var _pageOrientation PageOrientation // out
 
-	_pageOrientation = (PageOrientation)(C.GtkPageOrientation)
+	_pageOrientation = (PageOrientation)(_cret)
 
 	return _pageOrientation
 }
@@ -239,13 +239,13 @@ func (s *PageSetupClass) PaperSize() *PaperSize {
 	var _arg0 *C.GtkPageSetup // out
 	var _cret *C.GtkPaperSize // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_page_setup_get_paper_size(_arg0)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(unsafe.Pointer(*C.GtkPaperSize))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 
 	return _paperSize
 }
@@ -258,7 +258,7 @@ func (s *PageSetupClass) LoadFile(fileName string) error {
 	var _arg1 *C.char         // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -279,8 +279,8 @@ func (s *PageSetupClass) LoadKeyFile(keyFile *glib.KeyFile, groupName string) er
 	var _arg2 *C.char         // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(*glib.KeyFile))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -301,8 +301,8 @@ func (s *PageSetupClass) SetPaperSize(size *PaperSize) {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GtkPaperSize // out
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
-	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size))
 
 	C.gtk_page_setup_set_paper_size(_arg0, _arg1)
 }
@@ -313,8 +313,8 @@ func (s *PageSetupClass) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GtkPaperSize // out
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
-	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size))
 
 	C.gtk_page_setup_set_paper_size_and_default_margins(_arg0, _arg1)
 }
@@ -325,7 +325,7 @@ func (s *PageSetupClass) ToFile(fileName string) error {
 	var _arg1 *C.char         // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -343,13 +343,13 @@ func (s *PageSetupClass) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkPageSetup // out
 	var _cret *C.GVariant     // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_page_setup_to_gvariant(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -364,8 +364,8 @@ func (s *PageSetupClass) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.char         // out
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(*glib.KeyFile))
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg2))
 

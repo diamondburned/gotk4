@@ -46,8 +46,8 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 
 	model = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(arg0))).(*TreeModelInterface)
-	path = (*TreePath)(unsafe.Pointer(*C.GtkTreePath))
-	iter = (*TreeIter)(unsafe.Pointer(*C.GtkTreeIter))
+	path = (*TreePath)(unsafe.Pointer(arg1))
+	iter = (*TreeIter)(unsafe.Pointer(arg2))
 	data = box.Get(uintptr(arg3))
 
 	fn := v.(TreeSelectionForeachFunc)
@@ -77,7 +77,7 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 		externglib.Take(unsafe.Pointer(arg0))).(*TreeSelectionClass)
 	model = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(arg1))).(*TreeModelInterface)
-	path = (*TreePath)(unsafe.Pointer(*C.GtkTreePath))
+	path = (*TreePath)(unsafe.Pointer(arg2))
 	if arg3 != 0 {
 		pathCurrentlySelected = true
 	}
@@ -189,7 +189,7 @@ func (s *TreeSelectionClass) CountSelectedRows() int {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret C.gint              // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_tree_selection_count_selected_rows(_arg0)
 
@@ -206,13 +206,13 @@ func (s *TreeSelectionClass) Mode() SelectionMode {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret C.GtkSelectionMode  // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_tree_selection_get_mode(_arg0)
 
 	var _selectionMode SelectionMode // out
 
-	_selectionMode = (SelectionMode)(C.GtkSelectionMode)
+	_selectionMode = (SelectionMode)(_cret)
 
 	return _selectionMode
 }
@@ -222,7 +222,7 @@ func (s *TreeSelectionClass) TreeView() *TreeViewClass {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret *C.GtkTreeView      // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_tree_selection_get_tree_view(_arg0)
 
@@ -240,8 +240,8 @@ func (s *TreeSelectionClass) IterIsSelected(iter *TreeIter) bool {
 	var _arg1 *C.GtkTreeIter      // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(*TreeIter))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	_cret = C.gtk_tree_selection_iter_is_selected(_arg0, _arg1)
 
@@ -261,8 +261,8 @@ func (s *TreeSelectionClass) PathIsSelected(path *TreePath) bool {
 	var _arg1 *C.GtkTreePath      // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(*TreePath))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_selection_path_is_selected(_arg0, _arg1)
 
@@ -280,7 +280,7 @@ func (s *TreeSelectionClass) PathIsSelected(path *TreePath) bool {
 func (s *TreeSelectionClass) SelectAll() {
 	var _arg0 *C.GtkTreeSelection // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_tree_selection_select_all(_arg0)
 }
@@ -290,8 +290,8 @@ func (s *TreeSelectionClass) SelectIter(iter *TreeIter) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeIter      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(*TreeIter))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	C.gtk_tree_selection_select_iter(_arg0, _arg1)
 }
@@ -301,8 +301,8 @@ func (s *TreeSelectionClass) SelectPath(path *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(*TreePath))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	C.gtk_tree_selection_select_path(_arg0, _arg1)
 }
@@ -314,9 +314,9 @@ func (s *TreeSelectionClass) SelectRange(startPath *TreePath, endPath *TreePath)
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkTreePath      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(*TreePath))
-	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(*TreePath))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(startPath))
+	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(endPath))
 
 	C.gtk_tree_selection_select_range(_arg0, _arg1, _arg2)
 }
@@ -329,7 +329,7 @@ func (s *TreeSelectionClass) SelectedForeach(fn TreeSelectionForeachFunc) {
 	var _arg1 C.GtkTreeSelectionForeachFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*[0]byte)(C.gotk4_TreeSelectionForeachFunc)
 	_arg2 = C.gpointer(box.Assign(fn))
 
@@ -340,7 +340,7 @@ func (s *TreeSelectionClass) SelectedForeach(fn TreeSelectionForeachFunc) {
 func (s *TreeSelectionClass) UnselectAll() {
 	var _arg0 *C.GtkTreeSelection // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_tree_selection_unselect_all(_arg0)
 }
@@ -350,8 +350,8 @@ func (s *TreeSelectionClass) UnselectIter(iter *TreeIter) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeIter      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(*TreeIter))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	C.gtk_tree_selection_unselect_iter(_arg0, _arg1)
 }
@@ -361,8 +361,8 @@ func (s *TreeSelectionClass) UnselectPath(path *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(*TreePath))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	C.gtk_tree_selection_unselect_path(_arg0, _arg1)
 }
@@ -374,9 +374,9 @@ func (s *TreeSelectionClass) UnselectRange(startPath *TreePath, endPath *TreePat
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkTreePath      // out
 
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&TreeSelection).Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(*TreePath))
-	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(*TreePath))
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(startPath))
+	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(endPath))
 
 	C.gtk_tree_selection_unselect_range(_arg0, _arg1, _arg2)
 }

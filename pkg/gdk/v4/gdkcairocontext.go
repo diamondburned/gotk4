@@ -77,13 +77,13 @@ func (s *CairoContextClass) CairoCreate() *cairo.Context {
 	var _arg0 *C.GdkCairoContext // out
 	var _cret *C.cairo_t         // in
 
-	_arg0 = (*C.GdkCairoContext)(unsafe.Pointer((&CairoContext).Native()))
+	_arg0 = (*C.GdkCairoContext)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gdk_cairo_context_cairo_create(_arg0)
 
 	var _context *cairo.Context // out
 
-	_context = (*cairo.Context)(unsafe.Pointer(*C.cairo_t))
+	_context = (*cairo.Context)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_context, func(v *cairo.Context) {
 		C.free(unsafe.Pointer(v))
 	})

@@ -130,7 +130,7 @@ func (s *SelectionInterface) AddSelection(i int) bool {
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&Selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_add_selection(_arg0, _arg1)
@@ -150,7 +150,7 @@ func (s *SelectionInterface) ClearSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&Selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.atk_selection_clear_selection(_arg0)
 
@@ -172,7 +172,7 @@ func (s *SelectionInterface) SelectionCount() int {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&Selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.atk_selection_get_selection_count(_arg0)
 
@@ -193,7 +193,7 @@ func (s *SelectionInterface) IsChildSelected(i int) bool {
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&Selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_is_child_selected(_arg0, _arg1)
@@ -217,7 +217,7 @@ func (s *SelectionInterface) RefSelection(i int) *ObjectClass {
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&Selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_ref_selection(_arg0, _arg1)
@@ -237,7 +237,7 @@ func (s *SelectionInterface) RemoveSelection(i int) bool {
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&Selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_remove_selection(_arg0, _arg1)
@@ -257,7 +257,7 @@ func (s *SelectionInterface) SelectAllSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&Selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.atk_selection_select_all_selection(_arg0)
 

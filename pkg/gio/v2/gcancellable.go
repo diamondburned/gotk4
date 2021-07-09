@@ -218,7 +218,7 @@ func NewCancellable() *CancellableClass {
 func (c *CancellableClass) Cancel() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 
 	C.g_cancellable_cancel(_arg0)
 }
@@ -238,7 +238,7 @@ func (c *CancellableClass) Disconnect(handlerId uint32) {
 	var _arg0 *C.GCancellable // out
 	var _arg1 C.gulong        // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gulong(handlerId)
 
 	C.g_cancellable_disconnect(_arg0, _arg1)
@@ -261,7 +261,7 @@ func (c *CancellableClass) Fd() int {
 	var _arg0 *C.GCancellable // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_cancellable_get_fd(_arg0)
 
@@ -277,7 +277,7 @@ func (c *CancellableClass) IsCancelled() bool {
 	var _arg0 *C.GCancellable // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_cancellable_is_cancelled(_arg0)
 
@@ -312,8 +312,8 @@ func (c *CancellableClass) MakePollfd(pollfd *glib.PollFD) bool {
 	var _arg1 *C.GPollFD      // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(*glib.PollFD))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd))
 
 	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
 
@@ -331,7 +331,7 @@ func (c *CancellableClass) MakePollfd(pollfd *glib.PollFD) bool {
 func (c *CancellableClass) PopCurrent() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 
 	C.g_cancellable_pop_current(_arg0)
 }
@@ -347,7 +347,7 @@ func (c *CancellableClass) PopCurrent() {
 func (c *CancellableClass) PushCurrent() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 
 	C.g_cancellable_push_current(_arg0)
 }
@@ -364,7 +364,7 @@ func (c *CancellableClass) PushCurrent() {
 func (c *CancellableClass) ReleaseFd() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 
 	C.g_cancellable_release_fd(_arg0)
 }
@@ -383,7 +383,7 @@ func (c *CancellableClass) ReleaseFd() {
 func (c *CancellableClass) Reset() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 
 	C.g_cancellable_reset(_arg0)
 }
@@ -394,7 +394,7 @@ func (c *CancellableClass) SetErrorIfCancelled() error {
 	var _arg0 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 
 	C.g_cancellable_set_error_if_cancelled(_arg0, &_cerr)
 
@@ -418,13 +418,13 @@ func (c *CancellableClass) NewSource() *glib.Source {
 	var _arg0 *C.GCancellable // out
 	var _cret *C.GSource      // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_cancellable_source_new(_arg0)
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(unsafe.Pointer(*C.GSource))
+	_source = (*glib.Source)(unsafe.Pointer(_cret))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))

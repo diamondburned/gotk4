@@ -134,8 +134,8 @@ func NewLayout(hadjustment Adjustment, vadjustment Adjustment) *LayoutClass {
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&hadjustment).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((&vadjustment).Native()))
 
 	_cret = C.gtk_layout_new(_arg1, _arg2)
 
@@ -152,7 +152,7 @@ func (l *LayoutClass) BinWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkLayout // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&l).Native()))
 
 	_cret = C.gtk_layout_get_bin_window(_arg0)
 
@@ -176,7 +176,7 @@ func (l *LayoutClass) HAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&l).Native()))
 
 	_cret = C.gtk_layout_get_hadjustment(_arg0)
 
@@ -195,7 +195,7 @@ func (l *LayoutClass) Size() (width uint, height uint) {
 	var _arg1 C.guint      // in
 	var _arg2 C.guint      // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&l).Native()))
 
 	C.gtk_layout_get_size(_arg0, &_arg1, &_arg2)
 
@@ -220,7 +220,7 @@ func (l *LayoutClass) VAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&l).Native()))
 
 	_cret = C.gtk_layout_get_vadjustment(_arg0)
 
@@ -239,8 +239,8 @@ func (l *LayoutClass) Move(childWidget Widget, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&l).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&childWidget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -255,8 +255,8 @@ func (l *LayoutClass) Put(childWidget Widget, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&l).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&childWidget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -272,8 +272,8 @@ func (l *LayoutClass) SetHAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&l).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
 
 	C.gtk_layout_set_hadjustment(_arg0, _arg1)
 }
@@ -284,7 +284,7 @@ func (l *LayoutClass) SetSize(width uint, height uint) {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&l).Native()))
 	_arg1 = C.guint(width)
 	_arg2 = C.guint(height)
 
@@ -300,8 +300,8 @@ func (l *LayoutClass) SetVAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&l).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
 
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)
 }

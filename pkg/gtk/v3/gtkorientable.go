@@ -62,13 +62,13 @@ func (o *OrientableInterface) Orientation() Orientation {
 	var _arg0 *C.GtkOrientable // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkOrientable)(unsafe.Pointer((&Orientable).Native()))
+	_arg0 = (*C.GtkOrientable)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.gtk_orientable_get_orientation(_arg0)
 
 	var _orientation Orientation // out
 
-	_orientation = (Orientation)(C.GtkOrientation)
+	_orientation = (Orientation)(_cret)
 
 	return _orientation
 }

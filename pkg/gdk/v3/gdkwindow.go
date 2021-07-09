@@ -369,7 +369,7 @@ func OffscreenWindowGetEmbedder(window Window) *WindowClass {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
 
 	_cret = C.gdk_offscreen_window_get_embedder(_arg1)
 
@@ -388,13 +388,13 @@ func OffscreenWindowGetSurface(window Window) *cairo.Surface {
 	var _arg1 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
 
 	_cret = C.gdk_offscreen_window_get_surface(_arg1)
 
 	var _surface *cairo.Surface // out
 
-	_surface = (*cairo.Surface)(unsafe.Pointer(*C.cairo_surface_t))
+	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
 
 	return _surface
 }
@@ -409,8 +409,8 @@ func OffscreenWindowSetEmbedder(window Window, embedder Window) {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 *C.GdkWindow // out
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer((&embedder).Native()))
 
 	C.gdk_offscreen_window_set_embedder(_arg1, _arg2)
 }
@@ -1458,7 +1458,7 @@ func marshalWindow(p uintptr) (interface{}, error) {
 func (w *WindowClass) Beep() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_beep(_arg0)
 }
@@ -1493,8 +1493,8 @@ func (w *WindowClass) BeginDrawFrame(region *cairo.Region) *DrawingContextClass 
 	var _arg1 *C.cairo_region_t    // out
 	var _cret *C.GdkDrawingContext // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	_cret = C.gdk_window_begin_draw_frame(_arg0, _arg1)
 
@@ -1518,7 +1518,7 @@ func (w *WindowClass) BeginMoveDrag(button int, rootX int, rootY int, timestamp 
 	var _arg3 C.gint       // out
 	var _arg4 C.guint32    // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gint(button)
 	_arg2 = C.gint(rootX)
 	_arg3 = C.gint(rootY)
@@ -1540,8 +1540,8 @@ func (w *WindowClass) BeginMoveDragForDevice(device Device, button int, rootX in
 	var _arg4 C.gint       // out
 	var _arg5 C.guint32    // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 	_arg2 = C.gint(button)
 	_arg3 = C.gint(rootX)
 	_arg4 = C.gint(rootY)
@@ -1559,8 +1559,8 @@ func (w *WindowClass) BeginPaintRect(rectangle *Rectangle) {
 	var _arg0 *C.GdkWindow    // out
 	var _arg1 *C.GdkRectangle // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(*Rectangle))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rectangle))
 
 	C.gdk_window_begin_paint_rect(_arg0, _arg1)
 }
@@ -1605,8 +1605,8 @@ func (w *WindowClass) BeginPaintRegion(region *cairo.Region) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gdk_window_begin_paint_region(_arg0, _arg1)
 }
@@ -1617,7 +1617,7 @@ func (w *WindowClass) BeginPaintRegion(region *cairo.Region) {
 func (w *WindowClass) ConfigureFinished() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_configure_finished(_arg0)
 }
@@ -1644,7 +1644,7 @@ func (w *WindowClass) CoordsFromParent(parentX float64, parentY float64) (x floa
 	var _arg3 C.gdouble    // in
 	var _arg4 C.gdouble    // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gdouble(parentX)
 	_arg2 = C.gdouble(parentY)
 
@@ -1680,7 +1680,7 @@ func (w *WindowClass) CoordsToParent(x float64, y float64) (parentX float64, par
 	var _arg3 C.gdouble    // in
 	var _arg4 C.gdouble    // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gdouble(x)
 	_arg2 = C.gdouble(y)
 
@@ -1708,7 +1708,7 @@ func (w *WindowClass) CreateGLContext() (*GLContextClass, error) {
 	var _cret *C.GdkGLContext // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_create_gl_context(_arg0, &_cerr)
 
@@ -1730,7 +1730,7 @@ func (w *WindowClass) CreateGLContext() (*GLContextClass, error) {
 func (w *WindowClass) Deiconify() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_deiconify(_arg0)
 }
@@ -1745,7 +1745,7 @@ func (w *WindowClass) Deiconify() {
 func (w *WindowClass) Destroy() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_destroy(_arg0)
 }
@@ -1753,7 +1753,7 @@ func (w *WindowClass) Destroy() {
 func (w *WindowClass) DestroyNotify() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_destroy_notify(_arg0)
 }
@@ -1764,7 +1764,7 @@ func (w *WindowClass) DestroyNotify() {
 func (w *WindowClass) EnableSynchronizedConfigure() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_enable_synchronized_configure(_arg0)
 }
@@ -1780,8 +1780,8 @@ func (w *WindowClass) EndDrawFrame(context DrawingContext) {
 	var _arg0 *C.GdkWindow         // out
 	var _arg1 *C.GdkDrawingContext // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkDrawingContext)(unsafe.Pointer((&DrawingContext).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkDrawingContext)(unsafe.Pointer((&context).Native()))
 
 	C.gdk_window_end_draw_frame(_arg0, _arg1)
 }
@@ -1796,7 +1796,7 @@ func (w *WindowClass) EndDrawFrame(context DrawingContext) {
 func (w *WindowClass) EndPaint() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_end_paint(_arg0)
 }
@@ -1811,7 +1811,7 @@ func (w *WindowClass) EnsureNative() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_ensure_native(_arg0)
 
@@ -1830,7 +1830,7 @@ func (w *WindowClass) EnsureNative() bool {
 func (w *WindowClass) Flush() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_flush(_arg0)
 }
@@ -1842,7 +1842,7 @@ func (w *WindowClass) Focus(timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_window_focus(_arg0, _arg1)
@@ -1862,7 +1862,7 @@ func (w *WindowClass) Focus(timestamp uint32) {
 func (w *WindowClass) FreezeToplevelUpdatesLibgtkOnly() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_freeze_toplevel_updates_libgtk_only(_arg0)
 }
@@ -1875,7 +1875,7 @@ func (w *WindowClass) FreezeToplevelUpdatesLibgtkOnly() {
 func (w *WindowClass) FreezeUpdates() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_freeze_updates(_arg0)
 }
@@ -1894,7 +1894,7 @@ func (w *WindowClass) FreezeUpdates() {
 func (w *WindowClass) Fullscreen() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_fullscreen(_arg0)
 }
@@ -1908,7 +1908,7 @@ func (w *WindowClass) FullscreenOnMonitor(monitor int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gint(monitor)
 
 	C.gdk_window_fullscreen_on_monitor(_arg0, _arg1)
@@ -1920,7 +1920,7 @@ func (w *WindowClass) FullscreenOnMonitor(monitor int) {
 func (w *WindowClass) GeometryChanged() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_geometry_changed(_arg0)
 }
@@ -1931,7 +1931,7 @@ func (w *WindowClass) AcceptFocus() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_accept_focus(_arg0)
 
@@ -1951,13 +1951,13 @@ func (w *WindowClass) BackgroundPattern() *cairo.Pattern {
 	var _arg0 *C.GdkWindow       // out
 	var _cret *C.cairo_pattern_t // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_background_pattern(_arg0)
 
 	var _pattern *cairo.Pattern // out
 
-	_pattern = (*cairo.Pattern)(unsafe.Pointer(*C.cairo_pattern_t))
+	_pattern = (*cairo.Pattern)(unsafe.Pointer(_cret))
 
 	return _pattern
 }
@@ -1970,13 +1970,13 @@ func (w *WindowClass) ClipRegion() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_clip_region(_arg0)
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(*C.cairo_region_t))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -1993,7 +1993,7 @@ func (w *WindowClass) Composited() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_composited(_arg0)
 
@@ -2014,7 +2014,7 @@ func (w *WindowClass) Cursor() *CursorClass {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkCursor // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_cursor(_arg0)
 
@@ -2033,14 +2033,14 @@ func (w *WindowClass) Decorations() (WMDecoration, bool) {
 	var _arg1 C.GdkWMDecoration // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_decorations(_arg0, &_arg1)
 
 	var _decorations WMDecoration // out
 	var _ok bool                  // out
 
-	_decorations = (WMDecoration)(C.GdkWMDecoration)
+	_decorations = (WMDecoration)(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2057,8 +2057,8 @@ func (w *WindowClass) DeviceCursor(device Device) *CursorClass {
 	var _arg1 *C.GdkDevice // out
 	var _cret *C.GdkCursor // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 
 	_cret = C.gdk_window_get_device_cursor(_arg0, _arg1)
 
@@ -2077,14 +2077,14 @@ func (w *WindowClass) DeviceEvents(device Device) EventMask {
 	var _arg1 *C.GdkDevice   // out
 	var _cret C.GdkEventMask // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 
 	_cret = C.gdk_window_get_device_events(_arg0, _arg1)
 
 	var _eventMask EventMask // out
 
-	_eventMask = (EventMask)(C.GdkEventMask)
+	_eventMask = (EventMask)(_cret)
 
 	return _eventMask
 }
@@ -2102,8 +2102,8 @@ func (w *WindowClass) DevicePosition(device Device) (x int, y int, mask Modifier
 	var _arg4 C.GdkModifierType // in
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 
 	_cret = C.gdk_window_get_device_position(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -2114,7 +2114,7 @@ func (w *WindowClass) DevicePosition(device Device) (x int, y int, mask Modifier
 
 	_x = int(_arg2)
 	_y = int(_arg3)
-	_mask = (ModifierType)(C.GdkModifierType)
+	_mask = (ModifierType)(_arg4)
 	_ret = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
 
@@ -2132,8 +2132,8 @@ func (w *WindowClass) DevicePositionDouble(device Device) (x float64, y float64,
 	var _arg4 C.GdkModifierType // in
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 
 	_cret = C.gdk_window_get_device_position_double(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -2144,7 +2144,7 @@ func (w *WindowClass) DevicePositionDouble(device Device) (x float64, y float64,
 
 	_x = float64(_arg2)
 	_y = float64(_arg3)
-	_mask = (ModifierType)(C.GdkModifierType)
+	_mask = (ModifierType)(_arg4)
 	_ret = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
 
@@ -2156,7 +2156,7 @@ func (w *WindowClass) Display() *DisplayClass {
 	var _arg0 *C.GdkWindow  // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_display(_arg0)
 
@@ -2174,7 +2174,7 @@ func (w *WindowClass) DragProtocol() (*WindowClass, DragProtocol) {
 	var _arg1 *C.GdkWindow      // in
 	var _cret C.GdkDragProtocol // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_drag_protocol(_arg0, &_arg1)
 
@@ -2183,7 +2183,7 @@ func (w *WindowClass) DragProtocol() (*WindowClass, DragProtocol) {
 
 	_target = gextras.CastObject(
 		externglib.AssumeOwnership(unsafe.Pointer(_arg1))).(*WindowClass)
-	_dragProtocol = (DragProtocol)(C.GdkDragProtocol)
+	_dragProtocol = (DragProtocol)(_cret)
 
 	return _target, _dragProtocol
 }
@@ -2197,7 +2197,7 @@ func (w *WindowClass) EffectiveParent() *WindowClass {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_effective_parent(_arg0)
 
@@ -2219,7 +2219,7 @@ func (w *WindowClass) EffectiveToplevel() *WindowClass {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_effective_toplevel(_arg0)
 
@@ -2236,7 +2236,7 @@ func (w *WindowClass) EventCompression() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_event_compression(_arg0)
 
@@ -2255,13 +2255,13 @@ func (w *WindowClass) Events() EventMask {
 	var _arg0 *C.GdkWindow   // out
 	var _cret C.GdkEventMask // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_events(_arg0)
 
 	var _eventMask EventMask // out
 
-	_eventMask = (EventMask)(C.GdkEventMask)
+	_eventMask = (EventMask)(_cret)
 
 	return _eventMask
 }
@@ -2272,7 +2272,7 @@ func (w *WindowClass) FocusOnMap() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_focus_on_map(_arg0)
 
@@ -2291,7 +2291,7 @@ func (w *WindowClass) FrameClock() *FrameClockClass {
 	var _arg0 *C.GdkWindow     // out
 	var _cret *C.GdkFrameClock // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_frame_clock(_arg0)
 
@@ -2308,13 +2308,13 @@ func (w *WindowClass) FullscreenMode() FullscreenMode {
 	var _arg0 *C.GdkWindow        // out
 	var _cret C.GdkFullscreenMode // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_fullscreen_mode(_arg0)
 
 	var _fullscreenMode FullscreenMode // out
 
-	_fullscreenMode = (FullscreenMode)(C.GdkFullscreenMode)
+	_fullscreenMode = (FullscreenMode)(_cret)
 
 	return _fullscreenMode
 }
@@ -2345,7 +2345,7 @@ func (w *WindowClass) Geometry() (x int, y int, width int, height int) {
 	var _arg3 C.gint       // in
 	var _arg4 C.gint       // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_get_geometry(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -2368,7 +2368,7 @@ func (w *WindowClass) Group() *WindowClass {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_group(_arg0)
 
@@ -2389,7 +2389,7 @@ func (w *WindowClass) Height() int {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_height(_arg0)
 
@@ -2406,7 +2406,7 @@ func (w *WindowClass) ModalHint() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_modal_hint(_arg0)
 
@@ -2428,7 +2428,7 @@ func (w *WindowClass) Origin() (x int, y int, gint int) {
 	var _arg2 C.gint       // in
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_origin(_arg0, &_arg1, &_arg2)
 
@@ -2457,7 +2457,7 @@ func (w *WindowClass) Parent() *WindowClass {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_parent(_arg0)
 
@@ -2477,7 +2477,7 @@ func (w *WindowClass) PassThrough() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_pass_through(_arg0)
 
@@ -2501,7 +2501,7 @@ func (w *WindowClass) Pointer() (x int, y int, mask ModifierType, ret *WindowCla
 	var _arg3 C.GdkModifierType // in
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_pointer(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -2512,7 +2512,7 @@ func (w *WindowClass) Pointer() (x int, y int, mask ModifierType, ret *WindowCla
 
 	_x = int(_arg1)
 	_y = int(_arg2)
-	_mask = (ModifierType)(C.GdkModifierType)
+	_mask = (ModifierType)(_arg3)
 	_ret = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
 
@@ -2530,7 +2530,7 @@ func (w *WindowClass) Position() (x int, y int) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_get_position(_arg0, &_arg1, &_arg2)
 
@@ -2553,7 +2553,7 @@ func (w *WindowClass) RootCoords(x int, y int) (rootX int, rootY int) {
 	var _arg3 C.gint       // in
 	var _arg4 C.gint       // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
@@ -2575,7 +2575,7 @@ func (w *WindowClass) RootOrigin() (x int, y int) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_get_root_origin(_arg0, &_arg1, &_arg2)
 
@@ -2603,7 +2603,7 @@ func (w *WindowClass) ScaleFactor() int {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_scale_factor(_arg0)
 
@@ -2619,7 +2619,7 @@ func (w *WindowClass) Screen() *ScreenClass {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkScreen // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_screen(_arg0)
 
@@ -2637,13 +2637,13 @@ func (w *WindowClass) State() WindowState {
 	var _arg0 *C.GdkWindow     // out
 	var _cret C.GdkWindowState // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_state(_arg0)
 
 	var _windowState WindowState // out
 
-	_windowState = (WindowState)(C.GdkWindowState)
+	_windowState = (WindowState)(_cret)
 
 	return _windowState
 }
@@ -2654,7 +2654,7 @@ func (w *WindowClass) SupportMultidevice() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_support_multidevice(_arg0)
 
@@ -2680,7 +2680,7 @@ func (w *WindowClass) Toplevel() *WindowClass {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_toplevel(_arg0)
 
@@ -2697,13 +2697,13 @@ func (w *WindowClass) TypeHint() WindowTypeHint {
 	var _arg0 *C.GdkWindow        // out
 	var _cret C.GdkWindowTypeHint // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_type_hint(_arg0)
 
 	var _windowTypeHint WindowTypeHint // out
 
-	_windowTypeHint = (WindowTypeHint)(C.GdkWindowTypeHint)
+	_windowTypeHint = (WindowTypeHint)(_cret)
 
 	return _windowTypeHint
 }
@@ -2718,13 +2718,13 @@ func (w *WindowClass) UpdateArea() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_update_area(_arg0)
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(*C.cairo_region_t))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -2738,7 +2738,7 @@ func (w *WindowClass) UserData() interface{} {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gpointer   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_get_user_data(_arg0, &_arg1)
 
@@ -2756,13 +2756,13 @@ func (w *WindowClass) VisibleRegion() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_visible_region(_arg0)
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(*C.cairo_region_t))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -2775,7 +2775,7 @@ func (w *WindowClass) Visual() *VisualClass {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkVisual // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_visual(_arg0)
 
@@ -2796,7 +2796,7 @@ func (w *WindowClass) Width() int {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_width(_arg0)
 
@@ -2812,13 +2812,13 @@ func (w *WindowClass) WindowType() WindowType {
 	var _arg0 *C.GdkWindow    // out
 	var _cret C.GdkWindowType // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_get_window_type(_arg0)
 
 	var _windowType WindowType // out
 
-	_windowType = (WindowType)(C.GdkWindowType)
+	_windowType = (WindowType)(_cret)
 
 	return _windowType
 }
@@ -2829,7 +2829,7 @@ func (w *WindowClass) HasNative() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_has_native(_arg0)
 
@@ -2848,7 +2848,7 @@ func (w *WindowClass) HasNative() bool {
 func (w *WindowClass) Hide() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_hide(_arg0)
 }
@@ -2861,7 +2861,7 @@ func (w *WindowClass) Hide() {
 func (w *WindowClass) Iconify() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_iconify(_arg0)
 }
@@ -2885,8 +2885,8 @@ func (w *WindowClass) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX
 	var _arg2 C.gint            // out
 	var _arg3 C.gint            // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion))
 	_arg2 = C.gint(offsetX)
 	_arg3 = C.gint(offsetY)
 
@@ -2913,8 +2913,8 @@ func (w *WindowClass) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 	var _arg2 C.GdkWindowChildFunc // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 	_arg2 = (*[0]byte)(C.gotk4_WindowChildFunc)
 	_arg3 = C.gpointer(box.Assign(childFunc))
 
@@ -2929,8 +2929,8 @@ func (w *WindowClass) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 	var _arg1 *C.GdkRectangle // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(*Rectangle))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
 	if invalidateChildren {
 		_arg2 = C.TRUE
 	}
@@ -2959,8 +2959,8 @@ func (w *WindowClass) InvalidateRegion(region *cairo.Region, invalidateChildren 
 	var _arg1 *C.cairo_region_t // out
 	var _arg2 C.gboolean        // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 	if invalidateChildren {
 		_arg2 = C.TRUE
 	}
@@ -2973,7 +2973,7 @@ func (w *WindowClass) IsDestroyed() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_is_destroyed(_arg0)
 
@@ -2991,7 +2991,7 @@ func (w *WindowClass) IsInputOnly() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_is_input_only(_arg0)
 
@@ -3009,7 +3009,7 @@ func (w *WindowClass) IsShaped() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_is_shaped(_arg0)
 
@@ -3029,7 +3029,7 @@ func (w *WindowClass) IsViewable() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_is_viewable(_arg0)
 
@@ -3048,7 +3048,7 @@ func (w *WindowClass) IsVisible() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	_cret = C.gdk_window_is_visible(_arg0)
 
@@ -3074,7 +3074,7 @@ func (w *WindowClass) IsVisible() bool {
 func (w *WindowClass) Lower() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_lower(_arg0)
 }
@@ -3092,8 +3092,8 @@ func (w *WindowClass) MarkPaintFromClip(cr *cairo.Context) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.cairo_t   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
 
 	C.gdk_window_mark_paint_from_clip(_arg0, _arg1)
 }
@@ -3111,7 +3111,7 @@ func (w *WindowClass) MarkPaintFromClip(cr *cairo.Context) {
 func (w *WindowClass) Maximize() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_maximize(_arg0)
 }
@@ -3126,7 +3126,7 @@ func (w *WindowClass) Maximize() {
 func (w *WindowClass) MergeChildInputShapes() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_merge_child_input_shapes(_arg0)
 }
@@ -3140,7 +3140,7 @@ func (w *WindowClass) MergeChildInputShapes() {
 func (w *WindowClass) MergeChildShapes() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_merge_child_shapes(_arg0)
 }
@@ -3157,7 +3157,7 @@ func (w *WindowClass) Move(x int, y int) {
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
@@ -3175,8 +3175,8 @@ func (w *WindowClass) MoveRegion(region *cairo.Region, dx int, dy int) {
 	var _arg2 C.gint            // out
 	var _arg3 C.gint            // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 	_arg2 = C.gint(dx)
 	_arg3 = C.gint(dy)
 
@@ -3194,7 +3194,7 @@ func (w *WindowClass) MoveResize(x int, y int, width int, height int) {
 	var _arg3 C.gint       // out
 	var _arg4 C.gint       // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	_arg3 = C.gint(width)
@@ -3217,7 +3217,7 @@ func (w *WindowClass) ProcessUpdates(updateChildren bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if updateChildren {
 		_arg1 = C.TRUE
 	}
@@ -3235,7 +3235,7 @@ func (w *WindowClass) ProcessUpdates(updateChildren bool) {
 func (w *WindowClass) Raise() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_raise(_arg0)
 }
@@ -3244,7 +3244,7 @@ func (w *WindowClass) Raise() {
 func (w *WindowClass) RegisterDnd() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_register_dnd(_arg0)
 }
@@ -3257,8 +3257,8 @@ func (w *WindowClass) Reparent(newParent Window, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&newParent).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -3278,7 +3278,7 @@ func (w *WindowClass) Resize(width int, height int) {
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 
@@ -3300,8 +3300,8 @@ func (w *WindowClass) Restack(sibling Window, above bool) {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&sibling).Native()))
 	if above {
 		_arg2 = C.TRUE
 	}
@@ -3323,7 +3323,7 @@ func (w *WindowClass) Scroll(dx int, dy int) {
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gint(dx)
 	_arg2 = C.gint(dy)
 
@@ -3339,7 +3339,7 @@ func (w *WindowClass) SetAcceptFocus(acceptFocus bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if acceptFocus {
 		_arg1 = C.TRUE
 	}
@@ -3358,8 +3358,8 @@ func (w *WindowClass) SetBackground(color *Color) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkColor  // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(*Color))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
 
 	C.gdk_window_set_background(_arg0, _arg1)
 }
@@ -3378,8 +3378,8 @@ func (w *WindowClass) SetBackgroundPattern(pattern *cairo.Pattern) {
 	var _arg0 *C.GdkWindow       // out
 	var _arg1 *C.cairo_pattern_t // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_pattern_t)(unsafe.Pointer(*cairo.Pattern))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_pattern_t)(unsafe.Pointer(pattern))
 
 	C.gdk_window_set_background_pattern(_arg0, _arg1)
 }
@@ -3393,8 +3393,8 @@ func (w *WindowClass) SetBackgroundRGBA(rgba *RGBA) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkRGBA   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	C.gdk_window_set_background_rgba(_arg0, _arg1)
 }
@@ -3406,7 +3406,7 @@ func (w *WindowClass) SetBackgroundRGBA(rgba *RGBA) {
 func (w *WindowClass) SetChildInputShapes() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_set_child_input_shapes(_arg0)
 }
@@ -3418,7 +3418,7 @@ func (w *WindowClass) SetChildInputShapes() {
 func (w *WindowClass) SetChildShapes() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_set_child_shapes(_arg0)
 }
@@ -3447,7 +3447,7 @@ func (w *WindowClass) SetComposited(composited bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if composited {
 		_arg1 = C.TRUE
 	}
@@ -3467,8 +3467,8 @@ func (w *WindowClass) SetCursor(cursor Cursor) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkCursor // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkCursor)(unsafe.Pointer((&Cursor).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkCursor)(unsafe.Pointer((&cursor).Native()))
 
 	C.gdk_window_set_cursor(_arg0, _arg1)
 }
@@ -3484,9 +3484,9 @@ func (w *WindowClass) SetDeviceCursor(device Device, cursor Cursor) {
 	var _arg1 *C.GdkDevice // out
 	var _arg2 *C.GdkCursor // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
-	_arg2 = (*C.GdkCursor)(unsafe.Pointer((&Cursor).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
+	_arg2 = (*C.GdkCursor)(unsafe.Pointer((&cursor).Native()))
 
 	C.gdk_window_set_device_cursor(_arg0, _arg1, _arg2)
 }
@@ -3503,7 +3503,7 @@ func (w *WindowClass) SetEventCompression(eventCompression bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if eventCompression {
 		_arg1 = C.TRUE
 	}
@@ -3523,7 +3523,7 @@ func (w *WindowClass) SetFocusOnMap(focusOnMap bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if focusOnMap {
 		_arg1 = C.TRUE
 	}
@@ -3544,8 +3544,8 @@ func (w *WindowClass) SetGroup(leader Window) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&leader).Native()))
 
 	C.gdk_window_set_group(_arg0, _arg1)
 }
@@ -3566,7 +3566,7 @@ func (w *WindowClass) SetIconName(name string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -3585,7 +3585,7 @@ func (w *WindowClass) SetKeepAbove(setting bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -3605,7 +3605,7 @@ func (w *WindowClass) SetKeepBelow(setting bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -3623,7 +3623,7 @@ func (w *WindowClass) SetModalHint(modal bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -3653,7 +3653,7 @@ func (w *WindowClass) SetOpacity(opacity float64) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gdouble    // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gdouble(opacity)
 
 	C.gdk_window_set_opacity(_arg0, _arg1)
@@ -3675,8 +3675,8 @@ func (w *WindowClass) SetOpaqueRegion(region *cairo.Region) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gdk_window_set_opaque_region(_arg0, _arg1)
 }
@@ -3693,7 +3693,7 @@ func (w *WindowClass) SetOverrideRedirect(overrideRedirect bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if overrideRedirect {
 		_arg1 = C.TRUE
 	}
@@ -3722,7 +3722,7 @@ func (w *WindowClass) SetPassThrough(passThrough bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if passThrough {
 		_arg1 = C.TRUE
 	}
@@ -3745,7 +3745,7 @@ func (w *WindowClass) SetRole(role string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = (*C.gchar)(C.CString(role))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -3768,7 +3768,7 @@ func (w *WindowClass) SetShadowWidth(left int, right int, top int, bottom int) {
 	var _arg3 C.gint       // out
 	var _arg4 C.gint       // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = C.gint(left)
 	_arg2 = C.gint(right)
 	_arg3 = C.gint(top)
@@ -3787,7 +3787,7 @@ func (w *WindowClass) SetSkipPagerHint(skipsPager bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if skipsPager {
 		_arg1 = C.TRUE
 	}
@@ -3804,7 +3804,7 @@ func (w *WindowClass) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if skipsTaskbar {
 		_arg1 = C.TRUE
 	}
@@ -3818,7 +3818,7 @@ func (w *WindowClass) SetStartupID(startupId string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = (*C.gchar)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -3836,7 +3836,7 @@ func (w *WindowClass) SetStaticGravities(useStatic bool) bool {
 	var _arg1 C.gboolean   // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if useStatic {
 		_arg1 = C.TRUE
 	}
@@ -3861,7 +3861,7 @@ func (w *WindowClass) SetSupportMultidevice(supportMultidevice bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if supportMultidevice {
 		_arg1 = C.TRUE
 	}
@@ -3878,7 +3878,7 @@ func (w *WindowClass) SetTitle(title string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -3895,8 +3895,8 @@ func (w *WindowClass) SetTransientFor(parent Window) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&parent).Native()))
 
 	C.gdk_window_set_transient_for(_arg0, _arg1)
 }
@@ -3906,7 +3906,7 @@ func (w *WindowClass) SetUrgencyHint(urgent bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 	if urgent {
 		_arg1 = C.TRUE
 	}
@@ -3932,8 +3932,8 @@ func (w *WindowClass) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int,
 	var _arg2 C.gint            // out
 	var _arg3 C.gint            // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion))
 	_arg2 = C.gint(offsetX)
 	_arg3 = C.gint(offsetY)
 
@@ -3951,7 +3951,7 @@ func (w *WindowClass) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int,
 func (w *WindowClass) Show() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_show(_arg0)
 }
@@ -3966,7 +3966,7 @@ func (w *WindowClass) Show() {
 func (w *WindowClass) ShowUnraised() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_show_unraised(_arg0)
 }
@@ -3983,7 +3983,7 @@ func (w *WindowClass) ShowUnraised() {
 func (w *WindowClass) Stick() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_stick(_arg0)
 }
@@ -3997,7 +3997,7 @@ func (w *WindowClass) Stick() {
 func (w *WindowClass) ThawToplevelUpdatesLibgtkOnly() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_thaw_toplevel_updates_libgtk_only(_arg0)
 }
@@ -4006,7 +4006,7 @@ func (w *WindowClass) ThawToplevelUpdatesLibgtkOnly() {
 func (w *WindowClass) ThawUpdates() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_thaw_updates(_arg0)
 }
@@ -4023,7 +4023,7 @@ func (w *WindowClass) ThawUpdates() {
 func (w *WindowClass) Unfullscreen() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_unfullscreen(_arg0)
 }
@@ -4041,7 +4041,7 @@ func (w *WindowClass) Unfullscreen() {
 func (w *WindowClass) Unmaximize() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_unmaximize(_arg0)
 }
@@ -4051,7 +4051,7 @@ func (w *WindowClass) Unmaximize() {
 func (w *WindowClass) Unstick() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_unstick(_arg0)
 }
@@ -4062,7 +4062,7 @@ func (w *WindowClass) Unstick() {
 func (w *WindowClass) Withdraw() {
 	var _arg0 *C.GdkWindow // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer((&w).Native()))
 
 	C.gdk_window_withdraw(_arg0)
 }
@@ -4213,7 +4213,7 @@ func (g *Geometry) MaxAspect() float64 {
 // WinGravity: window gravity, see gtk_window_set_gravity()
 func (g *Geometry) WinGravity() Gravity {
 	var v Gravity // out
-	v = (Gravity)(C.GdkGravity)
+	v = (Gravity)(g.native.win_gravity)
 	return v
 }
 
@@ -4279,7 +4279,7 @@ func (w *WindowAttr) Height() int {
 // events)
 func (w *WindowAttr) Wclass() WindowWindowClass {
 	var v WindowWindowClass // out
-	v = (WindowWindowClass)(C.GdkWindowWindowClass)
+	v = (WindowWindowClass)(w.native.wclass)
 	return v
 }
 
@@ -4294,7 +4294,7 @@ func (w *WindowAttr) Visual() *VisualClass {
 // WindowType: type of window
 func (w *WindowAttr) WindowType() WindowType {
 	var v WindowType // out
-	v = (WindowType)(C.GdkWindowType)
+	v = (WindowType)(w.native.window_type)
 	return v
 }
 
@@ -4332,6 +4332,6 @@ func (w *WindowAttr) OverrideRedirect() bool {
 // TypeHint: hint of the function of the window
 func (w *WindowAttr) TypeHint() WindowTypeHint {
 	var v WindowTypeHint // out
-	v = (WindowTypeHint)(C.GdkWindowTypeHint)
+	v = (WindowTypeHint)(w.native.type_hint)
 	return v
 }

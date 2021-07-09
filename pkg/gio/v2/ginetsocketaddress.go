@@ -85,7 +85,7 @@ func NewInetSocketAddress(address InetAddress, port uint16) *InetSocketAddressCl
 	var _arg2 C.guint16         // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((&address).Native()))
 	_arg2 = C.guint16(port)
 
 	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
@@ -127,7 +127,7 @@ func (a *InetSocketAddressClass) Address() *InetAddressClass {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret *C.GInetAddress       // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&InetSocketAddress).Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_socket_address_get_address(_arg0)
 
@@ -145,7 +145,7 @@ func (a *InetSocketAddressClass) Flowinfo() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&InetSocketAddress).Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_socket_address_get_flowinfo(_arg0)
 
@@ -161,7 +161,7 @@ func (a *InetSocketAddressClass) Port() uint16 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint16             // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&InetSocketAddress).Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_socket_address_get_port(_arg0)
 
@@ -178,7 +178,7 @@ func (a *InetSocketAddressClass) ScopeID() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&InetSocketAddress).Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_socket_address_get_scope_id(_arg0)
 

@@ -72,13 +72,13 @@ func (s *AccessibleInterface) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkAccessible    // out
 	var _cret C.GtkAccessibleRole // in
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&Accessible).Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_accessible_get_accessible_role(_arg0)
 
 	var _accessibleRole AccessibleRole // out
 
-	_accessibleRole = (AccessibleRole)(C.GtkAccessibleRole)
+	_accessibleRole = (AccessibleRole)(_cret)
 
 	return _accessibleRole
 }

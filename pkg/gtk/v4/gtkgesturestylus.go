@@ -89,7 +89,7 @@ func (g *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
 	var _arg0 *C.GtkGestureStylus // out
 	var _cret *C.GdkDeviceTool    // in
 
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer((&GestureStylus).Native()))
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer((&g).Native()))
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
 

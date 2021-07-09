@@ -175,8 +175,8 @@ func (b *SearchBarClass) ConnectEntry(entry Editable) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEditable  // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
-	_arg1 = (*C.GtkEditable)(unsafe.Pointer((&Editable).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&b).Native()))
+	_arg1 = (*C.GtkEditable)(unsafe.Pointer((&entry).Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 }
@@ -186,7 +186,7 @@ func (b *SearchBarClass) Child() *WidgetClass {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_search_bar_get_child(_arg0)
 
@@ -203,7 +203,7 @@ func (b *SearchBarClass) KeyCaptureWidget() *WidgetClass {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_search_bar_get_key_capture_widget(_arg0)
 
@@ -220,7 +220,7 @@ func (b *SearchBarClass) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_search_bar_get_search_mode(_arg0)
 
@@ -238,7 +238,7 @@ func (b *SearchBarClass) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
 
@@ -256,8 +256,8 @@ func (b *SearchBarClass) SetChild(child Widget) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&b).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_search_bar_set_child(_arg0, _arg1)
 }
@@ -277,8 +277,8 @@ func (b *SearchBarClass) SetKeyCaptureWidget(widget Widget) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&b).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	C.gtk_search_bar_set_key_capture_widget(_arg0, _arg1)
 }
@@ -288,7 +288,7 @@ func (b *SearchBarClass) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&b).Native()))
 	if searchMode {
 		_arg1 = C.TRUE
 	}
@@ -305,7 +305,7 @@ func (b *SearchBarClass) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&b).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}

@@ -159,13 +159,13 @@ func (b *BoxClass) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBox             // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_box_get_baseline_position(_arg0)
 
 	var _baselinePosition BaselinePosition // out
 
-	_baselinePosition = (BaselinePosition)(C.GtkBaselinePosition)
+	_baselinePosition = (BaselinePosition)(_cret)
 
 	return _baselinePosition
 }
@@ -175,7 +175,7 @@ func (b *BoxClass) CenterWidget() *WidgetClass {
 	var _arg0 *C.GtkBox    // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_box_get_center_widget(_arg0)
 
@@ -193,7 +193,7 @@ func (b *BoxClass) Homogeneous() bool {
 	var _arg0 *C.GtkBox  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_box_get_homogeneous(_arg0)
 
@@ -211,7 +211,7 @@ func (b *BoxClass) Spacing() int {
 	var _arg0 *C.GtkBox // out
 	var _cret C.gint    // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_box_get_spacing(_arg0)
 
@@ -232,8 +232,8 @@ func (b *BoxClass) PackEnd(child Widget, expand bool, fill bool, padding uint) {
 	var _arg3 C.gboolean   // out
 	var _arg4 C.guint      // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -255,8 +255,8 @@ func (b *BoxClass) PackStart(child Widget, expand bool, fill bool, padding uint)
 	var _arg3 C.gboolean   // out
 	var _arg4 C.guint      // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -277,8 +277,8 @@ func (b *BoxClass) QueryChildPacking(child Widget) (expand bool, fill bool, padd
 	var _arg4 C.guint       // in
 	var _arg5 C.GtkPackType // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_box_query_child_packing(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -294,7 +294,7 @@ func (b *BoxClass) QueryChildPacking(child Widget) (expand bool, fill bool, padd
 		_fill = true
 	}
 	_padding = uint(_arg4)
-	_packType = (PackType)(C.GtkPackType)
+	_packType = (PackType)(_arg5)
 
 	return _expand, _fill, _padding, _packType
 }
@@ -312,8 +312,8 @@ func (b *BoxClass) ReorderChild(child Widget, position int) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_box_reorder_child(_arg0, _arg1, _arg2)
@@ -326,8 +326,8 @@ func (b *BoxClass) SetCenterWidget(widget Widget) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	C.gtk_box_set_center_widget(_arg0, _arg1)
 }
@@ -338,7 +338,7 @@ func (b *BoxClass) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBox  // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -352,7 +352,7 @@ func (b *BoxClass) SetSpacing(spacing int) {
 	var _arg0 *C.GtkBox // out
 	var _arg1 C.gint    // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer((&Box).Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer((&b).Native()))
 	_arg1 = C.gint(spacing)
 
 	C.gtk_box_set_spacing(_arg0, _arg1)

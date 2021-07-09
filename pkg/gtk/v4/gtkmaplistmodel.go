@@ -73,7 +73,7 @@ func (s *MapListModelClass) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer((&MapListModel).Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_map_list_model_has_map(_arg0)
 

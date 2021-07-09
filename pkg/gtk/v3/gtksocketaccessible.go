@@ -61,7 +61,7 @@ func (s *SocketAccessibleClass) Embed(path string) {
 	var _arg0 *C.GtkSocketAccessible // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer((&SocketAccessible).Native()))
+	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 

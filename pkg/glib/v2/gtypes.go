@@ -134,7 +134,7 @@ func (t *TimeVal) Add(microseconds int32) {
 	var _arg0 *C.GTimeVal // out
 	var _arg1 C.glong     // out
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(*TimeVal))
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t))
 	_arg1 = C.glong(microseconds)
 
 	C.g_time_val_add(_arg0, _arg1)
@@ -177,7 +177,7 @@ func (t *TimeVal) ToISO8601() string {
 	var _arg0 *C.GTimeVal // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(*TimeVal))
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t))
 
 	_cret = C.g_time_val_to_iso8601(_arg0)
 

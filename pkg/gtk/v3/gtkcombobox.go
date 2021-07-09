@@ -294,7 +294,7 @@ func NewComboBoxWithArea(area CellArea) *ComboBoxClass {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((&CellArea).Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((&area).Native()))
 
 	_cret = C.gtk_combo_box_new_with_area(_arg1)
 
@@ -313,7 +313,7 @@ func NewComboBoxWithAreaAndEntry(area CellArea) *ComboBoxClass {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((&CellArea).Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((&area).Native()))
 
 	_cret = C.gtk_combo_box_new_with_area_and_entry(_arg1)
 
@@ -345,7 +345,7 @@ func NewComboBoxWithModel(model TreeModel) *ComboBoxClass {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((&TreeModel).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((&model).Native()))
 
 	_cret = C.gtk_combo_box_new_with_model(_arg1)
 
@@ -363,7 +363,7 @@ func NewComboBoxWithModelAndEntry(model TreeModel) *ComboBoxClass {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((&TreeModel).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((&model).Native()))
 
 	_cret = C.gtk_combo_box_new_with_model_and_entry(_arg1)
 
@@ -384,7 +384,7 @@ func (c *ComboBoxClass) Active() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_active(_arg0)
 
@@ -408,7 +408,7 @@ func (c *ComboBoxClass) ActiveID() string {
 	var _arg0 *C.GtkComboBox // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_active_id(_arg0)
 
@@ -426,7 +426,7 @@ func (c *ComboBoxClass) AddTearoffs() bool {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_add_tearoffs(_arg0)
 
@@ -445,13 +445,13 @@ func (c *ComboBoxClass) ButtonSensitivity() SensitivityType {
 	var _arg0 *C.GtkComboBox       // out
 	var _cret C.GtkSensitivityType // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_button_sensitivity(_arg0)
 
 	var _sensitivityType SensitivityType // out
 
-	_sensitivityType = (SensitivityType)(C.GtkSensitivityType)
+	_sensitivityType = (SensitivityType)(_cret)
 
 	return _sensitivityType
 }
@@ -462,7 +462,7 @@ func (c *ComboBoxClass) ColumnSpanColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_column_span_column(_arg0)
 
@@ -479,7 +479,7 @@ func (c *ComboBoxClass) EntryTextColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_entry_text_column(_arg0)
 
@@ -498,7 +498,7 @@ func (c *ComboBoxClass) FocusOnClick() bool {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_focus_on_click(_arg0)
 
@@ -516,7 +516,7 @@ func (c *ComboBoxClass) HasEntry() bool {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_has_entry(_arg0)
 
@@ -535,7 +535,7 @@ func (c *ComboBoxClass) IDColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_id_column(_arg0)
 
@@ -551,7 +551,7 @@ func (c *ComboBoxClass) Model() *TreeModelInterface {
 	var _arg0 *C.GtkComboBox  // out
 	var _cret *C.GtkTreeModel // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_model(_arg0)
 
@@ -572,7 +572,7 @@ func (c *ComboBoxClass) PopupAccessible() *atk.ObjectClass {
 	var _arg0 *C.GtkComboBox // out
 	var _cret *C.AtkObject   // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_popup_accessible(_arg0)
 
@@ -590,7 +590,7 @@ func (c *ComboBoxClass) PopupFixedWidth() bool {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_popup_fixed_width(_arg0)
 
@@ -608,7 +608,7 @@ func (c *ComboBoxClass) RowSpanColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_row_span_column(_arg0)
 
@@ -627,7 +627,7 @@ func (c *ComboBoxClass) Title() string {
 	var _arg0 *C.GtkComboBox // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_title(_arg0)
 
@@ -645,7 +645,7 @@ func (c *ComboBoxClass) WrapWidth() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_combo_box_get_wrap_width(_arg0)
 
@@ -663,7 +663,7 @@ func (c *ComboBoxClass) WrapWidth() int {
 func (c *ComboBoxClass) Popdown() {
 	var _arg0 *C.GtkComboBox // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_combo_box_popdown(_arg0)
 }
@@ -677,7 +677,7 @@ func (c *ComboBoxClass) Popdown() {
 func (c *ComboBoxClass) Popup() {
 	var _arg0 *C.GtkComboBox // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_combo_box_popup(_arg0)
 }
@@ -689,8 +689,8 @@ func (c *ComboBoxClass) PopupForDevice(device gdk.Device) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.GdkDevice   // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 
 	C.gtk_combo_box_popup_for_device(_arg0, _arg1)
 }
@@ -700,7 +700,7 @@ func (c *ComboBoxClass) SetActive(index_ int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(index_)
 
 	C.gtk_combo_box_set_active(_arg0, _arg1)
@@ -717,7 +717,7 @@ func (c *ComboBoxClass) SetActiveID(activeId string) bool {
 	var _arg1 *C.gchar       // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.gchar)(C.CString(activeId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -738,8 +738,8 @@ func (c *ComboBoxClass) SetActiveIter(iter *TreeIter) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.GtkTreeIter // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(*TreeIter))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	C.gtk_combo_box_set_active_iter(_arg0, _arg1)
 }
@@ -751,7 +751,7 @@ func (c *ComboBoxClass) SetAddTearoffs(addTearoffs bool) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	if addTearoffs {
 		_arg1 = C.TRUE
 	}
@@ -766,7 +766,7 @@ func (c *ComboBoxClass) SetColumnSpanColumn(columnSpan int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(columnSpan)
 
 	C.gtk_combo_box_set_column_span_column(_arg0, _arg1)
@@ -782,7 +782,7 @@ func (c *ComboBoxClass) SetEntryTextColumn(textColumn int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(textColumn)
 
 	C.gtk_combo_box_set_entry_text_column(_arg0, _arg1)
@@ -798,7 +798,7 @@ func (c *ComboBoxClass) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	if focusOnClick {
 		_arg1 = C.TRUE
 	}
@@ -813,7 +813,7 @@ func (c *ComboBoxClass) SetIDColumn(idColumn int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(idColumn)
 
 	C.gtk_combo_box_set_id_column(_arg0, _arg1)
@@ -830,8 +830,8 @@ func (c *ComboBoxClass) SetModel(model TreeModel) {
 	var _arg0 *C.GtkComboBox  // out
 	var _arg1 *C.GtkTreeModel // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((&TreeModel).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((&model).Native()))
 
 	C.gtk_combo_box_set_model(_arg0, _arg1)
 }
@@ -842,7 +842,7 @@ func (c *ComboBoxClass) SetPopupFixedWidth(fixed bool) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	if fixed {
 		_arg1 = C.TRUE
 	}
@@ -857,7 +857,7 @@ func (c *ComboBoxClass) SetRowSpanColumn(rowSpan int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(rowSpan)
 
 	C.gtk_combo_box_set_row_span_column(_arg0, _arg1)
@@ -870,7 +870,7 @@ func (c *ComboBoxClass) SetTitle(title string) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.gchar       // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -884,7 +884,7 @@ func (c *ComboBoxClass) SetWrapWidth(width int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&ComboBox).Native()))
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(width)
 
 	C.gtk_combo_box_set_wrap_width(_arg0, _arg1)

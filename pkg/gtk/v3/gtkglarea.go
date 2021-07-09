@@ -226,7 +226,7 @@ func NewGLArea() *GLAreaClass {
 func (a *GLAreaClass) AttachBuffers() {
 	var _arg0 *C.GtkGLArea // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	C.gtk_gl_area_attach_buffers(_arg0)
 }
@@ -236,7 +236,7 @@ func (a *GLAreaClass) AutoRender() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_gl_area_get_auto_render(_arg0)
 
@@ -254,7 +254,7 @@ func (a *GLAreaClass) Context() *gdk.GLContextClass {
 	var _arg0 *C.GtkGLArea    // out
 	var _cret *C.GdkGLContext // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_gl_area_get_context(_arg0)
 
@@ -271,7 +271,7 @@ func (a *GLAreaClass) Error() error {
 	var _arg0 *C.GtkGLArea // out
 	var _cret *C.GError    // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_gl_area_get_error(_arg0)
 
@@ -287,7 +287,7 @@ func (a *GLAreaClass) HasAlpha() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_gl_area_get_has_alpha(_arg0)
 
@@ -305,7 +305,7 @@ func (a *GLAreaClass) HasDepthBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_gl_area_get_has_depth_buffer(_arg0)
 
@@ -323,7 +323,7 @@ func (a *GLAreaClass) HasStencilBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_gl_area_get_has_stencil_buffer(_arg0)
 
@@ -343,7 +343,7 @@ func (a *GLAreaClass) RequiredVersion() (major int, minor int) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	C.gtk_gl_area_get_required_version(_arg0, &_arg1, &_arg2)
 
@@ -361,7 +361,7 @@ func (a *GLAreaClass) UseES() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_gl_area_get_use_es(_arg0)
 
@@ -382,7 +382,7 @@ func (a *GLAreaClass) UseES() bool {
 func (a *GLAreaClass) MakeCurrent() {
 	var _arg0 *C.GtkGLArea // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	C.gtk_gl_area_make_current(_arg0)
 }
@@ -397,7 +397,7 @@ func (a *GLAreaClass) MakeCurrent() {
 func (a *GLAreaClass) QueueRender() {
 	var _arg0 *C.GtkGLArea // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 
 	C.gtk_gl_area_queue_render(_arg0)
 }
@@ -415,7 +415,7 @@ func (a *GLAreaClass) SetAutoRender(autoRender bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 	if autoRender {
 		_arg1 = C.TRUE
 	}
@@ -430,7 +430,7 @@ func (a *GLAreaClass) SetError(err error) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 *C.GError    // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.gtk_gl_area_set_error(_arg0, _arg1)
@@ -446,7 +446,7 @@ func (a *GLAreaClass) SetHasAlpha(hasAlpha bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 	if hasAlpha {
 		_arg1 = C.TRUE
 	}
@@ -461,7 +461,7 @@ func (a *GLAreaClass) SetHasDepthBuffer(hasDepthBuffer bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 	if hasDepthBuffer {
 		_arg1 = C.TRUE
 	}
@@ -476,7 +476,7 @@ func (a *GLAreaClass) SetHasStencilBuffer(hasStencilBuffer bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 	if hasStencilBuffer {
 		_arg1 = C.TRUE
 	}
@@ -493,7 +493,7 @@ func (a *GLAreaClass) SetRequiredVersion(major int, minor int) {
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 	_arg1 = C.gint(major)
 	_arg2 = C.gint(minor)
 
@@ -509,7 +509,7 @@ func (a *GLAreaClass) SetUseES(useEs bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&GLArea).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer((&a).Native()))
 	if useEs {
 		_arg1 = C.TRUE
 	}

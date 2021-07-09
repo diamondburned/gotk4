@@ -262,7 +262,7 @@ func (c *IMContextClass) DeleteSurrounding(offset int, nChars int) bool {
 	var _arg2 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(offset)
 	_arg2 = C.gint(nChars)
 
@@ -285,8 +285,8 @@ func (c *IMContextClass) FilterKeypress(event *gdk.EventKey) bool {
 	var _arg1 *C.GdkEventKey  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
-	_arg1 = (*C.GdkEventKey)(unsafe.Pointer(*gdk.EventKey))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GdkEventKey)(unsafe.Pointer(event))
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
 
@@ -305,7 +305,7 @@ func (c *IMContextClass) FilterKeypress(event *gdk.EventKey) bool {
 func (c *IMContextClass) FocusIn() {
 	var _arg0 *C.GtkIMContext // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_im_context_focus_in(_arg0)
 }
@@ -316,7 +316,7 @@ func (c *IMContextClass) FocusIn() {
 func (c *IMContextClass) FocusOut() {
 	var _arg0 *C.GtkIMContext // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_im_context_focus_out(_arg0)
 }
@@ -330,7 +330,7 @@ func (c *IMContextClass) PreeditString() (string, *pango.AttrList, int) {
 	var _arg2 *C.PangoAttrList // in
 	var _arg3 C.gint           // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -340,7 +340,7 @@ func (c *IMContextClass) PreeditString() (string, *pango.AttrList, int) {
 
 	_str = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))
-	_attrs = (*pango.AttrList)(unsafe.Pointer(*C.PangoAttrList))
+	_attrs = (*pango.AttrList)(unsafe.Pointer(_arg2))
 	C.pango_attr_list_ref(_arg2)
 	runtime.SetFinalizer(_attrs, func(v *pango.AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
@@ -367,7 +367,7 @@ func (c *IMContextClass) Surrounding() (string, int, bool) {
 	var _arg2 C.gint          // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
 
@@ -391,7 +391,7 @@ func (c *IMContextClass) Surrounding() (string, int, bool) {
 func (c *IMContextClass) Reset() {
 	var _arg0 *C.GtkIMContext // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
 
 	C.gtk_im_context_reset(_arg0)
 }
@@ -404,8 +404,8 @@ func (c *IMContextClass) SetClientWindow(window gdk.Window) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkWindow    // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&gdk.Window).Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
 
 	C.gtk_im_context_set_client_window(_arg0, _arg1)
 }
@@ -416,8 +416,8 @@ func (c *IMContextClass) SetCursorLocation(area *gdk.Rectangle) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkRectangle // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(*gdk.Rectangle))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(area))
 
 	C.gtk_im_context_set_cursor_location(_arg0, _arg1)
 }
@@ -432,7 +432,7 @@ func (c *IMContextClass) SetSurrounding(text string, len int, cursorIndex int) {
 	var _arg2 C.gint          // out
 	var _arg3 C.gint          // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
@@ -449,7 +449,7 @@ func (c *IMContextClass) SetUsePreedit(usePreedit bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer((&c).Native()))
 	if usePreedit {
 		_arg1 = C.TRUE
 	}

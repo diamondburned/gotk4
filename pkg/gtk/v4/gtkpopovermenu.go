@@ -255,7 +255,7 @@ func NewPopoverMenuFromModel(model gio.MenuModel) *PopoverMenuClass {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&gio.MenuModel).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&model).Native()))
 
 	_cret = C.gtk_popover_menu_new_from_model(_arg1)
 
@@ -277,8 +277,8 @@ func (p *PopoverMenuClass) AddChild(child Widget, id string) bool {
 	var _arg2 *C.char           // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&PopoverMenu).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 	_arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -298,7 +298,7 @@ func (p *PopoverMenuClass) MenuModel() *gio.MenuModelClass {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _cret *C.GMenuModel     // in
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&PopoverMenu).Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_popover_menu_get_menu_model(_arg0)
 
@@ -317,8 +317,8 @@ func (p *PopoverMenuClass) RemoveChild(child Widget) bool {
 	var _arg1 *C.GtkWidget      // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&PopoverMenu).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	_cret = C.gtk_popover_menu_remove_child(_arg0, _arg1)
 
@@ -339,8 +339,8 @@ func (p *PopoverMenuClass) SetMenuModel(model gio.MenuModel) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GMenuModel     // out
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&PopoverMenu).Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&gio.MenuModel).Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((&model).Native()))
 
 	C.gtk_popover_menu_set_menu_model(_arg0, _arg1)
 }

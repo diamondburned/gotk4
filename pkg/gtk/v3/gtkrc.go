@@ -229,8 +229,8 @@ func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile str
 	var _arg3 *C.gchar       // out
 	var _cret *C.gchar       // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&Settings).Native()))
-	_arg2 = (*C.GScanner)(unsafe.Pointer(*glib.Scanner))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&settings).Native()))
+	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg3 = (*C.gchar)(C.CString(pixmapFile))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -337,7 +337,7 @@ func RCGetStyle(widget Widget) *StyleClass {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_rc_get_style(_arg1)
 
@@ -371,12 +371,12 @@ func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, t
 	var _arg4 C.GType        // out
 	var _cret *C.GtkStyle    // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&Settings).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&settings).Native()))
 	_arg2 = (*C.char)(C.CString(widgetPath))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(C.CString(classPath))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.GType)(externglib.Type)
+	_arg4 = (C.GType)(typ)
 
 	_cret = C.gtk_rc_get_style_by_paths(_arg1, _arg2, _arg3, _arg4)
 
@@ -426,14 +426,14 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 	var _arg2 C.GtkStateType // in
 	var _cret C.guint        // in
 
-	_arg1 = (*C.GScanner)(unsafe.Pointer(*glib.Scanner))
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
 
 	_cret = C.gtk_rc_parse_state(_arg1, &_arg2)
 
 	var _state StateType // out
 	var _guint uint      // out
 
-	_state = (StateType)(C.GtkStateType)
+	_state = (StateType)(_arg2)
 	_guint = uint(_cret)
 
 	return _state, _guint
@@ -480,7 +480,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 	var _arg2 C.gboolean     // out
 	var _cret C.gboolean     // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&Settings).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&settings).Native()))
 	if forceLoad {
 		_arg2 = C.TRUE
 	}
@@ -509,7 +509,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 func RCResetStyles(settings Settings) {
 	var _arg1 *C.GtkSettings // out
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&Settings).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer((&settings).Native()))
 
 	C.gtk_rc_reset_styles(_arg1)
 }
@@ -600,7 +600,7 @@ func (o *RCStyleClass) Copy() *RCStyleClass {
 	var _arg0 *C.GtkRcStyle // out
 	var _cret *C.GtkRcStyle // in
 
-	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer((&RCStyle).Native()))
+	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.gtk_rc_style_copy(_arg0)
 

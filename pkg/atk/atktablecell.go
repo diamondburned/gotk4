@@ -97,7 +97,7 @@ func (c *TableCellInterface) ColumnSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&TableCell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.atk_table_cell_get_column_span(_arg0)
 
@@ -115,7 +115,7 @@ func (c *TableCellInterface) Position() (row int, column int, ok bool) {
 	var _arg2 C.gint          // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&TableCell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.atk_table_cell_get_position(_arg0, &_arg1, &_arg2)
 
@@ -146,7 +146,7 @@ func (c *TableCellInterface) RowColumnSpan() (row int, column int, rowSpan int, 
 	var _arg4 C.gint          // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&TableCell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.atk_table_cell_get_row_column_span(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -172,7 +172,7 @@ func (c *TableCellInterface) RowSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&TableCell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.atk_table_cell_get_row_span(_arg0)
 
@@ -188,7 +188,7 @@ func (c *TableCellInterface) Table() *ObjectClass {
 	var _arg0 *C.AtkTableCell // out
 	var _cret *C.AtkObject    // in
 
-	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&TableCell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.atk_table_cell_get_table(_arg0)
 

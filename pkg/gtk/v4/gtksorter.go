@@ -138,13 +138,13 @@ func (s *SorterClass) Order() SorterOrder {
 	var _arg0 *C.GtkSorter     // out
 	var _cret C.GtkSorterOrder // in
 
-	_arg0 = (*C.GtkSorter)(unsafe.Pointer((&Sorter).Native()))
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_sorter_get_order(_arg0)
 
 	var _sorterOrder SorterOrder // out
 
-	_sorterOrder = (SorterOrder)(C.GtkSorterOrder)
+	_sorterOrder = (SorterOrder)(_cret)
 
 	return _sorterOrder
 }

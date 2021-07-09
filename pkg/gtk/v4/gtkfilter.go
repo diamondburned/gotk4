@@ -146,13 +146,13 @@ func (s *FilterClass) Strictness() FilterMatch {
 	var _arg0 *C.GtkFilter     // out
 	var _cret C.GtkFilterMatch // in
 
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer((&Filter).Native()))
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_filter_get_strictness(_arg0)
 
 	var _filterMatch FilterMatch // out
 
-	_filterMatch = (FilterMatch)(C.GtkFilterMatch)
+	_filterMatch = (FilterMatch)(_cret)
 
 	return _filterMatch
 }

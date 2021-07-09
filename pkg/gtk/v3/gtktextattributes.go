@@ -74,7 +74,7 @@ func NewTextAttributes() *TextAttributes {
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(*C.GtkTextAttributes))
+	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
 	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
 		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
@@ -91,21 +91,21 @@ func (t *TextAttributes) Native() unsafe.Pointer {
 // Justification for text.
 func (t *TextAttributes) Justification() Justification {
 	var v Justification // out
-	v = (Justification)(C.GtkJustification)
+	v = (Justification)(t.native.justification)
 	return v
 }
 
 // Direction for text.
 func (t *TextAttributes) Direction() TextDirection {
 	var v TextDirection // out
-	v = (TextDirection)(C.GtkTextDirection)
+	v = (TextDirection)(t.native.direction)
 	return v
 }
 
 // Font for text.
 func (t *TextAttributes) Font() *pango.FontDescription {
 	var v *pango.FontDescription // out
-	v = (*pango.FontDescription)(unsafe.Pointer(*C.PangoFontDescription))
+	v = (*pango.FontDescription)(unsafe.Pointer(t.native.font))
 	return v
 }
 
@@ -161,21 +161,21 @@ func (t *TextAttributes) PixelsInsideWrap() int {
 // Tabs: custom TabArray for this text.
 func (t *TextAttributes) Tabs() *pango.TabArray {
 	var v *pango.TabArray // out
-	v = (*pango.TabArray)(unsafe.Pointer(*C.PangoTabArray))
+	v = (*pango.TabArray)(unsafe.Pointer(t.native.tabs))
 	return v
 }
 
 // WrapMode for text.
 func (t *TextAttributes) WrapMode() WrapMode {
 	var v WrapMode // out
-	v = (WrapMode)(C.GtkWrapMode)
+	v = (WrapMode)(t.native.wrap_mode)
 	return v
 }
 
 // Language for text.
 func (t *TextAttributes) Language() *pango.Language {
 	var v *pango.Language // out
-	v = (*pango.Language)(unsafe.Pointer(*C.PangoLanguage))
+	v = (*pango.Language)(unsafe.Pointer(t.native.language))
 	return v
 }
 
@@ -191,13 +191,13 @@ func (s *TextAttributes) Copy() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(*TextAttributes))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s))
 
 	_cret = C.gtk_text_attributes_copy(_arg0)
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(*C.GtkTextAttributes))
+	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
 	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
 		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
@@ -212,8 +212,8 @@ func (s *TextAttributes) CopyValues(dest *TextAttributes) {
 	var _arg0 *C.GtkTextAttributes // out
 	var _arg1 *C.GtkTextAttributes // out
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(*TextAttributes))
-	_arg1 = (*C.GtkTextAttributes)(unsafe.Pointer(*TextAttributes))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s))
+	_arg1 = (*C.GtkTextAttributes)(unsafe.Pointer(dest))
 
 	C.gtk_text_attributes_copy_values(_arg0, _arg1)
 }
@@ -223,13 +223,13 @@ func (v *TextAttributes) ref() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(*TextAttributes))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v))
 
 	_cret = C.gtk_text_attributes_ref(_arg0)
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(*C.GtkTextAttributes))
+	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
 	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
 		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
@@ -243,7 +243,7 @@ func (v *TextAttributes) ref() *TextAttributes {
 func (v *TextAttributes) unref() {
 	var _arg0 *C.GtkTextAttributes // out
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(*TextAttributes))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v))
 
 	C.gtk_text_attributes_unref(_arg0)
 }

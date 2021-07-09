@@ -86,13 +86,13 @@ func (r *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 
 	_cret = C.gdk_rgba_copy(_arg0)
 
 	var _rgbA *RGBA // out
 
-	_rgbA = (*RGBA)(unsafe.Pointer(*C.GdkRGBA))
+	_rgbA = (*RGBA)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -104,7 +104,7 @@ func (r *RGBA) Copy() *RGBA {
 func (r *RGBA) free() {
 	var _arg0 *C.GdkRGBA // out
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 
 	C.gdk_rgba_free(_arg0)
 }
@@ -116,7 +116,7 @@ func (r *RGBA) IsClear() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 
 	_cret = C.gdk_rgba_is_clear(_arg0)
 
@@ -137,7 +137,7 @@ func (r *RGBA) IsOpaque() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 
 	_cret = C.gdk_rgba_is_opaque(_arg0)
 
@@ -169,7 +169,7 @@ func (r *RGBA) Parse(spec string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 	_arg1 = (*C.char)(C.CString(spec))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -200,7 +200,7 @@ func (r *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.char    // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
 
 	_cret = C.gdk_rgba_to_string(_arg0)
 

@@ -262,7 +262,7 @@ func (c *TLSCertificateClass) Issuer() *TLSCertificateClass {
 	var _arg0 *C.GTlsCertificate // out
 	var _cret *C.GTlsCertificate // in
 
-	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer((&TLSCertificate).Native()))
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_tls_certificate_get_issuer(_arg0)
 
@@ -284,8 +284,8 @@ func (c *TLSCertificateClass) IsSame(certTwo TLSCertificate) bool {
 	var _arg1 *C.GTlsCertificate // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer((&TLSCertificate).Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((&TLSCertificate).Native()))
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((&certTwo).Native()))
 
 	_cret = C.g_tls_certificate_is_same(_arg0, _arg1)
 
@@ -320,15 +320,15 @@ func (c *TLSCertificateClass) Verify(identity SocketConnectable, trustedCa TLSCe
 	var _arg2 *C.GTlsCertificate     // out
 	var _cret C.GTlsCertificateFlags // in
 
-	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer((&TLSCertificate).Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((&SocketConnectable).Native()))
-	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer((&TLSCertificate).Native()))
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((&identity).Native()))
+	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer((&trustedCa).Native()))
 
 	_cret = C.g_tls_certificate_verify(_arg0, _arg1, _arg2)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
-	_tlsCertificateFlags = (TLSCertificateFlags)(C.GTlsCertificateFlags)
+	_tlsCertificateFlags = (TLSCertificateFlags)(_cret)
 
 	return _tlsCertificateFlags
 }

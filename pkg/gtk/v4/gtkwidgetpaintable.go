@@ -75,7 +75,7 @@ func NewWidgetPaintable(widget Widget) *WidgetPaintableClass {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	_cret = C.gtk_widget_paintable_new(_arg1)
 
@@ -92,7 +92,7 @@ func (s *WidgetPaintableClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer((&WidgetPaintable).Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_widget_paintable_get_widget(_arg0)
 
@@ -109,8 +109,8 @@ func (s *WidgetPaintableClass) SetWidget(widget Widget) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer((&WidgetPaintable).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
 }

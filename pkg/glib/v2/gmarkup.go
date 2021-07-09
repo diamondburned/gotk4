@@ -173,7 +173,7 @@ func (c *MarkupParseContext) EndParse() error {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cerr *C.GError              // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	C.g_markup_parse_context_end_parse(_arg0, &_cerr)
 
@@ -191,7 +191,7 @@ func (c *MarkupParseContext) EndParse() error {
 func (c *MarkupParseContext) free() {
 	var _arg0 *C.GMarkupParseContext // out
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	C.g_markup_parse_context_free(_arg0)
 }
@@ -205,7 +205,7 @@ func (c *MarkupParseContext) Element() string {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	_cret = C.g_markup_parse_context_get_element(_arg0)
 
@@ -225,7 +225,7 @@ func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var _arg1 C.gint                 // in
 	var _arg2 C.gint                 // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	C.g_markup_parse_context_get_position(_arg0, &_arg1, &_arg2)
 
@@ -247,7 +247,7 @@ func (c *MarkupParseContext) UserData() interface{} {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	_cret = C.g_markup_parse_context_get_user_data(_arg0)
 
@@ -273,7 +273,7 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 	var _arg2 C.gssize               // out
 	var _cerr *C.GError              // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(textLen)
@@ -303,7 +303,7 @@ func (c *MarkupParseContext) Pop() interface{} {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	_cret = C.g_markup_parse_context_pop(_arg0)
 
@@ -362,8 +362,8 @@ func (c *MarkupParseContext) Push(parser *MarkupParser, userData interface{}) {
 	var _arg1 *C.GMarkupParser       // out
 	var _arg2 C.gpointer             // out
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
-	_arg1 = (*C.GMarkupParser)(unsafe.Pointer(*MarkupParser))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
+	_arg1 = (*C.GMarkupParser)(unsafe.Pointer(parser))
 	_arg2 = (C.gpointer)(box.Assign(userData))
 
 	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
@@ -374,13 +374,13 @@ func (c *MarkupParseContext) ref() *MarkupParseContext {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.GMarkupParseContext // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	_cret = C.g_markup_parse_context_ref(_arg0)
 
 	var _markupParseContext *MarkupParseContext // out
 
-	_markupParseContext = (*MarkupParseContext)(unsafe.Pointer(*C.GMarkupParseContext))
+	_markupParseContext = (*MarkupParseContext)(unsafe.Pointer(_cret))
 	C.g_markup_parse_context_ref(_cret)
 	runtime.SetFinalizer(_markupParseContext, func(v *MarkupParseContext) {
 		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(unsafe.Pointer(v)))
@@ -394,7 +394,7 @@ func (c *MarkupParseContext) ref() *MarkupParseContext {
 func (c *MarkupParseContext) unref() {
 	var _arg0 *C.GMarkupParseContext // out
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(*MarkupParseContext))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c))
 
 	C.g_markup_parse_context_unref(_arg0)
 }

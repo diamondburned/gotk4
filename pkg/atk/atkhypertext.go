@@ -81,7 +81,7 @@ func (h *HypertextInterface) Link(linkIndex int) *HyperlinkClass {
 	var _arg1 C.gint          // out
 	var _cret *C.AtkHyperlink // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer((&Hypertext).Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer((&h).Native()))
 	_arg1 = C.gint(linkIndex)
 
 	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
@@ -101,7 +101,7 @@ func (h *HypertextInterface) LinkIndex(charIndex int) int {
 	var _arg1 C.gint          // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer((&Hypertext).Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer((&h).Native()))
 	_arg1 = C.gint(charIndex)
 
 	_cret = C.atk_hypertext_get_link_index(_arg0, _arg1)
@@ -118,7 +118,7 @@ func (h *HypertextInterface) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer((&Hypertext).Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer((&h).Native()))
 
 	_cret = C.atk_hypertext_get_n_links(_arg0)
 

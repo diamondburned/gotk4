@@ -109,7 +109,7 @@ func (c *ColorSelectionDialogClass) ColorSelection() *WidgetClass {
 	var _arg0 *C.GtkColorSelectionDialog // out
 	var _cret *C.GtkWidget               // in
 
-	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer((&ColorSelectionDialog).Native()))
+	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
 

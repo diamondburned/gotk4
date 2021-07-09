@@ -177,7 +177,7 @@ func (b *ToggleToolButtonClass) Active() bool {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer((&ToggleToolButton).Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_toggle_tool_button_get_active(_arg0)
 
@@ -197,7 +197,7 @@ func (b *ToggleToolButtonClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer((&ToggleToolButton).Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer((&b).Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}

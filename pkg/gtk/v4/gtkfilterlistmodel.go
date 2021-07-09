@@ -100,7 +100,7 @@ func (s *FilterListModelClass) Filter() *FilterClass {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret *C.GtkFilter          // in
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&FilterListModel).Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_filter_list_model_get_filter(_arg0)
 
@@ -119,7 +119,7 @@ func (s *FilterListModelClass) Incremental() bool {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&FilterListModel).Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_filter_list_model_get_incremental(_arg0)
 
@@ -150,7 +150,7 @@ func (s *FilterListModelClass) Pending() uint {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret C.guint               // in
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&FilterListModel).Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_filter_list_model_get_pending(_arg0)
 
@@ -166,8 +166,8 @@ func (s *FilterListModelClass) SetFilter(filter Filter) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GtkFilter          // out
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&FilterListModel).Native()))
-	_arg1 = (*C.GtkFilter)(unsafe.Pointer((&Filter).Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer((&filter).Native()))
 
 	C.gtk_filter_list_model_set_filter(_arg0, _arg1)
 }
@@ -192,7 +192,7 @@ func (s *FilterListModelClass) SetIncremental(incremental bool) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&FilterListModel).Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer((&s).Native()))
 	if incremental {
 		_arg1 = C.TRUE
 	}

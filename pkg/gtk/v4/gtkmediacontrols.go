@@ -86,7 +86,7 @@ func NewMediaControls(stream MediaStream) *MediaControlsClass {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((&MediaStream).Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((&stream).Native()))
 
 	_cret = C.gtk_media_controls_new(_arg1)
 
@@ -103,7 +103,7 @@ func (c *MediaControlsClass) MediaStream() *MediaStreamClass {
 	var _arg0 *C.GtkMediaControls // out
 	var _cret *C.GtkMediaStream   // in
 
-	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer((&MediaControls).Native()))
+	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_media_controls_get_media_stream(_arg0)
 
@@ -120,8 +120,8 @@ func (c *MediaControlsClass) SetMediaStream(stream MediaStream) {
 	var _arg0 *C.GtkMediaControls // out
 	var _arg1 *C.GtkMediaStream   // out
 
-	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer((&MediaControls).Native()))
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((&MediaStream).Native()))
+	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((&stream).Native()))
 
 	C.gtk_media_controls_set_media_stream(_arg0, _arg1)
 }

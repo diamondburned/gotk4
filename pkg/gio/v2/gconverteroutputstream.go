@@ -81,8 +81,8 @@ func NewConverterOutputStream(baseStream OutputStream, converter Converter) *Con
 	var _arg2 *C.GConverter    // out
 	var _cret *C.GOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer((&OutputStream).Native()))
-	_arg2 = (*C.GConverter)(unsafe.Pointer((&Converter).Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer((&baseStream).Native()))
+	_arg2 = (*C.GConverter)(unsafe.Pointer((&converter).Native()))
 
 	_cret = C.g_converter_output_stream_new(_arg1, _arg2)
 
@@ -99,7 +99,7 @@ func (c *ConverterOutputStreamClass) Converter() *ConverterInterface {
 	var _arg0 *C.GConverterOutputStream // out
 	var _cret *C.GConverter             // in
 
-	_arg0 = (*C.GConverterOutputStream)(unsafe.Pointer((&ConverterOutputStream).Native()))
+	_arg0 = (*C.GConverterOutputStream)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_converter_output_stream_get_converter(_arg0)
 

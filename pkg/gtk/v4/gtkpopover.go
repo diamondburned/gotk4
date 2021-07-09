@@ -251,7 +251,7 @@ func (p *PopoverClass) Autohide() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_popover_get_autohide(_arg0)
 
@@ -270,7 +270,7 @@ func (p *PopoverClass) CascadePopdown() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_popover_get_cascade_popdown(_arg0)
 
@@ -288,7 +288,7 @@ func (p *PopoverClass) Child() *WidgetClass {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_popover_get_child(_arg0)
 
@@ -306,7 +306,7 @@ func (p *PopoverClass) HasArrow() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_popover_get_has_arrow(_arg0)
 
@@ -324,7 +324,7 @@ func (p *PopoverClass) MnemonicsVisible() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_popover_get_mnemonics_visible(_arg0)
 
@@ -343,7 +343,7 @@ func (p *PopoverClass) Offset() (xOffset int, yOffset int) {
 	var _arg1 C.int         // in
 	var _arg2 C.int         // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	C.gtk_popover_get_offset(_arg0, &_arg1, &_arg2)
 
@@ -361,13 +361,13 @@ func (p *PopoverClass) Position() PositionType {
 	var _arg0 *C.GtkPopover     // out
 	var _cret C.GtkPositionType // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gtk_popover_get_position(_arg0)
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(C.GtkPositionType)
+	_positionType = (PositionType)(_cret)
 
 	return _positionType
 }
@@ -380,7 +380,7 @@ func (p *PopoverClass) Position() PositionType {
 func (p *PopoverClass) Popdown() {
 	var _arg0 *C.GtkPopover // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	C.gtk_popover_popdown(_arg0)
 }
@@ -393,7 +393,7 @@ func (p *PopoverClass) Popdown() {
 func (p *PopoverClass) Popup() {
 	var _arg0 *C.GtkPopover // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	C.gtk_popover_popup(_arg0)
 }
@@ -402,7 +402,7 @@ func (p *PopoverClass) Popup() {
 func (p *PopoverClass) Present() {
 	var _arg0 *C.GtkPopover // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 
 	C.gtk_popover_present(_arg0)
 }
@@ -418,7 +418,7 @@ func (p *PopoverClass) SetAutohide(autohide bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 	if autohide {
 		_arg1 = C.TRUE
 	}
@@ -434,7 +434,7 @@ func (p *PopoverClass) SetCascadePopdown(cascadePopdown bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 	if cascadePopdown {
 		_arg1 = C.TRUE
 	}
@@ -447,8 +447,8 @@ func (p *PopoverClass) SetChild(child Widget) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_popover_set_child(_arg0, _arg1)
 }
@@ -462,8 +462,8 @@ func (p *PopoverClass) SetDefaultWidget(widget Widget) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	C.gtk_popover_set_default_widget(_arg0, _arg1)
 }
@@ -474,7 +474,7 @@ func (p *PopoverClass) SetHasArrow(hasArrow bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 	if hasArrow {
 		_arg1 = C.TRUE
 	}
@@ -487,7 +487,7 @@ func (p *PopoverClass) SetMnemonicsVisible(mnemonicsVisible bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 	if mnemonicsVisible {
 		_arg1 = C.TRUE
 	}
@@ -505,7 +505,7 @@ func (p *PopoverClass) SetOffset(xOffset int, yOffset int) {
 	var _arg1 C.int         // out
 	var _arg2 C.int         // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
 	_arg1 = C.int(xOffset)
 	_arg2 = C.int(yOffset)
 
@@ -519,8 +519,8 @@ func (p *PopoverClass) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&Popover).Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(*gdk.Rectangle))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer((&p).Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
 
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }

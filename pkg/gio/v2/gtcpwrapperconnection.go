@@ -75,8 +75,8 @@ func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) *TCPWrapperCo
 	var _arg2 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in
 
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
-	_arg2 = (*C.GSocket)(unsafe.Pointer((&Socket).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((&baseIoStream).Native()))
+	_arg2 = (*C.GSocket)(unsafe.Pointer((&socket).Native()))
 
 	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
 
@@ -93,7 +93,7 @@ func (c *TCPWrapperConnectionClass) BaseIOStream() *IOStreamClass {
 	var _arg0 *C.GTcpWrapperConnection // out
 	var _cret *C.GIOStream             // in
 
-	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer((&TCPWrapperConnection).Native()))
+	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
 

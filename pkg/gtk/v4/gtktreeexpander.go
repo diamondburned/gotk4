@@ -142,7 +142,7 @@ func (s *TreeExpanderClass) Child() *WidgetClass {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret *C.GtkWidget       // in
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_tree_expander_get_child(_arg0)
 
@@ -163,7 +163,7 @@ func (s *TreeExpanderClass) Item() *externglib.Object {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret C.gpointer         // in
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_tree_expander_get_item(_arg0)
 
@@ -180,7 +180,7 @@ func (s *TreeExpanderClass) ListRow() *TreeListRowClass {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret *C.GtkTreeListRow  // in
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_tree_expander_get_list_row(_arg0)
 
@@ -197,8 +197,8 @@ func (s *TreeExpanderClass) SetChild(child Widget) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkWidget       // out
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&child).Native()))
 
 	C.gtk_tree_expander_set_child(_arg0, _arg1)
 }
@@ -208,8 +208,8 @@ func (s *TreeExpanderClass) SetListRow(listRow TreeListRow) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkTreeListRow  // out
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
-	_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer((&listRow).Native()))
 
 	C.gtk_tree_expander_set_list_row(_arg0, _arg1)
 }

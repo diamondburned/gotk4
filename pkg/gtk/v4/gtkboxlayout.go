@@ -86,13 +86,13 @@ func (b *BoxLayoutClass) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&BoxLayout).Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_box_layout_get_baseline_position(_arg0)
 
 	var _baselinePosition BaselinePosition // out
 
-	_baselinePosition = (BaselinePosition)(C.GtkBaselinePosition)
+	_baselinePosition = (BaselinePosition)(_cret)
 
 	return _baselinePosition
 }
@@ -102,7 +102,7 @@ func (b *BoxLayoutClass) Homogeneous() bool {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&BoxLayout).Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_box_layout_get_homogeneous(_arg0)
 
@@ -120,7 +120,7 @@ func (b *BoxLayoutClass) Spacing() uint {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&BoxLayout).Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&b).Native()))
 
 	_cret = C.gtk_box_layout_get_spacing(_arg0)
 
@@ -137,7 +137,7 @@ func (b *BoxLayoutClass) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&BoxLayout).Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&b).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -150,7 +150,7 @@ func (b *BoxLayoutClass) SetSpacing(spacing uint) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&BoxLayout).Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer((&b).Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_box_layout_set_spacing(_arg0, _arg1)

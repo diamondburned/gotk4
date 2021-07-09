@@ -21,7 +21,7 @@ import "C"
 func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
 	var _arg1 *C.GOptionGroup // out
 
-	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(*glib.OptionGroup))
+	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group))
 
 	C.gdk_add_option_entries_libgtk_only(_arg1)
 }
@@ -168,7 +168,7 @@ func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg3 C.guint32       // out
 	var _cret C.GdkGrabStatus // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&Window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&window).Native()))
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}
@@ -178,7 +178,7 @@ func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
 
 	var _grabStatus GrabStatus // out
 
-	_grabStatus = (GrabStatus)(C.GdkGrabStatus)
+	_grabStatus = (GrabStatus)(_cret)
 
 	return _grabStatus
 }

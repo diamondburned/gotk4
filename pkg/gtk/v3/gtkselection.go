@@ -55,7 +55,7 @@ func marshalTargetFlags(p uintptr) (interface{}, error) {
 func SelectionRemoveAll(widget Widget) {
 	var _arg1 *C.GtkWidget // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	C.gtk_selection_remove_all(_arg1)
 }
@@ -93,7 +93,7 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(unsafe.Pointer(*C.GtkTargetEntry))
+	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -134,13 +134,13 @@ func (d *TargetEntry) Copy() *TargetEntry {
 	var _arg0 *C.GtkTargetEntry // out
 	var _cret *C.GtkTargetEntry // in
 
-	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(*TargetEntry))
+	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(d))
 
 	_cret = C.gtk_target_entry_copy(_arg0)
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(unsafe.Pointer(*C.GtkTargetEntry))
+	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -153,7 +153,7 @@ func (d *TargetEntry) Copy() *TargetEntry {
 func (d *TargetEntry) free() {
 	var _arg0 *C.GtkTargetEntry // out
 
-	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(*TargetEntry))
+	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(d))
 
 	C.gtk_target_entry_free(_arg0)
 }
@@ -187,7 +187,7 @@ func (l *TargetList) AddImageTargets(info uint, writable bool) {
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(*TargetList))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
 	_arg1 = C.guint(info)
 	if writable {
 		_arg2 = C.TRUE
@@ -206,12 +206,12 @@ func (l *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer T
 	var _arg2 C.gboolean       // out
 	var _arg3 *C.GtkTextBuffer // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(*TargetList))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
 	_arg1 = C.guint(info)
 	if deserializable {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer((&TextBuffer).Native()))
+	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer((&buffer).Native()))
 
 	C.gtk_target_list_add_rich_text_targets(_arg0, _arg1, _arg2, _arg3)
 }
@@ -222,7 +222,7 @@ func (l *TargetList) AddTextTargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(*TargetList))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
 	_arg1 = C.guint(info)
 
 	C.gtk_target_list_add_text_targets(_arg0, _arg1)
@@ -234,7 +234,7 @@ func (l *TargetList) AddURITargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(*TargetList))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
 	_arg1 = C.guint(info)
 
 	C.gtk_target_list_add_uri_targets(_arg0, _arg1)
@@ -245,13 +245,13 @@ func (l *TargetList) ref() *TargetList {
 	var _arg0 *C.GtkTargetList // out
 	var _cret *C.GtkTargetList // in
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(*TargetList))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
 
 	_cret = C.gtk_target_list_ref(_arg0)
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(unsafe.Pointer(*C.GtkTargetList))
+	_targetList = (*TargetList)(unsafe.Pointer(_cret))
 	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
@@ -265,7 +265,7 @@ func (l *TargetList) ref() *TargetList {
 func (l *TargetList) unref() {
 	var _arg0 *C.GtkTargetList // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(*TargetList))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
 
 	C.gtk_target_list_unref(_arg0)
 }

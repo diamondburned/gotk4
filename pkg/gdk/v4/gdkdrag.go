@@ -129,7 +129,7 @@ func (d *DragClass) DropDone(success bool) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 	if success {
 		_arg1 = C.TRUE
 	}
@@ -142,13 +142,13 @@ func (d *DragClass) Actions() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_drag_get_actions(_arg0)
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(C.GdkDragAction)
+	_dragAction = (DragAction)(_cret)
 
 	return _dragAction
 }
@@ -158,7 +158,7 @@ func (d *DragClass) Content() *ContentProviderClass {
 	var _arg0 *C.GdkDrag            // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_drag_get_content(_arg0)
 
@@ -175,7 +175,7 @@ func (d *DragClass) Device() *DeviceClass {
 	var _arg0 *C.GdkDrag   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_drag_get_device(_arg0)
 
@@ -192,7 +192,7 @@ func (d *DragClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_drag_get_display(_arg0)
 
@@ -215,7 +215,7 @@ func (d *DragClass) DragSurface() *SurfaceClass {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_drag_get_drag_surface(_arg0)
 
@@ -232,13 +232,13 @@ func (d *DragClass) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrag           // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_drag_get_formats(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(*C.GdkContentFormats))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
@@ -252,13 +252,13 @@ func (d *DragClass) SelectedAction() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_drag_get_selected_action(_arg0)
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(C.GdkDragAction)
+	_dragAction = (DragAction)(_cret)
 
 	return _dragAction
 }
@@ -268,7 +268,7 @@ func (d *DragClass) Surface() *SurfaceClass {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_drag_get_surface(_arg0)
 
@@ -289,7 +289,7 @@ func (d *DragClass) SetHotspot(hotX int, hotY int) {
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&Drag).Native()))
+	_arg0 = (*C.GdkDrag)(unsafe.Pointer((&d).Native()))
 	_arg1 = C.int(hotX)
 	_arg2 = C.int(hotY)
 

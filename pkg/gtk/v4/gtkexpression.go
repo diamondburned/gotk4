@@ -55,7 +55,7 @@ func ValueDupExpression(value externglib.Value) *ExpressionClass {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
 
 	_cret = C.gtk_value_dup_expression(_arg1)
 
@@ -73,7 +73,7 @@ func ValueGetExpression(value externglib.Value) *ExpressionClass {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
 
 	_cret = C.gtk_value_get_expression(_arg1)
 
@@ -92,8 +92,8 @@ func ValueSetExpression(value externglib.Value, expression Expression) {
 	var _arg1 *C.GValue        // out
 	var _arg2 *C.GtkExpression // out
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
 
 	C.gtk_value_set_expression(_arg1, _arg2)
 }
@@ -105,8 +105,8 @@ func ValueTakeExpression(value externglib.Value, expression Expression) {
 	var _arg1 *C.GValue        // out
 	var _arg2 *C.GtkExpression // out
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
 
 	C.gtk_value_take_expression(_arg1, _arg2)
 }
@@ -206,7 +206,7 @@ func NewConstantExpressionForValue(value externglib.Value) *ConstantExpressionCl
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
 
 	_cret = C.gtk_constant_expression_new_for_value(_arg1)
 
@@ -387,13 +387,13 @@ func (s *ExpressionClass) ValueType() externglib.Type {
 	var _arg0 *C.GtkExpression // out
 	var _cret C.GType          // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_expression_get_value_type(_arg0)
 
 	var _gType externglib.Type // out
 
-	_gType = externglib.Type(C.GType)
+	_gType = externglib.Type(_cret)
 
 	return _gType
 }
@@ -409,7 +409,7 @@ func (s *ExpressionClass) IsStatic() bool {
 	var _arg0 *C.GtkExpression // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_expression_is_static(_arg0)
 
@@ -427,7 +427,7 @@ func (s *ExpressionClass) ref() *ExpressionClass {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_expression_ref(_arg0)
 
@@ -446,7 +446,7 @@ func (s *ExpressionClass) ref() *ExpressionClass {
 func (s *ExpressionClass) unref() {
 	var _arg0 *C.GtkExpression // out
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_expression_unref(_arg0)
 }
@@ -493,7 +493,7 @@ func NewObjectExpression(object gextras.Objector) *ObjectExpressionClass {
 	var _arg1 *C.GObject       // out
 	var _cret *C.GtkExpression // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&gextras.Objector).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
 
 	_cret = C.gtk_object_expression_new(_arg1)
 
@@ -510,7 +510,7 @@ func (e *ObjectExpressionClass) Object() *externglib.Object {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GObject       // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&ObjectExpression).Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_object_expression_get_object(_arg0)
 
@@ -566,8 +566,8 @@ func NewPropertyExpression(thisType externglib.Type, expression Expression, prop
 	var _arg3 *C.char          // out
 	var _cret *C.GtkExpression // in
 
-	_arg1 = (C.GType)(externglib.Type)
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
+	_arg1 = (C.GType)(thisType)
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer((&expression).Native()))
 	_arg3 = (*C.char)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -587,7 +587,7 @@ func (e *PropertyExpressionClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&PropertyExpression).Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer((&e).Native()))
 
 	_cret = C.gtk_property_expression_get_expression(_arg0)
 
@@ -633,8 +633,8 @@ func (w *ExpressionWatch) Evaluate(value externglib.Value) bool {
 	var _arg1 *C.GValue             // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(*ExpressionWatch))
-	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
+	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&value).GValue))
 
 	_cret = C.gtk_expression_watch_evaluate(_arg0, _arg1)
 
@@ -652,13 +652,13 @@ func (w *ExpressionWatch) ref() *ExpressionWatch {
 	var _arg0 *C.GtkExpressionWatch // out
 	var _cret *C.GtkExpressionWatch // in
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(*ExpressionWatch))
+	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w))
 
 	_cret = C.gtk_expression_watch_ref(_arg0)
 
 	var _expressionWatch *ExpressionWatch // out
 
-	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(*C.GtkExpressionWatch))
+	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
 	C.gtk_expression_watch_ref(_cret)
 	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
 		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
@@ -673,7 +673,7 @@ func (w *ExpressionWatch) ref() *ExpressionWatch {
 func (w *ExpressionWatch) unref() {
 	var _arg0 *C.GtkExpressionWatch // out
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(*ExpressionWatch))
+	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w))
 
 	C.gtk_expression_watch_unref(_arg0)
 }
@@ -684,7 +684,7 @@ func (w *ExpressionWatch) unref() {
 func (w *ExpressionWatch) Unwatch() {
 	var _arg0 *C.GtkExpressionWatch // out
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(*ExpressionWatch))
+	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w))
 
 	C.gtk_expression_watch_unwatch(_arg0)
 }

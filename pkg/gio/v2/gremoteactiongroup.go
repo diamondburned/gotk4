@@ -138,11 +138,11 @@ func (r *RemoteActionGroupInterface) ActivateActionFull(actionName string, param
 	var _arg2 *C.GVariant           // out
 	var _arg3 *C.GVariant           // out
 
-	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer((&RemoteActionGroup).Native()))
+	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer((&r).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(platformData))
 
 	C.g_remote_action_group_activate_action_full(_arg0, _arg1, _arg2, _arg3)
 }
@@ -162,11 +162,11 @@ func (r *RemoteActionGroupInterface) ChangeActionStateFull(actionName string, va
 	var _arg2 *C.GVariant           // out
 	var _arg3 *C.GVariant           // out
 
-	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer((&RemoteActionGroup).Native()))
+	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer((&r).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(platformData))
 
 	C.g_remote_action_group_change_action_state_full(_arg0, _arg1, _arg2, _arg3)
 }

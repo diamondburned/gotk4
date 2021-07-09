@@ -101,7 +101,7 @@ func (m *MiscClass) Alignment() (xalign float32, yalign float32) {
 	var _arg1 C.gfloat   // in
 	var _arg2 C.gfloat   // in
 
-	_arg0 = (*C.GtkMisc)(unsafe.Pointer((&Misc).Native()))
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer((&m).Native()))
 
 	C.gtk_misc_get_alignment(_arg0, &_arg1, &_arg2)
 
@@ -123,7 +123,7 @@ func (m *MiscClass) Padding() (xpad int, ypad int) {
 	var _arg1 C.gint     // in
 	var _arg2 C.gint     // in
 
-	_arg0 = (*C.GtkMisc)(unsafe.Pointer((&Misc).Native()))
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer((&m).Native()))
 
 	C.gtk_misc_get_padding(_arg0, &_arg1, &_arg2)
 
@@ -144,7 +144,7 @@ func (m *MiscClass) SetAlignment(xalign float32, yalign float32) {
 	var _arg1 C.gfloat   // out
 	var _arg2 C.gfloat   // out
 
-	_arg0 = (*C.GtkMisc)(unsafe.Pointer((&Misc).Native()))
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer((&m).Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 
@@ -159,7 +159,7 @@ func (m *MiscClass) SetPadding(xpad int, ypad int) {
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
 
-	_arg0 = (*C.GtkMisc)(unsafe.Pointer((&Misc).Native()))
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer((&m).Native()))
 	_arg1 = C.gint(xpad)
 	_arg2 = C.gint(ypad)
 

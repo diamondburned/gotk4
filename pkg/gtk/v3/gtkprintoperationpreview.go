@@ -95,7 +95,7 @@ func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
 func (p *PrintOperationPreviewInterface) EndPreview() {
 	var _arg0 *C.GtkPrintOperationPreview // out
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer((&PrintOperationPreview).Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer((&p).Native()))
 
 	C.gtk_print_operation_preview_end_preview(_arg0)
 }
@@ -107,7 +107,7 @@ func (p *PrintOperationPreviewInterface) IsSelected(pageNr int) bool {
 	var _arg1 C.gint                      // out
 	var _cret C.gboolean                  // in
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer((&PrintOperationPreview).Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer((&p).Native()))
 	_arg1 = C.gint(pageNr)
 
 	_cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
@@ -133,7 +133,7 @@ func (p *PrintOperationPreviewInterface) RenderPage(pageNr int) {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.gint                      // out
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer((&PrintOperationPreview).Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer((&p).Native()))
 	_arg1 = C.gint(pageNr)
 
 	C.gtk_print_operation_preview_render_page(_arg0, _arg1)

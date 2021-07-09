@@ -214,7 +214,7 @@ func (r *RangeClass) Adjustment() *AdjustmentClass {
 	var _arg0 *C.GtkRange      // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_range_get_adjustment(_arg0)
 
@@ -231,7 +231,7 @@ func (r *RangeClass) FillLevel() float64 {
 	var _arg0 *C.GtkRange // out
 	var _cret C.double    // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_range_get_fill_level(_arg0)
 
@@ -249,7 +249,7 @@ func (r *RangeClass) Flippable() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_range_get_flippable(_arg0)
 
@@ -269,7 +269,7 @@ func (r *RangeClass) Inverted() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_range_get_inverted(_arg0)
 
@@ -287,7 +287,7 @@ func (r *RangeClass) RestrictToFillLevel() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_range_get_restrict_to_fill_level(_arg0)
 
@@ -307,7 +307,7 @@ func (r *RangeClass) RoundDigits() int {
 	var _arg0 *C.GtkRange // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_range_get_round_digits(_arg0)
 
@@ -323,7 +323,7 @@ func (r *RangeClass) ShowFillLevel() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_range_get_show_fill_level(_arg0)
 
@@ -345,7 +345,7 @@ func (r *RangeClass) SliderRange() (sliderStart int, sliderEnd int) {
 	var _arg1 C.int       // in
 	var _arg2 C.int       // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	C.gtk_range_get_slider_range(_arg0, &_arg1, &_arg2)
 
@@ -365,7 +365,7 @@ func (r *RangeClass) SliderSizeFixed() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_range_get_slider_size_fixed(_arg0)
 
@@ -383,7 +383,7 @@ func (r *RangeClass) Value() float64 {
 	var _arg0 *C.GtkRange // out
 	var _cret C.double    // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 
 	_cret = C.gtk_range_get_value(_arg0)
 
@@ -408,8 +408,8 @@ func (r *RangeClass) SetAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkRange      // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&adjustment).Native()))
 
 	C.gtk_range_set_adjustment(_arg0, _arg1)
 }
@@ -434,7 +434,7 @@ func (r *RangeClass) SetFillLevel(fillLevel float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.double    // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	_arg1 = C.double(fillLevel)
 
 	C.gtk_range_set_fill_level(_arg0, _arg1)
@@ -450,7 +450,7 @@ func (r *RangeClass) SetFlippable(flippable bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	if flippable {
 		_arg1 = C.TRUE
 	}
@@ -468,7 +468,7 @@ func (r *RangeClass) SetIncrements(step float64, page float64) {
 	var _arg1 C.double    // out
 	var _arg2 C.double    // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	_arg1 = C.double(step)
 	_arg2 = C.double(page)
 
@@ -484,7 +484,7 @@ func (r *RangeClass) SetInverted(setting bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -501,7 +501,7 @@ func (r *RangeClass) SetRange(min float64, max float64) {
 	var _arg1 C.double    // out
 	var _arg2 C.double    // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	_arg1 = C.double(min)
 	_arg2 = C.double(max)
 
@@ -517,7 +517,7 @@ func (r *RangeClass) SetRestrictToFillLevel(restrictToFillLevel bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	if restrictToFillLevel {
 		_arg1 = C.TRUE
 	}
@@ -533,7 +533,7 @@ func (r *RangeClass) SetRoundDigits(roundDigits int) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.int       // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	_arg1 = C.int(roundDigits)
 
 	C.gtk_range_set_round_digits(_arg0, _arg1)
@@ -547,7 +547,7 @@ func (r *RangeClass) SetShowFillLevel(showFillLevel bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	if showFillLevel {
 		_arg1 = C.TRUE
 	}
@@ -563,7 +563,7 @@ func (r *RangeClass) SetSliderSizeFixed(sizeFixed bool) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	if sizeFixed {
 		_arg1 = C.TRUE
 	}
@@ -580,7 +580,7 @@ func (r *RangeClass) SetValue(value float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.double    // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer((&Range).Native()))
+	_arg0 = (*C.GtkRange)(unsafe.Pointer((&r).Native()))
 	_arg1 = C.double(value)
 
 	C.gtk_range_set_value(_arg0, _arg1)

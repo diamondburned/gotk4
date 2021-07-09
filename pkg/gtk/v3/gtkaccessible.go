@@ -95,7 +95,7 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 func (a *AccessibleClass) ConnectWidgetDestroyed() {
 	var _arg0 *C.GtkAccessible // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&Accessible).Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&a).Native()))
 
 	C.gtk_accessible_connect_widget_destroyed(_arg0)
 }
@@ -106,7 +106,7 @@ func (a *AccessibleClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkAccessible // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&Accessible).Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_accessible_get_widget(_arg0)
 
@@ -127,8 +127,8 @@ func (a *AccessibleClass) SetWidget(widget Widget) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&Accessible).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&widget).Native()))
 
 	C.gtk_accessible_set_widget(_arg0, _arg1)
 }

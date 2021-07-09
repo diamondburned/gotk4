@@ -60,7 +60,7 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 	fn := v.(VFSFileLookupFunc)
 	file := fn(vfs, identifier, userData)
 
-	cret = (*C.GFile)(unsafe.Pointer((&File).Native()))
+	cret = (*C.GFile)(unsafe.Pointer((&file).Native()))
 
 	return cret
 }
@@ -141,7 +141,7 @@ func (v *VFSClass) FileForPath(path string) *FileInterface {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GVfs)(unsafe.Pointer((&VFS).Native()))
+	_arg0 = (*C.GVfs)(unsafe.Pointer((&v).Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -164,7 +164,7 @@ func (v *VFSClass) FileForURI(uri string) *FileInterface {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GVfs)(unsafe.Pointer((&VFS).Native()))
+	_arg0 = (*C.GVfs)(unsafe.Pointer((&v).Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -183,7 +183,7 @@ func (v *VFSClass) SupportedURISchemes() []string {
 	var _arg0 *C.GVfs // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GVfs)(unsafe.Pointer((&VFS).Native()))
+	_arg0 = (*C.GVfs)(unsafe.Pointer((&v).Native()))
 
 	_cret = C.g_vfs_get_supported_uri_schemes(_arg0)
 
@@ -211,7 +211,7 @@ func (v *VFSClass) IsActive() bool {
 	var _arg0 *C.GVfs    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GVfs)(unsafe.Pointer((&VFS).Native()))
+	_arg0 = (*C.GVfs)(unsafe.Pointer((&v).Native()))
 
 	_cret = C.g_vfs_is_active(_arg0)
 
@@ -232,7 +232,7 @@ func (v *VFSClass) ParseName(parseName string) *FileInterface {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GVfs)(unsafe.Pointer((&VFS).Native()))
+	_arg0 = (*C.GVfs)(unsafe.Pointer((&v).Native()))
 	_arg1 = (*C.char)(C.CString(parseName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -253,7 +253,7 @@ func (v *VFSClass) UnregisterURIScheme(scheme string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GVfs)(unsafe.Pointer((&VFS).Native()))
+	_arg0 = (*C.GVfs)(unsafe.Pointer((&v).Native()))
 	_arg1 = (*C.char)(C.CString(scheme))
 	defer C.free(unsafe.Pointer(_arg1))
 

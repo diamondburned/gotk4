@@ -85,7 +85,7 @@ func NewListStore(itemType externglib.Type) *ListStoreClass {
 	var _arg1 C.GType       // out
 	var _cret *C.GListStore // in
 
-	_arg1 = (C.GType)(externglib.Type)
+	_arg1 = (C.GType)(itemType)
 
 	_cret = C.g_list_store_new(_arg1)
 
@@ -106,7 +106,7 @@ func (s *ListStoreClass) Remove(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer((&ListStore).Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer((&s).Native()))
 	_arg1 = C.guint(position)
 
 	C.g_list_store_remove(_arg0, _arg1)
@@ -116,7 +116,7 @@ func (s *ListStoreClass) Remove(position uint) {
 func (s *ListStoreClass) RemoveAll() {
 	var _arg0 *C.GListStore // out
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer((&ListStore).Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer((&s).Native()))
 
 	C.g_list_store_remove_all(_arg0)
 }
@@ -127,7 +127,7 @@ func (s *ListStoreClass) Sort(compareFunc glib.CompareDataFunc) {
 	var _arg1 C.GCompareDataFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer((&ListStore).Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
 	_arg2 = C.gpointer(box.Assign(compareFunc))
 

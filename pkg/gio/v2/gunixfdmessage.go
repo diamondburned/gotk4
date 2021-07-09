@@ -104,7 +104,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) *UnixFDMessageClass {
 	var _arg1 *C.GUnixFDList           // out
 	var _cret *C.GSocketControlMessage // in
 
-	_arg1 = (*C.GUnixFDList)(unsafe.Pointer((&UnixFDList).Native()))
+	_arg1 = (*C.GUnixFDList)(unsafe.Pointer((&fdList).Native()))
 
 	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
 
@@ -129,7 +129,7 @@ func (m *UnixFDMessageClass) AppendFd(fd int) error {
 	var _arg1 C.gint            // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer((&UnixFDMessage).Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer((&m).Native()))
 	_arg1 = C.gint(fd)
 
 	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
@@ -148,7 +148,7 @@ func (m *UnixFDMessageClass) FdList() *UnixFDListClass {
 	var _arg0 *C.GUnixFDMessage // out
 	var _cret *C.GUnixFDList    // in
 
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer((&UnixFDMessage).Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.g_unix_fd_message_get_fd_list(_arg0)
 

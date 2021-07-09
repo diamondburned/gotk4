@@ -117,7 +117,7 @@ func (m *MonitorClass) Display() *DisplayClass {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_monitor_get_display(_arg0)
 
@@ -134,7 +134,7 @@ func (m *MonitorClass) HeightMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_monitor_get_height_mm(_arg0)
 
@@ -155,7 +155,7 @@ func (m *MonitorClass) Manufacturer() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_monitor_get_manufacturer(_arg0)
 
@@ -171,7 +171,7 @@ func (m *MonitorClass) Model() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_monitor_get_model(_arg0)
 
@@ -189,7 +189,7 @@ func (m *MonitorClass) RefreshRate() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_monitor_get_refresh_rate(_arg0)
 
@@ -211,7 +211,7 @@ func (m *MonitorClass) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_monitor_get_scale_factor(_arg0)
 
@@ -228,13 +228,13 @@ func (m *MonitorClass) SubpixelLayout() SubpixelLayout {
 	var _arg0 *C.GdkMonitor       // out
 	var _cret C.GdkSubpixelLayout // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_monitor_get_subpixel_layout(_arg0)
 
 	var _subpixelLayout SubpixelLayout // out
 
-	_subpixelLayout = (SubpixelLayout)(C.GdkSubpixelLayout)
+	_subpixelLayout = (SubpixelLayout)(_cret)
 
 	return _subpixelLayout
 }
@@ -244,7 +244,7 @@ func (m *MonitorClass) WidthMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_monitor_get_width_mm(_arg0)
 
@@ -261,7 +261,7 @@ func (m *MonitorClass) IsPrimary() bool {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&Monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer((&m).Native()))
 
 	_cret = C.gdk_monitor_is_primary(_arg0)
 

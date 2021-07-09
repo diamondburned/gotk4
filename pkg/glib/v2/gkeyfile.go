@@ -82,7 +82,7 @@ func NewKeyFile() *KeyFile {
 
 	var _keyFile *KeyFile // out
 
-	_keyFile = (*KeyFile)(unsafe.Pointer(*C.GKeyFile))
+	_keyFile = (*KeyFile)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_keyFile, func(v *KeyFile) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -108,7 +108,7 @@ func (k *KeyFile) Boolean(groupName string, key string) error {
 	var _arg2 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -137,7 +137,7 @@ func (k *KeyFile) Comment(groupName string, key string) (string, error) {
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -169,7 +169,7 @@ func (k *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _cret C.gdouble   // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -193,7 +193,7 @@ func (k *KeyFile) Groups() (uint, []string) {
 	var _arg1 C.gsize     // in
 	var _cret **C.gchar
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 
 	_cret = C.g_key_file_get_groups(_arg0, &_arg1)
 
@@ -229,7 +229,7 @@ func (k *KeyFile) Int64(groupName string, key string) (int64, error) {
 	var _cret C.gint64    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -260,7 +260,7 @@ func (k *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _cret C.gint      // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -288,7 +288,7 @@ func (k *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -333,7 +333,7 @@ func (k *KeyFile) LocaleForKey(groupName string, key string, locale string) stri
 	var _arg3 *C.gchar    // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -371,7 +371,7 @@ func (k *KeyFile) LocaleString(groupName string, key string, locale string) (str
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -396,7 +396,7 @@ func (k *KeyFile) StartGroup() string {
 	var _arg0 *C.GKeyFile // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 
 	_cret = C.g_key_file_get_start_group(_arg0)
 
@@ -422,7 +422,7 @@ func (k *KeyFile) String(groupName string, key string) (string, error) {
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -450,7 +450,7 @@ func (k *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _cret C.guint64   // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -480,7 +480,7 @@ func (k *KeyFile) Value(groupName string, key string) (string, error) {
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -504,7 +504,7 @@ func (k *KeyFile) HasGroup(groupName string) bool {
 	var _arg1 *C.gchar    // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -528,7 +528,7 @@ func (k *KeyFile) RemoveComment(groupName string, key string) error {
 	var _arg2 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -549,7 +549,7 @@ func (k *KeyFile) RemoveGroup(groupName string) error {
 	var _arg1 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -569,7 +569,7 @@ func (k *KeyFile) RemoveKey(groupName string, key string) error {
 	var _arg2 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -596,7 +596,7 @@ func (k *KeyFile) SaveToFile(filename string) error {
 	var _arg1 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -617,7 +617,7 @@ func (k *KeyFile) SetBoolean(groupName string, key string, value bool) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.gboolean  // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -639,7 +639,7 @@ func (k *KeyFile) SetBooleanList(groupName string, key string, list []bool) {
 	var _arg3 *C.gboolean
 	var _arg4 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -665,7 +665,7 @@ func (k *KeyFile) SetComment(groupName string, key string, comment string) error
 	var _arg3 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -690,7 +690,7 @@ func (k *KeyFile) SetDouble(groupName string, key string, value float64) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.gdouble   // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -709,7 +709,7 @@ func (k *KeyFile) SetDoubleList(groupName string, key string, list []float64) {
 	var _arg3 *C.gdouble
 	var _arg4 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -728,7 +728,7 @@ func (k *KeyFile) SetInt64(groupName string, key string, value int64) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.gint64    // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -746,7 +746,7 @@ func (k *KeyFile) SetInteger(groupName string, key string, value int) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.gint      // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -765,7 +765,7 @@ func (k *KeyFile) SetIntegerList(groupName string, key string, list []int) {
 	var _arg3 *C.gint
 	var _arg4 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -783,7 +783,7 @@ func (k *KeyFile) SetListSeparator(separator byte) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 C.gchar     // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = C.gchar(separator)
 
 	C.g_key_file_set_list_separator(_arg0, _arg1)
@@ -798,7 +798,7 @@ func (k *KeyFile) SetLocaleString(groupName string, key string, locale string, _
 	var _arg3 *C.gchar    // out
 	var _arg4 *C.gchar    // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -822,7 +822,7 @@ func (k *KeyFile) SetLocaleStringList(groupName string, key string, locale strin
 	var _arg4 **C.gchar
 	var _arg5 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -853,7 +853,7 @@ func (k *KeyFile) SetString(groupName string, key string, _string string) {
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -874,7 +874,7 @@ func (k *KeyFile) SetStringList(groupName string, key string, list []string) {
 	var _arg3 **C.gchar
 	var _arg4 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -901,7 +901,7 @@ func (k *KeyFile) SetUint64(groupName string, key string, value uint64) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.guint64   // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -922,7 +922,7 @@ func (k *KeyFile) SetValue(groupName string, key string, value string) {
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(key))
@@ -943,7 +943,7 @@ func (k *KeyFile) ToData() (uint, string, error) {
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 
 	_cret = C.g_key_file_to_data(_arg0, &_arg1, &_cerr)
 
@@ -964,7 +964,7 @@ func (k *KeyFile) ToData() (uint, string, error) {
 func (k *KeyFile) unref() {
 	var _arg0 *C.GKeyFile // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(*KeyFile))
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k))
 
 	C.g_key_file_unref(_arg0)
 }

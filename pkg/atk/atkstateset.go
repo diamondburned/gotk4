@@ -83,8 +83,8 @@ func (s *StateSetClass) AndSets(compareSet StateSet) *StateSetClass {
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((&compareSet).Native()))
 
 	_cret = C.atk_state_set_and_sets(_arg0, _arg1)
 
@@ -100,7 +100,7 @@ func (s *StateSetClass) AndSets(compareSet StateSet) *StateSetClass {
 func (s *StateSetClass) ClearStates() {
 	var _arg0 *C.AtkStateSet // out
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&s).Native()))
 
 	C.atk_state_set_clear_states(_arg0)
 }
@@ -110,7 +110,7 @@ func (s *StateSetClass) IsEmpty() bool {
 	var _arg0 *C.AtkStateSet // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.atk_state_set_is_empty(_arg0)
 
@@ -129,8 +129,8 @@ func (s *StateSetClass) OrSets(compareSet StateSet) *StateSetClass {
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((&compareSet).Native()))
 
 	_cret = C.atk_state_set_or_sets(_arg0, _arg1)
 
@@ -150,8 +150,8 @@ func (s *StateSetClass) XorSets(compareSet StateSet) *StateSetClass {
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((&compareSet).Native()))
 
 	_cret = C.atk_state_set_xor_sets(_arg0, _arg1)
 

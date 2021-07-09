@@ -182,7 +182,7 @@ func NewVariantType(typeString string) *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -195,13 +195,13 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 	var _arg1 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg1 = (*C.GVariantType)(unsafe.Pointer(element))
 
 	_cret = C.g_variant_type_new_array(_arg1)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -215,14 +215,14 @@ func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType 
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg1 = (*C.GVariantType)(unsafe.Pointer(key))
+	_arg2 = (*C.GVariantType)(unsafe.Pointer(value))
 
 	_cret = C.g_variant_type_new_dict_entry(_arg1, _arg2)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -235,13 +235,13 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 	var _arg1 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg1 = (*C.GVariantType)(unsafe.Pointer(element))
 
 	_cret = C.g_variant_type_new_maybe(_arg1)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -262,7 +262,7 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -281,13 +281,13 @@ func (t *VariantType) Copy() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_copy(_arg0)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -302,7 +302,7 @@ func (t *VariantType) DupString() string {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_dup_string(_arg0)
 
@@ -321,13 +321,13 @@ func (t *VariantType) Element() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_element(_arg0)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -347,13 +347,13 @@ func (t *VariantType) First() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_first(_arg0)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -367,7 +367,7 @@ func (t *VariantType) First() *VariantType {
 func (t *VariantType) free() {
 	var _arg0 *C.GVariantType // out
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	C.g_variant_type_free(_arg0)
 }
@@ -379,7 +379,7 @@ func (t *VariantType) StringLength() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_get_string_length(_arg0)
 
@@ -399,7 +399,7 @@ func (t *VariantType) IsArray() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_array(_arg0)
 
@@ -425,7 +425,7 @@ func (t *VariantType) IsBasic() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_basic(_arg0)
 
@@ -449,7 +449,7 @@ func (t *VariantType) IsContainer() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_container(_arg0)
 
@@ -475,7 +475,7 @@ func (t *VariantType) IsDefinite() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_definite(_arg0)
 
@@ -497,7 +497,7 @@ func (t *VariantType) IsDictEntry() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_dict_entry(_arg0)
 
@@ -519,7 +519,7 @@ func (t *VariantType) IsMaybe() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_maybe(_arg0)
 
@@ -542,8 +542,8 @@ func (t *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	var _arg1 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
+	_arg1 = (*C.GVariantType)(unsafe.Pointer(supertype))
 
 	_cret = C.g_variant_type_is_subtype_of(_arg0, _arg1)
 
@@ -565,7 +565,7 @@ func (t *VariantType) IsTuple() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_tuple(_arg0)
 
@@ -583,7 +583,7 @@ func (t *VariantType) IsVariant() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_is_variant(_arg0)
 
@@ -604,13 +604,13 @@ func (t *VariantType) Key() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_key(_arg0)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -626,7 +626,7 @@ func (t *VariantType) NItems() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_n_items(_arg0)
 
@@ -651,13 +651,13 @@ func (t *VariantType) Next() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_next(_arg0)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }
@@ -669,13 +669,13 @@ func (t *VariantType) Value() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariantType)(unsafe.Pointer(*VariantType))
+	_arg0 = (*C.GVariantType)(unsafe.Pointer(t))
 
 	_cret = C.g_variant_type_value(_arg0)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(*C.GVariantType))
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
 }

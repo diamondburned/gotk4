@@ -93,7 +93,7 @@ func (s *ScrollableInterface) HAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkScrollable // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&Scrollable).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_scrollable_get_hadjustment(_arg0)
 
@@ -110,13 +110,13 @@ func (s *ScrollableInterface) HscrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
 	var _cret C.GtkScrollablePolicy // in
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&Scrollable).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_scrollable_get_hscroll_policy(_arg0)
 
 	var _scrollablePolicy ScrollablePolicy // out
 
-	_scrollablePolicy = (ScrollablePolicy)(C.GtkScrollablePolicy)
+	_scrollablePolicy = (ScrollablePolicy)(_cret)
 
 	return _scrollablePolicy
 }
@@ -126,7 +126,7 @@ func (s *ScrollableInterface) VAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkScrollable // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&Scrollable).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_scrollable_get_vadjustment(_arg0)
 
@@ -143,13 +143,13 @@ func (s *ScrollableInterface) VscrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
 	var _cret C.GtkScrollablePolicy // in
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&Scrollable).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_scrollable_get_vscroll_policy(_arg0)
 
 	var _scrollablePolicy ScrollablePolicy // out
 
-	_scrollablePolicy = (ScrollablePolicy)(C.GtkScrollablePolicy)
+	_scrollablePolicy = (ScrollablePolicy)(_cret)
 
 	return _scrollablePolicy
 }
@@ -159,8 +159,8 @@ func (s *ScrollableInterface) SetHAdjustment(hadjustment Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&Scrollable).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&hadjustment).Native()))
 
 	C.gtk_scrollable_set_hadjustment(_arg0, _arg1)
 }
@@ -170,8 +170,8 @@ func (s *ScrollableInterface) SetVAdjustment(vadjustment Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&Scrollable).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&vadjustment).Native()))
 
 	C.gtk_scrollable_set_vadjustment(_arg0, _arg1)
 }

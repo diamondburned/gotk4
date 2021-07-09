@@ -176,7 +176,7 @@ func (d *DeviceManagerClass) ClientPointer() *DeviceClass {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDevice        // in
 
-	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer((&DeviceManager).Native()))
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_device_manager_get_client_pointer(_arg0)
 
@@ -193,7 +193,7 @@ func (d *DeviceManagerClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDisplay       // in
 
-	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer((&DeviceManager).Native()))
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer((&d).Native()))
 
 	_cret = C.gdk_device_manager_get_display(_arg0)
 

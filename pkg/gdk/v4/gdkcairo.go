@@ -44,8 +44,8 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType 
 	var _arg8 C.int         // out
 	var _arg9 C.int         // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
-	_arg2 = (*C.GdkSurface)(unsafe.Pointer((&Surface).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.GdkSurface)(unsafe.Pointer((&surface).Native()))
 	_arg3 = C.int(source)
 	_arg4 = C.int(sourceType)
 	_arg5 = C.int(bufferScale)
@@ -62,8 +62,8 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg1 *C.cairo_t      // out
 	var _arg2 *C.GdkRectangle // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
-	_arg2 = (*C.GdkRectangle)(unsafe.Pointer(*Rectangle))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.GdkRectangle)(unsafe.Pointer(rectangle))
 
 	C.gdk_cairo_rectangle(_arg1, _arg2)
 }
@@ -73,8 +73,8 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var _arg1 *C.cairo_t        // out
 	var _arg2 *C.cairo_region_t // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
-	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gdk_cairo_region(_arg1, _arg2)
 }
@@ -88,13 +88,13 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.cairo_region_t  // in
 
-	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(*cairo.Surface))
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
 
 	_cret = C.gdk_cairo_region_create_from_surface(_arg1)
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(*C.cairo_region_t))
+	_region = (*cairo.Region)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -112,8 +112,8 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 	var _arg3 C.double     // out
 	var _arg4 C.double     // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((&pixbuf).Native()))
 	_arg3 = C.double(pixbufX)
 	_arg4 = C.double(pixbufY)
 
@@ -125,8 +125,8 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 *C.GdkRGBA // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	C.gdk_cairo_set_source_rgba(_arg1, _arg2)
 }

@@ -64,7 +64,7 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (c
 
 	widget = gextras.CastObject(
 		externglib.Take(unsafe.Pointer(arg0))).(*WidgetClass)
-	args = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
+	args = (*glib.Variant)(unsafe.Pointer(arg1))
 	C.g_variant_ref(arg1)
 	runtime.SetFinalizer(args, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -230,7 +230,7 @@ func (s *NamedActionClass) ActionName() string {
 	var _arg0 *C.GtkNamedAction // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer((&NamedAction).Native()))
+	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_named_action_get_action_name(_arg0)
 
@@ -363,7 +363,7 @@ func (s *ShortcutActionClass) String() string {
 	var _arg0 *C.GtkShortcutAction // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer((&ShortcutAction).Native()))
+	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_shortcut_action_to_string(_arg0)
 
@@ -433,7 +433,7 @@ func (s *SignalActionClass) SignalName() string {
 	var _arg0 *C.GtkSignalAction // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer((&SignalAction).Native()))
+	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_signal_action_get_signal_name(_arg0)
 

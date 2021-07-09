@@ -106,13 +106,13 @@ func (s *DropClass) Actions() DragAction {
 	var _arg0 *C.GdkDrop      // out
 	var _cret C.GdkDragAction // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gdk_drop_get_actions(_arg0)
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(C.GdkDragAction)
+	_dragAction = (DragAction)(_cret)
 
 	return _dragAction
 }
@@ -122,7 +122,7 @@ func (s *DropClass) Device() *DeviceClass {
 	var _arg0 *C.GdkDrop   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gdk_drop_get_device(_arg0)
 
@@ -139,7 +139,7 @@ func (s *DropClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gdk_drop_get_display(_arg0)
 
@@ -159,7 +159,7 @@ func (s *DropClass) Drag() *DragClass {
 	var _arg0 *C.GdkDrop // out
 	var _cret *C.GdkDrag // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gdk_drop_get_drag(_arg0)
 
@@ -177,13 +177,13 @@ func (s *DropClass) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrop           // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gdk_drop_get_formats(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(*C.GdkContentFormats))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
@@ -197,7 +197,7 @@ func (s *DropClass) Surface() *SurfaceClass {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gdk_drop_get_surface(_arg0)
 

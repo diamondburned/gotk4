@@ -65,7 +65,7 @@ func (t *FrameTimings) Complete() bool {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(*FrameTimings))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
 
 	_cret = C.gdk_frame_timings_get_complete(_arg0)
 
@@ -84,7 +84,7 @@ func (t *FrameTimings) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(*FrameTimings))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
 
 	_cret = C.gdk_frame_timings_get_frame_counter(_arg0)
 
@@ -103,7 +103,7 @@ func (t *FrameTimings) FrameTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(*FrameTimings))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
 
 	_cret = C.gdk_frame_timings_get_frame_time(_arg0)
 
@@ -131,7 +131,7 @@ func (t *FrameTimings) PredictedPresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(*FrameTimings))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
 
 	_cret = C.gdk_frame_timings_get_predicted_presentation_time(_arg0)
 
@@ -149,7 +149,7 @@ func (t *FrameTimings) PresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(*FrameTimings))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
 
 	_cret = C.gdk_frame_timings_get_presentation_time(_arg0)
 
@@ -168,7 +168,7 @@ func (t *FrameTimings) RefreshInterval() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(*FrameTimings))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
 
 	_cret = C.gdk_frame_timings_get_refresh_interval(_arg0)
 
@@ -184,13 +184,13 @@ func (t *FrameTimings) ref() *FrameTimings {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret *C.GdkFrameTimings // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(*FrameTimings))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
 
 	_cret = C.gdk_frame_timings_ref(_arg0)
 
 	var _frameTimings *FrameTimings // out
 
-	_frameTimings = (*FrameTimings)(unsafe.Pointer(*C.GdkFrameTimings))
+	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
 	C.gdk_frame_timings_ref(_cret)
 	runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
 		C.gdk_frame_timings_unref((*C.GdkFrameTimings)(unsafe.Pointer(v)))
@@ -205,7 +205,7 @@ func (t *FrameTimings) ref() *FrameTimings {
 func (t *FrameTimings) unref() {
 	var _arg0 *C.GdkFrameTimings // out
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(*FrameTimings))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
 
 	C.gdk_frame_timings_unref(_arg0)
 }

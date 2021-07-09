@@ -260,7 +260,7 @@ func (c *ApplicationCommandLineClass) CreateFileForArg(arg string) *FileInterfac
 	var _arg1 *C.gchar                   // out
 	var _cret *C.GFile                   // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.gchar)(C.CString(arg))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -286,7 +286,7 @@ func (c *ApplicationCommandLineClass) Cwd() string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.gchar                   // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_application_command_line_get_cwd(_arg0)
 
@@ -316,7 +316,7 @@ func (c *ApplicationCommandLineClass) Environ() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_application_command_line_get_environ(_arg0)
 
@@ -345,7 +345,7 @@ func (c *ApplicationCommandLineClass) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.int                      // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_application_command_line_get_exit_status(_arg0)
 
@@ -361,7 +361,7 @@ func (c *ApplicationCommandLineClass) IsRemote() bool {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_application_command_line_get_is_remote(_arg0)
 
@@ -388,13 +388,13 @@ func (c *ApplicationCommandLineClass) OptionsDict() *glib.VariantDict {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariantDict            // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_application_command_line_get_options_dict(_arg0)
 
 	var _variantDict *glib.VariantDict // out
 
-	_variantDict = (*glib.VariantDict)(unsafe.Pointer(*C.GVariantDict))
+	_variantDict = (*glib.VariantDict)(unsafe.Pointer(_cret))
 	C.g_variant_dict_ref(_cret)
 	runtime.SetFinalizer(_variantDict, func(v *glib.VariantDict) {
 		C.g_variant_dict_unref((*C.GVariantDict)(unsafe.Pointer(v)))
@@ -415,13 +415,13 @@ func (c *ApplicationCommandLineClass) PlatformData() *glib.Variant {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariant                // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_application_command_line_get_platform_data(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -443,7 +443,7 @@ func (c *ApplicationCommandLineClass) Stdin() *InputStreamClass {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GInputStream            // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.g_application_command_line_get_stdin(_arg0)
 
@@ -471,7 +471,7 @@ func (c *ApplicationCommandLineClass) env(name string) string {
 	var _arg1 *C.gchar                   // out
 	var _cret *C.gchar                   // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -507,7 +507,7 @@ func (c *ApplicationCommandLineClass) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.int(exitStatus)
 
 	C.g_application_command_line_set_exit_status(_arg0, _arg1)

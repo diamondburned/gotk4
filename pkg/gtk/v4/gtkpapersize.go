@@ -61,7 +61,7 @@ func NewPaperSize(name string) *PaperSize {
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(unsafe.Pointer(*C.GtkPaperSize))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -74,13 +74,13 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPaperSize // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant))
 
 	_cret = C.gtk_paper_size_new_from_gvariant(_arg1)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(unsafe.Pointer(*C.GtkPaperSize))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -104,7 +104,7 @@ func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSi
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(unsafe.Pointer(*C.GtkPaperSize))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -119,7 +119,7 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	var _cret *C.GtkPaperSize // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(*glib.KeyFile))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -128,7 +128,7 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	var _paperSize *PaperSize // out
 	var _goerr error          // out
 
-	_paperSize = (*PaperSize)(unsafe.Pointer(*C.GtkPaperSize))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -156,7 +156,7 @@ func NewPaperSizeFromPpd(ppdName string, ppdDisplayName string, width float64, h
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(unsafe.Pointer(*C.GtkPaperSize))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -174,13 +174,13 @@ func (o *PaperSize) Copy() *PaperSize {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret *C.GtkPaperSize // in
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(o))
 
 	_cret = C.gtk_paper_size_copy(_arg0)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(unsafe.Pointer(*C.GtkPaperSize))
+	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -192,7 +192,7 @@ func (o *PaperSize) Copy() *PaperSize {
 func (s *PaperSize) free() {
 	var _arg0 *C.GtkPaperSize // out
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s))
 
 	C.gtk_paper_size_free(_arg0)
 }
@@ -202,7 +202,7 @@ func (s *PaperSize) DisplayName() string {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s))
 
 	_cret = C.gtk_paper_size_get_display_name(_arg0)
 
@@ -218,7 +218,7 @@ func (s *PaperSize) Name() string {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s))
 
 	_cret = C.gtk_paper_size_get_name(_arg0)
 
@@ -234,7 +234,7 @@ func (s *PaperSize) PpdName() string {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s))
 
 	_cret = C.gtk_paper_size_get_ppd_name(_arg0)
 
@@ -250,7 +250,7 @@ func (s *PaperSize) IsCustom() bool {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s))
 
 	_cret = C.gtk_paper_size_is_custom(_arg0)
 
@@ -269,8 +269,8 @@ func (s *PaperSize) IsEqual(size2 *PaperSize) bool {
 	var _arg1 *C.GtkPaperSize // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
-	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s))
+	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size2))
 
 	_cret = C.gtk_paper_size_is_equal(_arg0, _arg1)
 
@@ -288,7 +288,7 @@ func (s *PaperSize) IsIpp() bool {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s))
 
 	_cret = C.gtk_paper_size_is_ipp(_arg0)
 
@@ -306,13 +306,13 @@ func (p *PaperSize) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret *C.GVariant     // in
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(p))
 
 	_cret = C.gtk_paper_size_to_gvariant(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -327,8 +327,8 @@ func (s *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.char         // out
 
-	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(*glib.KeyFile))
+	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(s))
+	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg2))
 

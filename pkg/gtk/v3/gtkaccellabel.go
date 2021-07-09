@@ -146,7 +146,7 @@ func (a *AccelLabelClass) Accel() (uint, gdk.ModifierType) {
 	var _arg1 C.guint           // in
 	var _arg2 C.GdkModifierType // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&AccelLabel).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&a).Native()))
 
 	C.gtk_accel_label_get_accel(_arg0, &_arg1, &_arg2)
 
@@ -154,7 +154,7 @@ func (a *AccelLabelClass) Accel() (uint, gdk.ModifierType) {
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg1)
-	_acceleratorMods = (gdk.ModifierType)(C.GdkModifierType)
+	_acceleratorMods = (gdk.ModifierType)(_arg2)
 
 	return _acceleratorKey, _acceleratorMods
 }
@@ -165,7 +165,7 @@ func (a *AccelLabelClass) AccelWidget() *WidgetClass {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&AccelLabel).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_accel_label_get_accel_widget(_arg0)
 
@@ -184,7 +184,7 @@ func (a *AccelLabelClass) AccelWidth() uint {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&AccelLabel).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_accel_label_get_accel_width(_arg0)
 
@@ -202,7 +202,7 @@ func (a *AccelLabelClass) Refetch() bool {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&AccelLabel).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.gtk_accel_label_refetch(_arg0)
 
@@ -222,8 +222,8 @@ func (a *AccelLabelClass) SetAccelWidget(accelWidget Widget) {
 	var _arg0 *C.GtkAccelLabel // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&AccelLabel).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&accelWidget).Native()))
 
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)
 }

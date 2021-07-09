@@ -90,7 +90,7 @@ func (i *DBusInterfaceInterface) DupObject() *DBusObjectInterface {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer((&DBusInterface).Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer((&i).Native()))
 
 	_cret = C.g_dbus_interface_dup_object(_arg0)
 
@@ -108,13 +108,13 @@ func (i *DBusInterfaceInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer((&DBusInterface).Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer((&i).Native()))
 
 	_cret = C.g_dbus_interface_get_info(_arg0)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(*C.GDBusInterfaceInfo))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
 	C.g_dbus_interface_info_ref(_cret)
 	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
@@ -130,8 +130,8 @@ func (i *DBusInterfaceInterface) SetObject(object DBusObject) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer((&DBusInterface).Native()))
-	_arg1 = (*C.GDBusObject)(unsafe.Pointer((&DBusObject).Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer((&i).Native()))
+	_arg1 = (*C.GDBusObject)(unsafe.Pointer((&object).Native()))
 
 	C.g_dbus_interface_set_object(_arg0, _arg1)
 }

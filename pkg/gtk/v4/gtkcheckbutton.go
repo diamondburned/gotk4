@@ -246,7 +246,7 @@ func (s *CheckButtonClass) Active() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_check_button_get_active(_arg0)
 
@@ -264,7 +264,7 @@ func (c *CheckButtonClass) Inconsistent() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gtk_check_button_get_inconsistent(_arg0)
 
@@ -282,7 +282,7 @@ func (s *CheckButtonClass) Label() string {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_check_button_get_label(_arg0)
 
@@ -298,7 +298,7 @@ func (s *CheckButtonClass) UseUnderline() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_check_button_get_use_underline(_arg0)
 
@@ -316,7 +316,7 @@ func (s *CheckButtonClass) SetActive(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&s).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -342,8 +342,8 @@ func (s *CheckButtonClass) SetGroup(group CheckButton) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.GtkCheckButton // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
-	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&s).Native()))
+	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer((&group).Native()))
 
 	C.gtk_check_button_set_group(_arg0, _arg1)
 }
@@ -356,7 +356,7 @@ func (c *CheckButtonClass) SetInconsistent(inconsistent bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&c).Native()))
 	if inconsistent {
 		_arg1 = C.TRUE
 	}
@@ -373,7 +373,7 @@ func (s *CheckButtonClass) SetLabel(label string) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -389,7 +389,7 @@ func (s *CheckButtonClass) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&s).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

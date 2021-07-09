@@ -90,7 +90,7 @@ func (t *DeviceToolClass) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer((&DeviceTool).Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer((&t).Native()))
 
 	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
 
@@ -107,7 +107,7 @@ func (t *DeviceToolClass) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer((&DeviceTool).Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer((&t).Native()))
 
 	_cret = C.gdk_device_tool_get_serial(_arg0)
 
@@ -123,13 +123,13 @@ func (t *DeviceToolClass) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
 	var _cret C.GdkDeviceToolType // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer((&DeviceTool).Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer((&t).Native()))
 
 	_cret = C.gdk_device_tool_get_tool_type(_arg0)
 
 	var _deviceToolType DeviceToolType // out
 
-	_deviceToolType = (DeviceToolType)(C.GdkDeviceToolType)
+	_deviceToolType = (DeviceToolType)(_cret)
 
 	return _deviceToolType
 }
@@ -192,13 +192,13 @@ func (c *DragContextClass) Actions() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_drag_context_get_actions(_arg0)
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(C.GdkDragAction)
+	_dragAction = (DragAction)(_cret)
 
 	return _dragAction
 }
@@ -208,7 +208,7 @@ func (c *DragContextClass) DestWindow() *WindowClass {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_drag_context_get_dest_window(_arg0)
 
@@ -225,7 +225,7 @@ func (c *DragContextClass) Device() *DeviceClass {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkDevice      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_drag_context_get_device(_arg0)
 
@@ -246,7 +246,7 @@ func (c *DragContextClass) DragWindow() *WindowClass {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_drag_context_get_drag_window(_arg0)
 
@@ -263,13 +263,13 @@ func (c *DragContextClass) Protocol() DragProtocol {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragProtocol // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_drag_context_get_protocol(_arg0)
 
 	var _dragProtocol DragProtocol // out
 
-	_dragProtocol = (DragProtocol)(C.GdkDragProtocol)
+	_dragProtocol = (DragProtocol)(_cret)
 
 	return _dragProtocol
 }
@@ -279,13 +279,13 @@ func (c *DragContextClass) SelectedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_drag_context_get_selected_action(_arg0)
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(C.GdkDragAction)
+	_dragAction = (DragAction)(_cret)
 
 	return _dragAction
 }
@@ -295,7 +295,7 @@ func (c *DragContextClass) SourceWindow() *WindowClass {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_drag_context_get_source_window(_arg0)
 
@@ -312,13 +312,13 @@ func (c *DragContextClass) SuggestedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
 
 	_cret = C.gdk_drag_context_get_suggested_action(_arg0)
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(C.GdkDragAction)
+	_dragAction = (DragAction)(_cret)
 
 	return _dragAction
 }
@@ -329,8 +329,8 @@ func (c *DragContextClass) SetDevice(device Device) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkDevice      // out
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&device).Native()))
 
 	C.gdk_drag_context_set_device(_arg0, _arg1)
 }
@@ -343,7 +343,7 @@ func (c *DragContextClass) SetHotspot(hotX int, hotY int) {
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&DragContext).Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer((&c).Native()))
 	_arg1 = C.gint(hotX)
 	_arg2 = C.gint(hotY)
 

@@ -59,7 +59,7 @@ func (o *GObjectAccessibleClass) Object() *externglib.Object {
 	var _arg0 *C.AtkGObjectAccessible // out
 	var _cret *C.GObject              // in
 
-	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer((&GObjectAccessible).Native()))
+	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.atk_gobject_accessible_get_object(_arg0)
 

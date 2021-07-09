@@ -132,8 +132,8 @@ func (a *InetAddressClass) Equal(otherAddress InetAddress) bool {
 	var _arg1 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((&otherAddress).Native()))
 
 	_cret = C.g_inet_address_equal(_arg0, _arg1)
 
@@ -151,13 +151,13 @@ func (a *InetAddressClass) Family() SocketFamily {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.GSocketFamily // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_family(_arg0)
 
 	var _socketFamily SocketFamily // out
 
-	_socketFamily = (SocketFamily)(C.GSocketFamily)
+	_socketFamily = (SocketFamily)(_cret)
 
 	return _socketFamily
 }
@@ -167,7 +167,7 @@ func (a *InetAddressClass) IsAny() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_any(_arg0)
 
@@ -186,7 +186,7 @@ func (a *InetAddressClass) IsLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_link_local(_arg0)
 
@@ -204,7 +204,7 @@ func (a *InetAddressClass) IsLoopback() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_loopback(_arg0)
 
@@ -222,7 +222,7 @@ func (a *InetAddressClass) IsMcGlobal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_global(_arg0)
 
@@ -240,7 +240,7 @@ func (a *InetAddressClass) IsMcLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_link_local(_arg0)
 
@@ -258,7 +258,7 @@ func (a *InetAddressClass) IsMcNodeLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_node_local(_arg0)
 
@@ -277,7 +277,7 @@ func (a *InetAddressClass) IsMcOrgLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_org_local(_arg0)
 
@@ -295,7 +295,7 @@ func (a *InetAddressClass) IsMcSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_site_local(_arg0)
 
@@ -313,7 +313,7 @@ func (a *InetAddressClass) IsMulticast() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_multicast(_arg0)
 
@@ -334,7 +334,7 @@ func (a *InetAddressClass) IsSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_is_site_local(_arg0)
 
@@ -353,7 +353,7 @@ func (a *InetAddressClass) NativeSize() uint {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gsize         // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_get_native_size(_arg0)
 
@@ -369,7 +369,7 @@ func (a *InetAddressClass) String() string {
 	var _arg0 *C.GInetAddress // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer((&a).Native()))
 
 	_cret = C.g_inet_address_to_string(_arg0)
 

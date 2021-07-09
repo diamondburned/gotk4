@@ -616,7 +616,7 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 
 	var _unicodeBreakType UnicodeBreakType // out
 
-	_unicodeBreakType = (UnicodeBreakType)(C.GUnicodeBreakType)
+	_unicodeBreakType = (UnicodeBreakType)(_cret)
 
 	return _unicodeBreakType
 }
@@ -811,7 +811,7 @@ func UnicharGetScript(ch uint32) UnicodeScript {
 
 	var _unicodeScript UnicodeScript // out
 
-	_unicodeScript = (UnicodeScript)(C.GUnicodeScript)
+	_unicodeScript = (UnicodeScript)(_cret)
 
 	return _unicodeScript
 }
@@ -1226,7 +1226,7 @@ func UnicharType(c uint32) UnicodeType {
 
 	var _unicodeType UnicodeType // out
 
-	_unicodeType = (UnicodeType)(C.GUnicodeType)
+	_unicodeType = (UnicodeType)(_cret)
 
 	return _unicodeType
 }
@@ -1320,7 +1320,7 @@ func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 
 	var _unicodeScript UnicodeScript // out
 
-	_unicodeScript = (UnicodeScript)(C.GUnicodeScript)
+	_unicodeScript = (UnicodeScript)(_cret)
 
 	return _unicodeScript
 }

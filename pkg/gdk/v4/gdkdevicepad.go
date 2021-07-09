@@ -95,7 +95,7 @@ func (p *DevicePadInterface) GroupNModes(groupIdx int) int {
 	var _arg1 C.int           // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer((&DevicePad).Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer((&p).Native()))
 	_arg1 = C.int(groupIdx)
 
 	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
@@ -115,7 +115,7 @@ func (p *DevicePadInterface) NGroups() int {
 	var _arg0 *C.GdkDevicePad // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer((&DevicePad).Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer((&p).Native()))
 
 	_cret = C.gdk_device_pad_get_n_groups(_arg0)
 

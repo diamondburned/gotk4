@@ -260,7 +260,7 @@ func (s *PlacesSidebarClass) LocalOnly() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_places_sidebar_get_local_only(_arg0)
 
@@ -278,13 +278,13 @@ func (s *PlacesSidebarClass) OpenFlags() PlacesOpenFlags {
 	var _arg0 *C.GtkPlacesSidebar  // out
 	var _cret C.GtkPlacesOpenFlags // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_places_sidebar_get_open_flags(_arg0)
 
 	var _placesOpenFlags PlacesOpenFlags // out
 
-	_placesOpenFlags = (PlacesOpenFlags)(C.GtkPlacesOpenFlags)
+	_placesOpenFlags = (PlacesOpenFlags)(_cret)
 
 	return _placesOpenFlags
 }
@@ -297,7 +297,7 @@ func (s *PlacesSidebarClass) ShowConnectToServer() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_connect_to_server(_arg0)
 
@@ -316,7 +316,7 @@ func (s *PlacesSidebarClass) ShowDesktop() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_desktop(_arg0)
 
@@ -335,7 +335,7 @@ func (s *PlacesSidebarClass) ShowEnterLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_enter_location(_arg0)
 
@@ -354,7 +354,7 @@ func (s *PlacesSidebarClass) ShowOtherLocations() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_other_locations(_arg0)
 
@@ -373,7 +373,7 @@ func (s *PlacesSidebarClass) ShowRecent() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_recent(_arg0)
 
@@ -392,7 +392,7 @@ func (s *PlacesSidebarClass) ShowStarredLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_starred_location(_arg0)
 
@@ -411,7 +411,7 @@ func (s *PlacesSidebarClass) ShowTrash() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_trash(_arg0)
 
@@ -438,11 +438,11 @@ func (s *PlacesSidebarClass) SetDropTargetsVisible(visible bool, context gdk.Dra
 	var _arg1 C.gboolean          // out
 	var _arg2 *C.GdkDragContext   // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
+	_arg2 = (*C.GdkDragContext)(unsafe.Pointer((&context).Native()))
 
 	C.gtk_places_sidebar_set_drop_targets_visible(_arg0, _arg1, _arg2)
 }
@@ -452,7 +452,7 @@ func (s *PlacesSidebarClass) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 	if localOnly {
 		_arg1 = C.TRUE
 	}
@@ -473,7 +473,7 @@ func (s *PlacesSidebarClass) SetShowConnectToServer(showConnectToServer bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 	if showConnectToServer {
 		_arg1 = C.TRUE
 	}
@@ -489,7 +489,7 @@ func (s *PlacesSidebarClass) SetShowDesktop(showDesktop bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 	if showDesktop {
 		_arg1 = C.TRUE
 	}
@@ -507,7 +507,7 @@ func (s *PlacesSidebarClass) SetShowEnterLocation(showEnterLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 	if showEnterLocation {
 		_arg1 = C.TRUE
 	}
@@ -528,7 +528,7 @@ func (s *PlacesSidebarClass) SetShowOtherLocations(showOtherLocations bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 	if showOtherLocations {
 		_arg1 = C.TRUE
 	}
@@ -543,7 +543,7 @@ func (s *PlacesSidebarClass) SetShowRecent(showRecent bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 	if showRecent {
 		_arg1 = C.TRUE
 	}
@@ -557,7 +557,7 @@ func (s *PlacesSidebarClass) SetShowStarredLocation(showStarredLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 	if showStarredLocation {
 		_arg1 = C.TRUE
 	}
@@ -571,7 +571,7 @@ func (s *PlacesSidebarClass) SetShowTrash(showTrash bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&s).Native()))
 	if showTrash {
 		_arg1 = C.TRUE
 	}

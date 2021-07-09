@@ -129,7 +129,7 @@ func (o *MemoryOutputStreamClass) Data() interface{} {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&MemoryOutputStream).Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.g_memory_output_stream_get_data(_arg0)
 
@@ -146,7 +146,7 @@ func (o *MemoryOutputStreamClass) DataSize() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&MemoryOutputStream).Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.g_memory_output_stream_get_data_size(_arg0)
 
@@ -175,7 +175,7 @@ func (o *MemoryOutputStreamClass) Size() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&MemoryOutputStream).Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.g_memory_output_stream_get_size(_arg0)
 
@@ -195,7 +195,7 @@ func (o *MemoryOutputStreamClass) StealData() interface{} {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&MemoryOutputStream).Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&o).Native()))
 
 	_cret = C.g_memory_output_stream_steal_data(_arg0)
 

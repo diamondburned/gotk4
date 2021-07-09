@@ -85,7 +85,7 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 	var userData interface{}   // out
 
 	logDomain = C.GoString(arg0)
-	logLevel = (LogLevelFlags)(C.GLogLevelFlags)
+	logLevel = (LogLevelFlags)(arg1)
 	message = C.GoString(arg2)
 	userData = box.Get(uintptr(arg3))
 

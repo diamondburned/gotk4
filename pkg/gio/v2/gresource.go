@@ -29,7 +29,7 @@ import "C"
 func ResourcesRegister(resource *Resource) {
 	var _arg1 *C.GResource // out
 
-	_arg1 = (*C.GResource)(unsafe.Pointer(*Resource))
+	_arg1 = (*C.GResource)(unsafe.Pointer(resource))
 
 	C.g_resources_register(_arg1)
 }
@@ -39,7 +39,7 @@ func ResourcesRegister(resource *Resource) {
 func ResourcesUnregister(resource *Resource) {
 	var _arg1 *C.GResource // out
 
-	_arg1 = (*C.GResource)(unsafe.Pointer(*Resource))
+	_arg1 = (*C.GResource)(unsafe.Pointer(resource))
 
 	C.g_resources_unregister(_arg1)
 }
@@ -69,7 +69,7 @@ func (s *StaticResource) Native() unsafe.Pointer {
 func (s *StaticResource) Fini() {
 	var _arg0 *C.GStaticResource // out
 
-	_arg0 = (*C.GStaticResource)(unsafe.Pointer(*StaticResource))
+	_arg0 = (*C.GStaticResource)(unsafe.Pointer(s))
 
 	C.g_static_resource_fini(_arg0)
 }
@@ -84,13 +84,13 @@ func (s *StaticResource) Resource() *Resource {
 	var _arg0 *C.GStaticResource // out
 	var _cret *C.GResource       // in
 
-	_arg0 = (*C.GStaticResource)(unsafe.Pointer(*StaticResource))
+	_arg0 = (*C.GStaticResource)(unsafe.Pointer(s))
 
 	_cret = C.g_static_resource_get_resource(_arg0)
 
 	var _resource *Resource // out
 
-	_resource = (*Resource)(unsafe.Pointer(*C.GResource))
+	_resource = (*Resource)(unsafe.Pointer(_cret))
 	C.g_resource_ref(_cret)
 	runtime.SetFinalizer(_resource, func(v *Resource) {
 		C.g_resource_unref((*C.GResource)(unsafe.Pointer(v)))
@@ -107,7 +107,7 @@ func (s *StaticResource) Resource() *Resource {
 func (s *StaticResource) Init() {
 	var _arg0 *C.GStaticResource // out
 
-	_arg0 = (*C.GStaticResource)(unsafe.Pointer(*StaticResource))
+	_arg0 = (*C.GStaticResource)(unsafe.Pointer(s))
 
 	C.g_static_resource_init(_arg0)
 }

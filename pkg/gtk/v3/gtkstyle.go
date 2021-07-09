@@ -134,7 +134,7 @@ func (s *StyleClass) Copy() *StyleClass {
 	var _arg0 *C.GtkStyle // out
 	var _cret *C.GtkStyle // in
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&Style).Native()))
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_style_copy(_arg0)
 
@@ -153,7 +153,7 @@ func (s *StyleClass) Copy() *StyleClass {
 func (s *StyleClass) Detach() {
 	var _arg0 *C.GtkStyle // out
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&Style).Native()))
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&s).Native()))
 
 	C.gtk_style_detach(_arg0)
 }
@@ -163,7 +163,7 @@ func (s *StyleClass) HasContext() bool {
 	var _arg0 *C.GtkStyle // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&Style).Native()))
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&s).Native()))
 
 	_cret = C.gtk_style_has_context(_arg0)
 
@@ -185,7 +185,7 @@ func (s *StyleClass) LookupIconSet(stockId string) *IconSet {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkIconSet // in
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&Style).Native()))
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer((&s).Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -193,7 +193,7 @@ func (s *StyleClass) LookupIconSet(stockId string) *IconSet {
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(unsafe.Pointer(*C.GtkIconSet))
+	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
 	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))

@@ -82,16 +82,7 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 type PadController interface {
 	gextras.Objector
 
-	// SetAction adds an individual action to @controller.
-	//
-	// This action will only be activated if the given button/ring/strip number
-	// in @index is interacted while the current mode is @mode. -1 may be used
-	// for simple cases, so the action is triggered on all modes.
-	//
-	// The given @label should be considered user-visible, so
-	// internationalization rules apply. Some windowing systems may be able to
-	// use those for user feedback.
-	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
+	privatePadControllerClass()
 }
 
 // PadControllerClass implements the PadController interface.
@@ -115,34 +106,7 @@ func marshalPadController(p uintptr) (interface{}, error) {
 	return wrapPadController(obj), nil
 }
 
-// SetAction adds an individual action to @controller.
-//
-// This action will only be activated if the given button/ring/strip number in
-// @index is interacted while the current mode is @mode. -1 may be used for
-// simple cases, so the action is triggered on all modes.
-//
-// The given @label should be considered user-visible, so internationalization
-// rules apply. Some windowing systems may be able to use those for user
-// feedback.
-func (c *PadControllerClass) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
-	var _arg0 *C.GtkPadController // out
-	var _arg1 C.GtkPadActionType  // out
-	var _arg2 C.int               // out
-	var _arg3 C.int               // out
-	var _arg4 *C.char             // out
-	var _arg5 *C.char             // out
-
-	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkPadActionType(typ)
-	_arg2 = C.int(index)
-	_arg3 = C.int(mode)
-	_arg4 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*C.char)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg5))
-
-	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
+func (*PadControllerClass) privatePadControllerClass() {}
 
 // PadActionEntry: struct defining a pad action entry.
 type PadActionEntry struct {
@@ -163,7 +127,7 @@ func (p *PadActionEntry) Native() unsafe.Pointer {
 // Type: the type of pad feature that will trigger this action entry.
 func (p *PadActionEntry) Type() PadActionType {
 	var v PadActionType // out
-	v = PadActionType(p.native._type)
+	v = (PadActionType)(C.GtkPadActionType)
 	return v
 }
 

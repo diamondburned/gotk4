@@ -64,14 +64,15 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 }
 
 // NewIMMulticontext creates a new IMMulticontext.
-func NewIMMulticontext() IMMulticontext {
+func NewIMMulticontext() *IMMulticontextClass {
 	var _cret *C.GtkIMContext // in
 
 	_cret = C.gtk_im_multicontext_new()
 
-	var _imMulticontext IMMulticontext // out
+	var _imMulticontext *IMMulticontextClass // out
 
-	_imMulticontext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IMMulticontext)
+	_imMulticontext = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IMMulticontextClass)
 
 	return _imMulticontext
 }
@@ -85,8 +86,8 @@ func (c *IMMulticontextClass) AppendMenuitems(menushell MenuShell) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.GtkMenuShell      // out
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkMenuShell)(unsafe.Pointer(menushell.Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer((&IMMulticontext).Native()))
+	_arg1 = (*C.GtkMenuShell)(unsafe.Pointer((&MenuShell).Native()))
 
 	C.gtk_im_multicontext_append_menuitems(_arg0, _arg1)
 }
@@ -96,7 +97,7 @@ func (c *IMMulticontextClass) ContextID() string {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer((&IMMulticontext).Native()))
 
 	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
 
@@ -115,7 +116,7 @@ func (c *IMMulticontextClass) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer((&IMMulticontext).Native()))
 	_arg1 = (*C.char)(C.CString(contextId))
 	defer C.free(unsafe.Pointer(_arg1))
 

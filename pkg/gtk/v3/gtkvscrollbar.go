@@ -55,7 +55,6 @@ func wrapVScrollbar(obj *externglib.Object) VScrollbar {
 			RangeClass: RangeClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -93,17 +92,18 @@ func marshalVScrollbar(p uintptr) (interface{}, error) {
 // NewVScrollbar creates a new vertical scrollbar.
 //
 // Deprecated: since version 3.2.
-func NewVScrollbar(adjustment Adjustment) VScrollbar {
+func NewVScrollbar(adjustment Adjustment) *VScrollbarClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
 
 	_cret = C.gtk_vscrollbar_new(_arg1)
 
-	var _vScrollbar VScrollbar // out
+	var _vScrollbar *VScrollbarClass // out
 
-	_vScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(VScrollbar)
+	_vScrollbar = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*VScrollbarClass)
 
 	return _vScrollbar
 }

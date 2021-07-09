@@ -82,7 +82,7 @@ type Revealer interface {
 	gextras.Objector
 
 	// Child gets the child widget of @revealer.
-	Child() Widget
+	Child() *WidgetClass
 	// ChildRevealed returns whether the child is fully revealed.
 	//
 	// In other words, this returns whether the transition to the revealed state
@@ -109,11 +109,6 @@ type Revealer interface {
 	SetRevealChild(revealChild bool)
 	// SetTransitionDuration sets the duration that transitions will take.
 	SetTransitionDuration(duration uint)
-	// SetTransitionType sets the type of animation that will be used for
-	// transitions in @revealer.
-	//
-	// Available types include various kinds of fades and slides.
-	SetTransitionType(transition RevealerTransitionType)
 }
 
 // RevealerClass implements the Revealer interface.
@@ -131,7 +126,6 @@ func wrapRevealer(obj *externglib.Object) Revealer {
 	return &RevealerClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -162,30 +156,32 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 }
 
 // NewRevealer creates a new `GtkRevealer`.
-func NewRevealer() Revealer {
+func NewRevealer() *RevealerClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_revealer_new()
 
-	var _revealer Revealer // out
+	var _revealer *RevealerClass // out
 
-	_revealer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Revealer)
+	_revealer = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RevealerClass)
 
 	return _revealer
 }
 
 // Child gets the child widget of @revealer.
-func (r *RevealerClass) Child() Widget {
+func (r *RevealerClass) Child() *WidgetClass {
 	var _arg0 *C.GtkRevealer // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
 
 	_cret = C.gtk_revealer_get_child(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -198,7 +194,7 @@ func (r *RevealerClass) ChildRevealed() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
 
 	_cret = C.gtk_revealer_get_child_revealed(_arg0)
 
@@ -220,7 +216,7 @@ func (r *RevealerClass) RevealChild() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
 
 	_cret = C.gtk_revealer_get_reveal_child(_arg0)
 
@@ -239,7 +235,7 @@ func (r *RevealerClass) TransitionDuration() uint {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
 
 	_cret = C.gtk_revealer_get_transition_duration(_arg0)
 
@@ -256,13 +252,13 @@ func (r *RevealerClass) TransitionType() RevealerTransitionType {
 	var _arg0 *C.GtkRevealer              // out
 	var _cret C.GtkRevealerTransitionType // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
 
 	_cret = C.gtk_revealer_get_transition_type(_arg0)
 
 	var _revealerTransitionType RevealerTransitionType // out
 
-	_revealerTransitionType = RevealerTransitionType(_cret)
+	_revealerTransitionType = (RevealerTransitionType)(C.GtkRevealerTransitionType)
 
 	return _revealerTransitionType
 }
@@ -272,8 +268,8 @@ func (r *RevealerClass) SetChild(child Widget) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_revealer_set_child(_arg0, _arg1)
 }
@@ -286,7 +282,7 @@ func (r *RevealerClass) SetRevealChild(revealChild bool) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
 	if revealChild {
 		_arg1 = C.TRUE
 	}
@@ -299,22 +295,8 @@ func (r *RevealerClass) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer((&Revealer).Native()))
 	_arg1 = C.guint(duration)
 
 	C.gtk_revealer_set_transition_duration(_arg0, _arg1)
-}
-
-// SetTransitionType sets the type of animation that will be used for
-// transitions in @revealer.
-//
-// Available types include various kinds of fades and slides.
-func (r *RevealerClass) SetTransitionType(transition RevealerTransitionType) {
-	var _arg0 *C.GtkRevealer              // out
-	var _arg1 C.GtkRevealerTransitionType // out
-
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
-	_arg1 = C.GtkRevealerTransitionType(transition)
-
-	C.gtk_revealer_set_transition_type(_arg0, _arg1)
 }

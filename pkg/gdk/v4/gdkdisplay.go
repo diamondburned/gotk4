@@ -64,26 +64,26 @@ type Display interface {
 	Flush()
 	// AppLaunchContext returns a `GdkAppLaunchContext` suitable for launching
 	// applications on the given display.
-	AppLaunchContext() AppLaunchContext
+	AppLaunchContext() *AppLaunchContextClass
 	// Clipboard gets the clipboard used for copy/paste operations.
-	Clipboard() Clipboard
+	Clipboard() *ClipboardClass
 	// DefaultSeat returns the default `GdkSeat` for this display.
 	//
 	// Note that a display may not have a seat. In this case, this function will
 	// return nil.
-	DefaultSeat() Seat
+	DefaultSeat() *SeatClass
 	// MonitorAtSurface gets the monitor in which the largest area of @surface
 	// resides.
 	//
 	// Returns a monitor close to @surface if it is outside of all monitors.
-	MonitorAtSurface(surface Surface) Monitor
+	MonitorAtSurface(surface Surface) *MonitorClass
 	// Name gets the name of the display.
 	Name() string
 	// PrimaryClipboard gets the clipboard used for the primary selection.
 	//
 	// On backends where the primary clipboard is not supported natively, GDK
 	// emulates this clipboard locally.
-	PrimaryClipboard() Clipboard
+	PrimaryClipboard() *ClipboardClass
 	// Setting retrieves a desktop-wide setting such as double-click time for
 	// the @display.
 	Setting(name string, value externglib.Value) bool
@@ -147,25 +147,6 @@ type Display interface {
 	// This is most useful for X11. On windowing systems where requests are
 	// handled synchronously, this function will do nothing.
 	Sync()
-	// TranslateKey translates the contents of a `GdkEventKey` into a keyval,
-	// effective group, and level.
-	//
-	// Modifiers that affected the translation and are thus unavailable for
-	// application use are returned in @consumed_modifiers.
-	//
-	// The @effective_group is the group that was actually used for the
-	// translation; some keys such as Enter are not affected by the active
-	// keyboard group. The @level is derived from @state.
-	//
-	// @consumed_modifiers gives modifiers that should be masked out from @state
-	// when comparing this key press to a keyboard shortcut. For instance, on a
-	// US keyboard, the `plus` symbol is shifted, so when comparing a key press
-	// to a `<Control>plus` accelerator `<Shift>` should be masked out.
-	//
-	// This function should rarely be needed, since `GdkEventKey` already
-	// contains the translated keyval. It is exported for the benefit of
-	// virtualized test environments.
-	TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 }
 
 // DisplayClass implements the Display interface.
@@ -191,7 +172,7 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 func (d *DisplayClass) Beep() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	C.gdk_display_beep(_arg0)
 }
@@ -202,7 +183,7 @@ func (d *DisplayClass) Beep() {
 func (d *DisplayClass) Close() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	C.gdk_display_close(_arg0)
 }
@@ -214,8 +195,8 @@ func (d *DisplayClass) DeviceIsGrabbed(device Device) bool {
 	var _arg1 *C.GdkDevice  // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
 
@@ -241,40 +222,42 @@ func (d *DisplayClass) DeviceIsGrabbed(device Device) bool {
 func (d *DisplayClass) Flush() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	C.gdk_display_flush(_arg0)
 }
 
 // AppLaunchContext returns a `GdkAppLaunchContext` suitable for launching
 // applications on the given display.
-func (d *DisplayClass) AppLaunchContext() AppLaunchContext {
+func (d *DisplayClass) AppLaunchContext() *AppLaunchContextClass {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_get_app_launch_context(_arg0)
 
-	var _appLaunchContext AppLaunchContext // out
+	var _appLaunchContext *AppLaunchContextClass // out
 
-	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AppLaunchContext)
+	_appLaunchContext = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*AppLaunchContextClass)
 
 	return _appLaunchContext
 }
 
 // Clipboard gets the clipboard used for copy/paste operations.
-func (d *DisplayClass) Clipboard() Clipboard {
+func (d *DisplayClass) Clipboard() *ClipboardClass {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_get_clipboard(_arg0)
 
-	var _clipboard Clipboard // out
+	var _clipboard *ClipboardClass // out
 
-	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Clipboard)
+	_clipboard = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ClipboardClass)
 
 	return _clipboard
 }
@@ -283,17 +266,18 @@ func (d *DisplayClass) Clipboard() Clipboard {
 //
 // Note that a display may not have a seat. In this case, this function will
 // return nil.
-func (d *DisplayClass) DefaultSeat() Seat {
+func (d *DisplayClass) DefaultSeat() *SeatClass {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_get_default_seat(_arg0)
 
-	var _seat Seat // out
+	var _seat *SeatClass // out
 
-	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Seat)
+	_seat = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SeatClass)
 
 	return _seat
 }
@@ -302,19 +286,20 @@ func (d *DisplayClass) DefaultSeat() Seat {
 // resides.
 //
 // Returns a monitor close to @surface if it is outside of all monitors.
-func (d *DisplayClass) MonitorAtSurface(surface Surface) Monitor {
+func (d *DisplayClass) MonitorAtSurface(surface Surface) *MonitorClass {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((&Surface).Native()))
 
 	_cret = C.gdk_display_get_monitor_at_surface(_arg0, _arg1)
 
-	var _monitor Monitor // out
+	var _monitor *MonitorClass // out
 
-	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Monitor)
+	_monitor = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*MonitorClass)
 
 	return _monitor
 }
@@ -324,7 +309,7 @@ func (d *DisplayClass) Name() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_get_name(_arg0)
 
@@ -339,17 +324,18 @@ func (d *DisplayClass) Name() string {
 //
 // On backends where the primary clipboard is not supported natively, GDK
 // emulates this clipboard locally.
-func (d *DisplayClass) PrimaryClipboard() Clipboard {
+func (d *DisplayClass) PrimaryClipboard() *ClipboardClass {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_get_primary_clipboard(_arg0)
 
-	var _clipboard Clipboard // out
+	var _clipboard *ClipboardClass // out
 
-	_clipboard = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Clipboard)
+	_clipboard = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ClipboardClass)
 
 	return _clipboard
 }
@@ -362,10 +348,10 @@ func (d *DisplayClass) Setting(name string, value externglib.Value) bool {
 	var _arg2 *C.GValue     // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
 
 	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
 
@@ -384,7 +370,7 @@ func (d *DisplayClass) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_get_startup_notification_id(_arg0)
 
@@ -400,7 +386,7 @@ func (d *DisplayClass) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_is_closed(_arg0)
 
@@ -427,7 +413,7 @@ func (d *DisplayClass) IsComposited() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_is_composited(_arg0)
 
@@ -454,7 +440,7 @@ func (d *DisplayClass) IsRGBA() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_is_rgba(_arg0)
 
@@ -478,7 +464,7 @@ func (d *DisplayClass) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 	_arg1 = (*C.char)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -494,8 +480,8 @@ func (d *DisplayClass) PutEvent(event Event) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkEvent   // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer((&Event).Native()))
 
 	C.gdk_display_put_event(_arg0, _arg1)
 }
@@ -510,7 +496,7 @@ func (d *DisplayClass) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_display_supports_input_shapes(_arg0)
 
@@ -536,60 +522,7 @@ func (d *DisplayClass) SupportsInputShapes() bool {
 func (d *DisplayClass) Sync() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	C.gdk_display_sync(_arg0)
-}
-
-// TranslateKey translates the contents of a `GdkEventKey` into a keyval,
-// effective group, and level.
-//
-// Modifiers that affected the translation and are thus unavailable for
-// application use are returned in @consumed_modifiers.
-//
-// The @effective_group is the group that was actually used for the translation;
-// some keys such as Enter are not affected by the active keyboard group. The
-// @level is derived from @state.
-//
-// @consumed_modifiers gives modifiers that should be masked out from @state
-// when comparing this key press to a keyboard shortcut. For instance, on a US
-// keyboard, the `plus` symbol is shifted, so when comparing a key press to a
-// `<Control>plus` accelerator `<Shift>` should be masked out.
-//
-// This function should rarely be needed, since `GdkEventKey` already contains
-// the translated keyval. It is exported for the benefit of virtualized test
-// environments.
-func (d *DisplayClass) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool) {
-	var _arg0 *C.GdkDisplay     // out
-	var _arg1 C.guint           // out
-	var _arg2 C.GdkModifierType // out
-	var _arg3 C.int             // out
-	var _arg4 C.guint           // in
-	var _arg5 C.int             // in
-	var _arg6 C.int             // in
-	var _arg7 C.GdkModifierType // in
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	_arg1 = C.guint(keycode)
-	_arg2 = C.GdkModifierType(state)
-	_arg3 = C.int(group)
-
-	_cret = C.gdk_display_translate_key(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
-
-	var _keyval uint           // out
-	var _effectiveGroup int    // out
-	var _level int             // out
-	var _consumed ModifierType // out
-	var _ok bool               // out
-
-	_keyval = uint(_arg4)
-	_effectiveGroup = int(_arg5)
-	_level = int(_arg6)
-	_consumed = ModifierType(_arg7)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _keyval, _effectiveGroup, _level, _consumed, _ok
 }

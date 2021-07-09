@@ -104,14 +104,15 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 }
 
 // NewCSSProvider returns a newly created `GtkCssProvider`.
-func NewCSSProvider() CSSProvider {
+func NewCSSProvider() *CSSProviderClass {
 	var _cret *C.GtkCssProvider // in
 
 	_cret = C.gtk_css_provider_new()
 
-	var _cssProvider CSSProvider // out
+	var _cssProvider *CSSProviderClass // out
 
-	_cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CSSProvider)
+	_cssProvider = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CSSProviderClass)
 
 	return _cssProvider
 }
@@ -124,7 +125,7 @@ func (c *CSSProviderClass) LoadFromData(data []byte) {
 	var _arg1 *C.char
 	var _arg2 C.gssize
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer((&CSSProvider).Native()))
 	_arg2 = C.gssize(len(data))
 	_arg1 = (*C.char)(unsafe.Pointer(&data[0]))
 
@@ -138,7 +139,7 @@ func (c *CSSProviderClass) LoadFromPath(path string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer((&CSSProvider).Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -153,7 +154,7 @@ func (c *CSSProviderClass) LoadFromResource(resourcePath string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer((&CSSProvider).Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -170,7 +171,7 @@ func (p *CSSProviderClass) LoadNamed(name string, variant string) {
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer((&CSSProvider).Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(variant))
@@ -188,7 +189,7 @@ func (p *CSSProviderClass) String() string {
 	var _arg0 *C.GtkCssProvider // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer((&CSSProvider).Native()))
 
 	_cret = C.gtk_css_provider_to_string(_arg0)
 

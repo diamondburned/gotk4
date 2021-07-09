@@ -86,19 +86,9 @@ type DragSource interface {
 	// Actions gets the actions that are currently set on the `GtkDragSource`.
 	Actions() gdk.DragAction
 	// Content gets the current content provider of a `GtkDragSource`.
-	Content() gdk.ContentProvider
+	Content() *gdk.ContentProviderClass
 	// Drag returns the underlying `GdkDrag` object for an ongoing drag.
-	Drag() gdk.Drag
-	// SetActions sets the actions on the `GtkDragSource`.
-	//
-	// During a DND operation, the actions are offered to potential drop
-	// targets. If @actions include GDK_ACTION_MOVE, you need to listen to the
-	// [signal@Gtk.DragSource::drag-end] signal and handle @delete_data being
-	// true.
-	//
-	// This function can be called before a drag is started, or in a handler for
-	// the [signal@Gtk.DragSource::prepare] signal.
-	SetActions(actions gdk.DragAction)
+	Drag() *gdk.DragClass
 	// SetContent sets a content provider on a `GtkDragSource`.
 	//
 	// When the data is requested in the cause of a DND operation, it will be
@@ -138,14 +128,15 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 }
 
 // NewDragSource creates a new `GtkDragSource` object.
-func NewDragSource() DragSource {
+func NewDragSource() *DragSourceClass {
 	var _cret *C.GtkDragSource // in
 
 	_cret = C.gtk_drag_source_new()
 
-	var _dragSource DragSource // out
+	var _dragSource *DragSourceClass // out
 
-	_dragSource = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DragSource)
+	_dragSource = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DragSourceClass)
 
 	return _dragSource
 }
@@ -154,7 +145,7 @@ func NewDragSource() DragSource {
 func (s *DragSourceClass) DragCancel() {
 	var _arg0 *C.GtkDragSource // out
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&DragSource).Native()))
 
 	C.gtk_drag_source_drag_cancel(_arg0)
 }
@@ -164,65 +155,49 @@ func (s *DragSourceClass) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDragSource // out
 	var _cret C.GdkDragAction  // in
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&DragSource).Native()))
 
 	_cret = C.gtk_drag_source_get_actions(_arg0)
 
 	var _dragAction gdk.DragAction // out
 
-	_dragAction = gdk.DragAction(_cret)
+	_dragAction = (gdk.DragAction)(C.GdkDragAction)
 
 	return _dragAction
 }
 
 // Content gets the current content provider of a `GtkDragSource`.
-func (s *DragSourceClass) Content() gdk.ContentProvider {
+func (s *DragSourceClass) Content() *gdk.ContentProviderClass {
 	var _arg0 *C.GtkDragSource      // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&DragSource).Native()))
 
 	_cret = C.gtk_drag_source_get_content(_arg0)
 
-	var _contentProvider gdk.ContentProvider // out
+	var _contentProvider *gdk.ContentProviderClass // out
 
-	_contentProvider = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.ContentProvider)
+	_contentProvider = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.ContentProviderClass)
 
 	return _contentProvider
 }
 
 // Drag returns the underlying `GdkDrag` object for an ongoing drag.
-func (s *DragSourceClass) Drag() gdk.Drag {
+func (s *DragSourceClass) Drag() *gdk.DragClass {
 	var _arg0 *C.GtkDragSource // out
 	var _cret *C.GdkDrag       // in
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&DragSource).Native()))
 
 	_cret = C.gtk_drag_source_get_drag(_arg0)
 
-	var _drag gdk.Drag // out
+	var _drag *gdk.DragClass // out
 
-	_drag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Drag)
+	_drag = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DragClass)
 
 	return _drag
-}
-
-// SetActions sets the actions on the `GtkDragSource`.
-//
-// During a DND operation, the actions are offered to potential drop targets. If
-// @actions include GDK_ACTION_MOVE, you need to listen to the
-// [signal@Gtk.DragSource::drag-end] signal and handle @delete_data being true.
-//
-// This function can be called before a drag is started, or in a handler for the
-// [signal@Gtk.DragSource::prepare] signal.
-func (s *DragSourceClass) SetActions(actions gdk.DragAction) {
-	var _arg0 *C.GtkDragSource // out
-	var _arg1 C.GdkDragAction  // out
-
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GdkDragAction(actions)
-
-	C.gtk_drag_source_set_actions(_arg0, _arg1)
 }
 
 // SetContent sets a content provider on a `GtkDragSource`.
@@ -239,8 +214,8 @@ func (s *DragSourceClass) SetContent(content gdk.ContentProvider) {
 	var _arg0 *C.GtkDragSource      // out
 	var _arg1 *C.GdkContentProvider // out
 
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer((&DragSource).Native()))
+	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer((&gdk.ContentProvider).Native()))
 
 	C.gtk_drag_source_set_content(_arg0, _arg1)
 }

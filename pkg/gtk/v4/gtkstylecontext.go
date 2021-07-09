@@ -121,7 +121,7 @@ type StyleContext interface {
 	// [func@Gtk.StyleContext.add_provider_for_display].
 	AddProvider(provider StyleProvider, priority uint)
 	// Display returns the `GdkDisplay` to which @context is attached.
-	Display() gdk.Display
+	Display() *gdk.DisplayClass
 	// Scale returns the scale used for assets.
 	Scale() int
 	// State returns the state used for style matching.
@@ -165,18 +165,6 @@ type StyleContext interface {
 	SetDisplay(display gdk.Display)
 	// SetScale sets the scale to use when getting image assets for the style.
 	SetScale(scale int)
-	// SetState sets the state to be used for style matching.
-	SetState(flags StateFlags)
-	// String converts the style context into a string representation.
-	//
-	// The string representation always includes information about the name,
-	// state, id, visibility and style classes of the CSS node that is backing
-	// @context. Depending on the flags, more information may be included.
-	//
-	// This function is intended for testing and debugging of the CSS
-	// implementation in GTK. There are no guarantees about the format of the
-	// returned string, it may change.
-	String(flags StyleContextPrintFlags) string
 }
 
 // StyleContextClass implements the StyleContext interface.
@@ -212,7 +200,7 @@ func (c *StyleContextClass) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.char)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -234,25 +222,26 @@ func (c *StyleContextClass) AddProvider(provider StyleProvider, priority uint) {
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((&StyleProvider).Native()))
 	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
 }
 
 // Display returns the `GdkDisplay` to which @context is attached.
-func (c *StyleContextClass) Display() gdk.Display {
+func (c *StyleContextClass) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GdkDisplay      // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_display(_arg0)
 
-	var _display gdk.Display // out
+	var _display *gdk.DisplayClass // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Display)
+	_display = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DisplayClass)
 
 	return _display
 }
@@ -262,7 +251,7 @@ func (c *StyleContextClass) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.int              // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
 
@@ -283,13 +272,13 @@ func (c *StyleContextClass) State() StateFlags {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkStateFlags    // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_state(_arg0)
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = StateFlags(_cret)
+	_stateFlags = (StateFlags)(C.GtkStateFlags)
 
 	return _stateFlags
 }
@@ -300,7 +289,7 @@ func (c *StyleContextClass) HasClass(className string) bool {
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.char)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -320,7 +309,7 @@ func (c *StyleContextClass) RemoveClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.char)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -332,8 +321,8 @@ func (c *StyleContextClass) RemoveProvider(provider StyleProvider) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((&StyleProvider).Native()))
 
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
@@ -344,7 +333,7 @@ func (c *StyleContextClass) RemoveProvider(provider StyleProvider) {
 func (c *StyleContextClass) Restore() {
 	var _arg0 *C.GtkStyleContext // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	C.gtk_style_context_restore(_arg0)
 }
@@ -361,7 +350,7 @@ func (c *StyleContextClass) Restore() {
 func (c *StyleContextClass) Save() {
 	var _arg0 *C.GtkStyleContext // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	C.gtk_style_context_save(_arg0)
 }
@@ -377,8 +366,8 @@ func (c *StyleContextClass) SetDisplay(display gdk.Display) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkDisplay      // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&gdk.Display).Native()))
 
 	C.gtk_style_context_set_display(_arg0, _arg1)
 }
@@ -388,46 +377,8 @@ func (c *StyleContextClass) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.int              // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = C.int(scale)
 
 	C.gtk_style_context_set_scale(_arg0, _arg1)
-}
-
-// SetState sets the state to be used for style matching.
-func (c *StyleContextClass) SetState(flags StateFlags) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkStateFlags    // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkStateFlags(flags)
-
-	C.gtk_style_context_set_state(_arg0, _arg1)
-}
-
-// String converts the style context into a string representation.
-//
-// The string representation always includes information about the name, state,
-// id, visibility and style classes of the CSS node that is backing @context.
-// Depending on the flags, more information may be included.
-//
-// This function is intended for testing and debugging of the CSS implementation
-// in GTK. There are no guarantees about the format of the returned string, it
-// may change.
-func (c *StyleContextClass) String(flags StyleContextPrintFlags) string {
-	var _arg0 *C.GtkStyleContext          // out
-	var _arg1 C.GtkStyleContextPrintFlags // out
-	var _cret *C.char                     // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkStyleContextPrintFlags(flags)
-
-	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString(_cret)
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
 }

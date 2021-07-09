@@ -41,7 +41,7 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 	var _arg3 C.gint     // out
 	var _cret C.gint     // in
 
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(fds))
+	_arg1 = (*C.GPollFD)(unsafe.Pointer(*PollFD))
 	_arg2 = C.guint(nfds)
 	_arg3 = C.gint(timeout)
 

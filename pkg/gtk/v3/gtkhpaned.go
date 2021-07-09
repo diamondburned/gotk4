@@ -53,7 +53,6 @@ func wrapHPaned(obj *externglib.Object) HPaned {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -88,14 +87,15 @@ func marshalHPaned(p uintptr) (interface{}, error) {
 // NewHPaned: create a new HPaned
 //
 // Deprecated: since version 3.2.
-func NewHPaned() HPaned {
+func NewHPaned() *HPanedClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_hpaned_new()
 
-	var _hPaned HPaned // out
+	var _hPaned *HPanedClass // out
 
-	_hPaned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HPaned)
+	_hPaned = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HPanedClass)
 
 	return _hPaned
 }

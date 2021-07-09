@@ -74,7 +74,6 @@ func wrapCellAreaBox(obj *externglib.Object) CellAreaBox {
 	return &CellAreaBoxClass{
 		Object: obj,
 		CellAreaClass: CellAreaClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			BuildableInterface: BuildableInterface{
 				Object: obj,
@@ -102,14 +101,15 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 }
 
 // NewCellAreaBox creates a new CellAreaBox.
-func NewCellAreaBox() CellAreaBox {
+func NewCellAreaBox() *CellAreaBoxClass {
 	var _cret *C.GtkCellArea // in
 
 	_cret = C.gtk_cell_area_box_new()
 
-	var _cellAreaBox CellAreaBox // out
+	var _cellAreaBox *CellAreaBoxClass // out
 
-	_cellAreaBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellAreaBox)
+	_cellAreaBox = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CellAreaBoxClass)
 
 	return _cellAreaBox
 }
@@ -119,7 +119,7 @@ func (b *CellAreaBoxClass) Spacing() int {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer((&CellAreaBox).Native()))
 
 	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
 
@@ -141,8 +141,8 @@ func (b *CellAreaBoxClass) PackEnd(renderer CellRenderer, expand bool, align boo
 	var _arg3 C.gboolean         // out
 	var _arg4 C.gboolean         // out
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer((&CellAreaBox).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((&CellRenderer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -167,8 +167,8 @@ func (b *CellAreaBoxClass) PackStart(renderer CellRenderer, expand bool, align b
 	var _arg3 C.gboolean         // out
 	var _arg4 C.gboolean         // out
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer((&CellAreaBox).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((&CellRenderer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -187,7 +187,7 @@ func (b *CellAreaBoxClass) SetSpacing(spacing int) {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer((&CellAreaBox).Native()))
 	_arg1 = C.int(spacing)
 
 	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)

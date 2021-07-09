@@ -77,17 +77,18 @@ func marshalTexture(p uintptr) (interface{}, error) {
 
 // NewTextureForPixbuf creates a new texture object representing the
 // `GdkPixbuf`.
-func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
+func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) *TextureClass {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GdkTexture // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
 
 	_cret = C.gdk_texture_new_for_pixbuf(_arg1)
 
-	var _texture Texture // out
+	var _texture *TextureClass // out
 
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Texture)
+	_texture = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TextureClass)
 
 	return _texture
 }
@@ -101,7 +102,7 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 // It is a fatal error if @resource_path does not specify a valid image resource
 // and the program will abort if that happens. If you are unsure about the
 // validity of a resource, use [ctor@Gdk.Texture.new_from_file] to load it.
-func NewTextureFromResource(resourcePath string) Texture {
+func NewTextureFromResource(resourcePath string) *TextureClass {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkTexture // in
 
@@ -110,9 +111,10 @@ func NewTextureFromResource(resourcePath string) Texture {
 
 	_cret = C.gdk_texture_new_from_resource(_arg1)
 
-	var _texture Texture // out
+	var _texture *TextureClass // out
 
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Texture)
+	_texture = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TextureClass)
 
 	return _texture
 }
@@ -122,7 +124,7 @@ func (t *TextureClass) Height() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer((&Texture).Native()))
 
 	_cret = C.gdk_texture_get_height(_arg0)
 
@@ -138,7 +140,7 @@ func (t *TextureClass) Width() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer((&Texture).Native()))
 
 	_cret = C.gdk_texture_get_width(_arg0)
 
@@ -160,7 +162,7 @@ func (t *TextureClass) SaveToPng(filename string) bool {
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer((&Texture).Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 

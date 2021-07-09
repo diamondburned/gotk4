@@ -31,7 +31,7 @@ func TestRegisterAllTypes() {
 func TestWidgetWaitForDraw(widget Widget) {
 	var _arg1 *C.GtkWidget // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_test_widget_wait_for_draw(_arg1)
 }

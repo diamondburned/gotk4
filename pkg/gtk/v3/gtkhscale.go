@@ -55,7 +55,6 @@ func wrapHScale(obj *externglib.Object) HScale {
 			RangeClass: RangeClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -93,17 +92,18 @@ func marshalHScale(p uintptr) (interface{}, error) {
 // NewHScale creates a new HScale.
 //
 // Deprecated: since version 3.2.
-func NewHScale(adjustment Adjustment) HScale {
+func NewHScale(adjustment Adjustment) *HScaleClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
 
 	_cret = C.gtk_hscale_new(_arg1)
 
-	var _hScale HScale // out
+	var _hScale *HScaleClass // out
 
-	_hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HScale)
+	_hScale = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HScaleClass)
 
 	return _hScale
 }
@@ -118,7 +118,7 @@ func NewHScale(adjustment Adjustment) HScale {
 // gtk_scale_set_digits() to correct it.
 //
 // Deprecated: since version 3.2.
-func NewHScaleWithRange(min float64, max float64, step float64) HScale {
+func NewHScaleWithRange(min float64, max float64, step float64) *HScaleClass {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
 	var _arg3 C.gdouble    // out
@@ -130,9 +130,10 @@ func NewHScaleWithRange(min float64, max float64, step float64) HScale {
 
 	_cret = C.gtk_hscale_new_with_range(_arg1, _arg2, _arg3)
 
-	var _hScale HScale // out
+	var _hScale *HScaleClass // out
 
-	_hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HScale)
+	_hScale = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HScaleClass)
 
 	return _hScale
 }

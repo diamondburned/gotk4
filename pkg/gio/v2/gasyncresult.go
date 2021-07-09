@@ -40,7 +40,7 @@ func init() {
 // yet, so the interface currently has no use.
 type AsyncResultOverrider interface {
 	// SourceObject gets the source object from a Result.
-	SourceObject() gextras.Objector
+	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.
 	UserData() interface{}
 	// IsTagged checks if @res has the given @source_tag (generally a function
@@ -132,7 +132,7 @@ type AsyncResult interface {
 	gextras.Objector
 
 	// SourceObject gets the source object from a Result.
-	SourceObject() gextras.Objector
+	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.
 	UserData() interface{}
 	// IsTagged checks if @res has the given @source_tag (generally a function
@@ -169,17 +169,18 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 }
 
 // SourceObject gets the source object from a Result.
-func (r *AsyncResultInterface) SourceObject() gextras.Objector {
+func (r *AsyncResultInterface) SourceObject() *externglib.Object {
 	var _arg0 *C.GAsyncResult // out
 	var _cret *C.GObject      // in
 
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	_cret = C.g_async_result_get_source_object(_arg0)
 
-	var _object gextras.Objector // out
+	var _object *externglib.Object // out
 
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
+	_object = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*externglib.Object)
 
 	return _object
 }
@@ -189,7 +190,7 @@ func (r *AsyncResultInterface) UserData() interface{} {
 	var _arg0 *C.GAsyncResult // out
 	var _cret C.gpointer      // in
 
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	_cret = C.g_async_result_get_user_data(_arg0)
 
@@ -207,7 +208,7 @@ func (r *AsyncResultInterface) IsTagged(sourceTag interface{}) bool {
 	var _arg1 C.gpointer      // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 	_arg1 = (C.gpointer)(box.Assign(sourceTag))
 
 	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
@@ -233,7 +234,7 @@ func (r *AsyncResultInterface) LegacyPropagateError() error {
 	var _arg0 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	C.g_async_result_legacy_propagate_error(_arg0, &_cerr)
 

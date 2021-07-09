@@ -90,7 +90,6 @@ func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcut {
 	return &ShortcutsShortcutClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,

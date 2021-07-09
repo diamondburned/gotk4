@@ -75,14 +75,15 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 
 // NewGestureLongPress returns a newly created `GtkGesture` that recognizes long
 // presses.
-func NewGestureLongPress() GestureLongPress {
+func NewGestureLongPress() *GestureLongPressClass {
 	var _cret *C.GtkGesture // in
 
 	_cret = C.gtk_gesture_long_press_new()
 
-	var _gestureLongPress GestureLongPress // out
+	var _gestureLongPress *GestureLongPressClass // out
 
-	_gestureLongPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureLongPress)
+	_gestureLongPress = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureLongPressClass)
 
 	return _gestureLongPress
 }
@@ -92,7 +93,7 @@ func (g *GestureLongPressClass) DelayFactor() float64 {
 	var _arg0 *C.GtkGestureLongPress // out
 	var _cret C.double               // in
 
-	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer((&GestureLongPress).Native()))
 
 	_cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
 
@@ -111,7 +112,7 @@ func (g *GestureLongPressClass) SetDelayFactor(delayFactor float64) {
 	var _arg0 *C.GtkGestureLongPress // out
 	var _arg1 C.double               // out
 
-	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer((&GestureLongPress).Native()))
 	_arg1 = C.double(delayFactor)
 
 	C.gtk_gesture_long_press_set_delay_factor(_arg0, _arg1)

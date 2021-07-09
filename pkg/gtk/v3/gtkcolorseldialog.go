@@ -29,7 +29,7 @@ type ColorSelectionDialog interface {
 
 	// ColorSelection retrieves the ColorSelection widget embedded in the
 	// dialog.
-	ColorSelection() Widget
+	ColorSelection() *WidgetClass
 }
 
 // ColorSelectionDialogClass implements the ColorSelectionDialog interface.
@@ -53,7 +53,6 @@ func wrapColorSelectionDialog(obj *externglib.Object) ColorSelectionDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							BuildableInterface: BuildableInterface{
 								Object: obj,
@@ -88,7 +87,7 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 }
 
 // NewColorSelectionDialog creates a new ColorSelectionDialog.
-func NewColorSelectionDialog(title string) ColorSelectionDialog {
+func NewColorSelectionDialog(title string) *ColorSelectionDialogClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -97,25 +96,27 @@ func NewColorSelectionDialog(title string) ColorSelectionDialog {
 
 	_cret = C.gtk_color_selection_dialog_new(_arg1)
 
-	var _colorSelectionDialog ColorSelectionDialog // out
+	var _colorSelectionDialog *ColorSelectionDialogClass // out
 
-	_colorSelectionDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorSelectionDialog)
+	_colorSelectionDialog = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ColorSelectionDialogClass)
 
 	return _colorSelectionDialog
 }
 
 // ColorSelection retrieves the ColorSelection widget embedded in the dialog.
-func (c *ColorSelectionDialogClass) ColorSelection() Widget {
+func (c *ColorSelectionDialogClass) ColorSelection() *WidgetClass {
 	var _arg0 *C.GtkColorSelectionDialog // out
 	var _cret *C.GtkWidget               // in
 
-	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer((&ColorSelectionDialog).Native()))
 
 	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }

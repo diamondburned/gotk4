@@ -59,7 +59,6 @@ func wrapSeparatorMenuItem(obj *externglib.Object) SeparatorMenuItem {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -75,7 +74,6 @@ func wrapSeparatorMenuItem(obj *externglib.Object) SeparatorMenuItem {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -91,7 +89,6 @@ func wrapSeparatorMenuItem(obj *externglib.Object) SeparatorMenuItem {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -114,14 +111,15 @@ func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
 }
 
 // NewSeparatorMenuItem creates a new SeparatorMenuItem.
-func NewSeparatorMenuItem() SeparatorMenuItem {
+func NewSeparatorMenuItem() *SeparatorMenuItemClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_separator_menu_item_new()
 
-	var _separatorMenuItem SeparatorMenuItem // out
+	var _separatorMenuItem *SeparatorMenuItemClass // out
 
-	_separatorMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SeparatorMenuItem)
+	_separatorMenuItem = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SeparatorMenuItemClass)
 
 	return _separatorMenuItem
 }

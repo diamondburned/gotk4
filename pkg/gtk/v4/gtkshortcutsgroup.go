@@ -54,7 +54,6 @@ func wrapShortcutsGroup(obj *externglib.Object) ShortcutsGroup {
 		BoxClass: BoxClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,

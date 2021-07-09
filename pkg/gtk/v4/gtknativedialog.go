@@ -81,7 +81,7 @@ type NativeDialog interface {
 	// Title gets the title of the `GtkNativeDialog`.
 	Title() string
 	// TransientFor fetches the transient parent for this window.
-	TransientFor() Window
+	TransientFor() *WindowClass
 	// Visible determines whether the dialog is visible.
 	Visible() bool
 	// Hide hides the dialog if it is visible, aborting any interaction.
@@ -153,7 +153,7 @@ func marshalNativeDialog(p uintptr) (interface{}, error) {
 func (s *NativeDialogClass) Destroy() {
 	var _arg0 *C.GtkNativeDialog // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
 
 	C.gtk_native_dialog_destroy(_arg0)
 }
@@ -163,7 +163,7 @@ func (s *NativeDialogClass) Modal() bool {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
 
 	_cret = C.gtk_native_dialog_get_modal(_arg0)
 
@@ -181,7 +181,7 @@ func (s *NativeDialogClass) Title() string {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
 
 	_cret = C.gtk_native_dialog_get_title(_arg0)
 
@@ -193,17 +193,18 @@ func (s *NativeDialogClass) Title() string {
 }
 
 // TransientFor fetches the transient parent for this window.
-func (s *NativeDialogClass) TransientFor() Window {
+func (s *NativeDialogClass) TransientFor() *WindowClass {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret *C.GtkWindow       // in
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
 
 	_cret = C.gtk_native_dialog_get_transient_for(_arg0)
 
-	var _window Window // out
+	var _window *WindowClass // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
 
 	return _window
 }
@@ -213,7 +214,7 @@ func (s *NativeDialogClass) Visible() bool {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
 
 	_cret = C.gtk_native_dialog_get_visible(_arg0)
 
@@ -235,7 +236,7 @@ func (s *NativeDialogClass) Visible() bool {
 func (s *NativeDialogClass) Hide() {
 	var _arg0 *C.GtkNativeDialog // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
 
 	C.gtk_native_dialog_hide(_arg0)
 }
@@ -251,7 +252,7 @@ func (s *NativeDialogClass) SetModal(modal bool) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -264,7 +265,7 @@ func (s *NativeDialogClass) SetTitle(title string) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -282,8 +283,8 @@ func (s *NativeDialogClass) SetTransientFor(parent Window) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.GtkWindow       // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
 
 	C.gtk_native_dialog_set_transient_for(_arg0, _arg1)
 }
@@ -298,7 +299,7 @@ func (s *NativeDialogClass) SetTransientFor(parent Window) {
 func (s *NativeDialogClass) Show() {
 	var _arg0 *C.GtkNativeDialog // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer((&NativeDialog).Native()))
 
 	C.gtk_native_dialog_show(_arg0)
 }

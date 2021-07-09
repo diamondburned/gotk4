@@ -123,13 +123,13 @@ type Gesture interface {
 	// @gesture.
 	//
 	// This returns nil if the gesture is not being interacted.
-	Device() gdk.Device
+	Device() *gdk.DeviceClass
 	// LastEvent returns the last event that was processed for @sequence.
 	//
 	// Note that the returned pointer is only valid as long as the @sequence is
 	// still interpreted by the @gesture. If in doubt, you should make a copy of
 	// the event.
-	LastEvent(sequence *gdk.EventSequence) gdk.Event
+	LastEvent(sequence *gdk.EventSequence) *gdk.EventClass
 	// LastUpdatedSequence returns the `GdkEventSequence` that was last updated
 	// on @gesture.
 	LastUpdatedSequence() *gdk.EventSequence
@@ -172,43 +172,6 @@ type Gesture interface {
 	// A gesture is recognized if there are as many interacting touch sequences
 	// as required by @gesture.
 	IsRecognized() bool
-	// SetSequenceState sets the state of @sequence in @gesture.
-	//
-	// Sequences start in state GTK_EVENT_SEQUENCE_NONE, and whenever they
-	// change state, they can never go back to that state. Likewise, sequences
-	// in state GTK_EVENT_SEQUENCE_DENIED cannot turn back to a not denied
-	// state. With these rules, the lifetime of an event sequence is constrained
-	// to the next four:
-	//
-	// * None * None → Denied * None → Claimed * None → Claimed → Denied
-	//
-	// Note: Due to event handling ordering, it may be unsafe to set the state
-	// on another gesture within a [signal@Gtk.Gesture::begin] signal handler,
-	// as the callback might be executed before the other gesture knows about
-	// the sequence. A safe way to perform this could be:
-	//
-	// “`c static void first_gesture_begin_cb (GtkGesture *first_gesture,
-	// GdkEventSequence *sequence, gpointer user_data) {
-	// gtk_gesture_set_sequence_state (first_gesture, sequence,
-	// GTK_EVENT_SEQUENCE_CLAIMED); gtk_gesture_set_sequence_state
-	// (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED); }
-	//
-	// static void second_gesture_begin_cb (GtkGesture *second_gesture,
-	// GdkEventSequence *sequence, gpointer user_data) { if
-	// (gtk_gesture_get_sequence_state (first_gesture, sequence) ==
-	// GTK_EVENT_SEQUENCE_CLAIMED) gtk_gesture_set_sequence_state
-	// (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED); } “`
-	//
-	// If both gestures are in the same group, just set the state on the gesture
-	// emitting the event, the sequence will be already be initialized to the
-	// group's global state when the second gesture processes the event.
-	SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool
-	// SetState sets the state of all sequences that @gesture is currently
-	// interacting with.
-	//
-	// See [method@Gtk.Gesture.set_sequence_state] for more details on sequence
-	// states.
-	SetState(state EventSequenceState) bool
 	// Ungroup separates @gesture into an isolated group.
 	Ungroup()
 }
@@ -245,7 +208,7 @@ func (g *GestureClass) BoundingBoxCenter() (x float64, y float64, ok bool) {
 	var _arg2 C.double      // in
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
 
 	_cret = C.gtk_gesture_get_bounding_box_center(_arg0, &_arg1, &_arg2)
 
@@ -266,17 +229,18 @@ func (g *GestureClass) BoundingBoxCenter() (x float64, y float64, ok bool) {
 // @gesture.
 //
 // This returns nil if the gesture is not being interacted.
-func (g *GestureClass) Device() gdk.Device {
+func (g *GestureClass) Device() *gdk.DeviceClass {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GdkDevice  // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
 
 	_cret = C.gtk_gesture_get_device(_arg0)
 
-	var _device gdk.Device // out
+	var _device *gdk.DeviceClass // out
 
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Device)
+	_device = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DeviceClass)
 
 	return _device
 }
@@ -286,19 +250,20 @@ func (g *GestureClass) Device() gdk.Device {
 // Note that the returned pointer is only valid as long as the @sequence is
 // still interpreted by the @gesture. If in doubt, you should make a copy of the
 // event.
-func (g *GestureClass) LastEvent(sequence *gdk.EventSequence) gdk.Event {
+func (g *GestureClass) LastEvent(sequence *gdk.EventSequence) *gdk.EventClass {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _cret *C.GdkEvent         // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
+	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(*gdk.EventSequence))
 
 	_cret = C.gtk_gesture_get_last_event(_arg0, _arg1)
 
-	var _event gdk.Event // out
+	var _event *gdk.EventClass // out
 
-	_event = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Event)
+	_event = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.EventClass)
 
 	return _event
 }
@@ -309,13 +274,13 @@ func (g *GestureClass) LastUpdatedSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGesture       // out
 	var _cret *C.GdkEventSequence // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
 
 	_cret = C.gtk_gesture_get_last_updated_sequence(_arg0)
 
 	var _eventSequence *gdk.EventSequence // out
 
-	_eventSequence = (*gdk.EventSequence)(unsafe.Pointer(_cret))
+	_eventSequence = (*gdk.EventSequence)(unsafe.Pointer(*C.GdkEventSequence))
 
 	return _eventSequence
 }
@@ -332,8 +297,8 @@ func (g *GestureClass) Point(sequence *gdk.EventSequence) (x float64, y float64,
 	var _arg3 C.double            // in
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
+	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(*gdk.EventSequence))
 
 	_cret = C.gtk_gesture_get_point(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -356,14 +321,14 @@ func (g *GestureClass) SequenceState(sequence *gdk.EventSequence) EventSequenceS
 	var _arg1 *C.GdkEventSequence     // out
 	var _cret C.GtkEventSequenceState // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
+	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(*gdk.EventSequence))
 
 	_cret = C.gtk_gesture_get_sequence_state(_arg0, _arg1)
 
 	var _eventSequenceState EventSequenceState // out
 
-	_eventSequenceState = EventSequenceState(_cret)
+	_eventSequenceState = (EventSequenceState)(C.GtkEventSequenceState)
 
 	return _eventSequenceState
 }
@@ -387,8 +352,8 @@ func (g *GestureClass) Group(gesture Gesture) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GtkGesture // out
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
+	_arg1 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
 
 	C.gtk_gesture_group(_arg0, _arg1)
 }
@@ -400,8 +365,8 @@ func (g *GestureClass) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var _arg1 *C.GdkEventSequence // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
+	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(*gdk.EventSequence))
 
 	_cret = C.gtk_gesture_handles_sequence(_arg0, _arg1)
 
@@ -421,7 +386,7 @@ func (g *GestureClass) IsActive() bool {
 	var _arg0 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
 
 	_cret = C.gtk_gesture_is_active(_arg0)
 
@@ -440,8 +405,8 @@ func (g *GestureClass) IsGroupedWith(other Gesture) bool {
 	var _arg1 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GtkGesture)(unsafe.Pointer(other.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
+	_arg1 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
 
 	_cret = C.gtk_gesture_is_grouped_with(_arg0, _arg1)
 
@@ -462,83 +427,9 @@ func (g *GestureClass) IsRecognized() bool {
 	var _arg0 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
 
 	_cret = C.gtk_gesture_is_recognized(_arg0)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetSequenceState sets the state of @sequence in @gesture.
-//
-// Sequences start in state GTK_EVENT_SEQUENCE_NONE, and whenever they change
-// state, they can never go back to that state. Likewise, sequences in state
-// GTK_EVENT_SEQUENCE_DENIED cannot turn back to a not denied state. With these
-// rules, the lifetime of an event sequence is constrained to the next four:
-//
-// * None * None → Denied * None → Claimed * None → Claimed → Denied
-//
-// Note: Due to event handling ordering, it may be unsafe to set the state on
-// another gesture within a [signal@Gtk.Gesture::begin] signal handler, as the
-// callback might be executed before the other gesture knows about the sequence.
-// A safe way to perform this could be:
-//
-// “`c static void first_gesture_begin_cb (GtkGesture *first_gesture,
-// GdkEventSequence *sequence, gpointer user_data) {
-// gtk_gesture_set_sequence_state (first_gesture, sequence,
-// GTK_EVENT_SEQUENCE_CLAIMED); gtk_gesture_set_sequence_state (second_gesture,
-// sequence, GTK_EVENT_SEQUENCE_DENIED); }
-//
-// static void second_gesture_begin_cb (GtkGesture *second_gesture,
-// GdkEventSequence *sequence, gpointer user_data) { if
-// (gtk_gesture_get_sequence_state (first_gesture, sequence) ==
-// GTK_EVENT_SEQUENCE_CLAIMED) gtk_gesture_set_sequence_state (second_gesture,
-// sequence, GTK_EVENT_SEQUENCE_DENIED); } “`
-//
-// If both gestures are in the same group, just set the state on the gesture
-// emitting the event, the sequence will be already be initialized to the
-// group's global state when the second gesture processes the event.
-func (g *GestureClass) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
-	var _arg0 *C.GtkGesture           // out
-	var _arg1 *C.GdkEventSequence     // out
-	var _arg2 C.GtkEventSequenceState // out
-	var _cret C.gboolean              // in
-
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
-	_arg2 = C.GtkEventSequenceState(state)
-
-	_cret = C.gtk_gesture_set_sequence_state(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetState sets the state of all sequences that @gesture is currently
-// interacting with.
-//
-// See [method@Gtk.Gesture.set_sequence_state] for more details on sequence
-// states.
-func (g *GestureClass) SetState(state EventSequenceState) bool {
-	var _arg0 *C.GtkGesture           // out
-	var _arg1 C.GtkEventSequenceState // out
-	var _cret C.gboolean              // in
-
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	_arg1 = C.GtkEventSequenceState(state)
-
-	_cret = C.gtk_gesture_set_state(_arg0, _arg1)
 
 	var _ok bool // out
 
@@ -553,7 +444,7 @@ func (g *GestureClass) SetState(state EventSequenceState) bool {
 func (g *GestureClass) Ungroup() {
 	var _arg0 *C.GtkGesture // out
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer((&Gesture).Native()))
 
 	C.gtk_gesture_ungroup(_arg0)
 }

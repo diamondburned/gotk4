@@ -119,7 +119,6 @@ func wrapDrawingArea(obj *externglib.Object) DrawingArea {
 	return &DrawingAreaClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			BuildableInterface: BuildableInterface{
 				Object: obj,
@@ -138,14 +137,15 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 }
 
 // NewDrawingArea creates a new drawing area.
-func NewDrawingArea() DrawingArea {
+func NewDrawingArea() *DrawingAreaClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_drawing_area_new()
 
-	var _drawingArea DrawingArea // out
+	var _drawingArea *DrawingAreaClass // out
 
-	_drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DrawingArea)
+	_drawingArea = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DrawingAreaClass)
 
 	return _drawingArea
 }

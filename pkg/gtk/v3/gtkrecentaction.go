@@ -87,7 +87,7 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewRecentAction(name string, label string, tooltip string, stockId string) RecentAction {
+func NewRecentAction(name string, label string, tooltip string, stockId string) *RecentActionClass {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _arg3 *C.gchar     // out
@@ -105,9 +105,10 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 
 	_cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
 
-	var _recentAction RecentAction // out
+	var _recentAction *RecentActionClass // out
 
-	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RecentAction)
+	_recentAction = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RecentActionClass)
 
 	return _recentAction
 }
@@ -117,7 +118,7 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManager) RecentAction {
+func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManager) *RecentActionClass {
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.gchar            // out
 	var _arg3 *C.gchar            // out
@@ -133,13 +134,14 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer((&RecentManager).Native()))
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _recentAction RecentAction // out
+	var _recentAction *RecentActionClass // out
 
-	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RecentAction)
+	_recentAction = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RecentActionClass)
 
 	return _recentAction
 }
@@ -152,7 +154,7 @@ func (a *RecentActionClass) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentAction // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer((&RecentAction).Native()))
 
 	_cret = C.gtk_recent_action_get_show_numbers(_arg0)
 
@@ -175,7 +177,7 @@ func (a *RecentActionClass) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentAction // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer((&RecentAction).Native()))
 	if showNumbers {
 		_arg1 = C.TRUE
 	}

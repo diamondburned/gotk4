@@ -48,7 +48,7 @@ type ApplicationCommandLineOverrider interface {
 	// future, support may be expanded to other platforms.
 	//
 	// You must only call this function once per commandline invocation.
-	Stdin() InputStream
+	Stdin() *InputStreamClass
 	PrintLiteral(message string)
 	PrinterrLiteral(message string)
 }
@@ -133,7 +133,7 @@ type ApplicationCommandLine interface {
 	// This differs from g_file_new_for_commandline_arg() in that it resolves
 	// relative pathnames using the current working directory of the invoking
 	// process rather than the local process.
-	CreateFileForArg(arg string) File
+	CreateFileForArg(arg string) *FileInterface
 	// Cwd gets the working directory of the command line invocation. The string
 	// may contain non-utf8 data.
 	//
@@ -193,7 +193,7 @@ type ApplicationCommandLine interface {
 	// future, support may be expanded to other platforms.
 	//
 	// You must only call this function once per commandline invocation.
-	Stdin() InputStream
+	Stdin() *InputStreamClass
 	// Env gets the value of a particular environment variable of the command
 	// line invocation, as would be returned by g_getenv(). The strings may
 	// contain non-utf8 data.
@@ -255,20 +255,21 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 // This differs from g_file_new_for_commandline_arg() in that it resolves
 // relative pathnames using the current working directory of the invoking
 // process rather than the local process.
-func (c *ApplicationCommandLineClass) CreateFileForArg(arg string) File {
+func (c *ApplicationCommandLineClass) CreateFileForArg(arg string) *FileInterface {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
 	var _cret *C.GFile                   // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 	_arg1 = (*C.gchar)(C.CString(arg))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
 
-	var _file File // out
+	var _file *FileInterface // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(File)
+	_file = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileInterface)
 
 	return _file
 }
@@ -285,7 +286,7 @@ func (c *ApplicationCommandLineClass) Cwd() string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.gchar                   // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 
 	_cret = C.g_application_command_line_get_cwd(_arg0)
 
@@ -315,7 +316,7 @@ func (c *ApplicationCommandLineClass) Environ() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 
 	_cret = C.g_application_command_line_get_environ(_arg0)
 
@@ -344,7 +345,7 @@ func (c *ApplicationCommandLineClass) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.int                      // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 
 	_cret = C.g_application_command_line_get_exit_status(_arg0)
 
@@ -360,7 +361,7 @@ func (c *ApplicationCommandLineClass) IsRemote() bool {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 
 	_cret = C.g_application_command_line_get_is_remote(_arg0)
 
@@ -387,13 +388,13 @@ func (c *ApplicationCommandLineClass) OptionsDict() *glib.VariantDict {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariantDict            // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 
 	_cret = C.g_application_command_line_get_options_dict(_arg0)
 
 	var _variantDict *glib.VariantDict // out
 
-	_variantDict = (*glib.VariantDict)(unsafe.Pointer(_cret))
+	_variantDict = (*glib.VariantDict)(unsafe.Pointer(*C.GVariantDict))
 	C.g_variant_dict_ref(_cret)
 	runtime.SetFinalizer(_variantDict, func(v *glib.VariantDict) {
 		C.g_variant_dict_unref((*C.GVariantDict)(unsafe.Pointer(v)))
@@ -414,13 +415,13 @@ func (c *ApplicationCommandLineClass) PlatformData() *glib.Variant {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariant                // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 
 	_cret = C.g_application_command_line_get_platform_data(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -438,17 +439,18 @@ func (c *ApplicationCommandLineClass) PlatformData() *glib.Variant {
 // future, support may be expanded to other platforms.
 //
 // You must only call this function once per commandline invocation.
-func (c *ApplicationCommandLineClass) Stdin() InputStream {
+func (c *ApplicationCommandLineClass) Stdin() *InputStreamClass {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GInputStream            // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 
 	_cret = C.g_application_command_line_get_stdin(_arg0)
 
-	var _inputStream InputStream // out
+	var _inputStream *InputStreamClass // out
 
-	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InputStream)
+	_inputStream = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*InputStreamClass)
 
 	return _inputStream
 }
@@ -469,7 +471,7 @@ func (c *ApplicationCommandLineClass) env(name string) string {
 	var _arg1 *C.gchar                   // out
 	var _cret *C.gchar                   // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -505,7 +507,7 @@ func (c *ApplicationCommandLineClass) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer((&ApplicationCommandLine).Native()))
 	_arg1 = C.int(exitStatus)
 
 	C.g_application_command_line_set_exit_status(_arg0, _arg1)

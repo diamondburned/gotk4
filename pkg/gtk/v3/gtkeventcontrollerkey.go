@@ -34,7 +34,7 @@ type EventControllerKey interface {
 	Forward(widget Widget) bool
 	Group() uint
 	// ImContext gets the IM context of a key controller.
-	ImContext() IMContext
+	ImContext() *IMContextClass
 	SetImContext(imContext IMContext)
 }
 
@@ -59,17 +59,18 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	return wrapEventControllerKey(obj), nil
 }
 
-func NewEventControllerKey(widget Widget) EventControllerKey {
+func NewEventControllerKey(widget Widget) *EventControllerKeyClass {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_event_controller_key_new(_arg1)
 
-	var _eventControllerKey EventControllerKey // out
+	var _eventControllerKey *EventControllerKeyClass // out
 
-	_eventControllerKey = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerKey)
+	_eventControllerKey = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EventControllerKeyClass)
 
 	return _eventControllerKey
 }
@@ -79,8 +80,8 @@ func (c *EventControllerKeyClass) Forward(widget Widget) bool {
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&EventControllerKey).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
 
@@ -97,7 +98,7 @@ func (c *EventControllerKeyClass) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&EventControllerKey).Native()))
 
 	_cret = C.gtk_event_controller_key_get_group(_arg0)
 
@@ -109,17 +110,18 @@ func (c *EventControllerKeyClass) Group() uint {
 }
 
 // ImContext gets the IM context of a key controller.
-func (c *EventControllerKeyClass) ImContext() IMContext {
+func (c *EventControllerKeyClass) ImContext() *IMContextClass {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&EventControllerKey).Native()))
 
 	_cret = C.gtk_event_controller_key_get_im_context(_arg0)
 
-	var _imContext IMContext // out
+	var _imContext *IMContextClass // out
 
-	_imContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(IMContext)
+	_imContext = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*IMContextClass)
 
 	return _imContext
 }
@@ -128,8 +130,8 @@ func (c *EventControllerKeyClass) SetImContext(imContext IMContext) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkIMContext)(unsafe.Pointer(imContext.Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer((&EventControllerKey).Native()))
+	_arg1 = (*C.GtkIMContext)(unsafe.Pointer((&IMContext).Native()))
 
 	C.gtk_event_controller_key_set_im_context(_arg0, _arg1)
 }

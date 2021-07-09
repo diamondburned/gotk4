@@ -51,7 +51,7 @@ type SimpleActionGroup interface {
 	// If no such action exists, returns nil.
 	//
 	// Deprecated: since version 2.38.
-	Lookup(actionName string) Action
+	Lookup(actionName string) *ActionInterface
 	// Remove removes the named action from the action group.
 	//
 	// If no action of this name is in the group then nothing happens.
@@ -88,14 +88,15 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 }
 
 // NewSimpleActionGroup creates a new, empty, ActionGroup.
-func NewSimpleActionGroup() SimpleActionGroup {
+func NewSimpleActionGroup() *SimpleActionGroupClass {
 	var _cret *C.GSimpleActionGroup // in
 
 	_cret = C.g_simple_action_group_new()
 
-	var _simpleActionGroup SimpleActionGroup // out
+	var _simpleActionGroup *SimpleActionGroupClass // out
 
-	_simpleActionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SimpleActionGroup)
+	_simpleActionGroup = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SimpleActionGroupClass)
 
 	return _simpleActionGroup
 }
@@ -112,8 +113,8 @@ func (s *SimpleActionGroupClass) Insert(action Action) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer((&SimpleActionGroup).Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
 
 	C.g_simple_action_group_insert(_arg0, _arg1)
 }
@@ -123,20 +124,21 @@ func (s *SimpleActionGroupClass) Insert(action Action) {
 // If no such action exists, returns nil.
 //
 // Deprecated: since version 2.38.
-func (s *SimpleActionGroupClass) Lookup(actionName string) Action {
+func (s *SimpleActionGroupClass) Lookup(actionName string) *ActionInterface {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GAction            // in
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer((&SimpleActionGroup).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_simple_action_group_lookup(_arg0, _arg1)
 
-	var _action Action // out
+	var _action *ActionInterface // out
 
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Action)
+	_action = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ActionInterface)
 
 	return _action
 }
@@ -150,7 +152,7 @@ func (s *SimpleActionGroupClass) Remove(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer((&SimpleActionGroup).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 

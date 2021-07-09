@@ -106,7 +106,6 @@ func wrapFontButton(obj *externglib.Object) FontButton {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -122,7 +121,6 @@ func wrapFontButton(obj *externglib.Object) FontButton {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -138,7 +136,6 @@ func wrapFontButton(obj *externglib.Object) FontButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -164,20 +161,21 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 }
 
 // NewFontButton creates a new font picker widget.
-func NewFontButton() FontButton {
+func NewFontButton() *FontButtonClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_font_button_new()
 
-	var _fontButton FontButton // out
+	var _fontButton *FontButtonClass // out
 
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontButton)
+	_fontButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontButtonClass)
 
 	return _fontButton
 }
 
 // NewFontButtonWithFont creates a new font picker widget.
-func NewFontButtonWithFont(fontname string) FontButton {
+func NewFontButtonWithFont(fontname string) *FontButtonClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -186,9 +184,10 @@ func NewFontButtonWithFont(fontname string) FontButton {
 
 	_cret = C.gtk_font_button_new_with_font(_arg1)
 
-	var _fontButton FontButton // out
+	var _fontButton *FontButtonClass // out
 
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontButton)
+	_fontButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontButtonClass)
 
 	return _fontButton
 }
@@ -204,7 +203,7 @@ func (f *FontButtonClass) FontName() string {
 	var _arg0 *C.GtkFontButton // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 
 	_cret = C.gtk_font_button_get_font_name(_arg0)
 
@@ -220,7 +219,7 @@ func (f *FontButtonClass) ShowSize() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 
 	_cret = C.gtk_font_button_get_show_size(_arg0)
 
@@ -239,7 +238,7 @@ func (f *FontButtonClass) ShowStyle() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 
 	_cret = C.gtk_font_button_get_show_style(_arg0)
 
@@ -257,7 +256,7 @@ func (f *FontButtonClass) Title() string {
 	var _arg0 *C.GtkFontButton // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 
 	_cret = C.gtk_font_button_get_title(_arg0)
 
@@ -273,7 +272,7 @@ func (f *FontButtonClass) UseFont() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 
 	_cret = C.gtk_font_button_get_use_font(_arg0)
 
@@ -291,7 +290,7 @@ func (f *FontButtonClass) UseSize() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 
 	_cret = C.gtk_font_button_get_use_size(_arg0)
 
@@ -313,7 +312,7 @@ func (f *FontButtonClass) SetFontName(fontname string) bool {
 	var _arg1 *C.gchar         // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 	_arg1 = (*C.gchar)(C.CString(fontname))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -334,7 +333,7 @@ func (f *FontButtonClass) SetShowSize(showSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 	if showSize {
 		_arg1 = C.TRUE
 	}
@@ -348,7 +347,7 @@ func (f *FontButtonClass) SetShowStyle(showStyle bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 	if showStyle {
 		_arg1 = C.TRUE
 	}
@@ -361,7 +360,7 @@ func (f *FontButtonClass) SetTitle(title string) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -374,7 +373,7 @@ func (f *FontButtonClass) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 	if useFont {
 		_arg1 = C.TRUE
 	}
@@ -388,7 +387,7 @@ func (f *FontButtonClass) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer((&FontButton).Native()))
 	if useSize {
 		_arg1 = C.TRUE
 	}

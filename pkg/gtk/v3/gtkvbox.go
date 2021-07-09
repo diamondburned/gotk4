@@ -71,7 +71,6 @@ func wrapVBox(obj *externglib.Object) VBox {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -106,7 +105,7 @@ func marshalVBox(p uintptr) (interface{}, error) {
 // NewVBox creates a new VBox.
 //
 // Deprecated: since version 3.2.
-func NewVBox(homogeneous bool, spacing int) VBox {
+func NewVBox(homogeneous bool, spacing int) *VBoxClass {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out
 	var _cret *C.GtkWidget // in
@@ -118,9 +117,10 @@ func NewVBox(homogeneous bool, spacing int) VBox {
 
 	_cret = C.gtk_vbox_new(_arg1, _arg2)
 
-	var _vBox VBox // out
+	var _vBox *VBoxClass // out
 
-	_vBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(VBox)
+	_vBox = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*VBoxClass)
 
 	return _vBox
 }

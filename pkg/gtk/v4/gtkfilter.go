@@ -83,8 +83,6 @@ type FilterOverrider interface {
 	// This function is meant purely for optimization purposes, filters can
 	// choose to omit implementing it, but FilterListModel uses it.
 	Strictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	Match(item gextras.Objector) bool
 }
 
 // Filter: `GtkFilter` object describes the filtering to be performed by a
@@ -108,16 +106,6 @@ type FilterOverrider interface {
 type Filter interface {
 	gextras.Objector
 
-	// Changed emits the Filter::changed signal to notify all users of the
-	// filter that the filter changed. Users of the filter should then check
-	// items again via gtk_filter_match().
-	//
-	// Depending on the @change parameter, not all items need to be changed, but
-	// only some. Refer to the FilterChange documentation for details.
-	//
-	// This function is intended for implementors of Filter subclasses and
-	// should not be called from other functions.
-	Changed(change FilterChange)
 	// Strictness gets the known strictness of @filters. If the strictness is
 	// not known, GTK_FILTER_MATCH_SOME is returned.
 	//
@@ -126,8 +114,6 @@ type Filter interface {
 	// This function is meant purely for optimization purposes, filters can
 	// choose to omit implementing it, but FilterListModel uses it.
 	Strictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	Match(item gextras.Objector) bool
 }
 
 // FilterClass implements the Filter interface.
@@ -149,25 +135,6 @@ func marshalFilter(p uintptr) (interface{}, error) {
 	return wrapFilter(obj), nil
 }
 
-// Changed emits the Filter::changed signal to notify all users of the filter
-// that the filter changed. Users of the filter should then check items again
-// via gtk_filter_match().
-//
-// Depending on the @change parameter, not all items need to be changed, but
-// only some. Refer to the FilterChange documentation for details.
-//
-// This function is intended for implementors of Filter subclasses and should
-// not be called from other functions.
-func (s *FilterClass) Changed(change FilterChange) {
-	var _arg0 *C.GtkFilter      // out
-	var _arg1 C.GtkFilterChange // out
-
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GtkFilterChange(change)
-
-	C.gtk_filter_changed(_arg0, _arg1)
-}
-
 // Strictness gets the known strictness of @filters. If the strictness is not
 // known, GTK_FILTER_MATCH_SOME is returned.
 //
@@ -179,33 +146,13 @@ func (s *FilterClass) Strictness() FilterMatch {
 	var _arg0 *C.GtkFilter     // out
 	var _cret C.GtkFilterMatch // in
 
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer((&Filter).Native()))
 
 	_cret = C.gtk_filter_get_strictness(_arg0)
 
 	var _filterMatch FilterMatch // out
 
-	_filterMatch = FilterMatch(_cret)
+	_filterMatch = (FilterMatch)(C.GtkFilterMatch)
 
 	return _filterMatch
-}
-
-// Match checks if the given @item is matched by the filter or not.
-func (s *FilterClass) Match(item gextras.Objector) bool {
-	var _arg0 *C.GtkFilter // out
-	var _arg1 C.gpointer   // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(item.Native()))
-
-	_cret = C.gtk_filter_match(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }

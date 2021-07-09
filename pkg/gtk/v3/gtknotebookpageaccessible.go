@@ -52,19 +52,20 @@ func marshalNotebookPageAccessible(p uintptr) (interface{}, error) {
 	return wrapNotebookPageAccessible(obj), nil
 }
 
-func NewNotebookPageAccessible(notebook NotebookAccessible, child Widget) NotebookPageAccessible {
+func NewNotebookPageAccessible(notebook NotebookAccessible, child Widget) *NotebookPageAccessibleClass {
 	var _arg1 *C.GtkNotebookAccessible // out
 	var _arg2 *C.GtkWidget             // out
 	var _cret *C.AtkObject             // in
 
-	_arg1 = (*C.GtkNotebookAccessible)(unsafe.Pointer(notebook.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkNotebookAccessible)(unsafe.Pointer((&NotebookAccessible).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_notebook_page_accessible_new(_arg1, _arg2)
 
-	var _notebookPageAccessible NotebookPageAccessible // out
+	var _notebookPageAccessible *NotebookPageAccessibleClass // out
 
-	_notebookPageAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NotebookPageAccessible)
+	_notebookPageAccessible = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NotebookPageAccessibleClass)
 
 	return _notebookPageAccessible
 }
@@ -72,7 +73,7 @@ func NewNotebookPageAccessible(notebook NotebookAccessible, child Widget) Notebo
 func (p *NotebookPageAccessibleClass) Invalidate() {
 	var _arg0 *C.GtkNotebookPageAccessible // out
 
-	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer((&NotebookPageAccessible).Native()))
 
 	C.gtk_notebook_page_accessible_invalidate(_arg0)
 }

@@ -40,7 +40,7 @@ type FilterOutputStream interface {
 	gextras.Objector
 
 	// BaseStream gets the base stream for the filter stream.
-	BaseStream() OutputStream
+	BaseStream() *OutputStreamClass
 	// CloseBaseStream returns whether the base stream will be closed when
 	// @stream is closed.
 	CloseBaseStream() bool
@@ -71,17 +71,18 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 }
 
 // BaseStream gets the base stream for the filter stream.
-func (s *FilterOutputStreamClass) BaseStream() OutputStream {
+func (s *FilterOutputStreamClass) BaseStream() *OutputStreamClass {
 	var _arg0 *C.GFilterOutputStream // out
 	var _cret *C.GOutputStream       // in
 
-	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer((&FilterOutputStream).Native()))
 
 	_cret = C.g_filter_output_stream_get_base_stream(_arg0)
 
-	var _outputStream OutputStream // out
+	var _outputStream *OutputStreamClass // out
 
-	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(OutputStream)
+	_outputStream = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*OutputStreamClass)
 
 	return _outputStream
 }
@@ -92,7 +93,7 @@ func (s *FilterOutputStreamClass) CloseBaseStream() bool {
 	var _arg0 *C.GFilterOutputStream // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer((&FilterOutputStream).Native()))
 
 	_cret = C.g_filter_output_stream_get_close_base_stream(_arg0)
 
@@ -111,7 +112,7 @@ func (s *FilterOutputStreamClass) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterOutputStream // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer((&FilterOutputStream).Native()))
 	if closeBase {
 		_arg1 = C.TRUE
 	}

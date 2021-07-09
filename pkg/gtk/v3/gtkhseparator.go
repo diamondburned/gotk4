@@ -56,7 +56,6 @@ func wrapHSeparator(obj *externglib.Object) HSeparator {
 		SeparatorClass: SeparatorClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -87,14 +86,15 @@ func marshalHSeparator(p uintptr) (interface{}, error) {
 // NewHSeparator creates a new HSeparator.
 //
 // Deprecated: since version 3.2.
-func NewHSeparator() HSeparator {
+func NewHSeparator() *HSeparatorClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_hseparator_new()
 
-	var _hSeparator HSeparator // out
+	var _hSeparator *HSeparatorClass // out
 
-	_hSeparator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HSeparator)
+	_hSeparator = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HSeparatorClass)
 
 	return _hSeparator
 }

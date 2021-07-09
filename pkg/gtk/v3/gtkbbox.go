@@ -81,8 +81,6 @@ type ButtonBox interface {
 	// aligned at the other end of the button box from the main children. For
 	// the other styles, they appear immediately next to the main children.
 	SetChildSecondary(child Widget, isSecondary bool)
-	// SetLayout changes the way buttons are arranged in their container.
-	SetLayout(layoutStyle ButtonBoxStyle)
 }
 
 // ButtonBoxClass implements the ButtonBox interface.
@@ -103,7 +101,6 @@ func wrapButtonBox(obj *externglib.Object) ButtonBox {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -135,22 +132,6 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 	return wrapButtonBox(obj), nil
 }
 
-// NewButtonBox creates a new ButtonBox.
-func NewButtonBox(orientation Orientation) ButtonBox {
-	var _arg1 C.GtkOrientation // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-
-	_cret = C.gtk_button_box_new(_arg1)
-
-	var _buttonBox ButtonBox // out
-
-	_buttonBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ButtonBox)
-
-	return _buttonBox
-}
-
 // ChildNonHomogeneous returns whether the child is exempted from homogenous
 // sizing.
 func (w *ButtonBoxClass) ChildNonHomogeneous(child Widget) bool {
@@ -158,8 +139,8 @@ func (w *ButtonBoxClass) ChildNonHomogeneous(child Widget) bool {
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&ButtonBox).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
 
@@ -179,8 +160,8 @@ func (w *ButtonBoxClass) ChildSecondary(child Widget) bool {
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&ButtonBox).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
 
@@ -199,13 +180,13 @@ func (w *ButtonBoxClass) Layout() ButtonBoxStyle {
 	var _arg0 *C.GtkButtonBox     // out
 	var _cret C.GtkButtonBoxStyle // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&ButtonBox).Native()))
 
 	_cret = C.gtk_button_box_get_layout(_arg0)
 
 	var _buttonBoxStyle ButtonBoxStyle // out
 
-	_buttonBoxStyle = ButtonBoxStyle(_cret)
+	_buttonBoxStyle = (ButtonBoxStyle)(C.GtkButtonBoxStyle)
 
 	return _buttonBoxStyle
 }
@@ -217,8 +198,8 @@ func (w *ButtonBoxClass) SetChildNonHomogeneous(child Widget, nonHomogeneous boo
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&ButtonBox).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if nonHomogeneous {
 		_arg2 = C.TRUE
 	}
@@ -242,22 +223,11 @@ func (w *ButtonBoxClass) SetChildSecondary(child Widget, isSecondary bool) {
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer((&ButtonBox).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if isSecondary {
 		_arg2 = C.TRUE
 	}
 
 	C.gtk_button_box_set_child_secondary(_arg0, _arg1, _arg2)
-}
-
-// SetLayout changes the way buttons are arranged in their container.
-func (w *ButtonBoxClass) SetLayout(layoutStyle ButtonBoxStyle) {
-	var _arg0 *C.GtkButtonBox     // out
-	var _arg1 C.GtkButtonBoxStyle // out
-
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkButtonBoxStyle(layoutStyle)
-
-	C.gtk_button_box_set_layout(_arg0, _arg1)
 }

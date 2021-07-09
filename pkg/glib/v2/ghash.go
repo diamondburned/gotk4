@@ -27,7 +27,7 @@ func init() {
 // together with the @user_data parameter passed to
 // g_hash_table_foreach_remove(). It should return true if the key/value pair
 // should be removed from the Table.
-type HRFunc func(key interface{}, value interface{}) (ok bool)
+type HRFunc func(key interface{}, value interface{}, userData interface{}) (ok bool)
 
 //export gotk4_HRFunc
 func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
@@ -36,14 +36,16 @@ func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cret C.gbo
 		panic(`callback not found`)
 	}
 
-	var key interface{}   // out
-	var value interface{} // out
+	var key interface{}      // out
+	var value interface{}    // out
+	var userData interface{} // out
 
 	key = box.Get(uintptr(arg0))
 	value = box.Get(uintptr(arg1))
+	userData = box.Get(uintptr(arg2))
 
 	fn := v.(HRFunc)
-	ok := fn(key, value)
+	ok := fn(key, value, userData)
 
 	if ok {
 		cret = C.TRUE
@@ -347,8 +349,8 @@ func (i *HashTableIter) Init(hashTable *HashTable) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 *C.GHashTable     // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(*HashTableIter))
+	_arg1 = (*C.GHashTable)(unsafe.Pointer(*HashTable))
 
 	C.g_hash_table_iter_init(_arg0, _arg1)
 }
@@ -362,7 +364,7 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 	var _arg2 C.gpointer        // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(*HashTableIter))
 
 	_cret = C.g_hash_table_iter_next(_arg0, &_arg1, &_arg2)
 
@@ -398,7 +400,7 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 func (i *HashTableIter) Remove() {
 	var _arg0 *C.GHashTableIter // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(*HashTableIter))
 
 	C.g_hash_table_iter_remove(_arg0)
 }
@@ -413,7 +415,7 @@ func (i *HashTableIter) Replace(value interface{}) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 C.gpointer        // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(*HashTableIter))
 	_arg1 = (C.gpointer)(box.Assign(value))
 
 	C.g_hash_table_iter_replace(_arg0, _arg1)
@@ -426,7 +428,7 @@ func (i *HashTableIter) Replace(value interface{}) {
 func (i *HashTableIter) Steal() {
 	var _arg0 *C.GHashTableIter // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(*HashTableIter))
 
 	C.g_hash_table_iter_steal(_arg0)
 }

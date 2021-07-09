@@ -60,7 +60,7 @@ type UnixFDMessage interface {
 	// FdList gets the FDList contained in @message. This function does not
 	// return a reference to the caller, but the returned list is valid for the
 	// lifetime of @message.
-	FdList() UnixFDList
+	FdList() *UnixFDListClass
 }
 
 // UnixFDMessageClass implements the UnixFDMessage interface.
@@ -86,30 +86,32 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 
 // NewUnixFDMessage creates a new FDMessage containing an empty file descriptor
 // list.
-func NewUnixFDMessage() UnixFDMessage {
+func NewUnixFDMessage() *UnixFDMessageClass {
 	var _cret *C.GSocketControlMessage // in
 
 	_cret = C.g_unix_fd_message_new()
 
-	var _unixFDMessage UnixFDMessage // out
+	var _unixFDMessage *UnixFDMessageClass // out
 
-	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDMessage)
+	_unixFDMessage = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixFDMessageClass)
 
 	return _unixFDMessage
 }
 
 // NewUnixFDMessageWithFdList creates a new FDMessage containing @list.
-func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
+func NewUnixFDMessageWithFdList(fdList UnixFDList) *UnixFDMessageClass {
 	var _arg1 *C.GUnixFDList           // out
 	var _cret *C.GSocketControlMessage // in
 
-	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	_arg1 = (*C.GUnixFDList)(unsafe.Pointer((&UnixFDList).Native()))
 
 	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
 
-	var _unixFDMessage UnixFDMessage // out
+	var _unixFDMessage *UnixFDMessageClass // out
 
-	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDMessage)
+	_unixFDMessage = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixFDMessageClass)
 
 	return _unixFDMessage
 }
@@ -127,7 +129,7 @@ func (m *UnixFDMessageClass) AppendFd(fd int) error {
 	var _arg1 C.gint            // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer((&UnixFDMessage).Native()))
 	_arg1 = C.gint(fd)
 
 	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
@@ -142,17 +144,18 @@ func (m *UnixFDMessageClass) AppendFd(fd int) error {
 // FdList gets the FDList contained in @message. This function does not return a
 // reference to the caller, but the returned list is valid for the lifetime of
 // @message.
-func (m *UnixFDMessageClass) FdList() UnixFDList {
+func (m *UnixFDMessageClass) FdList() *UnixFDListClass {
 	var _arg0 *C.GUnixFDMessage // out
 	var _cret *C.GUnixFDList    // in
 
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer((&UnixFDMessage).Native()))
 
 	_cret = C.g_unix_fd_message_get_fd_list(_arg0)
 
-	var _unixFDList UnixFDList // out
+	var _unixFDList *UnixFDListClass // out
 
-	_unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(UnixFDList)
+	_unixFDList = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*UnixFDListClass)
 
 	return _unixFDList
 }

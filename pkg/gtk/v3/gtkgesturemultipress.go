@@ -74,17 +74,18 @@ func marshalGestureMultiPress(p uintptr) (interface{}, error) {
 
 // NewGestureMultiPress returns a newly created Gesture that recognizes single
 // and multiple presses.
-func NewGestureMultiPress(widget Widget) GestureMultiPress {
+func NewGestureMultiPress(widget Widget) *GestureMultiPressClass {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_gesture_multi_press_new(_arg1)
 
-	var _gestureMultiPress GestureMultiPress // out
+	var _gestureMultiPress *GestureMultiPressClass // out
 
-	_gestureMultiPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureMultiPress)
+	_gestureMultiPress = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureMultiPressClass)
 
 	return _gestureMultiPress
 }
@@ -100,8 +101,8 @@ func (g *GestureMultiPressClass) SetArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkGestureMultiPress // out
 	var _arg1 *C.GdkRectangle         // out
 
-	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
+	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer((&GestureMultiPress).Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(*gdk.Rectangle))
 
 	C.gtk_gesture_multi_press_set_area(_arg0, _arg1)
 }

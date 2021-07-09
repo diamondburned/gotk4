@@ -33,12 +33,12 @@ type StyleProviderOverrider interface {
 	// nil if none is defined.
 	//
 	// Deprecated: since version 3.8.
-	IconFactory(path *WidgetPath) IconFactory
+	IconFactory(path *WidgetPath) *IconFactoryClass
 	// Style returns the style settings affecting a widget defined by @path, or
 	// nil if @provider doesn’t contemplate styling @path.
 	//
 	// Deprecated: since version 3.8.
-	Style(path *WidgetPath) StyleProperties
+	Style(path *WidgetPath) *StylePropertiesClass
 }
 
 // StyleProvider is an interface used to provide style information to a
@@ -51,12 +51,12 @@ type StyleProvider interface {
 	// nil if none is defined.
 	//
 	// Deprecated: since version 3.8.
-	IconFactory(path *WidgetPath) IconFactory
+	IconFactory(path *WidgetPath) *IconFactoryClass
 	// Style returns the style settings affecting a widget defined by @path, or
 	// nil if @provider doesn’t contemplate styling @path.
 	//
 	// Deprecated: since version 3.8.
-	Style(path *WidgetPath) StyleProperties
+	Style(path *WidgetPath) *StylePropertiesClass
 }
 
 // StyleProviderInterface implements the StyleProvider interface.
@@ -82,19 +82,20 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 // none is defined.
 //
 // Deprecated: since version 3.8.
-func (p *StyleProviderInterface) IconFactory(path *WidgetPath) IconFactory {
+func (p *StyleProviderInterface) IconFactory(path *WidgetPath) *IconFactoryClass {
 	var _arg0 *C.GtkStyleProvider // out
 	var _arg1 *C.GtkWidgetPath    // out
 	var _cret *C.GtkIconFactory   // in
 
-	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
+	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer((&StyleProvider).Native()))
+	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(*WidgetPath))
 
 	_cret = C.gtk_style_provider_get_icon_factory(_arg0, _arg1)
 
-	var _iconFactory IconFactory // out
+	var _iconFactory *IconFactoryClass // out
 
-	_iconFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(IconFactory)
+	_iconFactory = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*IconFactoryClass)
 
 	return _iconFactory
 }
@@ -103,19 +104,20 @@ func (p *StyleProviderInterface) IconFactory(path *WidgetPath) IconFactory {
 // if @provider doesn’t contemplate styling @path.
 //
 // Deprecated: since version 3.8.
-func (p *StyleProviderInterface) Style(path *WidgetPath) StyleProperties {
+func (p *StyleProviderInterface) Style(path *WidgetPath) *StylePropertiesClass {
 	var _arg0 *C.GtkStyleProvider   // out
 	var _arg1 *C.GtkWidgetPath      // out
 	var _cret *C.GtkStyleProperties // in
 
-	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
+	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer((&StyleProvider).Native()))
+	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(*WidgetPath))
 
 	_cret = C.gtk_style_provider_get_style(_arg0, _arg1)
 
-	var _styleProperties StyleProperties // out
+	var _styleProperties *StylePropertiesClass // out
 
-	_styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StyleProperties)
+	_styleProperties = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StylePropertiesClass)
 
 	return _styleProperties
 }

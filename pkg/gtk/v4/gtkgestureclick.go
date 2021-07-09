@@ -62,14 +62,15 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 
 // NewGestureClick returns a newly created `GtkGesture` that recognizes single
 // and multiple presses.
-func NewGestureClick() GestureClick {
+func NewGestureClick() *GestureClickClass {
 	var _cret *C.GtkGesture // in
 
 	_cret = C.gtk_gesture_click_new()
 
-	var _gestureClick GestureClick // out
+	var _gestureClick *GestureClickClass // out
 
-	_gestureClick = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureClick)
+	_gestureClick = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureClickClass)
 
 	return _gestureClick
 }

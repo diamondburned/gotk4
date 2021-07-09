@@ -35,7 +35,7 @@ type StringSorter interface {
 
 	// Expression gets the expression that is evaluated to obtain strings from
 	// items.
-	Expression() Expression
+	Expression() *ExpressionClass
 	// IgnoreCase gets whether the sorter ignores case differences.
 	IgnoreCase() bool
 	// SetExpression sets the expression that is evaluated to obtain strings
@@ -73,34 +73,36 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 //
 // Unless an expression is set on it, this sorter will always compare items as
 // invalid.
-func NewStringSorter(expression Expression) StringSorter {
+func NewStringSorter(expression Expression) *StringSorterClass {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringSorter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
 
 	_cret = C.gtk_string_sorter_new(_arg1)
 
-	var _stringSorter StringSorter // out
+	var _stringSorter *StringSorterClass // out
 
-	_stringSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StringSorter)
+	_stringSorter = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StringSorterClass)
 
 	return _stringSorter
 }
 
 // Expression gets the expression that is evaluated to obtain strings from
 // items.
-func (s *StringSorterClass) Expression() Expression {
+func (s *StringSorterClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkStringSorter // out
 	var _cret *C.GtkExpression   // in
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&StringSorter).Native()))
 
 	_cret = C.gtk_string_sorter_get_expression(_arg0)
 
-	var _expression Expression // out
+	var _expression *ExpressionClass // out
 
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expression)
+	_expression = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ExpressionClass)
 
 	return _expression
 }
@@ -110,7 +112,7 @@ func (s *StringSorterClass) IgnoreCase() bool {
 	var _arg0 *C.GtkStringSorter // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&StringSorter).Native()))
 
 	_cret = C.gtk_string_sorter_get_ignore_case(_arg0)
 
@@ -131,8 +133,8 @@ func (s *StringSorterClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 *C.GtkExpression   // out
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&StringSorter).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
 
 	C.gtk_string_sorter_set_expression(_arg0, _arg1)
 }
@@ -142,7 +144,7 @@ func (s *StringSorterClass) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer((&StringSorter).Native()))
 	if ignoreCase {
 		_arg1 = C.TRUE
 	}

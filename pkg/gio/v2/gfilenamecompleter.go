@@ -75,14 +75,15 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 }
 
 // NewFilenameCompleter creates a new filename completer.
-func NewFilenameCompleter() FilenameCompleter {
+func NewFilenameCompleter() *FilenameCompleterClass {
 	var _cret *C.GFilenameCompleter // in
 
 	_cret = C.g_filename_completer_new()
 
-	var _filenameCompleter FilenameCompleter // out
+	var _filenameCompleter *FilenameCompleterClass // out
 
-	_filenameCompleter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FilenameCompleter)
+	_filenameCompleter = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FilenameCompleterClass)
 
 	return _filenameCompleter
 }
@@ -93,7 +94,7 @@ func (c *FilenameCompleterClass) CompletionSuffix(initialText string) string {
 	var _arg1 *C.char               // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer((&FilenameCompleter).Native()))
 	_arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -113,7 +114,7 @@ func (c *FilenameCompleterClass) Completions(initialText string) []string {
 	var _arg1 *C.char               // out
 	var _cret **C.char
 
-	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer((&FilenameCompleter).Native()))
 	_arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -145,7 +146,7 @@ func (c *FilenameCompleterClass) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer((&FilenameCompleter).Native()))
 	if dirsOnly {
 		_arg1 = C.TRUE
 	}

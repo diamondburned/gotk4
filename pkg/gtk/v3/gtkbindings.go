@@ -19,29 +19,6 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// BindingsActivate: find a key binding matching @keyval and @modifiers and
-// activate the binding on @object.
-func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.ModifierType) bool {
-	var _arg1 *C.GObject        // out
-	var _arg2 C.guint           // out
-	var _arg3 C.GdkModifierType // out
-	var _cret C.gboolean        // in
-
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = C.guint(keyval)
-	_arg3 = C.GdkModifierType(modifiers)
-
-	_cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // BindingsActivateEvent looks up key bindings for @object to find one matching
 // @event, and if one was found, activate it.
 func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
@@ -49,8 +26,8 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 	var _arg2 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&gextras.Objector).Native()))
+	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(*gdk.EventKey))
 
 	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
 
@@ -83,7 +60,7 @@ func (b *BindingArg) Native() unsafe.Pointer {
 // ArgType: implementation detail
 func (b *BindingArg) ArgType() externglib.Type {
 	var v externglib.Type // out
-	v = externglib.Type(b.native.arg_type)
+	v = externglib.Type(C.GType)
 	return v
 }
 
@@ -114,28 +91,28 @@ func (b *BindingEntry) Keyval() uint {
 // Modifiers: key modifiers to match
 func (b *BindingEntry) Modifiers() gdk.ModifierType {
 	var v gdk.ModifierType // out
-	v = gdk.ModifierType(b.native.modifiers)
+	v = (gdk.ModifierType)(C.GdkModifierType)
 	return v
 }
 
 // SetNext: linked list of entries maintained by binding set
 func (b *BindingEntry) SetNext() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.native.set_next))
+	v = (*BindingEntry)(unsafe.Pointer(*C.GtkBindingEntry))
 	return v
 }
 
 // HashNext: implementation detail
 func (b *BindingEntry) HashNext() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.native.hash_next))
+	v = (*BindingEntry)(unsafe.Pointer(*C.GtkBindingEntry))
 	return v
 }
 
 // Signals: action signals of this entry
 func (b *BindingEntry) Signals() *BindingSignal {
 	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(b.native.signals))
+	v = (*BindingSignal)(unsafe.Pointer(*C.GtkBindingSignal))
 	return v
 }
 
@@ -159,7 +136,7 @@ func (b *BindingSignal) Native() unsafe.Pointer {
 // Next: implementation detail
 func (b *BindingSignal) Next() *BindingSignal {
 	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(b.native.next))
+	v = (*BindingSignal)(unsafe.Pointer(*C.GtkBindingSignal))
 	return v
 }
 

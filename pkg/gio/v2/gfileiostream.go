@@ -8,7 +8,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -64,7 +63,7 @@ type FileIOStreamOverrider interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error)
 	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
 	// completed, @callback will be called with a Result which can be used to
 	// finish the operation with g_file_io_stream_query_info_finish().
@@ -74,8 +73,7 @@ type FileIOStreamOverrider interface {
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) (FileInfo, error)
-	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
+	QueryInfoFinish(result AsyncResult) (*FileInfoClass, error)
 	Tell() int64
 	TruncateFn(size int64, cancellable Cancellable) error
 }
@@ -120,7 +118,7 @@ type FileIOStream interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
+	QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error)
 	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
 	// completed, @callback will be called with a Result which can be used to
 	// finish the operation with g_file_io_stream_query_info_finish().
@@ -130,7 +128,7 @@ type FileIOStream interface {
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) (FileInfo, error)
+	QueryInfoFinish(result AsyncResult) (*FileInfoClass, error)
 }
 
 // FileIOStreamClass implements the FileIOStream interface.
@@ -167,7 +165,7 @@ func (s *FileIOStreamClass) Etag() string {
 	var _arg0 *C.GFileIOStream // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer((&FileIOStream).Native()))
 
 	_cret = C.g_file_io_stream_get_etag(_arg0)
 
@@ -194,24 +192,25 @@ func (s *FileIOStreamClass) Etag() string {
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be set, and nil will be returned.
-func (s *FileIOStreamClass) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
+func (s *FileIOStreamClass) QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg1 *C.char          // out
 	var _arg2 *C.GCancellable  // out
 	var _cret *C.GFileInfo     // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer((&FileIOStream).Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_file_io_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
-	var _fileInfo FileInfo // out
-	var _goerr error       // out
+	var _fileInfo *FileInfoClass // out
+	var _goerr error             // out
 
-	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
+	_fileInfo = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileInfoClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -231,11 +230,11 @@ func (s *FileIOStreamClass) QueryInfoAsync(attributes string, ioPriority int, ca
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer((&FileIOStream).Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -244,21 +243,22 @@ func (s *FileIOStreamClass) QueryInfoAsync(attributes string, ioPriority int, ca
 
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_io_stream_query_info_async().
-func (s *FileIOStreamClass) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
+func (s *FileIOStreamClass) QueryInfoFinish(result AsyncResult) (*FileInfoClass, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret *C.GFileInfo     // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer((&FileIOStream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	_cret = C.g_file_io_stream_query_info_finish(_arg0, _arg1, &_cerr)
 
-	var _fileInfo FileInfo // out
-	var _goerr error       // out
+	var _fileInfo *FileInfoClass // out
+	var _goerr error             // out
 
-	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FileInfo)
+	_fileInfo = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileInfoClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr

@@ -58,14 +58,15 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 }
 
 // NewOverlayLayout creates a new `GtkOverlayLayout` instance.
-func NewOverlayLayout() OverlayLayout {
+func NewOverlayLayout() *OverlayLayoutClass {
 	var _cret *C.GtkLayoutManager // in
 
 	_cret = C.gtk_overlay_layout_new()
 
-	var _overlayLayout OverlayLayout // out
+	var _overlayLayout *OverlayLayoutClass // out
 
-	_overlayLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(OverlayLayout)
+	_overlayLayout = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*OverlayLayoutClass)
 
 	return _overlayLayout
 }
@@ -113,7 +114,7 @@ func (c *OverlayLayoutChildClass) ClipOverlay() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer((&OverlayLayoutChild).Native()))
 
 	_cret = C.gtk_overlay_layout_child_get_clip_overlay(_arg0)
 
@@ -131,7 +132,7 @@ func (c *OverlayLayoutChildClass) Measure() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer((&OverlayLayoutChild).Native()))
 
 	_cret = C.gtk_overlay_layout_child_get_measure(_arg0)
 
@@ -149,7 +150,7 @@ func (c *OverlayLayoutChildClass) SetClipOverlay(clipOverlay bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer((&OverlayLayoutChild).Native()))
 	if clipOverlay {
 		_arg1 = C.TRUE
 	}
@@ -162,7 +163,7 @@ func (c *OverlayLayoutChildClass) SetMeasure(measure bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer((&OverlayLayoutChild).Native()))
 	if measure {
 		_arg1 = C.TRUE
 	}

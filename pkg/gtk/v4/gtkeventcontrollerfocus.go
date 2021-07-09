@@ -65,14 +65,15 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 
 // NewEventControllerFocus creates a new event controller that will handle focus
 // events.
-func NewEventControllerFocus() EventControllerFocus {
+func NewEventControllerFocus() *EventControllerFocusClass {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_event_controller_focus_new()
 
-	var _eventControllerFocus EventControllerFocus // out
+	var _eventControllerFocus *EventControllerFocusClass // out
 
-	_eventControllerFocus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerFocus)
+	_eventControllerFocus = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EventControllerFocusClass)
 
 	return _eventControllerFocus
 }
@@ -82,7 +83,7 @@ func (s *EventControllerFocusClass) ContainsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer((&EventControllerFocus).Native()))
 
 	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
 
@@ -100,7 +101,7 @@ func (s *EventControllerFocusClass) IsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer((&EventControllerFocus).Native()))
 
 	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
 

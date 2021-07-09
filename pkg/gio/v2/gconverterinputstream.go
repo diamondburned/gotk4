@@ -40,7 +40,7 @@ type ConverterInputStream interface {
 	gextras.Objector
 
 	// Converter gets the #GConverter that is used by @converter_stream.
-	Converter() Converter
+	Converter() *ConverterInterface
 }
 
 // ConverterInputStreamClass implements the ConverterInputStream interface.
@@ -76,35 +76,37 @@ func marshalConverterInputStream(p uintptr) (interface{}, error) {
 
 // NewConverterInputStream creates a new converter input stream for the
 // @base_stream.
-func NewConverterInputStream(baseStream InputStream, converter Converter) ConverterInputStream {
+func NewConverterInputStream(baseStream InputStream, converter Converter) *ConverterInputStreamClass {
 	var _arg1 *C.GInputStream // out
 	var _arg2 *C.GConverter   // out
 	var _cret *C.GInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
-	_arg2 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((&InputStream).Native()))
+	_arg2 = (*C.GConverter)(unsafe.Pointer((&Converter).Native()))
 
 	_cret = C.g_converter_input_stream_new(_arg1, _arg2)
 
-	var _converterInputStream ConverterInputStream // out
+	var _converterInputStream *ConverterInputStreamClass // out
 
-	_converterInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ConverterInputStream)
+	_converterInputStream = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ConverterInputStreamClass)
 
 	return _converterInputStream
 }
 
 // Converter gets the #GConverter that is used by @converter_stream.
-func (c *ConverterInputStreamClass) Converter() Converter {
+func (c *ConverterInputStreamClass) Converter() *ConverterInterface {
 	var _arg0 *C.GConverterInputStream // out
 	var _cret *C.GConverter            // in
 
-	_arg0 = (*C.GConverterInputStream)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GConverterInputStream)(unsafe.Pointer((&ConverterInputStream).Native()))
 
 	_cret = C.g_converter_input_stream_get_converter(_arg0)
 
-	var _converter Converter // out
+	var _converter *ConverterInterface // out
 
-	_converter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Converter)
+	_converter = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ConverterInterface)
 
 	return _converter
 }

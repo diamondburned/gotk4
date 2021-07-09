@@ -85,7 +85,7 @@ type Socket interface {
 
 	// PlugWindow retrieves the window of the plug. Use this to check if the
 	// plug has been created inside of the socket.
-	PlugWindow() gdk.Window
+	PlugWindow() *gdk.WindowClass
 }
 
 // SocketClass implements the Socket interface.
@@ -103,7 +103,6 @@ func wrapSocket(obj *externglib.Object) Socket {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -126,31 +125,33 @@ func marshalSocket(p uintptr) (interface{}, error) {
 }
 
 // NewSocket: create a new empty Socket.
-func NewSocket() Socket {
+func NewSocket() *SocketClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_socket_new()
 
-	var _socket Socket // out
+	var _socket *SocketClass // out
 
-	_socket = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Socket)
+	_socket = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SocketClass)
 
 	return _socket
 }
 
 // PlugWindow retrieves the window of the plug. Use this to check if the plug
 // has been created inside of the socket.
-func (s *SocketClass) PlugWindow() gdk.Window {
+func (s *SocketClass) PlugWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkSocket // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer((&Socket).Native()))
 
 	_cret = C.gtk_socket_get_plug_window(_arg0)
 
-	var _window gdk.Window // out
+	var _window *gdk.WindowClass // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.WindowClass)
 
 	return _window
 }

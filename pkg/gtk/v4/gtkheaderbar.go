@@ -88,7 +88,7 @@ type HeaderBar interface {
 	// TitleWidget retrieves the title widget of the header.
 	//
 	// See [method@Gtk.HeaderBar.set_title_widget].
-	TitleWidget() Widget
+	TitleWidget() *WidgetClass
 	// PackEnd adds @child to @bar, packed with reference to the end of the
 	// @bar.
 	PackEnd(child Widget)
@@ -150,7 +150,6 @@ func wrapHeaderBar(obj *externglib.Object) HeaderBar {
 	return &HeaderBarClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -181,14 +180,15 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 }
 
 // NewHeaderBar creates a new `GtkHeaderBar` widget.
-func NewHeaderBar() HeaderBar {
+func NewHeaderBar() *HeaderBarClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_header_bar_new()
 
-	var _headerBar HeaderBar // out
+	var _headerBar *HeaderBarClass // out
 
-	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HeaderBar)
+	_headerBar = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HeaderBarClass)
 
 	return _headerBar
 }
@@ -198,7 +198,7 @@ func (b *HeaderBarClass) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&HeaderBar).Native()))
 
 	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 
@@ -215,7 +215,7 @@ func (b *HeaderBarClass) ShowTitleButtons() bool {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&HeaderBar).Native()))
 
 	_cret = C.gtk_header_bar_get_show_title_buttons(_arg0)
 
@@ -231,17 +231,18 @@ func (b *HeaderBarClass) ShowTitleButtons() bool {
 // TitleWidget retrieves the title widget of the header.
 //
 // See [method@Gtk.HeaderBar.set_title_widget].
-func (b *HeaderBarClass) TitleWidget() Widget {
+func (b *HeaderBarClass) TitleWidget() *WidgetClass {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&HeaderBar).Native()))
 
 	_cret = C.gtk_header_bar_get_title_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -251,8 +252,8 @@ func (b *HeaderBarClass) PackEnd(child Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&HeaderBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_header_bar_pack_end(_arg0, _arg1)
 }
@@ -263,8 +264,8 @@ func (b *HeaderBarClass) PackStart(child Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&HeaderBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_header_bar_pack_start(_arg0, _arg1)
 }
@@ -277,8 +278,8 @@ func (b *HeaderBarClass) Remove(child Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&HeaderBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_header_bar_remove(_arg0, _arg1)
 }
@@ -304,7 +305,7 @@ func (b *HeaderBarClass) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&HeaderBar).Native()))
 	_arg1 = (*C.char)(C.CString(layout))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -317,7 +318,7 @@ func (b *HeaderBarClass) SetShowTitleButtons(setting bool) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&HeaderBar).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -339,8 +340,8 @@ func (b *HeaderBarClass) SetTitleWidget(titleWidget Widget) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer((&HeaderBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_header_bar_set_title_widget(_arg0, _arg1)
 }

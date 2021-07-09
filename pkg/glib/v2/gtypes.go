@@ -18,7 +18,7 @@ import "C"
 // two values. The function should return a negative integer if the first value
 // comes before the second, 0 if they are equal, or a positive integer if the
 // first value comes after the second.
-type CompareDataFunc func(a interface{}, b interface{}) (gint int)
+type CompareDataFunc func(a interface{}, b interface{}, userData interface{}) (gint int)
 
 //export gotk4_CompareDataFunc
 func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) (cret C.gint) {
@@ -27,14 +27,16 @@ func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gp
 		panic(`callback not found`)
 	}
 
-	var a interface{} // out
-	var b interface{} // out
+	var a interface{}        // out
+	var b interface{}        // out
+	var userData interface{} // out
 
 	a = box.Get(uintptr(arg0))
 	b = box.Get(uintptr(arg1))
+	userData = box.Get(uintptr(arg2))
 
 	fn := v.(CompareDataFunc)
-	gint := fn(a, b)
+	gint := fn(a, b, userData)
 
 	cret = C.gint(gint)
 
@@ -43,7 +45,7 @@ func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gp
 
 // Func specifies the type of functions passed to g_list_foreach() and
 // g_slist_foreach().
-type Func func(data interface{})
+type Func func(data interface{}, userData interface{})
 
 //export gotk4_Func
 func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
@@ -52,18 +54,20 @@ func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var data interface{} // out
+	var data interface{}     // out
+	var userData interface{} // out
 
 	data = box.Get(uintptr(arg0))
+	userData = box.Get(uintptr(arg1))
 
 	fn := v.(Func)
-	fn(data)
+	fn(data, userData)
 }
 
 // HFunc specifies the type of the function passed to g_hash_table_foreach(). It
 // is called with each key/value pair, together with the @user_data parameter
 // which is passed to g_hash_table_foreach().
-type HFunc func(key interface{}, value interface{})
+type HFunc func(key interface{}, value interface{}, userData interface{})
 
 //export gotk4_HFunc
 func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
@@ -72,14 +76,16 @@ func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var key interface{}   // out
-	var value interface{} // out
+	var key interface{}      // out
+	var value interface{}    // out
+	var userData interface{} // out
 
 	key = box.Get(uintptr(arg0))
 	value = box.Get(uintptr(arg1))
+	userData = box.Get(uintptr(arg2))
 
 	fn := v.(HFunc)
-	fn(key, value)
+	fn(key, value, userData)
 }
 
 // TimeVal represents a precise time, with seconds and microseconds. Similar to
@@ -128,7 +134,7 @@ func (t *TimeVal) Add(microseconds int32) {
 	var _arg0 *C.GTimeVal // out
 	var _arg1 C.glong     // out
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(*TimeVal))
 	_arg1 = C.glong(microseconds)
 
 	C.g_time_val_add(_arg0, _arg1)
@@ -171,7 +177,7 @@ func (t *TimeVal) ToISO8601() string {
 	var _arg0 *C.GTimeVal // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(*TimeVal))
 
 	_cret = C.g_time_val_to_iso8601(_arg0)
 

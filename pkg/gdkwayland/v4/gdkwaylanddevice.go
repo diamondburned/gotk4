@@ -75,7 +75,7 @@ func (d *WaylandDeviceClass) NodePath() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&WaylandDevice).Native()))
 
 	_cret = C.gdk_wayland_device_get_node_path(_arg0)
 

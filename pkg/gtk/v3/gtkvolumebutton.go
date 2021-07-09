@@ -56,7 +56,6 @@ func wrapVolumeButton(obj *externglib.Object) VolumeButton {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							BuildableInterface: BuildableInterface{
 								Object: obj,
@@ -72,7 +71,6 @@ func wrapVolumeButton(obj *externglib.Object) VolumeButton {
 				},
 				ActionableInterface: ActionableInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -88,7 +86,6 @@ func wrapVolumeButton(obj *externglib.Object) VolumeButton {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -107,7 +104,6 @@ func wrapVolumeButton(obj *externglib.Object) VolumeButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -135,14 +131,15 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 // NewVolumeButton creates a VolumeButton, with a range between 0.0 and 1.0,
 // with a stepping of 0.02. Volume values can be obtained and modified using the
 // functions from ScaleButton.
-func NewVolumeButton() VolumeButton {
+func NewVolumeButton() *VolumeButtonClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_volume_button_new()
 
-	var _volumeButton VolumeButton // out
+	var _volumeButton *VolumeButtonClass // out
 
-	_volumeButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(VolumeButton)
+	_volumeButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*VolumeButtonClass)
 
 	return _volumeButton
 }

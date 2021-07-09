@@ -168,7 +168,7 @@ type FontOverrider interface {
 	Describe() *FontDescription
 	DescribeAbsolute() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
-	Coverage(language *Language) Coverage
+	Coverage(language *Language) *CoverageClass
 	// FontMap gets the font map for which the font was created.
 	//
 	// Note that the font maintains a *weak* reference to the font map, so if
@@ -179,7 +179,7 @@ type FontOverrider interface {
 	// It is the responsibility of the user to ensure that the font map is kept
 	// alive. In most uses this is not an issue as a Context holds a reference
 	// to the font map.
-	FontMap() FontMap
+	FontMap() *FontMapClass
 	// Metrics gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts, a
@@ -207,9 +207,9 @@ type Font interface {
 	// Use [method@Pango.Font.describe] if you want the font size in points.
 	DescribeWithAbsoluteSize() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
-	Coverage(language *Language) Coverage
+	Coverage(language *Language) *CoverageClass
 	// Face gets the `PangoFontFace` to which @font belongs.
-	Face() FontFace
+	Face() *FontFaceClass
 	// FontMap gets the font map for which the font was created.
 	//
 	// Note that the font maintains a *weak* reference to the font map, so if
@@ -220,7 +220,7 @@ type Font interface {
 	// It is the responsibility of the user to ensure that the font map is kept
 	// alive. In most uses this is not an issue as a Context holds a reference
 	// to the font map.
-	FontMap() FontMap
+	FontMap() *FontMapClass
 	// Metrics gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts, a
@@ -263,13 +263,13 @@ func (f *FontClass) Describe() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer((&Font).Native()))
 
 	_cret = C.pango_font_describe(_arg0)
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(*C.PangoFontDescription))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -285,13 +285,13 @@ func (f *FontClass) DescribeWithAbsoluteSize() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer((&Font).Native()))
 
 	_cret = C.pango_font_describe_with_absolute_size(_arg0)
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(*C.PangoFontDescription))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -300,35 +300,37 @@ func (f *FontClass) DescribeWithAbsoluteSize() *FontDescription {
 }
 
 // Coverage computes the coverage map for a given font and language tag.
-func (f *FontClass) Coverage(language *Language) Coverage {
+func (f *FontClass) Coverage(language *Language) *CoverageClass {
 	var _arg0 *C.PangoFont     // out
 	var _arg1 *C.PangoLanguage // out
 	var _cret *C.PangoCoverage // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer((&Font).Native()))
+	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
 
 	_cret = C.pango_font_get_coverage(_arg0, _arg1)
 
-	var _coverage Coverage // out
+	var _coverage *CoverageClass // out
 
-	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Coverage)
+	_coverage = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CoverageClass)
 
 	return _coverage
 }
 
 // Face gets the `PangoFontFace` to which @font belongs.
-func (f *FontClass) Face() FontFace {
+func (f *FontClass) Face() *FontFaceClass {
 	var _arg0 *C.PangoFont     // out
 	var _cret *C.PangoFontFace // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer((&Font).Native()))
 
 	_cret = C.pango_font_get_face(_arg0)
 
-	var _fontFace FontFace // out
+	var _fontFace *FontFaceClass // out
 
-	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontFace)
+	_fontFace = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontFaceClass)
 
 	return _fontFace
 }
@@ -343,17 +345,18 @@ func (f *FontClass) Face() FontFace {
 // It is the responsibility of the user to ensure that the font map is kept
 // alive. In most uses this is not an issue as a Context holds a reference to
 // the font map.
-func (f *FontClass) FontMap() FontMap {
+func (f *FontClass) FontMap() *FontMapClass {
 	var _arg0 *C.PangoFont    // out
 	var _cret *C.PangoFontMap // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer((&Font).Native()))
 
 	_cret = C.pango_font_get_font_map(_arg0)
 
-	var _fontMap FontMap // out
+	var _fontMap *FontMapClass // out
 
-	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontMap)
+	_fontMap = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontMapClass)
 
 	return _fontMap
 }
@@ -371,14 +374,14 @@ func (f *FontClass) Metrics(language *Language) *FontMetrics {
 	var _arg1 *C.PangoLanguage    // out
 	var _cret *C.PangoFontMetrics // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer((&Font).Native()))
+	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
 
 	_cret = C.pango_font_get_metrics(_arg0, _arg1)
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	_fontMetrics = (*FontMetrics)(unsafe.Pointer(*C.PangoFontMetrics))
 	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
@@ -395,7 +398,7 @@ func (f *FontClass) HasChar(wc uint32) bool {
 	var _arg1 C.gunichar   // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer((&Font).Native()))
 	_arg1 = C.gunichar(wc)
 
 	_cret = C.pango_font_has_char(_arg0, _arg1)
@@ -423,7 +426,7 @@ type FontFaceOverrider interface {
 	// suitable for displaying to users.
 	FaceName() string
 	// Family gets the `PangoFontFamily` that @face belongs to.
-	Family() FontFamily
+	Family() *FontFamilyClass
 	// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
 	// underlying font rendering engine from another face, perhaps by shearing,
 	// emboldening, or lightening it.
@@ -451,7 +454,7 @@ type FontFace interface {
 	// suitable for displaying to users.
 	FaceName() string
 	// Family gets the `PangoFontFamily` that @face belongs to.
-	Family() FontFamily
+	Family() *FontFamilyClass
 	// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
 	// underlying font rendering engine from another face, perhaps by shearing,
 	// emboldening, or lightening it.
@@ -491,13 +494,13 @@ func (f *FontFaceClass) Describe() *FontDescription {
 	var _arg0 *C.PangoFontFace        // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&FontFace).Native()))
 
 	_cret = C.pango_font_face_describe(_arg0)
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(*C.PangoFontDescription))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -512,7 +515,7 @@ func (f *FontFaceClass) FaceName() string {
 	var _arg0 *C.PangoFontFace // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&FontFace).Native()))
 
 	_cret = C.pango_font_face_get_face_name(_arg0)
 
@@ -524,17 +527,18 @@ func (f *FontFaceClass) FaceName() string {
 }
 
 // Family gets the `PangoFontFamily` that @face belongs to.
-func (f *FontFaceClass) Family() FontFamily {
+func (f *FontFaceClass) Family() *FontFamilyClass {
 	var _arg0 *C.PangoFontFace   // out
 	var _cret *C.PangoFontFamily // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&FontFace).Native()))
 
 	_cret = C.pango_font_face_get_family(_arg0)
 
-	var _fontFamily FontFamily // out
+	var _fontFamily *FontFamilyClass // out
 
-	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontFamily)
+	_fontFamily = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontFamilyClass)
 
 	return _fontFamily
 }
@@ -546,7 +550,7 @@ func (f *FontFaceClass) IsSynthesized() bool {
 	var _arg0 *C.PangoFontFace // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&FontFace).Native()))
 
 	_cret = C.pango_font_face_is_synthesized(_arg0)
 
@@ -570,7 +574,7 @@ func (f *FontFaceClass) ListSizes() []int {
 	var _arg1 *C.int
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer((&FontFace).Native()))
 
 	C.pango_font_face_list_sizes(_arg0, &_arg1, &_arg2)
 
@@ -590,7 +594,7 @@ func (f *FontFaceClass) ListSizes() []int {
 // yet, so the interface currently has no use.
 type FontFamilyOverrider interface {
 	// Face gets the `PangoFontFace` of @family with the given name.
-	Face(name string) FontFace
+	Face(name string) *FontFaceClass
 	// Name gets the name of the family.
 	//
 	// The name is unique among all fonts for the font backend and can be used
@@ -618,7 +622,7 @@ type FontFamilyOverrider interface {
 	//
 	// The faces in a family share a common design, but differ in slant, weight,
 	// width and other aspects.
-	ListFaces() []FontFace
+	ListFaces() []*FontFaceClass
 }
 
 // FontFamily: `PangoFontFamily` is used to represent a family of related font
@@ -630,7 +634,7 @@ type FontFamily interface {
 	gextras.Objector
 
 	// Face gets the `PangoFontFace` of @family with the given name.
-	Face(name string) FontFace
+	Face(name string) *FontFaceClass
 	// Name gets the name of the family.
 	//
 	// The name is unique among all fonts for the font backend and can be used
@@ -658,7 +662,7 @@ type FontFamily interface {
 	//
 	// The faces in a family share a common design, but differ in slant, weight,
 	// width and other aspects.
-	ListFaces() []FontFace
+	ListFaces() []*FontFaceClass
 }
 
 // FontFamilyClass implements the FontFamily interface.
@@ -681,20 +685,21 @@ func marshalFontFamily(p uintptr) (interface{}, error) {
 }
 
 // Face gets the `PangoFontFace` of @family with the given name.
-func (f *FontFamilyClass) Face(name string) FontFace {
+func (f *FontFamilyClass) Face(name string) *FontFaceClass {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 *C.char            // out
 	var _cret *C.PangoFontFace   // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&FontFamily).Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_family_get_face(_arg0, _arg1)
 
-	var _fontFace FontFace // out
+	var _fontFace *FontFaceClass // out
 
-	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontFace)
+	_fontFace = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontFaceClass)
 
 	return _fontFace
 }
@@ -707,7 +712,7 @@ func (f *FontFamilyClass) Name() string {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&FontFamily).Native()))
 
 	_cret = C.pango_font_family_get_name(_arg0)
 
@@ -735,7 +740,7 @@ func (f *FontFamilyClass) IsMonospace() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&FontFamily).Native()))
 
 	_cret = C.pango_font_family_is_monospace(_arg0)
 
@@ -754,7 +759,7 @@ func (f *FontFamilyClass) IsVariable() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&FontFamily).Native()))
 
 	_cret = C.pango_font_family_is_variable(_arg0)
 
@@ -771,23 +776,24 @@ func (f *FontFamilyClass) IsVariable() bool {
 //
 // The faces in a family share a common design, but differ in slant, weight,
 // width and other aspects.
-func (f *FontFamilyClass) ListFaces() []FontFace {
+func (f *FontFamilyClass) ListFaces() []*FontFaceClass {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 **C.PangoFontFace
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer((&FontFamily).Native()))
 
 	C.pango_font_family_list_faces(_arg0, &_arg1, &_arg2)
 
-	var _faces []FontFace
+	var _faces []*FontFaceClass
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		src := unsafe.Slice(_arg1, _arg2)
-		_faces = make([]FontFace, _arg2)
+		_faces = make([]*FontFaceClass, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_faces[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src[i]))).(FontFace)
+			_faces[i] = gextras.CastObject(
+				externglib.Take(unsafe.Pointer(src[i]))).(*FontFaceClass)
 		}
 	}
 
@@ -823,7 +829,7 @@ func NewFontDescription() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(*C.PangoFontDescription))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -853,9 +859,9 @@ func (d *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *FontD
 	var _arg2 *C.PangoFontDescription // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(oldMatch))
-	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(newMatch))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
+	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_better_match(_arg0, _arg1, _arg2)
 
@@ -873,13 +879,13 @@ func (d *FontDescription) Copy() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_copy(_arg0)
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(*C.PangoFontDescription))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -898,13 +904,13 @@ func (d *FontDescription) CopyStatic() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_copy_static(_arg0)
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(unsafe.Pointer(*C.PangoFontDescription))
 	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -923,8 +929,8 @@ func (d *FontDescription) Equal(desc2 *FontDescription) bool {
 	var _arg1 *C.PangoFontDescription // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc2))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_equal(_arg0, _arg1)
 
@@ -941,7 +947,7 @@ func (d *FontDescription) Equal(desc2 *FontDescription) bool {
 func (d *FontDescription) free() {
 	var _arg0 *C.PangoFontDescription // out
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	C.pango_font_description_free(_arg0)
 }
@@ -953,7 +959,7 @@ func (d *FontDescription) Family() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_family(_arg0)
 
@@ -971,13 +977,13 @@ func (d *FontDescription) Gravity() Gravity {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoGravity          // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_gravity(_arg0)
 
 	var _gravity Gravity // out
 
-	_gravity = Gravity(_cret)
+	_gravity = (Gravity)(C.PangoGravity)
 
 	return _gravity
 }
@@ -987,13 +993,13 @@ func (d *FontDescription) SetFields() FontMask {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoFontMask         // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_set_fields(_arg0)
 
 	var _fontMask FontMask // out
 
-	_fontMask = FontMask(_cret)
+	_fontMask = (FontMask)(C.PangoFontMask)
 
 	return _fontMask
 }
@@ -1005,7 +1011,7 @@ func (d *FontDescription) Size() int {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.gint                  // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_size(_arg0)
 
@@ -1025,7 +1031,7 @@ func (d *FontDescription) SizeIsAbsolute() bool {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_size_is_absolute(_arg0)
 
@@ -1045,13 +1051,13 @@ func (d *FontDescription) Stretch() Stretch {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoStretch          // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_stretch(_arg0)
 
 	var _stretch Stretch // out
 
-	_stretch = Stretch(_cret)
+	_stretch = (Stretch)(C.PangoStretch)
 
 	return _stretch
 }
@@ -1063,13 +1069,13 @@ func (d *FontDescription) Style() Style {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoStyle            // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_style(_arg0)
 
 	var _style Style // out
 
-	_style = Style(_cret)
+	_style = (Style)(C.PangoStyle)
 
 	return _style
 }
@@ -1081,13 +1087,13 @@ func (d *FontDescription) Variant() Variant {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoVariant          // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_variant(_arg0)
 
 	var _variant Variant // out
 
-	_variant = Variant(_cret)
+	_variant = (Variant)(C.PangoVariant)
 
 	return _variant
 }
@@ -1099,7 +1105,7 @@ func (d *FontDescription) Variations() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_variations(_arg0)
 
@@ -1117,13 +1123,13 @@ func (d *FontDescription) Weight() Weight {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoWeight           // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_get_weight(_arg0)
 
 	var _weight Weight // out
 
-	_weight = Weight(_cret)
+	_weight = (Weight)(C.PangoWeight)
 
 	return _weight
 }
@@ -1136,7 +1142,7 @@ func (d *FontDescription) Hash() uint {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.guint                 // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_hash(_arg0)
 
@@ -1160,8 +1166,8 @@ func (d *FontDescription) Merge(descToMerge *FontDescription, replaceExisting bo
 	var _arg1 *C.PangoFontDescription // out
 	var _arg2 C.gboolean              // out
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(descToMerge))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 	if replaceExisting {
 		_arg2 = C.TRUE
 	}
@@ -1181,8 +1187,8 @@ func (d *FontDescription) MergeStatic(descToMerge *FontDescription, replaceExist
 	var _arg1 *C.PangoFontDescription // out
 	var _arg2 C.gboolean              // out
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(descToMerge))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 	if replaceExisting {
 		_arg2 = C.TRUE
 	}
@@ -1198,7 +1204,7 @@ func (d *FontDescription) SetAbsoluteSize(size float64) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.double                // out
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 	_arg1 = C.double(size)
 
 	C.pango_font_description_set_absolute_size(_arg0, _arg1)
@@ -1214,7 +1220,7 @@ func (d *FontDescription) SetFamily(family string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 	_arg1 = (*C.char)(C.CString(family))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1233,29 +1239,11 @@ func (d *FontDescription) SetFamilyStatic(family string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 	_arg1 = (*C.char)(C.CString(family))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_family_static(_arg0, _arg1)
-}
-
-// SetGravity sets the gravity field of a font description.
-//
-// The gravity field specifies how the glyphs should be rotated. If @gravity is
-// PANGO_GRAVITY_AUTO, this actually unsets the gravity mask on the font
-// description.
-//
-// This function is seldom useful to the user. Gravity should normally be set on
-// a `PangoContext`.
-func (d *FontDescription) SetGravity(gravity Gravity) {
-	var _arg0 *C.PangoFontDescription // out
-	var _arg1 C.PangoGravity          // out
-
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = C.PangoGravity(gravity)
-
-	C.pango_font_description_set_gravity(_arg0, _arg1)
 }
 
 // SetSize sets the size field of a font description in fractional points.
@@ -1266,57 +1254,10 @@ func (d *FontDescription) SetSize(size int) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.gint                  // out
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 	_arg1 = C.gint(size)
 
 	C.pango_font_description_set_size(_arg0, _arg1)
-}
-
-// SetStretch sets the stretch field of a font description.
-//
-// The [enum@Pango.Stretch] field specifies how narrow or wide the font should
-// be.
-func (d *FontDescription) SetStretch(stretch Stretch) {
-	var _arg0 *C.PangoFontDescription // out
-	var _arg1 C.PangoStretch          // out
-
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = C.PangoStretch(stretch)
-
-	C.pango_font_description_set_stretch(_arg0, _arg1)
-}
-
-// SetStyle sets the style field of a `PangoFontDescription`.
-//
-// The [enum@Pango.Style] enumeration describes whether the font is slanted and
-// the manner in which it is slanted; it can be either NGO_STYLE_NORMAL,
-// NGO_STYLE_ITALIC, or NGO_STYLE_OBLIQUE.
-//
-// Most fonts will either have a italic style or an oblique style, but not both,
-// and font matching in Pango will match italic specifications with oblique
-// fonts and vice-versa if an exact match is not found.
-func (d *FontDescription) SetStyle(style Style) {
-	var _arg0 *C.PangoFontDescription // out
-	var _arg1 C.PangoStyle            // out
-
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = C.PangoStyle(style)
-
-	C.pango_font_description_set_style(_arg0, _arg1)
-}
-
-// SetVariant sets the variant field of a font description.
-//
-// The [enum@Pango.Variant] can either be PANGO_VARIANT_NORMAL or
-// PANGO_VARIANT_SMALL_CAPS.
-func (d *FontDescription) SetVariant(variant Variant) {
-	var _arg0 *C.PangoFontDescription // out
-	var _arg1 C.PangoVariant          // out
-
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = C.PangoVariant(variant)
-
-	C.pango_font_description_set_variant(_arg0, _arg1)
 }
 
 // SetVariations sets the variations field of a font description.
@@ -1338,7 +1279,7 @@ func (d *FontDescription) SetVariations(variations string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 	_arg1 = (*C.char)(C.CString(variations))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1356,26 +1297,11 @@ func (d *FontDescription) SetVariationsStatic(variations string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 	_arg1 = (*C.char)(C.CString(variations))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_variations_static(_arg0, _arg1)
-}
-
-// SetWeight sets the weight field of a font description.
-//
-// The weight field specifies how bold or light the font should be. In addition
-// to the values of the [enum@Pango.Weight] enumeration, other intermediate
-// numeric values are possible.
-func (d *FontDescription) SetWeight(weight Weight) {
-	var _arg0 *C.PangoFontDescription // out
-	var _arg1 C.PangoWeight           // out
-
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = C.PangoWeight(weight)
-
-	C.pango_font_description_set_weight(_arg0, _arg1)
 }
 
 // ToFilename creates a filename representation of a font description.
@@ -1387,7 +1313,7 @@ func (d *FontDescription) ToFilename() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_to_filename(_arg0)
 
@@ -1409,7 +1335,7 @@ func (d *FontDescription) String() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_description_to_string(_arg0)
 
@@ -1419,19 +1345,6 @@ func (d *FontDescription) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// UnsetFields unsets some of the fields in a `PangoFontDescription`.
-//
-// The unset fields will get back to their default values.
-func (d *FontDescription) UnsetFields(toUnset FontMask) {
-	var _arg0 *C.PangoFontDescription // out
-	var _arg1 C.PangoFontMask         // out
-
-	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(d))
-	_arg1 = C.PangoFontMask(toUnset)
-
-	C.pango_font_description_unset_fields(_arg0, _arg1)
 }
 
 // FontMetrics: `PangoFontMetrics` structure holds the overall metric
@@ -1471,7 +1384,7 @@ func (m *FontMetrics) ApproximateCharWidth() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_get_approximate_char_width(_arg0)
 
@@ -1493,7 +1406,7 @@ func (m *FontMetrics) ApproximateDigitWidth() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_get_approximate_digit_width(_arg0)
 
@@ -1513,7 +1426,7 @@ func (m *FontMetrics) Ascent() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_get_ascent(_arg0)
 
@@ -1534,7 +1447,7 @@ func (m *FontMetrics) Descent() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_get_descent(_arg0)
 
@@ -1554,7 +1467,7 @@ func (m *FontMetrics) Height() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_get_height(_arg0)
 
@@ -1573,7 +1486,7 @@ func (m *FontMetrics) StrikethroughPosition() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_get_strikethrough_position(_arg0)
 
@@ -1590,7 +1503,7 @@ func (m *FontMetrics) StrikethroughThickness() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_get_strikethrough_thickness(_arg0)
 
@@ -1610,7 +1523,7 @@ func (m *FontMetrics) UnderlinePosition() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_get_underline_position(_arg0)
 
@@ -1626,7 +1539,7 @@ func (m *FontMetrics) UnderlineThickness() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_get_underline_thickness(_arg0)
 
@@ -1642,13 +1555,13 @@ func (m *FontMetrics) ref() *FontMetrics {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret *C.PangoFontMetrics // in
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	_cret = C.pango_font_metrics_ref(_arg0)
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	_fontMetrics = (*FontMetrics)(unsafe.Pointer(*C.PangoFontMetrics))
 	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
@@ -1662,7 +1575,7 @@ func (m *FontMetrics) ref() *FontMetrics {
 func (m *FontMetrics) unref() {
 	var _arg0 *C.PangoFontMetrics // out
 
-	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoFontMetrics)(unsafe.Pointer(*FontMetrics))
 
 	C.pango_font_metrics_unref(_arg0)
 }

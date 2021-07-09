@@ -30,7 +30,6 @@ func init() {
 // yet, so the interface currently has no use.
 type HSVOverrider interface {
 	Changed()
-	Move(typ DirectionType)
 }
 
 // HSV is the “color wheel” part of a complete color selector widget. It allows
@@ -72,7 +71,6 @@ func wrapHSV(obj *externglib.Object) HSV {
 	return &HSVClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			BuildableInterface: BuildableInterface{
 				Object: obj,
@@ -91,14 +89,15 @@ func marshalHSV(p uintptr) (interface{}, error) {
 }
 
 // NewHSV creates a new HSV color selector.
-func NewHSV() HSV {
+func NewHSV() *HSVClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_hsv_new()
 
-	var _hsV HSV // out
+	var _hsV *HSVClass // out
 
-	_hsV = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HSV)
+	_hsV = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HSVClass)
 
 	return _hsV
 }
@@ -111,7 +110,7 @@ func (h *HSVClass) Color() (h float64, s float64, v float64) {
 	var _arg2 C.gdouble // in
 	var _arg3 C.gdouble // in
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer((&HSV).Native()))
 
 	C.gtk_hsv_get_color(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -132,7 +131,7 @@ func (h *HSVClass) Metrics() (size int, ringWidth int) {
 	var _arg1 C.gint    // in
 	var _arg2 C.gint    // in
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer((&HSV).Native()))
 
 	C.gtk_hsv_get_metrics(_arg0, &_arg1, &_arg2)
 
@@ -153,7 +152,7 @@ func (h *HSVClass) IsAdjusting() bool {
 	var _arg0 *C.GtkHSV  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer((&HSV).Native()))
 
 	_cret = C.gtk_hsv_is_adjusting(_arg0)
 
@@ -174,7 +173,7 @@ func (h *HSVClass) SetColor(h float64, s float64, v float64) {
 	var _arg2 C.double  // out
 	var _arg3 C.double  // out
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer((&HSV).Native()))
 	_arg1 = C.double(h)
 	_arg2 = C.double(s)
 	_arg3 = C.double(v)
@@ -188,7 +187,7 @@ func (h *HSVClass) SetMetrics(size int, ringWidth int) {
 	var _arg1 C.gint    // out
 	var _arg2 C.gint    // out
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer((&HSV).Native()))
 	_arg1 = C.gint(size)
 	_arg2 = C.gint(ringWidth)
 

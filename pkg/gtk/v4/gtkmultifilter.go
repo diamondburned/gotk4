@@ -74,14 +74,15 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 // This filter matches an item if any of the filters added to it matches the
 // item. In particular, this means that if no filter has been added to it, the
 // filter matches no item.
-func NewAnyFilter() AnyFilter {
+func NewAnyFilter() *AnyFilterClass {
 	var _cret *C.GtkAnyFilter // in
 
 	_cret = C.gtk_any_filter_new()
 
-	var _anyFilter AnyFilter // out
+	var _anyFilter *AnyFilterClass // out
 
-	_anyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(AnyFilter)
+	_anyFilter = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*AnyFilterClass)
 
 	return _anyFilter
 }
@@ -138,14 +139,15 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 // This filter matches an item if each of the filters added to it matches the
 // item. In particular, this means that if no filter has been added to it, the
 // filter matches every item.
-func NewEveryFilter() EveryFilter {
+func NewEveryFilter() *EveryFilterClass {
 	var _cret *C.GtkEveryFilter // in
 
 	_cret = C.gtk_every_filter_new()
 
-	var _everyFilter EveryFilter // out
+	var _everyFilter *EveryFilterClass // out
 
-	_everyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EveryFilter)
+	_everyFilter = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EveryFilterClass)
 
 	return _everyFilter
 }
@@ -199,8 +201,8 @@ func (s *MultiFilterClass) Append(filter Filter) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer((&MultiFilter).Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer((&Filter).Native()))
 
 	C.gtk_multi_filter_append(_arg0, _arg1)
 }
@@ -214,7 +216,7 @@ func (s *MultiFilterClass) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer((&MultiFilter).Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)

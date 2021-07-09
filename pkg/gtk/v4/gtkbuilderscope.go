@@ -142,14 +142,15 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 //
 // Calling this function is only necessary if you want to add custom callbacks
 // via [method@Gtk.BuilderCScope.add_callback_symbol].
-func NewBuilderCScope() BuilderCScope {
+func NewBuilderCScope() *BuilderCScopeClass {
 	var _cret *C.GtkBuilderScope // in
 
 	_cret = C.gtk_builder_cscope_new()
 
-	var _builderCScope BuilderCScope // out
+	var _builderCScope *BuilderCScopeClass // out
 
-	_builderCScope = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BuilderCScope)
+	_builderCScope = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*BuilderCScopeClass)
 
 	return _builderCScope
 }

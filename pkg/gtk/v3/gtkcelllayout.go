@@ -27,7 +27,7 @@ func init() {
 
 // CellLayoutDataFunc: function which should set the value of @cell_layout’s
 // cell renderer(s) as appropriate.
-type CellLayoutDataFunc func(cellLayout CellLayout, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
+type CellLayoutDataFunc func(cellLayout *CellLayoutInterface, cell *CellRendererClass, treeModel *TreeModelInterface, iter *TreeIter, data interface{})
 
 //export gotk4_CellLayoutDataFunc
 func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -36,18 +36,23 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 		panic(`callback not found`)
 	}
 
-	var cellLayout CellLayout // out
-	var cell CellRenderer     // out
-	var treeModel TreeModel   // out
-	var iter *TreeIter        // out
+	var cellLayout *CellLayoutInterface // out
+	var cell *CellRendererClass         // out
+	var treeModel *TreeModelInterface   // out
+	var iter *TreeIter                  // out
+	var data interface{}                // out
 
-	cellLayout = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(CellLayout)
-	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(CellRenderer)
-	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2))).(TreeModel)
-	iter = (*TreeIter)(unsafe.Pointer(arg3))
+	cellLayout = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg0))).(*CellLayoutInterface)
+	cell = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg1))).(*CellRendererClass)
+	treeModel = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg2))).(*TreeModelInterface)
+	iter = (*TreeIter)(unsafe.Pointer(*C.GtkTreeIter))
+	data = box.Get(uintptr(arg4))
 
 	fn := v.(CellLayoutDataFunc)
-	fn(cellLayout, cell, treeModel, iter)
+	fn(cellLayout, cell, treeModel, iter, data)
 }
 
 // CellLayoutOverrider contains methods that are overridable.
@@ -71,7 +76,7 @@ type CellLayoutOverrider interface {
 	// Area returns the underlying CellArea which might be @cell_layout if
 	// called on a CellArea or might be nil if no CellArea is used by
 	// @cell_layout.
-	Area() CellArea
+	Area() *CellAreaClass
 	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
 	// then the @cell is allocated no more space than it needs. Any unused space
 	// is divided evenly between cells for which @expand is true.
@@ -196,7 +201,7 @@ type CellLayout interface {
 	// Area returns the underlying CellArea which might be @cell_layout if
 	// called on a CellArea or might be nil if no CellArea is used by
 	// @cell_layout.
-	Area() CellArea
+	Area() *CellAreaClass
 	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
 	// then the @cell is allocated no more space than it needs. Any unused space
 	// is divided evenly between cells for which @expand is true.
@@ -247,8 +252,8 @@ func (c *CellLayoutInterface) AddAttribute(cell CellRenderer, attribute string, 
 	var _arg2 *C.gchar           // out
 	var _arg3 C.gint             // out
 
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer((&CellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((&CellRenderer).Native()))
 	_arg2 = (*C.gchar)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(column)
@@ -261,7 +266,7 @@ func (c *CellLayoutInterface) AddAttribute(cell CellRenderer, attribute string, 
 func (c *CellLayoutInterface) Clear() {
 	var _arg0 *C.GtkCellLayout // out
 
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer((&CellLayout).Native()))
 
 	C.gtk_cell_layout_clear(_arg0)
 }
@@ -272,25 +277,26 @@ func (c *CellLayoutInterface) ClearAttributes(cell CellRenderer) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
 
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer((&CellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((&CellRenderer).Native()))
 
 	C.gtk_cell_layout_clear_attributes(_arg0, _arg1)
 }
 
 // Area returns the underlying CellArea which might be @cell_layout if called on
 // a CellArea or might be nil if no CellArea is used by @cell_layout.
-func (c *CellLayoutInterface) Area() CellArea {
+func (c *CellLayoutInterface) Area() *CellAreaClass {
 	var _arg0 *C.GtkCellLayout // out
 	var _cret *C.GtkCellArea   // in
 
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer((&CellLayout).Native()))
 
 	_cret = C.gtk_cell_layout_get_area(_arg0)
 
-	var _cellArea CellArea // out
+	var _cellArea *CellAreaClass // out
 
-	_cellArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellArea)
+	_cellArea = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CellAreaClass)
 
 	return _cellArea
 }
@@ -305,8 +311,8 @@ func (c *CellLayoutInterface) PackEnd(cell CellRenderer, expand bool) {
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gboolean         // out
 
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer((&CellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((&CellRenderer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -324,8 +330,8 @@ func (c *CellLayoutInterface) PackStart(cell CellRenderer, expand bool) {
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gboolean         // out
 
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer((&CellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((&CellRenderer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -342,8 +348,8 @@ func (c *CellLayoutInterface) Reorder(cell CellRenderer, position int) {
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gint             // out
 
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer((&CellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((&CellRenderer).Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)

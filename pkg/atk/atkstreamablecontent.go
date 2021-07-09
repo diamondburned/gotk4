@@ -109,7 +109,7 @@ func (s *StreamableContentInterface) MIMEType(i int) string {
 	var _arg1 C.gint                  // out
 	var _cret *C.gchar                // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer((&StreamableContent).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_streamable_content_get_mime_type(_arg0, _arg1)
@@ -126,7 +126,7 @@ func (s *StreamableContentInterface) NMIMETypes() int {
 	var _arg0 *C.AtkStreamableContent // out
 	var _cret C.gint                  // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer((&StreamableContent).Native()))
 
 	_cret = C.atk_streamable_content_get_n_mime_types(_arg0)
 
@@ -143,7 +143,7 @@ func (s *StreamableContentInterface) Stream(mimeType string) *glib.IOChannel {
 	var _arg1 *C.gchar                // out
 	var _cret *C.GIOChannel           // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer((&StreamableContent).Native()))
 	_arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -151,7 +151,7 @@ func (s *StreamableContentInterface) Stream(mimeType string) *glib.IOChannel {
 
 	var _ioChannel *glib.IOChannel // out
 
-	_ioChannel = (*glib.IOChannel)(unsafe.Pointer(_cret))
+	_ioChannel = (*glib.IOChannel)(unsafe.Pointer(*C.GIOChannel))
 	C.g_io_channel_ref(_cret)
 	runtime.SetFinalizer(_ioChannel, func(v *glib.IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
@@ -172,7 +172,7 @@ func (s *StreamableContentInterface) URI(mimeType string) string {
 	var _arg1 *C.gchar                // out
 	var _cret *C.gchar                // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer((&StreamableContent).Native()))
 	_arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 

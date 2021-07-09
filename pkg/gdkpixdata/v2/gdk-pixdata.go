@@ -94,23 +94,24 @@ const (
 // pixel data is copied into newly-allocated memory; otherwise it is reused.
 //
 // Deprecated: since version 2.32.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, error) {
+func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.PixbufClass, error) {
 	var _arg1 *C.GdkPixdata // out
 	var _arg2 C.gboolean    // out
 	var _cret *C.GdkPixbuf  // in
 	var _cerr *C.GError     // in
 
-	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata))
+	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(*Pixdata))
 	if copyPixels {
 		_arg2 = C.TRUE
 	}
 
 	_cret = C.gdk_pixbuf_from_pixdata(_arg1, _arg2, &_cerr)
 
-	var _pixbuf gdkpixbuf.Pixbuf // out
-	var _goerr error             // out
+	var _pixbuf *gdkpixbuf.PixbufClass // out
+	var _goerr error                   // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*gdkpixbuf.PixbufClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -207,7 +208,7 @@ func (p *Pixdata) Deserialize(stream []byte) error {
 	var _arg1 C.guint
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p))
+	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(*Pixdata))
 	_arg1 = C.guint(len(stream))
 	_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
 

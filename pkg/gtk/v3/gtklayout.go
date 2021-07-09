@@ -42,7 +42,7 @@ type Layout interface {
 
 	// BinWindow: retrieve the bin window of the layout used for drawing
 	// operations.
-	BinWindow() gdk.Window
+	BinWindow() *gdk.WindowClass
 	// HAdjustment: this function should only be called after the layout has
 	// been placed in a ScrolledWindow or otherwise configured for scrolling. It
 	// returns the Adjustment used for communication between the horizontal
@@ -51,7 +51,7 @@ type Layout interface {
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
 	//
 	// Deprecated: since version 3.0.
-	HAdjustment() Adjustment
+	HAdjustment() *AdjustmentClass
 	// Size gets the size that has been set on the layout, and that determines
 	// the total extents of the layout’s scrollbar area. See gtk_layout_set_size
 	// ().
@@ -64,7 +64,7 @@ type Layout interface {
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
 	//
 	// Deprecated: since version 3.0.
-	VAdjustment() Adjustment
+	VAdjustment() *AdjustmentClass
 	// Move moves a current child of @layout to a new position.
 	Move(childWidget Widget, x int, y int)
 	// Put adds @child_widget to @layout, at position (@x,@y). @layout becomes
@@ -102,7 +102,6 @@ func wrapLayout(obj *externglib.Object) Layout {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -130,35 +129,37 @@ func marshalLayout(p uintptr) (interface{}, error) {
 // NewLayout creates a new Layout. Unless you have a specific adjustment you’d
 // like the layout to use for scrolling, pass nil for @hadjustment and
 // @vadjustment.
-func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
+func NewLayout(hadjustment Adjustment, vadjustment Adjustment) *LayoutClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
 
 	_cret = C.gtk_layout_new(_arg1, _arg2)
 
-	var _layout Layout // out
+	var _layout *LayoutClass // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Layout)
+	_layout = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*LayoutClass)
 
 	return _layout
 }
 
 // BinWindow: retrieve the bin window of the layout used for drawing operations.
-func (l *LayoutClass) BinWindow() gdk.Window {
+func (l *LayoutClass) BinWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkLayout // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
 
 	_cret = C.gtk_layout_get_bin_window(_arg0)
 
-	var _window gdk.Window // out
+	var _window *gdk.WindowClass // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.WindowClass)
 
 	return _window
 }
@@ -171,17 +172,18 @@ func (l *LayoutClass) BinWindow() gdk.Window {
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: since version 3.0.
-func (l *LayoutClass) HAdjustment() Adjustment {
+func (l *LayoutClass) HAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
 
 	_cret = C.gtk_layout_get_hadjustment(_arg0)
 
-	var _adjustment Adjustment // out
+	var _adjustment *AdjustmentClass // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
+	_adjustment = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*AdjustmentClass)
 
 	return _adjustment
 }
@@ -193,7 +195,7 @@ func (l *LayoutClass) Size() (width uint, height uint) {
 	var _arg1 C.guint      // in
 	var _arg2 C.guint      // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
 
 	C.gtk_layout_get_size(_arg0, &_arg1, &_arg2)
 
@@ -214,17 +216,18 @@ func (l *LayoutClass) Size() (width uint, height uint) {
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: since version 3.0.
-func (l *LayoutClass) VAdjustment() Adjustment {
+func (l *LayoutClass) VAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
 
 	_cret = C.gtk_layout_get_vadjustment(_arg0)
 
-	var _adjustment Adjustment // out
+	var _adjustment *AdjustmentClass // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
+	_adjustment = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*AdjustmentClass)
 
 	return _adjustment
 }
@@ -236,8 +239,8 @@ func (l *LayoutClass) Move(childWidget Widget, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -252,8 +255,8 @@ func (l *LayoutClass) Put(childWidget Widget, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -269,8 +272,8 @@ func (l *LayoutClass) SetHAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
 
 	C.gtk_layout_set_hadjustment(_arg0, _arg1)
 }
@@ -281,7 +284,7 @@ func (l *LayoutClass) SetSize(width uint, height uint) {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
 	_arg1 = C.guint(width)
 	_arg2 = C.guint(height)
 
@@ -297,8 +300,8 @@ func (l *LayoutClass) SetVAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer((&Layout).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
 
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)
 }

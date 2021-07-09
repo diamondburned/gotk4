@@ -249,12 +249,12 @@ func (g *Generator) renderBlock() bool {
 		case typeconv.ConvertGoToC: // parameter
 			// Skip the instance parameter if any.
 			if i != 0 || !instanceParam {
-				g.GoArgs.Addf("%s %s", converted.InName, converted.InType)
+				g.GoArgs.Addf("%s %s", converted.InName, converted.In.Type)
 			}
 
-			// Go inputs are declared in the parameters, so no InDeclare.
+			// Go inputs are declared in the parameters, so no In.Declare.
 			// C outputs have to be declared (input means C function input).
-			g.pen.Line(secInputDecl, converted.OutDeclare)
+			g.pen.Line(secInputDecl, converted.Out.Declare)
 			// Conversions follow right after declaring all outputs.
 			g.pen.Line(secInputConv, converted.Conversion)
 
@@ -263,13 +263,13 @@ func (g *Generator) renderBlock() bool {
 			// purposes. It is not used internally at all, and so it doesn't
 			// have the underscore.
 			decoOut := strings.TrimPrefix(converted.OutName, "_")
-			g.GoRets.Addf("%s %s", decoOut, converted.OutType)
+			g.GoRets.Addf("%s %s", decoOut, converted.Out.Type)
 
 			goReturns.Add(converted.OutName)
 
-			g.pen.Line(secInputDecl, converted.InDeclare)
+			g.pen.Line(secInputDecl, converted.In.Declare)
 			// Go outputs should be redeclared.
-			g.pen.Line(secOutputDecl, converted.OutDeclare)
+			g.pen.Line(secOutputDecl, converted.Out.Declare)
 			// Conversions follow right after declaring all outputs.
 			g.pen.Line(secOutputConv, converted.Conversion)
 		}

@@ -43,10 +43,10 @@ type VolumeMonitorOverrider interface {
 	DriveEjectButton(drive Drive)
 	DriveStopButton(drive Drive)
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-	MountForUUID(uuid string) Mount
+	MountForUUID(uuid string) *MountInterface
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid())
-	VolumeForUUID(uuid string) Volume
+	VolumeForUUID(uuid string) *VolumeInterface
 	MountAdded(mount Mount)
 	MountChanged(mount Mount)
 	MountPreUnmount(mount Mount)
@@ -70,10 +70,10 @@ type VolumeMonitor interface {
 	gextras.Objector
 
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-	MountForUUID(uuid string) Mount
+	MountForUUID(uuid string) *MountInterface
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid())
-	VolumeForUUID(uuid string) Volume
+	VolumeForUUID(uuid string) *VolumeInterface
 }
 
 // VolumeMonitorClass implements the VolumeMonitor interface.
@@ -96,39 +96,41 @@ func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 }
 
 // MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-func (v *VolumeMonitorClass) MountForUUID(uuid string) Mount {
+func (v *VolumeMonitorClass) MountForUUID(uuid string) *MountInterface {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
 	var _cret *C.GMount         // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer((&VolumeMonitor).Native()))
 	_arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_monitor_get_mount_for_uuid(_arg0, _arg1)
 
-	var _mount Mount // out
+	var _mount *MountInterface // out
 
-	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Mount)
+	_mount = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MountInterface)
 
 	return _mount
 }
 
 // VolumeForUUID finds a #GVolume object by its UUID (see g_volume_get_uuid())
-func (v *VolumeMonitorClass) VolumeForUUID(uuid string) Volume {
+func (v *VolumeMonitorClass) VolumeForUUID(uuid string) *VolumeInterface {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
 	var _cret *C.GVolume        // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer((&VolumeMonitor).Native()))
 	_arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_monitor_get_volume_for_uuid(_arg0, _arg1)
 
-	var _volume Volume // out
+	var _volume *VolumeInterface // out
 
-	_volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Volume)
+	_volume = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*VolumeInterface)
 
 	return _volume
 }

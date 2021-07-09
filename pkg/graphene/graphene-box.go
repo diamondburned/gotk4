@@ -47,7 +47,7 @@ func NewBoxAlloc() *Box {
 
 	var _box *Box // out
 
-	_box = (*Box)(unsafe.Pointer(_cret))
+	_box = (*Box)(unsafe.Pointer(*C.graphene_box_t))
 	runtime.SetFinalizer(_box, func(v *Box) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -67,8 +67,8 @@ func (a *Box) ContainsBox(b *Box) bool {
 	var _arg1 *C.graphene_box_t // out
 	var _cret C._Bool           // in
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
 
 	_cret = C.graphene_box_contains_box(_arg0, _arg1)
 
@@ -87,8 +87,8 @@ func (b *Box) ContainsPoint(point *Point3D) bool {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C._Bool               // in
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
 
 	_cret = C.graphene_box_contains_point(_arg0, _arg1)
 
@@ -107,8 +107,8 @@ func (a *Box) Equal(b *Box) bool {
 	var _arg1 *C.graphene_box_t // out
 	var _cret C._Bool           // in
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
 
 	_cret = C.graphene_box_equal(_arg0, _arg1)
 
@@ -125,7 +125,7 @@ func (a *Box) Equal(b *Box) bool {
 func (b *Box) free() {
 	var _arg0 *C.graphene_box_t // out
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
 
 	C.graphene_box_free(_arg0)
 }
@@ -135,7 +135,7 @@ func (b *Box) Depth() float32 {
 	var _arg0 *C.graphene_box_t // out
 	var _cret C.float           // in
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
 
 	_cret = C.graphene_box_get_depth(_arg0)
 
@@ -151,7 +151,7 @@ func (b *Box) Height() float32 {
 	var _arg0 *C.graphene_box_t // out
 	var _cret C.float           // in
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
 
 	_cret = C.graphene_box_get_height(_arg0)
 
@@ -167,7 +167,7 @@ func (b *Box) Width() float32 {
 	var _arg0 *C.graphene_box_t // out
 	var _cret C.float           // in
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
 
 	_cret = C.graphene_box_get_width(_arg0)
 
@@ -185,15 +185,15 @@ func (b *Box) Init(min *Point3D, max *Point3D) *Box {
 	var _arg2 *C.graphene_point3d_t // out
 	var _cret *C.graphene_box_t     // in
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(min))
-	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(max))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
 
 	_cret = C.graphene_box_init(_arg0, _arg1, _arg2)
 
 	var _ret *Box // out
 
-	_ret = (*Box)(unsafe.Pointer(_cret))
+	_ret = (*Box)(unsafe.Pointer(*C.graphene_box_t))
 
 	return _ret
 }
@@ -205,14 +205,14 @@ func (b *Box) InitFromBox(src *Box) *Box {
 	var _arg1 *C.graphene_box_t // out
 	var _cret *C.graphene_box_t // in
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
-	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
 
 	_cret = C.graphene_box_init_from_box(_arg0, _arg1)
 
 	var _ret *Box // out
 
-	_ret = (*Box)(unsafe.Pointer(_cret))
+	_ret = (*Box)(unsafe.Pointer(*C.graphene_box_t))
 
 	return _ret
 }
@@ -225,15 +225,15 @@ func (b *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 	var _arg2 *C.graphene_vec3_t // out
 	var _cret *C.graphene_box_t  // in
 
-	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(b))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(min))
-	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(max))
+	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(*Box))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
 
 	_cret = C.graphene_box_init_from_vec3(_arg0, _arg1, _arg2)
 
 	var _ret *Box // out
 
-	_ret = (*Box)(unsafe.Pointer(_cret))
+	_ret = (*Box)(unsafe.Pointer(*C.graphene_box_t))
 
 	return _ret
 }

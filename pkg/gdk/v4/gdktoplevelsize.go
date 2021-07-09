@@ -20,7 +20,7 @@ func ToplevelSizeGetType() externglib.Type {
 
 	var _gType externglib.Type // out
 
-	_gType = externglib.Type(_cret)
+	_gType = externglib.Type(C.GType)
 
 	return _gType
 }

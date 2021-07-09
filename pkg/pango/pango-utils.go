@@ -37,36 +37,6 @@ func IsZeroWidth(ch uint32) bool {
 	return _ok
 }
 
-// Log2VisGetEmbeddingLevels: return the bidirectional embedding levels of the
-// input paragraph.
-//
-// The bidirectional embedding levels are defined by the Unicode Bidirectional
-// Algorithm available at:
-//
-//    http://www.unicode.org/reports/tr9/
-//
-// If the input base direction is a weak direction, the direction of the
-// characters in the text will determine the final resolved direction.
-func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *byte {
-	var _arg1 *C.gchar          // out
-	var _arg2 C.int             // out
-	var _arg3 *C.PangoDirection // out
-	var _cret *C.guint8         // in
-
-	_arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = (*C.PangoDirection)(unsafe.Pointer(pbaseDir))
-
-	_cret = C.pango_log2vis_get_embedding_levels(_arg1, _arg2, _arg3)
-
-	var _guint8 *byte // out
-
-	_guint8 = (*byte)(unsafe.Pointer(_cret))
-
-	return _guint8
-}
-
 // ParseEnum parses an enum type and stores the result in @value.
 //
 // If @str does not match the nick name of any of the possible values for the
@@ -85,7 +55,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg5 *C.char    // in
 	var _cret C.gboolean // in
 
-	_arg1 = (C.GType)(typ)
+	_arg1 = (C.GType)(externglib.Type)
 	_arg2 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg2))
 	if warn {
@@ -131,7 +101,7 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _stretch Stretch // out
 	var _ok bool         // out
 
-	_stretch = Stretch(_arg2)
+	_stretch = (Stretch)(C.PangoStretch)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -160,7 +130,7 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 	var _style Style // out
 	var _ok bool     // out
 
-	_style = Style(_arg2)
+	_style = (Style)(C.PangoStyle)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -189,7 +159,7 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _variant Variant // out
 	var _ok bool         // out
 
-	_variant = Variant(_arg2)
+	_variant = (Variant)(C.PangoVariant)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -218,7 +188,7 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _weight Weight // out
 	var _ok bool       // out
 
-	_weight = Weight(_arg2)
+	_weight = (Weight)(C.PangoWeight)
 	if _cret != 0 {
 		_ok = true
 	}

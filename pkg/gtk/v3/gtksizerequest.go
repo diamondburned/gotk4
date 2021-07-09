@@ -30,7 +30,7 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 
 	_arg1 = C.gint(extraSpace)
 	_arg2 = C.guint(nRequestedSizes)
-	_arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(sizes))
+	_arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(*RequestedSize))
 
 	_cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
 

@@ -69,17 +69,18 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 }
 
 // NewGestureSwipe returns a newly created Gesture that recognizes swipes.
-func NewGestureSwipe(widget Widget) GestureSwipe {
+func NewGestureSwipe(widget Widget) *GestureSwipeClass {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_gesture_swipe_new(_arg1)
 
-	var _gestureSwipe GestureSwipe // out
+	var _gestureSwipe *GestureSwipeClass // out
 
-	_gestureSwipe = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureSwipe)
+	_gestureSwipe = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureSwipeClass)
 
 	return _gestureSwipe
 }
@@ -93,7 +94,7 @@ func (g *GestureSwipeClass) Velocity() (velocityX float64, velocityY float64, ok
 	var _arg2 C.gdouble          // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer((&GestureSwipe).Native()))
 
 	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
 

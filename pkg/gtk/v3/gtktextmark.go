@@ -56,7 +56,7 @@ type TextMark interface {
 
 	// Buffer gets the buffer this mark is located inside, or nil if the mark is
 	// deleted.
-	Buffer() TextBuffer
+	Buffer() *TextBufferClass
 	// Deleted returns true if the mark has been removed from its buffer with
 	// gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way
 	// to add it to a buffer again.
@@ -104,7 +104,7 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 // the mark will end up on the right of newly-inserted text. The standard
 // left-to-right cursor is a mark with right gravity (when you type, the cursor
 // stays on the right side of the text you’re typing).
-func NewTextMark(name string, leftGravity bool) TextMark {
+func NewTextMark(name string, leftGravity bool) *TextMarkClass {
 	var _arg1 *C.gchar       // out
 	var _arg2 C.gboolean     // out
 	var _cret *C.GtkTextMark // in
@@ -117,26 +117,28 @@ func NewTextMark(name string, leftGravity bool) TextMark {
 
 	_cret = C.gtk_text_mark_new(_arg1, _arg2)
 
-	var _textMark TextMark // out
+	var _textMark *TextMarkClass // out
 
-	_textMark = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextMark)
+	_textMark = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TextMarkClass)
 
 	return _textMark
 }
 
 // Buffer gets the buffer this mark is located inside, or nil if the mark is
 // deleted.
-func (m *TextMarkClass) Buffer() TextBuffer {
+func (m *TextMarkClass) Buffer() *TextBufferClass {
 	var _arg0 *C.GtkTextMark   // out
 	var _cret *C.GtkTextBuffer // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer((&TextMark).Native()))
 
 	_cret = C.gtk_text_mark_get_buffer(_arg0)
 
-	var _textBuffer TextBuffer // out
+	var _textBuffer *TextBufferClass // out
 
-	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TextBuffer)
+	_textBuffer = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*TextBufferClass)
 
 	return _textBuffer
 }
@@ -148,7 +150,7 @@ func (m *TextMarkClass) Deleted() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer((&TextMark).Native()))
 
 	_cret = C.gtk_text_mark_get_deleted(_arg0)
 
@@ -166,7 +168,7 @@ func (m *TextMarkClass) LeftGravity() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer((&TextMark).Native()))
 
 	_cret = C.gtk_text_mark_get_left_gravity(_arg0)
 
@@ -184,7 +186,7 @@ func (m *TextMarkClass) Name() string {
 	var _arg0 *C.GtkTextMark // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer((&TextMark).Native()))
 
 	_cret = C.gtk_text_mark_get_name(_arg0)
 
@@ -201,7 +203,7 @@ func (m *TextMarkClass) Visible() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer((&TextMark).Native()))
 
 	_cret = C.gtk_text_mark_get_visible(_arg0)
 
@@ -222,7 +224,7 @@ func (m *TextMarkClass) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer((&TextMark).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

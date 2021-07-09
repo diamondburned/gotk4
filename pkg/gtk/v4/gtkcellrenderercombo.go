@@ -69,14 +69,15 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 // value in a TreeModel. For example, you can bind the “text” property on the
 // cell renderer to a string value in the model, thus rendering a different
 // string in each row of the TreeView.
-func NewCellRendererCombo() CellRendererCombo {
+func NewCellRendererCombo() *CellRendererComboClass {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_combo_new()
 
-	var _cellRendererCombo CellRendererCombo // out
+	var _cellRendererCombo *CellRendererComboClass // out
 
-	_cellRendererCombo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererCombo)
+	_cellRendererCombo = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererComboClass)
 
 	return _cellRendererCombo
 }

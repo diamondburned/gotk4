@@ -64,7 +64,7 @@ func marshalKeyEventType(p uintptr) (interface{}, error) {
 // occurs, if registered via atk_add_key_event_listener. It allows for
 // pre-emptive interception of key events via the return code as described
 // below.
-type KeySnoopFunc func(event *KeyEventStruct) (gint int)
+type KeySnoopFunc func(event *KeyEventStruct, userData interface{}) (gint int)
 
 //export gotk4_KeySnoopFunc
 func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint) {
@@ -74,11 +74,13 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 	}
 
 	var event *KeyEventStruct // out
+	var userData interface{}  // out
 
-	event = (*KeyEventStruct)(unsafe.Pointer(arg0))
+	event = (*KeyEventStruct)(unsafe.Pointer(*C.AtkKeyEventStruct))
+	userData = box.Get(uintptr(arg1))
 
 	fn := v.(KeySnoopFunc)
-	gint := fn(event)
+	gint := fn(event, userData)
 
 	cret = C.gint(gint)
 
@@ -92,33 +94,35 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 func FocusTrackerNotify(object Object) {
 	var _arg1 *C.AtkObject // out
 
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	C.atk_focus_tracker_notify(_arg1)
 }
 
 // GetFocusObject gets the currently focused object.
-func GetFocusObject() Object {
+func GetFocusObject() *ObjectClass {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_focus_object()
 
-	var _object Object // out
+	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Object)
+	_object = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ObjectClass)
 
 	return _object
 }
 
 // GetRoot gets the root accessible container for the current application.
-func GetRoot() Object {
+func GetRoot() *ObjectClass {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_root()
 
-	var _object Object // out
+	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Object)
+	_object = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ObjectClass)
 
 	return _object
 }

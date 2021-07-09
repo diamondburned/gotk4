@@ -34,7 +34,7 @@ import "C"
 func DragCancel(context gdk.DragContext) {
 	var _arg1 *C.GdkDragContext // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
 
 	C.gtk_drag_cancel(_arg1)
 }
@@ -47,7 +47,7 @@ func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
 	var _arg3 C.gboolean        // out
 	var _arg4 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
 	if success {
 		_arg2 = C.TRUE
 	}
@@ -60,17 +60,18 @@ func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
 }
 
 // DragGetSourceWidget determines the source widget for a drag.
-func DragGetSourceWidget(context gdk.DragContext) Widget {
+func DragGetSourceWidget(context gdk.DragContext) *WidgetClass {
 	var _arg1 *C.GdkDragContext // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
 
 	_cret = C.gtk_drag_get_source_widget(_arg1)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -79,7 +80,7 @@ func DragGetSourceWidget(context gdk.DragContext) Widget {
 func DragSetIconDefault(context gdk.DragContext) {
 	var _arg1 *C.GdkDragContext // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
 
 	C.gtk_drag_set_icon_default(_arg1)
 }
@@ -94,7 +95,7 @@ func DragSetIconName(context gdk.DragContext, iconName string, hotX int, hotY in
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
 	_arg2 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
@@ -110,8 +111,8 @@ func DragSetIconPixbuf(context gdk.DragContext, pixbuf gdkpixbuf.Pixbuf, hotX in
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 
@@ -127,7 +128,7 @@ func DragSetIconStock(context gdk.DragContext, stockId string, hotX int, hotY in
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
 	_arg2 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
@@ -147,8 +148,8 @@ func DragSetIconSurface(context gdk.DragContext, surface *cairo.Surface) {
 	var _arg1 *C.GdkDragContext  // out
 	var _arg2 *C.cairo_surface_t // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
+	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(*cairo.Surface))
 
 	C.gtk_drag_set_icon_surface(_arg1, _arg2)
 }
@@ -162,8 +163,8 @@ func DragSetIconWidget(context gdk.DragContext, widget Widget, hotX int, hotY in
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 

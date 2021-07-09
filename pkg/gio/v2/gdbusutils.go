@@ -124,14 +124,14 @@ func DBusGValueToGVariant(gvalue externglib.Value, typ *glib.VariantType) *glib.
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&gvalue.GValue))
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(typ))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
+	_arg2 = (*C.GVariantType)(unsafe.Pointer(*glib.VariantType))
 
 	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))

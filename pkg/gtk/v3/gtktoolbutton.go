@@ -61,14 +61,14 @@ type ToolButton interface {
 	IconName() string
 	// IconWidget: return the widget used as icon widget on @button. See
 	// gtk_tool_button_set_icon_widget().
-	IconWidget() Widget
+	IconWidget() *WidgetClass
 	// Label returns the label used by the tool button, or nil if the tool
 	// button doesn’t have a label. or uses a the label from a stock item. The
 	// returned string is owned by GTK+, and must not be modified or freed.
 	Label() string
 	// LabelWidget returns the widget used as label on @button. See
 	// gtk_tool_button_set_label_widget().
-	LabelWidget() Widget
+	LabelWidget() *WidgetClass
 	// StockID returns the name of the stock item. See
 	// gtk_tool_button_set_stock_id(). The returned string is owned by GTK+ and
 	// must not be freed or modifed.
@@ -142,7 +142,6 @@ func wrapToolButton(obj *externglib.Object) ToolButton {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -165,7 +164,6 @@ func wrapToolButton(obj *externglib.Object) ToolButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -189,20 +187,21 @@ func marshalToolButton(p uintptr) (interface{}, error) {
 
 // NewToolButton creates a new ToolButton using @icon_widget as contents and
 // @label as label.
-func NewToolButton(iconWidget Widget, label string) ToolButton {
+func NewToolButton(iconWidget Widget, label string) *ToolButtonClass {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_tool_button_new(_arg1, _arg2)
 
-	var _toolButton ToolButton // out
+	var _toolButton *ToolButtonClass // out
 
-	_toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolButton)
+	_toolButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ToolButtonClass)
 
 	return _toolButton
 }
@@ -214,7 +213,7 @@ func NewToolButton(iconWidget Widget, label string) ToolButton {
 // It is an error if @stock_id is not a name of a stock item.
 //
 // Deprecated: since version 3.10.
-func NewToolButtonFromStock(stockId string) ToolButton {
+func NewToolButtonFromStock(stockId string) *ToolButtonClass {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
 
@@ -223,9 +222,10 @@ func NewToolButtonFromStock(stockId string) ToolButton {
 
 	_cret = C.gtk_tool_button_new_from_stock(_arg1)
 
-	var _toolButton ToolButton // out
+	var _toolButton *ToolButtonClass // out
 
-	_toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToolButton)
+	_toolButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ToolButtonClass)
 
 	return _toolButton
 }
@@ -236,7 +236,7 @@ func (b *ToolButtonClass) IconName() string {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 
 	_cret = C.gtk_tool_button_get_icon_name(_arg0)
 
@@ -249,17 +249,18 @@ func (b *ToolButtonClass) IconName() string {
 
 // IconWidget: return the widget used as icon widget on @button. See
 // gtk_tool_button_set_icon_widget().
-func (b *ToolButtonClass) IconWidget() Widget {
+func (b *ToolButtonClass) IconWidget() *WidgetClass {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 
 	_cret = C.gtk_tool_button_get_icon_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -271,7 +272,7 @@ func (b *ToolButtonClass) Label() string {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 
 	_cret = C.gtk_tool_button_get_label(_arg0)
 
@@ -284,17 +285,18 @@ func (b *ToolButtonClass) Label() string {
 
 // LabelWidget returns the widget used as label on @button. See
 // gtk_tool_button_set_label_widget().
-func (b *ToolButtonClass) LabelWidget() Widget {
+func (b *ToolButtonClass) LabelWidget() *WidgetClass {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 
 	_cret = C.gtk_tool_button_get_label_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -308,7 +310,7 @@ func (b *ToolButtonClass) StockID() string {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 
 	_cret = C.gtk_tool_button_get_stock_id(_arg0)
 
@@ -326,7 +328,7 @@ func (b *ToolButtonClass) UseUnderline() bool {
 	var _arg0 *C.GtkToolButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 
 	_cret = C.gtk_tool_button_get_use_underline(_arg0)
 
@@ -347,7 +349,7 @@ func (b *ToolButtonClass) SetIconName(iconName string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 	_arg1 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -362,8 +364,8 @@ func (b *ToolButtonClass) SetIconWidget(iconWidget Widget) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_tool_button_set_icon_widget(_arg0, _arg1)
 }
@@ -378,7 +380,7 @@ func (b *ToolButtonClass) SetLabel(label string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -394,8 +396,8 @@ func (b *ToolButtonClass) SetLabelWidget(labelWidget Widget) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_tool_button_set_label_widget(_arg0, _arg1)
 }
@@ -410,7 +412,7 @@ func (b *ToolButtonClass) SetStockID(stockId string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -429,7 +431,7 @@ func (b *ToolButtonClass) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToolButton)(unsafe.Pointer((&ToolButton).Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

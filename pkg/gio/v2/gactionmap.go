@@ -48,7 +48,7 @@ type ActionMapOverrider interface {
 	// @action_map.
 	//
 	// If no such action exists, returns nil.
-	LookupAction(actionName string) Action
+	LookupAction(actionName string) *ActionInterface
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
@@ -76,7 +76,7 @@ type ActionMap interface {
 	// @action_map.
 	//
 	// If no such action exists, returns nil.
-	LookupAction(actionName string) Action
+	LookupAction(actionName string) *ActionInterface
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
@@ -112,8 +112,8 @@ func (a *ActionMapInterface) AddAction(action Action) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer((&ActionMap).Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
 
 	C.g_action_map_add_action(_arg0, _arg1)
 }
@@ -121,20 +121,21 @@ func (a *ActionMapInterface) AddAction(action Action) {
 // LookupAction looks up the action with the name @action_name in @action_map.
 //
 // If no such action exists, returns nil.
-func (a *ActionMapInterface) LookupAction(actionName string) Action {
+func (a *ActionMapInterface) LookupAction(actionName string) *ActionInterface {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer((&ActionMap).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
 
-	var _action Action // out
+	var _action *ActionInterface // out
 
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Action)
+	_action = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ActionInterface)
 
 	return _action
 }
@@ -146,7 +147,7 @@ func (a *ActionMapInterface) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer((&ActionMap).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 

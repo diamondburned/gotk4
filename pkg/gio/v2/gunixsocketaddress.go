@@ -101,7 +101,7 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 //
 // To create abstract socket addresses, on systems that support that, use
 // g_unix_socket_address_new_abstract().
-func NewUnixSocketAddress(path string) UnixSocketAddress {
+func NewUnixSocketAddress(path string) *UnixSocketAddressClass {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GSocketAddress // in
 
@@ -110,9 +110,10 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 
 	_cret = C.g_unix_socket_address_new(_arg1)
 
-	var _unixSocketAddress UnixSocketAddress // out
+	var _unixSocketAddress *UnixSocketAddressClass // out
 
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixSocketAddress)
+	_unixSocketAddress = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixSocketAddressClass)
 
 	return _unixSocketAddress
 }
@@ -121,7 +122,7 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED SocketAddress for @path.
 //
 // Deprecated.
-func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
+func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddressClass {
 	var _arg1 *C.gchar
 	var _arg2 C.gint
 	var _cret *C.GSocketAddress // in
@@ -131,59 +132,10 @@ func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 
 	_cret = C.g_unix_socket_address_new_abstract(_arg1, _arg2)
 
-	var _unixSocketAddress UnixSocketAddress // out
+	var _unixSocketAddress *UnixSocketAddressClass // out
 
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixSocketAddress)
-
-	return _unixSocketAddress
-}
-
-// NewUnixSocketAddressWithType creates a new SocketAddress of type @type with
-// name @path.
-//
-// If @type is G_UNIX_SOCKET_ADDRESS_PATH, this is equivalent to calling
-// g_unix_socket_address_new().
-//
-// If @type is G_UNIX_SOCKET_ADDRESS_ANONYMOUS, @path and @path_len will be
-// ignored.
-//
-// If @path_type is G_UNIX_SOCKET_ADDRESS_ABSTRACT, then @path_len bytes of
-// @path will be copied to the socket's path, and only those bytes will be
-// considered part of the name. (If @path_len is -1, then @path is assumed to be
-// NUL-terminated.) For example, if @path was "test", then calling
-// g_socket_address_get_native_size() on the returned socket would return 7 (2
-// bytes of overhead, 1 byte for the abstract-socket indicator byte, and 4 bytes
-// for the name "test").
-//
-// If @path_type is G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED, then @path_len bytes
-// of @path will be copied to the socket's path, the rest of the path will be
-// padded with 0 bytes, and the entire zero-padded buffer will be considered the
-// name. (As above, if @path_len is -1, then @path is assumed to be
-// NUL-terminated.) In this case, g_socket_address_get_native_size() will always
-// return the full size of a `struct sockaddr_un`, although
-// g_unix_socket_address_get_path_len() will still return just the length of
-// @path.
-//
-// G_UNIX_SOCKET_ADDRESS_ABSTRACT is preferred over
-// G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED for new programs. Of course, when
-// connecting to a server created by another process, you must use the
-// appropriate type corresponding to how that process created its listening
-// socket.
-func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSocketAddress {
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-	var _arg3 C.GUnixSocketAddressType // out
-	var _cret *C.GSocketAddress        // in
-
-	_arg2 = C.gint(len(path))
-	_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
-	_arg3 = C.GUnixSocketAddressType(typ)
-
-	_cret = C.g_unix_socket_address_new_with_type(_arg1, _arg2, _arg3)
-
-	var _unixSocketAddress UnixSocketAddress // out
-
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixSocketAddress)
+	_unixSocketAddress = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixSocketAddressClass)
 
 	return _unixSocketAddress
 }
@@ -193,13 +145,13 @@ func (a *UnixSocketAddressClass) AddressType() UnixSocketAddressType {
 	var _arg0 *C.GUnixSocketAddress    // out
 	var _cret C.GUnixSocketAddressType // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer((&UnixSocketAddress).Native()))
 
 	_cret = C.g_unix_socket_address_get_address_type(_arg0)
 
 	var _unixSocketAddressType UnixSocketAddressType // out
 
-	_unixSocketAddressType = UnixSocketAddressType(_cret)
+	_unixSocketAddressType = (UnixSocketAddressType)(C.GUnixSocketAddressType)
 
 	return _unixSocketAddressType
 }
@@ -211,7 +163,7 @@ func (a *UnixSocketAddressClass) IsAbstract() bool {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer((&UnixSocketAddress).Native()))
 
 	_cret = C.g_unix_socket_address_get_is_abstract(_arg0)
 
@@ -233,7 +185,7 @@ func (a *UnixSocketAddressClass) Path() string {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer((&UnixSocketAddress).Native()))
 
 	_cret = C.g_unix_socket_address_get_path(_arg0)
 
@@ -251,7 +203,7 @@ func (a *UnixSocketAddressClass) PathLen() uint {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gsize               // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer((&UnixSocketAddress).Native()))
 
 	_cret = C.g_unix_socket_address_get_path_len(_arg0)
 

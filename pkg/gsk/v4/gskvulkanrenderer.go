@@ -50,14 +50,15 @@ func marshalVulkanRenderer(p uintptr) (interface{}, error) {
 	return wrapVulkanRenderer(obj), nil
 }
 
-func NewVulkanRenderer() VulkanRenderer {
+func NewVulkanRenderer() *VulkanRendererClass {
 	var _cret *C.GskRenderer // in
 
 	_cret = C.gsk_vulkan_renderer_new()
 
-	var _vulkanRenderer VulkanRenderer // out
+	var _vulkanRenderer *VulkanRendererClass // out
 
-	_vulkanRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(VulkanRenderer)
+	_vulkanRenderer = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*VulkanRendererClass)
 
 	return _vulkanRenderer
 }

@@ -41,7 +41,7 @@ type TreeListModel interface {
 	// nil is returned.
 	//
 	// Do not confuse this function with [method@Gtk.TreeListModel.get_row].
-	ChildRow(position uint) TreeListRow
+	ChildRow(position uint) *TreeListRowClass
 	// Passthrough gets whether the model is passing through original row items.
 	//
 	// If this function returns false, the `GListModel` functions for @self
@@ -70,7 +70,7 @@ type TreeListModel interface {
 	//
 	// Do not confuse this function with
 	// [method@Gtk.TreeListModel.get_child_row].
-	Row(position uint) TreeListRow
+	Row(position uint) *TreeListRowClass
 	// SetAutoexpand sets whether the model should autoexpand.
 	//
 	// If set to true, the model will recursively expand all rows that get added
@@ -107,7 +107,7 @@ func (s *TreeListModelClass) Autoexpand() bool {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer((&TreeListModel).Native()))
 
 	_cret = C.gtk_tree_list_model_get_autoexpand(_arg0)
 
@@ -127,19 +127,20 @@ func (s *TreeListModelClass) Autoexpand() bool {
 // returned.
 //
 // Do not confuse this function with [method@Gtk.TreeListModel.get_row].
-func (s *TreeListModelClass) ChildRow(position uint) TreeListRow {
+func (s *TreeListModelClass) ChildRow(position uint) *TreeListRowClass {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.guint             // out
 	var _cret *C.GtkTreeListRow   // in
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer((&TreeListModel).Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_tree_list_model_get_child_row(_arg0, _arg1)
 
-	var _treeListRow TreeListRow // out
+	var _treeListRow *TreeListRowClass // out
 
-	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeListRow)
+	_treeListRow = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TreeListRowClass)
 
 	return _treeListRow
 }
@@ -157,7 +158,7 @@ func (s *TreeListModelClass) Passthrough() bool {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer((&TreeListModel).Native()))
 
 	_cret = C.gtk_tree_list_model_get_passthrough(_arg0)
 
@@ -185,19 +186,20 @@ func (s *TreeListModelClass) Passthrough() bool {
 // g_list_model_get_item().
 //
 // Do not confuse this function with [method@Gtk.TreeListModel.get_child_row].
-func (s *TreeListModelClass) Row(position uint) TreeListRow {
+func (s *TreeListModelClass) Row(position uint) *TreeListRowClass {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.guint             // out
 	var _cret *C.GtkTreeListRow   // in
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer((&TreeListModel).Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_tree_list_model_get_row(_arg0, _arg1)
 
-	var _treeListRow TreeListRow // out
+	var _treeListRow *TreeListRowClass // out
 
-	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeListRow)
+	_treeListRow = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TreeListRowClass)
 
 	return _treeListRow
 }
@@ -211,7 +213,7 @@ func (s *TreeListModelClass) SetAutoexpand(autoexpand bool) {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer((&TreeListModel).Native()))
 	if autoexpand {
 		_arg1 = C.TRUE
 	}
@@ -236,7 +238,7 @@ type TreeListRow interface {
 
 	// ChildRow: if @self is not expanded or @position is greater than the
 	// number of children, nil is returned.
-	ChildRow(position uint) TreeListRow
+	ChildRow(position uint) *TreeListRowClass
 	// Depth gets the depth of this row.
 	//
 	// Rows that correspond to items in the root model have a depth of zero,
@@ -251,7 +253,7 @@ type TreeListRow interface {
 	//
 	// The value returned by this function never changes until the row is
 	// destroyed.
-	Item() gextras.Objector
+	Item() *externglib.Object
 	// Parent gets the row representing the parent for @self.
 	//
 	// That is the row that would need to be collapsed to make this row
@@ -261,7 +263,7 @@ type TreeListRow interface {
 	//
 	// The value returned by this function never changes until the row is
 	// destroyed.
-	Parent() TreeListRow
+	Parent() *TreeListRowClass
 	// Position returns the position in the `GtkTreeListModel` that @self
 	// occupies at the moment.
 	Position() uint
@@ -304,19 +306,20 @@ func marshalTreeListRow(p uintptr) (interface{}, error) {
 
 // ChildRow: if @self is not expanded or @position is greater than the number of
 // children, nil is returned.
-func (s *TreeListRowClass) ChildRow(position uint) TreeListRow {
+func (s *TreeListRowClass) ChildRow(position uint) *TreeListRowClass {
 	var _arg0 *C.GtkTreeListRow // out
 	var _arg1 C.guint           // out
 	var _cret *C.GtkTreeListRow // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_tree_list_row_get_child_row(_arg0, _arg1)
 
-	var _treeListRow TreeListRow // out
+	var _treeListRow *TreeListRowClass // out
 
-	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeListRow)
+	_treeListRow = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TreeListRowClass)
 
 	return _treeListRow
 }
@@ -332,7 +335,7 @@ func (s *TreeListRowClass) Depth() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
 
 	_cret = C.gtk_tree_list_row_get_depth(_arg0)
 
@@ -348,7 +351,7 @@ func (s *TreeListRowClass) Expanded() bool {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
 
 	_cret = C.gtk_tree_list_row_get_expanded(_arg0)
 
@@ -364,17 +367,18 @@ func (s *TreeListRowClass) Expanded() bool {
 // Item gets the item corresponding to this row,
 //
 // The value returned by this function never changes until the row is destroyed.
-func (s *TreeListRowClass) Item() gextras.Objector {
+func (s *TreeListRowClass) Item() *externglib.Object {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gpointer        // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
 
 	_cret = C.gtk_tree_list_row_get_item(_arg0)
 
-	var _object gextras.Objector // out
+	var _object *externglib.Object // out
 
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
+	_object = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(&_cret))).(*externglib.Object)
 
 	return _object
 }
@@ -386,17 +390,18 @@ func (s *TreeListRowClass) Item() gextras.Objector {
 // If @self is a row corresponding to the root model, nil is returned.
 //
 // The value returned by this function never changes until the row is destroyed.
-func (s *TreeListRowClass) Parent() TreeListRow {
+func (s *TreeListRowClass) Parent() *TreeListRowClass {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret *C.GtkTreeListRow // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
 
 	_cret = C.gtk_tree_list_row_get_parent(_arg0)
 
-	var _treeListRow TreeListRow // out
+	var _treeListRow *TreeListRowClass // out
 
-	_treeListRow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TreeListRow)
+	_treeListRow = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TreeListRowClass)
 
 	return _treeListRow
 }
@@ -407,7 +412,7 @@ func (s *TreeListRowClass) Position() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
 
 	_cret = C.gtk_tree_list_row_get_position(_arg0)
 
@@ -428,7 +433,7 @@ func (s *TreeListRowClass) IsExpandable() bool {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
 
 	_cret = C.gtk_tree_list_row_is_expandable(_arg0)
 
@@ -453,7 +458,7 @@ func (s *TreeListRowClass) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkTreeListRow // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
 	if expanded {
 		_arg1 = C.TRUE
 	}

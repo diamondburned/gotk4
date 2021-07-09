@@ -164,7 +164,7 @@ func (s *PollableOutputStreamInterface) CanPoll() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer((&PollableOutputStream).Native()))
 
 	_cret = C.g_pollable_output_stream_can_poll(_arg0)
 
@@ -190,14 +190,14 @@ func (s *PollableOutputStreamInterface) CreateSource(cancellable Cancellable) *g
 	var _arg1 *C.GCancellable          // out
 	var _cret *C.GSource               // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer((&PollableOutputStream).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_pollable_output_stream_create_source(_arg0, _arg1)
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	_source = (*glib.Source)(unsafe.Pointer(*C.GSource))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
@@ -217,7 +217,7 @@ func (s *PollableOutputStreamInterface) IsWritable() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer((&PollableOutputStream).Native()))
 
 	_cret = C.g_pollable_output_stream_is_writable(_arg0)
 
@@ -252,10 +252,10 @@ func (s *PollableOutputStreamInterface) WriteNonblocking(buffer []byte, cancella
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer((&PollableOutputStream).Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 

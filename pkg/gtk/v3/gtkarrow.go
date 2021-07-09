@@ -45,10 +45,7 @@ func init() {
 type Arrow interface {
 	gextras.Objector
 
-	// Set sets the direction and style of the Arrow, @arrow.
-	//
-	// Deprecated: since version 3.14.
-	Set(arrowType ArrowType, shadowType ShadowType)
+	privateArrowClass()
 }
 
 // ArrowClass implements the Arrow interface.
@@ -66,7 +63,6 @@ func wrapArrow(obj *externglib.Object) Arrow {
 		MiscClass: MiscClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -88,37 +84,4 @@ func marshalArrow(p uintptr) (interface{}, error) {
 	return wrapArrow(obj), nil
 }
 
-// NewArrow creates a new Arrow widget.
-//
-// Deprecated: since version 3.14.
-func NewArrow(arrowType ArrowType, shadowType ShadowType) Arrow {
-	var _arg1 C.GtkArrowType  // out
-	var _arg2 C.GtkShadowType // out
-	var _cret *C.GtkWidget    // in
-
-	_arg1 = C.GtkArrowType(arrowType)
-	_arg2 = C.GtkShadowType(shadowType)
-
-	_cret = C.gtk_arrow_new(_arg1, _arg2)
-
-	var _arrow Arrow // out
-
-	_arrow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Arrow)
-
-	return _arrow
-}
-
-// Set sets the direction and style of the Arrow, @arrow.
-//
-// Deprecated: since version 3.14.
-func (a *ArrowClass) Set(arrowType ArrowType, shadowType ShadowType) {
-	var _arg0 *C.GtkArrow     // out
-	var _arg1 C.GtkArrowType  // out
-	var _arg2 C.GtkShadowType // out
-
-	_arg0 = (*C.GtkArrow)(unsafe.Pointer(a.Native()))
-	_arg1 = C.GtkArrowType(arrowType)
-	_arg2 = C.GtkShadowType(shadowType)
-
-	C.gtk_arrow_set(_arg0, _arg1, _arg2)
-}
+func (*ArrowClass) privateArrowClass() {}

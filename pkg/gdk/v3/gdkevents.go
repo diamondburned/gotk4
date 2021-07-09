@@ -489,7 +489,7 @@ func SettingGet(name string, value externglib.Value) bool {
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
 
 	_cret = C.gdk_setting_get(_arg1, _arg2)
 
@@ -522,14 +522,15 @@ func (e *EventAny) Native() unsafe.Pointer {
 // Type: the type of the event.
 func (e *EventAny) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventAny) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventAny) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -584,14 +585,15 @@ func (e *EventButton) Native() unsafe.Pointer {
 // GDK_3BUTTON_PRESS or GDK_BUTTON_RELEASE).
 func (e *EventButton) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventButton) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventButton) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -635,7 +637,7 @@ func (e *EventButton) Axes() *float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventButton) State() ModifierType {
 	var v ModifierType // out
-	v = ModifierType(e.native.state)
+	v = (ModifierType)(C.GdkModifierType)
 	return v
 }
 
@@ -651,9 +653,10 @@ func (e *EventButton) Button() uint {
 
 // Device: the master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventButton) Device() Device {
-	var v Device // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device))).(Device)
+func (e *EventButton) Device() *DeviceClass {
+	var v *DeviceClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.device))).(*DeviceClass)
 	return v
 }
 
@@ -690,14 +693,15 @@ func (e *EventConfigure) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_CONFIGURE).
 func (e *EventConfigure) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventConfigure) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventConfigure) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -755,14 +759,15 @@ func (e *EventCrossing) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_ENTER_NOTIFY or GDK_LEAVE_NOTIFY).
 func (e *EventCrossing) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventCrossing) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventCrossing) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -774,9 +779,10 @@ func (e *EventCrossing) SendEvent() int8 {
 }
 
 // Subwindow: the window that was entered or left.
-func (e *EventCrossing) Subwindow() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.subwindow))).(Window)
+func (e *EventCrossing) Subwindow() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.subwindow))).(*WindowClass)
 	return v
 }
 
@@ -822,7 +828,7 @@ func (e *EventCrossing) YRoot() float64 {
 // never native.
 func (e *EventCrossing) Mode() CrossingMode {
 	var v CrossingMode // out
-	v = CrossingMode(e.native.mode)
+	v = (CrossingMode)(C.GdkCrossingMode)
 	return v
 }
 
@@ -831,7 +837,7 @@ func (e *EventCrossing) Mode() CrossingMode {
 // GDK_NOTIFY_NONLINEAR_VIRTUAL).
 func (e *EventCrossing) Detail() NotifyType {
 	var v NotifyType // out
-	v = NotifyType(e.native.detail)
+	v = (NotifyType)(C.GdkNotifyType)
 	return v
 }
 
@@ -848,7 +854,7 @@ func (e *EventCrossing) Focus() bool {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventCrossing) State() ModifierType {
 	var v ModifierType // out
-	v = ModifierType(e.native.state)
+	v = (ModifierType)(C.GdkModifierType)
 	return v
 }
 
@@ -872,14 +878,15 @@ func (e *EventDND) Native() unsafe.Pointer {
 // GDK_DRAG_STATUS, GDK_DROP_START or GDK_DROP_FINISHED).
 func (e *EventDND) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventDND) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventDND) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -891,9 +898,10 @@ func (e *EventDND) SendEvent() int8 {
 }
 
 // Context: the DragContext for the current DND operation.
-func (e *EventDND) Context() DragContext {
-	var v DragContext // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.context))).(DragContext)
+func (e *EventDND) Context() *DragContextClass {
+	var v *DragContextClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.context))).(*DragContextClass)
 	return v
 }
 
@@ -940,14 +948,15 @@ func (e *EventExpose) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_EXPOSE or GDK_DAMAGE).
 func (e *EventExpose) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventExpose) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventExpose) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -961,7 +970,7 @@ func (e *EventExpose) SendEvent() int8 {
 // Region: the region that needs to be redrawn.
 func (e *EventExpose) Region() *cairo.Region {
 	var v *cairo.Region // out
-	v = (*cairo.Region)(unsafe.Pointer(e.native.region))
+	v = (*cairo.Region)(unsafe.Pointer(*C.cairo_region_t))
 	return v
 }
 
@@ -994,14 +1003,15 @@ func (e *EventFocus) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_FOCUS_CHANGE).
 func (e *EventFocus) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventFocus) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventFocus) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1043,15 +1053,16 @@ func (e *EventGrabBroken) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_GRAB_BROKEN)
 func (e *EventGrabBroken) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event, i.e. the window that previously
 // owned the grab
-func (e *EventGrabBroken) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventGrabBroken) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1083,9 +1094,10 @@ func (e *EventGrabBroken) Implicit() bool {
 
 // GrabWindow: if this event is caused by another grab in the same application,
 // @grab_window contains the new grab window. Otherwise @grab_window is nil.
-func (e *EventGrabBroken) GrabWindow() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.grab_window))).(Window)
+func (e *EventGrabBroken) GrabWindow() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.grab_window))).(*WindowClass)
 	return v
 }
 
@@ -1108,14 +1120,15 @@ func (e *EventKey) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_KEY_PRESS or GDK_KEY_RELEASE).
 func (e *EventKey) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventKey) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventKey) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1137,7 +1150,7 @@ func (e *EventKey) Time() uint32 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventKey) State() ModifierType {
 	var v ModifierType // out
-	v = ModifierType(e.native.state)
+	v = (ModifierType)(C.GdkModifierType)
 	return v
 }
 
@@ -1204,14 +1217,15 @@ func (e *EventMotion) Native() unsafe.Pointer {
 // Type: the type of the event.
 func (e *EventMotion) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventMotion) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventMotion) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1255,7 +1269,7 @@ func (e *EventMotion) Axes() *float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventMotion) State() ModifierType {
 	var v ModifierType // out
-	v = ModifierType(e.native.state)
+	v = (ModifierType)(C.GdkModifierType)
 	return v
 }
 
@@ -1269,9 +1283,10 @@ func (e *EventMotion) IsHint() int16 {
 
 // Device: the master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventMotion) Device() Device {
-	var v Device // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device))).(Device)
+func (e *EventMotion) Device() *DeviceClass {
+	var v *DeviceClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.device))).(*DeviceClass)
 	return v
 }
 
@@ -1310,14 +1325,15 @@ func (e *EventOwnerChange) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_OWNER_CHANGE).
 func (e *EventOwnerChange) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event
-func (e *EventOwnerChange) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventOwnerChange) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1329,16 +1345,17 @@ func (e *EventOwnerChange) SendEvent() int8 {
 }
 
 // Owner: the new owner of the selection, or nil if there is none
-func (e *EventOwnerChange) Owner() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.owner))).(Window)
+func (e *EventOwnerChange) Owner() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.owner))).(*WindowClass)
 	return v
 }
 
 // Reason: the reason for the ownership change as a OwnerChange value
 func (e *EventOwnerChange) Reason() OwnerChange {
 	var v OwnerChange // out
-	v = OwnerChange(e.native.reason)
+	v = (OwnerChange)(C.GdkOwnerChange)
 	return v
 }
 
@@ -1376,14 +1393,15 @@ func (e *EventPadAxis) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PAD_RING or GDK_PAD_STRIP).
 func (e *EventPadAxis) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventPadAxis) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventPadAxis) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1452,14 +1470,15 @@ func (e *EventPadButton) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PAD_BUTTON_PRESS or GDK_PAD_BUTTON_RELEASE).
 func (e *EventPadButton) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventPadButton) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventPadButton) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1520,14 +1539,15 @@ func (e *EventPadGroupMode) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PAD_GROUP_MODE).
 func (e *EventPadGroupMode) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventPadGroupMode) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventPadGroupMode) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1580,14 +1600,15 @@ func (e *EventProperty) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PROPERTY_NOTIFY).
 func (e *EventProperty) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventProperty) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventProperty) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1609,7 +1630,7 @@ func (e *EventProperty) Time() uint32 {
 // (GDK_PROPERTY_DELETE).
 func (e *EventProperty) State() PropertyState {
 	var v PropertyState // out
-	v = PropertyState(e.native.state)
+	v = (PropertyState)(C.GdkPropertyState)
 	return v
 }
 
@@ -1640,14 +1661,15 @@ func (e *EventProximity) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_PROXIMITY_IN or GDK_PROXIMITY_OUT).
 func (e *EventProximity) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventProximity) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventProximity) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1667,9 +1689,10 @@ func (e *EventProximity) Time() uint32 {
 
 // Device: the master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventProximity) Device() Device {
-	var v Device // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device))).(Device)
+func (e *EventProximity) Device() *DeviceClass {
+	var v *DeviceClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.device))).(*DeviceClass)
 	return v
 }
 
@@ -1698,14 +1721,15 @@ func (e *EventScroll) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_SCROLL).
 func (e *EventScroll) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventScroll) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventScroll) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1741,7 +1765,7 @@ func (e *EventScroll) Y() float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventScroll) State() ModifierType {
 	var v ModifierType // out
-	v = ModifierType(e.native.state)
+	v = (ModifierType)(C.GdkModifierType)
 	return v
 }
 
@@ -1749,15 +1773,16 @@ func (e *EventScroll) State() ModifierType {
 // GDK_SCROLL_LEFT, GDK_SCROLL_RIGHT or GDK_SCROLL_SMOOTH).
 func (e *EventScroll) Direction() ScrollDirection {
 	var v ScrollDirection // out
-	v = ScrollDirection(e.native.direction)
+	v = (ScrollDirection)(C.GdkScrollDirection)
 	return v
 }
 
 // Device: the master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventScroll) Device() Device {
-	var v Device // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device))).(Device)
+func (e *EventScroll) Device() *DeviceClass {
+	var v *DeviceClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.device))).(*DeviceClass)
 	return v
 }
 
@@ -1810,14 +1835,15 @@ func (e *EventSelection) Native() unsafe.Pointer {
 // GDK_SELECTION_REQUEST).
 func (e *EventSelection) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventSelection) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventSelection) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1836,9 +1862,10 @@ func (e *EventSelection) Time() uint32 {
 }
 
 // Requestor: the window on which to place @property or nil if none.
-func (e *EventSelection) Requestor() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.requestor))).(Window)
+func (e *EventSelection) Requestor() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.requestor))).(*WindowClass)
 	return v
 }
 
@@ -1881,14 +1908,15 @@ func (e *EventSetting) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_SETTING).
 func (e *EventSetting) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventSetting) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventSetting) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1903,7 +1931,7 @@ func (e *EventSetting) SendEvent() int8 {
 // GDK_SETTING_ACTION_CHANGED or GDK_SETTING_ACTION_DELETED).
 func (e *EventSetting) Action() SettingAction {
 	var v SettingAction // out
-	v = SettingAction(e.native.action)
+	v = (SettingAction)(C.GdkSettingAction)
 	return v
 }
 
@@ -1942,14 +1970,15 @@ func (e *EventTouch) Native() unsafe.Pointer {
 // GDK_TOUCH_END, GDK_TOUCH_CANCEL)
 func (e *EventTouch) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event
-func (e *EventTouch) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventTouch) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -1993,14 +2022,14 @@ func (e *EventTouch) Axes() *float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType
 func (e *EventTouch) State() ModifierType {
 	var v ModifierType // out
-	v = ModifierType(e.native.state)
+	v = (ModifierType)(C.GdkModifierType)
 	return v
 }
 
 // Sequence: the event sequence that the event belongs to
 func (e *EventTouch) Sequence() *EventSequence {
 	var v *EventSequence // out
-	v = (*EventSequence)(unsafe.Pointer(e.native.sequence))
+	v = (*EventSequence)(unsafe.Pointer(*C.GdkEventSequence))
 	return v
 }
 
@@ -2016,9 +2045,10 @@ func (e *EventTouch) EmulatingPointer() bool {
 
 // Device: the master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventTouch) Device() Device {
-	var v Device // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device))).(Device)
+func (e *EventTouch) Device() *DeviceClass {
+	var v *DeviceClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.device))).(*DeviceClass)
 	return v
 }
 
@@ -2055,14 +2085,15 @@ func (e *EventTouchpadPinch) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_TOUCHPAD_PINCH)
 func (e *EventTouchpadPinch) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event
-func (e *EventTouchpadPinch) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventTouchpadPinch) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -2156,7 +2187,7 @@ func (e *EventTouchpadPinch) YRoot() float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventTouchpadPinch) State() ModifierType {
 	var v ModifierType // out
-	v = ModifierType(e.native.state)
+	v = (ModifierType)(C.GdkModifierType)
 	return v
 }
 
@@ -2179,14 +2210,15 @@ func (e *EventTouchpadSwipe) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_TOUCHPAD_SWIPE)
 func (e *EventTouchpadSwipe) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event
-func (e *EventTouchpadSwipe) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventTouchpadSwipe) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -2264,7 +2296,7 @@ func (e *EventTouchpadSwipe) YRoot() float64 {
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventTouchpadSwipe) State() ModifierType {
 	var v ModifierType // out
-	v = ModifierType(e.native.state)
+	v = (ModifierType)(C.GdkModifierType)
 	return v
 }
 
@@ -2289,14 +2321,15 @@ func (e *EventVisibility) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_VISIBILITY_NOTIFY).
 func (e *EventVisibility) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventVisibility) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventVisibility) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -2311,7 +2344,7 @@ func (e *EventVisibility) SendEvent() int8 {
 // GDK_VISIBILITY_PARTIAL or GDK_VISIBILITY_UNOBSCURED).
 func (e *EventVisibility) State() VisibilityState {
 	var v VisibilityState // out
-	v = VisibilityState(e.native.state)
+	v = (VisibilityState)(C.GdkVisibilityState)
 	return v
 }
 
@@ -2334,14 +2367,15 @@ func (e *EventWindowState) Native() unsafe.Pointer {
 // Type: the type of the event (GDK_WINDOW_STATE).
 func (e *EventWindowState) Type() EventType {
 	var v EventType // out
-	v = EventType(e.native._type)
+	v = (EventType)(C.GdkEventType)
 	return v
 }
 
 // Window: the window which received the event.
-func (e *EventWindowState) Window() Window {
-	var v Window // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window))).(Window)
+func (e *EventWindowState) Window() *WindowClass {
+	var v *WindowClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(e.native.window))).(*WindowClass)
 	return v
 }
 
@@ -2355,13 +2389,13 @@ func (e *EventWindowState) SendEvent() int8 {
 // ChangedMask: mask specifying what flags have changed.
 func (e *EventWindowState) ChangedMask() WindowState {
 	var v WindowState // out
-	v = WindowState(e.native.changed_mask)
+	v = (WindowState)(C.GdkWindowState)
 	return v
 }
 
 // NewWindowState: the new window state, a combination of WindowState bits.
 func (e *EventWindowState) NewWindowState() WindowState {
 	var v WindowState // out
-	v = WindowState(e.native.new_window_state)
+	v = (WindowState)(C.GdkWindowState)
 	return v
 }

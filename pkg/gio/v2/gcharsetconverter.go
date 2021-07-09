@@ -74,7 +74,7 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 }
 
 // NewCharsetConverter creates a new Converter.
-func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter, error) {
+func NewCharsetConverter(toCharset string, fromCharset string) (*CharsetConverterClass, error) {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
 	var _cret *C.GCharsetConverter // in
@@ -87,10 +87,11 @@ func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter
 
 	_cret = C.g_charset_converter_new(_arg1, _arg2, &_cerr)
 
-	var _charsetConverter CharsetConverter // out
-	var _goerr error                       // out
+	var _charsetConverter *CharsetConverterClass // out
+	var _goerr error                             // out
 
-	_charsetConverter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CharsetConverter)
+	_charsetConverter = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CharsetConverterClass)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _charsetConverter, _goerr
@@ -101,7 +102,7 @@ func (c *CharsetConverterClass) NumFallbacks() uint {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.guint              // in
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer((&CharsetConverter).Native()))
 
 	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
 
@@ -117,7 +118,7 @@ func (c *CharsetConverterClass) UseFallback() bool {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer((&CharsetConverter).Native()))
 
 	_cret = C.g_charset_converter_get_use_fallback(_arg0)
 
@@ -135,7 +136,7 @@ func (c *CharsetConverterClass) SetUseFallback(useFallback bool) {
 	var _arg0 *C.GCharsetConverter // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer((&CharsetConverter).Native()))
 	if useFallback {
 		_arg1 = C.TRUE
 	}

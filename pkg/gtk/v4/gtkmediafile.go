@@ -48,7 +48,7 @@ type MediaFile interface {
 	// InputStream returns the stream that @self is currently playing from.
 	//
 	// When @self is not playing or not playing from a stream, nil is returned.
-	InputStream() gio.InputStream
+	InputStream() *gio.InputStreamClass
 	// SetFilename sets the `GtkMediaFile to play the given file.
 	//
 	// This is a utility function that converts the given @filename to a `GFile`
@@ -90,14 +90,15 @@ func marshalMediaFile(p uintptr) (interface{}, error) {
 }
 
 // NewMediaFile creates a new empty media file.
-func NewMediaFile() MediaFile {
+func NewMediaFile() *MediaFileClass {
 	var _cret *C.GtkMediaStream // in
 
 	_cret = C.gtk_media_file_new()
 
-	var _mediaFile MediaFile // out
+	var _mediaFile *MediaFileClass // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MediaFile)
+	_mediaFile = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MediaFileClass)
 
 	return _mediaFile
 }
@@ -106,7 +107,7 @@ func NewMediaFile() MediaFile {
 //
 // This is a utility function that converts the given @filename to a `GFile` and
 // calls [ctor@Gtk.MediaFile.new_for_file].
-func NewMediaFileForFilename(filename string) MediaFile {
+func NewMediaFileForFilename(filename string) *MediaFileClass {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
 
@@ -115,9 +116,10 @@ func NewMediaFileForFilename(filename string) MediaFile {
 
 	_cret = C.gtk_media_file_new_for_filename(_arg1)
 
-	var _mediaFile MediaFile // out
+	var _mediaFile *MediaFileClass // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MediaFile)
+	_mediaFile = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MediaFileClass)
 
 	return _mediaFile
 }
@@ -126,17 +128,18 @@ func NewMediaFileForFilename(filename string) MediaFile {
 //
 // If you want the resulting media to be seekable, the stream should implement
 // the `GSeekable` interface.
-func NewMediaFileForInputStream(stream gio.InputStream) MediaFile {
+func NewMediaFileForInputStream(stream gio.InputStream) *MediaFileClass {
 	var _arg1 *C.GInputStream   // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((&gio.InputStream).Native()))
 
 	_cret = C.gtk_media_file_new_for_input_stream(_arg1)
 
-	var _mediaFile MediaFile // out
+	var _mediaFile *MediaFileClass // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MediaFile)
+	_mediaFile = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MediaFileClass)
 
 	return _mediaFile
 }
@@ -145,7 +148,7 @@ func NewMediaFileForInputStream(stream gio.InputStream) MediaFile {
 //
 // This is a utility function that converts the given @resource to a `GFile` and
 // calls [ctor@Gtk.MediaFile.new_for_file].
-func NewMediaFileForResource(resourcePath string) MediaFile {
+func NewMediaFileForResource(resourcePath string) *MediaFileClass {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
 
@@ -154,9 +157,10 @@ func NewMediaFileForResource(resourcePath string) MediaFile {
 
 	_cret = C.gtk_media_file_new_for_resource(_arg1)
 
-	var _mediaFile MediaFile // out
+	var _mediaFile *MediaFileClass // out
 
-	_mediaFile = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MediaFile)
+	_mediaFile = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MediaFileClass)
 
 	return _mediaFile
 }
@@ -165,7 +169,7 @@ func NewMediaFileForResource(resourcePath string) MediaFile {
 func (s *MediaFileClass) Clear() {
 	var _arg0 *C.GtkMediaFile // out
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer((&MediaFile).Native()))
 
 	C.gtk_media_file_clear(_arg0)
 }
@@ -173,17 +177,18 @@ func (s *MediaFileClass) Clear() {
 // InputStream returns the stream that @self is currently playing from.
 //
 // When @self is not playing or not playing from a stream, nil is returned.
-func (s *MediaFileClass) InputStream() gio.InputStream {
+func (s *MediaFileClass) InputStream() *gio.InputStreamClass {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GInputStream // in
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer((&MediaFile).Native()))
 
 	_cret = C.gtk_media_file_get_input_stream(_arg0)
 
-	var _inputStream gio.InputStream // out
+	var _inputStream *gio.InputStreamClass // out
 
-	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.InputStream)
+	_inputStream = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gio.InputStreamClass)
 
 	return _inputStream
 }
@@ -196,7 +201,7 @@ func (s *MediaFileClass) SetFilename(filename string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer((&MediaFile).Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -213,8 +218,8 @@ func (s *MediaFileClass) SetInputStream(stream gio.InputStream) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.GInputStream // out
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer((&MediaFile).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((&gio.InputStream).Native()))
 
 	C.gtk_media_file_set_input_stream(_arg0, _arg1)
 }
@@ -227,7 +232,7 @@ func (s *MediaFileClass) SetResource(resourcePath string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer((&MediaFile).Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 

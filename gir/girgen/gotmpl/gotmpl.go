@@ -3,8 +3,12 @@
 package gotmpl
 
 import (
+	"io"
+	"log"
 	"path/filepath"
 	"runtime"
+	"strings"
+	"sync"
 	"text/template"
 
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
@@ -29,4 +33,31 @@ func NewGoTemplate(block string) *template.Template {
 	})
 	t = template.Must(t.Parse(block))
 	return t
+}
+
+var (
+	renderTmpls = map[string]*template.Template{}
+	tmplMutex   sync.Mutex
+)
+
+// M describes a key-value map for a template render.
+type M = map[string]interface{}
+
+// Render renders the given template string with the given key-value pair.
+func Render(w io.Writer, tmpl string, v interface{}) {
+	tmpl = strings.TrimSpace(tmpl) + "\n"
+
+	tmplMutex.Lock()
+	renderTmpl, ok := renderTmpls[tmpl]
+	if !ok {
+		renderTmpl = template.New("(anonymous)")
+		renderTmpl = renderTmpl.Delims("<", ">")
+		renderTmpl = template.Must(renderTmpl.Parse(tmpl))
+		renderTmpls[tmpl] = renderTmpl
+	}
+	tmplMutex.Unlock()
+
+	if err := renderTmpl.ExecuteTemplate(w, "(anonymous)", v); err != nil {
+		log.Panicln("inline render fail:", err)
+	}
 }

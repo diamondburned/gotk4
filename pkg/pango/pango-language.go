@@ -66,7 +66,7 @@ func (l *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
 
 	_cret = C.pango_language_get_sample_string(_arg0)
 
@@ -75,35 +75,6 @@ func (l *Language) SampleString() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// IncludesScript determines if @script is one of the scripts used to write
-// @language. The returned value is conservative; if nothing is known about the
-// language tag @language, true will be returned, since, as far as Pango knows,
-// @script might be used to write @language.
-//
-// This routine is used in Pango's itemization process when determining if a
-// supplied language tag is relevant to a particular section of text. It
-// probably is not useful for applications in most circumstances.
-//
-// This function uses [method@Pango.Language.get_scripts] internally.
-func (l *Language) IncludesScript(script Script) bool {
-	var _arg0 *C.PangoLanguage // out
-	var _arg1 C.PangoScript    // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
-	_arg1 = C.PangoScript(script)
-
-	_cret = C.pango_language_includes_script(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Matches checks if a language tag matches one of the elements in a list of
@@ -117,7 +88,7 @@ func (l *Language) Matches(rangeList string) bool {
 	var _arg1 *C.char          // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
 	_arg1 = (*C.char)(C.CString(rangeList))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -137,7 +108,7 @@ func (l *Language) String() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
 
 	_cret = C.pango_language_to_string(_arg0)
 

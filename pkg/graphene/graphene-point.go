@@ -46,7 +46,7 @@ func NewPointAlloc() *Point {
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(_cret))
+	_point = (*Point)(unsafe.Pointer(*C.graphene_point_t))
 	runtime.SetFinalizer(_point, func(v *Point) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -81,8 +81,8 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	var _arg3 C.float             // in
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
 
 	_cret = C.graphene_point_distance(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -107,8 +107,8 @@ func (a *Point) Equal(b *Point) bool {
 	var _arg1 *C.graphene_point_t // out
 	var _cret C._Bool             // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
 
 	_cret = C.graphene_point_equal(_arg0, _arg1)
 
@@ -125,7 +125,7 @@ func (a *Point) Equal(b *Point) bool {
 func (p *Point) free() {
 	var _arg0 *C.graphene_point_t // out
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
 
 	C.graphene_point_free(_arg0)
 }
@@ -139,7 +139,7 @@ func (p *Point) Init(x float32, y float32) *Point {
 	var _arg2 C.float             // out
 	var _cret *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
 	_arg1 = C.float(x)
 	_arg2 = C.float(y)
 
@@ -147,7 +147,7 @@ func (p *Point) Init(x float32, y float32) *Point {
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(_cret))
+	_point = (*Point)(unsafe.Pointer(*C.graphene_point_t))
 
 	return _point
 }
@@ -158,14 +158,14 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 	var _arg1 *C.graphene_point_t // out
 	var _cret *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
 
 	_cret = C.graphene_point_init_from_point(_arg0, _arg1)
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(_cret))
+	_point = (*Point)(unsafe.Pointer(*C.graphene_point_t))
 
 	return _point
 }
@@ -177,14 +177,14 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 	var _arg1 *C.graphene_vec2_t  // out
 	var _cret *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
+	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(*Vec2))
 
 	_cret = C.graphene_point_init_from_vec2(_arg0, _arg1)
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(_cret))
+	_point = (*Point)(unsafe.Pointer(*C.graphene_point_t))
 
 	return _point
 }
@@ -197,8 +197,8 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 	var _arg2 C.float             // out
 	var _cret C._Bool             // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(*Point))
 	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_point_near(_arg0, _arg1, _arg2)

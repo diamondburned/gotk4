@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -21,32 +20,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_map_list_model_get_type()), F: marshalMapListModel},
 	})
-}
-
-// MapListModelMapFunc: user function that is called to map an @item of the
-// original model to an item expected by the map model.
-//
-// The returned items must conform to the item type of the model they are used
-// with.
-type MapListModelMapFunc func(item gextras.Objector) (object gextras.Objector)
-
-//export gotk4_MapListModelMapFunc
-func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointer) {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var item gextras.Objector // out
-
-	item = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg0))).(gextras.Objector)
-
-	fn := v.(MapListModelMapFunc)
-	object := fn(item)
-
-	cret = (C.gpointer)(unsafe.Pointer(object.Native()))
-
-	return cret
 }
 
 // MapListModel: `GtkMapListModel` maps the items in a list model to different
@@ -100,7 +73,7 @@ func (s *MapListModelClass) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer((&MapListModel).Native()))
 
 	_cret = C.gtk_map_list_model_has_map(_arg0)
 

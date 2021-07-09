@@ -92,7 +92,6 @@ func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
 		WindowClass: WindowClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -115,7 +114,6 @@ func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
 			},
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -132,7 +130,6 @@ func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
 				Object: obj,
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -146,7 +143,6 @@ func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
 					},
 				},
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -174,7 +170,6 @@ func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
 		},
 		NativeInterface: NativeInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -191,7 +186,6 @@ func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
 			Object: obj,
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -205,7 +199,6 @@ func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
 				},
 			},
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,

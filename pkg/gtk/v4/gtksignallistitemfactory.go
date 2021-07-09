@@ -93,14 +93,15 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 // NewSignalListItemFactory creates a new `GtkSignalListItemFactory`.
 //
 // You need to connect signal handlers before you use it.
-func NewSignalListItemFactory() SignalListItemFactory {
+func NewSignalListItemFactory() *SignalListItemFactoryClass {
 	var _cret *C.GtkListItemFactory // in
 
 	_cret = C.gtk_signal_list_item_factory_new()
 
-	var _signalListItemFactory SignalListItemFactory // out
+	var _signalListItemFactory *SignalListItemFactoryClass // out
 
-	_signalListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SignalListItemFactory)
+	_signalListItemFactory = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SignalListItemFactoryClass)
 
 	return _signalListItemFactory
 }

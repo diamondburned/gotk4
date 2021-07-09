@@ -23,7 +23,7 @@ import "C"
 //
 // The @handle can be passed to other processes, for the purpose of marking
 // surfaces as transient for out-of-process surfaces.
-type WaylandToplevelExported func(toplevel WaylandToplevel, handle string)
+type WaylandToplevelExported func(toplevel *WaylandToplevelClass, handle string, userData interface{})
 
 //export gotk4_WaylandToplevelExported
 func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
@@ -32,12 +32,15 @@ func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpo
 		panic(`callback not found`)
 	}
 
-	var toplevel WaylandToplevel // out
-	var handle string            // out
+	var toplevel *WaylandToplevelClass // out
+	var handle string                  // out
+	var userData interface{}           // out
 
-	toplevel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(WaylandToplevel)
+	toplevel = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg0))).(*WaylandToplevelClass)
 	handle = C.GoString(arg1)
+	userData = box.Get(uintptr(arg2))
 
 	fn := v.(WaylandToplevelExported)
-	fn(toplevel, handle)
+	fn(toplevel, handle, userData)
 }

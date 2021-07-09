@@ -61,17 +61,18 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 
 // NewGestureRotate returns a newly created Gesture that recognizes 2-touch
 // rotation gestures.
-func NewGestureRotate(widget Widget) GestureRotate {
+func NewGestureRotate(widget Widget) *GestureRotateClass {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_gesture_rotate_new(_arg1)
 
-	var _gestureRotate GestureRotate // out
+	var _gestureRotate *GestureRotateClass // out
 
-	_gestureRotate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureRotate)
+	_gestureRotate = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureRotateClass)
 
 	return _gestureRotate
 }
@@ -83,7 +84,7 @@ func (g *GestureRotateClass) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out
 	var _cret C.gdouble           // in
 
-	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer((&GestureRotate).Native()))
 
 	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
 

@@ -50,7 +50,6 @@ func wrapVButtonBox(obj *externglib.Object) VButtonBox {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -92,14 +91,15 @@ func marshalVButtonBox(p uintptr) (interface{}, error) {
 // NewVButtonBox creates a new vertical button box.
 //
 // Deprecated: since version 3.2.
-func NewVButtonBox() VButtonBox {
+func NewVButtonBox() *VButtonBoxClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_vbutton_box_new()
 
-	var _vButtonBox VButtonBox // out
+	var _vButtonBox *VButtonBoxClass // out
 
-	_vButtonBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(VButtonBox)
+	_vButtonBox = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*VButtonBoxClass)
 
 	return _vButtonBox
 }

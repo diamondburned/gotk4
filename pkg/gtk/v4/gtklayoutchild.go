@@ -36,10 +36,10 @@ type LayoutChild interface {
 
 	// ChildWidget retrieves the `GtkWidget` associated to the given
 	// @layout_child.
-	ChildWidget() Widget
+	ChildWidget() *WidgetClass
 	// LayoutManager retrieves the `GtkLayoutManager` instance that created the
 	// given @layout_child.
-	LayoutManager() LayoutManager
+	LayoutManager() *LayoutManagerClass
 }
 
 // LayoutChildClass implements the LayoutChild interface.
@@ -62,34 +62,36 @@ func marshalLayoutChild(p uintptr) (interface{}, error) {
 }
 
 // ChildWidget retrieves the `GtkWidget` associated to the given @layout_child.
-func (l *LayoutChildClass) ChildWidget() Widget {
+func (l *LayoutChildClass) ChildWidget() *WidgetClass {
 	var _arg0 *C.GtkLayoutChild // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer((&LayoutChild).Native()))
 
 	_cret = C.gtk_layout_child_get_child_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
 
 // LayoutManager retrieves the `GtkLayoutManager` instance that created the
 // given @layout_child.
-func (l *LayoutChildClass) LayoutManager() LayoutManager {
+func (l *LayoutChildClass) LayoutManager() *LayoutManagerClass {
 	var _arg0 *C.GtkLayoutChild   // out
 	var _cret *C.GtkLayoutManager // in
 
-	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer((&LayoutChild).Native()))
 
 	_cret = C.gtk_layout_child_get_layout_manager(_arg0)
 
-	var _layoutManager LayoutManager // out
+	var _layoutManager *LayoutManagerClass // out
 
-	_layoutManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LayoutManager)
+	_layoutManager = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*LayoutManagerClass)
 
 	return _layoutManager
 }

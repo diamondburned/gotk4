@@ -37,25 +37,11 @@ type RelationSet interface {
 	// function should unref it to ensure that it will be destroyed when the
 	// AtkRelationSet is destroyed.
 	Add(relation Relation)
-	// AddRelationByType: add a new relation of the specified type with the
-	// specified target to the current relation set if the relation set does not
-	// contain a relation of that type. If it is does contain a relation of that
-	// typea the target is added to the relation.
-	AddRelationByType(relationship RelationType, target Object)
-	// Contains determines whether the relation set contains a relation that
-	// matches the specified type.
-	Contains(relationship RelationType) bool
-	// ContainsTarget determines whether the relation set contains a relation
-	// that matches the specified pair formed by type @relationship and object
-	// @target.
-	ContainsTarget(relationship RelationType, target Object) bool
 	// NRelations determines the number of relations in a relation set.
 	NRelations() int
 	// Relation determines the relation at the specified position in the
 	// relation set.
-	Relation(i int) Relation
-	// RelationByType finds a relation that matches the specified type.
-	RelationByType(relationship RelationType) Relation
+	Relation(i int) *RelationClass
 	// Remove removes a relation from the relation set. This function unref's
 	// the Relation so it will be deleted unless there is another reference to
 	// it.
@@ -82,14 +68,15 @@ func marshalRelationSet(p uintptr) (interface{}, error) {
 }
 
 // NewRelationSet creates a new empty relation set.
-func NewRelationSet() RelationSet {
+func NewRelationSet() *RelationSetClass {
 	var _cret *C.AtkRelationSet // in
 
 	_cret = C.atk_relation_set_new()
 
-	var _relationSet RelationSet // out
+	var _relationSet *RelationSetClass // out
 
-	_relationSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RelationSet)
+	_relationSet = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RelationSetClass)
 
 	return _relationSet
 }
@@ -102,70 +89,10 @@ func (s *RelationSetClass) Add(relation Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer((&RelationSet).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer((&Relation).Native()))
 
 	C.atk_relation_set_add(_arg0, _arg1)
-}
-
-// AddRelationByType: add a new relation of the specified type with the
-// specified target to the current relation set if the relation set does not
-// contain a relation of that type. If it is does contain a relation of that
-// typea the target is added to the relation.
-func (s *RelationSetClass) AddRelationByType(relationship RelationType, target Object) {
-	var _arg0 *C.AtkRelationSet // out
-	var _arg1 C.AtkRelationType // out
-	var _arg2 *C.AtkObject      // out
-
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
-	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
-
-	C.atk_relation_set_add_relation_by_type(_arg0, _arg1, _arg2)
-}
-
-// Contains determines whether the relation set contains a relation that matches
-// the specified type.
-func (s *RelationSetClass) Contains(relationship RelationType) bool {
-	var _arg0 *C.AtkRelationSet // out
-	var _arg1 C.AtkRelationType // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
-	_arg1 = C.AtkRelationType(relationship)
-
-	_cret = C.atk_relation_set_contains(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ContainsTarget determines whether the relation set contains a relation that
-// matches the specified pair formed by type @relationship and object @target.
-func (s *RelationSetClass) ContainsTarget(relationship RelationType, target Object) bool {
-	var _arg0 *C.AtkRelationSet // out
-	var _arg1 C.AtkRelationType // out
-	var _arg2 *C.AtkObject      // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
-	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
-
-	_cret = C.atk_relation_set_contains_target(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // NRelations determines the number of relations in a relation set.
@@ -173,7 +100,7 @@ func (s *RelationSetClass) NRelations() int {
 	var _arg0 *C.AtkRelationSet // out
 	var _cret C.gint            // in
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer((&RelationSet).Native()))
 
 	_cret = C.atk_relation_set_get_n_relations(_arg0)
 
@@ -186,37 +113,20 @@ func (s *RelationSetClass) NRelations() int {
 
 // Relation determines the relation at the specified position in the relation
 // set.
-func (s *RelationSetClass) Relation(i int) Relation {
+func (s *RelationSetClass) Relation(i int) *RelationClass {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.gint            // out
 	var _cret *C.AtkRelation    // in
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer((&RelationSet).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_relation_set_get_relation(_arg0, _arg1)
 
-	var _relation Relation // out
+	var _relation *RelationClass // out
 
-	_relation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Relation)
-
-	return _relation
-}
-
-// RelationByType finds a relation that matches the specified type.
-func (s *RelationSetClass) RelationByType(relationship RelationType) Relation {
-	var _arg0 *C.AtkRelationSet // out
-	var _arg1 C.AtkRelationType // out
-	var _cret *C.AtkRelation    // in
-
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
-	_arg1 = C.AtkRelationType(relationship)
-
-	_cret = C.atk_relation_set_get_relation_by_type(_arg0, _arg1)
-
-	var _relation Relation // out
-
-	_relation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Relation)
+	_relation = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RelationClass)
 
 	return _relation
 }
@@ -227,8 +137,8 @@ func (s *RelationSetClass) Remove(relation Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer((&RelationSet).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer((&Relation).Native()))
 
 	C.atk_relation_set_remove(_arg0, _arg1)
 }

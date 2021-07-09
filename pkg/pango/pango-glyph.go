@@ -113,7 +113,7 @@ func NewGlyphString() *GlyphString {
 
 	var _glyphString *GlyphString // out
 
-	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
+	_glyphString = (*GlyphString)(unsafe.Pointer(*C.PangoGlyphString))
 	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -146,13 +146,13 @@ func (s *GlyphString) Copy() *GlyphString {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret *C.PangoGlyphString // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(*GlyphString))
 
 	_cret = C.pango_glyph_string_copy(_arg0)
 
 	var _glyphString *GlyphString // out
 
-	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
+	_glyphString = (*GlyphString)(unsafe.Pointer(*C.PangoGlyphString))
 	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -164,7 +164,7 @@ func (s *GlyphString) Copy() *GlyphString {
 func (s *GlyphString) free() {
 	var _arg0 *C.PangoGlyphString // out
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(*GlyphString))
 
 	C.pango_glyph_string_free(_arg0)
 }
@@ -179,7 +179,7 @@ func (g *GlyphString) Width() int {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(*GlyphString))
 
 	_cret = C.pango_glyph_string_get_width(_arg0)
 
@@ -195,7 +195,7 @@ func (s *GlyphString) SetSize(newLen int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.gint              // out
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(*GlyphString))
 	_arg1 = C.gint(newLen)
 
 	C.pango_glyph_string_set_size(_arg0, _arg1)

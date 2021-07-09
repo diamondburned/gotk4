@@ -81,7 +81,6 @@ func wrapSearchEntry(obj *externglib.Object) SearchEntry {
 		EntryClass: EntryClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -92,7 +91,6 @@ func wrapSearchEntry(obj *externglib.Object) SearchEntry {
 			},
 			CellEditableInterface: CellEditableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -108,7 +106,6 @@ func wrapSearchEntry(obj *externglib.Object) SearchEntry {
 		},
 		CellEditableInterface: CellEditableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -129,14 +126,15 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 
 // NewSearchEntry creates a SearchEntry, with a find icon when the search field
 // is empty, and a clear icon when it isn't.
-func NewSearchEntry() SearchEntry {
+func NewSearchEntry() *SearchEntryClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_search_entry_new()
 
-	var _searchEntry SearchEntry // out
+	var _searchEntry *SearchEntryClass // out
 
-	_searchEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SearchEntry)
+	_searchEntry = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SearchEntryClass)
 
 	return _searchEntry
 }

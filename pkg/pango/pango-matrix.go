@@ -99,8 +99,8 @@ func (m *Matrix) Concat(newMatrix *Matrix) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 *C.PangoMatrix // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
-	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(newMatrix))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(*Matrix))
+	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(*Matrix))
 
 	C.pango_matrix_concat(_arg0, _arg1)
 }
@@ -110,13 +110,13 @@ func (m *Matrix) Copy() *Matrix {
 	var _arg0 *C.PangoMatrix // out
 	var _cret *C.PangoMatrix // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(*Matrix))
 
 	_cret = C.pango_matrix_copy(_arg0)
 
 	var _ret *Matrix // out
 
-	_ret = (*Matrix)(unsafe.Pointer(_cret))
+	_ret = (*Matrix)(unsafe.Pointer(*C.PangoMatrix))
 	runtime.SetFinalizer(_ret, func(v *Matrix) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -128,7 +128,7 @@ func (m *Matrix) Copy() *Matrix {
 func (m *Matrix) free() {
 	var _arg0 *C.PangoMatrix // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(*Matrix))
 
 	C.pango_matrix_free(_arg0)
 }
@@ -143,7 +143,7 @@ func (m *Matrix) FontScaleFactor() float64 {
 	var _arg0 *C.PangoMatrix // out
 	var _cret C.double       // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(*Matrix))
 
 	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 
@@ -167,7 +167,7 @@ func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg1 C.double       // in
 	var _arg2 C.double       // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(*Matrix))
 
 	C.pango_matrix_get_font_scale_factors(_arg0, &_arg1, &_arg2)
 
@@ -187,7 +187,7 @@ func (m *Matrix) Rotate(degrees float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(*Matrix))
 	_arg1 = C.double(degrees)
 
 	C.pango_matrix_rotate(_arg0, _arg1)
@@ -201,7 +201,7 @@ func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(*Matrix))
 	_arg1 = C.double(scaleX)
 	_arg2 = C.double(scaleY)
 
@@ -216,7 +216,7 @@ func (m *Matrix) Translate(tx float64, ty float64) {
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(*Matrix))
 	_arg1 = C.double(tx)
 	_arg2 = C.double(ty)
 

@@ -74,14 +74,15 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 // This sorter compares items by trying each of the sorters in turn, until one
 // returns non-zero. In particular, if no sorter has been added to it, it will
 // always compare items as equal.
-func NewMultiSorter() MultiSorter {
+func NewMultiSorter() *MultiSorterClass {
 	var _cret *C.GtkMultiSorter // in
 
 	_cret = C.gtk_multi_sorter_new()
 
-	var _multiSorter MultiSorter // out
+	var _multiSorter *MultiSorterClass // out
 
-	_multiSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MultiSorter)
+	_multiSorter = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MultiSorterClass)
 
 	return _multiSorter
 }
@@ -94,8 +95,8 @@ func (s *MultiSorterClass) Append(sorter Sorter) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 *C.GtkSorter      // out
 
-	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer((&MultiSorter).Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer((&Sorter).Native()))
 
 	C.gtk_multi_sorter_append(_arg0, _arg1)
 }
@@ -108,7 +109,7 @@ func (s *MultiSorterClass) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer((&MultiSorter).Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_sorter_remove(_arg0, _arg1)

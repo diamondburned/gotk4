@@ -43,9 +43,9 @@ type Native interface {
 	gextras.Objector
 
 	// Renderer returns the renderer that is used for this `GtkNative`.
-	Renderer() gsk.Renderer
+	Renderer() *gsk.RendererClass
 	// Surface returns the surface of this `GtkNative`.
-	Surface() gdk.Surface
+	Surface() *gdk.SurfaceClass
 	// SurfaceTransform retrieves the surface transform of @self.
 	//
 	// This is the translation from @self's surface coordinates into @self's
@@ -71,7 +71,6 @@ var _ Native = (*NativeInterface)(nil)
 func wrapNative(obj *externglib.Object) Native {
 	return &NativeInterface{
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -93,33 +92,35 @@ func marshalNative(p uintptr) (interface{}, error) {
 }
 
 // Renderer returns the renderer that is used for this `GtkNative`.
-func (s *NativeInterface) Renderer() gsk.Renderer {
+func (s *NativeInterface) Renderer() *gsk.RendererClass {
 	var _arg0 *C.GtkNative   // out
 	var _cret *C.GskRenderer // in
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
 
 	_cret = C.gtk_native_get_renderer(_arg0)
 
-	var _renderer gsk.Renderer // out
+	var _renderer *gsk.RendererClass // out
 
-	_renderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gsk.Renderer)
+	_renderer = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gsk.RendererClass)
 
 	return _renderer
 }
 
 // Surface returns the surface of this `GtkNative`.
-func (s *NativeInterface) Surface() gdk.Surface {
+func (s *NativeInterface) Surface() *gdk.SurfaceClass {
 	var _arg0 *C.GtkNative  // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
 
 	_cret = C.gtk_native_get_surface(_arg0)
 
-	var _surface gdk.Surface // out
+	var _surface *gdk.SurfaceClass // out
 
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Surface)
+	_surface = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.SurfaceClass)
 
 	return _surface
 }
@@ -133,7 +134,7 @@ func (s *NativeInterface) SurfaceTransform() (x float64, y float64) {
 	var _arg1 C.double     // in
 	var _arg2 C.double     // in
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
 
 	C.gtk_native_get_surface_transform(_arg0, &_arg1, &_arg2)
 
@@ -152,7 +153,7 @@ func (s *NativeInterface) SurfaceTransform() (x float64, y float64) {
 func (s *NativeInterface) Realize() {
 	var _arg0 *C.GtkNative // out
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
 
 	C.gtk_native_realize(_arg0)
 }
@@ -163,7 +164,7 @@ func (s *NativeInterface) Realize() {
 func (s *NativeInterface) Unrealize() {
 	var _arg0 *C.GtkNative // out
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer((&Native).Native()))
 
 	C.gtk_native_unrealize(_arg0)
 }

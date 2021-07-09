@@ -82,14 +82,15 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 }
 
 // NewFixedLayout creates a new `GtkFixedLayout`.
-func NewFixedLayout() FixedLayout {
+func NewFixedLayout() *FixedLayoutClass {
 	var _cret *C.GtkLayoutManager // in
 
 	_cret = C.gtk_fixed_layout_new()
 
-	var _fixedLayout FixedLayout // out
+	var _fixedLayout *FixedLayoutClass // out
 
-	_fixedLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(FixedLayout)
+	_fixedLayout = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FixedLayoutClass)
 
 	return _fixedLayout
 }
@@ -133,13 +134,13 @@ func (c *FixedLayoutChildClass) Transform() *gsk.Transform {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _cret *C.GskTransform        // in
 
-	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer((&FixedLayoutChild).Native()))
 
 	_cret = C.gtk_fixed_layout_child_get_transform(_arg0)
 
 	var _transform *gsk.Transform // out
 
-	_transform = (*gsk.Transform)(unsafe.Pointer(_cret))
+	_transform = (*gsk.Transform)(unsafe.Pointer(*C.GskTransform))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
@@ -153,8 +154,8 @@ func (c *FixedLayoutChildClass) SetTransform(transform *gsk.Transform) {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _arg1 *C.GskTransform        // out
 
-	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GskTransform)(unsafe.Pointer(transform))
+	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer((&FixedLayoutChild).Native()))
+	_arg1 = (*C.GskTransform)(unsafe.Pointer(*gsk.Transform))
 
 	C.gtk_fixed_layout_child_set_transform(_arg0, _arg1)
 }

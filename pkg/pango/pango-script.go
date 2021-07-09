@@ -310,7 +310,7 @@ func NewScriptIter(text string, length int) *ScriptIter {
 
 	var _scriptIter *ScriptIter // out
 
-	_scriptIter = (*ScriptIter)(unsafe.Pointer(_cret))
+	_scriptIter = (*ScriptIter)(unsafe.Pointer(*C.PangoScriptIter))
 	runtime.SetFinalizer(_scriptIter, func(v *ScriptIter) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -327,7 +327,7 @@ func (s *ScriptIter) Native() unsafe.Pointer {
 func (i *ScriptIter) free() {
 	var _arg0 *C.PangoScriptIter // out
 
-	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(*ScriptIter))
 
 	C.pango_script_iter_free(_arg0)
 }
@@ -345,7 +345,7 @@ func (i *ScriptIter) Range() (start string, end string, script Script) {
 	var _arg2 *C.char            // in
 	var _arg3 C.PangoScript      // in
 
-	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(*ScriptIter))
 
 	C.pango_script_iter_get_range(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -357,7 +357,7 @@ func (i *ScriptIter) Range() (start string, end string, script Script) {
 	defer C.free(unsafe.Pointer(_arg1))
 	_end = C.GoString(_arg2)
 	defer C.free(unsafe.Pointer(_arg2))
-	_script = Script(_arg3)
+	_script = (Script)(C.PangoScript)
 
 	return _start, _end, _script
 }
@@ -368,7 +368,7 @@ func (i *ScriptIter) Next() bool {
 	var _arg0 *C.PangoScriptIter // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(*ScriptIter))
 
 	_cret = C.pango_script_iter_next(_arg0)
 

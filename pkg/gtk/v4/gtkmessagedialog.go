@@ -100,7 +100,7 @@ type MessageDialog interface {
 	// packed. You can add your own extra content to that box and it will appear
 	// below those labels. See [method@Gtk.Dialog.get_content_area] for the
 	// corresponding function in the parent [class@Gtk.Dialog].
-	MessageArea() Widget
+	MessageArea() *WidgetClass
 	// SetMarkup sets the text of the message dialog.
 	SetMarkup(str string)
 }
@@ -127,7 +127,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 			WindowClass: WindowClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -150,7 +149,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 				},
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -167,7 +165,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 					Object: obj,
 					NativeInterface: NativeInterface{
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							AccessibleInterface: AccessibleInterface{
 								Object: obj,
@@ -181,7 +178,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 						},
 					},
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -209,7 +205,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 			},
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -226,7 +221,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 				Object: obj,
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -240,7 +234,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 					},
 				},
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -268,7 +261,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 		},
 		NativeInterface: NativeInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -285,7 +277,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 			Object: obj,
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -299,7 +290,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 				},
 			},
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -330,17 +320,18 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 // You can add your own extra content to that box and it will appear below those
 // labels. See [method@Gtk.Dialog.get_content_area] for the corresponding
 // function in the parent [class@Gtk.Dialog].
-func (m *MessageDialogClass) MessageArea() Widget {
+func (m *MessageDialogClass) MessageArea() *WidgetClass {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -350,7 +341,7 @@ func (m *MessageDialogClass) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 

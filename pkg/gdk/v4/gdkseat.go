@@ -57,11 +57,11 @@ type Seat interface {
 	// Capabilities returns the capabilities this `GdkSeat` currently has.
 	Capabilities() SeatCapabilities
 	// Display returns the `GdkDisplay` this seat belongs to.
-	Display() Display
+	Display() *DisplayClass
 	// Keyboard returns the device that routes keyboard events.
-	Keyboard() Device
+	Keyboard() *DeviceClass
 	// Pointer returns the device that routes pointer events.
-	Pointer() Device
+	Pointer() *DeviceClass
 }
 
 // SeatClass implements the Seat interface.
@@ -88,61 +88,64 @@ func (s *SeatClass) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer((&Seat).Native()))
 
 	_cret = C.gdk_seat_get_capabilities(_arg0)
 
 	var _seatCapabilities SeatCapabilities // out
 
-	_seatCapabilities = SeatCapabilities(_cret)
+	_seatCapabilities = (SeatCapabilities)(C.GdkSeatCapabilities)
 
 	return _seatCapabilities
 }
 
 // Display returns the `GdkDisplay` this seat belongs to.
-func (s *SeatClass) Display() Display {
+func (s *SeatClass) Display() *DisplayClass {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer((&Seat).Native()))
 
 	_cret = C.gdk_seat_get_display(_arg0)
 
-	var _display Display // out
+	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
+	_display = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
 
 	return _display
 }
 
 // Keyboard returns the device that routes keyboard events.
-func (s *SeatClass) Keyboard() Device {
+func (s *SeatClass) Keyboard() *DeviceClass {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer((&Seat).Native()))
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
 
-	var _device Device // out
+	var _device *DeviceClass // out
 
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Device)
+	_device = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
 
 	return _device
 }
 
 // Pointer returns the device that routes pointer events.
-func (s *SeatClass) Pointer() Device {
+func (s *SeatClass) Pointer() *DeviceClass {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer((&Seat).Native()))
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
 
-	var _device Device // out
+	var _device *DeviceClass // out
 
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Device)
+	_device = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
 
 	return _device
 }

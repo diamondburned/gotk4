@@ -76,7 +76,6 @@ func wrapRecentChooserMenu(obj *externglib.Object) RecentChooserMenu {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -123,14 +122,15 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 // This widget creates its own RecentManager object. See the
 // gtk_recent_chooser_menu_new_for_manager() function to know how to create a
 // RecentChooserMenu widget bound to another RecentManager object.
-func NewRecentChooserMenu() RecentChooserMenu {
+func NewRecentChooserMenu() *RecentChooserMenuClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_recent_chooser_menu_new()
 
-	var _recentChooserMenu RecentChooserMenu // out
+	var _recentChooserMenu *RecentChooserMenuClass // out
 
-	_recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RecentChooserMenu)
+	_recentChooserMenu = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RecentChooserMenuClass)
 
 	return _recentChooserMenu
 }
@@ -141,17 +141,18 @@ func NewRecentChooserMenu() RecentChooserMenu {
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object or if you wish to share
 // a common RecentManager object among multiple RecentChooser widgets.
-func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
+func NewRecentChooserMenuForManager(manager RecentManager) *RecentChooserMenuClass {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((&RecentManager).Native()))
 
 	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
 
-	var _recentChooserMenu RecentChooserMenu // out
+	var _recentChooserMenu *RecentChooserMenuClass // out
 
-	_recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RecentChooserMenu)
+	_recentChooserMenu = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RecentChooserMenuClass)
 
 	return _recentChooserMenu
 }
@@ -162,7 +163,7 @@ func (m *RecentChooserMenuClass) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer((&RecentChooserMenu).Native()))
 
 	_cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
 
@@ -183,7 +184,7 @@ func (m *RecentChooserMenuClass) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer((&RecentChooserMenu).Native()))
 	if showNumbers {
 		_arg1 = C.TRUE
 	}

@@ -60,7 +60,6 @@ func wrapAspectFrame(obj *externglib.Object) AspectFrame {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -91,7 +90,7 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 }
 
 // NewAspectFrame: create a new AspectFrame.
-func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
+func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) *AspectFrameClass {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gfloat     // out
 	var _arg3 C.gfloat     // out
@@ -110,9 +109,10 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 
 	_cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _aspectFrame AspectFrame // out
+	var _aspectFrame *AspectFrameClass // out
 
-	_aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AspectFrame)
+	_aspectFrame = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*AspectFrameClass)
 
 	return _aspectFrame
 }
@@ -125,7 +125,7 @@ func (a *AspectFrameClass) Set(xalign float32, yalign float32, ratio float32, ob
 	var _arg3 C.gfloat          // out
 	var _arg4 C.gboolean        // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer((&AspectFrame).Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 	_arg3 = C.gfloat(ratio)

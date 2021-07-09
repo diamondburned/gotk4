@@ -59,14 +59,8 @@ func marshalDevicePadFeature(p uintptr) (interface{}, error) {
 type DevicePad interface {
 	gextras.Objector
 
-	// FeatureGroup returns the group the given @feature and @idx belong to.
-	//
-	// f the feature or index do not exist in @pad, -1 is returned.
-	FeatureGroup(feature DevicePadFeature, featureIdx int) int
 	// GroupNModes returns the number of modes that @group may have.
 	GroupNModes(groupIdx int) int
-	// NFeatures returns the number of features a tablet pad has.
-	NFeatures(feature DevicePadFeature) int
 	// NGroups returns the number of groups this pad device has.
 	//
 	// Pads have at least one group. A pad group is a subcollection of
@@ -95,56 +89,16 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 	return wrapDevicePad(obj), nil
 }
 
-// FeatureGroup returns the group the given @feature and @idx belong to.
-//
-// f the feature or index do not exist in @pad, -1 is returned.
-func (p *DevicePadInterface) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
-	var _arg0 *C.GdkDevicePad       // out
-	var _arg1 C.GdkDevicePadFeature // out
-	var _arg2 C.int                 // out
-	var _cret C.int                 // in
-
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-	_arg1 = C.GdkDevicePadFeature(feature)
-	_arg2 = C.int(featureIdx)
-
-	_cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
 // GroupNModes returns the number of modes that @group may have.
 func (p *DevicePadInterface) GroupNModes(groupIdx int) int {
 	var _arg0 *C.GdkDevicePad // out
 	var _arg1 C.int           // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer((&DevicePad).Native()))
 	_arg1 = C.int(groupIdx)
 
 	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// NFeatures returns the number of features a tablet pad has.
-func (p *DevicePadInterface) NFeatures(feature DevicePadFeature) int {
-	var _arg0 *C.GdkDevicePad       // out
-	var _arg1 C.GdkDevicePadFeature // out
-	var _cret C.int                 // in
-
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-	_arg1 = C.GdkDevicePadFeature(feature)
-
-	_cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
 
 	var _gint int // out
 
@@ -161,7 +115,7 @@ func (p *DevicePadInterface) NGroups() int {
 	var _arg0 *C.GdkDevicePad // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer((&DevicePad).Native()))
 
 	_cret = C.gdk_device_pad_get_n_groups(_arg0)
 

@@ -75,7 +75,6 @@ func wrapToggleToolButton(obj *externglib.Object) ToggleToolButton {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							BuildableInterface: BuildableInterface{
 								Object: obj,
@@ -98,7 +97,6 @@ func wrapToggleToolButton(obj *externglib.Object) ToggleToolButton {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -114,7 +112,6 @@ func wrapToggleToolButton(obj *externglib.Object) ToggleToolButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -137,14 +134,15 @@ func marshalToggleToolButton(p uintptr) (interface{}, error) {
 }
 
 // NewToggleToolButton returns a new ToggleToolButton
-func NewToggleToolButton() ToggleToolButton {
+func NewToggleToolButton() *ToggleToolButtonClass {
 	var _cret *C.GtkToolItem // in
 
 	_cret = C.gtk_toggle_tool_button_new()
 
-	var _toggleToolButton ToggleToolButton // out
+	var _toggleToolButton *ToggleToolButtonClass // out
 
-	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleToolButton)
+	_toggleToolButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ToggleToolButtonClass)
 
 	return _toggleToolButton
 }
@@ -156,7 +154,7 @@ func NewToggleToolButton() ToggleToolButton {
 // It is an error if @stock_id is not a name of a stock item.
 //
 // Deprecated: since version 3.10.
-func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
+func NewToggleToolButtonFromStock(stockId string) *ToggleToolButtonClass {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
 
@@ -165,9 +163,10 @@ func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
 
 	_cret = C.gtk_toggle_tool_button_new_from_stock(_arg1)
 
-	var _toggleToolButton ToggleToolButton // out
+	var _toggleToolButton *ToggleToolButtonClass // out
 
-	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ToggleToolButton)
+	_toggleToolButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ToggleToolButtonClass)
 
 	return _toggleToolButton
 }
@@ -178,7 +177,7 @@ func (b *ToggleToolButtonClass) Active() bool {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer((&ToggleToolButton).Native()))
 
 	_cret = C.gtk_toggle_tool_button_get_active(_arg0)
 
@@ -198,7 +197,7 @@ func (b *ToggleToolButtonClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer((&ToggleToolButton).Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}

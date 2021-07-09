@@ -23,7 +23,7 @@ type Stock = string
 // and ActionGroup.
 //
 // Deprecated: since version 3.10.
-type TranslateFunc func(path string) (utf8 string)
+type TranslateFunc func(path string, funcData interface{}) (utf8 string)
 
 //export gotk4_TranslateFunc
 func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
@@ -32,12 +32,14 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
 		panic(`callback not found`)
 	}
 
-	var path string // out
+	var path string          // out
+	var funcData interface{} // out
 
 	path = C.GoString(arg0)
+	funcData = box.Get(uintptr(arg1))
 
 	fn := v.(TranslateFunc)
-	utf8 := fn(path)
+	utf8 := fn(path, funcData)
 
 	cret = (*C.gchar)(C.CString(utf8))
 
@@ -77,7 +79,7 @@ func (s *StockItem) Label() string {
 // Modifier type for keyboard accelerator
 func (s *StockItem) Modifier() gdk.ModifierType {
 	var v gdk.ModifierType // out
-	v = gdk.ModifierType(s.native.modifier)
+	v = (gdk.ModifierType)(C.GdkModifierType)
 	return v
 }
 
@@ -103,7 +105,7 @@ func (s *StockItem) TranslationDomain() string {
 func (i *StockItem) free() {
 	var _arg0 *C.GtkStockItem // out
 
-	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(i))
+	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(*StockItem))
 
 	C.gtk_stock_item_free(_arg0)
 }

@@ -90,7 +90,7 @@ func marshalUnixInputStream(p uintptr) (interface{}, error) {
 //
 // If @close_fd is true, the file descriptor will be closed when the stream is
 // closed.
-func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
+func NewUnixInputStream(fd int, closeFd bool) *UnixInputStreamClass {
 	var _arg1 C.gint          // out
 	var _arg2 C.gboolean      // out
 	var _cret *C.GInputStream // in
@@ -102,9 +102,10 @@ func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
 
 	_cret = C.g_unix_input_stream_new(_arg1, _arg2)
 
-	var _unixInputStream UnixInputStream // out
+	var _unixInputStream *UnixInputStreamClass // out
 
-	_unixInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixInputStream)
+	_unixInputStream = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixInputStreamClass)
 
 	return _unixInputStream
 }
@@ -115,7 +116,7 @@ func (s *UnixInputStreamClass) CloseFd() bool {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer((&UnixInputStream).Native()))
 
 	_cret = C.g_unix_input_stream_get_close_fd(_arg0)
 
@@ -133,7 +134,7 @@ func (s *UnixInputStreamClass) Fd() int {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gint              // in
 
-	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer((&UnixInputStream).Native()))
 
 	_cret = C.g_unix_input_stream_get_fd(_arg0)
 
@@ -150,7 +151,7 @@ func (s *UnixInputStreamClass) SetCloseFd(closeFd bool) {
 	var _arg0 *C.GUnixInputStream // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer((&UnixInputStream).Native()))
 	if closeFd {
 		_arg1 = C.TRUE
 	}

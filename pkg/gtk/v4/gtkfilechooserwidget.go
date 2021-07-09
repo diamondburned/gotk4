@@ -53,7 +53,6 @@ func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidget {
 	return &FileChooserWidgetClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -84,25 +83,6 @@ func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserWidget(obj), nil
-}
-
-// NewFileChooserWidget creates a new `GtkFileChooserWidget`.
-//
-// This is a file chooser widget that can be embedded in custom windows, and it
-// is the same widget that is used by `GtkFileChooserDialog`.
-func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
-	var _arg1 C.GtkFileChooserAction // out
-	var _cret *C.GtkWidget           // in
-
-	_arg1 = C.GtkFileChooserAction(action)
-
-	_cret = C.gtk_file_chooser_widget_new(_arg1)
-
-	var _fileChooserWidget FileChooserWidget // out
-
-	_fileChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FileChooserWidget)
-
-	return _fileChooserWidget
 }
 
 func (*FileChooserWidgetClass) privateFileChooserWidgetClass() {}

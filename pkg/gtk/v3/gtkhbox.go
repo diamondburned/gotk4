@@ -65,7 +65,6 @@ func wrapHBox(obj *externglib.Object) HBox {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -100,7 +99,7 @@ func marshalHBox(p uintptr) (interface{}, error) {
 // NewHBox creates a new HBox.
 //
 // Deprecated: since version 3.2.
-func NewHBox(homogeneous bool, spacing int) HBox {
+func NewHBox(homogeneous bool, spacing int) *HBoxClass {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out
 	var _cret *C.GtkWidget // in
@@ -112,9 +111,10 @@ func NewHBox(homogeneous bool, spacing int) HBox {
 
 	_cret = C.gtk_hbox_new(_arg1, _arg2)
 
-	var _hBox HBox // out
+	var _hBox *HBoxClass // out
 
-	_hBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HBox)
+	_hBox = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HBoxClass)
 
 	return _hBox
 }

@@ -54,7 +54,6 @@ func wrapSeparator(obj *externglib.Object) Separator {
 	return &SeparatorClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			BuildableInterface: BuildableInterface{
 				Object: obj,
@@ -73,22 +72,6 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSeparator(obj), nil
-}
-
-// NewSeparator creates a new Separator with the given orientation.
-func NewSeparator(orientation Orientation) Separator {
-	var _arg1 C.GtkOrientation // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-
-	_cret = C.gtk_separator_new(_arg1)
-
-	var _separator Separator // out
-
-	_separator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Separator)
-
-	return _separator
 }
 
 func (*SeparatorClass) privateSeparatorClass() {}

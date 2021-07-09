@@ -33,21 +33,21 @@ type FontSelection interface {
 	// family, slant, weight, width, etc).
 	//
 	// Deprecated: since version 3.2.
-	Face() pango.FontFace
+	Face() *pango.FontFaceClass
 	// FaceList: this returns the TreeView which lists all styles available for
 	// the selected font. For example, “Regular”, “Bold”, etc.
 	//
 	// Deprecated: since version 3.2.
-	FaceList() Widget
+	FaceList() *WidgetClass
 	// Family gets the FontFamily representing the selected font family.
 	//
 	// Deprecated: since version 3.2.
-	Family() pango.FontFamily
+	Family() *pango.FontFamilyClass
 	// FamilyList: this returns the TreeView that lists font families, for
 	// example, “Sans”, “Serif”, etc.
 	//
 	// Deprecated: since version 3.2.
-	FamilyList() Widget
+	FamilyList() *WidgetClass
 	// FontName gets the currently-selected font name.
 	//
 	// Note that this can be a different string than what you set with
@@ -63,7 +63,7 @@ type FontSelection interface {
 	// preview.
 	//
 	// Deprecated: since version 3.2.
-	PreviewEntry() Widget
+	PreviewEntry() *WidgetClass
 	// PreviewText gets the text displayed in the preview area.
 	//
 	// Deprecated: since version 3.2.
@@ -76,11 +76,11 @@ type FontSelection interface {
 	// number manually instead of selecting it from the list of font sizes.
 	//
 	// Deprecated: since version 3.2.
-	SizeEntry() Widget
+	SizeEntry() *WidgetClass
 	// SizeList: this returns the TreeView used to list font sizes.
 	//
 	// Deprecated: since version 3.2.
-	SizeList() Widget
+	SizeList() *WidgetClass
 	// SetFontName sets the currently-selected font.
 	//
 	// Note that the @fontsel needs to know the screen in which it will appear
@@ -114,7 +114,6 @@ func wrapFontSelection(obj *externglib.Object) FontSelection {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -149,14 +148,15 @@ func marshalFontSelection(p uintptr) (interface{}, error) {
 // NewFontSelection creates a new FontSelection.
 //
 // Deprecated: since version 3.2.
-func NewFontSelection() FontSelection {
+func NewFontSelection() *FontSelectionClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_font_selection_new()
 
-	var _fontSelection FontSelection // out
+	var _fontSelection *FontSelectionClass // out
 
-	_fontSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontSelection)
+	_fontSelection = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontSelectionClass)
 
 	return _fontSelection
 }
@@ -165,17 +165,18 @@ func NewFontSelection() FontSelection {
 // family, slant, weight, width, etc).
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionClass) Face() pango.FontFace {
+func (f *FontSelectionClass) Face() *pango.FontFaceClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFace    // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_face(_arg0)
 
-	var _fontFace pango.FontFace // out
+	var _fontFace *pango.FontFaceClass // out
 
-	_fontFace = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontFace)
+	_fontFace = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*pango.FontFaceClass)
 
 	return _fontFace
 }
@@ -184,17 +185,18 @@ func (f *FontSelectionClass) Face() pango.FontFace {
 // selected font. For example, “Regular”, “Bold”, etc.
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionClass) FaceList() Widget {
+func (f *FontSelectionClass) FaceList() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_face_list(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -202,17 +204,18 @@ func (f *FontSelectionClass) FaceList() Widget {
 // Family gets the FontFamily representing the selected font family.
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionClass) Family() pango.FontFamily {
+func (f *FontSelectionClass) Family() *pango.FontFamilyClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFamily  // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_family(_arg0)
 
-	var _fontFamily pango.FontFamily // out
+	var _fontFamily *pango.FontFamilyClass // out
 
-	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontFamily)
+	_fontFamily = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*pango.FontFamilyClass)
 
 	return _fontFamily
 }
@@ -221,17 +224,18 @@ func (f *FontSelectionClass) Family() pango.FontFamily {
 // “Sans”, “Serif”, etc.
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionClass) FamilyList() Widget {
+func (f *FontSelectionClass) FamilyList() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_family_list(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -250,7 +254,7 @@ func (f *FontSelectionClass) FontName() string {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.gchar            // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_font_name(_arg0)
 
@@ -265,17 +269,18 @@ func (f *FontSelectionClass) FontName() string {
 // PreviewEntry: this returns the Entry used to display the font as a preview.
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionClass) PreviewEntry() Widget {
+func (f *FontSelectionClass) PreviewEntry() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_preview_entry(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -287,7 +292,7 @@ func (f *FontSelectionClass) PreviewText() string {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.gchar            // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_preview_text(_arg0)
 
@@ -305,7 +310,7 @@ func (f *FontSelectionClass) Size() int {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret C.gint              // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_size(_arg0)
 
@@ -320,17 +325,18 @@ func (f *FontSelectionClass) Size() int {
 // number manually instead of selecting it from the list of font sizes.
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionClass) SizeEntry() Widget {
+func (f *FontSelectionClass) SizeEntry() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_size_entry(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -338,17 +344,18 @@ func (f *FontSelectionClass) SizeEntry() Widget {
 // SizeList: this returns the TreeView used to list font sizes.
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionClass) SizeList() Widget {
+func (f *FontSelectionClass) SizeList() *WidgetClass {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 
 	_cret = C.gtk_font_selection_get_size_list(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -365,7 +372,7 @@ func (f *FontSelectionClass) SetFontName(fontname string) bool {
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 	_arg1 = (*C.gchar)(C.CString(fontname))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -388,7 +395,7 @@ func (f *FontSelectionClass) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelection // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer((&FontSelection).Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -401,7 +408,7 @@ type FontSelectionDialog interface {
 	// CancelButton gets the “Cancel” button.
 	//
 	// Deprecated: since version 3.2.
-	CancelButton() Widget
+	CancelButton() *WidgetClass
 	// FontName gets the currently-selected font name.
 	//
 	// Note that this can be a different string than what you set with
@@ -416,11 +423,11 @@ type FontSelectionDialog interface {
 	// FontSelection retrieves the FontSelection widget embedded in the dialog.
 	//
 	// Deprecated: since version 3.2.
-	FontSelection() Widget
+	FontSelection() *WidgetClass
 	// OkButton gets the “OK” button.
 	//
 	// Deprecated: since version 3.2.
-	OkButton() Widget
+	OkButton() *WidgetClass
 	// PreviewText gets the text displayed in the preview area.
 	//
 	// Deprecated: since version 3.2.
@@ -456,7 +463,6 @@ func wrapFontSelectionDialog(obj *externglib.Object) FontSelectionDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							BuildableInterface: BuildableInterface{
 								Object: obj,
@@ -493,7 +499,7 @@ func marshalFontSelectionDialog(p uintptr) (interface{}, error) {
 // NewFontSelectionDialog creates a new FontSelectionDialog.
 //
 // Deprecated: since version 3.2.
-func NewFontSelectionDialog(title string) FontSelectionDialog {
+func NewFontSelectionDialog(title string) *FontSelectionDialogClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -502,9 +508,10 @@ func NewFontSelectionDialog(title string) FontSelectionDialog {
 
 	_cret = C.gtk_font_selection_dialog_new(_arg1)
 
-	var _fontSelectionDialog FontSelectionDialog // out
+	var _fontSelectionDialog *FontSelectionDialogClass // out
 
-	_fontSelectionDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontSelectionDialog)
+	_fontSelectionDialog = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontSelectionDialogClass)
 
 	return _fontSelectionDialog
 }
@@ -512,17 +519,18 @@ func NewFontSelectionDialog(title string) FontSelectionDialog {
 // CancelButton gets the “Cancel” button.
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionDialogClass) CancelButton() Widget {
+func (f *FontSelectionDialogClass) CancelButton() *WidgetClass {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_cancel_button(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -541,7 +549,7 @@ func (f *FontSelectionDialogClass) FontName() string {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.gchar                  // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_font_name(_arg0)
 
@@ -556,17 +564,18 @@ func (f *FontSelectionDialogClass) FontName() string {
 // FontSelection retrieves the FontSelection widget embedded in the dialog.
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionDialogClass) FontSelection() Widget {
+func (f *FontSelectionDialogClass) FontSelection() *WidgetClass {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_font_selection(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -574,17 +583,18 @@ func (f *FontSelectionDialogClass) FontSelection() Widget {
 // OkButton gets the “OK” button.
 //
 // Deprecated: since version 3.2.
-func (f *FontSelectionDialogClass) OkButton() Widget {
+func (f *FontSelectionDialogClass) OkButton() *WidgetClass {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_ok_button(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -596,7 +606,7 @@ func (f *FontSelectionDialogClass) PreviewText() string {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.gchar                  // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
 
 	_cret = C.gtk_font_selection_dialog_get_preview_text(_arg0)
 
@@ -615,7 +625,7 @@ func (f *FontSelectionDialogClass) SetFontName(fontname string) bool {
 	var _arg1 *C.gchar                  // out
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
 	_arg1 = (*C.gchar)(C.CString(fontname))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -637,7 +647,7 @@ func (f *FontSelectionDialogClass) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _arg1 *C.gchar                  // out
 
-	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer((&FontSelectionDialog).Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 

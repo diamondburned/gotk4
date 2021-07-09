@@ -45,7 +45,7 @@ type UnixCredentialsMessage interface {
 	gextras.Objector
 
 	// Credentials gets the credentials stored in @message.
-	Credentials() Credentials
+	Credentials() *CredentialsClass
 }
 
 // UnixCredentialsMessageClass implements the UnixCredentialsMessage interface.
@@ -71,47 +71,50 @@ func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 
 // NewUnixCredentialsMessage creates a new CredentialsMessage with credentials
 // matching the current processes.
-func NewUnixCredentialsMessage() UnixCredentialsMessage {
+func NewUnixCredentialsMessage() *UnixCredentialsMessageClass {
 	var _cret *C.GSocketControlMessage // in
 
 	_cret = C.g_unix_credentials_message_new()
 
-	var _unixCredentialsMessage UnixCredentialsMessage // out
+	var _unixCredentialsMessage *UnixCredentialsMessageClass // out
 
-	_unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixCredentialsMessage)
+	_unixCredentialsMessage = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixCredentialsMessageClass)
 
 	return _unixCredentialsMessage
 }
 
 // NewUnixCredentialsMessageWithCredentials creates a new CredentialsMessage
 // holding @credentials.
-func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCredentialsMessage {
+func NewUnixCredentialsMessageWithCredentials(credentials Credentials) *UnixCredentialsMessageClass {
 	var _arg1 *C.GCredentials          // out
 	var _cret *C.GSocketControlMessage // in
 
-	_arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
 
 	_cret = C.g_unix_credentials_message_new_with_credentials(_arg1)
 
-	var _unixCredentialsMessage UnixCredentialsMessage // out
+	var _unixCredentialsMessage *UnixCredentialsMessageClass // out
 
-	_unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixCredentialsMessage)
+	_unixCredentialsMessage = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixCredentialsMessageClass)
 
 	return _unixCredentialsMessage
 }
 
 // Credentials gets the credentials stored in @message.
-func (m *UnixCredentialsMessageClass) Credentials() Credentials {
+func (m *UnixCredentialsMessageClass) Credentials() *CredentialsClass {
 	var _arg0 *C.GUnixCredentialsMessage // out
 	var _cret *C.GCredentials            // in
 
-	_arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer((&UnixCredentialsMessage).Native()))
 
 	_cret = C.g_unix_credentials_message_get_credentials(_arg0)
 
-	var _credentials Credentials // out
+	var _credentials *CredentialsClass // out
 
-	_credentials = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Credentials)
+	_credentials = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CredentialsClass)
 
 	return _credentials
 }

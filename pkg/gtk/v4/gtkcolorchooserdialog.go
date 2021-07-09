@@ -63,7 +63,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 			WindowClass: WindowClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -86,7 +85,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 				},
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -103,7 +101,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 					Object: obj,
 					NativeInterface: NativeInterface{
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							AccessibleInterface: AccessibleInterface{
 								Object: obj,
@@ -117,7 +114,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 						},
 					},
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -145,7 +141,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 			},
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -162,7 +157,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 				Object: obj,
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -176,7 +170,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 					},
 				},
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -207,7 +200,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 		},
 		NativeInterface: NativeInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -224,7 +216,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 			Object: obj,
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -238,7 +229,6 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 				},
 			},
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -264,20 +254,21 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 }
 
 // NewColorChooserDialog creates a new `GtkColorChooserDialog`.
-func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
+func NewColorChooserDialog(title string, parent Window) *ColorChooserDialogClass {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
 
-	var _colorChooserDialog ColorChooserDialog // out
+	var _colorChooserDialog *ColorChooserDialogClass // out
 
-	_colorChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorChooserDialog)
+	_colorChooserDialog = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ColorChooserDialogClass)
 
 	return _colorChooserDialog
 }

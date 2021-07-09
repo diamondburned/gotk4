@@ -47,7 +47,7 @@ type DrawingContext interface {
 	// Clip retrieves a copy of the clip region used when creating the @context.
 	Clip() *cairo.Region
 	// Window retrieves the window that created the drawing @context.
-	Window() Window
+	Window() *WindowClass
 	// IsValid checks whether the given DrawingContext is valid.
 	IsValid() bool
 }
@@ -81,13 +81,13 @@ func (c *DrawingContextClass) CairoContext() *cairo.Context {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_t           // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer((&DrawingContext).Native()))
 
 	_cret = C.gdk_drawing_context_get_cairo_context(_arg0)
 
 	var _ret *cairo.Context // out
 
-	_ret = (*cairo.Context)(unsafe.Pointer(_cret))
+	_ret = (*cairo.Context)(unsafe.Pointer(*C.cairo_t))
 
 	return _ret
 }
@@ -97,13 +97,13 @@ func (c *DrawingContextClass) Clip() *cairo.Region {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_region_t    // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer((&DrawingContext).Native()))
 
 	_cret = C.gdk_drawing_context_get_clip(_arg0)
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	_region = (*cairo.Region)(unsafe.Pointer(*C.cairo_region_t))
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -112,17 +112,18 @@ func (c *DrawingContextClass) Clip() *cairo.Region {
 }
 
 // Window retrieves the window that created the drawing @context.
-func (c *DrawingContextClass) Window() Window {
+func (c *DrawingContextClass) Window() *WindowClass {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.GdkWindow         // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer((&DrawingContext).Native()))
 
 	_cret = C.gdk_drawing_context_get_window(_arg0)
 
-	var _window Window // out
+	var _window *WindowClass // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
 
 	return _window
 }
@@ -132,7 +133,7 @@ func (c *DrawingContextClass) IsValid() bool {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer((&DrawingContext).Native()))
 
 	_cret = C.gdk_drawing_context_is_valid(_arg0)
 

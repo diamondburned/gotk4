@@ -65,14 +65,15 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 
 // NewEventControllerMotion creates a new event controller that will handle
 // motion events.
-func NewEventControllerMotion() EventControllerMotion {
+func NewEventControllerMotion() *EventControllerMotionClass {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_event_controller_motion_new()
 
-	var _eventControllerMotion EventControllerMotion // out
+	var _eventControllerMotion *EventControllerMotionClass // out
 
-	_eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerMotion)
+	_eventControllerMotion = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EventControllerMotionClass)
 
 	return _eventControllerMotion
 }
@@ -82,7 +83,7 @@ func (s *EventControllerMotionClass) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 
-	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer((&EventControllerMotion).Native()))
 
 	_cret = C.gtk_event_controller_motion_contains_pointer(_arg0)
 
@@ -100,7 +101,7 @@ func (s *EventControllerMotionClass) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 
-	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer((&EventControllerMotion).Native()))
 
 	_cret = C.gtk_event_controller_motion_is_pointer(_arg0)
 

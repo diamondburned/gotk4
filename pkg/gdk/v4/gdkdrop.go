@@ -40,11 +40,6 @@ func init() {
 type Drop interface {
 	gextras.Objector
 
-	// Finish ends the drag operation after a drop.
-	//
-	// The @action must be a single action selected from the actions available
-	// via [method@Gdk.Drop.get_actions].
-	Finish(action DragAction)
 	// Actions returns the possible actions for this `GdkDrop`.
 	//
 	// If this value contains multiple actions - i.e.
@@ -60,34 +55,19 @@ type Drop interface {
 	// will not change this value anymore once a drop has started.
 	Actions() DragAction
 	// Device returns the `GdkDevice` performing the drop.
-	Device() Device
+	Device() *DeviceClass
 	// Display gets the `GdkDisplay` that @self was created for.
-	Display() Display
+	Display() *DisplayClass
 	// Drag: if this is an in-app drag-and-drop operation, returns the `GdkDrag`
 	// that corresponds to this drop.
 	//
 	// If it is not, nil is returned.
-	Drag() Drag
+	Drag() *DragClass
 	// Formats returns the `GdkContentFormats` that the drop offers the data to
 	// be read in.
 	Formats() *ContentFormats
 	// Surface returns the `GdkSurface` performing the drop.
-	Surface() Surface
-	// Status selects all actions that are potentially supported by the
-	// destination.
-	//
-	// When calling this function, do not restrict the passed in actions to the
-	// ones provided by [method@Gdk.Drop.get_actions]. Those actions may change
-	// in the future, even depending on the actions you provide here.
-	//
-	// The @preferred action is a hint to the drag'n'drop mechanism about which
-	// action to use when multiple actions are possible.
-	//
-	// This function should be called by drag destinations in response to
-	// GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
-	// know the exact actions it supports, it should set any possible actions
-	// first and then later call this function again.
-	Status(actions DragAction, preferred DragAction)
+	Surface() *SurfaceClass
 }
 
 // DropClass implements the Drop interface.
@@ -109,20 +89,6 @@ func marshalDrop(p uintptr) (interface{}, error) {
 	return wrapDrop(obj), nil
 }
 
-// Finish ends the drag operation after a drop.
-//
-// The @action must be a single action selected from the actions available via
-// [method@Gdk.Drop.get_actions].
-func (s *DropClass) Finish(action DragAction) {
-	var _arg0 *C.GdkDrop      // out
-	var _arg1 C.GdkDragAction // out
-
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GdkDragAction(action)
-
-	C.gdk_drop_finish(_arg0, _arg1)
-}
-
 // Actions returns the possible actions for this `GdkDrop`.
 //
 // If this value contains multiple actions - i.e.
@@ -140,45 +106,47 @@ func (s *DropClass) Actions() DragAction {
 	var _arg0 *C.GdkDrop      // out
 	var _cret C.GdkDragAction // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
 
 	_cret = C.gdk_drop_get_actions(_arg0)
 
 	var _dragAction DragAction // out
 
-	_dragAction = DragAction(_cret)
+	_dragAction = (DragAction)(C.GdkDragAction)
 
 	return _dragAction
 }
 
 // Device returns the `GdkDevice` performing the drop.
-func (s *DropClass) Device() Device {
+func (s *DropClass) Device() *DeviceClass {
 	var _arg0 *C.GdkDrop   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
 
 	_cret = C.gdk_drop_get_device(_arg0)
 
-	var _device Device // out
+	var _device *DeviceClass // out
 
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Device)
+	_device = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
 
 	return _device
 }
 
 // Display gets the `GdkDisplay` that @self was created for.
-func (s *DropClass) Display() Display {
+func (s *DropClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
 
 	_cret = C.gdk_drop_get_display(_arg0)
 
-	var _display Display // out
+	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
+	_display = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
 
 	return _display
 }
@@ -187,17 +155,18 @@ func (s *DropClass) Display() Display {
 // that corresponds to this drop.
 //
 // If it is not, nil is returned.
-func (s *DropClass) Drag() Drag {
+func (s *DropClass) Drag() *DragClass {
 	var _arg0 *C.GdkDrop // out
 	var _cret *C.GdkDrag // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
 
 	_cret = C.gdk_drop_get_drag(_arg0)
 
-	var _drag Drag // out
+	var _drag *DragClass // out
 
-	_drag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Drag)
+	_drag = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DragClass)
 
 	return _drag
 }
@@ -208,13 +177,13 @@ func (s *DropClass) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrop           // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
 
 	_cret = C.gdk_drop_get_formats(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(*C.GdkContentFormats))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
@@ -224,42 +193,18 @@ func (s *DropClass) Formats() *ContentFormats {
 }
 
 // Surface returns the `GdkSurface` performing the drop.
-func (s *DropClass) Surface() Surface {
+func (s *DropClass) Surface() *SurfaceClass {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer((&Drop).Native()))
 
 	_cret = C.gdk_drop_get_surface(_arg0)
 
-	var _surface Surface // out
+	var _surface *SurfaceClass // out
 
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Surface)
+	_surface = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SurfaceClass)
 
 	return _surface
-}
-
-// Status selects all actions that are potentially supported by the destination.
-//
-// When calling this function, do not restrict the passed in actions to the ones
-// provided by [method@Gdk.Drop.get_actions]. Those actions may change in the
-// future, even depending on the actions you provide here.
-//
-// The @preferred action is a hint to the drag'n'drop mechanism about which
-// action to use when multiple actions are possible.
-//
-// This function should be called by drag destinations in response to
-// GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
-// know the exact actions it supports, it should set any possible actions first
-// and then later call this function again.
-func (s *DropClass) Status(actions DragAction, preferred DragAction) {
-	var _arg0 *C.GdkDrop      // out
-	var _arg1 C.GdkDragAction // out
-	var _arg2 C.GdkDragAction // out
-
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GdkDragAction(actions)
-	_arg2 = C.GdkDragAction(preferred)
-
-	C.gdk_drop_status(_arg0, _arg1, _arg2)
 }

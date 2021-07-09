@@ -46,22 +46,12 @@ type MountOverrider interface {
 	// CanUnmount checks if @mount can be unmounted.
 	CanUnmount() bool
 	Changed()
-	// Eject ejects a mount. This is an asynchronous operation, and is finished
-	// by calling g_mount_eject_finish() with the @mount and Result data
-	// returned in the @callback.
-	//
-	// Deprecated: since version 2.22.
-	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a mount. If any errors occurred during the
 	// operation, @error will be set to contain the errors and false will be
 	// returned.
 	//
 	// Deprecated: since version 2.22.
 	EjectFinish(result AsyncResult) error
-	// EjectWithOperation ejects a mount. This is an asynchronous operation, and
-	// is finished by calling g_mount_eject_with_operation_finish() with the
-	// @mount and Result data returned in the @callback.
-	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
@@ -69,28 +59,28 @@ type MountOverrider interface {
 	// DefaultLocation gets the default location of @mount. The default location
 	// of the given @mount is a path that reflects the main entry point for the
 	// user (e.g. the home directory, or the root of the volume).
-	DefaultLocation() File
+	DefaultLocation() *FileInterface
 	// Drive gets the drive for the @mount.
 	//
 	// This is a convenience method for getting the #GVolume and then using that
 	// object to get the #GDrive.
-	Drive() Drive
+	Drive() *DriveInterface
 	// Icon gets the icon for @mount.
-	Icon() Icon
+	Icon() *IconInterface
 	// Name gets the name of @mount.
 	Name() string
 	// Root gets the root directory on @mount.
-	Root() File
+	Root() *FileInterface
 	// SortKey gets the sort key for @mount, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for @mount.
-	SymbolicIcon() Icon
+	SymbolicIcon() *IconInterface
 	// UUID gets the UUID for the @mount. The reference is typically based on
 	// the file system UUID for the mount in question and should be considered
 	// an opaque string. Returns nil if there is no UUID available.
 	UUID() string
 	// Volume gets the volume for the @mount.
-	Volume() Volume
+	Volume() *VolumeInterface
 	// GuessContentType tries to guess the type of content stored on @mount.
 	// Returns one or more textual identifiers of well-known content types
 	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
@@ -119,35 +109,16 @@ type MountOverrider interface {
 	// g_mount_guess_content_type() for the asynchronous version.
 	GuessContentTypeSync(forceRescan bool, cancellable Cancellable) ([]string, error)
 	PreUnmount()
-	// Remount remounts a mount. This is an asynchronous operation, and is
-	// finished by calling g_mount_remount_finish() with the @mount and Results
-	// data returned in the @callback.
-	//
-	// Remounting is useful when some setting affecting the operation of the
-	// volume has been changed, as these may need a remount to take affect.
-	// While this is semantically equivalent with unmounting and then remounting
-	// not all backends might need to actually be unmounted.
-	Remount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// RemountFinish finishes remounting a mount. If any errors occurred during
 	// the operation, @error will be set to contain the errors and false will be
 	// returned.
 	RemountFinish(result AsyncResult) error
-	// Unmount unmounts a mount. This is an asynchronous operation, and is
-	// finished by calling g_mount_unmount_finish() with the @mount and Result
-	// data returned in the @callback.
-	//
-	// Deprecated: since version 2.22.
-	Unmount(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// UnmountFinish finishes unmounting a mount. If any errors occurred during
 	// the operation, @error will be set to contain the errors and false will be
 	// returned.
 	//
 	// Deprecated: since version 2.22.
 	UnmountFinish(result AsyncResult) error
-	// UnmountWithOperation unmounts a mount. This is an asynchronous operation,
-	// and is finished by calling g_mount_unmount_with_operation_finish() with
-	// the @mount and Result data returned in the @callback.
-	UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
@@ -180,22 +151,12 @@ type Mount interface {
 	CanEject() bool
 	// CanUnmount checks if @mount can be unmounted.
 	CanUnmount() bool
-	// Eject ejects a mount. This is an asynchronous operation, and is finished
-	// by calling g_mount_eject_finish() with the @mount and Result data
-	// returned in the @callback.
-	//
-	// Deprecated: since version 2.22.
-	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a mount. If any errors occurred during the
 	// operation, @error will be set to contain the errors and false will be
 	// returned.
 	//
 	// Deprecated: since version 2.22.
 	EjectFinish(result AsyncResult) error
-	// EjectWithOperation ejects a mount. This is an asynchronous operation, and
-	// is finished by calling g_mount_eject_with_operation_finish() with the
-	// @mount and Result data returned in the @callback.
-	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
@@ -203,28 +164,28 @@ type Mount interface {
 	// DefaultLocation gets the default location of @mount. The default location
 	// of the given @mount is a path that reflects the main entry point for the
 	// user (e.g. the home directory, or the root of the volume).
-	DefaultLocation() File
+	DefaultLocation() *FileInterface
 	// Drive gets the drive for the @mount.
 	//
 	// This is a convenience method for getting the #GVolume and then using that
 	// object to get the #GDrive.
-	Drive() Drive
+	Drive() *DriveInterface
 	// Icon gets the icon for @mount.
-	Icon() Icon
+	Icon() *IconInterface
 	// Name gets the name of @mount.
 	Name() string
 	// Root gets the root directory on @mount.
-	Root() File
+	Root() *FileInterface
 	// SortKey gets the sort key for @mount, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for @mount.
-	SymbolicIcon() Icon
+	SymbolicIcon() *IconInterface
 	// UUID gets the UUID for the @mount. The reference is typically based on
 	// the file system UUID for the mount in question and should be considered
 	// an opaque string. Returns nil if there is no UUID available.
 	UUID() string
 	// Volume gets the volume for the @mount.
-	Volume() Volume
+	Volume() *VolumeInterface
 	// GuessContentType tries to guess the type of content stored on @mount.
 	// Returns one or more textual identifiers of well-known content types
 	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
@@ -274,15 +235,6 @@ type Mount interface {
 	// manage shadow mounts (and shadows the underlying mount) if the activation
 	// root on a #GVolume is set.
 	IsShadowed() bool
-	// Remount remounts a mount. This is an asynchronous operation, and is
-	// finished by calling g_mount_remount_finish() with the @mount and Results
-	// data returned in the @callback.
-	//
-	// Remounting is useful when some setting affecting the operation of the
-	// volume has been changed, as these may need a remount to take affect.
-	// While this is semantically equivalent with unmounting and then remounting
-	// not all backends might need to actually be unmounted.
-	Remount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// RemountFinish finishes remounting a mount. If any errors occurred during
 	// the operation, @error will be set to contain the errors and false will be
 	// returned.
@@ -292,22 +244,12 @@ type Mount interface {
 	// g_mount_is_shadowed() for more information. The caller will need to emit
 	// the #GMount::changed signal on @mount manually.
 	Shadow()
-	// Unmount unmounts a mount. This is an asynchronous operation, and is
-	// finished by calling g_mount_unmount_finish() with the @mount and Result
-	// data returned in the @callback.
-	//
-	// Deprecated: since version 2.22.
-	Unmount(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// UnmountFinish finishes unmounting a mount. If any errors occurred during
 	// the operation, @error will be set to contain the errors and false will be
 	// returned.
 	//
 	// Deprecated: since version 2.22.
 	UnmountFinish(result AsyncResult) error
-	// UnmountWithOperation unmounts a mount. This is an asynchronous operation,
-	// and is finished by calling g_mount_unmount_with_operation_finish() with
-	// the @mount and Result data returned in the @callback.
-	UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
@@ -343,7 +285,7 @@ func (m *MountInterface) CanEject() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_can_eject(_arg0)
 
@@ -361,7 +303,7 @@ func (m *MountInterface) CanUnmount() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_can_unmount(_arg0)
 
@@ -374,27 +316,6 @@ func (m *MountInterface) CanUnmount() bool {
 	return _ok
 }
 
-// Eject ejects a mount. This is an asynchronous operation, and is finished by
-// calling g_mount_eject_finish() with the @mount and Result data returned in
-// the @callback.
-//
-// Deprecated: since version 2.22.
-func (m *MountInterface) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GMount             // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_mount_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
 // EjectFinish finishes ejecting a mount. If any errors occurred during the
 // operation, @error will be set to contain the errors and false will be
 // returned.
@@ -405,8 +326,8 @@ func (m *MountInterface) EjectFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	C.g_mount_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -417,27 +338,6 @@ func (m *MountInterface) EjectFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// EjectWithOperation ejects a mount. This is an asynchronous operation, and is
-// finished by calling g_mount_eject_with_operation_finish() with the @mount and
-// Result data returned in the @callback.
-func (m *MountInterface) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GMount             // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_mount_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
 // EjectWithOperationFinish finishes ejecting a mount. If any errors occurred
 // during the operation, @error will be set to contain the errors and false will
 // be returned.
@@ -446,8 +346,8 @@ func (m *MountInterface) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	C.g_mount_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -461,17 +361,18 @@ func (m *MountInterface) EjectWithOperationFinish(result AsyncResult) error {
 // DefaultLocation gets the default location of @mount. The default location of
 // the given @mount is a path that reflects the main entry point for the user
 // (e.g. the home directory, or the root of the volume).
-func (m *MountInterface) DefaultLocation() File {
+func (m *MountInterface) DefaultLocation() *FileInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_get_default_location(_arg0)
 
-	var _file File // out
+	var _file *FileInterface // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(File)
+	_file = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileInterface)
 
 	return _file
 }
@@ -480,33 +381,35 @@ func (m *MountInterface) DefaultLocation() File {
 //
 // This is a convenience method for getting the #GVolume and then using that
 // object to get the #GDrive.
-func (m *MountInterface) Drive() Drive {
+func (m *MountInterface) Drive() *DriveInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GDrive // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_get_drive(_arg0)
 
-	var _drive Drive // out
+	var _drive *DriveInterface // out
 
-	_drive = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Drive)
+	_drive = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DriveInterface)
 
 	return _drive
 }
 
 // Icon gets the icon for @mount.
-func (m *MountInterface) Icon() Icon {
+func (m *MountInterface) Icon() *IconInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_get_icon(_arg0)
 
-	var _icon Icon // out
+	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
+	_icon = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
 
 	return _icon
 }
@@ -516,7 +419,7 @@ func (m *MountInterface) Name() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_get_name(_arg0)
 
@@ -529,17 +432,18 @@ func (m *MountInterface) Name() string {
 }
 
 // Root gets the root directory on @mount.
-func (m *MountInterface) Root() File {
+func (m *MountInterface) Root() *FileInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_get_root(_arg0)
 
-	var _file File // out
+	var _file *FileInterface // out
 
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(File)
+	_file = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FileInterface)
 
 	return _file
 }
@@ -549,7 +453,7 @@ func (m *MountInterface) SortKey() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.gchar  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_get_sort_key(_arg0)
 
@@ -561,17 +465,18 @@ func (m *MountInterface) SortKey() string {
 }
 
 // SymbolicIcon gets the symbolic icon for @mount.
-func (m *MountInterface) SymbolicIcon() Icon {
+func (m *MountInterface) SymbolicIcon() *IconInterface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
 
-	var _icon Icon // out
+	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
+	_icon = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
 
 	return _icon
 }
@@ -583,7 +488,7 @@ func (m *MountInterface) UUID() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_get_uuid(_arg0)
 
@@ -596,17 +501,18 @@ func (m *MountInterface) UUID() string {
 }
 
 // Volume gets the volume for the @mount.
-func (m *MountInterface) Volume() Volume {
+func (m *MountInterface) Volume() *VolumeInterface {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_get_volume(_arg0)
 
-	var _volume Volume // out
+	var _volume *VolumeInterface // out
 
-	_volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Volume)
+	_volume = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*VolumeInterface)
 
 	return _volume
 }
@@ -629,11 +535,11 @@ func (m *MountInterface) GuessContentType(forceRescan bool, cancellable Cancella
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -650,8 +556,8 @@ func (m *MountInterface) GuessContentTypeFinish(result AsyncResult) ([]string, e
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
 
@@ -693,11 +599,11 @@ func (m *MountInterface) GuessContentTypeSync(forceRescan bool, cancellable Canc
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_mount_guess_content_type_sync(_arg0, _arg1, _arg2, &_cerr)
 
@@ -747,7 +653,7 @@ func (m *MountInterface) IsShadowed() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	_cret = C.g_mount_is_shadowed(_arg0)
 
@@ -760,32 +666,6 @@ func (m *MountInterface) IsShadowed() bool {
 	return _ok
 }
 
-// Remount remounts a mount. This is an asynchronous operation, and is finished
-// by calling g_mount_remount_finish() with the @mount and Results data returned
-// in the @callback.
-//
-// Remounting is useful when some setting affecting the operation of the volume
-// has been changed, as these may need a remount to take affect. While this is
-// semantically equivalent with unmounting and then remounting not all backends
-// might need to actually be unmounted.
-func (m *MountInterface) Remount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GMount             // out
-	var _arg1 C.GMountMountFlags    // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = C.GMountMountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_mount_remount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
 // RemountFinish finishes remounting a mount. If any errors occurred during the
 // operation, @error will be set to contain the errors and false will be
 // returned.
@@ -794,8 +674,8 @@ func (m *MountInterface) RemountFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	C.g_mount_remount_finish(_arg0, _arg1, &_cerr)
 
@@ -813,30 +693,9 @@ func (m *MountInterface) RemountFinish(result AsyncResult) error {
 func (m *MountInterface) Shadow() {
 	var _arg0 *C.GMount // out
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	C.g_mount_shadow(_arg0)
-}
-
-// Unmount unmounts a mount. This is an asynchronous operation, and is finished
-// by calling g_mount_unmount_finish() with the @mount and Result data returned
-// in the @callback.
-//
-// Deprecated: since version 2.22.
-func (m *MountInterface) Unmount(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GMount             // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GCancellable       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
-
-	C.g_mount_unmount(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // UnmountFinish finishes unmounting a mount. If any errors occurred during the
@@ -849,8 +708,8 @@ func (m *MountInterface) UnmountFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	C.g_mount_unmount_finish(_arg0, _arg1, &_cerr)
 
@@ -861,27 +720,6 @@ func (m *MountInterface) UnmountFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// UnmountWithOperation unmounts a mount. This is an asynchronous operation, and
-// is finished by calling g_mount_unmount_with_operation_finish() with the
-// @mount and Result data returned in the @callback.
-func (m *MountInterface) UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GMount             // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg3 *C.GCancellable       // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
-
-	C.g_mount_unmount_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
 // UnmountWithOperationFinish finishes unmounting a mount. If any errors
 // occurred during the operation, @error will be set to contain the errors and
 // false will be returned.
@@ -890,8 +728,8 @@ func (m *MountInterface) UnmountWithOperationFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	C.g_mount_unmount_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -909,7 +747,7 @@ func (m *MountInterface) UnmountWithOperationFinish(result AsyncResult) error {
 func (m *MountInterface) Unshadow() {
 	var _arg0 *C.GMount // out
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer((&Mount).Native()))
 
 	C.g_mount_unshadow(_arg0)
 }

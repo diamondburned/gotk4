@@ -111,17 +111,18 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 
 // NewContentProviderForValue: create a content provider that provides the given
 // @value.
-func NewContentProviderForValue(value externglib.Value) ContentProvider {
+func NewContentProviderForValue(value externglib.Value) *ContentProviderClass {
 	var _arg1 *C.GValue             // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
 
 	_cret = C.gdk_content_provider_new_for_value(_arg1)
 
-	var _contentProvider ContentProvider // out
+	var _contentProvider *ContentProviderClass // out
 
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ContentProvider)
+	_contentProvider = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ContentProviderClass)
 
 	return _contentProvider
 }
@@ -138,7 +139,7 @@ func NewContentProviderForValue(value externglib.Value) ContentProvider {
 // a call such as “`c gdk_content_provider_new_union ((GdkContentProvider *[2])
 // { gdk_content_provider_new_typed (G_TYPE_FILE, file),
 // gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture) }, 2); “`
-func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
+func NewContentProviderUnion(providers []ContentProvider) *ContentProviderClass {
 	var _arg1 **C.GdkContentProvider
 	var _arg2 C.gsize
 	var _cret *C.GdkContentProvider // in
@@ -148,15 +149,16 @@ func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 	{
 		out := unsafe.Slice(_arg1, len(providers))
 		for i := range providers {
-			out[i] = (*C.GdkContentProvider)(unsafe.Pointer(providers[i].Native()))
+			out[i] = (*C.GdkContentProvider)(unsafe.Pointer((&ContentProvider).Native()))
 		}
 	}
 
 	_cret = C.gdk_content_provider_new_union(_arg1, _arg2)
 
-	var _contentProvider ContentProvider // out
+	var _contentProvider *ContentProviderClass // out
 
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ContentProvider)
+	_contentProvider = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ContentProviderClass)
 
 	return _contentProvider
 }
@@ -165,7 +167,7 @@ func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 func (p *ContentProviderClass) ContentChanged() {
 	var _arg0 *C.GdkContentProvider // out
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer((&ContentProvider).Native()))
 
 	C.gdk_content_provider_content_changed(_arg0)
 }
@@ -182,8 +184,8 @@ func (p *ContentProviderClass) Value(value externglib.Value) error {
 	var _arg1 *C.GValue             // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer((&ContentProvider).Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
 
 	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
 
@@ -200,13 +202,13 @@ func (p *ContentProviderClass) RefFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer((&ContentProvider).Native()))
 
 	_cret = C.gdk_content_provider_ref_formats(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(*C.GdkContentFormats))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
@@ -226,13 +228,13 @@ func (p *ContentProviderClass) RefStorableFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer((&ContentProvider).Native()))
 
 	_cret = C.gdk_content_provider_ref_storable_formats(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(unsafe.Pointer(*C.GdkContentFormats))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))

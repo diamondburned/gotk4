@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,7 +32,7 @@ type ATContext interface {
 	gextras.Objector
 
 	// Accessible retrieves the `GtkAccessible` using this context.
-	Accessible() Accessible
+	Accessible() *AccessibleInterface
 	// AccessibleRole retrieves the accessible role of this context.
 	AccessibleRole() AccessibleRole
 }
@@ -57,42 +56,19 @@ func marshalATContext(p uintptr) (interface{}, error) {
 	return wrapATContext(obj), nil
 }
 
-// NewATContextCreate creates a new `GtkATContext` instance for the given
-// accessible role, accessible instance, and display connection.
-//
-// The `GtkATContext` implementation being instantiated will depend on the
-// platform.
-func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, display gdk.Display) ATContext {
-	var _arg1 C.GtkAccessibleRole // out
-	var _arg2 *C.GtkAccessible    // out
-	var _arg3 *C.GdkDisplay       // out
-	var _cret *C.GtkATContext     // in
-
-	_arg1 = C.GtkAccessibleRole(accessibleRole)
-	_arg2 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg3 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-
-	_cret = C.gtk_at_context_create(_arg1, _arg2, _arg3)
-
-	var _atContext ATContext // out
-
-	_atContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ATContext)
-
-	return _atContext
-}
-
 // Accessible retrieves the `GtkAccessible` using this context.
-func (s *ATContextClass) Accessible() Accessible {
+func (s *ATContextClass) Accessible() *AccessibleInterface {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
 
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer((&ATContext).Native()))
 
 	_cret = C.gtk_at_context_get_accessible(_arg0)
 
-	var _accessible Accessible // out
+	var _accessible *AccessibleInterface // out
 
-	_accessible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Accessible)
+	_accessible = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*AccessibleInterface)
 
 	return _accessible
 }
@@ -102,13 +78,13 @@ func (s *ATContextClass) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkATContext     // out
 	var _cret C.GtkAccessibleRole // in
 
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer((&ATContext).Native()))
 
 	_cret = C.gtk_at_context_get_accessible_role(_arg0)
 
 	var _accessibleRole AccessibleRole // out
 
-	_accessibleRole = AccessibleRole(_cret)
+	_accessibleRole = (AccessibleRole)(C.GtkAccessibleRole)
 
 	return _accessibleRole
 }

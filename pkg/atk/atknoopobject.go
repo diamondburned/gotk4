@@ -108,17 +108,18 @@ func marshalNoOpObject(p uintptr) (interface{}, error) {
 
 // NewNoOpObject provides a default (non-functioning stub) Object. Application
 // maintainers should not use this method.
-func NewNoOpObject(obj gextras.Objector) NoOpObject {
+func NewNoOpObject(obj gextras.Objector) *NoOpObjectClass {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&gextras.Objector).Native()))
 
 	_cret = C.atk_no_op_object_new(_arg1)
 
-	var _noOpObject NoOpObject // out
+	var _noOpObject *NoOpObjectClass // out
 
-	_noOpObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NoOpObject)
+	_noOpObject = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NoOpObjectClass)
 
 	return _noOpObject
 }

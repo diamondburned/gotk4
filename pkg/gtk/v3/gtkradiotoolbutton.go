@@ -67,7 +67,6 @@ func wrapRadioToolButton(obj *externglib.Object) RadioToolButton {
 						ContainerClass: ContainerClass{
 							Object: obj,
 							WidgetClass: WidgetClass{
-								Object:           obj,
 								InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 								BuildableInterface: BuildableInterface{
 									Object: obj,
@@ -90,7 +89,6 @@ func wrapRadioToolButton(obj *externglib.Object) RadioToolButton {
 				},
 				ActionableInterface: ActionableInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -106,7 +104,6 @@ func wrapRadioToolButton(obj *externglib.Object) RadioToolButton {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -122,7 +119,6 @@ func wrapRadioToolButton(obj *externglib.Object) RadioToolButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -146,17 +142,18 @@ func marshalRadioToolButton(p uintptr) (interface{}, error) {
 
 // NewRadioToolButtonFromWidget creates a new RadioToolButton adding it to the
 // same group as @gruup
-func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
+func NewRadioToolButtonFromWidget(group RadioToolButton) *RadioToolButtonClass {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _cret *C.GtkToolItem        // in
 
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((&RadioToolButton).Native()))
 
 	_cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
 
-	var _radioToolButton RadioToolButton // out
+	var _radioToolButton *RadioToolButtonClass // out
 
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioToolButton)
+	_radioToolButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RadioToolButtonClass)
 
 	return _radioToolButton
 }
@@ -166,20 +163,21 @@ func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
 // label from the stock item indicated by @stock_id.
 //
 // Deprecated: since version 3.10.
-func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string) RadioToolButton {
+func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string) *RadioToolButtonClass {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _arg2 *C.gchar              // out
 	var _cret *C.GtkToolItem        // in
 
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((&RadioToolButton).Native()))
 	_arg2 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_tool_button_new_with_stock_from_widget(_arg1, _arg2)
 
-	var _radioToolButton RadioToolButton // out
+	var _radioToolButton *RadioToolButtonClass // out
 
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioToolButton)
+	_radioToolButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RadioToolButtonClass)
 
 	return _radioToolButton
 }

@@ -116,7 +116,7 @@ func (s *IconPaintableClass) IconName() string {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer((&IconPaintable).Native()))
 
 	_cret = C.gtk_icon_paintable_get_icon_name(_arg0)
 
@@ -138,7 +138,7 @@ func (s *IconPaintableClass) IsSymbolic() bool {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer((&IconPaintable).Native()))
 
 	_cret = C.gtk_icon_paintable_is_symbolic(_arg0)
 
@@ -193,7 +193,7 @@ type IconTheme interface {
 	AddSearchPath(path string)
 	// Display returns the display that the `GtkIconTheme` object was created
 	// for.
-	Display() gdk.Display
+	Display() *gdk.DisplayClass
 	// IconNames lists the names of icons in the current icon theme.
 	IconNames() []string
 	// IconSizes returns an array of integers describing the sizes at which the
@@ -217,23 +217,6 @@ type IconTheme interface {
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
-	// LookupIcon looks up a named icon for a desired size and window scale,
-	// returning a `GtkIconPaintable`.
-	//
-	// The icon can then be rendered by using it as a `GdkPaintable`, or you can
-	// get information such as the filename and size.
-	//
-	// If the available @icon_name is not available and @fallbacks are provided,
-	// they will be tried in order.
-	//
-	// If no matching icon is found, then a paintable that renders the "missing
-	// icon" icon is returned. If you need to do something else for missing
-	// icons you need to use [method@Gtk.IconTheme.has_icon].
-	//
-	// Note that you probably want to listen for icon theme changes and update
-	// the icon. This is usually done by overriding the
-	// GtkWidgetClass.css-changed() function.
-	LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable
 	// SetSearchPath sets the search path for the icon theme object.
 	//
 	// When looking for an icon theme, GTK will search for a subdirectory of one
@@ -281,14 +264,15 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 // Icon theme objects are used to lookup up an icon by name in a particular icon
 // theme. Usually, you’ll want to use [func@Gtk.IconTheme.get_for_display]
 // rather than creating a new icon theme object for scratch.
-func NewIconTheme() IconTheme {
+func NewIconTheme() *IconThemeClass {
 	var _cret *C.GtkIconTheme // in
 
 	_cret = C.gtk_icon_theme_new()
 
-	var _iconTheme IconTheme // out
+	var _iconTheme *IconThemeClass // out
 
-	_iconTheme = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconTheme)
+	_iconTheme = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconThemeClass)
 
 	return _iconTheme
 }
@@ -304,7 +288,7 @@ func (s *IconThemeClass) AddResourcePath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -318,7 +302,7 @@ func (s *IconThemeClass) AddSearchPath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -326,17 +310,18 @@ func (s *IconThemeClass) AddSearchPath(path string) {
 }
 
 // Display returns the display that the `GtkIconTheme` object was created for.
-func (s *IconThemeClass) Display() gdk.Display {
+func (s *IconThemeClass) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.GdkDisplay   // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 
 	_cret = C.gtk_icon_theme_get_display(_arg0)
 
-	var _display gdk.Display // out
+	var _display *gdk.DisplayClass // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Display)
+	_display = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DisplayClass)
 
 	return _display
 }
@@ -346,7 +331,7 @@ func (s *IconThemeClass) IconNames() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 
 	_cret = C.gtk_icon_theme_get_icon_names(_arg0)
 
@@ -380,7 +365,7 @@ func (s *IconThemeClass) IconSizes(iconName string) []int {
 	var _arg1 *C.char         // out
 	var _cret *C.int
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -412,7 +397,7 @@ func (s *IconThemeClass) ResourcePath() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 
 	_cret = C.gtk_icon_theme_get_resource_path(_arg0)
 
@@ -443,7 +428,7 @@ func (s *IconThemeClass) SearchPath() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 
 	_cret = C.gtk_icon_theme_get_search_path(_arg0)
 
@@ -474,7 +459,7 @@ func (s *IconThemeClass) ThemeName() string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 
 	_cret = C.gtk_icon_theme_get_theme_name(_arg0)
 
@@ -492,7 +477,7 @@ func (s *IconThemeClass) HasIcon(iconName string) bool {
 	var _arg1 *C.char         // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -505,58 +490,6 @@ func (s *IconThemeClass) HasIcon(iconName string) bool {
 	}
 
 	return _ok
-}
-
-// LookupIcon looks up a named icon for a desired size and window scale,
-// returning a `GtkIconPaintable`.
-//
-// The icon can then be rendered by using it as a `GdkPaintable`, or you can get
-// information such as the filename and size.
-//
-// If the available @icon_name is not available and @fallbacks are provided,
-// they will be tried in order.
-//
-// If no matching icon is found, then a paintable that renders the "missing
-// icon" icon is returned. If you need to do something else for missing icons
-// you need to use [method@Gtk.IconTheme.has_icon].
-//
-// Note that you probably want to listen for icon theme changes and update the
-// icon. This is usually done by overriding the GtkWidgetClass.css-changed()
-// function.
-func (s *IconThemeClass) LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable {
-	var _arg0 *C.GtkIconTheme // out
-	var _arg1 *C.char         // out
-	var _arg2 **C.char
-	var _arg3 C.int                // out
-	var _arg4 C.int                // out
-	var _arg5 C.GtkTextDirection   // out
-	var _arg6 C.GtkIconLookupFlags // out
-	var _cret *C.GtkIconPaintable  // in
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.char)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.char)(C.malloc(C.ulong(len(fallbacks)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice(_arg2, len(fallbacks))
-		for i := range fallbacks {
-			out[i] = (*C.char)(C.CString(fallbacks[i]))
-			defer C.free(unsafe.Pointer(out[i]))
-		}
-	}
-	_arg3 = C.int(size)
-	_arg4 = C.int(scale)
-	_arg5 = C.GtkTextDirection(direction)
-	_arg6 = C.GtkIconLookupFlags(flags)
-
-	_cret = C.gtk_icon_theme_lookup_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
-	var _iconPaintable IconPaintable // out
-
-	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconPaintable)
-
-	return _iconPaintable
 }
 
 // SetSearchPath sets the search path for the icon theme object.
@@ -577,7 +510,7 @@ func (s *IconThemeClass) SetSearchPath(path []string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 **C.char
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(path)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
@@ -600,7 +533,7 @@ func (s *IconThemeClass) SetThemeName(themeName string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer((&IconTheme).Native()))
 	_arg1 = (*C.char)(C.CString(themeName))
 	defer C.free(unsafe.Pointer(_arg1))
 

@@ -95,13 +95,13 @@ type MessageDialog interface {
 	// Image gets the dialog’s image.
 	//
 	// Deprecated: since version 3.12.
-	Image() Widget
+	Image() *WidgetClass
 	// MessageArea returns the message area of the dialog. This is the box where
 	// the dialog’s primary and secondary labels are packed. You can add your
 	// own extra content to that box and it will appear below those labels. See
 	// gtk_dialog_get_content_area() for the corresponding function in the
 	// parent Dialog.
-	MessageArea() Widget
+	MessageArea() *WidgetClass
 	// SetImage sets the dialog’s image to @image.
 	//
 	// Deprecated: since version 3.12.
@@ -132,7 +132,6 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							BuildableInterface: BuildableInterface{
 								Object: obj,
@@ -169,17 +168,18 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 // Image gets the dialog’s image.
 //
 // Deprecated: since version 3.12.
-func (d *MessageDialogClass) Image() Widget {
+func (d *MessageDialogClass) Image() *WidgetClass {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
 
 	_cret = C.gtk_message_dialog_get_image(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -189,17 +189,18 @@ func (d *MessageDialogClass) Image() Widget {
 // content to that box and it will appear below those labels. See
 // gtk_dialog_get_content_area() for the corresponding function in the parent
 // Dialog.
-func (m *MessageDialogClass) MessageArea() Widget {
+func (m *MessageDialogClass) MessageArea() *WidgetClass {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -211,8 +212,8 @@ func (d *MessageDialogClass) SetImage(image Widget) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_message_dialog_set_image(_arg0, _arg1)
 }
@@ -223,7 +224,7 @@ func (m *MessageDialogClass) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer((&MessageDialog).Native()))
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 

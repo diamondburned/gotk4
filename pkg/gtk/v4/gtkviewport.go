@@ -44,7 +44,7 @@ type Viewport interface {
 	gextras.Objector
 
 	// Child gets the child widget of @viewport.
-	Child() Widget
+	Child() *WidgetClass
 	// ScrollToFocus gets whether the viewport is scrolling to keep the focused
 	// child in view.
 	ScrollToFocus() bool
@@ -71,7 +71,6 @@ func wrapViewport(obj *externglib.Object) Viewport {
 	return &ViewportClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -108,35 +107,37 @@ func marshalViewport(p uintptr) (interface{}, error) {
 //
 // The new viewport uses the given adjustments, or default adjustments if none
 // are given.
-func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
+func NewViewport(hadjustment Adjustment, vadjustment Adjustment) *ViewportClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
-	var _viewport Viewport // out
+	var _viewport *ViewportClass // out
 
-	_viewport = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Viewport)
+	_viewport = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ViewportClass)
 
 	return _viewport
 }
 
 // Child gets the child widget of @viewport.
-func (v *ViewportClass) Child() Widget {
+func (v *ViewportClass) Child() *WidgetClass {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer((&Viewport).Native()))
 
 	_cret = C.gtk_viewport_get_child(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -147,7 +148,7 @@ func (v *ViewportClass) ScrollToFocus() bool {
 	var _arg0 *C.GtkViewport // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer((&Viewport).Native()))
 
 	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
 
@@ -165,8 +166,8 @@ func (v *ViewportClass) SetChild(child Widget) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer((&Viewport).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_viewport_set_child(_arg0, _arg1)
 }
@@ -177,7 +178,7 @@ func (v *ViewportClass) SetScrollToFocus(scrollToFocus bool) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer((&Viewport).Native()))
 	if scrollToFocus {
 		_arg1 = C.TRUE
 	}

@@ -28,7 +28,7 @@ func init() {
 // yet, so the interface currently has no use.
 type HyperlinkImplOverrider interface {
 	// Hyperlink gets the hyperlink associated with this object.
-	Hyperlink() Hyperlink
+	Hyperlink() *HyperlinkClass
 }
 
 // HyperlinkImpl allows AtkObjects to refer to their associated AtkHyperlink
@@ -59,7 +59,7 @@ type HyperlinkImpl interface {
 	gextras.Objector
 
 	// Hyperlink gets the hyperlink associated with this object.
-	Hyperlink() Hyperlink
+	Hyperlink() *HyperlinkClass
 }
 
 // HyperlinkImplInterface implements the HyperlinkImpl interface.
@@ -82,17 +82,18 @@ func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 }
 
 // Hyperlink gets the hyperlink associated with this object.
-func (i *HyperlinkImplInterface) Hyperlink() Hyperlink {
+func (i *HyperlinkImplInterface) Hyperlink() *HyperlinkClass {
 	var _arg0 *C.AtkHyperlinkImpl // out
 	var _cret *C.AtkHyperlink     // in
 
-	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer((&HyperlinkImpl).Native()))
 
 	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
 
-	var _hyperlink Hyperlink // out
+	var _hyperlink *HyperlinkClass // out
 
-	_hyperlink = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Hyperlink)
+	_hyperlink = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*HyperlinkClass)
 
 	return _hyperlink
 }

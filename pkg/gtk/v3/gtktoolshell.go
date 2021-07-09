@@ -58,7 +58,7 @@ type ToolShellOverrider interface {
 	// TextSizeGroup retrieves the current text size group for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_text_size_group() instead.
-	TextSizeGroup() SizeGroup
+	TextSizeGroup() *SizeGroupClass
 	// RebuildMenu: calling this function signals the tool shell that the
 	// overflow menu item for tool items have changed. If there is an overflow
 	// menu and if it is visible when this function it called, the menu will be
@@ -105,7 +105,7 @@ type ToolShell interface {
 	// TextSizeGroup retrieves the current text size group for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_text_size_group() instead.
-	TextSizeGroup() SizeGroup
+	TextSizeGroup() *SizeGroupClass
 	// RebuildMenu: calling this function signals the tool shell that the
 	// overflow menu item for tool items have changed. If there is an overflow
 	// menu and if it is visible when this function it called, the menu will be
@@ -126,7 +126,6 @@ var _ ToolShell = (*ToolShellInterface)(nil)
 func wrapToolShell(obj *externglib.Object) ToolShell {
 	return &ToolShellInterface{
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			BuildableInterface: BuildableInterface{
 				Object: obj,
@@ -148,13 +147,13 @@ func (s *ToolShellInterface) EllipsizeMode() pango.EllipsizeMode {
 	var _arg0 *C.GtkToolShell      // out
 	var _cret C.PangoEllipsizeMode // in
 
-	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer((&ToolShell).Native()))
 
 	_cret = C.gtk_tool_shell_get_ellipsize_mode(_arg0)
 
 	var _ellipsizeMode pango.EllipsizeMode // out
 
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
+	_ellipsizeMode = (pango.EllipsizeMode)(C.PangoEllipsizeMode)
 
 	return _ellipsizeMode
 }
@@ -165,7 +164,7 @@ func (s *ToolShellInterface) IconSize() int {
 	var _arg0 *C.GtkToolShell // out
 	var _cret C.GtkIconSize   // in
 
-	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer((&ToolShell).Native()))
 
 	_cret = C.gtk_tool_shell_get_icon_size(_arg0)
 
@@ -183,13 +182,13 @@ func (s *ToolShellInterface) Orientation() Orientation {
 	var _arg0 *C.GtkToolShell  // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer((&ToolShell).Native()))
 
 	_cret = C.gtk_tool_shell_get_orientation(_arg0)
 
 	var _orientation Orientation // out
 
-	_orientation = Orientation(_cret)
+	_orientation = (Orientation)(C.GtkOrientation)
 
 	return _orientation
 }
@@ -201,13 +200,13 @@ func (s *ToolShellInterface) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolShell  // out
 	var _cret C.GtkReliefStyle // in
 
-	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer((&ToolShell).Native()))
 
 	_cret = C.gtk_tool_shell_get_relief_style(_arg0)
 
 	var _reliefStyle ReliefStyle // out
 
-	_reliefStyle = ReliefStyle(_cret)
+	_reliefStyle = (ReliefStyle)(C.GtkReliefStyle)
 
 	return _reliefStyle
 }
@@ -219,13 +218,13 @@ func (s *ToolShellInterface) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolShell   // out
 	var _cret C.GtkToolbarStyle // in
 
-	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer((&ToolShell).Native()))
 
 	_cret = C.gtk_tool_shell_get_style(_arg0)
 
 	var _toolbarStyle ToolbarStyle // out
 
-	_toolbarStyle = ToolbarStyle(_cret)
+	_toolbarStyle = (ToolbarStyle)(C.GtkToolbarStyle)
 
 	return _toolbarStyle
 }
@@ -237,7 +236,7 @@ func (s *ToolShellInterface) TextAlignment() float32 {
 	var _arg0 *C.GtkToolShell // out
 	var _cret C.gfloat        // in
 
-	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer((&ToolShell).Native()))
 
 	_cret = C.gtk_tool_shell_get_text_alignment(_arg0)
 
@@ -255,13 +254,13 @@ func (s *ToolShellInterface) TextOrientation() Orientation {
 	var _arg0 *C.GtkToolShell  // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer((&ToolShell).Native()))
 
 	_cret = C.gtk_tool_shell_get_text_orientation(_arg0)
 
 	var _orientation Orientation // out
 
-	_orientation = Orientation(_cret)
+	_orientation = (Orientation)(C.GtkOrientation)
 
 	return _orientation
 }
@@ -269,17 +268,18 @@ func (s *ToolShellInterface) TextOrientation() Orientation {
 // TextSizeGroup retrieves the current text size group for the tool shell. Tool
 // items must not call this function directly, but rely on
 // gtk_tool_item_get_text_size_group() instead.
-func (s *ToolShellInterface) TextSizeGroup() SizeGroup {
+func (s *ToolShellInterface) TextSizeGroup() *SizeGroupClass {
 	var _arg0 *C.GtkToolShell // out
 	var _cret *C.GtkSizeGroup // in
 
-	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer((&ToolShell).Native()))
 
 	_cret = C.gtk_tool_shell_get_text_size_group(_arg0)
 
-	var _sizeGroup SizeGroup // out
+	var _sizeGroup *SizeGroupClass // out
 
-	_sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SizeGroup)
+	_sizeGroup = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SizeGroupClass)
 
 	return _sizeGroup
 }
@@ -293,7 +293,7 @@ func (s *ToolShellInterface) TextSizeGroup() SizeGroup {
 func (s *ToolShellInterface) RebuildMenu() {
 	var _arg0 *C.GtkToolShell // out
 
-	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer((&ToolShell).Native()))
 
 	C.gtk_tool_shell_rebuild_menu(_arg0)
 }

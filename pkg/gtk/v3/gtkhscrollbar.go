@@ -55,7 +55,6 @@ func wrapHScrollbar(obj *externglib.Object) HScrollbar {
 			RangeClass: RangeClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -93,17 +92,18 @@ func marshalHScrollbar(p uintptr) (interface{}, error) {
 // NewHScrollbar creates a new horizontal scrollbar.
 //
 // Deprecated: since version 3.2.
-func NewHScrollbar(adjustment Adjustment) HScrollbar {
+func NewHScrollbar(adjustment Adjustment) *HScrollbarClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
 
 	_cret = C.gtk_hscrollbar_new(_arg1)
 
-	var _hScrollbar HScrollbar // out
+	var _hScrollbar *HScrollbarClass // out
 
-	_hScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HScrollbar)
+	_hScrollbar = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HScrollbarClass)
 
 	return _hScrollbar
 }

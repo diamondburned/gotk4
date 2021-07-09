@@ -27,7 +27,7 @@ func X11GetParentRelativePattern() *cairo.Pattern {
 
 	var _pattern *cairo.Pattern // out
 
-	_pattern = (*cairo.Pattern)(unsafe.Pointer(_cret))
+	_pattern = (*cairo.Pattern)(unsafe.Pointer(*C.cairo_pattern_t))
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
 		C.free(unsafe.Pointer(v))
 	})

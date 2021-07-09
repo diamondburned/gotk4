@@ -33,14 +33,8 @@ type LayoutManagerOverrider interface {
 	Allocate(widget Widget, width int, height int, baseline int)
 	// CreateLayoutChild: create a LayoutChild instance for the given @for_child
 	// widget.
-	CreateLayoutChild(widget Widget, forChild Widget) LayoutChild
+	CreateLayoutChild(widget Widget, forChild Widget) *LayoutChildClass
 	RequestMode(widget Widget) SizeRequestMode
-	// Measure measures the size of the @widget using @manager, for the given
-	// @orientation and size.
-	//
-	// See the [class@Gtk.Widget] documentation on layout management for more
-	// details.
-	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 	Root()
 	Unroot()
 }
@@ -100,22 +94,16 @@ type LayoutManager interface {
 	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
 	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
 	// the given `GtkLayoutManager`.
-	LayoutChild(child Widget) LayoutChild
+	LayoutChild(child Widget) *LayoutChildClass
 	// RequestMode retrieves the request mode of @manager.
 	RequestMode() SizeRequestMode
 	// Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
-	Widget() Widget
+	Widget() *WidgetClass
 	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
 	//
 	// This function should be called by subclasses of `GtkLayoutManager` in
 	// response to changes to their layout management policies.
 	LayoutChanged()
-	// Measure measures the size of the @widget using @manager, for the given
-	// @orientation and size.
-	//
-	// See the [class@Gtk.Widget] documentation on layout management for more
-	// details.
-	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
 // LayoutManagerClass implements the LayoutManager interface.
@@ -147,8 +135,8 @@ func (m *LayoutManagerClass) Allocate(widget Widget, width int, height int, base
 	var _arg3 C.int               // out
 	var _arg4 C.int               // out
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&LayoutManager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg2 = C.int(width)
 	_arg3 = C.int(height)
 	_arg4 = C.int(baseline)
@@ -164,19 +152,20 @@ func (m *LayoutManagerClass) Allocate(widget Widget, width int, height int, base
 // The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
 // guaranteed to exist as long as @child is a child of the `GtkWidget` using the
 // given `GtkLayoutManager`.
-func (m *LayoutManagerClass) LayoutChild(child Widget) LayoutChild {
+func (m *LayoutManagerClass) LayoutChild(child Widget) *LayoutChildClass {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.GtkLayoutChild   // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&LayoutManager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_layout_manager_get_layout_child(_arg0, _arg1)
 
-	var _layoutChild LayoutChild // out
+	var _layoutChild *LayoutChildClass // out
 
-	_layoutChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LayoutChild)
+	_layoutChild = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*LayoutChildClass)
 
 	return _layoutChild
 }
@@ -186,29 +175,30 @@ func (m *LayoutManagerClass) RequestMode() SizeRequestMode {
 	var _arg0 *C.GtkLayoutManager  // out
 	var _cret C.GtkSizeRequestMode // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&LayoutManager).Native()))
 
 	_cret = C.gtk_layout_manager_get_request_mode(_arg0)
 
 	var _sizeRequestMode SizeRequestMode // out
 
-	_sizeRequestMode = SizeRequestMode(_cret)
+	_sizeRequestMode = (SizeRequestMode)(C.GtkSizeRequestMode)
 
 	return _sizeRequestMode
 }
 
 // Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
-func (m *LayoutManagerClass) Widget() Widget {
+func (m *LayoutManagerClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkLayoutManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&LayoutManager).Native()))
 
 	_cret = C.gtk_layout_manager_get_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -220,42 +210,7 @@ func (m *LayoutManagerClass) Widget() Widget {
 func (m *LayoutManagerClass) LayoutChanged() {
 	var _arg0 *C.GtkLayoutManager // out
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer((&LayoutManager).Native()))
 
 	C.gtk_layout_manager_layout_changed(_arg0)
-}
-
-// Measure measures the size of the @widget using @manager, for the given
-// @orientation and size.
-//
-// See the [class@Gtk.Widget] documentation on layout management for more
-// details.
-func (m *LayoutManagerClass) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
-	var _arg0 *C.GtkLayoutManager // out
-	var _arg1 *C.GtkWidget        // out
-	var _arg2 C.GtkOrientation    // out
-	var _arg3 C.int               // out
-	var _arg4 C.int               // in
-	var _arg5 C.int               // in
-	var _arg6 C.int               // in
-	var _arg7 C.int               // in
-
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = C.GtkOrientation(orientation)
-	_arg3 = C.int(forSize)
-
-	C.gtk_layout_manager_measure(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
-
-	var _minimum int         // out
-	var _natural int         // out
-	var _minimumBaseline int // out
-	var _naturalBaseline int // out
-
-	_minimum = int(_arg4)
-	_natural = int(_arg5)
-	_minimumBaseline = int(_arg6)
-	_naturalBaseline = int(_arg7)
-
-	return _minimum, _natural, _minimumBaseline, _naturalBaseline
 }

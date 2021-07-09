@@ -486,7 +486,7 @@ func marshalRole(p uintptr) (interface{}, error) {
 
 // Function is a function definition used for padding which has been added to
 // class and interface structures to allow for expansion in the future.
-type Function func() (ok bool)
+type Function func(userData interface{}) (ok bool)
 
 //export gotk4_Function
 func gotk4_Function(arg0 C.gpointer) (cret C.gboolean) {
@@ -495,8 +495,12 @@ func gotk4_Function(arg0 C.gpointer) (cret C.gboolean) {
 		panic(`callback not found`)
 	}
 
+	var userData interface{} // out
+
+	userData = box.Get(uintptr(arg0))
+
 	fn := v.(Function)
-	ok := fn()
+	ok := fn(userData)
 
 	if ok {
 		cret = C.TRUE
@@ -571,7 +575,7 @@ type ObjectOverrider interface {
 	//
 	// If you are only interested on the parent assigned with
 	// atk_object_set_parent(), use atk_object_peek_parent().
-	Parent() Object
+	Parent() *ObjectClass
 	// Role gets the role of the accessible.
 	Role() Role
 	// Initialize: this function is called when implementing subclasses of
@@ -580,10 +584,10 @@ type ObjectOverrider interface {
 	// used to create an instance of a subclass of Object
 	Initialize(data interface{})
 	// RefRelationSet gets the RelationSet associated with the object.
-	RefRelationSet() RelationSet
+	RefRelationSet() *RelationSetClass
 	// RefStateSet gets a reference to the state set of the accessible; the
 	// caller must unreference it when it is no longer needed.
-	RefStateSet() StateSet
+	RefStateSet() *StateSetClass
 	// RemovePropertyChangeHandler removes a property change handler.
 	//
 	// Deprecated: since version 2.12.
@@ -601,8 +605,6 @@ type ObjectOverrider interface {
 	// SetParent sets the accessible parent of the accessible. @parent can be
 	// NULL.
 	SetParent(parent Object)
-	// SetRole sets the role of the accessible.
-	SetRole(role Role)
 	StateChange(name string, stateSet bool)
 	VisibleDataChanged()
 }
@@ -626,9 +628,6 @@ type ObjectOverrider interface {
 type Object interface {
 	gextras.Objector
 
-	// AddRelationship adds a relationship of the specified type with the
-	// specified target.
-	AddRelationship(relationship RelationType, target Object) bool
 	// AccessibleID gets the accessible id of the accessible.
 	AccessibleID() string
 	// Description gets the accessible description of the accessible.
@@ -661,7 +660,7 @@ type Object interface {
 	//
 	// If you are only interested on the parent assigned with
 	// atk_object_set_parent(), use atk_object_peek_parent().
-	Parent() Object
+	Parent() *ObjectClass
 	// Role gets the role of the accessible.
 	Role() Role
 	// Initialize: this function is called when implementing subclasses of
@@ -676,23 +675,20 @@ type Object interface {
 	// This method is intended as an utility for ATK implementors, and not to be
 	// exposed to accessible tools. See atk_object_get_parent() for further
 	// reference.
-	PeekParent() Object
+	PeekParent() *ObjectClass
 	// RefAccessibleChild gets a reference to the specified accessible child of
 	// the object. The accessible children are 0-based so the first accessible
 	// child is at index 0, the second at index 1 and so on.
-	RefAccessibleChild(i int) Object
+	RefAccessibleChild(i int) *ObjectClass
 	// RefRelationSet gets the RelationSet associated with the object.
-	RefRelationSet() RelationSet
+	RefRelationSet() *RelationSetClass
 	// RefStateSet gets a reference to the state set of the accessible; the
 	// caller must unreference it when it is no longer needed.
-	RefStateSet() StateSet
+	RefStateSet() *StateSetClass
 	// RemovePropertyChangeHandler removes a property change handler.
 	//
 	// Deprecated: since version 2.12.
 	RemovePropertyChangeHandler(handlerId uint)
-	// RemoveRelationship removes a relationship of the specified type with the
-	// specified target.
-	RemoveRelationship(relationship RelationType, target Object) bool
 	// SetAccessibleID sets the accessible ID of the accessible. This is not
 	// meant to be presented to the user, but to be an ID which is stable over
 	// application development. Typically, this is the gtkbuilder ID. Such an ID
@@ -712,8 +708,6 @@ type Object interface {
 	// SetParent sets the accessible parent of the accessible. @parent can be
 	// NULL.
 	SetParent(parent Object)
-	// SetRole sets the role of the accessible.
-	SetRole(role Role)
 }
 
 // ObjectClass implements the Object interface.
@@ -735,35 +729,12 @@ func marshalObject(p uintptr) (interface{}, error) {
 	return wrapObject(obj), nil
 }
 
-// AddRelationship adds a relationship of the specified type with the specified
-// target.
-func (o *ObjectClass) AddRelationship(relationship RelationType, target Object) bool {
-	var _arg0 *C.AtkObject      // out
-	var _arg1 C.AtkRelationType // out
-	var _arg2 *C.AtkObject      // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(o.Native()))
-	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
-
-	_cret = C.atk_object_add_relationship(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // AccessibleID gets the accessible id of the accessible.
 func (a *ObjectClass) AccessibleID() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_accessible_id(_arg0)
 
@@ -779,7 +750,7 @@ func (a *ObjectClass) Description() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_description(_arg0)
 
@@ -796,7 +767,7 @@ func (a *ObjectClass) IndexInParent() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_index_in_parent(_arg0)
 
@@ -814,13 +785,13 @@ func (a *ObjectClass) Layer() Layer {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkLayer   // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_layer(_arg0)
 
 	var _layer Layer // out
 
-	_layer = Layer(_cret)
+	_layer = (Layer)(C.AtkLayer)
 
 	return _layer
 }
@@ -833,7 +804,7 @@ func (a *ObjectClass) MDIZOrder() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_mdi_zorder(_arg0)
 
@@ -849,7 +820,7 @@ func (a *ObjectClass) NAccessibleChildren() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_n_accessible_children(_arg0)
 
@@ -865,7 +836,7 @@ func (a *ObjectClass) Name() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_name(_arg0)
 
@@ -882,7 +853,7 @@ func (a *ObjectClass) ObjectLocale() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_object_locale(_arg0)
 
@@ -901,17 +872,18 @@ func (a *ObjectClass) ObjectLocale() string {
 //
 // If you are only interested on the parent assigned with
 // atk_object_set_parent(), use atk_object_peek_parent().
-func (a *ObjectClass) Parent() Object {
+func (a *ObjectClass) Parent() *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_parent(_arg0)
 
-	var _object Object // out
+	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Object)
+	_object = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ObjectClass)
 
 	return _object
 }
@@ -921,13 +893,13 @@ func (a *ObjectClass) Role() Role {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkRole    // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_get_role(_arg0)
 
 	var _role Role // out
 
-	_role = Role(_cret)
+	_role = (Role)(C.AtkRole)
 
 	return _role
 }
@@ -940,7 +912,7 @@ func (a *ObjectClass) Initialize(data interface{}) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gpointer   // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 	_arg1 = (C.gpointer)(box.Assign(data))
 
 	C.atk_object_initialize(_arg0, _arg1)
@@ -953,17 +925,18 @@ func (a *ObjectClass) Initialize(data interface{}) {
 // This method is intended as an utility for ATK implementors, and not to be
 // exposed to accessible tools. See atk_object_get_parent() for further
 // reference.
-func (a *ObjectClass) PeekParent() Object {
+func (a *ObjectClass) PeekParent() *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_peek_parent(_arg0)
 
-	var _object Object // out
+	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Object)
+	_object = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ObjectClass)
 
 	return _object
 }
@@ -971,52 +944,55 @@ func (a *ObjectClass) PeekParent() Object {
 // RefAccessibleChild gets a reference to the specified accessible child of the
 // object. The accessible children are 0-based so the first accessible child is
 // at index 0, the second at index 1 and so on.
-func (a *ObjectClass) RefAccessibleChild(i int) Object {
+func (a *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_object_ref_accessible_child(_arg0, _arg1)
 
-	var _object Object // out
+	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Object)
+	_object = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ObjectClass)
 
 	return _object
 }
 
 // RefRelationSet gets the RelationSet associated with the object.
-func (a *ObjectClass) RefRelationSet() RelationSet {
+func (a *ObjectClass) RefRelationSet() *RelationSetClass {
 	var _arg0 *C.AtkObject      // out
 	var _cret *C.AtkRelationSet // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_ref_relation_set(_arg0)
 
-	var _relationSet RelationSet // out
+	var _relationSet *RelationSetClass // out
 
-	_relationSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RelationSet)
+	_relationSet = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RelationSetClass)
 
 	return _relationSet
 }
 
 // RefStateSet gets a reference to the state set of the accessible; the caller
 // must unreference it when it is no longer needed.
-func (a *ObjectClass) RefStateSet() StateSet {
+func (a *ObjectClass) RefStateSet() *StateSetClass {
 	var _arg0 *C.AtkObject   // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_object_ref_state_set(_arg0)
 
-	var _stateSet StateSet // out
+	var _stateSet *StateSetClass // out
 
-	_stateSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StateSet)
+	_stateSet = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StateSetClass)
 
 	return _stateSet
 }
@@ -1028,33 +1004,10 @@ func (a *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.guint      // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 	_arg1 = C.guint(handlerId)
 
 	C.atk_object_remove_property_change_handler(_arg0, _arg1)
-}
-
-// RemoveRelationship removes a relationship of the specified type with the
-// specified target.
-func (o *ObjectClass) RemoveRelationship(relationship RelationType, target Object) bool {
-	var _arg0 *C.AtkObject      // out
-	var _arg1 C.AtkRelationType // out
-	var _arg2 *C.AtkObject      // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(o.Native()))
-	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
-
-	_cret = C.atk_object_remove_relationship(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // SetAccessibleID sets the accessible ID of the accessible. This is not meant
@@ -1066,7 +1019,7 @@ func (a *ObjectClass) SetAccessibleID(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1081,7 +1034,7 @@ func (a *ObjectClass) SetDescription(description string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 	_arg1 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1096,7 +1049,7 @@ func (a *ObjectClass) SetName(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1108,21 +1061,10 @@ func (a *ObjectClass) SetParent(parent Object) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(parent.Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	C.atk_object_set_parent(_arg0, _arg1)
-}
-
-// SetRole sets the role of the accessible.
-func (a *ObjectClass) SetRole(role Role) {
-	var _arg0 *C.AtkObject // out
-	var _arg1 C.AtkRole    // out
-
-	_arg0 = (*C.AtkObject)(unsafe.Pointer(a.Native()))
-	_arg1 = C.AtkRole(role)
-
-	C.atk_object_set_role(_arg0, _arg1)
 }
 
 // Attribute is a string name/value pair representing a generic attribute. This

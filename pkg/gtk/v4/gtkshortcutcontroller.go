@@ -76,30 +76,6 @@ type ShortcutController interface {
 	// If @shortcut had not been added to @controller or this controller uses an
 	// external shortcut list, this function does nothing.
 	RemoveShortcut(shortcut Shortcut)
-	// SetMnemonicsModifiers sets the controller to have the given
-	// @mnemonics_modifiers.
-	//
-	// The mnemonics modifiers determines which modifiers need to be pressed to
-	// allow activation of shortcuts with mnemonics triggers.
-	//
-	// GTK normally uses the Alt modifier for mnemonics, except in PopoverMenus,
-	// where mnemonics can be triggered without any modifiers. It should be very
-	// rarely necessary to change this, and doing so is likely to interfere with
-	// other shortcuts.
-	//
-	// This value is only relevant for local shortcut controllers. Global and
-	// managed shortcut controllers will have their shortcuts activated from
-	// other places which have their own modifiers for activating mnemonics.
-	SetMnemonicsModifiers(modifiers gdk.ModifierType)
-	// SetScope sets the controller to have the given @scope.
-	//
-	// The scope allows shortcuts to be activated outside of the normal event
-	// propagation. In particular, it allows installing global keyboard
-	// shortcuts that can be activated even when a widget does not have focus.
-	//
-	// With GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated when the
-	// widget has focus.
-	SetScope(scope ShortcutScope)
 }
 
 // ShortcutControllerClass implements the ShortcutController interface.
@@ -130,14 +106,15 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 }
 
 // NewShortcutController creates a new shortcut controller.
-func NewShortcutController() ShortcutController {
+func NewShortcutController() *ShortcutControllerClass {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_shortcut_controller_new()
 
-	var _shortcutController ShortcutController // out
+	var _shortcutController *ShortcutControllerClass // out
 
-	_shortcutController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ShortcutController)
+	_shortcutController = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ShortcutControllerClass)
 
 	return _shortcutController
 }
@@ -150,8 +127,8 @@ func (s *ShortcutControllerClass) AddShortcut(shortcut Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer((&ShortcutController).Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer((&Shortcut).Native()))
 
 	C.gtk_shortcut_controller_add_shortcut(_arg0, _arg1)
 }
@@ -162,13 +139,13 @@ func (s *ShortcutControllerClass) MnemonicsModifiers() gdk.ModifierType {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GdkModifierType        // in
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer((&ShortcutController).Native()))
 
 	_cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(_arg0)
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = gdk.ModifierType(_cret)
+	_modifierType = (gdk.ModifierType)(C.GdkModifierType)
 
 	return _modifierType
 }
@@ -179,13 +156,13 @@ func (s *ShortcutControllerClass) Scope() ShortcutScope {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GtkShortcutScope       // in
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer((&ShortcutController).Native()))
 
 	_cret = C.gtk_shortcut_controller_get_scope(_arg0)
 
 	var _shortcutScope ShortcutScope // out
 
-	_shortcutScope = ShortcutScope(_cret)
+	_shortcutScope = (ShortcutScope)(C.GtkShortcutScope)
 
 	return _shortcutScope
 }
@@ -198,50 +175,8 @@ func (s *ShortcutControllerClass) RemoveShortcut(shortcut Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer((&ShortcutController).Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer((&Shortcut).Native()))
 
 	C.gtk_shortcut_controller_remove_shortcut(_arg0, _arg1)
-}
-
-// SetMnemonicsModifiers sets the controller to have the given
-// @mnemonics_modifiers.
-//
-// The mnemonics modifiers determines which modifiers need to be pressed to
-// allow activation of shortcuts with mnemonics triggers.
-//
-// GTK normally uses the Alt modifier for mnemonics, except in PopoverMenus,
-// where mnemonics can be triggered without any modifiers. It should be very
-// rarely necessary to change this, and doing so is likely to interfere with
-// other shortcuts.
-//
-// This value is only relevant for local shortcut controllers. Global and
-// managed shortcut controllers will have their shortcuts activated from other
-// places which have their own modifiers for activating mnemonics.
-func (s *ShortcutControllerClass) SetMnemonicsModifiers(modifiers gdk.ModifierType) {
-	var _arg0 *C.GtkShortcutController // out
-	var _arg1 C.GdkModifierType        // out
-
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GdkModifierType(modifiers)
-
-	C.gtk_shortcut_controller_set_mnemonics_modifiers(_arg0, _arg1)
-}
-
-// SetScope sets the controller to have the given @scope.
-//
-// The scope allows shortcuts to be activated outside of the normal event
-// propagation. In particular, it allows installing global keyboard shortcuts
-// that can be activated even when a widget does not have focus.
-//
-// With GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated when the
-// widget has focus.
-func (s *ShortcutControllerClass) SetScope(scope ShortcutScope) {
-	var _arg0 *C.GtkShortcutController // out
-	var _arg1 C.GtkShortcutScope       // out
-
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GtkShortcutScope(scope)
-
-	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)
 }

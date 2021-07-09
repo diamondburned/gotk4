@@ -117,7 +117,7 @@ type Device interface {
 	//
 	// If @device is of type GDK_DEVICE_TYPE_FLOATING, nil will be returned, as
 	// there is no associated device.
-	AssociatedDevice() Device
+	AssociatedDevice() *DeviceClass
 	// Axes returns the axes currently available on the device.
 	Axes() AxisFlags
 	// AxisUse returns the axis use for @index_.
@@ -125,7 +125,7 @@ type Device interface {
 	// DeviceType returns the device type for @device.
 	DeviceType() DeviceType
 	// Display returns the Display to which @device pertains.
-	Display() Display
+	Display() *DisplayClass
 	// HasCursor determines whether the pointer follows device motion. This is
 	// not meaningful for keyboard devices, which don't have a pointer.
 	HasCursor() bool
@@ -137,7 +137,7 @@ type Device interface {
 	// display server. If another application has a pointer grab, or this
 	// application has a grab with owner_events = false, nil may be returned
 	// even if the pointer is physically over one of this application's windows.
-	LastEventWindow() Window
+	LastEventWindow() *WindowClass
 	// Mode determines the mode of the device.
 	Mode() InputMode
 	// NAxes returns the number of axes the device currently has.
@@ -150,19 +150,19 @@ type Device interface {
 	// coordinates are those of its master pointer, This function may not be
 	// called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is an
 	// ongoing grab on them, see gdk_device_grab().
-	Position() (screen Screen, x int, y int)
+	Position() (screen *ScreenClass, x int, y int)
 	// PositionDouble gets the current location of @device in double precision.
 	// As a slave device's coordinates are those of its master pointer, this
 	// function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
 	// unless there is an ongoing grab on them. See gdk_device_grab().
-	PositionDouble() (screen Screen, x float64, y float64)
+	PositionDouble() (screen *ScreenClass, x float64, y float64)
 	// ProductID returns the product ID of this device, or nil if this
 	// information couldn't be obtained. This ID is retrieved from the device,
 	// and is thus constant for it. See gdk_device_get_vendor_id() for more
 	// information.
 	ProductID() string
 	// Seat returns the Seat the device belongs to.
-	Seat() Seat
+	Seat() *SeatClass
 	// Source determines the type of the device.
 	Source() InputSource
 	// VendorID returns the vendor ID of this device, or nil if this information
@@ -198,7 +198,7 @@ type Device interface {
 	// As a slave device coordinates are those of its master pointer, This
 	// function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
 	// unless there is an ongoing grab on them, see gdk_device_grab().
-	WindowAtPosition() (winX int, winY int, window Window)
+	WindowAtPosition() (winX int, winY int, window *WindowClass)
 	// WindowAtPositionDouble obtains the window underneath @device, returning
 	// the location of the device in @win_x and @win_y in double precision.
 	// Returns nil if the window tree under @device is not known to GDK (for
@@ -207,44 +207,7 @@ type Device interface {
 	// As a slave device coordinates are those of its master pointer, This
 	// function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
 	// unless there is an ongoing grab on them, see gdk_device_grab().
-	WindowAtPositionDouble() (winX float64, winY float64, window Window)
-	// Grab grabs the device so that all events coming from this device are
-	// passed to this application until the device is ungrabbed with
-	// gdk_device_ungrab(), or the window becomes unviewable. This overrides any
-	// previous grab on the device by this client.
-	//
-	// Note that @device and @window need to be on the same display.
-	//
-	// Device grabs are used for operations which need complete control over the
-	// given device events (either pointer or keyboard). For example in GTK+
-	// this is used for Drag and Drop operations, popup menus and such.
-	//
-	// Note that if the event mask of an X window has selected both button press
-	// and button release events, then a button press event will cause an
-	// automatic pointer grab until the button is released. X does this
-	// automatically since most applications expect to receive button press and
-	// release events in pairs. It is equivalent to a pointer grab on the window
-	// with @owner_events set to true.
-	//
-	// If you set up anything at the time you take the grab that needs to be
-	// cleaned up when the grab ends, you should handle the EventGrabBroken
-	// events that are emitted when the grab ends unvoluntarily.
-	//
-	// Deprecated: since version 3.20.
-	Grab(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus
-	// SetAxisUse specifies how an axis of a device is used.
-	SetAxisUse(index_ uint, use AxisUse)
-	// SetKey specifies the X key event to generate when a macro button of a
-	// device is pressed.
-	SetKey(index_ uint, keyval uint, modifiers ModifierType)
-	// SetMode sets a the mode of an input device. The mode controls if the
-	// device is active and whether the device’s range is mapped to the entire
-	// screen or to a single window.
-	//
-	// Note: This is only meaningful for floating devices, master devices (and
-	// slaves connected to these) drive the pointer cursor, which is not limited
-	// by the input mode.
-	SetMode(mode InputMode) bool
+	WindowAtPositionDouble() (winX float64, winY float64, window *WindowClass)
 	// Ungrab: release any grab on @device.
 	//
 	// Deprecated: since version 3.20.
@@ -288,17 +251,18 @@ func marshalDevice(p uintptr) (interface{}, error) {
 //
 // If @device is of type GDK_DEVICE_TYPE_FLOATING, nil will be returned, as
 // there is no associated device.
-func (d *DeviceClass) AssociatedDevice() Device {
+func (d *DeviceClass) AssociatedDevice() *DeviceClass {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_associated_device(_arg0)
 
-	var _ret Device // out
+	var _ret *DeviceClass // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Device)
+	_ret = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DeviceClass)
 
 	return _ret
 }
@@ -308,13 +272,13 @@ func (d *DeviceClass) Axes() AxisFlags {
 	var _arg0 *C.GdkDevice   // out
 	var _cret C.GdkAxisFlags // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_axes(_arg0)
 
 	var _axisFlags AxisFlags // out
 
-	_axisFlags = AxisFlags(_cret)
+	_axisFlags = (AxisFlags)(C.GdkAxisFlags)
 
 	return _axisFlags
 }
@@ -325,14 +289,14 @@ func (d *DeviceClass) AxisUse(index_ uint) AxisUse {
 	var _arg1 C.guint      // out
 	var _cret C.GdkAxisUse // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 	_arg1 = C.guint(index_)
 
 	_cret = C.gdk_device_get_axis_use(_arg0, _arg1)
 
 	var _axisUse AxisUse // out
 
-	_axisUse = AxisUse(_cret)
+	_axisUse = (AxisUse)(C.GdkAxisUse)
 
 	return _axisUse
 }
@@ -342,29 +306,30 @@ func (d *DeviceClass) DeviceType() DeviceType {
 	var _arg0 *C.GdkDevice    // out
 	var _cret C.GdkDeviceType // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_device_type(_arg0)
 
 	var _deviceType DeviceType // out
 
-	_deviceType = DeviceType(_cret)
+	_deviceType = (DeviceType)(C.GdkDeviceType)
 
 	return _deviceType
 }
 
 // Display returns the Display to which @device pertains.
-func (d *DeviceClass) Display() Display {
+func (d *DeviceClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDevice  // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_display(_arg0)
 
-	var _display Display // out
+	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
+	_display = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
 
 	return _display
 }
@@ -375,7 +340,7 @@ func (d *DeviceClass) HasCursor() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_has_cursor(_arg0)
 
@@ -397,7 +362,7 @@ func (d *DeviceClass) Key(index_ uint) (uint, ModifierType, bool) {
 	var _arg3 C.GdkModifierType // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 	_arg1 = C.guint(index_)
 
 	_cret = C.gdk_device_get_key(_arg0, _arg1, &_arg2, &_arg3)
@@ -407,7 +372,7 @@ func (d *DeviceClass) Key(index_ uint) (uint, ModifierType, bool) {
 	var _ok bool                // out
 
 	_keyval = uint(_arg2)
-	_modifiers = ModifierType(_arg3)
+	_modifiers = (ModifierType)(C.GdkModifierType)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -420,17 +385,18 @@ func (d *DeviceClass) Key(index_ uint) (uint, ModifierType, bool) {
 // server. If another application has a pointer grab, or this application has a
 // grab with owner_events = false, nil may be returned even if the pointer is
 // physically over one of this application's windows.
-func (d *DeviceClass) LastEventWindow() Window {
+func (d *DeviceClass) LastEventWindow() *WindowClass {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_last_event_window(_arg0)
 
-	var _window Window // out
+	var _window *WindowClass // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
 
 	return _window
 }
@@ -440,13 +406,13 @@ func (d *DeviceClass) Mode() InputMode {
 	var _arg0 *C.GdkDevice   // out
 	var _cret C.GdkInputMode // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_mode(_arg0)
 
 	var _inputMode InputMode // out
 
-	_inputMode = InputMode(_cret)
+	_inputMode = (InputMode)(C.GdkInputMode)
 
 	return _inputMode
 }
@@ -456,7 +422,7 @@ func (d *DeviceClass) NAxes() int {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_n_axes(_arg0)
 
@@ -472,7 +438,7 @@ func (d *DeviceClass) NKeys() int {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_n_keys(_arg0)
 
@@ -488,7 +454,7 @@ func (d *DeviceClass) Name() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_name(_arg0)
 
@@ -503,21 +469,22 @@ func (d *DeviceClass) Name() string {
 // are those of its master pointer, This function may not be called on devices
 // of type GDK_DEVICE_TYPE_SLAVE, unless there is an ongoing grab on them, see
 // gdk_device_grab().
-func (d *DeviceClass) Position() (screen Screen, x int, y int) {
+func (d *DeviceClass) Position() (screen *ScreenClass, x int, y int) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // in
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	C.gdk_device_get_position(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var _screen Screen // out
-	var _x int         // out
-	var _y int         // out
+	var _screen *ScreenClass // out
+	var _x int               // out
+	var _y int               // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
+	_screen = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_arg1))).(*ScreenClass)
 	_x = int(_arg2)
 	_y = int(_arg3)
 
@@ -528,21 +495,22 @@ func (d *DeviceClass) Position() (screen Screen, x int, y int) {
 // slave device's coordinates are those of its master pointer, this function may
 // not be called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is an
 // ongoing grab on them. See gdk_device_grab().
-func (d *DeviceClass) PositionDouble() (screen Screen, x float64, y float64) {
+func (d *DeviceClass) PositionDouble() (screen *ScreenClass, x float64, y float64) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // in
 	var _arg2 C.gdouble    // in
 	var _arg3 C.gdouble    // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	C.gdk_device_get_position_double(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var _screen Screen // out
-	var _x float64     // out
-	var _y float64     // out
+	var _screen *ScreenClass // out
+	var _x float64           // out
+	var _y float64           // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1))).(Screen)
+	_screen = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_arg1))).(*ScreenClass)
 	_x = float64(_arg2)
 	_y = float64(_arg3)
 
@@ -556,7 +524,7 @@ func (d *DeviceClass) ProductID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_product_id(_arg0)
 
@@ -568,17 +536,18 @@ func (d *DeviceClass) ProductID() string {
 }
 
 // Seat returns the Seat the device belongs to.
-func (d *DeviceClass) Seat() Seat {
+func (d *DeviceClass) Seat() *SeatClass {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkSeat   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_seat(_arg0)
 
-	var _seat Seat // out
+	var _seat *SeatClass // out
 
-	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Seat)
+	_seat = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SeatClass)
 
 	return _seat
 }
@@ -588,13 +557,13 @@ func (d *DeviceClass) Source() InputSource {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.GdkInputSource // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_source(_arg0)
 
 	var _inputSource InputSource // out
 
-	_inputSource = InputSource(_cret)
+	_inputSource = (InputSource)(C.GdkInputSource)
 
 	return _inputSource
 }
@@ -627,7 +596,7 @@ func (d *DeviceClass) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_vendor_id(_arg0)
 
@@ -646,23 +615,24 @@ func (d *DeviceClass) VendorID() string {
 // As a slave device coordinates are those of its master pointer, This function
 // may not be called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is
 // an ongoing grab on them, see gdk_device_grab().
-func (d *DeviceClass) WindowAtPosition() (winX int, winY int, window Window) {
+func (d *DeviceClass) WindowAtPosition() (winX int, winY int, window *WindowClass) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_window_at_position(_arg0, &_arg1, &_arg2)
 
-	var _winX int      // out
-	var _winY int      // out
-	var _window Window // out
+	var _winX int            // out
+	var _winY int            // out
+	var _window *WindowClass // out
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
 
 	return _winX, _winY, _window
 }
@@ -675,132 +645,26 @@ func (d *DeviceClass) WindowAtPosition() (winX int, winY int, window Window) {
 // As a slave device coordinates are those of its master pointer, This function
 // may not be called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is
 // an ongoing grab on them, see gdk_device_grab().
-func (d *DeviceClass) WindowAtPositionDouble() (winX float64, winY float64, window Window) {
+func (d *DeviceClass) WindowAtPositionDouble() (winX float64, winY float64, window *WindowClass) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.gdouble    // in
 	var _arg2 C.gdouble    // in
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 
 	_cret = C.gdk_device_get_window_at_position_double(_arg0, &_arg1, &_arg2)
 
-	var _winX float64  // out
-	var _winY float64  // out
-	var _window Window // out
+	var _winX float64        // out
+	var _winY float64        // out
+	var _window *WindowClass // out
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
 
 	return _winX, _winY, _window
-}
-
-// Grab grabs the device so that all events coming from this device are passed
-// to this application until the device is ungrabbed with gdk_device_ungrab(),
-// or the window becomes unviewable. This overrides any previous grab on the
-// device by this client.
-//
-// Note that @device and @window need to be on the same display.
-//
-// Device grabs are used for operations which need complete control over the
-// given device events (either pointer or keyboard). For example in GTK+ this is
-// used for Drag and Drop operations, popup menus and such.
-//
-// Note that if the event mask of an X window has selected both button press and
-// button release events, then a button press event will cause an automatic
-// pointer grab until the button is released. X does this automatically since
-// most applications expect to receive button press and release events in pairs.
-// It is equivalent to a pointer grab on the window with @owner_events set to
-// true.
-//
-// If you set up anything at the time you take the grab that needs to be cleaned
-// up when the grab ends, you should handle the EventGrabBroken events that are
-// emitted when the grab ends unvoluntarily.
-//
-// Deprecated: since version 3.20.
-func (d *DeviceClass) Grab(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus {
-	var _arg0 *C.GdkDevice       // out
-	var _arg1 *C.GdkWindow       // out
-	var _arg2 C.GdkGrabOwnership // out
-	var _arg3 C.gboolean         // out
-	var _arg4 C.GdkEventMask     // out
-	var _arg5 *C.GdkCursor       // out
-	var _arg6 C.guint32          // out
-	var _cret C.GdkGrabStatus    // in
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = C.GdkGrabOwnership(grabOwnership)
-	if ownerEvents {
-		_arg3 = C.TRUE
-	}
-	_arg4 = C.GdkEventMask(eventMask)
-	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
-	_arg6 = C.guint32(time_)
-
-	_cret = C.gdk_device_grab(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
-	var _grabStatus GrabStatus // out
-
-	_grabStatus = GrabStatus(_cret)
-
-	return _grabStatus
-}
-
-// SetAxisUse specifies how an axis of a device is used.
-func (d *DeviceClass) SetAxisUse(index_ uint, use AxisUse) {
-	var _arg0 *C.GdkDevice // out
-	var _arg1 C.guint      // out
-	var _arg2 C.GdkAxisUse // out
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = C.guint(index_)
-	_arg2 = C.GdkAxisUse(use)
-
-	C.gdk_device_set_axis_use(_arg0, _arg1, _arg2)
-}
-
-// SetKey specifies the X key event to generate when a macro button of a device
-// is pressed.
-func (d *DeviceClass) SetKey(index_ uint, keyval uint, modifiers ModifierType) {
-	var _arg0 *C.GdkDevice      // out
-	var _arg1 C.guint           // out
-	var _arg2 C.guint           // out
-	var _arg3 C.GdkModifierType // out
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = C.guint(index_)
-	_arg2 = C.guint(keyval)
-	_arg3 = C.GdkModifierType(modifiers)
-
-	C.gdk_device_set_key(_arg0, _arg1, _arg2, _arg3)
-}
-
-// SetMode sets a the mode of an input device. The mode controls if the device
-// is active and whether the device’s range is mapped to the entire screen or to
-// a single window.
-//
-// Note: This is only meaningful for floating devices, master devices (and
-// slaves connected to these) drive the pointer cursor, which is not limited by
-// the input mode.
-func (d *DeviceClass) SetMode(mode InputMode) bool {
-	var _arg0 *C.GdkDevice   // out
-	var _arg1 C.GdkInputMode // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = C.GdkInputMode(mode)
-
-	_cret = C.gdk_device_set_mode(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Ungrab: release any grab on @device.
@@ -810,7 +674,7 @@ func (d *DeviceClass) Ungrab(time_ uint32) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint32    // out
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
 	_arg1 = C.guint32(time_)
 
 	C.gdk_device_ungrab(_arg0, _arg1)
@@ -830,8 +694,8 @@ func (d *DeviceClass) Warp(screen Screen, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer((&Device).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&Screen).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 

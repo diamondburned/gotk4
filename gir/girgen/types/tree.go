@@ -125,7 +125,7 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 	// Ensure that the Object field is present if we have more than 1
 	// embedded classes/interfaces to avoid ambiguous selectors.
 	for _, req := range tree.Requires {
-		if req.IsExternGLib("Object") {
+		if req.IsExternGLib("Object") || req.IsExternGLib("InitiallyUnowned") {
 			hasGObject = true
 			break
 		}

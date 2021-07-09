@@ -70,7 +70,7 @@ type DrawContext interface {
 	// explicitly before calling this function.
 	EndFrame()
 	// Display retrieves the `GdkDisplay` the @context is created for
-	Display() Display
+	Display() *DisplayClass
 	// FrameRegion retrieves the region that is currently being repainted.
 	//
 	// After a call to [method@Gdk.DrawContext.begin_frame] this function will
@@ -82,7 +82,7 @@ type DrawContext interface {
 	// [method@Gdk.DrawContext.end_frame], nil will be returned.
 	FrameRegion() *cairo.Region
 	// Surface retrieves the surface that @context is bound to.
-	Surface() Surface
+	Surface() *SurfaceClass
 	// IsInFrame returns true if @context is in the process of drawing to its
 	// surface.
 	//
@@ -138,8 +138,8 @@ func (c *DrawContextClass) BeginFrame(region *cairo.Region) {
 	var _arg0 *C.GdkDrawContext // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer((&DrawContext).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
 
 	C.gdk_draw_context_begin_frame(_arg0, _arg1)
 }
@@ -156,23 +156,24 @@ func (c *DrawContextClass) BeginFrame(region *cairo.Region) {
 func (c *DrawContextClass) EndFrame() {
 	var _arg0 *C.GdkDrawContext // out
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer((&DrawContext).Native()))
 
 	C.gdk_draw_context_end_frame(_arg0)
 }
 
 // Display retrieves the `GdkDisplay` the @context is created for
-func (c *DrawContextClass) Display() Display {
+func (c *DrawContextClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkDisplay     // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer((&DrawContext).Native()))
 
 	_cret = C.gdk_draw_context_get_display(_arg0)
 
-	var _display Display // out
+	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
+	_display = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
 
 	return _display
 }
@@ -189,29 +190,30 @@ func (c *DrawContextClass) FrameRegion() *cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.cairo_region_t // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer((&DrawContext).Native()))
 
 	_cret = C.gdk_draw_context_get_frame_region(_arg0)
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	_region = (*cairo.Region)(unsafe.Pointer(*C.cairo_region_t))
 
 	return _region
 }
 
 // Surface retrieves the surface that @context is bound to.
-func (c *DrawContextClass) Surface() Surface {
+func (c *DrawContextClass) Surface() *SurfaceClass {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkSurface     // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer((&DrawContext).Native()))
 
 	_cret = C.gdk_draw_context_get_surface(_arg0)
 
-	var _surface Surface // out
+	var _surface *SurfaceClass // out
 
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Surface)
+	_surface = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SurfaceClass)
 
 	return _surface
 }
@@ -226,7 +228,7 @@ func (c *DrawContextClass) IsInFrame() bool {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer((&DrawContext).Native()))
 
 	_cret = C.gdk_draw_context_is_in_frame(_arg0)
 

@@ -84,7 +84,7 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 
 // NewThreadedSocketService creates a new SocketService with no listeners.
 // Listeners must be added with one of the Listener "add" methods.
-func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
+func NewThreadedSocketService(maxThreads int) *ThreadedSocketServiceClass {
 	var _arg1 C.int             // out
 	var _cret *C.GSocketService // in
 
@@ -92,9 +92,10 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 
 	_cret = C.g_threaded_socket_service_new(_arg1)
 
-	var _threadedSocketService ThreadedSocketService // out
+	var _threadedSocketService *ThreadedSocketServiceClass // out
 
-	_threadedSocketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ThreadedSocketService)
+	_threadedSocketService = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ThreadedSocketServiceClass)
 
 	return _threadedSocketService
 }

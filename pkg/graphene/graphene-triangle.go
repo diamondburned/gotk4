@@ -46,7 +46,7 @@ func NewTriangleAlloc() *Triangle {
 
 	var _triangle *Triangle // out
 
-	_triangle = (*Triangle)(unsafe.Pointer(_cret))
+	_triangle = (*Triangle)(unsafe.Pointer(*C.graphene_triangle_t))
 	runtime.SetFinalizer(_triangle, func(v *Triangle) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -65,8 +65,8 @@ func (t *Triangle) ContainsPoint(p *Point3D) bool {
 	var _arg1 *C.graphene_point3d_t  // out
 	var _cret C._Bool                // in
 
-	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(*Triangle))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
 
 	_cret = C.graphene_triangle_contains_point(_arg0, _arg1)
 
@@ -85,8 +85,8 @@ func (a *Triangle) Equal(b *Triangle) bool {
 	var _arg1 *C.graphene_triangle_t // out
 	var _cret C._Bool                // in
 
-	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_triangle_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(*Triangle))
+	_arg1 = (*C.graphene_triangle_t)(unsafe.Pointer(*Triangle))
 
 	_cret = C.graphene_triangle_equal(_arg0, _arg1)
 
@@ -103,7 +103,7 @@ func (a *Triangle) Equal(b *Triangle) bool {
 func (t *Triangle) free() {
 	var _arg0 *C.graphene_triangle_t // out
 
-	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(*Triangle))
 
 	C.graphene_triangle_free(_arg0)
 }
@@ -113,7 +113,7 @@ func (t *Triangle) Area() float32 {
 	var _arg0 *C.graphene_triangle_t // out
 	var _cret C.float                // in
 
-	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(*Triangle))
 
 	_cret = C.graphene_triangle_get_area(_arg0)
 
@@ -134,7 +134,7 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 	var _arg3 *C.float
 	var _cret *C.graphene_triangle_t // in
 
-	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(*Triangle))
 	_arg1 = (*C.float)(unsafe.Pointer(&a))
 	_arg2 = (*C.float)(unsafe.Pointer(&b))
 	_arg3 = (*C.float)(unsafe.Pointer(&c))
@@ -143,7 +143,7 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 
 	var _triangle *Triangle // out
 
-	_triangle = (*Triangle)(unsafe.Pointer(_cret))
+	_triangle = (*Triangle)(unsafe.Pointer(*C.graphene_triangle_t))
 
 	return _triangle
 }
@@ -157,16 +157,16 @@ func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle
 	var _arg3 *C.graphene_point3d_t  // out
 	var _cret *C.graphene_triangle_t // in
 
-	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(a))
-	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(b))
-	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(c))
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(*Triangle))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
 
 	_cret = C.graphene_triangle_init_from_point3d(_arg0, _arg1, _arg2, _arg3)
 
 	var _triangle *Triangle // out
 
-	_triangle = (*Triangle)(unsafe.Pointer(_cret))
+	_triangle = (*Triangle)(unsafe.Pointer(*C.graphene_triangle_t))
 
 	return _triangle
 }
@@ -180,16 +180,16 @@ func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 	var _arg3 *C.graphene_vec3_t     // out
 	var _cret *C.graphene_triangle_t // in
 
-	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(a))
-	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(b))
-	_arg3 = (*C.graphene_vec3_t)(unsafe.Pointer(c))
+	_arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(*Triangle))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg3 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
 
 	_cret = C.graphene_triangle_init_from_vec3(_arg0, _arg1, _arg2, _arg3)
 
 	var _triangle *Triangle // out
 
-	_triangle = (*Triangle)(unsafe.Pointer(_cret))
+	_triangle = (*Triangle)(unsafe.Pointer(*C.graphene_triangle_t))
 
 	return _triangle
 }

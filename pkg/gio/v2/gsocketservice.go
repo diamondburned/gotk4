@@ -122,14 +122,15 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 // New services are created active, there is no need to call
 // g_socket_service_start(), unless g_socket_service_stop() has been called
 // before.
-func NewSocketService() SocketService {
+func NewSocketService() *SocketServiceClass {
 	var _cret *C.GSocketService // in
 
 	_cret = C.g_socket_service_new()
 
-	var _socketService SocketService // out
+	var _socketService *SocketServiceClass // out
 
-	_socketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketService)
+	_socketService = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SocketServiceClass)
 
 	return _socketService
 }
@@ -141,7 +142,7 @@ func (s *SocketServiceClass) IsActive() bool {
 	var _arg0 *C.GSocketService // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer((&SocketService).Native()))
 
 	_cret = C.g_socket_service_is_active(_arg0)
 
@@ -163,7 +164,7 @@ func (s *SocketServiceClass) IsActive() bool {
 func (s *SocketServiceClass) Start() {
 	var _arg0 *C.GSocketService // out
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer((&SocketService).Native()))
 
 	C.g_socket_service_start(_arg0)
 }
@@ -186,7 +187,7 @@ func (s *SocketServiceClass) Start() {
 func (s *SocketServiceClass) Stop() {
 	var _arg0 *C.GSocketService // out
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer((&SocketService).Native()))
 
 	C.g_socket_service_stop(_arg0)
 }

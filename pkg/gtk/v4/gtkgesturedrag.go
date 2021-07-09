@@ -71,14 +71,15 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 }
 
 // NewGestureDrag returns a newly created `GtkGesture` that recognizes drags.
-func NewGestureDrag() GestureDrag {
+func NewGestureDrag() *GestureDragClass {
 	var _cret *C.GtkGesture // in
 
 	_cret = C.gtk_gesture_drag_new()
 
-	var _gestureDrag GestureDrag // out
+	var _gestureDrag *GestureDragClass // out
 
-	_gestureDrag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureDrag)
+	_gestureDrag = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureDragClass)
 
 	return _gestureDrag
 }
@@ -94,7 +95,7 @@ func (g *GestureDragClass) Offset() (x float64, y float64, ok bool) {
 	var _arg2 C.double          // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer((&GestureDrag).Native()))
 
 	_cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
 
@@ -121,7 +122,7 @@ func (g *GestureDragClass) StartPoint() (x float64, y float64, ok bool) {
 	var _arg2 C.double          // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer((&GestureDrag).Native()))
 
 	_cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
 

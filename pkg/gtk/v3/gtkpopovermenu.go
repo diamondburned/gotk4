@@ -124,7 +124,6 @@ func wrapPopoverMenu(obj *externglib.Object) PopoverMenu {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -155,14 +154,15 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 }
 
 // NewPopoverMenu creates a new popover menu.
-func NewPopoverMenu() PopoverMenu {
+func NewPopoverMenu() *PopoverMenuClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_popover_menu_new()
 
-	var _popoverMenu PopoverMenu // out
+	var _popoverMenu *PopoverMenuClass // out
 
-	_popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PopoverMenu)
+	_popoverMenu = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*PopoverMenuClass)
 
 	return _popoverMenu
 }
@@ -178,7 +178,7 @@ func (p *PopoverMenuClass) OpenSubmenu(name string) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer((&PopoverMenu).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 

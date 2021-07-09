@@ -58,7 +58,6 @@ func wrapRecentChooserWidget(obj *externglib.Object) RecentChooserWidget {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -95,14 +94,15 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 
 // NewRecentChooserWidget creates a new RecentChooserWidget object. This is an
 // embeddable widget used to access the recently used resources list.
-func NewRecentChooserWidget() RecentChooserWidget {
+func NewRecentChooserWidget() *RecentChooserWidgetClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_recent_chooser_widget_new()
 
-	var _recentChooserWidget RecentChooserWidget // out
+	var _recentChooserWidget *RecentChooserWidgetClass // out
 
-	_recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RecentChooserWidget)
+	_recentChooserWidget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RecentChooserWidgetClass)
 
 	return _recentChooserWidget
 }
@@ -112,17 +112,18 @@ func NewRecentChooserWidget() RecentChooserWidget {
 //
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object.
-func NewRecentChooserWidgetForManager(manager RecentManager) RecentChooserWidget {
+func NewRecentChooserWidgetForManager(manager RecentManager) *RecentChooserWidgetClass {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((&RecentManager).Native()))
 
 	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
 
-	var _recentChooserWidget RecentChooserWidget // out
+	var _recentChooserWidget *RecentChooserWidgetClass // out
 
-	_recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RecentChooserWidget)
+	_recentChooserWidget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RecentChooserWidgetClass)
 
 	return _recentChooserWidget
 }

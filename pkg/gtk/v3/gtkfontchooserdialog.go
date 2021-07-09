@@ -60,7 +60,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							BuildableInterface: BuildableInterface{
 								Object: obj,
@@ -98,20 +97,21 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 }
 
 // NewFontChooserDialog creates a new FontChooserDialog.
-func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
+func NewFontChooserDialog(title string, parent Window) *FontChooserDialogClass {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
 
 	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
 
-	var _fontChooserDialog FontChooserDialog // out
+	var _fontChooserDialog *FontChooserDialogClass // out
 
-	_fontChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontChooserDialog)
+	_fontChooserDialog = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontChooserDialogClass)
 
 	return _fontChooserDialog
 }

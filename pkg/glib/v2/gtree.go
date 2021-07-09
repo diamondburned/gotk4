@@ -54,7 +54,7 @@ func (t *Tree) Native() unsafe.Pointer {
 func (t *Tree) Destroy() {
 	var _arg0 *C.GTree // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 
 	C.g_tree_destroy(_arg0)
 }
@@ -68,7 +68,7 @@ func (t *Tree) Height() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 
 	_cret = C.g_tree_height(_arg0)
 
@@ -88,7 +88,7 @@ func (t *Tree) Insert(key interface{}, value interface{}) {
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 	_arg1 = (C.gpointer)(box.Assign(key))
 	_arg2 = (C.gpointer)(box.Assign(value))
 
@@ -103,7 +103,7 @@ func (t *Tree) Lookup(key interface{}) interface{} {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gpointer      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 	_arg1 = (C.gconstpointer)(box.Assign(key))
 
 	_cret = C.g_tree_lookup(_arg0, _arg1)
@@ -125,7 +125,7 @@ func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value
 	var _arg3 C.gpointer      // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 	_arg1 = (C.gconstpointer)(box.Assign(lookupKey))
 
 	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
@@ -148,7 +148,7 @@ func (t *Tree) Nnodes() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 
 	_cret = C.g_tree_nnodes(_arg0)
 
@@ -166,13 +166,13 @@ func (t *Tree) ref() *Tree {
 	var _arg0 *C.GTree // out
 	var _cret *C.GTree // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 
 	_cret = C.g_tree_ref(_arg0)
 
 	var _ret *Tree // out
 
-	_ret = (*Tree)(unsafe.Pointer(_cret))
+	_ret = (*Tree)(unsafe.Pointer(*C.GTree))
 	C.g_tree_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Tree) {
 		C.g_tree_unref((*C.GTree)(unsafe.Pointer(v)))
@@ -195,7 +195,7 @@ func (t *Tree) Remove(key interface{}) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 	_arg1 = (C.gconstpointer)(box.Assign(key))
 
 	_cret = C.g_tree_remove(_arg0, _arg1)
@@ -216,7 +216,7 @@ func (t *Tree) Replace(key interface{}, value interface{}) {
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 	_arg1 = (C.gpointer)(box.Assign(key))
 	_arg2 = (C.gpointer)(box.Assign(value))
 
@@ -232,7 +232,7 @@ func (t *Tree) Steal(key interface{}) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 	_arg1 = (C.gconstpointer)(box.Assign(key))
 
 	_cret = C.g_tree_steal(_arg0, _arg1)
@@ -254,7 +254,7 @@ func (t *Tree) Steal(key interface{}) bool {
 func (t *Tree) unref() {
 	var _arg0 *C.GTree // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(*Tree))
 
 	C.g_tree_unref(_arg0)
 }

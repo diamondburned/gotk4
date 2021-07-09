@@ -85,7 +85,6 @@ func wrapFixed(obj *externglib.Object) Fixed {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -108,14 +107,15 @@ func marshalFixed(p uintptr) (interface{}, error) {
 }
 
 // NewFixed creates a new Fixed.
-func NewFixed() Fixed {
+func NewFixed() *FixedClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_fixed_new()
 
-	var _fixed Fixed // out
+	var _fixed *FixedClass // out
 
-	_fixed = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Fixed)
+	_fixed = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FixedClass)
 
 	return _fixed
 }
@@ -127,8 +127,8 @@ func (f *FixedClass) Move(widget Widget, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer((&Fixed).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -142,8 +142,8 @@ func (f *FixedClass) Put(widget Widget, x int, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer((&Fixed).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -165,9 +165,10 @@ func (f *FixedChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-func (f *FixedChild) Widget() Widget {
-	var v Widget // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget))).(Widget)
+func (f *FixedChild) Widget() *WidgetClass {
+	var v *WidgetClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(f.native.widget))).(*WidgetClass)
 	return v
 }
 

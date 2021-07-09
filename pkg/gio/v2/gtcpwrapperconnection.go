@@ -40,7 +40,7 @@ type TCPWrapperConnection interface {
 	gextras.Objector
 
 	// BaseIOStream gets @conn's base OStream
-	BaseIOStream() IOStream
+	BaseIOStream() *IOStreamClass
 }
 
 // TCPWrapperConnectionClass implements the TCPWrapperConnection interface.
@@ -70,35 +70,37 @@ func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
 
 // NewTCPWrapperConnection wraps @base_io_stream and @socket together as a
 // Connection.
-func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) TCPWrapperConnection {
+func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) *TCPWrapperConnectionClass {
 	var _arg1 *C.GIOStream         // out
 	var _arg2 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in
 
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(baseIoStream.Native()))
-	_arg2 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg2 = (*C.GSocket)(unsafe.Pointer((&Socket).Native()))
 
 	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
 
-	var _tcpWrapperConnection TCPWrapperConnection // out
+	var _tcpWrapperConnection *TCPWrapperConnectionClass // out
 
-	_tcpWrapperConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TCPWrapperConnection)
+	_tcpWrapperConnection = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TCPWrapperConnectionClass)
 
 	return _tcpWrapperConnection
 }
 
 // BaseIOStream gets @conn's base OStream
-func (c *TCPWrapperConnectionClass) BaseIOStream() IOStream {
+func (c *TCPWrapperConnectionClass) BaseIOStream() *IOStreamClass {
 	var _arg0 *C.GTcpWrapperConnection // out
 	var _cret *C.GIOStream             // in
 
-	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer((&TCPWrapperConnection).Native()))
 
 	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
 
-	var _ioStream IOStream // out
+	var _ioStream *IOStreamClass // out
 
-	_ioStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(IOStream)
+	_ioStream = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*IOStreamClass)
 
 	return _ioStream
 }

@@ -66,7 +66,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 			WindowClass: WindowClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -89,7 +88,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 				},
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -106,7 +104,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 					Object: obj,
 					NativeInterface: NativeInterface{
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							AccessibleInterface: AccessibleInterface{
 								Object: obj,
@@ -120,7 +117,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 						},
 					},
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -148,7 +144,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 			},
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -165,7 +160,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 				Object: obj,
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -179,7 +173,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 					},
 				},
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -210,7 +203,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 		},
 		NativeInterface: NativeInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -227,7 +219,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 			Object: obj,
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -241,7 +232,6 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 				},
 			},
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -267,20 +257,21 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 }
 
 // NewFontChooserDialog creates a new `GtkFontChooserDialog`.
-func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
+func NewFontChooserDialog(title string, parent Window) *FontChooserDialogClass {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
 
 	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
 
-	var _fontChooserDialog FontChooserDialog // out
+	var _fontChooserDialog *FontChooserDialogClass // out
 
-	_fontChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontChooserDialog)
+	_fontChooserDialog = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontChooserDialogClass)
 
 	return _fontChooserDialog
 }

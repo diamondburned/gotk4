@@ -49,7 +49,7 @@ func NewPlaneAlloc() *Plane {
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(*C.graphene_plane_t))
 	runtime.SetFinalizer(_plane, func(v *Plane) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -68,8 +68,8 @@ func (p *Plane) Distance(point *Point3D) float32 {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C.float               // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
 
 	_cret = C.graphene_plane_distance(_arg0, _arg1)
 
@@ -86,8 +86,8 @@ func (a *Plane) Equal(b *Plane) bool {
 	var _arg1 *C.graphene_plane_t // out
 	var _cret C._Bool             // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
+	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
 
 	_cret = C.graphene_plane_equal(_arg0, _arg1)
 
@@ -104,7 +104,7 @@ func (a *Plane) Equal(b *Plane) bool {
 func (p *Plane) free() {
 	var _arg0 *C.graphene_plane_t // out
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
 
 	C.graphene_plane_free(_arg0)
 }
@@ -115,7 +115,7 @@ func (p *Plane) Constant() float32 {
 	var _arg0 *C.graphene_plane_t // out
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
 
 	_cret = C.graphene_plane_get_constant(_arg0)
 
@@ -134,15 +134,15 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	var _arg2 C.float             // out
 	var _cret *C.graphene_plane_t // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(normal))
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
 	_arg2 = C.float(constant)
 
 	_cret = C.graphene_plane_init(_arg0, _arg1, _arg2)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(*C.graphene_plane_t))
 
 	return _plane
 }
@@ -154,14 +154,14 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 	var _arg1 *C.graphene_plane_t // out
 	var _cret *C.graphene_plane_t // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
+	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
 
 	_cret = C.graphene_plane_init_from_plane(_arg0, _arg1)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(*C.graphene_plane_t))
 
 	return _plane
 }
@@ -174,15 +174,15 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 	var _arg2 *C.graphene_point3d_t // out
 	var _cret *C.graphene_plane_t   // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(normal))
-	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(*Vec3))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
 
 	_cret = C.graphene_plane_init_from_point(_arg0, _arg1, _arg2)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(*C.graphene_plane_t))
 
 	return _plane
 }
@@ -199,16 +199,16 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 	var _arg3 *C.graphene_point3d_t // out
 	var _cret *C.graphene_plane_t   // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(a))
-	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(b))
-	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(c))
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
+	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(*Point3D))
 
 	_cret = C.graphene_plane_init_from_points(_arg0, _arg1, _arg2, _arg3)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(*C.graphene_plane_t))
 
 	return _plane
 }
@@ -220,14 +220,14 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 	var _arg1 *C.graphene_vec4_t  // out
 	var _cret *C.graphene_plane_t // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(*Plane))
+	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(*Vec4))
 
 	_cret = C.graphene_plane_init_from_vec4(_arg0, _arg1)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(unsafe.Pointer(*C.graphene_plane_t))
 
 	return _plane
 }

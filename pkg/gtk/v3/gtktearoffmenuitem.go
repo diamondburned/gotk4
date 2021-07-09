@@ -65,7 +65,6 @@ func wrapTearoffMenuItem(obj *externglib.Object) TearoffMenuItem {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -81,7 +80,6 @@ func wrapTearoffMenuItem(obj *externglib.Object) TearoffMenuItem {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -97,7 +95,6 @@ func wrapTearoffMenuItem(obj *externglib.Object) TearoffMenuItem {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -122,14 +119,15 @@ func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
 // NewTearoffMenuItem creates a new TearoffMenuItem.
 //
 // Deprecated: since version 3.4.
-func NewTearoffMenuItem() TearoffMenuItem {
+func NewTearoffMenuItem() *TearoffMenuItemClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_tearoff_menu_item_new()
 
-	var _tearoffMenuItem TearoffMenuItem // out
+	var _tearoffMenuItem *TearoffMenuItemClass // out
 
-	_tearoffMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TearoffMenuItem)
+	_tearoffMenuItem = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*TearoffMenuItemClass)
 
 	return _tearoffMenuItem
 }

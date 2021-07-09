@@ -213,20 +213,20 @@ type Dialog interface {
 	// [signal@Gtk.Dialog::response] signal with the given @response_id. The
 	// button is appended to the end of the dialog’s action area. The button
 	// widget is returned, but usually you don’t need it.
-	AddButton(buttonText string, responseId int) Widget
+	AddButton(buttonText string, responseId int) *WidgetClass
 	// ContentArea returns the content area of @dialog.
-	ContentArea() Box
+	ContentArea() *BoxClass
 	// HeaderBar returns the header bar of @dialog.
 	//
 	// Note that the headerbar is only used by the dialog if the
 	// [property@Gtk.Dialog:use-header-bar] property is true.
-	HeaderBar() HeaderBar
+	HeaderBar() *HeaderBarClass
 	// ResponseForWidget gets the response id of a widget in the action area of
 	// a dialog.
 	ResponseForWidget(widget Widget) int
 	// WidgetForResponse gets the widget button that uses the given response ID
 	// in the action area of a dialog.
-	WidgetForResponse(responseId int) Widget
+	WidgetForResponse(responseId int) *WidgetClass
 	// Response emits the ::response signal with the given response ID.
 	//
 	// Used to indicate that the user has responded to the dialog in some way.
@@ -264,7 +264,6 @@ func wrapDialog(obj *externglib.Object) Dialog {
 		WindowClass: WindowClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -287,7 +286,6 @@ func wrapDialog(obj *externglib.Object) Dialog {
 			},
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -304,7 +302,6 @@ func wrapDialog(obj *externglib.Object) Dialog {
 				Object: obj,
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -318,7 +315,6 @@ func wrapDialog(obj *externglib.Object) Dialog {
 					},
 				},
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -346,7 +342,6 @@ func wrapDialog(obj *externglib.Object) Dialog {
 		},
 		NativeInterface: NativeInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -363,7 +358,6 @@ func wrapDialog(obj *externglib.Object) Dialog {
 			Object: obj,
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -377,7 +371,6 @@ func wrapDialog(obj *externglib.Object) Dialog {
 				},
 			},
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -406,14 +399,15 @@ func marshalDialog(p uintptr) (interface{}, error) {
 //
 // Widgets should not be packed into the `GtkWindow` directly, but into the
 // @content_area and @action_area, as described above.
-func NewDialog() Dialog {
+func NewDialog() *DialogClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_dialog_new()
 
-	var _dialog Dialog // out
+	var _dialog *DialogClass // out
 
-	_dialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Dialog)
+	_dialog = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DialogClass)
 
 	return _dialog
 }
@@ -432,8 +426,8 @@ func (d *DialogClass) AddActionWidget(child Widget, responseId int) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg2 = C.int(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
@@ -445,38 +439,40 @@ func (d *DialogClass) AddActionWidget(child Widget, responseId int) {
 // [signal@Gtk.Dialog::response] signal with the given @response_id. The button
 // is appended to the end of the dialog’s action area. The button widget is
 // returned, but usually you don’t need it.
-func (d *DialogClass) AddButton(buttonText string, responseId int) Widget {
+func (d *DialogClass) AddButton(buttonText string, responseId int) *WidgetClass {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
 	_arg1 = (*C.char)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(responseId)
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
 
 // ContentArea returns the content area of @dialog.
-func (d *DialogClass) ContentArea() Box {
+func (d *DialogClass) ContentArea() *BoxClass {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
 
 	_cret = C.gtk_dialog_get_content_area(_arg0)
 
-	var _box Box // out
+	var _box *BoxClass // out
 
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Box)
+	_box = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*BoxClass)
 
 	return _box
 }
@@ -485,17 +481,18 @@ func (d *DialogClass) ContentArea() Box {
 //
 // Note that the headerbar is only used by the dialog if the
 // [property@Gtk.Dialog:use-header-bar] property is true.
-func (d *DialogClass) HeaderBar() HeaderBar {
+func (d *DialogClass) HeaderBar() *HeaderBarClass {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
 
 	_cret = C.gtk_dialog_get_header_bar(_arg0)
 
-	var _headerBar HeaderBar // out
+	var _headerBar *HeaderBarClass // out
 
-	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HeaderBar)
+	_headerBar = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HeaderBarClass)
 
 	return _headerBar
 }
@@ -507,8 +504,8 @@ func (d *DialogClass) ResponseForWidget(widget Widget) int {
 	var _arg1 *C.GtkWidget // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 
@@ -521,19 +518,20 @@ func (d *DialogClass) ResponseForWidget(widget Widget) int {
 
 // WidgetForResponse gets the widget button that uses the given response ID in
 // the action area of a dialog.
-func (d *DialogClass) WidgetForResponse(responseId int) Widget {
+func (d *DialogClass) WidgetForResponse(responseId int) *WidgetClass {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
 	_arg1 = C.int(responseId)
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -545,7 +543,7 @@ func (d *DialogClass) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
 	_arg1 = C.int(responseId)
 
 	C.gtk_dialog_response(_arg0, _arg1)
@@ -559,7 +557,7 @@ func (d *DialogClass) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
 	_arg1 = C.int(responseId)
 
 	C.gtk_dialog_set_default_response(_arg0, _arg1)
@@ -574,7 +572,7 @@ func (d *DialogClass) SetResponseSensitive(responseId int, setting bool) {
 	var _arg1 C.int        // out
 	var _arg2 C.gboolean   // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer((&Dialog).Native()))
 	_arg1 = C.int(responseId)
 	if setting {
 		_arg2 = C.TRUE

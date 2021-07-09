@@ -98,7 +98,7 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 
 // NewSocketAddressFromNative creates a Address subclass corresponding to the
 // native struct sockaddr @native.
-func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
+func NewSocketAddressFromNative(native interface{}, len uint) *SocketAddressClass {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
@@ -108,9 +108,10 @@ func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
 
 	_cret = C.g_socket_address_new_from_native(_arg1, _arg2)
 
-	var _socketAddress SocketAddress // out
+	var _socketAddress *SocketAddressClass // out
 
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddress)
+	_socketAddress = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SocketAddressClass)
 
 	return _socketAddress
 }
@@ -120,13 +121,13 @@ func (a *SocketAddressClass) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer((&SocketAddress).Native()))
 
 	_cret = C.g_socket_address_get_family(_arg0)
 
 	var _socketFamily SocketFamily // out
 
-	_socketFamily = SocketFamily(_cret)
+	_socketFamily = (SocketFamily)(C.GSocketFamily)
 
 	return _socketFamily
 }
@@ -137,7 +138,7 @@ func (a *SocketAddressClass) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.gssize          // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer((&SocketAddress).Native()))
 
 	_cret = C.g_socket_address_get_native_size(_arg0)
 
@@ -160,7 +161,7 @@ func (a *SocketAddressClass) ToNative(dest interface{}, destlen uint) error {
 	var _arg2 C.gsize           // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer((&SocketAddress).Native()))
 	_arg1 = (C.gpointer)(box.Assign(dest))
 	_arg2 = C.gsize(destlen)
 

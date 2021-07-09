@@ -29,14 +29,15 @@ import "C"
 // will not be updated. Using gtk_widget_get_pango_context() is more convenient
 // if you want to keep a context around and track changes to the screen’s font
 // rendering settings.
-func PangoContextGet() pango.Context {
+func PangoContextGet() *pango.ContextClass {
 	var _cret *C.PangoContext // in
 
 	_cret = C.gdk_pango_context_get()
 
-	var _context pango.Context // out
+	var _context *pango.ContextClass // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Context)
+	_context = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.ContextClass)
 
 	return _context
 }
@@ -54,17 +55,18 @@ func PangoContextGet() pango.Context {
 // be updated. Using gtk_widget_get_pango_context() is more convenient if you
 // want to keep a context around and track changes to the font rendering
 // settings.
-func PangoContextGetForDisplay(display Display) pango.Context {
+func PangoContextGetForDisplay(display Display) *pango.ContextClass {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.PangoContext // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	_cret = C.gdk_pango_context_get_for_display(_arg1)
 
-	var _context pango.Context // out
+	var _context *pango.ContextClass // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Context)
+	_context = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.ContextClass)
 
 	return _context
 }
@@ -82,17 +84,18 @@ func PangoContextGetForDisplay(display Display) pango.Context {
 // updated. Using gtk_widget_get_pango_context() is more convenient if you want
 // to keep a context around and track changes to the screen’s font rendering
 // settings.
-func PangoContextGetForScreen(screen Screen) pango.Context {
+func PangoContextGetForScreen(screen Screen) *pango.ContextClass {
 	var _arg1 *C.GdkScreen    // out
 	var _cret *C.PangoContext // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&Screen).Native()))
 
 	_cret = C.gdk_pango_context_get_for_screen(_arg1)
 
-	var _context pango.Context // out
+	var _context *pango.ContextClass // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Context)
+	_context = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.ContextClass)
 
 	return _context
 }

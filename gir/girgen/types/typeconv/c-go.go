@@ -48,29 +48,29 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		return false
 	}
 
-	value.InType = types.AnyTypeCGo(value.AnyType)
+	value.In.Type = types.AnyTypeCGo(value.AnyType)
 	if value.ParameterIsOutput() {
 		// Dereference the input type, as we'll be passing in references.
-		value.InType = strings.TrimPrefix(value.InType, "*")
+		value.In.Type = strings.TrimPrefix(value.In.Type, "*")
 	}
 
 	if array.FixedSize > 0 && value.outputAllocs() {
-		value.inDecl.Linef("var %s [%d]%s", value.InName, array.FixedSize, value.InType)
+		value.inDecl.Linef("var %s [%d]%s", value.InName, array.FixedSize, value.In.Type)
 		// We've allocated an array, so have C write to this array.
-		value.InCall = fmt.Sprintf("&%s[0]", value.InName)
+		value.In.Call = fmt.Sprintf("&%s[0]", value.InName)
 	} else {
-		value.inDecl.Linef("var %s %s", value.InName, value.InType)
+		value.inDecl.Linef("var %s %s", value.InName, value.In.Type)
 		// Slice allocations are done later, since we don't know the length yet.
 		// CallerAllocates is probably impossible to do here.
-		value.InCall = fmt.Sprintf("&%s", value.InName)
+		value.In.Call = fmt.Sprintf("&%s", value.InName)
 	}
 
 	if array.FixedSize > 0 {
-		value.OutType = fmt.Sprintf("[%d]%s", array.FixedSize, inner.OutType)
-		value.outDecl.Linef("var %s %s", value.OutName, value.OutType)
+		value.Out.Type = fmt.Sprintf("[%d]%s", array.FixedSize, inner.Out.Type)
+		value.outDecl.Linef("var %s %s", value.OutName, value.Out.Type)
 	} else {
-		value.OutType = fmt.Sprintf("[]%s", inner.OutType)
-		value.outDecl.Linef("var %s %s", value.OutName, value.OutType)
+		value.Out.Type = fmt.Sprintf("[]%s", inner.Out.Type)
+		value.outDecl.Linef("var %s %s", value.OutName, value.Out.Type)
 	}
 
 	switch {
@@ -83,7 +83,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		if inner.Resolved.CanCast() {
 			value.p.Linef(
 				"%s = *(*%s)(unsafe.Pointer(&%s))",
-				value.OutName, value.OutType, value.InName)
+				value.Out.Set, value.Out.Type, value.InName)
 			return true
 		}
 
@@ -107,7 +107,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		value.inDecl.Linef("var %s %s // in", length.InName, length.InType)
+		value.inDecl.Linef("var %s %s // in", length.InName, length.In.Type)
 		// Length has no outDecl.
 
 		// If we're owning the new data, then we will directly use the backing
@@ -122,10 +122,10 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			value.header.Import("runtime")
 
 			value.p.Linef("%s = unsafe.Slice((*%s)(unsafe.Pointer(%s)), %s)",
-				value.OutName, inner.OutType, value.InName, length.InName)
+				value.Out.Set, inner.Out.Type, value.InName, length.InName)
 
 			// See: https://golang.org/misc/cgo/gmp/gmp.go?s=3086:3757#L87
-			value.p.Linef("runtime.SetFinalizer(&%s, func(v *%s) {", value.OutName, value.OutType)
+			value.p.Linef("runtime.SetFinalizer(&%s, func(v *%s) {", value.OutName, value.Out.Type)
 			value.p.Linef("  C.free(unsafe.Pointer(&(*v)[0]))")
 			value.p.Linef("})")
 
@@ -140,16 +140,16 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		if inner.Resolved.CanCast() {
 			// We can cast directly, which means no conversion is needed. Use
 			// the faster built-in copy() for this.
-			value.p.Linef("%s = make(%s, %s)", value.OutName, value.OutType, length.InName)
+			value.p.Linef("%s = make(%s, %s)", value.Out.Set, value.Out.Type, length.InName)
 			value.p.Linef(
 				"copy(%s, unsafe.Slice((*%s)(unsafe.Pointer(%s)), %s))",
-				value.OutName, inner.OutType, value.InName, length.InName)
+				value.OutName, inner.Out.Type, value.InName, length.InName)
 			return true
 		}
 
 		value.p.Descend()
 		value.p.Linef("src := unsafe.Slice(%s, %s)", value.InName, length.InName)
-		value.p.Linef("%s = make(%s, %s)", value.OutName, value.OutType, length.InName)
+		value.p.Linef("%s = make(%s, %s)", value.Out.Set, value.Out.Type, length.InName)
 		value.p.Linef("for i := 0; i < int(%s); i++ {", length.InName)
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
@@ -163,8 +163,8 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 		value.p.Linef("var len uintptr")
 		value.p.Linef("p := C.g_array_steal(&%s, (*C.gsize)(&len))", value.InName)
-		value.p.Linef("src := unsafe.Slice((*%s)(p), len)", inner.InType)
-		value.p.Linef("%s = make(%s, len)", value.OutName, value.OutType)
+		value.p.Linef("src := unsafe.Slice((*%s)(p), len)", inner.In.Type)
+		value.p.Linef("%s = make(%s, len)", value.Out.Set, value.Out.Type)
 		value.p.Linef("for i := 0; i < len; i++ {", value.InName)
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
@@ -183,7 +183,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			// If we're fully getting the backing array, then we can just steal
 			// it (since we own it now), which is less copying.
 			value.p.Linef("p := C.g_byte_array_steal(&%s, (*C.gsize)(&len))", value.InName)
-			value.p.Linef("%s = unsafe.Slice((*byte)(p), len)", value.OutName)
+			value.p.Linef("%s = unsafe.Slice((*byte)(p), len)", value.Out.Set)
 			value.p.Linef("runtime.SetFinalizer(&%s, func(v *[]byte) {")
 			value.p.Linef("  C.free(unsafe.Pointer(&(*v)[0]))")
 			value.p.Linef("})")
@@ -191,7 +191,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			return true
 		}
 
-		value.p.Linef("%s = make([]byte, %s.len)", value.OutName, value.InName)
+		value.p.Linef("%s = make([]byte, %s.len)", value.Out.Set, value.InName)
 		value.p.Linef(
 			// Use the built-in copy(), because it is fast.
 			"copy(%s, unsafe.Slice((*byte)(%s.data), %[2]s.len))",
@@ -205,14 +205,14 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 		// Scan for the length.
 		value.p.Linef("var i int")
-		value.p.Linef("var z %s", inner.InType)
+		value.p.Linef("var z %s", inner.In.Type)
 		value.p.Linef("for p := %s; *p != z; p = &unsafe.Slice(p, i+1)[i] {", value.InName)
 		value.p.Linef("  i++")
 		value.p.Linef("}")
 		value.p.EmptyLine()
 
 		value.p.Linef("src := unsafe.Slice(%s, i)", value.InName)
-		value.p.Linef("%s = make(%s, i)", value.OutName, value.OutType)
+		value.p.Linef("%s = make(%s, i)", value.Out.Set, value.Out.Type)
 		value.p.Linef("for i := range src {")
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
@@ -241,9 +241,9 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	switch {
 	case value.Resolved.IsBuiltin("interface{}"):
 		value.header.ImportCore("box")
-		// This isn't handled properly if InType is a typed pointer and not a
+		// This isn't handled properly if In.Type is a typed pointer and not a
 		// gpointer.
-		value.p.Linef("%s = box.Get(uintptr(%s))", value.OutName, value.InName)
+		value.p.Linef("%s = box.Get(uintptr(%s))", value.Out.Set, value.InName)
 		return true
 
 	case value.Resolved.IsBuiltin("string"):
@@ -251,7 +251,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		value.p.Linef("%s = C.GoString(%s)", value.OutName, value.InName)
+		value.p.Linef("%s = C.GoString(%s)", value.Out.Set, value.InName)
 		// Only free this if C is transferring ownership to us.
 		if value.isTransferring() {
 			value.header.Import("unsafe")
@@ -260,20 +260,23 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		return true
 
 	case value.Resolved.IsBuiltin("bool"):
-		if !value.isPtr(0) {
-			return false
-		}
-
 		switch types.CleanCType(value.Resolved.CType, true) {
 		case "gboolean":
 			// gboolean is resolved to C type int, so we have to do regular int
 			// comparison.
-			value.p.Linef("if %s != 0 { %s = true }", value.InName, value.OutName)
+			value.p.LineTmpl(value, `
+				if <.InPtr 0><.In.Name> != 0 {
+					<.OutPtr 0><.Out.Set> = true
+				}`)
 		case "_Bool", "bool":
 			fallthrough
 		default:
 			// CGo supports _Bool and bool directly.
-			value.p.Linef("if %s { %s = true }", value.InName, value.OutName)
+			value.p.LineTmpl(value, `
+				if <.InPtr 0><.In.Name> {
+					<.OutPtr 0><.Out.Set> = true
+				}
+			`)
 		}
 		return true
 
@@ -285,7 +288,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.header.ImportCore("gerror")
 		value.header.Import("unsafe")
 
-		value.p.Linef("%s = gerror.Take(unsafe.Pointer(%s))", value.OutName, value.InName)
+		value.p.Linef("%s = gerror.Take(unsafe.Pointer(%s))", value.Out.Set, value.InName)
 		return true
 
 	case value.Resolved.IsPrimitive():
@@ -295,10 +298,10 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			value.header.Import("unsafe")
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(%s))",
-				value.OutName, value.OutType, value.InName,
+				value.Out.Set, value.Out.Type, value.InName,
 			)
 		} else {
-			value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
+			value.p.Linef("%s = %s(%s)", value.Out.Set, value.Out.Type, value.InName)
 		}
 
 		return true
@@ -316,22 +319,16 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	case "GObject.Type", "GType":
 		value.header.NeedsExternGLib()
 		value.header.NeedsGLibObject()
-		value.p.Linef("%s = externglib.Type(%s)", value.OutName, value.InName)
+		value.p.LineTmpl(value, `<.Out.Set> = <.OutPtr 0>externglib.Type(<.InNamePtr 0>)`)
 		return true
 
 	case "GObject.Value":
-		if !value.isPtr(1) {
-			return false
-		}
-
 		value.header.Import("unsafe")
 		value.header.NeedsExternGLib()
 		value.header.NeedsGLibObject()
 
-		value.p.Linef(
-			"%s = externglib.ValueFromNative(unsafe.Pointer(%s))",
-			value.OutName, value.InName,
-		)
+		value.p.LineTmpl(value, `<.Out.Set> =
+			<- .OutPtr 1>externglib.ValueFromNative(unsafe.Pointer(<.InNamePtr 1>))`)
 
 		// Set this to be freed if we have the ownership now.
 		if value.isTransferring() {
@@ -345,12 +342,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		return true
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
-		if !value.isPtr(1) {
-			return false
-		}
-
-		value.cgoSetObject(conv)
-		return true
+		return value.cgoSetObject(conv)
 	}
 
 	// TODO: function
@@ -367,20 +359,11 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
-		if !value.isPtr(0) {
-			return false
-		}
-
-		value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
+		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
 		return true
 
 	case *gir.Class, *gir.Interface:
-		if !value.isPtr(1) {
-			return false
-		}
-
-		value.cgoSetObject(conv)
-		return true
+		return value.cgoSetObject(conv)
 
 	case *gir.Record:
 		// // We can slightly cheat here. Since Go structs are declared by wrapping
@@ -393,19 +376,18 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		// 	value.inDecl.Reset()
 
 		// 	// Write the Go type directly.
-		// 	value.inDecl.Linef("var %s %s", value.OutName, value.OutType)
-		// 	value.InCall = fmt.Sprintf("(%s)(%s)", value.InType, value.OutName)
+		// 	value.inDecl.Linef("var %s %s", value.OutName, value.Out.Type)
+		// 	value.In.Call = fmt.Sprintf("(%s)(%s)", value.In.Type, value.OutName)
 
 		// 	return true
 		// }
 
+		value.header.Import("unsafe")
 		// Require 1 pointer to avoid weird copies.
-		if !value.isPtr(1) {
+		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>))")
+		if value.fail {
 			return false
 		}
-
-		value.header.Import("unsafe")
-		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.OutName, value.OutType, value.InName)
 
 		var free *gir.Method
 
@@ -417,10 +399,10 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		// We can take ownership if the type can be reference-counted anyway.
 		if value.isTransferring() || free != nil {
 			value.header.Import("runtime")
-			value.p.Linef("runtime.SetFinalizer(%s, func(v %s) {", value.OutName, value.OutType)
+			value.p.Linef("runtime.SetFinalizer(%s, func(v %s) {", value.OutName, value.Out.Type)
 
 			if free != nil {
-				value.p.Linef("C.%s((%s)(unsafe.Pointer(v)))", free.CIdentifier, value.InType)
+				value.p.Linef("C.%s((%s)(unsafe.Pointer(v)))", free.CIdentifier, value.In.Type)
 			} else {
 				value.p.Linef("C.free(unsafe.Pointer(v))")
 			}
@@ -439,6 +421,10 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			value.TransferOwnership.TransferOwnership,
 		)
 		return result != nil
+	}
+
+	if value.Optional {
+		value.p.Linef("var %s %s // unsupported", value.OutName, value.Out.Type)
 	}
 
 	return false

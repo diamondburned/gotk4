@@ -59,7 +59,6 @@ func wrapShortcutsSection(obj *externglib.Object) ShortcutsSection {
 		BoxClass: BoxClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,

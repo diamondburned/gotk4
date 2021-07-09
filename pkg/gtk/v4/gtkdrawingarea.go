@@ -29,7 +29,7 @@ func init() {
 //
 // This function should exclusively redraw the contents of the drawing area and
 // must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func(drawingArea DrawingArea, cr *cairo.Context, width int, height int)
+type DrawingAreaDrawFunc func(drawingArea *DrawingAreaClass, cr *cairo.Context, width int, height int, userData interface{})
 
 //export gotk4_DrawingAreaDrawFunc
 func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
@@ -38,18 +38,21 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 		panic(`callback not found`)
 	}
 
-	var drawingArea DrawingArea // out
-	var cr *cairo.Context       // out
-	var width int               // out
-	var height int              // out
+	var drawingArea *DrawingAreaClass // out
+	var cr *cairo.Context             // out
+	var width int                     // out
+	var height int                    // out
+	var userData interface{}          // out
 
-	drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(DrawingArea)
-	cr = (*cairo.Context)(unsafe.Pointer(arg1))
+	drawingArea = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg0))).(*DrawingAreaClass)
+	cr = (*cairo.Context)(unsafe.Pointer(*C.cairo_t))
 	width = int(arg2)
 	height = int(arg3)
+	userData = box.Get(uintptr(arg4))
 
 	fn := v.(DrawingAreaDrawFunc)
-	fn(drawingArea, cr, width, height)
+	fn(drawingArea, cr, width, height, userData)
 }
 
 // DrawingAreaOverrider contains methods that are overridable.
@@ -173,7 +176,6 @@ func wrapDrawingArea(obj *externglib.Object) DrawingArea {
 	return &DrawingAreaClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -204,14 +206,15 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 }
 
 // NewDrawingArea creates a new drawing area.
-func NewDrawingArea() DrawingArea {
+func NewDrawingArea() *DrawingAreaClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_drawing_area_new()
 
-	var _drawingArea DrawingArea // out
+	var _drawingArea *DrawingAreaClass // out
 
-	_drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DrawingArea)
+	_drawingArea = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DrawingAreaClass)
 
 	return _drawingArea
 }
@@ -221,7 +224,7 @@ func (s *DrawingAreaClass) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer((&DrawingArea).Native()))
 
 	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 
@@ -237,7 +240,7 @@ func (s *DrawingAreaClass) ContentWidth() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer((&DrawingArea).Native()))
 
 	_cret = C.gtk_drawing_area_get_content_width(_arg0)
 
@@ -260,7 +263,7 @@ func (s *DrawingAreaClass) SetContentHeight(height int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer((&DrawingArea).Native()))
 	_arg1 = C.int(height)
 
 	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
@@ -278,7 +281,7 @@ func (s *DrawingAreaClass) SetContentWidth(width int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer((&DrawingArea).Native()))
 	_arg1 = C.int(width)
 
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)

@@ -116,7 +116,7 @@ type ColumnView interface {
 	// g_object_ref (gtk_column_view_get_sorter (view))); model =
 	// gtk_sort_list_model_new (store, sorter); selection = gtk_no_selection_new
 	// (model); gtk_column_view_set_model (view, selection); “`
-	Sorter() Sorter
+	Sorter() *SorterClass
 	// InsertColumn inserts a column at the given position in the columns of
 	// @self.
 	//
@@ -138,19 +138,6 @@ type ColumnView interface {
 	// SetSingleClickActivate sets whether rows should be activated on single
 	// click and selected on hover.
 	SetSingleClickActivate(singleClickActivate bool)
-	// SortByColumn sets the sorting of the view.
-	//
-	// This function should be used to set up the initial sorting. At runtime,
-	// users can change the sorting of a column view by clicking on the list
-	// headers.
-	//
-	// This call only has an effect if the sorter returned by
-	// [method@Gtk.ColumnView.get_sorter] is set on a sort model, and
-	// [method@Gtk.ColumnViewColumn.set_sorter] has been called on @column to
-	// associate a sorter with the column.
-	//
-	// If @column is nil, the view will be unsorted.
-	SortByColumn(column ColumnViewColumn, direction SortType)
 }
 
 // ColumnViewClass implements the ColumnView interface.
@@ -169,7 +156,6 @@ func wrapColumnView(obj *externglib.Object) ColumnView {
 	return &ColumnViewClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -207,8 +193,8 @@ func (s *ColumnViewClass) AppendColumn(column ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
+	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
 
 	C.gtk_column_view_append_column(_arg0, _arg1)
 }
@@ -219,7 +205,7 @@ func (s *ColumnViewClass) EnableRubberband() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 
 	_cret = C.gtk_column_view_get_enable_rubberband(_arg0)
 
@@ -237,7 +223,7 @@ func (s *ColumnViewClass) Reorderable() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 
 	_cret = C.gtk_column_view_get_reorderable(_arg0)
 
@@ -256,7 +242,7 @@ func (s *ColumnViewClass) ShowColumnSeparators() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 
 	_cret = C.gtk_column_view_get_show_column_separators(_arg0)
 
@@ -275,7 +261,7 @@ func (s *ColumnViewClass) ShowRowSeparators() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 
 	_cret = C.gtk_column_view_get_show_row_separators(_arg0)
 
@@ -294,7 +280,7 @@ func (s *ColumnViewClass) SingleClickActivate() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 
 	_cret = C.gtk_column_view_get_single_click_activate(_arg0)
 
@@ -322,17 +308,18 @@ func (s *ColumnViewClass) SingleClickActivate() bool {
 // (gtk_column_view_get_sorter (view))); model = gtk_sort_list_model_new (store,
 // sorter); selection = gtk_no_selection_new (model); gtk_column_view_set_model
 // (view, selection); “`
-func (s *ColumnViewClass) Sorter() Sorter {
+func (s *ColumnViewClass) Sorter() *SorterClass {
 	var _arg0 *C.GtkColumnView // out
 	var _cret *C.GtkSorter     // in
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 
 	_cret = C.gtk_column_view_get_sorter(_arg0)
 
-	var _sorter Sorter // out
+	var _sorter *SorterClass // out
 
-	_sorter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Sorter)
+	_sorter = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SorterClass)
 
 	return _sorter
 }
@@ -345,9 +332,9 @@ func (s *ColumnViewClass) InsertColumn(position uint, column ColumnViewColumn) {
 	var _arg1 C.guint                // out
 	var _arg2 *C.GtkColumnViewColumn // out
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 	_arg1 = C.guint(position)
-	_arg2 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
+	_arg2 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
 
 	C.gtk_column_view_insert_column(_arg0, _arg1, _arg2)
 }
@@ -357,8 +344,8 @@ func (s *ColumnViewClass) RemoveColumn(column ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
+	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer((&ColumnViewColumn).Native()))
 
 	C.gtk_column_view_remove_column(_arg0, _arg1)
 }
@@ -369,7 +356,7 @@ func (s *ColumnViewClass) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 	if enableRubberband {
 		_arg1 = C.TRUE
 	}
@@ -382,7 +369,7 @@ func (s *ColumnViewClass) SetReorderable(reorderable bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 	if reorderable {
 		_arg1 = C.TRUE
 	}
@@ -396,7 +383,7 @@ func (s *ColumnViewClass) SetShowColumnSeparators(showColumnSeparators bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 	if showColumnSeparators {
 		_arg1 = C.TRUE
 	}
@@ -410,7 +397,7 @@ func (s *ColumnViewClass) SetShowRowSeparators(showRowSeparators bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 	if showRowSeparators {
 		_arg1 = C.TRUE
 	}
@@ -424,33 +411,10 @@ func (s *ColumnViewClass) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer((&ColumnView).Native()))
 	if singleClickActivate {
 		_arg1 = C.TRUE
 	}
 
 	C.gtk_column_view_set_single_click_activate(_arg0, _arg1)
-}
-
-// SortByColumn sets the sorting of the view.
-//
-// This function should be used to set up the initial sorting. At runtime, users
-// can change the sorting of a column view by clicking on the list headers.
-//
-// This call only has an effect if the sorter returned by
-// [method@Gtk.ColumnView.get_sorter] is set on a sort model, and
-// [method@Gtk.ColumnViewColumn.set_sorter] has been called on @column to
-// associate a sorter with the column.
-//
-// If @column is nil, the view will be unsorted.
-func (s *ColumnViewClass) SortByColumn(column ColumnViewColumn, direction SortType) {
-	var _arg0 *C.GtkColumnView       // out
-	var _arg1 *C.GtkColumnViewColumn // out
-	var _arg2 C.GtkSortType          // out
-
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
-	_arg2 = C.GtkSortType(direction)
-
-	C.gtk_column_view_sort_by_column(_arg0, _arg1, _arg2)
 }

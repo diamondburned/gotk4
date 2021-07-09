@@ -92,7 +92,6 @@ func wrapLinkButton(obj *externglib.Object) LinkButton {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -108,7 +107,6 @@ func wrapLinkButton(obj *externglib.Object) LinkButton {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -124,7 +122,6 @@ func wrapLinkButton(obj *externglib.Object) LinkButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -147,7 +144,7 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 }
 
 // NewLinkButton creates a new LinkButton with the URI as its text.
-func NewLinkButton(uri string) LinkButton {
+func NewLinkButton(uri string) *LinkButtonClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -156,15 +153,16 @@ func NewLinkButton(uri string) LinkButton {
 
 	_cret = C.gtk_link_button_new(_arg1)
 
-	var _linkButton LinkButton // out
+	var _linkButton *LinkButtonClass // out
 
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LinkButton)
+	_linkButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*LinkButtonClass)
 
 	return _linkButton
 }
 
 // NewLinkButtonWithLabel creates a new LinkButton containing a label.
-func NewLinkButtonWithLabel(uri string, label string) LinkButton {
+func NewLinkButtonWithLabel(uri string, label string) *LinkButtonClass {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -176,9 +174,10 @@ func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 
 	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
 
-	var _linkButton LinkButton // out
+	var _linkButton *LinkButtonClass // out
 
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(LinkButton)
+	_linkButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*LinkButtonClass)
 
 	return _linkButton
 }
@@ -188,7 +187,7 @@ func (l *LinkButtonClass) URI() string {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer((&LinkButton).Native()))
 
 	_cret = C.gtk_link_button_get_uri(_arg0)
 
@@ -208,7 +207,7 @@ func (l *LinkButtonClass) Visited() bool {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer((&LinkButton).Native()))
 
 	_cret = C.gtk_link_button_get_visited(_arg0)
 
@@ -227,7 +226,7 @@ func (l *LinkButtonClass) SetURI(uri string) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer((&LinkButton).Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -240,7 +239,7 @@ func (l *LinkButtonClass) SetVisited(visited bool) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer((&LinkButton).Native()))
 	if visited {
 		_arg1 = C.TRUE
 	}

@@ -42,7 +42,7 @@ type ActionBar interface {
 	gextras.Objector
 
 	// CenterWidget retrieves the center bar widget of the bar.
-	CenterWidget() Widget
+	CenterWidget() *WidgetClass
 	// Revealed gets whether the contents of the action bar are revealed.
 	Revealed() bool
 	// PackEnd adds @child to @action_bar, packed with reference to the end of
@@ -78,7 +78,6 @@ func wrapActionBar(obj *externglib.Object) ActionBar {
 	return &ActionBarClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -109,30 +108,32 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 }
 
 // NewActionBar creates a new `GtkActionBar` widget.
-func NewActionBar() ActionBar {
+func NewActionBar() *ActionBarClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_action_bar_new()
 
-	var _actionBar ActionBar // out
+	var _actionBar *ActionBarClass // out
 
-	_actionBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ActionBar)
+	_actionBar = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ActionBarClass)
 
 	return _actionBar
 }
 
 // CenterWidget retrieves the center bar widget of the bar.
-func (a *ActionBarClass) CenterWidget() Widget {
+func (a *ActionBarClass) CenterWidget() *WidgetClass {
 	var _arg0 *C.GtkActionBar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer((&ActionBar).Native()))
 
 	_cret = C.gtk_action_bar_get_center_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -142,7 +143,7 @@ func (a *ActionBarClass) Revealed() bool {
 	var _arg0 *C.GtkActionBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer((&ActionBar).Native()))
 
 	_cret = C.gtk_action_bar_get_revealed(_arg0)
 
@@ -161,8 +162,8 @@ func (a *ActionBarClass) PackEnd(child Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer((&ActionBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_action_bar_pack_end(_arg0, _arg1)
 }
@@ -173,8 +174,8 @@ func (a *ActionBarClass) PackStart(child Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer((&ActionBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_action_bar_pack_start(_arg0, _arg1)
 }
@@ -184,8 +185,8 @@ func (a *ActionBarClass) Remove(child Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer((&ActionBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_action_bar_remove(_arg0, _arg1)
 }
@@ -195,8 +196,8 @@ func (a *ActionBarClass) SetCenterWidget(centerWidget Widget) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer((&ActionBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
 }
@@ -210,7 +211,7 @@ func (a *ActionBarClass) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer((&ActionBar).Native()))
 	if revealed {
 		_arg1 = C.TRUE
 	}

@@ -99,7 +99,6 @@ func wrapCheckMenuItem(obj *externglib.Object) CheckMenuItem {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -115,7 +114,6 @@ func wrapCheckMenuItem(obj *externglib.Object) CheckMenuItem {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -131,7 +129,6 @@ func wrapCheckMenuItem(obj *externglib.Object) CheckMenuItem {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -154,20 +151,21 @@ func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 }
 
 // NewCheckMenuItem creates a new CheckMenuItem.
-func NewCheckMenuItem() CheckMenuItem {
+func NewCheckMenuItem() *CheckMenuItemClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_check_menu_item_new()
 
-	var _checkMenuItem CheckMenuItem // out
+	var _checkMenuItem *CheckMenuItemClass // out
 
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckMenuItem)
+	_checkMenuItem = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CheckMenuItemClass)
 
 	return _checkMenuItem
 }
 
 // NewCheckMenuItemWithLabel creates a new CheckMenuItem with a label.
-func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
+func NewCheckMenuItemWithLabel(label string) *CheckMenuItemClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -176,9 +174,10 @@ func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
 
 	_cret = C.gtk_check_menu_item_new_with_label(_arg1)
 
-	var _checkMenuItem CheckMenuItem // out
+	var _checkMenuItem *CheckMenuItemClass // out
 
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckMenuItem)
+	_checkMenuItem = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CheckMenuItemClass)
 
 	return _checkMenuItem
 }
@@ -186,7 +185,7 @@ func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
 // NewCheckMenuItemWithMnemonic creates a new CheckMenuItem containing a label.
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
 // in @label indicate the mnemonic for the menu item.
-func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
+func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItemClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -195,9 +194,10 @@ func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
 
 	_cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
 
-	var _checkMenuItem CheckMenuItem // out
+	var _checkMenuItem *CheckMenuItemClass // out
 
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckMenuItem)
+	_checkMenuItem = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CheckMenuItemClass)
 
 	return _checkMenuItem
 }
@@ -208,7 +208,7 @@ func (c *CheckMenuItemClass) Active() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer((&CheckMenuItem).Native()))
 
 	_cret = C.gtk_check_menu_item_get_active(_arg0)
 
@@ -226,7 +226,7 @@ func (c *CheckMenuItemClass) DrawAsRadio() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer((&CheckMenuItem).Native()))
 
 	_cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
 
@@ -245,7 +245,7 @@ func (c *CheckMenuItemClass) Inconsistent() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer((&CheckMenuItem).Native()))
 
 	_cret = C.gtk_check_menu_item_get_inconsistent(_arg0)
 
@@ -263,7 +263,7 @@ func (c *CheckMenuItemClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer((&CheckMenuItem).Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -276,7 +276,7 @@ func (c *CheckMenuItemClass) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer((&CheckMenuItem).Native()))
 	if drawAsRadio {
 		_arg1 = C.TRUE
 	}
@@ -296,7 +296,7 @@ func (c *CheckMenuItemClass) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer((&CheckMenuItem).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -308,7 +308,7 @@ func (c *CheckMenuItemClass) SetInconsistent(setting bool) {
 func (c *CheckMenuItemClass) Toggled() {
 	var _arg0 *C.GtkCheckMenuItem // out
 
-	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer((&CheckMenuItem).Native()))
 
 	C.gtk_check_menu_item_toggled(_arg0)
 }

@@ -38,7 +38,7 @@ func init() {
 // yet, so the interface currently has no use.
 type SocketConnectableOverrider interface {
 	// Enumerate creates a AddressEnumerator for @connectable.
-	Enumerate() SocketAddressEnumerator
+	Enumerate() *SocketAddressEnumeratorClass
 	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
 	// return a Address for each of its addresses that you must connect to via a
 	// proxy.
@@ -46,7 +46,7 @@ type SocketConnectableOverrider interface {
 	// If @connectable does not implement
 	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
 	// g_socket_connectable_enumerate().
-	ProxyEnumerate() SocketAddressEnumerator
+	ProxyEnumerate() *SocketAddressEnumeratorClass
 	// String: format a Connectable as a string. This is a human-readable format
 	// for use in debugging output, and is not a stable serialization format. It
 	// is not suitable for use in user interfaces as it exposes too much
@@ -115,7 +115,7 @@ type SocketConnectable interface {
 	gextras.Objector
 
 	// Enumerate creates a AddressEnumerator for @connectable.
-	Enumerate() SocketAddressEnumerator
+	Enumerate() *SocketAddressEnumeratorClass
 	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
 	// return a Address for each of its addresses that you must connect to via a
 	// proxy.
@@ -123,7 +123,7 @@ type SocketConnectable interface {
 	// If @connectable does not implement
 	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
 	// g_socket_connectable_enumerate().
-	ProxyEnumerate() SocketAddressEnumerator
+	ProxyEnumerate() *SocketAddressEnumeratorClass
 	// String: format a Connectable as a string. This is a human-readable format
 	// for use in debugging output, and is not a stable serialization format. It
 	// is not suitable for use in user interfaces as it exposes too much
@@ -154,17 +154,18 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 }
 
 // Enumerate creates a AddressEnumerator for @connectable.
-func (c *SocketConnectableInterface) Enumerate() SocketAddressEnumerator {
+func (c *SocketConnectableInterface) Enumerate() *SocketAddressEnumeratorClass {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&SocketConnectable).Native()))
 
 	_cret = C.g_socket_connectable_enumerate(_arg0)
 
-	var _socketAddressEnumerator SocketAddressEnumerator // out
+	var _socketAddressEnumerator *SocketAddressEnumeratorClass // out
 
-	_socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddressEnumerator)
+	_socketAddressEnumerator = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SocketAddressEnumeratorClass)
 
 	return _socketAddressEnumerator
 }
@@ -174,17 +175,18 @@ func (c *SocketConnectableInterface) Enumerate() SocketAddressEnumerator {
 //
 // If @connectable does not implement g_socket_connectable_proxy_enumerate(),
 // this will fall back to calling g_socket_connectable_enumerate().
-func (c *SocketConnectableInterface) ProxyEnumerate() SocketAddressEnumerator {
+func (c *SocketConnectableInterface) ProxyEnumerate() *SocketAddressEnumeratorClass {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&SocketConnectable).Native()))
 
 	_cret = C.g_socket_connectable_proxy_enumerate(_arg0)
 
-	var _socketAddressEnumerator SocketAddressEnumerator // out
+	var _socketAddressEnumerator *SocketAddressEnumeratorClass // out
 
-	_socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(SocketAddressEnumerator)
+	_socketAddressEnumerator = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*SocketAddressEnumeratorClass)
 
 	return _socketAddressEnumerator
 }
@@ -200,7 +202,7 @@ func (c *SocketConnectableInterface) String() string {
 	var _arg0 *C.GSocketConnectable // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer((&SocketConnectable).Native()))
 
 	_cret = C.g_socket_connectable_to_string(_arg0)
 

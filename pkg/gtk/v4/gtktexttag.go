@@ -86,7 +86,7 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 }
 
 // NewTextTag creates a `GtkTextTag`.
-func NewTextTag(name string) TextTag {
+func NewTextTag(name string) *TextTagClass {
 	var _arg1 *C.char       // out
 	var _cret *C.GtkTextTag // in
 
@@ -95,9 +95,10 @@ func NewTextTag(name string) TextTag {
 
 	_cret = C.gtk_text_tag_new(_arg1)
 
-	var _textTag TextTag // out
+	var _textTag *TextTagClass // out
 
-	_textTag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextTag)
+	_textTag = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TextTagClass)
 
 	return _textTag
 }
@@ -111,7 +112,7 @@ func (t *TextTagClass) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer((&TextTag).Native()))
 	if sizeChanged {
 		_arg1 = C.TRUE
 	}
@@ -124,7 +125,7 @@ func (t *TextTagClass) Priority() int {
 	var _arg0 *C.GtkTextTag // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer((&TextTag).Native()))
 
 	_cret = C.gtk_text_tag_get_priority(_arg0)
 
@@ -152,7 +153,7 @@ func (t *TextTagClass) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.int         // out
 
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer((&TextTag).Native()))
 	_arg1 = C.int(priority)
 
 	C.gtk_text_tag_set_priority(_arg0, _arg1)

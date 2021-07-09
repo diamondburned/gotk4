@@ -252,8 +252,8 @@ func (a *ActionInterface) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(parameter))
+	_arg0 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
 
 	C.g_action_activate(_arg0, _arg1)
 }
@@ -272,8 +272,8 @@ func (a *ActionInterface) ChangeState(value *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
 
 	C.g_action_change_state(_arg0, _arg1)
 }
@@ -286,7 +286,7 @@ func (a *ActionInterface) Enabled() bool {
 	var _arg0 *C.GAction // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.g_action_get_enabled(_arg0)
 
@@ -304,7 +304,7 @@ func (a *ActionInterface) Name() string {
 	var _arg0 *C.GAction // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.g_action_get_name(_arg0)
 
@@ -327,13 +327,13 @@ func (a *ActionInterface) ParameterType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.g_action_get_parameter_type(_arg0)
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(unsafe.Pointer(*C.GVariantType))
 
 	return _variantType
 }
@@ -350,13 +350,13 @@ func (a *ActionInterface) State() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.g_action_get_state(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -386,13 +386,13 @@ func (a *ActionInterface) StateHint() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.g_action_get_state_hint(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -416,13 +416,13 @@ func (a *ActionInterface) StateType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.g_action_get_state_type(_arg0)
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(unsafe.Pointer(*C.GVariantType))
 
 	return _variantType
 }

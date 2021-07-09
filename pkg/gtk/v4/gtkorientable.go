@@ -32,8 +32,6 @@ type Orientable interface {
 
 	// Orientation retrieves the orientation of the @orientable.
 	Orientation() Orientation
-	// SetOrientation sets the orientation of the @orientable.
-	SetOrientation(orientation Orientation)
 }
 
 // OrientableInterface implements the Orientable interface.
@@ -60,24 +58,13 @@ func (o *OrientableInterface) Orientation() Orientation {
 	var _arg0 *C.GtkOrientable // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOrientable)(unsafe.Pointer((&Orientable).Native()))
 
 	_cret = C.gtk_orientable_get_orientation(_arg0)
 
 	var _orientation Orientation // out
 
-	_orientation = Orientation(_cret)
+	_orientation = (Orientation)(C.GtkOrientation)
 
 	return _orientation
-}
-
-// SetOrientation sets the orientation of the @orientable.
-func (o *OrientableInterface) SetOrientation(orientation Orientation) {
-	var _arg0 *C.GtkOrientable // out
-	var _arg1 C.GtkOrientation // out
-
-	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
-	_arg1 = C.GtkOrientation(orientation)
-
-	C.gtk_orientable_set_orientation(_arg0, _arg1)
 }

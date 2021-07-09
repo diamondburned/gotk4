@@ -6,6 +6,8 @@ import (
 	"log"
 	"strings"
 	"text/template"
+
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 )
 
 // Pen wraps a Pen and its own buffer.
@@ -88,4 +90,9 @@ func (p *Pen) WriteTmpl(tmpl *template.Template, args interface{}) {
 		log.Panicln("template error:", err)
 	}
 	p.EmptyLine()
+}
+
+// LineTmpl writes an inline template with the delimiter "{" and "}".
+func (p *Pen) LineTmpl(v interface{}, tmpl string) {
+	gotmpl.Render(p.PenWriter, tmpl, v)
 }

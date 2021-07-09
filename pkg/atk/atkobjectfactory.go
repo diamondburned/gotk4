@@ -43,7 +43,7 @@ type ObjectFactory interface {
 
 	// CreateAccessible provides an Object that implements an accessibility
 	// interface on behalf of @obj
-	CreateAccessible(obj gextras.Objector) Object
+	CreateAccessible(obj gextras.Objector) *ObjectClass
 	// AccessibleType gets the GType of the accessible which is created by the
 	// factory.
 	AccessibleType() externglib.Type
@@ -75,19 +75,20 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 
 // CreateAccessible provides an Object that implements an accessibility
 // interface on behalf of @obj
-func (f *ObjectFactoryClass) CreateAccessible(obj gextras.Objector) Object {
+func (f *ObjectFactoryClass) CreateAccessible(obj gextras.Objector) *ObjectClass {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
 	var _cret *C.AtkObject        // in
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer((&ObjectFactory).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&gextras.Objector).Native()))
 
 	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
 
-	var _object Object // out
+	var _object *ObjectClass // out
 
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Object)
+	_object = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ObjectClass)
 
 	return _object
 }
@@ -98,13 +99,13 @@ func (f *ObjectFactoryClass) AccessibleType() externglib.Type {
 	var _arg0 *C.AtkObjectFactory // out
 	var _cret C.GType             // in
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer((&ObjectFactory).Native()))
 
 	_cret = C.atk_object_factory_get_accessible_type(_arg0)
 
 	var _gType externglib.Type // out
 
-	_gType = externglib.Type(_cret)
+	_gType = externglib.Type(C.GType)
 
 	return _gType
 }
@@ -116,7 +117,7 @@ func (f *ObjectFactoryClass) AccessibleType() externglib.Type {
 func (f *ObjectFactoryClass) Invalidate() {
 	var _arg0 *C.AtkObjectFactory // out
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer((&ObjectFactory).Native()))
 
 	C.atk_object_factory_invalidate(_arg0)
 }

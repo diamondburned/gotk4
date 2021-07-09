@@ -70,7 +70,6 @@ func wrapSeparatorToolItem(obj *externglib.Object) SeparatorToolItem {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -107,14 +106,15 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 }
 
 // NewSeparatorToolItem: create a new SeparatorToolItem
-func NewSeparatorToolItem() SeparatorToolItem {
+func NewSeparatorToolItem() *SeparatorToolItemClass {
 	var _cret *C.GtkToolItem // in
 
 	_cret = C.gtk_separator_tool_item_new()
 
-	var _separatorToolItem SeparatorToolItem // out
+	var _separatorToolItem *SeparatorToolItemClass // out
 
-	_separatorToolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SeparatorToolItem)
+	_separatorToolItem = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SeparatorToolItemClass)
 
 	return _separatorToolItem
 }
@@ -125,7 +125,7 @@ func (i *SeparatorToolItemClass) Draw() bool {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer((&SeparatorToolItem).Native()))
 
 	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
 
@@ -145,7 +145,7 @@ func (i *SeparatorToolItemClass) SetDraw(draw bool) {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer((&SeparatorToolItem).Native()))
 	if draw {
 		_arg1 = C.TRUE
 	}

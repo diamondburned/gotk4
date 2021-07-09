@@ -169,14 +169,15 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 // which will allow themes to override the icons for the application.
 //
 // Deprecated: since version 3.10.
-func NewIconFactory() IconFactory {
+func NewIconFactory() *IconFactoryClass {
 	var _cret *C.GtkIconFactory // in
 
 	_cret = C.gtk_icon_factory_new()
 
-	var _iconFactory IconFactory // out
+	var _iconFactory *IconFactoryClass // out
 
-	_iconFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IconFactory)
+	_iconFactory = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconFactoryClass)
 
 	return _iconFactory
 }
@@ -197,10 +198,10 @@ func (f *IconFactoryClass) Add(stockId string, iconSet *IconSet) {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GtkIconSet     // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer((&IconFactory).Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
+	_arg2 = (*C.GtkIconSet)(unsafe.Pointer(*IconSet))
 
 	C.gtk_icon_factory_add(_arg0, _arg1, _arg2)
 }
@@ -215,7 +216,7 @@ func (f *IconFactoryClass) Add(stockId string, iconSet *IconSet) {
 func (f *IconFactoryClass) AddDefault() {
 	var _arg0 *C.GtkIconFactory // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer((&IconFactory).Native()))
 
 	C.gtk_icon_factory_add_default(_arg0)
 }
@@ -232,7 +233,7 @@ func (f *IconFactoryClass) Lookup(stockId string) *IconSet {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkIconSet     // in
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer((&IconFactory).Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -240,7 +241,7 @@ func (f *IconFactoryClass) Lookup(stockId string) *IconSet {
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	_iconSet = (*IconSet)(unsafe.Pointer(*C.GtkIconSet))
 	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
@@ -257,7 +258,7 @@ func (f *IconFactoryClass) Lookup(stockId string) *IconSet {
 func (f *IconFactoryClass) RemoveDefault() {
 	var _arg0 *C.GtkIconFactory // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer((&IconFactory).Native()))
 
 	C.gtk_icon_factory_remove_default(_arg0)
 }

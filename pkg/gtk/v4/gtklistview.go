@@ -110,7 +110,7 @@ type ListView interface {
 	// the mouse.
 	EnableRubberband() bool
 	// Factory gets the factory that's currently used to populate list items.
-	Factory() ListItemFactory
+	Factory() *ListItemFactoryClass
 	// ShowSeparators returns whether the list box should show separators
 	// between rows.
 	ShowSeparators() bool
@@ -150,7 +150,6 @@ func wrapListView(obj *externglib.Object) ListView {
 		ListBaseClass: ListBaseClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -208,7 +207,7 @@ func (s *ListViewClass) EnableRubberband() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer((&ListView).Native()))
 
 	_cret = C.gtk_list_view_get_enable_rubberband(_arg0)
 
@@ -222,17 +221,18 @@ func (s *ListViewClass) EnableRubberband() bool {
 }
 
 // Factory gets the factory that's currently used to populate list items.
-func (s *ListViewClass) Factory() ListItemFactory {
+func (s *ListViewClass) Factory() *ListItemFactoryClass {
 	var _arg0 *C.GtkListView        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer((&ListView).Native()))
 
 	_cret = C.gtk_list_view_get_factory(_arg0)
 
-	var _listItemFactory ListItemFactory // out
+	var _listItemFactory *ListItemFactoryClass // out
 
-	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListItemFactory)
+	_listItemFactory = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ListItemFactoryClass)
 
 	return _listItemFactory
 }
@@ -243,7 +243,7 @@ func (s *ListViewClass) ShowSeparators() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer((&ListView).Native()))
 
 	_cret = C.gtk_list_view_get_show_separators(_arg0)
 
@@ -262,7 +262,7 @@ func (s *ListViewClass) SingleClickActivate() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer((&ListView).Native()))
 
 	_cret = C.gtk_list_view_get_single_click_activate(_arg0)
 
@@ -281,7 +281,7 @@ func (s *ListViewClass) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer((&ListView).Native()))
 	if enableRubberband {
 		_arg1 = C.TRUE
 	}
@@ -294,8 +294,8 @@ func (s *ListViewClass) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkListView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer((&ListView).Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((&ListItemFactory).Native()))
 
 	C.gtk_list_view_set_factory(_arg0, _arg1)
 }
@@ -306,7 +306,7 @@ func (s *ListViewClass) SetShowSeparators(showSeparators bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer((&ListView).Native()))
 	if showSeparators {
 		_arg1 = C.TRUE
 	}
@@ -320,7 +320,7 @@ func (s *ListViewClass) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer((&ListView).Native()))
 	if singleClickActivate {
 		_arg1 = C.TRUE
 	}

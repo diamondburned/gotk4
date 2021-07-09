@@ -28,14 +28,15 @@ func init() {
 // function, maintainers may call atk_registry_set_factory_type() to associate
 // an ObjectFactory subclass with the GType of objects for whom accessibility
 // information will be provided.
-func GetDefaultRegistry() Registry {
+func GetDefaultRegistry() *RegistryClass {
 	var _cret *C.AtkRegistry // in
 
 	_cret = C.atk_get_default_registry()
 
-	var _registry Registry // out
+	var _registry *RegistryClass // out
 
-	_registry = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Registry)
+	_registry = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RegistryClass)
 
 	return _registry
 }
@@ -50,7 +51,7 @@ type Registry interface {
 
 	// Factory gets an ObjectFactory appropriate for creating Objects
 	// appropriate for @type.
-	Factory(typ externglib.Type) ObjectFactory
+	Factory(typ externglib.Type) *ObjectFactoryClass
 	// FactoryType provides a #GType indicating the ObjectFactory subclass
 	// associated with @type.
 	FactoryType(typ externglib.Type) externglib.Type
@@ -82,19 +83,20 @@ func marshalRegistry(p uintptr) (interface{}, error) {
 
 // Factory gets an ObjectFactory appropriate for creating Objects appropriate
 // for @type.
-func (r *RegistryClass) Factory(typ externglib.Type) ObjectFactory {
+func (r *RegistryClass) Factory(typ externglib.Type) *ObjectFactoryClass {
 	var _arg0 *C.AtkRegistry      // out
 	var _arg1 C.GType             // out
 	var _cret *C.AtkObjectFactory // in
 
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.GType)(typ)
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer((&Registry).Native()))
+	_arg1 = (C.GType)(externglib.Type)
 
 	_cret = C.atk_registry_get_factory(_arg0, _arg1)
 
-	var _objectFactory ObjectFactory // out
+	var _objectFactory *ObjectFactoryClass // out
 
-	_objectFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ObjectFactory)
+	_objectFactory = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ObjectFactoryClass)
 
 	return _objectFactory
 }
@@ -106,14 +108,14 @@ func (r *RegistryClass) FactoryType(typ externglib.Type) externglib.Type {
 	var _arg1 C.GType        // out
 	var _cret C.GType        // in
 
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.GType)(typ)
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer((&Registry).Native()))
+	_arg1 = (C.GType)(externglib.Type)
 
 	_cret = C.atk_registry_get_factory_type(_arg0, _arg1)
 
 	var _gType externglib.Type // out
 
-	_gType = externglib.Type(_cret)
+	_gType = externglib.Type(C.GType)
 
 	return _gType
 }
@@ -126,9 +128,9 @@ func (r *RegistryClass) SetFactoryType(typ externglib.Type, factoryType externgl
 	var _arg1 C.GType        // out
 	var _arg2 C.GType        // out
 
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(r.Native()))
-	_arg1 = (C.GType)(typ)
-	_arg2 = (C.GType)(factoryType)
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer((&Registry).Native()))
+	_arg1 = (C.GType)(externglib.Type)
+	_arg2 = (C.GType)(externglib.Type)
 
 	C.atk_registry_set_factory_type(_arg0, _arg1, _arg2)
 }

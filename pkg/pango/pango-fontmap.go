@@ -35,7 +35,7 @@ type FontMapOverrider interface {
 	// they have attached extra data to the context and such data is changed.
 	Changed()
 	// Family gets a font family by name.
-	Family(name string) FontFamily
+	Family(name string) *FontFamilyClass
 	// Serial returns the current serial number of @fontmap.
 	//
 	// The serial number is initialized to an small number larger than zero when
@@ -50,13 +50,13 @@ type FontMapOverrider interface {
 	// like in `PangoContext`.
 	Serial() uint
 	// ListFamilies: list all families for a fontmap.
-	ListFamilies() []FontFamily
+	ListFamilies() []*FontFamilyClass
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// @desc.
-	LoadFont(context Context, desc *FontDescription) Font
+	LoadFont(context Context, desc *FontDescription) *FontClass
 	// LoadFontset: load a set of fonts in the fontmap that can be used to
 	// render a font matching @desc.
-	LoadFontset(context Context, desc *FontDescription, language *Language) Fontset
+	LoadFontset(context Context, desc *FontDescription, language *Language) *FontsetClass
 }
 
 // FontMap: `PangoFontMap` represents the set of fonts available for a
@@ -83,9 +83,9 @@ type FontMap interface {
 	// have it's own way of create a `PangoContext`. For instance, the GTK
 	// toolkit has, among others, gtk_widget_get_pango_context(). Use those
 	// instead.
-	CreateContext() Context
+	CreateContext() *ContextClass
 	// Family gets a font family by name.
-	Family(name string) FontFamily
+	Family(name string) *FontFamilyClass
 	// Serial returns the current serial number of @fontmap.
 	//
 	// The serial number is initialized to an small number larger than zero when
@@ -100,13 +100,13 @@ type FontMap interface {
 	// like in `PangoContext`.
 	Serial() uint
 	// ListFamilies: list all families for a fontmap.
-	ListFamilies() []FontFamily
+	ListFamilies() []*FontFamilyClass
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// @desc.
-	LoadFont(context Context, desc *FontDescription) Font
+	LoadFont(context Context, desc *FontDescription) *FontClass
 	// LoadFontset: load a set of fonts in the fontmap that can be used to
 	// render a font matching @desc.
-	LoadFontset(context Context, desc *FontDescription, language *Language) Fontset
+	LoadFontset(context Context, desc *FontDescription, language *Language) *FontsetClass
 }
 
 // FontMapClass implements the FontMap interface.
@@ -137,7 +137,7 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 func (f *FontMapClass) Changed() {
 	var _arg0 *C.PangoFontMap // out
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
 
 	C.pango_font_map_changed(_arg0)
 }
@@ -150,36 +150,38 @@ func (f *FontMapClass) Changed() {
 // If you are using Pango as part of a higher-level system, that system may have
 // it's own way of create a `PangoContext`. For instance, the GTK toolkit has,
 // among others, gtk_widget_get_pango_context(). Use those instead.
-func (f *FontMapClass) CreateContext() Context {
+func (f *FontMapClass) CreateContext() *ContextClass {
 	var _arg0 *C.PangoFontMap // out
 	var _cret *C.PangoContext // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
 
 	_cret = C.pango_font_map_create_context(_arg0)
 
-	var _context Context // out
+	var _context *ContextClass // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Context)
+	_context = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ContextClass)
 
 	return _context
 }
 
 // Family gets a font family by name.
-func (f *FontMapClass) Family(name string) FontFamily {
+func (f *FontMapClass) Family(name string) *FontFamilyClass {
 	var _arg0 *C.PangoFontMap    // out
 	var _arg1 *C.char            // out
 	var _cret *C.PangoFontFamily // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_map_get_family(_arg0, _arg1)
 
-	var _fontFamily FontFamily // out
+	var _fontFamily *FontFamilyClass // out
 
-	_fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontFamily)
+	_fontFamily = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontFamilyClass)
 
 	return _fontFamily
 }
@@ -200,7 +202,7 @@ func (f *FontMapClass) Serial() uint {
 	var _arg0 *C.PangoFontMap // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
 
 	_cret = C.pango_font_map_get_serial(_arg0)
 
@@ -212,23 +214,24 @@ func (f *FontMapClass) Serial() uint {
 }
 
 // ListFamilies: list all families for a fontmap.
-func (f *FontMapClass) ListFamilies() []FontFamily {
+func (f *FontMapClass) ListFamilies() []*FontFamilyClass {
 	var _arg0 *C.PangoFontMap // out
 	var _arg1 **C.PangoFontFamily
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
 
 	C.pango_font_map_list_families(_arg0, &_arg1, &_arg2)
 
-	var _families []FontFamily
+	var _families []*FontFamilyClass
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		src := unsafe.Slice(_arg1, _arg2)
-		_families = make([]FontFamily, _arg2)
+		_families = make([]*FontFamilyClass, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_families[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src[i]))).(FontFamily)
+			_families[i] = gextras.CastObject(
+				externglib.Take(unsafe.Pointer(src[i]))).(*FontFamilyClass)
 		}
 	}
 
@@ -236,44 +239,46 @@ func (f *FontMapClass) ListFamilies() []FontFamily {
 }
 
 // LoadFont: load the font in the fontmap that is the closest match for @desc.
-func (f *FontMapClass) LoadFont(context Context, desc *FontDescription) Font {
+func (f *FontMapClass) LoadFont(context Context, desc *FontDescription) *FontClass {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
 	var _arg2 *C.PangoFontDescription // out
 	var _cret *C.PangoFont            // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer((&Context).Native()))
+	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
 
 	_cret = C.pango_font_map_load_font(_arg0, _arg1, _arg2)
 
-	var _font Font // out
+	var _font *FontClass // out
 
-	_font = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Font)
+	_font = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FontClass)
 
 	return _font
 }
 
 // LoadFontset: load a set of fonts in the fontmap that can be used to render a
 // font matching @desc.
-func (f *FontMapClass) LoadFontset(context Context, desc *FontDescription, language *Language) Fontset {
+func (f *FontMapClass) LoadFontset(context Context, desc *FontDescription, language *Language) *FontsetClass {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
 	var _arg2 *C.PangoFontDescription // out
 	var _arg3 *C.PangoLanguage        // out
 	var _cret *C.PangoFontset         // in
 
-	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
-	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer((&FontMap).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer((&Context).Native()))
+	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(*FontDescription))
+	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(*Language))
 
 	_cret = C.pango_font_map_load_fontset(_arg0, _arg1, _arg2, _arg3)
 
-	var _fontset Fontset // out
+	var _fontset *FontsetClass // out
 
-	_fontset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Fontset)
+	_fontset = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*FontsetClass)
 
 	return _fontset
 }

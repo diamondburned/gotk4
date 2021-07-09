@@ -84,7 +84,6 @@ func wrapScrollbar(obj *externglib.Object) Scrollbar {
 		RangeClass: RangeClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -110,24 +109,6 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScrollbar(obj), nil
-}
-
-// NewScrollbar creates a new scrollbar with the given orientation.
-func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
-	var _arg1 C.GtkOrientation // out
-	var _arg2 *C.GtkAdjustment // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-
-	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
-
-	var _scrollbar Scrollbar // out
-
-	_scrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Scrollbar)
-
-	return _scrollbar
 }
 
 func (*ScrollbarClass) privateScrollbarClass() {}

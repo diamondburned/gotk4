@@ -68,7 +68,6 @@ func wrapEmojiChooser(obj *externglib.Object) EmojiChooser {
 		PopoverClass: PopoverClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -91,7 +90,6 @@ func wrapEmojiChooser(obj *externglib.Object) EmojiChooser {
 			},
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -119,7 +117,6 @@ func wrapEmojiChooser(obj *externglib.Object) EmojiChooser {
 		},
 		NativeInterface: NativeInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -145,14 +142,15 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 }
 
 // NewEmojiChooser creates a new `GtkEmojiChooser`.
-func NewEmojiChooser() EmojiChooser {
+func NewEmojiChooser() *EmojiChooserClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_emoji_chooser_new()
 
-	var _emojiChooser EmojiChooser // out
+	var _emojiChooser *EmojiChooserClass // out
 
-	_emojiChooser = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(EmojiChooser)
+	_emojiChooser = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*EmojiChooserClass)
 
 	return _emojiChooser
 }

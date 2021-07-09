@@ -76,7 +76,7 @@ func marshalBookmarkList(p uintptr) (interface{}, error) {
 }
 
 // NewBookmarkList creates a new `GtkBookmarkList` with the given @attributes.
-func NewBookmarkList(filename string, attributes string) BookmarkList {
+func NewBookmarkList(filename string, attributes string) *BookmarkListClass {
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out
 	var _cret *C.GtkBookmarkList // in
@@ -88,9 +88,10 @@ func NewBookmarkList(filename string, attributes string) BookmarkList {
 
 	_cret = C.gtk_bookmark_list_new(_arg1, _arg2)
 
-	var _bookmarkList BookmarkList // out
+	var _bookmarkList *BookmarkListClass // out
 
-	_bookmarkList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(BookmarkList)
+	_bookmarkList = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*BookmarkListClass)
 
 	return _bookmarkList
 }
@@ -100,7 +101,7 @@ func (s *BookmarkListClass) Attributes() string {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer((&BookmarkList).Native()))
 
 	_cret = C.gtk_bookmark_list_get_attributes(_arg0)
 
@@ -116,7 +117,7 @@ func (s *BookmarkListClass) Filename() string {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer((&BookmarkList).Native()))
 
 	_cret = C.gtk_bookmark_list_get_filename(_arg0)
 
@@ -132,7 +133,7 @@ func (s *BookmarkListClass) IOPriority() int {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret C.int              // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer((&BookmarkList).Native()))
 
 	_cret = C.gtk_bookmark_list_get_io_priority(_arg0)
 
@@ -151,7 +152,7 @@ func (s *BookmarkListClass) IsLoading() bool {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer((&BookmarkList).Native()))
 
 	_cret = C.gtk_bookmark_list_is_loading(_arg0)
 
@@ -173,7 +174,7 @@ func (s *BookmarkListClass) SetAttributes(attributes string) {
 	var _arg0 *C.GtkBookmarkList // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer((&BookmarkList).Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -187,7 +188,7 @@ func (s *BookmarkListClass) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkBookmarkList // out
 	var _arg1 C.int              // out
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer((&BookmarkList).Native()))
 	_arg1 = C.int(ioPriority)
 
 	C.gtk_bookmark_list_set_io_priority(_arg0, _arg1)

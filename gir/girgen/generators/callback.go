@@ -254,18 +254,18 @@ func (g *CallbackGenerator) renderBlock() bool {
 
 		switch result.Direction {
 		case typeconv.ConvertCToGo:
-			goCallArgs.Add(result.OutCall)
-			goTypeArgs.Addf("%s %s", result.OutName, result.OutType)
+			goCallArgs.Add(result.Out.Call)
+			goTypeArgs.Addf("%s %s", result.OutName, result.Out.Type)
 
-			g.pen.Line(secInputPre, result.OutDeclare)
+			g.pen.Line(secInputPre, result.Out.Declare)
 			g.pen.Line(secInputConv, result.Conversion)
 
 		case typeconv.ConvertGoToC:
-			goCallRets.Add(result.InCall)
-			goTypeRets.Addf("%s %s", result.InName, result.InType)
+			goCallRets.Add(result.In.Call)
+			goTypeRets.Addf("%s %s", result.InName, result.In.Type)
 
-			// OutDeclare is declared in the function signature.
-			// g.pen.Line(secOutputPre, result.OutDeclare)
+			// Out.Declare is declared in the function signature.
+			// g.pen.Line(secOutputPre, result.Out.Declare)
 
 			g.pen.Line(secOutputConv, result.Conversion)
 		}

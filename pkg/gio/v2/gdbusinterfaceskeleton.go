@@ -79,7 +79,7 @@ type DBusInterfaceSkeleton interface {
 	Flush()
 	// Connection gets the first connection that @interface_ is exported on, if
 	// any.
-	Connection() DBusConnection
+	Connection() *DBusConnectionClass
 	// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
 	// of @interface_
 	Flags() DBusInterfaceSkeletonFlags
@@ -92,8 +92,6 @@ type DBusInterfaceSkeleton interface {
 	Properties() *glib.Variant
 	// HasConnection checks if @interface_ is exported on @connection.
 	HasConnection(connection DBusConnection) bool
-	// SetFlags sets flags describing what the behavior of @skeleton should be.
-	SetFlags(flags DBusInterfaceSkeletonFlags)
 	// Unexport stops exporting @interface_ on all connections it is exported
 	// on.
 	//
@@ -143,8 +141,8 @@ func (i *DBusInterfaceSkeletonClass) Export(connection DBusConnection, objectPat
 	var _arg2 *C.gchar                  // out
 	var _cerr *C.GError                 // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((&DBusConnection).Native()))
 	_arg2 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -167,23 +165,24 @@ func (i *DBusInterfaceSkeletonClass) Export(connection DBusConnection, objectPat
 func (i *DBusInterfaceSkeletonClass) Flush() {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
 
 	C.g_dbus_interface_skeleton_flush(_arg0)
 }
 
 // Connection gets the first connection that @interface_ is exported on, if any.
-func (i *DBusInterfaceSkeletonClass) Connection() DBusConnection {
+func (i *DBusInterfaceSkeletonClass) Connection() *DBusConnectionClass {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusConnection        // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_connection(_arg0)
 
-	var _dBusConnection DBusConnection // out
+	var _dBusConnection *DBusConnectionClass // out
 
-	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DBusConnectionClass)
 
 	return _dBusConnection
 }
@@ -194,13 +193,13 @@ func (i *DBusInterfaceSkeletonClass) Flags() DBusInterfaceSkeletonFlags {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
 	var _cret C.GDBusInterfaceSkeletonFlags // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_flags(_arg0)
 
 	var _dBusInterfaceSkeletonFlags DBusInterfaceSkeletonFlags // out
 
-	_dBusInterfaceSkeletonFlags = DBusInterfaceSkeletonFlags(_cret)
+	_dBusInterfaceSkeletonFlags = (DBusInterfaceSkeletonFlags)(C.GDBusInterfaceSkeletonFlags)
 
 	return _dBusInterfaceSkeletonFlags
 }
@@ -211,13 +210,13 @@ func (i *DBusInterfaceSkeletonClass) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusInterfaceInfo     // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_info(_arg0)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(*C.GDBusInterfaceInfo))
 	C.g_dbus_interface_info_ref(_cret)
 	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
@@ -231,7 +230,7 @@ func (i *DBusInterfaceSkeletonClass) ObjectPath() string {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.gchar                  // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_object_path(_arg0)
 
@@ -247,13 +246,13 @@ func (i *DBusInterfaceSkeletonClass) Properties() *glib.Variant {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GVariant               // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_properties(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -268,8 +267,8 @@ func (i *DBusInterfaceSkeletonClass) HasConnection(connection DBusConnection) bo
 	var _arg1 *C.GDBusConnection        // out
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((&DBusConnection).Native()))
 
 	_cret = C.g_dbus_interface_skeleton_has_connection(_arg0, _arg1)
 
@@ -282,17 +281,6 @@ func (i *DBusInterfaceSkeletonClass) HasConnection(connection DBusConnection) bo
 	return _ok
 }
 
-// SetFlags sets flags describing what the behavior of @skeleton should be.
-func (i *DBusInterfaceSkeletonClass) SetFlags(flags DBusInterfaceSkeletonFlags) {
-	var _arg0 *C.GDBusInterfaceSkeleton     // out
-	var _arg1 C.GDBusInterfaceSkeletonFlags // out
-
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
-	_arg1 = C.GDBusInterfaceSkeletonFlags(flags)
-
-	C.g_dbus_interface_skeleton_set_flags(_arg0, _arg1)
-}
-
 // Unexport stops exporting @interface_ on all connections it is exported on.
 //
 // To unexport @interface_ from only a single connection, use
@@ -300,7 +288,7 @@ func (i *DBusInterfaceSkeletonClass) SetFlags(flags DBusInterfaceSkeletonFlags) 
 func (i *DBusInterfaceSkeletonClass) Unexport() {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
 
 	C.g_dbus_interface_skeleton_unexport(_arg0)
 }
@@ -313,8 +301,8 @@ func (i *DBusInterfaceSkeletonClass) UnexportFromConnection(connection DBusConne
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((&DBusInterfaceSkeleton).Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((&DBusConnection).Native()))
 
 	C.g_dbus_interface_skeleton_unexport_from_connection(_arg0, _arg1)
 }

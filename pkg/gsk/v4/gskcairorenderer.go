@@ -59,14 +59,15 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 //
 // The Cairo renderer is incomplete. It cannot render 3D transformed content and
 // will instead render an error marker. Its usage should be avoided.
-func NewCairoRenderer() CairoRenderer {
+func NewCairoRenderer() *CairoRendererClass {
 	var _cret *C.GskRenderer // in
 
 	_cret = C.gsk_cairo_renderer_new()
 
-	var _cairoRenderer CairoRenderer // out
+	var _cairoRenderer *CairoRendererClass // out
 
-	_cairoRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(CairoRenderer)
+	_cairoRenderer = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CairoRendererClass)
 
 	return _cairoRenderer
 }

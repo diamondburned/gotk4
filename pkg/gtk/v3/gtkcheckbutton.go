@@ -78,7 +78,6 @@ func wrapCheckButton(obj *externglib.Object) CheckButton {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							BuildableInterface: BuildableInterface{
 								Object: obj,
@@ -94,7 +93,6 @@ func wrapCheckButton(obj *externglib.Object) CheckButton {
 				},
 				ActionableInterface: ActionableInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -110,7 +108,6 @@ func wrapCheckButton(obj *externglib.Object) CheckButton {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -126,7 +123,6 @@ func wrapCheckButton(obj *externglib.Object) CheckButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -149,21 +145,22 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 }
 
 // NewCheckButton creates a new CheckButton.
-func NewCheckButton() CheckButton {
+func NewCheckButton() *CheckButtonClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_check_button_new()
 
-	var _checkButton CheckButton // out
+	var _checkButton *CheckButtonClass // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CheckButtonClass)
 
 	return _checkButton
 }
 
 // NewCheckButtonWithLabel creates a new CheckButton with a Label to the right
 // of it.
-func NewCheckButtonWithLabel(label string) CheckButton {
+func NewCheckButtonWithLabel(label string) *CheckButtonClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -172,9 +169,10 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 
 	_cret = C.gtk_check_button_new_with_label(_arg1)
 
-	var _checkButton CheckButton // out
+	var _checkButton *CheckButtonClass // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CheckButtonClass)
 
 	return _checkButton
 }
@@ -182,7 +180,7 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 // NewCheckButtonWithMnemonic creates a new CheckButton containing a label. The
 // label will be created using gtk_label_new_with_mnemonic(), so underscores in
 // @label indicate the mnemonic for the check button.
-func NewCheckButtonWithMnemonic(label string) CheckButton {
+func NewCheckButtonWithMnemonic(label string) *CheckButtonClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -191,9 +189,10 @@ func NewCheckButtonWithMnemonic(label string) CheckButton {
 
 	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
 
-	var _checkButton CheckButton // out
+	var _checkButton *CheckButtonClass // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CheckButtonClass)
 
 	return _checkButton
 }

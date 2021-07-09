@@ -80,7 +80,6 @@ func wrapSwitch(obj *externglib.Object) Switch {
 	return &SwitchClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			BuildableInterface: BuildableInterface{
 				Object: obj,
@@ -88,7 +87,6 @@ func wrapSwitch(obj *externglib.Object) Switch {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -111,14 +109,15 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 }
 
 // NewSwitch creates a new Switch widget.
-func NewSwitch() Switch {
+func NewSwitch() *SwitchClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_switch_new()
 
-	var __switch Switch // out
+	var __switch *SwitchClass // out
 
-	__switch = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Switch)
+	__switch = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SwitchClass)
 
 	return __switch
 }
@@ -128,7 +127,7 @@ func (s *SwitchClass) Active() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer((&Switch).Native()))
 
 	_cret = C.gtk_switch_get_active(_arg0)
 
@@ -146,7 +145,7 @@ func (s *SwitchClass) State() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer((&Switch).Native()))
 
 	_cret = C.gtk_switch_get_state(_arg0)
 
@@ -164,7 +163,7 @@ func (s *SwitchClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer((&Switch).Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -183,7 +182,7 @@ func (s *SwitchClass) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer((&Switch).Native()))
 	if state {
 		_arg1 = C.TRUE
 	}

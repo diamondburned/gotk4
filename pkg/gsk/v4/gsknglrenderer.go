@@ -50,14 +50,15 @@ func marshalNglRenderer(p uintptr) (interface{}, error) {
 }
 
 // NewNglRenderer creates a new Renderer using the new OpenGL renderer.
-func NewNglRenderer() NglRenderer {
+func NewNglRenderer() *NglRendererClass {
 	var _cret *C.GskRenderer // in
 
 	_cret = C.gsk_ngl_renderer_new()
 
-	var _nglRenderer NglRenderer // out
+	var _nglRenderer *NglRendererClass // out
 
-	_nglRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NglRenderer)
+	_nglRenderer = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NglRendererClass)
 
 	return _nglRenderer
 }

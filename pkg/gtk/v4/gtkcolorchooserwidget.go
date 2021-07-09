@@ -70,7 +70,6 @@ func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
 	return &ColorChooserWidgetClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -104,14 +103,15 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 }
 
 // NewColorChooserWidget creates a new `GtkColorChooserWidget`.
-func NewColorChooserWidget() ColorChooserWidget {
+func NewColorChooserWidget() *ColorChooserWidgetClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_color_chooser_widget_new()
 
-	var _colorChooserWidget ColorChooserWidget // out
+	var _colorChooserWidget *ColorChooserWidgetClass // out
 
-	_colorChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorChooserWidget)
+	_colorChooserWidget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ColorChooserWidgetClass)
 
 	return _colorChooserWidget
 }

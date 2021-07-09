@@ -66,17 +66,18 @@ func marshalRendererCellAccessible(p uintptr) (interface{}, error) {
 	return wrapRendererCellAccessible(obj), nil
 }
 
-func NewRendererCellAccessible(renderer CellRenderer) RendererCellAccessible {
+func NewRendererCellAccessible(renderer CellRenderer) *RendererCellAccessibleClass {
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.AtkObject       // in
 
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((&CellRenderer).Native()))
 
 	_cret = C.gtk_renderer_cell_accessible_new(_arg1)
 
-	var _rendererCellAccessible RendererCellAccessible // out
+	var _rendererCellAccessible *RendererCellAccessibleClass // out
 
-	_rendererCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RendererCellAccessible)
+	_rendererCellAccessible = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RendererCellAccessibleClass)
 
 	return _rendererCellAccessible
 }

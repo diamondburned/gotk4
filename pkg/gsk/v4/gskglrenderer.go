@@ -52,14 +52,15 @@ func marshalGLRenderer(p uintptr) (interface{}, error) {
 
 // NewGLRenderer creates a new Renderer using OpenGL. This is the default
 // renderer used by GTK.
-func NewGLRenderer() GLRenderer {
+func NewGLRenderer() *GLRendererClass {
 	var _cret *C.GskRenderer // in
 
 	_cret = C.gsk_gl_renderer_new()
 
-	var _glRenderer GLRenderer // out
+	var _glRenderer *GLRendererClass // out
 
-	_glRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GLRenderer)
+	_glRenderer = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GLRendererClass)
 
 	return _glRenderer
 }

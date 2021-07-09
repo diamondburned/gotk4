@@ -47,12 +47,12 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 	if array.CType == "void*" {
 		// CGo treats void* arrays a bit weirdly: the function's input parameter
 		// type is actually unsafe.Pointer, so we have to wrap it.
-		value.OutCall = fmt.Sprintf("unsafe.Pointer(%s)", value.OutCall)
+		value.Out.Call = fmt.Sprintf("unsafe.Pointer(%s)", value.Out.Call)
 	}
 
 	// This is always the same.
-	value.OutType = types.AnyTypeCGo(value.AnyType)
-	value.outDecl.Linef("var %s %s", value.OutName, value.OutType)
+	value.Out.Type = types.AnyTypeCGo(value.AnyType)
+	value.outDecl.Linef("var %s %s", value.OutName, value.Out.Type)
 
 	// Length is roughly always the same as well.
 	var length *ValueConverted
@@ -64,8 +64,8 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		}
 
 		// Length has no input, as it's from the slice.
-		value.outDecl.Linef("var %s %s", length.OutName, length.OutType)
-		value.p.Linef("%s = %s(len(%s))", length.OutName, length.OutType, value.InName)
+		value.outDecl.Linef("var %s %s", length.OutName, length.Out.Type)
+		value.p.Linef("%s = %s(len(%s))", length.Out.Set, length.Out.Type, value.InName)
 	}
 
 	inner := conv.convertInner(value, value.InName+"[i]", "out[i]")
@@ -80,7 +80,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// This is technically a []byte, and we should use a []byte, because the
 		// C code may mutate the backing array. The internal type is "utf8",
 		// which is false, because the C type is just a single character.
-		value.InType = "[]byte"
+		value.In.Type = "[]byte"
 		value.inDecl.Linef("var %s []byte", value.InName)
 
 		// Only hand over Go memory if we're not copying.
@@ -88,7 +88,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			value.header.Import("unsafe")
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
-				value.OutName, value.OutType, value.InName,
+				value.Out.Set, value.Out.Type, value.InName,
 			)
 
 			return true
@@ -99,18 +99,18 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// but we're giving the caller the length, so an extra byte is fine.
 		value.p.Linef(
 			"%s = (%s)(C.CString(%s))",
-			value.OutName, value.OutType, value.InName,
+			value.Out.Set, value.Out.Type, value.InName,
 		)
 
 		return true
 	}
 
 	if array.FixedSize > 0 {
-		value.InType = fmt.Sprintf("[%d]%s", array.FixedSize, inner.InType)
-		value.inDecl.Linef("var %s %s", value.InName, value.InType)
+		value.In.Type = fmt.Sprintf("[%d]%s", array.FixedSize, inner.In.Type)
+		value.inDecl.Linef("var %s %s", value.InName, value.In.Type)
 	} else {
-		value.InType = fmt.Sprintf("[]%s", inner.InType)
-		value.inDecl.Linef("var %s %s", value.InName, value.InType)
+		value.In.Type = fmt.Sprintf("[]%s", inner.In.Type)
+		value.inDecl.Linef("var %s %s", value.InName, value.In.Type)
 	}
 
 	// TODO: PtrArray
@@ -125,7 +125,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			// properly.
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s))",
-				value.OutName, value.OutType, value.InName)
+				value.Out.Set, value.Out.Type, value.InName)
 
 			return true
 		}
@@ -135,7 +135,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.p.Descend()
 
 		value.p.Linef("out := (*[%d]%s)(unsafe.Pointer(%s))",
-			array.FixedSize, inner.OutType, value.OutName)
+			array.FixedSize, inner.Out.Type, value.OutName)
 
 		value.p.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
 		value.p.Linef("  " + inner.Conversion)
@@ -151,7 +151,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			value.header.Import("unsafe")
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
-				value.OutName, value.OutType, value.InName)
+				value.Out.Set, value.Out.Type, value.InName)
 
 			return true
 		}
@@ -160,7 +160,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 		value.p.Linef(
 			"%s = (%s)(%s)",
-			value.OutName, value.OutType, inner.cmalloc(value.InName, false),
+			value.Out.Set, value.Out.Type, inner.cmalloc(value.InName, false),
 		)
 		if !value.isTransferring() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
@@ -182,10 +182,10 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// https://developer.gnome.org/glib/stable/glib-Arrays.html#g-array-sized-new
 		value.p.Linef(
 			"%s = C.g_array_sized_new(%t, false, C.guint(%s), C.guint(len(%s)))",
-			value.OutName, array.IsZeroTerminated(), inner.csizeof(), value.InName)
+			value.Out.Set, array.IsZeroTerminated(), inner.csizeof(), value.InName)
 		value.p.Linef(
 			"%s = C.g_array_set_size(%s, C.guint(len(%s)))",
-			value.OutName, value.OutName, value.InName)
+			value.Out.Set, value.OutName, value.InName)
 
 		if !value.isTransferring() {
 			value.p.Linef("defer C.g_array_unref(%s)", value.OutName)
@@ -211,7 +211,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			// that will free the Go memory.
 			value.p.Linef(
 				"%s = C.g_byte_array_new_take((*C.guint8)(&%s[0]), C.gsize(len(%s)))",
-				value.OutName, value.InName, value.InName)
+				value.Out.Set, value.InName, value.InName)
 			// Steal will free the GByteArray, but not the underlying array
 			// itself, which is the Go memory.
 			value.p.Linef("defer C.g_byte_array_steal(%s, nil)", value.InName)
@@ -221,10 +221,10 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// https://developer.gnome.org/glib/stable/glib-Byte-Arrays.html#g-byte-array-new
 		value.p.Linef(
 			"%s = C.g_byte_array_sized_new(C.guint(len(%s)))",
-			value.OutName, value.InName)
+			value.Out.Set, value.InName)
 		value.p.Linef(
 			"%s = C.g_byte_array_append(%s, (*C.guint8)(&%s[0]), C.guint(len(%s)))",
-			value.OutName, value.OutName, value.InName, value.InName)
+			value.Out.Set, value.OutName, value.InName, value.InName)
 		// unref will free the underlying array as well.
 		value.p.Linef("defer C.g_byte_array_unref(%s)", value.OutName)
 		return true
@@ -235,20 +235,20 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// See if we can possibly reuse the Go slice in a shorter way.
 		if !value.isTransferring() && inner.Resolved.CanCast() {
 			value.p.Descend()
-			value.p.Linef("var zero %s", inner.InType)
+			value.p.Linef("var zero %s", inner.In.Type)
 			value.p.Linef("%s = append(%[1]s, zero)", value.InName)
 			value.p.Ascend()
 
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
-				value.OutName, value.OutType, value.InName)
+				value.Out.Set, value.Out.Type, value.InName)
 
 			return true
 		}
 
 		value.p.Linef(
 			"%s = (%s)(%s)",
-			value.OutName, value.OutType, inner.cmalloc(value.InName, true))
+			value.Out.Set, value.Out.Type, inner.cmalloc(value.InName, true))
 		if !value.isTransferring() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 		}
@@ -286,7 +286,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.header.ImportCore("box")
 		value.p.Linef(
 			"%s = (%s)(box.Assign(%s))",
-			value.OutName, value.OutType, value.InName,
+			value.Out.Set, value.Out.Type, value.InName,
 		)
 		return true
 
@@ -295,7 +295,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		value.p.Linef("%s = (%s)(C.CString(%s))", value.OutName, value.OutType, value.InName)
+		value.p.Linef("%s = (%s)(C.CString(%s))", value.Out.Set, value.Out.Type, value.InName)
 		// If we're not giving ownership this mallocated string, then we
 		// can free it once done.
 		if !value.isTransferring() {
@@ -306,19 +306,19 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		return true
 
 	case value.Resolved.IsBuiltin("bool"):
-		if !value.isPtr(0) {
-			return false
-		}
-
 		switch types.CleanCType(value.Resolved.CType, true) {
 		case "gboolean":
 			// Manually use C.TRUE.
-			value.p.Linef("if %s { %s = C.TRUE }", value.InName, value.OutName)
+			value.p.LineTmpl(value, `if <.InPtr 0><.In.Name> {
+				<.OutPtr 0><.Out.Set> = C.TRUE
+			}`)
 		case "_Bool", "bool":
 			// CGo supports casting the integer const to a C boolean.
 			fallthrough
 		default:
-			value.p.Linef("if %s { %s = %s(1) }", value.InName, value.OutName, value.OutType)
+			value.p.LineTmpl(value, `if <.InPtr 0><.In.Name> {
+				<.OutPtr 0><.Out.Set> = <.Out.Type>(1)
+			}`)
 		}
 
 		return true
@@ -331,12 +331,12 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.header.ImportCore("gerror")
 		value.header.Import("unsafe")
 
-		value.p.Linef("%s = (*C.GError)(gerror.New(%s))", value.OutName, value.InName)
-		if !value.isTransferring() {
-			value.p.Linef("if %s != nil {", value.OutName)
-			value.p.Linef("  defer C.g_error_free(%s)", value.OutName)
-			value.p.Linef("}")
-		}
+		value.p.Linef("%s = (*C.GError)(gerror.New(%s))", value.Out.Set, value.InName)
+		// if !value.isTransferring() {
+		// 	value.p.Linef("if %s != nil {", value.OutName)
+		// 	value.p.Linef("  defer C.g_error_free(%s)", value.OutName)
+		// 	value.p.Linef("}")
+		// }
 		return true
 
 	case value.Resolved.IsPrimitive():
@@ -346,10 +346,10 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			value.header.Import("unsafe")
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(%s))",
-				value.OutName, value.OutType, value.InName,
+				value.Out.Set, value.Out.Type, value.InName,
 			)
 		} else {
-			value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
+			value.p.Linef("%s = %s(%s)", value.Out.Set, value.Out.Type, value.InName)
 		}
 		return true
 	}
@@ -364,31 +364,18 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	switch types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name) {
 	case "GObject.Type", "GType":
 		value.header.NeedsGLibObject()
-		// Just a primitive.
-		value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
+		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
 		return true
 
 	case "GObject.Value":
-		if !value.isPtr(1) {
-			return false
-		}
-
-		value.header.NeedsGLibObject()
 		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
-		value.p.Linef(
-			"%s = (%s)(unsafe.Pointer(&%s.GValue))",
-			value.OutName, value.OutType, value.InName)
+		value.header.NeedsGLibObject()
+		value.p.LineTmpl(value, "<.Out.Set>=<.OutCast 1>(unsafe.Pointer(&<.InNamePtr 1>.GValue))")
 		return true
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
-		if !value.isPtr(1) {
-			return false
-		}
-
 		value.header.Import("unsafe")
-		value.p.Linef(
-			"%s = (%s)(unsafe.Pointer(%s.Native()))",
-			value.OutName, value.OutType, value.InName)
+		value.p.LineTmpl(value, "<.Out.Set>=<.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>.Native()))")
 		return true
 	}
 
@@ -398,40 +385,19 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
-		switch {
-		case value.isPtr(0):
-			value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
-		case value.isPtr(1):
-			value.header.Import("unsafe")
-			value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.OutName, value.OutType, value.InName)
-		default:
-			return false
-		}
-
-		return true
+		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
+		return value.fail
 
 	case *gir.Class, *gir.Interface:
-		if !value.isPtr(1) {
-			return false
-		}
-
 		value.header.Import("unsafe")
-		value.p.Linef(
-			"%s = (%s)(unsafe.Pointer(%s.Native()))",
-			value.OutName, value.OutType, value.InName,
+		value.p.LineTmpl(value,
+			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>.Native()))",
 		)
 		return true
 
 	case *gir.Record:
-		if !value.isPtr(1) {
-			return false
-		}
-
 		value.header.Import("unsafe")
-		value.p.Linef(
-			"%s = (%s)(unsafe.Pointer(%s))",
-			value.OutName, value.OutType, value.InName,
-		)
+		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>))")
 
 		// Detach Go's finalizer if the record doesn't have reference counting,
 		// since the caller is owning the value now.
@@ -466,26 +432,28 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		//
 		// As for the pointer to byte array cast, see
 		// https://github.com/golang/go/issues/19835.
-		value.p.Linef("%s = (*[0]byte)(C.%s%s)", value.OutName, file.CallbackPrefix, exportedName)
+		value.p.Linef("%s = (*[0]byte)(C.%s%s)", value.Out.Set, file.CallbackPrefix, exportedName)
 
-		value.outDecl.Linef("var %s %s", closure.OutName, closure.OutType)
-		value.p.Linef("%s = %s(box.Assign(%s))", closure.OutName, closure.OutType, value.InName)
+		value.outDecl.Linef("var %s %s", closure.OutName, closure.Out.Type)
+		value.p.Linef("%s = %s(box.Assign(%s))", closure.Out.Set, closure.Out.Type, value.InName)
 
 		if value.Destroy != nil {
 			if destroy := conv.convertParam(*value.Destroy); destroy != nil {
 				value.header.CallbackDelete = true
-				value.outDecl.Linef("var %s %s", destroy.OutName, destroy.OutType)
+				value.outDecl.Linef("var %s %s", destroy.OutName, destroy.Out.Type)
 				value.p.Linef(
 					"%s = (%s)((*[0]byte)(C.callbackDelete))",
-					destroy.OutName, destroy.OutType,
+					destroy.Out.Set, destroy.Out.Type,
 				)
 			}
 		}
 
 		return true
+	}
 
-		// case value.AllowNone:
-		// 	value.p.Linef("var %s %s // unsupported", value.OutName, value.OutType)
+	if value.Optional {
+		value.p.Linef("var %s %s // unsupported", value.OutName, value.Out.Type)
+		return true
 	}
 
 	return false

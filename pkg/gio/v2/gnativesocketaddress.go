@@ -71,7 +71,7 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 }
 
 // NewNativeSocketAddress creates a new SocketAddress for @native and @len.
-func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
+func NewNativeSocketAddress(native interface{}, len uint) *NativeSocketAddressClass {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
@@ -81,9 +81,10 @@ func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
 
 	_cret = C.g_native_socket_address_new(_arg1, _arg2)
 
-	var _nativeSocketAddress NativeSocketAddress // out
+	var _nativeSocketAddress *NativeSocketAddressClass // out
 
-	_nativeSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NativeSocketAddress)
+	_nativeSocketAddress = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NativeSocketAddressClass)
 
 	return _nativeSocketAddress
 }

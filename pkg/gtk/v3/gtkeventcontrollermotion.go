@@ -57,17 +57,18 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 
 // NewEventControllerMotion creates a new event controller that will handle
 // motion events for the given @widget.
-func NewEventControllerMotion(widget Widget) EventControllerMotion {
+func NewEventControllerMotion(widget Widget) *EventControllerMotionClass {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_event_controller_motion_new(_arg1)
 
-	var _eventControllerMotion EventControllerMotion // out
+	var _eventControllerMotion *EventControllerMotionClass // out
 
-	_eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(EventControllerMotion)
+	_eventControllerMotion = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*EventControllerMotionClass)
 
 	return _eventControllerMotion
 }

@@ -57,10 +57,10 @@ type IOStreamOverrider interface {
 	CloseFn(cancellable Cancellable) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
-	InputStream() InputStream
+	InputStream() *InputStreamClass
 	// OutputStream gets the output stream for this object. This is used for
 	// writing.
-	OutputStream() OutputStream
+	OutputStream() *OutputStreamClass
 }
 
 // IOStream represents an object that has both read and write streams. Generally
@@ -161,10 +161,10 @@ type IOStream interface {
 	CloseFinish(result AsyncResult) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
-	InputStream() InputStream
+	InputStream() *InputStreamClass
 	// OutputStream gets the output stream for this object. This is used for
 	// writing.
-	OutputStream() OutputStream
+	OutputStream() *OutputStreamClass
 	// HasPending checks if a stream has pending actions.
 	HasPending() bool
 	// IsClosed checks if a stream is closed.
@@ -172,13 +172,6 @@ type IOStream interface {
 	// SetPending sets @stream to have actions pending. If the pending flag is
 	// already set or @stream is closed, it will return false and set @error.
 	SetPending() error
-	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
-	// input stream of @stream2, and splice the output stream of @stream2 to the
-	// input stream of @stream1.
-	//
-	// When the operation is finished @callback will be called. You can then
-	// call g_io_stream_splice_finish() to get the result of the operation.
-	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
 // IOStreamClass implements the IOStream interface.
@@ -204,7 +197,7 @@ func marshalIOStream(p uintptr) (interface{}, error) {
 func (s *IOStreamClass) ClearPending() {
 	var _arg0 *C.GIOStream // out
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
 
 	C.g_io_stream_clear_pending(_arg0)
 }
@@ -246,8 +239,8 @@ func (s *IOStreamClass) Close(cancellable Cancellable) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	C.g_io_stream_close(_arg0, _arg1, &_cerr)
 
@@ -274,9 +267,9 @@ func (s *IOStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, call
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -289,8 +282,8 @@ func (s *IOStreamClass) CloseFinish(result AsyncResult) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	C.g_io_stream_close_finish(_arg0, _arg1, &_cerr)
 
@@ -302,34 +295,36 @@ func (s *IOStreamClass) CloseFinish(result AsyncResult) error {
 }
 
 // InputStream gets the input stream for this object. This is used for reading.
-func (s *IOStreamClass) InputStream() InputStream {
+func (s *IOStreamClass) InputStream() *InputStreamClass {
 	var _arg0 *C.GIOStream    // out
 	var _cret *C.GInputStream // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
 
 	_cret = C.g_io_stream_get_input_stream(_arg0)
 
-	var _inputStream InputStream // out
+	var _inputStream *InputStreamClass // out
 
-	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(InputStream)
+	_inputStream = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*InputStreamClass)
 
 	return _inputStream
 }
 
 // OutputStream gets the output stream for this object. This is used for
 // writing.
-func (s *IOStreamClass) OutputStream() OutputStream {
+func (s *IOStreamClass) OutputStream() *OutputStreamClass {
 	var _arg0 *C.GIOStream     // out
 	var _cret *C.GOutputStream // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
 
 	_cret = C.g_io_stream_get_output_stream(_arg0)
 
-	var _outputStream OutputStream // out
+	var _outputStream *OutputStreamClass // out
 
-	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(OutputStream)
+	_outputStream = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*OutputStreamClass)
 
 	return _outputStream
 }
@@ -339,7 +334,7 @@ func (s *IOStreamClass) HasPending() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
 
 	_cret = C.g_io_stream_has_pending(_arg0)
 
@@ -357,7 +352,7 @@ func (s *IOStreamClass) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
 
 	_cret = C.g_io_stream_is_closed(_arg0)
 
@@ -376,7 +371,7 @@ func (s *IOStreamClass) SetPending() error {
 	var _arg0 *C.GIOStream // out
 	var _cerr *C.GError    // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer((&IOStream).Native()))
 
 	C.g_io_stream_set_pending(_arg0, &_cerr)
 
@@ -385,30 +380,4 @@ func (s *IOStreamClass) SetPending() error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// SpliceAsync: asynchronously splice the output stream of @stream1 to the input
-// stream of @stream2, and splice the output stream of @stream2 to the input
-// stream of @stream1.
-//
-// When the operation is finished @callback will be called. You can then call
-// g_io_stream_splice_finish() to get the result of the operation.
-func (s *IOStreamClass) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GIOStream           // out
-	var _arg1 *C.GIOStream           // out
-	var _arg2 C.GIOStreamSpliceFlags // out
-	var _arg3 C.int                  // out
-	var _arg4 *C.GCancellable        // out
-	var _arg5 C.GAsyncReadyCallback  // out
-	var _arg6 C.gpointer
-
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream2.Native()))
-	_arg2 = C.GIOStreamSpliceFlags(flags)
-	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(box.Assign(callback))
-
-	C.g_io_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

@@ -85,13 +85,13 @@ func (c *Color) Copy() *Color {
 	var _arg0 *C.GdkColor // out
 	var _cret *C.GdkColor // in
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(c))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(*Color))
 
 	_cret = C.gdk_color_copy(_arg0)
 
 	var _ret *Color // out
 
-	_ret = (*Color)(unsafe.Pointer(_cret))
+	_ret = (*Color)(unsafe.Pointer(*C.GdkColor))
 	runtime.SetFinalizer(_ret, func(v *Color) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -107,8 +107,8 @@ func (c *Color) Equal(colorb *Color) bool {
 	var _arg1 *C.GdkColor // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(c))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(colorb))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(*Color))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(*Color))
 
 	_cret = C.gdk_color_equal(_arg0, _arg1)
 
@@ -127,7 +127,7 @@ func (c *Color) Equal(colorb *Color) bool {
 func (c *Color) free() {
 	var _arg0 *C.GdkColor // out
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(c))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(*Color))
 
 	C.gdk_color_free(_arg0)
 }
@@ -139,7 +139,7 @@ func (c *Color) Hash() uint {
 	var _arg0 *C.GdkColor // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(c))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(*Color))
 
 	_cret = C.gdk_color_hash(_arg0)
 
@@ -161,7 +161,7 @@ func (c *Color) String() string {
 	var _arg0 *C.GdkColor // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(c))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(*Color))
 
 	_cret = C.gdk_color_to_string(_arg0)
 

@@ -201,16 +201,6 @@ type DataInputStream interface {
 	//
 	// The returned string will always be nul-terminated on success.
 	ReadUptoFinish(result AsyncResult) (uint, string, error)
-	// SetByteOrder: this function sets the byte order for the given @stream.
-	// All subsequent reads from the @stream will be read in the given @order.
-	SetByteOrder(order DataStreamByteOrder)
-	// SetNewlineType sets the newline type for the @stream.
-	//
-	// Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a
-	// read chunk ends in "CR" we must read an additional byte to know if this
-	// is "CR" or "CR LF", and this might block if there is no more data
-	// available.
-	SetNewlineType(typ DataStreamNewlineType)
 }
 
 // DataInputStreamClass implements the DataInputStream interface.
@@ -249,17 +239,18 @@ func marshalDataInputStream(p uintptr) (interface{}, error) {
 }
 
 // NewDataInputStream creates a new data input stream for the @base_stream.
-func NewDataInputStream(baseStream InputStream) DataInputStream {
+func NewDataInputStream(baseStream InputStream) *DataInputStreamClass {
 	var _arg1 *C.GInputStream     // out
 	var _cret *C.GDataInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((&InputStream).Native()))
 
 	_cret = C.g_data_input_stream_new(_arg1)
 
-	var _dataInputStream DataInputStream // out
+	var _dataInputStream *DataInputStreamClass // out
 
-	_dataInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DataInputStream)
+	_dataInputStream = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DataInputStreamClass)
 
 	return _dataInputStream
 }
@@ -269,13 +260,13 @@ func (s *DataInputStreamClass) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataInputStream    // out
 	var _cret C.GDataStreamByteOrder // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
 
 	_cret = C.g_data_input_stream_get_byte_order(_arg0)
 
 	var _dataStreamByteOrder DataStreamByteOrder // out
 
-	_dataStreamByteOrder = DataStreamByteOrder(_cret)
+	_dataStreamByteOrder = (DataStreamByteOrder)(C.GDataStreamByteOrder)
 
 	return _dataStreamByteOrder
 }
@@ -285,13 +276,13 @@ func (s *DataInputStreamClass) NewlineType() DataStreamNewlineType {
 	var _arg0 *C.GDataInputStream      // out
 	var _cret C.GDataStreamNewlineType // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
 
 	_cret = C.g_data_input_stream_get_newline_type(_arg0)
 
 	var _dataStreamNewlineType DataStreamNewlineType // out
 
-	_dataStreamNewlineType = DataStreamNewlineType(_cret)
+	_dataStreamNewlineType = (DataStreamNewlineType)(C.GDataStreamNewlineType)
 
 	return _dataStreamNewlineType
 }
@@ -303,8 +294,8 @@ func (s *DataInputStreamClass) ReadByte(cancellable Cancellable) (byte, error) {
 	var _cret C.guchar            // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_byte(_arg0, _arg1, &_cerr)
 
@@ -328,8 +319,8 @@ func (s *DataInputStreamClass) ReadInt16(cancellable Cancellable) (int16, error)
 	var _cret C.gint16            // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_int16(_arg0, _arg1, &_cerr)
 
@@ -357,8 +348,8 @@ func (s *DataInputStreamClass) ReadInt32(cancellable Cancellable) (int32, error)
 	var _cret C.gint32            // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_int32(_arg0, _arg1, &_cerr)
 
@@ -386,8 +377,8 @@ func (s *DataInputStreamClass) ReadInt64(cancellable Cancellable) (int64, error)
 	var _cret C.gint64            // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_int64(_arg0, _arg1, &_cerr)
 
@@ -414,8 +405,8 @@ func (s *DataInputStreamClass) ReadLine(cancellable Cancellable) (uint, []byte, 
 	var _cret *C.char
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_line(_arg0, &_arg1, _arg2, &_cerr)
 
@@ -454,9 +445,9 @@ func (s *DataInputStreamClass) ReadLineAsync(ioPriority int, cancellable Cancell
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
 	_arg1 = C.gint(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -473,8 +464,8 @@ func (s *DataInputStreamClass) ReadLineFinish(result AsyncResult) (uint, []byte,
 	var _cret *C.char
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	_cret = C.g_data_input_stream_read_line_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -510,8 +501,8 @@ func (s *DataInputStreamClass) ReadLineFinishUTF8(result AsyncResult) (uint, str
 	var _cret *C.char             // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	_cret = C.g_data_input_stream_read_line_finish_utf8(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -539,8 +530,8 @@ func (s *DataInputStreamClass) ReadLineUTF8(cancellable Cancellable) (uint, stri
 	var _cret *C.char             // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_line_utf8(_arg0, &_arg1, _arg2, &_cerr)
 
@@ -567,8 +558,8 @@ func (s *DataInputStreamClass) ReadUint16(cancellable Cancellable) (uint16, erro
 	var _cret C.guint16           // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_uint16(_arg0, _arg1, &_cerr)
 
@@ -596,8 +587,8 @@ func (s *DataInputStreamClass) ReadUint32(cancellable Cancellable) (uint32, erro
 	var _cret C.guint32           // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_uint32(_arg0, _arg1, &_cerr)
 
@@ -624,8 +615,8 @@ func (s *DataInputStreamClass) ReadUint64(cancellable Cancellable) (uint64, erro
 	var _cret C.guint64           // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_uint64(_arg0, _arg1, &_cerr)
 
@@ -658,10 +649,10 @@ func (s *DataInputStreamClass) ReadUntil(stopChars string, cancellable Cancellab
 	var _cret *C.char             // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
 	_arg1 = (*C.gchar)(C.CString(stopChars))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_until(_arg0, _arg1, &_arg2, _arg3, &_cerr)
 
@@ -700,11 +691,11 @@ func (s *DataInputStreamClass) ReadUntilAsync(stopChars string, ioPriority int, 
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
 	_arg1 = (*C.gchar)(C.CString(stopChars))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -722,8 +713,8 @@ func (s *DataInputStreamClass) ReadUntilFinish(result AsyncResult) (uint, string
 	var _cret *C.char             // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	_cret = C.g_data_input_stream_read_until_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -758,11 +749,11 @@ func (s *DataInputStreamClass) ReadUpto(stopChars string, stopCharsLen int, canc
 	var _cret *C.char             // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
 	_arg1 = (*C.gchar)(C.CString(stopChars))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 
 	_cret = C.g_data_input_stream_read_upto(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
 
@@ -798,12 +789,12 @@ func (s *DataInputStreamClass) ReadUptoAsync(stopChars string, stopCharsLen int,
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
 	_arg1 = (*C.gchar)(C.CString(stopChars))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
 	_arg3 = C.gint(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((&Cancellable).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg6 = C.gpointer(box.Assign(callback))
 
@@ -825,8 +816,8 @@ func (s *DataInputStreamClass) ReadUptoFinish(result AsyncResult) (uint, string,
 	var _cret *C.char             // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer((&DataInputStream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((&AsyncResult).Native()))
 
 	_cret = C.g_data_input_stream_read_upto_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -840,31 +831,4 @@ func (s *DataInputStreamClass) ReadUptoFinish(result AsyncResult) (uint, string,
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _length, _utf8, _goerr
-}
-
-// SetByteOrder: this function sets the byte order for the given @stream. All
-// subsequent reads from the @stream will be read in the given @order.
-func (s *DataInputStreamClass) SetByteOrder(order DataStreamByteOrder) {
-	var _arg0 *C.GDataInputStream    // out
-	var _arg1 C.GDataStreamByteOrder // out
-
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GDataStreamByteOrder(order)
-
-	C.g_data_input_stream_set_byte_order(_arg0, _arg1)
-}
-
-// SetNewlineType sets the newline type for the @stream.
-//
-// Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read
-// chunk ends in "CR" we must read an additional byte to know if this is "CR" or
-// "CR LF", and this might block if there is no more data available.
-func (s *DataInputStreamClass) SetNewlineType(typ DataStreamNewlineType) {
-	var _arg0 *C.GDataInputStream      // out
-	var _arg1 C.GDataStreamNewlineType // out
-
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GDataStreamNewlineType(typ)
-
-	C.g_data_input_stream_set_newline_type(_arg0, _arg1)
 }

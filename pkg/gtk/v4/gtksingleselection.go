@@ -45,7 +45,7 @@ type SingleSelection interface {
 	// SelectedItem gets the selected item.
 	//
 	// If no item is selected, nil is returned.
-	SelectedItem() gextras.Objector
+	SelectedItem() *externglib.Object
 	// SetAutoselect enables or disables autoselect.
 	//
 	// If @autoselect is true, @self will enforce that an item is always
@@ -94,7 +94,7 @@ func (s *SingleSelectionClass) Autoselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer((&SingleSelection).Native()))
 
 	_cret = C.gtk_single_selection_get_autoselect(_arg0)
 
@@ -113,7 +113,7 @@ func (s *SingleSelectionClass) CanUnselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer((&SingleSelection).Native()))
 
 	_cret = C.gtk_single_selection_get_can_unselect(_arg0)
 
@@ -133,7 +133,7 @@ func (s *SingleSelectionClass) Selected() uint {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.guint               // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer((&SingleSelection).Native()))
 
 	_cret = C.gtk_single_selection_get_selected(_arg0)
 
@@ -147,17 +147,18 @@ func (s *SingleSelectionClass) Selected() uint {
 // SelectedItem gets the selected item.
 //
 // If no item is selected, nil is returned.
-func (s *SingleSelectionClass) SelectedItem() gextras.Objector {
+func (s *SingleSelectionClass) SelectedItem() *externglib.Object {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gpointer            // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer((&SingleSelection).Native()))
 
 	_cret = C.gtk_single_selection_get_selected_item(_arg0)
 
-	var _object gextras.Objector // out
+	var _object *externglib.Object // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
+	_object = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(&_cret))).(*externglib.Object)
 
 	return _object
 }
@@ -171,7 +172,7 @@ func (s *SingleSelectionClass) SetAutoselect(autoselect bool) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer((&SingleSelection).Native()))
 	if autoselect {
 		_arg1 = C.TRUE
 	}
@@ -189,7 +190,7 @@ func (s *SingleSelectionClass) SetCanUnselect(canUnselect bool) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer((&SingleSelection).Native()))
 	if canUnselect {
 		_arg1 = C.TRUE
 	}
@@ -208,7 +209,7 @@ func (s *SingleSelectionClass) SetSelected(position uint) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.guint               // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer((&SingleSelection).Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_single_selection_set_selected(_arg0, _arg1)

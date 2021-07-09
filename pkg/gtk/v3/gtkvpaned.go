@@ -53,7 +53,6 @@ func wrapVPaned(obj *externglib.Object) VPaned {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -88,14 +87,15 @@ func marshalVPaned(p uintptr) (interface{}, error) {
 // NewVPaned: create a new VPaned
 //
 // Deprecated: since version 3.2.
-func NewVPaned() VPaned {
+func NewVPaned() *VPanedClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_vpaned_new()
 
-	var _vPaned VPaned // out
+	var _vPaned *VPanedClass // out
 
-	_vPaned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(VPaned)
+	_vPaned = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*VPanedClass)
 
 	return _vPaned
 }

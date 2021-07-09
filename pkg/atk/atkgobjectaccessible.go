@@ -30,7 +30,7 @@ type GObjectAccessible interface {
 	gextras.Objector
 
 	// Object gets the GObject for which @obj is the accessible object.
-	Object() gextras.Objector
+	Object() *externglib.Object
 }
 
 // GObjectAccessibleClass implements the GObjectAccessible interface.
@@ -55,17 +55,18 @@ func marshalGObjectAccessible(p uintptr) (interface{}, error) {
 }
 
 // Object gets the GObject for which @obj is the accessible object.
-func (o *GObjectAccessibleClass) Object() gextras.Objector {
+func (o *GObjectAccessibleClass) Object() *externglib.Object {
 	var _arg0 *C.AtkGObjectAccessible // out
 	var _cret *C.GObject              // in
 
-	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer((&GObjectAccessible).Native()))
 
 	_cret = C.atk_gobject_accessible_get_object(_arg0)
 
-	var _object gextras.Objector // out
+	var _object *externglib.Object // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
+	_object = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*externglib.Object)
 
 	return _object
 }

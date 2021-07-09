@@ -67,14 +67,15 @@ func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
 	return wrapContainerCellAccessible(obj), nil
 }
 
-func NewContainerCellAccessible() ContainerCellAccessible {
+func NewContainerCellAccessible() *ContainerCellAccessibleClass {
 	var _cret *C.GtkContainerCellAccessible // in
 
 	_cret = C.gtk_container_cell_accessible_new()
 
-	var _containerCellAccessible ContainerCellAccessible // out
+	var _containerCellAccessible *ContainerCellAccessibleClass // out
 
-	_containerCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ContainerCellAccessible)
+	_containerCellAccessible = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ContainerCellAccessibleClass)
 
 	return _containerCellAccessible
 }
@@ -83,8 +84,8 @@ func (c *ContainerCellAccessibleClass) AddChild(child CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer((&ContainerCellAccessible).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
 
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
 }
@@ -93,8 +94,8 @@ func (c *ContainerCellAccessibleClass) RemoveChild(child CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer((&ContainerCellAccessible).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
 
 	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
 }

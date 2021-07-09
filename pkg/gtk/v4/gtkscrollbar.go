@@ -65,7 +65,7 @@ type Scrollbar interface {
 	gextras.Objector
 
 	// Adjustment returns the scrollbar's adjustment.
-	Adjustment() Adjustment
+	Adjustment() *AdjustmentClass
 	// SetAdjustment makes the scrollbar use the given adjustment.
 	SetAdjustment(adjustment Adjustment)
 }
@@ -86,7 +86,6 @@ func wrapScrollbar(obj *externglib.Object) Scrollbar {
 	return &ScrollbarClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -119,36 +118,19 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 	return wrapScrollbar(obj), nil
 }
 
-// NewScrollbar creates a new scrollbar with the given orientation.
-func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
-	var _arg1 C.GtkOrientation // out
-	var _arg2 *C.GtkAdjustment // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-
-	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
-
-	var _scrollbar Scrollbar // out
-
-	_scrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Scrollbar)
-
-	return _scrollbar
-}
-
 // Adjustment returns the scrollbar's adjustment.
-func (s *ScrollbarClass) Adjustment() Adjustment {
+func (s *ScrollbarClass) Adjustment() *AdjustmentClass {
 	var _arg0 *C.GtkScrollbar  // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer((&Scrollbar).Native()))
 
 	_cret = C.gtk_scrollbar_get_adjustment(_arg0)
 
-	var _adjustment Adjustment // out
+	var _adjustment *AdjustmentClass // out
 
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Adjustment)
+	_adjustment = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*AdjustmentClass)
 
 	return _adjustment
 }
@@ -158,8 +140,8 @@ func (s *ScrollbarClass) SetAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkScrollbar  // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer((&Scrollbar).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((&Adjustment).Native()))
 
 	C.gtk_scrollbar_set_adjustment(_arg0, _arg1)
 }

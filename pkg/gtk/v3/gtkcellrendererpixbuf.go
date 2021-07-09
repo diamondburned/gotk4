@@ -68,14 +68,15 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 // a value in a TreeModel. For example, you can bind the “pixbuf” property on
 // the cell renderer to a pixbuf value in the model, thus rendering a different
 // image in each row of the TreeView.
-func NewCellRendererPixbuf() CellRendererPixbuf {
+func NewCellRendererPixbuf() *CellRendererPixbufClass {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_pixbuf_new()
 
-	var _cellRendererPixbuf CellRendererPixbuf // out
+	var _cellRendererPixbuf *CellRendererPixbufClass // out
 
-	_cellRendererPixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererPixbuf)
+	_cellRendererPixbuf = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererPixbufClass)
 
 	return _cellRendererPixbuf
 }

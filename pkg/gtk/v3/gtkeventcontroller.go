@@ -34,18 +34,11 @@ type EventController interface {
 	// events.
 	PropagationPhase() PropagationPhase
 	// Widget returns the Widget this controller relates to.
-	Widget() Widget
+	Widget() *WidgetClass
 	// Reset resets the @controller to a clean state. Every interaction the
 	// controller did through EventController::handle-event will be dropped at
 	// this point.
 	Reset()
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	//
-	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will. In that phase,
-	// the events can be managed by calling gtk_event_controller_handle_event().
-	SetPropagationPhase(phase PropagationPhase)
 }
 
 // EventControllerClass implements the EventController interface.
@@ -73,29 +66,30 @@ func (c *EventControllerClass) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 
 	var _propagationPhase PropagationPhase // out
 
-	_propagationPhase = PropagationPhase(_cret)
+	_propagationPhase = (PropagationPhase)(C.GtkPropagationPhase)
 
 	return _propagationPhase
 }
 
 // Widget returns the Widget this controller relates to.
-func (c *EventControllerClass) Widget() Widget {
+func (c *EventControllerClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -106,23 +100,7 @@ func (c *EventControllerClass) Widget() Widget {
 func (c *EventControllerClass) Reset() {
 	var _arg0 *C.GtkEventController // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer((&EventController).Native()))
 
 	C.gtk_event_controller_reset(_arg0)
-}
-
-// SetPropagationPhase sets the propagation phase at which a controller handles
-// events.
-//
-// If @phase is GTK_PHASE_NONE, no automatic event handling will be performed,
-// but other additional gesture maintenance will. In that phase, the events can
-// be managed by calling gtk_event_controller_handle_event().
-func (c *EventControllerClass) SetPropagationPhase(phase PropagationPhase) {
-	var _arg0 *C.GtkEventController // out
-	var _arg1 C.GtkPropagationPhase // out
-
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkPropagationPhase(phase)
-
-	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
 }

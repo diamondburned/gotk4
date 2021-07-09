@@ -62,14 +62,15 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 
 // NewCellRendererSpinner returns a new cell renderer which will show a spinner
 // to indicate activity.
-func NewCellRendererSpinner() CellRendererSpinner {
+func NewCellRendererSpinner() *CellRendererSpinnerClass {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_spinner_new()
 
-	var _cellRendererSpinner CellRendererSpinner // out
+	var _cellRendererSpinner *CellRendererSpinnerClass // out
 
-	_cellRendererSpinner = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererSpinner)
+	_cellRendererSpinner = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererSpinnerClass)
 
 	return _cellRendererSpinner
 }

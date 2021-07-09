@@ -85,7 +85,6 @@ func wrapSearchBar(obj *externglib.Object) SearchBar {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -113,14 +112,15 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 
 // NewSearchBar creates a SearchBar. You will need to tell it about which widget
 // is going to be your text entry using gtk_search_bar_connect_entry().
-func NewSearchBar() SearchBar {
+func NewSearchBar() *SearchBarClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_search_bar_new()
 
-	var _searchBar SearchBar // out
+	var _searchBar *SearchBarClass // out
 
-	_searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SearchBar)
+	_searchBar = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SearchBarClass)
 
 	return _searchBar
 }
@@ -133,8 +133,8 @@ func (b *SearchBarClass) ConnectEntry(entry Entry) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEntry     // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
+	_arg1 = (*C.GtkEntry)(unsafe.Pointer((&Entry).Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 }
@@ -144,7 +144,7 @@ func (b *SearchBarClass) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
 
 	_cret = C.gtk_search_bar_get_search_mode(_arg0)
 
@@ -162,7 +162,7 @@ func (b *SearchBarClass) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
 
 	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
 
@@ -180,7 +180,7 @@ func (b *SearchBarClass) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
 	if searchMode {
 		_arg1 = C.TRUE
 	}
@@ -195,7 +195,7 @@ func (b *SearchBarClass) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer((&SearchBar).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}

@@ -64,14 +64,15 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 
 // NewGestureZoom returns a newly created `GtkGesture` that recognizes
 // pinch/zoom gestures.
-func NewGestureZoom() GestureZoom {
+func NewGestureZoom() *GestureZoomClass {
 	var _cret *C.GtkGesture // in
 
 	_cret = C.gtk_gesture_zoom_new()
 
-	var _gestureZoom GestureZoom // out
+	var _gestureZoom *GestureZoomClass // out
 
-	_gestureZoom = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(GestureZoom)
+	_gestureZoom = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*GestureZoomClass)
 
 	return _gestureZoom
 }
@@ -85,7 +86,7 @@ func (g *GestureZoomClass) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out
 	var _cret C.double          // in
 
-	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer((&GestureZoom).Native()))
 
 	_cret = C.gtk_gesture_zoom_get_scale_delta(_arg0)
 

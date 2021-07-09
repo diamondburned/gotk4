@@ -62,7 +62,7 @@ type TreeExpander interface {
 	gextras.Objector
 
 	// Child gets the child widget displayed by @self.
-	Child() Widget
+	Child() *WidgetClass
 	// Item forwards the item set on the `GtkTreeListRow` that @self is
 	// managing.
 	//
@@ -70,9 +70,9 @@ type TreeExpander interface {
 	//
 	// “`c gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
 	// “`
-	Item() gextras.Objector
+	Item() *externglib.Object
 	// ListRow gets the list row managed by @self.
-	ListRow() TreeListRow
+	ListRow() *TreeListRowClass
 	// SetChild sets the content widget to display.
 	SetChild(child Widget)
 	// SetListRow sets the tree list row that this expander should manage.
@@ -94,7 +94,6 @@ func wrapTreeExpander(obj *externglib.Object) TreeExpander {
 	return &TreeExpanderClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -125,30 +124,32 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 }
 
 // NewTreeExpander creates a new `GtkTreeExpander`
-func NewTreeExpander() TreeExpander {
+func NewTreeExpander() *TreeExpanderClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_tree_expander_new()
 
-	var _treeExpander TreeExpander // out
+	var _treeExpander *TreeExpanderClass // out
 
-	_treeExpander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeExpander)
+	_treeExpander = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*TreeExpanderClass)
 
 	return _treeExpander
 }
 
 // Child gets the child widget displayed by @self.
-func (s *TreeExpanderClass) Child() Widget {
+func (s *TreeExpanderClass) Child() *WidgetClass {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret *C.GtkWidget       // in
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
 
 	_cret = C.gtk_tree_expander_get_child(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -158,33 +159,35 @@ func (s *TreeExpanderClass) Child() Widget {
 // This call is essentially equivalent to calling:
 //
 // “`c gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self)); “`
-func (s *TreeExpanderClass) Item() gextras.Objector {
+func (s *TreeExpanderClass) Item() *externglib.Object {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret C.gpointer         // in
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
 
 	_cret = C.gtk_tree_expander_get_item(_arg0)
 
-	var _object gextras.Objector // out
+	var _object *externglib.Object // out
 
-	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gextras.Objector)
+	_object = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(&_cret))).(*externglib.Object)
 
 	return _object
 }
 
 // ListRow gets the list row managed by @self.
-func (s *TreeExpanderClass) ListRow() TreeListRow {
+func (s *TreeExpanderClass) ListRow() *TreeListRowClass {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret *C.GtkTreeListRow  // in
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
 
 	_cret = C.gtk_tree_expander_get_list_row(_arg0)
 
-	var _treeListRow TreeListRow // out
+	var _treeListRow *TreeListRowClass // out
 
-	_treeListRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(TreeListRow)
+	_treeListRow = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*TreeListRowClass)
 
 	return _treeListRow
 }
@@ -194,8 +197,8 @@ func (s *TreeExpanderClass) SetChild(child Widget) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkWidget       // out
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_tree_expander_set_child(_arg0, _arg1)
 }
@@ -205,8 +208,8 @@ func (s *TreeExpanderClass) SetListRow(listRow TreeListRow) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkTreeListRow  // out
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer(listRow.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer((&TreeExpander).Native()))
+	_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer((&TreeListRow).Native()))
 
 	C.gtk_tree_expander_set_list_row(_arg0, _arg1)
 }

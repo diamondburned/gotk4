@@ -108,14 +108,15 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 
 // NewMemoryOutputStreamResizable creates a new OutputStream, using g_realloc()
 // and g_free() for memory allocation.
-func NewMemoryOutputStreamResizable() MemoryOutputStream {
+func NewMemoryOutputStreamResizable() *MemoryOutputStreamClass {
 	var _cret *C.GOutputStream // in
 
 	_cret = C.g_memory_output_stream_new_resizable()
 
-	var _memoryOutputStream MemoryOutputStream // out
+	var _memoryOutputStream *MemoryOutputStreamClass // out
 
-	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MemoryOutputStream)
+	_memoryOutputStream = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MemoryOutputStreamClass)
 
 	return _memoryOutputStream
 }
@@ -128,7 +129,7 @@ func (o *MemoryOutputStreamClass) Data() interface{} {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&MemoryOutputStream).Native()))
 
 	_cret = C.g_memory_output_stream_get_data(_arg0)
 
@@ -145,7 +146,7 @@ func (o *MemoryOutputStreamClass) DataSize() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&MemoryOutputStream).Native()))
 
 	_cret = C.g_memory_output_stream_get_data_size(_arg0)
 
@@ -174,7 +175,7 @@ func (o *MemoryOutputStreamClass) Size() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&MemoryOutputStream).Native()))
 
 	_cret = C.g_memory_output_stream_get_size(_arg0)
 
@@ -194,7 +195,7 @@ func (o *MemoryOutputStreamClass) StealData() interface{} {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer((&MemoryOutputStream).Native()))
 
 	_cret = C.g_memory_output_stream_steal_data(_arg0)
 

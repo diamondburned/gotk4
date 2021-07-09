@@ -32,7 +32,7 @@ type ActionGroupOverrider interface {
 	// Action looks up an action in the action group by name.
 	//
 	// Deprecated: since version 3.10.
-	Action(actionName string) Action
+	Action(actionName string) *ActionClass
 }
 
 // ActionGroup actions are organised into groups. An action group is essentially
@@ -109,11 +109,11 @@ type ActionGroup interface {
 	// AccelGroup gets the accelerator group.
 	//
 	// Deprecated: since version 3.10.
-	AccelGroup() AccelGroup
+	AccelGroup() *AccelGroupClass
 	// Action looks up an action in the action group by name.
 	//
 	// Deprecated: since version 3.10.
-	Action(actionName string) Action
+	Action(actionName string) *ActionClass
 	// Name gets the name of the action group.
 	//
 	// Deprecated: since version 3.10.
@@ -192,7 +192,7 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 // is used when associating [keybindings][Action-Accel] with the actions.
 //
 // Deprecated: since version 3.10.
-func NewActionGroup(name string) ActionGroup {
+func NewActionGroup(name string) *ActionGroupClass {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkActionGroup // in
 
@@ -201,9 +201,10 @@ func NewActionGroup(name string) ActionGroup {
 
 	_cret = C.gtk_action_group_new(_arg1)
 
-	var _actionGroup ActionGroup // out
+	var _actionGroup *ActionGroupClass // out
 
-	_actionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(ActionGroup)
+	_actionGroup = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ActionGroupClass)
 
 	return _actionGroup
 }
@@ -220,8 +221,8 @@ func (a *ActionGroupClass) AddAction(action Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	C.gtk_action_group_add_action(_arg0, _arg1)
 }
@@ -240,8 +241,8 @@ func (a *ActionGroupClass) AddActionWithAccel(action Action, accelerator string)
 	var _arg1 *C.GtkAction      // out
 	var _arg2 *C.gchar          // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	_arg2 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -251,17 +252,18 @@ func (a *ActionGroupClass) AddActionWithAccel(action Action, accelerator string)
 // AccelGroup gets the accelerator group.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) AccelGroup() AccelGroup {
+func (a *ActionGroupClass) AccelGroup() *AccelGroupClass {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GtkAccelGroup  // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
 
 	_cret = C.gtk_action_group_get_accel_group(_arg0)
 
-	var _accelGroup AccelGroup // out
+	var _accelGroup *AccelGroupClass // out
 
-	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(AccelGroup)
+	_accelGroup = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*AccelGroupClass)
 
 	return _accelGroup
 }
@@ -269,20 +271,21 @@ func (a *ActionGroupClass) AccelGroup() AccelGroup {
 // Action looks up an action in the action group by name.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) Action(actionName string) Action {
+func (a *ActionGroupClass) Action(actionName string) *ActionClass {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkAction      // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_action_group_get_action(_arg0, _arg1)
 
-	var _action Action // out
+	var _action *ActionClass // out
 
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Action)
+	_action = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ActionClass)
 
 	return _action
 }
@@ -294,7 +297,7 @@ func (a *ActionGroupClass) Name() string {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
 
 	_cret = C.gtk_action_group_get_name(_arg0)
 
@@ -314,7 +317,7 @@ func (a *ActionGroupClass) Sensitive() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
 
 	_cret = C.gtk_action_group_get_sensitive(_arg0)
 
@@ -336,7 +339,7 @@ func (a *ActionGroupClass) Visible() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
 
 	_cret = C.gtk_action_group_get_visible(_arg0)
 
@@ -356,8 +359,8 @@ func (a *ActionGroupClass) RemoveAction(action Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	C.gtk_action_group_remove_action(_arg0, _arg1)
 }
@@ -370,8 +373,8 @@ func (a *ActionGroupClass) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAccelGroup  // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer((&AccelGroup).Native()))
 
 	C.gtk_action_group_set_accel_group(_arg0, _arg1)
 }
@@ -383,7 +386,7 @@ func (a *ActionGroupClass) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
 	if sensitive {
 		_arg1 = C.TRUE
 	}
@@ -403,7 +406,7 @@ func (a *ActionGroupClass) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
 	_arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -417,7 +420,7 @@ func (a *ActionGroupClass) SetVisible(visible bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
@@ -435,7 +438,7 @@ func (a *ActionGroupClass) TranslateString(_string string) string {
 	var _arg1 *C.gchar          // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer((&ActionGroup).Native()))
 	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
 

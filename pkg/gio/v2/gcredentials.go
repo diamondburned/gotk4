@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -87,13 +86,6 @@ type Credentials interface {
 	//
 	// This operation can fail if #GCredentials is not supported on the the OS.
 	IsSameUser(otherCredentials Credentials) error
-	// SetNative copies the native credentials of type @native_type from @native
-	// into @credentials.
-	//
-	// It is a programming error (which will cause a warning to be logged) to
-	// use this method if there is no #GCredentials support for the OS or if
-	// @native_type isn't supported by the OS.
-	SetNative(nativeType CredentialsType, native interface{})
 	// SetUnixUser tries to set the UNIX user identifier on @credentials. This
 	// method is only available on UNIX platforms.
 	//
@@ -129,14 +121,15 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 
 // NewCredentials creates a new #GCredentials object with credentials matching
 // the the current process.
-func NewCredentials() Credentials {
+func NewCredentials() *CredentialsClass {
 	var _cret *C.GCredentials // in
 
 	_cret = C.g_credentials_new()
 
-	var _credentials Credentials // out
+	var _credentials *CredentialsClass // out
 
-	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Credentials)
+	_credentials = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*CredentialsClass)
 
 	return _credentials
 }
@@ -152,7 +145,7 @@ func (c *CredentialsClass) UnixPid() (int, error) {
 	var _cret C.pid_t         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
 
 	_cret = C.g_credentials_get_unix_pid(_arg0, &_cerr)
 
@@ -175,7 +168,7 @@ func (c *CredentialsClass) UnixUser() (uint, error) {
 	var _cret C.uid_t         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
 
 	_cret = C.g_credentials_get_unix_user(_arg0, &_cerr)
 
@@ -196,8 +189,8 @@ func (c *CredentialsClass) IsSameUser(otherCredentials Credentials) error {
 	var _arg1 *C.GCredentials // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
 
 	C.g_credentials_is_same_user(_arg0, _arg1, &_cerr)
 
@@ -206,24 +199,6 @@ func (c *CredentialsClass) IsSameUser(otherCredentials Credentials) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// SetNative copies the native credentials of type @native_type from @native
-// into @credentials.
-//
-// It is a programming error (which will cause a warning to be logged) to use
-// this method if there is no #GCredentials support for the OS or if
-// @native_type isn't supported by the OS.
-func (c *CredentialsClass) SetNative(nativeType CredentialsType, native interface{}) {
-	var _arg0 *C.GCredentials    // out
-	var _arg1 C.GCredentialsType // out
-	var _arg2 C.gpointer         // out
-
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GCredentialsType(nativeType)
-	_arg2 = (C.gpointer)(box.Assign(native))
-
-	C.g_credentials_set_native(_arg0, _arg1, _arg2)
 }
 
 // SetUnixUser tries to set the UNIX user identifier on @credentials. This
@@ -237,7 +212,7 @@ func (c *CredentialsClass) SetUnixUser(uid uint) error {
 	var _arg1 C.uid_t         // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
 	_arg1 = C.uid_t(uid)
 
 	C.g_credentials_set_unix_user(_arg0, _arg1, &_cerr)
@@ -256,7 +231,7 @@ func (c *CredentialsClass) String() string {
 	var _arg0 *C.GCredentials // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer((&Credentials).Native()))
 
 	_cret = C.g_credentials_to_string(_arg0)
 

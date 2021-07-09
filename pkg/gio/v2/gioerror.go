@@ -35,7 +35,7 @@ func IOErrorFromErrno(errNo int) IOErrorEnum {
 
 	var _ioErrorEnum IOErrorEnum // out
 
-	_ioErrorEnum = IOErrorEnum(_cret)
+	_ioErrorEnum = (IOErrorEnum)(C.GIOErrorEnum)
 
 	return _ioErrorEnum
 }

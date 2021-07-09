@@ -205,7 +205,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 			WindowClass: WindowClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -228,7 +227,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 				},
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -245,7 +243,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 					Object: obj,
 					NativeInterface: NativeInterface{
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							AccessibleInterface: AccessibleInterface{
 								Object: obj,
@@ -259,7 +256,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 						},
 					},
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -287,7 +283,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 			},
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -304,7 +299,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 				Object: obj,
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -318,7 +312,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 					},
 				},
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -349,7 +342,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 		},
 		NativeInterface: NativeInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -366,7 +358,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 			Object: obj,
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -380,7 +371,6 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 				},
 			},
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,

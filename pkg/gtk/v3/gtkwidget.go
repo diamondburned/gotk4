@@ -56,7 +56,7 @@ func marshalWidgetHelpType(p uintptr) (interface{}, error) {
 
 // Callback: the type of the callback functions used for e.g. iterating over the
 // children of a container, see gtk_container_foreach().
-type Callback func(widget Widget)
+type Callback func(widget *WidgetClass, data interface{})
 
 //export gotk4_Callback
 func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
@@ -65,17 +65,20 @@ func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var widget Widget // out
+	var widget *WidgetClass // out
+	var data interface{}    // out
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
+	widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg0))).(*WidgetClass)
+	data = box.Get(uintptr(arg1))
 
 	fn := v.(Callback)
-	fn(widget)
+	fn(widget, data)
 }
 
 // TickCallback: callback type for adding a function to update animations. See
 // gtk_widget_add_tick_callback().
-type TickCallback func(widget Widget, frameClock gdk.FrameClock) (ok bool)
+type TickCallback func(widget *WidgetClass, frameClock *gdk.FrameClockClass, userData interface{}) (ok bool)
 
 //export gotk4_TickCallback
 func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
@@ -84,14 +87,18 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 		panic(`callback not found`)
 	}
 
-	var widget Widget             // out
-	var frameClock gdk.FrameClock // out
+	var widget *WidgetClass             // out
+	var frameClock *gdk.FrameClockClass // out
+	var userData interface{}            // out
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
-	frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1))).(gdk.FrameClock)
+	widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg0))).(*WidgetClass)
+	frameClock = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg1))).(*gdk.FrameClockClass)
+	userData = box.Get(uintptr(arg2))
 
 	fn := v.(TickCallback)
-	ok := fn(widget, frameClock)
+	ok := fn(widget, frameClock, userData)
 
 	if ok {
 		cret = C.TRUE
@@ -113,8 +120,8 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Window) bool {
 	var _arg2 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer((&gdk.Window).Native()))
 
 	_cret = C.gtk_cairo_should_draw_window(_arg1, _arg2)
 
@@ -141,9 +148,9 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widget, window gdk.Window)
 	var _arg2 *C.GtkWidget // out
 	var _arg3 *C.GdkWindow // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg3 = (*C.GdkWindow)(unsafe.Pointer((&gdk.Window).Native()))
 
 	C.gtk_cairo_transform_to_window(_arg1, _arg2, _arg3)
 }
@@ -155,8 +162,6 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widget, window gdk.Window)
 type WidgetOverrider interface {
 	AdjustBaselineAllocation(baseline *int)
 	AdjustBaselineRequest(minimumBaseline *int, naturalBaseline *int)
-	AdjustSizeAllocation(orientation Orientation, minimumSize *int, naturalSize *int, allocatedPos *int, allocatedSize *int)
-	AdjustSizeRequest(orientation Orientation, minimumSize *int, naturalSize *int)
 	ButtonPressEvent(event *gdk.EventButton) bool
 	ButtonReleaseEvent(event *gdk.EventButton) bool
 	// CanActivateAccel determines whether an accelerator that activates the
@@ -167,6 +172,7 @@ type WidgetOverrider interface {
 	// all its ancestors mapped.
 	CanActivateAccel(signalId uint) bool
 	CompositedChanged()
+	ComputeExpand(hexpandP *bool, vexpandP *bool)
 	ConfigureEvent(event *gdk.EventConfigure) bool
 	DamageEvent(event *gdk.EventExpose) bool
 	DeleteEvent(event *gdk.EventAny) bool
@@ -203,19 +209,16 @@ type WidgetOverrider interface {
 	// See also: gtk_container_remove()
 	Destroy()
 	DestroyEvent(event *gdk.EventAny) bool
-	DirectionChanged(previousDirection TextDirection)
 	DragBegin(context gdk.DragContext)
 	DragDataDelete(context gdk.DragContext)
 	DragDataGet(context gdk.DragContext, selectionData *SelectionData, info uint, time_ uint)
 	DragDataReceived(context gdk.DragContext, x int, y int, selectionData *SelectionData, info uint, time_ uint)
 	DragDrop(context gdk.DragContext, x int, y int, time_ uint) bool
 	DragEnd(context gdk.DragContext)
-	DragFailed(context gdk.DragContext, result DragResult) bool
 	DragLeave(context gdk.DragContext, time_ uint)
 	DragMotion(context gdk.DragContext, x int, y int, time_ uint) bool
 	Draw(cr *cairo.Context) bool
 	EnterNotifyEvent(event *gdk.EventCrossing) bool
-	Focus(direction DirectionType) bool
 	FocusInEvent(event *gdk.EventFocus) bool
 	FocusOutEvent(event *gdk.EventFocus) bool
 	// Accessible returns the accessible object that describes the widget to an
@@ -230,7 +233,7 @@ type WidgetOverrider interface {
 	// The documentation of the ATK (http://developer.gnome.org/atk/stable/)
 	// library contains more information about accessible objects and their
 	// uses.
-	Accessible() atk.Object
+	Accessible() *atk.ObjectClass
 	// PreferredHeight retrieves a widget’s initial minimum and natural height.
 	//
 	// This call is specific to width-for-height requests.
@@ -307,33 +310,6 @@ type WidgetOverrider interface {
 	HierarchyChanged(previousToplevel Widget)
 	KeyPressEvent(event *gdk.EventKey) bool
 	KeyReleaseEvent(event *gdk.EventKey) bool
-	// KeynavFailed: this function should be called whenever keyboard navigation
-	// within a single widget hits a boundary. The function emits the
-	// Widget::keynav-failed signal on the widget and its return value should be
-	// interpreted in a way similar to the return value of
-	// gtk_widget_child_focus():
-	//
-	// When true is returned, stay in the widget, the failed keyboard navigation
-	// is OK and/or there is nowhere we can/should move the focus to.
-	//
-	// When false is returned, the caller should continue with keyboard
-	// navigation outside the widget, e.g. by calling gtk_widget_child_focus()
-	// on the widget’s toplevel.
-	//
-	// The default ::keynav-failed handler returns false for GTK_DIR_TAB_FORWARD
-	// and GTK_DIR_TAB_BACKWARD. For the other values of DirectionType it
-	// returns true.
-	//
-	// Whenever the default handler returns true, it also calls
-	// gtk_widget_error_bell() to notify the user of the failed keyboard
-	// navigation.
-	//
-	// A use case for providing an own implementation of ::keynav-failed (either
-	// by connecting to it or by overriding it) would be a row of Entry widgets
-	// where the user should be able to navigate the entire row with the cursor
-	// keys, as e.g. known from user interfaces that require entering license
-	// keys.
-	KeynavFailed(direction DirectionType) bool
 	LeaveNotifyEvent(event *gdk.EventCrossing) bool
 	// Map: this function is only for use in widget implementations. Causes a
 	// widget to be mapped if it isn’t already.
@@ -342,7 +318,6 @@ type WidgetOverrider interface {
 	// MnemonicActivate emits the Widget::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
 	MotionNotifyEvent(event *gdk.EventMotion) bool
-	MoveFocus(direction DirectionType)
 	ParentSet(previousParent Widget)
 	PopupMenu() bool
 	PropertyNotifyEvent(event *gdk.EventProperty) bool
@@ -398,9 +373,6 @@ type WidgetOverrider interface {
 	// ShowAll: recursively shows a widget, and any child widgets (if the widget
 	// is a container).
 	ShowAll()
-	ShowHelp(helpType WidgetHelpType) bool
-	StateChanged(previousState StateType)
-	StateFlagsChanged(previousStateFlags StateFlags)
 	StyleSet(previousStyle Style)
 	StyleUpdated()
 	TouchEvent(event *gdk.EventTouch) bool
@@ -516,18 +488,6 @@ type Widget interface {
 	// Enter on a widget during key navigation. If @widget isn't activatable,
 	// the function returns false.
 	Activate() bool
-	// AddAccelerator installs an accelerator for this @widget in @accel_group
-	// that causes @accel_signal to be emitted if the accelerator is activated.
-	// The @accel_group needs to be added to the widget’s toplevel via
-	// gtk_window_add_accel_group(), and the signal must be of type
-	// G_SIGNAL_ACTION. Accelerators added through this function are not user
-	// changeable during runtime. If you want to support accelerators that can
-	// be changed by the user, use gtk_accel_map_add_entry() and
-	// gtk_widget_set_accel_path() or gtk_menu_item_set_accel_path() instead.
-	AddAccelerator(accelSignal string, accelGroup AccelGroup, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags)
-	// AddDeviceEvents adds the device events in the bitfield @events to the
-	// event mask for @widget. See gtk_widget_set_device_events() for details.
-	AddDeviceEvents(device gdk.Device, events gdk.EventMask)
 	// AddEvents adds the events in the bitfield @events to the event mask for
 	// @widget. See gtk_widget_set_events() and the [input handling
 	// overview][event-masks] for details.
@@ -546,26 +506,6 @@ type Widget interface {
 	// default check is that the widget must be sensitive, and the widget and
 	// all its ancestors mapped.
 	CanActivateAccel(signalId uint) bool
-	// ChildFocus: this function is used by custom widget implementations; if
-	// you're writing an app, you’d use gtk_widget_grab_focus() to move the
-	// focus to a particular widget, and gtk_container_set_focus_chain() to
-	// change the focus tab order. So you may want to investigate those
-	// functions instead.
-	//
-	// gtk_widget_child_focus() is called by containers as the user moves around
-	// the window using keyboard shortcuts. @direction indicates what kind of
-	// motion is taking place (up, down, left, right, tab forward, tab
-	// backward). gtk_widget_child_focus() emits the Widget::focus signal;
-	// widgets override the default handler for this signal in order to
-	// implement appropriate focus behavior.
-	//
-	// The default ::focus handler for a widget should return true if moving in
-	// @direction left the focus on a focusable location inside that widget, and
-	// false if moving in @direction moved the focus outside the widget. If
-	// returning true, widgets normally call gtk_widget_grab_focus() to place
-	// the focus accordingly; if returning false, they don’t modify the current
-	// focus location.
-	ChildFocus(direction DirectionType) bool
 	// ChildNotify emits a Widget::child-notify signal for the [child
 	// property][child-properties] @child_property on @widget.
 	//
@@ -578,29 +518,17 @@ type Widget interface {
 	//
 	// Deprecated: since version 3.0.
 	ClassPath() (pathLength uint, path string, pathReversed string)
-	// ComputeExpand computes whether a container should give this widget extra
-	// space when possible. Containers should check this, rather than looking at
-	// gtk_widget_get_hexpand() or gtk_widget_get_vexpand().
-	//
-	// This function already checks whether the widget is visible, so visibility
-	// does not need to be checked separately. Non-visible widgets are not
-	// expanded.
-	//
-	// The computed expand value uses either the expand setting explicitly set
-	// on the widget itself, or, if none has been explicitly set, the widget may
-	// expand if some of its children do.
-	ComputeExpand(orientation Orientation) bool
 	// CreatePangoContext creates a new Context with the appropriate font map,
 	// font options, font description, and base direction for drawing text for
 	// this widget. See also gtk_widget_get_pango_context().
-	CreatePangoContext() pango.Context
+	CreatePangoContext() *pango.ContextClass
 	// CreatePangoLayout creates a new Layout with the appropriate font map,
 	// font description, and base direction for drawing text for this widget.
 	//
 	// If you keep a Layout created in this way around, you need to re-create it
 	// when the widget Context is replaced. This can be tracked by using the
 	// Widget::screen-changed signal on the widget.
-	CreatePangoLayout(text string) pango.Layout
+	CreatePangoLayout(text string) *pango.LayoutClass
 	// Destroy destroys a widget.
 	//
 	// When a widget is destroyed all references it holds on other objects will
@@ -664,10 +592,6 @@ type Widget interface {
 	// DragDestGetTrackMotion returns whether the widget has been configured to
 	// always emit Widget::drag-motion signals.
 	DragDestGetTrackMotion() bool
-	// DragDestSetProxy sets this widget as a proxy for drops to another window.
-	//
-	// Deprecated: since version 3.22.
-	DragDestSetProxy(proxyWindow gdk.Window, protocol gdk.DragProtocol, useCoordinates bool)
 	// DragDestSetTargetList sets the target types that this widget can accept
 	// from drag-and-drop. The widget must first be made into a drag destination
 	// with gtk_drag_dest_set().
@@ -778,13 +702,13 @@ type Widget interface {
 	// The documentation of the ATK (http://developer.gnome.org/atk/stable/)
 	// library contains more information about accessible objects and their
 	// uses.
-	Accessible() atk.Object
+	Accessible() *atk.ObjectClass
 	// ActionGroup retrieves the Group that was registered using @prefix. The
 	// resulting Group may have been registered to @widget or any Widget in its
 	// ancestry.
 	//
 	// If no action group was found matching @prefix, then nil is returned.
-	ActionGroup(prefix string) gio.ActionGroup
+	ActionGroup(prefix string) *gio.ActionGroupInterface
 	// AllocatedBaseline returns the baseline that has currently been allocated
 	// to @widget. This function is intended to be used when implementing
 	// handlers for the Widget::draw function, and when allocating child widgets
@@ -806,7 +730,7 @@ type Widget interface {
 	//
 	// Note that unlike gtk_widget_is_ancestor(), gtk_widget_get_ancestor()
 	// considers @widget to be an ancestor of itself.
-	Ancestor(widgetType externglib.Type) Widget
+	Ancestor(widgetType externglib.Type) *WidgetClass
 	// AppPaintable determines whether the application intends to draw on the
 	// widget in an Widget::draw handler.
 	//
@@ -846,7 +770,7 @@ type Widget interface {
 	// In general, you should only create display specific resources when a
 	// widget has been realized, and you should free those resources when the
 	// widget is unrealized.
-	Display() gdk.Display
+	Display() *gdk.DisplayClass
 	// DoubleBuffered determines whether the widget is double buffered.
 	//
 	// See gtk_widget_set_double_buffered()
@@ -864,7 +788,7 @@ type Widget interface {
 	FocusOnClick() bool
 	// FontMap gets the font map that has been set with
 	// gtk_widget_set_font_map().
-	FontMap() pango.FontMap
+	FontMap() *pango.FontMapClass
 	// FontOptions returns the #cairo_font_options_t used for Pango rendering.
 	// When not set, the defaults font options for the Screen will be used.
 	FontOptions() *cairo.FontOptions
@@ -889,7 +813,7 @@ type Widget interface {
 	// widget’s frame clock.
 	//
 	// Unrealized widgets do not have a frame clock.
-	FrameClock() gdk.FrameClock
+	FrameClock() *gdk.FrameClockClass
 	// HAlign gets the value of the Widget:halign property.
 	//
 	// For backwards compatibility reasons this method will never return
@@ -944,11 +868,6 @@ type Widget interface {
 	MarginStart() int
 	// MarginTop gets the value of the Widget:margin-top property.
 	MarginTop() int
-	// ModifierMask returns the modifier mask the @widget’s windowing system
-	// backend uses for a particular purpose.
-	//
-	// See gdk_keymap_get_modifier_mask().
-	ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType
 	// ModifierStyle returns the current modifier style for the widget. (As set
 	// by gtk_widget_modify_style().) If no style has previously set, a new
 	// RcStyle will be created with all values unset, and set as the modifier
@@ -963,7 +882,7 @@ type Widget interface {
 	// modifier style if you want to keep it alive.
 	//
 	// Deprecated: since version 3.0.
-	ModifierStyle() RCStyle
+	ModifierStyle() *RCStyleClass
 	// Name retrieves the name of a widget. See gtk_widget_set_name() for the
 	// significance of widget names.
 	Name() string
@@ -981,12 +900,12 @@ type Widget interface {
 	// widget is removed from its toplevel), and will be updated to match any
 	// changes to the widget’s attributes. This can be tracked by using the
 	// Widget::screen-changed signal on the widget.
-	PangoContext() pango.Context
+	PangoContext() *pango.ContextClass
 	// Parent returns the parent container of @widget.
-	Parent() Widget
+	Parent() *WidgetClass
 	// ParentWindow gets @widget’s parent window, or nil if it does not have
 	// one.
-	ParentWindow() gdk.Window
+	ParentWindow() *gdk.WindowClass
 	// GetPath returns the WidgetPath representing @widget, if the widget is not
 	// connected to a toplevel widget, a partial path will be created.
 	GetPath() *WidgetPath
@@ -1073,7 +992,7 @@ type Widget interface {
 	// those resources when the widget is unrealized.
 	//
 	// Deprecated: since version 3.12.
-	RootWindow() gdk.Window
+	RootWindow() *gdk.WindowClass
 	// ScaleFactor retrieves the internal scale factor that maps from window
 	// coordinates to the actual device pixels. On traditional systems this is
 	// 1, on high density outputs, it can be a higher value (typically 2).
@@ -1087,7 +1006,7 @@ type Widget interface {
 	// In general, you should only create screen specific resources when a
 	// widget has been realized, and you should free those resources when the
 	// widget is unrealized.
-	Screen() gdk.Screen
+	Screen() *gdk.ScreenClass
 	// Sensitive returns the widget’s sensitivity (in the sense of returning the
 	// value that has been set using gtk_widget_set_sensitive()).
 	//
@@ -1099,7 +1018,7 @@ type Widget interface {
 	//
 	// Note that this function can only be called when the Widget is attached to
 	// a toplevel, since the settings object is specific to a particular Screen.
-	Settings() Settings
+	Settings() *SettingsClass
 	// SizeRequest gets the size request that was explicitly set for the widget
 	// using gtk_widget_set_size_request(). A value of -1 stored in @width or
 	// @height indicates that that dimension has not been set explicitly and the
@@ -1123,10 +1042,10 @@ type Widget interface {
 	// Style: simply an accessor function that returns @widget->style.
 	//
 	// Deprecated: since version 3.0.
-	Style() Style
+	Style() *StyleClass
 	// StyleContext returns the style context associated to @widget. The
 	// returned object is guaranteed to be the same for the lifetime of @widget.
-	StyleContext() StyleContext
+	StyleContext() *StyleContextClass
 	// SupportMultidevice returns true if @widget is multiple pointer aware. See
 	// gtk_widget_set_support_multidevice() for more information.
 	SupportMultidevice() bool
@@ -1139,7 +1058,7 @@ type Widget interface {
 	// This function is only meant to be called for code which is private to the
 	// @widget_type which declared the child and is meant for language bindings
 	// which cannot easily make use of the GObject structure offsets.
-	TemplateChild(widgetType externglib.Type, name string) gextras.Objector
+	TemplateChild(widgetType externglib.Type, name string) *externglib.Object
 	// TooltipMarkup gets the contents of the tooltip for @widget.
 	TooltipMarkup() string
 	// TooltipText gets the contents of the tooltip for @widget.
@@ -1147,7 +1066,7 @@ type Widget interface {
 	// TooltipWindow returns the Window of the current tooltip. This can be the
 	// GtkWindow created by default, or the custom tooltip window set using
 	// gtk_widget_set_tooltip_window().
-	TooltipWindow() Window
+	TooltipWindow() *WindowClass
 	// Toplevel: this function returns the topmost widget in the container
 	// hierarchy @widget is a part of. If @widget has no parent widgets, it will
 	// be returned as the topmost widget. No reference will be added to the
@@ -1175,7 +1094,7 @@ type Widget interface {
 	//
 	//      return NULL;
 	//    }
-	Toplevel() Widget
+	Toplevel() *WidgetClass
 	// VAlign gets the value of the Widget:valign property.
 	//
 	// For backwards compatibility reasons this method will never return
@@ -1206,9 +1125,9 @@ type Widget interface {
 	// See gtk_widget_set_visible().
 	Visible() bool
 	// Visual gets the visual that will be used to render @widget.
-	Visual() gdk.Visual
+	Visual() *gdk.VisualClass
 	// Window returns the widget’s window if it is realized, nil otherwise
-	Window() gdk.Window
+	Window() *gdk.WindowClass
 	// GrabAdd makes @widget the current grabbed widget.
 	//
 	// This means that interaction with other widgets in the same application is
@@ -1352,33 +1271,6 @@ type Widget interface {
 	//
 	// See also gtk_widget_get_visible() and gtk_widget_set_visible()
 	IsVisible() bool
-	// KeynavFailed: this function should be called whenever keyboard navigation
-	// within a single widget hits a boundary. The function emits the
-	// Widget::keynav-failed signal on the widget and its return value should be
-	// interpreted in a way similar to the return value of
-	// gtk_widget_child_focus():
-	//
-	// When true is returned, stay in the widget, the failed keyboard navigation
-	// is OK and/or there is nowhere we can/should move the focus to.
-	//
-	// When false is returned, the caller should continue with keyboard
-	// navigation outside the widget, e.g. by calling gtk_widget_child_focus()
-	// on the widget’s toplevel.
-	//
-	// The default ::keynav-failed handler returns false for GTK_DIR_TAB_FORWARD
-	// and GTK_DIR_TAB_BACKWARD. For the other values of DirectionType it
-	// returns true.
-	//
-	// Whenever the default handler returns true, it also calls
-	// gtk_widget_error_bell() to notify the user of the failed keyboard
-	// navigation.
-	//
-	// A use case for providing an own implementation of ::keynav-failed (either
-	// by connecting to it or by overriding it) would be a row of Entry widgets
-	// where the user should be able to navigate the entire row with the cursor
-	// keys, as e.g. known from user interfaces that require entering license
-	// keys.
-	KeynavFailed(direction DirectionType) bool
 	// ListActionPrefixes retrieves a nil-terminated array of strings containing
 	// the prefixes of Group's available to @widget.
 	ListActionPrefixes() []string
@@ -1387,36 +1279,6 @@ type Widget interface {
 	Map()
 	// MnemonicActivate emits the Widget::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
-	// ModifyBase sets the base color for a widget in a particular state. All
-	// other style values are left untouched. The base color is the background
-	// color used along with the text color (see gtk_widget_modify_text()) for
-	// widgets such as Entry and TextView. See also gtk_widget_modify_style().
-	//
-	// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-	// draw on their parent container’s window and thus may > not draw any
-	// background themselves. This is the case for e.g. > Label. > > To modify
-	// the background of such widgets, you have to set the > base color on their
-	// parent; if you want to set the background > of a rectangular area around
-	// a label, try placing the label in > a EventBox widget and setting the
-	// base color on that.
-	//
-	// Deprecated: since version 3.0.
-	ModifyBase(state StateType, color *gdk.Color)
-	// ModifyBg sets the background color for a widget in a particular state.
-	//
-	// All other style values are left untouched. See also
-	// gtk_widget_modify_style().
-	//
-	// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-	// draw on their parent container’s window and thus may > not draw any
-	// background themselves. This is the case for e.g. > Label. > > To modify
-	// the background of such widgets, you have to set the > background color on
-	// their parent; if you want to set the background > of a rectangular area
-	// around a label, try placing the label in > a EventBox widget and setting
-	// the background color on that.
-	//
-	// Deprecated: since version 3.0.
-	ModifyBg(state StateType, color *gdk.Color)
 	// ModifyCursor sets the cursor color to use in a widget, overriding the
 	// Widget cursor-color and secondary-cursor-color style properties.
 	//
@@ -1425,13 +1287,6 @@ type Widget interface {
 	//
 	// Deprecated: since version 3.0.
 	ModifyCursor(primary *gdk.Color, secondary *gdk.Color)
-	// ModifyFg sets the foreground color for a widget in a particular state.
-	//
-	// All other style values are left untouched. See also
-	// gtk_widget_modify_style().
-	//
-	// Deprecated: since version 3.0.
-	ModifyFg(state StateType, color *gdk.Color)
 	// ModifyFont sets the font to use for a widget.
 	//
 	// All other style values are left untouched. See also
@@ -1459,48 +1314,6 @@ type Widget interface {
 	//
 	// Deprecated: since version 3.0.
 	ModifyStyle(style RCStyle)
-	// ModifyText sets the text color for a widget in a particular state.
-	//
-	// All other style values are left untouched. The text color is the
-	// foreground color used along with the base color (see
-	// gtk_widget_modify_base()) for widgets such as Entry and TextView. See
-	// also gtk_widget_modify_style().
-	//
-	// Deprecated: since version 3.0.
-	ModifyText(state StateType, color *gdk.Color)
-	// OverrideBackgroundColor sets the background color to use for a widget.
-	//
-	// All other style values are left untouched. See
-	// gtk_widget_override_color().
-	//
-	// Deprecated: since version 3.16.
-	OverrideBackgroundColor(state StateFlags, color *gdk.RGBA)
-	// OverrideColor sets the color to use for a widget.
-	//
-	// All other style values are left untouched.
-	//
-	// This function does not act recursively. Setting the color of a container
-	// does not affect its children. Note that some widgets that you may not
-	// think of as containers, for instance Buttons, are actually containers.
-	//
-	// This API is mostly meant as a quick way for applications to change a
-	// widget appearance. If you are developing a widgets library and intend
-	// this change to be themeable, it is better done by setting meaningful CSS
-	// classes in your widget/container implementation through
-	// gtk_style_context_add_class().
-	//
-	// This way, your widget library can install a CssProvider with the
-	// GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority in order to provide a
-	// default styling for those widgets that need so, and this theming may
-	// fully overridden by the user’s theme.
-	//
-	// Note that for complex widgets this may bring in undesired results (such
-	// as uniform background color everywhere), in these cases it is better to
-	// fully style such widgets through a CssProvider with the
-	// GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority.
-	//
-	// Deprecated: since version 3.16.
-	OverrideColor(state StateFlags, color *gdk.RGBA)
 	// OverrideCursor sets the cursor color to use in a widget, overriding the
 	// cursor-color and secondary-cursor-color style properties. All other style
 	// values are left untouched. See also gtk_widget_modify_style().
@@ -1623,9 +1436,6 @@ type Widget interface {
 	// gtk_widget_register_window() instead. Old code will keep working as is,
 	// although some new features like transparency might not work perfectly.
 	RegisterWindow(window gdk.Window)
-	// RemoveAccelerator removes an accelerator from @widget, previously
-	// installed with gtk_widget_add_accelerator().
-	RemoveAccelerator(accelGroup AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool
 	// RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
 	// this widget. (See gtk_widget_list_mnemonic_labels()). The widget must
 	// have previously been added to the list with
@@ -1646,7 +1456,7 @@ type Widget interface {
 	// use with g_object_unref().
 	//
 	// Deprecated: since version 3.0.
-	RenderIcon(stockId string, size int, detail string) gdkpixbuf.Pixbuf
+	RenderIcon(stockId string, size int, detail string) *gdkpixbuf.PixbufClass
 	// RenderIconPixbuf: convenience function that uses the theme engine and
 	// style settings for @widget to look up @stock_id and render it to a
 	// pixbuf. @stock_id should be a stock icon ID such as K_STOCK_OPEN or
@@ -1657,7 +1467,7 @@ type Widget interface {
 	// use with g_object_unref().
 	//
 	// Deprecated: since version 3.10.
-	RenderIconPixbuf(stockId string, size int) gdkpixbuf.Pixbuf
+	RenderIconPixbuf(stockId string, size int) *gdkpixbuf.PixbufClass
 	// Reparent moves a widget from one Container to another, handling reference
 	// count issues to avoid destroying the widget.
 	//
@@ -1743,30 +1553,6 @@ type Widget interface {
 	// same mask that is has for core events (i.e. the one that
 	// gdk_window_get_events() returns).
 	SetDeviceEnabled(device gdk.Device, enabled bool)
-	// SetDeviceEvents sets the device event mask (see EventMask) for a widget.
-	// The event mask determines which events a widget will receive from
-	// @device. Keep in mind that different widgets have different default event
-	// masks, and by changing the event mask you may disrupt a widget’s
-	// functionality, so be careful. This function must be called while a widget
-	// is unrealized. Consider gtk_widget_add_device_events() for widgets that
-	// are already realized, or if you want to preserve the existing event mask.
-	// This function can’t be used with windowless widgets (which return false
-	// from gtk_widget_get_has_window()); to get events on those widgets, place
-	// them inside a EventBox and receive events on the event box.
-	SetDeviceEvents(device gdk.Device, events gdk.EventMask)
-	// SetDirection sets the reading direction on a particular widget. This
-	// direction controls the primary direction for widgets containing text, and
-	// also the direction in which the children of a container are packed. The
-	// ability to set the direction is present in order so that correct
-	// localization into languages with right-to-left reading directions can be
-	// done. Generally, applications will let the default reading direction
-	// present, except for containers where the containers are arranged in an
-	// order that is explicitly visual rather than logical (such as buttons for
-	// text justification).
-	//
-	// If the direction is set to GTK_TEXT_DIR_NONE, then the value set by
-	// gtk_widget_set_default_direction() will be used.
-	SetDirection(dir TextDirection)
 	// SetDoubleBuffered widgets are double buffered by default; you can use
 	// this function to turn off the buffering. “Double buffered” simply means
 	// that gdk_window_begin_draw_frame() and gdk_window_end_draw_frame() are
@@ -1816,9 +1602,6 @@ type Widget interface {
 	// this widget. When not set, the default font options for the Screen will
 	// be used.
 	SetFontOptions(options *cairo.FontOptions)
-	// SetHAlign sets the horizontal alignment of @widget. See the Widget:halign
-	// property.
-	SetHAlign(align Align)
 	// SetHasTooltip sets the has-tooltip property on @widget to @has_tooltip.
 	// See Widget:has-tooltip for more information.
 	SetHasTooltip(hasTooltip bool)
@@ -2003,28 +1786,6 @@ type Widget interface {
 	// it does include pretty much all other padding or border properties set by
 	// any subclass of Widget.
 	SetSizeRequest(width int, height int)
-	// SetState: this function is for use in widget implementations. Sets the
-	// state of a widget (insensitive, prelighted, etc.) Usually you should set
-	// the state using wrapper functions such as gtk_widget_set_sensitive().
-	//
-	// Deprecated: since version 3.0.
-	SetState(state StateType)
-	// SetStateFlags: this function is for use in widget implementations. Turns
-	// on flag values in the current widget state (insensitive, prelighted,
-	// etc.).
-	//
-	// This function accepts the values GTK_STATE_FLAG_DIR_LTR and
-	// GTK_STATE_FLAG_DIR_RTL but ignores them. If you want to set the widget's
-	// direction, use gtk_widget_set_direction().
-	//
-	// It is worth mentioning that any other state than
-	// GTK_STATE_FLAG_INSENSITIVE, will be propagated down to all non-internal
-	// children if @widget is a Container, while GTK_STATE_FLAG_INSENSITIVE
-	// itself will be propagated down to all Container children by different
-	// means than turning on the state flag down the hierarchy, both
-	// gtk_widget_get_state_flags() and gtk_widget_is_sensitive() will make use
-	// of these.
-	SetStateFlags(flags StateFlags, clear bool)
 	// SetStyle: used to set the Style for a widget (@widget->style). Since GTK
 	// 3, this function does nothing, the passed in style is ignored.
 	//
@@ -2056,9 +1817,6 @@ type Widget interface {
 	// tooltip window. If @custom_window is nil, the default tooltip window will
 	// be used.
 	SetTooltipWindow(customWindow Window)
-	// SetVAlign sets the vertical alignment of @widget. See the Widget:valign
-	// property.
-	SetVAlign(align Align)
 	// SetVExpand sets whether the widget would like any available extra
 	// vertical space.
 	//
@@ -2161,15 +1919,10 @@ type Widget interface {
 	// set up with gtk_widget_register_window(). You need to call this when the
 	// window is no longer used by the widget, such as when you destroy it.
 	UnregisterWindow(window gdk.Window)
-	// UnsetStateFlags: this function is for use in widget implementations.
-	// Turns off flag values for the current widget state (insensitive,
-	// prelighted, etc.). See gtk_widget_set_state_flags().
-	UnsetStateFlags(flags StateFlags)
 }
 
 // WidgetClass implements the Widget interface.
 type WidgetClass struct {
-	*externglib.Object
 	externglib.InitiallyUnowned
 	BuildableInterface
 }
@@ -2178,7 +1931,6 @@ var _ Widget = (*WidgetClass)(nil)
 
 func wrapWidget(obj *externglib.Object) Widget {
 	return &WidgetClass{
-		Object:           obj,
 		InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 		BuildableInterface: BuildableInterface{
 			Object: obj,
@@ -2200,7 +1952,7 @@ func (w *WidgetClass) Activate() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_activate(_arg0)
 
@@ -2213,47 +1965,6 @@ func (w *WidgetClass) Activate() bool {
 	return _ok
 }
 
-// AddAccelerator installs an accelerator for this @widget in @accel_group that
-// causes @accel_signal to be emitted if the accelerator is activated. The
-// @accel_group needs to be added to the widget’s toplevel via
-// gtk_window_add_accel_group(), and the signal must be of type G_SIGNAL_ACTION.
-// Accelerators added through this function are not user changeable during
-// runtime. If you want to support accelerators that can be changed by the user,
-// use gtk_accel_map_add_entry() and gtk_widget_set_accel_path() or
-// gtk_menu_item_set_accel_path() instead.
-func (w *WidgetClass) AddAccelerator(accelSignal string, accelGroup AccelGroup, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.gchar          // out
-	var _arg2 *C.GtkAccelGroup  // out
-	var _arg3 C.guint           // out
-	var _arg4 C.GdkModifierType // out
-	var _arg5 C.GtkAccelFlags   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.gchar)(C.CString(accelSignal))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
-	_arg3 = C.guint(accelKey)
-	_arg4 = C.GdkModifierType(accelMods)
-	_arg5 = C.GtkAccelFlags(accelFlags)
-
-	C.gtk_widget_add_accelerator(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-// AddDeviceEvents adds the device events in the bitfield @events to the event
-// mask for @widget. See gtk_widget_set_device_events() for details.
-func (w *WidgetClass) AddDeviceEvents(device gdk.Device, events gdk.EventMask) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 *C.GdkDevice   // out
-	var _arg2 C.GdkEventMask // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg2 = C.GdkEventMask(events)
-
-	C.gtk_widget_add_device_events(_arg0, _arg1, _arg2)
-}
-
 // AddEvents adds the events in the bitfield @events to the event mask for
 // @widget. See gtk_widget_set_events() and the [input handling
 // overview][event-masks] for details.
@@ -2261,7 +1972,7 @@ func (w *WidgetClass) AddEvents(events int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(events)
 
 	C.gtk_widget_add_events(_arg0, _arg1)
@@ -2276,8 +1987,8 @@ func (w *WidgetClass) AddMnemonicLabel(label Widget) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_add_mnemonic_label(_arg0, _arg1)
 }
@@ -2293,47 +2004,10 @@ func (w *WidgetClass) CanActivateAccel(signalId uint) bool {
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.guint(signalId)
 
 	_cret = C.gtk_widget_can_activate_accel(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ChildFocus: this function is used by custom widget implementations; if you're
-// writing an app, you’d use gtk_widget_grab_focus() to move the focus to a
-// particular widget, and gtk_container_set_focus_chain() to change the focus
-// tab order. So you may want to investigate those functions instead.
-//
-// gtk_widget_child_focus() is called by containers as the user moves around the
-// window using keyboard shortcuts. @direction indicates what kind of motion is
-// taking place (up, down, left, right, tab forward, tab backward).
-// gtk_widget_child_focus() emits the Widget::focus signal; widgets override the
-// default handler for this signal in order to implement appropriate focus
-// behavior.
-//
-// The default ::focus handler for a widget should return true if moving in
-// @direction left the focus on a focusable location inside that widget, and
-// false if moving in @direction moved the focus outside the widget. If
-// returning true, widgets normally call gtk_widget_grab_focus() to place the
-// focus accordingly; if returning false, they don’t modify the current focus
-// location.
-func (w *WidgetClass) ChildFocus(direction DirectionType) bool {
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkDirectionType // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkDirectionType(direction)
-
-	_cret = C.gtk_widget_child_focus(_arg0, _arg1)
 
 	var _ok bool // out
 
@@ -2354,7 +2028,7 @@ func (w *WidgetClass) ChildNotify(childProperty string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(childProperty))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -2371,7 +2045,7 @@ func (w *WidgetClass) ClassPath() (pathLength uint, path string, pathReversed st
 	var _arg2 *C.gchar     // in
 	var _arg3 *C.gchar     // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_class_path(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -2388,49 +2062,21 @@ func (w *WidgetClass) ClassPath() (pathLength uint, path string, pathReversed st
 	return _pathLength, _path, _pathReversed
 }
 
-// ComputeExpand computes whether a container should give this widget extra
-// space when possible. Containers should check this, rather than looking at
-// gtk_widget_get_hexpand() or gtk_widget_get_vexpand().
-//
-// This function already checks whether the widget is visible, so visibility
-// does not need to be checked separately. Non-visible widgets are not expanded.
-//
-// The computed expand value uses either the expand setting explicitly set on
-// the widget itself, or, if none has been explicitly set, the widget may expand
-// if some of its children do.
-func (w *WidgetClass) ComputeExpand(orientation Orientation) bool {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkOrientation // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkOrientation(orientation)
-
-	_cret = C.gtk_widget_compute_expand(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // CreatePangoContext creates a new Context with the appropriate font map, font
 // options, font description, and base direction for drawing text for this
 // widget. See also gtk_widget_get_pango_context().
-func (w *WidgetClass) CreatePangoContext() pango.Context {
+func (w *WidgetClass) CreatePangoContext() *pango.ContextClass {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.PangoContext // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_create_pango_context(_arg0)
 
-	var _context pango.Context // out
+	var _context *pango.ContextClass // out
 
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Context)
+	_context = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.ContextClass)
 
 	return _context
 }
@@ -2441,20 +2087,21 @@ func (w *WidgetClass) CreatePangoContext() pango.Context {
 // If you keep a Layout created in this way around, you need to re-create it
 // when the widget Context is replaced. This can be tracked by using the
 // Widget::screen-changed signal on the widget.
-func (w *WidgetClass) CreatePangoLayout(text string) pango.Layout {
+func (w *WidgetClass) CreatePangoLayout(text string) *pango.LayoutClass {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 *C.gchar       // out
 	var _cret *C.PangoLayout // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
 
-	var _layout pango.Layout // out
+	var _layout *pango.LayoutClass // out
 
-	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(pango.Layout)
+	_layout = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*pango.LayoutClass)
 
 	return _layout
 }
@@ -2491,7 +2138,7 @@ func (w *WidgetClass) CreatePangoLayout(text string) pango.Layout {
 func (w *WidgetClass) Destroy() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_destroy(_arg0)
 }
@@ -2505,8 +2152,8 @@ func (w *WidgetClass) DeviceIsShadowed(device gdk.Device) bool {
 	var _arg1 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
 
 	_cret = C.gtk_widget_device_is_shadowed(_arg0, _arg1)
 
@@ -2531,7 +2178,7 @@ func (w *WidgetClass) DragCheckThreshold(startX int, startY int, currentX int, c
 	var _arg4 C.gint       // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(startX)
 	_arg2 = C.gint(startY)
 	_arg3 = C.gint(currentX)
@@ -2555,7 +2202,7 @@ func (w *WidgetClass) DragCheckThreshold(startX int, startY int, currentX int, c
 func (w *WidgetClass) DragDestAddImageTargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_dest_add_image_targets(_arg0)
 }
@@ -2567,7 +2214,7 @@ func (w *WidgetClass) DragDestAddImageTargets() {
 func (w *WidgetClass) DragDestAddTextTargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_dest_add_text_targets(_arg0)
 }
@@ -2579,7 +2226,7 @@ func (w *WidgetClass) DragDestAddTextTargets() {
 func (w *WidgetClass) DragDestAddURITargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_dest_add_uri_targets(_arg0)
 }
@@ -2590,13 +2237,13 @@ func (w *WidgetClass) DragDestGetTargetList() *TargetList {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GtkTargetList // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_drag_dest_get_target_list(_arg0)
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	_targetList = (*TargetList)(unsafe.Pointer(*C.GtkTargetList))
 	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
@@ -2611,7 +2258,7 @@ func (w *WidgetClass) DragDestGetTrackMotion() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_drag_dest_get_track_motion(_arg0)
 
@@ -2624,25 +2271,6 @@ func (w *WidgetClass) DragDestGetTrackMotion() bool {
 	return _ok
 }
 
-// DragDestSetProxy sets this widget as a proxy for drops to another window.
-//
-// Deprecated: since version 3.22.
-func (w *WidgetClass) DragDestSetProxy(proxyWindow gdk.Window, protocol gdk.DragProtocol, useCoordinates bool) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GdkWindow      // out
-	var _arg2 C.GdkDragProtocol // out
-	var _arg3 C.gboolean        // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(proxyWindow.Native()))
-	_arg2 = C.GdkDragProtocol(protocol)
-	if useCoordinates {
-		_arg3 = C.TRUE
-	}
-
-	C.gtk_drag_dest_set_proxy(_arg0, _arg1, _arg2, _arg3)
-}
-
 // DragDestSetTargetList sets the target types that this widget can accept from
 // drag-and-drop. The widget must first be made into a drag destination with
 // gtk_drag_dest_set().
@@ -2650,8 +2278,8 @@ func (w *WidgetClass) DragDestSetTargetList(targetList *TargetList) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkTargetList // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkTargetList)(unsafe.Pointer(targetList))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkTargetList)(unsafe.Pointer(*TargetList))
 
 	C.gtk_drag_dest_set_target_list(_arg0, _arg1)
 }
@@ -2666,7 +2294,7 @@ func (w *WidgetClass) DragDestSetTrackMotion(trackMotion bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if trackMotion {
 		_arg1 = C.TRUE
 	}
@@ -2679,7 +2307,7 @@ func (w *WidgetClass) DragDestSetTrackMotion(trackMotion bool) {
 func (w *WidgetClass) DragDestUnset() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_dest_unset(_arg0)
 }
@@ -2690,7 +2318,7 @@ func (w *WidgetClass) DragDestUnset() {
 func (w *WidgetClass) DragHighlight() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_highlight(_arg0)
 }
@@ -2702,7 +2330,7 @@ func (w *WidgetClass) DragHighlight() {
 func (w *WidgetClass) DragSourceAddImageTargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_source_add_image_targets(_arg0)
 }
@@ -2714,7 +2342,7 @@ func (w *WidgetClass) DragSourceAddImageTargets() {
 func (w *WidgetClass) DragSourceAddTextTargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_source_add_text_targets(_arg0)
 }
@@ -2726,7 +2354,7 @@ func (w *WidgetClass) DragSourceAddTextTargets() {
 func (w *WidgetClass) DragSourceAddURITargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_source_add_uri_targets(_arg0)
 }
@@ -2737,13 +2365,13 @@ func (w *WidgetClass) DragSourceGetTargetList() *TargetList {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GtkTargetList // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_drag_source_get_target_list(_arg0)
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	_targetList = (*TargetList)(unsafe.Pointer(*C.GtkTargetList))
 	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
@@ -2759,7 +2387,7 @@ func (w *WidgetClass) DragSourceSetIconName(iconName string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -2773,8 +2401,8 @@ func (w *WidgetClass) DragSourceSetIconPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkPixbuf // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
 
 	C.gtk_drag_source_set_icon_pixbuf(_arg0, _arg1)
 }
@@ -2787,7 +2415,7 @@ func (w *WidgetClass) DragSourceSetIconStock(stockId string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -2801,8 +2429,8 @@ func (w *WidgetClass) DragSourceSetTargetList(targetList *TargetList) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkTargetList // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkTargetList)(unsafe.Pointer(targetList))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkTargetList)(unsafe.Pointer(*TargetList))
 
 	C.gtk_drag_source_set_target_list(_arg0, _arg1)
 }
@@ -2811,7 +2439,7 @@ func (w *WidgetClass) DragSourceSetTargetList(targetList *TargetList) {
 func (w *WidgetClass) DragSourceUnset() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_source_unset(_arg0)
 }
@@ -2821,7 +2449,7 @@ func (w *WidgetClass) DragSourceUnset() {
 func (w *WidgetClass) DragUnhighlight() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_unhighlight(_arg0)
 }
@@ -2845,8 +2473,8 @@ func (w *WidgetClass) Draw(cr *cairo.Context) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.cairo_t   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
 
 	C.gtk_widget_draw(_arg0, _arg1)
 }
@@ -2861,7 +2489,7 @@ func (w *WidgetClass) Draw(cr *cairo.Context) {
 func (w *WidgetClass) EnsureStyle() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_ensure_style(_arg0)
 }
@@ -2876,7 +2504,7 @@ func (w *WidgetClass) EnsureStyle() {
 func (w *WidgetClass) ErrorBell() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_error_bell(_arg0)
 }
@@ -2889,7 +2517,7 @@ func (w *WidgetClass) ErrorBell() {
 func (w *WidgetClass) FreezeChildNotify() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_freeze_child_notify(_arg0)
 }
@@ -2904,17 +2532,18 @@ func (w *WidgetClass) FreezeChildNotify() {
 //
 // The documentation of the ATK (http://developer.gnome.org/atk/stable/) library
 // contains more information about accessible objects and their uses.
-func (w *WidgetClass) Accessible() atk.Object {
+func (w *WidgetClass) Accessible() *atk.ObjectClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_accessible(_arg0)
 
-	var _object atk.Object // out
+	var _object *atk.ObjectClass // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(atk.Object)
+	_object = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*atk.ObjectClass)
 
 	return _object
 }
@@ -2924,20 +2553,21 @@ func (w *WidgetClass) Accessible() atk.Object {
 // ancestry.
 //
 // If no action group was found matching @prefix, then nil is returned.
-func (w *WidgetClass) ActionGroup(prefix string) gio.ActionGroup {
+func (w *WidgetClass) ActionGroup(prefix string) *gio.ActionGroupInterface {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.GActionGroup // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(prefix))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_get_action_group(_arg0, _arg1)
 
-	var _actionGroup gio.ActionGroup // out
+	var _actionGroup *gio.ActionGroupInterface // out
 
-	_actionGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gio.ActionGroup)
+	_actionGroup = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gio.ActionGroupInterface)
 
 	return _actionGroup
 }
@@ -2950,7 +2580,7 @@ func (w *WidgetClass) AllocatedBaseline() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_allocated_baseline(_arg0)
 
@@ -2968,7 +2598,7 @@ func (w *WidgetClass) AllocatedHeight() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_allocated_height(_arg0)
 
@@ -2986,7 +2616,7 @@ func (w *WidgetClass) AllocatedWidth() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_allocated_width(_arg0)
 
@@ -3005,19 +2635,20 @@ func (w *WidgetClass) AllocatedWidth() int {
 //
 // Note that unlike gtk_widget_is_ancestor(), gtk_widget_get_ancestor()
 // considers @widget to be an ancestor of itself.
-func (w *WidgetClass) Ancestor(widgetType externglib.Type) Widget {
+func (w *WidgetClass) Ancestor(widgetType externglib.Type) *WidgetClass {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GType      // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GType)(widgetType)
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (C.GType)(externglib.Type)
 
 	_cret = C.gtk_widget_get_ancestor(_arg0, _arg1)
 
-	var _ret Widget // out
+	var _ret *WidgetClass // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_ret = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _ret
 }
@@ -3030,7 +2661,7 @@ func (w *WidgetClass) AppPaintable() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_app_paintable(_arg0)
 
@@ -3049,7 +2680,7 @@ func (w *WidgetClass) CanDefault() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_can_default(_arg0)
 
@@ -3068,7 +2699,7 @@ func (w *WidgetClass) CanFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_can_focus(_arg0)
 
@@ -3090,7 +2721,7 @@ func (w *WidgetClass) ChildVisible() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_child_visible(_arg0)
 
@@ -3110,7 +2741,7 @@ func (w *WidgetClass) CompositeName() string {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_composite_name(_arg0)
 
@@ -3129,8 +2760,8 @@ func (w *WidgetClass) DeviceEnabled(device gdk.Device) bool {
 	var _arg1 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
 
 	_cret = C.gtk_widget_get_device_enabled(_arg0, _arg1)
 
@@ -3151,14 +2782,14 @@ func (w *WidgetClass) DeviceEvents(device gdk.Device) gdk.EventMask {
 	var _arg1 *C.GdkDevice   // out
 	var _cret C.GdkEventMask // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
 
 	_cret = C.gtk_widget_get_device_events(_arg0, _arg1)
 
 	var _eventMask gdk.EventMask // out
 
-	_eventMask = gdk.EventMask(_cret)
+	_eventMask = (gdk.EventMask)(C.GdkEventMask)
 
 	return _eventMask
 }
@@ -3169,13 +2800,13 @@ func (w *WidgetClass) Direction() TextDirection {
 	var _arg0 *C.GtkWidget       // out
 	var _cret C.GtkTextDirection // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_direction(_arg0)
 
 	var _textDirection TextDirection // out
 
-	_textDirection = TextDirection(_cret)
+	_textDirection = (TextDirection)(C.GtkTextDirection)
 
 	return _textDirection
 }
@@ -3187,17 +2818,18 @@ func (w *WidgetClass) Direction() TextDirection {
 // In general, you should only create display specific resources when a widget
 // has been realized, and you should free those resources when the widget is
 // unrealized.
-func (w *WidgetClass) Display() gdk.Display {
+func (w *WidgetClass) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_display(_arg0)
 
-	var _display gdk.Display // out
+	var _display *gdk.DisplayClass // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Display)
+	_display = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DisplayClass)
 
 	return _display
 }
@@ -3209,7 +2841,7 @@ func (w *WidgetClass) DoubleBuffered() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_double_buffered(_arg0)
 
@@ -3233,7 +2865,7 @@ func (w *WidgetClass) Events() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_events(_arg0)
 
@@ -3250,7 +2882,7 @@ func (w *WidgetClass) FocusOnClick() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_focus_on_click(_arg0)
 
@@ -3264,17 +2896,18 @@ func (w *WidgetClass) FocusOnClick() bool {
 }
 
 // FontMap gets the font map that has been set with gtk_widget_set_font_map().
-func (w *WidgetClass) FontMap() pango.FontMap {
+func (w *WidgetClass) FontMap() *pango.FontMapClass {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.PangoFontMap // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_font_map(_arg0)
 
-	var _fontMap pango.FontMap // out
+	var _fontMap *pango.FontMapClass // out
 
-	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.FontMap)
+	_fontMap = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*pango.FontMapClass)
 
 	return _fontMap
 }
@@ -3285,13 +2918,13 @@ func (w *WidgetClass) FontOptions() *cairo.FontOptions {
 	var _arg0 *C.GtkWidget            // out
 	var _cret *C.cairo_font_options_t // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_font_options(_arg0)
 
 	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
+	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(*C.cairo_font_options_t))
 
 	return _fontOptions
 }
@@ -3315,17 +2948,18 @@ func (w *WidgetClass) FontOptions() *cairo.FontOptions {
 // widget’s frame clock.
 //
 // Unrealized widgets do not have a frame clock.
-func (w *WidgetClass) FrameClock() gdk.FrameClock {
+func (w *WidgetClass) FrameClock() *gdk.FrameClockClass {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GdkFrameClock // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_frame_clock(_arg0)
 
-	var _frameClock gdk.FrameClock // out
+	var _frameClock *gdk.FrameClockClass // out
 
-	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.FrameClock)
+	_frameClock = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.FrameClockClass)
 
 	return _frameClock
 }
@@ -3339,13 +2973,13 @@ func (w *WidgetClass) HAlign() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_halign(_arg0)
 
 	var _align Align // out
 
-	_align = Align(_cret)
+	_align = (Align)(C.GtkAlign)
 
 	return _align
 }
@@ -3356,7 +2990,7 @@ func (w *WidgetClass) HasTooltip() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_has_tooltip(_arg0)
 
@@ -3375,7 +3009,7 @@ func (w *WidgetClass) HasWindow() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_has_window(_arg0)
 
@@ -3404,7 +3038,7 @@ func (w *WidgetClass) HExpand() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_hexpand(_arg0)
 
@@ -3430,7 +3064,7 @@ func (w *WidgetClass) HExpandSet() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_hexpand_set(_arg0)
 
@@ -3448,7 +3082,7 @@ func (w *WidgetClass) Mapped() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_mapped(_arg0)
 
@@ -3466,7 +3100,7 @@ func (w *WidgetClass) MarginBottom() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_margin_bottom(_arg0)
 
@@ -3482,7 +3116,7 @@ func (w *WidgetClass) MarginEnd() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_margin_end(_arg0)
 
@@ -3500,7 +3134,7 @@ func (w *WidgetClass) MarginLeft() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_margin_left(_arg0)
 
@@ -3518,7 +3152,7 @@ func (w *WidgetClass) MarginRight() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_margin_right(_arg0)
 
@@ -3534,7 +3168,7 @@ func (w *WidgetClass) MarginStart() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_margin_start(_arg0)
 
@@ -3550,7 +3184,7 @@ func (w *WidgetClass) MarginTop() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_margin_top(_arg0)
 
@@ -3559,27 +3193,6 @@ func (w *WidgetClass) MarginTop() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// ModifierMask returns the modifier mask the @widget’s windowing system backend
-// uses for a particular purpose.
-//
-// See gdk_keymap_get_modifier_mask().
-func (w *WidgetClass) ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType {
-	var _arg0 *C.GtkWidget        // out
-	var _arg1 C.GdkModifierIntent // out
-	var _cret C.GdkModifierType   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GdkModifierIntent(intent)
-
-	_cret = C.gtk_widget_get_modifier_mask(_arg0, _arg1)
-
-	var _modifierType gdk.ModifierType // out
-
-	_modifierType = gdk.ModifierType(_cret)
-
-	return _modifierType
 }
 
 // ModifierStyle returns the current modifier style for the widget. (As set by
@@ -3596,17 +3209,18 @@ func (w *WidgetClass) ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType {
 // you want to keep it alive.
 //
 // Deprecated: since version 3.0.
-func (w *WidgetClass) ModifierStyle() RCStyle {
+func (w *WidgetClass) ModifierStyle() *RCStyleClass {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GtkRcStyle // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_modifier_style(_arg0)
 
-	var _rcStyle RCStyle // out
+	var _rcStyle *RCStyleClass // out
 
-	_rcStyle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RCStyle)
+	_rcStyle = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RCStyleClass)
 
 	return _rcStyle
 }
@@ -3617,7 +3231,7 @@ func (w *WidgetClass) Name() string {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_name(_arg0)
 
@@ -3634,7 +3248,7 @@ func (w *WidgetClass) NoShowAll() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_no_show_all(_arg0)
 
@@ -3653,7 +3267,7 @@ func (w *WidgetClass) Opacity() float64 {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.double     // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_opacity(_arg0)
 
@@ -3671,49 +3285,52 @@ func (w *WidgetClass) Opacity() float64 {
 // from its toplevel), and will be updated to match any changes to the widget’s
 // attributes. This can be tracked by using the Widget::screen-changed signal on
 // the widget.
-func (w *WidgetClass) PangoContext() pango.Context {
+func (w *WidgetClass) PangoContext() *pango.ContextClass {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.PangoContext // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_pango_context(_arg0)
 
-	var _context pango.Context // out
+	var _context *pango.ContextClass // out
 
-	_context = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.Context)
+	_context = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*pango.ContextClass)
 
 	return _context
 }
 
 // Parent returns the parent container of @widget.
-func (w *WidgetClass) Parent() Widget {
+func (w *WidgetClass) Parent() *WidgetClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_parent(_arg0)
 
-	var _ret Widget // out
+	var _ret *WidgetClass // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_ret = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _ret
 }
 
 // ParentWindow gets @widget’s parent window, or nil if it does not have one.
-func (w *WidgetClass) ParentWindow() gdk.Window {
+func (w *WidgetClass) ParentWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_parent_window(_arg0)
 
-	var _window gdk.Window // out
+	var _window *gdk.WindowClass // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.WindowClass)
 
 	return _window
 }
@@ -3724,13 +3341,13 @@ func (w *WidgetClass) GetPath() *WidgetPath {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GtkWidgetPath // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_path(_arg0)
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(*C.GtkWidgetPath))
 	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
@@ -3751,7 +3368,7 @@ func (w *WidgetClass) Pointer() (x int, y int) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_get_pointer(_arg0, &_arg1, &_arg2)
 
@@ -3777,7 +3394,7 @@ func (w *WidgetClass) PreferredHeight() (minimumHeight int, naturalHeight int) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_get_preferred_height(_arg0, &_arg1, &_arg2)
 
@@ -3808,7 +3425,7 @@ func (w *WidgetClass) PreferredHeightAndBaselineForWidth(width int) (minimumHeig
 	var _arg4 C.gint       // in
 	var _arg5 C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(width)
 
 	C.gtk_widget_get_preferred_height_and_baseline_for_width(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
@@ -3839,7 +3456,7 @@ func (w *WidgetClass) PreferredHeightForWidth(width int) (minimumHeight int, nat
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(width)
 
 	C.gtk_widget_get_preferred_height_for_width(_arg0, _arg1, &_arg2, &_arg3)
@@ -3866,7 +3483,7 @@ func (w *WidgetClass) PreferredWidth() (minimumWidth int, naturalWidth int) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_get_preferred_width(_arg0, &_arg1, &_arg2)
 
@@ -3892,7 +3509,7 @@ func (w *WidgetClass) PreferredWidthForHeight(height int) (minimumWidth int, nat
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(height)
 
 	C.gtk_widget_get_preferred_width_for_height(_arg0, _arg1, &_arg2, &_arg3)
@@ -3911,7 +3528,7 @@ func (w *WidgetClass) Realized() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_realized(_arg0)
 
@@ -3933,7 +3550,7 @@ func (w *WidgetClass) ReceivesDefault() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_receives_default(_arg0)
 
@@ -3956,13 +3573,13 @@ func (w *WidgetClass) RequestMode() SizeRequestMode {
 	var _arg0 *C.GtkWidget         // out
 	var _cret C.GtkSizeRequestMode // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_request_mode(_arg0)
 
 	var _sizeRequestMode SizeRequestMode // out
 
-	_sizeRequestMode = SizeRequestMode(_cret)
+	_sizeRequestMode = (SizeRequestMode)(C.GtkSizeRequestMode)
 
 	return _sizeRequestMode
 }
@@ -3977,17 +3594,18 @@ func (w *WidgetClass) RequestMode() SizeRequestMode {
 // resources when the widget is unrealized.
 //
 // Deprecated: since version 3.12.
-func (w *WidgetClass) RootWindow() gdk.Window {
+func (w *WidgetClass) RootWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_root_window(_arg0)
 
-	var _window gdk.Window // out
+	var _window *gdk.WindowClass // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.WindowClass)
 
 	return _window
 }
@@ -4001,7 +3619,7 @@ func (w *WidgetClass) ScaleFactor() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_scale_factor(_arg0)
 
@@ -4019,17 +3637,18 @@ func (w *WidgetClass) ScaleFactor() int {
 // In general, you should only create screen specific resources when a widget
 // has been realized, and you should free those resources when the widget is
 // unrealized.
-func (w *WidgetClass) Screen() gdk.Screen {
+func (w *WidgetClass) Screen() *gdk.ScreenClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkScreen // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_screen(_arg0)
 
-	var _screen gdk.Screen // out
+	var _screen *gdk.ScreenClass // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
+	_screen = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.ScreenClass)
 
 	return _screen
 }
@@ -4043,7 +3662,7 @@ func (w *WidgetClass) Sensitive() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_sensitive(_arg0)
 
@@ -4060,17 +3679,18 @@ func (w *WidgetClass) Sensitive() bool {
 //
 // Note that this function can only be called when the Widget is attached to a
 // toplevel, since the settings object is specific to a particular Screen.
-func (w *WidgetClass) Settings() Settings {
+func (w *WidgetClass) Settings() *SettingsClass {
 	var _arg0 *C.GtkWidget   // out
 	var _cret *C.GtkSettings // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_settings(_arg0)
 
-	var _settings Settings // out
+	var _settings *SettingsClass // out
 
-	_settings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Settings)
+	_settings = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SettingsClass)
 
 	return _settings
 }
@@ -4086,7 +3706,7 @@ func (w *WidgetClass) SizeRequest() (width int, height int) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_get_size_request(_arg0, &_arg1, &_arg2)
 
@@ -4106,13 +3726,13 @@ func (w *WidgetClass) State() StateType {
 	var _arg0 *C.GtkWidget   // out
 	var _cret C.GtkStateType // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_state(_arg0)
 
 	var _stateType StateType // out
 
-	_stateType = StateType(_cret)
+	_stateType = (StateType)(C.GtkStateType)
 
 	return _stateType
 }
@@ -4127,13 +3747,13 @@ func (w *WidgetClass) StateFlags() StateFlags {
 	var _arg0 *C.GtkWidget    // out
 	var _cret C.GtkStateFlags // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_state_flags(_arg0)
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = StateFlags(_cret)
+	_stateFlags = (StateFlags)(C.GtkStateFlags)
 
 	return _stateFlags
 }
@@ -4141,34 +3761,36 @@ func (w *WidgetClass) StateFlags() StateFlags {
 // Style: simply an accessor function that returns @widget->style.
 //
 // Deprecated: since version 3.0.
-func (w *WidgetClass) Style() Style {
+func (w *WidgetClass) Style() *StyleClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_style(_arg0)
 
-	var _style Style // out
+	var _style *StyleClass // out
 
-	_style = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Style)
+	_style = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*StyleClass)
 
 	return _style
 }
 
 // StyleContext returns the style context associated to @widget. The returned
 // object is guaranteed to be the same for the lifetime of @widget.
-func (w *WidgetClass) StyleContext() StyleContext {
+func (w *WidgetClass) StyleContext() *StyleContextClass {
 	var _arg0 *C.GtkWidget       // out
 	var _cret *C.GtkStyleContext // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_style_context(_arg0)
 
-	var _styleContext StyleContext // out
+	var _styleContext *StyleContextClass // out
 
-	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StyleContext)
+	_styleContext = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*StyleContextClass)
 
 	return _styleContext
 }
@@ -4179,7 +3801,7 @@ func (w *WidgetClass) SupportMultidevice() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_support_multidevice(_arg0)
 
@@ -4201,22 +3823,23 @@ func (w *WidgetClass) SupportMultidevice() bool {
 // This function is only meant to be called for code which is private to the
 // @widget_type which declared the child and is meant for language bindings
 // which cannot easily make use of the GObject structure offsets.
-func (w *WidgetClass) TemplateChild(widgetType externglib.Type, name string) gextras.Objector {
+func (w *WidgetClass) TemplateChild(widgetType externglib.Type, name string) *externglib.Object {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GType      // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GObject   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (C.GType)(widgetType)
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (C.GType)(externglib.Type)
 	_arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
 
-	var _object gextras.Objector // out
+	var _object *externglib.Object // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
+	_object = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*externglib.Object)
 
 	return _object
 }
@@ -4226,7 +3849,7 @@ func (w *WidgetClass) TooltipMarkup() string {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_tooltip_markup(_arg0)
 
@@ -4243,7 +3866,7 @@ func (w *WidgetClass) TooltipText() string {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_tooltip_text(_arg0)
 
@@ -4258,17 +3881,18 @@ func (w *WidgetClass) TooltipText() string {
 // TooltipWindow returns the Window of the current tooltip. This can be the
 // GtkWindow created by default, or the custom tooltip window set using
 // gtk_widget_set_tooltip_window().
-func (w *WidgetClass) TooltipWindow() Window {
+func (w *WidgetClass) TooltipWindow() *WindowClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWindow // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_tooltip_window(_arg0)
 
-	var _window Window // out
+	var _window *WindowClass // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WindowClass)
 
 	return _window
 }
@@ -4300,17 +3924,18 @@ func (w *WidgetClass) TooltipWindow() Window {
 //
 //      return NULL;
 //    }
-func (w *WidgetClass) Toplevel() Widget {
+func (w *WidgetClass) Toplevel() *WidgetClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_toplevel(_arg0)
 
-	var _ret Widget // out
+	var _ret *WidgetClass // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_ret = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _ret
 }
@@ -4326,13 +3951,13 @@ func (w *WidgetClass) VAlign() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_valign(_arg0)
 
 	var _align Align // out
 
-	_align = Align(_cret)
+	_align = (Align)(C.GtkAlign)
 
 	return _align
 }
@@ -4343,13 +3968,13 @@ func (w *WidgetClass) VAlignWithBaseline() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_valign_with_baseline(_arg0)
 
 	var _align Align // out
 
-	_align = Align(_cret)
+	_align = (Align)(C.GtkAlign)
 
 	return _align
 }
@@ -4362,7 +3987,7 @@ func (w *WidgetClass) VExpand() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_vexpand(_arg0)
 
@@ -4383,7 +4008,7 @@ func (w *WidgetClass) VExpandSet() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_vexpand_set(_arg0)
 
@@ -4407,7 +4032,7 @@ func (w *WidgetClass) Visible() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_visible(_arg0)
 
@@ -4421,33 +4046,35 @@ func (w *WidgetClass) Visible() bool {
 }
 
 // Visual gets the visual that will be used to render @widget.
-func (w *WidgetClass) Visual() gdk.Visual {
+func (w *WidgetClass) Visual() *gdk.VisualClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkVisual // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_visual(_arg0)
 
-	var _visual gdk.Visual // out
+	var _visual *gdk.VisualClass // out
 
-	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Visual)
+	_visual = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.VisualClass)
 
 	return _visual
 }
 
 // Window returns the widget’s window if it is realized, nil otherwise
-func (w *WidgetClass) Window() gdk.Window {
+func (w *WidgetClass) Window() *gdk.WindowClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_get_window(_arg0)
 
-	var _window gdk.Window // out
+	var _window *gdk.WindowClass // out
 
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Window)
+	_window = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.WindowClass)
 
 	return _window
 }
@@ -4462,7 +4089,7 @@ func (w *WidgetClass) Window() gdk.Window {
 func (w *WidgetClass) GrabAdd() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_grab_add(_arg0)
 }
@@ -4478,7 +4105,7 @@ func (w *WidgetClass) GrabAdd() {
 func (w *WidgetClass) GrabDefault() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_grab_default(_arg0)
 }
@@ -4496,7 +4123,7 @@ func (w *WidgetClass) GrabDefault() {
 func (w *WidgetClass) GrabFocus() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_grab_focus(_arg0)
 }
@@ -4509,7 +4136,7 @@ func (w *WidgetClass) GrabFocus() {
 func (w *WidgetClass) GrabRemove() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_grab_remove(_arg0)
 }
@@ -4520,7 +4147,7 @@ func (w *WidgetClass) HasDefault() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_has_default(_arg0)
 
@@ -4540,7 +4167,7 @@ func (w *WidgetClass) HasFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_has_focus(_arg0)
 
@@ -4561,7 +4188,7 @@ func (w *WidgetClass) HasGrab() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_has_grab(_arg0)
 
@@ -4582,7 +4209,7 @@ func (w *WidgetClass) HasRCStyle() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_has_rc_style(_arg0)
 
@@ -4602,7 +4229,7 @@ func (w *WidgetClass) HasScreen() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_has_screen(_arg0)
 
@@ -4627,7 +4254,7 @@ func (w *WidgetClass) HasVisibleFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_has_visible_focus(_arg0)
 
@@ -4645,7 +4272,7 @@ func (w *WidgetClass) HasVisibleFocus() bool {
 func (w *WidgetClass) Hide() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_hide(_arg0)
 }
@@ -4660,7 +4287,7 @@ func (w *WidgetClass) HideOnDelete() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_hide_on_delete(_arg0)
 
@@ -4679,7 +4306,7 @@ func (w *WidgetClass) InDestruction() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_in_destruction(_arg0)
 
@@ -4710,7 +4337,7 @@ func (w *WidgetClass) InDestruction() bool {
 func (w *WidgetClass) InitTemplate() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_init_template(_arg0)
 }
@@ -4722,8 +4349,8 @@ func (w *WidgetClass) InputShapeCombineRegion(region *cairo.Region) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
 
 	C.gtk_widget_input_shape_combine_region(_arg0, _arg1)
 }
@@ -4739,10 +4366,10 @@ func (w *WidgetClass) InsertActionGroup(name string, group gio.ActionGroup) {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.GActionGroup // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer((&gio.ActionGroup).Native()))
 
 	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
 }
@@ -4754,8 +4381,8 @@ func (w *WidgetClass) IsAncestor(ancestor Widget) bool {
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(ancestor.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_is_ancestor(_arg0, _arg1)
 
@@ -4781,7 +4408,7 @@ func (w *WidgetClass) IsComposited() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_is_composited(_arg0)
 
@@ -4800,7 +4427,7 @@ func (w *WidgetClass) IsDrawable() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_is_drawable(_arg0)
 
@@ -4821,7 +4448,7 @@ func (w *WidgetClass) IsFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_is_focus(_arg0)
 
@@ -4840,7 +4467,7 @@ func (w *WidgetClass) IsSensitive() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_is_sensitive(_arg0)
 
@@ -4861,7 +4488,7 @@ func (w *WidgetClass) IsToplevel() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_is_toplevel(_arg0)
 
@@ -4884,50 +4511,9 @@ func (w *WidgetClass) IsVisible() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_is_visible(_arg0)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// KeynavFailed: this function should be called whenever keyboard navigation
-// within a single widget hits a boundary. The function emits the
-// Widget::keynav-failed signal on the widget and its return value should be
-// interpreted in a way similar to the return value of gtk_widget_child_focus():
-//
-// When true is returned, stay in the widget, the failed keyboard navigation is
-// OK and/or there is nowhere we can/should move the focus to.
-//
-// When false is returned, the caller should continue with keyboard navigation
-// outside the widget, e.g. by calling gtk_widget_child_focus() on the widget’s
-// toplevel.
-//
-// The default ::keynav-failed handler returns false for GTK_DIR_TAB_FORWARD and
-// GTK_DIR_TAB_BACKWARD. For the other values of DirectionType it returns true.
-//
-// Whenever the default handler returns true, it also calls
-// gtk_widget_error_bell() to notify the user of the failed keyboard navigation.
-//
-// A use case for providing an own implementation of ::keynav-failed (either by
-// connecting to it or by overriding it) would be a row of Entry widgets where
-// the user should be able to navigate the entire row with the cursor keys, as
-// e.g. known from user interfaces that require entering license keys.
-func (w *WidgetClass) KeynavFailed(direction DirectionType) bool {
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkDirectionType // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkDirectionType(direction)
-
-	_cret = C.gtk_widget_keynav_failed(_arg0, _arg1)
 
 	var _ok bool // out
 
@@ -4944,7 +4530,7 @@ func (w *WidgetClass) ListActionPrefixes() []string {
 	var _arg0 *C.GtkWidget // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_list_action_prefixes(_arg0)
 
@@ -4972,7 +4558,7 @@ func (w *WidgetClass) ListActionPrefixes() []string {
 func (w *WidgetClass) Map() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_map(_arg0)
 }
@@ -4983,7 +4569,7 @@ func (w *WidgetClass) MnemonicActivate(groupCycling bool) bool {
 	var _arg1 C.gboolean   // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if groupCycling {
 		_arg1 = C.TRUE
 	}
@@ -4999,57 +4585,6 @@ func (w *WidgetClass) MnemonicActivate(groupCycling bool) bool {
 	return _ok
 }
 
-// ModifyBase sets the base color for a widget in a particular state. All other
-// style values are left untouched. The base color is the background color used
-// along with the text color (see gtk_widget_modify_text()) for widgets such as
-// Entry and TextView. See also gtk_widget_modify_style().
-//
-// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-// draw on their parent container’s window and thus may > not draw any
-// background themselves. This is the case for e.g. > Label. > > To modify the
-// background of such widgets, you have to set the > base color on their parent;
-// if you want to set the background > of a rectangular area around a label, try
-// placing the label in > a EventBox widget and setting the base color on that.
-//
-// Deprecated: since version 3.0.
-func (w *WidgetClass) ModifyBase(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
-
-	C.gtk_widget_modify_base(_arg0, _arg1, _arg2)
-}
-
-// ModifyBg sets the background color for a widget in a particular state.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-// draw on their parent container’s window and thus may > not draw any
-// background themselves. This is the case for e.g. > Label. > > To modify the
-// background of such widgets, you have to set the > background color on their
-// parent; if you want to set the background > of a rectangular area around a
-// label, try placing the label in > a EventBox widget and setting the
-// background color on that.
-//
-// Deprecated: since version 3.0.
-func (w *WidgetClass) ModifyBg(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
-
-	C.gtk_widget_modify_bg(_arg0, _arg1, _arg2)
-}
-
 // ModifyCursor sets the cursor color to use in a widget, overriding the Widget
 // cursor-color and secondary-cursor-color style properties.
 //
@@ -5062,29 +4597,11 @@ func (w *WidgetClass) ModifyCursor(primary *gdk.Color, secondary *gdk.Color) {
 	var _arg1 *C.GdkColor  // out
 	var _arg2 *C.GdkColor  // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(primary))
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(secondary))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(*gdk.Color))
+	_arg2 = (*C.GdkColor)(unsafe.Pointer(*gdk.Color))
 
 	C.gtk_widget_modify_cursor(_arg0, _arg1, _arg2)
-}
-
-// ModifyFg sets the foreground color for a widget in a particular state.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// Deprecated: since version 3.0.
-func (w *WidgetClass) ModifyFg(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
-
-	C.gtk_widget_modify_fg(_arg0, _arg1, _arg2)
 }
 
 // ModifyFont sets the font to use for a widget.
@@ -5097,8 +4614,8 @@ func (w *WidgetClass) ModifyFont(fontDesc *pango.FontDescription) {
 	var _arg0 *C.GtkWidget            // out
 	var _arg1 *C.PangoFontDescription // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(fontDesc))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(*pango.FontDescription))
 
 	C.gtk_widget_modify_font(_arg0, _arg1)
 }
@@ -5125,82 +4642,10 @@ func (w *WidgetClass) ModifyStyle(style RCStyle) {
 	var _arg0 *C.GtkWidget  // out
 	var _arg1 *C.GtkRcStyle // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkRcStyle)(unsafe.Pointer((&RCStyle).Native()))
 
 	C.gtk_widget_modify_style(_arg0, _arg1)
-}
-
-// ModifyText sets the text color for a widget in a particular state.
-//
-// All other style values are left untouched. The text color is the foreground
-// color used along with the base color (see gtk_widget_modify_base()) for
-// widgets such as Entry and TextView. See also gtk_widget_modify_style().
-//
-// Deprecated: since version 3.0.
-func (w *WidgetClass) ModifyText(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
-
-	C.gtk_widget_modify_text(_arg0, _arg1, _arg2)
-}
-
-// OverrideBackgroundColor sets the background color to use for a widget.
-//
-// All other style values are left untouched. See gtk_widget_override_color().
-//
-// Deprecated: since version 3.16.
-func (w *WidgetClass) OverrideBackgroundColor(state StateFlags, color *gdk.RGBA) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkStateFlags // out
-	var _arg2 *C.GdkRGBA      // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkStateFlags(state)
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
-
-	C.gtk_widget_override_background_color(_arg0, _arg1, _arg2)
-}
-
-// OverrideColor sets the color to use for a widget.
-//
-// All other style values are left untouched.
-//
-// This function does not act recursively. Setting the color of a container does
-// not affect its children. Note that some widgets that you may not think of as
-// containers, for instance Buttons, are actually containers.
-//
-// This API is mostly meant as a quick way for applications to change a widget
-// appearance. If you are developing a widgets library and intend this change to
-// be themeable, it is better done by setting meaningful CSS classes in your
-// widget/container implementation through gtk_style_context_add_class().
-//
-// This way, your widget library can install a CssProvider with the
-// GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority in order to provide a default
-// styling for those widgets that need so, and this theming may fully overridden
-// by the user’s theme.
-//
-// Note that for complex widgets this may bring in undesired results (such as
-// uniform background color everywhere), in these cases it is better to fully
-// style such widgets through a CssProvider with the
-// GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority.
-//
-// Deprecated: since version 3.16.
-func (w *WidgetClass) OverrideColor(state StateFlags, color *gdk.RGBA) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkStateFlags // out
-	var _arg2 *C.GdkRGBA      // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkStateFlags(state)
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
-
-	C.gtk_widget_override_color(_arg0, _arg1, _arg2)
 }
 
 // OverrideCursor sets the cursor color to use in a widget, overriding the
@@ -5216,9 +4661,9 @@ func (w *WidgetClass) OverrideCursor(cursor *gdk.RGBA, secondaryCursor *gdk.RGBA
 	var _arg1 *C.GdkRGBA   // out
 	var _arg2 *C.GdkRGBA   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(cursor))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(secondaryCursor))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(*gdk.RGBA))
+	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(*gdk.RGBA))
 
 	C.gtk_widget_override_cursor(_arg0, _arg1, _arg2)
 }
@@ -5231,8 +4676,8 @@ func (w *WidgetClass) OverrideFont(fontDesc *pango.FontDescription) {
 	var _arg0 *C.GtkWidget            // out
 	var _arg1 *C.PangoFontDescription // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(fontDesc))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(*pango.FontDescription))
 
 	C.gtk_widget_override_font(_arg0, _arg1)
 }
@@ -5248,10 +4693,10 @@ func (w *WidgetClass) OverrideSymbolicColor(name string, color *gdk.RGBA) {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GdkRGBA   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(*gdk.RGBA))
 
 	C.gtk_widget_override_symbolic_color(_arg0, _arg1, _arg2)
 }
@@ -5274,7 +4719,7 @@ func (w *WidgetClass) Path() (pathLength uint, path string, pathReversed string)
 	var _arg2 *C.gchar     // in
 	var _arg3 *C.gchar     // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_path(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -5301,7 +4746,7 @@ func (w *WidgetClass) Path() (pathLength uint, path string, pathReversed string)
 func (w *WidgetClass) QueueAllocate() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_queue_allocate(_arg0)
 }
@@ -5314,7 +4759,7 @@ func (w *WidgetClass) QueueAllocate() {
 func (w *WidgetClass) QueueComputeExpand() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_queue_compute_expand(_arg0)
 }
@@ -5324,7 +4769,7 @@ func (w *WidgetClass) QueueComputeExpand() {
 func (w *WidgetClass) QueueDraw() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_queue_draw(_arg0)
 }
@@ -5346,7 +4791,7 @@ func (w *WidgetClass) QueueDrawArea(x int, y int, width int, height int) {
 	var _arg3 C.gint       // out
 	var _arg4 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	_arg3 = C.gint(width)
@@ -5368,8 +4813,8 @@ func (w *WidgetClass) QueueDrawRegion(region *cairo.Region) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
 
 	C.gtk_widget_queue_draw_region(_arg0, _arg1)
 }
@@ -5386,7 +4831,7 @@ func (w *WidgetClass) QueueDrawRegion(region *cairo.Region) {
 func (w *WidgetClass) QueueResize() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_queue_resize(_arg0)
 }
@@ -5396,7 +4841,7 @@ func (w *WidgetClass) QueueResize() {
 func (w *WidgetClass) QueueResizeNoRedraw() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_queue_resize_no_redraw(_arg0)
 }
@@ -5420,7 +4865,7 @@ func (w *WidgetClass) QueueResizeNoRedraw() {
 func (w *WidgetClass) Realize() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_realize(_arg0)
 }
@@ -5435,14 +4880,14 @@ func (w *WidgetClass) RegionIntersect(region *cairo.Region) *cairo.Region {
 	var _arg1 *C.cairo_region_t // out
 	var _cret *C.cairo_region_t // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
 
 	_cret = C.gtk_widget_region_intersect(_arg0, _arg1)
 
 	var _ret *cairo.Region // out
 
-	_ret = (*cairo.Region)(unsafe.Pointer(_cret))
+	_ret = (*cairo.Region)(unsafe.Pointer(*C.cairo_region_t))
 	runtime.SetFinalizer(_ret, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -5462,35 +4907,10 @@ func (w *WidgetClass) RegisterWindow(window gdk.Window) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&gdk.Window).Native()))
 
 	C.gtk_widget_register_window(_arg0, _arg1)
-}
-
-// RemoveAccelerator removes an accelerator from @widget, previously installed
-// with gtk_widget_add_accelerator().
-func (w *WidgetClass) RemoveAccelerator(accelGroup AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkAccelGroup  // out
-	var _arg2 C.guint           // out
-	var _arg3 C.GdkModifierType // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
-	_arg2 = C.guint(accelKey)
-	_arg3 = C.GdkModifierType(accelMods)
-
-	_cret = C.gtk_widget_remove_accelerator(_arg0, _arg1, _arg2, _arg3)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
@@ -5500,8 +4920,8 @@ func (w *WidgetClass) RemoveMnemonicLabel(label Widget) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_remove_mnemonic_label(_arg0, _arg1)
 }
@@ -5512,7 +4932,7 @@ func (w *WidgetClass) RemoveTickCallback(id uint) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.guint(id)
 
 	C.gtk_widget_remove_tick_callback(_arg0, _arg1)
@@ -5530,14 +4950,14 @@ func (w *WidgetClass) RemoveTickCallback(id uint) {
 // g_object_unref().
 //
 // Deprecated: since version 3.0.
-func (w *WidgetClass) RenderIcon(stockId string, size int, detail string) gdkpixbuf.Pixbuf {
+func (w *WidgetClass) RenderIcon(stockId string, size int, detail string) *gdkpixbuf.PixbufClass {
 	var _arg0 *C.GtkWidget  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 	var _arg3 *C.gchar      // out
 	var _cret *C.GdkPixbuf  // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
@@ -5546,9 +4966,10 @@ func (w *WidgetClass) RenderIcon(stockId string, size int, detail string) gdkpix
 
 	_cret = C.gtk_widget_render_icon(_arg0, _arg1, _arg2, _arg3)
 
-	var _pixbuf gdkpixbuf.Pixbuf // out
+	var _pixbuf *gdkpixbuf.PixbufClass // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*gdkpixbuf.PixbufClass)
 
 	return _pixbuf
 }
@@ -5563,22 +4984,23 @@ func (w *WidgetClass) RenderIcon(stockId string, size int, detail string) gdkpix
 // g_object_unref().
 //
 // Deprecated: since version 3.10.
-func (w *WidgetClass) RenderIconPixbuf(stockId string, size int) gdkpixbuf.Pixbuf {
+func (w *WidgetClass) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.PixbufClass {
 	var _arg0 *C.GtkWidget  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GdkPixbuf  // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_widget_render_icon_pixbuf(_arg0, _arg1, _arg2)
 
-	var _pixbuf gdkpixbuf.Pixbuf // out
+	var _pixbuf *gdkpixbuf.PixbufClass // out
 
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*gdkpixbuf.PixbufClass)
 
 	return _pixbuf
 }
@@ -5591,8 +5013,8 @@ func (w *WidgetClass) Reparent(newParent Widget) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(newParent.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_reparent(_arg0, _arg1)
 }
@@ -5607,7 +5029,7 @@ func (w *WidgetClass) Reparent(newParent Widget) {
 func (w *WidgetClass) ResetRCStyles() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_reset_rc_styles(_arg0)
 }
@@ -5619,7 +5041,7 @@ func (w *WidgetClass) ResetRCStyles() {
 func (w *WidgetClass) ResetStyle() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_reset_style(_arg0)
 }
@@ -5648,10 +5070,10 @@ func (w *WidgetClass) SetAccelPath(accelPath string, accelGroup AccelGroup) {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(accelPath))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer((&AccelGroup).Native()))
 
 	C.gtk_widget_set_accel_path(_arg0, _arg1, _arg2)
 }
@@ -5671,7 +5093,7 @@ func (w *WidgetClass) SetAppPaintable(appPaintable bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if appPaintable {
 		_arg1 = C.TRUE
 	}
@@ -5685,7 +5107,7 @@ func (w *WidgetClass) SetCanDefault(canDefault bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if canDefault {
 		_arg1 = C.TRUE
 	}
@@ -5699,7 +5121,7 @@ func (w *WidgetClass) SetCanFocus(canFocus bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if canFocus {
 		_arg1 = C.TRUE
 	}
@@ -5726,7 +5148,7 @@ func (w *WidgetClass) SetChildVisible(isVisible bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if isVisible {
 		_arg1 = C.TRUE
 	}
@@ -5742,7 +5164,7 @@ func (w *WidgetClass) SetCompositeName(name string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -5760,56 +5182,13 @@ func (w *WidgetClass) SetDeviceEnabled(device gdk.Device, enabled bool) {
 	var _arg1 *C.GdkDevice // out
 	var _arg2 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
 	if enabled {
 		_arg2 = C.TRUE
 	}
 
 	C.gtk_widget_set_device_enabled(_arg0, _arg1, _arg2)
-}
-
-// SetDeviceEvents sets the device event mask (see EventMask) for a widget. The
-// event mask determines which events a widget will receive from @device. Keep
-// in mind that different widgets have different default event masks, and by
-// changing the event mask you may disrupt a widget’s functionality, so be
-// careful. This function must be called while a widget is unrealized. Consider
-// gtk_widget_add_device_events() for widgets that are already realized, or if
-// you want to preserve the existing event mask. This function can’t be used
-// with windowless widgets (which return false from
-// gtk_widget_get_has_window()); to get events on those widgets, place them
-// inside a EventBox and receive events on the event box.
-func (w *WidgetClass) SetDeviceEvents(device gdk.Device, events gdk.EventMask) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 *C.GdkDevice   // out
-	var _arg2 C.GdkEventMask // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg2 = C.GdkEventMask(events)
-
-	C.gtk_widget_set_device_events(_arg0, _arg1, _arg2)
-}
-
-// SetDirection sets the reading direction on a particular widget. This
-// direction controls the primary direction for widgets containing text, and
-// also the direction in which the children of a container are packed. The
-// ability to set the direction is present in order so that correct localization
-// into languages with right-to-left reading directions can be done. Generally,
-// applications will let the default reading direction present, except for
-// containers where the containers are arranged in an order that is explicitly
-// visual rather than logical (such as buttons for text justification).
-//
-// If the direction is set to GTK_TEXT_DIR_NONE, then the value set by
-// gtk_widget_set_default_direction() will be used.
-func (w *WidgetClass) SetDirection(dir TextDirection) {
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkTextDirection // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkTextDirection(dir)
-
-	C.gtk_widget_set_direction(_arg0, _arg1)
 }
 
 // SetDoubleBuffered widgets are double buffered by default; you can use this
@@ -5841,7 +5220,7 @@ func (w *WidgetClass) SetDoubleBuffered(doubleBuffered bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if doubleBuffered {
 		_arg1 = C.TRUE
 	}
@@ -5862,7 +5241,7 @@ func (w *WidgetClass) SetEvents(events int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(events)
 
 	C.gtk_widget_set_events(_arg0, _arg1)
@@ -5876,7 +5255,7 @@ func (w *WidgetClass) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if focusOnClick {
 		_arg1 = C.TRUE
 	}
@@ -5890,8 +5269,8 @@ func (w *WidgetClass) SetFontMap(fontMap pango.FontMap) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.PangoFontMap // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.PangoFontMap)(unsafe.Pointer((&pango.FontMap).Native()))
 
 	C.gtk_widget_set_font_map(_arg0, _arg1)
 }
@@ -5903,22 +5282,10 @@ func (w *WidgetClass) SetFontOptions(options *cairo.FontOptions) {
 	var _arg0 *C.GtkWidget            // out
 	var _arg1 *C.cairo_font_options_t // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(*cairo.FontOptions))
 
 	C.gtk_widget_set_font_options(_arg0, _arg1)
-}
-
-// SetHAlign sets the horizontal alignment of @widget. See the Widget:halign
-// property.
-func (w *WidgetClass) SetHAlign(align Align) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.GtkAlign   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkAlign(align)
-
-	C.gtk_widget_set_halign(_arg0, _arg1)
 }
 
 // SetHasTooltip sets the has-tooltip property on @widget to @has_tooltip. See
@@ -5927,7 +5294,7 @@ func (w *WidgetClass) SetHasTooltip(hasTooltip bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if hasTooltip {
 		_arg1 = C.TRUE
 	}
@@ -5948,7 +5315,7 @@ func (w *WidgetClass) SetHasWindow(hasWindow bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if hasWindow {
 		_arg1 = C.TRUE
 	}
@@ -5982,7 +5349,7 @@ func (w *WidgetClass) SetHExpand(expand bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if expand {
 		_arg1 = C.TRUE
 	}
@@ -6007,7 +5374,7 @@ func (w *WidgetClass) SetHExpandSet(set bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if set {
 		_arg1 = C.TRUE
 	}
@@ -6023,7 +5390,7 @@ func (w *WidgetClass) SetMapped(mapped bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if mapped {
 		_arg1 = C.TRUE
 	}
@@ -6037,7 +5404,7 @@ func (w *WidgetClass) SetMarginBottom(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(margin)
 
 	C.gtk_widget_set_margin_bottom(_arg0, _arg1)
@@ -6049,7 +5416,7 @@ func (w *WidgetClass) SetMarginEnd(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(margin)
 
 	C.gtk_widget_set_margin_end(_arg0, _arg1)
@@ -6063,7 +5430,7 @@ func (w *WidgetClass) SetMarginLeft(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(margin)
 
 	C.gtk_widget_set_margin_left(_arg0, _arg1)
@@ -6077,7 +5444,7 @@ func (w *WidgetClass) SetMarginRight(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(margin)
 
 	C.gtk_widget_set_margin_right(_arg0, _arg1)
@@ -6089,7 +5456,7 @@ func (w *WidgetClass) SetMarginStart(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(margin)
 
 	C.gtk_widget_set_margin_start(_arg0, _arg1)
@@ -6101,7 +5468,7 @@ func (w *WidgetClass) SetMarginTop(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(margin)
 
 	C.gtk_widget_set_margin_top(_arg0, _arg1)
@@ -6120,7 +5487,7 @@ func (w *WidgetClass) SetName(name string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -6136,7 +5503,7 @@ func (w *WidgetClass) SetNoShowAll(noShowAll bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if noShowAll {
 		_arg1 = C.TRUE
 	}
@@ -6161,7 +5528,7 @@ func (w *WidgetClass) SetOpacity(opacity float64) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.double     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.double(opacity)
 
 	C.gtk_widget_set_opacity(_arg0, _arg1)
@@ -6175,8 +5542,8 @@ func (w *WidgetClass) SetParent(parent Widget) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parent.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_set_parent(_arg0, _arg1)
 }
@@ -6191,8 +5558,8 @@ func (w *WidgetClass) SetParentWindow(parentWindow gdk.Window) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(parentWindow.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&gdk.Window).Native()))
 
 	C.gtk_widget_set_parent_window(_arg0, _arg1)
 }
@@ -6206,7 +5573,7 @@ func (w *WidgetClass) SetRealized(realized bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if realized {
 		_arg1 = C.TRUE
 	}
@@ -6223,7 +5590,7 @@ func (w *WidgetClass) SetReceivesDefault(receivesDefault bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if receivesDefault {
 		_arg1 = C.TRUE
 	}
@@ -6249,7 +5616,7 @@ func (w *WidgetClass) SetRedrawOnAllocate(redrawOnAllocate bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if redrawOnAllocate {
 		_arg1 = C.TRUE
 	}
@@ -6265,7 +5632,7 @@ func (w *WidgetClass) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if sensitive {
 		_arg1 = C.TRUE
 	}
@@ -6305,53 +5672,11 @@ func (w *WidgetClass) SetSizeRequest(width int, height int) {
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 
 	C.gtk_widget_set_size_request(_arg0, _arg1, _arg2)
-}
-
-// SetState: this function is for use in widget implementations. Sets the state
-// of a widget (insensitive, prelighted, etc.) Usually you should set the state
-// using wrapper functions such as gtk_widget_set_sensitive().
-//
-// Deprecated: since version 3.0.
-func (w *WidgetClass) SetState(state StateType) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkStateType(state)
-
-	C.gtk_widget_set_state(_arg0, _arg1)
-}
-
-// SetStateFlags: this function is for use in widget implementations. Turns on
-// flag values in the current widget state (insensitive, prelighted, etc.).
-//
-// This function accepts the values GTK_STATE_FLAG_DIR_LTR and
-// GTK_STATE_FLAG_DIR_RTL but ignores them. If you want to set the widget's
-// direction, use gtk_widget_set_direction().
-//
-// It is worth mentioning that any other state than GTK_STATE_FLAG_INSENSITIVE,
-// will be propagated down to all non-internal children if @widget is a
-// Container, while GTK_STATE_FLAG_INSENSITIVE itself will be propagated down to
-// all Container children by different means than turning on the state flag down
-// the hierarchy, both gtk_widget_get_state_flags() and
-// gtk_widget_is_sensitive() will make use of these.
-func (w *WidgetClass) SetStateFlags(flags StateFlags, clear bool) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkStateFlags // out
-	var _arg2 C.gboolean      // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkStateFlags(flags)
-	if clear {
-		_arg2 = C.TRUE
-	}
-
-	C.gtk_widget_set_state_flags(_arg0, _arg1, _arg2)
 }
 
 // SetStyle: used to set the Style for a widget (@widget->style). Since GTK 3,
@@ -6362,8 +5687,8 @@ func (w *WidgetClass) SetStyle(style Style) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkStyle  // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer((&Style).Native()))
 
 	C.gtk_widget_set_style(_arg0, _arg1)
 }
@@ -6377,7 +5702,7 @@ func (w *WidgetClass) SetSupportMultidevice(supportMultidevice bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if supportMultidevice {
 		_arg1 = C.TRUE
 	}
@@ -6396,7 +5721,7 @@ func (w *WidgetClass) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -6412,7 +5737,7 @@ func (w *WidgetClass) SetTooltipText(text string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -6427,22 +5752,10 @@ func (w *WidgetClass) SetTooltipWindow(customWindow Window) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWindow // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(customWindow.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
 
 	C.gtk_widget_set_tooltip_window(_arg0, _arg1)
-}
-
-// SetVAlign sets the vertical alignment of @widget. See the Widget:valign
-// property.
-func (w *WidgetClass) SetVAlign(align Align) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.GtkAlign   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkAlign(align)
-
-	C.gtk_widget_set_valign(_arg0, _arg1)
 }
 
 // SetVExpand sets whether the widget would like any available extra vertical
@@ -6453,7 +5766,7 @@ func (w *WidgetClass) SetVExpand(expand bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if expand {
 		_arg1 = C.TRUE
 	}
@@ -6469,7 +5782,7 @@ func (w *WidgetClass) SetVExpandSet(set bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if set {
 		_arg1 = C.TRUE
 	}
@@ -6487,7 +5800,7 @@ func (w *WidgetClass) SetVisible(visible bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
@@ -6506,8 +5819,8 @@ func (w *WidgetClass) SetVisual(visual gdk.Visual) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkVisual // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkVisual)(unsafe.Pointer((&gdk.Visual).Native()))
 
 	C.gtk_widget_set_visual(_arg0, _arg1)
 }
@@ -6526,8 +5839,8 @@ func (w *WidgetClass) SetWindow(window gdk.Window) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&gdk.Window).Native()))
 
 	C.gtk_widget_set_window(_arg0, _arg1)
 }
@@ -6539,8 +5852,8 @@ func (w *WidgetClass) ShapeCombineRegion(region *cairo.Region) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(*cairo.Region))
 
 	C.gtk_widget_shape_combine_region(_arg0, _arg1)
 }
@@ -6559,7 +5872,7 @@ func (w *WidgetClass) ShapeCombineRegion(region *cairo.Region) {
 func (w *WidgetClass) Show() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_show(_arg0)
 }
@@ -6569,7 +5882,7 @@ func (w *WidgetClass) Show() {
 func (w *WidgetClass) ShowAll() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_show_all(_arg0)
 }
@@ -6581,7 +5894,7 @@ func (w *WidgetClass) ShowAll() {
 func (w *WidgetClass) ShowNow() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_show_now(_arg0)
 }
@@ -6600,7 +5913,7 @@ func (w *WidgetClass) ShowNow() {
 func (w *WidgetClass) StyleAttach() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_style_attach(_arg0)
 }
@@ -6611,10 +5924,10 @@ func (w *WidgetClass) StyleGetProperty(propertyName string, value externglib.Val
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GValue    // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg1 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
 
 	C.gtk_widget_style_get_property(_arg0, _arg1, _arg2)
 }
@@ -6625,7 +5938,7 @@ func (w *WidgetClass) StyleGetProperty(propertyName string, value externglib.Val
 func (w *WidgetClass) ThawChildNotify() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_thaw_child_notify(_arg0)
 }
@@ -6643,8 +5956,8 @@ func (s *WidgetClass) TranslateCoordinates(destWidget Widget, srcX int, srcY int
 	var _arg5 C.gint       // in
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(destWidget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg2 = C.gint(srcX)
 	_arg3 = C.gint(srcY)
 
@@ -6669,7 +5982,7 @@ func (s *WidgetClass) TranslateCoordinates(destWidget Widget, srcX int, srcY int
 func (w *WidgetClass) TriggerTooltipQuery() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_trigger_tooltip_query(_arg0)
 }
@@ -6679,7 +5992,7 @@ func (w *WidgetClass) TriggerTooltipQuery() {
 func (w *WidgetClass) Unmap() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_unmap(_arg0)
 }
@@ -6690,7 +6003,7 @@ func (w *WidgetClass) Unmap() {
 func (w *WidgetClass) Unparent() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_unparent(_arg0)
 }
@@ -6701,7 +6014,7 @@ func (w *WidgetClass) Unparent() {
 func (w *WidgetClass) Unrealize() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_unrealize(_arg0)
 }
@@ -6713,23 +6026,10 @@ func (w *WidgetClass) UnregisterWindow(window gdk.Window) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&gdk.Window).Native()))
 
 	C.gtk_widget_unregister_window(_arg0, _arg1)
-}
-
-// UnsetStateFlags: this function is for use in widget implementations. Turns
-// off flag values for the current widget state (insensitive, prelighted, etc.).
-// See gtk_widget_set_state_flags().
-func (w *WidgetClass) UnsetStateFlags(flags StateFlags) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkStateFlags // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(w.Native()))
-	_arg1 = C.GtkStateFlags(flags)
-
-	C.gtk_widget_unset_state_flags(_arg0, _arg1)
 }
 
 // Requisition represents the desired size of a widget. See [GtkWidget’s
@@ -6757,7 +6057,7 @@ func NewRequisition() *Requisition {
 
 	var _requisition *Requisition // out
 
-	_requisition = (*Requisition)(unsafe.Pointer(_cret))
+	_requisition = (*Requisition)(unsafe.Pointer(*C.GtkRequisition))
 	runtime.SetFinalizer(_requisition, func(v *Requisition) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -6789,13 +6089,13 @@ func (r *Requisition) Copy() *Requisition {
 	var _arg0 *C.GtkRequisition // out
 	var _cret *C.GtkRequisition // in
 
-	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(r))
+	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(*Requisition))
 
 	_cret = C.gtk_requisition_copy(_arg0)
 
 	var _ret *Requisition // out
 
-	_ret = (*Requisition)(unsafe.Pointer(_cret))
+	_ret = (*Requisition)(unsafe.Pointer(*C.GtkRequisition))
 	runtime.SetFinalizer(_ret, func(v *Requisition) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -6807,7 +6107,7 @@ func (r *Requisition) Copy() *Requisition {
 func (r *Requisition) free() {
 	var _arg0 *C.GtkRequisition // out
 
-	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(r))
+	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(*Requisition))
 
 	C.gtk_requisition_free(_arg0)
 }

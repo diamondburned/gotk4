@@ -86,13 +86,13 @@ func (r *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
 
 	_cret = C.gdk_rgba_copy(_arg0)
 
 	var _rgbA *RGBA // out
 
-	_rgbA = (*RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*RGBA)(unsafe.Pointer(*C.GdkRGBA))
 	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -100,50 +100,13 @@ func (r *RGBA) Copy() *RGBA {
 	return _rgbA
 }
 
-// Equal compares two `GdkRGBA` colors.
-func (p *RGBA) Equal(p2 RGBA) bool {
-	var _arg0 C.gconstpointer // out
-	var _arg1 C.gconstpointer // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(p))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(p2))
-
-	_cret = C.gdk_rgba_equal(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Free frees a `GdkRGBA`.
 func (r *RGBA) free() {
 	var _arg0 *C.GdkRGBA // out
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
 
 	C.gdk_rgba_free(_arg0)
-}
-
-// Hash: hash function suitable for using for a hash table that stores
-// `GdkRGBA`s.
-func (p *RGBA) Hash() uint {
-	var _arg0 C.gconstpointer // out
-	var _cret C.guint         // in
-
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(p))
-
-	_cret = C.gdk_rgba_hash(_arg0)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
 }
 
 // IsClear checks if an @rgba value is transparent.
@@ -153,7 +116,7 @@ func (r *RGBA) IsClear() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
 
 	_cret = C.gdk_rgba_is_clear(_arg0)
 
@@ -174,7 +137,7 @@ func (r *RGBA) IsOpaque() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
 
 	_cret = C.gdk_rgba_is_opaque(_arg0)
 
@@ -206,7 +169,7 @@ func (r *RGBA) Parse(spec string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
 	_arg1 = (*C.char)(C.CString(spec))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -237,7 +200,7 @@ func (r *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.char    // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(*RGBA))
 
 	_cret = C.gdk_rgba_to_string(_arg0)
 

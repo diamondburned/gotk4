@@ -31,12 +31,6 @@ type ImageOverrider interface {
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.
 	ImageLocale() string
-	// ImagePosition gets the position of the image in the form of a point
-	// specifying the images top-left corner.
-	//
-	// If the position can not be obtained (e.g. missing support), x and y are
-	// set to -1.
-	ImagePosition(coordType CoordType) (x int, y int)
 	// ImageSize: get the width and height in pixels for the specified image.
 	// The values of @width and @height are returned as -1 if the values cannot
 	// be obtained (for instance, if the object is not onscreen).
@@ -66,12 +60,6 @@ type Image interface {
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.
 	ImageLocale() string
-	// ImagePosition gets the position of the image in the form of a point
-	// specifying the images top-left corner.
-	//
-	// If the position can not be obtained (e.g. missing support), x and y are
-	// set to -1.
-	ImagePosition(coordType CoordType) (x int, y int)
 	// ImageSize: get the width and height in pixels for the specified image.
 	// The values of @width and @height are returned as -1 if the values cannot
 	// be obtained (for instance, if the object is not onscreen).
@@ -107,7 +95,7 @@ func (i *ImageInterface) ImageDescription() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer((&Image).Native()))
 
 	_cret = C.atk_image_get_image_description(_arg0)
 
@@ -123,7 +111,7 @@ func (i *ImageInterface) ImageLocale() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer((&Image).Native()))
 
 	_cret = C.atk_image_get_image_locale(_arg0)
 
@@ -132,31 +120,6 @@ func (i *ImageInterface) ImageLocale() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// ImagePosition gets the position of the image in the form of a point
-// specifying the images top-left corner.
-//
-// If the position can not be obtained (e.g. missing support), x and y are set
-// to -1.
-func (i *ImageInterface) ImagePosition(coordType CoordType) (x int, y int) {
-	var _arg0 *C.AtkImage    // out
-	var _arg1 C.gint         // in
-	var _arg2 C.gint         // in
-	var _arg3 C.AtkCoordType // out
-
-	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
-	_arg3 = C.AtkCoordType(coordType)
-
-	C.atk_image_get_image_position(_arg0, &_arg1, &_arg2, _arg3)
-
-	var _x int // out
-	var _y int // out
-
-	_x = int(_arg1)
-	_y = int(_arg2)
-
-	return _x, _y
 }
 
 // ImageSize: get the width and height in pixels for the specified image. The
@@ -170,7 +133,7 @@ func (i *ImageInterface) ImageSize() (width int, height int) {
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
 
-	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer((&Image).Native()))
 
 	C.atk_image_get_image_size(_arg0, &_arg1, &_arg2)
 
@@ -189,7 +152,7 @@ func (i *ImageInterface) SetImageDescription(description string) bool {
 	var _arg1 *C.gchar    // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer((&Image).Native()))
 	_arg1 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg1))
 

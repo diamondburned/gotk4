@@ -139,7 +139,6 @@ var _ Actionable = (*ActionableInterface)(nil)
 func wrapActionable(obj *externglib.Object) Actionable {
 	return &ActionableInterface{
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -165,7 +164,7 @@ func (a *ActionableInterface) ActionName() string {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer((&Actionable).Native()))
 
 	_cret = C.gtk_actionable_get_action_name(_arg0)
 
@@ -181,13 +180,13 @@ func (a *ActionableInterface) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.GVariant      // in
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer((&Actionable).Native()))
 
 	_cret = C.gtk_actionable_get_action_target_value(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -212,7 +211,7 @@ func (a *ActionableInterface) SetActionName(actionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer((&Actionable).Native()))
 	_arg1 = (*C.char)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -240,8 +239,8 @@ func (a *ActionableInterface) SetActionTargetValue(targetValue *glib.Variant) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.GVariant      // out
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(targetValue))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer((&Actionable).Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(*glib.Variant))
 
 	C.gtk_actionable_set_action_target_value(_arg0, _arg1)
 }
@@ -255,7 +254,7 @@ func (a *ActionableInterface) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer((&Actionable).Native()))
 	_arg1 = (*C.char)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(_arg1))
 

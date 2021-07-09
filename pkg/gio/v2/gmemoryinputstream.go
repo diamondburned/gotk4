@@ -76,14 +76,15 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 }
 
 // NewMemoryInputStream creates a new empty InputStream.
-func NewMemoryInputStream() MemoryInputStream {
+func NewMemoryInputStream() *MemoryInputStreamClass {
 	var _cret *C.GInputStream // in
 
 	_cret = C.g_memory_input_stream_new()
 
-	var _memoryInputStream MemoryInputStream // out
+	var _memoryInputStream *MemoryInputStreamClass // out
 
-	_memoryInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(MemoryInputStream)
+	_memoryInputStream = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*MemoryInputStreamClass)
 
 	return _memoryInputStream
 }

@@ -35,7 +35,7 @@ type Popup interface {
 	// Autohide returns whether this popup is set to hide on outside clicks.
 	Autohide() bool
 	// Parent returns the parent surface of a popup.
-	Parent() Surface
+	Parent() *SurfaceClass
 	// PositionX obtains the position of the popup relative to its parent.
 	PositionX() int
 	// PositionY obtains the position of the popup relative to its parent.
@@ -94,7 +94,7 @@ func (p *PopupInterface) Autohide() bool {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer((&Popup).Native()))
 
 	_cret = C.gdk_popup_get_autohide(_arg0)
 
@@ -108,17 +108,18 @@ func (p *PopupInterface) Autohide() bool {
 }
 
 // Parent returns the parent surface of a popup.
-func (p *PopupInterface) Parent() Surface {
+func (p *PopupInterface) Parent() *SurfaceClass {
 	var _arg0 *C.GdkPopup   // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer((&Popup).Native()))
 
 	_cret = C.gdk_popup_get_parent(_arg0)
 
-	var _surface Surface // out
+	var _surface *SurfaceClass // out
 
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Surface)
+	_surface = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SurfaceClass)
 
 	return _surface
 }
@@ -128,7 +129,7 @@ func (p *PopupInterface) PositionX() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer((&Popup).Native()))
 
 	_cret = C.gdk_popup_get_position_x(_arg0)
 
@@ -144,7 +145,7 @@ func (p *PopupInterface) PositionY() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer((&Popup).Native()))
 
 	_cret = C.gdk_popup_get_position_y(_arg0)
 
@@ -163,13 +164,13 @@ func (p *PopupInterface) RectAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
 	var _cret C.GdkGravity // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer((&Popup).Native()))
 
 	_cret = C.gdk_popup_get_rect_anchor(_arg0)
 
 	var _gravity Gravity // out
 
-	_gravity = Gravity(_cret)
+	_gravity = (Gravity)(C.GdkGravity)
 
 	return _gravity
 }
@@ -182,13 +183,13 @@ func (p *PopupInterface) SurfaceAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
 	var _cret C.GdkGravity // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer((&Popup).Native()))
 
 	_cret = C.gdk_popup_get_surface_anchor(_arg0)
 
 	var _gravity Gravity // out
 
-	_gravity = Gravity(_cret)
+	_gravity = (Gravity)(C.GdkGravity)
 
 	return _gravity
 }
@@ -215,10 +216,10 @@ func (p *PopupInterface) Present(width int, height int, layout *PopupLayout) boo
 	var _arg3 *C.GdkPopupLayout // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer((&Popup).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
-	_arg3 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg3 = (*C.GdkPopupLayout)(unsafe.Pointer(*PopupLayout))
 
 	_cret = C.gdk_popup_present(_arg0, _arg1, _arg2, _arg3)
 

@@ -36,7 +36,7 @@ type Bin interface {
 	// Child gets the child of the Bin, or nil if the bin contains no child
 	// widget. The returned widget does not have a reference added, so you do
 	// not need to unref it.
-	Child() Widget
+	Child() *WidgetClass
 }
 
 // BinClass implements the Bin interface.
@@ -54,7 +54,6 @@ func wrapBin(obj *externglib.Object) Bin {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -79,17 +78,18 @@ func marshalBin(p uintptr) (interface{}, error) {
 // Child gets the child of the Bin, or nil if the bin contains no child widget.
 // The returned widget does not have a reference added, so you do not need to
 // unref it.
-func (b *BinClass) Child() Widget {
+func (b *BinClass) Child() *WidgetClass {
 	var _arg0 *C.GtkBin    // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkBin)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBin)(unsafe.Pointer((&Bin).Native()))
 
 	_cret = C.gtk_bin_get_child(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }

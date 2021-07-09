@@ -39,7 +39,7 @@ type DBusObjectProxy interface {
 	gextras.Objector
 
 	// Connection gets the connection that @proxy is for.
-	Connection() DBusConnection
+	Connection() *DBusConnectionClass
 }
 
 // DBusObjectProxyClass implements the DBusObjectProxy interface.
@@ -67,36 +67,38 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 
 // NewDBusObjectProxy creates a new BusObjectProxy for the given connection and
 // object path.
-func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObjectProxy {
+func NewDBusObjectProxy(connection DBusConnection, objectPath string) *DBusObjectProxyClass {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
 	var _cret *C.GDBusObjectProxy // in
 
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((&DBusConnection).Native()))
 	_arg2 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
 
-	var _dBusObjectProxy DBusObjectProxy // out
+	var _dBusObjectProxy *DBusObjectProxyClass // out
 
-	_dBusObjectProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusObjectProxy)
+	_dBusObjectProxy = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DBusObjectProxyClass)
 
 	return _dBusObjectProxy
 }
 
 // Connection gets the connection that @proxy is for.
-func (p *DBusObjectProxyClass) Connection() DBusConnection {
+func (p *DBusObjectProxyClass) Connection() *DBusConnectionClass {
 	var _arg0 *C.GDBusObjectProxy // out
 	var _cret *C.GDBusConnection  // in
 
-	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer((&DBusObjectProxy).Native()))
 
 	_cret = C.g_dbus_object_proxy_get_connection(_arg0)
 
-	var _dBusConnection DBusConnection // out
+	var _dBusConnection *DBusConnectionClass // out
 
-	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DBusConnectionClass)
 
 	return _dBusConnection
 }

@@ -45,12 +45,6 @@ type Accessible interface {
 	// AccessibleRole retrieves the `GtkAccessibleRole` for the given
 	// `GtkAccessible`.
 	AccessibleRole() AccessibleRole
-	// ResetProperty resets the accessible @property to its default value.
-	ResetProperty(property AccessibleProperty)
-	// ResetRelation resets the accessible @relation to its default value.
-	ResetRelation(relation AccessibleRelation)
-	// ResetState resets the accessible @state to its default value.
-	ResetState(state AccessibleState)
 }
 
 // AccessibleInterface implements the Accessible interface.
@@ -78,46 +72,13 @@ func (s *AccessibleInterface) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkAccessible    // out
 	var _cret C.GtkAccessibleRole // in
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&Accessible).Native()))
 
 	_cret = C.gtk_accessible_get_accessible_role(_arg0)
 
 	var _accessibleRole AccessibleRole // out
 
-	_accessibleRole = AccessibleRole(_cret)
+	_accessibleRole = (AccessibleRole)(C.GtkAccessibleRole)
 
 	return _accessibleRole
-}
-
-// ResetProperty resets the accessible @property to its default value.
-func (s *AccessibleInterface) ResetProperty(property AccessibleProperty) {
-	var _arg0 *C.GtkAccessible        // out
-	var _arg1 C.GtkAccessibleProperty // out
-
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GtkAccessibleProperty(property)
-
-	C.gtk_accessible_reset_property(_arg0, _arg1)
-}
-
-// ResetRelation resets the accessible @relation to its default value.
-func (s *AccessibleInterface) ResetRelation(relation AccessibleRelation) {
-	var _arg0 *C.GtkAccessible        // out
-	var _arg1 C.GtkAccessibleRelation // out
-
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GtkAccessibleRelation(relation)
-
-	C.gtk_accessible_reset_relation(_arg0, _arg1)
-}
-
-// ResetState resets the accessible @state to its default value.
-func (s *AccessibleInterface) ResetState(state AccessibleState) {
-	var _arg0 *C.GtkAccessible     // out
-	var _arg1 C.GtkAccessibleState // out
-
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GtkAccessibleState(state)
-
-	C.gtk_accessible_reset_state(_arg0, _arg1)
 }

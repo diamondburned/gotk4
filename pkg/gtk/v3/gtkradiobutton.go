@@ -141,7 +141,6 @@ func wrapRadioButton(obj *externglib.Object) RadioButton {
 						ContainerClass: ContainerClass{
 							Object: obj,
 							WidgetClass: WidgetClass{
-								Object:           obj,
 								InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 								BuildableInterface: BuildableInterface{
 									Object: obj,
@@ -157,7 +156,6 @@ func wrapRadioButton(obj *externglib.Object) RadioButton {
 					},
 					ActionableInterface: ActionableInterface{
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							BuildableInterface: BuildableInterface{
 								Object: obj,
@@ -173,7 +171,6 @@ func wrapRadioButton(obj *externglib.Object) RadioButton {
 				},
 				ActionableInterface: ActionableInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -189,7 +186,6 @@ func wrapRadioButton(obj *externglib.Object) RadioButton {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -205,7 +201,6 @@ func wrapRadioButton(obj *externglib.Object) RadioButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -230,37 +225,39 @@ func marshalRadioButton(p uintptr) (interface{}, error) {
 // NewRadioButtonFromWidget creates a new RadioButton, adding it to the same
 // group as @radio_group_member. As with gtk_radio_button_new(), a widget should
 // be packed into the radio button.
-func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
+func NewRadioButtonFromWidget(radioGroupMember RadioButton) *RadioButtonClass {
 	var _arg1 *C.GtkRadioButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((&RadioButton).Native()))
 
 	_cret = C.gtk_radio_button_new_from_widget(_arg1)
 
-	var _radioButton RadioButton // out
+	var _radioButton *RadioButtonClass // out
 
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioButton)
+	_radioButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RadioButtonClass)
 
 	return _radioButton
 }
 
 // NewRadioButtonWithLabelFromWidget creates a new RadioButton with a text
 // label, adding it to the same group as @radio_group_member.
-func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label string) RadioButton {
+func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label string) *RadioButtonClass {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((&RadioButton).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_label_from_widget(_arg1, _arg2)
 
-	var _radioButton RadioButton // out
+	var _radioButton *RadioButtonClass // out
 
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioButton)
+	_radioButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RadioButtonClass)
 
 	return _radioButton
 }
@@ -268,20 +265,21 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label strin
 // NewRadioButtonWithMnemonicFromWidget creates a new RadioButton containing a
 // label. The label will be created using gtk_label_new_with_mnemonic(), so
 // underscores in @label indicate the mnemonic for the button.
-func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label string) RadioButton {
+func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label string) *RadioButtonClass {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((&RadioButton).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_mnemonic_from_widget(_arg1, _arg2)
 
-	var _radioButton RadioButton // out
+	var _radioButton *RadioButtonClass // out
 
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(RadioButton)
+	_radioButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*RadioButtonClass)
 
 	return _radioButton
 }
@@ -308,8 +306,8 @@ func (r *RadioButtonClass) JoinGroup(groupSource RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
 	var _arg1 *C.GtkRadioButton // out
 
-	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(groupSource.Native()))
+	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer((&RadioButton).Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((&RadioButton).Native()))
 
 	C.gtk_radio_button_join_group(_arg0, _arg1)
 }

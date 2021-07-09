@@ -114,16 +114,6 @@ type ScaleOverrider interface {
 type Scale interface {
 	gextras.Objector
 
-	// AddMark adds a mark at @value.
-	//
-	// A mark is indicated visually by drawing a tick mark next to the scale,
-	// and GTK+ makes it easy for the user to position the scale exactly at the
-	// marks value.
-	//
-	// If @markup is not nil, text is shown next to the tick mark.
-	//
-	// To remove marks from a scale, use gtk_scale_clear_marks().
-	AddMark(value float64, position PositionType, markup string)
 	// ClearMarks removes any marks that have been added with
 	// gtk_scale_add_mark().
 	ClearMarks()
@@ -136,7 +126,7 @@ type Scale interface {
 	HasOrigin() bool
 	// Layout gets the Layout used to display the scale. The returned object is
 	// owned by the scale so does not need to be freed by the caller.
-	Layout() pango.Layout
+	Layout() *pango.LayoutClass
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// Layout representing the text in the scale. Remember when using the Layout
 	// function you need to convert to and from pixels using PANGO_PIXELS() or
@@ -166,8 +156,6 @@ type Scale interface {
 	// will highlight the part of the trough between the origin (bottom or left
 	// side) and the current value.
 	SetHasOrigin(hasOrigin bool)
-	// SetValuePos sets the position in which the current value is displayed.
-	SetValuePos(pos PositionType)
 }
 
 // ScaleClass implements the Scale interface.
@@ -186,7 +174,6 @@ func wrapScale(obj *externglib.Object) Scale {
 		RangeClass: RangeClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -214,82 +201,11 @@ func marshalScale(p uintptr) (interface{}, error) {
 	return wrapScale(obj), nil
 }
 
-// NewScale creates a new Scale.
-func NewScale(orientation Orientation, adjustment Adjustment) Scale {
-	var _arg1 C.GtkOrientation // out
-	var _arg2 *C.GtkAdjustment // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-
-	_cret = C.gtk_scale_new(_arg1, _arg2)
-
-	var _scale Scale // out
-
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Scale)
-
-	return _scale
-}
-
-// NewScaleWithRange creates a new scale widget with the given orientation that
-// lets the user input a number between @min and @max (including @min and @max)
-// with the increment @step. @step must be nonzero; it’s the distance the slider
-// moves when using the arrow keys to adjust the scale value.
-//
-// Note that the way in which the precision is derived works best if @step is a
-// power of ten. If the resulting precision is not suitable for your needs, use
-// gtk_scale_set_digits() to correct it.
-func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) Scale {
-	var _arg1 C.GtkOrientation // out
-	var _arg2 C.gdouble        // out
-	var _arg3 C.gdouble        // out
-	var _arg4 C.gdouble        // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = C.gdouble(min)
-	_arg3 = C.gdouble(max)
-	_arg4 = C.gdouble(step)
-
-	_cret = C.gtk_scale_new_with_range(_arg1, _arg2, _arg3, _arg4)
-
-	var _scale Scale // out
-
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Scale)
-
-	return _scale
-}
-
-// AddMark adds a mark at @value.
-//
-// A mark is indicated visually by drawing a tick mark next to the scale, and
-// GTK+ makes it easy for the user to position the scale exactly at the marks
-// value.
-//
-// If @markup is not nil, text is shown next to the tick mark.
-//
-// To remove marks from a scale, use gtk_scale_clear_marks().
-func (s *ScaleClass) AddMark(value float64, position PositionType, markup string) {
-	var _arg0 *C.GtkScale       // out
-	var _arg1 C.gdouble         // out
-	var _arg2 C.GtkPositionType // out
-	var _arg3 *C.gchar          // out
-
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gdouble(value)
-	_arg2 = C.GtkPositionType(position)
-	_arg3 = (*C.gchar)(C.CString(markup))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	C.gtk_scale_add_mark(_arg0, _arg1, _arg2, _arg3)
-}
-
 // ClearMarks removes any marks that have been added with gtk_scale_add_mark().
 func (s *ScaleClass) ClearMarks() {
 	var _arg0 *C.GtkScale // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 
 	C.gtk_scale_clear_marks(_arg0)
 }
@@ -299,7 +215,7 @@ func (s *ScaleClass) Digits() int {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 
 	_cret = C.gtk_scale_get_digits(_arg0)
 
@@ -316,7 +232,7 @@ func (s *ScaleClass) DrawValue() bool {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 
 	_cret = C.gtk_scale_get_draw_value(_arg0)
 
@@ -334,7 +250,7 @@ func (s *ScaleClass) HasOrigin() bool {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 
 	_cret = C.gtk_scale_get_has_origin(_arg0)
 
@@ -349,17 +265,18 @@ func (s *ScaleClass) HasOrigin() bool {
 
 // Layout gets the Layout used to display the scale. The returned object is
 // owned by the scale so does not need to be freed by the caller.
-func (s *ScaleClass) Layout() pango.Layout {
+func (s *ScaleClass) Layout() *pango.LayoutClass {
 	var _arg0 *C.GtkScale    // out
 	var _cret *C.PangoLayout // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 
 	_cret = C.gtk_scale_get_layout(_arg0)
 
-	var _layout pango.Layout // out
+	var _layout *pango.LayoutClass // out
 
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(pango.Layout)
+	_layout = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*pango.LayoutClass)
 
 	return _layout
 }
@@ -374,7 +291,7 @@ func (s *ScaleClass) LayoutOffsets() (x int, y int) {
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 
 	C.gtk_scale_get_layout_offsets(_arg0, &_arg1, &_arg2)
 
@@ -392,13 +309,13 @@ func (s *ScaleClass) ValuePos() PositionType {
 	var _arg0 *C.GtkScale       // out
 	var _cret C.GtkPositionType // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 
 	_cret = C.gtk_scale_get_value_pos(_arg0)
 
 	var _positionType PositionType // out
 
-	_positionType = PositionType(_cret)
+	_positionType = (PositionType)(C.GtkPositionType)
 
 	return _positionType
 }
@@ -416,7 +333,7 @@ func (s *ScaleClass) SetDigits(digits int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gint      // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 	_arg1 = C.gint(digits)
 
 	C.gtk_scale_set_digits(_arg0, _arg1)
@@ -428,7 +345,7 @@ func (s *ScaleClass) SetDrawValue(drawValue bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 	if drawValue {
 		_arg1 = C.TRUE
 	}
@@ -443,21 +360,10 @@ func (s *ScaleClass) SetHasOrigin(hasOrigin bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer((&Scale).Native()))
 	if hasOrigin {
 		_arg1 = C.TRUE
 	}
 
 	C.gtk_scale_set_has_origin(_arg0, _arg1)
-}
-
-// SetValuePos sets the position in which the current value is displayed.
-func (s *ScaleClass) SetValuePos(pos PositionType) {
-	var _arg0 *C.GtkScale       // out
-	var _arg1 C.GtkPositionType // out
-
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GtkPositionType(pos)
-
-	C.gtk_scale_set_value_pos(_arg0, _arg1)
 }

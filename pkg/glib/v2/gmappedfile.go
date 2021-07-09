@@ -59,7 +59,7 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _mappedFile *MappedFile // out
 	var _goerr error            // out
 
-	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	_mappedFile = (*MappedFile)(unsafe.Pointer(*C.GMappedFile))
 	C.g_mapped_file_ref(_cret)
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
@@ -86,7 +86,7 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	var _mappedFile *MappedFile // out
 	var _goerr error            // out
 
-	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	_mappedFile = (*MappedFile)(unsafe.Pointer(*C.GMappedFile))
 	C.g_mapped_file_ref(_cret)
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
@@ -108,7 +108,7 @@ func (m *MappedFile) Native() unsafe.Pointer {
 func (f *MappedFile) free() {
 	var _arg0 *C.GMappedFile // out
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(*MappedFile))
 
 	C.g_mapped_file_free(_arg0)
 }
@@ -123,7 +123,7 @@ func (f *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(*MappedFile))
 
 	_cret = C.g_mapped_file_get_contents(_arg0)
 
@@ -140,7 +140,7 @@ func (f *MappedFile) Length() uint {
 	var _arg0 *C.GMappedFile // out
 	var _cret C.gsize        // in
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(*MappedFile))
 
 	_cret = C.g_mapped_file_get_length(_arg0)
 
@@ -157,13 +157,13 @@ func (f *MappedFile) ref() *MappedFile {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.GMappedFile // in
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(*MappedFile))
 
 	_cret = C.g_mapped_file_ref(_arg0)
 
 	var _mappedFile *MappedFile // out
 
-	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	_mappedFile = (*MappedFile)(unsafe.Pointer(*C.GMappedFile))
 	C.g_mapped_file_ref(_cret)
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
@@ -181,7 +181,7 @@ func (f *MappedFile) ref() *MappedFile {
 func (f *MappedFile) unref() {
 	var _arg0 *C.GMappedFile // out
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(*MappedFile))
 
 	C.g_mapped_file_unref(_arg0)
 }

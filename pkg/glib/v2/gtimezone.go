@@ -68,7 +68,7 @@ func NewTimeZone(identifier string) *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(unsafe.Pointer(*C.GTimeZone))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
@@ -89,7 +89,7 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(unsafe.Pointer(*C.GTimeZone))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
@@ -106,7 +106,7 @@ func NewTimeZoneLocal() *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(unsafe.Pointer(*C.GTimeZone))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
@@ -126,7 +126,7 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(unsafe.Pointer(*C.GTimeZone))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
@@ -143,7 +143,7 @@ func NewTimeZoneUtc() *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(unsafe.Pointer(*C.GTimeZone))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
@@ -157,74 +157,6 @@ func (t *TimeZone) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// AdjustTime finds an interval within @tz that corresponds to the given @time_,
-// possibly adjusting @time_ if required to fit into an interval. The meaning of
-// @time_ depends on @type.
-//
-// This function is similar to g_time_zone_find_interval(), with the difference
-// that it always succeeds (by making the adjustments described below).
-//
-// In any of the cases where g_time_zone_find_interval() succeeds then this
-// function returns the same value, without modifying @time_.
-//
-// This function may, however, modify @time_ in order to deal with non-existent
-// times. If the non-existent local @time_ of 02:30 were requested on March 14th
-// 2010 in Toronto then this function would adjust @time_ to be 03:00 and return
-// the interval containing the adjusted time.
-func (t *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
-	var _arg0 *C.GTimeZone // out
-	var _arg1 C.GTimeType  // out
-	var _arg2 *C.gint64    // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t))
-	_arg1 = C.GTimeType(typ)
-	_arg2 = (*C.gint64)(unsafe.Pointer(time_))
-
-	_cret = C.g_time_zone_adjust_time(_arg0, _arg1, _arg2)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// FindInterval finds an interval within @tz that corresponds to the given
-// @time_. The meaning of @time_ depends on @type.
-//
-// If @type is G_TIME_TYPE_UNIVERSAL then this function will always succeed
-// (since universal time is monotonic and continuous).
-//
-// Otherwise @time_ is treated as local time. The distinction between
-// G_TIME_TYPE_STANDARD and G_TIME_TYPE_DAYLIGHT is ignored except in the case
-// that the given @time_ is ambiguous. In Toronto, for example, 01:30 on
-// November 7th 2010 occurred twice (once inside of daylight savings time and
-// the next, an hour later, outside of daylight savings time). In this case, the
-// different value of @type would result in a different interval being returned.
-//
-// It is still possible for this function to fail. In Toronto, for example,
-// 02:00 on March 14th 2010 does not exist (due to the leap forward to begin
-// daylight savings time). -1 is returned in that case.
-func (t *TimeZone) FindInterval(typ TimeType, time_ int64) int {
-	var _arg0 *C.GTimeZone // out
-	var _arg1 C.GTimeType  // out
-	var _arg2 C.gint64     // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t))
-	_arg1 = C.GTimeType(typ)
-	_arg2 = C.gint64(time_)
-
-	_cret = C.g_time_zone_find_interval(_arg0, _arg1, _arg2)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
 // Abbreviation determines the time zone abbreviation to be used during a
 // particular @interval of time in the time zone @tz.
 //
@@ -235,7 +167,7 @@ func (t *TimeZone) Abbreviation(interval int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeZone)(unsafe.Pointer(*TimeZone))
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_get_abbreviation(_arg0, _arg1)
@@ -259,7 +191,7 @@ func (t *TimeZone) Identifier() string {
 	var _arg0 *C.GTimeZone // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeZone)(unsafe.Pointer(*TimeZone))
 
 	_cret = C.g_time_zone_get_identifier(_arg0)
 
@@ -281,7 +213,7 @@ func (t *TimeZone) Offset(interval int) int32 {
 	var _arg1 C.gint       // out
 	var _cret C.gint32     // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeZone)(unsafe.Pointer(*TimeZone))
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_get_offset(_arg0, _arg1)
@@ -300,7 +232,7 @@ func (t *TimeZone) IsDst(interval int) bool {
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeZone)(unsafe.Pointer(*TimeZone))
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_is_dst(_arg0, _arg1)
@@ -319,13 +251,13 @@ func (t *TimeZone) ref() *TimeZone {
 	var _arg0 *C.GTimeZone // out
 	var _cret *C.GTimeZone // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeZone)(unsafe.Pointer(*TimeZone))
 
 	_cret = C.g_time_zone_ref(_arg0)
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(unsafe.Pointer(*C.GTimeZone))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
@@ -338,7 +270,7 @@ func (t *TimeZone) ref() *TimeZone {
 func (t *TimeZone) unref() {
 	var _arg0 *C.GTimeZone // out
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeZone)(unsafe.Pointer(*TimeZone))
 
 	C.g_time_zone_unref(_arg0)
 }

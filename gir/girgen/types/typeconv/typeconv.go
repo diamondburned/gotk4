@@ -77,7 +77,10 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 			return nil
 		}
 
-		if value.Closure != nil {
+		// Only skip the parameter's closure index if the parameter itself is
+		// a callback. Sometimes, the user_data parameter will flag the callback
+		// as a closure argument, which messes up the generator.
+		if value.Scope != "" && value.Closure != nil {
 			skip(*value.Closure)
 		}
 		if value.Destroy != nil {
@@ -107,23 +110,15 @@ func (conv *Converter) CCallParams() []string {
 		return nil
 	}
 
-	// TODO: find a less awful hack, which is a very non-trivial hack, because
-	// we're splitting input and output parameters onto its own slice and
-	// convert them separately.
-	//
-	// A good way to solve this would be to combine them into the same routine,
-	// probably by using a list of []TypeConversion interfaces and invoke
-	// different routines depending on the type.
-
 	params := make([]string, 0, len(conv.results))
 
 	for _, result := range conv.results {
 		switch result.Direction {
 		case ConvertGoToC:
-			params = append(params, result.OutCall)
+			params = append(params, result.Out.Call)
 		case ConvertCToGo:
 			if result.ParameterIsOutput() {
-				params = append(params, result.InCall)
+				params = append(params, result.In.Call)
 			}
 		}
 	}
@@ -173,7 +168,7 @@ func (conv *Converter) ConvertAll() []ValueConverted {
 
 	// Convert everything in one go.
 	for i := range conv.results {
-		if !conv.convert(&conv.results[i]) {
+		if !conv.convert(&conv.results[i]) || conv.results[i].fail {
 			return nil
 		}
 	}
@@ -217,12 +212,12 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 
 	switch result.Direction {
 	case ConvertCToGo:
-		if !conv.cgoConvert(result) {
+		if !conv.cgoConvert(result) || result.fail {
 			conv.Logln(logger.Debug, "C->Go cannot convert type", types.AnyTypeC(result.AnyType))
 			return false
 		}
 	case ConvertGoToC:
-		if !conv.gocConvert(result) {
+		if !conv.gocConvert(result) || result.fail {
 			conv.Logln(logger.Debug, "Go->C cannot convert type", types.AnyTypeC(result.AnyType))
 			return false
 		}
@@ -232,7 +227,7 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 	}
 
 	if !result.Optional {
-		if result.InType == "" || result.OutType == "" {
+		if result.In.Type == "" || result.Out.Type == "" {
 			result.logln(conv, logger.Error, "missing CGoType or GoType")
 			panic("see above")
 		}

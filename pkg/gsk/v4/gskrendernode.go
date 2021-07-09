@@ -27,7 +27,7 @@ func init() {
 
 // ParseErrorFunc: type of callback that is called when an error occurs during
 // node deserialization.
-type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, err error)
+type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, err error, userData interface{})
 
 //export gotk4_ParseErrorFunc
 func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
@@ -39,13 +39,15 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	var start *ParseLocation // out
 	var end *ParseLocation   // out
 	var err error            // out
+	var userData interface{} // out
 
-	start = (*ParseLocation)(unsafe.Pointer(arg0))
-	end = (*ParseLocation)(unsafe.Pointer(arg1))
+	start = (*ParseLocation)(unsafe.Pointer(*C.GskParseLocation))
+	end = (*ParseLocation)(unsafe.Pointer(*C.GskParseLocation))
 	err = gerror.Take(unsafe.Pointer(arg2))
+	userData = box.Get(uintptr(arg3))
 
 	fn := v.(ParseErrorFunc)
-	fn(start, end, err)
+	fn(start, end, err, userData)
 }
 
 // RenderNode: `GskRenderNode` is the basic block in a scene graph to be
@@ -76,7 +78,7 @@ type RenderNode interface {
 	// NodeType returns the type of the @node.
 	NodeType() RenderNodeType
 	// Ref acquires a reference on the given `GskRenderNode`.
-	ref() RenderNode
+	ref() *RenderNodeClass
 	// Unref releases a reference on the given `GskRenderNode`.
 	//
 	// If the reference was the last, the resources associated to the @node are
@@ -123,8 +125,8 @@ func (n *RenderNodeClass) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(*cairo.Context))
 
 	C.gsk_render_node_draw(_arg0, _arg1)
 }
@@ -134,29 +136,30 @@ func (n *RenderNodeClass) NodeType() RenderNodeType {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret C.GskRenderNodeType // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
 
 	_cret = C.gsk_render_node_get_node_type(_arg0)
 
 	var _renderNodeType RenderNodeType // out
 
-	_renderNodeType = RenderNodeType(_cret)
+	_renderNodeType = (RenderNodeType)(C.GskRenderNodeType)
 
 	return _renderNodeType
 }
 
 // Ref acquires a reference on the given `GskRenderNode`.
-func (n *RenderNodeClass) ref() RenderNode {
+func (n *RenderNodeClass) ref() *RenderNodeClass {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
 
 	_cret = C.gsk_render_node_ref(_arg0)
 
-	var _renderNode RenderNode // out
+	var _renderNode *RenderNodeClass // out
 
-	_renderNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RenderNode)
+	_renderNode = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RenderNodeClass)
 
 	return _renderNode
 }
@@ -168,7 +171,7 @@ func (n *RenderNodeClass) ref() RenderNode {
 func (n *RenderNodeClass) unref() {
 	var _arg0 *C.GskRenderNode // out
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
 
 	C.gsk_render_node_unref(_arg0)
 }
@@ -185,7 +188,7 @@ func (n *RenderNodeClass) WriteToFile(filename string) error {
 	var _arg1 *C.char          // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer((&RenderNode).Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 

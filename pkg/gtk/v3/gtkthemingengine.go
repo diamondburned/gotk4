@@ -39,17 +39,14 @@ type ThemingEngineOverrider interface {
 	RenderBackground(cr *cairo.Context, x float64, y float64, width float64, height float64)
 	RenderCheck(cr *cairo.Context, x float64, y float64, width float64, height float64)
 	RenderExpander(cr *cairo.Context, x float64, y float64, width float64, height float64)
-	RenderExtension(cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType)
 	RenderFocus(cr *cairo.Context, x float64, y float64, width float64, height float64)
 	RenderFrame(cr *cairo.Context, x float64, y float64, width float64, height float64)
-	RenderFrameGap(cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xy0Gap float64, xy1Gap float64)
 	RenderHandle(cr *cairo.Context, x float64, y float64, width float64, height float64)
 	RenderIcon(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, x float64, y float64)
 	RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x float64, y float64)
 	RenderLayout(cr *cairo.Context, x float64, y float64, layout pango.Layout)
 	RenderLine(cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
 	RenderOption(cr *cairo.Context, x float64, y float64, width float64, height float64)
-	RenderSlider(cr *cairo.Context, x float64, y float64, width float64, height float64, orientation Orientation)
 }
 
 // ThemingEngine was the object used for rendering themed content in GTK+
@@ -66,10 +63,6 @@ type ThemingEngine interface {
 	//
 	// Deprecated: since version 3.8.
 	Direction() TextDirection
-	// Font returns the font description for a given state.
-	//
-	// Deprecated: since version 3.8.
-	Font(state StateFlags) *pango.FontDescription
 	// JunctionSides returns the widget direction used for rendering.
 	//
 	// Deprecated: since version 3.14.
@@ -81,7 +74,7 @@ type ThemingEngine interface {
 	// Screen returns the Screen to which @engine currently rendering to.
 	//
 	// Deprecated: since version 3.14.
-	Screen() gdk.Screen
+	Screen() *gdk.ScreenClass
 	// State returns the state used when rendering.
 	//
 	// Deprecated: since version 3.14.
@@ -97,17 +90,6 @@ type ThemingEngine interface {
 	//
 	// Deprecated: since version 3.14.
 	HasRegion(styleRegion string) (RegionFlags, bool)
-	// StateIsRunning returns true if there is a transition animation running
-	// for the current region (see gtk_style_context_push_animatable_region()).
-	//
-	// If @progress is not nil, the animation progress will be returned there,
-	// 0.0 means the state is closest to being false, while 1.0 means it’s
-	// closest to being true. This means transition animations will run from 0
-	// to 1 when @state is being set to true and from 1 to 0 when it’s being set
-	// to false.
-	//
-	// Deprecated: since version 3.6.
-	StateIsRunning(state StateType) (float64, bool)
 }
 
 // ThemingEngineClass implements the ThemingEngine interface.
@@ -136,35 +118,15 @@ func (e *ThemingEngineClass) Direction() TextDirection {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkTextDirection  // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
 
 	_cret = C.gtk_theming_engine_get_direction(_arg0)
 
 	var _textDirection TextDirection // out
 
-	_textDirection = TextDirection(_cret)
+	_textDirection = (TextDirection)(C.GtkTextDirection)
 
 	return _textDirection
-}
-
-// Font returns the font description for a given state.
-//
-// Deprecated: since version 3.8.
-func (e *ThemingEngineClass) Font(state StateFlags) *pango.FontDescription {
-	var _arg0 *C.GtkThemingEngine     // out
-	var _arg1 C.GtkStateFlags         // out
-	var _cret *C.PangoFontDescription // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-	_arg1 = C.GtkStateFlags(state)
-
-	_cret = C.gtk_theming_engine_get_font(_arg0, _arg1)
-
-	var _fontDescription *pango.FontDescription // out
-
-	_fontDescription = (*pango.FontDescription)(unsafe.Pointer(_cret))
-
-	return _fontDescription
 }
 
 // JunctionSides returns the widget direction used for rendering.
@@ -174,13 +136,13 @@ func (e *ThemingEngineClass) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkJunctionSides  // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
 
 	_cret = C.gtk_theming_engine_get_junction_sides(_arg0)
 
 	var _junctionSides JunctionSides // out
 
-	_junctionSides = JunctionSides(_cret)
+	_junctionSides = (JunctionSides)(C.GtkJunctionSides)
 
 	return _junctionSides
 }
@@ -192,13 +154,13 @@ func (e *ThemingEngineClass) Path() *WidgetPath {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GtkWidgetPath    // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
 
 	_cret = C.gtk_theming_engine_get_path(_arg0)
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(*C.GtkWidgetPath))
 	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
@@ -210,17 +172,18 @@ func (e *ThemingEngineClass) Path() *WidgetPath {
 // Screen returns the Screen to which @engine currently rendering to.
 //
 // Deprecated: since version 3.14.
-func (e *ThemingEngineClass) Screen() gdk.Screen {
+func (e *ThemingEngineClass) Screen() *gdk.ScreenClass {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GdkScreen        // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
 
 	_cret = C.gtk_theming_engine_get_screen(_arg0)
 
-	var _screen gdk.Screen // out
+	var _screen *gdk.ScreenClass // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
+	_screen = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.ScreenClass)
 
 	return _screen
 }
@@ -232,13 +195,13 @@ func (e *ThemingEngineClass) State() StateFlags {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkStateFlags     // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
 
 	_cret = C.gtk_theming_engine_get_state(_arg0)
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = StateFlags(_cret)
+	_stateFlags = (StateFlags)(C.GtkStateFlags)
 
 	return _stateFlags
 }
@@ -252,7 +215,7 @@ func (e *ThemingEngineClass) HasClass(styleClass string) bool {
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
 	_arg1 = (*C.gchar)(C.CString(styleClass))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -278,7 +241,7 @@ func (e *ThemingEngineClass) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg2 C.GtkRegionFlags    // in
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer((&ThemingEngine).Native()))
 	_arg1 = (*C.gchar)(C.CString(styleRegion))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -287,41 +250,10 @@ func (e *ThemingEngineClass) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _flags RegionFlags // out
 	var _ok bool           // out
 
-	_flags = RegionFlags(_arg2)
+	_flags = (RegionFlags)(C.GtkRegionFlags)
 	if _cret != 0 {
 		_ok = true
 	}
 
 	return _flags, _ok
-}
-
-// StateIsRunning returns true if there is a transition animation running for
-// the current region (see gtk_style_context_push_animatable_region()).
-//
-// If @progress is not nil, the animation progress will be returned there, 0.0
-// means the state is closest to being false, while 1.0 means it’s closest to
-// being true. This means transition animations will run from 0 to 1 when @state
-// is being set to true and from 1 to 0 when it’s being set to false.
-//
-// Deprecated: since version 3.6.
-func (e *ThemingEngineClass) StateIsRunning(state StateType) (float64, bool) {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateType      // out
-	var _arg2 C.gdouble           // in
-	var _cret C.gboolean          // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
-	_arg1 = C.GtkStateType(state)
-
-	_cret = C.gtk_theming_engine_state_is_running(_arg0, _arg1, &_arg2)
-
-	var _progress float64 // out
-	var _ok bool          // out
-
-	_progress = float64(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _progress, _ok
 }

@@ -38,7 +38,7 @@ type InetSocketAddress interface {
 	gextras.Objector
 
 	// Address gets @address's Address.
-	Address() InetAddress
+	Address() *InetAddressClass
 	// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
 	// IPv6 address.
 	Flowinfo() uint32
@@ -80,19 +80,20 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 }
 
 // NewInetSocketAddress creates a new SocketAddress for @address and @port.
-func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
+func NewInetSocketAddress(address InetAddress, port uint16) *InetSocketAddressClass {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((&InetAddress).Native()))
 	_arg2 = C.guint16(port)
 
 	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
 
-	var _inetSocketAddress InetSocketAddress // out
+	var _inetSocketAddress *InetSocketAddressClass // out
 
-	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetSocketAddress)
+	_inetSocketAddress = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*InetSocketAddressClass)
 
 	return _inetSocketAddress
 }
@@ -102,7 +103,7 @@ func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 //
 // If @address is an IPv6 address, it can also contain a scope ID (separated
 // from the address by a `%`).
-func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress {
+func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddressClass {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // out
 	var _cret *C.GSocketAddress // in
@@ -113,25 +114,27 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 
 	_cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
 
-	var _inetSocketAddress InetSocketAddress // out
+	var _inetSocketAddress *InetSocketAddressClass // out
 
-	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(InetSocketAddress)
+	_inetSocketAddress = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*InetSocketAddressClass)
 
 	return _inetSocketAddress
 }
 
 // Address gets @address's Address.
-func (a *InetSocketAddressClass) Address() InetAddress {
+func (a *InetSocketAddressClass) Address() *InetAddressClass {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret *C.GInetAddress       // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&InetSocketAddress).Native()))
 
 	_cret = C.g_inet_socket_address_get_address(_arg0)
 
-	var _inetAddress InetAddress // out
+	var _inetAddress *InetAddressClass // out
 
-	_inetAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(InetAddress)
+	_inetAddress = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*InetAddressClass)
 
 	return _inetAddress
 }
@@ -142,7 +145,7 @@ func (a *InetSocketAddressClass) Flowinfo() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&InetSocketAddress).Native()))
 
 	_cret = C.g_inet_socket_address_get_flowinfo(_arg0)
 
@@ -158,7 +161,7 @@ func (a *InetSocketAddressClass) Port() uint16 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint16             // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&InetSocketAddress).Native()))
 
 	_cret = C.g_inet_socket_address_get_port(_arg0)
 
@@ -175,7 +178,7 @@ func (a *InetSocketAddressClass) ScopeID() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer((&InetSocketAddress).Native()))
 
 	_cret = C.g_inet_socket_address_get_scope_id(_arg0)
 

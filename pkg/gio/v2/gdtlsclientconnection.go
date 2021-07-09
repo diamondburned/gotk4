@@ -38,7 +38,7 @@ type DTLSClientConnection interface {
 	gextras.Objector
 
 	// ServerIdentity gets @conn's expected server identity
-	ServerIdentity() SocketConnectable
+	ServerIdentity() *SocketConnectableInterface
 	// ValidationFlags gets @conn's validation flags
 	ValidationFlags() TLSCertificateFlags
 	// SetServerIdentity sets @conn's expected server identity, which is used
@@ -46,10 +46,6 @@ type DTLSClientConnection interface {
 	// also to let @conn know what name to look for in the certificate when
 	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 	SetServerIdentity(identity SocketConnectable)
-	// SetValidationFlags sets @conn's validation flags, to override the default
-	// set of checks performed when validating a server certificate. By default,
-	// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
-	SetValidationFlags(flags TLSCertificateFlags)
 }
 
 // DTLSClientConnectionInterface implements the DTLSClientConnection interface.
@@ -82,17 +78,18 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 }
 
 // ServerIdentity gets @conn's expected server identity
-func (c *DTLSClientConnectionInterface) ServerIdentity() SocketConnectable {
+func (c *DTLSClientConnectionInterface) ServerIdentity() *SocketConnectableInterface {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer((&DTLSClientConnection).Native()))
 
 	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
 
-	var _socketConnectable SocketConnectable // out
+	var _socketConnectable *SocketConnectableInterface // out
 
-	_socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SocketConnectable)
+	_socketConnectable = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SocketConnectableInterface)
 
 	return _socketConnectable
 }
@@ -102,13 +99,13 @@ func (c *DTLSClientConnectionInterface) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret C.GTlsCertificateFlags   // in
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer((&DTLSClientConnection).Native()))
 
 	_cret = C.g_dtls_client_connection_get_validation_flags(_arg0)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
-	_tlsCertificateFlags = TLSCertificateFlags(_cret)
+	_tlsCertificateFlags = (TLSCertificateFlags)(C.GTlsCertificateFlags)
 
 	return _tlsCertificateFlags
 }
@@ -121,21 +118,8 @@ func (c *DTLSClientConnectionInterface) SetServerIdentity(identity SocketConnect
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 *C.GSocketConnectable    // out
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer((&DTLSClientConnection).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((&SocketConnectable).Native()))
 
 	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
-}
-
-// SetValidationFlags sets @conn's validation flags, to override the default set
-// of checks performed when validating a server certificate. By default,
-// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
-func (c *DTLSClientConnectionInterface) SetValidationFlags(flags TLSCertificateFlags) {
-	var _arg0 *C.GDtlsClientConnection // out
-	var _arg1 C.GTlsCertificateFlags   // out
-
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GTlsCertificateFlags(flags)
-
-	C.g_dtls_client_connection_set_validation_flags(_arg0, _arg1)
 }

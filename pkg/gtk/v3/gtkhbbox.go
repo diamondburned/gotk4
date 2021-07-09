@@ -50,7 +50,6 @@ func wrapHButtonBox(obj *externglib.Object) HButtonBox {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -92,14 +91,15 @@ func marshalHButtonBox(p uintptr) (interface{}, error) {
 // NewHButtonBox creates a new horizontal button box.
 //
 // Deprecated: since version 3.2.
-func NewHButtonBox() HButtonBox {
+func NewHButtonBox() *HButtonBoxClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_hbutton_box_new()
 
-	var _hButtonBox HButtonBox // out
+	var _hButtonBox *HButtonBoxClass // out
 
-	_hButtonBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(HButtonBox)
+	_hButtonBox = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HButtonBoxClass)
 
 	return _hButtonBox
 }

@@ -33,7 +33,6 @@ type CellAccessibleParentOverrider interface {
 	Activate(cell CellAccessible)
 	Edit(cell CellAccessible)
 	ExpandCollapse(cell CellAccessible)
-	CellExtents(cell CellAccessible, coordType atk.CoordType) (x int, y int, width int, height int)
 	CellPosition(cell CellAccessible) (row int, column int)
 	ChildIndex(cell CellAccessible) int
 	RendererState(cell CellAccessible) CellRendererState
@@ -47,7 +46,6 @@ type CellAccessibleParent interface {
 	Activate(cell CellAccessible)
 	Edit(cell CellAccessible)
 	ExpandCollapse(cell CellAccessible)
-	CellExtents(cell CellAccessible, coordType atk.CoordType) (x int, y int, width int, height int)
 	CellPosition(cell CellAccessible) (row int, column int)
 	ChildIndex(cell CellAccessible) int
 	RendererState(cell CellAccessible) CellRendererState
@@ -78,8 +76,8 @@ func (p *CellAccessibleParentInterface) Activate(cell CellAccessible) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer((&CellAccessibleParent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
 
 	C.gtk_cell_accessible_parent_activate(_arg0, _arg1)
 }
@@ -88,8 +86,8 @@ func (p *CellAccessibleParentInterface) Edit(cell CellAccessible) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer((&CellAccessibleParent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
 
 	C.gtk_cell_accessible_parent_edit(_arg0, _arg1)
 }
@@ -98,38 +96,10 @@ func (p *CellAccessibleParentInterface) ExpandCollapse(cell CellAccessible) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer((&CellAccessibleParent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
 
 	C.gtk_cell_accessible_parent_expand_collapse(_arg0, _arg1)
-}
-
-func (p *CellAccessibleParentInterface) CellExtents(cell CellAccessible, coordType atk.CoordType) (x int, y int, width int, height int) {
-	var _arg0 *C.GtkCellAccessibleParent // out
-	var _arg1 *C.GtkCellAccessible       // out
-	var _arg2 C.gint                     // in
-	var _arg3 C.gint                     // in
-	var _arg4 C.gint                     // in
-	var _arg5 C.gint                     // in
-	var _arg6 C.AtkCoordType             // out
-
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-	_arg6 = C.AtkCoordType(coordType)
-
-	C.gtk_cell_accessible_parent_get_cell_extents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, _arg6)
-
-	var _x int      // out
-	var _y int      // out
-	var _width int  // out
-	var _height int // out
-
-	_x = int(_arg2)
-	_y = int(_arg3)
-	_width = int(_arg4)
-	_height = int(_arg5)
-
-	return _x, _y, _width, _height
 }
 
 func (p *CellAccessibleParentInterface) CellPosition(cell CellAccessible) (row int, column int) {
@@ -138,8 +108,8 @@ func (p *CellAccessibleParentInterface) CellPosition(cell CellAccessible) (row i
 	var _arg2 C.gint                     // in
 	var _arg3 C.gint                     // in
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer((&CellAccessibleParent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
 
 	C.gtk_cell_accessible_parent_get_cell_position(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -157,8 +127,8 @@ func (p *CellAccessibleParentInterface) ChildIndex(cell CellAccessible) int {
 	var _arg1 *C.GtkCellAccessible       // out
 	var _cret C.int                      // in
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer((&CellAccessibleParent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
 
 	_cret = C.gtk_cell_accessible_parent_get_child_index(_arg0, _arg1)
 
@@ -174,14 +144,14 @@ func (p *CellAccessibleParentInterface) RendererState(cell CellAccessible) CellR
 	var _arg1 *C.GtkCellAccessible       // out
 	var _cret C.GtkCellRendererState     // in
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer((&CellAccessibleParent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
 
 	_cret = C.gtk_cell_accessible_parent_get_renderer_state(_arg0, _arg1)
 
 	var _cellRendererState CellRendererState // out
 
-	_cellRendererState = CellRendererState(_cret)
+	_cellRendererState = (CellRendererState)(C.GtkCellRendererState)
 
 	return _cellRendererState
 }
@@ -191,8 +161,8 @@ func (p *CellAccessibleParentInterface) GrabFocus(cell CellAccessible) bool {
 	var _arg1 *C.GtkCellAccessible       // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer((&CellAccessibleParent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
 
 	_cret = C.gtk_cell_accessible_parent_grab_focus(_arg0, _arg1)
 
@@ -210,9 +180,9 @@ func (p *CellAccessibleParentInterface) UpdateRelationset(cell CellAccessible, r
 	var _arg1 *C.GtkCellAccessible       // out
 	var _arg2 *C.AtkRelationSet          // out
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-	_arg2 = (*C.AtkRelationSet)(unsafe.Pointer(relationset.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer((&CellAccessibleParent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((&CellAccessible).Native()))
+	_arg2 = (*C.AtkRelationSet)(unsafe.Pointer((&atk.RelationSet).Native()))
 
 	C.gtk_cell_accessible_parent_update_relationset(_arg0, _arg1, _arg2)
 }

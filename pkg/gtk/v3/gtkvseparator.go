@@ -51,7 +51,6 @@ func wrapVSeparator(obj *externglib.Object) VSeparator {
 		SeparatorClass: SeparatorClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -82,14 +81,15 @@ func marshalVSeparator(p uintptr) (interface{}, error) {
 // NewVSeparator creates a new VSeparator.
 //
 // Deprecated: since version 3.2.
-func NewVSeparator() VSeparator {
+func NewVSeparator() *VSeparatorClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_vseparator_new()
 
-	var _vSeparator VSeparator // out
+	var _vSeparator *VSeparatorClass // out
 
-	_vSeparator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(VSeparator)
+	_vSeparator = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*VSeparatorClass)
 
 	return _vSeparator
 }

@@ -70,7 +70,7 @@ func marshalPrintCapabilities(p uintptr) (interface{}, error) {
 //
 // Note that you need to ref @printer, if you want to keep a reference to it
 // after the function has returned.
-type PrinterFunc func(printer Printer) (ok bool)
+type PrinterFunc func(printer *PrinterClass, data interface{}) (ok bool)
 
 //export gotk4_PrinterFunc
 func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) (cret C.gboolean) {
@@ -79,12 +79,15 @@ func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) (cret C.gboolean) {
 		panic(`callback not found`)
 	}
 
-	var printer Printer // out
+	var printer *PrinterClass // out
+	var data interface{}      // out
 
-	printer = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Printer)
+	printer = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg0))).(*PrinterClass)
+	data = box.Get(uintptr(arg1))
 
 	fn := v.(PrinterFunc)
-	ok := fn(printer)
+	ok := fn(printer, data)
 
 	if ok {
 		cret = C.TRUE
@@ -122,7 +125,7 @@ type Printer interface {
 	// [method@Gtk.Printer.request_details].
 	Capabilities() PrintCapabilities
 	// DefaultPageSize returns default page size of @printer.
-	DefaultPageSize() PageSetup
+	DefaultPageSize() *PageSetupClass
 	// Description gets the description of the printer.
 	Description() string
 	// HardMargins: retrieve the hard margins of @printer.
@@ -203,7 +206,7 @@ func (p *PrinterClass) AcceptsPDF() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_accepts_pdf(_arg0)
 
@@ -221,7 +224,7 @@ func (p *PrinterClass) AcceptsPS() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_accepts_ps(_arg0)
 
@@ -240,8 +243,8 @@ func (a *PrinterClass) Compare(b Printer) int {
 	var _arg1 *C.GtkPrinter // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkPrinter)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
+	_arg1 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_compare(_arg0, _arg1)
 
@@ -264,29 +267,30 @@ func (p *PrinterClass) Capabilities() PrintCapabilities {
 	var _arg0 *C.GtkPrinter          // out
 	var _cret C.GtkPrintCapabilities // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_get_capabilities(_arg0)
 
 	var _printCapabilities PrintCapabilities // out
 
-	_printCapabilities = PrintCapabilities(_cret)
+	_printCapabilities = (PrintCapabilities)(C.GtkPrintCapabilities)
 
 	return _printCapabilities
 }
 
 // DefaultPageSize returns default page size of @printer.
-func (p *PrinterClass) DefaultPageSize() PageSetup {
+func (p *PrinterClass) DefaultPageSize() *PageSetupClass {
 	var _arg0 *C.GtkPrinter   // out
 	var _cret *C.GtkPageSetup // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_get_default_page_size(_arg0)
 
-	var _pageSetup PageSetup // out
+	var _pageSetup *PageSetupClass // out
 
-	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PageSetup)
+	_pageSetup = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PageSetupClass)
 
 	return _pageSetup
 }
@@ -296,7 +300,7 @@ func (p *PrinterClass) Description() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_get_description(_arg0)
 
@@ -322,7 +326,7 @@ func (p *PrinterClass) HardMargins() (top float64, bottom float64, left float64,
 	var _arg4 C.double      // in
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -360,8 +364,8 @@ func (p *PrinterClass) HardMarginsForPaperSize(paperSize *PaperSize) (top float6
 	var _arg5 C.double        // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(paperSize))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
+	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(*PaperSize))
 
 	_cret = C.gtk_printer_get_hard_margins_for_paper_size(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -387,7 +391,7 @@ func (p *PrinterClass) IconName() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_get_icon_name(_arg0)
 
@@ -403,7 +407,7 @@ func (p *PrinterClass) JobCount() int {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_get_job_count(_arg0)
 
@@ -419,7 +423,7 @@ func (p *PrinterClass) Location() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_get_location(_arg0)
 
@@ -435,7 +439,7 @@ func (p *PrinterClass) Name() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_get_name(_arg0)
 
@@ -452,7 +456,7 @@ func (p *PrinterClass) StateMessage() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_get_state_message(_arg0)
 
@@ -468,7 +472,7 @@ func (p *PrinterClass) HasDetails() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_has_details(_arg0)
 
@@ -486,7 +490,7 @@ func (p *PrinterClass) IsAcceptingJobs() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_is_accepting_jobs(_arg0)
 
@@ -505,7 +509,7 @@ func (p *PrinterClass) IsActive() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_is_active(_arg0)
 
@@ -523,7 +527,7 @@ func (p *PrinterClass) IsDefault() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_is_default(_arg0)
 
@@ -543,7 +547,7 @@ func (p *PrinterClass) IsPaused() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_is_paused(_arg0)
 
@@ -562,7 +566,7 @@ func (p *PrinterClass) IsVirtual() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	_cret = C.gtk_printer_is_virtual(_arg0)
 
@@ -582,7 +586,7 @@ func (p *PrinterClass) IsVirtual() bool {
 func (p *PrinterClass) RequestDetails() {
 	var _arg0 *C.GtkPrinter // out
 
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrinter)(unsafe.Pointer((&Printer).Native()))
 
 	C.gtk_printer_request_details(_arg0)
 }

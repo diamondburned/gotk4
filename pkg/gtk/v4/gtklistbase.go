@@ -46,7 +46,6 @@ func wrapListBase(obj *externglib.Object) ListBase {
 	return &ListBaseClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,

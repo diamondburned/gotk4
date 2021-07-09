@@ -66,8 +66,6 @@ type TLSPassword interface {
 	// SetDescription: set a description string about what the password will be
 	// used for.
 	SetDescription(description string)
-	// SetFlags: set flags about the password.
-	SetFlags(flags TLSPasswordFlags)
 	// SetValue: set the value for this password. The @value will be copied by
 	// the password object.
 	//
@@ -101,32 +99,13 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 	return wrapTLSPassword(obj), nil
 }
 
-// NewTLSPassword: create a new Password object.
-func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
-	var _arg1 C.GTlsPasswordFlags // out
-	var _arg2 *C.gchar            // out
-	var _cret *C.GTlsPassword     // in
-
-	_arg1 = C.GTlsPasswordFlags(flags)
-	_arg2 = (*C.gchar)(C.CString(description))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.g_tls_password_new(_arg1, _arg2)
-
-	var _tlsPassword TLSPassword // out
-
-	_tlsPassword = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TLSPassword)
-
-	return _tlsPassword
-}
-
 // Description: get a description string about what the password will be used
 // for.
 func (p *TLSPasswordClass) Description() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&TLSPassword).Native()))
 
 	_cret = C.g_tls_password_get_description(_arg0)
 
@@ -142,13 +121,13 @@ func (p *TLSPasswordClass) Flags() TLSPasswordFlags {
 	var _arg0 *C.GTlsPassword     // out
 	var _cret C.GTlsPasswordFlags // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&TLSPassword).Native()))
 
 	_cret = C.g_tls_password_get_flags(_arg0)
 
 	var _tlsPasswordFlags TLSPasswordFlags // out
 
-	_tlsPasswordFlags = TLSPasswordFlags(_cret)
+	_tlsPasswordFlags = (TLSPasswordFlags)(C.GTlsPasswordFlags)
 
 	return _tlsPasswordFlags
 }
@@ -162,7 +141,7 @@ func (p *TLSPasswordClass) Value(length *uint) *byte {
 	var _arg1 *C.gsize        // out
 	var _cret *C.guchar       // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&TLSPassword).Native()))
 	_arg1 = (*C.gsize)(unsafe.Pointer(length))
 
 	_cret = C.g_tls_password_get_value(_arg0, _arg1)
@@ -181,7 +160,7 @@ func (p *TLSPasswordClass) Warning() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&TLSPassword).Native()))
 
 	_cret = C.g_tls_password_get_warning(_arg0)
 
@@ -198,22 +177,11 @@ func (p *TLSPasswordClass) SetDescription(description string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&TLSPassword).Native()))
 	_arg1 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_description(_arg0, _arg1)
-}
-
-// SetFlags: set flags about the password.
-func (p *TLSPasswordClass) SetFlags(flags TLSPasswordFlags) {
-	var _arg0 *C.GTlsPassword     // out
-	var _arg1 C.GTlsPasswordFlags // out
-
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
-	_arg1 = C.GTlsPasswordFlags(flags)
-
-	C.g_tls_password_set_flags(_arg0, _arg1)
 }
 
 // SetValue: set the value for this password. The @value will be copied by the
@@ -228,7 +196,7 @@ func (p *TLSPasswordClass) SetValue(value []byte) {
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&TLSPassword).Native()))
 	_arg2 = C.gssize(len(value))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&value[0]))
 
@@ -242,7 +210,7 @@ func (p *TLSPasswordClass) SetWarning(warning string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer((&TLSPassword).Native()))
 	_arg1 = (*C.gchar)(C.CString(warning))
 	defer C.free(unsafe.Pointer(_arg1))
 

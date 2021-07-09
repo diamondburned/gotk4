@@ -75,14 +75,15 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 }
 
 // NewIMContextSimple creates a new IMContextSimple.
-func NewIMContextSimple() IMContextSimple {
+func NewIMContextSimple() *IMContextSimpleClass {
 	var _cret *C.GtkIMContext // in
 
 	_cret = C.gtk_im_context_simple_new()
 
-	var _imContextSimple IMContextSimple // out
+	var _imContextSimple *IMContextSimpleClass // out
 
-	_imContextSimple = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(IMContextSimple)
+	_imContextSimple = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IMContextSimpleClass)
 
 	return _imContextSimple
 }
@@ -92,7 +93,7 @@ func (c *IMContextSimpleClass) AddComposeFile(composeFile string) {
 	var _arg0 *C.GtkIMContextSimple // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer((&IMContextSimple).Native()))
 	_arg1 = (*C.char)(C.CString(composeFile))
 	defer C.free(unsafe.Pointer(_arg1))
 

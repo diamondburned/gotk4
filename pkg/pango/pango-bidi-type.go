@@ -89,7 +89,7 @@ func FindBaseDir(text string, length int) Direction {
 
 	var _direction Direction // out
 
-	_direction = Direction(_cret)
+	_direction = (Direction)(C.PangoDirection)
 
 	return _direction
 }
@@ -138,7 +138,7 @@ func UnicharDirection(ch uint32) Direction {
 
 	var _direction Direction // out
 
-	_direction = Direction(_cret)
+	_direction = (Direction)(C.PangoDirection)
 
 	return _direction
 }

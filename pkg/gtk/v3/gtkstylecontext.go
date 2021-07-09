@@ -6,11 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -46,55 +44,6 @@ const (
 
 func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 	return StyleContextPrintFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// DrawInsertionCursor draws a text caret on @cr at @location. This is not a
-// style function but merely a convenience function for drawing the standard
-// cursor shape.
-//
-// Deprecated: since version 3.4.
-func DrawInsertionCursor(widget Widget, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
-	var _arg1 *C.GtkWidget       // out
-	var _arg2 *C.cairo_t         // out
-	var _arg3 *C.GdkRectangle    // out
-	var _arg4 C.gboolean         // out
-	var _arg5 C.GtkTextDirection // out
-	var _arg6 C.gboolean         // out
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(location))
-	if isPrimary {
-		_arg4 = C.TRUE
-	}
-	_arg5 = C.GtkTextDirection(direction)
-	if drawArrow {
-		_arg6 = C.TRUE
-	}
-
-	C.gtk_draw_insertion_cursor(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-}
-
-// RenderInsertionCursor draws a text caret on @cr at the specified index of
-// @layout.
-func RenderInsertionCursor(context StyleContext, cr *cairo.Context, x float64, y float64, layout pango.Layout, index int, direction pango.Direction) {
-	var _arg1 *C.GtkStyleContext // out
-	var _arg2 *C.cairo_t         // out
-	var _arg3 C.gdouble          // out
-	var _arg4 C.gdouble          // out
-	var _arg5 *C.PangoLayout     // out
-	var _arg6 C.int              // out
-	var _arg7 C.PangoDirection   // out
-
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg3 = C.gdouble(x)
-	_arg4 = C.gdouble(y)
-	_arg5 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg6 = C.int(index)
-	_arg7 = C.PangoDirection(direction)
-
-	C.gtk_render_insertion_cursor(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
 // StyleContextOverrider contains methods that are overridable.
@@ -184,26 +133,6 @@ type StyleContext interface {
 	// function takes precedence over another added through
 	// gtk_style_context_add_provider_for_screen().
 	AddProvider(provider StyleProvider, priority uint)
-	// AddRegion adds a region to @context, so posterior calls to
-	// gtk_style_context_get() or any of the gtk_render_*() functions will make
-	// use of this new region for styling.
-	//
-	// In the CSS file format, a TreeView defining a “row” region, would be
-	// matched by:
-	//
-	// |[ <!-- language="CSS" --> treeview row { ... } ]|
-	//
-	// Pseudo-classes are used for matching @flags, so the two following rules:
-	// |[ <!-- language="CSS" --> treeview row:nth-child(even) { ... } treeview
-	// row:nth-child(odd) { ... } ]|
-	//
-	// would apply to even and odd rows, respectively.
-	//
-	// Region names must only contain lowercase letters and “-”, starting always
-	// with a lowercase letter.
-	//
-	// Deprecated: since version 3.14.
-	AddRegion(regionName string, flags RegionFlags)
 	// CancelAnimations stops all running animations for @region_id and all
 	// animatable regions underneath.
 	//
@@ -219,26 +148,20 @@ type StyleContext interface {
 	//
 	// Deprecated: since version 3.8.
 	Direction() TextDirection
-	// Font returns the font description for a given state. The returned object
-	// is const and will remain valid until the StyleContext::changed signal
-	// happens.
-	//
-	// Deprecated: since version 3.8.
-	Font(state StateFlags) *pango.FontDescription
 	// FrameClock returns the FrameClock to which @context is attached.
-	FrameClock() gdk.FrameClock
+	FrameClock() *gdk.FrameClockClass
 	// JunctionSides returns the sides where rendered elements connect visually
 	// with others.
 	JunctionSides() JunctionSides
 	// Parent gets the parent context set via gtk_style_context_set_parent().
 	// See that function for details.
-	Parent() StyleContext
+	Parent() *StyleContextClass
 	// Path returns the widget path used for style matching.
 	Path() *WidgetPath
 	// Scale returns the scale used for assets.
 	Scale() int
 	// Screen returns the Screen to which @context is attached.
-	Screen() gdk.Screen
+	Screen() *gdk.ScreenClass
 	// Section queries the location in the CSS where @property was defined for
 	// the current @context. Note that the state to be queried is taken from
 	// gtk_style_context_get_state().
@@ -283,37 +206,6 @@ type StyleContext interface {
 	//
 	// Deprecated: since version 3.10.
 	LookupIconSet(stockId string) *IconSet
-	// NotifyStateChange notifies a state change on @context, so if the current
-	// style makes use of transition animations, one will be started so all
-	// rendered elements under @region_id are animated for state @state being
-	// set to value @state_value.
-	//
-	// The @window parameter is used in order to invalidate the rendered area as
-	// the animation runs, so make sure it is the same window that is being
-	// rendered on by the gtk_render_*() functions.
-	//
-	// If @region_id is nil, all rendered elements using @context will be
-	// affected by this state transition.
-	//
-	// As a practical example, a Button notifying a state transition on the
-	// prelight state: |[ <!-- language="C" -->
-	// gtk_style_context_notify_state_change (context, gtk_widget_get_window
-	// (widget), NULL, GTK_STATE_PRELIGHT, button->in_button); ]|
-	//
-	// Can be handled in the CSS file like this: |[ <!-- language="CSS" -->
-	// button { background-color: #f00 }
-	//
-	// button:hover { background-color: #fff; transition: 200ms linear } ]|
-	//
-	// This combination will animate the button background from red to white if
-	// a pointer enters the button, and back to red if the pointer leaves the
-	// button.
-	//
-	// Note that @state is used when finding the transition parameters, which is
-	// why the style places the transition under the :hover pseudo-class.
-	//
-	// Deprecated: since version 3.6.
-	NotifyStateChange(window gdk.Window, regionId interface{}, state StateType, stateValue bool)
 	// PopAnimatableRegion pops an animatable region from @context. See
 	// gtk_style_context_push_animatable_region().
 	//
@@ -362,13 +254,6 @@ type StyleContext interface {
 	//
 	// Deprecated: since version 3.18.
 	SetBackground(window gdk.Window)
-	// SetDirection sets the reading direction for rendering purposes.
-	//
-	// If you are using a StyleContext returned from
-	// gtk_widget_get_style_context(), you do not need to call this yourself.
-	//
-	// Deprecated: since version 3.8.
-	SetDirection(direction TextDirection)
 	// SetFrameClock attaches @context to the given frame clock.
 	//
 	// The frame clock is used for the timing of animations.
@@ -376,15 +261,6 @@ type StyleContext interface {
 	// If you are using a StyleContext returned from
 	// gtk_widget_get_style_context(), you do not need to call this yourself.
 	SetFrameClock(frameClock gdk.FrameClock)
-	// SetJunctionSides sets the sides where rendered elements (mostly through
-	// gtk_render_frame()) will visually connect with other visual elements.
-	//
-	// This is merely a hint that may or may not be honored by themes.
-	//
-	// Container widgets are expected to set junction hints as appropriate for
-	// their children, so it should not normally be necessary to call this
-	// function manually.
-	SetJunctionSides(sides JunctionSides)
 	// SetParent sets the parent style context for @context. The parent style
 	// context is used to implement inheritance
 	// (http://www.w3.org/TR/css3-cascade/#inheritance) of properties.
@@ -408,28 +284,6 @@ type StyleContext interface {
 	// If you are using a StyleContext returned from
 	// gtk_widget_get_style_context(), you do not need to call this yourself.
 	SetScreen(screen gdk.Screen)
-	// SetState sets the state to be used for style matching.
-	SetState(flags StateFlags)
-	// StateIsRunning returns true if there is a transition animation running
-	// for the current region (see gtk_style_context_push_animatable_region()).
-	//
-	// If @progress is not nil, the animation progress will be returned there,
-	// 0.0 means the state is closest to being unset, while 1.0 means it’s
-	// closest to being set. This means transition animation will run from 0 to
-	// 1 when @state is being set and from 1 to 0 when it’s being unset.
-	//
-	// Deprecated: since version 3.6.
-	StateIsRunning(state StateType) (float64, bool)
-	// String converts the style context into a string representation.
-	//
-	// The string representation always includes information about the name,
-	// state, id, visibility and style classes of the CSS node that is backing
-	// @context. Depending on the flags, more information may be included.
-	//
-	// This function is intended for testing and debugging of the CSS
-	// implementation in GTK+. There are no guarantees about the format of the
-	// returned string, it may change.
-	String(flags StyleContextPrintFlags) string
 }
 
 // StyleContextClass implements the StyleContext interface.
@@ -459,14 +313,15 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 // GTK+, if you are using StyleContext to theme Widgets, use
 // gtk_widget_get_style_context() in order to get a style context ready to theme
 // the widget.
-func NewStyleContext() StyleContext {
+func NewStyleContext() *StyleContextClass {
 	var _cret *C.GtkStyleContext // in
 
 	_cret = C.gtk_style_context_new()
 
-	var _styleContext StyleContext // out
+	var _styleContext *StyleContextClass // out
 
-	_styleContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StyleContext)
+	_styleContext = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StyleContextClass)
 
 	return _styleContext
 }
@@ -486,7 +341,7 @@ func (c *StyleContextClass) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.gchar)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -506,43 +361,11 @@ func (c *StyleContextClass) AddProvider(provider StyleProvider, priority uint) {
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((&StyleProvider).Native()))
 	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
-}
-
-// AddRegion adds a region to @context, so posterior calls to
-// gtk_style_context_get() or any of the gtk_render_*() functions will make use
-// of this new region for styling.
-//
-// In the CSS file format, a TreeView defining a “row” region, would be matched
-// by:
-//
-// |[ <!-- language="CSS" --> treeview row { ... } ]|
-//
-// Pseudo-classes are used for matching @flags, so the two following rules: |[
-// <!-- language="CSS" --> treeview row:nth-child(even) { ... } treeview
-// row:nth-child(odd) { ... } ]|
-//
-// would apply to even and odd rows, respectively.
-//
-// Region names must only contain lowercase letters and “-”, starting always
-// with a lowercase letter.
-//
-// Deprecated: since version 3.14.
-func (c *StyleContextClass) AddRegion(regionName string, flags RegionFlags) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.gchar           // out
-	var _arg2 C.GtkRegionFlags   // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.gchar)(C.CString(regionName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkRegionFlags(flags)
-
-	C.gtk_style_context_add_region(_arg0, _arg1, _arg2)
 }
 
 // CancelAnimations stops all running animations for @region_id and all
@@ -559,7 +382,7 @@ func (c *StyleContextClass) CancelAnimations(regionId interface{}) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.gpointer         // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (C.gpointer)(box.Assign(regionId))
 
 	C.gtk_style_context_cancel_animations(_arg0, _arg1)
@@ -572,50 +395,30 @@ func (c *StyleContextClass) Direction() TextDirection {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkTextDirection // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_direction(_arg0)
 
 	var _textDirection TextDirection // out
 
-	_textDirection = TextDirection(_cret)
+	_textDirection = (TextDirection)(C.GtkTextDirection)
 
 	return _textDirection
 }
 
-// Font returns the font description for a given state. The returned object is
-// const and will remain valid until the StyleContext::changed signal happens.
-//
-// Deprecated: since version 3.8.
-func (c *StyleContextClass) Font(state StateFlags) *pango.FontDescription {
-	var _arg0 *C.GtkStyleContext      // out
-	var _arg1 C.GtkStateFlags         // out
-	var _cret *C.PangoFontDescription // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkStateFlags(state)
-
-	_cret = C.gtk_style_context_get_font(_arg0, _arg1)
-
-	var _fontDescription *pango.FontDescription // out
-
-	_fontDescription = (*pango.FontDescription)(unsafe.Pointer(_cret))
-
-	return _fontDescription
-}
-
 // FrameClock returns the FrameClock to which @context is attached.
-func (c *StyleContextClass) FrameClock() gdk.FrameClock {
+func (c *StyleContextClass) FrameClock() *gdk.FrameClockClass {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GdkFrameClock   // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_frame_clock(_arg0)
 
-	var _frameClock gdk.FrameClock // out
+	var _frameClock *gdk.FrameClockClass // out
 
-	_frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.FrameClock)
+	_frameClock = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.FrameClockClass)
 
 	return _frameClock
 }
@@ -626,30 +429,31 @@ func (c *StyleContextClass) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkJunctionSides // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_junction_sides(_arg0)
 
 	var _junctionSides JunctionSides // out
 
-	_junctionSides = JunctionSides(_cret)
+	_junctionSides = (JunctionSides)(C.GtkJunctionSides)
 
 	return _junctionSides
 }
 
 // Parent gets the parent context set via gtk_style_context_set_parent(). See
 // that function for details.
-func (c *StyleContextClass) Parent() StyleContext {
+func (c *StyleContextClass) Parent() *StyleContextClass {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GtkStyleContext // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_parent(_arg0)
 
-	var _styleContext StyleContext // out
+	var _styleContext *StyleContextClass // out
 
-	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(StyleContext)
+	_styleContext = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*StyleContextClass)
 
 	return _styleContext
 }
@@ -659,13 +463,13 @@ func (c *StyleContextClass) Path() *WidgetPath {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GtkWidgetPath   // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_path(_arg0)
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	_widgetPath = (*WidgetPath)(unsafe.Pointer(*C.GtkWidgetPath))
 	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
@@ -679,7 +483,7 @@ func (c *StyleContextClass) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.gint             // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
 
@@ -691,17 +495,18 @@ func (c *StyleContextClass) Scale() int {
 }
 
 // Screen returns the Screen to which @context is attached.
-func (c *StyleContextClass) Screen() gdk.Screen {
+func (c *StyleContextClass) Screen() *gdk.ScreenClass {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GdkScreen       // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_screen(_arg0)
 
-	var _screen gdk.Screen // out
+	var _screen *gdk.ScreenClass // out
 
-	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Screen)
+	_screen = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.ScreenClass)
 
 	return _screen
 }
@@ -722,7 +527,7 @@ func (c *StyleContextClass) Section(property string) *CSSSection {
 	var _arg1 *C.gchar           // out
 	var _cret *C.GtkCssSection   // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -730,7 +535,7 @@ func (c *StyleContextClass) Section(property string) *CSSSection {
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(unsafe.Pointer(*C.GtkCssSection))
 	C.gtk_css_section_ref(_cret)
 	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
@@ -748,13 +553,13 @@ func (c *StyleContextClass) State() StateFlags {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkStateFlags    // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	_cret = C.gtk_style_context_get_state(_arg0)
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = StateFlags(_cret)
+	_stateFlags = (StateFlags)(C.GtkStateFlags)
 
 	return _stateFlags
 }
@@ -768,10 +573,10 @@ func (c *StyleContextClass) StyleProperty(propertyName string, value externglib.
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GValue          // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(&(&externglib.Value).GValue))
 
 	C.gtk_style_context_get_style_property(_arg0, _arg1, _arg2)
 }
@@ -782,7 +587,7 @@ func (c *StyleContextClass) HasClass(className string) bool {
 	var _arg1 *C.gchar           // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.gchar)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -807,7 +612,7 @@ func (c *StyleContextClass) HasRegion(regionName string) (RegionFlags, bool) {
 	var _arg2 C.GtkRegionFlags   // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.gchar)(C.CString(regionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -816,7 +621,7 @@ func (c *StyleContextClass) HasRegion(regionName string) (RegionFlags, bool) {
 	var _flagsReturn RegionFlags // out
 	var _ok bool                 // out
 
-	_flagsReturn = RegionFlags(_arg2)
+	_flagsReturn = (RegionFlags)(C.GtkRegionFlags)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -832,7 +637,7 @@ func (c *StyleContextClass) HasRegion(regionName string) (RegionFlags, bool) {
 func (c *StyleContextClass) Invalidate() {
 	var _arg0 *C.GtkStyleContext // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	C.gtk_style_context_invalidate(_arg0)
 }
@@ -846,7 +651,7 @@ func (c *StyleContextClass) LookupIconSet(stockId string) *IconSet {
 	var _arg1 *C.gchar           // out
 	var _cret *C.GtkIconSet      // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -854,60 +659,13 @@ func (c *StyleContextClass) LookupIconSet(stockId string) *IconSet {
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	_iconSet = (*IconSet)(unsafe.Pointer(*C.GtkIconSet))
 	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
 
 	return _iconSet
-}
-
-// NotifyStateChange notifies a state change on @context, so if the current
-// style makes use of transition animations, one will be started so all rendered
-// elements under @region_id are animated for state @state being set to value
-// @state_value.
-//
-// The @window parameter is used in order to invalidate the rendered area as the
-// animation runs, so make sure it is the same window that is being rendered on
-// by the gtk_render_*() functions.
-//
-// If @region_id is nil, all rendered elements using @context will be affected
-// by this state transition.
-//
-// As a practical example, a Button notifying a state transition on the prelight
-// state: |[ <!-- language="C" --> gtk_style_context_notify_state_change
-// (context, gtk_widget_get_window (widget), NULL, GTK_STATE_PRELIGHT,
-// button->in_button); ]|
-//
-// Can be handled in the CSS file like this: |[ <!-- language="CSS" --> button {
-// background-color: #f00 }
-//
-// button:hover { background-color: #fff; transition: 200ms linear } ]|
-//
-// This combination will animate the button background from red to white if a
-// pointer enters the button, and back to red if the pointer leaves the button.
-//
-// Note that @state is used when finding the transition parameters, which is why
-// the style places the transition under the :hover pseudo-class.
-//
-// Deprecated: since version 3.6.
-func (c *StyleContextClass) NotifyStateChange(window gdk.Window, regionId interface{}, state StateType, stateValue bool) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.GdkWindow       // out
-	var _arg2 C.gpointer         // out
-	var _arg3 C.GtkStateType     // out
-	var _arg4 C.gboolean         // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (C.gpointer)(box.Assign(regionId))
-	_arg3 = C.GtkStateType(state)
-	if stateValue {
-		_arg4 = C.TRUE
-	}
-
-	C.gtk_style_context_notify_state_change(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // PopAnimatableRegion pops an animatable region from @context. See
@@ -917,7 +675,7 @@ func (c *StyleContextClass) NotifyStateChange(window gdk.Window, regionId interf
 func (c *StyleContextClass) PopAnimatableRegion() {
 	var _arg0 *C.GtkStyleContext // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	C.gtk_style_context_pop_animatable_region(_arg0)
 }
@@ -937,7 +695,7 @@ func (c *StyleContextClass) PushAnimatableRegion(regionId interface{}) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.gpointer         // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (C.gpointer)(box.Assign(regionId))
 
 	C.gtk_style_context_push_animatable_region(_arg0, _arg1)
@@ -948,7 +706,7 @@ func (c *StyleContextClass) RemoveClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.gchar)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -960,8 +718,8 @@ func (c *StyleContextClass) RemoveProvider(provider StyleProvider) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((&StyleProvider).Native()))
 
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
@@ -973,7 +731,7 @@ func (c *StyleContextClass) RemoveRegion(regionName string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = (*C.gchar)(C.CString(regionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -985,7 +743,7 @@ func (c *StyleContextClass) RemoveRegion(regionName string) {
 func (c *StyleContextClass) Restore() {
 	var _arg0 *C.GtkStyleContext // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	C.gtk_style_context_restore(_arg0)
 }
@@ -1000,7 +758,7 @@ func (c *StyleContextClass) Restore() {
 func (c *StyleContextClass) Save() {
 	var _arg0 *C.GtkStyleContext // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	C.gtk_style_context_save(_arg0)
 }
@@ -1016,8 +774,8 @@ func (c *StyleContextClass) ScrollAnimations(window gdk.Window, dx int, dy int) 
 	var _arg2 C.gint             // out
 	var _arg3 C.gint             // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&gdk.Window).Native()))
 	_arg2 = C.gint(dx)
 	_arg3 = C.gint(dy)
 
@@ -1032,26 +790,10 @@ func (c *StyleContextClass) SetBackground(window gdk.Window) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkWindow       // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((&gdk.Window).Native()))
 
 	C.gtk_style_context_set_background(_arg0, _arg1)
-}
-
-// SetDirection sets the reading direction for rendering purposes.
-//
-// If you are using a StyleContext returned from gtk_widget_get_style_context(),
-// you do not need to call this yourself.
-//
-// Deprecated: since version 3.8.
-func (c *StyleContextClass) SetDirection(direction TextDirection) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkTextDirection // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkTextDirection(direction)
-
-	C.gtk_style_context_set_direction(_arg0, _arg1)
 }
 
 // SetFrameClock attaches @context to the given frame clock.
@@ -1064,28 +806,10 @@ func (c *StyleContextClass) SetFrameClock(frameClock gdk.FrameClock) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkFrameClock   // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GdkFrameClock)(unsafe.Pointer((&gdk.FrameClock).Native()))
 
 	C.gtk_style_context_set_frame_clock(_arg0, _arg1)
-}
-
-// SetJunctionSides sets the sides where rendered elements (mostly through
-// gtk_render_frame()) will visually connect with other visual elements.
-//
-// This is merely a hint that may or may not be honored by themes.
-//
-// Container widgets are expected to set junction hints as appropriate for their
-// children, so it should not normally be necessary to call this function
-// manually.
-func (c *StyleContextClass) SetJunctionSides(sides JunctionSides) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkJunctionSides // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkJunctionSides(sides)
-
-	C.gtk_style_context_set_junction_sides(_arg0, _arg1)
 }
 
 // SetParent sets the parent style context for @context. The parent style
@@ -1098,8 +822,8 @@ func (c *StyleContextClass) SetParent(parent StyleContext) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GtkStyleContext // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(parent.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 
 	C.gtk_style_context_set_parent(_arg0, _arg1)
 }
@@ -1113,8 +837,8 @@ func (c *StyleContextClass) SetPath(path *WidgetPath) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GtkWidgetPath   // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(*WidgetPath))
 
 	C.gtk_style_context_set_path(_arg0, _arg1)
 }
@@ -1124,7 +848,7 @@ func (c *StyleContextClass) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.gint             // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
 	_arg1 = C.gint(scale)
 
 	C.gtk_style_context_set_scale(_arg0, _arg1)
@@ -1141,77 +865,8 @@ func (c *StyleContextClass) SetScreen(screen gdk.Screen) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkScreen       // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer((&StyleContext).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((&gdk.Screen).Native()))
 
 	C.gtk_style_context_set_screen(_arg0, _arg1)
-}
-
-// SetState sets the state to be used for style matching.
-func (c *StyleContextClass) SetState(flags StateFlags) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkStateFlags    // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkStateFlags(flags)
-
-	C.gtk_style_context_set_state(_arg0, _arg1)
-}
-
-// StateIsRunning returns true if there is a transition animation running for
-// the current region (see gtk_style_context_push_animatable_region()).
-//
-// If @progress is not nil, the animation progress will be returned there, 0.0
-// means the state is closest to being unset, while 1.0 means it’s closest to
-// being set. This means transition animation will run from 0 to 1 when @state
-// is being set and from 1 to 0 when it’s being unset.
-//
-// Deprecated: since version 3.6.
-func (c *StyleContextClass) StateIsRunning(state StateType) (float64, bool) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkStateType     // out
-	var _arg2 C.gdouble          // in
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkStateType(state)
-
-	_cret = C.gtk_style_context_state_is_running(_arg0, _arg1, &_arg2)
-
-	var _progress float64 // out
-	var _ok bool          // out
-
-	_progress = float64(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _progress, _ok
-}
-
-// String converts the style context into a string representation.
-//
-// The string representation always includes information about the name, state,
-// id, visibility and style classes of the CSS node that is backing @context.
-// Depending on the flags, more information may be included.
-//
-// This function is intended for testing and debugging of the CSS implementation
-// in GTK+. There are no guarantees about the format of the returned string, it
-// may change.
-func (c *StyleContextClass) String(flags StyleContextPrintFlags) string {
-	var _arg0 *C.GtkStyleContext          // out
-	var _arg1 C.GtkStyleContextPrintFlags // out
-	var _cret *C.char                     // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-	_arg1 = C.GtkStyleContextPrintFlags(flags)
-
-	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString(_cret)
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
 }

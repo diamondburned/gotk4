@@ -50,7 +50,6 @@ func wrapVolumeButton(obj *externglib.Object) VolumeButton {
 		ScaleButtonClass: ScaleButtonClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -101,14 +100,15 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 // The button has a range between 0.0 and 1.0, with a stepping of 0.02. Volume
 // values can be obtained and modified using the functions from
 // [class@Gtk.ScaleButton].
-func NewVolumeButton() VolumeButton {
+func NewVolumeButton() *VolumeButtonClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_volume_button_new()
 
-	var _volumeButton VolumeButton // out
+	var _volumeButton *VolumeButtonClass // out
 
-	_volumeButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(VolumeButton)
+	_volumeButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*VolumeButtonClass)
 
 	return _volumeButton
 }

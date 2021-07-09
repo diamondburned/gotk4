@@ -34,9 +34,9 @@ type PageSetupUnixDialog interface {
 	gextras.Objector
 
 	// PageSetup gets the currently selected page setup from the dialog.
-	PageSetup() PageSetup
+	PageSetup() *PageSetupClass
 	// PrintSettings gets the current print settings from the dialog.
-	PrintSettings() PrintSettings
+	PrintSettings() *PrintSettingsClass
 	// SetPageSetup sets the `GtkPageSetup` from which the page setup dialog
 	// takes its values.
 	SetPageSetup(pageSetup PageSetup)
@@ -67,7 +67,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 			WindowClass: WindowClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -90,7 +89,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 				},
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -107,7 +105,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 					Object: obj,
 					NativeInterface: NativeInterface{
 						WidgetClass: WidgetClass{
-							Object:           obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 							AccessibleInterface: AccessibleInterface{
 								Object: obj,
@@ -121,7 +118,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 						},
 					},
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -149,7 +145,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 			},
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -166,7 +161,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 				Object: obj,
 				NativeInterface: NativeInterface{
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						AccessibleInterface: AccessibleInterface{
 							Object: obj,
@@ -180,7 +174,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 					},
 				},
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -208,7 +201,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 		},
 		NativeInterface: NativeInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -225,7 +217,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 			Object: obj,
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -239,7 +230,6 @@ func wrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
 				},
 			},
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -265,52 +255,55 @@ func marshalPageSetupUnixDialog(p uintptr) (interface{}, error) {
 }
 
 // NewPageSetupUnixDialog creates a new page setup dialog.
-func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
+func NewPageSetupUnixDialog(title string, parent Window) *PageSetupUnixDialogClass {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
 
 	_cret = C.gtk_page_setup_unix_dialog_new(_arg1, _arg2)
 
-	var _pageSetupUnixDialog PageSetupUnixDialog // out
+	var _pageSetupUnixDialog *PageSetupUnixDialogClass // out
 
-	_pageSetupUnixDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PageSetupUnixDialog)
+	_pageSetupUnixDialog = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*PageSetupUnixDialogClass)
 
 	return _pageSetupUnixDialog
 }
 
 // PageSetup gets the currently selected page setup from the dialog.
-func (d *PageSetupUnixDialogClass) PageSetup() PageSetup {
+func (d *PageSetupUnixDialogClass) PageSetup() *PageSetupClass {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _cret *C.GtkPageSetup           // in
 
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&PageSetupUnixDialog).Native()))
 
 	_cret = C.gtk_page_setup_unix_dialog_get_page_setup(_arg0)
 
-	var _pageSetup PageSetup // out
+	var _pageSetup *PageSetupClass // out
 
-	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PageSetup)
+	_pageSetup = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*PageSetupClass)
 
 	return _pageSetup
 }
 
 // PrintSettings gets the current print settings from the dialog.
-func (d *PageSetupUnixDialogClass) PrintSettings() PrintSettings {
+func (d *PageSetupUnixDialogClass) PrintSettings() *PrintSettingsClass {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _cret *C.GtkPrintSettings       // in
 
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&PageSetupUnixDialog).Native()))
 
 	_cret = C.gtk_page_setup_unix_dialog_get_print_settings(_arg0)
 
-	var _printSettings PrintSettings // out
+	var _printSettings *PrintSettingsClass // out
 
-	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PrintSettings)
+	_printSettings = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*PrintSettingsClass)
 
 	return _printSettings
 }
@@ -321,8 +314,8 @@ func (d *PageSetupUnixDialogClass) SetPageSetup(pageSetup PageSetup) {
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _arg1 *C.GtkPageSetup           // out
 
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&PageSetupUnixDialog).Native()))
+	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer((&PageSetup).Native()))
 
 	C.gtk_page_setup_unix_dialog_set_page_setup(_arg0, _arg1)
 }
@@ -333,8 +326,8 @@ func (d *PageSetupUnixDialogClass) SetPrintSettings(printSettings PrintSettings)
 	var _arg0 *C.GtkPageSetupUnixDialog // out
 	var _arg1 *C.GtkPrintSettings       // out
 
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(printSettings.Native()))
+	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer((&PageSetupUnixDialog).Native()))
+	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer((&PrintSettings).Native()))
 
 	C.gtk_page_setup_unix_dialog_set_print_settings(_arg0, _arg1)
 }

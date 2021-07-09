@@ -24,7 +24,7 @@ import "C"
 
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
 // They can be used to implement custom key event handling.
-type KeySnoopFunc func(grabWidget Widget, event *gdk.EventKey) (gint int)
+type KeySnoopFunc func(grabWidget *WidgetClass, event *gdk.EventKey, funcData interface{}) (gint int)
 
 //export gotk4_KeySnoopFunc
 func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) (cret C.gint) {
@@ -33,14 +33,17 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 		panic(`callback not found`)
 	}
 
-	var grabWidget Widget   // out
-	var event *gdk.EventKey // out
+	var grabWidget *WidgetClass // out
+	var event *gdk.EventKey     // out
+	var funcData interface{}    // out
 
-	grabWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0))).(Widget)
-	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
+	grabWidget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(arg0))).(*WidgetClass)
+	event = (*gdk.EventKey)(unsafe.Pointer(*C.GdkEventKey))
+	funcData = box.Get(uintptr(arg2))
 
 	fn := v.(KeySnoopFunc)
-	gint := fn(grabWidget, event)
+	gint := fn(grabWidget, event, funcData)
 
 	cret = C.gint(gint)
 
@@ -93,8 +96,8 @@ func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
 	var _arg2 *C.GdkDevice // out
 	var _arg3 C.gboolean   // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
 	if blockOthers {
 		_arg3 = C.TRUE
 	}
@@ -109,8 +112,8 @@ func DeviceGrabRemove(widget Widget, device gdk.Device) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer((&gdk.Device).Native()))
 
 	C.gtk_device_grab_remove(_arg1, _arg2)
 }
@@ -186,14 +189,15 @@ func GetBinaryAge() uint {
 
 // GetCurrentEventDevice: if there is a current event and it has a device,
 // return that device, otherwise return nil.
-func GetCurrentEventDevice() gdk.Device {
+func GetCurrentEventDevice() *gdk.DeviceClass {
 	var _cret *C.GdkDevice // in
 
 	_cret = C.gtk_get_current_event_device()
 
-	var _device gdk.Device // out
+	var _device *gdk.DeviceClass // out
 
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Device)
+	_device = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.DeviceClass)
 
 	return _device
 }
@@ -209,7 +213,7 @@ func GetCurrentEventState() (gdk.ModifierType, bool) {
 	var _state gdk.ModifierType // out
 	var _ok bool                // out
 
-	_state = gdk.ModifierType(_arg1)
+	_state = (gdk.ModifierType)(C.GdkModifierType)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -245,7 +249,7 @@ func GetDefaultLanguage() *pango.Language {
 
 	var _language *pango.Language // out
 
-	_language = (*pango.Language)(unsafe.Pointer(_cret))
+	_language = (*pango.Language)(unsafe.Pointer(*C.PangoLanguage))
 
 	return _language
 }
@@ -290,7 +294,7 @@ func GetLocaleDirection() TextDirection {
 
 	var _textDirection TextDirection // out
 
-	_textDirection = TextDirection(_cret)
+	_textDirection = (TextDirection)(C.GtkTextDirection)
 
 	return _textDirection
 }
@@ -370,7 +374,7 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 
 	var _optionGroup *glib.OptionGroup // out
 
-	_optionGroup = (*glib.OptionGroup)(unsafe.Pointer(_cret))
+	_optionGroup = (*glib.OptionGroup)(unsafe.Pointer(*C.GOptionGroup))
 	C.g_option_group_ref(_cret)
 	runtime.SetFinalizer(_optionGroup, func(v *glib.OptionGroup) {
 		C.g_option_group_unref((*C.GOptionGroup)(unsafe.Pointer(v)))
@@ -380,14 +384,15 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 }
 
 // GrabGetCurrent queries the current grab of the default window group.
-func GrabGetCurrent() Widget {
+func GrabGetCurrent() *WidgetClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_grab_get_current()
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }

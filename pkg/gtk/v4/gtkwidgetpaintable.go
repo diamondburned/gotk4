@@ -46,7 +46,7 @@ type WidgetPaintable interface {
 	gextras.Objector
 
 	// Widget returns the widget that is observed or nil if none.
-	Widget() Widget
+	Widget() *WidgetClass
 	// SetWidget sets the widget that should be observed.
 	SetWidget(widget Widget)
 }
@@ -71,33 +71,35 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.
-func NewWidgetPaintable(widget Widget) WidgetPaintable {
+func NewWidgetPaintable(widget Widget) *WidgetPaintableClass {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	_cret = C.gtk_widget_paintable_new(_arg1)
 
-	var _widgetPaintable WidgetPaintable // out
+	var _widgetPaintable *WidgetPaintableClass // out
 
-	_widgetPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(WidgetPaintable)
+	_widgetPaintable = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*WidgetPaintableClass)
 
 	return _widgetPaintable
 }
 
 // Widget returns the widget that is observed or nil if none.
-func (s *WidgetPaintableClass) Widget() Widget {
+func (s *WidgetPaintableClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer((&WidgetPaintable).Native()))
 
 	_cret = C.gtk_widget_paintable_get_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -107,8 +109,8 @@ func (s *WidgetPaintableClass) SetWidget(widget Widget) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer((&WidgetPaintable).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
 }

@@ -28,48 +28,19 @@ func init() {
 type StateSet interface {
 	gextras.Objector
 
-	// AddState adds the state of the specified type to the state set if it is
-	// not already present.
-	//
-	// Note that because an StateSet is a read-only object, this method should
-	// be used to add a state to a newly-created set which will then be returned
-	// by #atk_object_ref_state_set. It should not be used to modify the
-	// existing state of an object. See also #atk_object_notify_state_change.
-	AddState(typ StateType) bool
-	// AddStates adds the states of the specified types to the state set.
-	//
-	// Note that because an StateSet is a read-only object, this method should
-	// be used to add states to a newly-created set which will then be returned
-	// by #atk_object_ref_state_set. It should not be used to modify the
-	// existing state of an object. See also #atk_object_notify_state_change.
-	AddStates(types []StateType)
 	// AndSets constructs the intersection of the two sets, returning nil if the
 	// intersection is empty.
-	AndSets(compareSet StateSet) StateSet
+	AndSets(compareSet StateSet) *StateSetClass
 	// ClearStates removes all states from the state set.
 	ClearStates()
-	// ContainsState checks whether the state for the specified type is in the
-	// specified set.
-	ContainsState(typ StateType) bool
-	// ContainsStates checks whether the states for all the specified types are
-	// in the specified set.
-	ContainsStates(types []StateType) bool
 	// IsEmpty checks whether the state set is empty, i.e. has no states set.
 	IsEmpty() bool
 	// OrSets constructs the union of the two sets.
-	OrSets(compareSet StateSet) StateSet
-	// RemoveState removes the state for the specified type from the state set.
-	//
-	// Note that because an StateSet is a read-only object, this method should
-	// be used to remove a state to a newly-created set which will then be
-	// returned by #atk_object_ref_state_set. It should not be used to modify
-	// the existing state of an object. See also
-	// #atk_object_notify_state_change.
-	RemoveState(typ StateType) bool
+	OrSets(compareSet StateSet) *StateSetClass
 	// XorSets constructs the exclusive-or of the two sets, returning nil is
 	// empty. The set returned by this operation contains the states in exactly
 	// one of the two sets.
-	XorSets(compareSet StateSet) StateSet
+	XorSets(compareSet StateSet) *StateSetClass
 }
 
 // StateSetClass implements the StateSet interface.
@@ -92,84 +63,35 @@ func marshalStateSet(p uintptr) (interface{}, error) {
 }
 
 // NewStateSet creates a new empty state set.
-func NewStateSet() StateSet {
+func NewStateSet() *StateSetClass {
 	var _cret *C.AtkStateSet // in
 
 	_cret = C.atk_state_set_new()
 
-	var _stateSet StateSet // out
+	var _stateSet *StateSetClass // out
 
-	_stateSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StateSet)
+	_stateSet = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StateSetClass)
 
 	return _stateSet
 }
 
-// AddState adds the state of the specified type to the state set if it is not
-// already present.
-//
-// Note that because an StateSet is a read-only object, this method should be
-// used to add a state to a newly-created set which will then be returned by
-// #atk_object_ref_state_set. It should not be used to modify the existing state
-// of an object. See also #atk_object_notify_state_change.
-func (s *StateSetClass) AddState(typ StateType) bool {
-	var _arg0 *C.AtkStateSet // out
-	var _arg1 C.AtkStateType // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
-	_arg1 = C.AtkStateType(typ)
-
-	_cret = C.atk_state_set_add_state(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// AddStates adds the states of the specified types to the state set.
-//
-// Note that because an StateSet is a read-only object, this method should be
-// used to add states to a newly-created set which will then be returned by
-// #atk_object_ref_state_set. It should not be used to modify the existing state
-// of an object. See also #atk_object_notify_state_change.
-func (s *StateSetClass) AddStates(types []StateType) {
-	var _arg0 *C.AtkStateSet // out
-	var _arg1 *C.AtkStateType
-	var _arg2 C.gint
-
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
-	_arg2 = C.gint(len(types))
-	_arg1 = (*C.AtkStateType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_AtkStateType)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice(_arg1, len(types))
-		for i := range types {
-			out[i] = C.AtkStateType(types[i])
-		}
-	}
-
-	C.atk_state_set_add_states(_arg0, _arg1, _arg2)
-}
-
 // AndSets constructs the intersection of the two sets, returning nil if the
 // intersection is empty.
-func (s *StateSetClass) AndSets(compareSet StateSet) StateSet {
+func (s *StateSetClass) AndSets(compareSet StateSet) *StateSetClass {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
 
 	_cret = C.atk_state_set_and_sets(_arg0, _arg1)
 
-	var _stateSet StateSet // out
+	var _stateSet *StateSetClass // out
 
-	_stateSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StateSet)
+	_stateSet = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StateSetClass)
 
 	return _stateSet
 }
@@ -178,60 +100,9 @@ func (s *StateSetClass) AndSets(compareSet StateSet) StateSet {
 func (s *StateSetClass) ClearStates() {
 	var _arg0 *C.AtkStateSet // out
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
 
 	C.atk_state_set_clear_states(_arg0)
-}
-
-// ContainsState checks whether the state for the specified type is in the
-// specified set.
-func (s *StateSetClass) ContainsState(typ StateType) bool {
-	var _arg0 *C.AtkStateSet // out
-	var _arg1 C.AtkStateType // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
-	_arg1 = C.AtkStateType(typ)
-
-	_cret = C.atk_state_set_contains_state(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ContainsStates checks whether the states for all the specified types are in
-// the specified set.
-func (s *StateSetClass) ContainsStates(types []StateType) bool {
-	var _arg0 *C.AtkStateSet // out
-	var _arg1 *C.AtkStateType
-	var _arg2 C.gint
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
-	_arg2 = C.gint(len(types))
-	_arg1 = (*C.AtkStateType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_AtkStateType)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice(_arg1, len(types))
-		for i := range types {
-			out[i] = C.AtkStateType(types[i])
-		}
-	}
-
-	_cret = C.atk_state_set_contains_states(_arg0, _arg1, _arg2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // IsEmpty checks whether the state set is empty, i.e. has no states set.
@@ -239,7 +110,7 @@ func (s *StateSetClass) IsEmpty() bool {
 	var _arg0 *C.AtkStateSet // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
 
 	_cret = C.atk_state_set_is_empty(_arg0)
 
@@ -253,64 +124,41 @@ func (s *StateSetClass) IsEmpty() bool {
 }
 
 // OrSets constructs the union of the two sets.
-func (s *StateSetClass) OrSets(compareSet StateSet) StateSet {
+func (s *StateSetClass) OrSets(compareSet StateSet) *StateSetClass {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
 
 	_cret = C.atk_state_set_or_sets(_arg0, _arg1)
 
-	var _stateSet StateSet // out
+	var _stateSet *StateSetClass // out
 
-	_stateSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StateSet)
+	_stateSet = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StateSetClass)
 
 	return _stateSet
-}
-
-// RemoveState removes the state for the specified type from the state set.
-//
-// Note that because an StateSet is a read-only object, this method should be
-// used to remove a state to a newly-created set which will then be returned by
-// #atk_object_ref_state_set. It should not be used to modify the existing state
-// of an object. See also #atk_object_notify_state_change.
-func (s *StateSetClass) RemoveState(typ StateType) bool {
-	var _arg0 *C.AtkStateSet // out
-	var _arg1 C.AtkStateType // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
-	_arg1 = C.AtkStateType(typ)
-
-	_cret = C.atk_state_set_remove_state(_arg0, _arg1)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // XorSets constructs the exclusive-or of the two sets, returning nil is empty.
 // The set returned by this operation contains the states in exactly one of the
 // two sets.
-func (s *StateSetClass) XorSets(compareSet StateSet) StateSet {
+func (s *StateSetClass) XorSets(compareSet StateSet) *StateSetClass {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((&StateSet).Native()))
 
 	_cret = C.atk_state_set_xor_sets(_arg0, _arg1)
 
-	var _stateSet StateSet // out
+	var _stateSet *StateSetClass // out
 
-	_stateSet = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(StateSet)
+	_stateSet = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*StateSetClass)
 
 	return _stateSet
 }

@@ -51,13 +51,13 @@ func (s *CSSSection) EndLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
 	var _cret *C.GtkCssLocation // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(*CSSSection))
 
 	_cret = C.gtk_css_section_get_end_location(_arg0)
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (*CSSLocation)(unsafe.Pointer(_cret))
+	_cssLocation = (*CSSLocation)(unsafe.Pointer(*C.GtkCssLocation))
 
 	return _cssLocation
 }
@@ -74,13 +74,13 @@ func (s *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(*CSSSection))
 
 	_cret = C.gtk_css_section_get_parent(_arg0)
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(unsafe.Pointer(*C.GtkCssSection))
 	C.gtk_css_section_ref(_cret)
 	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
@@ -95,13 +95,13 @@ func (s *CSSSection) StartLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
 	var _cret *C.GtkCssLocation // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(*CSSSection))
 
 	_cret = C.gtk_css_section_get_start_location(_arg0)
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (*CSSLocation)(unsafe.Pointer(_cret))
+	_cssLocation = (*CSSLocation)(unsafe.Pointer(*C.GtkCssLocation))
 
 	return _cssLocation
 }
@@ -111,13 +111,13 @@ func (s *CSSSection) ref() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(*CSSSection))
 
 	_cret = C.gtk_css_section_ref(_arg0)
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(unsafe.Pointer(*C.GtkCssSection))
 	C.gtk_css_section_ref(_cret)
 	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
@@ -132,7 +132,7 @@ func (s *CSSSection) String() string {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(*CSSSection))
 
 	_cret = C.gtk_css_section_to_string(_arg0)
 
@@ -149,7 +149,7 @@ func (s *CSSSection) String() string {
 func (s *CSSSection) unref() {
 	var _arg0 *C.GtkCssSection // out
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(*CSSSection))
 
 	C.gtk_css_section_unref(_arg0)
 }

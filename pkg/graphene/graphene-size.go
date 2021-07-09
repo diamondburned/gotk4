@@ -46,7 +46,7 @@ func NewSizeAlloc() *Size {
 
 	var _size *Size // out
 
-	_size = (*Size)(unsafe.Pointer(_cret))
+	_size = (*Size)(unsafe.Pointer(*C.graphene_size_t))
 	runtime.SetFinalizer(_size, func(v *Size) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -79,8 +79,8 @@ func (a *Size) Equal(b *Size) bool {
 	var _arg1 *C.graphene_size_t // out
 	var _cret C._Bool            // in
 
-	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(*Size))
+	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(*Size))
 
 	_cret = C.graphene_size_equal(_arg0, _arg1)
 
@@ -97,7 +97,7 @@ func (a *Size) Equal(b *Size) bool {
 func (s *Size) free() {
 	var _arg0 *C.graphene_size_t // out
 
-	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(*Size))
 
 	C.graphene_size_free(_arg0)
 }
@@ -109,7 +109,7 @@ func (s *Size) Init(width float32, height float32) *Size {
 	var _arg2 C.float            // out
 	var _cret *C.graphene_size_t // in
 
-	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(*Size))
 	_arg1 = C.float(width)
 	_arg2 = C.float(height)
 
@@ -117,7 +117,7 @@ func (s *Size) Init(width float32, height float32) *Size {
 
 	var _size *Size // out
 
-	_size = (*Size)(unsafe.Pointer(_cret))
+	_size = (*Size)(unsafe.Pointer(*C.graphene_size_t))
 
 	return _size
 }
@@ -129,14 +129,14 @@ func (s *Size) InitFromSize(src *Size) *Size {
 	var _arg1 *C.graphene_size_t // out
 	var _cret *C.graphene_size_t // in
 
-	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s))
-	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(*Size))
+	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(*Size))
 
 	_cret = C.graphene_size_init_from_size(_arg0, _arg1)
 
 	var _size *Size // out
 
-	_size = (*Size)(unsafe.Pointer(_cret))
+	_size = (*Size)(unsafe.Pointer(*C.graphene_size_t))
 
 	return _size
 }

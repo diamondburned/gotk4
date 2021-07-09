@@ -147,7 +147,6 @@ func wrapCheckButton(obj *externglib.Object) CheckButton {
 	return &CheckButtonClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -164,7 +163,6 @@ func wrapCheckButton(obj *externglib.Object) CheckButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -193,20 +191,21 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 }
 
 // NewCheckButton creates a new `GtkCheckButton`.
-func NewCheckButton() CheckButton {
+func NewCheckButton() *CheckButtonClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_check_button_new()
 
-	var _checkButton CheckButton // out
+	var _checkButton *CheckButtonClass // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CheckButtonClass)
 
 	return _checkButton
 }
 
 // NewCheckButtonWithLabel creates a new `GtkCheckButton` with the given text.
-func NewCheckButtonWithLabel(label string) CheckButton {
+func NewCheckButtonWithLabel(label string) *CheckButtonClass {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -215,16 +214,17 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 
 	_cret = C.gtk_check_button_new_with_label(_arg1)
 
-	var _checkButton CheckButton // out
+	var _checkButton *CheckButtonClass // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CheckButtonClass)
 
 	return _checkButton
 }
 
 // NewCheckButtonWithMnemonic creates a new `GtkCheckButton` with the given text
 // and a mnemonic.
-func NewCheckButtonWithMnemonic(label string) CheckButton {
+func NewCheckButtonWithMnemonic(label string) *CheckButtonClass {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -233,9 +233,10 @@ func NewCheckButtonWithMnemonic(label string) CheckButton {
 
 	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
 
-	var _checkButton CheckButton // out
+	var _checkButton *CheckButtonClass // out
 
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CheckButton)
+	_checkButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CheckButtonClass)
 
 	return _checkButton
 }
@@ -245,7 +246,7 @@ func (s *CheckButtonClass) Active() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
 
 	_cret = C.gtk_check_button_get_active(_arg0)
 
@@ -263,7 +264,7 @@ func (c *CheckButtonClass) Inconsistent() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
 
 	_cret = C.gtk_check_button_get_inconsistent(_arg0)
 
@@ -281,7 +282,7 @@ func (s *CheckButtonClass) Label() string {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
 
 	_cret = C.gtk_check_button_get_label(_arg0)
 
@@ -297,7 +298,7 @@ func (s *CheckButtonClass) UseUnderline() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
 
 	_cret = C.gtk_check_button_get_use_underline(_arg0)
 
@@ -315,7 +316,7 @@ func (s *CheckButtonClass) SetActive(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -341,8 +342,8 @@ func (s *CheckButtonClass) SetGroup(group CheckButton) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.GtkCheckButton // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
+	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
 
 	C.gtk_check_button_set_group(_arg0, _arg1)
 }
@@ -355,7 +356,7 @@ func (c *CheckButtonClass) SetInconsistent(inconsistent bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
 	if inconsistent {
 		_arg1 = C.TRUE
 	}
@@ -372,7 +373,7 @@ func (s *CheckButtonClass) SetLabel(label string) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -388,7 +389,7 @@ func (s *CheckButtonClass) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer((&CheckButton).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

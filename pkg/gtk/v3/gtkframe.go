@@ -75,7 +75,7 @@ type Frame interface {
 	LabelAlign() (xalign float32, yalign float32)
 	// LabelWidget retrieves the label widget for the frame. See
 	// gtk_frame_set_label_widget().
-	LabelWidget() Widget
+	LabelWidget() *WidgetClass
 	// ShadowType retrieves the shadow type of the frame. See
 	// gtk_frame_set_shadow_type().
 	ShadowType() ShadowType
@@ -88,12 +88,6 @@ type Frame interface {
 	// SetLabelWidget sets the Frame:label-widget for the frame. This is the
 	// widget that will appear embedded in the top edge of the frame as a title.
 	SetLabelWidget(labelWidget Widget)
-	// SetShadowType sets the Frame:shadow-type for @frame, i.e. whether it is
-	// drawn without (GTK_SHADOW_NONE) or with (other values) a visible border.
-	// Values other than GTK_SHADOW_NONE are treated identically by GtkFrame.
-	// The chosen type is applied by removing or adding the .flat class to the
-	// CSS node named border.
-	SetShadowType(typ ShadowType)
 }
 
 // FrameClass implements the Frame interface.
@@ -113,7 +107,6 @@ func wrapFrame(obj *externglib.Object) Frame {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -141,7 +134,7 @@ func marshalFrame(p uintptr) (interface{}, error) {
 
 // NewFrame creates a new Frame, with optional label @label. If @label is nil,
 // the label is omitted.
-func NewFrame(label string) Frame {
+func NewFrame(label string) *FrameClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -150,9 +143,10 @@ func NewFrame(label string) Frame {
 
 	_cret = C.gtk_frame_new(_arg1)
 
-	var _frame Frame // out
+	var _frame *FrameClass // out
 
-	_frame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Frame)
+	_frame = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FrameClass)
 
 	return _frame
 }
@@ -164,7 +158,7 @@ func (f *FrameClass) Label() string {
 	var _arg0 *C.GtkFrame // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&Frame).Native()))
 
 	_cret = C.gtk_frame_get_label(_arg0)
 
@@ -182,7 +176,7 @@ func (f *FrameClass) LabelAlign() (xalign float32, yalign float32) {
 	var _arg1 C.gfloat    // in
 	var _arg2 C.gfloat    // in
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&Frame).Native()))
 
 	C.gtk_frame_get_label_align(_arg0, &_arg1, &_arg2)
 
@@ -197,17 +191,18 @@ func (f *FrameClass) LabelAlign() (xalign float32, yalign float32) {
 
 // LabelWidget retrieves the label widget for the frame. See
 // gtk_frame_set_label_widget().
-func (f *FrameClass) LabelWidget() Widget {
+func (f *FrameClass) LabelWidget() *WidgetClass {
 	var _arg0 *C.GtkFrame  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&Frame).Native()))
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -218,13 +213,13 @@ func (f *FrameClass) ShadowType() ShadowType {
 	var _arg0 *C.GtkFrame     // out
 	var _cret C.GtkShadowType // in
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&Frame).Native()))
 
 	_cret = C.gtk_frame_get_shadow_type(_arg0)
 
 	var _shadowType ShadowType // out
 
-	_shadowType = ShadowType(_cret)
+	_shadowType = (ShadowType)(C.GtkShadowType)
 
 	return _shadowType
 }
@@ -235,7 +230,7 @@ func (f *FrameClass) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 *C.gchar    // out
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&Frame).Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -249,7 +244,7 @@ func (f *FrameClass) SetLabelAlign(xalign float32, yalign float32) {
 	var _arg1 C.gfloat    // out
 	var _arg2 C.gfloat    // out
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&Frame).Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 
@@ -262,23 +257,8 @@ func (f *FrameClass) SetLabelWidget(labelWidget Widget) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer((&Frame).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
-}
-
-// SetShadowType sets the Frame:shadow-type for @frame, i.e. whether it is drawn
-// without (GTK_SHADOW_NONE) or with (other values) a visible border. Values
-// other than GTK_SHADOW_NONE are treated identically by GtkFrame. The chosen
-// type is applied by removing or adding the .flat class to the CSS node named
-// border.
-func (f *FrameClass) SetShadowType(typ ShadowType) {
-	var _arg0 *C.GtkFrame     // out
-	var _arg1 C.GtkShadowType // out
-
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-	_arg1 = C.GtkShadowType(typ)
-
-	C.gtk_frame_set_shadow_type(_arg0, _arg1)
 }

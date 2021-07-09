@@ -70,7 +70,7 @@ type SearchEntry interface {
 
 	// KeyCaptureWidget gets the widget that @entry is capturing key events
 	// from.
-	KeyCaptureWidget() Widget
+	KeyCaptureWidget() *WidgetClass
 	// SetKeyCaptureWidget sets @widget as the widget that @entry will capture
 	// key events from.
 	//
@@ -105,7 +105,6 @@ func wrapSearchEntry(obj *externglib.Object) SearchEntry {
 	return &SearchEntryClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -128,7 +127,6 @@ func wrapSearchEntry(obj *externglib.Object) SearchEntry {
 		},
 		EditableInterface: EditableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -151,30 +149,32 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 }
 
 // NewSearchEntry creates a `GtkSearchEntry`.
-func NewSearchEntry() SearchEntry {
+func NewSearchEntry() *SearchEntryClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_search_entry_new()
 
-	var _searchEntry SearchEntry // out
+	var _searchEntry *SearchEntryClass // out
 
-	_searchEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(SearchEntry)
+	_searchEntry = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*SearchEntryClass)
 
 	return _searchEntry
 }
 
 // KeyCaptureWidget gets the widget that @entry is capturing key events from.
-func (e *SearchEntryClass) KeyCaptureWidget() Widget {
+func (e *SearchEntryClass) KeyCaptureWidget() *WidgetClass {
 	var _arg0 *C.GtkSearchEntry // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer((&SearchEntry).Native()))
 
 	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -197,8 +197,8 @@ func (e *SearchEntryClass) SetKeyCaptureWidget(widget Widget) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer((&SearchEntry).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
 }

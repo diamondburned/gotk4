@@ -43,17 +43,17 @@ type ActionOverrider interface {
 	// that menu.
 	//
 	// Deprecated: since version 3.10.
-	CreateMenu() Widget
+	CreateMenu() *WidgetClass
 	// CreateMenuItem creates a menu item widget that proxies for the given
 	// action.
 	//
 	// Deprecated: since version 3.10.
-	CreateMenuItem() Widget
+	CreateMenuItem() *WidgetClass
 	// CreateToolItem creates a toolbar item widget that proxies for the given
 	// action.
 	//
 	// Deprecated: since version 3.10.
-	CreateToolItem() Widget
+	CreateToolItem() *WidgetClass
 	DisconnectProxy(proxy Widget)
 }
 
@@ -135,23 +135,23 @@ type Action interface {
 	// to create icons displayed in the proxy widgets.
 	//
 	// Deprecated: since version 3.10.
-	CreateIcon(iconSize int) Widget
+	CreateIcon(iconSize int) *WidgetClass
 	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
 	// item or the toolbar item it creates, this function returns an instance of
 	// that menu.
 	//
 	// Deprecated: since version 3.10.
-	CreateMenu() Widget
+	CreateMenu() *WidgetClass
 	// CreateMenuItem creates a menu item widget that proxies for the given
 	// action.
 	//
 	// Deprecated: since version 3.10.
-	CreateMenuItem() Widget
+	CreateMenuItem() *WidgetClass
 	// CreateToolItem creates a toolbar item widget that proxies for the given
 	// action.
 	//
 	// Deprecated: since version 3.10.
-	CreateToolItem() Widget
+	CreateToolItem() *WidgetClass
 	// DisconnectAccelerator undoes the effect of one call to
 	// gtk_action_connect_accelerator().
 	//
@@ -326,7 +326,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 // section][XML-UI] for information on allowed action names.
 //
 // Deprecated: since version 3.10.
-func NewAction(name string, label string, tooltip string, stockId string) Action {
+func NewAction(name string, label string, tooltip string, stockId string) *ActionClass {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _arg3 *C.gchar     // out
@@ -344,9 +344,10 @@ func NewAction(name string, label string, tooltip string, stockId string) Action
 
 	_cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
 
-	var _action Action // out
+	var _action *ActionClass // out
 
-	_action = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Action)
+	_action = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*ActionClass)
 
 	return _action
 }
@@ -360,7 +361,7 @@ func NewAction(name string, label string, tooltip string, stockId string) Action
 func (a *ActionClass) Activate() {
 	var _arg0 *C.GtkAction // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	C.gtk_action_activate(_arg0)
 }
@@ -375,7 +376,7 @@ func (a *ActionClass) Activate() {
 func (a *ActionClass) BlockActivate() {
 	var _arg0 *C.GtkAction // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	C.gtk_action_block_activate(_arg0)
 }
@@ -393,7 +394,7 @@ func (a *ActionClass) BlockActivate() {
 func (a *ActionClass) ConnectAccelerator() {
 	var _arg0 *C.GtkAction // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	C.gtk_action_connect_accelerator(_arg0)
 }
@@ -402,19 +403,20 @@ func (a *ActionClass) ConnectAccelerator() {
 // create icons displayed in the proxy widgets.
 //
 // Deprecated: since version 3.10.
-func (a *ActionClass) CreateIcon(iconSize int) Widget {
+func (a *ActionClass) CreateIcon(iconSize int) *WidgetClass {
 	var _arg0 *C.GtkAction  // out
 	var _arg1 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	_arg1 = C.GtkIconSize(iconSize)
 
 	_cret = C.gtk_action_create_icon(_arg0, _arg1)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -424,17 +426,18 @@ func (a *ActionClass) CreateIcon(iconSize int) Widget {
 // menu.
 //
 // Deprecated: since version 3.10.
-func (a *ActionClass) CreateMenu() Widget {
+func (a *ActionClass) CreateMenu() *WidgetClass {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_create_menu(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -442,17 +445,18 @@ func (a *ActionClass) CreateMenu() Widget {
 // CreateMenuItem creates a menu item widget that proxies for the given action.
 //
 // Deprecated: since version 3.10.
-func (a *ActionClass) CreateMenuItem() Widget {
+func (a *ActionClass) CreateMenuItem() *WidgetClass {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_create_menu_item(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -461,17 +465,18 @@ func (a *ActionClass) CreateMenuItem() Widget {
 // action.
 //
 // Deprecated: since version 3.10.
-func (a *ActionClass) CreateToolItem() Widget {
+func (a *ActionClass) CreateToolItem() *WidgetClass {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_create_tool_item(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -483,7 +488,7 @@ func (a *ActionClass) CreateToolItem() Widget {
 func (a *ActionClass) DisconnectAccelerator() {
 	var _arg0 *C.GtkAction // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	C.gtk_action_disconnect_accelerator(_arg0)
 }
@@ -495,7 +500,7 @@ func (a *ActionClass) AccelPath() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_accel_path(_arg0)
 
@@ -514,7 +519,7 @@ func (a *ActionClass) AlwaysShowImage() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_always_show_image(_arg0)
 
@@ -534,7 +539,7 @@ func (a *ActionClass) IconName() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_icon_name(_arg0)
 
@@ -552,7 +557,7 @@ func (a *ActionClass) IsImportant() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_is_important(_arg0)
 
@@ -572,7 +577,7 @@ func (a *ActionClass) Label() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_label(_arg0)
 
@@ -590,7 +595,7 @@ func (a *ActionClass) Name() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_name(_arg0)
 
@@ -610,7 +615,7 @@ func (a *ActionClass) Sensitive() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_sensitive(_arg0)
 
@@ -630,7 +635,7 @@ func (a *ActionClass) ShortLabel() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_short_label(_arg0)
 
@@ -648,7 +653,7 @@ func (a *ActionClass) StockID() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_stock_id(_arg0)
 
@@ -666,7 +671,7 @@ func (a *ActionClass) Tooltip() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_tooltip(_arg0)
 
@@ -686,7 +691,7 @@ func (a *ActionClass) Visible() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_visible(_arg0)
 
@@ -706,7 +711,7 @@ func (a *ActionClass) VisibleHorizontal() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_visible_horizontal(_arg0)
 
@@ -726,7 +731,7 @@ func (a *ActionClass) VisibleVertical() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_get_visible_vertical(_arg0)
 
@@ -746,7 +751,7 @@ func (a *ActionClass) IsSensitive() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_is_sensitive(_arg0)
 
@@ -766,7 +771,7 @@ func (a *ActionClass) IsVisible() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	_cret = C.gtk_action_is_visible(_arg0)
 
@@ -787,8 +792,8 @@ func (a *ActionClass) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkAction     // out
 	var _arg1 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer((&AccelGroup).Native()))
 
 	C.gtk_action_set_accel_group(_arg0, _arg1)
 }
@@ -806,7 +811,7 @@ func (a *ActionClass) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	_arg1 = (*C.gchar)(C.CString(accelPath))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -824,7 +829,7 @@ func (a *ActionClass) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	if alwaysShow {
 		_arg1 = C.TRUE
 	}
@@ -839,7 +844,7 @@ func (a *ActionClass) SetIconName(iconName string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	_arg1 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -854,7 +859,7 @@ func (a *ActionClass) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	if isImportant {
 		_arg1 = C.TRUE
 	}
@@ -869,7 +874,7 @@ func (a *ActionClass) SetLabel(label string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -885,7 +890,7 @@ func (a *ActionClass) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	if sensitive {
 		_arg1 = C.TRUE
 	}
@@ -900,7 +905,7 @@ func (a *ActionClass) SetShortLabel(shortLabel string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	_arg1 = (*C.gchar)(C.CString(shortLabel))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -914,7 +919,7 @@ func (a *ActionClass) SetStockID(stockId string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -928,7 +933,7 @@ func (a *ActionClass) SetTooltip(tooltip string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	_arg1 = (*C.gchar)(C.CString(tooltip))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -944,7 +949,7 @@ func (a *ActionClass) SetVisible(visible bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
@@ -959,7 +964,7 @@ func (a *ActionClass) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	if visibleHorizontal {
 		_arg1 = C.TRUE
 	}
@@ -974,7 +979,7 @@ func (a *ActionClass) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 	if visibleVertical {
 		_arg1 = C.TRUE
 	}
@@ -988,7 +993,7 @@ func (a *ActionClass) SetVisibleVertical(visibleVertical bool) {
 func (a *ActionClass) UnblockActivate() {
 	var _arg0 *C.GtkAction // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAction)(unsafe.Pointer((&Action).Native()))
 
 	C.gtk_action_unblock_activate(_arg0)
 }

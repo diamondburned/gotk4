@@ -144,7 +144,6 @@ func wrapPicture(obj *externglib.Object) Picture {
 	return &PictureClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -175,14 +174,15 @@ func marshalPicture(p uintptr) (interface{}, error) {
 }
 
 // NewPicture creates a new empty `GtkPicture` widget.
-func NewPicture() Picture {
+func NewPicture() *PictureClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_picture_new()
 
-	var _picture Picture // out
+	var _picture *PictureClass // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Picture)
+	_picture = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*PictureClass)
 
 	return _picture
 }
@@ -192,7 +192,7 @@ func NewPicture() Picture {
 //
 // This is a utility function that calls [ctor@Gtk.Picture.new_for_file]. See
 // that function for details.
-func NewPictureForFilename(filename string) Picture {
+func NewPictureForFilename(filename string) *PictureClass {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -201,9 +201,10 @@ func NewPictureForFilename(filename string) Picture {
 
 	_cret = C.gtk_picture_new_for_filename(_arg1)
 
-	var _picture Picture // out
+	var _picture *PictureClass // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Picture)
+	_picture = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*PictureClass)
 
 	return _picture
 }
@@ -214,17 +215,18 @@ func NewPictureForFilename(filename string) Picture {
 // See that function for details.
 //
 // The pixbuf must not be modified after passing it to this function.
-func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
+func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) *PictureClass {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
 
 	_cret = C.gtk_picture_new_for_pixbuf(_arg1)
 
-	var _picture Picture // out
+	var _picture *PictureClass // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Picture)
+	_picture = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*PictureClass)
 
 	return _picture
 }
@@ -234,7 +236,7 @@ func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
 //
 // This is a utility function that calls [ctor@Gtk.Picture.new_for_file]. See
 // that function for details.
-func NewPictureForResource(resourcePath string) Picture {
+func NewPictureForResource(resourcePath string) *PictureClass {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -243,9 +245,10 @@ func NewPictureForResource(resourcePath string) Picture {
 
 	_cret = C.gtk_picture_new_for_resource(_arg1)
 
-	var _picture Picture // out
+	var _picture *PictureClass // out
 
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Picture)
+	_picture = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*PictureClass)
 
 	return _picture
 }
@@ -257,7 +260,7 @@ func (s *PictureClass) AlternativeText() string {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
 
 	_cret = C.gtk_picture_get_alternative_text(_arg0)
 
@@ -273,7 +276,7 @@ func (s *PictureClass) CanShrink() bool {
 	var _arg0 *C.GtkPicture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
 
 	_cret = C.gtk_picture_get_can_shrink(_arg0)
 
@@ -292,7 +295,7 @@ func (s *PictureClass) KeepAspectRatio() bool {
 	var _arg0 *C.GtkPicture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
 
 	_cret = C.gtk_picture_get_keep_aspect_ratio(_arg0)
 
@@ -317,7 +320,7 @@ func (s *PictureClass) SetAlternativeText(alternativeText string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
 	_arg1 = (*C.char)(C.CString(alternativeText))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -339,7 +342,7 @@ func (s *PictureClass) SetCanShrink(canShrink bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
 	if canShrink {
 		_arg1 = C.TRUE
 	}
@@ -354,7 +357,7 @@ func (s *PictureClass) SetFilename(filename string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -373,7 +376,7 @@ func (s *PictureClass) SetKeepAspectRatio(keepAspectRatio bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
 	if keepAspectRatio {
 		_arg1 = C.TRUE
 	}
@@ -390,8 +393,8 @@ func (s *PictureClass) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.GdkPixbuf  // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
 
 	C.gtk_picture_set_pixbuf(_arg0, _arg1)
 }
@@ -404,7 +407,7 @@ func (s *PictureClass) SetResource(resourcePath string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer((&Picture).Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 

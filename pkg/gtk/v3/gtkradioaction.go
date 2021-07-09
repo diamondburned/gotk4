@@ -111,7 +111,7 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewRadioAction(name string, label string, tooltip string, stockId string, value int) RadioAction {
+func NewRadioAction(name string, label string, tooltip string, stockId string, value int) *RadioActionClass {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
 	var _arg3 *C.gchar          // out
@@ -131,9 +131,10 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 
 	_cret = C.gtk_radio_action_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _radioAction RadioAction // out
+	var _radioAction *RadioActionClass // out
 
-	_radioAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(RadioAction)
+	_radioAction = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*RadioActionClass)
 
 	return _radioAction
 }
@@ -146,7 +147,7 @@ func (a *RadioActionClass) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret C.gint            // in
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer((&RadioAction).Native()))
 
 	_cret = C.gtk_radio_action_get_current_value(_arg0)
 
@@ -181,8 +182,8 @@ func (a *RadioActionClass) JoinGroup(groupSource RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GtkRadioAction // out
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(groupSource.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer((&RadioAction).Native()))
+	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer((&RadioAction).Native()))
 
 	C.gtk_radio_action_join_group(_arg0, _arg1)
 }
@@ -195,7 +196,7 @@ func (a *RadioActionClass) SetCurrentValue(currentValue int) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 C.gint            // out
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer((&RadioAction).Native()))
 	_arg1 = C.gint(currentValue)
 
 	C.gtk_radio_action_set_current_value(_arg0, _arg1)

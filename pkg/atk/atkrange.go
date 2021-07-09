@@ -57,7 +57,7 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 
 	var __range *Range // out
 
-	__range = (*Range)(unsafe.Pointer(_cret))
+	__range = (*Range)(unsafe.Pointer(*C.AtkRange))
 	runtime.SetFinalizer(__range, func(v *Range) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -75,13 +75,13 @@ func (s *Range) Copy() *Range {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.AtkRange // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(s))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(*Range))
 
 	_cret = C.atk_range_copy(_arg0)
 
 	var __range *Range // out
 
-	__range = (*Range)(unsafe.Pointer(_cret))
+	__range = (*Range)(unsafe.Pointer(*C.AtkRange))
 	runtime.SetFinalizer(__range, func(v *Range) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -93,7 +93,7 @@ func (s *Range) Copy() *Range {
 func (r *Range) free() {
 	var _arg0 *C.AtkRange // out
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(*Range))
 
 	C.atk_range_free(_arg0)
 }
@@ -103,7 +103,7 @@ func (r *Range) Description() string {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(*Range))
 
 	_cret = C.atk_range_get_description(_arg0)
 
@@ -119,7 +119,7 @@ func (r *Range) LowerLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(*Range))
 
 	_cret = C.atk_range_get_lower_limit(_arg0)
 
@@ -135,7 +135,7 @@ func (r *Range) UpperLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(*Range))
 
 	_cret = C.atk_range_get_upper_limit(_arg0)
 

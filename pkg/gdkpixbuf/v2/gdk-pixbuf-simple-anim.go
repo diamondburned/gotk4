@@ -59,7 +59,7 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 }
 
 // NewPixbufSimpleAnim creates a new, empty animation.
-func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
+func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnimClass {
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out
 	var _arg3 C.gfloat               // out
@@ -71,9 +71,10 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 
 	_cret = C.gdk_pixbuf_simple_anim_new(_arg1, _arg2, _arg3)
 
-	var _pixbufSimpleAnim PixbufSimpleAnim // out
+	var _pixbufSimpleAnim *PixbufSimpleAnimClass // out
 
-	_pixbufSimpleAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(PixbufSimpleAnim)
+	_pixbufSimpleAnim = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PixbufSimpleAnimClass)
 
 	return _pixbufSimpleAnim
 }
@@ -84,8 +85,8 @@ func (a *PixbufSimpleAnimClass) AddFrame(pixbuf Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer((&PixbufSimpleAnim).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&Pixbuf).Native()))
 
 	C.gdk_pixbuf_simple_anim_add_frame(_arg0, _arg1)
 }
@@ -96,7 +97,7 @@ func (a *PixbufSimpleAnimClass) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer((&PixbufSimpleAnim).Native()))
 
 	_cret = C.gdk_pixbuf_simple_anim_get_loop(_arg0)
 
@@ -115,7 +116,7 @@ func (a *PixbufSimpleAnimClass) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer((&PixbufSimpleAnim).Native()))
 	if loop {
 		_arg1 = C.TRUE
 	}

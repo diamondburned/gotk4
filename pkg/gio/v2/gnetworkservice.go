@@ -83,7 +83,7 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 // NewNetworkService creates a new Service representing the given @service,
 // @protocol, and @domain. This will initially be unresolved; use the
 // Connectable interface to resolve it.
-func NewNetworkService(service string, protocol string, domain string) NetworkService {
+func NewNetworkService(service string, protocol string, domain string) *NetworkServiceClass {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
 	var _arg3 *C.gchar              // out
@@ -98,9 +98,10 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 
 	_cret = C.g_network_service_new(_arg1, _arg2, _arg3)
 
-	var _networkService NetworkService // out
+	var _networkService *NetworkServiceClass // out
 
-	_networkService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(NetworkService)
+	_networkService = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*NetworkServiceClass)
 
 	return _networkService
 }
@@ -111,7 +112,7 @@ func (s *NetworkServiceClass) Domain() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer((&NetworkService).Native()))
 
 	_cret = C.g_network_service_get_domain(_arg0)
 
@@ -127,7 +128,7 @@ func (s *NetworkServiceClass) Protocol() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer((&NetworkService).Native()))
 
 	_cret = C.g_network_service_get_protocol(_arg0)
 
@@ -144,7 +145,7 @@ func (s *NetworkServiceClass) Scheme() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer((&NetworkService).Native()))
 
 	_cret = C.g_network_service_get_scheme(_arg0)
 
@@ -160,7 +161,7 @@ func (s *NetworkServiceClass) Service() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer((&NetworkService).Native()))
 
 	_cret = C.g_network_service_get_service(_arg0)
 
@@ -177,7 +178,7 @@ func (s *NetworkServiceClass) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer((&NetworkService).Native()))
 	_arg1 = (*C.gchar)(C.CString(scheme))
 	defer C.free(unsafe.Pointer(_arg1))
 

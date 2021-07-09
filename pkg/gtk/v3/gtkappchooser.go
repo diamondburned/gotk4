@@ -60,7 +60,6 @@ var _ AppChooser = (*AppChooserInterface)(nil)
 func wrapAppChooser(obj *externglib.Object) AppChooser {
 	return &AppChooserInterface{
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			BuildableInterface: BuildableInterface{
 				Object: obj,
@@ -81,7 +80,7 @@ func (s *AppChooserInterface) ContentType() string {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer((&AppChooser).Native()))
 
 	_cret = C.gtk_app_chooser_get_content_type(_arg0)
 
@@ -97,7 +96,7 @@ func (s *AppChooserInterface) ContentType() string {
 func (s *AppChooserInterface) Refresh() {
 	var _arg0 *C.GtkAppChooser // out
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer((&AppChooser).Native()))
 
 	C.gtk_app_chooser_refresh(_arg0)
 }

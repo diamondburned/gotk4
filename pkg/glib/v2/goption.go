@@ -153,7 +153,7 @@ func (o *OptionEntry) Flags() int {
 // Arg: the type of the option, as a Arg
 func (o *OptionEntry) Arg() OptionArg {
 	var v OptionArg // out
-	v = OptionArg(o.native.arg)
+	v = (OptionArg)(C.GOptionArg)
 	return v
 }
 
@@ -227,7 +227,7 @@ func (o *OptionGroup) Native() unsafe.Pointer {
 func (g *OptionGroup) free() {
 	var _arg0 *C.GOptionGroup // out
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(*OptionGroup))
 
 	C.g_option_group_free(_arg0)
 }
@@ -237,13 +237,13 @@ func (g *OptionGroup) ref() *OptionGroup {
 	var _arg0 *C.GOptionGroup // out
 	var _cret *C.GOptionGroup // in
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(*OptionGroup))
 
 	_cret = C.g_option_group_ref(_arg0)
 
 	var _optionGroup *OptionGroup // out
 
-	_optionGroup = (*OptionGroup)(unsafe.Pointer(_cret))
+	_optionGroup = (*OptionGroup)(unsafe.Pointer(*C.GOptionGroup))
 	C.g_option_group_ref(_cret)
 	runtime.SetFinalizer(_optionGroup, func(v *OptionGroup) {
 		C.g_option_group_unref((*C.GOptionGroup)(unsafe.Pointer(v)))
@@ -258,7 +258,7 @@ func (g *OptionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(*OptionGroup))
 	_arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -271,7 +271,7 @@ func (g *OptionGroup) SetTranslationDomain(domain string) {
 func (g *OptionGroup) unref() {
 	var _arg0 *C.GOptionGroup // out
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(*OptionGroup))
 
 	C.g_option_group_unref(_arg0)
 }

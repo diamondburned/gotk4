@@ -37,7 +37,7 @@ type DragIcon interface {
 	gextras.Objector
 
 	// Child gets the widget currently used as drag icon.
-	Child() Widget
+	Child() *WidgetClass
 	// SetChild sets the widget to display as the drag icon.
 	SetChild(child Widget)
 }
@@ -59,7 +59,6 @@ func wrapDragIcon(obj *externglib.Object) DragIcon {
 	return &DragIconClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -82,7 +81,6 @@ func wrapDragIcon(obj *externglib.Object) DragIcon {
 		},
 		NativeInterface: NativeInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -99,7 +97,6 @@ func wrapDragIcon(obj *externglib.Object) DragIcon {
 			Object: obj,
 			NativeInterface: NativeInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					AccessibleInterface: AccessibleInterface{
 						Object: obj,
@@ -113,7 +110,6 @@ func wrapDragIcon(obj *externglib.Object) DragIcon {
 				},
 			},
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				AccessibleInterface: AccessibleInterface{
 					Object: obj,
@@ -136,17 +132,18 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 }
 
 // Child gets the widget currently used as drag icon.
-func (s *DragIconClass) Child() Widget {
+func (s *DragIconClass) Child() *WidgetClass {
 	var _arg0 *C.GtkDragIcon // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer((&DragIcon).Native()))
 
 	_cret = C.gtk_drag_icon_get_child(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -156,8 +153,8 @@ func (s *DragIconClass) SetChild(child Widget) {
 	var _arg0 *C.GtkDragIcon // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer((&DragIcon).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
 }

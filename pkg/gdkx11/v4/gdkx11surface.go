@@ -28,7 +28,7 @@ func X11GetServerTime(surface X11Surface) uint32 {
 	var _arg1 *C.GdkSurface // out
 	var _cret C.guint32     // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
@@ -45,7 +45,7 @@ type X11Surface interface {
 	// Desktop gets the number of the workspace @surface is on.
 	Desktop() uint32
 	// Group returns the group this surface belongs to.
-	Group() gdk.Surface
+	Group() *gdk.SurfaceClass
 	// MoveToCurrentDesktop moves the surface to the correct workspace when
 	// running under a window manager that supports multiple workspaces, as
 	// described in the Extended Window Manager Hints
@@ -132,7 +132,7 @@ func (s *X11SurfaceClass) Desktop() uint32 {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.guint32     // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 
 	_cret = C.gdk_x11_surface_get_desktop(_arg0)
 
@@ -144,17 +144,18 @@ func (s *X11SurfaceClass) Desktop() uint32 {
 }
 
 // Group returns the group this surface belongs to.
-func (s *X11SurfaceClass) Group() gdk.Surface {
+func (s *X11SurfaceClass) Group() *gdk.SurfaceClass {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 
 	_cret = C.gdk_x11_surface_get_group(_arg0)
 
-	var _ret gdk.Surface // out
+	var _ret *gdk.SurfaceClass // out
 
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gdk.Surface)
+	_ret = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*gdk.SurfaceClass)
 
 	return _ret
 }
@@ -167,7 +168,7 @@ func (s *X11SurfaceClass) Group() gdk.Surface {
 func (s *X11SurfaceClass) MoveToCurrentDesktop() {
 	var _arg0 *C.GdkSurface // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 
 	C.gdk_x11_surface_move_to_current_desktop(_arg0)
 }
@@ -180,7 +181,7 @@ func (s *X11SurfaceClass) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.guint32     // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 	_arg1 = C.guint32(desktop)
 
 	C.gdk_x11_surface_move_to_desktop(_arg0, _arg1)
@@ -196,7 +197,7 @@ func (s *X11SurfaceClass) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 	if frameSyncEnabled {
 		_arg1 = C.TRUE
 	}
@@ -210,8 +211,8 @@ func (s *X11SurfaceClass) SetGroup(leader gdk.Surface) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkSurface // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(leader.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((&gdk.Surface).Native()))
 
 	C.gdk_x11_surface_set_group(_arg0, _arg1)
 }
@@ -222,7 +223,7 @@ func (s *X11SurfaceClass) SetSkipPagerHint(skipsPager bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 	if skipsPager {
 		_arg1 = C.TRUE
 	}
@@ -236,7 +237,7 @@ func (s *X11SurfaceClass) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 	if skipsTaskbar {
 		_arg1 = C.TRUE
 	}
@@ -256,7 +257,7 @@ func (s *X11SurfaceClass) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 	_arg1 = (*C.char)(C.CString(variant))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -269,7 +270,7 @@ func (s *X11SurfaceClass) SetUrgencyHint(urgent bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 	if urgent {
 		_arg1 = C.TRUE
 	}
@@ -291,7 +292,7 @@ func (s *X11SurfaceClass) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.guint32     // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_x11_surface_set_user_time(_arg0, _arg1)
@@ -305,7 +306,7 @@ func (s *X11SurfaceClass) SetUTF8Property(name string, value string) {
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer((&X11Surface).Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(value))

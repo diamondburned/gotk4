@@ -79,14 +79,15 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 // value in a TreeModel. For example, you can bind the “text” property on the
 // cell renderer to a string value in the model, thus rendering a different
 // string in each row of the TreeView
-func NewCellRendererText() CellRendererText {
+func NewCellRendererText() *CellRendererTextClass {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_text_new()
 
-	var _cellRendererText CellRendererText // out
+	var _cellRendererText *CellRendererTextClass // out
 
-	_cellRendererText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(CellRendererText)
+	_cellRendererText = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*CellRendererTextClass)
 
 	return _cellRendererText
 }
@@ -102,7 +103,7 @@ func (r *CellRendererTextClass) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg0 *C.GtkCellRendererText // out
 	var _arg1 C.gint                 // out
 
-	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer((&CellRendererText).Native()))
 	_arg1 = C.gint(numberOfRows)
 
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)

@@ -39,7 +39,7 @@ func init() {
 type DBusObjectOverrider interface {
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
-	Interface(interfaceName string) DBusInterface
+	Interface(interfaceName string) *DBusInterfaceInterface
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string
 	InterfaceAdded(interface_ DBusInterface)
@@ -54,7 +54,7 @@ type DBusObject interface {
 
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
-	Interface(interfaceName string) DBusInterface
+	Interface(interfaceName string) *DBusInterfaceInterface
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string
 }
@@ -80,20 +80,21 @@ func marshalDBusObject(p uintptr) (interface{}, error) {
 
 // Interface gets the D-Bus interface with name @interface_name associated with
 // @object, if any.
-func (o *DBusObjectInterface) Interface(interfaceName string) DBusInterface {
+func (o *DBusObjectInterface) Interface(interfaceName string) *DBusInterfaceInterface {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GDBusInterface // in
 
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer((&DBusObject).Native()))
 	_arg1 = (*C.gchar)(C.CString(interfaceName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_get_interface(_arg0, _arg1)
 
-	var _dBusInterface DBusInterface // out
+	var _dBusInterface *DBusInterfaceInterface // out
 
-	_dBusInterface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(DBusInterface)
+	_dBusInterface = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*DBusInterfaceInterface)
 
 	return _dBusInterface
 }
@@ -103,7 +104,7 @@ func (o *DBusObjectInterface) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer((&DBusObject).Native()))
 
 	_cret = C.g_dbus_object_get_object_path(_arg0)
 

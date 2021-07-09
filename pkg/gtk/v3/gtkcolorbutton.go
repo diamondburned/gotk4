@@ -94,7 +94,6 @@ func wrapColorButton(obj *externglib.Object) ColorButton {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -110,7 +109,6 @@ func wrapColorButton(obj *externglib.Object) ColorButton {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -126,7 +124,6 @@ func wrapColorButton(obj *externglib.Object) ColorButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -157,14 +154,15 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 // representing the current selected color. When the button is clicked, a
 // color-selection dialog will open, allowing the user to select a color. The
 // swatch will be updated to reflect the new color when the user finishes.
-func NewColorButton() ColorButton {
+func NewColorButton() *ColorButtonClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_color_button_new()
 
-	var _colorButton ColorButton // out
+	var _colorButton *ColorButtonClass // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorButton)
+	_colorButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ColorButtonClass)
 
 	return _colorButton
 }
@@ -172,33 +170,35 @@ func NewColorButton() ColorButton {
 // NewColorButtonWithColor creates a new color button.
 //
 // Deprecated: since version 3.4.
-func NewColorButtonWithColor(color *gdk.Color) ColorButton {
+func NewColorButtonWithColor(color *gdk.Color) *ColorButtonClass {
 	var _arg1 *C.GdkColor  // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(*gdk.Color))
 
 	_cret = C.gtk_color_button_new_with_color(_arg1)
 
-	var _colorButton ColorButton // out
+	var _colorButton *ColorButtonClass // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorButton)
+	_colorButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ColorButtonClass)
 
 	return _colorButton
 }
 
 // NewColorButtonWithRGBA creates a new color button.
-func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
+func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButtonClass {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(*gdk.RGBA))
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
-	var _colorButton ColorButton // out
+	var _colorButton *ColorButtonClass // out
 
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ColorButton)
+	_colorButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ColorButtonClass)
 
 	return _colorButton
 }
@@ -210,7 +210,7 @@ func (b *ColorButtonClass) Alpha() uint16 {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.guint16         // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&ColorButton).Native()))
 
 	_cret = C.gtk_color_button_get_alpha(_arg0)
 
@@ -226,7 +226,7 @@ func (b *ColorButtonClass) Title() string {
 	var _arg0 *C.GtkColorButton // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&ColorButton).Native()))
 
 	_cret = C.gtk_color_button_get_title(_arg0)
 
@@ -244,7 +244,7 @@ func (b *ColorButtonClass) UseAlpha() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&ColorButton).Native()))
 
 	_cret = C.gtk_color_button_get_use_alpha(_arg0)
 
@@ -264,7 +264,7 @@ func (b *ColorButtonClass) SetAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.guint16         // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&ColorButton).Native()))
 	_arg1 = C.guint16(alpha)
 
 	C.gtk_color_button_set_alpha(_arg0, _arg1)
@@ -277,8 +277,8 @@ func (b *ColorButtonClass) SetColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.GdkColor       // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&ColorButton).Native()))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(*gdk.Color))
 
 	C.gtk_color_button_set_color(_arg0, _arg1)
 }
@@ -288,7 +288,7 @@ func (b *ColorButtonClass) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&ColorButton).Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -303,7 +303,7 @@ func (b *ColorButtonClass) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer((&ColorButton).Native()))
 	if useAlpha {
 		_arg1 = C.TRUE
 	}

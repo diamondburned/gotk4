@@ -57,42 +57,14 @@ func marshalRelation(p uintptr) (interface{}, error) {
 	return wrapRelation(obj), nil
 }
 
-// NewRelation: create a new relation for the specified key and the specified
-// list of targets. See also atk_object_add_relationship().
-func NewRelation(targets []Object, relationship RelationType) Relation {
-	var _arg1 **C.AtkObject
-	var _arg2 C.gint
-	var _arg3 C.AtkRelationType // out
-	var _cret *C.AtkRelation    // in
-
-	_arg2 = C.gint(len(targets))
-	_arg1 = (**C.AtkObject)(C.malloc(C.ulong(len(targets)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice(_arg1, len(targets))
-		for i := range targets {
-			out[i] = (*C.AtkObject)(unsafe.Pointer(targets[i].Native()))
-		}
-	}
-	_arg3 = C.AtkRelationType(relationship)
-
-	_cret = C.atk_relation_new(_arg1, _arg2, _arg3)
-
-	var _relation Relation // out
-
-	_relation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Relation)
-
-	return _relation
-}
-
 // AddTarget adds the specified AtkObject to the target for the relation, if it
 // is not already present. See also atk_object_add_relationship().
 func (r *RelationClass) AddTarget(target Object) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer((&Relation).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	C.atk_relation_add_target(_arg0, _arg1)
 }
@@ -102,13 +74,13 @@ func (r *RelationClass) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
 	var _cret C.AtkRelationType // in
 
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer((&Relation).Native()))
 
 	_cret = C.atk_relation_get_relation_type(_arg0)
 
 	var _relationType RelationType // out
 
-	_relationType = RelationType(_cret)
+	_relationType = (RelationType)(C.AtkRelationType)
 
 	return _relationType
 }
@@ -120,8 +92,8 @@ func (r *RelationClass) RemoveTarget(target Object) bool {
 	var _arg1 *C.AtkObject   // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer((&Relation).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	_cret = C.atk_relation_remove_target(_arg0, _arg1)
 

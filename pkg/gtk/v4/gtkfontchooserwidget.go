@@ -63,7 +63,6 @@ func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
 	return &FontChooserWidgetClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -97,14 +96,15 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 }
 
 // NewFontChooserWidget creates a new `GtkFontChooserWidget`.
-func NewFontChooserWidget() FontChooserWidget {
+func NewFontChooserWidget() *FontChooserWidgetClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_font_chooser_widget_new()
 
-	var _fontChooserWidget FontChooserWidget // out
+	var _fontChooserWidget *FontChooserWidgetClass // out
 
-	_fontChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(FontChooserWidget)
+	_fontChooserWidget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*FontChooserWidgetClass)
 
 	return _fontChooserWidget
 }

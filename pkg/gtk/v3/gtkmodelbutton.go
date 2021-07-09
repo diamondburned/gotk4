@@ -137,7 +137,6 @@ func wrapModelButton(obj *externglib.Object) ModelButton {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -153,7 +152,6 @@ func wrapModelButton(obj *externglib.Object) ModelButton {
 			},
 			ActionableInterface: ActionableInterface{
 				WidgetClass: WidgetClass{
-					Object:           obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 					BuildableInterface: BuildableInterface{
 						Object: obj,
@@ -169,7 +167,6 @@ func wrapModelButton(obj *externglib.Object) ModelButton {
 		},
 		ActionableInterface: ActionableInterface{
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -192,14 +189,15 @@ func marshalModelButton(p uintptr) (interface{}, error) {
 }
 
 // NewModelButton creates a new GtkModelButton.
-func NewModelButton() ModelButton {
+func NewModelButton() *ModelButtonClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_model_button_new()
 
-	var _modelButton ModelButton // out
+	var _modelButton *ModelButtonClass // out
 
-	_modelButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ModelButton)
+	_modelButton = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ModelButtonClass)
 
 	return _modelButton
 }

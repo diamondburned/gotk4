@@ -144,23 +144,6 @@ type PlacesSidebar interface {
 	SetDropTargetsVisible(visible bool, context gdk.DragContext)
 	// SetLocalOnly sets whether the @sidebar should only show local files.
 	SetLocalOnly(localOnly bool)
-	// SetOpenFlags sets the way in which the calling application can open new
-	// locations from the places sidebar. For example, some applications only
-	// open locations “directly” into their main view, while others may support
-	// opening locations in a new notebook tab or a new window.
-	//
-	// This function is used to tell the places @sidebar about the ways in which
-	// the application can open new locations, so that the sidebar can display
-	// (or not) the “Open in new tab” and “Open in new window” menu items as
-	// appropriate.
-	//
-	// When the PlacesSidebar::open-location signal is emitted, its flags
-	// argument will be set to one of the @flags that was passed in
-	// gtk_places_sidebar_set_open_flags().
-	//
-	// Passing 0 for @flags will cause K_PLACES_OPEN_NORMAL to always be sent to
-	// callbacks for the “open-location” signal.
-	SetOpenFlags(flags PlacesOpenFlags)
 	// SetShowConnectToServer sets whether the @sidebar should show an item for
 	// connecting to a network server; this is off by default. An application
 	// may want to turn this on if it implements a way for the user to connect
@@ -225,7 +208,6 @@ func wrapPlacesSidebar(obj *externglib.Object) PlacesSidebar {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						Object:           obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 						BuildableInterface: BuildableInterface{
 							Object: obj,
@@ -259,14 +241,15 @@ func marshalPlacesSidebar(p uintptr) (interface{}, error) {
 //
 // The application should connect to at least the PlacesSidebar::open-location
 // signal to be notified when the user makes a selection in the sidebar.
-func NewPlacesSidebar() PlacesSidebar {
+func NewPlacesSidebar() *PlacesSidebarClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_places_sidebar_new()
 
-	var _placesSidebar PlacesSidebar // out
+	var _placesSidebar *PlacesSidebarClass // out
 
-	_placesSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(PlacesSidebar)
+	_placesSidebar = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*PlacesSidebarClass)
 
 	return _placesSidebar
 }
@@ -277,7 +260,7 @@ func (s *PlacesSidebarClass) LocalOnly() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 
 	_cret = C.gtk_places_sidebar_get_local_only(_arg0)
 
@@ -295,13 +278,13 @@ func (s *PlacesSidebarClass) OpenFlags() PlacesOpenFlags {
 	var _arg0 *C.GtkPlacesSidebar  // out
 	var _cret C.GtkPlacesOpenFlags // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 
 	_cret = C.gtk_places_sidebar_get_open_flags(_arg0)
 
 	var _placesOpenFlags PlacesOpenFlags // out
 
-	_placesOpenFlags = PlacesOpenFlags(_cret)
+	_placesOpenFlags = (PlacesOpenFlags)(C.GtkPlacesOpenFlags)
 
 	return _placesOpenFlags
 }
@@ -314,7 +297,7 @@ func (s *PlacesSidebarClass) ShowConnectToServer() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_connect_to_server(_arg0)
 
@@ -333,7 +316,7 @@ func (s *PlacesSidebarClass) ShowDesktop() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_desktop(_arg0)
 
@@ -352,7 +335,7 @@ func (s *PlacesSidebarClass) ShowEnterLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_enter_location(_arg0)
 
@@ -371,7 +354,7 @@ func (s *PlacesSidebarClass) ShowOtherLocations() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_other_locations(_arg0)
 
@@ -390,7 +373,7 @@ func (s *PlacesSidebarClass) ShowRecent() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_recent(_arg0)
 
@@ -409,7 +392,7 @@ func (s *PlacesSidebarClass) ShowStarredLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_starred_location(_arg0)
 
@@ -428,7 +411,7 @@ func (s *PlacesSidebarClass) ShowTrash() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_trash(_arg0)
 
@@ -455,11 +438,11 @@ func (s *PlacesSidebarClass) SetDropTargetsVisible(visible bool, context gdk.Dra
 	var _arg1 C.gboolean          // out
 	var _arg2 *C.GdkDragContext   // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.GdkDragContext)(unsafe.Pointer((&gdk.DragContext).Native()))
 
 	C.gtk_places_sidebar_set_drop_targets_visible(_arg0, _arg1, _arg2)
 }
@@ -469,37 +452,12 @@ func (s *PlacesSidebarClass) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 	if localOnly {
 		_arg1 = C.TRUE
 	}
 
 	C.gtk_places_sidebar_set_local_only(_arg0, _arg1)
-}
-
-// SetOpenFlags sets the way in which the calling application can open new
-// locations from the places sidebar. For example, some applications only open
-// locations “directly” into their main view, while others may support opening
-// locations in a new notebook tab or a new window.
-//
-// This function is used to tell the places @sidebar about the ways in which the
-// application can open new locations, so that the sidebar can display (or not)
-// the “Open in new tab” and “Open in new window” menu items as appropriate.
-//
-// When the PlacesSidebar::open-location signal is emitted, its flags argument
-// will be set to one of the @flags that was passed in
-// gtk_places_sidebar_set_open_flags().
-//
-// Passing 0 for @flags will cause K_PLACES_OPEN_NORMAL to always be sent to
-// callbacks for the “open-location” signal.
-func (s *PlacesSidebarClass) SetOpenFlags(flags PlacesOpenFlags) {
-	var _arg0 *C.GtkPlacesSidebar  // out
-	var _arg1 C.GtkPlacesOpenFlags // out
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-	_arg1 = C.GtkPlacesOpenFlags(flags)
-
-	C.gtk_places_sidebar_set_open_flags(_arg0, _arg1)
 }
 
 // SetShowConnectToServer sets whether the @sidebar should show an item for
@@ -515,7 +473,7 @@ func (s *PlacesSidebarClass) SetShowConnectToServer(showConnectToServer bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 	if showConnectToServer {
 		_arg1 = C.TRUE
 	}
@@ -531,7 +489,7 @@ func (s *PlacesSidebarClass) SetShowDesktop(showDesktop bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 	if showDesktop {
 		_arg1 = C.TRUE
 	}
@@ -549,7 +507,7 @@ func (s *PlacesSidebarClass) SetShowEnterLocation(showEnterLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 	if showEnterLocation {
 		_arg1 = C.TRUE
 	}
@@ -570,7 +528,7 @@ func (s *PlacesSidebarClass) SetShowOtherLocations(showOtherLocations bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 	if showOtherLocations {
 		_arg1 = C.TRUE
 	}
@@ -585,7 +543,7 @@ func (s *PlacesSidebarClass) SetShowRecent(showRecent bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 	if showRecent {
 		_arg1 = C.TRUE
 	}
@@ -599,7 +557,7 @@ func (s *PlacesSidebarClass) SetShowStarredLocation(showStarredLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 	if showStarredLocation {
 		_arg1 = C.TRUE
 	}
@@ -613,7 +571,7 @@ func (s *PlacesSidebarClass) SetShowTrash(showTrash bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer((&PlacesSidebar).Native()))
 	if showTrash {
 		_arg1 = C.TRUE
 	}

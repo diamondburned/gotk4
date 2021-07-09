@@ -69,14 +69,15 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 // NewWindowGroup creates a new `GtkWindowGroup` object.
 //
 // Modality of windows only affects windows within the same `GtkWindowGroup`.
-func NewWindowGroup() WindowGroup {
+func NewWindowGroup() *WindowGroupClass {
 	var _cret *C.GtkWindowGroup // in
 
 	_cret = C.gtk_window_group_new()
 
-	var _windowGroup WindowGroup // out
+	var _windowGroup *WindowGroupClass // out
 
-	_windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(WindowGroup)
+	_windowGroup = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*WindowGroupClass)
 
 	return _windowGroup
 }
@@ -86,8 +87,8 @@ func (w *WindowGroupClass) AddWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer((&WindowGroup).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
 
 	C.gtk_window_group_add_window(_arg0, _arg1)
 }
@@ -97,8 +98,8 @@ func (w *WindowGroupClass) RemoveWindow(window Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer((&WindowGroup).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((&Window).Native()))
 
 	C.gtk_window_group_remove_window(_arg0, _arg1)
 }

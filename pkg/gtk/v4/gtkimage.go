@@ -130,8 +130,6 @@ type Image interface {
 	//
 	// See [ctor@Gtk.Image.new_from_resource] for details.
 	SetFromResource(resourcePath string)
-	// SetIconSize suggests an icon size to the theme for named icons.
-	SetIconSize(iconSize IconSize)
 	// SetPixelSize sets the pixel size to use for named icons.
 	//
 	// If the pixel size is set to a value != -1, it is used instead of the icon
@@ -154,7 +152,6 @@ func wrapImage(obj *externglib.Object) Image {
 	return &ImageClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -185,14 +182,15 @@ func marshalImage(p uintptr) (interface{}, error) {
 }
 
 // NewImage creates a new empty `GtkImage` widget.
-func NewImage() Image {
+func NewImage() *ImageClass {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_image_new()
 
-	var _image Image // out
+	var _image *ImageClass // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Image)
+	_image = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ImageClass)
 
 	return _image
 }
@@ -210,7 +208,7 @@ func NewImage() Image {
 // The storage type (see [method@Gtk.Image.get_storage_type]) of the returned
 // image is not defined, it will be whatever is appropriate for displaying the
 // file.
-func NewImageFromFile(filename string) Image {
+func NewImageFromFile(filename string) *ImageClass {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -219,9 +217,10 @@ func NewImageFromFile(filename string) Image {
 
 	_cret = C.gtk_image_new_from_file(_arg1)
 
-	var _image Image // out
+	var _image *ImageClass // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Image)
+	_image = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ImageClass)
 
 	return _image
 }
@@ -232,7 +231,7 @@ func NewImageFromFile(filename string) Image {
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromIconName(iconName string) Image {
+func NewImageFromIconName(iconName string) *ImageClass {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -241,9 +240,10 @@ func NewImageFromIconName(iconName string) Image {
 
 	_cret = C.gtk_image_new_from_icon_name(_arg1)
 
-	var _image Image // out
+	var _image *ImageClass // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Image)
+	_image = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ImageClass)
 
 	return _image
 }
@@ -260,17 +260,18 @@ func NewImageFromIconName(iconName string) Image {
 // Note that this function just creates an `GtkImage` from the pixbuf. The
 // `GtkImage` created will not react to state changes. Should you want that, you
 // should use [ctor@Gtk.Image.new_from_icon_name].
-func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
+func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *ImageClass {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 
-	var _image Image // out
+	var _image *ImageClass // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Image)
+	_image = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ImageClass)
 
 	return _image
 }
@@ -289,7 +290,7 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 // The storage type (see [method@Gtk.Image.get_storage_type]) of the returned
 // image is not defined, it will be whatever is appropriate for displaying the
 // file.
-func NewImageFromResource(resourcePath string) Image {
+func NewImageFromResource(resourcePath string) *ImageClass {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -298,9 +299,10 @@ func NewImageFromResource(resourcePath string) Image {
 
 	_cret = C.gtk_image_new_from_resource(_arg1)
 
-	var _image Image // out
+	var _image *ImageClass // out
 
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Image)
+	_image = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ImageClass)
 
 	return _image
 }
@@ -309,7 +311,7 @@ func NewImageFromResource(resourcePath string) Image {
 func (i *ImageClass) Clear() {
 	var _arg0 *C.GtkImage // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
 
 	C.gtk_image_clear(_arg0)
 }
@@ -323,7 +325,7 @@ func (i *ImageClass) IconName() string {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
 
 	_cret = C.gtk_image_get_icon_name(_arg0)
 
@@ -339,13 +341,13 @@ func (i *ImageClass) IconSize() IconSize {
 	var _arg0 *C.GtkImage   // out
 	var _cret C.GtkIconSize // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
 
 	_cret = C.gtk_image_get_icon_size(_arg0)
 
 	var _iconSize IconSize // out
 
-	_iconSize = IconSize(_cret)
+	_iconSize = (IconSize)(C.GtkIconSize)
 
 	return _iconSize
 }
@@ -355,7 +357,7 @@ func (i *ImageClass) PixelSize() int {
 	var _arg0 *C.GtkImage // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
 
 	_cret = C.gtk_image_get_pixel_size(_arg0)
 
@@ -375,13 +377,13 @@ func (i *ImageClass) StorageType() ImageType {
 	var _arg0 *C.GtkImage    // out
 	var _cret C.GtkImageType // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
 
 	_cret = C.gtk_image_get_storage_type(_arg0)
 
 	var _imageType ImageType // out
 
-	_imageType = ImageType(_cret)
+	_imageType = (ImageType)(C.GtkImageType)
 
 	return _imageType
 }
@@ -393,7 +395,7 @@ func (i *ImageClass) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -407,7 +409,7 @@ func (i *ImageClass) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -424,8 +426,8 @@ func (i *ImageClass) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((&gdkpixbuf.Pixbuf).Native()))
 
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }
@@ -437,22 +439,11 @@ func (i *ImageClass) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_resource(_arg0, _arg1)
-}
-
-// SetIconSize suggests an icon size to the theme for named icons.
-func (i *ImageClass) SetIconSize(iconSize IconSize) {
-	var _arg0 *C.GtkImage   // out
-	var _arg1 C.GtkIconSize // out
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-	_arg1 = C.GtkIconSize(iconSize)
-
-	C.gtk_image_set_icon_size(_arg0, _arg1)
 }
 
 // SetPixelSize sets the pixel size to use for named icons.
@@ -463,7 +454,7 @@ func (i *ImageClass) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.int       // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer((&Image).Native()))
 	_arg1 = C.int(pixelSize)
 
 	C.gtk_image_set_pixel_size(_arg0, _arg1)

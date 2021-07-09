@@ -132,8 +132,8 @@ func (i *IconInterface) Equal(icon2 Icon) bool {
 	var _arg1 *C.GIcon   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer((&Icon).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((&Icon).Native()))
 
 	_cret = C.g_icon_equal(_arg0, _arg1)
 
@@ -155,13 +155,13 @@ func (i *IconInterface) Serialize() *glib.Variant {
 	var _arg0 *C.GIcon    // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer((&Icon).Native()))
 
 	_cret = C.g_icon_serialize(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(unsafe.Pointer(*C.GVariant))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
@@ -189,7 +189,7 @@ func (i *IconInterface) String() string {
 	var _arg0 *C.GIcon // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer((&Icon).Native()))
 
 	_cret = C.g_icon_to_string(_arg0)
 

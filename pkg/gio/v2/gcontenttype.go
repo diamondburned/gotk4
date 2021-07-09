@@ -129,7 +129,7 @@ func ContentTypeGetGenericIconName(typ string) string {
 }
 
 // ContentTypeGetIcon gets the icon for a content type.
-func ContentTypeGetIcon(typ string) Icon {
+func ContentTypeGetIcon(typ string) *IconInterface {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -138,9 +138,10 @@ func ContentTypeGetIcon(typ string) Icon {
 
 	_cret = C.g_content_type_get_icon(_arg1)
 
-	var _icon Icon // out
+	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
+	_icon = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
 
 	return _icon
 }
@@ -191,7 +192,7 @@ func ContentTypeGetMIMEType(typ string) string {
 }
 
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
-func ContentTypeGetSymbolicIcon(typ string) Icon {
+func ContentTypeGetSymbolicIcon(typ string) *IconInterface {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -200,9 +201,10 @@ func ContentTypeGetSymbolicIcon(typ string) Icon {
 
 	_cret = C.g_content_type_get_symbolic_icon(_arg1)
 
-	var _icon Icon // out
+	var _icon *IconInterface // out
 
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Icon)
+	_icon = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*IconInterface)
 
 	return _icon
 }
@@ -253,7 +255,7 @@ func ContentTypeGuessForTree(root File) []string {
 	var _arg1 *C.GFile // out
 	var _cret **C.gchar
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(root.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((&File).Native()))
 
 	_cret = C.g_content_type_guess_for_tree(_arg1)
 

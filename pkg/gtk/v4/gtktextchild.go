@@ -64,14 +64,15 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 // [method@Gtk.TextBuffer.insert_child_anchor]. To perform the creation and
 // insertion in one step, use the convenience function
 // [method@Gtk.TextBuffer.create_child_anchor].
-func NewTextChildAnchor() TextChildAnchor {
+func NewTextChildAnchor() *TextChildAnchorClass {
 	var _cret *C.GtkTextChildAnchor // in
 
 	_cret = C.gtk_text_child_anchor_new()
 
-	var _textChildAnchor TextChildAnchor // out
+	var _textChildAnchor *TextChildAnchorClass // out
 
-	_textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(TextChildAnchor)
+	_textChildAnchor = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*TextChildAnchorClass)
 
 	return _textChildAnchor
 }
@@ -86,7 +87,7 @@ func (a *TextChildAnchorClass) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer((&TextChildAnchor).Native()))
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 

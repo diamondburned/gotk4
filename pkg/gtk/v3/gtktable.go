@@ -69,25 +69,6 @@ func marshalAttachOptions(p uintptr) (interface{}, error) {
 type Table interface {
 	gextras.Objector
 
-	// Attach adds a widget to a table. The number of “cells” that a widget will
-	// occupy is specified by @left_attach, @right_attach, @top_attach and
-	// @bottom_attach. These each represent the leftmost, rightmost, uppermost
-	// and lowest column and row numbers of the table. (Columns and rows are
-	// indexed from zero).
-	//
-	// To make a button occupy the lower right cell of a 2x2 table, use
-	//
-	//    gtk_table_attach (table, button,
-	//                      1, 2, // left, right attach
-	//                      1, 2, // top, bottom attach
-	//                      xoptions, yoptions,
-	//                      xpadding, ypadding);
-	//
-	// If you want to make the button span the entire bottom row, use
-	// @left_attach == 0 and @right_attach = 2 instead.
-	//
-	// Deprecated: since version 3.4.
-	Attach(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint)
 	// AttachDefaults as there are many options associated with
 	// gtk_table_attach(), this convenience function provides the programmer
 	// with a means to add children to a table with identical padding and
@@ -174,7 +155,6 @@ func wrapTable(obj *externglib.Object) Table {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				Object:           obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 				BuildableInterface: BuildableInterface{
 					Object: obj,
@@ -203,7 +183,7 @@ func marshalTable(p uintptr) (interface{}, error) {
 // silently interpreted as 1.
 //
 // Deprecated: since version 3.4.
-func NewTable(rows uint, columns uint, homogeneous bool) Table {
+func NewTable(rows uint, columns uint, homogeneous bool) *TableClass {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 	var _arg3 C.gboolean   // out
@@ -217,55 +197,12 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 
 	_cret = C.gtk_table_new(_arg1, _arg2, _arg3)
 
-	var _table Table // out
+	var _table *TableClass // out
 
-	_table = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Table)
+	_table = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*TableClass)
 
 	return _table
-}
-
-// Attach adds a widget to a table. The number of “cells” that a widget will
-// occupy is specified by @left_attach, @right_attach, @top_attach and
-// @bottom_attach. These each represent the leftmost, rightmost, uppermost and
-// lowest column and row numbers of the table. (Columns and rows are indexed
-// from zero).
-//
-// To make a button occupy the lower right cell of a 2x2 table, use
-//
-//    gtk_table_attach (table, button,
-//                      1, 2, // left, right attach
-//                      1, 2, // top, bottom attach
-//                      xoptions, yoptions,
-//                      xpadding, ypadding);
-//
-// If you want to make the button span the entire bottom row, use @left_attach
-// == 0 and @right_attach = 2 instead.
-//
-// Deprecated: since version 3.4.
-func (t *TableClass) Attach(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
-	var _arg0 *C.GtkTable        // out
-	var _arg1 *C.GtkWidget       // out
-	var _arg2 C.guint            // out
-	var _arg3 C.guint            // out
-	var _arg4 C.guint            // out
-	var _arg5 C.guint            // out
-	var _arg6 C.GtkAttachOptions // out
-	var _arg7 C.GtkAttachOptions // out
-	var _arg8 C.guint            // out
-	var _arg9 C.guint            // out
-
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = C.guint(leftAttach)
-	_arg3 = C.guint(rightAttach)
-	_arg4 = C.guint(topAttach)
-	_arg5 = C.guint(bottomAttach)
-	_arg6 = C.GtkAttachOptions(xoptions)
-	_arg7 = C.GtkAttachOptions(yoptions)
-	_arg8 = C.guint(xpadding)
-	_arg9 = C.guint(ypadding)
-
-	C.gtk_table_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
 
 // AttachDefaults as there are many options associated with gtk_table_attach(),
@@ -283,8 +220,8 @@ func (t *TableClass) AttachDefaults(widget Widget, leftAttach uint, rightAttach 
 	var _arg4 C.guint      // out
 	var _arg5 C.guint      // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 	_arg2 = C.guint(leftAttach)
 	_arg3 = C.guint(rightAttach)
 	_arg4 = C.guint(topAttach)
@@ -302,7 +239,7 @@ func (t *TableClass) ColSpacing(column uint) uint {
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 	_arg1 = C.guint(column)
 
 	_cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
@@ -323,7 +260,7 @@ func (t *TableClass) DefaultColSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 
 	_cret = C.gtk_table_get_default_col_spacing(_arg0)
 
@@ -343,7 +280,7 @@ func (t *TableClass) DefaultRowSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 
 	_cret = C.gtk_table_get_default_row_spacing(_arg0)
 
@@ -362,7 +299,7 @@ func (t *TableClass) Homogeneous() bool {
 	var _arg0 *C.GtkTable // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 
 	_cret = C.gtk_table_get_homogeneous(_arg0)
 
@@ -384,7 +321,7 @@ func (t *TableClass) RowSpacing(row uint) uint {
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 	_arg1 = C.guint(row)
 
 	_cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
@@ -404,7 +341,7 @@ func (t *TableClass) Size() (rows uint, columns uint) {
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 
 	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
 
@@ -426,7 +363,7 @@ func (t *TableClass) Resize(rows uint, columns uint) {
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 	_arg1 = C.guint(rows)
 	_arg2 = C.guint(columns)
 
@@ -442,7 +379,7 @@ func (t *TableClass) SetColSpacing(column uint, spacing uint) {
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 	_arg1 = C.guint(column)
 	_arg2 = C.guint(spacing)
 
@@ -457,7 +394,7 @@ func (t *TableClass) SetColSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_table_set_col_spacings(_arg0, _arg1)
@@ -471,7 +408,7 @@ func (t *TableClass) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -488,7 +425,7 @@ func (t *TableClass) SetRowSpacing(row uint, spacing uint) {
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 	_arg1 = C.guint(row)
 	_arg2 = C.guint(spacing)
 
@@ -502,7 +439,7 @@ func (t *TableClass) SetRowSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer((&Table).Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_table_set_row_spacings(_arg0, _arg1)
@@ -523,9 +460,10 @@ func (t *TableChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-func (t *TableChild) Widget() Widget {
-	var v Widget // out
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(t.native.widget))).(Widget)
+func (t *TableChild) Widget() *WidgetClass {
+	var v *WidgetClass // out
+	v = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(t.native.widget))).(*WidgetClass)
 	return v
 }
 

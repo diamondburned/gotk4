@@ -61,9 +61,9 @@ type DisplayManager interface {
 	gextras.Objector
 
 	// DefaultDisplay gets the default Display.
-	DefaultDisplay() Display
+	DefaultDisplay() *DisplayClass
 	// OpenDisplay opens a display.
-	OpenDisplay(name string) Display
+	OpenDisplay(name string) *DisplayClass
 	// SetDefaultDisplay sets @display as the default display.
 	SetDefaultDisplay(display Display)
 }
@@ -88,36 +88,38 @@ func marshalDisplayManager(p uintptr) (interface{}, error) {
 }
 
 // DefaultDisplay gets the default Display.
-func (m *DisplayManagerClass) DefaultDisplay() Display {
+func (m *DisplayManagerClass) DefaultDisplay() *DisplayClass {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GdkDisplay        // in
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer((&DisplayManager).Native()))
 
 	_cret = C.gdk_display_manager_get_default_display(_arg0)
 
-	var _display Display // out
+	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
+	_display = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
 
 	return _display
 }
 
 // OpenDisplay opens a display.
-func (m *DisplayManagerClass) OpenDisplay(name string) Display {
+func (m *DisplayManagerClass) OpenDisplay(name string) *DisplayClass {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.gchar             // out
 	var _cret *C.GdkDisplay        // in
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer((&DisplayManager).Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 
-	var _display Display // out
+	var _display *DisplayClass // out
 
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Display)
+	_display = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DisplayClass)
 
 	return _display
 }
@@ -127,8 +129,8 @@ func (m *DisplayManagerClass) SetDefaultDisplay(display Display) {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.GdkDisplay        // out
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer((&DisplayManager).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((&Display).Native()))
 
 	C.gdk_display_manager_set_default_display(_arg0, _arg1)
 }

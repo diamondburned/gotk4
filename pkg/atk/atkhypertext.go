@@ -28,7 +28,7 @@ func init() {
 // yet, so the interface currently has no use.
 type HypertextOverrider interface {
 	// Link gets the link in this hypertext document at index @link_index
-	Link(linkIndex int) Hyperlink
+	Link(linkIndex int) *HyperlinkClass
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by @char_index.
 	LinkIndex(charIndex int) int
@@ -48,7 +48,7 @@ type Hypertext interface {
 	gextras.Objector
 
 	// Link gets the link in this hypertext document at index @link_index
-	Link(linkIndex int) Hyperlink
+	Link(linkIndex int) *HyperlinkClass
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by @char_index.
 	LinkIndex(charIndex int) int
@@ -76,19 +76,20 @@ func marshalHypertext(p uintptr) (interface{}, error) {
 }
 
 // Link gets the link in this hypertext document at index @link_index
-func (h *HypertextInterface) Link(linkIndex int) Hyperlink {
+func (h *HypertextInterface) Link(linkIndex int) *HyperlinkClass {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkHyperlink // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer((&Hypertext).Native()))
 	_arg1 = C.gint(linkIndex)
 
 	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
 
-	var _hyperlink Hyperlink // out
+	var _hyperlink *HyperlinkClass // out
 
-	_hyperlink = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Hyperlink)
+	_hyperlink = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*HyperlinkClass)
 
 	return _hyperlink
 }
@@ -100,7 +101,7 @@ func (h *HypertextInterface) LinkIndex(charIndex int) int {
 	var _arg1 C.gint          // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer((&Hypertext).Native()))
 	_arg1 = C.gint(charIndex)
 
 	_cret = C.atk_hypertext_get_link_index(_arg0, _arg1)
@@ -117,7 +118,7 @@ func (h *HypertextInterface) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer((&Hypertext).Native()))
 
 	_cret = C.atk_hypertext_get_n_links(_arg0)
 

@@ -95,14 +95,15 @@ func marshalUnixFDList(p uintptr) (interface{}, error) {
 }
 
 // NewUnixFDList creates a new FDList containing no file descriptors.
-func NewUnixFDList() UnixFDList {
+func NewUnixFDList() *UnixFDListClass {
 	var _cret *C.GUnixFDList // in
 
 	_cret = C.g_unix_fd_list_new()
 
-	var _unixFDList UnixFDList // out
+	var _unixFDList *UnixFDListClass // out
 
-	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDList)
+	_unixFDList = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixFDListClass)
 
 	return _unixFDList
 }
@@ -114,7 +115,7 @@ func NewUnixFDList() UnixFDList {
 // Each file descriptor in the array should be set to close-on-exec.
 //
 // If @n_fds is -1 then @fds must be terminated with -1.
-func NewUnixFDListFromArray(fds []int) UnixFDList {
+func NewUnixFDListFromArray(fds []int) *UnixFDListClass {
 	var _arg1 *C.gint
 	var _arg2 C.gint
 	var _cret *C.GUnixFDList // in
@@ -124,9 +125,10 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 
 	_cret = C.g_unix_fd_list_new_from_array(_arg1, _arg2)
 
-	var _unixFDList UnixFDList // out
+	var _unixFDList *UnixFDListClass // out
 
-	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(UnixFDList)
+	_unixFDList = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*UnixFDListClass)
 
 	return _unixFDList
 }
@@ -149,7 +151,7 @@ func (l *UnixFDListClass) Append(fd int) (int, error) {
 	var _cret C.gint         // in
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer((&UnixFDList).Native()))
 	_arg1 = C.gint(fd)
 
 	_cret = C.g_unix_fd_list_append(_arg0, _arg1, &_cerr)
@@ -179,7 +181,7 @@ func (l *UnixFDListClass) Get(index_ int) (int, error) {
 	var _cret C.gint         // in
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer((&UnixFDList).Native()))
 	_arg1 = C.gint(index_)
 
 	_cret = C.g_unix_fd_list_get(_arg0, _arg1, &_cerr)
@@ -199,7 +201,7 @@ func (l *UnixFDListClass) Length() int {
 	var _arg0 *C.GUnixFDList // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer((&UnixFDList).Native()))
 
 	_cret = C.g_unix_fd_list_get_length(_arg0)
 

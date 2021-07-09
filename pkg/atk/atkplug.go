@@ -83,14 +83,15 @@ func marshalPlug(p uintptr) (interface{}, error) {
 }
 
 // NewPlug creates a new Plug instance.
-func NewPlug() Plug {
+func NewPlug() *PlugClass {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_plug_new()
 
-	var _plug Plug // out
+	var _plug *PlugClass // out
 
-	_plug = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret))).(Plug)
+	_plug = gextras.CastObject(
+		externglib.AssumeOwnership(unsafe.Pointer(_cret))).(*PlugClass)
 
 	return _plug
 }
@@ -106,7 +107,7 @@ func (p *PlugClass) ID() string {
 	var _arg0 *C.AtkPlug // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer((&Plug).Native()))
 
 	_cret = C.atk_plug_get_id(_arg0)
 
@@ -131,8 +132,8 @@ func (p *PlugClass) SetChild(child Object) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer((&Plug).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((&Object).Native()))
 
 	C.atk_plug_set_child(_arg0, _arg1)
 }

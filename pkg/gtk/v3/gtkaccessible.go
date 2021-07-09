@@ -58,7 +58,7 @@ type Accessible interface {
 	ConnectWidgetDestroyed()
 	// Widget gets the Widget corresponding to the Accessible. The returned
 	// widget does not have a reference added, so you do not need to unref it.
-	Widget() Widget
+	Widget() *WidgetClass
 	// SetWidget sets the Widget corresponding to the Accessible.
 	//
 	// @accessible will not hold a reference to @widget. It is the caller’s
@@ -95,24 +95,25 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 func (a *AccessibleClass) ConnectWidgetDestroyed() {
 	var _arg0 *C.GtkAccessible // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&Accessible).Native()))
 
 	C.gtk_accessible_connect_widget_destroyed(_arg0)
 }
 
 // Widget gets the Widget corresponding to the Accessible. The returned widget
 // does not have a reference added, so you do not need to unref it.
-func (a *AccessibleClass) Widget() Widget {
+func (a *AccessibleClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkAccessible // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&Accessible).Native()))
 
 	_cret = C.gtk_accessible_get_widget(_arg0)
 
-	var _widget Widget // out
+	var _widget *WidgetClass // out
 
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Widget)
+	_widget = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*WidgetClass)
 
 	return _widget
 }
@@ -126,8 +127,8 @@ func (a *AccessibleClass) SetWidget(widget Widget) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer((&Accessible).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((&Widget).Native()))
 
 	C.gtk_accessible_set_widget(_arg0, _arg1)
 }

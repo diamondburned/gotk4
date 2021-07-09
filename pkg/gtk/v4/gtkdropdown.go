@@ -60,21 +60,21 @@ type DropDown interface {
 	// items.
 	//
 	// See [method@Gtk.DropDown.set_expression].
-	Expression() Expression
+	Expression() *ExpressionClass
 	// Factory gets the factory that's currently used to populate list items.
 	//
 	// The factory returned by this function is always used for the item in the
 	// button. It is also used for items in the popup if
 	// [property@Gtk.DropDown:list-factory] is not set.
-	Factory() ListItemFactory
+	Factory() *ListItemFactoryClass
 	// ListFactory gets the factory that's currently used to populate list items
 	// in the popup.
-	ListFactory() ListItemFactory
+	ListFactory() *ListItemFactoryClass
 	// Selected gets the position of the selected item.
 	Selected() uint
 	// SelectedItem gets the selected item. If no item is selected, nil is
 	// returned.
-	SelectedItem() gextras.Objector
+	SelectedItem() *externglib.Object
 	// SetEnableSearch sets whether a search entry will be shown in the popup
 	// that allows to search for items in the list.
 	//
@@ -112,7 +112,6 @@ func wrapDropDown(obj *externglib.Object) DropDown {
 	return &DropDownClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			AccessibleInterface: AccessibleInterface{
 				Object: obj,
@@ -144,7 +143,7 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 
 // NewDropDownFromStrings creates a new `GtkDropDown` that is populated with the
 // strings.
-func NewDropDownFromStrings(strings []string) DropDown {
+func NewDropDownFromStrings(strings []string) *DropDownClass {
 	var _arg1 **C.char
 	var _cret *C.GtkWidget // in
 
@@ -160,9 +159,10 @@ func NewDropDownFromStrings(strings []string) DropDown {
 
 	_cret = C.gtk_drop_down_new_from_strings(_arg1)
 
-	var _dropDown DropDown // out
+	var _dropDown *DropDownClass // out
 
-	_dropDown = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(DropDown)
+	_dropDown = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*DropDownClass)
 
 	return _dropDown
 }
@@ -172,7 +172,7 @@ func (s *DropDownClass) EnableSearch() bool {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
 
 	_cret = C.gtk_drop_down_get_enable_search(_arg0)
 
@@ -188,17 +188,18 @@ func (s *DropDownClass) EnableSearch() bool {
 // Expression gets the expression set that is used to obtain strings from items.
 //
 // See [method@Gtk.DropDown.set_expression].
-func (s *DropDownClass) Expression() Expression {
+func (s *DropDownClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkDropDown   // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
 
 	_cret = C.gtk_drop_down_get_expression(_arg0)
 
-	var _expression Expression // out
+	var _expression *ExpressionClass // out
 
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(Expression)
+	_expression = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ExpressionClass)
 
 	return _expression
 }
@@ -208,34 +209,36 @@ func (s *DropDownClass) Expression() Expression {
 // The factory returned by this function is always used for the item in the
 // button. It is also used for items in the popup if
 // [property@Gtk.DropDown:list-factory] is not set.
-func (s *DropDownClass) Factory() ListItemFactory {
+func (s *DropDownClass) Factory() *ListItemFactoryClass {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
 
 	_cret = C.gtk_drop_down_get_factory(_arg0)
 
-	var _listItemFactory ListItemFactory // out
+	var _listItemFactory *ListItemFactoryClass // out
 
-	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListItemFactory)
+	_listItemFactory = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ListItemFactoryClass)
 
 	return _listItemFactory
 }
 
 // ListFactory gets the factory that's currently used to populate list items in
 // the popup.
-func (s *DropDownClass) ListFactory() ListItemFactory {
+func (s *DropDownClass) ListFactory() *ListItemFactoryClass {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
 
 	_cret = C.gtk_drop_down_get_list_factory(_arg0)
 
-	var _listItemFactory ListItemFactory // out
+	var _listItemFactory *ListItemFactoryClass // out
 
-	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(ListItemFactory)
+	_listItemFactory = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(_cret))).(*ListItemFactoryClass)
 
 	return _listItemFactory
 }
@@ -245,7 +248,7 @@ func (s *DropDownClass) Selected() uint {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
 
 	_cret = C.gtk_drop_down_get_selected(_arg0)
 
@@ -257,17 +260,18 @@ func (s *DropDownClass) Selected() uint {
 }
 
 // SelectedItem gets the selected item. If no item is selected, nil is returned.
-func (s *DropDownClass) SelectedItem() gextras.Objector {
+func (s *DropDownClass) SelectedItem() *externglib.Object {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gpointer     // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
 
 	_cret = C.gtk_drop_down_get_selected_item(_arg0)
 
-	var _object gextras.Objector // out
+	var _object *externglib.Object // out
 
-	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret))).(gextras.Objector)
+	_object = gextras.CastObject(
+		externglib.Take(unsafe.Pointer(&_cret))).(*externglib.Object)
 
 	return _object
 }
@@ -280,7 +284,7 @@ func (s *DropDownClass) SetEnableSearch(enableSearch bool) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
 	if enableSearch {
 		_arg1 = C.TRUE
 	}
@@ -297,8 +301,8 @@ func (s *DropDownClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkDropDown   // out
 	var _arg1 *C.GtkExpression // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((&Expression).Native()))
 
 	C.gtk_drop_down_set_expression(_arg0, _arg1)
 }
@@ -308,8 +312,8 @@ func (s *DropDownClass) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((&ListItemFactory).Native()))
 
 	C.gtk_drop_down_set_factory(_arg0, _arg1)
 }
@@ -320,8 +324,8 @@ func (s *DropDownClass) SetListFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((&ListItemFactory).Native()))
 
 	C.gtk_drop_down_set_list_factory(_arg0, _arg1)
 }
@@ -331,7 +335,7 @@ func (s *DropDownClass) SetSelected(position uint) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer((&DropDown).Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_drop_down_set_selected(_arg0, _arg1)

@@ -58,7 +58,6 @@ var _ CellEditable = (*CellEditableInterface)(nil)
 func wrapCellEditable(obj *externglib.Object) CellEditable {
 	return &CellEditableInterface{
 		WidgetClass: WidgetClass{
-			Object:           obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
 			BuildableInterface: BuildableInterface{
 				Object: obj,
@@ -77,7 +76,7 @@ func marshalCellEditable(p uintptr) (interface{}, error) {
 func (c *CellEditableInterface) EditingDone() {
 	var _arg0 *C.GtkCellEditable // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer((&CellEditable).Native()))
 
 	C.gtk_cell_editable_editing_done(_arg0)
 }
@@ -86,7 +85,7 @@ func (c *CellEditableInterface) EditingDone() {
 func (c *CellEditableInterface) RemoveWidget() {
 	var _arg0 *C.GtkCellEditable // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer((&CellEditable).Native()))
 
 	C.gtk_cell_editable_remove_widget(_arg0)
 }

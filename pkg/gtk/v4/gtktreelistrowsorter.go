@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_list_row_sorter_get_type()), F: marshalTreeListRowSorter},
+		{T: externglib.Type(C.gtk_tree_list_row_sorter_get_type()), F: marshalTreeListRowSorterrer},
 	})
+}
+
+// TreeListRowSorterrer describes TreeListRowSorter's methods.
+type TreeListRowSorterrer interface {
+	gextras.Objector
+
+	GetSorter() *Sorter
+	SetSorter(sorter Sorterrer)
 }
 
 // TreeListRowSorter: `GtkTreeListRowSorter` is a special-purpose sorter that
@@ -33,37 +41,24 @@ func init() {
 // gtk_sort_list_model_new (tree_model, sorter); selection =
 // gtk_single_selection_new (sort_model); gtk_column_view_set_model (view,
 // G_LIST_MODEL (selection)); “`
-type TreeListRowSorter interface {
-	gextras.Objector
-
-	// Sorter returns the sorter used by @self.
-	Sorter() *SorterClass
-	// SetSorter sets the sorter to use for items with the same parent.
-	//
-	// This sorter will be passed the [property@Gtk.TreeListRow:item] of the
-	// tree list rows passed to @self.
-	SetSorter(sorter Sorter)
+type TreeListRowSorter struct {
+	Sorter
 }
 
-// TreeListRowSorterClass implements the TreeListRowSorter interface.
-type TreeListRowSorterClass struct {
-	SorterClass
-}
+var _ TreeListRowSorterrer = (*TreeListRowSorter)(nil)
 
-var _ TreeListRowSorter = (*TreeListRowSorterClass)(nil)
-
-func wrapTreeListRowSorter(obj *externglib.Object) TreeListRowSorter {
-	return &TreeListRowSorterClass{
-		SorterClass: SorterClass{
+func wrapTreeListRowSorterrer(obj *externglib.Object) TreeListRowSorterrer {
+	return &TreeListRowSorter{
+		Sorter: Sorter{
 			Object: obj,
 		},
 	}
 }
 
-func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
+func marshalTreeListRowSorterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeListRowSorter(obj), nil
+	return wrapTreeListRowSorterrer(obj), nil
 }
 
 // NewTreeListRowSorter: create a special-purpose sorter that applies the
@@ -71,7 +66,7 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 //
 // Note that this sorter relies on [property@Gtk.TreeListModel:passthrough]
 // being false as it can only sort [class@Gtk.TreeListRow]s.
-func NewTreeListRowSorter(sorter Sorter) *TreeListRowSorterClass {
+func NewTreeListRowSorter(sorter Sorterrer) *TreeListRowSorter {
 	var _arg1 *C.GtkSorter            // out
 	var _cret *C.GtkTreeListRowSorter // in
 
@@ -79,15 +74,15 @@ func NewTreeListRowSorter(sorter Sorter) *TreeListRowSorterClass {
 
 	_cret = C.gtk_tree_list_row_sorter_new(_arg1)
 
-	var _treeListRowSorter *TreeListRowSorterClass // out
+	var _treeListRowSorter *TreeListRowSorter // out
 
-	_treeListRowSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeListRowSorterClass)
+	_treeListRowSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeListRowSorter)
 
 	return _treeListRowSorter
 }
 
-// Sorter returns the sorter used by @self.
-func (self *TreeListRowSorterClass) Sorter() *SorterClass {
+// GetSorter returns the sorter used by @self.
+func (self *TreeListRowSorter) GetSorter() *Sorter {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _cret *C.GtkSorter            // in
 
@@ -95,9 +90,9 @@ func (self *TreeListRowSorterClass) Sorter() *SorterClass {
 
 	_cret = C.gtk_tree_list_row_sorter_get_sorter(_arg0)
 
-	var _sorter *SorterClass // out
+	var _sorter *Sorter // out
 
-	_sorter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SorterClass)
+	_sorter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Sorter)
 
 	return _sorter
 }
@@ -106,7 +101,7 @@ func (self *TreeListRowSorterClass) Sorter() *SorterClass {
 //
 // This sorter will be passed the [property@Gtk.TreeListRow:item] of the tree
 // list rows passed to @self.
-func (self *TreeListRowSorterClass) SetSorter(sorter Sorter) {
+func (self *TreeListRowSorter) SetSorter(sorter Sorterrer) {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _arg1 *C.GtkSorter            // out
 

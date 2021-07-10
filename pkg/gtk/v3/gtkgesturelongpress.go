@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_long_press_get_type()), F: marshalGestureLongPress},
+		{T: externglib.Type(C.gtk_gesture_long_press_get_type()), F: marshalGestureLongPresser},
 	})
+}
+
+// GestureLongPresser describes GestureLongPress's methods.
+type GestureLongPresser interface {
+	gextras.Objector
+
+	privateGestureLongPress()
 }
 
 // GestureLongPress is a Gesture implementation able to recognize long presses,
@@ -30,24 +37,17 @@ func init() {
 // If the touchpoint is lifted before the timeout passes, or if it drifts too
 // far of the initial press point, the GestureLongPress::cancelled signal will
 // be emitted.
-type GestureLongPress interface {
-	gextras.Objector
-
-	privateGestureLongPressClass()
+type GestureLongPress struct {
+	GestureSingle
 }
 
-// GestureLongPressClass implements the GestureLongPress interface.
-type GestureLongPressClass struct {
-	GestureSingleClass
-}
+var _ GestureLongPresser = (*GestureLongPress)(nil)
 
-var _ GestureLongPress = (*GestureLongPressClass)(nil)
-
-func wrapGestureLongPress(obj *externglib.Object) GestureLongPress {
-	return &GestureLongPressClass{
-		GestureSingleClass: GestureSingleClass{
-			GestureClass: GestureClass{
-				EventControllerClass: EventControllerClass{
+func wrapGestureLongPresser(obj *externglib.Object) GestureLongPresser {
+	return &GestureLongPress{
+		GestureSingle: GestureSingle{
+			Gesture: Gesture{
+				EventController: EventController{
 					Object: obj,
 				},
 			},
@@ -55,15 +55,15 @@ func wrapGestureLongPress(obj *externglib.Object) GestureLongPress {
 	}
 }
 
-func marshalGestureLongPress(p uintptr) (interface{}, error) {
+func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureLongPress(obj), nil
+	return wrapGestureLongPresser(obj), nil
 }
 
 // NewGestureLongPress returns a newly created Gesture that recognizes long
 // presses.
-func NewGestureLongPress(widget Widget) *GestureLongPressClass {
+func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
@@ -71,11 +71,11 @@ func NewGestureLongPress(widget Widget) *GestureLongPressClass {
 
 	_cret = C.gtk_gesture_long_press_new(_arg1)
 
-	var _gestureLongPress *GestureLongPressClass // out
+	var _gestureLongPress *GestureLongPress // out
 
-	_gestureLongPress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureLongPressClass)
+	_gestureLongPress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureLongPress)
 
 	return _gestureLongPress
 }
 
-func (*GestureLongPressClass) privateGestureLongPressClass() {}
+func (*GestureLongPress) privateGestureLongPress() {}

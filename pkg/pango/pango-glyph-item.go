@@ -33,12 +33,6 @@ type GlyphItem struct {
 	native C.PangoGlyphItem
 }
 
-// WrapGlyphItem wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapGlyphItem(ptr unsafe.Pointer) *GlyphItem {
-	return (*GlyphItem)(ptr)
-}
-
 func marshalGlyphItem(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*GlyphItem)(unsafe.Pointer(b)), nil
@@ -62,7 +56,7 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 
 	_glyphItem = (*GlyphItem)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.free(unsafe.Pointer(v))
+		C.pango_glyph_item_free((*C.PangoGlyphItem)(unsafe.Pointer(v)))
 	})
 
 	return _glyphItem
@@ -104,7 +98,7 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 
 	_glyphItem = (*GlyphItem)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.free(unsafe.Pointer(v))
+		C.pango_glyph_item_free((*C.PangoGlyphItem)(unsafe.Pointer(v)))
 	})
 
 	return _glyphItem
@@ -146,12 +140,6 @@ type GlyphItemIter struct {
 	native C.PangoGlyphItemIter
 }
 
-// WrapGlyphItemIter wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapGlyphItemIter(ptr unsafe.Pointer) *GlyphItemIter {
-	return (*GlyphItemIter)(ptr)
-}
-
 func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*GlyphItemIter)(unsafe.Pointer(b)), nil
@@ -175,7 +163,7 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 
 	_glyphItemIter = (*GlyphItemIter)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphItemIter, func(v *GlyphItemIter) {
-		C.free(unsafe.Pointer(v))
+		C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(unsafe.Pointer(v)))
 	})
 
 	return _glyphItemIter

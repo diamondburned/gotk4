@@ -18,8 +18,22 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButton},
+		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtonner},
 	})
+}
+
+// FontButtonner describes FontButton's methods.
+type FontButtonner interface {
+	gextras.Objector
+
+	Modal() bool
+	Title() string
+	UseFont() bool
+	UseSize() bool
+	SetModal(modal bool)
+	SetTitle(title string)
+	SetUseFont(useFont bool)
+	SetUseSize(useSize bool)
 }
 
 // FontButton: the `GtkFontButton` allows to open a font chooser dialog to
@@ -36,96 +50,72 @@ func init() {
 //
 // `GtkFontButton` has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
-type FontButton interface {
-	gextras.Objector
-
-	// Modal gets whether the dialog is modal.
-	Modal() bool
-	// Title retrieves the title of the font chooser dialog.
-	Title() string
-	// UseFont returns whether the selected font is used in the label.
-	UseFont() bool
-	// UseSize returns whether the selected size is used in the label.
-	UseSize() bool
-	// SetModal sets whether the dialog should be modal.
-	SetModal(modal bool)
-	// SetTitle sets the title for the font chooser dialog.
-	SetTitle(title string)
-	// SetUseFont: if @use_font is true, the font name will be written using the
-	// selected font.
-	SetUseFont(useFont bool)
-	// SetUseSize: if @use_size is true, the font name will be written using the
-	// selected size.
-	SetUseSize(useSize bool)
-}
-
-// FontButtonClass implements the FontButton interface.
-type FontButtonClass struct {
+type FontButton struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	FontChooserIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	FontChooser
 }
 
-var _ FontButton = (*FontButtonClass)(nil)
+var _ FontButtonner = (*FontButton)(nil)
 
-func wrapFontButton(obj *externglib.Object) FontButton {
-	return &FontButtonClass{
+func wrapFontButtonner(obj *externglib.Object) FontButtonner {
+	return &FontButton{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		FontChooserIface: FontChooserIface{
+		FontChooser: FontChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFontButton(p uintptr) (interface{}, error) {
+func marshalFontButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontButton(obj), nil
+	return wrapFontButtonner(obj), nil
 }
 
 // NewFontButton creates a new font picker widget.
-func NewFontButton() *FontButtonClass {
+func NewFontButton() *FontButton {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_font_button_new()
 
-	var _fontButton *FontButtonClass // out
+	var _fontButton *FontButton // out
 
-	_fontButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontButtonClass)
+	_fontButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontButton)
 
 	return _fontButton
 }
 
 // NewFontButtonWithFont creates a new font picker widget showing the given
 // font.
-func NewFontButtonWithFont(fontname string) *FontButtonClass {
+func NewFontButtonWithFont(fontname string) *FontButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -134,15 +124,15 @@ func NewFontButtonWithFont(fontname string) *FontButtonClass {
 
 	_cret = C.gtk_font_button_new_with_font(_arg1)
 
-	var _fontButton *FontButtonClass // out
+	var _fontButton *FontButton // out
 
-	_fontButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontButtonClass)
+	_fontButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontButton)
 
 	return _fontButton
 }
 
 // Modal gets whether the dialog is modal.
-func (fontButton *FontButtonClass) Modal() bool {
+func (fontButton *FontButton) Modal() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
@@ -160,7 +150,7 @@ func (fontButton *FontButtonClass) Modal() bool {
 }
 
 // Title retrieves the title of the font chooser dialog.
-func (fontButton *FontButtonClass) Title() string {
+func (fontButton *FontButton) Title() string {
 	var _arg0 *C.GtkFontButton // out
 	var _cret *C.char          // in
 
@@ -176,7 +166,7 @@ func (fontButton *FontButtonClass) Title() string {
 }
 
 // UseFont returns whether the selected font is used in the label.
-func (fontButton *FontButtonClass) UseFont() bool {
+func (fontButton *FontButton) UseFont() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
@@ -194,7 +184,7 @@ func (fontButton *FontButtonClass) UseFont() bool {
 }
 
 // UseSize returns whether the selected size is used in the label.
-func (fontButton *FontButtonClass) UseSize() bool {
+func (fontButton *FontButton) UseSize() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
@@ -212,7 +202,7 @@ func (fontButton *FontButtonClass) UseSize() bool {
 }
 
 // SetModal sets whether the dialog should be modal.
-func (fontButton *FontButtonClass) SetModal(modal bool) {
+func (fontButton *FontButton) SetModal(modal bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
@@ -225,7 +215,7 @@ func (fontButton *FontButtonClass) SetModal(modal bool) {
 }
 
 // SetTitle sets the title for the font chooser dialog.
-func (fontButton *FontButtonClass) SetTitle(title string) {
+func (fontButton *FontButton) SetTitle(title string) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.char          // out
 
@@ -238,7 +228,7 @@ func (fontButton *FontButtonClass) SetTitle(title string) {
 
 // SetUseFont: if @use_font is true, the font name will be written using the
 // selected font.
-func (fontButton *FontButtonClass) SetUseFont(useFont bool) {
+func (fontButton *FontButton) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
@@ -252,7 +242,7 @@ func (fontButton *FontButtonClass) SetUseFont(useFont bool) {
 
 // SetUseSize: if @use_size is true, the font name will be written using the
 // selected size.
-func (fontButton *FontButtonClass) SetUseSize(useSize bool) {
+func (fontButton *FontButton) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 

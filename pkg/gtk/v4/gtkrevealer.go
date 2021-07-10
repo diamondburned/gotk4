@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_revealer_transition_type_get_type()), F: marshalRevealerTransitionType},
-		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealer},
+		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealerrer},
 	})
 }
 
@@ -54,6 +54,20 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Revealerrer describes Revealer's methods.
+type Revealerrer interface {
+	gextras.Objector
+
+	Child() *Widget
+	ChildRevealed() bool
+	RevealChild() bool
+	TransitionDuration() uint
+	TransitionType() RevealerTransitionType
+	SetChild(child Widgetter)
+	SetRevealChild(revealChild bool)
+	SetTransitionDuration(duration uint)
+}
+
 // Revealer: `GtkRevealer` animates the transition of its child from invisible
 // to visible.
 //
@@ -78,101 +92,67 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 //
 // The child of `GtkRevealer`, if set, is always available in the accessibility
 // tree, regardless of the state of the revealer widget.
-type Revealer interface {
-	gextras.Objector
-
-	// Child gets the child widget of @revealer.
-	Child() *WidgetClass
-	// ChildRevealed returns whether the child is fully revealed.
-	//
-	// In other words, this returns whether the transition to the revealed state
-	// is completed.
-	ChildRevealed() bool
-	// RevealChild returns whether the child is currently revealed.
-	//
-	// This function returns true as soon as the transition is to the revealed
-	// state is started. To learn whether the child is fully revealed (ie the
-	// transition is completed), use [method@Gtk.Revealer.get_child_revealed].
-	RevealChild() bool
-	// TransitionDuration returns the amount of time (in milliseconds) that
-	// transitions will take.
-	TransitionDuration() uint
-	// TransitionType gets the type of animation that will be used for
-	// transitions in @revealer.
-	TransitionType() RevealerTransitionType
-	// SetChild sets the child widget of @revealer.
-	SetChild(child Widget)
-	// SetRevealChild tells the `GtkRevealer` to reveal or conceal its child.
-	//
-	// The transition will be animated with the current transition type of
-	// @revealer.
-	SetRevealChild(revealChild bool)
-	// SetTransitionDuration sets the duration that transitions will take.
-	SetTransitionDuration(duration uint)
-}
-
-// RevealerClass implements the Revealer interface.
-type RevealerClass struct {
+type Revealer struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ Revealer = (*RevealerClass)(nil)
+var _ Revealerrer = (*Revealer)(nil)
 
-func wrapRevealer(obj *externglib.Object) Revealer {
-	return &RevealerClass{
+func wrapRevealerrer(obj *externglib.Object) Revealerrer {
+	return &Revealer{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRevealer(p uintptr) (interface{}, error) {
+func marshalRevealerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRevealer(obj), nil
+	return wrapRevealerrer(obj), nil
 }
 
 // NewRevealer creates a new `GtkRevealer`.
-func NewRevealer() *RevealerClass {
+func NewRevealer() *Revealer {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_revealer_new()
 
-	var _revealer *RevealerClass // out
+	var _revealer *Revealer // out
 
-	_revealer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RevealerClass)
+	_revealer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Revealer)
 
 	return _revealer
 }
 
 // Child gets the child widget of @revealer.
-func (revealer *RevealerClass) Child() *WidgetClass {
+func (revealer *Revealer) Child() *Widget {
 	var _arg0 *C.GtkRevealer // out
 	var _cret *C.GtkWidget   // in
 
@@ -180,9 +160,9 @@ func (revealer *RevealerClass) Child() *WidgetClass {
 
 	_cret = C.gtk_revealer_get_child(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -191,7 +171,7 @@ func (revealer *RevealerClass) Child() *WidgetClass {
 //
 // In other words, this returns whether the transition to the revealed state is
 // completed.
-func (revealer *RevealerClass) ChildRevealed() bool {
+func (revealer *Revealer) ChildRevealed() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
 
@@ -213,7 +193,7 @@ func (revealer *RevealerClass) ChildRevealed() bool {
 // This function returns true as soon as the transition is to the revealed state
 // is started. To learn whether the child is fully revealed (ie the transition
 // is completed), use [method@Gtk.Revealer.get_child_revealed].
-func (revealer *RevealerClass) RevealChild() bool {
+func (revealer *Revealer) RevealChild() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
 
@@ -232,7 +212,7 @@ func (revealer *RevealerClass) RevealChild() bool {
 
 // TransitionDuration returns the amount of time (in milliseconds) that
 // transitions will take.
-func (revealer *RevealerClass) TransitionDuration() uint {
+func (revealer *Revealer) TransitionDuration() uint {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.guint        // in
 
@@ -249,7 +229,7 @@ func (revealer *RevealerClass) TransitionDuration() uint {
 
 // TransitionType gets the type of animation that will be used for transitions
 // in @revealer.
-func (revealer *RevealerClass) TransitionType() RevealerTransitionType {
+func (revealer *Revealer) TransitionType() RevealerTransitionType {
 	var _arg0 *C.GtkRevealer              // out
 	var _cret C.GtkRevealerTransitionType // in
 
@@ -265,7 +245,7 @@ func (revealer *RevealerClass) TransitionType() RevealerTransitionType {
 }
 
 // SetChild sets the child widget of @revealer.
-func (revealer *RevealerClass) SetChild(child Widget) {
+func (revealer *Revealer) SetChild(child Widgetter) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -279,7 +259,7 @@ func (revealer *RevealerClass) SetChild(child Widget) {
 //
 // The transition will be animated with the current transition type of
 // @revealer.
-func (revealer *RevealerClass) SetRevealChild(revealChild bool) {
+func (revealer *Revealer) SetRevealChild(revealChild bool) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.gboolean     // out
 
@@ -292,7 +272,7 @@ func (revealer *RevealerClass) SetRevealChild(revealChild bool) {
 }
 
 // SetTransitionDuration sets the duration that transitions will take.
-func (revealer *RevealerClass) SetTransitionDuration(duration uint) {
+func (revealer *Revealer) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.guint        // out
 

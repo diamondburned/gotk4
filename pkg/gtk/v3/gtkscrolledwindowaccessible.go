@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scrolled_window_accessible_get_type()), F: marshalScrolledWindowAccessible},
+		{T: externglib.Type(C.gtk_scrolled_window_accessible_get_type()), F: marshalScrolledWindowAccessibler},
 	})
 }
 
-type ScrolledWindowAccessible interface {
+// ScrolledWindowAccessibler describes ScrolledWindowAccessible's methods.
+type ScrolledWindowAccessibler interface {
 	gextras.Objector
 
-	privateScrolledWindowAccessibleClass()
+	privateScrolledWindowAccessible()
 }
 
-// ScrolledWindowAccessibleClass implements the ScrolledWindowAccessible interface.
-type ScrolledWindowAccessibleClass struct {
-	ContainerAccessibleClass
+type ScrolledWindowAccessible struct {
+	ContainerAccessible
 }
 
-var _ ScrolledWindowAccessible = (*ScrolledWindowAccessibleClass)(nil)
+var _ ScrolledWindowAccessibler = (*ScrolledWindowAccessible)(nil)
 
-func wrapScrolledWindowAccessible(obj *externglib.Object) ScrolledWindowAccessible {
-	return &ScrolledWindowAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapScrolledWindowAccessibler(obj *externglib.Object) ScrolledWindowAccessibler {
+	return &ScrolledWindowAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapScrolledWindowAccessible(obj *externglib.Object) ScrolledWindowAccessib
 	}
 }
 
-func marshalScrolledWindowAccessible(p uintptr) (interface{}, error) {
+func marshalScrolledWindowAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrolledWindowAccessible(obj), nil
+	return wrapScrolledWindowAccessibler(obj), nil
 }
 
-func (*ScrolledWindowAccessibleClass) privateScrolledWindowAccessibleClass() {}
+func (*ScrolledWindowAccessible) privateScrolledWindowAccessible() {}

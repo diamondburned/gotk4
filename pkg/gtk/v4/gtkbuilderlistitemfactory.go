@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_builder_list_item_factory_get_type()), F: marshalBuilderListItemFactory},
+		{T: externglib.Type(C.gtk_builder_list_item_factory_get_type()), F: marshalyier},
 	})
+}
+
+// yier describes BuilderListItemFactory's methods.
+type yier interface {
+	gextras.Objector
+
+	Resource() string
+	Scope() *BuilderScope
 }
 
 // BuilderListItemFactory: `GtkBuilderListItemFactory` is a `GtkListItemFactory`
@@ -33,41 +41,30 @@ func init() {
 // <binding name="label"> <lookup name="name" type="SettingsKey"> <lookup
 // name="item">GtkListItem</lookup> </lookup> </binding> </object> </property>
 // </template> </interface> “`
-type BuilderListItemFactory interface {
-	gextras.Objector
-
-	// Resource: if the data references a resource, gets the path of that
-	// resource.
-	Resource() string
-	// Scope gets the scope used when constructing listitems.
-	Scope() *BuilderScopeIface
+type BuilderListItemFactory struct {
+	ListItemFactory
 }
 
-// BuilderListItemFactoryClass implements the BuilderListItemFactory interface.
-type BuilderListItemFactoryClass struct {
-	ListItemFactoryClass
-}
+var _ yier = (*BuilderListItemFactory)(nil)
 
-var _ BuilderListItemFactory = (*BuilderListItemFactoryClass)(nil)
-
-func wrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactory {
-	return &BuilderListItemFactoryClass{
-		ListItemFactoryClass: ListItemFactoryClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &BuilderListItemFactory{
+		ListItemFactory: ListItemFactory{
 			Object: obj,
 		},
 	}
 }
 
-func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderListItemFactory(obj), nil
+	return wrapyier(obj), nil
 }
 
 // NewBuilderListItemFactoryFromResource creates a new
 // `GtkBuilderListItemFactory` that instantiates widgets using data read from
 // the given @resource_path to pass to `GtkBuilder`.
-func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath string) *BuilderListItemFactoryClass {
+func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath string) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
 	var _arg2 *C.char               // out
 	var _cret *C.GtkListItemFactory // in
@@ -78,15 +75,15 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath stri
 
 	_cret = C.gtk_builder_list_item_factory_new_from_resource(_arg1, _arg2)
 
-	var _builderListItemFactory *BuilderListItemFactoryClass // out
+	var _builderListItemFactory *BuilderListItemFactory // out
 
-	_builderListItemFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BuilderListItemFactoryClass)
+	_builderListItemFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BuilderListItemFactory)
 
 	return _builderListItemFactory
 }
 
 // Resource: if the data references a resource, gets the path of that resource.
-func (self *BuilderListItemFactoryClass) Resource() string {
+func (self *BuilderListItemFactory) Resource() string {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.char                      // in
 
@@ -102,7 +99,7 @@ func (self *BuilderListItemFactoryClass) Resource() string {
 }
 
 // Scope gets the scope used when constructing listitems.
-func (self *BuilderListItemFactoryClass) Scope() *BuilderScopeIface {
+func (self *BuilderListItemFactory) Scope() *BuilderScope {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GtkBuilderScope           // in
 
@@ -110,9 +107,9 @@ func (self *BuilderListItemFactoryClass) Scope() *BuilderScopeIface {
 
 	_cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
 
-	var _builderScope *BuilderScopeIface // out
+	var _builderScope *BuilderScope // out
 
-	_builderScope = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*BuilderScopeIface)
+	_builderScope = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*BuilderScope)
 
 	return _builderScope
 }

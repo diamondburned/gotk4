@@ -32,15 +32,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_output_stream_get_type()), F: marshalFileOutputStream},
+		{T: externglib.Type(C.g_file_output_stream_get_type()), F: marshalFileOutputStreamer},
 	})
 }
 
-// FileOutputStreamOverrider contains methods that are overridable.
+// FileOutputStreamerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileOutputStreamOverrider interface {
+type FileOutputStreamerOverrider interface {
 	CanSeek() bool
 	CanTruncate() bool
 	// Etag gets the entity tag for the file when it has been written. This must
@@ -63,19 +63,29 @@ type FileOutputStreamOverrider interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error)
+	QueryInfo(attributes string, cancellable Cancellabler) (*FileInfo, error)
 	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
 	// completed, @callback will be called with a Result which can be used to
 	// finish the operation with g_file_output_stream_query_info_finish().
 	//
 	// For the synchronous version of this function, see
 	// g_file_output_stream_query_info().
-	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_output_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) (*FileInfoClass, error)
+	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 	Tell() int64
-	TruncateFn(size int64, cancellable Cancellable) error
+	TruncateFn(size int64, cancellable Cancellabler) error
+}
+
+// FileOutputStreamer describes FileOutputStream's methods.
+type FileOutputStreamer interface {
+	gextras.Objector
+
+	Etag() string
+	QueryInfo(attributes string, cancellable Cancellabler) (*FileInfo, error)
+	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 }
 
 // FileOutputStream provides output streams that write their content to a file.
@@ -89,73 +99,36 @@ type FileOutputStreamOverrider interface {
 // position a file output stream, use g_seekable_seek(). To find out if a file
 // output stream supports truncating, use g_seekable_can_truncate(). To truncate
 // a file output stream, use g_seekable_truncate().
-type FileOutputStream interface {
-	gextras.Objector
-
-	// Etag gets the entity tag for the file when it has been written. This must
-	// be called after the stream has been written and closed, as the etag can
-	// change while writing.
-	Etag() string
-	// QueryInfo queries a file output stream for the given @attributes. This
-	// function blocks while querying the stream. For the asynchronous version
-	// of this function, see g_file_output_stream_query_info_async(). While the
-	// stream is blocked, the stream will set the pending flag internally, and
-	// any other operations on the stream will fail with G_IO_ERROR_PENDING.
-	//
-	// Can fail if the stream was already closed (with @error being set to
-	// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
-	// set to G_IO_ERROR_PENDING), or if querying info is not supported for the
-	// stream's interface (with @error being set to G_IO_ERROR_NOT_SUPPORTED).
-	// In all cases of failure, nil will be returned.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
-	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error)
-	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
-	// completed, @callback will be called with a Result which can be used to
-	// finish the operation with g_file_output_stream_query_info_finish().
-	//
-	// For the synchronous version of this function, see
-	// g_file_output_stream_query_info().
-	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// QueryInfoFinish finalizes the asynchronous query started by
-	// g_file_output_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) (*FileInfoClass, error)
-}
-
-// FileOutputStreamClass implements the FileOutputStream interface.
-type FileOutputStreamClass struct {
+type FileOutputStream struct {
 	*externglib.Object
-	OutputStreamClass
-	SeekableIface
+	OutputStream
+	Seekable
 }
 
-var _ FileOutputStream = (*FileOutputStreamClass)(nil)
+var _ FileOutputStreamer = (*FileOutputStream)(nil)
 
-func wrapFileOutputStream(obj *externglib.Object) FileOutputStream {
-	return &FileOutputStreamClass{
+func wrapFileOutputStreamer(obj *externglib.Object) FileOutputStreamer {
+	return &FileOutputStream{
 		Object: obj,
-		OutputStreamClass: OutputStreamClass{
+		OutputStream: OutputStream{
 			Object: obj,
 		},
-		SeekableIface: SeekableIface{
+		Seekable: Seekable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFileOutputStream(p uintptr) (interface{}, error) {
+func marshalFileOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileOutputStream(obj), nil
+	return wrapFileOutputStreamer(obj), nil
 }
 
 // Etag gets the entity tag for the file when it has been written. This must be
 // called after the stream has been written and closed, as the etag can change
 // while writing.
-func (stream *FileOutputStreamClass) Etag() string {
+func (stream *FileOutputStream) Etag() string {
 	var _arg0 *C.GFileOutputStream // out
 	var _cret *C.char              // in
 
@@ -186,7 +159,7 @@ func (stream *FileOutputStreamClass) Etag() string {
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be set, and nil will be returned.
-func (stream *FileOutputStreamClass) QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error) {
+func (stream *FileOutputStream) QueryInfo(attributes string, cancellable Cancellabler) (*FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.GCancellable      // out
@@ -200,10 +173,10 @@ func (stream *FileOutputStreamClass) QueryInfo(attributes string, cancellable Ca
 
 	_cret = C.g_file_output_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
-	var _fileInfo *FileInfoClass // out
-	var _goerr error             // out
+	var _fileInfo *FileInfo // out
+	var _goerr error        // out
 
-	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfoClass)
+	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfo)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -215,7 +188,7 @@ func (stream *FileOutputStreamClass) QueryInfo(attributes string, cancellable Ca
 //
 // For the synchronous version of this function, see
 // g_file_output_stream_query_info().
-func (stream *FileOutputStreamClass) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *FileOutputStream) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileOutputStream  // out
 	var _arg1 *C.char               // out
 	var _arg2 C.int                 // out
@@ -236,7 +209,7 @@ func (stream *FileOutputStreamClass) QueryInfoAsync(attributes string, ioPriorit
 
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_output_stream_query_info_async().
-func (stream *FileOutputStreamClass) QueryInfoFinish(result AsyncResult) (*FileInfoClass, error) {
+func (stream *FileOutputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileInfo         // in
@@ -247,10 +220,10 @@ func (stream *FileOutputStreamClass) QueryInfoFinish(result AsyncResult) (*FileI
 
 	_cret = C.g_file_output_stream_query_info_finish(_arg0, _arg1, &_cerr)
 
-	var _fileInfo *FileInfoClass // out
-	var _goerr error             // out
+	var _fileInfo *FileInfo // out
+	var _goerr error        // out
 
-	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfoClass)
+	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfo)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr

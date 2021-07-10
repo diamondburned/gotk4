@@ -32,16 +32,33 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_listener_get_type()), F: marshalSocketListener},
+		{T: externglib.Type(C.g_socket_listener_get_type()), F: marshalSocketListenerrer},
 	})
 }
 
-// SocketListenerOverrider contains methods that are overridable.
+// SocketListenerrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketListenerOverrider interface {
+type SocketListenerrerOverrider interface {
 	Changed()
+}
+
+// SocketListenerrer describes SocketListener's methods.
+type SocketListenerrer interface {
+	gextras.Objector
+
+	Accept(cancellable Cancellabler) (*externglib.Object, *SocketConnection, error)
+	AcceptAsync(cancellable Cancellabler, callback AsyncReadyCallback)
+	AcceptFinish(result AsyncResulter) (*externglib.Object, *SocketConnection, error)
+	AcceptSocket(cancellable Cancellabler) (*externglib.Object, *Socket, error)
+	AcceptSocketAsync(cancellable Cancellabler, callback AsyncReadyCallback)
+	AcceptSocketFinish(result AsyncResulter) (*externglib.Object, *Socket, error)
+	AddAnyInetPort(sourceObject gextras.Objector) (uint16, error)
+	AddInetPort(port uint16, sourceObject gextras.Objector) error
+	AddSocket(socket Socketter, sourceObject gextras.Objector) error
+	Close()
+	SetBacklog(listenBacklog int)
 }
 
 // SocketListener is an object that keeps track of a set of server sockets and
@@ -55,133 +72,35 @@ type SocketListenerOverrider interface {
 //
 // If you want to implement a network server, also look at Service and
 // SocketService which are subclasses of Listener that make this even easier.
-type SocketListener interface {
-	gextras.Objector
-
-	// Accept blocks waiting for a client to connect to any of the sockets added
-	// to the listener. Returns a Connection for the socket that was accepted.
-	//
-	// If @source_object is not nil it will be filled out with the source object
-	// specified when the corresponding socket or address was added to the
-	// listener.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Accept(cancellable Cancellable) (*externglib.Object, *SocketConnectionClass, error)
-	// AcceptAsync: this is the asynchronous version of
-	// g_socket_listener_accept().
-	//
-	// When the operation is finished @callback will be called. You can then
-	// call g_socket_listener_accept_socket() to get the result of the
-	// operation.
-	AcceptAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// AcceptFinish finishes an async accept operation. See
-	// g_socket_listener_accept_async()
-	AcceptFinish(result AsyncResult) (*externglib.Object, *SocketConnectionClass, error)
-	// AcceptSocket blocks waiting for a client to connect to any of the sockets
-	// added to the listener. Returns the #GSocket that was accepted.
-	//
-	// If you want to accept the high-level Connection, not a #GSocket, which is
-	// often the case, then you should use g_socket_listener_accept() instead.
-	//
-	// If @source_object is not nil it will be filled out with the source object
-	// specified when the corresponding socket or address was added to the
-	// listener.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	AcceptSocket(cancellable Cancellable) (*externglib.Object, *SocketClass, error)
-	// AcceptSocketAsync: this is the asynchronous version of
-	// g_socket_listener_accept_socket().
-	//
-	// When the operation is finished @callback will be called. You can then
-	// call g_socket_listener_accept_socket_finish() to get the result of the
-	// operation.
-	AcceptSocketAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// AcceptSocketFinish finishes an async accept operation. See
-	// g_socket_listener_accept_socket_async()
-	AcceptSocketFinish(result AsyncResult) (*externglib.Object, *SocketClass, error)
-	// AddAnyInetPort listens for TCP connections on any available port number
-	// for both IPv6 and IPv4 (if each is available).
-	//
-	// This is useful if you need to have a socket for incoming connections but
-	// don't care about the specific port number.
-	//
-	// @source_object will be passed out in the various calls to accept to
-	// identify this particular source, which is useful if you're listening on
-	// multiple addresses and do different things depending on what address is
-	// connected to.
-	AddAnyInetPort(sourceObject gextras.Objector) (uint16, error)
-	// AddInetPort: helper function for g_socket_listener_add_address() that
-	// creates a TCP/IP socket listening on IPv4 and IPv6 (if supported) on the
-	// specified port on all interfaces.
-	//
-	// @source_object will be passed out in the various calls to accept to
-	// identify this particular source, which is useful if you're listening on
-	// multiple addresses and do different things depending on what address is
-	// connected to.
-	//
-	// Call g_socket_listener_close() to stop listening on @port; this will not
-	// be done automatically when you drop your final reference to @listener, as
-	// references may be held internally.
-	AddInetPort(port uint16, sourceObject gextras.Objector) error
-	// AddSocket adds @socket to the set of sockets that we try to accept new
-	// clients from. The socket must be bound to a local address and listened
-	// to.
-	//
-	// @source_object will be passed out in the various calls to accept to
-	// identify this particular source, which is useful if you're listening on
-	// multiple addresses and do different things depending on what address is
-	// connected to.
-	//
-	// The @socket will not be automatically closed when the @listener is
-	// finalized unless the listener held the final reference to the socket.
-	// Before GLib 2.42, the @socket was automatically closed on finalization of
-	// the @listener, even if references to it were held elsewhere.
-	AddSocket(socket Socket, sourceObject gextras.Objector) error
-	// Close closes all the sockets in the listener.
-	Close()
-	// SetBacklog sets the listen backlog on the sockets in the listener. This
-	// must be called before adding any sockets, addresses or ports to the
-	// Listener (for example, by calling g_socket_listener_add_inet_port()) to
-	// be effective.
-	//
-	// See g_socket_set_listen_backlog() for details
-	SetBacklog(listenBacklog int)
-}
-
-// SocketListenerClass implements the SocketListener interface.
-type SocketListenerClass struct {
+type SocketListener struct {
 	*externglib.Object
 }
 
-var _ SocketListener = (*SocketListenerClass)(nil)
+var _ SocketListenerrer = (*SocketListener)(nil)
 
-func wrapSocketListener(obj *externglib.Object) SocketListener {
-	return &SocketListenerClass{
+func wrapSocketListenerrer(obj *externglib.Object) SocketListenerrer {
+	return &SocketListener{
 		Object: obj,
 	}
 }
 
-func marshalSocketListener(p uintptr) (interface{}, error) {
+func marshalSocketListenerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketListener(obj), nil
+	return wrapSocketListenerrer(obj), nil
 }
 
 // NewSocketListener creates a new Listener with no sockets to listen for. New
 // listeners can be added with e.g. g_socket_listener_add_address() or
 // g_socket_listener_add_inet_port().
-func NewSocketListener() *SocketListenerClass {
+func NewSocketListener() *SocketListener {
 	var _cret *C.GSocketListener // in
 
 	_cret = C.g_socket_listener_new()
 
-	var _socketListener *SocketListenerClass // out
+	var _socketListener *SocketListener // out
 
-	_socketListener = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketListenerClass)
+	_socketListener = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketListener)
 
 	return _socketListener
 }
@@ -195,7 +114,7 @@ func NewSocketListener() *SocketListenerClass {
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (listener *SocketListenerClass) Accept(cancellable Cancellable) (*externglib.Object, *SocketConnectionClass, error) {
+func (listener *SocketListener) Accept(cancellable Cancellabler) (*externglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GObject           // in
 	var _arg2 *C.GCancellable      // out
@@ -207,12 +126,12 @@ func (listener *SocketListenerClass) Accept(cancellable Cancellable) (*externgli
 
 	_cret = C.g_socket_listener_accept(_arg0, &_arg1, _arg2, &_cerr)
 
-	var _sourceObject *externglib.Object         // out
-	var _socketConnection *SocketConnectionClass // out
-	var _goerr error                             // out
+	var _sourceObject *externglib.Object    // out
+	var _socketConnection *SocketConnection // out
+	var _goerr error                        // out
 
 	_sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*externglib.Object)
-	_socketConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketConnectionClass)
+	_socketConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socketConnection, _goerr
@@ -222,7 +141,7 @@ func (listener *SocketListenerClass) Accept(cancellable Cancellable) (*externgli
 //
 // When the operation is finished @callback will be called. You can then call
 // g_socket_listener_accept_socket() to get the result of the operation.
-func (listener *SocketListenerClass) AcceptAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+func (listener *SocketListener) AcceptAsync(cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -238,7 +157,7 @@ func (listener *SocketListenerClass) AcceptAsync(cancellable Cancellable, callba
 
 // AcceptFinish finishes an async accept operation. See
 // g_socket_listener_accept_async()
-func (listener *SocketListenerClass) AcceptFinish(result AsyncResult) (*externglib.Object, *SocketConnectionClass, error) {
+func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GAsyncResult      // out
 	var _arg2 *C.GObject           // in
@@ -250,12 +169,12 @@ func (listener *SocketListenerClass) AcceptFinish(result AsyncResult) (*externgl
 
 	_cret = C.g_socket_listener_accept_finish(_arg0, _arg1, &_arg2, &_cerr)
 
-	var _sourceObject *externglib.Object         // out
-	var _socketConnection *SocketConnectionClass // out
-	var _goerr error                             // out
+	var _sourceObject *externglib.Object    // out
+	var _socketConnection *SocketConnection // out
+	var _goerr error                        // out
 
 	_sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*externglib.Object)
-	_socketConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketConnectionClass)
+	_socketConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socketConnection, _goerr
@@ -273,7 +192,7 @@ func (listener *SocketListenerClass) AcceptFinish(result AsyncResult) (*externgl
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (listener *SocketListenerClass) AcceptSocket(cancellable Cancellable) (*externglib.Object, *SocketClass, error) {
+func (listener *SocketListener) AcceptSocket(cancellable Cancellabler) (*externglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GObject         // in
 	var _arg2 *C.GCancellable    // out
@@ -286,11 +205,11 @@ func (listener *SocketListenerClass) AcceptSocket(cancellable Cancellable) (*ext
 	_cret = C.g_socket_listener_accept_socket(_arg0, &_arg1, _arg2, &_cerr)
 
 	var _sourceObject *externglib.Object // out
-	var _socket *SocketClass             // out
+	var _socket *Socket                  // out
 	var _goerr error                     // out
 
 	_sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*externglib.Object)
-	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketClass)
+	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Socket)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socket, _goerr
@@ -301,7 +220,7 @@ func (listener *SocketListenerClass) AcceptSocket(cancellable Cancellable) (*ext
 //
 // When the operation is finished @callback will be called. You can then call
 // g_socket_listener_accept_socket_finish() to get the result of the operation.
-func (listener *SocketListenerClass) AcceptSocketAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+func (listener *SocketListener) AcceptSocketAsync(cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -317,7 +236,7 @@ func (listener *SocketListenerClass) AcceptSocketAsync(cancellable Cancellable, 
 
 // AcceptSocketFinish finishes an async accept operation. See
 // g_socket_listener_accept_socket_async()
-func (listener *SocketListenerClass) AcceptSocketFinish(result AsyncResult) (*externglib.Object, *SocketClass, error) {
+func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*externglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 *C.GObject         // in
@@ -330,11 +249,11 @@ func (listener *SocketListenerClass) AcceptSocketFinish(result AsyncResult) (*ex
 	_cret = C.g_socket_listener_accept_socket_finish(_arg0, _arg1, &_arg2, &_cerr)
 
 	var _sourceObject *externglib.Object // out
-	var _socket *SocketClass             // out
+	var _socket *Socket                  // out
 	var _goerr error                     // out
 
 	_sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*externglib.Object)
-	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketClass)
+	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Socket)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _sourceObject, _socket, _goerr
@@ -349,7 +268,7 @@ func (listener *SocketListenerClass) AcceptSocketFinish(result AsyncResult) (*ex
 // @source_object will be passed out in the various calls to accept to identify
 // this particular source, which is useful if you're listening on multiple
 // addresses and do different things depending on what address is connected to.
-func (listener *SocketListenerClass) AddAnyInetPort(sourceObject gextras.Objector) (uint16, error) {
+func (listener *SocketListener) AddAnyInetPort(sourceObject gextras.Objector) (uint16, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GObject         // out
 	var _cret C.guint16          // in
@@ -380,7 +299,7 @@ func (listener *SocketListenerClass) AddAnyInetPort(sourceObject gextras.Objecto
 // Call g_socket_listener_close() to stop listening on @port; this will not be
 // done automatically when you drop your final reference to @listener, as
 // references may be held internally.
-func (listener *SocketListenerClass) AddInetPort(port uint16, sourceObject gextras.Objector) error {
+func (listener *SocketListener) AddInetPort(port uint16, sourceObject gextras.Objector) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.guint16          // out
 	var _arg2 *C.GObject         // out
@@ -410,7 +329,7 @@ func (listener *SocketListenerClass) AddInetPort(port uint16, sourceObject gextr
 // unless the listener held the final reference to the socket. Before GLib 2.42,
 // the @socket was automatically closed on finalization of the @listener, even
 // if references to it were held elsewhere.
-func (listener *SocketListenerClass) AddSocket(socket Socket, sourceObject gextras.Objector) error {
+func (listener *SocketListener) AddSocket(socket Socketter, sourceObject gextras.Objector) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocket         // out
 	var _arg2 *C.GObject         // out
@@ -430,7 +349,7 @@ func (listener *SocketListenerClass) AddSocket(socket Socket, sourceObject gextr
 }
 
 // Close closes all the sockets in the listener.
-func (listener *SocketListenerClass) Close() {
+func (listener *SocketListener) Close() {
 	var _arg0 *C.GSocketListener // out
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
@@ -443,7 +362,7 @@ func (listener *SocketListenerClass) Close() {
 // example, by calling g_socket_listener_add_inet_port()) to be effective.
 //
 // See g_socket_set_listen_backlog() for details
-func (listener *SocketListenerClass) SetBacklog(listenBacklog int) {
+func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.int              // out
 

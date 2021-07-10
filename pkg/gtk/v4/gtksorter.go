@@ -20,7 +20,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_sorter_change_get_type()), F: marshalSorterChange},
 		{T: externglib.Type(C.gtk_sorter_order_get_type()), F: marshalSorterOrder},
-		{T: externglib.Type(C.gtk_sorter_get_type()), F: marshalSorter},
+		{T: externglib.Type(C.gtk_sorter_get_type()), F: marshalSorterrer},
 	})
 }
 
@@ -67,11 +67,11 @@ func marshalSorterOrder(p uintptr) (interface{}, error) {
 	return SorterOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SorterOverrider contains methods that are overridable.
+// SorterrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SorterOverrider interface {
+type SorterrerOverrider interface {
 	// Compare compares two given items according to the sort order implemented
 	// by the sorter.
 	//
@@ -89,6 +89,14 @@ type SorterOverrider interface {
 	// See [enum@Gtk.SorterOrder] for details of the possible return values.
 	//
 	// This function is intended to allow optimizations.
+	Order() SorterOrder
+}
+
+// Sorterrer describes Sorter's methods.
+type Sorterrer interface {
+	gextras.Objector
+
+	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 	Order() SorterOrder
 }
 
@@ -111,46 +119,22 @@ type SorterOverrider interface {
 //
 // Of course, in particular for large lists, it is also possible to subclass
 // `GtkSorter` and provide one's own sorter.
-type Sorter interface {
-	gextras.Objector
-
-	// Compare compares two given items according to the sort order implemented
-	// by the sorter.
-	//
-	// Sorters implement a partial order:
-	//
-	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-	// then a ≤ c
-	//
-	// The sorter may signal it conforms to additional constraints via the
-	// return value of [method@Gtk.Sorter.get_order].
-	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
-	// Order gets the order that @self conforms to.
-	//
-	// See [enum@Gtk.SorterOrder] for details of the possible return values.
-	//
-	// This function is intended to allow optimizations.
-	Order() SorterOrder
-}
-
-// SorterClass implements the Sorter interface.
-type SorterClass struct {
+type Sorter struct {
 	*externglib.Object
 }
 
-var _ Sorter = (*SorterClass)(nil)
+var _ Sorterrer = (*Sorter)(nil)
 
-func wrapSorter(obj *externglib.Object) Sorter {
-	return &SorterClass{
+func wrapSorterrer(obj *externglib.Object) Sorterrer {
+	return &Sorter{
 		Object: obj,
 	}
 }
 
-func marshalSorter(p uintptr) (interface{}, error) {
+func marshalSorterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSorter(obj), nil
+	return wrapSorterrer(obj), nil
 }
 
 // Compare compares two given items according to the sort order implemented by
@@ -164,7 +148,7 @@ func marshalSorter(p uintptr) (interface{}, error) {
 //
 // The sorter may signal it conforms to additional constraints via the return
 // value of [method@Gtk.Sorter.get_order].
-func (self *SorterClass) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
+func (self *Sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
 	var _arg0 *C.GtkSorter  // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.gpointer    // out
@@ -188,7 +172,7 @@ func (self *SorterClass) Compare(item1 gextras.Objector, item2 gextras.Objector)
 // See [enum@Gtk.SorterOrder] for details of the possible return values.
 //
 // This function is intended to allow optimizations.
-func (self *SorterClass) Order() SorterOrder {
+func (self *Sorter) Order() SorterOrder {
 	var _arg0 *C.GtkSorter     // out
 	var _cret C.GtkSorterOrder // in
 

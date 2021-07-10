@@ -18,17 +18,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_hyperlink_impl_get_type()), F: marshalHyperlinkImpl},
+		{T: externglib.Type(C.atk_hyperlink_impl_get_type()), F: marshalHyperlinkImpler},
 	})
 }
 
-// HyperlinkImplOverrider contains methods that are overridable.
+// HyperlinkImplerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type HyperlinkImplOverrider interface {
+type HyperlinkImplerOverrider interface {
 	// Hyperlink gets the hyperlink associated with this object.
-	Hyperlink() *HyperlinkClass
+	Hyperlink() *Hyperlink
+}
+
+// HyperlinkImpler describes HyperlinkImpl's methods.
+type HyperlinkImpler interface {
+	gextras.Objector
+
+	Hyperlink() *Hyperlink
 }
 
 // HyperlinkImpl allows AtkObjects to refer to their associated AtkHyperlink
@@ -55,34 +62,26 @@ type HyperlinkImplOverrider interface {
 // AtkHyperlink was defined as an object type, not an interface. Thus, in order
 // to interact with AtkObjects via AtkHyperlink semantics, a new interface was
 // required.
-type HyperlinkImpl interface {
-	gextras.Objector
-
-	// Hyperlink gets the hyperlink associated with this object.
-	Hyperlink() *HyperlinkClass
-}
-
-// HyperlinkImplIface implements the HyperlinkImpl interface.
-type HyperlinkImplIface struct {
+type HyperlinkImpl struct {
 	*externglib.Object
 }
 
-var _ HyperlinkImpl = (*HyperlinkImplIface)(nil)
+var _ HyperlinkImpler = (*HyperlinkImpl)(nil)
 
-func wrapHyperlinkImpl(obj *externglib.Object) HyperlinkImpl {
-	return &HyperlinkImplIface{
+func wrapHyperlinkImpler(obj *externglib.Object) HyperlinkImpler {
+	return &HyperlinkImpl{
 		Object: obj,
 	}
 }
 
-func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
+func marshalHyperlinkImpler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHyperlinkImpl(obj), nil
+	return wrapHyperlinkImpler(obj), nil
 }
 
 // Hyperlink gets the hyperlink associated with this object.
-func (impl *HyperlinkImplIface) Hyperlink() *HyperlinkClass {
+func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 	var _arg0 *C.AtkHyperlinkImpl // out
 	var _cret *C.AtkHyperlink     // in
 
@@ -90,9 +89,9 @@ func (impl *HyperlinkImplIface) Hyperlink() *HyperlinkClass {
 
 	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
 
-	var _hyperlink *HyperlinkClass // out
+	var _hyperlink *Hyperlink // out
 
-	_hyperlink = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*HyperlinkClass)
+	_hyperlink = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Hyperlink)
 
 	return _hyperlink
 }

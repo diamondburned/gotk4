@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_accessible_get_type()), F: marshalStackAccessible},
+		{T: externglib.Type(C.gtk_stack_accessible_get_type()), F: marshalStackAccessibler},
 	})
 }
 
-type StackAccessible interface {
+// StackAccessibler describes StackAccessible's methods.
+type StackAccessibler interface {
 	gextras.Objector
 
-	privateStackAccessibleClass()
+	privateStackAccessible()
 }
 
-// StackAccessibleClass implements the StackAccessible interface.
-type StackAccessibleClass struct {
-	ContainerAccessibleClass
+type StackAccessible struct {
+	ContainerAccessible
 }
 
-var _ StackAccessible = (*StackAccessibleClass)(nil)
+var _ StackAccessibler = (*StackAccessible)(nil)
 
-func wrapStackAccessible(obj *externglib.Object) StackAccessible {
-	return &StackAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapStackAccessibler(obj *externglib.Object) StackAccessibler {
+	return &StackAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapStackAccessible(obj *externglib.Object) StackAccessible {
 	}
 }
 
-func marshalStackAccessible(p uintptr) (interface{}, error) {
+func marshalStackAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStackAccessible(obj), nil
+	return wrapStackAccessibler(obj), nil
 }
 
-func (*StackAccessibleClass) privateStackAccessibleClass() {}
+func (*StackAccessible) privateStackAccessible() {}

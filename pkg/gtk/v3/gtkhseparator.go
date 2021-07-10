@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hseparator_get_type()), F: marshalHSeparator},
+		{T: externglib.Type(C.gtk_hseparator_get_type()), F: marshalHSeparatorrer},
 	})
+}
+
+// HSeparatorrer describes HSeparator's methods.
+type HSeparatorrer interface {
+	gextras.Objector
+
+	privateHSeparator()
 }
 
 // HSeparator: the HSeparator widget is a horizontal separator, used to group
@@ -34,71 +41,64 @@ func init() {
 // gtk_menu_shell_append().
 //
 // GtkHSeparator has been deprecated, use Separator instead.
-type HSeparator interface {
-	gextras.Objector
-
-	privateHSeparatorClass()
-}
-
-// HSeparatorClass implements the HSeparator interface.
-type HSeparatorClass struct {
+type HSeparator struct {
 	*externglib.Object
-	SeparatorClass
-	BuildableIface
-	OrientableIface
+	Separator
+	Buildable
+	Orientable
 }
 
-var _ HSeparator = (*HSeparatorClass)(nil)
+var _ HSeparatorrer = (*HSeparator)(nil)
 
-func wrapHSeparator(obj *externglib.Object) HSeparator {
-	return &HSeparatorClass{
+func wrapHSeparatorrer(obj *externglib.Object) HSeparatorrer {
+	return &HSeparator{
 		Object: obj,
-		SeparatorClass: SeparatorClass{
+		Separator: Separator{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalHSeparator(p uintptr) (interface{}, error) {
+func marshalHSeparatorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHSeparator(obj), nil
+	return wrapHSeparatorrer(obj), nil
 }
 
 // NewHSeparator creates a new HSeparator.
 //
 // Deprecated: Use gtk_separator_new() with GTK_ORIENTATION_HORIZONTAL instead.
-func NewHSeparator() *HSeparatorClass {
+func NewHSeparator() *HSeparator {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_hseparator_new()
 
-	var _hSeparator *HSeparatorClass // out
+	var _hSeparator *HSeparator // out
 
-	_hSeparator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HSeparatorClass)
+	_hSeparator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HSeparator)
 
 	return _hSeparator
 }
 
-func (*HSeparatorClass) privateHSeparatorClass() {}
+func (*HSeparator) privateHSeparator() {}

@@ -20,19 +20,38 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_action_group_get_type()), F: marshalActionGroup},
+		{T: externglib.Type(C.gtk_action_group_get_type()), F: marshalActionGrouper},
 	})
 }
 
-// ActionGroupOverrider contains methods that are overridable.
+// ActionGrouperOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionGroupOverrider interface {
+type ActionGrouperOverrider interface {
 	// Action looks up an action in the action group by name.
 	//
 	// Deprecated: since version 3.10.
-	Action(actionName string) *ActionClass
+	Action(actionName string) *Action
+}
+
+// ActionGrouper describes ActionGroup's methods.
+type ActionGrouper interface {
+	gextras.Objector
+
+	AddAction(action Actioner)
+	AddActionWithAccel(action Actioner, accelerator string)
+	AccelGroup() *AccelGroup
+	Action(actionName string) *Action
+	Name() string
+	Sensitive() bool
+	Visible() bool
+	RemoveAction(action Actioner)
+	SetAccelGroup(accelGroup AccelGrouper)
+	SetSensitive(sensitive bool)
+	SetTranslationDomain(domain string)
+	SetVisible(visible bool)
+	TranslateString(_string string) string
 }
 
 // ActionGroup actions are organised into groups. An action group is essentially
@@ -84,115 +103,33 @@ type ActionGroupOverrider interface {
 //          <accelerator key="F1" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
 //      </child>
 //    </object>
-type ActionGroup interface {
-	gextras.Objector
-
-	// AddAction adds an action object to the action group. Note that this
-	// function does not set up the accel path of the action, which can lead to
-	// problems if a user tries to modify the accelerator of a menuitem
-	// associated with the action. Therefore you must either set the accel path
-	// yourself with gtk_action_set_accel_path(), or use
-	// `gtk_action_group_add_action_with_accel (..., NULL)`.
-	//
-	// Deprecated: since version 3.10.
-	AddAction(action Action)
-	// AddActionWithAccel adds an action object to the action group and sets up
-	// the accelerator.
-	//
-	// If @accelerator is nil, attempts to use the accelerator associated with
-	// the stock_id of the action.
-	//
-	// Accel paths are set to `<Actions>/group-name/action-name`.
-	//
-	// Deprecated: since version 3.10.
-	AddActionWithAccel(action Action, accelerator string)
-	// AccelGroup gets the accelerator group.
-	//
-	// Deprecated: since version 3.10.
-	AccelGroup() *AccelGroupClass
-	// Action looks up an action in the action group by name.
-	//
-	// Deprecated: since version 3.10.
-	Action(actionName string) *ActionClass
-	// Name gets the name of the action group.
-	//
-	// Deprecated: since version 3.10.
-	Name() string
-	// Sensitive returns true if the group is sensitive. The constituent actions
-	// can only be logically sensitive (see gtk_action_is_sensitive()) if they
-	// are sensitive (see gtk_action_get_sensitive()) and their group is
-	// sensitive.
-	//
-	// Deprecated: since version 3.10.
-	Sensitive() bool
-	// Visible returns true if the group is visible. The constituent actions can
-	// only be logically visible (see gtk_action_is_visible()) if they are
-	// visible (see gtk_action_get_visible()) and their group is visible.
-	//
-	// Deprecated: since version 3.10.
-	Visible() bool
-	// RemoveAction removes an action object from the action group.
-	//
-	// Deprecated: since version 3.10.
-	RemoveAction(action Action)
-	// SetAccelGroup sets the accelerator group to be used by every action in
-	// this group.
-	//
-	// Deprecated: since version 3.10.
-	SetAccelGroup(accelGroup AccelGroup)
-	// SetSensitive changes the sensitivity of @action_group
-	//
-	// Deprecated: since version 3.10.
-	SetSensitive(sensitive bool)
-	// SetTranslationDomain sets the translation domain and uses g_dgettext()
-	// for translating the @label and @tooltip of ActionEntrys added by
-	// gtk_action_group_add_actions().
-	//
-	// If you’re not using gettext() for localization, see
-	// gtk_action_group_set_translate_func().
-	//
-	// Deprecated: since version 3.10.
-	SetTranslationDomain(domain string)
-	// SetVisible changes the visible of @action_group.
-	//
-	// Deprecated: since version 3.10.
-	SetVisible(visible bool)
-	// TranslateString translates a string using the function set with
-	// gtk_action_group_set_translate_func(). This is mainly intended for
-	// language bindings.
-	//
-	// Deprecated: since version 3.10.
-	TranslateString(_string string) string
-}
-
-// ActionGroupClass implements the ActionGroup interface.
-type ActionGroupClass struct {
+type ActionGroup struct {
 	*externglib.Object
-	BuildableIface
+	Buildable
 }
 
-var _ ActionGroup = (*ActionGroupClass)(nil)
+var _ ActionGrouper = (*ActionGroup)(nil)
 
-func wrapActionGroup(obj *externglib.Object) ActionGroup {
-	return &ActionGroupClass{
+func wrapActionGrouper(obj *externglib.Object) ActionGrouper {
+	return &ActionGroup{
 		Object: obj,
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalActionGroup(p uintptr) (interface{}, error) {
+func marshalActionGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionGroup(obj), nil
+	return wrapActionGrouper(obj), nil
 }
 
 // NewActionGroup creates a new ActionGroup object. The name of the action group
 // is used when associating [keybindings][Action-Accel] with the actions.
 //
 // Deprecated: since version 3.10.
-func NewActionGroup(name string) *ActionGroupClass {
+func NewActionGroup(name string) *ActionGroup {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkActionGroup // in
 
@@ -201,9 +138,9 @@ func NewActionGroup(name string) *ActionGroupClass {
 
 	_cret = C.gtk_action_group_new(_arg1)
 
-	var _actionGroup *ActionGroupClass // out
+	var _actionGroup *ActionGroup // out
 
-	_actionGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ActionGroupClass)
+	_actionGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ActionGroup)
 
 	return _actionGroup
 }
@@ -216,7 +153,7 @@ func NewActionGroup(name string) *ActionGroupClass {
 // (..., NULL)`.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) AddAction(action Action) {
+func (actionGroup *ActionGroup) AddAction(action Actioner) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
@@ -235,7 +172,7 @@ func (actionGroup *ActionGroupClass) AddAction(action Action) {
 // Accel paths are set to `<Actions>/group-name/action-name`.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) AddActionWithAccel(action Action, accelerator string) {
+func (actionGroup *ActionGroup) AddActionWithAccel(action Actioner, accelerator string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 	var _arg2 *C.gchar          // out
@@ -251,7 +188,7 @@ func (actionGroup *ActionGroupClass) AddActionWithAccel(action Action, accelerat
 // AccelGroup gets the accelerator group.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) AccelGroup() *AccelGroupClass {
+func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GtkAccelGroup  // in
 
@@ -259,9 +196,9 @@ func (actionGroup *ActionGroupClass) AccelGroup() *AccelGroupClass {
 
 	_cret = C.gtk_action_group_get_accel_group(_arg0)
 
-	var _accelGroup *AccelGroupClass // out
+	var _accelGroup *AccelGroup // out
 
-	_accelGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccelGroupClass)
+	_accelGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccelGroup)
 
 	return _accelGroup
 }
@@ -269,7 +206,7 @@ func (actionGroup *ActionGroupClass) AccelGroup() *AccelGroupClass {
 // Action looks up an action in the action group by name.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) Action(actionName string) *ActionClass {
+func (actionGroup *ActionGroup) Action(actionName string) *Action {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkAction      // in
@@ -280,9 +217,9 @@ func (actionGroup *ActionGroupClass) Action(actionName string) *ActionClass {
 
 	_cret = C.gtk_action_group_get_action(_arg0, _arg1)
 
-	var _action *ActionClass // out
+	var _action *Action // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionClass)
+	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Action)
 
 	return _action
 }
@@ -290,7 +227,7 @@ func (actionGroup *ActionGroupClass) Action(actionName string) *ActionClass {
 // Name gets the name of the action group.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) Name() string {
+func (actionGroup *ActionGroup) Name() string {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.gchar          // in
 
@@ -310,7 +247,7 @@ func (actionGroup *ActionGroupClass) Name() string {
 // sensitive (see gtk_action_get_sensitive()) and their group is sensitive.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) Sensitive() bool {
+func (actionGroup *ActionGroup) Sensitive() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
@@ -332,7 +269,7 @@ func (actionGroup *ActionGroupClass) Sensitive() bool {
 // (see gtk_action_get_visible()) and their group is visible.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) Visible() bool {
+func (actionGroup *ActionGroup) Visible() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
@@ -352,7 +289,7 @@ func (actionGroup *ActionGroupClass) Visible() bool {
 // RemoveAction removes an action object from the action group.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) RemoveAction(action Action) {
+func (actionGroup *ActionGroup) RemoveAction(action Actioner) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
@@ -366,7 +303,7 @@ func (actionGroup *ActionGroupClass) RemoveAction(action Action) {
 // group.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) SetAccelGroup(accelGroup AccelGroup) {
+func (actionGroup *ActionGroup) SetAccelGroup(accelGroup AccelGrouper) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAccelGroup  // out
 
@@ -379,7 +316,7 @@ func (actionGroup *ActionGroupClass) SetAccelGroup(accelGroup AccelGroup) {
 // SetSensitive changes the sensitivity of @action_group
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) SetSensitive(sensitive bool) {
+func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
@@ -399,7 +336,7 @@ func (actionGroup *ActionGroupClass) SetSensitive(sensitive bool) {
 // gtk_action_group_set_translate_func().
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) SetTranslationDomain(domain string) {
+func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 
@@ -413,7 +350,7 @@ func (actionGroup *ActionGroupClass) SetTranslationDomain(domain string) {
 // SetVisible changes the visible of @action_group.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) SetVisible(visible bool) {
+func (actionGroup *ActionGroup) SetVisible(visible bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
@@ -430,7 +367,7 @@ func (actionGroup *ActionGroupClass) SetVisible(visible bool) {
 // bindings.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroupClass) TranslateString(_string string) string {
+func (actionGroup *ActionGroup) TranslateString(_string string) string {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.gchar          // in
@@ -456,12 +393,6 @@ type ActionEntry struct {
 	native C.GtkActionEntry
 }
 
-// WrapActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
-	return (*ActionEntry)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (a *ActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -475,12 +406,6 @@ type RadioActionEntry struct {
 	native C.GtkRadioActionEntry
 }
 
-// WrapRadioActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRadioActionEntry(ptr unsafe.Pointer) *RadioActionEntry {
-	return (*RadioActionEntry)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (r *RadioActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
@@ -492,12 +417,6 @@ func (r *RadioActionEntry) Native() unsafe.Pointer {
 // Deprecated: since version 3.10.
 type ToggleActionEntry struct {
 	native C.GtkToggleActionEntry
-}
-
-// WrapToggleActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToggleActionEntry(ptr unsafe.Pointer) *ToggleActionEntry {
-	return (*ToggleActionEntry)(ptr)
 }
 
 // Native returns the underlying C source pointer.

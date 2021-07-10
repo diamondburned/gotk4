@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_registry_get_type()), F: marshalRegistry},
+		{T: externglib.Type(C.atk_registry_get_type()), F: marshalyier},
 	})
 }
 
@@ -28,16 +28,25 @@ func init() {
 // function, maintainers may call atk_registry_set_factory_type() to associate
 // an ObjectFactory subclass with the GType of objects for whom accessibility
 // information will be provided.
-func GetDefaultRegistry() *RegistryClass {
+func GetDefaultRegistry() *Registry {
 	var _cret *C.AtkRegistry // in
 
 	_cret = C.atk_get_default_registry()
 
-	var _registry *RegistryClass // out
+	var _registry *Registry // out
 
-	_registry = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RegistryClass)
+	_registry = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Registry)
 
 	return _registry
+}
+
+// yier describes Registry's methods.
+type yier interface {
+	gextras.Objector
+
+	Factory(typ externglib.Type) *ObjectFactory
+	FactoryType(typ externglib.Type) externglib.Type
+	SetFactoryType(typ externglib.Type, factoryType externglib.Type)
 }
 
 // Registry: the AtkRegistry is normally used to create appropriate ATK "peers"
@@ -45,44 +54,27 @@ func GetDefaultRegistry() *RegistryClass {
 // interact with the AtkRegistry by associating appropriate ATK implementation
 // classes with GObject classes via the atk_registry_set_factory_type call,
 // passing the appropriate GType for application custom widget classes.
-type Registry interface {
-	gextras.Objector
-
-	// Factory gets an ObjectFactory appropriate for creating Objects
-	// appropriate for @type.
-	Factory(typ externglib.Type) *ObjectFactoryClass
-	// FactoryType provides a #GType indicating the ObjectFactory subclass
-	// associated with @type.
-	FactoryType(typ externglib.Type) externglib.Type
-	// SetFactoryType: associate an ObjectFactory subclass with a #GType. Note:
-	// The associated @factory_type will thereafter be responsible for the
-	// creation of new Object implementations for instances appropriate for
-	// @type.
-	SetFactoryType(typ externglib.Type, factoryType externglib.Type)
-}
-
-// RegistryClass implements the Registry interface.
-type RegistryClass struct {
+type Registry struct {
 	*externglib.Object
 }
 
-var _ Registry = (*RegistryClass)(nil)
+var _ yier = (*Registry)(nil)
 
-func wrapRegistry(obj *externglib.Object) Registry {
-	return &RegistryClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &Registry{
 		Object: obj,
 	}
 }
 
-func marshalRegistry(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRegistry(obj), nil
+	return wrapyier(obj), nil
 }
 
 // Factory gets an ObjectFactory appropriate for creating Objects appropriate
 // for @type.
-func (registry *RegistryClass) Factory(typ externglib.Type) *ObjectFactoryClass {
+func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 	var _arg0 *C.AtkRegistry      // out
 	var _arg1 C.GType             // out
 	var _cret *C.AtkObjectFactory // in
@@ -92,16 +84,16 @@ func (registry *RegistryClass) Factory(typ externglib.Type) *ObjectFactoryClass 
 
 	_cret = C.atk_registry_get_factory(_arg0, _arg1)
 
-	var _objectFactory *ObjectFactoryClass // out
+	var _objectFactory *ObjectFactory // out
 
-	_objectFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectFactoryClass)
+	_objectFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectFactory)
 
 	return _objectFactory
 }
 
 // FactoryType provides a #GType indicating the ObjectFactory subclass
 // associated with @type.
-func (registry *RegistryClass) FactoryType(typ externglib.Type) externglib.Type {
+func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
 	var _cret C.GType        // in
@@ -121,7 +113,7 @@ func (registry *RegistryClass) FactoryType(typ externglib.Type) externglib.Type 
 // SetFactoryType: associate an ObjectFactory subclass with a #GType. Note: The
 // associated @factory_type will thereafter be responsible for the creation of
 // new Object implementations for instances appropriate for @type.
-func (registry *RegistryClass) SetFactoryType(typ externglib.Type, factoryType externglib.Type) {
+func (registry *Registry) SetFactoryType(typ externglib.Type, factoryType externglib.Type) {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
 	var _arg2 C.GType        // out

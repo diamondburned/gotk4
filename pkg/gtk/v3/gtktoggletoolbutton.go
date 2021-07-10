@@ -20,16 +20,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButton},
+		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButtonner},
 	})
 }
 
-// ToggleToolButtonOverrider contains methods that are overridable.
+// ToggleToolButtonnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToggleToolButtonOverrider interface {
+type ToggleToolButtonnerOverrider interface {
 	Toggled()
+}
+
+// ToggleToolButtonner describes ToggleToolButton's methods.
+type ToggleToolButtonner interface {
+	gextras.Objector
+
+	Active() bool
+	SetActive(isActive bool)
 }
 
 // ToggleToolButton is a ToolItem that contains a toggle button.
@@ -40,119 +48,106 @@ type ToggleToolButtonOverrider interface {
 // CSS nodes
 //
 // GtkToggleToolButton has a single CSS node with name togglebutton.
-type ToggleToolButton interface {
-	gextras.Objector
-
-	// Active queries a ToggleToolButton and returns its current state. Returns
-	// true if the toggle button is pressed in and false if it is raised.
-	Active() bool
-	// SetActive sets the status of the toggle tool button. Set to true if you
-	// want the GtkToggleButton to be “pressed in”, and false to raise it. This
-	// action causes the toggled signal to be emitted.
-	SetActive(isActive bool)
-}
-
-// ToggleToolButtonClass implements the ToggleToolButton interface.
-type ToggleToolButtonClass struct {
+type ToggleToolButton struct {
 	*externglib.Object
-	ToolButtonClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	ToolButton
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ ToggleToolButton = (*ToggleToolButtonClass)(nil)
+var _ ToggleToolButtonner = (*ToggleToolButton)(nil)
 
-func wrapToggleToolButton(obj *externglib.Object) ToggleToolButton {
-	return &ToggleToolButtonClass{
+func wrapToggleToolButtonner(obj *externglib.Object) ToggleToolButtonner {
+	return &ToggleToolButton{
 		Object: obj,
-		ToolButtonClass: ToolButtonClass{
+		ToolButton: ToolButton{
 			Object: obj,
-			ToolItemClass: ToolItemClass{
+			ToolItem: ToolItem{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				ActivatableIface: ActivatableIface{
+				Activatable: Activatable{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalToggleToolButton(p uintptr) (interface{}, error) {
+func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleToolButton(obj), nil
+	return wrapToggleToolButtonner(obj), nil
 }
 
 // NewToggleToolButton returns a new ToggleToolButton
-func NewToggleToolButton() *ToggleToolButtonClass {
+func NewToggleToolButton() *ToggleToolButton {
 	var _cret *C.GtkToolItem // in
 
 	_cret = C.gtk_toggle_tool_button_new()
 
-	var _toggleToolButton *ToggleToolButtonClass // out
+	var _toggleToolButton *ToggleToolButton // out
 
-	_toggleToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleToolButtonClass)
+	_toggleToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleToolButton)
 
 	return _toggleToolButton
 }
@@ -164,7 +159,7 @@ func NewToggleToolButton() *ToggleToolButtonClass {
 // It is an error if @stock_id is not a name of a stock item.
 //
 // Deprecated: Use gtk_toggle_tool_button_new() instead.
-func NewToggleToolButtonFromStock(stockId string) *ToggleToolButtonClass {
+func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
 
@@ -173,16 +168,16 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButtonClass {
 
 	_cret = C.gtk_toggle_tool_button_new_from_stock(_arg1)
 
-	var _toggleToolButton *ToggleToolButtonClass // out
+	var _toggleToolButton *ToggleToolButton // out
 
-	_toggleToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleToolButtonClass)
+	_toggleToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleToolButton)
 
 	return _toggleToolButton
 }
 
 // Active queries a ToggleToolButton and returns its current state. Returns true
 // if the toggle button is pressed in and false if it is raised.
-func (button *ToggleToolButtonClass) Active() bool {
+func (button *ToggleToolButton) Active() bool {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _cret C.gboolean             // in
 
@@ -202,7 +197,7 @@ func (button *ToggleToolButtonClass) Active() bool {
 // SetActive sets the status of the toggle tool button. Set to true if you want
 // the GtkToggleButton to be “pressed in”, and false to raise it. This action
 // causes the toggled signal to be emitted.
-func (button *ToggleToolButtonClass) SetActive(isActive bool) {
+func (button *ToggleToolButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _arg1 C.gboolean             // out
 

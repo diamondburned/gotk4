@@ -26,7 +26,7 @@ func init() {
 		{T: externglib.Type(C.gtk_resize_mode_get_type()), F: marshalResizeMode},
 		{T: externglib.Type(C.gtk_scroll_step_get_type()), F: marshalScrollStep},
 		{T: externglib.Type(C.gtk_debug_flag_get_type()), F: marshalDebugFlag},
-		{T: externglib.Type(C.gtk_entry_icon_accessible_get_type()), F: marshalEntryIconAccessible},
+		{T: externglib.Type(C.gtk_entry_icon_accessible_get_type()), F: marshalEntryIconAccessibler},
 	})
 }
 
@@ -137,37 +137,37 @@ func marshalDebugFlag(p uintptr) (interface{}, error) {
 	return DebugFlag(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type EntryIconAccessible interface {
+// EntryIconAccessibler describes EntryIconAccessible's methods.
+type EntryIconAccessibler interface {
 	gextras.Objector
 
-	privateEntryIconAccessibleClass()
+	privateEntryIconAccessible()
 }
 
-// EntryIconAccessibleClass implements the EntryIconAccessible interface.
-type EntryIconAccessibleClass struct {
+type EntryIconAccessible struct {
 	*externglib.Object
-	atk.ObjectClass
-	atk.ActionIface
+	atk.Object
+	atk.Action
 }
 
-var _ EntryIconAccessible = (*EntryIconAccessibleClass)(nil)
+var _ EntryIconAccessibler = (*EntryIconAccessible)(nil)
 
-func wrapEntryIconAccessible(obj *externglib.Object) EntryIconAccessible {
-	return &EntryIconAccessibleClass{
+func wrapEntryIconAccessibler(obj *externglib.Object) EntryIconAccessibler {
+	return &EntryIconAccessible{
 		Object: obj,
-		ObjectClass: atk.ObjectClass{
+		Object: atk.Object{
 			Object: obj,
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEntryIconAccessible(p uintptr) (interface{}, error) {
+func marshalEntryIconAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryIconAccessible(obj), nil
+	return wrapEntryIconAccessibler(obj), nil
 }
 
-func (*EntryIconAccessibleClass) privateEntryIconAccessibleClass() {}
+func (*EntryIconAccessible) privateEntryIconAccessible() {}

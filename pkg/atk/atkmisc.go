@@ -18,15 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_misc_get_type()), F: marshalMisc},
+		{T: externglib.Type(C.atk_misc_get_type()), F: marshalMiscer},
 	})
 }
 
-// MiscOverrider contains methods that are overridable.
+// MiscerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type MiscOverrider interface {
+type MiscerOverrider interface {
 	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
 	// (This method is implemented by the toolkit ATK implementation layer; for
 	// instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).
@@ -44,51 +44,35 @@ type MiscOverrider interface {
 	// GTK+, GAIL implements this via GDK_THREADS_LEAVE).
 	//
 	// Deprecated: Since 2.12.
+	ThreadsLeave()
+}
+
+// Miscer describes Misc's methods.
+type Miscer interface {
+	gextras.Objector
+
+	ThreadsEnter()
 	ThreadsLeave()
 }
 
 // Misc: set of utility functions for thread locking. This interface and all his
 // related methods are deprecated since 2.12.
-type Misc interface {
-	gextras.Objector
-
-	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
-	// (This method is implemented by the toolkit ATK implementation layer; for
-	// instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).
-	//
-	// Deprecated: Since 2.12.
-	ThreadsEnter()
-	// ThreadsLeave: release the thread mutex for the GUI toolkit, if one
-	// exists. This method, and atk_misc_threads_enter, are needed in some
-	// situations by threaded application code which services ATK requests,
-	// since fulfilling ATK requests often requires calling into the GUI
-	// toolkit. If a long-running or potentially blocking call takes place
-	// inside such a block, it should be bracketed by
-	// atk_misc_threads_leave/atk_misc_threads_enter calls. (This method is
-	// implemented by the toolkit ATK implementation layer; for instance, for
-	// GTK+, GAIL implements this via GDK_THREADS_LEAVE).
-	//
-	// Deprecated: Since 2.12.
-	ThreadsLeave()
-}
-
-// MiscClass implements the Misc interface.
-type MiscClass struct {
+type Misc struct {
 	*externglib.Object
 }
 
-var _ Misc = (*MiscClass)(nil)
+var _ Miscer = (*Misc)(nil)
 
-func wrapMisc(obj *externglib.Object) Misc {
-	return &MiscClass{
+func wrapMiscer(obj *externglib.Object) Miscer {
+	return &Misc{
 		Object: obj,
 	}
 }
 
-func marshalMisc(p uintptr) (interface{}, error) {
+func marshalMiscer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMisc(obj), nil
+	return wrapMiscer(obj), nil
 }
 
 // ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists. (This
@@ -96,7 +80,7 @@ func marshalMisc(p uintptr) (interface{}, error) {
 // for GTK+, GAIL implements this via GDK_THREADS_ENTER).
 //
 // Deprecated: Since 2.12.
-func (misc *MiscClass) ThreadsEnter() {
+func (misc *Misc) ThreadsEnter() {
 	var _arg0 *C.AtkMisc // out
 
 	_arg0 = (*C.AtkMisc)(unsafe.Pointer(misc.Native()))
@@ -114,7 +98,7 @@ func (misc *MiscClass) ThreadsEnter() {
 // for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
 //
 // Deprecated: Since 2.12.
-func (misc *MiscClass) ThreadsLeave() {
+func (misc *Misc) ThreadsLeave() {
 	var _arg0 *C.AtkMisc // out
 
 	_arg0 = (*C.AtkMisc)(unsafe.Pointer(misc.Native()))

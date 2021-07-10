@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_vulkan_context_get_type()), F: marshalVulkanContext},
+		{T: externglib.Type(C.gdk_vulkan_context_get_type()), F: marshalVulkanContexter},
 	})
+}
+
+// VulkanContexter describes VulkanContext's methods.
+type VulkanContexter interface {
+	gextras.Objector
+
+	privateVulkanContext()
 }
 
 // VulkanContext: `GdkVulkanContext` is an object representing the
@@ -31,31 +38,24 @@ func init() {
 //
 // Support for `GdkVulkanContext` is platform-specific and context creation can
 // fail, returning nil context.
-type VulkanContext interface {
-	gextras.Objector
-
-	privateVulkanContextClass()
+type VulkanContext struct {
+	DrawContext
 }
 
-// VulkanContextClass implements the VulkanContext interface.
-type VulkanContextClass struct {
-	DrawContextClass
-}
+var _ VulkanContexter = (*VulkanContext)(nil)
 
-var _ VulkanContext = (*VulkanContextClass)(nil)
-
-func wrapVulkanContext(obj *externglib.Object) VulkanContext {
-	return &VulkanContextClass{
-		DrawContextClass: DrawContextClass{
+func wrapVulkanContexter(obj *externglib.Object) VulkanContexter {
+	return &VulkanContext{
+		DrawContext: DrawContext{
 			Object: obj,
 		},
 	}
 }
 
-func marshalVulkanContext(p uintptr) (interface{}, error) {
+func marshalVulkanContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVulkanContext(obj), nil
+	return wrapVulkanContexter(obj), nil
 }
 
-func (*VulkanContextClass) privateVulkanContextClass() {}
+func (*VulkanContext) privateVulkanContext() {}

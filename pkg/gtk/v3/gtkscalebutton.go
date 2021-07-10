@@ -20,16 +20,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButton},
+		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButtonner},
 	})
 }
 
-// ScaleButtonOverrider contains methods that are overridable.
+// ScaleButtonnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ScaleButtonOverrider interface {
+type ScaleButtonnerOverrider interface {
 	ValueChanged(value float64)
+}
+
+// ScaleButtonner describes ScaleButton's methods.
+type ScaleButtonner interface {
+	gextras.Objector
+
+	Adjustment() *Adjustment
+	MinusButton() *Button
+	PlusButton() *Button
+	Popup() *Widget
+	Value() float64
+	SetAdjustment(adjustment Adjustmenter)
+	SetIcons(icons []string)
+	SetValue(value float64)
 }
 
 // ScaleButton provides a button which pops up a scale widget. This kind of
@@ -43,123 +57,95 @@ type ScaleButtonOverrider interface {
 // from a plain Button, it gets the .scale style class.
 //
 // The popup widget that contains the scale has a .scale-popup style class.
-type ScaleButton interface {
-	gextras.Objector
-
-	// Adjustment gets the Adjustment associated with the ScaleButton’s scale.
-	// See gtk_range_get_adjustment() for details.
-	Adjustment() *AdjustmentClass
-	// MinusButton retrieves the minus button of the ScaleButton.
-	MinusButton() *ButtonClass
-	// PlusButton retrieves the plus button of the ScaleButton.
-	PlusButton() *ButtonClass
-	// Popup retrieves the popup of the ScaleButton.
-	Popup() *WidgetClass
-	// Value gets the current value of the scale button.
-	Value() float64
-	// SetAdjustment sets the Adjustment to be used as a model for the
-	// ScaleButton’s scale. See gtk_range_set_adjustment() for details.
-	SetAdjustment(adjustment Adjustment)
-	// SetIcons sets the icons to be used by the scale button. For details, see
-	// the ScaleButton:icons property.
-	SetIcons(icons []string)
-	// SetValue sets the current value of the scale; if the value is outside the
-	// minimum or maximum range values, it will be clamped to fit inside them.
-	// The scale button emits the ScaleButton::value-changed signal if the value
-	// changes.
-	SetValue(value float64)
-}
-
-// ScaleButtonClass implements the ScaleButton interface.
-type ScaleButtonClass struct {
+type ScaleButton struct {
 	*externglib.Object
-	ButtonClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
-	OrientableIface
+	Button
+	Actionable
+	Activatable
+	Buildable
+	Orientable
 }
 
-var _ ScaleButton = (*ScaleButtonClass)(nil)
+var _ ScaleButtonner = (*ScaleButton)(nil)
 
-func wrapScaleButton(obj *externglib.Object) ScaleButton {
-	return &ScaleButtonClass{
+func wrapScaleButtonner(obj *externglib.Object) ScaleButtonner {
+	return &ScaleButton{
 		Object: obj,
-		ButtonClass: ButtonClass{
+		Button: Button{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalScaleButton(p uintptr) (interface{}, error) {
+func marshalScaleButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScaleButton(obj), nil
+	return wrapScaleButtonner(obj), nil
 }
 
 // NewScaleButton creates a ScaleButton, with a range between @min and @max,
 // with a stepping of @step.
-func NewScaleButton(size int, min float64, max float64, step float64, icons []string) *ScaleButtonClass {
+func NewScaleButton(size int, min float64, max float64, step float64, icons []string) *ScaleButton {
 	var _arg1 C.GtkIconSize // out
 	var _arg2 C.gdouble     // out
 	var _arg3 C.gdouble     // out
@@ -183,16 +169,16 @@ func NewScaleButton(size int, min float64, max float64, step float64, icons []st
 
 	_cret = C.gtk_scale_button_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _scaleButton *ScaleButtonClass // out
+	var _scaleButton *ScaleButton // out
 
-	_scaleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ScaleButtonClass)
+	_scaleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ScaleButton)
 
 	return _scaleButton
 }
 
 // Adjustment gets the Adjustment associated with the ScaleButton’s scale. See
 // gtk_range_get_adjustment() for details.
-func (button *ScaleButtonClass) Adjustment() *AdjustmentClass {
+func (button *ScaleButton) Adjustment() *Adjustment {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkAdjustment  // in
 
@@ -200,15 +186,15 @@ func (button *ScaleButtonClass) Adjustment() *AdjustmentClass {
 
 	_cret = C.gtk_scale_button_get_adjustment(_arg0)
 
-	var _adjustment *AdjustmentClass // out
+	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AdjustmentClass)
+	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
 
 	return _adjustment
 }
 
 // MinusButton retrieves the minus button of the ScaleButton.
-func (button *ScaleButtonClass) MinusButton() *ButtonClass {
+func (button *ScaleButton) MinusButton() *Button {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
@@ -216,15 +202,15 @@ func (button *ScaleButtonClass) MinusButton() *ButtonClass {
 
 	_cret = C.gtk_scale_button_get_minus_button(_arg0)
 
-	var _ret *ButtonClass // out
+	var _ret *Button // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonClass)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
 
 	return _ret
 }
 
 // PlusButton retrieves the plus button of the ScaleButton.
-func (button *ScaleButtonClass) PlusButton() *ButtonClass {
+func (button *ScaleButton) PlusButton() *Button {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
@@ -232,15 +218,15 @@ func (button *ScaleButtonClass) PlusButton() *ButtonClass {
 
 	_cret = C.gtk_scale_button_get_plus_button(_arg0)
 
-	var _ret *ButtonClass // out
+	var _ret *Button // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonClass)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
 
 	return _ret
 }
 
 // Popup retrieves the popup of the ScaleButton.
-func (button *ScaleButtonClass) Popup() *WidgetClass {
+func (button *ScaleButton) Popup() *Widget {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
@@ -248,15 +234,15 @@ func (button *ScaleButtonClass) Popup() *WidgetClass {
 
 	_cret = C.gtk_scale_button_get_popup(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // Value gets the current value of the scale button.
-func (button *ScaleButtonClass) Value() float64 {
+func (button *ScaleButton) Value() float64 {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret C.gdouble         // in
 
@@ -273,7 +259,7 @@ func (button *ScaleButtonClass) Value() float64 {
 
 // SetAdjustment sets the Adjustment to be used as a model for the ScaleButton’s
 // scale. See gtk_range_set_adjustment() for details.
-func (button *ScaleButtonClass) SetAdjustment(adjustment Adjustment) {
+func (button *ScaleButton) SetAdjustment(adjustment Adjustmenter) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 *C.GtkAdjustment  // out
 
@@ -285,7 +271,7 @@ func (button *ScaleButtonClass) SetAdjustment(adjustment Adjustment) {
 
 // SetIcons sets the icons to be used by the scale button. For details, see the
 // ScaleButton:icons property.
-func (button *ScaleButtonClass) SetIcons(icons []string) {
+func (button *ScaleButton) SetIcons(icons []string) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 **C.gchar
 
@@ -307,7 +293,7 @@ func (button *ScaleButtonClass) SetIcons(icons []string) {
 // minimum or maximum range values, it will be clamped to fit inside them. The
 // scale button emits the ScaleButton::value-changed signal if the value
 // changes.
-func (button *ScaleButtonClass) SetValue(value float64) {
+func (button *ScaleButton) SetValue(value float64) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 C.gdouble         // out
 

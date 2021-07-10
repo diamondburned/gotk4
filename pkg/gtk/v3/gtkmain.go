@@ -24,7 +24,7 @@ import "C"
 
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
 // They can be used to implement custom key event handling.
-type KeySnoopFunc func(grabWidget *WidgetClass, event *gdk.EventKey, funcData interface{}) (gint int)
+type KeySnoopFunc func(grabWidget *Widget, event *gdk.EventKey, funcData interface{}) (gint int)
 
 //export gotk4_KeySnoopFunc
 func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) (cret C.gint) {
@@ -33,11 +33,11 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 		panic(`callback not found`)
 	}
 
-	var grabWidget *WidgetClass // out
-	var event *gdk.EventKey     // out
-	var funcData interface{}    // out
+	var grabWidget *Widget   // out
+	var event *gdk.EventKey  // out
+	var funcData interface{} // out
 
-	grabWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*WidgetClass)
+	grabWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
 	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
 	funcData = box.Get(uintptr(arg2))
 
@@ -90,7 +90,7 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 // its associated pointer or keyboard (if any) are delivered to @widget. If the
 // @block_others parameter is true, any other devices will be unable to interact
 // with @widget during the grab.
-func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
+func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
 	var _arg3 C.gboolean   // out
@@ -107,7 +107,7 @@ func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
 // DeviceGrabRemove removes a device grab from the given widget.
 //
 // You have to pair calls to gtk_device_grab_add() and gtk_device_grab_remove().
-func DeviceGrabRemove(widget Widget, device gdk.Device) {
+func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
 
@@ -188,14 +188,14 @@ func GetBinaryAge() uint {
 
 // GetCurrentEventDevice: if there is a current event and it has a device,
 // return that device, otherwise return nil.
-func GetCurrentEventDevice() *gdk.DeviceClass {
+func GetCurrentEventDevice() *gdk.Device {
 	var _cret *C.GdkDevice // in
 
 	_cret = C.gtk_get_current_event_device()
 
-	var _device *gdk.DeviceClass // out
+	var _device *gdk.Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Device)
 
 	return _device
 }
@@ -382,14 +382,14 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 }
 
 // GrabGetCurrent queries the current grab of the default window group.
-func GrabGetCurrent() *WidgetClass {
+func GrabGetCurrent() *Widget {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_grab_get_current()
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }

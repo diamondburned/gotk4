@@ -29,8 +29,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_unix_fd_message_get_type()), F: marshalUnixFDMessage},
+		{T: externglib.Type(C.g_unix_fd_message_get_type()), F: marshalUnixFDMessager},
 	})
+}
+
+// UnixFDMessager describes UnixFDMessage's methods.
+type UnixFDMessager interface {
+	gextras.Objector
+
+	AppendFd(fd int) error
+	FdList() *UnixFDList
 }
 
 // UnixFDMessage: this ControlMessage contains a FDList. It may be sent using
@@ -45,61 +53,42 @@ func init() {
 // Note that `<gio/gunixfdmessage.h>` belongs to the UNIX-specific GIO
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
-type UnixFDMessage interface {
-	gextras.Objector
-
-	// AppendFd adds a file descriptor to @message.
-	//
-	// The file descriptor is duplicated using dup(). You keep your copy of the
-	// descriptor and the copy contained in @message will be closed when
-	// @message is finalized.
-	//
-	// A possible cause of failure is exceeding the per-process or system-wide
-	// file descriptor limit.
-	AppendFd(fd int) error
-	// FdList gets the FDList contained in @message. This function does not
-	// return a reference to the caller, but the returned list is valid for the
-	// lifetime of @message.
-	FdList() *UnixFDListClass
+type UnixFDMessage struct {
+	SocketControlMessage
 }
 
-// UnixFDMessageClass implements the UnixFDMessage interface.
-type UnixFDMessageClass struct {
-	SocketControlMessageClass
-}
+var _ UnixFDMessager = (*UnixFDMessage)(nil)
 
-var _ UnixFDMessage = (*UnixFDMessageClass)(nil)
-
-func wrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
-	return &UnixFDMessageClass{
-		SocketControlMessageClass: SocketControlMessageClass{
+func wrapUnixFDMessager(obj *externglib.Object) UnixFDMessager {
+	return &UnixFDMessage{
+		SocketControlMessage: SocketControlMessage{
 			Object: obj,
 		},
 	}
 }
 
-func marshalUnixFDMessage(p uintptr) (interface{}, error) {
+func marshalUnixFDMessager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixFDMessage(obj), nil
+	return wrapUnixFDMessager(obj), nil
 }
 
 // NewUnixFDMessage creates a new FDMessage containing an empty file descriptor
 // list.
-func NewUnixFDMessage() *UnixFDMessageClass {
+func NewUnixFDMessage() *UnixFDMessage {
 	var _cret *C.GSocketControlMessage // in
 
 	_cret = C.g_unix_fd_message_new()
 
-	var _unixFDMessage *UnixFDMessageClass // out
+	var _unixFDMessage *UnixFDMessage // out
 
-	_unixFDMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDMessageClass)
+	_unixFDMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDMessage)
 
 	return _unixFDMessage
 }
 
 // NewUnixFDMessageWithFdList creates a new FDMessage containing @list.
-func NewUnixFDMessageWithFdList(fdList UnixFDList) *UnixFDMessageClass {
+func NewUnixFDMessageWithFdList(fdList UnixFDLister) *UnixFDMessage {
 	var _arg1 *C.GUnixFDList           // out
 	var _cret *C.GSocketControlMessage // in
 
@@ -107,9 +96,9 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) *UnixFDMessageClass {
 
 	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
 
-	var _unixFDMessage *UnixFDMessageClass // out
+	var _unixFDMessage *UnixFDMessage // out
 
-	_unixFDMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDMessageClass)
+	_unixFDMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDMessage)
 
 	return _unixFDMessage
 }
@@ -122,7 +111,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) *UnixFDMessageClass {
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
 // descriptor limit.
-func (message *UnixFDMessageClass) AppendFd(fd int) error {
+func (message *UnixFDMessage) AppendFd(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
 	var _cerr *C.GError         // in
@@ -142,7 +131,7 @@ func (message *UnixFDMessageClass) AppendFd(fd int) error {
 // FdList gets the FDList contained in @message. This function does not return a
 // reference to the caller, but the returned list is valid for the lifetime of
 // @message.
-func (message *UnixFDMessageClass) FdList() *UnixFDListClass {
+func (message *UnixFDMessage) FdList() *UnixFDList {
 	var _arg0 *C.GUnixFDMessage // out
 	var _cret *C.GUnixFDList    // in
 
@@ -150,9 +139,9 @@ func (message *UnixFDMessageClass) FdList() *UnixFDListClass {
 
 	_cret = C.g_unix_fd_message_get_fd_list(_arg0)
 
-	var _unixFDList *UnixFDListClass // out
+	var _unixFDList *UnixFDList // out
 
-	_unixFDList = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*UnixFDListClass)
+	_unixFDList = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*UnixFDList)
 
 	return _unixFDList
 }

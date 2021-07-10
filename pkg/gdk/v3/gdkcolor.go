@@ -30,12 +30,6 @@ type Color struct {
 	native C.GdkColor
 }
 
-// WrapColor wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapColor(ptr unsafe.Pointer) *Color {
-	return (*Color)(ptr)
-}
-
 func marshalColor(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Color)(unsafe.Pointer(b)), nil
@@ -63,7 +57,7 @@ func (color *Color) Copy() *Color {
 
 	_ret = (*Color)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Color) {
-		C.free(unsafe.Pointer(v))
+		C.gdk_color_free((*C.GdkColor)(unsafe.Pointer(v)))
 	})
 
 	return _ret

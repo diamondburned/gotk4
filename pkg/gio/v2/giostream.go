@@ -32,15 +32,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_io_stream_get_type()), F: marshalIOStream},
+		{T: externglib.Type(C.g_io_stream_get_type()), F: marshalIOStreamer},
 	})
 }
 
-// IOStreamOverrider contains methods that are overridable.
+// IOStreamerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type IOStreamOverrider interface {
+type IOStreamerOverrider interface {
 	// CloseAsync requests an asynchronous close of the stream, releasing
 	// resources related to it. When the operation is finished @callback will be
 	// called. You can then call g_io_stream_close_finish() to get the result of
@@ -51,16 +51,31 @@ type IOStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
 	// CloseFinish closes a stream.
-	CloseFinish(result AsyncResult) error
-	CloseFn(cancellable Cancellable) error
+	CloseFinish(result AsyncResulter) error
+	CloseFn(cancellable Cancellabler) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
-	InputStream() *InputStreamClass
+	InputStream() *InputStream
 	// OutputStream gets the output stream for this object. This is used for
 	// writing.
-	OutputStream() *OutputStreamClass
+	OutputStream() *OutputStream
+}
+
+// IOStreamer describes IOStream's methods.
+type IOStreamer interface {
+	gextras.Objector
+
+	ClearPending()
+	Close(cancellable Cancellabler) error
+	CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	CloseFinish(result AsyncResulter) error
+	InputStream() *InputStream
+	OutputStream() *OutputStream
+	HasPending() bool
+	IsClosed() bool
+	SetPending() error
 }
 
 // IOStream represents an object that has both read and write streams. Generally
@@ -107,94 +122,26 @@ type IOStreamOverrider interface {
 // Note that the semantics of such operations may not be well-defined due to the
 // state the wrapper stream leaves the base stream in (though they are
 // guaranteed not to crash).
-type IOStream interface {
-	gextras.Objector
-
-	// ClearPending clears the pending flag on @stream.
-	ClearPending()
-	// Close closes the stream, releasing resources related to it. This will
-	// also close the individual input and output streams, if they are not
-	// already closed.
-	//
-	// Once the stream is closed, all other operations will return
-	// G_IO_ERROR_CLOSED. Closing a stream multiple times will not return an
-	// error.
-	//
-	// Closing a stream will automatically flush any outstanding buffers in the
-	// stream.
-	//
-	// Streams will be automatically closed when the last reference is dropped,
-	// but you might want to call this function to make sure resources are
-	// released as early as possible.
-	//
-	// Some streams might keep the backing store of the stream (e.g. a file
-	// descriptor) open after the stream is closed. See the documentation for
-	// the individual stream for details.
-	//
-	// On failure the first error that happened will be reported, but the close
-	// operation will finish as much as possible. A stream that failed to close
-	// will still return G_IO_ERROR_CLOSED for all operations. Still, it is
-	// important to check and report the error to the user, otherwise there
-	// might be a loss of data as all data might not be written.
-	//
-	// If @cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	// Cancelling a close will still leave the stream closed, but some streams
-	// can use a faster close that doesn't block to e.g. check errors.
-	//
-	// The default implementation of this method just calls close on the
-	// individual input/output streams.
-	Close(cancellable Cancellable) error
-	// CloseAsync requests an asynchronous close of the stream, releasing
-	// resources related to it. When the operation is finished @callback will be
-	// called. You can then call g_io_stream_close_finish() to get the result of
-	// the operation.
-	//
-	// For behaviour details see g_io_stream_close().
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinish closes a stream.
-	CloseFinish(result AsyncResult) error
-	// InputStream gets the input stream for this object. This is used for
-	// reading.
-	InputStream() *InputStreamClass
-	// OutputStream gets the output stream for this object. This is used for
-	// writing.
-	OutputStream() *OutputStreamClass
-	// HasPending checks if a stream has pending actions.
-	HasPending() bool
-	// IsClosed checks if a stream is closed.
-	IsClosed() bool
-	// SetPending sets @stream to have actions pending. If the pending flag is
-	// already set or @stream is closed, it will return false and set @error.
-	SetPending() error
-}
-
-// IOStreamClass implements the IOStream interface.
-type IOStreamClass struct {
+type IOStream struct {
 	*externglib.Object
 }
 
-var _ IOStream = (*IOStreamClass)(nil)
+var _ IOStreamer = (*IOStream)(nil)
 
-func wrapIOStream(obj *externglib.Object) IOStream {
-	return &IOStreamClass{
+func wrapIOStreamer(obj *externglib.Object) IOStreamer {
+	return &IOStream{
 		Object: obj,
 	}
 }
 
-func marshalIOStream(p uintptr) (interface{}, error) {
+func marshalIOStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIOStream(obj), nil
+	return wrapIOStreamer(obj), nil
 }
 
 // ClearPending clears the pending flag on @stream.
-func (stream *IOStreamClass) ClearPending() {
+func (stream *IOStream) ClearPending() {
 	var _arg0 *C.GIOStream // out
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
@@ -234,7 +181,7 @@ func (stream *IOStreamClass) ClearPending() {
 //
 // The default implementation of this method just calls close on the individual
 // input/output streams.
-func (stream *IOStreamClass) Close(cancellable Cancellable) error {
+func (stream *IOStream) Close(cancellable Cancellabler) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
@@ -260,7 +207,7 @@ func (stream *IOStreamClass) Close(cancellable Cancellable) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (stream *IOStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *IOStream) CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream          // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
@@ -277,7 +224,7 @@ func (stream *IOStreamClass) CloseAsync(ioPriority int, cancellable Cancellable,
 }
 
 // CloseFinish closes a stream.
-func (stream *IOStreamClass) CloseFinish(result AsyncResult) error {
+func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -295,7 +242,7 @@ func (stream *IOStreamClass) CloseFinish(result AsyncResult) error {
 }
 
 // InputStream gets the input stream for this object. This is used for reading.
-func (stream *IOStreamClass) InputStream() *InputStreamClass {
+func (stream *IOStream) InputStream() *InputStream {
 	var _arg0 *C.GIOStream    // out
 	var _cret *C.GInputStream // in
 
@@ -303,16 +250,16 @@ func (stream *IOStreamClass) InputStream() *InputStreamClass {
 
 	_cret = C.g_io_stream_get_input_stream(_arg0)
 
-	var _inputStream *InputStreamClass // out
+	var _inputStream *InputStream // out
 
-	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InputStreamClass)
+	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InputStream)
 
 	return _inputStream
 }
 
 // OutputStream gets the output stream for this object. This is used for
 // writing.
-func (stream *IOStreamClass) OutputStream() *OutputStreamClass {
+func (stream *IOStream) OutputStream() *OutputStream {
 	var _arg0 *C.GIOStream     // out
 	var _cret *C.GOutputStream // in
 
@@ -320,15 +267,15 @@ func (stream *IOStreamClass) OutputStream() *OutputStreamClass {
 
 	_cret = C.g_io_stream_get_output_stream(_arg0)
 
-	var _outputStream *OutputStreamClass // out
+	var _outputStream *OutputStream // out
 
-	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*OutputStreamClass)
+	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*OutputStream)
 
 	return _outputStream
 }
 
 // HasPending checks if a stream has pending actions.
-func (stream *IOStreamClass) HasPending() bool {
+func (stream *IOStream) HasPending() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
@@ -346,7 +293,7 @@ func (stream *IOStreamClass) HasPending() bool {
 }
 
 // IsClosed checks if a stream is closed.
-func (stream *IOStreamClass) IsClosed() bool {
+func (stream *IOStream) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
@@ -365,7 +312,7 @@ func (stream *IOStreamClass) IsClosed() bool {
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
-func (stream *IOStreamClass) SetPending() error {
+func (stream *IOStream) SetPending() error {
 	var _arg0 *C.GIOStream // out
 	var _cerr *C.GError    // in
 

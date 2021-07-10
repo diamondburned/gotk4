@@ -36,12 +36,6 @@ type Transform struct {
 	native C.GskTransform
 }
 
-// WrapTransform wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTransform(ptr unsafe.Pointer) *Transform {
-	return (*Transform)(ptr)
-}
-
 func marshalTransform(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Transform)(unsafe.Pointer(b)), nil

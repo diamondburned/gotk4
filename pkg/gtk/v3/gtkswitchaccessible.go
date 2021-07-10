@@ -21,43 +21,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_switch_accessible_get_type()), F: marshalSwitchAccessible},
+		{T: externglib.Type(C.gtk_switch_accessible_get_type()), F: marshalSwitchAccessibler},
 	})
 }
 
-type SwitchAccessible interface {
+// SwitchAccessibler describes SwitchAccessible's methods.
+type SwitchAccessibler interface {
 	gextras.Objector
 
-	privateSwitchAccessibleClass()
+	privateSwitchAccessible()
 }
 
-// SwitchAccessibleClass implements the SwitchAccessible interface.
-type SwitchAccessibleClass struct {
-	WidgetAccessibleClass
-	atk.ActionIface
+type SwitchAccessible struct {
+	WidgetAccessible
+	atk.Action
 }
 
-var _ SwitchAccessible = (*SwitchAccessibleClass)(nil)
+var _ SwitchAccessibler = (*SwitchAccessible)(nil)
 
-func wrapSwitchAccessible(obj *externglib.Object) SwitchAccessible {
-	return &SwitchAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapSwitchAccessibler(obj *externglib.Object) SwitchAccessibler {
+	return &SwitchAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSwitchAccessible(p uintptr) (interface{}, error) {
+func marshalSwitchAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSwitchAccessible(obj), nil
+	return wrapSwitchAccessibler(obj), nil
 }
 
-func (*SwitchAccessibleClass) privateSwitchAccessibleClass() {}
+func (*SwitchAccessible) privateSwitchAccessible() {}

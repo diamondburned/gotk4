@@ -21,28 +21,28 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_container_accessible_get_type()), F: marshalContainerAccessible},
+		{T: externglib.Type(C.gtk_container_accessible_get_type()), F: marshalContainerAccessibler},
 	})
 }
 
-type ContainerAccessible interface {
+// ContainerAccessibler describes ContainerAccessible's methods.
+type ContainerAccessibler interface {
 	gextras.Objector
 
-	privateContainerAccessibleClass()
+	privateContainerAccessible()
 }
 
-// ContainerAccessibleClass implements the ContainerAccessible interface.
-type ContainerAccessibleClass struct {
-	WidgetAccessibleClass
+type ContainerAccessible struct {
+	WidgetAccessible
 }
 
-var _ ContainerAccessible = (*ContainerAccessibleClass)(nil)
+var _ ContainerAccessibler = (*ContainerAccessible)(nil)
 
-func wrapContainerAccessible(obj *externglib.Object) ContainerAccessible {
-	return &ContainerAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapContainerAccessibler(obj *externglib.Object) ContainerAccessibler {
+	return &ContainerAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
@@ -50,10 +50,10 @@ func wrapContainerAccessible(obj *externglib.Object) ContainerAccessible {
 	}
 }
 
-func marshalContainerAccessible(p uintptr) (interface{}, error) {
+func marshalContainerAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContainerAccessible(obj), nil
+	return wrapContainerAccessibler(obj), nil
 }
 
-func (*ContainerAccessibleClass) privateContainerAccessibleClass() {}
+func (*ContainerAccessible) privateContainerAccessible() {}

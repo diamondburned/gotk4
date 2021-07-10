@@ -20,17 +20,27 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_switch_get_type()), F: marshalSwitch},
+		{T: externglib.Type(C.gtk_switch_get_type()), F: marshalSwitcher},
 	})
 }
 
-// SwitchOverrider contains methods that are overridable.
+// SwitcherOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SwitchOverrider interface {
+type SwitcherOverrider interface {
 	Activate()
 	StateSet(state bool) bool
+}
+
+// Switcher describes Switch's methods.
+type Switcher interface {
+	gextras.Objector
+
+	Active() bool
+	State() bool
+	SetActive(isActive bool)
+	SetState(state bool)
 }
 
 // Switch is a widget that has two states: on or off. The user can control which
@@ -46,90 +56,70 @@ type SwitchOverrider interface {
 //
 // GtkSwitch has two css nodes, the main node with the name switch and a subnode
 // named slider. Neither of them is using any style classes.
-type Switch interface {
-	gextras.Objector
-
-	// Active gets whether the Switch is in its “on” or “off” state.
-	Active() bool
-	// State gets the underlying state of the Switch.
-	State() bool
-	// SetActive changes the state of @sw to the desired one.
-	SetActive(isActive bool)
-	// SetState sets the underlying state of the Switch.
-	//
-	// Normally, this is the same as Switch:active, unless the switch is set up
-	// for delayed state changes. This function is typically called from a
-	// Switch::state-set signal handler.
-	//
-	// See Switch::state-set for details.
-	SetState(state bool)
-}
-
-// SwitchClass implements the Switch interface.
-type SwitchClass struct {
+type Switch struct {
 	*externglib.Object
-	WidgetClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	Widget
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ Switch = (*SwitchClass)(nil)
+var _ Switcher = (*Switch)(nil)
 
-func wrapSwitch(obj *externglib.Object) Switch {
-	return &SwitchClass{
+func wrapSwitcher(obj *externglib.Object) Switcher {
+	return &Switch{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSwitch(p uintptr) (interface{}, error) {
+func marshalSwitcher(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSwitch(obj), nil
+	return wrapSwitcher(obj), nil
 }
 
 // NewSwitch creates a new Switch widget.
-func NewSwitch() *SwitchClass {
+func NewSwitch() *Switch {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_switch_new()
 
-	var __switch *SwitchClass // out
+	var __switch *Switch // out
 
-	__switch = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SwitchClass)
+	__switch = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Switch)
 
 	return __switch
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.
-func (sw *SwitchClass) Active() bool {
+func (sw *Switch) Active() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
@@ -147,7 +137,7 @@ func (sw *SwitchClass) Active() bool {
 }
 
 // State gets the underlying state of the Switch.
-func (sw *SwitchClass) State() bool {
+func (sw *Switch) State() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
@@ -165,7 +155,7 @@ func (sw *SwitchClass) State() bool {
 }
 
 // SetActive changes the state of @sw to the desired one.
-func (sw *SwitchClass) SetActive(isActive bool) {
+func (sw *Switch) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
@@ -184,7 +174,7 @@ func (sw *SwitchClass) SetActive(isActive bool) {
 // Switch::state-set signal handler.
 //
 // See Switch::state-set for details.
-func (sw *SwitchClass) SetState(state bool) {
+func (sw *Switch) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 

@@ -21,62 +21,62 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_container_cell_accessible_get_type()), F: marshalContainerCellAccessible},
+		{T: externglib.Type(C.gtk_container_cell_accessible_get_type()), F: marshalContainerCellAccessibler},
 	})
 }
 
-type ContainerCellAccessible interface {
+// ContainerCellAccessibler describes ContainerCellAccessible's methods.
+type ContainerCellAccessibler interface {
 	gextras.Objector
 
-	AddChild(child CellAccessible)
-	RemoveChild(child CellAccessible)
+	AddChild(child CellAccessibler)
+	RemoveChild(child CellAccessibler)
 }
 
-// ContainerCellAccessibleClass implements the ContainerCellAccessible interface.
-type ContainerCellAccessibleClass struct {
-	CellAccessibleClass
-	atk.ActionIface
+type ContainerCellAccessible struct {
+	CellAccessible
+	atk.Action
 }
 
-var _ ContainerCellAccessible = (*ContainerCellAccessibleClass)(nil)
+var _ ContainerCellAccessibler = (*ContainerCellAccessible)(nil)
 
-func wrapContainerCellAccessible(obj *externglib.Object) ContainerCellAccessible {
-	return &ContainerCellAccessibleClass{
-		CellAccessibleClass: CellAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapContainerCellAccessibler(obj *externglib.Object) ContainerCellAccessibler {
+	return &ContainerCellAccessible{
+		CellAccessible: CellAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
+func marshalContainerCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContainerCellAccessible(obj), nil
+	return wrapContainerCellAccessibler(obj), nil
 }
 
-func NewContainerCellAccessible() *ContainerCellAccessibleClass {
+func NewContainerCellAccessible() *ContainerCellAccessible {
 	var _cret *C.GtkContainerCellAccessible // in
 
 	_cret = C.gtk_container_cell_accessible_new()
 
-	var _containerCellAccessible *ContainerCellAccessibleClass // out
+	var _containerCellAccessible *ContainerCellAccessible // out
 
-	_containerCellAccessible = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContainerCellAccessibleClass)
+	_containerCellAccessible = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContainerCellAccessible)
 
 	return _containerCellAccessible
 }
 
-func (container *ContainerCellAccessibleClass) AddChild(child CellAccessible) {
+func (container *ContainerCellAccessible) AddChild(child CellAccessibler) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
@@ -86,7 +86,7 @@ func (container *ContainerCellAccessibleClass) AddChild(child CellAccessible) {
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
 }
 
-func (container *ContainerCellAccessibleClass) RemoveChild(child CellAccessible) {
+func (container *ContainerCellAccessible) RemoveChild(child CellAccessibler) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 

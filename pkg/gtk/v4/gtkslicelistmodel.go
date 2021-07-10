@@ -18,8 +18,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_slice_list_model_get_type()), F: marshalSliceListModel},
+		{T: externglib.Type(C.gtk_slice_list_model_get_type()), F: marshalSliceListModeller},
 	})
+}
+
+// SliceListModeller describes SliceListModel's methods.
+type SliceListModeller interface {
+	gextras.Objector
+
+	Offset() uint
+	Size() uint
+	SetOffset(offset uint)
+	SetSize(size uint)
 }
 
 // SliceListModel: `GtkSliceListModel` is a list model that presents a slice of
@@ -28,46 +38,26 @@ func init() {
 // This is useful when implementing paging by setting the size to the number of
 // elements per page and updating the offset whenever a different page is
 // opened.
-type SliceListModel interface {
-	gextras.Objector
-
-	// Offset gets the offset set via gtk_slice_list_model_set_offset().
-	Offset() uint
-	// Size gets the size set via gtk_slice_list_model_set_size().
-	Size() uint
-	// SetOffset sets the offset into the original model for this slice.
-	//
-	// If the offset is too large for the sliced model, @self will end up empty.
-	SetOffset(offset uint)
-	// SetSize sets the maximum size. @self will never have more items than
-	// @size.
-	//
-	// It can however have fewer items if the offset is too large or the model
-	// sliced from doesn't have enough items.
-	SetSize(size uint)
-}
-
-// SliceListModelClass implements the SliceListModel interface.
-type SliceListModelClass struct {
+type SliceListModel struct {
 	*externglib.Object
 }
 
-var _ SliceListModel = (*SliceListModelClass)(nil)
+var _ SliceListModeller = (*SliceListModel)(nil)
 
-func wrapSliceListModel(obj *externglib.Object) SliceListModel {
-	return &SliceListModelClass{
+func wrapSliceListModeller(obj *externglib.Object) SliceListModeller {
+	return &SliceListModel{
 		Object: obj,
 	}
 }
 
-func marshalSliceListModel(p uintptr) (interface{}, error) {
+func marshalSliceListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSliceListModel(obj), nil
+	return wrapSliceListModeller(obj), nil
 }
 
 // Offset gets the offset set via gtk_slice_list_model_set_offset().
-func (self *SliceListModelClass) Offset() uint {
+func (self *SliceListModel) Offset() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
@@ -83,7 +73,7 @@ func (self *SliceListModelClass) Offset() uint {
 }
 
 // Size gets the size set via gtk_slice_list_model_set_size().
-func (self *SliceListModelClass) Size() uint {
+func (self *SliceListModel) Size() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
@@ -101,7 +91,7 @@ func (self *SliceListModelClass) Size() uint {
 // SetOffset sets the offset into the original model for this slice.
 //
 // If the offset is too large for the sliced model, @self will end up empty.
-func (self *SliceListModelClass) SetOffset(offset uint) {
+func (self *SliceListModel) SetOffset(offset uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 
@@ -115,7 +105,7 @@ func (self *SliceListModelClass) SetOffset(offset uint) {
 //
 // It can however have fewer items if the offset is too large or the model
 // sliced from doesn't have enough items.
-func (self *SliceListModelClass) SetSize(size uint) {
+func (self *SliceListModel) SetSize(size uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 

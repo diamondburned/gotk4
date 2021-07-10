@@ -21,8 +21,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_content_serializer_get_type()), F: marshalContentSerializer},
+		{T: externglib.Type(C.gdk_content_serializer_get_type()), F: marshalContentSerializerrer},
 	})
+}
+
+// ContentSerializerrer describes ContentSerializer's methods.
+type ContentSerializerrer interface {
+	gextras.Objector
+
+	Cancellable() *gio.Cancellable
+	GType() externglib.Type
+	MIMEType() string
+	OutputStream() *gio.OutputStream
+	Priority() int
+	TaskData() interface{}
+	UserData() interface{}
+	Value() *externglib.Value
+	ReturnError(err error)
+	ReturnSuccess()
 }
 
 // ContentSerializer: `GdkContentSerializer` is used to serialize content for
@@ -37,66 +53,28 @@ func init() {
 // functions, use [func@content_register_serializer].
 //
 // Also see [class@Gdk.ContentDeserializer].
-type ContentSerializer interface {
-	gextras.Objector
-
-	// Cancellable gets the cancellable for the current operation.
-	//
-	// This is the `GCancellable` that was passed to [content_serialize_async].
-	Cancellable() *gio.CancellableClass
-	// GType gets the `GType` to of the object to serialize.
-	GType() externglib.Type
-	// MIMEType gets the mime type to serialize to.
-	MIMEType() string
-	// OutputStream gets the output stream for the current operation.
-	//
-	// This is the stream that was passed to [func@content_serialize_async].
-	OutputStream() *gio.OutputStreamClass
-	// Priority gets the I/O priority for the current operation.
-	//
-	// This is the priority that was passed to [func@content_serialize_async].
-	Priority() int
-	// TaskData gets the data that was associated with the current operation.
-	//
-	// See [method@Gdk.ContentSerializer.set_task_data].
-	TaskData() interface{}
-	// UserData gets the user data that was passed when the serializer was
-	// registered.
-	UserData() interface{}
-	// Value gets the `GValue` to read the object to serialize from.
-	Value() *externglib.Value
-	// ReturnError: indicate that the serialization has ended with an error.
-	//
-	// This function consumes @error.
-	ReturnError(err error)
-	// ReturnSuccess: indicate that the serialization has been successfully
-	// completed.
-	ReturnSuccess()
-}
-
-// ContentSerializerClass implements the ContentSerializer interface.
-type ContentSerializerClass struct {
+type ContentSerializer struct {
 	*externglib.Object
 }
 
-var _ ContentSerializer = (*ContentSerializerClass)(nil)
+var _ ContentSerializerrer = (*ContentSerializer)(nil)
 
-func wrapContentSerializer(obj *externglib.Object) ContentSerializer {
-	return &ContentSerializerClass{
+func wrapContentSerializerrer(obj *externglib.Object) ContentSerializerrer {
+	return &ContentSerializer{
 		Object: obj,
 	}
 }
 
-func marshalContentSerializer(p uintptr) (interface{}, error) {
+func marshalContentSerializerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContentSerializer(obj), nil
+	return wrapContentSerializerrer(obj), nil
 }
 
 // Cancellable gets the cancellable for the current operation.
 //
 // This is the `GCancellable` that was passed to [content_serialize_async].
-func (serializer *ContentSerializerClass) Cancellable() *gio.CancellableClass {
+func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GCancellable         // in
 
@@ -104,15 +82,15 @@ func (serializer *ContentSerializerClass) Cancellable() *gio.CancellableClass {
 
 	_cret = C.gdk_content_serializer_get_cancellable(_arg0)
 
-	var _cancellable *gio.CancellableClass // out
+	var _cancellable *gio.Cancellable // out
 
-	_cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.CancellableClass)
+	_cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Cancellable)
 
 	return _cancellable
 }
 
 // GType gets the `GType` to of the object to serialize.
-func (serializer *ContentSerializerClass) GType() externglib.Type {
+func (serializer *ContentSerializer) GType() externglib.Type {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.GType                 // in
 
@@ -128,7 +106,7 @@ func (serializer *ContentSerializerClass) GType() externglib.Type {
 }
 
 // MIMEType gets the mime type to serialize to.
-func (serializer *ContentSerializerClass) MIMEType() string {
+func (serializer *ContentSerializer) MIMEType() string {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.char                 // in
 
@@ -146,7 +124,7 @@ func (serializer *ContentSerializerClass) MIMEType() string {
 // OutputStream gets the output stream for the current operation.
 //
 // This is the stream that was passed to [func@content_serialize_async].
-func (serializer *ContentSerializerClass) OutputStream() *gio.OutputStreamClass {
+func (serializer *ContentSerializer) OutputStream() *gio.OutputStream {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GOutputStream        // in
 
@@ -154,9 +132,9 @@ func (serializer *ContentSerializerClass) OutputStream() *gio.OutputStreamClass 
 
 	_cret = C.gdk_content_serializer_get_output_stream(_arg0)
 
-	var _outputStream *gio.OutputStreamClass // out
+	var _outputStream *gio.OutputStream // out
 
-	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.OutputStreamClass)
+	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.OutputStream)
 
 	return _outputStream
 }
@@ -164,7 +142,7 @@ func (serializer *ContentSerializerClass) OutputStream() *gio.OutputStreamClass 
 // Priority gets the I/O priority for the current operation.
 //
 // This is the priority that was passed to [func@content_serialize_async].
-func (serializer *ContentSerializerClass) Priority() int {
+func (serializer *ContentSerializer) Priority() int {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.int                   // in
 
@@ -182,7 +160,7 @@ func (serializer *ContentSerializerClass) Priority() int {
 // TaskData gets the data that was associated with the current operation.
 //
 // See [method@Gdk.ContentSerializer.set_task_data].
-func (serializer *ContentSerializerClass) TaskData() interface{} {
+func (serializer *ContentSerializer) TaskData() interface{} {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.gpointer              // in
 
@@ -199,7 +177,7 @@ func (serializer *ContentSerializerClass) TaskData() interface{} {
 
 // UserData gets the user data that was passed when the serializer was
 // registered.
-func (serializer *ContentSerializerClass) UserData() interface{} {
+func (serializer *ContentSerializer) UserData() interface{} {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.gpointer              // in
 
@@ -215,7 +193,7 @@ func (serializer *ContentSerializerClass) UserData() interface{} {
 }
 
 // Value gets the `GValue` to read the object to serialize from.
-func (serializer *ContentSerializerClass) Value() *externglib.Value {
+func (serializer *ContentSerializer) Value() *externglib.Value {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GValue               // in
 
@@ -233,7 +211,7 @@ func (serializer *ContentSerializerClass) Value() *externglib.Value {
 // ReturnError: indicate that the serialization has ended with an error.
 //
 // This function consumes @error.
-func (serializer *ContentSerializerClass) ReturnError(err error) {
+func (serializer *ContentSerializer) ReturnError(err error) {
 	var _arg0 *C.GdkContentSerializer // out
 	var _arg1 *C.GError               // out
 
@@ -245,7 +223,7 @@ func (serializer *ContentSerializerClass) ReturnError(err error) {
 
 // ReturnSuccess: indicate that the serialization has been successfully
 // completed.
-func (serializer *ContentSerializerClass) ReturnSuccess() {
+func (serializer *ContentSerializer) ReturnSuccess() {
 	var _arg0 *C.GdkContentSerializer // out
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))

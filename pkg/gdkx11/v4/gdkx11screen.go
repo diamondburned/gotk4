@@ -18,67 +18,44 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_screen_get_type()), F: marshalX11Screen},
+		{T: externglib.Type(C.gdk_x11_screen_get_type()), F: marshalX11Screener},
 	})
 }
 
-type X11Screen interface {
+// X11Screener describes X11Screen's methods.
+type X11Screener interface {
 	gextras.Objector
 
-	// CurrentDesktop returns the current workspace for @screen when running
-	// under a window manager that supports multiple workspaces, as described in
-	// the Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	CurrentDesktop() uint32
-	// NumberOfDesktops returns the number of workspaces for @screen when
-	// running under a window manager that supports multiple workspaces, as
-	// described in the Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	NumberOfDesktops() uint32
-	// ScreenNumber returns the index of a X11Screen.
 	ScreenNumber() int
-	// WindowManagerName returns the name of the window manager for @screen.
 	WindowManagerName() string
-	// SupportsNetWmHint: this function is specific to the X11 backend of GDK,
-	// and indicates whether the window manager supports a certain hint from the
-	// Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec) specification.
-	//
-	// When using this function, keep in mind that the window manager can change
-	// over time; so you shouldn’t use this function in a way that impacts
-	// persistent application state. A common bug is that your application can
-	// start up before the window manager does when the user logs in, and before
-	// the window manager starts gdk_x11_screen_supports_net_wm_hint() will
-	// return false for every property. You can monitor the
-	// window_manager_changed signal on X11Screen to detect a window manager
-	// change.
 	SupportsNetWmHint(propertyName string) bool
 }
 
-// X11ScreenClass implements the X11Screen interface.
-type X11ScreenClass struct {
+type X11Screen struct {
 	*externglib.Object
 }
 
-var _ X11Screen = (*X11ScreenClass)(nil)
+var _ X11Screener = (*X11Screen)(nil)
 
-func wrapX11Screen(obj *externglib.Object) X11Screen {
-	return &X11ScreenClass{
+func wrapX11Screener(obj *externglib.Object) X11Screener {
+	return &X11Screen{
 		Object: obj,
 	}
 }
 
-func marshalX11Screen(p uintptr) (interface{}, error) {
+func marshalX11Screener(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Screen(obj), nil
+	return wrapX11Screener(obj), nil
 }
 
 // CurrentDesktop returns the current workspace for @screen when running under a
 // window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
-func (screen *X11ScreenClass) CurrentDesktop() uint32 {
+func (screen *X11Screen) CurrentDesktop() uint32 {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret C.guint32       // in
 
@@ -97,7 +74,7 @@ func (screen *X11ScreenClass) CurrentDesktop() uint32 {
 // under a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
-func (screen *X11ScreenClass) NumberOfDesktops() uint32 {
+func (screen *X11Screen) NumberOfDesktops() uint32 {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret C.guint32       // in
 
@@ -113,7 +90,7 @@ func (screen *X11ScreenClass) NumberOfDesktops() uint32 {
 }
 
 // ScreenNumber returns the index of a X11Screen.
-func (screen *X11ScreenClass) ScreenNumber() int {
+func (screen *X11Screen) ScreenNumber() int {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret C.int           // in
 
@@ -129,7 +106,7 @@ func (screen *X11ScreenClass) ScreenNumber() int {
 }
 
 // WindowManagerName returns the name of the window manager for @screen.
-func (screen *X11ScreenClass) WindowManagerName() string {
+func (screen *X11Screen) WindowManagerName() string {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret *C.char         // in
 
@@ -156,7 +133,7 @@ func (screen *X11ScreenClass) WindowManagerName() string {
 // window manager starts gdk_x11_screen_supports_net_wm_hint() will return false
 // for every property. You can monitor the window_manager_changed signal on
 // X11Screen to detect a window manager change.
-func (screen *X11ScreenClass) SupportsNetWmHint(propertyName string) bool {
+func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 	var _arg0 *C.GdkX11Screen // out
 	var _arg1 *C.char         // out
 	var _cret C.gboolean      // in

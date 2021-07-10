@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_style_provider_get_type()), F: marshalStyleProvider},
+		{T: externglib.Type(C.gtk_style_provider_get_type()), F: marshalStyleProviderrer},
 	})
+}
+
+// StyleProviderrer describes StyleProvider's methods.
+type StyleProviderrer interface {
+	gextras.Objector
+
+	privateStyleProvider()
 }
 
 // StyleProvider: `GtkStyleProvider` is an interface for style information used
@@ -31,29 +38,22 @@ func init() {
 //
 // GTK uses the `GtkStyleProvider` implementation for CSS in
 // [iface@Gtk.CssProvider].
-type StyleProvider interface {
-	gextras.Objector
-
-	privateStyleProviderIface()
-}
-
-// StyleProviderIface implements the StyleProvider interface.
-type StyleProviderIface struct {
+type StyleProvider struct {
 	*externglib.Object
 }
 
-var _ StyleProvider = (*StyleProviderIface)(nil)
+var _ StyleProviderrer = (*StyleProvider)(nil)
 
-func wrapStyleProvider(obj *externglib.Object) StyleProvider {
-	return &StyleProviderIface{
+func wrapStyleProviderrer(obj *externglib.Object) StyleProviderrer {
+	return &StyleProvider{
 		Object: obj,
 	}
 }
 
-func marshalStyleProvider(p uintptr) (interface{}, error) {
+func marshalStyleProviderrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleProvider(obj), nil
+	return wrapStyleProviderrer(obj), nil
 }
 
-func (*StyleProviderIface) privateStyleProviderIface() {}
+func (*StyleProvider) privateStyleProvider() {}

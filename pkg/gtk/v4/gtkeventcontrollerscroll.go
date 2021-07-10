@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_event_controller_scroll_flags_get_type()), F: marshalEventControllerScrollFlags},
-		{T: externglib.Type(C.gtk_event_controller_scroll_get_type()), F: marshalEventControllerScroll},
+		{T: externglib.Type(C.gtk_event_controller_scroll_get_type()), F: marshalEventControllerScroller},
 	})
 }
 
@@ -46,6 +46,13 @@ const (
 
 func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 	return EventControllerScrollFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// EventControllerScroller describes EventControllerScroll's methods.
+type EventControllerScroller interface {
+	gextras.Objector
+
+	Flags() EventControllerScrollFlags
 }
 
 // EventControllerScroll: `GtkEventControllerScroll` is an event controller that
@@ -83,36 +90,28 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 // [signal@Gtk.EventControllerScroll::decelerate] signal, emitted at the end of
 // scrolling with two X/Y velocity arguments that are consistent with the motion
 // that was received.
-type EventControllerScroll interface {
-	gextras.Objector
-
-	// Flags gets the flags conditioning the scroll controller behavior.
-	Flags() EventControllerScrollFlags
+type EventControllerScroll struct {
+	EventController
 }
 
-// EventControllerScrollClass implements the EventControllerScroll interface.
-type EventControllerScrollClass struct {
-	EventControllerClass
-}
+var _ EventControllerScroller = (*EventControllerScroll)(nil)
 
-var _ EventControllerScroll = (*EventControllerScrollClass)(nil)
-
-func wrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
-	return &EventControllerScrollClass{
-		EventControllerClass: EventControllerClass{
+func wrapEventControllerScroller(obj *externglib.Object) EventControllerScroller {
+	return &EventControllerScroll{
+		EventController: EventController{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEventControllerScroll(p uintptr) (interface{}, error) {
+func marshalEventControllerScroller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerScroll(obj), nil
+	return wrapEventControllerScroller(obj), nil
 }
 
 // Flags gets the flags conditioning the scroll controller behavior.
-func (scroll *EventControllerScrollClass) Flags() EventControllerScrollFlags {
+func (scroll *EventControllerScroll) Flags() EventControllerScrollFlags {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _cret C.GtkEventControllerScrollFlags // in
 

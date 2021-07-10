@@ -19,35 +19,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_drag_context_get_type()), F: marshalX11DragContext},
+		{T: externglib.Type(C.gdk_x11_drag_context_get_type()), F: marshalX11DragContexter},
 	})
 }
 
-type X11DragContext interface {
+// X11DragContexter describes X11DragContext's methods.
+type X11DragContexter interface {
 	gextras.Objector
 
-	privateX11DragContextClass()
+	privateX11DragContext()
 }
 
-// X11DragContextClass implements the X11DragContext interface.
-type X11DragContextClass struct {
-	gdk.DragContextClass
+type X11DragContext struct {
+	gdk.DragContext
 }
 
-var _ X11DragContext = (*X11DragContextClass)(nil)
+var _ X11DragContexter = (*X11DragContext)(nil)
 
-func wrapX11DragContext(obj *externglib.Object) X11DragContext {
-	return &X11DragContextClass{
-		DragContextClass: gdk.DragContextClass{
+func wrapX11DragContexter(obj *externglib.Object) X11DragContexter {
+	return &X11DragContext{
+		DragContext: gdk.DragContext{
 			Object: obj,
 		},
 	}
 }
 
-func marshalX11DragContext(p uintptr) (interface{}, error) {
+func marshalX11DragContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11DragContext(obj), nil
+	return wrapX11DragContexter(obj), nil
 }
 
-func (*X11DragContextClass) privateX11DragContextClass() {}
+func (*X11DragContext) privateX11DragContext() {}

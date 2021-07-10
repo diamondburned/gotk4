@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialog},
+		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialogger},
 	})
+}
+
+// FontChooserDialogger describes FontChooserDialog's methods.
+type FontChooserDialogger interface {
+	gextras.Objector
+
+	privateFontChooserDialog()
 }
 
 // FontChooserDialog: the FontChooserDialog widget is a dialog for selecting a
@@ -32,75 +39,68 @@ func init() {
 //
 // The GtkFontChooserDialog implementation of the Buildable interface exposes
 // the buttons with the names “select_button” and “cancel_button”.
-type FontChooserDialog interface {
-	gextras.Objector
-
-	privateFontChooserDialogClass()
-}
-
-// FontChooserDialogClass implements the FontChooserDialog interface.
-type FontChooserDialogClass struct {
+type FontChooserDialog struct {
 	*externglib.Object
-	DialogClass
-	BuildableIface
-	FontChooserIface
+	Dialog
+	Buildable
+	FontChooser
 }
 
-var _ FontChooserDialog = (*FontChooserDialogClass)(nil)
+var _ FontChooserDialogger = (*FontChooserDialog)(nil)
 
-func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
-	return &FontChooserDialogClass{
+func wrapFontChooserDialogger(obj *externglib.Object) FontChooserDialogger {
+	return &FontChooserDialog{
 		Object: obj,
-		DialogClass: DialogClass{
+		Dialog: Dialog{
 			Object: obj,
-			WindowClass: WindowClass{
+			Window: Window{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		FontChooserIface: FontChooserIface{
+		FontChooser: FontChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFontChooserDialog(p uintptr) (interface{}, error) {
+func marshalFontChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontChooserDialog(obj), nil
+	return wrapFontChooserDialogger(obj), nil
 }
 
 // NewFontChooserDialog creates a new FontChooserDialog.
-func NewFontChooserDialog(title string, parent Window) *FontChooserDialogClass {
+func NewFontChooserDialog(title string, parent Windowwer) *FontChooserDialog {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
@@ -111,11 +111,11 @@ func NewFontChooserDialog(title string, parent Window) *FontChooserDialogClass {
 
 	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
 
-	var _fontChooserDialog *FontChooserDialogClass // out
+	var _fontChooserDialog *FontChooserDialog // out
 
-	_fontChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontChooserDialogClass)
+	_fontChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontChooserDialog)
 
 	return _fontChooserDialog
 }
 
-func (*FontChooserDialogClass) privateFontChooserDialogClass() {}
+func (*FontChooserDialog) privateFontChooserDialog() {}

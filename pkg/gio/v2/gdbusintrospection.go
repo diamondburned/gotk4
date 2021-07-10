@@ -44,12 +44,6 @@ type DBusAnnotationInfo struct {
 	native C.GDBusAnnotationInfo
 }
 
-// WrapDBusAnnotationInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusAnnotationInfo(ptr unsafe.Pointer) *DBusAnnotationInfo {
-	return (*DBusAnnotationInfo)(ptr)
-}
-
 func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*DBusAnnotationInfo)(unsafe.Pointer(b)), nil
@@ -97,12 +91,6 @@ type DBusArgInfo struct {
 	native C.GDBusArgInfo
 }
 
-// WrapDBusArgInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusArgInfo(ptr unsafe.Pointer) *DBusArgInfo {
-	return (*DBusArgInfo)(ptr)
-}
-
 func marshalDBusArgInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*DBusArgInfo)(unsafe.Pointer(b)), nil
@@ -148,12 +136,6 @@ func (info *DBusArgInfo) unref() {
 // DBusInterfaceInfo: information about a D-Bus interface.
 type DBusInterfaceInfo struct {
 	native C.GDBusInterfaceInfo
-}
-
-// WrapDBusInterfaceInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
-	return (*DBusInterfaceInfo)(ptr)
 }
 
 func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
@@ -309,12 +291,6 @@ type DBusMethodInfo struct {
 	native C.GDBusMethodInfo
 }
 
-// WrapDBusMethodInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusMethodInfo(ptr unsafe.Pointer) *DBusMethodInfo {
-	return (*DBusMethodInfo)(ptr)
-}
-
 func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*DBusMethodInfo)(unsafe.Pointer(b)), nil
@@ -360,12 +336,6 @@ func (info *DBusMethodInfo) unref() {
 // DBusNodeInfo: information about nodes in a remote object hierarchy.
 type DBusNodeInfo struct {
 	native C.GDBusNodeInfo
-}
-
-// WrapDBusNodeInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusNodeInfo(ptr unsafe.Pointer) *DBusNodeInfo {
-	return (*DBusNodeInfo)(ptr)
 }
 
 func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
@@ -464,12 +434,6 @@ type DBusPropertyInfo struct {
 	native C.GDBusPropertyInfo
 }
 
-// WrapDBusPropertyInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusPropertyInfo(ptr unsafe.Pointer) *DBusPropertyInfo {
-	return (*DBusPropertyInfo)(ptr)
-}
-
 func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*DBusPropertyInfo)(unsafe.Pointer(b)), nil
@@ -515,12 +479,6 @@ func (info *DBusPropertyInfo) unref() {
 // DBusSignalInfo: information about a signal on a D-Bus interface.
 type DBusSignalInfo struct {
 	native C.GDBusSignalInfo
-}
-
-// WrapDBusSignalInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusSignalInfo(ptr unsafe.Pointer) *DBusSignalInfo {
-	return (*DBusSignalInfo)(ptr)
 }
 
 func marshalDBusSignalInfo(p uintptr) (interface{}, error) {

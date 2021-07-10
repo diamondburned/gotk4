@@ -28,8 +28,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_unix_input_stream_get_type()), F: marshalUnixInputStream},
+		{T: externglib.Type(C.g_unix_input_stream_get_type()), F: marshalUnixInputStreamer},
 	})
+}
+
+// UnixInputStreamer describes UnixInputStream's methods.
+type UnixInputStreamer interface {
+	gextras.Objector
+
+	CloseFd() bool
+	Fd() int
+	SetCloseFd(closeFd bool)
 }
 
 // UnixInputStream implements Stream for reading from a UNIX file descriptor,
@@ -40,57 +49,43 @@ func init() {
 // Note that `<gio/gunixinputstream.h>` belongs to the UNIX-specific GIO
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
-type UnixInputStream interface {
-	gextras.Objector
-
-	// CloseFd returns whether the file descriptor of @stream will be closed
-	// when the stream is closed.
-	CloseFd() bool
-	// Fd: return the UNIX file descriptor that the stream reads from.
-	Fd() int
-	// SetCloseFd sets whether the file descriptor of @stream shall be closed
-	// when the stream is closed.
-	SetCloseFd(closeFd bool)
-}
-
-// UnixInputStreamClass implements the UnixInputStream interface.
-type UnixInputStreamClass struct {
+type UnixInputStream struct {
 	*externglib.Object
-	InputStreamClass
-	FileDescriptorBasedIface
-	PollableInputStreamIface
+	InputStream
+	FileDescriptorBased
+	PollableInputStream
 }
 
-var _ UnixInputStream = (*UnixInputStreamClass)(nil)
+var _ UnixInputStreamer = (*UnixInputStream)(nil)
 
-func wrapUnixInputStream(obj *externglib.Object) UnixInputStream {
-	return &UnixInputStreamClass{
+func wrapUnixInputStreamer(obj *externglib.Object) UnixInputStreamer {
+	return &UnixInputStream{
 		Object: obj,
-		InputStreamClass: InputStreamClass{
+		InputStream: InputStream{
 			Object: obj,
 		},
-		FileDescriptorBasedIface: FileDescriptorBasedIface{
+		FileDescriptorBased: FileDescriptorBased{
 			Object: obj,
 		},
-		PollableInputStreamIface: PollableInputStreamIface{
-			InputStreamClass: InputStreamClass{
+		PollableInputStream: PollableInputStream{
+			InputStream: InputStream{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalUnixInputStream(p uintptr) (interface{}, error) {
+func marshalUnixInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixInputStream(obj), nil
+	return wrapUnixInputStreamer(obj), nil
 }
 
 // NewUnixInputStream creates a new InputStream for the given @fd.
 //
 // If @close_fd is true, the file descriptor will be closed when the stream is
 // closed.
-func NewUnixInputStream(fd int, closeFd bool) *UnixInputStreamClass {
+func NewUnixInputStream(fd int, closeFd bool) *UnixInputStream {
 	var _arg1 C.gint          // out
 	var _arg2 C.gboolean      // out
 	var _cret *C.GInputStream // in
@@ -102,16 +97,16 @@ func NewUnixInputStream(fd int, closeFd bool) *UnixInputStreamClass {
 
 	_cret = C.g_unix_input_stream_new(_arg1, _arg2)
 
-	var _unixInputStream *UnixInputStreamClass // out
+	var _unixInputStream *UnixInputStream // out
 
-	_unixInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixInputStreamClass)
+	_unixInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixInputStream)
 
 	return _unixInputStream
 }
 
 // CloseFd returns whether the file descriptor of @stream will be closed when
 // the stream is closed.
-func (stream *UnixInputStreamClass) CloseFd() bool {
+func (stream *UnixInputStream) CloseFd() bool {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gboolean          // in
 
@@ -129,7 +124,7 @@ func (stream *UnixInputStreamClass) CloseFd() bool {
 }
 
 // Fd: return the UNIX file descriptor that the stream reads from.
-func (stream *UnixInputStreamClass) Fd() int {
+func (stream *UnixInputStream) Fd() int {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gint              // in
 
@@ -146,7 +141,7 @@ func (stream *UnixInputStreamClass) Fd() int {
 
 // SetCloseFd sets whether the file descriptor of @stream shall be closed when
 // the stream is closed.
-func (stream *UnixInputStreamClass) SetCloseFd(closeFd bool) {
+func (stream *UnixInputStream) SetCloseFd(closeFd bool) {
 	var _arg0 *C.GUnixInputStream // out
 	var _arg1 C.gboolean          // out
 

@@ -19,12 +19,6 @@ type Queue struct {
 	native C.GQueue
 }
 
-// WrapQueue wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapQueue(ptr unsafe.Pointer) *Queue {
-	return (*Queue)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (q *Queue) Native() unsafe.Pointer {
 	return unsafe.Pointer(&q.native)

@@ -19,8 +19,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_app_launch_context_get_type()), F: marshalAppLaunchContext},
+		{T: externglib.Type(C.gdk_app_launch_context_get_type()), F: marshalAppLaunchContexter},
 	})
+}
+
+// AppLaunchContexter describes AppLaunchContext's methods.
+type AppLaunchContexter interface {
+	gextras.Objector
+
+	Display() *Display
+	SetDesktop(desktop int)
+	SetIconName(iconName string)
+	SetTimestamp(timestamp uint32)
 }
 
 // AppLaunchContext: `GdkAppLaunchContext` handles launching an application in a
@@ -44,66 +54,28 @@ func init() {
 // &error)) g_warning ("Launching failed: s\n", error->message);
 //
 // g_object_unref (context); “`
-type AppLaunchContext interface {
-	gextras.Objector
-
-	// Display gets the `GdkDisplay` that @context is for.
-	Display() *DisplayClass
-	// SetDesktop sets the workspace on which applications will be launched.
-	//
-	// This only works when running under a window manager that supports
-	// multiple workspaces, as described in the Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec).
-	//
-	// When the workspace is not specified or @desktop is set to -1, it is up to
-	// the window manager to pick one, typically it will be the current
-	// workspace.
-	SetDesktop(desktop int)
-	// SetIconName sets the icon for applications that are launched with this
-	// context.
-	//
-	// The @icon_name will be interpreted in the same way as the Icon field in
-	// desktop files. See also [method@Gdk.AppLaunchContext.set_icon()].
-	//
-	// If both @icon and @icon_name are set, the @icon_name takes priority. If
-	// neither @icon or @icon_name is set, the icon is taken from either the
-	// file that is passed to launched application or from the `GAppInfo` for
-	// the launched application itself.
-	SetIconName(iconName string)
-	// SetTimestamp sets the timestamp of @context.
-	//
-	// The timestamp should ideally be taken from the event that triggered the
-	// launch.
-	//
-	// Window managers can use this information to avoid moving the focus to the
-	// newly launched application when the user is busy typing in another
-	// window. This is also known as 'focus stealing prevention'.
-	SetTimestamp(timestamp uint32)
+type AppLaunchContext struct {
+	gio.AppLaunchContext
 }
 
-// AppLaunchContextClass implements the AppLaunchContext interface.
-type AppLaunchContextClass struct {
-	gio.AppLaunchContextClass
-}
+var _ AppLaunchContexter = (*AppLaunchContext)(nil)
 
-var _ AppLaunchContext = (*AppLaunchContextClass)(nil)
-
-func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
-	return &AppLaunchContextClass{
-		AppLaunchContextClass: gio.AppLaunchContextClass{
+func wrapAppLaunchContexter(obj *externglib.Object) AppLaunchContexter {
+	return &AppLaunchContext{
+		AppLaunchContext: gio.AppLaunchContext{
 			Object: obj,
 		},
 	}
 }
 
-func marshalAppLaunchContext(p uintptr) (interface{}, error) {
+func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppLaunchContext(obj), nil
+	return wrapAppLaunchContexter(obj), nil
 }
 
 // Display gets the `GdkDisplay` that @context is for.
-func (context *AppLaunchContextClass) Display() *DisplayClass {
+func (context *AppLaunchContext) Display() *Display {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _cret *C.GdkDisplay          // in
 
@@ -111,9 +83,9 @@ func (context *AppLaunchContextClass) Display() *DisplayClass {
 
 	_cret = C.gdk_app_launch_context_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
@@ -126,7 +98,7 @@ func (context *AppLaunchContextClass) Display() *DisplayClass {
 //
 // When the workspace is not specified or @desktop is set to -1, it is up to the
 // window manager to pick one, typically it will be the current workspace.
-func (context *AppLaunchContextClass) SetDesktop(desktop int) {
+func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.int                  // out
 
@@ -146,7 +118,7 @@ func (context *AppLaunchContextClass) SetDesktop(desktop int) {
 // neither @icon or @icon_name is set, the icon is taken from either the file
 // that is passed to launched application or from the `GAppInfo` for the
 // launched application itself.
-func (context *AppLaunchContextClass) SetIconName(iconName string) {
+func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.char                // out
 
@@ -165,7 +137,7 @@ func (context *AppLaunchContextClass) SetIconName(iconName string) {
 // Window managers can use this information to avoid moving the focus to the
 // newly launched application when the user is busy typing in another window.
 // This is also known as 'focus stealing prevention'.
-func (context *AppLaunchContextClass) SetTimestamp(timestamp uint32) {
+func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.guint32              // out
 

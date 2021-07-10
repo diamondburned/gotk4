@@ -52,7 +52,7 @@ func marshalTargetFlags(p uintptr) (interface{}, error) {
 // SelectionRemoveAll removes all handlers and unsets ownership of all
 // selections for a widget. Called when widget is being destroyed. This function
 // will not generally be called by applications.
-func SelectionRemoveAll(widget Widget) {
+func SelectionRemoveAll(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -78,12 +78,6 @@ type TargetEntry struct {
 	native C.GtkTargetEntry
 }
 
-// WrapTargetEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTargetEntry(ptr unsafe.Pointer) *TargetEntry {
-	return (*TargetEntry)(ptr)
-}
-
 func marshalTargetEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*TargetEntry)(unsafe.Pointer(b)), nil
@@ -107,7 +101,7 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 
 	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_target_entry_free((*C.GtkTargetEntry)(unsafe.Pointer(v)))
 	})
 
 	return _targetEntry
@@ -131,7 +125,7 @@ func (data *TargetEntry) Copy() *TargetEntry {
 
 	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_target_entry_free((*C.GtkTargetEntry)(unsafe.Pointer(v)))
 	})
 
 	return _targetEntry
@@ -151,12 +145,6 @@ func (data *TargetEntry) free() {
 // opaque.
 type TargetList struct {
 	native C.GtkTargetList
-}
-
-// WrapTargetList wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTargetList(ptr unsafe.Pointer) *TargetList {
-	return (*TargetList)(ptr)
 }
 
 func marshalTargetList(p uintptr) (interface{}, error) {
@@ -211,7 +199,7 @@ func (list *TargetList) AddImageTargets(info uint, writable bool) {
 // gtk_text_buffer_register_serialize_format() or
 // gtk_text_buffer_register_deserialize_format() to the target list. All targets
 // are added with the same @info.
-func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer TextBuffer) {
+func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer TextBufferrer) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
@@ -298,12 +286,6 @@ func (list *TargetList) unref() {
 // TargetEntry, but in an efficient form.
 type TargetPair struct {
 	native C.GtkTargetPair
-}
-
-// WrapTargetPair wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTargetPair(ptr unsafe.Pointer) *TargetPair {
-	return (*TargetPair)(ptr)
 }
 
 // Native returns the underlying C source pointer.

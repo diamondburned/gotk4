@@ -30,12 +30,6 @@ type Range struct {
 	native C.AtkRange
 }
 
-// WrapRange wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRange(ptr unsafe.Pointer) *Range {
-	return (*Range)(ptr)
-}
-
 func marshalRange(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Range)(unsafe.Pointer(b)), nil
@@ -59,7 +53,7 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 
 	__range = (*Range)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(__range, func(v *Range) {
-		C.free(unsafe.Pointer(v))
+		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
 	})
 
 	return __range
@@ -83,7 +77,7 @@ func (src *Range) Copy() *Range {
 
 	__range = (*Range)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(__range, func(v *Range) {
-		C.free(unsafe.Pointer(v))
+		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
 	})
 
 	return __range

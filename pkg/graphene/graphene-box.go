@@ -28,12 +28,6 @@ type Box struct {
 	native C.graphene_box_t
 }
 
-// WrapBox wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBox(ptr unsafe.Pointer) *Box {
-	return (*Box)(ptr)
-}
-
 func marshalBox(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Box)(unsafe.Pointer(b)), nil
@@ -49,7 +43,7 @@ func NewBoxAlloc() *Box {
 
 	_box = (*Box)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_box, func(v *Box) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_box_free((*C.graphene_box_t)(unsafe.Pointer(v)))
 	})
 
 	return _box

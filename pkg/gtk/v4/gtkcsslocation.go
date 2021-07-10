@@ -27,12 +27,6 @@ type CSSLocation struct {
 	native C.GtkCssLocation
 }
 
-// WrapCSSLocation wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCSSLocation(ptr unsafe.Pointer) *CSSLocation {
-	return (*CSSLocation)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (c *CSSLocation) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)

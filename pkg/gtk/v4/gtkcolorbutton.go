@@ -19,8 +19,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButton},
+		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtonner},
 	})
+}
+
+// ColorButtonner describes ColorButton's methods.
+type ColorButtonner interface {
+	gextras.Objector
+
+	Modal() bool
+	Title() string
+	SetModal(modal bool)
+	SetTitle(title string)
 }
 
 // ColorButton: the `GtkColorButton` allows to open a color chooser dialog to
@@ -38,68 +48,54 @@ func init() {
 // `GtkColorButton` has a single CSS node with name colorbutton which contains a
 // button node. To differentiate it from a plain `GtkButton`, it gets the .color
 // style class.
-type ColorButton interface {
-	gextras.Objector
-
-	// Modal gets whether the dialog is modal.
-	Modal() bool
-	// Title gets the title of the color chooser dialog.
-	Title() string
-	// SetModal sets whether the dialog should be modal.
-	SetModal(modal bool)
-	// SetTitle sets the title for the color chooser dialog.
-	SetTitle(title string)
-}
-
-// ColorButtonClass implements the ColorButton interface.
-type ColorButtonClass struct {
+type ColorButton struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ColorChooserIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ColorChooser
+	ConstraintTarget
 }
 
-var _ ColorButton = (*ColorButtonClass)(nil)
+var _ ColorButtonner = (*ColorButton)(nil)
 
-func wrapColorButton(obj *externglib.Object) ColorButton {
-	return &ColorButtonClass{
+func wrapColorButtonner(obj *externglib.Object) ColorButtonner {
+	return &ColorButton{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ColorChooserIface: ColorChooserIface{
+		ColorChooser: ColorChooser{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalColorButton(p uintptr) (interface{}, error) {
+func marshalColorButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorButton(obj), nil
+	return wrapColorButtonner(obj), nil
 }
 
 // NewColorButton creates a new color button.
@@ -108,20 +104,20 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 // representing the current selected color. When the button is clicked, a color
 // chooser dialog will open, allowing the user to select a color. The swatch
 // will be updated to reflect the new color when the user finishes.
-func NewColorButton() *ColorButtonClass {
+func NewColorButton() *ColorButton {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_color_button_new()
 
-	var _colorButton *ColorButtonClass // out
+	var _colorButton *ColorButton // out
 
-	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButtonClass)
+	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
 
 	return _colorButton
 }
 
 // NewColorButtonWithRGBA creates a new color button showing the given color.
-func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButtonClass {
+func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
 
@@ -129,15 +125,15 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButtonClass {
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
-	var _colorButton *ColorButtonClass // out
+	var _colorButton *ColorButton // out
 
-	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButtonClass)
+	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
 
 	return _colorButton
 }
 
 // Modal gets whether the dialog is modal.
-func (button *ColorButtonClass) Modal() bool {
+func (button *ColorButton) Modal() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
 
@@ -155,7 +151,7 @@ func (button *ColorButtonClass) Modal() bool {
 }
 
 // Title gets the title of the color chooser dialog.
-func (button *ColorButtonClass) Title() string {
+func (button *ColorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
 	var _cret *C.char           // in
 
@@ -171,7 +167,7 @@ func (button *ColorButtonClass) Title() string {
 }
 
 // SetModal sets whether the dialog should be modal.
-func (button *ColorButtonClass) SetModal(modal bool) {
+func (button *ColorButton) SetModal(modal bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
 
@@ -184,7 +180,7 @@ func (button *ColorButtonClass) SetModal(modal bool) {
 }
 
 // SetTitle sets the title for the color chooser dialog.
-func (button *ColorButtonClass) SetTitle(title string) {
+func (button *ColorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.char           // out
 

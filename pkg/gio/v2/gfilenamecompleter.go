@@ -28,67 +28,63 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_filename_completer_get_type()), F: marshalFilenameCompleter},
+		{T: externglib.Type(C.g_filename_completer_get_type()), F: marshalFilenameCompleterrer},
 	})
 }
 
-// FilenameCompleterOverrider contains methods that are overridable.
+// FilenameCompleterrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FilenameCompleterOverrider interface {
+type FilenameCompleterrerOverrider interface {
 	GotCompletionData()
+}
+
+// FilenameCompleterrer describes FilenameCompleter's methods.
+type FilenameCompleterrer interface {
+	gextras.Objector
+
+	CompletionSuffix(initialText string) string
+	Completions(initialText string) []string
+	SetDirsOnly(dirsOnly bool)
 }
 
 // FilenameCompleter completes partial file and directory names given a partial
 // string by looking in the file system for clues. Can return a list of possible
 // completion strings for widget implementations.
-type FilenameCompleter interface {
-	gextras.Objector
-
-	// CompletionSuffix obtains a completion for @initial_text from @completer.
-	CompletionSuffix(initialText string) string
-	// Completions gets an array of completion strings for a given initial text.
-	Completions(initialText string) []string
-	// SetDirsOnly: if @dirs_only is true, @completer will only complete
-	// directory names, and not file names.
-	SetDirsOnly(dirsOnly bool)
-}
-
-// FilenameCompleterClass implements the FilenameCompleter interface.
-type FilenameCompleterClass struct {
+type FilenameCompleter struct {
 	*externglib.Object
 }
 
-var _ FilenameCompleter = (*FilenameCompleterClass)(nil)
+var _ FilenameCompleterrer = (*FilenameCompleter)(nil)
 
-func wrapFilenameCompleter(obj *externglib.Object) FilenameCompleter {
-	return &FilenameCompleterClass{
+func wrapFilenameCompleterrer(obj *externglib.Object) FilenameCompleterrer {
+	return &FilenameCompleter{
 		Object: obj,
 	}
 }
 
-func marshalFilenameCompleter(p uintptr) (interface{}, error) {
+func marshalFilenameCompleterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilenameCompleter(obj), nil
+	return wrapFilenameCompleterrer(obj), nil
 }
 
 // NewFilenameCompleter creates a new filename completer.
-func NewFilenameCompleter() *FilenameCompleterClass {
+func NewFilenameCompleter() *FilenameCompleter {
 	var _cret *C.GFilenameCompleter // in
 
 	_cret = C.g_filename_completer_new()
 
-	var _filenameCompleter *FilenameCompleterClass // out
+	var _filenameCompleter *FilenameCompleter // out
 
-	_filenameCompleter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FilenameCompleterClass)
+	_filenameCompleter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FilenameCompleter)
 
 	return _filenameCompleter
 }
 
 // CompletionSuffix obtains a completion for @initial_text from @completer.
-func (completer *FilenameCompleterClass) CompletionSuffix(initialText string) string {
+func (completer *FilenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
 	var _cret *C.char               // in
@@ -108,7 +104,7 @@ func (completer *FilenameCompleterClass) CompletionSuffix(initialText string) st
 }
 
 // Completions gets an array of completion strings for a given initial text.
-func (completer *FilenameCompleterClass) Completions(initialText string) []string {
+func (completer *FilenameCompleter) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
 	var _cret **C.char
@@ -141,7 +137,7 @@ func (completer *FilenameCompleterClass) Completions(initialText string) []strin
 
 // SetDirsOnly: if @dirs_only is true, @completer will only complete directory
 // names, and not file names.
-func (completer *FilenameCompleterClass) SetDirsOnly(dirsOnly bool) {
+func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 C.gboolean            // out
 

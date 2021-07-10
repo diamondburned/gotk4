@@ -28,16 +28,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_service_get_type()), F: marshalSocketService},
+		{T: externglib.Type(C.g_socket_service_get_type()), F: marshalSocketServicer},
 	})
 }
 
-// SocketServiceOverrider contains methods that are overridable.
+// SocketServicerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketServiceOverrider interface {
-	Incoming(connection SocketConnection, sourceObject gextras.Objector) bool
+type SocketServicerOverrider interface {
+	Incoming(connection SocketConnectioner, sourceObject gextras.Objector) bool
+}
+
+// SocketServicer describes SocketService's methods.
+type SocketServicer interface {
+	gextras.Objector
+
+	IsActive() bool
+	Start()
+	Stop()
 }
 
 // SocketService is an object that represents a service that is provided to the
@@ -62,57 +71,24 @@ type SocketServiceOverrider interface {
 // created in, and is not threadsafe in general. However, the calls to start and
 // stop the service are thread-safe so these can be used from threads that
 // handle incoming clients.
-type SocketService interface {
-	gextras.Objector
-
-	// IsActive: check whether the service is active or not. An active service
-	// will accept new clients that connect, while a non-active service will let
-	// connecting clients queue up until the service is started.
-	IsActive() bool
-	// Start restarts the service, i.e. start accepting connections from the
-	// added sockets when the mainloop runs. This only needs to be called after
-	// the service has been stopped from g_socket_service_stop().
-	//
-	// This call is thread-safe, so it may be called from a thread handling an
-	// incoming client request.
-	Start()
-	// Stop stops the service, i.e. stops accepting connections from the added
-	// sockets when the mainloop runs.
-	//
-	// This call is thread-safe, so it may be called from a thread handling an
-	// incoming client request.
-	//
-	// Note that this only stops accepting new connections; it does not close
-	// the listening sockets, and you can call g_socket_service_start() again
-	// later to begin listening again. To close the listening sockets, call
-	// g_socket_listener_close(). (This will happen automatically when the
-	// Service is finalized.)
-	//
-	// This must be called before calling g_socket_listener_close() as the
-	// socket service will start accepting connections immediately when a new
-	// socket is added.
-	Stop()
+type SocketService struct {
+	SocketListener
 }
 
-// SocketServiceClass implements the SocketService interface.
-type SocketServiceClass struct {
-	SocketListenerClass
-}
+var _ SocketServicer = (*SocketService)(nil)
 
-var _ SocketService = (*SocketServiceClass)(nil)
-
-func wrapSocketService(obj *externglib.Object) SocketService {
-	return &SocketServiceClass{
-		SocketListenerClass: SocketListenerClass{
+func wrapSocketServicer(obj *externglib.Object) SocketServicer {
+	return &SocketService{
+		SocketListener: SocketListener{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSocketService(p uintptr) (interface{}, error) {
+func marshalSocketServicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketService(obj), nil
+	return wrapSocketServicer(obj), nil
 }
 
 // NewSocketService creates a new Service with no sockets to listen for. New
@@ -122,14 +98,14 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 // New services are created active, there is no need to call
 // g_socket_service_start(), unless g_socket_service_stop() has been called
 // before.
-func NewSocketService() *SocketServiceClass {
+func NewSocketService() *SocketService {
 	var _cret *C.GSocketService // in
 
 	_cret = C.g_socket_service_new()
 
-	var _socketService *SocketServiceClass // out
+	var _socketService *SocketService // out
 
-	_socketService = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketServiceClass)
+	_socketService = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketService)
 
 	return _socketService
 }
@@ -137,7 +113,7 @@ func NewSocketService() *SocketServiceClass {
 // IsActive: check whether the service is active or not. An active service will
 // accept new clients that connect, while a non-active service will let
 // connecting clients queue up until the service is started.
-func (service *SocketServiceClass) IsActive() bool {
+func (service *SocketService) IsActive() bool {
 	var _arg0 *C.GSocketService // out
 	var _cret C.gboolean        // in
 
@@ -160,7 +136,7 @@ func (service *SocketServiceClass) IsActive() bool {
 //
 // This call is thread-safe, so it may be called from a thread handling an
 // incoming client request.
-func (service *SocketServiceClass) Start() {
+func (service *SocketService) Start() {
 	var _arg0 *C.GSocketService // out
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(service.Native()))
@@ -183,7 +159,7 @@ func (service *SocketServiceClass) Start() {
 // This must be called before calling g_socket_listener_close() as the socket
 // service will start accepting connections immediately when a new socket is
 // added.
-func (service *SocketServiceClass) Stop() {
+func (service *SocketService) Stop() {
 	var _arg0 *C.GSocketService // out
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(service.Native()))

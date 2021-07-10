@@ -35,12 +35,6 @@ type ToplevelLayout struct {
 	native C.GdkToplevelLayout
 }
 
-// WrapToplevelLayout wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToplevelLayout(ptr unsafe.Pointer) *ToplevelLayout {
-	return (*ToplevelLayout)(ptr)
-}
-
 func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*ToplevelLayout)(unsafe.Pointer(b)), nil
@@ -135,7 +129,7 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 
 // FullscreenMonitor returns the monitor that the layout is fullscreening the
 // surface on.
-func (layout *ToplevelLayout) FullscreenMonitor() *MonitorClass {
+func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkMonitor        // in
 
@@ -143,9 +137,9 @@ func (layout *ToplevelLayout) FullscreenMonitor() *MonitorClass {
 
 	_cret = C.gdk_toplevel_layout_get_fullscreen_monitor(_arg0)
 
-	var _monitor *MonitorClass // out
+	var _monitor *Monitor // out
 
-	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MonitorClass)
+	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Monitor)
 
 	return _monitor
 }
@@ -216,7 +210,7 @@ func (layout *ToplevelLayout) ref() *ToplevelLayout {
 
 // SetFullscreen sets whether the layout should cause the surface to be
 // fullscreen when presented.
-func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitor) {
+func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitorrer) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
 	var _arg2 *C.GdkMonitor        // out

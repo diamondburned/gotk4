@@ -21,30 +21,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_accessible_get_type()), F: marshalMenuAccessible},
+		{T: externglib.Type(C.gtk_menu_accessible_get_type()), F: marshalMenuAccessibler},
 	})
 }
 
-type MenuAccessible interface {
+// MenuAccessibler describes MenuAccessible's methods.
+type MenuAccessibler interface {
 	gextras.Objector
 
-	privateMenuAccessibleClass()
+	privateMenuAccessible()
 }
 
-// MenuAccessibleClass implements the MenuAccessible interface.
-type MenuAccessibleClass struct {
-	MenuShellAccessibleClass
+type MenuAccessible struct {
+	MenuShellAccessible
 }
 
-var _ MenuAccessible = (*MenuAccessibleClass)(nil)
+var _ MenuAccessibler = (*MenuAccessible)(nil)
 
-func wrapMenuAccessible(obj *externglib.Object) MenuAccessible {
-	return &MenuAccessibleClass{
-		MenuShellAccessibleClass: MenuShellAccessibleClass{
-			ContainerAccessibleClass: ContainerAccessibleClass{
-				WidgetAccessibleClass: WidgetAccessibleClass{
-					AccessibleClass: AccessibleClass{
-						ObjectClass: atk.ObjectClass{
+func wrapMenuAccessibler(obj *externglib.Object) MenuAccessibler {
+	return &MenuAccessible{
+		MenuShellAccessible: MenuShellAccessible{
+			ContainerAccessible: ContainerAccessible{
+				WidgetAccessible: WidgetAccessible{
+					Accessible: Accessible{
+						Object: atk.Object{
 							Object: obj,
 						},
 					},
@@ -54,10 +54,10 @@ func wrapMenuAccessible(obj *externglib.Object) MenuAccessible {
 	}
 }
 
-func marshalMenuAccessible(p uintptr) (interface{}, error) {
+func marshalMenuAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuAccessible(obj), nil
+	return wrapMenuAccessibler(obj), nil
 }
 
-func (*MenuAccessibleClass) privateMenuAccessibleClass() {}
+func (*MenuAccessible) privateMenuAccessible() {}

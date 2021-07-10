@@ -23,7 +23,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
 		{T: externglib.Type(C.gtk_dialog_flags_get_type()), F: marshalDialogFlags},
-		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialog},
+		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialogger},
 	})
 }
 
@@ -92,7 +92,7 @@ func marshalDialogFlags(p uintptr) (interface{}, error) {
 // changes.
 //
 // Deprecated: Deprecated.
-func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
+func AlternativeDialogButtonOrder(screen gdk.Screener) bool {
 	var _arg1 *C.GdkScreen // out
 	var _cret C.gboolean   // in
 
@@ -109,17 +109,35 @@ func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
 	return _ok
 }
 
-// DialogOverrider contains methods that are overridable.
+// DialoggerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DialogOverrider interface {
+type DialoggerOverrider interface {
 	Close()
 	// Response emits the Dialog::response signal with the given response ID.
 	// Used to indicate that the user has responded to the dialog in some way;
 	// typically either you or gtk_dialog_run() will be monitoring the
 	// ::response signal and take appropriate action.
 	Response(responseId int)
+}
+
+// Dialogger describes Dialog's methods.
+type Dialogger interface {
+	gextras.Objector
+
+	AddActionWidget(child Widgetter, responseId int)
+	AddButton(buttonText string, responseId int) *Widget
+	ActionArea() *Box
+	ContentArea() *Box
+	HeaderBar() *HeaderBar
+	ResponseForWidget(widget Widgetter) int
+	WidgetForResponse(responseId int) *Widget
+	Response(responseId int)
+	Run() int
+	SetAlternativeButtonOrderFromArray(newOrder []int)
+	SetDefaultResponse(responseId int)
+	SetResponseSensitive(responseId int, setting bool)
 }
 
 // Dialog boxes are a convenient way to prompt the user for a small amount of
@@ -233,171 +251,68 @@ type DialogOverrider interface {
 //        <action-widget response="ok" default="true">button_ok</action-widget>
 //      </action-widgets>
 //    </object>
-type Dialog interface {
-	gextras.Objector
-
-	// AddActionWidget adds an activatable widget to the action area of a
-	// Dialog, connecting a signal handler that will emit the Dialog::response
-	// signal on the dialog when the widget is activated. The widget is appended
-	// to the end of the dialog’s action area. If you want to add a
-	// non-activatable widget, simply pack it into the @action_area field of the
-	// Dialog struct.
-	AddActionWidget(child Widget, responseId int)
-	// AddButton adds a button with the given text and sets things up so that
-	// clicking the button will emit the Dialog::response signal with the given
-	// @response_id. The button is appended to the end of the dialog’s action
-	// area. The button widget is returned, but usually you don’t need it.
-	AddButton(buttonText string, responseId int) *WidgetClass
-	// ActionArea returns the action area of @dialog.
-	//
-	// Deprecated: Direct access to the action area is discouraged; use
-	// gtk_dialog_add_button(), etc.
-	ActionArea() *BoxClass
-	// ContentArea returns the content area of @dialog.
-	ContentArea() *BoxClass
-	// HeaderBar returns the header bar of @dialog. Note that the headerbar is
-	// only used by the dialog if the Dialog:use-header-bar property is true.
-	HeaderBar() *HeaderBarClass
-	// ResponseForWidget gets the response id of a widget in the action area of
-	// a dialog.
-	ResponseForWidget(widget Widget) int
-	// WidgetForResponse gets the widget button that uses the given response ID
-	// in the action area of a dialog.
-	WidgetForResponse(responseId int) *WidgetClass
-	// Response emits the Dialog::response signal with the given response ID.
-	// Used to indicate that the user has responded to the dialog in some way;
-	// typically either you or gtk_dialog_run() will be monitoring the
-	// ::response signal and take appropriate action.
-	Response(responseId int)
-	// Run blocks in a recursive main loop until the @dialog either emits the
-	// Dialog::response signal, or is destroyed. If the dialog is destroyed
-	// during the call to gtk_dialog_run(), gtk_dialog_run() returns
-	// K_RESPONSE_NONE. Otherwise, it returns the response ID from the
-	// ::response signal emission.
-	//
-	// Before entering the recursive main loop, gtk_dialog_run() calls
-	// gtk_widget_show() on the dialog for you. Note that you still need to show
-	// any children of the dialog yourself.
-	//
-	// During gtk_dialog_run(), the default behavior of Widget::delete-event is
-	// disabled; if the dialog receives ::delete_event, it will not be destroyed
-	// as windows usually are, and gtk_dialog_run() will return
-	// K_RESPONSE_DELETE_EVENT. Also, during gtk_dialog_run() the dialog will be
-	// modal. You can force gtk_dialog_run() to return at any time by calling
-	// gtk_dialog_response() to emit the ::response signal. Destroying the
-	// dialog during gtk_dialog_run() is a very bad idea, because your post-run
-	// code won’t know whether the dialog was destroyed or not.
-	//
-	// After gtk_dialog_run() returns, you are responsible for hiding or
-	// destroying the dialog if you wish to do so.
-	//
-	// Typical usage of this function might be:
-	//
-	//      GtkWidget *dialog = gtk_dialog_new ();
-	//      // Set up dialog...
-	//
-	//      int result = gtk_dialog_run (GTK_DIALOG (dialog));
-	//      switch (result)
-	//        {
-	//          case GTK_RESPONSE_ACCEPT:
-	//             // do_application_specific_something ();
-	//             break;
-	//          default:
-	//             // do_nothing_since_dialog_was_cancelled ();
-	//             break;
-	//        }
-	//      gtk_widget_destroy (dialog);
-	//
-	// Note that even though the recursive main loop gives the effect of a modal
-	// dialog (it prevents the user from interacting with other windows in the
-	// same window group while the dialog is run), callbacks such as timeouts,
-	// IO channel watches, DND drops, etc, will be triggered during a
-	// gtk_dialog_run() call.
-	Run() int
-	// SetAlternativeButtonOrderFromArray sets an alternative button order. If
-	// the Settings:gtk-alternative-button-order setting is set to true, the
-	// dialog buttons are reordered according to the order of the response ids
-	// in @new_order.
-	//
-	// See gtk_dialog_set_alternative_button_order() for more information.
-	//
-	// This function is for use by language bindings.
-	//
-	// Deprecated: Deprecated.
-	SetAlternativeButtonOrderFromArray(newOrder []int)
-	// SetDefaultResponse sets the last widget in the dialog’s action area with
-	// the given @response_id as the default widget for the dialog. Pressing
-	// “Enter” normally activates the default widget.
-	SetDefaultResponse(responseId int)
-	// SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)`
-	// for each widget in the dialog’s action area with the given @response_id.
-	// A convenient way to sensitize/desensitize dialog buttons.
-	SetResponseSensitive(responseId int, setting bool)
-}
-
-// DialogClass implements the Dialog interface.
-type DialogClass struct {
+type Dialog struct {
 	*externglib.Object
-	WindowClass
-	BuildableIface
+	Window
+	Buildable
 }
 
-var _ Dialog = (*DialogClass)(nil)
+var _ Dialogger = (*Dialog)(nil)
 
-func wrapDialog(obj *externglib.Object) Dialog {
-	return &DialogClass{
+func wrapDialogger(obj *externglib.Object) Dialogger {
+	return &Dialog{
 		Object: obj,
-		WindowClass: WindowClass{
+		Window: Window{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDialog(p uintptr) (interface{}, error) {
+func marshalDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDialog(obj), nil
+	return wrapDialogger(obj), nil
 }
 
 // NewDialog creates a new dialog box.
 //
 // Widgets should not be packed into this Window directly, but into the @vbox
 // and @action_area, as described above.
-func NewDialog() *DialogClass {
+func NewDialog() *Dialog {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_dialog_new()
 
-	var _dialog *DialogClass // out
+	var _dialog *Dialog // out
 
-	_dialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DialogClass)
+	_dialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Dialog)
 
 	return _dialog
 }
@@ -407,7 +322,7 @@ func NewDialog() *DialogClass {
 // dialog when the widget is activated. The widget is appended to the end of the
 // dialog’s action area. If you want to add a non-activatable widget, simply
 // pack it into the @action_area field of the Dialog struct.
-func (dialog *DialogClass) AddActionWidget(child Widget, responseId int) {
+func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -423,7 +338,7 @@ func (dialog *DialogClass) AddActionWidget(child Widget, responseId int) {
 // clicking the button will emit the Dialog::response signal with the given
 // @response_id. The button is appended to the end of the dialog’s action area.
 // The button widget is returned, but usually you don’t need it.
-func (dialog *DialogClass) AddButton(buttonText string, responseId int) *WidgetClass {
+func (dialog *Dialog) AddButton(buttonText string, responseId int) *Widget {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -436,9 +351,9 @@ func (dialog *DialogClass) AddButton(buttonText string, responseId int) *WidgetC
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -447,7 +362,7 @@ func (dialog *DialogClass) AddButton(buttonText string, responseId int) *WidgetC
 //
 // Deprecated: Direct access to the action area is discouraged; use
 // gtk_dialog_add_button(), etc.
-func (dialog *DialogClass) ActionArea() *BoxClass {
+func (dialog *Dialog) ActionArea() *Box {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
@@ -455,15 +370,15 @@ func (dialog *DialogClass) ActionArea() *BoxClass {
 
 	_cret = C.gtk_dialog_get_action_area(_arg0)
 
-	var _box *BoxClass // out
+	var _box *Box // out
 
-	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*BoxClass)
+	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
 
 	return _box
 }
 
 // ContentArea returns the content area of @dialog.
-func (dialog *DialogClass) ContentArea() *BoxClass {
+func (dialog *Dialog) ContentArea() *Box {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
@@ -471,16 +386,16 @@ func (dialog *DialogClass) ContentArea() *BoxClass {
 
 	_cret = C.gtk_dialog_get_content_area(_arg0)
 
-	var _box *BoxClass // out
+	var _box *Box // out
 
-	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*BoxClass)
+	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
 
 	return _box
 }
 
 // HeaderBar returns the header bar of @dialog. Note that the headerbar is only
 // used by the dialog if the Dialog:use-header-bar property is true.
-func (dialog *DialogClass) HeaderBar() *HeaderBarClass {
+func (dialog *Dialog) HeaderBar() *HeaderBar {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
@@ -488,16 +403,16 @@ func (dialog *DialogClass) HeaderBar() *HeaderBarClass {
 
 	_cret = C.gtk_dialog_get_header_bar(_arg0)
 
-	var _headerBar *HeaderBarClass // out
+	var _headerBar *HeaderBar // out
 
-	_headerBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HeaderBarClass)
+	_headerBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HeaderBar)
 
 	return _headerBar
 }
 
 // ResponseForWidget gets the response id of a widget in the action area of a
 // dialog.
-func (dialog *DialogClass) ResponseForWidget(widget Widget) int {
+func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gint       // in
@@ -516,7 +431,7 @@ func (dialog *DialogClass) ResponseForWidget(widget Widget) int {
 
 // WidgetForResponse gets the widget button that uses the given response ID in
 // the action area of a dialog.
-func (dialog *DialogClass) WidgetForResponse(responseId int) *WidgetClass {
+func (dialog *Dialog) WidgetForResponse(responseId int) *Widget {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 	var _cret *C.GtkWidget // in
@@ -526,9 +441,9 @@ func (dialog *DialogClass) WidgetForResponse(responseId int) *WidgetClass {
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -537,7 +452,7 @@ func (dialog *DialogClass) WidgetForResponse(responseId int) *WidgetClass {
 // to indicate that the user has responded to the dialog in some way; typically
 // either you or gtk_dialog_run() will be monitoring the ::response signal and
 // take appropriate action.
-func (dialog *DialogClass) Response(responseId int) {
+func (dialog *Dialog) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 
@@ -589,7 +504,7 @@ func (dialog *DialogClass) Response(responseId int) {
 // dialog (it prevents the user from interacting with other windows in the same
 // window group while the dialog is run), callbacks such as timeouts, IO channel
 // watches, DND drops, etc, will be triggered during a gtk_dialog_run() call.
-func (dialog *DialogClass) Run() int {
+func (dialog *Dialog) Run() int {
 	var _arg0 *C.GtkDialog // out
 	var _cret C.gint       // in
 
@@ -614,7 +529,7 @@ func (dialog *DialogClass) Run() int {
 // This function is for use by language bindings.
 //
 // Deprecated: Deprecated.
-func (dialog *DialogClass) SetAlternativeButtonOrderFromArray(newOrder []int) {
+func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg2 *C.gint
 	var _arg1 C.gint
@@ -629,7 +544,7 @@ func (dialog *DialogClass) SetAlternativeButtonOrderFromArray(newOrder []int) {
 // SetDefaultResponse sets the last widget in the dialog’s action area with the
 // given @response_id as the default widget for the dialog. Pressing “Enter”
 // normally activates the default widget.
-func (dialog *DialogClass) SetDefaultResponse(responseId int) {
+func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 
@@ -642,7 +557,7 @@ func (dialog *DialogClass) SetDefaultResponse(responseId int) {
 // SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)` for
 // each widget in the dialog’s action area with the given @response_id. A
 // convenient way to sensitize/desensitize dialog buttons.
-func (dialog *DialogClass) SetResponseSensitive(responseId int, setting bool) {
+func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gboolean   // out

@@ -31,15 +31,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_pollable_input_stream_get_type()), F: marshalPollableInputStream},
+		{T: externglib.Type(C.g_pollable_input_stream_get_type()), F: marshalPollableInputStreamer},
 	})
 }
 
-// PollableInputStreamOverrider contains methods that are overridable.
+// PollableInputStreamerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PollableInputStreamOverrider interface {
+type PollableInputStreamerOverrider interface {
 	// CanPoll checks if @stream is actually pollable. Some classes may
 	// implement InputStream but have only certain instances of that class be
 	// pollable. If this method returns false, then the behavior of other
@@ -56,7 +56,7 @@ type PollableInputStreamOverrider interface {
 	// stream may not actually be readable even after the source triggers, so
 	// you should use g_pollable_input_stream_read_nonblocking() rather than
 	// g_input_stream_read() from the callback.
-	CreateSource(cancellable Cancellable) *glib.Source
+	CreateSource(cancellable Cancellabler) *glib.Source
 	// IsReadable checks if @stream can be read.
 	//
 	// Note that some stream types may not be able to implement this 100%
@@ -79,70 +79,37 @@ type PollableInputStreamOverrider interface {
 	ReadNonblocking(buffer []byte) (int, error)
 }
 
+// PollableInputStreamer describes PollableInputStream's methods.
+type PollableInputStreamer interface {
+	gextras.Objector
+
+	CanPoll() bool
+	CreateSource(cancellable Cancellabler) *glib.Source
+	IsReadable() bool
+	ReadNonblocking(buffer []byte, cancellable Cancellabler) (int, error)
+}
+
 // PollableInputStream is implemented by Streams that can be polled for
 // readiness to read. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
-type PollableInputStream interface {
-	gextras.Objector
-
-	// CanPoll checks if @stream is actually pollable. Some classes may
-	// implement InputStream but have only certain instances of that class be
-	// pollable. If this method returns false, then the behavior of other
-	// InputStream methods is undefined.
-	//
-	// For any given stream, the value returned by this method is constant; a
-	// stream cannot switch from pollable to non-pollable or vice versa.
-	CanPoll() bool
-	// CreateSource creates a #GSource that triggers when @stream can be read,
-	// or @cancellable is triggered or an error occurs. The callback on the
-	// source is of the SourceFunc type.
-	//
-	// As with g_pollable_input_stream_is_readable(), it is possible that the
-	// stream may not actually be readable even after the source triggers, so
-	// you should use g_pollable_input_stream_read_nonblocking() rather than
-	// g_input_stream_read() from the callback.
-	CreateSource(cancellable Cancellable) *glib.Source
-	// IsReadable checks if @stream can be read.
-	//
-	// Note that some stream types may not be able to implement this 100%
-	// reliably, and it is possible that a call to g_input_stream_read() after
-	// this returns true would still block. To guarantee non-blocking behavior,
-	// you should always use g_pollable_input_stream_read_nonblocking(), which
-	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
-	IsReadable() bool
-	// ReadNonblocking attempts to read up to @count bytes from @stream into
-	// @buffer, as with g_input_stream_read(). If @stream is not currently
-	// readable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
-	// can use g_pollable_input_stream_create_source() to create a #GSource that
-	// will be triggered when @stream is readable.
-	//
-	// Note that since this method never blocks, you cannot actually use
-	// @cancellable to cancel it. However, it will return an error if
-	// @cancellable has already been cancelled when you call, which may happen
-	// if you call this method after a source triggers due to having been
-	// cancelled.
-	ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error)
+type PollableInputStream struct {
+	InputStream
 }
 
-// PollableInputStreamIface implements the PollableInputStream interface.
-type PollableInputStreamIface struct {
-	InputStreamClass
-}
+var _ PollableInputStreamer = (*PollableInputStream)(nil)
 
-var _ PollableInputStream = (*PollableInputStreamIface)(nil)
-
-func wrapPollableInputStream(obj *externglib.Object) PollableInputStream {
-	return &PollableInputStreamIface{
-		InputStreamClass: InputStreamClass{
+func wrapPollableInputStreamer(obj *externglib.Object) PollableInputStreamer {
+	return &PollableInputStream{
+		InputStream: InputStream{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPollableInputStream(p uintptr) (interface{}, error) {
+func marshalPollableInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPollableInputStream(obj), nil
+	return wrapPollableInputStreamer(obj), nil
 }
 
 // CanPoll checks if @stream is actually pollable. Some classes may implement
@@ -152,7 +119,7 @@ func marshalPollableInputStream(p uintptr) (interface{}, error) {
 //
 // For any given stream, the value returned by this method is constant; a stream
 // cannot switch from pollable to non-pollable or vice versa.
-func (stream *PollableInputStreamIface) CanPoll() bool {
+func (stream *PollableInputStream) CanPoll() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
 
@@ -177,7 +144,7 @@ func (stream *PollableInputStreamIface) CanPoll() bool {
 // may not actually be readable even after the source triggers, so you should
 // use g_pollable_input_stream_read_nonblocking() rather than
 // g_input_stream_read() from the callback.
-func (stream *PollableInputStreamIface) CreateSource(cancellable Cancellable) *glib.Source {
+func (stream *PollableInputStream) CreateSource(cancellable Cancellabler) *glib.Source {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret *C.GSource              // in
@@ -205,7 +172,7 @@ func (stream *PollableInputStreamIface) CreateSource(cancellable Cancellable) *g
 // true would still block. To guarantee non-blocking behavior, you should always
 // use g_pollable_input_stream_read_nonblocking(), which will return a
 // G_IO_ERROR_WOULD_BLOCK error rather than blocking.
-func (stream *PollableInputStreamIface) IsReadable() bool {
+func (stream *PollableInputStream) IsReadable() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
 
@@ -232,7 +199,7 @@ func (stream *PollableInputStreamIface) IsReadable() bool {
 // @cancellable to cancel it. However, it will return an error if @cancellable
 // has already been cancelled when you call, which may happen if you call this
 // method after a source triggers due to having been cancelled.
-func (stream *PollableInputStreamIface) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
+func (stream *PollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancellabler) (int, error) {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize

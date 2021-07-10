@@ -21,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
-		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialog},
+		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialogger},
 	})
 }
 
@@ -51,6 +51,16 @@ const (
 
 func marshalButtonsType(p uintptr) (interface{}, error) {
 	return ButtonsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// MessageDialogger describes MessageDialog's methods.
+type MessageDialogger interface {
+	gextras.Objector
+
+	Image() *Widget
+	MessageArea() *Widget
+	SetImage(image Widgetter)
+	SetMarkup(str string)
 }
 
 // MessageDialog presents a dialog with some message text. It’s simply a
@@ -89,89 +99,66 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 //
 // The GtkMessageDialog implementation of the GtkBuildable interface exposes the
 // message area as an internal child with the name “message_area”.
-type MessageDialog interface {
-	gextras.Objector
-
-	// Image gets the dialog’s image.
-	//
-	// Deprecated: Use Dialog for dialogs with images.
-	Image() *WidgetClass
-	// MessageArea returns the message area of the dialog. This is the box where
-	// the dialog’s primary and secondary labels are packed. You can add your
-	// own extra content to that box and it will appear below those labels. See
-	// gtk_dialog_get_content_area() for the corresponding function in the
-	// parent Dialog.
-	MessageArea() *WidgetClass
-	// SetImage sets the dialog’s image to @image.
-	//
-	// Deprecated: Use Dialog to create dialogs with images.
-	SetImage(image Widget)
-	// SetMarkup sets the text of the message dialog to be @str, which is marked
-	// up with the [Pango text markup language][PangoMarkupFormat].
-	SetMarkup(str string)
-}
-
-// MessageDialogClass implements the MessageDialog interface.
-type MessageDialogClass struct {
+type MessageDialog struct {
 	*externglib.Object
-	DialogClass
-	BuildableIface
+	Dialog
+	Buildable
 }
 
-var _ MessageDialog = (*MessageDialogClass)(nil)
+var _ MessageDialogger = (*MessageDialog)(nil)
 
-func wrapMessageDialog(obj *externglib.Object) MessageDialog {
-	return &MessageDialogClass{
+func wrapMessageDialogger(obj *externglib.Object) MessageDialogger {
+	return &MessageDialog{
 		Object: obj,
-		DialogClass: DialogClass{
+		Dialog: Dialog{
 			Object: obj,
-			WindowClass: WindowClass{
+			Window: Window{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMessageDialog(p uintptr) (interface{}, error) {
+func marshalMessageDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMessageDialog(obj), nil
+	return wrapMessageDialogger(obj), nil
 }
 
 // Image gets the dialog’s image.
 //
 // Deprecated: Use Dialog for dialogs with images.
-func (dialog *MessageDialogClass) Image() *WidgetClass {
+func (dialog *MessageDialog) Image() *Widget {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
@@ -179,9 +166,9 @@ func (dialog *MessageDialogClass) Image() *WidgetClass {
 
 	_cret = C.gtk_message_dialog_get_image(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -191,7 +178,7 @@ func (dialog *MessageDialogClass) Image() *WidgetClass {
 // content to that box and it will appear below those labels. See
 // gtk_dialog_get_content_area() for the corresponding function in the parent
 // Dialog.
-func (messageDialog *MessageDialogClass) MessageArea() *WidgetClass {
+func (messageDialog *MessageDialog) MessageArea() *Widget {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
@@ -199,9 +186,9 @@ func (messageDialog *MessageDialogClass) MessageArea() *WidgetClass {
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -209,7 +196,7 @@ func (messageDialog *MessageDialogClass) MessageArea() *WidgetClass {
 // SetImage sets the dialog’s image to @image.
 //
 // Deprecated: Use Dialog to create dialogs with images.
-func (dialog *MessageDialogClass) SetImage(image Widget) {
+func (dialog *MessageDialog) SetImage(image Widgetter) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
 
@@ -221,7 +208,7 @@ func (dialog *MessageDialogClass) SetImage(image Widget) {
 
 // SetMarkup sets the text of the message dialog to be @str, which is marked up
 // with the [Pango text markup language][PangoMarkupFormat].
-func (messageDialog *MessageDialogClass) SetMarkup(str string) {
+func (messageDialog *MessageDialog) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.gchar            // out
 

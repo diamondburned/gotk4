@@ -19,8 +19,20 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDrop},
+		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDropper},
 	})
+}
+
+// Dropper describes Drop's methods.
+type Dropper interface {
+	gextras.Objector
+
+	Actions() DragAction
+	Device() *Device
+	Display() *Display
+	Drag() *Drag
+	Formats() *ContentFormats
+	Surface() *Surface
 }
 
 // Drop: the `GdkDrop` object represents the target of an ongoing DND operation.
@@ -37,56 +49,22 @@ func init() {
 // GTK provides a higher level abstraction based on top of these functions, and
 // so they are not normally needed in GTK applications. See the "Drag and Drop"
 // section of the GTK documentation for more information.
-type Drop interface {
-	gextras.Objector
-
-	// Actions returns the possible actions for this `GdkDrop`.
-	//
-	// If this value contains multiple actions - i.e.
-	// [func@Gdk.DragAction.is_unique] returns false for the result -
-	// [method@Gdk.Drop.finish] must choose the action to use when accepting the
-	// drop. This will only happen if you passed GDK_ACTION_ASK as one of the
-	// possible actions in [method@Gdk.Drop.status]. GDK_ACTION_ASK itself will
-	// not be included in the actions returned by this function.
-	//
-	// This value may change over the lifetime of the [class@Gdk.Drop] both as a
-	// response to source side actions as well as to calls to
-	// [method@Gdk.Drop.status] or [method@Gdk.Drop.finish]. The source side
-	// will not change this value anymore once a drop has started.
-	Actions() DragAction
-	// Device returns the `GdkDevice` performing the drop.
-	Device() *DeviceClass
-	// Display gets the `GdkDisplay` that @self was created for.
-	Display() *DisplayClass
-	// Drag: if this is an in-app drag-and-drop operation, returns the `GdkDrag`
-	// that corresponds to this drop.
-	//
-	// If it is not, nil is returned.
-	Drag() *DragClass
-	// Formats returns the `GdkContentFormats` that the drop offers the data to
-	// be read in.
-	Formats() *ContentFormats
-	// Surface returns the `GdkSurface` performing the drop.
-	Surface() *SurfaceClass
-}
-
-// DropClass implements the Drop interface.
-type DropClass struct {
+type Drop struct {
 	*externglib.Object
 }
 
-var _ Drop = (*DropClass)(nil)
+var _ Dropper = (*Drop)(nil)
 
-func wrapDrop(obj *externglib.Object) Drop {
-	return &DropClass{
+func wrapDropper(obj *externglib.Object) Dropper {
+	return &Drop{
 		Object: obj,
 	}
 }
 
-func marshalDrop(p uintptr) (interface{}, error) {
+func marshalDropper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrop(obj), nil
+	return wrapDropper(obj), nil
 }
 
 // Actions returns the possible actions for this `GdkDrop`.
@@ -102,7 +80,7 @@ func marshalDrop(p uintptr) (interface{}, error) {
 // response to source side actions as well as to calls to
 // [method@Gdk.Drop.status] or [method@Gdk.Drop.finish]. The source side will
 // not change this value anymore once a drop has started.
-func (self *DropClass) Actions() DragAction {
+func (self *Drop) Actions() DragAction {
 	var _arg0 *C.GdkDrop      // out
 	var _cret C.GdkDragAction // in
 
@@ -118,7 +96,7 @@ func (self *DropClass) Actions() DragAction {
 }
 
 // Device returns the `GdkDevice` performing the drop.
-func (self *DropClass) Device() *DeviceClass {
+func (self *Drop) Device() *Device {
 	var _arg0 *C.GdkDrop   // out
 	var _cret *C.GdkDevice // in
 
@@ -126,15 +104,15 @@ func (self *DropClass) Device() *DeviceClass {
 
 	_cret = C.gdk_drop_get_device(_arg0)
 
-	var _device *DeviceClass // out
+	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
 
 	return _device
 }
 
 // Display gets the `GdkDisplay` that @self was created for.
-func (self *DropClass) Display() *DisplayClass {
+func (self *Drop) Display() *Display {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkDisplay // in
 
@@ -142,9 +120,9 @@ func (self *DropClass) Display() *DisplayClass {
 
 	_cret = C.gdk_drop_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
@@ -153,7 +131,7 @@ func (self *DropClass) Display() *DisplayClass {
 // that corresponds to this drop.
 //
 // If it is not, nil is returned.
-func (self *DropClass) Drag() *DragClass {
+func (self *Drop) Drag() *Drag {
 	var _arg0 *C.GdkDrop // out
 	var _cret *C.GdkDrag // in
 
@@ -161,16 +139,16 @@ func (self *DropClass) Drag() *DragClass {
 
 	_cret = C.gdk_drop_get_drag(_arg0)
 
-	var _drag *DragClass // out
+	var _drag *Drag // out
 
-	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DragClass)
+	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Drag)
 
 	return _drag
 }
 
 // Formats returns the `GdkContentFormats` that the drop offers the data to be
 // read in.
-func (self *DropClass) Formats() *ContentFormats {
+func (self *Drop) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrop           // out
 	var _cret *C.GdkContentFormats // in
 
@@ -190,7 +168,7 @@ func (self *DropClass) Formats() *ContentFormats {
 }
 
 // Surface returns the `GdkSurface` performing the drop.
-func (self *DropClass) Surface() *SurfaceClass {
+func (self *Drop) Surface() *Surface {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkSurface // in
 
@@ -198,9 +176,9 @@ func (self *DropClass) Surface() *SurfaceClass {
 
 	_cret = C.gdk_drop_get_surface(_arg0)
 
-	var _surface *SurfaceClass // out
+	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
 
 	return _surface
 }

@@ -71,12 +71,6 @@ type CSSSection struct {
 	native C.GtkCssSection
 }
 
-// WrapCSSSection wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCSSSection(ptr unsafe.Pointer) *CSSSection {
-	return (*CSSSection)(ptr)
-}
-
 func marshalCSSSection(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*CSSSection)(unsafe.Pointer(b)), nil

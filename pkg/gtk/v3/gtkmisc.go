@@ -20,8 +20,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_misc_get_type()), F: marshalMisc},
+		{T: externglib.Type(C.gtk_misc_get_type()), F: marshalMiscer},
 	})
+}
+
+// Miscer describes Misc's methods.
+type Miscer interface {
+	gextras.Objector
+
+	Alignment() (xalign float32, yalign float32)
+	Padding() (xpad int, ypad int)
+	SetAlignment(xalign float32, yalign float32)
+	SetPadding(xpad int, ypad int)
 }
 
 // Misc: the Misc widget is an abstract widget which is not useful itself, but
@@ -39,68 +49,43 @@ func init() {
 // Widget:halign, Widget:valign and Widget:margin properties on the child
 // widget, so GtkMisc should not be used in new code. To reflect this fact, all
 // Misc API has been deprecated.
-type Misc interface {
-	gextras.Objector
-
-	// Alignment gets the X and Y alignment of the widget within its allocation.
-	// See gtk_misc_set_alignment().
-	//
-	// Deprecated: Use Widget alignment and margin properties.
-	Alignment() (xalign float32, yalign float32)
-	// Padding gets the padding in the X and Y directions of the widget. See
-	// gtk_misc_set_padding().
-	//
-	// Deprecated: Use Widget alignment and margin properties.
-	Padding() (xpad int, ypad int)
-	// SetAlignment sets the alignment of the widget.
-	//
-	// Deprecated: Use Widget's alignment (Widget:halign and Widget:valign) and
-	// margin properties or Label's Label:xalign and Label:yalign properties.
-	SetAlignment(xalign float32, yalign float32)
-	// SetPadding sets the amount of space to add around the widget.
-	//
-	// Deprecated: Use Widget alignment and margin properties.
-	SetPadding(xpad int, ypad int)
-}
-
-// MiscClass implements the Misc interface.
-type MiscClass struct {
+type Misc struct {
 	*externglib.Object
-	WidgetClass
-	BuildableIface
+	Widget
+	Buildable
 }
 
-var _ Misc = (*MiscClass)(nil)
+var _ Miscer = (*Misc)(nil)
 
-func wrapMisc(obj *externglib.Object) Misc {
-	return &MiscClass{
+func wrapMiscer(obj *externglib.Object) Miscer {
+	return &Misc{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMisc(p uintptr) (interface{}, error) {
+func marshalMiscer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMisc(obj), nil
+	return wrapMiscer(obj), nil
 }
 
 // Alignment gets the X and Y alignment of the widget within its allocation. See
 // gtk_misc_set_alignment().
 //
 // Deprecated: Use Widget alignment and margin properties.
-func (misc *MiscClass) Alignment() (xalign float32, yalign float32) {
+func (misc *Misc) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gfloat   // in
 	var _arg2 C.gfloat   // in
@@ -122,7 +107,7 @@ func (misc *MiscClass) Alignment() (xalign float32, yalign float32) {
 // gtk_misc_set_padding().
 //
 // Deprecated: Use Widget alignment and margin properties.
-func (misc *MiscClass) Padding() (xpad int, ypad int) {
+func (misc *Misc) Padding() (xpad int, ypad int) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gint     // in
 	var _arg2 C.gint     // in
@@ -144,7 +129,7 @@ func (misc *MiscClass) Padding() (xpad int, ypad int) {
 //
 // Deprecated: Use Widget's alignment (Widget:halign and Widget:valign) and
 // margin properties or Label's Label:xalign and Label:yalign properties.
-func (misc *MiscClass) SetAlignment(xalign float32, yalign float32) {
+func (misc *Misc) SetAlignment(xalign float32, yalign float32) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gfloat   // out
 	var _arg2 C.gfloat   // out
@@ -159,7 +144,7 @@ func (misc *MiscClass) SetAlignment(xalign float32, yalign float32) {
 // SetPadding sets the amount of space to add around the widget.
 //
 // Deprecated: Use Widget alignment and margin properties.
-func (misc *MiscClass) SetPadding(xpad int, ypad int) {
+func (misc *Misc) SetPadding(xpad int, ypad int) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out

@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_no_selection_get_type()), F: marshalNoSelection},
+		{T: externglib.Type(C.gtk_no_selection_get_type()), F: marshalNoSelectioner},
 	})
+}
+
+// NoSelectioner describes NoSelection's methods.
+type NoSelectioner interface {
+	gextras.Objector
+
+	privateNoSelection()
 }
 
 // NoSelection: `GtkNoSelection` is a `GtkSelectionModel` that does not allow
@@ -27,29 +34,22 @@ func init() {
 //
 // This model is meant to be used as a simple wrapper around a `GListModel` when
 // a `GtkSelectionModel` is required.
-type NoSelection interface {
-	gextras.Objector
-
-	privateNoSelectionClass()
-}
-
-// NoSelectionClass implements the NoSelection interface.
-type NoSelectionClass struct {
+type NoSelection struct {
 	*externglib.Object
 }
 
-var _ NoSelection = (*NoSelectionClass)(nil)
+var _ NoSelectioner = (*NoSelection)(nil)
 
-func wrapNoSelection(obj *externglib.Object) NoSelection {
-	return &NoSelectionClass{
+func wrapNoSelectioner(obj *externglib.Object) NoSelectioner {
+	return &NoSelection{
 		Object: obj,
 	}
 }
 
-func marshalNoSelection(p uintptr) (interface{}, error) {
+func marshalNoSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoSelection(obj), nil
+	return wrapNoSelectioner(obj), nil
 }
 
-func (*NoSelectionClass) privateNoSelectionClass() {}
+func (*NoSelection) privateNoSelection() {}

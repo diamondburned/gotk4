@@ -28,26 +28,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_manager_get_type()), F: marshalDBusObjectManager},
+		{T: externglib.Type(C.g_dbus_object_manager_get_type()), F: marshalDBusObjectManagerrer},
 	})
 }
 
-// DBusObjectManagerOverrider contains methods that are overridable.
+// DBusObjectManagerrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusObjectManagerOverrider interface {
+type DBusObjectManagerrerOverrider interface {
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
-	Interface(objectPath string, interfaceName string) *DBusInterfaceIface
+	Interface(objectPath string, interfaceName string) *DBusInterface
 	// GetObject gets the BusObjectProxy at @object_path, if any.
-	GetObject(objectPath string) *DBusObjectIface
+	GetObject(objectPath string) *DBusObject
 	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
-	InterfaceAdded(object DBusObject, interface_ DBusInterface)
-	InterfaceRemoved(object DBusObject, interface_ DBusInterface)
-	ObjectAdded(object DBusObject)
-	ObjectRemoved(object DBusObject)
+	InterfaceAdded(object DBusObjecter, interface_ DBusInterfacer)
+	InterfaceRemoved(object DBusObjecter, interface_ DBusInterfacer)
+	ObjectAdded(object DBusObjecter)
+	ObjectRemoved(object DBusObjecter)
+}
+
+// DBusObjectManagerrer describes DBusObjectManager's methods.
+type DBusObjectManagerrer interface {
+	gextras.Objector
+
+	Interface(objectPath string, interfaceName string) *DBusInterface
+	GetObject(objectPath string) *DBusObject
+	ObjectPath() string
 }
 
 // DBusObjectManager: the BusObjectManager type is the base type for service-
@@ -58,40 +67,27 @@ type DBusObjectManagerOverrider interface {
 //
 // See BusObjectManagerClient for the client-side implementation and
 // BusObjectManagerServer for the service-side implementation.
-type DBusObjectManager interface {
-	gextras.Objector
-
-	// Interface gets the interface proxy for @interface_name at @object_path,
-	// if any.
-	Interface(objectPath string, interfaceName string) *DBusInterfaceIface
-	// GetObject gets the BusObjectProxy at @object_path, if any.
-	GetObject(objectPath string) *DBusObjectIface
-	// ObjectPath gets the object path that @manager is for.
-	ObjectPath() string
-}
-
-// DBusObjectManagerIface implements the DBusObjectManager interface.
-type DBusObjectManagerIface struct {
+type DBusObjectManager struct {
 	*externglib.Object
 }
 
-var _ DBusObjectManager = (*DBusObjectManagerIface)(nil)
+var _ DBusObjectManagerrer = (*DBusObjectManager)(nil)
 
-func wrapDBusObjectManager(obj *externglib.Object) DBusObjectManager {
-	return &DBusObjectManagerIface{
+func wrapDBusObjectManagerrer(obj *externglib.Object) DBusObjectManagerrer {
+	return &DBusObjectManager{
 		Object: obj,
 	}
 }
 
-func marshalDBusObjectManager(p uintptr) (interface{}, error) {
+func marshalDBusObjectManagerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectManager(obj), nil
+	return wrapDBusObjectManagerrer(obj), nil
 }
 
 // Interface gets the interface proxy for @interface_name at @object_path, if
 // any.
-func (manager *DBusObjectManagerIface) Interface(objectPath string, interfaceName string) *DBusInterfaceIface {
+func (manager *DBusObjectManager) Interface(objectPath string, interfaceName string) *DBusInterface {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -105,15 +101,15 @@ func (manager *DBusObjectManagerIface) Interface(objectPath string, interfaceNam
 
 	_cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
 
-	var _dBusInterface *DBusInterfaceIface // out
+	var _dBusInterface *DBusInterface // out
 
-	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterfaceIface)
+	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterface)
 
 	return _dBusInterface
 }
 
 // GetObject gets the BusObjectProxy at @object_path, if any.
-func (manager *DBusObjectManagerIface) GetObject(objectPath string) *DBusObjectIface {
+func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusObject        // in
@@ -124,15 +120,15 @@ func (manager *DBusObjectManagerIface) GetObject(objectPath string) *DBusObjectI
 
 	_cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
 
-	var _dBusObject *DBusObjectIface // out
+	var _dBusObject *DBusObject // out
 
-	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectIface)
+	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObject)
 
 	return _dBusObject
 }
 
 // ObjectPath gets the object path that @manager is for.
-func (manager *DBusObjectManagerIface) ObjectPath() string {
+func (manager *DBusObjectManager) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.gchar              // in
 

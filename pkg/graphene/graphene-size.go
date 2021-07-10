@@ -27,12 +27,6 @@ type Size struct {
 	native C.graphene_size_t
 }
 
-// WrapSize wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSize(ptr unsafe.Pointer) *Size {
-	return (*Size)(ptr)
-}
-
 func marshalSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Size)(unsafe.Pointer(b)), nil
@@ -48,7 +42,7 @@ func NewSizeAlloc() *Size {
 
 	_size = (*Size)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_size, func(v *Size) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_size_free((*C.graphene_size_t)(unsafe.Pointer(v)))
 	})
 
 	return _size

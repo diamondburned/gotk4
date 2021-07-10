@@ -106,12 +106,6 @@ type StockItem struct {
 	native C.GtkStockItem
 }
 
-// WrapStockItem wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapStockItem(ptr unsafe.Pointer) *StockItem {
-	return (*StockItem)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (s *StockItem) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)

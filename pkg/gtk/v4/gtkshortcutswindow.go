@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindow},
+		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindowwer},
 	})
+}
+
+// ShortcutsWindowwer describes ShortcutsWindow's methods.
+type ShortcutsWindowwer interface {
+	gextras.Objector
+
+	privateShortcutsWindow()
 }
 
 // ShortcutsWindow: `GtkShortcutsWindow` shows information about the keyboard
@@ -66,186 +73,179 @@ func init() {
 //
 // The .ui file for this example can be found here
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
-type ShortcutsWindow interface {
-	gextras.Objector
-
-	privateShortcutsWindowClass()
-}
-
-// ShortcutsWindowClass implements the ShortcutsWindow interface.
-type ShortcutsWindowClass struct {
+type ShortcutsWindow struct {
 	*externglib.Object
-	WindowClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	NativeIface
-	RootIface
-	ShortcutManagerIface
+	Window
+	Accessible
+	Buildable
+	ConstraintTarget
+	Native
+	Root
+	ShortcutManager
 }
 
-var _ ShortcutsWindow = (*ShortcutsWindowClass)(nil)
+var _ ShortcutsWindowwer = (*ShortcutsWindow)(nil)
 
-func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
-	return &ShortcutsWindowClass{
+func wrapShortcutsWindowwer(obj *externglib.Object) ShortcutsWindowwer {
+	return &ShortcutsWindow{
 		Object: obj,
-		WindowClass: WindowClass{
+		Window: Window{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			RootIface: RootIface{
+			Root: Root{
 				Object: obj,
-				NativeIface: NativeIface{
+				Native: Native{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						AccessibleIface: AccessibleIface{
+						Accessible: Accessible{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
-						ConstraintTargetIface: ConstraintTargetIface{
+						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
 					},
 				},
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			ShortcutManagerIface: ShortcutManagerIface{
+			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		NativeIface: NativeIface{
+		Native: Native{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		RootIface: RootIface{
+		Root: Root{
 			Object: obj,
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		ShortcutManagerIface: ShortcutManagerIface{
+		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
 	}
 }
 
-func marshalShortcutsWindow(p uintptr) (interface{}, error) {
+func marshalShortcutsWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsWindow(obj), nil
+	return wrapShortcutsWindowwer(obj), nil
 }
 
-func (*ShortcutsWindowClass) privateShortcutsWindowClass() {}
+func (*ShortcutsWindow) privateShortcutsWindow() {}

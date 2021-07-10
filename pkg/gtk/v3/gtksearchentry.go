@@ -20,19 +20,26 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalSearchEntry},
+		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalyier},
 	})
 }
 
-// SearchEntryOverrider contains methods that are overridable.
+// yierOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SearchEntryOverrider interface {
+type yierOverrider interface {
 	NextMatch()
 	PreviousMatch()
 	SearchChanged()
 	StopSearch()
+}
+
+// yier describes SearchEntry's methods.
+type yier interface {
+	gextras.Objector
+
+	privateSearchEntry()
 }
 
 // SearchEntry is a subclass of Entry that has been tailored for use as a search
@@ -58,95 +65,88 @@ type SearchEntryOverrider interface {
 // Often, GtkSearchEntry will be fed events by means of being placed inside a
 // SearchBar. If that is not the case, you can use
 // gtk_search_entry_handle_event() to pass events.
-type SearchEntry interface {
-	gextras.Objector
-
-	privateSearchEntryClass()
-}
-
-// SearchEntryClass implements the SearchEntry interface.
-type SearchEntryClass struct {
+type SearchEntry struct {
 	*externglib.Object
-	EntryClass
-	BuildableIface
-	CellEditableIface
-	EditableIface
+	Entry
+	Buildable
+	CellEditable
+	Editable
 }
 
-var _ SearchEntry = (*SearchEntryClass)(nil)
+var _ yier = (*SearchEntry)(nil)
 
-func wrapSearchEntry(obj *externglib.Object) SearchEntry {
-	return &SearchEntryClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &SearchEntry{
 		Object: obj,
-		EntryClass: EntryClass{
+		Entry: Entry{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			CellEditableIface: CellEditableIface{
+			CellEditable: CellEditable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			EditableIface: EditableIface{
+			Editable: Editable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		CellEditableIface: CellEditableIface{
+		CellEditable: CellEditable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		EditableIface: EditableIface{
+		Editable: Editable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSearchEntry(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSearchEntry(obj), nil
+	return wrapyier(obj), nil
 }
 
 // NewSearchEntry creates a SearchEntry, with a find icon when the search field
 // is empty, and a clear icon when it isn't.
-func NewSearchEntry() *SearchEntryClass {
+func NewSearchEntry() *SearchEntry {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_search_entry_new()
 
-	var _searchEntry *SearchEntryClass // out
+	var _searchEntry *SearchEntry // out
 
-	_searchEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchEntryClass)
+	_searchEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchEntry)
 
 	return _searchEntry
 }
 
-func (*SearchEntryClass) privateSearchEntryClass() {}
+func (*SearchEntry) privateSearchEntry() {}

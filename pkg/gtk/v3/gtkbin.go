@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBin},
+		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBinner},
 	})
+}
+
+// Binner describes Bin's methods.
+type Binner interface {
+	gextras.Objector
+
+	Child() *Widget
 }
 
 // Bin: the Bin widget is a container with just one child. It is not very useful
@@ -30,58 +37,48 @@ func init() {
 //
 // Many GTK+ widgets are subclasses of Bin, including Window, Button, Frame,
 // HandleBox or ScrolledWindow.
-type Bin interface {
-	gextras.Objector
-
-	// Child gets the child of the Bin, or nil if the bin contains no child
-	// widget. The returned widget does not have a reference added, so you do
-	// not need to unref it.
-	Child() *WidgetClass
-}
-
-// BinClass implements the Bin interface.
-type BinClass struct {
+type Bin struct {
 	*externglib.Object
-	ContainerClass
-	BuildableIface
+	Container
+	Buildable
 }
 
-var _ Bin = (*BinClass)(nil)
+var _ Binner = (*Bin)(nil)
 
-func wrapBin(obj *externglib.Object) Bin {
-	return &BinClass{
+func wrapBinner(obj *externglib.Object) Binner {
+	return &Bin{
 		Object: obj,
-		ContainerClass: ContainerClass{
+		Container: Container{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalBin(p uintptr) (interface{}, error) {
+func marshalBinner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBin(obj), nil
+	return wrapBinner(obj), nil
 }
 
 // Child gets the child of the Bin, or nil if the bin contains no child widget.
 // The returned widget does not have a reference added, so you do not need to
 // unref it.
-func (bin *BinClass) Child() *WidgetClass {
+func (bin *Bin) Child() *Widget {
 	var _arg0 *C.GtkBin    // out
 	var _cret *C.GtkWidget // in
 
@@ -89,9 +86,9 @@ func (bin *BinClass) Child() *WidgetClass {
 
 	_cret = C.gtk_bin_get_child(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }

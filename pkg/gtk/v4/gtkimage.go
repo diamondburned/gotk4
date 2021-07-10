@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_image_type_get_type()), F: marshalImageType},
-		{T: externglib.Type(C.gtk_image_get_type()), F: marshalImage},
+		{T: externglib.Type(C.gtk_image_get_type()), F: marshalImager},
 	})
 }
 
@@ -49,6 +49,22 @@ const (
 
 func marshalImageType(p uintptr) (interface{}, error) {
 	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// Imager describes Image's methods.
+type Imager interface {
+	gextras.Objector
+
+	Clear()
+	IconName() string
+	IconSize() IconSize
+	PixelSize() int
+	StorageType() ImageType
+	SetFromFile(filename string)
+	SetFromIconName(iconName string)
+	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer)
+	SetFromResource(resourcePath string)
+	SetPixelSize(pixelSize int)
 }
 
 // Image: the `GtkImage` widget displays an image.
@@ -90,109 +106,61 @@ func marshalImageType(p uintptr) (interface{}, error) {
 // Accessibility
 //
 // `GtkImage` uses the `GTK_ACCESSIBLE_ROLE_IMG` role.
-type Image interface {
-	gextras.Objector
-
-	// Clear resets the image to be empty.
-	Clear()
-	// IconName gets the icon name and size being displayed by the `GtkImage`.
-	//
-	// The storage type of the image must be GTK_IMAGE_EMPTY or
-	// GTK_IMAGE_ICON_NAME (see [method@Gtk.Image.get_storage_type]). The
-	// returned string is owned by the `GtkImage` and should not be freed.
-	IconName() string
-	// IconSize gets the icon size used by the @image when rendering icons.
-	IconSize() IconSize
-	// PixelSize gets the pixel size used for named icons.
-	PixelSize() int
-	// StorageType gets the type of representation being used by the `GtkImage`
-	// to store image data.
-	//
-	// If the `GtkImage` has no image data, the return value will be
-	// GTK_IMAGE_EMPTY.
-	StorageType() ImageType
-	// SetFromFile sets a `GtkImage` to show a file.
-	//
-	// See [ctor@Gtk.Image.new_from_file] for details.
-	SetFromFile(filename string)
-	// SetFromIconName sets a `GtkImage` to show a named icon.
-	//
-	// See [ctor@Gtk.Image.new_from_icon_name] for details.
-	SetFromIconName(iconName string)
-	// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
-	//
-	// See [ctor@Gtk.Image.new_from_pixbuf] for details.
-	//
-	// Note: This is a helper for [method@Gtk.Image.set_from_paintable], and you
-	// can't get back the exact pixbuf once this is called, only a paintable.
-	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
-	// SetFromResource sets a `GtkImage` to show a resource.
-	//
-	// See [ctor@Gtk.Image.new_from_resource] for details.
-	SetFromResource(resourcePath string)
-	// SetPixelSize sets the pixel size to use for named icons.
-	//
-	// If the pixel size is set to a value != -1, it is used instead of the icon
-	// size set by [method@Gtk.Image.set_from_icon_name].
-	SetPixelSize(pixelSize int)
-}
-
-// ImageClass implements the Image interface.
-type ImageClass struct {
+type Image struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ Image = (*ImageClass)(nil)
+var _ Imager = (*Image)(nil)
 
-func wrapImage(obj *externglib.Object) Image {
-	return &ImageClass{
+func wrapImager(obj *externglib.Object) Imager {
+	return &Image{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalImage(p uintptr) (interface{}, error) {
+func marshalImager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImage(obj), nil
+	return wrapImager(obj), nil
 }
 
 // NewImage creates a new empty `GtkImage` widget.
-func NewImage() *ImageClass {
+func NewImage() *Image {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_image_new()
 
-	var _image *ImageClass // out
+	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ImageClass)
+	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
 
 	return _image
 }
@@ -210,7 +178,7 @@ func NewImage() *ImageClass {
 // The storage type (see [method@Gtk.Image.get_storage_type]) of the returned
 // image is not defined, it will be whatever is appropriate for displaying the
 // file.
-func NewImageFromFile(filename string) *ImageClass {
+func NewImageFromFile(filename string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -219,9 +187,9 @@ func NewImageFromFile(filename string) *ImageClass {
 
 	_cret = C.gtk_image_new_from_file(_arg1)
 
-	var _image *ImageClass // out
+	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ImageClass)
+	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
 
 	return _image
 }
@@ -232,7 +200,7 @@ func NewImageFromFile(filename string) *ImageClass {
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromIconName(iconName string) *ImageClass {
+func NewImageFromIconName(iconName string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -241,9 +209,9 @@ func NewImageFromIconName(iconName string) *ImageClass {
 
 	_cret = C.gtk_image_new_from_icon_name(_arg1)
 
-	var _image *ImageClass // out
+	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ImageClass)
+	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
 
 	return _image
 }
@@ -260,7 +228,7 @@ func NewImageFromIconName(iconName string) *ImageClass {
 // Note that this function just creates an `GtkImage` from the pixbuf. The
 // `GtkImage` created will not react to state changes. Should you want that, you
 // should use [ctor@Gtk.Image.new_from_icon_name].
-func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *ImageClass {
+func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
@@ -268,9 +236,9 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *ImageClass {
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 
-	var _image *ImageClass // out
+	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ImageClass)
+	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
 
 	return _image
 }
@@ -289,7 +257,7 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *ImageClass {
 // The storage type (see [method@Gtk.Image.get_storage_type]) of the returned
 // image is not defined, it will be whatever is appropriate for displaying the
 // file.
-func NewImageFromResource(resourcePath string) *ImageClass {
+func NewImageFromResource(resourcePath string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -298,15 +266,15 @@ func NewImageFromResource(resourcePath string) *ImageClass {
 
 	_cret = C.gtk_image_new_from_resource(_arg1)
 
-	var _image *ImageClass // out
+	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ImageClass)
+	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
 
 	return _image
 }
 
 // Clear resets the image to be empty.
-func (image *ImageClass) Clear() {
+func (image *Image) Clear() {
 	var _arg0 *C.GtkImage // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
@@ -319,7 +287,7 @@ func (image *ImageClass) Clear() {
 // The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME
 // (see [method@Gtk.Image.get_storage_type]). The returned string is owned by
 // the `GtkImage` and should not be freed.
-func (image *ImageClass) IconName() string {
+func (image *Image) IconName() string {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.char     // in
 
@@ -335,7 +303,7 @@ func (image *ImageClass) IconName() string {
 }
 
 // IconSize gets the icon size used by the @image when rendering icons.
-func (image *ImageClass) IconSize() IconSize {
+func (image *Image) IconSize() IconSize {
 	var _arg0 *C.GtkImage   // out
 	var _cret C.GtkIconSize // in
 
@@ -351,7 +319,7 @@ func (image *ImageClass) IconSize() IconSize {
 }
 
 // PixelSize gets the pixel size used for named icons.
-func (image *ImageClass) PixelSize() int {
+func (image *Image) PixelSize() int {
 	var _arg0 *C.GtkImage // out
 	var _cret C.int       // in
 
@@ -371,7 +339,7 @@ func (image *ImageClass) PixelSize() int {
 //
 // If the `GtkImage` has no image data, the return value will be
 // GTK_IMAGE_EMPTY.
-func (image *ImageClass) StorageType() ImageType {
+func (image *Image) StorageType() ImageType {
 	var _arg0 *C.GtkImage    // out
 	var _cret C.GtkImageType // in
 
@@ -389,7 +357,7 @@ func (image *ImageClass) StorageType() ImageType {
 // SetFromFile sets a `GtkImage` to show a file.
 //
 // See [ctor@Gtk.Image.new_from_file] for details.
-func (image *ImageClass) SetFromFile(filename string) {
+func (image *Image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
@@ -403,7 +371,7 @@ func (image *ImageClass) SetFromFile(filename string) {
 // SetFromIconName sets a `GtkImage` to show a named icon.
 //
 // See [ctor@Gtk.Image.new_from_icon_name] for details.
-func (image *ImageClass) SetFromIconName(iconName string) {
+func (image *Image) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
@@ -420,7 +388,7 @@ func (image *ImageClass) SetFromIconName(iconName string) {
 //
 // Note: This is a helper for [method@Gtk.Image.set_from_paintable], and you
 // can't get back the exact pixbuf once this is called, only a paintable.
-func (image *ImageClass) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
+func (image *Image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
 
@@ -433,7 +401,7 @@ func (image *ImageClass) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 // SetFromResource sets a `GtkImage` to show a resource.
 //
 // See [ctor@Gtk.Image.new_from_resource] for details.
-func (image *ImageClass) SetFromResource(resourcePath string) {
+func (image *Image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
@@ -448,7 +416,7 @@ func (image *ImageClass) SetFromResource(resourcePath string) {
 //
 // If the pixel size is set to a value != -1, it is used instead of the icon
 // size set by [method@Gtk.Image.set_from_icon_name].
-func (image *ImageClass) SetPixelSize(pixelSize int) {
+func (image *Image) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.int       // out
 

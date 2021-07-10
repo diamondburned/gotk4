@@ -38,12 +38,6 @@ type PaperSize struct {
 	native C.GtkPaperSize
 }
 
-// WrapPaperSize wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPaperSize(ptr unsafe.Pointer) *PaperSize {
-	return (*PaperSize)(ptr)
-}
-
 func marshalPaperSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*PaperSize)(unsafe.Pointer(b)), nil
@@ -63,7 +57,7 @@ func NewPaperSize(name string) *PaperSize {
 
 	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_paper_size_free((*C.GtkPaperSize)(unsafe.Pointer(v)))
 	})
 
 	return _paperSize
@@ -82,7 +76,7 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 
 	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_paper_size_free((*C.GtkPaperSize)(unsafe.Pointer(v)))
 	})
 
 	return _paperSize
@@ -106,7 +100,7 @@ func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSi
 
 	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_paper_size_free((*C.GtkPaperSize)(unsafe.Pointer(v)))
 	})
 
 	return _paperSize
@@ -130,7 +124,7 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 
 	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_paper_size_free((*C.GtkPaperSize)(unsafe.Pointer(v)))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -158,7 +152,7 @@ func NewPaperSizeFromPpd(ppdName string, ppdDisplayName string, width float64, h
 
 	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_paper_size_free((*C.GtkPaperSize)(unsafe.Pointer(v)))
 	})
 
 	return _paperSize
@@ -182,7 +176,7 @@ func (other *PaperSize) Copy() *PaperSize {
 
 	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_paper_size_free((*C.GtkPaperSize)(unsafe.Pointer(v)))
 	})
 
 	return _paperSize

@@ -23,10 +23,20 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_style_properties_get_type()), F: marshalStyleProperties},
+		{T: externglib.Type(C.gtk_style_properties_get_type()), F: marshalStylePropertieser},
 		{T: externglib.Type(C.gtk_gradient_get_type()), F: marshalGradient},
 		{T: externglib.Type(C.gtk_symbolic_color_get_type()), F: marshalSymbolicColor},
 	})
+}
+
+// StylePropertieser describes StyleProperties's methods.
+type StylePropertieser interface {
+	gextras.Objector
+
+	Clear()
+	LookupColor(name string) *SymbolicColor
+	MapColor(name string, color *SymbolicColor)
+	Merge(propsToMerge StylePropertieser, replace bool)
 }
 
 // StyleProperties provides the storage for style information that is used by
@@ -43,64 +53,39 @@ func init() {
 //
 // StyleProperties has been deprecated in GTK 3.16. The CSS machinery does not
 // use it anymore and all users of this object have been deprecated.
-type StyleProperties interface {
-	gextras.Objector
-
-	// Clear clears all style information from @props.
-	//
-	// Deprecated: StyleProperties are deprecated.
-	Clear()
-	// LookupColor returns the symbolic color that is mapped to @name.
-	//
-	// Deprecated: SymbolicColor is deprecated.
-	LookupColor(name string) *SymbolicColor
-	// MapColor maps @color so it can be referenced by @name. See
-	// gtk_style_properties_lookup_color()
-	//
-	// Deprecated: SymbolicColor is deprecated.
-	MapColor(name string, color *SymbolicColor)
-	// Merge merges into @props all the style information contained in
-	// @props_to_merge. If @replace is true, the values will be overwritten, if
-	// it is false, the older values will prevail.
-	//
-	// Deprecated: StyleProperties are deprecated.
-	Merge(propsToMerge StyleProperties, replace bool)
-}
-
-// StylePropertiesClass implements the StyleProperties interface.
-type StylePropertiesClass struct {
+type StyleProperties struct {
 	*externglib.Object
-	StyleProviderIface
+	StyleProvider
 }
 
-var _ StyleProperties = (*StylePropertiesClass)(nil)
+var _ StylePropertieser = (*StyleProperties)(nil)
 
-func wrapStyleProperties(obj *externglib.Object) StyleProperties {
-	return &StylePropertiesClass{
+func wrapStylePropertieser(obj *externglib.Object) StylePropertieser {
+	return &StyleProperties{
 		Object: obj,
-		StyleProviderIface: StyleProviderIface{
+		StyleProvider: StyleProvider{
 			Object: obj,
 		},
 	}
 }
 
-func marshalStyleProperties(p uintptr) (interface{}, error) {
+func marshalStylePropertieser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleProperties(obj), nil
+	return wrapStylePropertieser(obj), nil
 }
 
 // NewStyleProperties returns a newly created StyleProperties
 //
 // Deprecated: StyleProperties are deprecated.
-func NewStyleProperties() *StylePropertiesClass {
+func NewStyleProperties() *StyleProperties {
 	var _cret *C.GtkStyleProperties // in
 
 	_cret = C.gtk_style_properties_new()
 
-	var _styleProperties *StylePropertiesClass // out
+	var _styleProperties *StyleProperties // out
 
-	_styleProperties = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StylePropertiesClass)
+	_styleProperties = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StyleProperties)
 
 	return _styleProperties
 }
@@ -108,7 +93,7 @@ func NewStyleProperties() *StylePropertiesClass {
 // Clear clears all style information from @props.
 //
 // Deprecated: StyleProperties are deprecated.
-func (props *StylePropertiesClass) Clear() {
+func (props *StyleProperties) Clear() {
 	var _arg0 *C.GtkStyleProperties // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
@@ -119,7 +104,7 @@ func (props *StylePropertiesClass) Clear() {
 // LookupColor returns the symbolic color that is mapped to @name.
 //
 // Deprecated: SymbolicColor is deprecated.
-func (props *StylePropertiesClass) LookupColor(name string) *SymbolicColor {
+func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GtkSymbolicColor   // in
@@ -145,7 +130,7 @@ func (props *StylePropertiesClass) LookupColor(name string) *SymbolicColor {
 // gtk_style_properties_lookup_color()
 //
 // Deprecated: SymbolicColor is deprecated.
-func (props *StylePropertiesClass) MapColor(name string, color *SymbolicColor) {
+func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GtkSymbolicColor   // out
@@ -163,7 +148,7 @@ func (props *StylePropertiesClass) MapColor(name string, color *SymbolicColor) {
 // is false, the older values will prevail.
 //
 // Deprecated: StyleProperties are deprecated.
-func (props *StylePropertiesClass) Merge(propsToMerge StyleProperties, replace bool) {
+func (props *StyleProperties) Merge(propsToMerge StylePropertieser, replace bool) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 C.gboolean            // out
@@ -193,12 +178,6 @@ func (props *StylePropertiesClass) Merge(propsToMerge StyleProperties, replace b
 // code, please use Cairo directly.
 type Gradient struct {
 	native C.GtkGradient
-}
-
-// WrapGradient wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapGradient(ptr unsafe.Pointer) *Gradient {
-	return (*Gradient)(ptr)
 }
 
 func marshalGradient(p uintptr) (interface{}, error) {
@@ -310,7 +289,7 @@ func (gradient *Gradient) ref() *Gradient {
 // top of a named color that doesn't exist in @props.
 //
 // Deprecated: Gradient is deprecated.
-func (gradient *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
+func (gradient *Gradient) Resolve(props StylePropertieser) (*cairo.Pattern, bool) {
 	var _arg0 *C.GtkGradient        // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 *C.cairo_pattern_t    // in
@@ -335,7 +314,7 @@ func (gradient *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) 
 	return _resolvedGradient, _ok
 }
 
-func (gradient *Gradient) ResolveForContext(context StyleContext) *cairo.Pattern {
+func (gradient *Gradient) ResolveForContext(context StyleContexter) *cairo.Pattern {
 	var _arg0 *C.GtkGradient     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _cret *C.cairo_pattern_t // in
@@ -401,12 +380,6 @@ func (gradient *Gradient) unref() {
 // detail of GTK+.
 type SymbolicColor struct {
 	native C.GtkSymbolicColor
-}
-
-// WrapSymbolicColor wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSymbolicColor(ptr unsafe.Pointer) *SymbolicColor {
-	return (*SymbolicColor)(ptr)
 }
 
 func marshalSymbolicColor(p uintptr) (interface{}, error) {
@@ -582,7 +555,7 @@ func (color *SymbolicColor) ref() *SymbolicColor {
 // or references such a color, this function will return false.
 //
 // Deprecated: SymbolicColor is deprecated.
-func (color *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
+func (color *SymbolicColor) Resolve(props StylePropertieser) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkSymbolicColor   // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 C.GdkRGBA             // in

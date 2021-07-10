@@ -30,12 +30,6 @@ type Tree struct {
 	native C.GTree
 }
 
-// WrapTree wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTree(ptr unsafe.Pointer) *Tree {
-	return (*Tree)(ptr)
-}
-
 func marshalTree(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Tree)(unsafe.Pointer(b)), nil

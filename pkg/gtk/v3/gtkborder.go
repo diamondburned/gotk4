@@ -30,12 +30,6 @@ type Border struct {
 	native C.GtkBorder
 }
 
-// WrapBorder wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBorder(ptr unsafe.Pointer) *Border {
-	return (*Border)(ptr)
-}
-
 func marshalBorder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Border)(unsafe.Pointer(b)), nil
@@ -51,7 +45,7 @@ func NewBorder() *Border {
 
 	_border = (*Border)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_border, func(v *Border) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
 	})
 
 	return _border
@@ -75,7 +69,7 @@ func (border_ *Border) Copy() *Border {
 
 	_border = (*Border)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_border, func(v *Border) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
 	})
 
 	return _border

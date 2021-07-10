@@ -28,38 +28,38 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_file_database_get_type()), F: marshalTLSFileDatabase},
+		{T: externglib.Type(C.g_tls_file_database_get_type()), F: marshalTLSFileDatabaser},
 	})
+}
+
+// TLSFileDatabaser describes TLSFileDatabase's methods.
+type TLSFileDatabaser interface {
+	gextras.Objector
+
+	privateTLSFileDatabase()
 }
 
 // TLSFileDatabase is implemented by Database objects which load their
 // certificate information from a file. It is an interface which TLS library
 // specific subtypes implement.
-type TLSFileDatabase interface {
-	gextras.Objector
-
-	privateTLSFileDatabaseIface()
+type TLSFileDatabase struct {
+	TLSDatabase
 }
 
-// TLSFileDatabaseIface implements the TLSFileDatabase interface.
-type TLSFileDatabaseIface struct {
-	TLSDatabaseClass
-}
+var _ TLSFileDatabaser = (*TLSFileDatabase)(nil)
 
-var _ TLSFileDatabase = (*TLSFileDatabaseIface)(nil)
-
-func wrapTLSFileDatabase(obj *externglib.Object) TLSFileDatabase {
-	return &TLSFileDatabaseIface{
-		TLSDatabaseClass: TLSDatabaseClass{
+func wrapTLSFileDatabaser(obj *externglib.Object) TLSFileDatabaser {
+	return &TLSFileDatabase{
+		TLSDatabase: TLSDatabase{
 			Object: obj,
 		},
 	}
 }
 
-func marshalTLSFileDatabase(p uintptr) (interface{}, error) {
+func marshalTLSFileDatabaser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSFileDatabase(obj), nil
+	return wrapTLSFileDatabaser(obj), nil
 }
 
-func (*TLSFileDatabaseIface) privateTLSFileDatabaseIface() {}
+func (*TLSFileDatabase) privateTLSFileDatabase() {}

@@ -21,17 +21,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocket},
+		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocketter},
 	})
 }
 
-// SocketOverrider contains methods that are overridable.
+// SocketterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketOverrider interface {
+type SocketterOverrider interface {
 	PlugAdded()
 	PlugRemoved() bool
+}
+
+// Socketter describes Socket's methods.
+type Socketter interface {
+	gextras.Objector
+
+	PlugWindow() *gdk.Window
 }
 
 // Socket: together with Plug, Socket provides the ability to embed widgets from
@@ -80,69 +87,60 @@ type SocketOverrider interface {
 // X11 platform and GDK_WINDOWING_X11 is defined. They can only be used on a
 // X11Display. To use Plug and Socket, you need to include the `gtk/gtkx.h`
 // header.
-type Socket interface {
-	gextras.Objector
-
-	// PlugWindow retrieves the window of the plug. Use this to check if the
-	// plug has been created inside of the socket.
-	PlugWindow() *gdk.WindowClass
-}
-
-// SocketClass implements the Socket interface.
-type SocketClass struct {
+type Socket struct {
 	*externglib.Object
-	ContainerClass
-	BuildableIface
+	Container
+	Buildable
 }
 
-var _ Socket = (*SocketClass)(nil)
+var _ Socketter = (*Socket)(nil)
 
-func wrapSocket(obj *externglib.Object) Socket {
-	return &SocketClass{
+func wrapSocketter(obj *externglib.Object) Socketter {
+	return &Socket{
 		Object: obj,
-		ContainerClass: ContainerClass{
+		Container: Container{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSocket(p uintptr) (interface{}, error) {
+func marshalSocketter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocket(obj), nil
+	return wrapSocketter(obj), nil
 }
 
 // NewSocket: create a new empty Socket.
-func NewSocket() *SocketClass {
+func NewSocket() *Socket {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_socket_new()
 
-	var _socket *SocketClass // out
+	var _socket *Socket // out
 
-	_socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketClass)
+	_socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Socket)
 
 	return _socket
 }
 
 // PlugWindow retrieves the window of the plug. Use this to check if the plug
 // has been created inside of the socket.
-func (socket_ *SocketClass) PlugWindow() *gdk.WindowClass {
+func (socket_ *Socket) PlugWindow() *gdk.Window {
 	var _arg0 *C.GtkSocket // out
 	var _cret *C.GdkWindow // in
 
@@ -150,9 +148,9 @@ func (socket_ *SocketClass) PlugWindow() *gdk.WindowClass {
 
 	_cret = C.gtk_socket_get_plug_window(_arg0)
 
-	var _window *gdk.WindowClass // out
+	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
 
 	return _window
 }

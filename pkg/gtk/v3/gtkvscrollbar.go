@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vscrollbar_get_type()), F: marshalVScrollbar},
+		{T: externglib.Type(C.gtk_vscrollbar_get_type()), F: marshalVScrollbarrer},
 	})
+}
+
+// VScrollbarrer describes VScrollbar's methods.
+type VScrollbarrer interface {
+	gextras.Objector
+
+	privateVScrollbar()
 }
 
 // VScrollbar: the VScrollbar widget is a widget arranged vertically creating a
@@ -31,71 +38,64 @@ func init() {
 // what the fields in an adjustment represent for a scrollbar.
 //
 // GtkVScrollbar has been deprecated, use Scrollbar instead.
-type VScrollbar interface {
-	gextras.Objector
-
-	privateVScrollbarClass()
-}
-
-// VScrollbarClass implements the VScrollbar interface.
-type VScrollbarClass struct {
+type VScrollbar struct {
 	*externglib.Object
-	ScrollbarClass
-	BuildableIface
-	OrientableIface
+	Scrollbar
+	Buildable
+	Orientable
 }
 
-var _ VScrollbar = (*VScrollbarClass)(nil)
+var _ VScrollbarrer = (*VScrollbar)(nil)
 
-func wrapVScrollbar(obj *externglib.Object) VScrollbar {
-	return &VScrollbarClass{
+func wrapVScrollbarrer(obj *externglib.Object) VScrollbarrer {
+	return &VScrollbar{
 		Object: obj,
-		ScrollbarClass: ScrollbarClass{
+		Scrollbar: Scrollbar{
 			Object: obj,
-			RangeClass: RangeClass{
+			Range: Range{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				OrientableIface: OrientableIface{
+				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalVScrollbar(p uintptr) (interface{}, error) {
+func marshalVScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVScrollbar(obj), nil
+	return wrapVScrollbarrer(obj), nil
 }
 
 // NewVScrollbar creates a new vertical scrollbar.
 //
 // Deprecated: Use gtk_scrollbar_new() with GTK_ORIENTATION_VERTICAL instead.
-func NewVScrollbar(adjustment Adjustment) *VScrollbarClass {
+func NewVScrollbar(adjustment Adjustmenter) *VScrollbar {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
@@ -103,11 +103,11 @@ func NewVScrollbar(adjustment Adjustment) *VScrollbarClass {
 
 	_cret = C.gtk_vscrollbar_new(_arg1)
 
-	var _vScrollbar *VScrollbarClass // out
+	var _vScrollbar *VScrollbar // out
 
-	_vScrollbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScrollbarClass)
+	_vScrollbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScrollbar)
 
 	return _vScrollbar
 }
 
-func (*VScrollbarClass) privateVScrollbarClass() {}
+func (*VScrollbar) privateVScrollbar() {}

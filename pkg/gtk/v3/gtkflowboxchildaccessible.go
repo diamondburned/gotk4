@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flow_box_child_accessible_get_type()), F: marshalFlowBoxChildAccessible},
+		{T: externglib.Type(C.gtk_flow_box_child_accessible_get_type()), F: marshalFlowBoxChildAccessibler},
 	})
 }
 
-type FlowBoxChildAccessible interface {
+// FlowBoxChildAccessibler describes FlowBoxChildAccessible's methods.
+type FlowBoxChildAccessibler interface {
 	gextras.Objector
 
-	privateFlowBoxChildAccessibleClass()
+	privateFlowBoxChildAccessible()
 }
 
-// FlowBoxChildAccessibleClass implements the FlowBoxChildAccessible interface.
-type FlowBoxChildAccessibleClass struct {
-	ContainerAccessibleClass
+type FlowBoxChildAccessible struct {
+	ContainerAccessible
 }
 
-var _ FlowBoxChildAccessible = (*FlowBoxChildAccessibleClass)(nil)
+var _ FlowBoxChildAccessibler = (*FlowBoxChildAccessible)(nil)
 
-func wrapFlowBoxChildAccessible(obj *externglib.Object) FlowBoxChildAccessible {
-	return &FlowBoxChildAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapFlowBoxChildAccessibler(obj *externglib.Object) FlowBoxChildAccessibler {
+	return &FlowBoxChildAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapFlowBoxChildAccessible(obj *externglib.Object) FlowBoxChildAccessible {
 	}
 }
 
-func marshalFlowBoxChildAccessible(p uintptr) (interface{}, error) {
+func marshalFlowBoxChildAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlowBoxChildAccessible(obj), nil
+	return wrapFlowBoxChildAccessibler(obj), nil
 }
 
-func (*FlowBoxChildAccessibleClass) privateFlowBoxChildAccessibleClass() {}
+func (*FlowBoxChildAccessible) privateFlowBoxChildAccessible() {}

@@ -22,13 +22,13 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_shortcut_action_flags_get_type()), F: marshalShortcutActionFlags},
-		{T: externglib.Type(C.gtk_activate_action_get_type()), F: marshalActivateAction},
-		{T: externglib.Type(C.gtk_callback_action_get_type()), F: marshalCallbackAction},
-		{T: externglib.Type(C.gtk_mnemonic_action_get_type()), F: marshalMnemonicAction},
-		{T: externglib.Type(C.gtk_named_action_get_type()), F: marshalNamedAction},
-		{T: externglib.Type(C.gtk_nothing_action_get_type()), F: marshalNothingAction},
-		{T: externglib.Type(C.gtk_shortcut_action_get_type()), F: marshalShortcutAction},
-		{T: externglib.Type(C.gtk_signal_action_get_type()), F: marshalSignalAction},
+		{T: externglib.Type(C.gtk_activate_action_get_type()), F: marshalActivateActioner},
+		{T: externglib.Type(C.gtk_callback_action_get_type()), F: marshalCallbackActioner},
+		{T: externglib.Type(C.gtk_mnemonic_action_get_type()), F: marshalMnemonicActioner},
+		{T: externglib.Type(C.gtk_named_action_get_type()), F: marshalNamedActioner},
+		{T: externglib.Type(C.gtk_nothing_action_get_type()), F: marshalNothingActioner},
+		{T: externglib.Type(C.gtk_shortcut_action_get_type()), F: marshalShortcutActioner},
+		{T: externglib.Type(C.gtk_signal_action_get_type()), F: marshalSignalActioner},
 	})
 }
 
@@ -49,7 +49,7 @@ func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 }
 
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
-type ShortcutFunc func(widget *WidgetClass, args *glib.Variant, userData interface{}) (ok bool)
+type ShortcutFunc func(widget *Widget, args *glib.Variant, userData interface{}) (ok bool)
 
 //export gotk4_ShortcutFunc
 func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
@@ -58,11 +58,11 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (c
 		panic(`callback not found`)
 	}
 
-	var widget *WidgetClass  // out
+	var widget *Widget       // out
 	var args *glib.Variant   // out
 	var userData interface{} // out
 
-	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*WidgetClass)
+	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
 	args = (*glib.Variant)(unsafe.Pointer(arg1))
 	C.g_variant_ref(arg1)
 	runtime.SetFinalizer(args, func(v *glib.Variant) {
@@ -80,124 +80,123 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (c
 	return cret
 }
 
-// ActivateAction: `GtkShortcutAction` that calls gtk_widget_activate().
-type ActivateAction interface {
+// ActivateActioner describes ActivateAction's methods.
+type ActivateActioner interface {
 	gextras.Objector
 
-	privateActivateActionClass()
+	privateActivateAction()
 }
 
-// ActivateActionClass implements the ActivateAction interface.
-type ActivateActionClass struct {
-	ShortcutActionClass
+// ActivateAction: `GtkShortcutAction` that calls gtk_widget_activate().
+type ActivateAction struct {
+	ShortcutAction
 }
 
-var _ ActivateAction = (*ActivateActionClass)(nil)
+var _ ActivateActioner = (*ActivateAction)(nil)
 
-func wrapActivateAction(obj *externglib.Object) ActivateAction {
-	return &ActivateActionClass{
-		ShortcutActionClass: ShortcutActionClass{
+func wrapActivateActioner(obj *externglib.Object) ActivateActioner {
+	return &ActivateAction{
+		ShortcutAction: ShortcutAction{
 			Object: obj,
 		},
 	}
 }
 
-func marshalActivateAction(p uintptr) (interface{}, error) {
+func marshalActivateActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActivateAction(obj), nil
+	return wrapActivateActioner(obj), nil
 }
 
-func (*ActivateActionClass) privateActivateActionClass() {}
+func (*ActivateAction) privateActivateAction() {}
+
+// CallbackActioner describes CallbackAction's methods.
+type CallbackActioner interface {
+	gextras.Objector
+
+	privateCallbackAction()
+}
 
 // CallbackAction: `GtkShortcutAction` that invokes a callback.
-type CallbackAction interface {
-	gextras.Objector
-
-	privateCallbackActionClass()
+type CallbackAction struct {
+	ShortcutAction
 }
 
-// CallbackActionClass implements the CallbackAction interface.
-type CallbackActionClass struct {
-	ShortcutActionClass
-}
+var _ CallbackActioner = (*CallbackAction)(nil)
 
-var _ CallbackAction = (*CallbackActionClass)(nil)
-
-func wrapCallbackAction(obj *externglib.Object) CallbackAction {
-	return &CallbackActionClass{
-		ShortcutActionClass: ShortcutActionClass{
+func wrapCallbackActioner(obj *externglib.Object) CallbackActioner {
+	return &CallbackAction{
+		ShortcutAction: ShortcutAction{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCallbackAction(p uintptr) (interface{}, error) {
+func marshalCallbackActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCallbackAction(obj), nil
+	return wrapCallbackActioner(obj), nil
 }
 
-func (*CallbackActionClass) privateCallbackActionClass() {}
+func (*CallbackAction) privateCallbackAction() {}
+
+// MnemonicActioner describes MnemonicAction's methods.
+type MnemonicActioner interface {
+	gextras.Objector
+
+	privateMnemonicAction()
+}
 
 // MnemonicAction: `GtkShortcutAction` that calls
 // gtk_widget_mnemonic_activate().
-type MnemonicAction interface {
-	gextras.Objector
-
-	privateMnemonicActionClass()
+type MnemonicAction struct {
+	ShortcutAction
 }
 
-// MnemonicActionClass implements the MnemonicAction interface.
-type MnemonicActionClass struct {
-	ShortcutActionClass
-}
+var _ MnemonicActioner = (*MnemonicAction)(nil)
 
-var _ MnemonicAction = (*MnemonicActionClass)(nil)
-
-func wrapMnemonicAction(obj *externglib.Object) MnemonicAction {
-	return &MnemonicActionClass{
-		ShortcutActionClass: ShortcutActionClass{
+func wrapMnemonicActioner(obj *externglib.Object) MnemonicActioner {
+	return &MnemonicAction{
+		ShortcutAction: ShortcutAction{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMnemonicAction(p uintptr) (interface{}, error) {
+func marshalMnemonicActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMnemonicAction(obj), nil
+	return wrapMnemonicActioner(obj), nil
 }
 
-func (*MnemonicActionClass) privateMnemonicActionClass() {}
+func (*MnemonicAction) privateMnemonicAction() {}
 
-// NamedAction: `GtkShortcutAction` that activates an action by name.
-type NamedAction interface {
+// NamedActioner describes NamedAction's methods.
+type NamedActioner interface {
 	gextras.Objector
 
-	// ActionName returns the name of the action that will be activated.
 	ActionName() string
 }
 
-// NamedActionClass implements the NamedAction interface.
-type NamedActionClass struct {
-	ShortcutActionClass
+// NamedAction: `GtkShortcutAction` that activates an action by name.
+type NamedAction struct {
+	ShortcutAction
 }
 
-var _ NamedAction = (*NamedActionClass)(nil)
+var _ NamedActioner = (*NamedAction)(nil)
 
-func wrapNamedAction(obj *externglib.Object) NamedAction {
-	return &NamedActionClass{
-		ShortcutActionClass: ShortcutActionClass{
+func wrapNamedActioner(obj *externglib.Object) NamedActioner {
+	return &NamedAction{
+		ShortcutAction: ShortcutAction{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNamedAction(p uintptr) (interface{}, error) {
+func marshalNamedActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNamedAction(obj), nil
+	return wrapNamedActioner(obj), nil
 }
 
 // NewNamedAction creates an action that when activated, activates the named
@@ -207,7 +206,7 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 //
 // See [method@Gtk.Widget.insert_action_group] for how to add actions to
 // widgets.
-func NewNamedAction(name string) *NamedActionClass {
+func NewNamedAction(name string) *NamedAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
 
@@ -216,15 +215,15 @@ func NewNamedAction(name string) *NamedActionClass {
 
 	_cret = C.gtk_named_action_new(_arg1)
 
-	var _namedAction *NamedActionClass // out
+	var _namedAction *NamedAction // out
 
-	_namedAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NamedActionClass)
+	_namedAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NamedAction)
 
 	return _namedAction
 }
 
 // ActionName returns the name of the action that will be activated.
-func (self *NamedActionClass) ActionName() string {
+func (self *NamedAction) ActionName() string {
 	var _arg0 *C.GtkNamedAction // out
 	var _cret *C.char           // in
 
@@ -239,35 +238,42 @@ func (self *NamedActionClass) ActionName() string {
 	return _utf8
 }
 
-// NothingAction: `GtkShortcutAction` that does nothing.
-type NothingAction interface {
+// NothingActioner describes NothingAction's methods.
+type NothingActioner interface {
 	gextras.Objector
 
-	privateNothingActionClass()
+	privateNothingAction()
 }
 
-// NothingActionClass implements the NothingAction interface.
-type NothingActionClass struct {
-	ShortcutActionClass
+// NothingAction: `GtkShortcutAction` that does nothing.
+type NothingAction struct {
+	ShortcutAction
 }
 
-var _ NothingAction = (*NothingActionClass)(nil)
+var _ NothingActioner = (*NothingAction)(nil)
 
-func wrapNothingAction(obj *externglib.Object) NothingAction {
-	return &NothingActionClass{
-		ShortcutActionClass: ShortcutActionClass{
+func wrapNothingActioner(obj *externglib.Object) NothingActioner {
+	return &NothingAction{
+		ShortcutAction: ShortcutAction{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNothingAction(p uintptr) (interface{}, error) {
+func marshalNothingActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNothingAction(obj), nil
+	return wrapNothingActioner(obj), nil
 }
 
-func (*NothingActionClass) privateNothingActionClass() {}
+func (*NothingAction) privateNothingAction() {}
+
+// ShortcutActioner describes ShortcutAction's methods.
+type ShortcutActioner interface {
+	gextras.Objector
+
+	String() string
+}
 
 // ShortcutAction: `GtkShortcutAction` encodes an action that can be triggered
 // by a keyboard shortcut.
@@ -296,33 +302,22 @@ func (*NothingActionClass) privateNothingActionClass() {}
 //    - [class@Gtk.NamedAction]: a shortcut action that calls
 //      gtk_widget_activate_action()
 //    - [class@Gtk.NothingAction]: a shortcut action that does nothing
-type ShortcutAction interface {
-	gextras.Objector
-
-	// String prints the given action into a human-readable string.
-	//
-	// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
-	// when debugging.
-	String() string
-}
-
-// ShortcutActionClass implements the ShortcutAction interface.
-type ShortcutActionClass struct {
+type ShortcutAction struct {
 	*externglib.Object
 }
 
-var _ ShortcutAction = (*ShortcutActionClass)(nil)
+var _ ShortcutActioner = (*ShortcutAction)(nil)
 
-func wrapShortcutAction(obj *externglib.Object) ShortcutAction {
-	return &ShortcutActionClass{
+func wrapShortcutActioner(obj *externglib.Object) ShortcutActioner {
+	return &ShortcutAction{
 		Object: obj,
 	}
 }
 
-func marshalShortcutAction(p uintptr) (interface{}, error) {
+func marshalShortcutActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutAction(obj), nil
+	return wrapShortcutActioner(obj), nil
 }
 
 // NewShortcutActionParseString tries to parse the given string into an action.
@@ -336,7 +331,7 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 // `mnemonic-activate`, for `GtkMnemonicAction` - `action(NAME)`, for a
 // `GtkNamedAction` for the action named `NAME` - `signal(NAME)`, for a
 // `GtkSignalAction` for the signal `NAME`
-func NewShortcutActionParseString(_string string) *ShortcutActionClass {
+func NewShortcutActionParseString(_string string) *ShortcutAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
 
@@ -345,9 +340,9 @@ func NewShortcutActionParseString(_string string) *ShortcutActionClass {
 
 	_cret = C.gtk_shortcut_action_parse_string(_arg1)
 
-	var _shortcutAction *ShortcutActionClass // out
+	var _shortcutAction *ShortcutAction // out
 
-	_shortcutAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutActionClass)
+	_shortcutAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutAction)
 
 	return _shortcutAction
 }
@@ -356,7 +351,7 @@ func NewShortcutActionParseString(_string string) *ShortcutActionClass {
 //
 // This is a small wrapper around [method@Gtk.ShortcutAction.print] to help when
 // debugging.
-func (self *ShortcutActionClass) String() string {
+func (self *ShortcutAction) String() string {
 	var _arg0 *C.GtkShortcutAction // out
 	var _cret *C.char              // in
 
@@ -372,43 +367,42 @@ func (self *ShortcutActionClass) String() string {
 	return _utf8
 }
 
+// SignalActioner describes SignalAction's methods.
+type SignalActioner interface {
+	gextras.Objector
+
+	SignalName() string
+}
+
 // SignalAction: `GtkShortcut`Action that emits a signal.
 //
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.
-type SignalAction interface {
-	gextras.Objector
-
-	// SignalName returns the name of the signal that will be emitted.
-	SignalName() string
+type SignalAction struct {
+	ShortcutAction
 }
 
-// SignalActionClass implements the SignalAction interface.
-type SignalActionClass struct {
-	ShortcutActionClass
-}
+var _ SignalActioner = (*SignalAction)(nil)
 
-var _ SignalAction = (*SignalActionClass)(nil)
-
-func wrapSignalAction(obj *externglib.Object) SignalAction {
-	return &SignalActionClass{
-		ShortcutActionClass: ShortcutActionClass{
+func wrapSignalActioner(obj *externglib.Object) SignalActioner {
+	return &SignalAction{
+		ShortcutAction: ShortcutAction{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSignalAction(p uintptr) (interface{}, error) {
+func marshalSignalActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSignalAction(obj), nil
+	return wrapSignalActioner(obj), nil
 }
 
 // NewSignalAction creates an action that when activated, emits the given action
 // signal on the provided widget.
 //
 // It will also unpack the args into arguments passed to the signal.
-func NewSignalAction(signalName string) *SignalActionClass {
+func NewSignalAction(signalName string) *SignalAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
 
@@ -417,15 +411,15 @@ func NewSignalAction(signalName string) *SignalActionClass {
 
 	_cret = C.gtk_signal_action_new(_arg1)
 
-	var _signalAction *SignalActionClass // out
+	var _signalAction *SignalAction // out
 
-	_signalAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SignalActionClass)
+	_signalAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SignalAction)
 
 	return _signalAction
 }
 
 // SignalName returns the name of the signal that will be emitted.
-func (self *SignalActionClass) SignalName() string {
+func (self *SignalAction) SignalName() string {
 	var _arg0 *C.GtkSignalAction // out
 	var _cret *C.char            // in
 

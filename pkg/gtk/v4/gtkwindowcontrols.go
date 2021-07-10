@@ -18,8 +18,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_controls_get_type()), F: marshalWindowControls},
+		{T: externglib.Type(C.gtk_window_controls_get_type()), F: marshalWindowControlser},
 	})
+}
+
+// WindowControlser describes WindowControls's methods.
+type WindowControlser interface {
+	gextras.Objector
+
+	DecorationLayout() string
+	Empty() bool
+	Side() PackType
+	SetDecorationLayout(layout string)
 }
 
 // WindowControls: `GtkWindowControls` shows window frame controls.
@@ -64,81 +74,54 @@ func init() {
 // Accessibility
 //
 // `GtkWindowControls` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type WindowControls interface {
-	gextras.Objector
-
-	// DecorationLayout gets the decoration layout of this `GtkWindowControls`.
-	DecorationLayout() string
-	// Empty gets whether the widget has any window buttons.
-	Empty() bool
-	// Side gets the side to which this `GtkWindowControls` instance belongs.
-	Side() PackType
-	// SetDecorationLayout sets the decoration layout for the title buttons.
-	//
-	// This overrides the [property@Gtk.Settings:gtk-decoration-layout] setting.
-	//
-	// The format of the string is button names, separated by commas. A colon
-	// separates the buttons that should appear on the left from those on the
-	// right. Recognized button names are minimize, maximize, close and icon
-	// (the window icon).
-	//
-	// For example, “icon:minimize,maximize,close” specifies a icon on the left,
-	// and minimize, maximize and close buttons on the right.
-	//
-	// If [property@Gtk.WindowControls:side] value is @GTK_PACK_START, @self
-	// will display the part before the colon, otherwise after that.
-	SetDecorationLayout(layout string)
-}
-
-// WindowControlsClass implements the WindowControls interface.
-type WindowControlsClass struct {
+type WindowControls struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ WindowControls = (*WindowControlsClass)(nil)
+var _ WindowControlser = (*WindowControls)(nil)
 
-func wrapWindowControls(obj *externglib.Object) WindowControls {
-	return &WindowControlsClass{
+func wrapWindowControlser(obj *externglib.Object) WindowControlser {
+	return &WindowControls{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalWindowControls(p uintptr) (interface{}, error) {
+func marshalWindowControlser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowControls(obj), nil
+	return wrapWindowControlser(obj), nil
 }
 
 // DecorationLayout gets the decoration layout of this `GtkWindowControls`.
-func (self *WindowControlsClass) DecorationLayout() string {
+func (self *WindowControls) DecorationLayout() string {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret *C.char              // in
 
@@ -154,7 +137,7 @@ func (self *WindowControlsClass) DecorationLayout() string {
 }
 
 // Empty gets whether the widget has any window buttons.
-func (self *WindowControlsClass) Empty() bool {
+func (self *WindowControls) Empty() bool {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret C.gboolean           // in
 
@@ -172,7 +155,7 @@ func (self *WindowControlsClass) Empty() bool {
 }
 
 // Side gets the side to which this `GtkWindowControls` instance belongs.
-func (self *WindowControlsClass) Side() PackType {
+func (self *WindowControls) Side() PackType {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret C.GtkPackType        // in
 
@@ -201,7 +184,7 @@ func (self *WindowControlsClass) Side() PackType {
 //
 // If [property@Gtk.WindowControls:side] value is @GTK_PACK_START, @self will
 // display the part before the colon, otherwise after that.
-func (self *WindowControlsClass) SetDecorationLayout(layout string) {
+func (self *WindowControls) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkWindowControls // out
 	var _arg1 *C.char              // out
 

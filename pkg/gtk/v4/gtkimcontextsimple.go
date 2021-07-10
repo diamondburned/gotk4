@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_im_context_simple_get_type()), F: marshalIMContextSimple},
+		{T: externglib.Type(C.gtk_im_context_simple_get_type()), F: marshalIMContextSimpler},
 	})
+}
+
+// IMContextSimpler describes IMContextSimple's methods.
+type IMContextSimpler interface {
+	gextras.Objector
+
+	AddComposeFile(composeFile string)
 }
 
 // IMContextSimple: `GtkIMContextSimple` is an input method supporting
@@ -46,49 +53,41 @@ func init() {
 //    Ctrl-Shift-u 1 2 3 Enter
 //
 // yields U+0123 LATIN SMALL LETTER G WITH CEDILLA, i.e. ģ.
-type IMContextSimple interface {
-	gextras.Objector
-
-	// AddComposeFile adds an additional table from the X11 compose file.
-	AddComposeFile(composeFile string)
+type IMContextSimple struct {
+	IMContext
 }
 
-// IMContextSimpleClass implements the IMContextSimple interface.
-type IMContextSimpleClass struct {
-	IMContextClass
-}
+var _ IMContextSimpler = (*IMContextSimple)(nil)
 
-var _ IMContextSimple = (*IMContextSimpleClass)(nil)
-
-func wrapIMContextSimple(obj *externglib.Object) IMContextSimple {
-	return &IMContextSimpleClass{
-		IMContextClass: IMContextClass{
+func wrapIMContextSimpler(obj *externglib.Object) IMContextSimpler {
+	return &IMContextSimple{
+		IMContext: IMContext{
 			Object: obj,
 		},
 	}
 }
 
-func marshalIMContextSimple(p uintptr) (interface{}, error) {
+func marshalIMContextSimpler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIMContextSimple(obj), nil
+	return wrapIMContextSimpler(obj), nil
 }
 
 // NewIMContextSimple creates a new IMContextSimple.
-func NewIMContextSimple() *IMContextSimpleClass {
+func NewIMContextSimple() *IMContextSimple {
 	var _cret *C.GtkIMContext // in
 
 	_cret = C.gtk_im_context_simple_new()
 
-	var _imContextSimple *IMContextSimpleClass // out
+	var _imContextSimple *IMContextSimple // out
 
-	_imContextSimple = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IMContextSimpleClass)
+	_imContextSimple = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IMContextSimple)
 
 	return _imContextSimple
 }
 
 // AddComposeFile adds an additional table from the X11 compose file.
-func (contextSimple *IMContextSimpleClass) AddComposeFile(composeFile string) {
+func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 	var _arg0 *C.GtkIMContextSimple // out
 	var _arg1 *C.char               // out
 

@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_device_xi2_get_type()), F: marshalX11DeviceXI2},
+		{T: externglib.Type(C.gdk_x11_device_xi2_get_type()), F: marshalX11DeviceXI2er},
 	})
 }
 
@@ -31,31 +31,31 @@ const (
 	X11DeviceTypeFloating
 )
 
-type X11DeviceXI2 interface {
+// X11DeviceXI2er describes X11DeviceXI2's methods.
+type X11DeviceXI2er interface {
 	gextras.Objector
 
-	privateX11DeviceXI2Class()
+	privateX11DeviceXI2()
 }
 
-// X11DeviceXI2Class implements the X11DeviceXI2 interface.
-type X11DeviceXI2Class struct {
-	gdk.DeviceClass
+type X11DeviceXI2 struct {
+	gdk.Device
 }
 
-var _ X11DeviceXI2 = (*X11DeviceXI2Class)(nil)
+var _ X11DeviceXI2er = (*X11DeviceXI2)(nil)
 
-func wrapX11DeviceXI2(obj *externglib.Object) X11DeviceXI2 {
-	return &X11DeviceXI2Class{
-		DeviceClass: gdk.DeviceClass{
+func wrapX11DeviceXI2er(obj *externglib.Object) X11DeviceXI2er {
+	return &X11DeviceXI2{
+		Device: gdk.Device{
 			Object: obj,
 		},
 	}
 }
 
-func marshalX11DeviceXI2(p uintptr) (interface{}, error) {
+func marshalX11DeviceXI2er(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11DeviceXI2(obj), nil
+	return wrapX11DeviceXI2er(obj), nil
 }
 
-func (*X11DeviceXI2Class) privateX11DeviceXI2Class() {}
+func (*X11DeviceXI2) privateX11DeviceXI2() {}

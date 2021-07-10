@@ -20,7 +20,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
 		{T: externglib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
-		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButton},
+		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButtonner},
 	})
 }
 
@@ -65,6 +65,34 @@ const (
 
 func marshalSpinType(p uintptr) (interface{}, error) {
 	return SpinType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SpinButtonner describes SpinButton's methods.
+type SpinButtonner interface {
+	gextras.Objector
+
+	Configure(adjustment Adjustmenter, climbRate float64, digits uint)
+	Adjustment() *Adjustment
+	ClimbRate() float64
+	Digits() uint
+	Increments() (step float64, page float64)
+	Numeric() bool
+	Range() (min float64, max float64)
+	SnapToTicks() bool
+	UpdatePolicy() SpinButtonUpdatePolicy
+	Value() float64
+	ValueAsInt() int
+	Wrap() bool
+	SetAdjustment(adjustment Adjustmenter)
+	SetClimbRate(climbRate float64)
+	SetDigits(digits uint)
+	SetIncrements(step float64, page float64)
+	SetNumeric(numeric bool)
+	SetRange(min float64, max float64)
+	SetSnapToTicks(snapToTicks bool)
+	SetValue(value float64)
+	SetWrap(wrap bool)
+	Update()
 }
 
 // SpinButton: `GtkSpinButton` is an ideal way to allow the user to set the
@@ -155,172 +183,96 @@ func marshalSpinType(p uintptr) (interface{}, error) {
 // Accessiblity
 //
 // `GtkSpinButton` uses the GTK_ACCESSIBLE_ROLE_SPIN_BUTTON role.
-type SpinButton interface {
-	gextras.Objector
-
-	// Configure changes the properties of an existing spin button.
-	//
-	// The adjustment, climb rate, and number of decimal places are updated
-	// accordingly.
-	Configure(adjustment Adjustment, climbRate float64, digits uint)
-	// Adjustment: get the adjustment associated with a `GtkSpinButton`.
-	Adjustment() *AdjustmentClass
-	// ClimbRate returns the acceleration rate for repeated changes.
-	ClimbRate() float64
-	// Digits fetches the precision of @spin_button.
-	Digits() uint
-	// Increments gets the current step and page the increments used by
-	// @spin_button.
-	//
-	// See [method@Gtk.SpinButton.set_increments].
-	Increments() (step float64, page float64)
-	// Numeric returns whether non-numeric text can be typed into the spin
-	// button.
-	Numeric() bool
-	// Range gets the range allowed for @spin_button.
-	//
-	// See [method@Gtk.SpinButton.set_range].
-	Range() (min float64, max float64)
-	// SnapToTicks returns whether the values are corrected to the nearest step.
-	SnapToTicks() bool
-	// UpdatePolicy gets the update behavior of a spin button.
-	//
-	// See [method@Gtk.SpinButton.set_update_policy].
-	UpdatePolicy() SpinButtonUpdatePolicy
-	// Value: get the value in the @spin_button.
-	Value() float64
-	// ValueAsInt: get the value @spin_button represented as an integer.
-	ValueAsInt() int
-	// Wrap returns whether the spin button’s value wraps around to the opposite
-	// limit when the upper or lower limit of the range is exceeded.
-	Wrap() bool
-	// SetAdjustment replaces the `GtkAdjustment` associated with @spin_button.
-	SetAdjustment(adjustment Adjustment)
-	// SetClimbRate sets the acceleration rate for repeated changes when you
-	// hold down a button or key.
-	SetClimbRate(climbRate float64)
-	// SetDigits: set the precision to be displayed by @spin_button.
-	//
-	// Up to 20 digit precision is allowed.
-	SetDigits(digits uint)
-	// SetIncrements sets the step and page increments for spin_button.
-	//
-	// This affects how quickly the value changes when the spin button’s arrows
-	// are activated.
-	SetIncrements(step float64, page float64)
-	// SetNumeric sets the flag that determines if non-numeric text can be typed
-	// into the spin button.
-	SetNumeric(numeric bool)
-	// SetRange sets the minimum and maximum allowable values for @spin_button.
-	//
-	// If the current value is outside this range, it will be adjusted to fit
-	// within the range, otherwise it will remain unchanged.
-	SetRange(min float64, max float64)
-	// SetSnapToTicks sets the policy as to whether values are corrected to the
-	// nearest step increment when a spin button is activated after providing an
-	// invalid value.
-	SetSnapToTicks(snapToTicks bool)
-	// SetValue sets the value of @spin_button.
-	SetValue(value float64)
-	// SetWrap sets the flag that determines if a spin button value wraps around
-	// to the opposite limit when the upper or lower limit of the range is
-	// exceeded.
-	SetWrap(wrap bool)
-	// Update: manually force an update of the spin button.
-	Update()
-}
-
-// SpinButtonClass implements the SpinButton interface.
-type SpinButtonClass struct {
+type SpinButton struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	CellEditableIface
-	ConstraintTargetIface
-	EditableIface
-	OrientableIface
+	Widget
+	Accessible
+	Buildable
+	CellEditable
+	ConstraintTarget
+	Editable
+	Orientable
 }
 
-var _ SpinButton = (*SpinButtonClass)(nil)
+var _ SpinButtonner = (*SpinButton)(nil)
 
-func wrapSpinButton(obj *externglib.Object) SpinButton {
-	return &SpinButtonClass{
+func wrapSpinButtonner(obj *externglib.Object) SpinButtonner {
+	return &SpinButton{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		CellEditableIface: CellEditableIface{
+		CellEditable: CellEditable{
 			Object: obj,
-			WidgetClass: WidgetClass{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				AccessibleIface: AccessibleIface{
-					Object: obj,
-				},
-				BuildableIface: BuildableIface{
-					Object: obj,
-				},
-				ConstraintTargetIface: ConstraintTargetIface{
-					Object: obj,
-				},
-			},
-		},
-		ConstraintTargetIface: ConstraintTargetIface{
-			Object: obj,
-		},
-		EditableIface: EditableIface{
-			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		OrientableIface: OrientableIface{
+		ConstraintTarget: ConstraintTarget{
+			Object: obj,
+		},
+		Editable: Editable{
+			Object: obj,
+			Widget: Widget{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				Accessible: Accessible{
+					Object: obj,
+				},
+				Buildable: Buildable{
+					Object: obj,
+				},
+				ConstraintTarget: ConstraintTarget{
+					Object: obj,
+				},
+			},
+		},
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSpinButton(p uintptr) (interface{}, error) {
+func marshalSpinButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinButton(obj), nil
+	return wrapSpinButtonner(obj), nil
 }
 
 // NewSpinButton creates a new `GtkSpinButton`.
-func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) *SpinButtonClass {
+func NewSpinButton(adjustment Adjustmenter, climbRate float64, digits uint) *SpinButton {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.double         // out
 	var _arg3 C.guint          // out
@@ -332,9 +284,9 @@ func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) *SpinB
 
 	_cret = C.gtk_spin_button_new(_arg1, _arg2, _arg3)
 
-	var _spinButton *SpinButtonClass // out
+	var _spinButton *SpinButton // out
 
-	_spinButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SpinButtonClass)
+	_spinButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SpinButton)
 
 	return _spinButton
 }
@@ -351,7 +303,7 @@ func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) *SpinB
 // Note that the way in which the precision is derived works best if @step is a
 // power of ten. If the resulting precision is not suitable for your needs, use
 // [method@Gtk.SpinButton.set_digits] to correct it.
-func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButtonClass {
+func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButton {
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out
 	var _arg3 C.double     // out
@@ -363,9 +315,9 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButtonC
 
 	_cret = C.gtk_spin_button_new_with_range(_arg1, _arg2, _arg3)
 
-	var _spinButton *SpinButtonClass // out
+	var _spinButton *SpinButton // out
 
-	_spinButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SpinButtonClass)
+	_spinButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SpinButton)
 
 	return _spinButton
 }
@@ -374,7 +326,7 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButtonC
 //
 // The adjustment, climb rate, and number of decimal places are updated
 // accordingly.
-func (spinButton *SpinButtonClass) Configure(adjustment Adjustment, climbRate float64, digits uint) {
+func (spinButton *SpinButton) Configure(adjustment Adjustmenter, climbRate float64, digits uint) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.double         // out
@@ -389,7 +341,7 @@ func (spinButton *SpinButtonClass) Configure(adjustment Adjustment, climbRate fl
 }
 
 // Adjustment: get the adjustment associated with a `GtkSpinButton`.
-func (spinButton *SpinButtonClass) Adjustment() *AdjustmentClass {
+func (spinButton *SpinButton) Adjustment() *Adjustment {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret *C.GtkAdjustment // in
 
@@ -397,15 +349,15 @@ func (spinButton *SpinButtonClass) Adjustment() *AdjustmentClass {
 
 	_cret = C.gtk_spin_button_get_adjustment(_arg0)
 
-	var _adjustment *AdjustmentClass // out
+	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AdjustmentClass)
+	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
 
 	return _adjustment
 }
 
 // ClimbRate returns the acceleration rate for repeated changes.
-func (spinButton *SpinButtonClass) ClimbRate() float64 {
+func (spinButton *SpinButton) ClimbRate() float64 {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.double         // in
 
@@ -421,7 +373,7 @@ func (spinButton *SpinButtonClass) ClimbRate() float64 {
 }
 
 // Digits fetches the precision of @spin_button.
-func (spinButton *SpinButtonClass) Digits() uint {
+func (spinButton *SpinButton) Digits() uint {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.guint          // in
 
@@ -440,7 +392,7 @@ func (spinButton *SpinButtonClass) Digits() uint {
 // @spin_button.
 //
 // See [method@Gtk.SpinButton.set_increments].
-func (spinButton *SpinButtonClass) Increments() (step float64, page float64) {
+func (spinButton *SpinButton) Increments() (step float64, page float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // in
 	var _arg2 C.double         // in
@@ -459,7 +411,7 @@ func (spinButton *SpinButtonClass) Increments() (step float64, page float64) {
 }
 
 // Numeric returns whether non-numeric text can be typed into the spin button.
-func (spinButton *SpinButtonClass) Numeric() bool {
+func (spinButton *SpinButton) Numeric() bool {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gboolean       // in
 
@@ -479,7 +431,7 @@ func (spinButton *SpinButtonClass) Numeric() bool {
 // Range gets the range allowed for @spin_button.
 //
 // See [method@Gtk.SpinButton.set_range].
-func (spinButton *SpinButtonClass) Range() (min float64, max float64) {
+func (spinButton *SpinButton) Range() (min float64, max float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // in
 	var _arg2 C.double         // in
@@ -498,7 +450,7 @@ func (spinButton *SpinButtonClass) Range() (min float64, max float64) {
 }
 
 // SnapToTicks returns whether the values are corrected to the nearest step.
-func (spinButton *SpinButtonClass) SnapToTicks() bool {
+func (spinButton *SpinButton) SnapToTicks() bool {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gboolean       // in
 
@@ -518,7 +470,7 @@ func (spinButton *SpinButtonClass) SnapToTicks() bool {
 // UpdatePolicy gets the update behavior of a spin button.
 //
 // See [method@Gtk.SpinButton.set_update_policy].
-func (spinButton *SpinButtonClass) UpdatePolicy() SpinButtonUpdatePolicy {
+func (spinButton *SpinButton) UpdatePolicy() SpinButtonUpdatePolicy {
 	var _arg0 *C.GtkSpinButton            // out
 	var _cret C.GtkSpinButtonUpdatePolicy // in
 
@@ -534,7 +486,7 @@ func (spinButton *SpinButtonClass) UpdatePolicy() SpinButtonUpdatePolicy {
 }
 
 // Value: get the value in the @spin_button.
-func (spinButton *SpinButtonClass) Value() float64 {
+func (spinButton *SpinButton) Value() float64 {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.double         // in
 
@@ -550,7 +502,7 @@ func (spinButton *SpinButtonClass) Value() float64 {
 }
 
 // ValueAsInt: get the value @spin_button represented as an integer.
-func (spinButton *SpinButtonClass) ValueAsInt() int {
+func (spinButton *SpinButton) ValueAsInt() int {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.int            // in
 
@@ -567,7 +519,7 @@ func (spinButton *SpinButtonClass) ValueAsInt() int {
 
 // Wrap returns whether the spin button’s value wraps around to the opposite
 // limit when the upper or lower limit of the range is exceeded.
-func (spinButton *SpinButtonClass) Wrap() bool {
+func (spinButton *SpinButton) Wrap() bool {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gboolean       // in
 
@@ -585,7 +537,7 @@ func (spinButton *SpinButtonClass) Wrap() bool {
 }
 
 // SetAdjustment replaces the `GtkAdjustment` associated with @spin_button.
-func (spinButton *SpinButtonClass) SetAdjustment(adjustment Adjustment) {
+func (spinButton *SpinButton) SetAdjustment(adjustment Adjustmenter) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -597,7 +549,7 @@ func (spinButton *SpinButtonClass) SetAdjustment(adjustment Adjustment) {
 
 // SetClimbRate sets the acceleration rate for repeated changes when you hold
 // down a button or key.
-func (spinButton *SpinButtonClass) SetClimbRate(climbRate float64) {
+func (spinButton *SpinButton) SetClimbRate(climbRate float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // out
 
@@ -610,7 +562,7 @@ func (spinButton *SpinButtonClass) SetClimbRate(climbRate float64) {
 // SetDigits: set the precision to be displayed by @spin_button.
 //
 // Up to 20 digit precision is allowed.
-func (spinButton *SpinButtonClass) SetDigits(digits uint) {
+func (spinButton *SpinButton) SetDigits(digits uint) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.guint          // out
 
@@ -624,7 +576,7 @@ func (spinButton *SpinButtonClass) SetDigits(digits uint) {
 //
 // This affects how quickly the value changes when the spin button’s arrows are
 // activated.
-func (spinButton *SpinButtonClass) SetIncrements(step float64, page float64) {
+func (spinButton *SpinButton) SetIncrements(step float64, page float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // out
 	var _arg2 C.double         // out
@@ -638,7 +590,7 @@ func (spinButton *SpinButtonClass) SetIncrements(step float64, page float64) {
 
 // SetNumeric sets the flag that determines if non-numeric text can be typed
 // into the spin button.
-func (spinButton *SpinButtonClass) SetNumeric(numeric bool) {
+func (spinButton *SpinButton) SetNumeric(numeric bool) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gboolean       // out
 
@@ -654,7 +606,7 @@ func (spinButton *SpinButtonClass) SetNumeric(numeric bool) {
 //
 // If the current value is outside this range, it will be adjusted to fit within
 // the range, otherwise it will remain unchanged.
-func (spinButton *SpinButtonClass) SetRange(min float64, max float64) {
+func (spinButton *SpinButton) SetRange(min float64, max float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // out
 	var _arg2 C.double         // out
@@ -669,7 +621,7 @@ func (spinButton *SpinButtonClass) SetRange(min float64, max float64) {
 // SetSnapToTicks sets the policy as to whether values are corrected to the
 // nearest step increment when a spin button is activated after providing an
 // invalid value.
-func (spinButton *SpinButtonClass) SetSnapToTicks(snapToTicks bool) {
+func (spinButton *SpinButton) SetSnapToTicks(snapToTicks bool) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gboolean       // out
 
@@ -682,7 +634,7 @@ func (spinButton *SpinButtonClass) SetSnapToTicks(snapToTicks bool) {
 }
 
 // SetValue sets the value of @spin_button.
-func (spinButton *SpinButtonClass) SetValue(value float64) {
+func (spinButton *SpinButton) SetValue(value float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // out
 
@@ -694,7 +646,7 @@ func (spinButton *SpinButtonClass) SetValue(value float64) {
 
 // SetWrap sets the flag that determines if a spin button value wraps around to
 // the opposite limit when the upper or lower limit of the range is exceeded.
-func (spinButton *SpinButtonClass) SetWrap(wrap bool) {
+func (spinButton *SpinButton) SetWrap(wrap bool) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gboolean       // out
 
@@ -707,7 +659,7 @@ func (spinButton *SpinButtonClass) SetWrap(wrap bool) {
 }
 
 // Update: manually force an update of the spin button.
-func (spinButton *SpinButtonClass) Update() {
+func (spinButton *SpinButton) Update() {
 	var _arg0 *C.GtkSpinButton // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(spinButton.Native()))

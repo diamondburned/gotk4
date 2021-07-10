@@ -18,53 +18,53 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_any_filter_get_type()), F: marshalAnyFilter},
-		{T: externglib.Type(C.gtk_every_filter_get_type()), F: marshalEveryFilter},
-		{T: externglib.Type(C.gtk_multi_filter_get_type()), F: marshalMultiFilter},
+		{T: externglib.Type(C.gtk_any_filter_get_type()), F: marshalAnyFilterrer},
+		{T: externglib.Type(C.gtk_every_filter_get_type()), F: marshalEveryFilterrer},
+		{T: externglib.Type(C.gtk_multi_filter_get_type()), F: marshalMultiFilterrer},
 	})
+}
+
+// AnyFilterrer describes AnyFilter's methods.
+type AnyFilterrer interface {
+	gextras.Objector
+
+	privateAnyFilter()
 }
 
 // AnyFilter: `GtkAnyFilter` matches an item when at least one of its filters
 // matches.
 //
 // To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
-type AnyFilter interface {
-	gextras.Objector
-
-	privateAnyFilterClass()
-}
-
-// AnyFilterClass implements the AnyFilter interface.
-type AnyFilterClass struct {
+type AnyFilter struct {
 	*externglib.Object
-	MultiFilterClass
-	BuildableIface
+	MultiFilter
+	Buildable
 }
 
-var _ AnyFilter = (*AnyFilterClass)(nil)
+var _ AnyFilterrer = (*AnyFilter)(nil)
 
-func wrapAnyFilter(obj *externglib.Object) AnyFilter {
-	return &AnyFilterClass{
+func wrapAnyFilterrer(obj *externglib.Object) AnyFilterrer {
+	return &AnyFilter{
 		Object: obj,
-		MultiFilterClass: MultiFilterClass{
+		MultiFilter: MultiFilter{
 			Object: obj,
-			FilterClass: FilterClass{
+			Filter: Filter{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalAnyFilter(p uintptr) (interface{}, error) {
+func marshalAnyFilterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAnyFilter(obj), nil
+	return wrapAnyFilterrer(obj), nil
 }
 
 // NewAnyFilter creates a new empty "any" filter.
@@ -74,61 +74,61 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 // This filter matches an item if any of the filters added to it matches the
 // item. In particular, this means that if no filter has been added to it, the
 // filter matches no item.
-func NewAnyFilter() *AnyFilterClass {
+func NewAnyFilter() *AnyFilter {
 	var _cret *C.GtkAnyFilter // in
 
 	_cret = C.gtk_any_filter_new()
 
-	var _anyFilter *AnyFilterClass // out
+	var _anyFilter *AnyFilter // out
 
-	_anyFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AnyFilterClass)
+	_anyFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AnyFilter)
 
 	return _anyFilter
 }
 
-func (*AnyFilterClass) privateAnyFilterClass() {}
+func (*AnyFilter) privateAnyFilter() {}
+
+// EveryFilterrer describes EveryFilter's methods.
+type EveryFilterrer interface {
+	gextras.Objector
+
+	privateEveryFilter()
+}
 
 // EveryFilter: `GtkEveryFilter` matches an item when each of its filters
 // matches.
 //
 // To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
-type EveryFilter interface {
-	gextras.Objector
-
-	privateEveryFilterClass()
-}
-
-// EveryFilterClass implements the EveryFilter interface.
-type EveryFilterClass struct {
+type EveryFilter struct {
 	*externglib.Object
-	MultiFilterClass
-	BuildableIface
+	MultiFilter
+	Buildable
 }
 
-var _ EveryFilter = (*EveryFilterClass)(nil)
+var _ EveryFilterrer = (*EveryFilter)(nil)
 
-func wrapEveryFilter(obj *externglib.Object) EveryFilter {
-	return &EveryFilterClass{
+func wrapEveryFilterrer(obj *externglib.Object) EveryFilterrer {
+	return &EveryFilter{
 		Object: obj,
-		MultiFilterClass: MultiFilterClass{
+		MultiFilter: MultiFilter{
 			Object: obj,
-			FilterClass: FilterClass{
+			Filter: Filter{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEveryFilter(p uintptr) (interface{}, error) {
+func marshalEveryFilterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEveryFilter(obj), nil
+	return wrapEveryFilterrer(obj), nil
 }
 
 // NewEveryFilter creates a new empty "every" filter.
@@ -138,64 +138,58 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 // This filter matches an item if each of the filters added to it matches the
 // item. In particular, this means that if no filter has been added to it, the
 // filter matches every item.
-func NewEveryFilter() *EveryFilterClass {
+func NewEveryFilter() *EveryFilter {
 	var _cret *C.GtkEveryFilter // in
 
 	_cret = C.gtk_every_filter_new()
 
-	var _everyFilter *EveryFilterClass // out
+	var _everyFilter *EveryFilter // out
 
-	_everyFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EveryFilterClass)
+	_everyFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EveryFilter)
 
 	return _everyFilter
 }
 
-func (*EveryFilterClass) privateEveryFilterClass() {}
+func (*EveryFilter) privateEveryFilter() {}
 
-// MultiFilter: `GtkMultiFilter` is the base class for filters that combine
-// multiple filters.
-type MultiFilter interface {
+// MultiFilterrer describes MultiFilter's methods.
+type MultiFilterrer interface {
 	gextras.Objector
 
-	// Append adds a @filter to @self to use for matching.
-	Append(filter Filter)
-	// Remove removes the filter at the given @position from the list of filters
-	// used by @self.
-	//
-	// If @position is larger than the number of filters, nothing happens and
-	// the function returns.
+	Append(filter Filterrer)
 	Remove(position uint)
 }
 
-// MultiFilterClass implements the MultiFilter interface.
-type MultiFilterClass struct {
+// MultiFilter: `GtkMultiFilter` is the base class for filters that combine
+// multiple filters.
+type MultiFilter struct {
 	*externglib.Object
-	FilterClass
-	BuildableIface
+	Filter
+	Buildable
 }
 
-var _ MultiFilter = (*MultiFilterClass)(nil)
+var _ MultiFilterrer = (*MultiFilter)(nil)
 
-func wrapMultiFilter(obj *externglib.Object) MultiFilter {
-	return &MultiFilterClass{
+func wrapMultiFilterrer(obj *externglib.Object) MultiFilterrer {
+	return &MultiFilter{
 		Object: obj,
-		FilterClass: FilterClass{
+		Filter: Filter{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMultiFilter(p uintptr) (interface{}, error) {
+func marshalMultiFilterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMultiFilter(obj), nil
+	return wrapMultiFilterrer(obj), nil
 }
 
 // Append adds a @filter to @self to use for matching.
-func (self *MultiFilterClass) Append(filter Filter) {
+func (self *MultiFilter) Append(filter Filterrer) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
 
@@ -210,7 +204,7 @@ func (self *MultiFilterClass) Append(filter Filter) {
 //
 // If @position is larger than the number of filters, nothing happens and the
 // function returns.
-func (self *MultiFilterClass) Remove(position uint) {
+func (self *MultiFilter) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 

@@ -21,8 +21,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButton},
+		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtonner},
 	})
+}
+
+// LockButtonner describes LockButton's methods.
+type LockButtonner interface {
+	gextras.Objector
+
+	Permission() *gio.Permission
+	SetPermission(permission gio.Permissioner)
 }
 
 // LockButton is a widget that can be used in control panels or preference
@@ -55,100 +63,90 @@ func init() {
 // with the LockButton:text-lock, LockButton:text-unlock,
 // LockButton:tooltip-lock, LockButton:tooltip-unlock and
 // LockButton:tooltip-not-authorized properties.
-type LockButton interface {
-	gextras.Objector
-
-	// Permission obtains the #GPermission object that controls @button.
-	Permission() *gio.PermissionClass
-	// SetPermission sets the #GPermission object that controls @button.
-	SetPermission(permission gio.Permission)
-}
-
-// LockButtonClass implements the LockButton interface.
-type LockButtonClass struct {
+type LockButton struct {
 	*externglib.Object
-	ButtonClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	Button
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ LockButton = (*LockButtonClass)(nil)
+var _ LockButtonner = (*LockButton)(nil)
 
-func wrapLockButton(obj *externglib.Object) LockButton {
-	return &LockButtonClass{
+func wrapLockButtonner(obj *externglib.Object) LockButtonner {
+	return &LockButton{
 		Object: obj,
-		ButtonClass: ButtonClass{
+		Button: Button{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalLockButton(p uintptr) (interface{}, error) {
+func marshalLockButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLockButton(obj), nil
+	return wrapLockButtonner(obj), nil
 }
 
 // NewLockButton creates a new lock button which reflects the @permission.
-func NewLockButton(permission gio.Permission) *LockButtonClass {
+func NewLockButton(permission gio.Permissioner) *LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in
 
@@ -156,15 +154,15 @@ func NewLockButton(permission gio.Permission) *LockButtonClass {
 
 	_cret = C.gtk_lock_button_new(_arg1)
 
-	var _lockButton *LockButtonClass // out
+	var _lockButton *LockButton // out
 
-	_lockButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LockButtonClass)
+	_lockButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LockButton)
 
 	return _lockButton
 }
 
 // Permission obtains the #GPermission object that controls @button.
-func (button *LockButtonClass) Permission() *gio.PermissionClass {
+func (button *LockButton) Permission() *gio.Permission {
 	var _arg0 *C.GtkLockButton // out
 	var _cret *C.GPermission   // in
 
@@ -172,15 +170,15 @@ func (button *LockButtonClass) Permission() *gio.PermissionClass {
 
 	_cret = C.gtk_lock_button_get_permission(_arg0)
 
-	var _permission *gio.PermissionClass // out
+	var _permission *gio.Permission // out
 
-	_permission = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.PermissionClass)
+	_permission = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Permission)
 
 	return _permission
 }
 
 // SetPermission sets the #GPermission object that controls @button.
-func (button *LockButtonClass) SetPermission(permission gio.Permission) {
+func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	var _arg0 *C.GtkLockButton // out
 	var _arg1 *C.GPermission   // out
 

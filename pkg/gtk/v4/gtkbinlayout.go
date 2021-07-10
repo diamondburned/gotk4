@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bin_layout_get_type()), F: marshalBinLayout},
+		{T: externglib.Type(C.gtk_bin_layout_get_type()), F: marshalBinLayouter},
 	})
+}
+
+// BinLayouter describes BinLayout's methods.
+type BinLayouter interface {
+	gextras.Objector
+
+	privateBinLayout()
 }
 
 // BinLayout: `GtkBinLayout` is a `GtkLayoutManager` subclass useful for create
@@ -29,44 +36,37 @@ func init() {
 // the [property@Gtk.Widget:hexpand], [property@Gtk.Widget:vexpand],
 // [property@Gtk.Widget:halign], and [property@Gtk.Widget:valign] properties of
 // each child to determine where they should be positioned.
-type BinLayout interface {
-	gextras.Objector
-
-	privateBinLayoutClass()
+type BinLayout struct {
+	LayoutManager
 }
 
-// BinLayoutClass implements the BinLayout interface.
-type BinLayoutClass struct {
-	LayoutManagerClass
-}
+var _ BinLayouter = (*BinLayout)(nil)
 
-var _ BinLayout = (*BinLayoutClass)(nil)
-
-func wrapBinLayout(obj *externglib.Object) BinLayout {
-	return &BinLayoutClass{
-		LayoutManagerClass: LayoutManagerClass{
+func wrapBinLayouter(obj *externglib.Object) BinLayouter {
+	return &BinLayout{
+		LayoutManager: LayoutManager{
 			Object: obj,
 		},
 	}
 }
 
-func marshalBinLayout(p uintptr) (interface{}, error) {
+func marshalBinLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBinLayout(obj), nil
+	return wrapBinLayouter(obj), nil
 }
 
 // NewBinLayout creates a new `GtkBinLayout` instance.
-func NewBinLayout() *BinLayoutClass {
+func NewBinLayout() *BinLayout {
 	var _cret *C.GtkLayoutManager // in
 
 	_cret = C.gtk_bin_layout_new()
 
-	var _binLayout *BinLayoutClass // out
+	var _binLayout *BinLayout // out
 
-	_binLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BinLayoutClass)
+	_binLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BinLayout)
 
 	return _binLayout
 }
 
-func (*BinLayoutClass) privateBinLayoutClass() {}
+func (*BinLayout) privateBinLayout() {}

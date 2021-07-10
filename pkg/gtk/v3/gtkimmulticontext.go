@@ -20,61 +20,48 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_im_multicontext_get_type()), F: marshalIMMulticontext},
+		{T: externglib.Type(C.gtk_im_multicontext_get_type()), F: marshalIMMulticontexter},
 	})
 }
 
-type IMMulticontext interface {
+// IMMulticontexter describes IMMulticontext's methods.
+type IMMulticontexter interface {
 	gextras.Objector
 
-	// AppendMenuitems: add menuitems for various available input methods to a
-	// menu; the menuitems, when selected, will switch the input method for the
-	// context and the global default input method.
-	//
-	// Deprecated: It is better to use the system-wide input method framework
-	// for changing input methods. Modern desktop shells offer on-screen
-	// displays for this that can triggered with a keyboard shortcut, e.g.
-	// Super-Space.
-	AppendMenuitems(menushell MenuShell)
-	// ContextID gets the id of the currently active slave of the @context.
+	AppendMenuitems(menushell MenuSheller)
 	ContextID() string
-	// SetContextID sets the context id for @context.
-	//
-	// This causes the currently active slave of @context to be replaced by the
-	// slave corresponding to the new context id.
 	SetContextID(contextId string)
 }
 
-// IMMulticontextClass implements the IMMulticontext interface.
-type IMMulticontextClass struct {
-	IMContextClass
+type IMMulticontext struct {
+	IMContext
 }
 
-var _ IMMulticontext = (*IMMulticontextClass)(nil)
+var _ IMMulticontexter = (*IMMulticontext)(nil)
 
-func wrapIMMulticontext(obj *externglib.Object) IMMulticontext {
-	return &IMMulticontextClass{
-		IMContextClass: IMContextClass{
+func wrapIMMulticontexter(obj *externglib.Object) IMMulticontexter {
+	return &IMMulticontext{
+		IMContext: IMContext{
 			Object: obj,
 		},
 	}
 }
 
-func marshalIMMulticontext(p uintptr) (interface{}, error) {
+func marshalIMMulticontexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIMMulticontext(obj), nil
+	return wrapIMMulticontexter(obj), nil
 }
 
 // NewIMMulticontext creates a new IMMulticontext.
-func NewIMMulticontext() *IMMulticontextClass {
+func NewIMMulticontext() *IMMulticontext {
 	var _cret *C.GtkIMContext // in
 
 	_cret = C.gtk_im_multicontext_new()
 
-	var _imMulticontext *IMMulticontextClass // out
+	var _imMulticontext *IMMulticontext // out
 
-	_imMulticontext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IMMulticontextClass)
+	_imMulticontext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IMMulticontext)
 
 	return _imMulticontext
 }
@@ -86,7 +73,7 @@ func NewIMMulticontext() *IMMulticontextClass {
 // Deprecated: It is better to use the system-wide input method framework for
 // changing input methods. Modern desktop shells offer on-screen displays for
 // this that can triggered with a keyboard shortcut, e.g. Super-Space.
-func (context *IMMulticontextClass) AppendMenuitems(menushell MenuShell) {
+func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.GtkMenuShell      // out
 
@@ -97,7 +84,7 @@ func (context *IMMulticontextClass) AppendMenuitems(menushell MenuShell) {
 }
 
 // ContextID gets the id of the currently active slave of the @context.
-func (context *IMMulticontextClass) ContextID() string {
+func (context *IMMulticontext) ContextID() string {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _cret *C.char              // in
 
@@ -116,7 +103,7 @@ func (context *IMMulticontextClass) ContextID() string {
 //
 // This causes the currently active slave of @context to be replaced by the
 // slave corresponding to the new context id.
-func (context *IMMulticontextClass) SetContextID(contextId string) {
+func (context *IMMulticontext) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.char              // out
 

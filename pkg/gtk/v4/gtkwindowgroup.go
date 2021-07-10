@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_group_get_type()), F: marshalWindowGroup},
+		{T: externglib.Type(C.gtk_window_group_get_type()), F: marshalWindowGrouper},
 	})
+}
+
+// WindowGrouper describes WindowGroup's methods.
+type WindowGrouper interface {
+	gextras.Objector
+
+	AddWindow(window Windowwer)
+	RemoveWindow(window Windowwer)
 }
 
 // WindowGroup: `GtkWindowGroup` makes group of windows behave like separate
@@ -38,51 +46,41 @@ func init() {
 // window group are subsequently destroyed, then they will be removed from the
 // window group and drop their references on the window group; when all window
 // have been removed, the window group will be freed.
-type WindowGroup interface {
-	gextras.Objector
-
-	// AddWindow adds a window to a `GtkWindowGroup`.
-	AddWindow(window Window)
-	// RemoveWindow removes a window from a `GtkWindowGroup`.
-	RemoveWindow(window Window)
-}
-
-// WindowGroupClass implements the WindowGroup interface.
-type WindowGroupClass struct {
+type WindowGroup struct {
 	*externglib.Object
 }
 
-var _ WindowGroup = (*WindowGroupClass)(nil)
+var _ WindowGrouper = (*WindowGroup)(nil)
 
-func wrapWindowGroup(obj *externglib.Object) WindowGroup {
-	return &WindowGroupClass{
+func wrapWindowGrouper(obj *externglib.Object) WindowGrouper {
+	return &WindowGroup{
 		Object: obj,
 	}
 }
 
-func marshalWindowGroup(p uintptr) (interface{}, error) {
+func marshalWindowGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowGroup(obj), nil
+	return wrapWindowGrouper(obj), nil
 }
 
 // NewWindowGroup creates a new `GtkWindowGroup` object.
 //
 // Modality of windows only affects windows within the same `GtkWindowGroup`.
-func NewWindowGroup() *WindowGroupClass {
+func NewWindowGroup() *WindowGroup {
 	var _cret *C.GtkWindowGroup // in
 
 	_cret = C.gtk_window_group_new()
 
-	var _windowGroup *WindowGroupClass // out
+	var _windowGroup *WindowGroup // out
 
-	_windowGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WindowGroupClass)
+	_windowGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WindowGroup)
 
 	return _windowGroup
 }
 
 // AddWindow adds a window to a `GtkWindowGroup`.
-func (windowGroup *WindowGroupClass) AddWindow(window Window) {
+func (windowGroup *WindowGroup) AddWindow(window Windowwer) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -93,7 +91,7 @@ func (windowGroup *WindowGroupClass) AddWindow(window Window) {
 }
 
 // RemoveWindow removes a window from a `GtkWindowGroup`.
-func (windowGroup *WindowGroupClass) RemoveWindow(window Window) {
+func (windowGroup *WindowGroup) RemoveWindow(window Windowwer) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 

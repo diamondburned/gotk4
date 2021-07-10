@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.pango_coverage_level_get_type()), F: marshalCoverageLevel},
-		{T: externglib.Type(C.pango_coverage_get_type()), F: marshalCoverage},
+		{T: externglib.Type(C.pango_coverage_get_type()), F: marshalCoverager},
 	})
 }
 
@@ -51,71 +51,57 @@ func marshalCoverageLevel(p uintptr) (interface{}, error) {
 	return CoverageLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Coverager describes Coverage's methods.
+type Coverager interface {
+	gextras.Objector
+
+	Copy() *Coverage
+	Get(index_ int) CoverageLevel
+	Max(other Coverager)
+	ref() *Coverage
+	ToBytes() []byte
+	unref()
+}
+
 // Coverage structure is a map from Unicode characters to CoverageLevel values.
 //
 // It is often necessary in Pango to determine if a particular font can
 // represent a particular character, and also how well it can represent that
 // character. The Coverage is a data structure that is used to represent that
 // information. It is an opaque structure with no public fields.
-type Coverage interface {
-	gextras.Objector
-
-	// Copy an existing `PangoCoverage`.
-	Copy() *CoverageClass
-	// Get: determine whether a particular index is covered by @coverage.
-	Get(index_ int) CoverageLevel
-	// Max: set the coverage for each index in @coverage to be the max (better)
-	// value of the current coverage for the index and the coverage for the
-	// corresponding index in @other.
-	//
-	// Deprecated: This function does nothing.
-	Max(other Coverage)
-	// Ref: increase the reference count on the `PangoCoverage` by one.
-	ref() *CoverageClass
-	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
-	//
-	// Deprecated: This returns nil.
-	ToBytes() []byte
-	// Unref: decrease the reference count on the `PangoCoverage` by one.
-	//
-	// If the result is zero, free the coverage and all associated memory.
-	unref()
-}
-
-// CoverageClass implements the Coverage interface.
-type CoverageClass struct {
+type Coverage struct {
 	*externglib.Object
 }
 
-var _ Coverage = (*CoverageClass)(nil)
+var _ Coverager = (*Coverage)(nil)
 
-func wrapCoverage(obj *externglib.Object) Coverage {
-	return &CoverageClass{
+func wrapCoverager(obj *externglib.Object) Coverager {
+	return &Coverage{
 		Object: obj,
 	}
 }
 
-func marshalCoverage(p uintptr) (interface{}, error) {
+func marshalCoverager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCoverage(obj), nil
+	return wrapCoverager(obj), nil
 }
 
 // NewCoverage: create a new `PangoCoverage`
-func NewCoverage() *CoverageClass {
+func NewCoverage() *Coverage {
 	var _cret *C.PangoCoverage // in
 
 	_cret = C.pango_coverage_new()
 
-	var _coverage *CoverageClass // out
+	var _coverage *Coverage // out
 
-	_coverage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CoverageClass)
+	_coverage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Coverage)
 
 	return _coverage
 }
 
 // Copy an existing `PangoCoverage`.
-func (coverage *CoverageClass) Copy() *CoverageClass {
+func (coverage *Coverage) Copy() *Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
 
@@ -123,15 +109,15 @@ func (coverage *CoverageClass) Copy() *CoverageClass {
 
 	_cret = C.pango_coverage_copy(_arg0)
 
-	var _ret *CoverageClass // out
+	var _ret *Coverage // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CoverageClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Coverage)
 
 	return _ret
 }
 
 // Get: determine whether a particular index is covered by @coverage.
-func (coverage *CoverageClass) Get(index_ int) CoverageLevel {
+func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
 	var _cret C.PangoCoverageLevel // in
@@ -153,7 +139,7 @@ func (coverage *CoverageClass) Get(index_ int) CoverageLevel {
 // corresponding index in @other.
 //
 // Deprecated: This function does nothing.
-func (coverage *CoverageClass) Max(other Coverage) {
+func (coverage *Coverage) Max(other Coverager) {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.PangoCoverage // out
 
@@ -164,7 +150,7 @@ func (coverage *CoverageClass) Max(other Coverage) {
 }
 
 // Ref: increase the reference count on the `PangoCoverage` by one.
-func (coverage *CoverageClass) ref() *CoverageClass {
+func (coverage *Coverage) ref() *Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
 
@@ -172,9 +158,9 @@ func (coverage *CoverageClass) ref() *CoverageClass {
 
 	_cret = C.pango_coverage_ref(_arg0)
 
-	var _ret *CoverageClass // out
+	var _ret *Coverage // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CoverageClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Coverage)
 
 	return _ret
 }
@@ -182,7 +168,7 @@ func (coverage *CoverageClass) ref() *CoverageClass {
 // ToBytes: convert a `PangoCoverage` structure into a flat binary format.
 //
 // Deprecated: This returns nil.
-func (coverage *CoverageClass) ToBytes() []byte {
+func (coverage *Coverage) ToBytes() []byte {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.guchar
 	var _arg2 C.int // in
@@ -204,7 +190,7 @@ func (coverage *CoverageClass) ToBytes() []byte {
 // Unref: decrease the reference count on the `PangoCoverage` by one.
 //
 // If the result is zero, free the coverage and all associated memory.
-func (coverage *CoverageClass) unref() {
+func (coverage *Coverage) unref() {
 	var _arg0 *C.PangoCoverage // out
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))

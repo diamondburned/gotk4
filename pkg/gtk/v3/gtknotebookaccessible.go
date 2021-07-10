@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_notebook_accessible_get_type()), F: marshalNotebookAccessible},
+		{T: externglib.Type(C.gtk_notebook_accessible_get_type()), F: marshalNotebookAccessibler},
 	})
 }
 
-type NotebookAccessible interface {
+// NotebookAccessibler describes NotebookAccessible's methods.
+type NotebookAccessibler interface {
 	gextras.Objector
 
-	privateNotebookAccessibleClass()
+	privateNotebookAccessible()
 }
 
-// NotebookAccessibleClass implements the NotebookAccessible interface.
-type NotebookAccessibleClass struct {
-	ContainerAccessibleClass
+type NotebookAccessible struct {
+	ContainerAccessible
 }
 
-var _ NotebookAccessible = (*NotebookAccessibleClass)(nil)
+var _ NotebookAccessibler = (*NotebookAccessible)(nil)
 
-func wrapNotebookAccessible(obj *externglib.Object) NotebookAccessible {
-	return &NotebookAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapNotebookAccessibler(obj *externglib.Object) NotebookAccessibler {
+	return &NotebookAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapNotebookAccessible(obj *externglib.Object) NotebookAccessible {
 	}
 }
 
-func marshalNotebookAccessible(p uintptr) (interface{}, error) {
+func marshalNotebookAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotebookAccessible(obj), nil
+	return wrapNotebookAccessibler(obj), nil
 }
 
-func (*NotebookAccessibleClass) privateNotebookAccessibleClass() {}
+func (*NotebookAccessible) privateNotebookAccessible() {}

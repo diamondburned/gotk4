@@ -20,16 +20,26 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButton},
+		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButtonner},
 	})
 }
 
-// LinkButtonOverrider contains methods that are overridable.
+// LinkButtonnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type LinkButtonOverrider interface {
+type LinkButtonnerOverrider interface {
 	ActivateLink() bool
+}
+
+// LinkButtonner describes LinkButton's methods.
+type LinkButtonner interface {
+	gextras.Objector
+
+	URI() string
+	Visited() bool
+	SetURI(uri string)
+	SetVisited(visited bool)
 }
 
 // LinkButton is a Button with a hyperlink, similar to the one used by web
@@ -52,110 +62,90 @@ type LinkButtonOverrider interface {
 //
 // GtkLinkButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .link style class.
-type LinkButton interface {
-	gextras.Objector
-
-	// URI retrieves the URI set using gtk_link_button_set_uri().
-	URI() string
-	// Visited retrieves the “visited” state of the URI where the LinkButton
-	// points. The button becomes visited when it is clicked. If the URI is
-	// changed on the button, the “visited” state is unset again.
-	//
-	// The state may also be changed using gtk_link_button_set_visited().
-	Visited() bool
-	// SetURI sets @uri as the URI where the LinkButton points. As a side-effect
-	// this unsets the “visited” state of the button.
-	SetURI(uri string)
-	// SetVisited sets the “visited” state of the URI where the LinkButton
-	// points. See gtk_link_button_get_visited() for more details.
-	SetVisited(visited bool)
-}
-
-// LinkButtonClass implements the LinkButton interface.
-type LinkButtonClass struct {
+type LinkButton struct {
 	*externglib.Object
-	ButtonClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	Button
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ LinkButton = (*LinkButtonClass)(nil)
+var _ LinkButtonner = (*LinkButton)(nil)
 
-func wrapLinkButton(obj *externglib.Object) LinkButton {
-	return &LinkButtonClass{
+func wrapLinkButtonner(obj *externglib.Object) LinkButtonner {
+	return &LinkButton{
 		Object: obj,
-		ButtonClass: ButtonClass{
+		Button: Button{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalLinkButton(p uintptr) (interface{}, error) {
+func marshalLinkButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLinkButton(obj), nil
+	return wrapLinkButtonner(obj), nil
 }
 
 // NewLinkButton creates a new LinkButton with the URI as its text.
-func NewLinkButton(uri string) *LinkButtonClass {
+func NewLinkButton(uri string) *LinkButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -164,15 +154,15 @@ func NewLinkButton(uri string) *LinkButtonClass {
 
 	_cret = C.gtk_link_button_new(_arg1)
 
-	var _linkButton *LinkButtonClass // out
+	var _linkButton *LinkButton // out
 
-	_linkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LinkButtonClass)
+	_linkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LinkButton)
 
 	return _linkButton
 }
 
 // NewLinkButtonWithLabel creates a new LinkButton containing a label.
-func NewLinkButtonWithLabel(uri string, label string) *LinkButtonClass {
+func NewLinkButtonWithLabel(uri string, label string) *LinkButton {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -184,15 +174,15 @@ func NewLinkButtonWithLabel(uri string, label string) *LinkButtonClass {
 
 	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
 
-	var _linkButton *LinkButtonClass // out
+	var _linkButton *LinkButton // out
 
-	_linkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LinkButtonClass)
+	_linkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LinkButton)
 
 	return _linkButton
 }
 
 // URI retrieves the URI set using gtk_link_button_set_uri().
-func (linkButton *LinkButtonClass) URI() string {
+func (linkButton *LinkButton) URI() string {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret *C.gchar         // in
 
@@ -212,7 +202,7 @@ func (linkButton *LinkButtonClass) URI() string {
 // button, the “visited” state is unset again.
 //
 // The state may also be changed using gtk_link_button_set_visited().
-func (linkButton *LinkButtonClass) Visited() bool {
+func (linkButton *LinkButton) Visited() bool {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret C.gboolean       // in
 
@@ -231,7 +221,7 @@ func (linkButton *LinkButtonClass) Visited() bool {
 
 // SetURI sets @uri as the URI where the LinkButton points. As a side-effect
 // this unsets the “visited” state of the button.
-func (linkButton *LinkButtonClass) SetURI(uri string) {
+func (linkButton *LinkButton) SetURI(uri string) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 *C.gchar         // out
 
@@ -244,7 +234,7 @@ func (linkButton *LinkButtonClass) SetURI(uri string) {
 
 // SetVisited sets the “visited” state of the URI where the LinkButton points.
 // See gtk_link_button_get_visited() for more details.
-func (linkButton *LinkButtonClass) SetVisited(visited bool) {
+func (linkButton *LinkButton) SetVisited(visited bool) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 C.gboolean       // out
 

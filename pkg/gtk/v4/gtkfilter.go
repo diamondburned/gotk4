@@ -20,7 +20,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_filter_change_get_type()), F: marshalFilterChange},
 		{T: externglib.Type(C.gtk_filter_match_get_type()), F: marshalFilterMatch},
-		{T: externglib.Type(C.gtk_filter_get_type()), F: marshalFilter},
+		{T: externglib.Type(C.gtk_filter_get_type()), F: marshalFilterrer},
 	})
 }
 
@@ -70,11 +70,11 @@ func marshalFilterMatch(p uintptr) (interface{}, error) {
 	return FilterMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FilterOverrider contains methods that are overridable.
+// FilterrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FilterOverrider interface {
+type FilterrerOverrider interface {
 	// Strictness gets the known strictness of @filters. If the strictness is
 	// not known, GTK_FILTER_MATCH_SOME is returned.
 	//
@@ -84,6 +84,14 @@ type FilterOverrider interface {
 	// choose to omit implementing it, but FilterListModel uses it.
 	Strictness() FilterMatch
 	// Match checks if the given @item is matched by the filter or not.
+	Match(item gextras.Objector) bool
+}
+
+// Filterrer describes Filter's methods.
+type Filterrer interface {
+	gextras.Objector
+
+	Strictness() FilterMatch
 	Match(item gextras.Objector) bool
 }
 
@@ -105,38 +113,22 @@ type FilterOverrider interface {
 //
 // However, in particular for large lists or complex search methods, it is also
 // possible to subclass Filter and provide one's own filter.
-type Filter interface {
-	gextras.Objector
-
-	// Strictness gets the known strictness of @filters. If the strictness is
-	// not known, GTK_FILTER_MATCH_SOME is returned.
-	//
-	// This value may change after emission of the Filter::changed signal.
-	//
-	// This function is meant purely for optimization purposes, filters can
-	// choose to omit implementing it, but FilterListModel uses it.
-	Strictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	Match(item gextras.Objector) bool
-}
-
-// FilterClass implements the Filter interface.
-type FilterClass struct {
+type Filter struct {
 	*externglib.Object
 }
 
-var _ Filter = (*FilterClass)(nil)
+var _ Filterrer = (*Filter)(nil)
 
-func wrapFilter(obj *externglib.Object) Filter {
-	return &FilterClass{
+func wrapFilterrer(obj *externglib.Object) Filterrer {
+	return &Filter{
 		Object: obj,
 	}
 }
 
-func marshalFilter(p uintptr) (interface{}, error) {
+func marshalFilterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilter(obj), nil
+	return wrapFilterrer(obj), nil
 }
 
 // Strictness gets the known strictness of @filters. If the strictness is not
@@ -146,7 +138,7 @@ func marshalFilter(p uintptr) (interface{}, error) {
 //
 // This function is meant purely for optimization purposes, filters can choose
 // to omit implementing it, but FilterListModel uses it.
-func (self *FilterClass) Strictness() FilterMatch {
+func (self *Filter) Strictness() FilterMatch {
 	var _arg0 *C.GtkFilter     // out
 	var _cret C.GtkFilterMatch // in
 
@@ -162,7 +154,7 @@ func (self *FilterClass) Strictness() FilterMatch {
 }
 
 // Match checks if the given @item is matched by the filter or not.
-func (self *FilterClass) Match(item gextras.Objector) bool {
+func (self *Filter) Match(item gextras.Objector) bool {
 	var _arg0 *C.GtkFilter // out
 	var _arg1 C.gpointer   // out
 	var _cret C.gboolean   // in

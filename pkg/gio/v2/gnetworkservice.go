@@ -28,8 +28,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_service_get_type()), F: marshalNetworkService},
+		{T: externglib.Type(C.g_network_service_get_type()), F: marshalNetworkServicer},
 	})
+}
+
+// NetworkServicer describes NetworkService's methods.
+type NetworkServicer interface {
+	gextras.Objector
+
+	Domain() string
+	Protocol() string
+	Scheme() string
+	Service() string
+	SetScheme(scheme string)
 }
 
 // NetworkService: like Address does with hostnames, Service provides an easy
@@ -39,51 +50,32 @@ func init() {
 //
 // See Target for more information about SRV records, and see Connectable for an
 // example of using the connectable interface.
-type NetworkService interface {
-	gextras.Objector
-
-	// Domain gets the domain that @srv serves. This might be either UTF-8 or
-	// ASCII-encoded, depending on what @srv was created with.
-	Domain() string
-	// Protocol gets @srv's protocol name (eg, "tcp").
-	Protocol() string
-	// Scheme gets the URI scheme used to resolve proxies. By default, the
-	// service name is used as scheme.
-	Scheme() string
-	// Service gets @srv's service name (eg, "ldap").
-	Service() string
-	// SetScheme set's the URI scheme used to resolve proxies. By default, the
-	// service name is used as scheme.
-	SetScheme(scheme string)
-}
-
-// NetworkServiceClass implements the NetworkService interface.
-type NetworkServiceClass struct {
+type NetworkService struct {
 	*externglib.Object
-	SocketConnectableIface
+	SocketConnectable
 }
 
-var _ NetworkService = (*NetworkServiceClass)(nil)
+var _ NetworkServicer = (*NetworkService)(nil)
 
-func wrapNetworkService(obj *externglib.Object) NetworkService {
-	return &NetworkServiceClass{
+func wrapNetworkServicer(obj *externglib.Object) NetworkServicer {
+	return &NetworkService{
 		Object: obj,
-		SocketConnectableIface: SocketConnectableIface{
+		SocketConnectable: SocketConnectable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNetworkService(p uintptr) (interface{}, error) {
+func marshalNetworkServicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNetworkService(obj), nil
+	return wrapNetworkServicer(obj), nil
 }
 
 // NewNetworkService creates a new Service representing the given @service,
 // @protocol, and @domain. This will initially be unresolved; use the
 // Connectable interface to resolve it.
-func NewNetworkService(service string, protocol string, domain string) *NetworkServiceClass {
+func NewNetworkService(service string, protocol string, domain string) *NetworkService {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
 	var _arg3 *C.gchar              // out
@@ -98,16 +90,16 @@ func NewNetworkService(service string, protocol string, domain string) *NetworkS
 
 	_cret = C.g_network_service_new(_arg1, _arg2, _arg3)
 
-	var _networkService *NetworkServiceClass // out
+	var _networkService *NetworkService // out
 
-	_networkService = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkServiceClass)
+	_networkService = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkService)
 
 	return _networkService
 }
 
 // Domain gets the domain that @srv serves. This might be either UTF-8 or
 // ASCII-encoded, depending on what @srv was created with.
-func (srv *NetworkServiceClass) Domain() string {
+func (srv *NetworkService) Domain() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
@@ -123,7 +115,7 @@ func (srv *NetworkServiceClass) Domain() string {
 }
 
 // Protocol gets @srv's protocol name (eg, "tcp").
-func (srv *NetworkServiceClass) Protocol() string {
+func (srv *NetworkService) Protocol() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
@@ -140,7 +132,7 @@ func (srv *NetworkServiceClass) Protocol() string {
 
 // Scheme gets the URI scheme used to resolve proxies. By default, the service
 // name is used as scheme.
-func (srv *NetworkServiceClass) Scheme() string {
+func (srv *NetworkService) Scheme() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
@@ -156,7 +148,7 @@ func (srv *NetworkServiceClass) Scheme() string {
 }
 
 // Service gets @srv's service name (eg, "ldap").
-func (srv *NetworkServiceClass) Service() string {
+func (srv *NetworkService) Service() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
@@ -173,7 +165,7 @@ func (srv *NetworkServiceClass) Service() string {
 
 // SetScheme set's the URI scheme used to resolve proxies. By default, the
 // service name is used as scheme.
-func (srv *NetworkServiceClass) SetScheme(scheme string) {
+func (srv *NetworkService) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out
 

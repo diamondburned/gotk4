@@ -69,12 +69,6 @@ type SettingsSchema struct {
 	native C.GSettingsSchema
 }
 
-// WrapSettingsSchema wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSettingsSchema(ptr unsafe.Pointer) *SettingsSchema {
-	return (*SettingsSchema)(ptr)
-}
-
 func marshalSettingsSchema(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*SettingsSchema)(unsafe.Pointer(b)), nil
@@ -269,12 +263,6 @@ func (schema *SettingsSchema) unref() {
 // the following functions.
 type SettingsSchemaKey struct {
 	native C.GSettingsSchemaKey
-}
-
-// WrapSettingsSchemaKey wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSettingsSchemaKey(ptr unsafe.Pointer) *SettingsSchemaKey {
-	return (*SettingsSchemaKey)(ptr)
 }
 
 func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
@@ -505,12 +493,6 @@ func (key *SettingsSchemaKey) unref() {
 // directly.
 type SettingsSchemaSource struct {
 	native C.GSettingsSchemaSource
-}
-
-// WrapSettingsSchemaSource wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSettingsSchemaSource(ptr unsafe.Pointer) *SettingsSchemaSource {
-	return (*SettingsSchemaSource)(ptr)
 }
 
 func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {

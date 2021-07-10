@@ -94,7 +94,7 @@ const (
 // pixel data is copied into newly-allocated memory; otherwise it is reused.
 //
 // Deprecated: Use `GResource` instead.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.PixbufClass, error) {
+func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, error) {
 	var _arg1 *C.GdkPixdata // out
 	var _arg2 C.gboolean    // out
 	var _cret *C.GdkPixbuf  // in
@@ -107,10 +107,10 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.PixbufClas
 
 	_cret = C.gdk_pixbuf_from_pixdata(_arg1, _arg2, &_cerr)
 
-	var _pixbuf *gdkpixbuf.PixbufClass // out
-	var _goerr error                   // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+	var _goerr error              // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -130,12 +130,6 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.PixbufClas
 // used to save the original compressed images inside the program's binary.
 type Pixdata struct {
 	native C.GdkPixdata
-}
-
-// WrapPixdata wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
-	return (*Pixdata)(ptr)
 }
 
 // Native returns the underlying C source pointer.

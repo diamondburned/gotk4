@@ -16,7 +16,7 @@ import (
 import "C"
 
 // X11DeviceManagerLookup returns the Device that wraps the given device ID.
-func X11DeviceManagerLookup(deviceManager X11DeviceManagerCore, deviceId int) *X11DeviceCoreClass {
+func X11DeviceManagerLookup(deviceManager X11DeviceManagerCorer, deviceId int) *X11DeviceCore {
 	var _arg1 *C.GdkDeviceManager // out
 	var _arg2 C.gint              // out
 	var _cret *C.GdkDevice        // in
@@ -26,9 +26,9 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerCore, deviceId int) *X
 
 	_cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)
 
-	var _x11DeviceCore *X11DeviceCoreClass // out
+	var _x11DeviceCore *X11DeviceCore // out
 
-	_x11DeviceCore = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*X11DeviceCoreClass)
+	_x11DeviceCore = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*X11DeviceCore)
 
 	return _x11DeviceCore
 }

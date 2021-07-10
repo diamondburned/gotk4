@@ -21,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_recent_manager_error_get_type()), F: marshalRecentManagerError},
-		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManager},
+		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManagerrer},
 		{T: externglib.Type(C.gtk_recent_info_get_type()), F: marshalRecentInfo},
 	})
 }
@@ -51,12 +51,25 @@ func marshalRecentManagerError(p uintptr) (interface{}, error) {
 	return RecentManagerError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RecentManagerOverrider contains methods that are overridable.
+// RecentManagerrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RecentManagerOverrider interface {
+type RecentManagerrerOverrider interface {
 	Changed()
+}
+
+// RecentManagerrer describes RecentManager's methods.
+type RecentManagerrer interface {
+	gextras.Objector
+
+	AddFull(uri string, recentData *RecentData) bool
+	AddItem(uri string) bool
+	HasItem(uri string) bool
+	LookupItem(uri string) (*RecentInfo, error)
+	MoveItem(uri string, newUri string) error
+	PurgeItems() (int, error)
+	RemoveItem(uri string) error
 }
 
 // RecentManager: `GtkRecentManager` manages and looks up recently used files.
@@ -99,74 +112,22 @@ type RecentManagerOverrider interface {
 //
 // Note that the maximum age of the recently used files list is controllable
 // through the [property@Gtk.Settings:gtk-recent-files-max-age] property.
-type RecentManager interface {
-	gextras.Objector
-
-	// AddFull adds a new resource, pointed by @uri, into the recently used
-	// resources list, using the metadata specified inside the `GtkRecentData`
-	// passed in @recent_data.
-	//
-	// The passed URI will be used to identify this resource inside the list.
-	//
-	// In order to register the new recently used resource, metadata about the
-	// resource must be passed as well as the URI; the metadata is stored in a
-	// `GtkRecentData`, which must contain the MIME type of the resource pointed
-	// by the URI; the name of the application that is registering the item, and
-	// a command line to be used when launching the item.
-	//
-	// Optionally, a `GtkRecentData` might contain a UTF-8 string to be used
-	// when viewing the item instead of the last component of the URI; a short
-	// description of the item; whether the item should be considered private -
-	// that is, should be displayed only by the applications that have
-	// registered it.
-	AddFull(uri string, recentData *RecentData) bool
-	// AddItem adds a new resource, pointed by @uri, into the recently used
-	// resources list.
-	//
-	// This function automatically retrieves some of the needed metadata and
-	// setting other metadata to common default values; it then feeds the data
-	// to [method@Gtk.RecentManager.add_full].
-	//
-	// See [method@Gtk.RecentManager.add_full] if you want to explicitly define
-	// the metadata for the resource pointed by @uri.
-	AddItem(uri string) bool
-	// HasItem checks whether there is a recently used resource registered with
-	// @uri inside the recent manager.
-	HasItem(uri string) bool
-	// LookupItem searches for a URI inside the recently used resources list,
-	// and returns a `GtkRecentInfo` containing information about the resource
-	// like its MIME type, or its display name.
-	LookupItem(uri string) (*RecentInfo, error)
-	// MoveItem changes the location of a recently used resource from @uri to
-	// @new_uri.
-	//
-	// Please note that this function will not affect the resource pointed by
-	// the URIs, but only the URI used in the recently used resources list.
-	MoveItem(uri string, newUri string) error
-	// PurgeItems purges every item from the recently used resources list.
-	PurgeItems() (int, error)
-	// RemoveItem removes a resource pointed by @uri from the recently used
-	// resources list handled by a recent manager.
-	RemoveItem(uri string) error
-}
-
-// RecentManagerClass implements the RecentManager interface.
-type RecentManagerClass struct {
+type RecentManager struct {
 	*externglib.Object
 }
 
-var _ RecentManager = (*RecentManagerClass)(nil)
+var _ RecentManagerrer = (*RecentManager)(nil)
 
-func wrapRecentManager(obj *externglib.Object) RecentManager {
-	return &RecentManagerClass{
+func wrapRecentManagerrer(obj *externglib.Object) RecentManagerrer {
+	return &RecentManager{
 		Object: obj,
 	}
 }
 
-func marshalRecentManager(p uintptr) (interface{}, error) {
+func marshalRecentManagerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentManager(obj), nil
+	return wrapRecentManagerrer(obj), nil
 }
 
 // NewRecentManager creates a new recent manager object.
@@ -178,14 +139,14 @@ func marshalRecentManager(p uintptr) (interface{}, error) {
 //
 // `GtkRecentManager` objects are expensive: be sure to create them only when
 // needed. You should use [type_func@Gtk.RecentManager.get_default] instead.
-func NewRecentManager() *RecentManagerClass {
+func NewRecentManager() *RecentManager {
 	var _cret *C.GtkRecentManager // in
 
 	_cret = C.gtk_recent_manager_new()
 
-	var _recentManager *RecentManagerClass // out
+	var _recentManager *RecentManager // out
 
-	_recentManager = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentManagerClass)
+	_recentManager = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentManager)
 
 	return _recentManager
 }
@@ -206,7 +167,7 @@ func NewRecentManager() *RecentManagerClass {
 // viewing the item instead of the last component of the URI; a short
 // description of the item; whether the item should be considered private - that
 // is, should be displayed only by the applications that have registered it.
-func (manager *RecentManagerClass) AddFull(uri string, recentData *RecentData) bool {
+func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.GtkRecentData    // out
@@ -237,7 +198,7 @@ func (manager *RecentManagerClass) AddFull(uri string, recentData *RecentData) b
 //
 // See [method@Gtk.RecentManager.add_full] if you want to explicitly define the
 // metadata for the resource pointed by @uri.
-func (manager *RecentManagerClass) AddItem(uri string) bool {
+func (manager *RecentManager) AddItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
 	var _cret C.gboolean          // in
@@ -259,7 +220,7 @@ func (manager *RecentManagerClass) AddItem(uri string) bool {
 
 // HasItem checks whether there is a recently used resource registered with @uri
 // inside the recent manager.
-func (manager *RecentManagerClass) HasItem(uri string) bool {
+func (manager *RecentManager) HasItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
 	var _cret C.gboolean          // in
@@ -282,7 +243,7 @@ func (manager *RecentManagerClass) HasItem(uri string) bool {
 // LookupItem searches for a URI inside the recently used resources list, and
 // returns a `GtkRecentInfo` containing information about the resource like its
 // MIME type, or its display name.
-func (manager *RecentManagerClass) LookupItem(uri string) (*RecentInfo, error) {
+func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
 	var _cret *C.GtkRecentInfo    // in
@@ -312,7 +273,7 @@ func (manager *RecentManagerClass) LookupItem(uri string) (*RecentInfo, error) {
 //
 // Please note that this function will not affect the resource pointed by the
 // URIs, but only the URI used in the recently used resources list.
-func (manager *RecentManagerClass) MoveItem(uri string, newUri string) error {
+func (manager *RecentManager) MoveItem(uri string, newUri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.char             // out
@@ -334,7 +295,7 @@ func (manager *RecentManagerClass) MoveItem(uri string, newUri string) error {
 }
 
 // PurgeItems purges every item from the recently used resources list.
-func (manager *RecentManagerClass) PurgeItems() (int, error) {
+func (manager *RecentManager) PurgeItems() (int, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _cret C.int               // in
 	var _cerr *C.GError           // in
@@ -354,7 +315,7 @@ func (manager *RecentManagerClass) PurgeItems() (int, error) {
 
 // RemoveItem removes a resource pointed by @uri from the recently used
 // resources list handled by a recent manager.
-func (manager *RecentManagerClass) RemoveItem(uri string) error {
+func (manager *RecentManager) RemoveItem(uri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
 	var _cerr *C.GError           // in
@@ -378,12 +339,6 @@ type RecentData struct {
 	native C.GtkRecentData
 }
 
-// WrapRecentData wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRecentData(ptr unsafe.Pointer) *RecentData {
-	return (*RecentData)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (r *RecentData) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
@@ -393,12 +348,6 @@ func (r *RecentData) Native() unsafe.Pointer {
 // the recently used files list.
 type RecentInfo struct {
 	native C.GtkRecentInfo
-}
-
-// WrapRecentInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRecentInfo(ptr unsafe.Pointer) *RecentInfo {
-	return (*RecentInfo)(ptr)
 }
 
 func marshalRecentInfo(p uintptr) (interface{}, error) {

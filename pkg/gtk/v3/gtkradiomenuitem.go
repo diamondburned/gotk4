@@ -20,16 +20,23 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_menu_item_get_type()), F: marshalRadioMenuItem},
+		{T: externglib.Type(C.gtk_radio_menu_item_get_type()), F: marshalRadioMenuItemmer},
 	})
 }
 
-// RadioMenuItemOverrider contains methods that are overridable.
+// RadioMenuItemmerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RadioMenuItemOverrider interface {
+type RadioMenuItemmerOverrider interface {
 	GroupChanged()
+}
+
+// RadioMenuItemmer describes RadioMenuItem's methods.
+type RadioMenuItemmer interface {
+	gextras.Objector
+
+	JoinGroup(groupSource RadioMenuItemmer)
 }
 
 // RadioMenuItem: radio menu item is a check menu item that belongs to a group.
@@ -49,139 +56,112 @@ type RadioMenuItemOverrider interface {
 //
 // GtkRadioMenuItem has a main CSS node with name menuitem, and a subnode with
 // name radio, which gets the .left or .right style class.
-type RadioMenuItem interface {
-	gextras.Objector
-
-	// JoinGroup joins a RadioMenuItem object to the group of another
-	// RadioMenuItem object.
-	//
-	// This function should be used by language bindings to avoid the memory
-	// manangement of the opaque List of gtk_radio_menu_item_get_group() and
-	// gtk_radio_menu_item_set_group().
-	//
-	// A common way to set up a group of RadioMenuItem instances is:
-	//
-	//      GtkRadioMenuItem *last_item = NULL;
-	//
-	//      while ( ...more items to add... )
-	//        {
-	//          GtkRadioMenuItem *radio_item;
-	//
-	//          radio_item = gtk_radio_menu_item_new (...);
-	//
-	//          gtk_radio_menu_item_join_group (radio_item, last_item);
-	//          last_item = radio_item;
-	//        }
-	JoinGroup(groupSource RadioMenuItem)
-}
-
-// RadioMenuItemClass implements the RadioMenuItem interface.
-type RadioMenuItemClass struct {
+type RadioMenuItem struct {
 	*externglib.Object
-	CheckMenuItemClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	CheckMenuItem
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ RadioMenuItem = (*RadioMenuItemClass)(nil)
+var _ RadioMenuItemmer = (*RadioMenuItem)(nil)
 
-func wrapRadioMenuItem(obj *externglib.Object) RadioMenuItem {
-	return &RadioMenuItemClass{
+func wrapRadioMenuItemmer(obj *externglib.Object) RadioMenuItemmer {
+	return &RadioMenuItem{
 		Object: obj,
-		CheckMenuItemClass: CheckMenuItemClass{
+		CheckMenuItem: CheckMenuItem{
 			Object: obj,
-			MenuItemClass: MenuItemClass{
+			MenuItem: MenuItem{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				ActionableIface: ActionableIface{
+				Actionable: Actionable{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
 				},
-				ActivatableIface: ActivatableIface{
+				Activatable: Activatable{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRadioMenuItem(p uintptr) (interface{}, error) {
+func marshalRadioMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioMenuItem(obj), nil
+	return wrapRadioMenuItemmer(obj), nil
 }
 
 // NewRadioMenuItemFromWidget creates a new RadioMenuItem adding it to the same
 // group as @group.
-func NewRadioMenuItemFromWidget(group RadioMenuItem) *RadioMenuItemClass {
+func NewRadioMenuItemFromWidget(group RadioMenuItemmer) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _cret *C.GtkWidget        // in
 
@@ -189,9 +169,9 @@ func NewRadioMenuItemFromWidget(group RadioMenuItem) *RadioMenuItemClass {
 
 	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
 
-	var _radioMenuItem *RadioMenuItemClass // out
+	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioMenuItemClass)
+	_radioMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioMenuItem)
 
 	return _radioMenuItem
 }
@@ -199,7 +179,7 @@ func NewRadioMenuItemFromWidget(group RadioMenuItem) *RadioMenuItemClass {
 // NewRadioMenuItemWithLabelFromWidget creates a new GtkRadioMenuItem whose
 // child is a simple GtkLabel. The new RadioMenuItem is added to the same group
 // as @group.
-func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItem, label string) *RadioMenuItemClass {
+func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItemmer, label string) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out
 	var _cret *C.GtkWidget        // in
@@ -210,9 +190,9 @@ func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItem, label string) *Rad
 
 	_cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
 
-	var _radioMenuItem *RadioMenuItemClass // out
+	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioMenuItemClass)
+	_radioMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioMenuItem)
 
 	return _radioMenuItem
 }
@@ -223,7 +203,7 @@ func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItem, label string) *Rad
 // for the menu item.
 //
 // The new RadioMenuItem is added to the same group as @group.
-func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItem, label string) *RadioMenuItemClass {
+func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItemmer, label string) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out
 	var _cret *C.GtkWidget        // in
@@ -234,9 +214,9 @@ func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItem, label string) *
 
 	_cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)
 
-	var _radioMenuItem *RadioMenuItemClass // out
+	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioMenuItemClass)
+	_radioMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioMenuItem)
 
 	return _radioMenuItem
 }
@@ -261,7 +241,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItem, label string) *
 //          gtk_radio_menu_item_join_group (radio_item, last_item);
 //          last_item = radio_item;
 //        }
-func (radioMenuItem *RadioMenuItemClass) JoinGroup(groupSource RadioMenuItem) {
+func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource RadioMenuItemmer) {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _arg1 *C.GtkRadioMenuItem // out
 

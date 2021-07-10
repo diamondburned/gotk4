@@ -19,35 +19,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_cursor_get_type()), F: marshalX11Cursor},
+		{T: externglib.Type(C.gdk_x11_cursor_get_type()), F: marshalX11Cursorrer},
 	})
 }
 
-type X11Cursor interface {
+// X11Cursorrer describes X11Cursor's methods.
+type X11Cursorrer interface {
 	gextras.Objector
 
-	privateX11CursorClass()
+	privateX11Cursor()
 }
 
-// X11CursorClass implements the X11Cursor interface.
-type X11CursorClass struct {
-	gdk.CursorClass
+type X11Cursor struct {
+	gdk.Cursor
 }
 
-var _ X11Cursor = (*X11CursorClass)(nil)
+var _ X11Cursorrer = (*X11Cursor)(nil)
 
-func wrapX11Cursor(obj *externglib.Object) X11Cursor {
-	return &X11CursorClass{
-		CursorClass: gdk.CursorClass{
+func wrapX11Cursorrer(obj *externglib.Object) X11Cursorrer {
+	return &X11Cursor{
+		Cursor: gdk.Cursor{
 			Object: obj,
 		},
 	}
 }
 
-func marshalX11Cursor(p uintptr) (interface{}, error) {
+func marshalX11Cursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Cursor(obj), nil
+	return wrapX11Cursorrer(obj), nil
 }
 
-func (*X11CursorClass) privateX11CursorClass() {}
+func (*X11Cursor) privateX11Cursor() {}

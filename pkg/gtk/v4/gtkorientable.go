@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_orientable_get_type()), F: marshalOrientable},
+		{T: externglib.Type(C.gtk_orientable_get_type()), F: marshalOrientabler},
 	})
+}
+
+// Orientabler describes Orientable's methods.
+type Orientabler interface {
+	gextras.Objector
+
+	Orientation() Orientation
 }
 
 // Orientable: the `GtkOrientable` interface is implemented by all widgets that
@@ -27,34 +34,26 @@ func init() {
 //
 // `GtkOrientable` is more flexible in that it allows the orientation to be
 // changed at runtime, allowing the widgets to “flip”.
-type Orientable interface {
-	gextras.Objector
-
-	// Orientation retrieves the orientation of the @orientable.
-	Orientation() Orientation
-}
-
-// OrientableIface implements the Orientable interface.
-type OrientableIface struct {
+type Orientable struct {
 	*externglib.Object
 }
 
-var _ Orientable = (*OrientableIface)(nil)
+var _ Orientabler = (*Orientable)(nil)
 
-func wrapOrientable(obj *externglib.Object) Orientable {
-	return &OrientableIface{
+func wrapOrientabler(obj *externglib.Object) Orientabler {
+	return &Orientable{
 		Object: obj,
 	}
 }
 
-func marshalOrientable(p uintptr) (interface{}, error) {
+func marshalOrientabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOrientable(obj), nil
+	return wrapOrientabler(obj), nil
 }
 
 // Orientation retrieves the orientation of the @orientable.
-func (orientable *OrientableIface) Orientation() Orientation {
+func (orientable *Orientable) Orientation() Orientation {
 	var _arg0 *C.GtkOrientable // out
 	var _cret C.GtkOrientation // in
 

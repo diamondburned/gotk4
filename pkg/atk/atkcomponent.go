@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.atk_scroll_type_get_type()), F: marshalScrollType},
-		{T: externglib.Type(C.atk_component_get_type()), F: marshalComponent},
+		{T: externglib.Type(C.atk_component_get_type()), F: marshalComponenter},
 		{T: externglib.Type(C.atk_rectangle_get_type()), F: marshalRectangle},
 	})
 }
@@ -57,11 +57,11 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ComponentOverrider contains methods that are overridable.
+// ComponenterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ComponentOverrider interface {
+type ComponenterOverrider interface {
 	BoundsChanged(bounds *Rectangle)
 	// Alpha returns the alpha value (i.e. the opacity) for this @component, on
 	// a scale from 0 (fully transparent) to 1.0 (fully opaque).
@@ -92,6 +92,19 @@ type ComponentOverrider interface {
 	SetSize(width int, height int) bool
 }
 
+// Componenter describes Component's methods.
+type Componenter interface {
+	gextras.Objector
+
+	Alpha() float64
+	Layer() Layer
+	MDIZOrder() int
+	Size() (width int, height int)
+	GrabFocus() bool
+	RemoveFocusHandler(handlerId uint)
+	SetSize(width int, height int) bool
+}
+
 // Component should be implemented by most if not all UI elements with an actual
 // on-screen presence, i.e. components which can be said to have a
 // screen-coordinate bounding box. Virtually all widgets will need to have
@@ -102,60 +115,27 @@ type ComponentOverrider interface {
 // A possible exception might be textual information with a transparent
 // background, in which case text glyph bounding box information is provided by
 // Text.
-type Component interface {
-	gextras.Objector
-
-	// Alpha returns the alpha value (i.e. the opacity) for this @component, on
-	// a scale from 0 (fully transparent) to 1.0 (fully opaque).
-	Alpha() float64
-	// Layer gets the layer of the component.
-	Layer() Layer
-	// MDIZOrder gets the zorder of the component. The value G_MININT will be
-	// returned if the layer of the component is not ATK_LAYER_MDI or
-	// ATK_LAYER_WINDOW.
-	MDIZOrder() int
-	// Size gets the size of the @component in terms of width and height.
-	//
-	// If the size can not be obtained (e.g. a non-embedded plug or missing
-	// support), width and height are set to -1.
-	//
-	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
-	Size() (width int, height int)
-	// GrabFocus grabs focus for this @component.
-	GrabFocus() bool
-	// RemoveFocusHandler: remove the handler specified by @handler_id from the
-	// list of functions to be executed when this object receives focus events
-	// (in or out).
-	//
-	// Deprecated: If you need to track when an object gains or lose the focus,
-	// use the Object::state-change "focused" notification instead.
-	RemoveFocusHandler(handlerId uint)
-	// SetSize: set the size of the @component in terms of width and height.
-	SetSize(width int, height int) bool
-}
-
-// ComponentIface implements the Component interface.
-type ComponentIface struct {
+type Component struct {
 	*externglib.Object
 }
 
-var _ Component = (*ComponentIface)(nil)
+var _ Componenter = (*Component)(nil)
 
-func wrapComponent(obj *externglib.Object) Component {
-	return &ComponentIface{
+func wrapComponenter(obj *externglib.Object) Componenter {
+	return &Component{
 		Object: obj,
 	}
 }
 
-func marshalComponent(p uintptr) (interface{}, error) {
+func marshalComponenter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComponent(obj), nil
+	return wrapComponenter(obj), nil
 }
 
 // Alpha returns the alpha value (i.e. the opacity) for this @component, on a
 // scale from 0 (fully transparent) to 1.0 (fully opaque).
-func (component *ComponentIface) Alpha() float64 {
+func (component *Component) Alpha() float64 {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gdouble       // in
 
@@ -171,7 +151,7 @@ func (component *ComponentIface) Alpha() float64 {
 }
 
 // Layer gets the layer of the component.
-func (component *ComponentIface) Layer() Layer {
+func (component *Component) Layer() Layer {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.AtkLayer      // in
 
@@ -189,7 +169,7 @@ func (component *ComponentIface) Layer() Layer {
 // MDIZOrder gets the zorder of the component. The value G_MININT will be
 // returned if the layer of the component is not ATK_LAYER_MDI or
 // ATK_LAYER_WINDOW.
-func (component *ComponentIface) MDIZOrder() int {
+func (component *Component) MDIZOrder() int {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gint          // in
 
@@ -210,7 +190,7 @@ func (component *ComponentIface) MDIZOrder() int {
 // support), width and height are set to -1.
 //
 // Deprecated: Since 2.12. Use atk_component_get_extents() instead.
-func (component *ComponentIface) Size() (width int, height int) {
+func (component *Component) Size() (width int, height int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -229,7 +209,7 @@ func (component *ComponentIface) Size() (width int, height int) {
 }
 
 // GrabFocus grabs focus for this @component.
-func (component *ComponentIface) GrabFocus() bool {
+func (component *Component) GrabFocus() bool {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gboolean      // in
 
@@ -252,7 +232,7 @@ func (component *ComponentIface) GrabFocus() bool {
 //
 // Deprecated: If you need to track when an object gains or lose the focus, use
 // the Object::state-change "focused" notification instead.
-func (component *ComponentIface) RemoveFocusHandler(handlerId uint) {
+func (component *Component) RemoveFocusHandler(handlerId uint) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.guint         // out
 
@@ -263,7 +243,7 @@ func (component *ComponentIface) RemoveFocusHandler(handlerId uint) {
 }
 
 // SetSize: set the size of the @component in terms of width and height.
-func (component *ComponentIface) SetSize(width int, height int) bool {
+func (component *Component) SetSize(width int, height int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -288,12 +268,6 @@ func (component *ComponentIface) SetSize(width int, height int) bool {
 // relative to the component top-level parent.
 type Rectangle struct {
 	native C.AtkRectangle
-}
-
-// WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
-	return (*Rectangle)(ptr)
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {

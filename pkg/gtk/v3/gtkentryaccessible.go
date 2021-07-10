@@ -21,43 +21,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_entry_accessible_get_type()), F: marshalEntryAccessible},
+		{T: externglib.Type(C.gtk_entry_accessible_get_type()), F: marshalEntryAccessibler},
 	})
 }
 
-type EntryAccessible interface {
+// EntryAccessibler describes EntryAccessible's methods.
+type EntryAccessibler interface {
 	gextras.Objector
 
-	privateEntryAccessibleClass()
+	privateEntryAccessible()
 }
 
-// EntryAccessibleClass implements the EntryAccessible interface.
-type EntryAccessibleClass struct {
-	WidgetAccessibleClass
-	atk.ActionIface
+type EntryAccessible struct {
+	WidgetAccessible
+	atk.Action
 }
 
-var _ EntryAccessible = (*EntryAccessibleClass)(nil)
+var _ EntryAccessibler = (*EntryAccessible)(nil)
 
-func wrapEntryAccessible(obj *externglib.Object) EntryAccessible {
-	return &EntryAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapEntryAccessibler(obj *externglib.Object) EntryAccessibler {
+	return &EntryAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEntryAccessible(p uintptr) (interface{}, error) {
+func marshalEntryAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryAccessible(obj), nil
+	return wrapEntryAccessibler(obj), nil
 }
 
-func (*EntryAccessibleClass) privateEntryAccessibleClass() {}
+func (*EntryAccessible) privateEntryAccessible() {}

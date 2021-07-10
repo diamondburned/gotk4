@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_item_factory_get_type()), F: marshalListItemFactory},
+		{T: externglib.Type(C.gtk_list_item_factory_get_type()), F: marshalyier},
 	})
+}
+
+// yier describes ListItemFactory's methods.
+type yier interface {
+	gextras.Objector
+
+	privateListItemFactory()
 }
 
 // ListItemFactory: `GtkListItemFactory` creates widgets for the items taken
@@ -71,29 +78,22 @@ func init() {
 // view widget you want to use it with, such as via
 // [method@Gtk.ListView.set_factory]. Reusing factories across different views
 // is allowed, but very uncommon.
-type ListItemFactory interface {
-	gextras.Objector
-
-	privateListItemFactoryClass()
-}
-
-// ListItemFactoryClass implements the ListItemFactory interface.
-type ListItemFactoryClass struct {
+type ListItemFactory struct {
 	*externglib.Object
 }
 
-var _ ListItemFactory = (*ListItemFactoryClass)(nil)
+var _ yier = (*ListItemFactory)(nil)
 
-func wrapListItemFactory(obj *externglib.Object) ListItemFactory {
-	return &ListItemFactoryClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &ListItemFactory{
 		Object: obj,
 	}
 }
 
-func marshalListItemFactory(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListItemFactory(obj), nil
+	return wrapyier(obj), nil
 }
 
-func (*ListItemFactoryClass) privateListItemFactoryClass() {}
+func (*ListItemFactory) privateListItemFactory() {}

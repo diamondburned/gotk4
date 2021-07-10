@@ -31,12 +31,6 @@ type RoundedRect struct {
 	native C.GskRoundedRect
 }
 
-// WrapRoundedRect wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRoundedRect(ptr unsafe.Pointer) *RoundedRect {
-	return (*RoundedRect)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (r *RoundedRect) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)

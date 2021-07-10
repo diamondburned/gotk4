@@ -19,15 +19,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_document_get_type()), F: marshalDocument},
+		{T: externglib.Type(C.atk_document_get_type()), F: marshalDocumenter},
 	})
 }
 
-// DocumentOverrider contains methods that are overridable.
+// DocumenterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DocumentOverrider interface {
+type DocumenterOverrider interface {
 	// CurrentPageNumber retrieves the current page number inside @document.
 	CurrentPageNumber() int
 	// Document gets a gpointer that points to an instance of the DOM. It is up
@@ -60,69 +60,46 @@ type DocumentOverrider interface {
 	SetDocumentAttribute(attributeName string, attributeValue string) bool
 }
 
+// Documenter describes Document's methods.
+type Documenter interface {
+	gextras.Objector
+
+	AttributeValue(attributeName string) string
+	CurrentPageNumber() int
+	Document() interface{}
+	DocumentType() string
+	Locale() string
+	PageCount() int
+	SetAttributeValue(attributeName string, attributeValue string) bool
+}
+
 // Document: the AtkDocument interface should be supported by any object whose
 // content is a representation or view of a document. The AtkDocument interface
 // should appear on the toplevel container for the document content; however
 // AtkDocument instances may be nested (i.e. an AtkDocument may be a descendant
 // of another AtkDocument) in those cases where one document contains "embedded
 // content" which can reasonably be considered a document in its own right.
-type Document interface {
-	gextras.Objector
-
-	// AttributeValue retrieves the value of the given @attribute_name inside
-	// @document.
-	AttributeValue(attributeName string) string
-	// CurrentPageNumber retrieves the current page number inside @document.
-	CurrentPageNumber() int
-	// Document gets a gpointer that points to an instance of the DOM. It is up
-	// to the caller to check atk_document_get_type to determine how to cast
-	// this pointer.
-	//
-	// Deprecated: Since 2.12. @document is already a representation of the
-	// document. Use it directly, or one of its children, as an instance of the
-	// DOM.
-	Document() interface{}
-	// DocumentType gets a string indicating the document type.
-	//
-	// Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask
-	// for the document type if it applies.
-	DocumentType() string
-	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
-	// of the content of this document instance. Individual text substrings or
-	// images within this document may have a different locale, see
-	// atk_text_get_attributes and atk_image_get_image_locale.
-	//
-	// Deprecated: Please use atk_object_get_object_locale() instead.
-	Locale() string
-	// PageCount retrieves the total number of pages inside @document.
-	PageCount() int
-	// SetAttributeValue sets the value for the given @attribute_name inside
-	// @document.
-	SetAttributeValue(attributeName string, attributeValue string) bool
-}
-
-// DocumentIface implements the Document interface.
-type DocumentIface struct {
+type Document struct {
 	*externglib.Object
 }
 
-var _ Document = (*DocumentIface)(nil)
+var _ Documenter = (*Document)(nil)
 
-func wrapDocument(obj *externglib.Object) Document {
-	return &DocumentIface{
+func wrapDocumenter(obj *externglib.Object) Documenter {
+	return &Document{
 		Object: obj,
 	}
 }
 
-func marshalDocument(p uintptr) (interface{}, error) {
+func marshalDocumenter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDocument(obj), nil
+	return wrapDocumenter(obj), nil
 }
 
 // AttributeValue retrieves the value of the given @attribute_name inside
 // @document.
-func (document *DocumentIface) AttributeValue(attributeName string) string {
+func (document *Document) AttributeValue(attributeName string) string {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
 	var _cret *C.gchar       // in
@@ -141,7 +118,7 @@ func (document *DocumentIface) AttributeValue(attributeName string) string {
 }
 
 // CurrentPageNumber retrieves the current page number inside @document.
-func (document *DocumentIface) CurrentPageNumber() int {
+func (document *Document) CurrentPageNumber() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
@@ -162,7 +139,7 @@ func (document *DocumentIface) CurrentPageNumber() int {
 //
 // Deprecated: Since 2.12. @document is already a representation of the
 // document. Use it directly, or one of its children, as an instance of the DOM.
-func (document *DocumentIface) Document() interface{} {
+func (document *Document) Document() interface{} {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gpointer     // in
 
@@ -181,7 +158,7 @@ func (document *DocumentIface) Document() interface{} {
 //
 // Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask for
 // the document type if it applies.
-func (document *DocumentIface) DocumentType() string {
+func (document *Document) DocumentType() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
@@ -202,7 +179,7 @@ func (document *DocumentIface) DocumentType() string {
 // and atk_image_get_image_locale.
 //
 // Deprecated: Please use atk_object_get_object_locale() instead.
-func (document *DocumentIface) Locale() string {
+func (document *Document) Locale() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
@@ -218,7 +195,7 @@ func (document *DocumentIface) Locale() string {
 }
 
 // PageCount retrieves the total number of pages inside @document.
-func (document *DocumentIface) PageCount() int {
+func (document *Document) PageCount() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
@@ -235,7 +212,7 @@ func (document *DocumentIface) PageCount() int {
 
 // SetAttributeValue sets the value for the given @attribute_name inside
 // @document.
-func (document *DocumentIface) SetAttributeValue(attributeName string, attributeValue string) bool {
+func (document *Document) SetAttributeValue(attributeName string, attributeValue string) bool {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.gchar       // out

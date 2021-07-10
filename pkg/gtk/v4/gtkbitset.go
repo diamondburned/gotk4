@@ -22,12 +22,6 @@ type BitsetIter struct {
 	native C.GtkBitsetIter
 }
 
-// WrapBitsetIter wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBitsetIter(ptr unsafe.Pointer) *BitsetIter {
-	return (*BitsetIter)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (b *BitsetIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)

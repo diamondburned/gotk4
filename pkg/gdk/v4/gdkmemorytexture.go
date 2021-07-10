@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_memory_format_get_type()), F: marshalMemoryFormat},
-		{T: externglib.Type(C.gdk_memory_texture_get_type()), F: marshalMemoryTexture},
+		{T: externglib.Type(C.gdk_memory_texture_get_type()), F: marshalMemoryTexturer},
 	})
 }
 
@@ -68,41 +68,41 @@ func marshalMemoryFormat(p uintptr) (interface{}, error) {
 	return MemoryFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MemoryTexture: `GdkTexture` representing image data in memory.
-type MemoryTexture interface {
+// MemoryTexturer describes MemoryTexture's methods.
+type MemoryTexturer interface {
 	gextras.Objector
 
-	privateMemoryTextureClass()
+	privateMemoryTexture()
 }
 
-// MemoryTextureClass implements the MemoryTexture interface.
-type MemoryTextureClass struct {
+// MemoryTexture: `GdkTexture` representing image data in memory.
+type MemoryTexture struct {
 	*externglib.Object
-	TextureClass
-	PaintableIface
+	Texture
+	Paintable
 }
 
-var _ MemoryTexture = (*MemoryTextureClass)(nil)
+var _ MemoryTexturer = (*MemoryTexture)(nil)
 
-func wrapMemoryTexture(obj *externglib.Object) MemoryTexture {
-	return &MemoryTextureClass{
+func wrapMemoryTexturer(obj *externglib.Object) MemoryTexturer {
+	return &MemoryTexture{
 		Object: obj,
-		TextureClass: TextureClass{
+		Texture: Texture{
 			Object: obj,
-			PaintableIface: PaintableIface{
+			Paintable: Paintable{
 				Object: obj,
 			},
 		},
-		PaintableIface: PaintableIface{
+		Paintable: Paintable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMemoryTexture(p uintptr) (interface{}, error) {
+func marshalMemoryTexturer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryTexture(obj), nil
+	return wrapMemoryTexturer(obj), nil
 }
 
-func (*MemoryTextureClass) privateMemoryTextureClass() {}
+func (*MemoryTexture) privateMemoryTexture() {}

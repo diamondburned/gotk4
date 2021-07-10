@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_device_manager_get_type()), F: marshalDeviceManager},
+		{T: externglib.Type(C.gdk_device_manager_get_type()), F: marshalDeviceManagerrer},
 	})
+}
+
+// DeviceManagerrer describes DeviceManager's methods.
+type DeviceManagerrer interface {
+	gextras.Objector
+
+	ClientPointer() *Device
+	Display() *Display
 }
 
 // DeviceManager: in addition to a single pointer and keyboard for user
@@ -126,41 +134,22 @@ func init() {
 //
 // In GTK+ 3.20, a new Seat object has been introduced that supersedes
 // DeviceManager and should be preferred in newly written code.
-type DeviceManager interface {
-	gextras.Objector
-
-	// ClientPointer returns the client pointer, that is, the master pointer
-	// that acts as the core pointer for this application. In X11, window
-	// managers may change this depending on the interaction pattern under the
-	// presence of several pointers.
-	//
-	// You should use this function seldomly, only in code that isn’t triggered
-	// by a Event and there aren’t other means to get a meaningful Device to
-	// operate on.
-	//
-	// Deprecated: Use gdk_seat_get_pointer() instead.
-	ClientPointer() *DeviceClass
-	// Display gets the Display associated to @device_manager.
-	Display() *DisplayClass
-}
-
-// DeviceManagerClass implements the DeviceManager interface.
-type DeviceManagerClass struct {
+type DeviceManager struct {
 	*externglib.Object
 }
 
-var _ DeviceManager = (*DeviceManagerClass)(nil)
+var _ DeviceManagerrer = (*DeviceManager)(nil)
 
-func wrapDeviceManager(obj *externglib.Object) DeviceManager {
-	return &DeviceManagerClass{
+func wrapDeviceManagerrer(obj *externglib.Object) DeviceManagerrer {
+	return &DeviceManager{
 		Object: obj,
 	}
 }
 
-func marshalDeviceManager(p uintptr) (interface{}, error) {
+func marshalDeviceManagerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDeviceManager(obj), nil
+	return wrapDeviceManagerrer(obj), nil
 }
 
 // ClientPointer returns the client pointer, that is, the master pointer that
@@ -172,7 +161,7 @@ func marshalDeviceManager(p uintptr) (interface{}, error) {
 // Event and there aren’t other means to get a meaningful Device to operate on.
 //
 // Deprecated: Use gdk_seat_get_pointer() instead.
-func (deviceManager *DeviceManagerClass) ClientPointer() *DeviceClass {
+func (deviceManager *DeviceManager) ClientPointer() *Device {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDevice        // in
 
@@ -180,15 +169,15 @@ func (deviceManager *DeviceManagerClass) ClientPointer() *DeviceClass {
 
 	_cret = C.gdk_device_manager_get_client_pointer(_arg0)
 
-	var _device *DeviceClass // out
+	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
 
 	return _device
 }
 
 // Display gets the Display associated to @device_manager.
-func (deviceManager *DeviceManagerClass) Display() *DisplayClass {
+func (deviceManager *DeviceManager) Display() *Display {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDisplay       // in
 
@@ -196,9 +185,9 @@ func (deviceManager *DeviceManagerClass) Display() *DisplayClass {
 
 	_cret = C.gdk_device_manager_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }

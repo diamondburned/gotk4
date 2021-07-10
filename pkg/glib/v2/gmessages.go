@@ -207,12 +207,6 @@ type LogField struct {
 	native C.GLogField
 }
 
-// WrapLogField wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapLogField(ptr unsafe.Pointer) *LogField {
-	return (*LogField)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (l *LogField) Native() unsafe.Pointer {
 	return unsafe.Pointer(&l.native)

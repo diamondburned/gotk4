@@ -20,77 +20,75 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_selection_dialog_get_type()), F: marshalColorSelectionDialog},
+		{T: externglib.Type(C.gtk_color_selection_dialog_get_type()), F: marshalColorSelectionDialogger},
 	})
 }
 
-type ColorSelectionDialog interface {
+// ColorSelectionDialogger describes ColorSelectionDialog's methods.
+type ColorSelectionDialogger interface {
 	gextras.Objector
 
-	// ColorSelection retrieves the ColorSelection widget embedded in the
-	// dialog.
-	ColorSelection() *WidgetClass
+	ColorSelection() *Widget
 }
 
-// ColorSelectionDialogClass implements the ColorSelectionDialog interface.
-type ColorSelectionDialogClass struct {
+type ColorSelectionDialog struct {
 	*externglib.Object
-	DialogClass
-	BuildableIface
+	Dialog
+	Buildable
 }
 
-var _ ColorSelectionDialog = (*ColorSelectionDialogClass)(nil)
+var _ ColorSelectionDialogger = (*ColorSelectionDialog)(nil)
 
-func wrapColorSelectionDialog(obj *externglib.Object) ColorSelectionDialog {
-	return &ColorSelectionDialogClass{
+func wrapColorSelectionDialogger(obj *externglib.Object) ColorSelectionDialogger {
+	return &ColorSelectionDialog{
 		Object: obj,
-		DialogClass: DialogClass{
+		Dialog: Dialog{
 			Object: obj,
-			WindowClass: WindowClass{
+			Window: Window{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
+func marshalColorSelectionDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorSelectionDialog(obj), nil
+	return wrapColorSelectionDialogger(obj), nil
 }
 
 // NewColorSelectionDialog creates a new ColorSelectionDialog.
-func NewColorSelectionDialog(title string) *ColorSelectionDialogClass {
+func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -99,15 +97,15 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialogClass {
 
 	_cret = C.gtk_color_selection_dialog_new(_arg1)
 
-	var _colorSelectionDialog *ColorSelectionDialogClass // out
+	var _colorSelectionDialog *ColorSelectionDialog // out
 
-	_colorSelectionDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorSelectionDialogClass)
+	_colorSelectionDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorSelectionDialog)
 
 	return _colorSelectionDialog
 }
 
 // ColorSelection retrieves the ColorSelection widget embedded in the dialog.
-func (colorsel *ColorSelectionDialogClass) ColorSelection() *WidgetClass {
+func (colorsel *ColorSelectionDialog) ColorSelection() *Widget {
 	var _arg0 *C.GtkColorSelectionDialog // out
 	var _cret *C.GtkWidget               // in
 
@@ -115,9 +113,9 @@ func (colorsel *ColorSelectionDialogClass) ColorSelection() *WidgetClass {
 
 	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }

@@ -20,8 +20,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixed},
+		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixedder},
 	})
+}
+
+// Fixedder describes Fixed's methods.
+type Fixedder interface {
+	gextras.Objector
+
+	Move(widget Widgetter, x int, y int)
+	Put(widget Widgetter, x int, y int)
 }
 
 // Fixed: the Fixed widget is a container which can place child widgets at fixed
@@ -61,69 +69,59 @@ func init() {
 //
 // See also Layout, which shares the ability to perform fixed positioning of
 // child widgets and additionally adds custom drawing and scrollability.
-type Fixed interface {
-	gextras.Objector
-
-	// Move moves a child of a Fixed container to the given position.
-	Move(widget Widget, x int, y int)
-	// Put adds a widget to a Fixed container at the given position.
-	Put(widget Widget, x int, y int)
-}
-
-// FixedClass implements the Fixed interface.
-type FixedClass struct {
+type Fixed struct {
 	*externglib.Object
-	ContainerClass
-	BuildableIface
+	Container
+	Buildable
 }
 
-var _ Fixed = (*FixedClass)(nil)
+var _ Fixedder = (*Fixed)(nil)
 
-func wrapFixed(obj *externglib.Object) Fixed {
-	return &FixedClass{
+func wrapFixedder(obj *externglib.Object) Fixedder {
+	return &Fixed{
 		Object: obj,
-		ContainerClass: ContainerClass{
+		Container: Container{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFixed(p uintptr) (interface{}, error) {
+func marshalFixedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixed(obj), nil
+	return wrapFixedder(obj), nil
 }
 
 // NewFixed creates a new Fixed.
-func NewFixed() *FixedClass {
+func NewFixed() *Fixed {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_fixed_new()
 
-	var _fixed *FixedClass // out
+	var _fixed *Fixed // out
 
-	_fixed = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FixedClass)
+	_fixed = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Fixed)
 
 	return _fixed
 }
 
 // Move moves a child of a Fixed container to the given position.
-func (fixed *FixedClass) Move(widget Widget, x int, y int) {
+func (fixed *Fixed) Move(widget Widgetter, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -138,7 +136,7 @@ func (fixed *FixedClass) Move(widget Widget, x int, y int) {
 }
 
 // Put adds a widget to a Fixed container at the given position.
-func (fixed *FixedClass) Put(widget Widget, x int, y int) {
+func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -154,12 +152,6 @@ func (fixed *FixedClass) Put(widget Widget, x int, y int) {
 
 type FixedChild struct {
 	native C.GtkFixedChild
-}
-
-// WrapFixedChild wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFixedChild(ptr unsafe.Pointer) *FixedChild {
-	return (*FixedChild)(ptr)
 }
 
 // Native returns the underlying C source pointer.

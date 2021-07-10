@@ -18,15 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_table_cell_get_type()), F: marshalTableCell},
+		{T: externglib.Type(C.atk_table_cell_get_type()), F: marshalTableCeller},
 	})
 }
 
-// TableCellOverrider contains methods that are overridable.
+// TableCellerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TableCellOverrider interface {
+type TableCellerOverrider interface {
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
 	ColumnSpan() int
@@ -42,7 +42,18 @@ type TableCellOverrider interface {
 	// RowSpan returns the number of rows occupied by this cell accessible.
 	RowSpan() int
 	// Table returns a reference to the accessible of the containing table.
-	Table() *ObjectClass
+	Table() *Object
+}
+
+// TableCeller describes TableCell's methods.
+type TableCeller interface {
+	gextras.Objector
+
+	ColumnSpan() int
+	Position() (row int, column int, ok bool)
+	RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
+	RowSpan() int
+	Table() *Object
 }
 
 // TableCell: being Table a component which present elements ordered via rows
@@ -50,50 +61,28 @@ type TableCellOverrider interface {
 // "cells" should implement.
 //
 // See also Table.
-type TableCell interface {
-	gextras.Objector
-
-	// ColumnSpan returns the number of columns occupied by this cell
-	// accessible.
-	ColumnSpan() int
-	// Position retrieves the tabular position of this cell.
-	Position() (row int, column int, ok bool)
-	// RowColumnSpan gets the row and column indexes and span of this cell
-	// accessible.
-	//
-	// Note: If the object does not implement this function, then, by default,
-	// atk will implement this function by calling get_row_span and
-	// get_column_span on the object.
-	RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
-	// RowSpan returns the number of rows occupied by this cell accessible.
-	RowSpan() int
-	// Table returns a reference to the accessible of the containing table.
-	Table() *ObjectClass
+type TableCell struct {
+	Object
 }
 
-// TableCellIface implements the TableCell interface.
-type TableCellIface struct {
-	ObjectClass
-}
+var _ TableCeller = (*TableCell)(nil)
 
-var _ TableCell = (*TableCellIface)(nil)
-
-func wrapTableCell(obj *externglib.Object) TableCell {
-	return &TableCellIface{
-		ObjectClass: ObjectClass{
+func wrapTableCeller(obj *externglib.Object) TableCeller {
+	return &TableCell{
+		Object: Object{
 			Object: obj,
 		},
 	}
 }
 
-func marshalTableCell(p uintptr) (interface{}, error) {
+func marshalTableCeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTableCell(obj), nil
+	return wrapTableCeller(obj), nil
 }
 
 // ColumnSpan returns the number of columns occupied by this cell accessible.
-func (cell *TableCellIface) ColumnSpan() int {
+func (cell *TableCell) ColumnSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
 
@@ -109,7 +98,7 @@ func (cell *TableCellIface) ColumnSpan() int {
 }
 
 // Position retrieves the tabular position of this cell.
-func (cell *TableCellIface) Position() (row int, column int, ok bool) {
+func (cell *TableCell) Position() (row int, column int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -138,7 +127,7 @@ func (cell *TableCellIface) Position() (row int, column int, ok bool) {
 // Note: If the object does not implement this function, then, by default, atk
 // will implement this function by calling get_row_span and get_column_span on
 // the object.
-func (cell *TableCellIface) RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
+func (cell *TableCell) RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -168,7 +157,7 @@ func (cell *TableCellIface) RowColumnSpan() (row int, column int, rowSpan int, c
 }
 
 // RowSpan returns the number of rows occupied by this cell accessible.
-func (cell *TableCellIface) RowSpan() int {
+func (cell *TableCell) RowSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
 
@@ -184,7 +173,7 @@ func (cell *TableCellIface) RowSpan() int {
 }
 
 // Table returns a reference to the accessible of the containing table.
-func (cell *TableCellIface) Table() *ObjectClass {
+func (cell *TableCell) Table() *Object {
 	var _arg0 *C.AtkTableCell // out
 	var _cret *C.AtkObject    // in
 
@@ -192,9 +181,9 @@ func (cell *TableCellIface) Table() *ObjectClass {
 
 	_cret = C.atk_table_cell_get_table(_arg0)
 
-	var _object *ObjectClass // out
+	var _object *Object // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Object)
 
 	return _object
 }

@@ -21,51 +21,51 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_cell_accessible_get_type()), F: marshalTextCellAccessible},
+		{T: externglib.Type(C.gtk_text_cell_accessible_get_type()), F: marshalTextCellAccessibler},
 	})
 }
 
-type TextCellAccessible interface {
+// TextCellAccessibler describes TextCellAccessible's methods.
+type TextCellAccessibler interface {
 	gextras.Objector
 
-	privateTextCellAccessibleClass()
+	privateTextCellAccessible()
 }
 
-// TextCellAccessibleClass implements the TextCellAccessible interface.
-type TextCellAccessibleClass struct {
-	RendererCellAccessibleClass
-	atk.ActionIface
+type TextCellAccessible struct {
+	RendererCellAccessible
+	atk.Action
 }
 
-var _ TextCellAccessible = (*TextCellAccessibleClass)(nil)
+var _ TextCellAccessibler = (*TextCellAccessible)(nil)
 
-func wrapTextCellAccessible(obj *externglib.Object) TextCellAccessible {
-	return &TextCellAccessibleClass{
-		RendererCellAccessibleClass: RendererCellAccessibleClass{
-			CellAccessibleClass: CellAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapTextCellAccessibler(obj *externglib.Object) TextCellAccessibler {
+	return &TextCellAccessible{
+		RendererCellAccessible: RendererCellAccessible{
+			CellAccessible: CellAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
-				ActionIface: atk.ActionIface{
+				Action: atk.Action{
 					Object: obj,
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalTextCellAccessible(p uintptr) (interface{}, error) {
+func marshalTextCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextCellAccessible(obj), nil
+	return wrapTextCellAccessibler(obj), nil
 }
 
-func (*TextCellAccessibleClass) privateTextCellAccessibleClass() {}
+func (*TextCellAccessible) privateTextCellAccessible() {}

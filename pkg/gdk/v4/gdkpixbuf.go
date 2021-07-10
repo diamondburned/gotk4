@@ -24,7 +24,7 @@ import "C"
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the @surface contains one.
-func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) *gdkpixbuf.PixbufClass {
+func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.cairo_surface_t // out
 	var _arg2 C.int              // out
 	var _arg3 C.int              // out
@@ -40,9 +40,9 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 
 	_cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _pixbuf *gdkpixbuf.PixbufClass // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -51,7 +51,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 //
 // This should generally not be used in newly written code as later stages will
 // almost certainly convert the pixbuf back into a texture to draw it on screen.
-func PixbufGetFromTexture(texture Texture) *gdkpixbuf.PixbufClass {
+func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkTexture // out
 	var _cret *C.GdkPixbuf  // in
 
@@ -59,9 +59,9 @@ func PixbufGetFromTexture(texture Texture) *gdkpixbuf.PixbufClass {
 
 	_cret = C.gdk_pixbuf_get_from_texture(_arg1)
 
-	var _pixbuf *gdkpixbuf.PixbufClass // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }

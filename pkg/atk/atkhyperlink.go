@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.atk_hyperlink_state_flags_get_type()), F: marshalHyperlinkStateFlags},
-		{T: externglib.Type(C.atk_hyperlink_get_type()), F: marshalHyperlink},
+		{T: externglib.Type(C.atk_hyperlink_get_type()), F: marshalHyperlinker},
 	})
 }
 
@@ -35,11 +35,11 @@ func marshalHyperlinkStateFlags(p uintptr) (interface{}, error) {
 	return HyperlinkStateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// HyperlinkOverrider contains methods that are overridable.
+// HyperlinkerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type HyperlinkOverrider interface {
+type HyperlinkerOverrider interface {
 	// EndIndex gets the index with the hypertext document at which this link
 	// ends.
 	EndIndex() int
@@ -50,7 +50,7 @@ type HyperlinkOverrider interface {
 	// hyperlink, Image if @link_ is an image hyperlink etc.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
-	GetObject(i int) *ObjectClass
+	GetObject(i int) *Object
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	StartIndex() int
@@ -71,72 +71,49 @@ type HyperlinkOverrider interface {
 	LinkState() uint
 }
 
+// Hyperlinker describes Hyperlink's methods.
+type Hyperlinker interface {
+	gextras.Objector
+
+	EndIndex() int
+	NAnchors() int
+	GetObject(i int) *Object
+	StartIndex() int
+	URI(i int) string
+	IsInline() bool
+	IsSelectedLink() bool
+	IsValid() bool
+}
+
 // Hyperlink: ATK object which encapsulates a link or set of links (for instance
 // in the case of client-side image maps) in a hypertext document. It may
 // implement the AtkAction interface. AtkHyperlink may also be used to refer to
 // inline embedded content, since it allows specification of a start and end
 // offset within the host AtkHypertext object.
-type Hyperlink interface {
-	gextras.Objector
-
-	// EndIndex gets the index with the hypertext document at which this link
-	// ends.
-	EndIndex() int
-	// NAnchors gets the number of anchors associated with this hyperlink.
-	NAnchors() int
-	// GetObject returns the item associated with this hyperlinks nth anchor.
-	// For instance, the returned Object will implement Text if @link_ is a text
-	// hyperlink, Image if @link_ is an image hyperlink etc.
-	//
-	// Multiple anchors are primarily used by client-side image maps.
-	GetObject(i int) *ObjectClass
-	// StartIndex gets the index with the hypertext document at which this link
-	// begins.
-	StartIndex() int
-	// URI: get a the URI associated with the anchor specified by @i of @link_.
-	//
-	// Multiple anchors are primarily used by client-side image maps.
-	URI(i int) string
-	// IsInline indicates whether the link currently displays some or all of its
-	// content inline. Ordinary HTML links will usually return false, but an
-	// inline &lt;src&gt; HTML element will return true.
-	IsInline() bool
-	// IsSelectedLink determines whether this AtkHyperlink is selected
-	//
-	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
-	// ATK_STATE_FOCUSED for focused links.
-	IsSelectedLink() bool
-	// IsValid: since the document that a link is associated with may have
-	// changed this method returns true if the link is still valid (with respect
-	// to the document it references) and false otherwise.
-	IsValid() bool
-}
-
-// HyperlinkClass implements the Hyperlink interface.
-type HyperlinkClass struct {
+type Hyperlink struct {
 	*externglib.Object
-	ActionIface
+	Action
 }
 
-var _ Hyperlink = (*HyperlinkClass)(nil)
+var _ Hyperlinker = (*Hyperlink)(nil)
 
-func wrapHyperlink(obj *externglib.Object) Hyperlink {
-	return &HyperlinkClass{
+func wrapHyperlinker(obj *externglib.Object) Hyperlinker {
+	return &Hyperlink{
 		Object: obj,
-		ActionIface: ActionIface{
+		Action: Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalHyperlink(p uintptr) (interface{}, error) {
+func marshalHyperlinker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHyperlink(obj), nil
+	return wrapHyperlinker(obj), nil
 }
 
 // EndIndex gets the index with the hypertext document at which this link ends.
-func (link_ *HyperlinkClass) EndIndex() int {
+func (link_ *Hyperlink) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -152,7 +129,7 @@ func (link_ *HyperlinkClass) EndIndex() int {
 }
 
 // NAnchors gets the number of anchors associated with this hyperlink.
-func (link_ *HyperlinkClass) NAnchors() int {
+func (link_ *Hyperlink) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -172,7 +149,7 @@ func (link_ *HyperlinkClass) NAnchors() int {
 // hyperlink, Image if @link_ is an image hyperlink etc.
 //
 // Multiple anchors are primarily used by client-side image maps.
-func (link_ *HyperlinkClass) GetObject(i int) *ObjectClass {
+func (link_ *Hyperlink) GetObject(i int) *Object {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -182,16 +159,16 @@ func (link_ *HyperlinkClass) GetObject(i int) *ObjectClass {
 
 	_cret = C.atk_hyperlink_get_object(_arg0, _arg1)
 
-	var _object *ObjectClass // out
+	var _object *Object // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
 
 	return _object
 }
 
 // StartIndex gets the index with the hypertext document at which this link
 // begins.
-func (link_ *HyperlinkClass) StartIndex() int {
+func (link_ *Hyperlink) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -209,7 +186,7 @@ func (link_ *HyperlinkClass) StartIndex() int {
 // URI: get a the URI associated with the anchor specified by @i of @link_.
 //
 // Multiple anchors are primarily used by client-side image maps.
-func (link_ *HyperlinkClass) URI(i int) string {
+func (link_ *Hyperlink) URI(i int) string {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.gchar        // in
@@ -230,7 +207,7 @@ func (link_ *HyperlinkClass) URI(i int) string {
 // IsInline indicates whether the link currently displays some or all of its
 // content inline. Ordinary HTML links will usually return false, but an inline
 // &lt;src&gt; HTML element will return true.
-func (link_ *HyperlinkClass) IsInline() bool {
+func (link_ *Hyperlink) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
@@ -251,7 +228,7 @@ func (link_ *HyperlinkClass) IsInline() bool {
 //
 // Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
 // ATK_STATE_FOCUSED for focused links.
-func (link_ *HyperlinkClass) IsSelectedLink() bool {
+func (link_ *Hyperlink) IsSelectedLink() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
@@ -271,7 +248,7 @@ func (link_ *HyperlinkClass) IsSelectedLink() bool {
 // IsValid: since the document that a link is associated with may have changed
 // this method returns true if the link is still valid (with respect to the
 // document it references) and false otherwise.
-func (link_ *HyperlinkClass) IsValid() bool {
+func (link_ *Hyperlink) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 

@@ -33,7 +33,7 @@ import "C"
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
+func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
 	var _arg1 *C.cairo_t    // out
 	var _arg2 *C.GdkSurface // out
 	var _arg3 C.int         // out
@@ -106,7 +106,7 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 //
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
-func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
+func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuffer, pixbufX float64, pixbufY float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkPixbuf // out
 	var _arg3 C.double     // out

@@ -19,8 +19,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drag_source_get_type()), F: marshalDragSource},
+		{T: externglib.Type(C.gtk_drag_source_get_type()), F: marshalDragSourcer},
 	})
+}
+
+// DragSourcer describes DragSource's methods.
+type DragSourcer interface {
+	gextras.Objector
+
+	DragCancel()
+	Actions() gdk.DragAction
+	Content() *gdk.ContentProvider
+	Drag() *gdk.Drag
+	SetContent(content gdk.ContentProviderrer)
 }
 
 // DragSource: `GtkDragSource` is an event controller to initiate Drag-And-Drop
@@ -78,42 +89,17 @@ func init() {
 // actions include GDK_ACTION_MOVE, you need to listen for the
 // [signal@Gtk.DragSource::drag-end] signal and delete the data after it has
 // been transferred.
-type DragSource interface {
-	gextras.Objector
-
-	// DragCancel cancels a currently ongoing drag operation.
-	DragCancel()
-	// Actions gets the actions that are currently set on the `GtkDragSource`.
-	Actions() gdk.DragAction
-	// Content gets the current content provider of a `GtkDragSource`.
-	Content() *gdk.ContentProviderClass
-	// Drag returns the underlying `GdkDrag` object for an ongoing drag.
-	Drag() *gdk.DragClass
-	// SetContent sets a content provider on a `GtkDragSource`.
-	//
-	// When the data is requested in the cause of a DND operation, it will be
-	// obtained from the content provider.
-	//
-	// This function can be called before a drag is started, or in a handler for
-	// the [signal@Gtk.DragSource::prepare] signal.
-	//
-	// You may consider setting the content provider back to nil in a
-	// [signal@Gtk.DragSource::drag-end] signal handler.
-	SetContent(content gdk.ContentProvider)
+type DragSource struct {
+	GestureSingle
 }
 
-// DragSourceClass implements the DragSource interface.
-type DragSourceClass struct {
-	GestureSingleClass
-}
+var _ DragSourcer = (*DragSource)(nil)
 
-var _ DragSource = (*DragSourceClass)(nil)
-
-func wrapDragSource(obj *externglib.Object) DragSource {
-	return &DragSourceClass{
-		GestureSingleClass: GestureSingleClass{
-			GestureClass: GestureClass{
-				EventControllerClass: EventControllerClass{
+func wrapDragSourcer(obj *externglib.Object) DragSourcer {
+	return &DragSource{
+		GestureSingle: GestureSingle{
+			Gesture: Gesture{
+				EventController: EventController{
 					Object: obj,
 				},
 			},
@@ -121,27 +107,27 @@ func wrapDragSource(obj *externglib.Object) DragSource {
 	}
 }
 
-func marshalDragSource(p uintptr) (interface{}, error) {
+func marshalDragSourcer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragSource(obj), nil
+	return wrapDragSourcer(obj), nil
 }
 
 // NewDragSource creates a new `GtkDragSource` object.
-func NewDragSource() *DragSourceClass {
+func NewDragSource() *DragSource {
 	var _cret *C.GtkDragSource // in
 
 	_cret = C.gtk_drag_source_new()
 
-	var _dragSource *DragSourceClass // out
+	var _dragSource *DragSource // out
 
-	_dragSource = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DragSourceClass)
+	_dragSource = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DragSource)
 
 	return _dragSource
 }
 
 // DragCancel cancels a currently ongoing drag operation.
-func (source *DragSourceClass) DragCancel() {
+func (source *DragSource) DragCancel() {
 	var _arg0 *C.GtkDragSource // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
@@ -150,7 +136,7 @@ func (source *DragSourceClass) DragCancel() {
 }
 
 // Actions gets the actions that are currently set on the `GtkDragSource`.
-func (source *DragSourceClass) Actions() gdk.DragAction {
+func (source *DragSource) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDragSource // out
 	var _cret C.GdkDragAction  // in
 
@@ -166,7 +152,7 @@ func (source *DragSourceClass) Actions() gdk.DragAction {
 }
 
 // Content gets the current content provider of a `GtkDragSource`.
-func (source *DragSourceClass) Content() *gdk.ContentProviderClass {
+func (source *DragSource) Content() *gdk.ContentProvider {
 	var _arg0 *C.GtkDragSource      // out
 	var _cret *C.GdkContentProvider // in
 
@@ -174,15 +160,15 @@ func (source *DragSourceClass) Content() *gdk.ContentProviderClass {
 
 	_cret = C.gtk_drag_source_get_content(_arg0)
 
-	var _contentProvider *gdk.ContentProviderClass // out
+	var _contentProvider *gdk.ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.ContentProviderClass)
+	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.ContentProvider)
 
 	return _contentProvider
 }
 
 // Drag returns the underlying `GdkDrag` object for an ongoing drag.
-func (source *DragSourceClass) Drag() *gdk.DragClass {
+func (source *DragSource) Drag() *gdk.Drag {
 	var _arg0 *C.GtkDragSource // out
 	var _cret *C.GdkDrag       // in
 
@@ -190,9 +176,9 @@ func (source *DragSourceClass) Drag() *gdk.DragClass {
 
 	_cret = C.gtk_drag_source_get_drag(_arg0)
 
-	var _drag *gdk.DragClass // out
+	var _drag *gdk.Drag // out
 
-	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DragClass)
+	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Drag)
 
 	return _drag
 }
@@ -207,7 +193,7 @@ func (source *DragSourceClass) Drag() *gdk.DragClass {
 //
 // You may consider setting the content provider back to nil in a
 // [signal@Gtk.DragSource::drag-end] signal handler.
-func (source *DragSourceClass) SetContent(content gdk.ContentProvider) {
+func (source *DragSource) SetContent(content gdk.ContentProviderrer) {
 	var _arg0 *C.GtkDragSource      // out
 	var _arg1 *C.GdkContentProvider // out
 

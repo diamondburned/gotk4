@@ -28,43 +28,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dtls_server_connection_get_type()), F: marshalDTLSServerConnection},
+		{T: externglib.Type(C.g_dtls_server_connection_get_type()), F: marshalDTLSServerConnectioner},
 	})
+}
+
+// DTLSServerConnectioner describes DTLSServerConnection's methods.
+type DTLSServerConnectioner interface {
+	gextras.Objector
+
+	privateDTLSServerConnection()
 }
 
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
-type DTLSServerConnection interface {
-	gextras.Objector
-
-	privateDTLSServerConnectionIface()
+type DTLSServerConnection struct {
+	DatagramBased
+	DTLSConnection
 }
 
-// DTLSServerConnectionIface implements the DTLSServerConnection interface.
-type DTLSServerConnectionIface struct {
-	DatagramBasedIface
-	DTLSConnectionIface
-}
+var _ DTLSServerConnectioner = (*DTLSServerConnection)(nil)
 
-var _ DTLSServerConnection = (*DTLSServerConnectionIface)(nil)
-
-func wrapDTLSServerConnection(obj *externglib.Object) DTLSServerConnection {
-	return &DTLSServerConnectionIface{
-		DatagramBasedIface: DatagramBasedIface{
+func wrapDTLSServerConnectioner(obj *externglib.Object) DTLSServerConnectioner {
+	return &DTLSServerConnection{
+		DatagramBased: DatagramBased{
 			Object: obj,
 		},
-		DTLSConnectionIface: DTLSConnectionIface{
-			DatagramBasedIface: DatagramBasedIface{
+		DTLSConnection: DTLSConnection{
+			DatagramBased: DatagramBased{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalDTLSServerConnection(p uintptr) (interface{}, error) {
+func marshalDTLSServerConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDTLSServerConnection(obj), nil
+	return wrapDTLSServerConnectioner(obj), nil
 }
 
-func (*DTLSServerConnectionIface) privateDTLSServerConnectionIface() {}
+func (*DTLSServerConnection) privateDTLSServerConnection() {}

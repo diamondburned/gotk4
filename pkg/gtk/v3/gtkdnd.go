@@ -31,7 +31,7 @@ import "C"
 //
 // If a drag is cancelled in this way, the @result argument of
 // Widget::drag-failed is set to @GTK_DRAG_RESULT_ERROR.
-func DragCancel(context gdk.DragContext) {
+func DragCancel(context gdk.DragContexter) {
 	var _arg1 *C.GdkDragContext // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
@@ -41,7 +41,7 @@ func DragCancel(context gdk.DragContext) {
 
 // DragFinish informs the drag source that the drop is finished, and that the
 // data of the drag will no longer be required.
-func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
+func DragFinish(context gdk.DragContexter, success bool, del bool, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
 	var _arg3 C.gboolean        // out
@@ -60,7 +60,7 @@ func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
 }
 
 // DragGetSourceWidget determines the source widget for a drag.
-func DragGetSourceWidget(context gdk.DragContext) *WidgetClass {
+func DragGetSourceWidget(context gdk.DragContexter) *Widget {
 	var _arg1 *C.GdkDragContext // out
 	var _cret *C.GtkWidget      // in
 
@@ -68,15 +68,15 @@ func DragGetSourceWidget(context gdk.DragContext) *WidgetClass {
 
 	_cret = C.gtk_drag_get_source_widget(_arg1)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // DragSetIconDefault sets the icon for a particular drag to the default icon.
-func DragSetIconDefault(context gdk.DragContext) {
+func DragSetIconDefault(context gdk.DragContexter) {
 	var _arg1 *C.GdkDragContext // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
@@ -88,7 +88,7 @@ func DragSetIconDefault(context gdk.DragContext) {
 // the docs for IconTheme for more details. Note that the size of the icon
 // depends on the icon theme (the icon is loaded at the symbolic size
 // K_ICON_SIZE_DND), thus @hot_x and @hot_y have to be used with care.
-func DragSetIconName(context gdk.DragContext, iconName string, hotX int, hotY int) {
+func DragSetIconName(context gdk.DragContexter, iconName string, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.gchar          // out
 	var _arg3 C.gint            // out
@@ -104,7 +104,7 @@ func DragSetIconName(context gdk.DragContext, iconName string, hotX int, hotY in
 }
 
 // DragSetIconPixbuf sets @pixbuf as the icon for a given drag.
-func DragSetIconPixbuf(context gdk.DragContext, pixbuf gdkpixbuf.Pixbuf, hotX int, hotY int) {
+func DragSetIconPixbuf(context gdk.DragContexter, pixbuf gdkpixbuf.Pixbuffer, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkPixbuf      // out
 	var _arg3 C.gint            // out
@@ -121,7 +121,7 @@ func DragSetIconPixbuf(context gdk.DragContext, pixbuf gdkpixbuf.Pixbuf, hotX in
 // DragSetIconStock sets the icon for a given drag from a stock ID.
 //
 // Deprecated: Use gtk_drag_set_icon_name() instead.
-func DragSetIconStock(context gdk.DragContext, stockId string, hotX int, hotY int) {
+func DragSetIconStock(context gdk.DragContexter, stockId string, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.gchar          // out
 	var _arg3 C.gint            // out
@@ -143,7 +143,7 @@ func DragSetIconStock(context gdk.DragContext, stockId string, hotX int, hotY in
 // To position the surface relative to the mouse, use
 // cairo_surface_set_device_offset() on @surface. The mouse cursor will be
 // positioned at the (0,0) coordinate of the surface.
-func DragSetIconSurface(context gdk.DragContext, surface *cairo.Surface) {
+func DragSetIconSurface(context gdk.DragContexter, surface *cairo.Surface) {
 	var _arg1 *C.GdkDragContext  // out
 	var _arg2 *C.cairo_surface_t // out
 
@@ -156,7 +156,7 @@ func DragSetIconSurface(context gdk.DragContext, surface *cairo.Surface) {
 // DragSetIconWidget changes the icon for drag operation to a given widget. GTK+
 // will not destroy the widget, so if you don’t want it to persist, you should
 // connect to the “drag-end” signal and destroy it yourself.
-func DragSetIconWidget(context gdk.DragContext, widget Widget, hotX int, hotY int) {
+func DragSetIconWidget(context gdk.DragContexter, widget Widgetter, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GtkWidget      // out
 	var _arg3 C.gint            // out

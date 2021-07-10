@@ -18,18 +18,28 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButton},
+		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButtonner},
 	})
 }
 
-// ToggleButtonOverrider contains methods that are overridable.
+// ToggleButtonnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToggleButtonOverrider interface {
+type ToggleButtonnerOverrider interface {
 	// Toggled emits the ::toggled signal on the `GtkToggleButton`.
 	//
 	// There is no good reason for an application ever to call this function.
+	Toggled()
+}
+
+// ToggleButtonner describes ToggleButton's methods.
+type ToggleButtonner interface {
+	gextras.Objector
+
+	Active() bool
+	SetActive(isActive bool)
+	SetGroup(group ToggleButtonner)
 	Toggled()
 }
 
@@ -96,153 +106,118 @@ type ToggleButtonOverrider interface {
 //    gtk_widget_show (window);
 //
 // } “`
-type ToggleButton interface {
-	gextras.Objector
-
-	// Active queries a `GtkToggleButton` and returns its current state.
-	//
-	// Returns true if the toggle button is pressed in and false if it is
-	// raised.
-	Active() bool
-	// SetActive sets the status of the toggle button.
-	//
-	// Set to true if you want the `GtkToggleButton` to be “pressed in”, and
-	// false to raise it.
-	//
-	// If the status of the button changes, this action causes the
-	// [signal@GtkToggleButton::toggled] signal to be emitted.
-	SetActive(isActive bool)
-	// SetGroup adds @self to the group of @group.
-	//
-	// In a group of multiple toggle buttons, only one button can be active at a
-	// time.
-	//
-	// Setting up groups in a cycle leads to undefined behavior.
-	//
-	// Note that the same effect can be achieved via the
-	// [interface@Gtk.Actionable] API, by using the same action with parameter
-	// type and state type 's' for all buttons in the group, and giving each
-	// button its own target value.
-	SetGroup(group ToggleButton)
-	// Toggled emits the ::toggled signal on the `GtkToggleButton`.
-	//
-	// There is no good reason for an application ever to call this function.
-	Toggled()
-}
-
-// ToggleButtonClass implements the ToggleButton interface.
-type ToggleButtonClass struct {
+type ToggleButton struct {
 	*externglib.Object
-	ButtonClass
-	AccessibleIface
-	ActionableIface
-	BuildableIface
-	ConstraintTargetIface
+	Button
+	Accessible
+	Actionable
+	Buildable
+	ConstraintTarget
 }
 
-var _ ToggleButton = (*ToggleButtonClass)(nil)
+var _ ToggleButtonner = (*ToggleButton)(nil)
 
-func wrapToggleButton(obj *externglib.Object) ToggleButton {
-	return &ToggleButtonClass{
+func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
+	return &ToggleButton{
 		Object: obj,
-		ButtonClass: ButtonClass{
+		Button: Button{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalToggleButton(p uintptr) (interface{}, error) {
+func marshalToggleButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleButton(obj), nil
+	return wrapToggleButtonner(obj), nil
 }
 
 // NewToggleButton creates a new toggle button.
 //
 // A widget should be packed into the button, as in [ctor@Gtk.Button.new].
-func NewToggleButton() *ToggleButtonClass {
+func NewToggleButton() *ToggleButton {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_toggle_button_new()
 
-	var _toggleButton *ToggleButtonClass // out
+	var _toggleButton *ToggleButton // out
 
-	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButtonClass)
+	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButton)
 
 	return _toggleButton
 }
 
 // NewToggleButtonWithLabel creates a new toggle button with a text label.
-func NewToggleButtonWithLabel(label string) *ToggleButtonClass {
+func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -251,9 +226,9 @@ func NewToggleButtonWithLabel(label string) *ToggleButtonClass {
 
 	_cret = C.gtk_toggle_button_new_with_label(_arg1)
 
-	var _toggleButton *ToggleButtonClass // out
+	var _toggleButton *ToggleButton // out
 
-	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButtonClass)
+	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButton)
 
 	return _toggleButton
 }
@@ -263,7 +238,7 @@ func NewToggleButtonWithLabel(label string) *ToggleButtonClass {
 //
 // The label will be created using [ctor@Gtk.Label.new_with_mnemonic], so
 // underscores in @label indicate the mnemonic for the button.
-func NewToggleButtonWithMnemonic(label string) *ToggleButtonClass {
+func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -272,9 +247,9 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButtonClass {
 
 	_cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 
-	var _toggleButton *ToggleButtonClass // out
+	var _toggleButton *ToggleButton // out
 
-	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButtonClass)
+	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButton)
 
 	return _toggleButton
 }
@@ -282,7 +257,7 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButtonClass {
 // Active queries a `GtkToggleButton` and returns its current state.
 //
 // Returns true if the toggle button is pressed in and false if it is raised.
-func (toggleButton *ToggleButtonClass) Active() bool {
+func (toggleButton *ToggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
@@ -306,7 +281,7 @@ func (toggleButton *ToggleButtonClass) Active() bool {
 //
 // If the status of the button changes, this action causes the
 // [signal@GtkToggleButton::toggled] signal to be emitted.
-func (toggleButton *ToggleButtonClass) SetActive(isActive bool) {
+func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
@@ -328,7 +303,7 @@ func (toggleButton *ToggleButtonClass) SetActive(isActive bool) {
 // Note that the same effect can be achieved via the [interface@Gtk.Actionable]
 // API, by using the same action with parameter type and state type 's' for all
 // buttons in the group, and giving each button its own target value.
-func (toggleButton *ToggleButtonClass) SetGroup(group ToggleButton) {
+func (toggleButton *ToggleButton) SetGroup(group ToggleButtonner) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 *C.GtkToggleButton // out
 
@@ -341,7 +316,7 @@ func (toggleButton *ToggleButtonClass) SetGroup(group ToggleButton) {
 // Toggled emits the ::toggled signal on the `GtkToggleButton`.
 //
 // There is no good reason for an application ever to call this function.
-func (toggleButton *ToggleButtonClass) Toggled() {
+func (toggleButton *ToggleButton) Toggled() {
 	var _arg0 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))

@@ -20,23 +20,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_activatable_get_type()), F: marshalActivatable},
+		{T: externglib.Type(C.gtk_activatable_get_type()), F: marshalActivatabler},
 	})
 }
 
-// ActivatableOverrider contains methods that are overridable.
+// ActivatablerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActivatableOverrider interface {
+type ActivatablerOverrider interface {
 	// SyncActionProperties: this is called to update the activatable
 	// completely, this is called internally when the Activatable:related-action
 	// property is set or unset and by the implementing class when
 	// Activatable:use-action-appearance changes.
 	//
 	// Deprecated: since version 3.10.
-	SyncActionProperties(action Action)
-	Update(action Action, propertyName string)
+	SyncActionProperties(action Actioner)
+	Update(action Actioner, propertyName string)
+}
+
+// Activatabler describes Activatable's methods.
+type Activatabler interface {
+	gextras.Objector
+
+	DoSetRelatedAction(action Actioner)
+	RelatedAction() *Action
+	UseActionAppearance() bool
+	SetRelatedAction(action Actioner)
+	SetUseActionAppearance(useAppearance bool)
+	SyncActionProperties(action Actioner)
 }
 
 // Activatable widgets can be connected to a Action and reflects the state of
@@ -270,82 +282,22 @@ type ActivatableOverrider interface {
 //
 //      ...
 //    }
-type Activatable interface {
-	gextras.Objector
-
-	// DoSetRelatedAction: this is a utility function for Activatable
-	// implementors.
-	//
-	// When implementing Activatable you must call this when handling changes of
-	// the Activatable:related-action, and you must also use this to break
-	// references in #GObject->dispose().
-	//
-	// This function adds a reference to the currently set related action for
-	// you, it also makes sure the Activatable->update() method is called when
-	// the related Action properties change and registers to the action’s proxy
-	// list.
-	//
-	// > Be careful to call this before setting the local > copy of the Action
-	// property, since this function uses > gtk_activatable_get_related_action()
-	// to retrieve the > previous action.
-	//
-	// Deprecated: since version 3.10.
-	DoSetRelatedAction(action Action)
-	// RelatedAction gets the related Action for @activatable.
-	//
-	// Deprecated: since version 3.10.
-	RelatedAction() *ActionClass
-	// UseActionAppearance gets whether this activatable should reset its layout
-	// and appearance when setting the related action or when the action changes
-	// appearance.
-	//
-	// Deprecated: since version 3.10.
-	UseActionAppearance() bool
-	// SetRelatedAction sets the related action on the @activatable object.
-	//
-	// > Activatable implementors need to handle the Activatable:related-action
-	// > property and call gtk_activatable_do_set_related_action() when it
-	// changes.
-	//
-	// Deprecated: since version 3.10.
-	SetRelatedAction(action Action)
-	// SetUseActionAppearance sets whether this activatable should reset its
-	// layout and appearance when setting the related action or when the action
-	// changes appearance
-	//
-	// > Activatable implementors need to handle the >
-	// Activatable:use-action-appearance property and call >
-	// gtk_activatable_sync_action_properties() to update @activatable > if
-	// needed.
-	//
-	// Deprecated: since version 3.10.
-	SetUseActionAppearance(useAppearance bool)
-	// SyncActionProperties: this is called to update the activatable
-	// completely, this is called internally when the Activatable:related-action
-	// property is set or unset and by the implementing class when
-	// Activatable:use-action-appearance changes.
-	//
-	// Deprecated: since version 3.10.
-	SyncActionProperties(action Action)
-}
-
-// ActivatableIface implements the Activatable interface.
-type ActivatableIface struct {
+type Activatable struct {
 	*externglib.Object
 }
 
-var _ Activatable = (*ActivatableIface)(nil)
+var _ Activatabler = (*Activatable)(nil)
 
-func wrapActivatable(obj *externglib.Object) Activatable {
-	return &ActivatableIface{
+func wrapActivatabler(obj *externglib.Object) Activatabler {
+	return &Activatable{
 		Object: obj,
 	}
 }
 
-func marshalActivatable(p uintptr) (interface{}, error) {
+func marshalActivatabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActivatable(obj), nil
+	return wrapActivatabler(obj), nil
 }
 
 // DoSetRelatedAction: this is a utility function for Activatable implementors.
@@ -363,7 +315,7 @@ func marshalActivatable(p uintptr) (interface{}, error) {
 // retrieve the > previous action.
 //
 // Deprecated: since version 3.10.
-func (activatable *ActivatableIface) DoSetRelatedAction(action Action) {
+func (activatable *Activatable) DoSetRelatedAction(action Actioner) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
 
@@ -376,7 +328,7 @@ func (activatable *ActivatableIface) DoSetRelatedAction(action Action) {
 // RelatedAction gets the related Action for @activatable.
 //
 // Deprecated: since version 3.10.
-func (activatable *ActivatableIface) RelatedAction() *ActionClass {
+func (activatable *Activatable) RelatedAction() *Action {
 	var _arg0 *C.GtkActivatable // out
 	var _cret *C.GtkAction      // in
 
@@ -384,9 +336,9 @@ func (activatable *ActivatableIface) RelatedAction() *ActionClass {
 
 	_cret = C.gtk_activatable_get_related_action(_arg0)
 
-	var _action *ActionClass // out
+	var _action *Action // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionClass)
+	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Action)
 
 	return _action
 }
@@ -396,7 +348,7 @@ func (activatable *ActivatableIface) RelatedAction() *ActionClass {
 // appearance.
 //
 // Deprecated: since version 3.10.
-func (activatable *ActivatableIface) UseActionAppearance() bool {
+func (activatable *Activatable) UseActionAppearance() bool {
 	var _arg0 *C.GtkActivatable // out
 	var _cret C.gboolean        // in
 
@@ -419,7 +371,7 @@ func (activatable *ActivatableIface) UseActionAppearance() bool {
 // property and call gtk_activatable_do_set_related_action() when it changes.
 //
 // Deprecated: since version 3.10.
-func (activatable *ActivatableIface) SetRelatedAction(action Action) {
+func (activatable *Activatable) SetRelatedAction(action Actioner) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
 
@@ -438,7 +390,7 @@ func (activatable *ActivatableIface) SetRelatedAction(action Action) {
 // gtk_activatable_sync_action_properties() to update @activatable > if needed.
 //
 // Deprecated: since version 3.10.
-func (activatable *ActivatableIface) SetUseActionAppearance(useAppearance bool) {
+func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 C.gboolean        // out
 
@@ -456,7 +408,7 @@ func (activatable *ActivatableIface) SetUseActionAppearance(useAppearance bool) 
 // changes.
 //
 // Deprecated: since version 3.10.
-func (activatable *ActivatableIface) SyncActionProperties(action Action) {
+func (activatable *Activatable) SyncActionProperties(action Actioner) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
 

@@ -19,8 +19,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_device_get_type()), F: marshalWaylandDevice},
+		{T: externglib.Type(C.gdk_wayland_device_get_type()), F: marshalWaylandDevicer},
 	})
+}
+
+// WaylandDevicer describes WaylandDevice's methods.
+type WaylandDevicer interface {
+	gextras.Objector
+
+	NodePath() string
 }
 
 // WaylandDevice: the Wayland implementation of `GdkDevice`.
@@ -30,38 +37,24 @@ func init() {
 // [method@GdkWayland.WaylandDevice.get_wl_seat], the `wl_keyboard` with
 // [method@GdkWayland.WaylandDevice.get_wl_keyboard] and the `wl_pointer` with
 // [method@GdkWayland.WaylandDevice.get_wl_pointer].
-type WaylandDevice interface {
-	gextras.Objector
-
-	// NodePath returns the `/dev/input/event*` path of this device.
-	//
-	// For `GdkDevice`s that possibly coalesce multiple hardware devices (eg.
-	// mouse, keyboard, touch,...), this function will return nil.
-	//
-	// This is most notably implemented for devices of type GDK_SOURCE_PEN,
-	// GDK_SOURCE_TABLET_PAD.
-	NodePath() string
+type WaylandDevice struct {
+	gdk.Device
 }
 
-// WaylandDeviceClass implements the WaylandDevice interface.
-type WaylandDeviceClass struct {
-	gdk.DeviceClass
-}
+var _ WaylandDevicer = (*WaylandDevice)(nil)
 
-var _ WaylandDevice = (*WaylandDeviceClass)(nil)
-
-func wrapWaylandDevice(obj *externglib.Object) WaylandDevice {
-	return &WaylandDeviceClass{
-		DeviceClass: gdk.DeviceClass{
+func wrapWaylandDevicer(obj *externglib.Object) WaylandDevicer {
+	return &WaylandDevice{
+		Device: gdk.Device{
 			Object: obj,
 		},
 	}
 }
 
-func marshalWaylandDevice(p uintptr) (interface{}, error) {
+func marshalWaylandDevicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandDevice(obj), nil
+	return wrapWaylandDevicer(obj), nil
 }
 
 // NodePath returns the `/dev/input/event*` path of this device.
@@ -71,7 +64,7 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 //
 // This is most notably implemented for devices of type GDK_SOURCE_PEN,
 // GDK_SOURCE_TABLET_PAD.
-func (device *WaylandDeviceClass) NodePath() string {
+func (device *WaylandDevice) NodePath() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
 

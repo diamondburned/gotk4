@@ -28,12 +28,6 @@ type TextAppearance struct {
 	native C.GtkTextAppearance
 }
 
-// WrapTextAppearance wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextAppearance(ptr unsafe.Pointer) *TextAppearance {
-	return (*TextAppearance)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (t *TextAppearance) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
@@ -45,12 +39,6 @@ func (t *TextAppearance) Native() unsafe.Pointer {
 // directly.
 type TextAttributes struct {
 	native C.GtkTextAttributes
-}
-
-// WrapTextAttributes wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextAttributes(ptr unsafe.Pointer) *TextAttributes {
-	return (*TextAttributes)(ptr)
 }
 
 func marshalTextAttributes(p uintptr) (interface{}, error) {

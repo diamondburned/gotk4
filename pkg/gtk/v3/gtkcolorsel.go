@@ -21,157 +21,107 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_selection_get_type()), F: marshalColorSelection},
+		{T: externglib.Type(C.gtk_color_selection_get_type()), F: marshalColorSelectioner},
 	})
 }
 
-// ColorSelectionOverrider contains methods that are overridable.
+// ColorSelectionerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ColorSelectionOverrider interface {
+type ColorSelectionerOverrider interface {
 	ColorChanged()
 }
 
-type ColorSelection interface {
+// ColorSelectioner describes ColorSelection's methods.
+type ColorSelectioner interface {
 	gextras.Objector
 
-	// CurrentAlpha returns the current alpha value.
 	CurrentAlpha() uint16
-	// CurrentColor sets @color to be the current color in the GtkColorSelection
-	// widget.
-	//
-	// Deprecated: Use gtk_color_selection_get_current_rgba() instead.
 	CurrentColor() gdk.Color
-	// CurrentRGBA sets @rgba to be the current color in the GtkColorSelection
-	// widget.
 	CurrentRGBA() gdk.RGBA
-	// HasOpacityControl determines whether the colorsel has an opacity control.
 	HasOpacityControl() bool
-	// HasPalette determines whether the color selector has a color palette.
 	HasPalette() bool
-	// PreviousAlpha returns the previous alpha value.
 	PreviousAlpha() uint16
-	// PreviousColor fills @color in with the original color value.
-	//
-	// Deprecated: Use gtk_color_selection_get_previous_rgba() instead.
 	PreviousColor() gdk.Color
-	// PreviousRGBA fills @rgba in with the original color value.
 	PreviousRGBA() gdk.RGBA
-	// IsAdjusting gets the current state of the @colorsel.
 	IsAdjusting() bool
-	// SetCurrentAlpha sets the current opacity to be @alpha.
-	//
-	// The first time this is called, it will also set the original opacity to
-	// be @alpha too.
 	SetCurrentAlpha(alpha uint16)
-	// SetCurrentColor sets the current color to be @color.
-	//
-	// The first time this is called, it will also set the original color to be
-	// @color too.
-	//
-	// Deprecated: Use gtk_color_selection_set_current_rgba() instead.
 	SetCurrentColor(color *gdk.Color)
-	// SetCurrentRGBA sets the current color to be @rgba.
-	//
-	// The first time this is called, it will also set the original color to be
-	// @rgba too.
 	SetCurrentRGBA(rgba *gdk.RGBA)
-	// SetHasOpacityControl sets the @colorsel to use or not use opacity.
 	SetHasOpacityControl(hasOpacity bool)
-	// SetHasPalette shows and hides the palette based upon the value of
-	// @has_palette.
 	SetHasPalette(hasPalette bool)
-	// SetPreviousAlpha sets the “previous” alpha to be @alpha.
-	//
-	// This function should be called with some hesitations, as it might seem
-	// confusing to have that alpha change.
 	SetPreviousAlpha(alpha uint16)
-	// SetPreviousColor sets the “previous” color to be @color.
-	//
-	// This function should be called with some hesitations, as it might seem
-	// confusing to have that color change. Calling
-	// gtk_color_selection_set_current_color() will also set this color the
-	// first time it is called.
-	//
-	// Deprecated: Use gtk_color_selection_set_previous_rgba() instead.
 	SetPreviousColor(color *gdk.Color)
-	// SetPreviousRGBA sets the “previous” color to be @rgba.
-	//
-	// This function should be called with some hesitations, as it might seem
-	// confusing to have that color change. Calling
-	// gtk_color_selection_set_current_rgba() will also set this color the first
-	// time it is called.
 	SetPreviousRGBA(rgba *gdk.RGBA)
 }
 
-// ColorSelectionClass implements the ColorSelection interface.
-type ColorSelectionClass struct {
+type ColorSelection struct {
 	*externglib.Object
-	BoxClass
-	BuildableIface
-	OrientableIface
+	Box
+	Buildable
+	Orientable
 }
 
-var _ ColorSelection = (*ColorSelectionClass)(nil)
+var _ ColorSelectioner = (*ColorSelection)(nil)
 
-func wrapColorSelection(obj *externglib.Object) ColorSelection {
-	return &ColorSelectionClass{
+func wrapColorSelectioner(obj *externglib.Object) ColorSelectioner {
+	return &ColorSelection{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalColorSelection(p uintptr) (interface{}, error) {
+func marshalColorSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorSelection(obj), nil
+	return wrapColorSelectioner(obj), nil
 }
 
 // NewColorSelection creates a new GtkColorSelection.
-func NewColorSelection() *ColorSelectionClass {
+func NewColorSelection() *ColorSelection {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_color_selection_new()
 
-	var _colorSelection *ColorSelectionClass // out
+	var _colorSelection *ColorSelection // out
 
-	_colorSelection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorSelectionClass)
+	_colorSelection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorSelection)
 
 	return _colorSelection
 }
 
 // CurrentAlpha returns the current alpha value.
-func (colorsel *ColorSelectionClass) CurrentAlpha() uint16 {
+func (colorsel *ColorSelection) CurrentAlpha() uint16 {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.guint16            // in
 
@@ -190,7 +140,7 @@ func (colorsel *ColorSelectionClass) CurrentAlpha() uint16 {
 // widget.
 //
 // Deprecated: Use gtk_color_selection_get_current_rgba() instead.
-func (colorsel *ColorSelectionClass) CurrentColor() gdk.Color {
+func (colorsel *ColorSelection) CurrentColor() gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.GdkColor           // in
 
@@ -207,7 +157,7 @@ func (colorsel *ColorSelectionClass) CurrentColor() gdk.Color {
 
 // CurrentRGBA sets @rgba to be the current color in the GtkColorSelection
 // widget.
-func (colorsel *ColorSelectionClass) CurrentRGBA() gdk.RGBA {
+func (colorsel *ColorSelection) CurrentRGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.GdkRGBA            // in
 
@@ -223,7 +173,7 @@ func (colorsel *ColorSelectionClass) CurrentRGBA() gdk.RGBA {
 }
 
 // HasOpacityControl determines whether the colorsel has an opacity control.
-func (colorsel *ColorSelectionClass) HasOpacityControl() bool {
+func (colorsel *ColorSelection) HasOpacityControl() bool {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.gboolean           // in
 
@@ -241,7 +191,7 @@ func (colorsel *ColorSelectionClass) HasOpacityControl() bool {
 }
 
 // HasPalette determines whether the color selector has a color palette.
-func (colorsel *ColorSelectionClass) HasPalette() bool {
+func (colorsel *ColorSelection) HasPalette() bool {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.gboolean           // in
 
@@ -259,7 +209,7 @@ func (colorsel *ColorSelectionClass) HasPalette() bool {
 }
 
 // PreviousAlpha returns the previous alpha value.
-func (colorsel *ColorSelectionClass) PreviousAlpha() uint16 {
+func (colorsel *ColorSelection) PreviousAlpha() uint16 {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.guint16            // in
 
@@ -277,7 +227,7 @@ func (colorsel *ColorSelectionClass) PreviousAlpha() uint16 {
 // PreviousColor fills @color in with the original color value.
 //
 // Deprecated: Use gtk_color_selection_get_previous_rgba() instead.
-func (colorsel *ColorSelectionClass) PreviousColor() gdk.Color {
+func (colorsel *ColorSelection) PreviousColor() gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.GdkColor           // in
 
@@ -293,7 +243,7 @@ func (colorsel *ColorSelectionClass) PreviousColor() gdk.Color {
 }
 
 // PreviousRGBA fills @rgba in with the original color value.
-func (colorsel *ColorSelectionClass) PreviousRGBA() gdk.RGBA {
+func (colorsel *ColorSelection) PreviousRGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.GdkRGBA            // in
 
@@ -309,7 +259,7 @@ func (colorsel *ColorSelectionClass) PreviousRGBA() gdk.RGBA {
 }
 
 // IsAdjusting gets the current state of the @colorsel.
-func (colorsel *ColorSelectionClass) IsAdjusting() bool {
+func (colorsel *ColorSelection) IsAdjusting() bool {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.gboolean           // in
 
@@ -330,7 +280,7 @@ func (colorsel *ColorSelectionClass) IsAdjusting() bool {
 //
 // The first time this is called, it will also set the original opacity to be
 // @alpha too.
-func (colorsel *ColorSelectionClass) SetCurrentAlpha(alpha uint16) {
+func (colorsel *ColorSelection) SetCurrentAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.guint16            // out
 
@@ -346,7 +296,7 @@ func (colorsel *ColorSelectionClass) SetCurrentAlpha(alpha uint16) {
 // @color too.
 //
 // Deprecated: Use gtk_color_selection_set_current_rgba() instead.
-func (colorsel *ColorSelectionClass) SetCurrentColor(color *gdk.Color) {
+func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkColor          // out
 
@@ -360,7 +310,7 @@ func (colorsel *ColorSelectionClass) SetCurrentColor(color *gdk.Color) {
 //
 // The first time this is called, it will also set the original color to be
 // @rgba too.
-func (colorsel *ColorSelectionClass) SetCurrentRGBA(rgba *gdk.RGBA) {
+func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkRGBA           // out
 
@@ -371,7 +321,7 @@ func (colorsel *ColorSelectionClass) SetCurrentRGBA(rgba *gdk.RGBA) {
 }
 
 // SetHasOpacityControl sets the @colorsel to use or not use opacity.
-func (colorsel *ColorSelectionClass) SetHasOpacityControl(hasOpacity bool) {
+func (colorsel *ColorSelection) SetHasOpacityControl(hasOpacity bool) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.gboolean           // out
 
@@ -385,7 +335,7 @@ func (colorsel *ColorSelectionClass) SetHasOpacityControl(hasOpacity bool) {
 
 // SetHasPalette shows and hides the palette based upon the value of
 // @has_palette.
-func (colorsel *ColorSelectionClass) SetHasPalette(hasPalette bool) {
+func (colorsel *ColorSelection) SetHasPalette(hasPalette bool) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.gboolean           // out
 
@@ -401,7 +351,7 @@ func (colorsel *ColorSelectionClass) SetHasPalette(hasPalette bool) {
 //
 // This function should be called with some hesitations, as it might seem
 // confusing to have that alpha change.
-func (colorsel *ColorSelectionClass) SetPreviousAlpha(alpha uint16) {
+func (colorsel *ColorSelection) SetPreviousAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.guint16            // out
 
@@ -419,7 +369,7 @@ func (colorsel *ColorSelectionClass) SetPreviousAlpha(alpha uint16) {
 // time it is called.
 //
 // Deprecated: Use gtk_color_selection_set_previous_rgba() instead.
-func (colorsel *ColorSelectionClass) SetPreviousColor(color *gdk.Color) {
+func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkColor          // out
 
@@ -435,7 +385,7 @@ func (colorsel *ColorSelectionClass) SetPreviousColor(color *gdk.Color) {
 // confusing to have that color change. Calling
 // gtk_color_selection_set_current_rgba() will also set this color the first
 // time it is called.
-func (colorsel *ColorSelectionClass) SetPreviousRGBA(rgba *gdk.RGBA) {
+func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkRGBA           // out
 

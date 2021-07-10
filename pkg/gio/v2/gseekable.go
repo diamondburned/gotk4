@@ -29,15 +29,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_seekable_get_type()), F: marshalSeekable},
+		{T: externglib.Type(C.g_seekable_get_type()), F: marshalSeekabler},
 	})
 }
 
-// SeekableOverrider contains methods that are overridable.
+// SeekablerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SeekableOverrider interface {
+type SeekablerOverrider interface {
 	// CanSeek tests if the stream supports the Iface.
 	CanSeek() bool
 	// CanTruncate tests if the length of the stream can be adjusted with
@@ -55,7 +55,17 @@ type SeekableOverrider interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	TruncateFn(offset int64, cancellable Cancellable) error
+	TruncateFn(offset int64, cancellable Cancellabler) error
+}
+
+// Seekabler describes Seekable's methods.
+type Seekabler interface {
+	gextras.Objector
+
+	CanSeek() bool
+	CanTruncate() bool
+	Tell() int64
+	Truncate(offset int64, cancellable Cancellabler) error
 }
 
 // Seekable is implemented by streams (implementations of Stream or Stream) that
@@ -70,50 +80,26 @@ type SeekableOverrider interface {
 // #GSeekable on resizable streams is approximately the same as POSIX lseek() on
 // a normal file. Seeking past the end and writing data will usually cause the
 // stream to resize by introducing zero bytes.
-type Seekable interface {
-	gextras.Objector
-
-	// CanSeek tests if the stream supports the Iface.
-	CanSeek() bool
-	// CanTruncate tests if the length of the stream can be adjusted with
-	// g_seekable_truncate().
-	CanTruncate() bool
-	// Tell tells the current position within the stream.
-	Tell() int64
-	// Truncate sets the length of the stream to @offset. If the stream was
-	// previously larger than @offset, the extra data is discarded. If the
-	// stream was previously shorter than @offset, it is extended with NUL
-	// ('\0') bytes.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	Truncate(offset int64, cancellable Cancellable) error
-}
-
-// SeekableIface implements the Seekable interface.
-type SeekableIface struct {
+type Seekable struct {
 	*externglib.Object
 }
 
-var _ Seekable = (*SeekableIface)(nil)
+var _ Seekabler = (*Seekable)(nil)
 
-func wrapSeekable(obj *externglib.Object) Seekable {
-	return &SeekableIface{
+func wrapSeekabler(obj *externglib.Object) Seekabler {
+	return &Seekable{
 		Object: obj,
 	}
 }
 
-func marshalSeekable(p uintptr) (interface{}, error) {
+func marshalSeekabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeekable(obj), nil
+	return wrapSeekabler(obj), nil
 }
 
 // CanSeek tests if the stream supports the Iface.
-func (seekable *SeekableIface) CanSeek() bool {
+func (seekable *Seekable) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
@@ -132,7 +118,7 @@ func (seekable *SeekableIface) CanSeek() bool {
 
 // CanTruncate tests if the length of the stream can be adjusted with
 // g_seekable_truncate().
-func (seekable *SeekableIface) CanTruncate() bool {
+func (seekable *Seekable) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
@@ -150,7 +136,7 @@ func (seekable *SeekableIface) CanTruncate() bool {
 }
 
 // Tell tells the current position within the stream.
-func (seekable *SeekableIface) Tell() int64 {
+func (seekable *Seekable) Tell() int64 {
 	var _arg0 *C.GSeekable // out
 	var _cret C.goffset    // in
 
@@ -174,7 +160,7 @@ func (seekable *SeekableIface) Tell() int64 {
 // the error G_IO_ERROR_CANCELLED will be returned. If an operation was
 // partially finished when the operation was cancelled the partial result will
 // be returned, without an error.
-func (seekable *SeekableIface) Truncate(offset int64, cancellable Cancellable) error {
+func (seekable *Seekable) Truncate(offset int64, cancellable Cancellabler) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
 	var _arg2 *C.GCancellable // out

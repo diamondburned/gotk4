@@ -16,25 +16,25 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-type HeaderBarAccessible interface {
+// HeaderBarAccessibler describes HeaderBarAccessible's methods.
+type HeaderBarAccessibler interface {
 	gextras.Objector
 
-	privateHeaderBarAccessibleClass()
+	privateHeaderBarAccessible()
 }
 
-// HeaderBarAccessibleClass implements the HeaderBarAccessible interface.
-type HeaderBarAccessibleClass struct {
-	ContainerAccessibleClass
+type HeaderBarAccessible struct {
+	ContainerAccessible
 }
 
-var _ HeaderBarAccessible = (*HeaderBarAccessibleClass)(nil)
+var _ HeaderBarAccessibler = (*HeaderBarAccessible)(nil)
 
-func wrapHeaderBarAccessible(obj *externglib.Object) HeaderBarAccessible {
-	return &HeaderBarAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapHeaderBarAccessibler(obj *externglib.Object) HeaderBarAccessibler {
+	return &HeaderBarAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -43,10 +43,10 @@ func wrapHeaderBarAccessible(obj *externglib.Object) HeaderBarAccessible {
 	}
 }
 
-func marshalHeaderBarAccessible(p uintptr) (interface{}, error) {
+func marshalHeaderBarAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHeaderBarAccessible(obj), nil
+	return wrapHeaderBarAccessibler(obj), nil
 }
 
-func (*HeaderBarAccessibleClass) privateHeaderBarAccessibleClass() {}
+func (*HeaderBarAccessible) privateHeaderBarAccessible() {}

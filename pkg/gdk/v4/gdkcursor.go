@@ -18,8 +18,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursor},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorrer},
 	})
+}
+
+// Cursorrer describes Cursor's methods.
+type Cursorrer interface {
+	gextras.Objector
+
+	Fallback() *Cursor
+	HotspotX() int
+	HotspotY() int
+	Name() string
+	Texture() *Texture
 }
 
 // Cursor: `GdkCursor` is used to create and destroy cursors.
@@ -56,60 +67,22 @@ func init() {
 // fallback cursors again, so it is possible to provide a chain of progressively
 // easier to support cursors. If none of the provided cursors can be supported,
 // the default cursor will be the ultimate fallback.
-type Cursor interface {
-	gextras.Objector
-
-	// Fallback returns the fallback for this @cursor.
-	//
-	// The fallback will be used if this cursor is not available on a given
-	// `GdkDisplay`. For named cursors, this can happen when using nonstandard
-	// names or when using an incomplete cursor theme. For textured cursors,
-	// this can happen when the texture is too large or when the `GdkDisplay` it
-	// is used on does not support textured cursors.
-	Fallback() *CursorClass
-	// HotspotX returns the horizontal offset of the hotspot.
-	//
-	// The hotspot indicates the pixel that will be directly above the cursor.
-	//
-	// Note that named cursors may have a nonzero hotspot, but this function
-	// will only return the hotspot position for cursors created with
-	// [ctor@Gdk.Cursor.new_from_texture].
-	HotspotX() int
-	// HotspotY returns the vertical offset of the hotspot.
-	//
-	// The hotspot indicates the pixel that will be directly above the cursor.
-	//
-	// Note that named cursors may have a nonzero hotspot, but this function
-	// will only return the hotspot position for cursors created with
-	// [ctor@Gdk.Cursor.new_from_texture].
-	HotspotY() int
-	// Name returns the name of the cursor.
-	//
-	// If the cursor is not a named cursor, nil will be returned.
-	Name() string
-	// Texture returns the texture for the cursor.
-	//
-	// If the cursor is a named cursor, nil will be returned.
-	Texture() *TextureClass
-}
-
-// CursorClass implements the Cursor interface.
-type CursorClass struct {
+type Cursor struct {
 	*externglib.Object
 }
 
-var _ Cursor = (*CursorClass)(nil)
+var _ Cursorrer = (*Cursor)(nil)
 
-func wrapCursor(obj *externglib.Object) Cursor {
-	return &CursorClass{
+func wrapCursorrer(obj *externglib.Object) Cursorrer {
+	return &Cursor{
 		Object: obj,
 	}
 }
 
-func marshalCursor(p uintptr) (interface{}, error) {
+func marshalCursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCursor(obj), nil
+	return wrapCursorrer(obj), nil
 }
 
 // NewCursorFromName creates a new cursor by looking up @name in the current
@@ -137,7 +110,7 @@ func marshalCursor(p uintptr) (interface{}, error) {
 // (nesw_resize_cursor.png) "nesw-resize" | | ! (nwse_resize_cursor.png)
 // "nwse-resize" | ! (zoom_in_cursor.png) "zoom-in" | ! (zoom_out_cursor.png)
 // "zoom-out" | |
-func NewCursorFromName(name string, fallback Cursor) *CursorClass {
+func NewCursorFromName(name string, fallback Cursorrer) *Cursor {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
@@ -148,15 +121,15 @@ func NewCursorFromName(name string, fallback Cursor) *CursorClass {
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
-	var _cursor *CursorClass // out
+	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
 
 	return _cursor
 }
 
 // NewCursorFromTexture creates a new cursor from a `GdkTexture`.
-func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback Cursor) *CursorClass {
+func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback Cursorrer) *Cursor {
 	var _arg1 *C.GdkTexture // out
 	var _arg2 C.int         // out
 	var _arg3 C.int         // out
@@ -170,9 +143,9 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 
 	_cret = C.gdk_cursor_new_from_texture(_arg1, _arg2, _arg3, _arg4)
 
-	var _cursor *CursorClass // out
+	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
 
 	return _cursor
 }
@@ -184,7 +157,7 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 // or when using an incomplete cursor theme. For textured cursors, this can
 // happen when the texture is too large or when the `GdkDisplay` it is used on
 // does not support textured cursors.
-func (cursor *CursorClass) Fallback() *CursorClass {
+func (cursor *Cursor) Fallback() *Cursor {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
@@ -192,9 +165,9 @@ func (cursor *CursorClass) Fallback() *CursorClass {
 
 	_cret = C.gdk_cursor_get_fallback(_arg0)
 
-	var _ret *CursorClass // out
+	var _ret *Cursor // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CursorClass)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Cursor)
 
 	return _ret
 }
@@ -206,7 +179,7 @@ func (cursor *CursorClass) Fallback() *CursorClass {
 // Note that named cursors may have a nonzero hotspot, but this function will
 // only return the hotspot position for cursors created with
 // [ctor@Gdk.Cursor.new_from_texture].
-func (cursor *CursorClass) HotspotX() int {
+func (cursor *Cursor) HotspotX() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
 
@@ -228,7 +201,7 @@ func (cursor *CursorClass) HotspotX() int {
 // Note that named cursors may have a nonzero hotspot, but this function will
 // only return the hotspot position for cursors created with
 // [ctor@Gdk.Cursor.new_from_texture].
-func (cursor *CursorClass) HotspotY() int {
+func (cursor *Cursor) HotspotY() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
 
@@ -246,7 +219,7 @@ func (cursor *CursorClass) HotspotY() int {
 // Name returns the name of the cursor.
 //
 // If the cursor is not a named cursor, nil will be returned.
-func (cursor *CursorClass) Name() string {
+func (cursor *Cursor) Name() string {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.char      // in
 
@@ -264,7 +237,7 @@ func (cursor *CursorClass) Name() string {
 // Texture returns the texture for the cursor.
 //
 // If the cursor is a named cursor, nil will be returned.
-func (cursor *CursorClass) Texture() *TextureClass {
+func (cursor *Cursor) Texture() *Texture {
 	var _arg0 *C.GdkCursor  // out
 	var _cret *C.GdkTexture // in
 
@@ -272,9 +245,9 @@ func (cursor *CursorClass) Texture() *TextureClass {
 
 	_cret = C.gdk_cursor_get_texture(_arg0)
 
-	var _texture *TextureClass // out
+	var _texture *Texture // out
 
-	_texture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextureClass)
+	_texture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Texture)
 
 	return _texture
 }

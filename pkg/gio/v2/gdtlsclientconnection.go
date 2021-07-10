@@ -28,55 +28,49 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dtls_client_connection_get_type()), F: marshalDTLSClientConnection},
+		{T: externglib.Type(C.g_dtls_client_connection_get_type()), F: marshalDTLSClientConnectioner},
 	})
+}
+
+// DTLSClientConnectioner describes DTLSClientConnection's methods.
+type DTLSClientConnectioner interface {
+	gextras.Objector
+
+	ServerIdentity() *SocketConnectable
+	ValidationFlags() TLSCertificateFlags
+	SetServerIdentity(identity SocketConnectabler)
 }
 
 // DTLSClientConnection is the client-side subclass of Connection, representing
 // a client-side DTLS connection.
-type DTLSClientConnection interface {
-	gextras.Objector
-
-	// ServerIdentity gets @conn's expected server identity
-	ServerIdentity() *SocketConnectableIface
-	// ValidationFlags gets @conn's validation flags
-	ValidationFlags() TLSCertificateFlags
-	// SetServerIdentity sets @conn's expected server identity, which is used
-	// both to tell servers on virtual hosts which certificate to present, and
-	// also to let @conn know what name to look for in the certificate when
-	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
-	SetServerIdentity(identity SocketConnectable)
+type DTLSClientConnection struct {
+	DatagramBased
+	DTLSConnection
 }
 
-// DTLSClientConnectionIface implements the DTLSClientConnection interface.
-type DTLSClientConnectionIface struct {
-	DatagramBasedIface
-	DTLSConnectionIface
-}
+var _ DTLSClientConnectioner = (*DTLSClientConnection)(nil)
 
-var _ DTLSClientConnection = (*DTLSClientConnectionIface)(nil)
-
-func wrapDTLSClientConnection(obj *externglib.Object) DTLSClientConnection {
-	return &DTLSClientConnectionIface{
-		DatagramBasedIface: DatagramBasedIface{
+func wrapDTLSClientConnectioner(obj *externglib.Object) DTLSClientConnectioner {
+	return &DTLSClientConnection{
+		DatagramBased: DatagramBased{
 			Object: obj,
 		},
-		DTLSConnectionIface: DTLSConnectionIface{
-			DatagramBasedIface: DatagramBasedIface{
+		DTLSConnection: DTLSConnection{
+			DatagramBased: DatagramBased{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
+func marshalDTLSClientConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDTLSClientConnection(obj), nil
+	return wrapDTLSClientConnectioner(obj), nil
 }
 
 // ServerIdentity gets @conn's expected server identity
-func (conn *DTLSClientConnectionIface) ServerIdentity() *SocketConnectableIface {
+func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
 
@@ -84,15 +78,15 @@ func (conn *DTLSClientConnectionIface) ServerIdentity() *SocketConnectableIface 
 
 	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
 
-	var _socketConnectable *SocketConnectableIface // out
+	var _socketConnectable *SocketConnectable // out
 
-	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketConnectableIface)
+	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketConnectable)
 
 	return _socketConnectable
 }
 
 // ValidationFlags gets @conn's validation flags
-func (conn *DTLSClientConnectionIface) ValidationFlags() TLSCertificateFlags {
+func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret C.GTlsCertificateFlags   // in
 
@@ -111,7 +105,7 @@ func (conn *DTLSClientConnectionIface) ValidationFlags() TLSCertificateFlags {
 // to tell servers on virtual hosts which certificate to present, and also to
 // let @conn know what name to look for in the certificate when performing
 // G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
-func (conn *DTLSClientConnectionIface) SetServerIdentity(identity SocketConnectable) {
+func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 *C.GSocketConnectable    // out
 

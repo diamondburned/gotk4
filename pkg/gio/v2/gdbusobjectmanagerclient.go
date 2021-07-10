@@ -30,16 +30,26 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_manager_client_get_type()), F: marshalDBusObjectManagerClient},
+		{T: externglib.Type(C.g_dbus_object_manager_client_get_type()), F: marshalDBusObjectManagerClienter},
 	})
 }
 
-// DBusObjectManagerClientOverrider contains methods that are overridable.
+// DBusObjectManagerClienterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusObjectManagerClientOverrider interface {
-	InterfaceProxySignal(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName string, signalName string, parameters *glib.Variant)
+type DBusObjectManagerClienterOverrider interface {
+	InterfaceProxySignal(objectProxy yier, interfaceProxy yier, senderName string, signalName string, parameters *glib.Variant)
+}
+
+// DBusObjectManagerClienter describes DBusObjectManagerClient's methods.
+type DBusObjectManagerClienter interface {
+	gextras.Objector
+
+	Connection() *DBusConnection
+	Flags() DBusObjectManagerClientFlags
+	Name() string
+	NameOwner() string
 }
 
 // DBusObjectManagerClient is used to create, monitor and delete object proxies
@@ -105,59 +115,41 @@ type DBusObjectManagerClientOverrider interface {
 // objects originating from the BusObjectManagerClient object will be created in
 // the same context and, consequently, will deliver signals in the same main
 // loop.
-type DBusObjectManagerClient interface {
-	gextras.Objector
-
-	// Connection gets the BusConnection used by @manager.
-	Connection() *DBusConnectionClass
-	// Flags gets the flags that @manager was constructed with.
-	Flags() DBusObjectManagerClientFlags
-	// Name gets the name that @manager is for, or nil if not a message bus
-	// connection.
-	Name() string
-	// NameOwner: the unique name that owns the name that @manager is for or nil
-	// if no-one currently owns that name. You can connect to the
-	// #GObject::notify signal to track changes to the
-	// BusObjectManagerClient:name-owner property.
-	NameOwner() string
-}
-
-// DBusObjectManagerClientClass implements the DBusObjectManagerClient interface.
-type DBusObjectManagerClientClass struct {
+type DBusObjectManagerClient struct {
 	*externglib.Object
 	*externglib.Object
-	AsyncInitableIface
-	DBusObjectManagerIface
-	InitableIface
+	AsyncInitable
+	DBusObjectManager
+	Initable
 }
 
-var _ DBusObjectManagerClient = (*DBusObjectManagerClientClass)(nil)
+var _ DBusObjectManagerClienter = (*DBusObjectManagerClient)(nil)
 
-func wrapDBusObjectManagerClient(obj *externglib.Object) DBusObjectManagerClient {
-	return &DBusObjectManagerClientClass{
+func wrapDBusObjectManagerClienter(obj *externglib.Object) DBusObjectManagerClienter {
+	return &DBusObjectManagerClient{
 		Object: obj,
 		Object: obj,
-		AsyncInitableIface: AsyncInitableIface{
+		AsyncInitable: AsyncInitable{
 			Object: obj,
 		},
-		DBusObjectManagerIface: DBusObjectManagerIface{
+		DBusObjectManager: DBusObjectManager{
 			Object: obj,
 		},
-		InitableIface: InitableIface{
+		Initable: Initable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
+func marshalDBusObjectManagerClienter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectManagerClient(obj), nil
+	return wrapDBusObjectManagerClienter(obj), nil
 }
 
 // NewDBusObjectManagerClientFinish finishes an operation started with
 // g_dbus_object_manager_client_new().
-func NewDBusObjectManagerClientFinish(res AsyncResult) (*DBusObjectManagerClientClass, error) {
+func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
 	var _cerr *C.GError             // in
@@ -166,10 +158,10 @@ func NewDBusObjectManagerClientFinish(res AsyncResult) (*DBusObjectManagerClient
 
 	_cret = C.g_dbus_object_manager_client_new_finish(_arg1, &_cerr)
 
-	var _dBusObjectManagerClient *DBusObjectManagerClientClass // out
-	var _goerr error                                           // out
+	var _dBusObjectManagerClient *DBusObjectManagerClient // out
+	var _goerr error                                      // out
 
-	_dBusObjectManagerClient = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectManagerClientClass)
+	_dBusObjectManagerClient = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectManagerClient)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusObjectManagerClient, _goerr
@@ -177,7 +169,7 @@ func NewDBusObjectManagerClientFinish(res AsyncResult) (*DBusObjectManagerClient
 
 // NewDBusObjectManagerClientForBusFinish finishes an operation started with
 // g_dbus_object_manager_client_new_for_bus().
-func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (*DBusObjectManagerClientClass, error) {
+func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
 	var _cerr *C.GError             // in
@@ -186,17 +178,17 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (*DBusObjectManager
 
 	_cret = C.g_dbus_object_manager_client_new_for_bus_finish(_arg1, &_cerr)
 
-	var _dBusObjectManagerClient *DBusObjectManagerClientClass // out
-	var _goerr error                                           // out
+	var _dBusObjectManagerClient *DBusObjectManagerClient // out
+	var _goerr error                                      // out
 
-	_dBusObjectManagerClient = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectManagerClientClass)
+	_dBusObjectManagerClient = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectManagerClient)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusObjectManagerClient, _goerr
 }
 
 // Connection gets the BusConnection used by @manager.
-func (manager *DBusObjectManagerClientClass) Connection() *DBusConnectionClass {
+func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.GDBusConnection          // in
 
@@ -204,15 +196,15 @@ func (manager *DBusObjectManagerClientClass) Connection() *DBusConnectionClass {
 
 	_cret = C.g_dbus_object_manager_client_get_connection(_arg0)
 
-	var _dBusConnection *DBusConnectionClass // out
+	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DBusConnectionClass)
+	_dBusConnection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DBusConnection)
 
 	return _dBusConnection
 }
 
 // Flags gets the flags that @manager was constructed with.
-func (manager *DBusObjectManagerClientClass) Flags() DBusObjectManagerClientFlags {
+func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	var _arg0 *C.GDBusObjectManagerClient     // out
 	var _cret C.GDBusObjectManagerClientFlags // in
 
@@ -229,7 +221,7 @@ func (manager *DBusObjectManagerClientClass) Flags() DBusObjectManagerClientFlag
 
 // Name gets the name that @manager is for, or nil if not a message bus
 // connection.
-func (manager *DBusObjectManagerClientClass) Name() string {
+func (manager *DBusObjectManagerClient) Name() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
 
@@ -247,7 +239,7 @@ func (manager *DBusObjectManagerClientClass) Name() string {
 // NameOwner: the unique name that owns the name that @manager is for or nil if
 // no-one currently owns that name. You can connect to the #GObject::notify
 // signal to track changes to the BusObjectManagerClient:name-owner property.
-func (manager *DBusObjectManagerClientClass) NameOwner() string {
+func (manager *DBusObjectManagerClient) NameOwner() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
 

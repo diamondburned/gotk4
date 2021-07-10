@@ -107,8 +107,8 @@ func (g *Generator) init(typ interface{}) bool {
 		g.InfoAttrs = &typ.InfoAttrs
 		g.InfoElements = &typ.InfoElements
 
-		g.InterfaceName = strcases.PascalToGo(typ.Name)
-		g.StructName = g.InterfaceName + types.ImplClassSuffix
+		g.StructName = strcases.PascalToGo(typ.Name)
+		g.InterfaceName = strcases.Interfacify(g.StructName)
 
 		if !g.setCType(typ.CType, typ.GLibTypeName) {
 			g.Logln(logger.Debug, "missing GType or GLibTypeName")
@@ -147,8 +147,8 @@ func (g *Generator) init(typ interface{}) bool {
 		g.InfoAttrs = &typ.InfoAttrs
 		g.InfoElements = &typ.InfoElements
 
-		g.InterfaceName = strcases.PascalToGo(typ.Name)
-		g.StructName = g.InterfaceName + types.ImplInterfaceSuffix
+		g.StructName = strcases.PascalToGo(typ.Name)
+		g.InterfaceName = strcases.Interfacify(g.StructName)
 
 		if !g.setCType(typ.CType, typ.GLibTypeName) {
 			g.Logln(logger.Debug, "missing GType or GLibTypeName")

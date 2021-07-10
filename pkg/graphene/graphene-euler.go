@@ -108,12 +108,6 @@ type Euler struct {
 	native C.graphene_euler_t
 }
 
-// WrapEuler wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEuler(ptr unsafe.Pointer) *Euler {
-	return (*Euler)(ptr)
-}
-
 func marshalEuler(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Euler)(unsafe.Pointer(b)), nil
@@ -129,7 +123,7 @@ func NewEulerAlloc() *Euler {
 
 	_euler = (*Euler)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_euler, func(v *Euler) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_euler_free((*C.graphene_euler_t)(unsafe.Pointer(v)))
 	})
 
 	return _euler

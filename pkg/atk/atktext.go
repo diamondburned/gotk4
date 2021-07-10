@@ -22,7 +22,7 @@ func init() {
 		{T: externglib.Type(C.atk_text_boundary_get_type()), F: marshalTextBoundary},
 		{T: externglib.Type(C.atk_text_clip_type_get_type()), F: marshalTextClipType},
 		{T: externglib.Type(C.atk_text_granularity_get_type()), F: marshalTextGranularity},
-		{T: externglib.Type(C.atk_text_get_type()), F: marshalText},
+		{T: externglib.Type(C.atk_text_get_type()), F: marshalTexter},
 		{T: externglib.Type(C.atk_text_range_get_type()), F: marshalTextRange},
 	})
 }
@@ -197,11 +197,11 @@ func marshalTextGranularity(p uintptr) (interface{}, error) {
 	return TextGranularity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TextOverrider contains methods that are overridable.
+// TexterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TextOverrider interface {
+type TexterOverrider interface {
 	// AddSelection adds a selection bounded by the specified offsets.
 	AddSelection(startOffset int, endOffset int) bool
 	// CaretOffset gets the offset of the position of the caret (cursor).
@@ -245,6 +245,22 @@ type TextOverrider interface {
 	TextSelectionChanged()
 }
 
+// Texter describes Text's methods.
+type Texter interface {
+	gextras.Objector
+
+	AddSelection(startOffset int, endOffset int) bool
+	CaretOffset() int
+	CharacterAtOffset(offset int) uint32
+	CharacterCount() int
+	NSelections() int
+	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
+	Text(startOffset int, endOffset int) string
+	RemoveSelection(selectionNum int) bool
+	SetCaretOffset(offset int) bool
+	SetSelection(selectionNum int, startOffset int, endOffset int) bool
+}
+
 // Text should be implemented by Objects on behalf of widgets that have text
 // content which is either attributed or otherwise non-trivial. Objects whose
 // text content is simple, unattributed, and very brief may expose that content
@@ -262,69 +278,26 @@ type TextOverrider interface {
 // therefore potentially multi-byte, and caret-to-byte offset mapping makes no
 // assumptions about the character length; also bounding box glyph-to-offset
 // mapping may be complex for languages which use ligatures.
-type Text interface {
-	gextras.Objector
-
-	// AddSelection adds a selection bounded by the specified offsets.
-	AddSelection(startOffset int, endOffset int) bool
-	// CaretOffset gets the offset of the position of the caret (cursor).
-	CaretOffset() int
-	// CharacterAtOffset gets the specified text.
-	CharacterAtOffset(offset int) uint32
-	// CharacterCount gets the character count.
-	CharacterCount() int
-	// NSelections gets the number of selected regions.
-	NSelections() int
-	// Selection gets the text from the specified selection.
-	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
-	// Text gets the specified text.
-	Text(startOffset int, endOffset int) string
-	// RemoveSelection removes the specified selection.
-	RemoveSelection(selectionNum int) bool
-	// SetCaretOffset sets the caret (cursor) position to the specified @offset.
-	//
-	// In the case of rich-text content, this method should either grab focus or
-	// move the sequential focus navigation starting point (if the application
-	// supports this concept) as if the user had clicked on the new caret
-	// position. Typically, this means that the target of this operation is the
-	// node containing the new caret position or one of its ancestors. In other
-	// words, after this method is called, if the user advances focus, it should
-	// move to the first focusable node following the new caret position.
-	//
-	// Calling this method should also scroll the application viewport in a way
-	// that matches the behavior of the application's typical caret motion or
-	// tab navigation as closely as possible. This also means that if the
-	// application's caret motion or focus navigation does not trigger a scroll
-	// operation, this method should not trigger one either. If the application
-	// does not have a caret motion or focus navigation operation, this method
-	// should try to scroll the new caret position into view while minimizing
-	// unnecessary scroll motion.
-	SetCaretOffset(offset int) bool
-	// SetSelection changes the start and end offset of the specified selection.
-	SetSelection(selectionNum int, startOffset int, endOffset int) bool
-}
-
-// TextIface implements the Text interface.
-type TextIface struct {
+type Text struct {
 	*externglib.Object
 }
 
-var _ Text = (*TextIface)(nil)
+var _ Texter = (*Text)(nil)
 
-func wrapText(obj *externglib.Object) Text {
-	return &TextIface{
+func wrapTexter(obj *externglib.Object) Texter {
+	return &Text{
 		Object: obj,
 	}
 }
 
-func marshalText(p uintptr) (interface{}, error) {
+func marshalTexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapText(obj), nil
+	return wrapTexter(obj), nil
 }
 
 // AddSelection adds a selection bounded by the specified offsets.
-func (text *TextIface) AddSelection(startOffset int, endOffset int) bool {
+func (text *Text) AddSelection(startOffset int, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -346,7 +319,7 @@ func (text *TextIface) AddSelection(startOffset int, endOffset int) bool {
 }
 
 // CaretOffset gets the offset of the position of the caret (cursor).
-func (text *TextIface) CaretOffset() int {
+func (text *Text) CaretOffset() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
@@ -362,7 +335,7 @@ func (text *TextIface) CaretOffset() int {
 }
 
 // CharacterAtOffset gets the specified text.
-func (text *TextIface) CharacterAtOffset(offset int) uint32 {
+func (text *Text) CharacterAtOffset(offset int) uint32 {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _cret C.gunichar // in
@@ -380,7 +353,7 @@ func (text *TextIface) CharacterAtOffset(offset int) uint32 {
 }
 
 // CharacterCount gets the character count.
-func (text *TextIface) CharacterCount() int {
+func (text *Text) CharacterCount() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
@@ -396,7 +369,7 @@ func (text *TextIface) CharacterCount() int {
 }
 
 // NSelections gets the number of selected regions.
-func (text *TextIface) NSelections() int {
+func (text *Text) NSelections() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
@@ -412,7 +385,7 @@ func (text *TextIface) NSelections() int {
 }
 
 // Selection gets the text from the specified selection.
-func (text *TextIface) Selection(selectionNum int) (startOffset int, endOffset int, utf8 string) {
+func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // in
@@ -437,7 +410,7 @@ func (text *TextIface) Selection(selectionNum int) (startOffset int, endOffset i
 }
 
 // Text gets the specified text.
-func (text *TextIface) Text(startOffset int, endOffset int) string {
+func (text *Text) Text(startOffset int, endOffset int) string {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -458,7 +431,7 @@ func (text *TextIface) Text(startOffset int, endOffset int) string {
 }
 
 // RemoveSelection removes the specified selection.
-func (text *TextIface) RemoveSelection(selectionNum int) bool {
+func (text *Text) RemoveSelection(selectionNum int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
@@ -494,7 +467,7 @@ func (text *TextIface) RemoveSelection(selectionNum int) bool {
 // method should not trigger one either. If the application does not have a
 // caret motion or focus navigation operation, this method should try to scroll
 // the new caret position into view while minimizing unnecessary scroll motion.
-func (text *TextIface) SetCaretOffset(offset int) bool {
+func (text *Text) SetCaretOffset(offset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
@@ -514,7 +487,7 @@ func (text *TextIface) SetCaretOffset(offset int) bool {
 }
 
 // SetSelection changes the start and end offset of the specified selection.
-func (text *TextIface) SetSelection(selectionNum int, startOffset int, endOffset int) bool {
+func (text *Text) SetSelection(selectionNum int, startOffset int, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -542,12 +515,6 @@ type TextRange struct {
 	native C.AtkTextRange
 }
 
-// WrapTextRange wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextRange(ptr unsafe.Pointer) *TextRange {
-	return (*TextRange)(ptr)
-}
-
 func marshalTextRange(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*TextRange)(unsafe.Pointer(b)), nil
@@ -561,12 +528,6 @@ func (t *TextRange) Native() unsafe.Pointer {
 // TextRectangle: structure used to store a rectangle used by AtkText.
 type TextRectangle struct {
 	native C.AtkTextRectangle
-}
-
-// WrapTextRectangle wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextRectangle(ptr unsafe.Pointer) *TextRectangle {
-	return (*TextRectangle)(ptr)
 }
 
 // Native returns the underlying C source pointer.

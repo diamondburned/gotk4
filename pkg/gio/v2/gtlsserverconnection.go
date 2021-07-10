@@ -28,39 +28,39 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_server_connection_get_type()), F: marshalTLSServerConnection},
+		{T: externglib.Type(C.g_tls_server_connection_get_type()), F: marshalTLSServerConnectioner},
 	})
+}
+
+// TLSServerConnectioner describes TLSServerConnection's methods.
+type TLSServerConnectioner interface {
+	gextras.Objector
+
+	privateTLSServerConnection()
 }
 
 // TLSServerConnection is the server-side subclass of Connection, representing a
 // server-side TLS connection.
-type TLSServerConnection interface {
-	gextras.Objector
-
-	privateTLSServerConnectionIface()
+type TLSServerConnection struct {
+	TLSConnection
 }
 
-// TLSServerConnectionIface implements the TLSServerConnection interface.
-type TLSServerConnectionIface struct {
-	TLSConnectionClass
-}
+var _ TLSServerConnectioner = (*TLSServerConnection)(nil)
 
-var _ TLSServerConnection = (*TLSServerConnectionIface)(nil)
-
-func wrapTLSServerConnection(obj *externglib.Object) TLSServerConnection {
-	return &TLSServerConnectionIface{
-		TLSConnectionClass: TLSConnectionClass{
-			IOStreamClass: IOStreamClass{
+func wrapTLSServerConnectioner(obj *externglib.Object) TLSServerConnectioner {
+	return &TLSServerConnection{
+		TLSConnection: TLSConnection{
+			IOStream: IOStream{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalTLSServerConnection(p uintptr) (interface{}, error) {
+func marshalTLSServerConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSServerConnection(obj), nil
+	return wrapTLSServerConnectioner(obj), nil
 }
 
-func (*TLSServerConnectionIface) privateTLSServerConnectionIface() {}
+func (*TLSServerConnection) privateTLSServerConnection() {}

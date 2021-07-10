@@ -18,25 +18,36 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_layout_manager_get_type()), F: marshalLayoutManager},
+		{T: externglib.Type(C.gtk_layout_manager_get_type()), F: marshalLayoutManagerrer},
 	})
 }
 
-// LayoutManagerOverrider contains methods that are overridable.
+// LayoutManagerrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type LayoutManagerOverrider interface {
+type LayoutManagerrerOverrider interface {
 	// Allocate assigns the given @width, @height, and @baseline to a @widget,
 	// and computes the position and sizes of the children of the @widget using
 	// the layout management policy of @manager.
-	Allocate(widget Widget, width int, height int, baseline int)
+	Allocate(widget Widgetter, width int, height int, baseline int)
 	// CreateLayoutChild: create a LayoutChild instance for the given @for_child
 	// widget.
-	CreateLayoutChild(widget Widget, forChild Widget) *LayoutChildClass
-	RequestMode(widget Widget) SizeRequestMode
+	CreateLayoutChild(widget Widgetter, forChild Widgetter) *LayoutChild
+	RequestMode(widget Widgetter) SizeRequestMode
 	Root()
 	Unroot()
+}
+
+// LayoutManagerrer describes LayoutManager's methods.
+type LayoutManagerrer interface {
+	gextras.Objector
+
+	Allocate(widget Widgetter, width int, height int, baseline int)
+	LayoutChild(child Widgetter) *LayoutChild
+	RequestMode() SizeRequestMode
+	Widget() *Widget
+	LayoutChanged()
 }
 
 // LayoutManager: layout managers are delegate classes that handle the preferred
@@ -79,56 +90,28 @@ type LayoutManagerOverrider interface {
 // layout properties; each `GtkLayoutChild` instance should call
 // [method@Gtk.LayoutManager.layout_changed] every time a property is updated,
 // in order to queue a new size measuring and allocation.
-type LayoutManager interface {
-	gextras.Objector
-
-	// Allocate assigns the given @width, @height, and @baseline to a @widget,
-	// and computes the position and sizes of the children of the @widget using
-	// the layout management policy of @manager.
-	Allocate(widget Widget, width int, height int, baseline int)
-	// LayoutChild retrieves a `GtkLayoutChild` instance for the
-	// `GtkLayoutManager`, creating one if necessary.
-	//
-	// The @child widget must be a child of the widget using @manager.
-	//
-	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
-	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
-	// the given `GtkLayoutManager`.
-	LayoutChild(child Widget) *LayoutChildClass
-	// RequestMode retrieves the request mode of @manager.
-	RequestMode() SizeRequestMode
-	// Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
-	Widget() *WidgetClass
-	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
-	//
-	// This function should be called by subclasses of `GtkLayoutManager` in
-	// response to changes to their layout management policies.
-	LayoutChanged()
-}
-
-// LayoutManagerClass implements the LayoutManager interface.
-type LayoutManagerClass struct {
+type LayoutManager struct {
 	*externglib.Object
 }
 
-var _ LayoutManager = (*LayoutManagerClass)(nil)
+var _ LayoutManagerrer = (*LayoutManager)(nil)
 
-func wrapLayoutManager(obj *externglib.Object) LayoutManager {
-	return &LayoutManagerClass{
+func wrapLayoutManagerrer(obj *externglib.Object) LayoutManagerrer {
+	return &LayoutManager{
 		Object: obj,
 	}
 }
 
-func marshalLayoutManager(p uintptr) (interface{}, error) {
+func marshalLayoutManagerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLayoutManager(obj), nil
+	return wrapLayoutManagerrer(obj), nil
 }
 
 // Allocate assigns the given @width, @height, and @baseline to a @widget, and
 // computes the position and sizes of the children of the @widget using the
 // layout management policy of @manager.
-func (manager *LayoutManagerClass) Allocate(widget Widget, width int, height int, baseline int) {
+func (manager *LayoutManager) Allocate(widget Widgetter, width int, height int, baseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.int               // out
@@ -152,7 +135,7 @@ func (manager *LayoutManagerClass) Allocate(widget Widget, width int, height int
 // The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
 // guaranteed to exist as long as @child is a child of the `GtkWidget` using the
 // given `GtkLayoutManager`.
-func (manager *LayoutManagerClass) LayoutChild(child Widget) *LayoutChildClass {
+func (manager *LayoutManager) LayoutChild(child Widgetter) *LayoutChild {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.GtkLayoutChild   // in
@@ -162,15 +145,15 @@ func (manager *LayoutManagerClass) LayoutChild(child Widget) *LayoutChildClass {
 
 	_cret = C.gtk_layout_manager_get_layout_child(_arg0, _arg1)
 
-	var _layoutChild *LayoutChildClass // out
+	var _layoutChild *LayoutChild // out
 
-	_layoutChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LayoutChildClass)
+	_layoutChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LayoutChild)
 
 	return _layoutChild
 }
 
 // RequestMode retrieves the request mode of @manager.
-func (manager *LayoutManagerClass) RequestMode() SizeRequestMode {
+func (manager *LayoutManager) RequestMode() SizeRequestMode {
 	var _arg0 *C.GtkLayoutManager  // out
 	var _cret C.GtkSizeRequestMode // in
 
@@ -186,7 +169,7 @@ func (manager *LayoutManagerClass) RequestMode() SizeRequestMode {
 }
 
 // Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
-func (manager *LayoutManagerClass) Widget() *WidgetClass {
+func (manager *LayoutManager) Widget() *Widget {
 	var _arg0 *C.GtkLayoutManager // out
 	var _cret *C.GtkWidget        // in
 
@@ -194,9 +177,9 @@ func (manager *LayoutManagerClass) Widget() *WidgetClass {
 
 	_cret = C.gtk_layout_manager_get_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -205,7 +188,7 @@ func (manager *LayoutManagerClass) Widget() *WidgetClass {
 //
 // This function should be called by subclasses of `GtkLayoutManager` in
 // response to changes to their layout management policies.
-func (manager *LayoutManagerClass) LayoutChanged() {
+func (manager *LayoutManager) LayoutChanged() {
 	var _arg0 *C.GtkLayoutManager // out
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))

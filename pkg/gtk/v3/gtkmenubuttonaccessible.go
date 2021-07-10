@@ -21,69 +21,69 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_button_accessible_get_type()), F: marshalMenuButtonAccessible},
+		{T: externglib.Type(C.gtk_menu_button_accessible_get_type()), F: marshalMenuButtonAccessibler},
 	})
 }
 
-type MenuButtonAccessible interface {
+// MenuButtonAccessibler describes MenuButtonAccessible's methods.
+type MenuButtonAccessibler interface {
 	gextras.Objector
 
-	privateMenuButtonAccessibleClass()
+	privateMenuButtonAccessible()
 }
 
-// MenuButtonAccessibleClass implements the MenuButtonAccessible interface.
-type MenuButtonAccessibleClass struct {
+type MenuButtonAccessible struct {
 	*externglib.Object
-	ToggleButtonAccessibleClass
-	atk.ActionIface
-	atk.ImageIface
+	ToggleButtonAccessible
+	atk.Action
+	atk.Image
 }
 
-var _ MenuButtonAccessible = (*MenuButtonAccessibleClass)(nil)
+var _ MenuButtonAccessibler = (*MenuButtonAccessible)(nil)
 
-func wrapMenuButtonAccessible(obj *externglib.Object) MenuButtonAccessible {
-	return &MenuButtonAccessibleClass{
+func wrapMenuButtonAccessibler(obj *externglib.Object) MenuButtonAccessibler {
+	return &MenuButtonAccessible{
 		Object: obj,
-		ToggleButtonAccessibleClass: ToggleButtonAccessibleClass{
+		ToggleButtonAccessible: ToggleButtonAccessible{
 			Object: obj,
-			ButtonAccessibleClass: ButtonAccessibleClass{
+			ButtonAccessible: ButtonAccessible{
 				Object: obj,
-				ContainerAccessibleClass: ContainerAccessibleClass{
-					WidgetAccessibleClass: WidgetAccessibleClass{
-						AccessibleClass: AccessibleClass{
-							ObjectClass: atk.ObjectClass{
+				ContainerAccessible: ContainerAccessible{
+					WidgetAccessible: WidgetAccessible{
+						Accessible: Accessible{
+							Object: atk.Object{
 								Object: obj,
 							},
 						},
 					},
 				},
-				ActionIface: atk.ActionIface{
+				Action: atk.Action{
 					Object: obj,
 				},
-				ImageIface: atk.ImageIface{
+				Image: atk.Image{
 					Object: obj,
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
-			ImageIface: atk.ImageIface{
+			Image: atk.Image{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMenuButtonAccessible(p uintptr) (interface{}, error) {
+func marshalMenuButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuButtonAccessible(obj), nil
+	return wrapMenuButtonAccessibler(obj), nil
 }
 
-func (*MenuButtonAccessibleClass) privateMenuButtonAccessibleClass() {}
+func (*MenuButtonAccessible) privateMenuButtonAccessible() {}

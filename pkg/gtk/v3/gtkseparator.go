@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_get_type()), F: marshalSeparator},
+		{T: externglib.Type(C.gtk_separator_get_type()), F: marshalSeparatorrer},
 	})
+}
+
+// Separatorrer describes Separator's methods.
+type Separatorrer interface {
+	gextras.Objector
+
+	privateSeparator()
 }
 
 // Separator is a horizontal or vertical separator widget, depending on the
@@ -34,47 +41,40 @@ func init() {
 //
 // GtkSeparator has a single CSS node with name separator. The node gets one of
 // the .horizontal or .vertical style classes.
-type Separator interface {
-	gextras.Objector
-
-	privateSeparatorClass()
-}
-
-// SeparatorClass implements the Separator interface.
-type SeparatorClass struct {
+type Separator struct {
 	*externglib.Object
-	WidgetClass
-	BuildableIface
-	OrientableIface
+	Widget
+	Buildable
+	Orientable
 }
 
-var _ Separator = (*SeparatorClass)(nil)
+var _ Separatorrer = (*Separator)(nil)
 
-func wrapSeparator(obj *externglib.Object) Separator {
-	return &SeparatorClass{
+func wrapSeparatorrer(obj *externglib.Object) Separatorrer {
+	return &Separator{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSeparator(p uintptr) (interface{}, error) {
+func marshalSeparatorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparator(obj), nil
+	return wrapSeparatorrer(obj), nil
 }
 
-func (*SeparatorClass) privateSeparatorClass() {}
+func (*Separator) privateSeparator() {}

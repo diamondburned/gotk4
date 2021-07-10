@@ -28,59 +28,56 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_get_type()), F: marshalDBusObject},
+		{T: externglib.Type(C.g_dbus_object_get_type()), F: marshalDBusObjecter},
 	})
 }
 
-// DBusObjectOverrider contains methods that are overridable.
+// DBusObjecterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusObjectOverrider interface {
+type DBusObjecterOverrider interface {
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
-	Interface(interfaceName string) *DBusInterfaceIface
+	Interface(interfaceName string) *DBusInterface
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string
-	InterfaceAdded(interface_ DBusInterface)
-	InterfaceRemoved(interface_ DBusInterface)
+	InterfaceAdded(interface_ DBusInterfacer)
+	InterfaceRemoved(interface_ DBusInterfacer)
+}
+
+// DBusObjecter describes DBusObject's methods.
+type DBusObjecter interface {
+	gextras.Objector
+
+	Interface(interfaceName string) *DBusInterface
+	ObjectPath() string
 }
 
 // DBusObject: the BusObject type is the base type for D-Bus objects on both the
 // service side (see BusObjectSkeleton) and the client side (see
 // BusObjectProxy). It is essentially just a container of interfaces.
-type DBusObject interface {
-	gextras.Objector
-
-	// Interface gets the D-Bus interface with name @interface_name associated
-	// with @object, if any.
-	Interface(interfaceName string) *DBusInterfaceIface
-	// ObjectPath gets the object path for @object.
-	ObjectPath() string
-}
-
-// DBusObjectIface implements the DBusObject interface.
-type DBusObjectIface struct {
+type DBusObject struct {
 	*externglib.Object
 }
 
-var _ DBusObject = (*DBusObjectIface)(nil)
+var _ DBusObjecter = (*DBusObject)(nil)
 
-func wrapDBusObject(obj *externglib.Object) DBusObject {
-	return &DBusObjectIface{
+func wrapDBusObjecter(obj *externglib.Object) DBusObjecter {
+	return &DBusObject{
 		Object: obj,
 	}
 }
 
-func marshalDBusObject(p uintptr) (interface{}, error) {
+func marshalDBusObjecter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObject(obj), nil
+	return wrapDBusObjecter(obj), nil
 }
 
 // Interface gets the D-Bus interface with name @interface_name associated with
 // @object, if any.
-func (object *DBusObjectIface) Interface(interfaceName string) *DBusInterfaceIface {
+func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GDBusInterface // in
@@ -91,15 +88,15 @@ func (object *DBusObjectIface) Interface(interfaceName string) *DBusInterfaceIfa
 
 	_cret = C.g_dbus_object_get_interface(_arg0, _arg1)
 
-	var _dBusInterface *DBusInterfaceIface // out
+	var _dBusInterface *DBusInterface // out
 
-	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterfaceIface)
+	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterface)
 
 	return _dBusInterface
 }
 
 // ObjectPath gets the object path for @object.
-func (object *DBusObjectIface) ObjectPath() string {
+func (object *DBusObject) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in
 

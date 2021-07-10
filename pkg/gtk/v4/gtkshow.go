@@ -14,7 +14,7 @@ import "C"
 
 // ShowURI: this function launches the default application for showing a given
 // uri, or shows an error dialog if that fails.
-func ShowURI(parent Window, uri string, timestamp uint32) {
+func ShowURI(parent Windowwer, uri string, timestamp uint32) {
 	var _arg1 *C.GtkWindow // out
 	var _arg2 *C.char      // out
 	var _arg3 C.guint32    // out

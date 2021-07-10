@@ -49,12 +49,6 @@ type Checksum struct {
 	native C.GChecksum
 }
 
-// WrapChecksum wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapChecksum(ptr unsafe.Pointer) *Checksum {
-	return (*Checksum)(ptr)
-}
-
 func marshalChecksum(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Checksum)(unsafe.Pointer(b)), nil
@@ -80,7 +74,7 @@ func (checksum *Checksum) Copy() *Checksum {
 
 	_ret = (*Checksum)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Checksum) {
-		C.free(unsafe.Pointer(v))
+		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
 	})
 
 	return _ret

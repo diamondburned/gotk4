@@ -18,8 +18,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_grid_view_get_type()), F: marshalGridView},
+		{T: externglib.Type(C.gtk_grid_view_get_type()), F: marshalGridViewer},
 	})
+}
+
+// GridViewer describes GridView's methods.
+type GridViewer interface {
+	gextras.Objector
+
+	EnableRubberband() bool
+	Factory() *ListItemFactory
+	MaxColumns() uint
+	MinColumns() uint
+	SingleClickActivate() bool
+	SetEnableRubberband(enableRubberband bool)
+	SetFactory(factory yier)
+	SetMaxColumns(maxColumns uint)
+	SetMinColumns(minColumns uint)
+	SetSingleClickActivate(singleClickActivate bool)
 }
 
 // GridView: `GtkGridView` presents a large dynamic grid of items.
@@ -50,122 +66,81 @@ func init() {
 //
 // `GtkGridView` uses the GTK_ACCESSIBLE_ROLE_GRID role, and the items use the
 // GTK_ACCESSIBLE_ROLE_GRID_CELL role.
-type GridView interface {
-	gextras.Objector
-
-	// EnableRubberband returns whether rows can be selected by dragging with
-	// the mouse.
-	EnableRubberband() bool
-	// Factory gets the factory that's currently used to populate list items.
-	Factory() *ListItemFactoryClass
-	// MaxColumns gets the maximum number of columns that the grid will use.
-	MaxColumns() uint
-	// MinColumns gets the minimum number of columns that the grid will use.
-	MinColumns() uint
-	// SingleClickActivate returns whether items will be activated on single
-	// click and selected on hover.
-	SingleClickActivate() bool
-	// SetEnableRubberband sets whether selections can be changed by dragging
-	// with the mouse.
-	SetEnableRubberband(enableRubberband bool)
-	// SetFactory sets the `GtkListItemFactory` to use for populating list
-	// items.
-	SetFactory(factory ListItemFactory)
-	// SetMaxColumns sets the maximum number of columns to use.
-	//
-	// This number must be at least 1.
-	//
-	// If @max_columns is smaller than the minimum set via
-	// [method@Gtk.GridView.set_min_columns], that value is used instead.
-	SetMaxColumns(maxColumns uint)
-	// SetMinColumns sets the minimum number of columns to use.
-	//
-	// This number must be at least 1.
-	//
-	// If @min_columns is smaller than the minimum set via
-	// [method@Gtk.GridView.set_max_columns], that value is ignored.
-	SetMinColumns(minColumns uint)
-	// SetSingleClickActivate sets whether items should be activated on single
-	// click and selected on hover.
-	SetSingleClickActivate(singleClickActivate bool)
-}
-
-// GridViewClass implements the GridView interface.
-type GridViewClass struct {
+type GridView struct {
 	*externglib.Object
-	ListBaseClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	OrientableIface
-	ScrollableIface
+	ListBase
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
+	Scrollable
 }
 
-var _ GridView = (*GridViewClass)(nil)
+var _ GridViewer = (*GridView)(nil)
 
-func wrapGridView(obj *externglib.Object) GridView {
-	return &GridViewClass{
+func wrapGridViewer(obj *externglib.Object) GridViewer {
+	return &GridView{
 		Object: obj,
-		ListBaseClass: ListBaseClass{
+		ListBase: ListBase{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
-			ScrollableIface: ScrollableIface{
+			Scrollable: Scrollable{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
-		ScrollableIface: ScrollableIface{
+		Scrollable: Scrollable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalGridView(p uintptr) (interface{}, error) {
+func marshalGridViewer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGridView(obj), nil
+	return wrapGridViewer(obj), nil
 }
 
 // EnableRubberband returns whether rows can be selected by dragging with the
 // mouse.
-func (self *GridViewClass) EnableRubberband() bool {
+func (self *GridView) EnableRubberband() bool {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.gboolean     // in
 
@@ -183,7 +158,7 @@ func (self *GridViewClass) EnableRubberband() bool {
 }
 
 // Factory gets the factory that's currently used to populate list items.
-func (self *GridViewClass) Factory() *ListItemFactoryClass {
+func (self *GridView) Factory() *ListItemFactory {
 	var _arg0 *C.GtkGridView        // out
 	var _cret *C.GtkListItemFactory // in
 
@@ -191,15 +166,15 @@ func (self *GridViewClass) Factory() *ListItemFactoryClass {
 
 	_cret = C.gtk_grid_view_get_factory(_arg0)
 
-	var _listItemFactory *ListItemFactoryClass // out
+	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactoryClass)
+	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
 
 	return _listItemFactory
 }
 
 // MaxColumns gets the maximum number of columns that the grid will use.
-func (self *GridViewClass) MaxColumns() uint {
+func (self *GridView) MaxColumns() uint {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.guint        // in
 
@@ -215,7 +190,7 @@ func (self *GridViewClass) MaxColumns() uint {
 }
 
 // MinColumns gets the minimum number of columns that the grid will use.
-func (self *GridViewClass) MinColumns() uint {
+func (self *GridView) MinColumns() uint {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.guint        // in
 
@@ -232,7 +207,7 @@ func (self *GridViewClass) MinColumns() uint {
 
 // SingleClickActivate returns whether items will be activated on single click
 // and selected on hover.
-func (self *GridViewClass) SingleClickActivate() bool {
+func (self *GridView) SingleClickActivate() bool {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.gboolean     // in
 
@@ -251,7 +226,7 @@ func (self *GridViewClass) SingleClickActivate() bool {
 
 // SetEnableRubberband sets whether selections can be changed by dragging with
 // the mouse.
-func (self *GridViewClass) SetEnableRubberband(enableRubberband bool) {
+func (self *GridView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.gboolean     // out
 
@@ -264,7 +239,7 @@ func (self *GridViewClass) SetEnableRubberband(enableRubberband bool) {
 }
 
 // SetFactory sets the `GtkListItemFactory` to use for populating list items.
-func (self *GridViewClass) SetFactory(factory ListItemFactory) {
+func (self *GridView) SetFactory(factory yier) {
 	var _arg0 *C.GtkGridView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -280,7 +255,7 @@ func (self *GridViewClass) SetFactory(factory ListItemFactory) {
 //
 // If @max_columns is smaller than the minimum set via
 // [method@Gtk.GridView.set_min_columns], that value is used instead.
-func (self *GridViewClass) SetMaxColumns(maxColumns uint) {
+func (self *GridView) SetMaxColumns(maxColumns uint) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
 
@@ -296,7 +271,7 @@ func (self *GridViewClass) SetMaxColumns(maxColumns uint) {
 //
 // If @min_columns is smaller than the minimum set via
 // [method@Gtk.GridView.set_max_columns], that value is ignored.
-func (self *GridViewClass) SetMinColumns(minColumns uint) {
+func (self *GridView) SetMinColumns(minColumns uint) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
 
@@ -308,7 +283,7 @@ func (self *GridViewClass) SetMinColumns(minColumns uint) {
 
 // SetSingleClickActivate sets whether items should be activated on single click
 // and selected on hover.
-func (self *GridViewClass) SetSingleClickActivate(singleClickActivate bool) {
+func (self *GridView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.gboolean     // out
 

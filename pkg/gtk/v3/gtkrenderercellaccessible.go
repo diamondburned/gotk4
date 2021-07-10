@@ -21,49 +21,49 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_renderer_cell_accessible_get_type()), F: marshalRendererCellAccessible},
+		{T: externglib.Type(C.gtk_renderer_cell_accessible_get_type()), F: marshalRendererCellAccessibler},
 	})
 }
 
-type RendererCellAccessible interface {
+// RendererCellAccessibler describes RendererCellAccessible's methods.
+type RendererCellAccessibler interface {
 	gextras.Objector
 
-	privateRendererCellAccessibleClass()
+	privateRendererCellAccessible()
 }
 
-// RendererCellAccessibleClass implements the RendererCellAccessible interface.
-type RendererCellAccessibleClass struct {
-	CellAccessibleClass
-	atk.ActionIface
+type RendererCellAccessible struct {
+	CellAccessible
+	atk.Action
 }
 
-var _ RendererCellAccessible = (*RendererCellAccessibleClass)(nil)
+var _ RendererCellAccessibler = (*RendererCellAccessible)(nil)
 
-func wrapRendererCellAccessible(obj *externglib.Object) RendererCellAccessible {
-	return &RendererCellAccessibleClass{
-		CellAccessibleClass: CellAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapRendererCellAccessibler(obj *externglib.Object) RendererCellAccessibler {
+	return &RendererCellAccessible{
+		CellAccessible: CellAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRendererCellAccessible(p uintptr) (interface{}, error) {
+func marshalRendererCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRendererCellAccessible(obj), nil
+	return wrapRendererCellAccessibler(obj), nil
 }
 
-func NewRendererCellAccessible(renderer CellRenderer) *RendererCellAccessibleClass {
+func NewRendererCellAccessible(renderer CellRendererrer) *RendererCellAccessible {
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.AtkObject       // in
 
@@ -71,11 +71,11 @@ func NewRendererCellAccessible(renderer CellRenderer) *RendererCellAccessibleCla
 
 	_cret = C.gtk_renderer_cell_accessible_new(_arg1)
 
-	var _rendererCellAccessible *RendererCellAccessibleClass // out
+	var _rendererCellAccessible *RendererCellAccessible // out
 
-	_rendererCellAccessible = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RendererCellAccessibleClass)
+	_rendererCellAccessible = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RendererCellAccessible)
 
 	return _rendererCellAccessible
 }
 
-func (*RendererCellAccessibleClass) privateRendererCellAccessibleClass() {}
+func (*RendererCellAccessible) privateRendererCellAccessible() {}

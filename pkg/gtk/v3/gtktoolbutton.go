@@ -20,16 +20,34 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_button_get_type()), F: marshalToolButton},
+		{T: externglib.Type(C.gtk_tool_button_get_type()), F: marshalToolButtonner},
 	})
 }
 
-// ToolButtonOverrider contains methods that are overridable.
+// ToolButtonnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToolButtonOverrider interface {
+type ToolButtonnerOverrider interface {
 	Clicked()
+}
+
+// ToolButtonner describes ToolButton's methods.
+type ToolButtonner interface {
+	gextras.Objector
+
+	IconName() string
+	IconWidget() *Widget
+	Label() string
+	LabelWidget() *Widget
+	StockID() string
+	UseUnderline() bool
+	SetIconName(iconName string)
+	SetIconWidget(iconWidget Widgetter)
+	SetLabel(label string)
+	SetLabelWidget(labelWidget Widgetter)
+	SetStockID(stockId string)
+	SetUseUnderline(useUnderline bool)
 }
 
 // ToolButton are ToolItems containing buttons.
@@ -53,148 +71,79 @@ type ToolButtonOverrider interface {
 // CSS nodes
 //
 // GtkToolButton has a single CSS node with name toolbutton.
-type ToolButton interface {
-	gextras.Objector
-
-	// IconName returns the name of the themed icon for the tool button, see
-	// gtk_tool_button_set_icon_name().
-	IconName() string
-	// IconWidget: return the widget used as icon widget on @button. See
-	// gtk_tool_button_set_icon_widget().
-	IconWidget() *WidgetClass
-	// Label returns the label used by the tool button, or nil if the tool
-	// button doesn’t have a label. or uses a the label from a stock item. The
-	// returned string is owned by GTK+, and must not be modified or freed.
-	Label() string
-	// LabelWidget returns the widget used as label on @button. See
-	// gtk_tool_button_set_label_widget().
-	LabelWidget() *WidgetClass
-	// StockID returns the name of the stock item. See
-	// gtk_tool_button_set_stock_id(). The returned string is owned by GTK+ and
-	// must not be freed or modifed.
-	//
-	// Deprecated: Use gtk_tool_button_get_icon_name() instead.
-	StockID() string
-	// UseUnderline returns whether underscores in the label property are used
-	// as mnemonics on menu items on the overflow menu. See
-	// gtk_tool_button_set_use_underline().
-	UseUnderline() bool
-	// SetIconName sets the icon for the tool button from a named themed icon.
-	// See the docs for IconTheme for more details. The ToolButton:icon-name
-	// property only has an effect if not overridden by non-nil
-	// ToolButton:label-widget, ToolButton:icon-widget and ToolButton:stock-id
-	// properties.
-	SetIconName(iconName string)
-	// SetIconWidget sets @icon as the widget used as icon on @button. If
-	// @icon_widget is nil the icon is determined by the ToolButton:stock-id
-	// property. If the ToolButton:stock-id property is also nil, @button will
-	// not have an icon.
-	SetIconWidget(iconWidget Widget)
-	// SetLabel sets @label as the label used for the tool button. The
-	// ToolButton:label property only has an effect if not overridden by a
-	// non-nil ToolButton:label-widget property. If both the
-	// ToolButton:label-widget and ToolButton:label properties are nil, the
-	// label is determined by the ToolButton:stock-id property. If the
-	// ToolButton:stock-id property is also nil, @button will not have a label.
-	SetLabel(label string)
-	// SetLabelWidget sets @label_widget as the widget that will be used as the
-	// label for @button. If @label_widget is nil the ToolButton:label property
-	// is used as label. If ToolButton:label is also nil, the label in the stock
-	// item determined by the ToolButton:stock-id property is used as label. If
-	// ToolButton:stock-id is also nil, @button does not have a label.
-	SetLabelWidget(labelWidget Widget)
-	// SetStockID sets the name of the stock item. See
-	// gtk_tool_button_new_from_stock(). The stock_id property only has an
-	// effect if not overridden by non-nil ToolButton:label-widget and
-	// ToolButton:icon-widget properties.
-	//
-	// Deprecated: Use gtk_tool_button_set_icon_name() instead.
-	SetStockID(stockId string)
-	// SetUseUnderline: if set, an underline in the label property indicates
-	// that the next character should be used for the mnemonic accelerator key
-	// in the overflow menu. For example, if the label property is “_Open” and
-	// @use_underline is true, the label on the tool button will be “Open” and
-	// the item on the overflow menu will have an underlined “O”.
-	//
-	// Labels shown on tool buttons never have mnemonics on them; this property
-	// only affects the menu item on the overflow menu.
-	SetUseUnderline(useUnderline bool)
-}
-
-// ToolButtonClass implements the ToolButton interface.
-type ToolButtonClass struct {
+type ToolButton struct {
 	*externglib.Object
-	ToolItemClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	ToolItem
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ ToolButton = (*ToolButtonClass)(nil)
+var _ ToolButtonner = (*ToolButton)(nil)
 
-func wrapToolButton(obj *externglib.Object) ToolButton {
-	return &ToolButtonClass{
+func wrapToolButtonner(obj *externglib.Object) ToolButtonner {
+	return &ToolButton{
 		Object: obj,
-		ToolItemClass: ToolItemClass{
+		ToolItem: ToolItem{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalToolButton(p uintptr) (interface{}, error) {
+func marshalToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolButton(obj), nil
+	return wrapToolButtonner(obj), nil
 }
 
 // NewToolButton creates a new ToolButton using @icon_widget as contents and
 // @label as label.
-func NewToolButton(iconWidget Widget, label string) *ToolButtonClass {
+func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -205,9 +154,9 @@ func NewToolButton(iconWidget Widget, label string) *ToolButtonClass {
 
 	_cret = C.gtk_tool_button_new(_arg1, _arg2)
 
-	var _toolButton *ToolButtonClass // out
+	var _toolButton *ToolButton // out
 
-	_toolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolButtonClass)
+	_toolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolButton)
 
 	return _toolButton
 }
@@ -220,7 +169,7 @@ func NewToolButton(iconWidget Widget, label string) *ToolButtonClass {
 //
 // Deprecated: Use gtk_tool_button_new() together with
 // gtk_image_new_from_icon_name() instead.
-func NewToolButtonFromStock(stockId string) *ToolButtonClass {
+func NewToolButtonFromStock(stockId string) *ToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
 
@@ -229,16 +178,16 @@ func NewToolButtonFromStock(stockId string) *ToolButtonClass {
 
 	_cret = C.gtk_tool_button_new_from_stock(_arg1)
 
-	var _toolButton *ToolButtonClass // out
+	var _toolButton *ToolButton // out
 
-	_toolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolButtonClass)
+	_toolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolButton)
 
 	return _toolButton
 }
 
 // IconName returns the name of the themed icon for the tool button, see
 // gtk_tool_button_set_icon_name().
-func (button *ToolButtonClass) IconName() string {
+func (button *ToolButton) IconName() string {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.gchar         // in
 
@@ -255,7 +204,7 @@ func (button *ToolButtonClass) IconName() string {
 
 // IconWidget: return the widget used as icon widget on @button. See
 // gtk_tool_button_set_icon_widget().
-func (button *ToolButtonClass) IconWidget() *WidgetClass {
+func (button *ToolButton) IconWidget() *Widget {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.GtkWidget     // in
 
@@ -263,9 +212,9 @@ func (button *ToolButtonClass) IconWidget() *WidgetClass {
 
 	_cret = C.gtk_tool_button_get_icon_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -273,7 +222,7 @@ func (button *ToolButtonClass) IconWidget() *WidgetClass {
 // Label returns the label used by the tool button, or nil if the tool button
 // doesn’t have a label. or uses a the label from a stock item. The returned
 // string is owned by GTK+, and must not be modified or freed.
-func (button *ToolButtonClass) Label() string {
+func (button *ToolButton) Label() string {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.gchar         // in
 
@@ -290,7 +239,7 @@ func (button *ToolButtonClass) Label() string {
 
 // LabelWidget returns the widget used as label on @button. See
 // gtk_tool_button_set_label_widget().
-func (button *ToolButtonClass) LabelWidget() *WidgetClass {
+func (button *ToolButton) LabelWidget() *Widget {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.GtkWidget     // in
 
@@ -298,9 +247,9 @@ func (button *ToolButtonClass) LabelWidget() *WidgetClass {
 
 	_cret = C.gtk_tool_button_get_label_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -310,7 +259,7 @@ func (button *ToolButtonClass) LabelWidget() *WidgetClass {
 // not be freed or modifed.
 //
 // Deprecated: Use gtk_tool_button_get_icon_name() instead.
-func (button *ToolButtonClass) StockID() string {
+func (button *ToolButton) StockID() string {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.gchar         // in
 
@@ -328,7 +277,7 @@ func (button *ToolButtonClass) StockID() string {
 // UseUnderline returns whether underscores in the label property are used as
 // mnemonics on menu items on the overflow menu. See
 // gtk_tool_button_set_use_underline().
-func (button *ToolButtonClass) UseUnderline() bool {
+func (button *ToolButton) UseUnderline() bool {
 	var _arg0 *C.GtkToolButton // out
 	var _cret C.gboolean       // in
 
@@ -349,7 +298,7 @@ func (button *ToolButtonClass) UseUnderline() bool {
 // the docs for IconTheme for more details. The ToolButton:icon-name property
 // only has an effect if not overridden by non-nil ToolButton:label-widget,
 // ToolButton:icon-widget and ToolButton:stock-id properties.
-func (button *ToolButtonClass) SetIconName(iconName string) {
+func (button *ToolButton) SetIconName(iconName string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
 
@@ -364,7 +313,7 @@ func (button *ToolButtonClass) SetIconName(iconName string) {
 // @icon_widget is nil the icon is determined by the ToolButton:stock-id
 // property. If the ToolButton:stock-id property is also nil, @button will not
 // have an icon.
-func (button *ToolButtonClass) SetIconWidget(iconWidget Widget) {
+func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -380,7 +329,7 @@ func (button *ToolButtonClass) SetIconWidget(iconWidget Widget) {
 // ToolButton:label properties are nil, the label is determined by the
 // ToolButton:stock-id property. If the ToolButton:stock-id property is also
 // nil, @button will not have a label.
-func (button *ToolButtonClass) SetLabel(label string) {
+func (button *ToolButton) SetLabel(label string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
 
@@ -396,7 +345,7 @@ func (button *ToolButtonClass) SetLabel(label string) {
 // used as label. If ToolButton:label is also nil, the label in the stock item
 // determined by the ToolButton:stock-id property is used as label. If
 // ToolButton:stock-id is also nil, @button does not have a label.
-func (button *ToolButtonClass) SetLabelWidget(labelWidget Widget) {
+func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -412,7 +361,7 @@ func (button *ToolButtonClass) SetLabelWidget(labelWidget Widget) {
 // properties.
 //
 // Deprecated: Use gtk_tool_button_set_icon_name() instead.
-func (button *ToolButtonClass) SetStockID(stockId string) {
+func (button *ToolButton) SetStockID(stockId string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
 
@@ -431,7 +380,7 @@ func (button *ToolButtonClass) SetStockID(stockId string) {
 //
 // Labels shown on tool buttons never have mnemonics on them; this property only
 // affects the menu item on the overflow menu.
-func (button *ToolButtonClass) SetUseUnderline(useUnderline bool) {
+func (button *ToolButton) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 C.gboolean       // out
 

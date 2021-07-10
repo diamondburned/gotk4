@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_recent_filter_flags_get_type()), F: marshalRecentFilterFlags},
-		{T: externglib.Type(C.gtk_recent_filter_get_type()), F: marshalRecentFilter},
+		{T: externglib.Type(C.gtk_recent_filter_get_type()), F: marshalRecentFilterrer},
 	})
 }
 
@@ -79,6 +79,22 @@ func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret 
 	return cret
 }
 
+// RecentFilterrer describes RecentFilter's methods.
+type RecentFilterrer interface {
+	gextras.Objector
+
+	AddAge(days int)
+	AddApplication(application string)
+	AddGroup(group string)
+	AddMIMEType(mimeType string)
+	AddPattern(pattern string)
+	AddPixbufFormats()
+	Filter(filterInfo *RecentFilterInfo) bool
+	Name() string
+	Needed() RecentFilterFlags
+	SetName(name string)
+}
+
 // RecentFilter can be used to restrict the files being shown in a
 // RecentChooser. Files can be filtered based on their name (with
 // gtk_recent_filter_add_pattern()), on their mime type (with
@@ -125,76 +141,30 @@ func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret 
 //        <application>glade</application>
 //      </applications>
 //    </object>
-type RecentFilter interface {
-	gextras.Objector
-
-	// AddAge adds a rule that allows resources based on their age - that is,
-	// the number of days elapsed since they were last modified.
-	AddAge(days int)
-	// AddApplication adds a rule that allows resources based on the name of the
-	// application that has registered them.
-	AddApplication(application string)
-	// AddGroup adds a rule that allows resources based on the name of the group
-	// to which they belong
-	AddGroup(group string)
-	// AddMIMEType adds a rule that allows resources based on their registered
-	// MIME type.
-	AddMIMEType(mimeType string)
-	// AddPattern adds a rule that allows resources based on a pattern matching
-	// their display name.
-	AddPattern(pattern string)
-	// AddPixbufFormats adds a rule allowing image files in the formats
-	// supported by GdkPixbuf.
-	AddPixbufFormats()
-	// Filter tests whether a file should be displayed according to @filter. The
-	// RecentFilterInfo @filter_info should include the fields returned from
-	// gtk_recent_filter_get_needed(), and must set the
-	// RecentFilterInfo.contains field of @filter_info to indicate which fields
-	// have been set.
-	//
-	// This function will not typically be used by applications; it is intended
-	// principally for use in the implementation of RecentChooser.
-	Filter(filterInfo *RecentFilterInfo) bool
-	// Name gets the human-readable name for the filter. See
-	// gtk_recent_filter_set_name().
-	Name() string
-	// Needed gets the fields that need to be filled in for the RecentFilterInfo
-	// passed to gtk_recent_filter_filter()
-	//
-	// This function will not typically be used by applications; it is intended
-	// principally for use in the implementation of RecentChooser.
-	Needed() RecentFilterFlags
-	// SetName sets the human-readable name of the filter; this is the string
-	// that will be displayed in the recently used resources selector user
-	// interface if there is a selectable list of filters.
-	SetName(name string)
-}
-
-// RecentFilterClass implements the RecentFilter interface.
-type RecentFilterClass struct {
+type RecentFilter struct {
 	*externglib.Object
 	externglib.InitiallyUnowned
-	BuildableIface
+	Buildable
 }
 
-var _ RecentFilter = (*RecentFilterClass)(nil)
+var _ RecentFilterrer = (*RecentFilter)(nil)
 
-func wrapRecentFilter(obj *externglib.Object) RecentFilter {
-	return &RecentFilterClass{
+func wrapRecentFilterrer(obj *externglib.Object) RecentFilterrer {
+	return &RecentFilter{
 		Object: obj,
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRecentFilter(p uintptr) (interface{}, error) {
+func marshalRecentFilterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentFilter(obj), nil
+	return wrapRecentFilterrer(obj), nil
 }
 
 // NewRecentFilter creates a new RecentFilter with no rules added to it. Such
@@ -206,21 +176,21 @@ func marshalRecentFilter(p uintptr) (interface{}, error) {
 //
 //    GtkRecentFilter *filter = gtk_recent_filter_new ();
 //    gtk_recent_filter_add_pattern (filter, "*");
-func NewRecentFilter() *RecentFilterClass {
+func NewRecentFilter() *RecentFilter {
 	var _cret *C.GtkRecentFilter // in
 
 	_cret = C.gtk_recent_filter_new()
 
-	var _recentFilter *RecentFilterClass // out
+	var _recentFilter *RecentFilter // out
 
-	_recentFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentFilterClass)
+	_recentFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentFilter)
 
 	return _recentFilter
 }
 
 // AddAge adds a rule that allows resources based on their age - that is, the
 // number of days elapsed since they were last modified.
-func (filter *RecentFilterClass) AddAge(days int) {
+func (filter *RecentFilter) AddAge(days int) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 C.gint             // out
 
@@ -232,7 +202,7 @@ func (filter *RecentFilterClass) AddAge(days int) {
 
 // AddApplication adds a rule that allows resources based on the name of the
 // application that has registered them.
-func (filter *RecentFilterClass) AddApplication(application string) {
+func (filter *RecentFilter) AddApplication(application string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -245,7 +215,7 @@ func (filter *RecentFilterClass) AddApplication(application string) {
 
 // AddGroup adds a rule that allows resources based on the name of the group to
 // which they belong
-func (filter *RecentFilterClass) AddGroup(group string) {
+func (filter *RecentFilter) AddGroup(group string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -258,7 +228,7 @@ func (filter *RecentFilterClass) AddGroup(group string) {
 
 // AddMIMEType adds a rule that allows resources based on their registered MIME
 // type.
-func (filter *RecentFilterClass) AddMIMEType(mimeType string) {
+func (filter *RecentFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -271,7 +241,7 @@ func (filter *RecentFilterClass) AddMIMEType(mimeType string) {
 
 // AddPattern adds a rule that allows resources based on a pattern matching
 // their display name.
-func (filter *RecentFilterClass) AddPattern(pattern string) {
+func (filter *RecentFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -284,7 +254,7 @@ func (filter *RecentFilterClass) AddPattern(pattern string) {
 
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
 // GdkPixbuf.
-func (filter *RecentFilterClass) AddPixbufFormats() {
+func (filter *RecentFilter) AddPixbufFormats() {
 	var _arg0 *C.GtkRecentFilter // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
@@ -299,7 +269,7 @@ func (filter *RecentFilterClass) AddPixbufFormats() {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
-func (filter *RecentFilterClass) Filter(filterInfo *RecentFilterInfo) bool {
+func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _arg1 *C.GtkRecentFilterInfo // out
 	var _cret C.gboolean             // in
@@ -320,7 +290,7 @@ func (filter *RecentFilterClass) Filter(filterInfo *RecentFilterInfo) bool {
 
 // Name gets the human-readable name for the filter. See
 // gtk_recent_filter_set_name().
-func (filter *RecentFilterClass) Name() string {
+func (filter *RecentFilter) Name() string {
 	var _arg0 *C.GtkRecentFilter // out
 	var _cret *C.gchar           // in
 
@@ -340,7 +310,7 @@ func (filter *RecentFilterClass) Name() string {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
-func (filter *RecentFilterClass) Needed() RecentFilterFlags {
+func (filter *RecentFilter) Needed() RecentFilterFlags {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _cret C.GtkRecentFilterFlags // in
 
@@ -358,7 +328,7 @@ func (filter *RecentFilterClass) Needed() RecentFilterFlags {
 // SetName sets the human-readable name of the filter; this is the string that
 // will be displayed in the recently used resources selector user interface if
 // there is a selectable list of filters.
-func (filter *RecentFilterClass) SetName(name string) {
+func (filter *RecentFilter) SetName(name string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
@@ -373,12 +343,6 @@ func (filter *RecentFilterClass) SetName(name string) {
 // gtk_recent_filter_filter().
 type RecentFilterInfo struct {
 	native C.GtkRecentFilterInfo
-}
-
-// WrapRecentFilterInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRecentFilterInfo(ptr unsafe.Pointer) *RecentFilterInfo {
-	return (*RecentFilterInfo)(ptr)
 }
 
 // Native returns the underlying C source pointer.

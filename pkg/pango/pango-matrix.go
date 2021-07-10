@@ -34,12 +34,6 @@ type Matrix struct {
 	native C.PangoMatrix
 }
 
-// WrapMatrix wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMatrix(ptr unsafe.Pointer) *Matrix {
-	return (*Matrix)(ptr)
-}
-
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Matrix)(unsafe.Pointer(b)), nil
@@ -76,7 +70,7 @@ func (matrix *Matrix) Copy() *Matrix {
 
 	_ret = (*Matrix)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Matrix) {
-		C.free(unsafe.Pointer(v))
+		C.pango_matrix_free((*C.PangoMatrix)(unsafe.Pointer(v)))
 	})
 
 	return _ret

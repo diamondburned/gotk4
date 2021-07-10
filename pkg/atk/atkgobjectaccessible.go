@@ -18,44 +18,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_gobject_accessible_get_type()), F: marshalGObjectAccessible},
+		{T: externglib.Type(C.atk_gobject_accessible_get_type()), F: marshalGObjectAccessibler},
 	})
+}
+
+// GObjectAccessibler describes GObjectAccessible's methods.
+type GObjectAccessibler interface {
+	gextras.Objector
+
+	GetObject() *externglib.Object
 }
 
 // GObjectAccessible: this object class is derived from AtkObject. It can be
 // used as a basis for implementing accessible objects for GObjects which are
 // not derived from GtkWidget. One example of its use is in providing an
 // accessible object for GnomeCanvasItem in the GAIL library.
-type GObjectAccessible interface {
-	gextras.Objector
-
-	// Object gets the GObject for which @obj is the accessible object.
-	Object() *externglib.Object
+type GObjectAccessible struct {
+	Object
 }
 
-// GObjectAccessibleClass implements the GObjectAccessible interface.
-type GObjectAccessibleClass struct {
-	ObjectClass
-}
+var _ GObjectAccessibler = (*GObjectAccessible)(nil)
 
-var _ GObjectAccessible = (*GObjectAccessibleClass)(nil)
-
-func wrapGObjectAccessible(obj *externglib.Object) GObjectAccessible {
-	return &GObjectAccessibleClass{
-		ObjectClass: ObjectClass{
+func wrapGObjectAccessibler(obj *externglib.Object) GObjectAccessibler {
+	return &GObjectAccessible{
+		Object: Object{
 			Object: obj,
 		},
 	}
 }
 
-func marshalGObjectAccessible(p uintptr) (interface{}, error) {
+func marshalGObjectAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGObjectAccessible(obj), nil
+	return wrapGObjectAccessibler(obj), nil
 }
 
-// Object gets the GObject for which @obj is the accessible object.
-func (obj *GObjectAccessibleClass) Object() *externglib.Object {
+// GetObject gets the GObject for which @obj is the accessible object.
+func (obj *GObjectAccessible) GetObject() *externglib.Object {
 	var _arg0 *C.AtkGObjectAccessible // out
 	var _cret *C.GObject              // in
 

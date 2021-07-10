@@ -393,14 +393,18 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		}
 
 		var free *gir.Method
+		var unref bool
 
 		if ref := types.RecordHasRef(v); ref != nil {
-			value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InName)
+			value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InNamePtr(1))
+			unref = true
+			free = types.RecordHasUnref(v)
+		} else {
 			free = types.RecordHasFree(v)
 		}
 
 		// We can take ownership if the type can be reference-counted anyway.
-		if value.isTransferring() || free != nil {
+		if value.isTransferring() || unref {
 			value.header.Import("runtime")
 			value.p.Linef("runtime.SetFinalizer(%s, func(v %s) {", value.OutName, value.Out.Type)
 

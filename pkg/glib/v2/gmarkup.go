@@ -148,12 +148,6 @@ type MarkupParseContext struct {
 	native C.GMarkupParseContext
 }
 
-// WrapMarkupParseContext wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMarkupParseContext(ptr unsafe.Pointer) *MarkupParseContext {
-	return (*MarkupParseContext)(ptr)
-}
-
 func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*MarkupParseContext)(unsafe.Pointer(b)), nil
@@ -408,12 +402,6 @@ func (context *MarkupParseContext) unref() {
 // caller.
 type MarkupParser struct {
 	native C.GMarkupParser
-}
-
-// WrapMarkupParser wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMarkupParser(ptr unsafe.Pointer) *MarkupParser {
-	return (*MarkupParser)(ptr)
 }
 
 // Native returns the underlying C source pointer.

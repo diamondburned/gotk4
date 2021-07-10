@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
-		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDrag},
+		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDragger},
 	})
 }
 
@@ -41,6 +41,22 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Dragger describes Drag's methods.
+type Dragger interface {
+	gextras.Objector
+
+	DropDone(success bool)
+	Actions() DragAction
+	Content() *ContentProvider
+	Device() *Device
+	Display() *Display
+	DragSurface() *Surface
+	Formats() *ContentFormats
+	SelectedAction() DragAction
+	Surface() *Surface
+	SetHotspot(hotX int, hotY int)
+}
+
 // Drag: the `GdkDrag` object represents the source of an ongoing DND operation.
 //
 // A `GdkDrag` is created when a drag is started, and stays alive for duration
@@ -51,68 +67,22 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 // GTK provides a higher level abstraction based on top of these functions, and
 // so they are not normally needed in GTK applications. See the "Drag and Drop"
 // section of the GTK documentation for more information.
-type Drag interface {
-	gextras.Objector
-
-	// DropDone informs GDK that the drop ended.
-	//
-	// Passing false for @success may trigger a drag cancellation animation.
-	//
-	// This function is called by the drag source, and should be the last call
-	// before dropping the reference to the @drag.
-	//
-	// The `GdkDrag` will only take the first [method@Gdk.Drag.drop_done] call
-	// as effective, if this function is called multiple times, all subsequent
-	// calls will be ignored.
-	DropDone(success bool)
-	// Actions determines the bitmask of possible actions proposed by the
-	// source.
-	Actions() DragAction
-	// Content returns the `GdkContentProvider` associated to the `GdkDrag`
-	// object.
-	Content() *ContentProviderClass
-	// Device returns the `GdkDevice` associated to the `GdkDrag` object.
-	Device() *DeviceClass
-	// Display gets the `GdkDisplay` that the drag object was created for.
-	Display() *DisplayClass
-	// DragSurface returns the surface on which the drag icon should be rendered
-	// during the drag operation.
-	//
-	// Note that the surface may not be available until the drag operation has
-	// begun. GDK will move the surface in accordance with the ongoing drag
-	// operation. The surface is owned by @drag and will be destroyed when the
-	// drag operation is over.
-	DragSurface() *SurfaceClass
-	// Formats retrieves the formats supported by this `GdkDrag` object.
-	Formats() *ContentFormats
-	// SelectedAction determines the action chosen by the drag destination.
-	SelectedAction() DragAction
-	// Surface returns the `GdkSurface` where the drag originates.
-	Surface() *SurfaceClass
-	// SetHotspot sets the position of the drag surface that will be kept under
-	// the cursor hotspot.
-	//
-	// Initially, the hotspot is at the top left corner of the drag surface.
-	SetHotspot(hotX int, hotY int)
-}
-
-// DragClass implements the Drag interface.
-type DragClass struct {
+type Drag struct {
 	*externglib.Object
 }
 
-var _ Drag = (*DragClass)(nil)
+var _ Dragger = (*Drag)(nil)
 
-func wrapDrag(obj *externglib.Object) Drag {
-	return &DragClass{
+func wrapDragger(obj *externglib.Object) Dragger {
+	return &Drag{
 		Object: obj,
 	}
 }
 
-func marshalDrag(p uintptr) (interface{}, error) {
+func marshalDragger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrag(obj), nil
+	return wrapDragger(obj), nil
 }
 
 // DropDone informs GDK that the drop ended.
@@ -125,7 +95,7 @@ func marshalDrag(p uintptr) (interface{}, error) {
 // The `GdkDrag` will only take the first [method@Gdk.Drag.drop_done] call as
 // effective, if this function is called multiple times, all subsequent calls
 // will be ignored.
-func (drag *DragClass) DropDone(success bool) {
+func (drag *Drag) DropDone(success bool) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.gboolean // out
 
@@ -138,7 +108,7 @@ func (drag *DragClass) DropDone(success bool) {
 }
 
 // Actions determines the bitmask of possible actions proposed by the source.
-func (drag *DragClass) Actions() DragAction {
+func (drag *Drag) Actions() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
 
@@ -154,7 +124,7 @@ func (drag *DragClass) Actions() DragAction {
 }
 
 // Content returns the `GdkContentProvider` associated to the `GdkDrag` object.
-func (drag *DragClass) Content() *ContentProviderClass {
+func (drag *Drag) Content() *ContentProvider {
 	var _arg0 *C.GdkDrag            // out
 	var _cret *C.GdkContentProvider // in
 
@@ -162,15 +132,15 @@ func (drag *DragClass) Content() *ContentProviderClass {
 
 	_cret = C.gdk_drag_get_content(_arg0)
 
-	var _contentProvider *ContentProviderClass // out
+	var _contentProvider *ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ContentProviderClass)
+	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ContentProvider)
 
 	return _contentProvider
 }
 
 // Device returns the `GdkDevice` associated to the `GdkDrag` object.
-func (drag *DragClass) Device() *DeviceClass {
+func (drag *Drag) Device() *Device {
 	var _arg0 *C.GdkDrag   // out
 	var _cret *C.GdkDevice // in
 
@@ -178,15 +148,15 @@ func (drag *DragClass) Device() *DeviceClass {
 
 	_cret = C.gdk_drag_get_device(_arg0)
 
-	var _device *DeviceClass // out
+	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
 
 	return _device
 }
 
 // Display gets the `GdkDisplay` that the drag object was created for.
-func (drag *DragClass) Display() *DisplayClass {
+func (drag *Drag) Display() *Display {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkDisplay // in
 
@@ -194,9 +164,9 @@ func (drag *DragClass) Display() *DisplayClass {
 
 	_cret = C.gdk_drag_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
@@ -208,7 +178,7 @@ func (drag *DragClass) Display() *DisplayClass {
 // begun. GDK will move the surface in accordance with the ongoing drag
 // operation. The surface is owned by @drag and will be destroyed when the drag
 // operation is over.
-func (drag *DragClass) DragSurface() *SurfaceClass {
+func (drag *Drag) DragSurface() *Surface {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
@@ -216,15 +186,15 @@ func (drag *DragClass) DragSurface() *SurfaceClass {
 
 	_cret = C.gdk_drag_get_drag_surface(_arg0)
 
-	var _surface *SurfaceClass // out
+	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
 
 	return _surface
 }
 
 // Formats retrieves the formats supported by this `GdkDrag` object.
-func (drag *DragClass) Formats() *ContentFormats {
+func (drag *Drag) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrag           // out
 	var _cret *C.GdkContentFormats // in
 
@@ -244,7 +214,7 @@ func (drag *DragClass) Formats() *ContentFormats {
 }
 
 // SelectedAction determines the action chosen by the drag destination.
-func (drag *DragClass) SelectedAction() DragAction {
+func (drag *Drag) SelectedAction() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
 
@@ -260,7 +230,7 @@ func (drag *DragClass) SelectedAction() DragAction {
 }
 
 // Surface returns the `GdkSurface` where the drag originates.
-func (drag *DragClass) Surface() *SurfaceClass {
+func (drag *Drag) Surface() *Surface {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
@@ -268,9 +238,9 @@ func (drag *DragClass) Surface() *SurfaceClass {
 
 	_cret = C.gdk_drag_get_surface(_arg0)
 
-	var _surface *SurfaceClass // out
+	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
 
 	return _surface
 }
@@ -279,7 +249,7 @@ func (drag *DragClass) Surface() *SurfaceClass {
 // cursor hotspot.
 //
 // Initially, the hotspot is at the top left corner of the drag surface.
-func (drag *DragClass) SetHotspot(hotX int, hotY int) {
+func (drag *Drag) SetHotspot(hotX int, hotY int) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out

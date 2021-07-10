@@ -21,16 +21,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButton},
+		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtonner},
 	})
 }
 
-// ColorButtonOverrider contains methods that are overridable.
+// ColorButtonnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ColorButtonOverrider interface {
+type ColorButtonnerOverrider interface {
 	ColorSet()
+}
+
+// ColorButtonner describes ColorButton's methods.
+type ColorButtonner interface {
+	gextras.Objector
+
+	Alpha() uint16
+	Color() gdk.Color
+	Title() string
+	UseAlpha() bool
+	SetAlpha(alpha uint16)
+	SetColor(color *gdk.Color)
+	SetTitle(title string)
+	SetUseAlpha(useAlpha bool)
 }
 
 // ColorButton: the ColorButton is a button which displays the currently
@@ -42,125 +56,90 @@ type ColorButtonOverrider interface {
 //
 // GtkColorButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .color style class.
-type ColorButton interface {
-	gextras.Objector
-
-	// Alpha returns the current alpha value.
-	//
-	// Deprecated: Use gtk_color_chooser_get_rgba() instead.
-	Alpha() uint16
-	// Color sets @color to be the current color in the ColorButton widget.
-	//
-	// Deprecated: Use gtk_color_chooser_get_rgba() instead.
-	Color() gdk.Color
-	// Title gets the title of the color selection dialog.
-	Title() string
-	// UseAlpha does the color selection dialog use the alpha channel ?
-	//
-	// Deprecated: Use gtk_color_chooser_get_use_alpha() instead.
-	UseAlpha() bool
-	// SetAlpha sets the current opacity to be @alpha.
-	//
-	// Deprecated: Use gtk_color_chooser_set_rgba() instead.
-	SetAlpha(alpha uint16)
-	// SetColor sets the current color to be @color.
-	//
-	// Deprecated: Use gtk_color_chooser_set_rgba() instead.
-	SetColor(color *gdk.Color)
-	// SetTitle sets the title for the color selection dialog.
-	SetTitle(title string)
-	// SetUseAlpha sets whether or not the color button should use the alpha
-	// channel.
-	//
-	// Deprecated: Use gtk_color_chooser_set_use_alpha() instead.
-	SetUseAlpha(useAlpha bool)
-}
-
-// ColorButtonClass implements the ColorButton interface.
-type ColorButtonClass struct {
+type ColorButton struct {
 	*externglib.Object
-	ButtonClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
-	ColorChooserIface
+	Button
+	Actionable
+	Activatable
+	Buildable
+	ColorChooser
 }
 
-var _ ColorButton = (*ColorButtonClass)(nil)
+var _ ColorButtonner = (*ColorButton)(nil)
 
-func wrapColorButton(obj *externglib.Object) ColorButton {
-	return &ColorButtonClass{
+func wrapColorButtonner(obj *externglib.Object) ColorButtonner {
+	return &ColorButton{
 		Object: obj,
-		ButtonClass: ButtonClass{
+		Button: Button{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ColorChooserIface: ColorChooserIface{
+		ColorChooser: ColorChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalColorButton(p uintptr) (interface{}, error) {
+func marshalColorButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorButton(obj), nil
+	return wrapColorButtonner(obj), nil
 }
 
 // NewColorButton creates a new color button.
@@ -169,14 +148,14 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 // representing the current selected color. When the button is clicked, a
 // color-selection dialog will open, allowing the user to select a color. The
 // swatch will be updated to reflect the new color when the user finishes.
-func NewColorButton() *ColorButtonClass {
+func NewColorButton() *ColorButton {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_color_button_new()
 
-	var _colorButton *ColorButtonClass // out
+	var _colorButton *ColorButton // out
 
-	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButtonClass)
+	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
 
 	return _colorButton
 }
@@ -184,7 +163,7 @@ func NewColorButton() *ColorButtonClass {
 // NewColorButtonWithColor creates a new color button.
 //
 // Deprecated: Use gtk_color_button_new_with_rgba() instead.
-func NewColorButtonWithColor(color *gdk.Color) *ColorButtonClass {
+func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 	var _arg1 *C.GdkColor  // out
 	var _cret *C.GtkWidget // in
 
@@ -192,15 +171,15 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButtonClass {
 
 	_cret = C.gtk_color_button_new_with_color(_arg1)
 
-	var _colorButton *ColorButtonClass // out
+	var _colorButton *ColorButton // out
 
-	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButtonClass)
+	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
 
 	return _colorButton
 }
 
 // NewColorButtonWithRGBA creates a new color button.
-func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButtonClass {
+func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
 
@@ -208,9 +187,9 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButtonClass {
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
-	var _colorButton *ColorButtonClass // out
+	var _colorButton *ColorButton // out
 
-	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButtonClass)
+	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
 
 	return _colorButton
 }
@@ -218,7 +197,7 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButtonClass {
 // Alpha returns the current alpha value.
 //
 // Deprecated: Use gtk_color_chooser_get_rgba() instead.
-func (button *ColorButtonClass) Alpha() uint16 {
+func (button *ColorButton) Alpha() uint16 {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.guint16         // in
 
@@ -236,7 +215,7 @@ func (button *ColorButtonClass) Alpha() uint16 {
 // Color sets @color to be the current color in the ColorButton widget.
 //
 // Deprecated: Use gtk_color_chooser_get_rgba() instead.
-func (button *ColorButtonClass) Color() gdk.Color {
+func (button *ColorButton) Color() gdk.Color {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.GdkColor        // in
 
@@ -252,7 +231,7 @@ func (button *ColorButtonClass) Color() gdk.Color {
 }
 
 // Title gets the title of the color selection dialog.
-func (button *ColorButtonClass) Title() string {
+func (button *ColorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
 	var _cret *C.gchar          // in
 
@@ -270,7 +249,7 @@ func (button *ColorButtonClass) Title() string {
 // UseAlpha does the color selection dialog use the alpha channel ?
 //
 // Deprecated: Use gtk_color_chooser_get_use_alpha() instead.
-func (button *ColorButtonClass) UseAlpha() bool {
+func (button *ColorButton) UseAlpha() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
 
@@ -290,7 +269,7 @@ func (button *ColorButtonClass) UseAlpha() bool {
 // SetAlpha sets the current opacity to be @alpha.
 //
 // Deprecated: Use gtk_color_chooser_set_rgba() instead.
-func (button *ColorButtonClass) SetAlpha(alpha uint16) {
+func (button *ColorButton) SetAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.guint16         // out
 
@@ -303,7 +282,7 @@ func (button *ColorButtonClass) SetAlpha(alpha uint16) {
 // SetColor sets the current color to be @color.
 //
 // Deprecated: Use gtk_color_chooser_set_rgba() instead.
-func (button *ColorButtonClass) SetColor(color *gdk.Color) {
+func (button *ColorButton) SetColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.GdkColor       // out
 
@@ -314,7 +293,7 @@ func (button *ColorButtonClass) SetColor(color *gdk.Color) {
 }
 
 // SetTitle sets the title for the color selection dialog.
-func (button *ColorButtonClass) SetTitle(title string) {
+func (button *ColorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.gchar          // out
 
@@ -329,7 +308,7 @@ func (button *ColorButtonClass) SetTitle(title string) {
 // channel.
 //
 // Deprecated: Use gtk_color_chooser_set_use_alpha() instead.
-func (button *ColorButtonClass) SetUseAlpha(useAlpha bool) {
+func (button *ColorButton) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
 

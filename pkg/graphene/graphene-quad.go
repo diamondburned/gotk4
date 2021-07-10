@@ -30,12 +30,6 @@ type Quad struct {
 	native C.graphene_quad_t
 }
 
-// WrapQuad wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapQuad(ptr unsafe.Pointer) *Quad {
-	return (*Quad)(ptr)
-}
-
 func marshalQuad(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Quad)(unsafe.Pointer(b)), nil
@@ -51,7 +45,7 @@ func NewQuadAlloc() *Quad {
 
 	_quad = (*Quad)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_quad, func(v *Quad) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_quad_free((*C.graphene_quad_t)(unsafe.Pointer(v)))
 	})
 
 	return _quad

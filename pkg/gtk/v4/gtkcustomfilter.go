@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_custom_filter_get_type()), F: marshalCustomFilter},
+		{T: externglib.Type(C.gtk_custom_filter_get_type()), F: marshalCustomFilterrer},
 	})
 }
 
@@ -53,33 +53,33 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) 
 	return cret
 }
 
-// CustomFilter: `GtkCustomFilter` determines whether to include items with a
-// callback.
-type CustomFilter interface {
+// CustomFilterrer describes CustomFilter's methods.
+type CustomFilterrer interface {
 	gextras.Objector
 
-	privateCustomFilterClass()
+	privateCustomFilter()
 }
 
-// CustomFilterClass implements the CustomFilter interface.
-type CustomFilterClass struct {
-	FilterClass
+// CustomFilter: `GtkCustomFilter` determines whether to include items with a
+// callback.
+type CustomFilter struct {
+	Filter
 }
 
-var _ CustomFilter = (*CustomFilterClass)(nil)
+var _ CustomFilterrer = (*CustomFilter)(nil)
 
-func wrapCustomFilter(obj *externglib.Object) CustomFilter {
-	return &CustomFilterClass{
-		FilterClass: FilterClass{
+func wrapCustomFilterrer(obj *externglib.Object) CustomFilterrer {
+	return &CustomFilter{
+		Filter: Filter{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCustomFilter(p uintptr) (interface{}, error) {
+func marshalCustomFilterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCustomFilter(obj), nil
+	return wrapCustomFilterrer(obj), nil
 }
 
-func (*CustomFilterClass) privateCustomFilterClass() {}
+func (*CustomFilter) privateCustomFilter() {}

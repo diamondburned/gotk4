@@ -21,28 +21,28 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_label_accessible_get_type()), F: marshalLabelAccessible},
+		{T: externglib.Type(C.gtk_label_accessible_get_type()), F: marshalLabelAccessibler},
 	})
 }
 
-type LabelAccessible interface {
+// LabelAccessibler describes LabelAccessible's methods.
+type LabelAccessibler interface {
 	gextras.Objector
 
-	privateLabelAccessibleClass()
+	privateLabelAccessible()
 }
 
-// LabelAccessibleClass implements the LabelAccessible interface.
-type LabelAccessibleClass struct {
-	WidgetAccessibleClass
+type LabelAccessible struct {
+	WidgetAccessible
 }
 
-var _ LabelAccessible = (*LabelAccessibleClass)(nil)
+var _ LabelAccessibler = (*LabelAccessible)(nil)
 
-func wrapLabelAccessible(obj *externglib.Object) LabelAccessible {
-	return &LabelAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapLabelAccessibler(obj *externglib.Object) LabelAccessibler {
+	return &LabelAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
@@ -50,10 +50,10 @@ func wrapLabelAccessible(obj *externglib.Object) LabelAccessible {
 	}
 }
 
-func marshalLabelAccessible(p uintptr) (interface{}, error) {
+func marshalLabelAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLabelAccessible(obj), nil
+	return wrapLabelAccessibler(obj), nil
 }
 
-func (*LabelAccessibleClass) privateLabelAccessibleClass() {}
+func (*LabelAccessible) privateLabelAccessible() {}

@@ -21,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_shortcut_type_get_type()), F: marshalShortcutType},
-		{T: externglib.Type(C.gtk_shortcuts_shortcut_get_type()), F: marshalShortcutsShortcut},
+		{T: externglib.Type(C.gtk_shortcuts_shortcut_get_type()), F: marshalShortcutsShortcutter},
 	})
 }
 
@@ -60,64 +60,64 @@ func marshalShortcutType(p uintptr) (interface{}, error) {
 	return ShortcutType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ShortcutsShortcut represents a single keyboard shortcut or gesture with a
-// short text. This widget is only meant to be used with ShortcutsWindow.
-type ShortcutsShortcut interface {
+// ShortcutsShortcutter describes ShortcutsShortcut's methods.
+type ShortcutsShortcutter interface {
 	gextras.Objector
 
-	privateShortcutsShortcutClass()
+	privateShortcutsShortcut()
 }
 
-// ShortcutsShortcutClass implements the ShortcutsShortcut interface.
-type ShortcutsShortcutClass struct {
+// ShortcutsShortcut represents a single keyboard shortcut or gesture with a
+// short text. This widget is only meant to be used with ShortcutsWindow.
+type ShortcutsShortcut struct {
 	*externglib.Object
-	BoxClass
-	BuildableIface
-	OrientableIface
+	Box
+	Buildable
+	Orientable
 }
 
-var _ ShortcutsShortcut = (*ShortcutsShortcutClass)(nil)
+var _ ShortcutsShortcutter = (*ShortcutsShortcut)(nil)
 
-func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcut {
-	return &ShortcutsShortcutClass{
+func wrapShortcutsShortcutter(obj *externglib.Object) ShortcutsShortcutter {
+	return &ShortcutsShortcut{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
+func marshalShortcutsShortcutter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsShortcut(obj), nil
+	return wrapShortcutsShortcutter(obj), nil
 }
 
-func (*ShortcutsShortcutClass) privateShortcutsShortcutClass() {}
+func (*ShortcutsShortcut) privateShortcutsShortcut() {}

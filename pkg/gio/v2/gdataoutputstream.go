@@ -29,64 +29,55 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_data_output_stream_get_type()), F: marshalDataOutputStream},
+		{T: externglib.Type(C.g_data_output_stream_get_type()), F: marshalDataOutputStreamer},
 	})
+}
+
+// DataOutputStreamer describes DataOutputStream's methods.
+type DataOutputStreamer interface {
+	gextras.Objector
+
+	ByteOrder() DataStreamByteOrder
+	PutByte(data byte, cancellable Cancellabler) error
+	PutInt16(data int16, cancellable Cancellabler) error
+	PutInt32(data int32, cancellable Cancellabler) error
+	PutInt64(data int64, cancellable Cancellabler) error
+	PutString(str string, cancellable Cancellabler) error
+	PutUint16(data uint16, cancellable Cancellabler) error
+	PutUint32(data uint32, cancellable Cancellabler) error
+	PutUint64(data uint64, cancellable Cancellabler) error
 }
 
 // DataOutputStream: data output stream implements Stream and includes functions
 // for writing data directly to an output stream.
-type DataOutputStream interface {
-	gextras.Objector
-
-	// ByteOrder gets the byte order for the stream.
-	ByteOrder() DataStreamByteOrder
-	// PutByte puts a byte into the output stream.
-	PutByte(data byte, cancellable Cancellable) error
-	// PutInt16 puts a signed 16-bit integer into the output stream.
-	PutInt16(data int16, cancellable Cancellable) error
-	// PutInt32 puts a signed 32-bit integer into the output stream.
-	PutInt32(data int32, cancellable Cancellable) error
-	// PutInt64 puts a signed 64-bit integer into the stream.
-	PutInt64(data int64, cancellable Cancellable) error
-	// PutString puts a string into the output stream.
-	PutString(str string, cancellable Cancellable) error
-	// PutUint16 puts an unsigned 16-bit integer into the output stream.
-	PutUint16(data uint16, cancellable Cancellable) error
-	// PutUint32 puts an unsigned 32-bit integer into the stream.
-	PutUint32(data uint32, cancellable Cancellable) error
-	// PutUint64 puts an unsigned 64-bit integer into the stream.
-	PutUint64(data uint64, cancellable Cancellable) error
+type DataOutputStream struct {
+	FilterOutputStream
+	Seekable
 }
 
-// DataOutputStreamClass implements the DataOutputStream interface.
-type DataOutputStreamClass struct {
-	FilterOutputStreamClass
-	SeekableIface
-}
+var _ DataOutputStreamer = (*DataOutputStream)(nil)
 
-var _ DataOutputStream = (*DataOutputStreamClass)(nil)
-
-func wrapDataOutputStream(obj *externglib.Object) DataOutputStream {
-	return &DataOutputStreamClass{
-		FilterOutputStreamClass: FilterOutputStreamClass{
-			OutputStreamClass: OutputStreamClass{
+func wrapDataOutputStreamer(obj *externglib.Object) DataOutputStreamer {
+	return &DataOutputStream{
+		FilterOutputStream: FilterOutputStream{
+			OutputStream: OutputStream{
 				Object: obj,
 			},
 		},
-		SeekableIface: SeekableIface{
+		Seekable: Seekable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDataOutputStream(p uintptr) (interface{}, error) {
+func marshalDataOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDataOutputStream(obj), nil
+	return wrapDataOutputStreamer(obj), nil
 }
 
 // NewDataOutputStream creates a new data output stream for @base_stream.
-func NewDataOutputStream(baseStream OutputStream) *DataOutputStreamClass {
+func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 	var _arg1 *C.GOutputStream     // out
 	var _cret *C.GDataOutputStream // in
 
@@ -94,15 +85,15 @@ func NewDataOutputStream(baseStream OutputStream) *DataOutputStreamClass {
 
 	_cret = C.g_data_output_stream_new(_arg1)
 
-	var _dataOutputStream *DataOutputStreamClass // out
+	var _dataOutputStream *DataOutputStream // out
 
-	_dataOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DataOutputStreamClass)
+	_dataOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DataOutputStream)
 
 	return _dataOutputStream
 }
 
 // ByteOrder gets the byte order for the stream.
-func (stream *DataOutputStreamClass) ByteOrder() DataStreamByteOrder {
+func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataOutputStream   // out
 	var _cret C.GDataStreamByteOrder // in
 
@@ -118,7 +109,7 @@ func (stream *DataOutputStreamClass) ByteOrder() DataStreamByteOrder {
 }
 
 // PutByte puts a byte into the output stream.
-func (stream *DataOutputStreamClass) PutByte(data byte, cancellable Cancellable) error {
+func (stream *DataOutputStream) PutByte(data byte, cancellable Cancellabler) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guchar             // out
 	var _arg2 *C.GCancellable      // out
@@ -138,7 +129,7 @@ func (stream *DataOutputStreamClass) PutByte(data byte, cancellable Cancellable)
 }
 
 // PutInt16 puts a signed 16-bit integer into the output stream.
-func (stream *DataOutputStreamClass) PutInt16(data int16, cancellable Cancellable) error {
+func (stream *DataOutputStream) PutInt16(data int16, cancellable Cancellabler) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint16             // out
 	var _arg2 *C.GCancellable      // out
@@ -158,7 +149,7 @@ func (stream *DataOutputStreamClass) PutInt16(data int16, cancellable Cancellabl
 }
 
 // PutInt32 puts a signed 32-bit integer into the output stream.
-func (stream *DataOutputStreamClass) PutInt32(data int32, cancellable Cancellable) error {
+func (stream *DataOutputStream) PutInt32(data int32, cancellable Cancellabler) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint32             // out
 	var _arg2 *C.GCancellable      // out
@@ -178,7 +169,7 @@ func (stream *DataOutputStreamClass) PutInt32(data int32, cancellable Cancellabl
 }
 
 // PutInt64 puts a signed 64-bit integer into the stream.
-func (stream *DataOutputStreamClass) PutInt64(data int64, cancellable Cancellable) error {
+func (stream *DataOutputStream) PutInt64(data int64, cancellable Cancellabler) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.gint64             // out
 	var _arg2 *C.GCancellable      // out
@@ -198,7 +189,7 @@ func (stream *DataOutputStreamClass) PutInt64(data int64, cancellable Cancellabl
 }
 
 // PutString puts a string into the output stream.
-func (stream *DataOutputStreamClass) PutString(str string, cancellable Cancellable) error {
+func (stream *DataOutputStream) PutString(str string, cancellable Cancellabler) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.GCancellable      // out
@@ -219,7 +210,7 @@ func (stream *DataOutputStreamClass) PutString(str string, cancellable Cancellab
 }
 
 // PutUint16 puts an unsigned 16-bit integer into the output stream.
-func (stream *DataOutputStreamClass) PutUint16(data uint16, cancellable Cancellable) error {
+func (stream *DataOutputStream) PutUint16(data uint16, cancellable Cancellabler) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint16            // out
 	var _arg2 *C.GCancellable      // out
@@ -239,7 +230,7 @@ func (stream *DataOutputStreamClass) PutUint16(data uint16, cancellable Cancella
 }
 
 // PutUint32 puts an unsigned 32-bit integer into the stream.
-func (stream *DataOutputStreamClass) PutUint32(data uint32, cancellable Cancellable) error {
+func (stream *DataOutputStream) PutUint32(data uint32, cancellable Cancellabler) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint32            // out
 	var _arg2 *C.GCancellable      // out
@@ -259,7 +250,7 @@ func (stream *DataOutputStreamClass) PutUint32(data uint32, cancellable Cancella
 }
 
 // PutUint64 puts an unsigned 64-bit integer into the stream.
-func (stream *DataOutputStreamClass) PutUint64(data uint64, cancellable Cancellable) error {
+func (stream *DataOutputStream) PutUint64(data uint64, cancellable Cancellabler) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg1 C.guint64            // out
 	var _arg2 *C.GCancellable      // out

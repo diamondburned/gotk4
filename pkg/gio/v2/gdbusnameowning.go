@@ -28,7 +28,7 @@ import "C"
 
 // BusAcquiredCallback: invoked when a connection to a message bus has been
 // obtained.
-type BusAcquiredCallback func(connection *DBusConnectionClass, name string, userData interface{})
+type BusAcquiredCallback func(connection *DBusConnection, name string, userData interface{})
 
 //export gotk4_BusAcquiredCallback
 func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
@@ -37,11 +37,11 @@ func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var name string                     // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var name string                // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	name = C.GoString(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -50,7 +50,7 @@ func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 }
 
 // BusNameAcquiredCallback: invoked when the name is acquired.
-type BusNameAcquiredCallback func(connection *DBusConnectionClass, name string, userData interface{})
+type BusNameAcquiredCallback func(connection *DBusConnection, name string, userData interface{})
 
 //export gotk4_BusNameAcquiredCallback
 func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
@@ -59,11 +59,11 @@ func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var name string                     // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var name string                // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	name = C.GoString(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -73,7 +73,7 @@ func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 
 // BusNameLostCallback: invoked when the name is lost or @connection has been
 // closed.
-type BusNameLostCallback func(connection *DBusConnectionClass, name string, userData interface{})
+type BusNameLostCallback func(connection *DBusConnection, name string, userData interface{})
 
 //export gotk4_BusNameLostCallback
 func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
@@ -82,11 +82,11 @@ func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var name string                     // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var name string                // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	name = C.GoString(arg1)
 	userData = box.Get(uintptr(arg2))
 

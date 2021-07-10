@@ -19,12 +19,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_window_get_type()), F: marshalX11Window},
+		{T: externglib.Type(C.gdk_x11_window_get_type()), F: marshalX11Windowwer},
 	})
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.
-func X11GetServerTime(window X11Window) uint32 {
+func X11GetServerTime(window X11Windowwer) uint32 {
 	var _arg1 *C.GdkWindow // out
 	var _cret C.guint32    // in
 
@@ -39,93 +39,43 @@ func X11GetServerTime(window X11Window) uint32 {
 	return _guint32
 }
 
-type X11Window interface {
+// X11Windowwer describes X11Window's methods.
+type X11Windowwer interface {
 	gextras.Objector
 
-	// Desktop gets the number of the workspace @window is on.
 	Desktop() uint32
-	// MoveToCurrentDesktop moves the window to the correct workspace when
-	// running under a window manager that supports multiple workspaces, as
-	// described in the Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec) specification. Will not do
-	// anything if the window is already on all workspaces.
 	MoveToCurrentDesktop()
-	// MoveToDesktop moves the window to the given workspace when running unde a
-	// window manager that supports multiple workspaces, as described in the
-	// Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	MoveToDesktop(desktop uint32)
-	// SetFrameExtents: this is the same as gdk_window_set_shadow_width() but it
-	// only works on GdkX11Window.
-	//
-	// Deprecated: Use gdk_window_set_shadow_width() instead.
 	SetFrameExtents(left int, right int, top int, bottom int)
-	// SetFrameSyncEnabled: this function can be used to disable frame
-	// synchronization for a window. Normally frame synchronziation will be
-	// enabled or disabled based on whether the system has a compositor that
-	// supports frame synchronization, but if the window is not directly managed
-	// by the window manager, then frame synchronziation may need to be
-	// disabled. This is the case for a window embedded via the XEMBED protocol.
 	SetFrameSyncEnabled(frameSyncEnabled bool)
-	// SetHideTitlebarWhenMaximized: set a hint for the window manager,
-	// requesting that the titlebar should be hidden when the window is
-	// maximized.
-	//
-	// Note that this property is automatically updated by GTK+, so this
-	// function should only be used by applications which do not use GTK+ to
-	// create toplevel windows.
 	SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool)
-	// SetThemeVariant: GTK+ applications can request a dark theme variant. In
-	// order to make other applications - namely window managers using GTK+ for
-	// themeing - aware of this choice, GTK+ uses this function to export the
-	// requested theme variant as _GTK_THEME_VARIANT property on toplevel
-	// windows.
-	//
-	// Note that this property is automatically updated by GTK+, so this
-	// function should only be used by applications which do not use GTK+ to
-	// create toplevel windows.
 	SetThemeVariant(variant string)
-	// SetUserTime: the application can use this call to update the
-	// _NET_WM_USER_TIME property on a toplevel window. This property stores an
-	// Xserver time which represents the time of the last user input event
-	// received for this window. This property may be used by the window manager
-	// to alter the focus, stacking, and/or placement behavior of windows when
-	// they are mapped depending on whether the new window was created by a user
-	// action or is a "pop-up" window activated by a timer or some other event.
-	//
-	// Note that this property is automatically updated by GDK, so this function
-	// should only be used by applications which handle input events bypassing
-	// GDK.
 	SetUserTime(timestamp uint32)
-	// SetUTF8Property: this function modifies or removes an arbitrary X11
-	// window property of type UTF8_STRING. If the given @window is not a
-	// toplevel window, it is ignored.
 	SetUTF8Property(name string, value string)
 }
 
-// X11WindowClass implements the X11Window interface.
-type X11WindowClass struct {
-	gdk.WindowClass
+type X11Window struct {
+	gdk.Window
 }
 
-var _ X11Window = (*X11WindowClass)(nil)
+var _ X11Windowwer = (*X11Window)(nil)
 
-func wrapX11Window(obj *externglib.Object) X11Window {
-	return &X11WindowClass{
-		WindowClass: gdk.WindowClass{
+func wrapX11Windowwer(obj *externglib.Object) X11Windowwer {
+	return &X11Window{
+		Window: gdk.Window{
 			Object: obj,
 		},
 	}
 }
 
-func marshalX11Window(p uintptr) (interface{}, error) {
+func marshalX11Windowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Window(obj), nil
+	return wrapX11Windowwer(obj), nil
 }
 
 // Desktop gets the number of the workspace @window is on.
-func (window *X11WindowClass) Desktop() uint32 {
+func (window *X11Window) Desktop() uint32 {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.guint32    // in
 
@@ -145,7 +95,7 @@ func (window *X11WindowClass) Desktop() uint32 {
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification. Will not do anything if the window is already on all
 // workspaces.
-func (window *X11WindowClass) MoveToCurrentDesktop() {
+func (window *X11Window) MoveToCurrentDesktop() {
 	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
@@ -157,7 +107,7 @@ func (window *X11WindowClass) MoveToCurrentDesktop() {
 // window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
-func (window *X11WindowClass) MoveToDesktop(desktop uint32) {
+func (window *X11Window) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
 
@@ -171,7 +121,7 @@ func (window *X11WindowClass) MoveToDesktop(desktop uint32) {
 // only works on GdkX11Window.
 //
 // Deprecated: Use gdk_window_set_shadow_width() instead.
-func (window *X11WindowClass) SetFrameExtents(left int, right int, top int, bottom int) {
+func (window *X11Window) SetFrameExtents(left int, right int, top int, bottom int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -193,7 +143,7 @@ func (window *X11WindowClass) SetFrameExtents(left int, right int, top int, bott
 // synchronization, but if the window is not directly managed by the window
 // manager, then frame synchronziation may need to be disabled. This is the case
 // for a window embedded via the XEMBED protocol.
-func (window *X11WindowClass) SetFrameSyncEnabled(frameSyncEnabled bool) {
+func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
@@ -211,7 +161,7 @@ func (window *X11WindowClass) SetFrameSyncEnabled(frameSyncEnabled bool) {
 // Note that this property is automatically updated by GTK+, so this function
 // should only be used by applications which do not use GTK+ to create toplevel
 // windows.
-func (window *X11WindowClass) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) {
+func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
 
@@ -231,7 +181,7 @@ func (window *X11WindowClass) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaxim
 // Note that this property is automatically updated by GTK+, so this function
 // should only be used by applications which do not use GTK+ to create toplevel
 // windows.
-func (window *X11WindowClass) SetThemeVariant(variant string) {
+func (window *X11Window) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.char      // out
 
@@ -252,7 +202,7 @@ func (window *X11WindowClass) SetThemeVariant(variant string) {
 //
 // Note that this property is automatically updated by GDK, so this function
 // should only be used by applications which handle input events bypassing GDK.
-func (window *X11WindowClass) SetUserTime(timestamp uint32) {
+func (window *X11Window) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
 
@@ -265,7 +215,7 @@ func (window *X11WindowClass) SetUserTime(timestamp uint32) {
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
 // property of type UTF8_STRING. If the given @window is not a toplevel window,
 // it is ignored.
-func (window *X11WindowClass) SetUTF8Property(name string, value string) {
+func (window *X11Window) SetUTF8Property(name string, value string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out

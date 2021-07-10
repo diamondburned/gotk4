@@ -19,8 +19,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_controller_motion_get_type()), F: marshalDropControllerMotion},
+		{T: externglib.Type(C.gtk_drop_controller_motion_get_type()), F: marshalDropControllerMotioner},
 	})
+}
+
+// DropControllerMotioner describes DropControllerMotion's methods.
+type DropControllerMotioner interface {
+	gextras.Objector
+
+	ContainsPointer() bool
+	Drop() *gdk.Drop
+	IsPointer() bool
 }
 
 // DropControllerMotion: `GtkDropControllerMotion` is an event controller
@@ -31,58 +40,43 @@ func init() {
 //
 // This controller is not able to accept drops, use [class@Gtk.DropTarget] for
 // that purpose.
-type DropControllerMotion interface {
-	gextras.Objector
-
-	// ContainsPointer returns if a Drag-and-Drop operation is within the widget
-	// @self or one of its children.
-	ContainsPointer() bool
-	// Drop returns the `GdkDrop` of a current Drag-and-Drop operation over the
-	// widget of @self.
-	Drop() *gdk.DropClass
-	// IsPointer returns if a Drag-and-Drop operation is within the widget
-	// @self, not one of its children.
-	IsPointer() bool
+type DropControllerMotion struct {
+	EventController
 }
 
-// DropControllerMotionClass implements the DropControllerMotion interface.
-type DropControllerMotionClass struct {
-	EventControllerClass
-}
+var _ DropControllerMotioner = (*DropControllerMotion)(nil)
 
-var _ DropControllerMotion = (*DropControllerMotionClass)(nil)
-
-func wrapDropControllerMotion(obj *externglib.Object) DropControllerMotion {
-	return &DropControllerMotionClass{
-		EventControllerClass: EventControllerClass{
+func wrapDropControllerMotioner(obj *externglib.Object) DropControllerMotioner {
+	return &DropControllerMotion{
+		EventController: EventController{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDropControllerMotion(p uintptr) (interface{}, error) {
+func marshalDropControllerMotioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropControllerMotion(obj), nil
+	return wrapDropControllerMotioner(obj), nil
 }
 
 // NewDropControllerMotion creates a new event controller that will handle
 // pointer motion events during drag and drop.
-func NewDropControllerMotion() *DropControllerMotionClass {
+func NewDropControllerMotion() *DropControllerMotion {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_drop_controller_motion_new()
 
-	var _dropControllerMotion *DropControllerMotionClass // out
+	var _dropControllerMotion *DropControllerMotion // out
 
-	_dropControllerMotion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DropControllerMotionClass)
+	_dropControllerMotion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DropControllerMotion)
 
 	return _dropControllerMotion
 }
 
 // ContainsPointer returns if a Drag-and-Drop operation is within the widget
 // @self or one of its children.
-func (self *DropControllerMotionClass) ContainsPointer() bool {
+func (self *DropControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 
@@ -101,7 +95,7 @@ func (self *DropControllerMotionClass) ContainsPointer() bool {
 
 // Drop returns the `GdkDrop` of a current Drag-and-Drop operation over the
 // widget of @self.
-func (self *DropControllerMotionClass) Drop() *gdk.DropClass {
+func (self *DropControllerMotion) Drop() *gdk.Drop {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret *C.GdkDrop                 // in
 
@@ -109,16 +103,16 @@ func (self *DropControllerMotionClass) Drop() *gdk.DropClass {
 
 	_cret = C.gtk_drop_controller_motion_get_drop(_arg0)
 
-	var _drop *gdk.DropClass // out
+	var _drop *gdk.Drop // out
 
-	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DropClass)
+	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Drop)
 
 	return _drop
 }
 
 // IsPointer returns if a Drag-and-Drop operation is within the widget @self,
 // not one of its children.
-func (self *DropControllerMotionClass) IsPointer() bool {
+func (self *DropControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 

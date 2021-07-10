@@ -20,17 +20,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindow},
+		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindowwer},
 	})
 }
 
-// ShortcutsWindowOverrider contains methods that are overridable.
+// ShortcutsWindowwerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ShortcutsWindowOverrider interface {
+type ShortcutsWindowwerOverrider interface {
 	Close()
 	Search()
+}
+
+// ShortcutsWindowwer describes ShortcutsWindow's methods.
+type ShortcutsWindowwer interface {
+	gextras.Objector
+
+	privateShortcutsWindow()
 }
 
 // ShortcutsWindow shows brief information about the keyboard shortcuts and
@@ -76,61 +83,54 @@ type ShortcutsWindowOverrider interface {
 //
 // The .ui file for this example can be found here
 // (https://git.gnome.org/browse/gtk+/tree/demos/gtk-demo/shortcuts-builder.ui).
-type ShortcutsWindow interface {
-	gextras.Objector
-
-	privateShortcutsWindowClass()
-}
-
-// ShortcutsWindowClass implements the ShortcutsWindow interface.
-type ShortcutsWindowClass struct {
+type ShortcutsWindow struct {
 	*externglib.Object
-	WindowClass
-	BuildableIface
+	Window
+	Buildable
 }
 
-var _ ShortcutsWindow = (*ShortcutsWindowClass)(nil)
+var _ ShortcutsWindowwer = (*ShortcutsWindow)(nil)
 
-func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
-	return &ShortcutsWindowClass{
+func wrapShortcutsWindowwer(obj *externglib.Object) ShortcutsWindowwer {
+	return &ShortcutsWindow{
 		Object: obj,
-		WindowClass: WindowClass{
+		Window: Window{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalShortcutsWindow(p uintptr) (interface{}, error) {
+func marshalShortcutsWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsWindow(obj), nil
+	return wrapShortcutsWindowwer(obj), nil
 }
 
-func (*ShortcutsWindowClass) privateShortcutsWindowClass() {}
+func (*ShortcutsWindow) privateShortcutsWindow() {}

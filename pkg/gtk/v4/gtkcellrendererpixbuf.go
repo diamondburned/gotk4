@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbuf},
+		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbuffer},
 	})
+}
+
+// CellRendererPixbuffer describes CellRendererPixbuf's methods.
+type CellRendererPixbuffer interface {
+	gextras.Objector
+
+	privateCellRendererPixbuf()
 }
 
 // CellRendererPixbuf renders a pixbuf in a cell
@@ -35,22 +42,15 @@ func init() {
 // renders that pixbuf, if the CellRenderer:is-expanded property is false and
 // the CellRendererPixbuf:pixbuf-expander-closed property is set to a pixbuf, it
 // renders that one.
-type CellRendererPixbuf interface {
-	gextras.Objector
-
-	privateCellRendererPixbufClass()
+type CellRendererPixbuf struct {
+	CellRenderer
 }
 
-// CellRendererPixbufClass implements the CellRendererPixbuf interface.
-type CellRendererPixbufClass struct {
-	CellRendererClass
-}
+var _ CellRendererPixbuffer = (*CellRendererPixbuf)(nil)
 
-var _ CellRendererPixbuf = (*CellRendererPixbufClass)(nil)
-
-func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuf {
-	return &CellRendererPixbufClass{
-		CellRendererClass: CellRendererClass{
+func wrapCellRendererPixbuffer(obj *externglib.Object) CellRendererPixbuffer {
+	return &CellRendererPixbuf{
+		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -58,10 +58,10 @@ func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuf {
 	}
 }
 
-func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
+func marshalCellRendererPixbuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererPixbuf(obj), nil
+	return wrapCellRendererPixbuffer(obj), nil
 }
 
 // NewCellRendererPixbuf creates a new CellRendererPixbuf. Adjust rendering
@@ -70,16 +70,16 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 // a value in a TreeModel. For example, you can bind the “pixbuf” property on
 // the cell renderer to a pixbuf value in the model, thus rendering a different
 // image in each row of the TreeView.
-func NewCellRendererPixbuf() *CellRendererPixbufClass {
+func NewCellRendererPixbuf() *CellRendererPixbuf {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_pixbuf_new()
 
-	var _cellRendererPixbuf *CellRendererPixbufClass // out
+	var _cellRendererPixbuf *CellRendererPixbuf // out
 
-	_cellRendererPixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererPixbufClass)
+	_cellRendererPixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererPixbuf)
 
 	return _cellRendererPixbuf
 }
 
-func (*CellRendererPixbufClass) privateCellRendererPixbufClass() {}
+func (*CellRendererPixbuf) privateCellRendererPixbuf() {}

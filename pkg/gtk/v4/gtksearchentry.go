@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalSearchEntry},
+		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalyier},
 	})
+}
+
+// yier describes SearchEntry's methods.
+type yier interface {
+	gextras.Objector
+
+	KeyCaptureWidget() *Widget
+	SetKeyCaptureWidget(widget Widgetter)
 }
 
 // SearchEntry: `GtkSearchEntry` is an entry widget that has been tailored for
@@ -65,83 +73,58 @@ func init() {
 // Accessibility
 //
 // `GtkSearchEntry` uses the GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
-type SearchEntry interface {
-	gextras.Objector
-
-	// KeyCaptureWidget gets the widget that @entry is capturing key events
-	// from.
-	KeyCaptureWidget() *WidgetClass
-	// SetKeyCaptureWidget sets @widget as the widget that @entry will capture
-	// key events from.
-	//
-	// Key events are consumed by the search entry to start or continue a
-	// search.
-	//
-	// If the entry is part of a `GtkSearchBar`, it is preferable to call
-	// [method@Gtk.SearchBar.set_key_capture_widget] instead, which will reveal
-	// the entry in addition to triggering the search entry.
-	//
-	// Note that despite the name of this function, the events are only
-	// 'captured' in the bubble phase, which means that editable child widgets
-	// of @widget will receive text input before it gets captured. If that is
-	// not desired, you can capture and forward the events yourself with
-	// [method@Gtk.EventControllerKey.forward].
-	SetKeyCaptureWidget(widget Widget)
-}
-
-// SearchEntryClass implements the SearchEntry interface.
-type SearchEntryClass struct {
+type SearchEntry struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	EditableIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Editable
 }
 
-var _ SearchEntry = (*SearchEntryClass)(nil)
+var _ yier = (*SearchEntry)(nil)
 
-func wrapSearchEntry(obj *externglib.Object) SearchEntry {
-	return &SearchEntryClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &SearchEntry{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		EditableIface: EditableIface{
+		Editable: Editable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
@@ -149,27 +132,27 @@ func wrapSearchEntry(obj *externglib.Object) SearchEntry {
 	}
 }
 
-func marshalSearchEntry(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSearchEntry(obj), nil
+	return wrapyier(obj), nil
 }
 
 // NewSearchEntry creates a `GtkSearchEntry`.
-func NewSearchEntry() *SearchEntryClass {
+func NewSearchEntry() *SearchEntry {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_search_entry_new()
 
-	var _searchEntry *SearchEntryClass // out
+	var _searchEntry *SearchEntry // out
 
-	_searchEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchEntryClass)
+	_searchEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchEntry)
 
 	return _searchEntry
 }
 
 // KeyCaptureWidget gets the widget that @entry is capturing key events from.
-func (entry *SearchEntryClass) KeyCaptureWidget() *WidgetClass {
+func (entry *SearchEntry) KeyCaptureWidget() *Widget {
 	var _arg0 *C.GtkSearchEntry // out
 	var _cret *C.GtkWidget      // in
 
@@ -177,9 +160,9 @@ func (entry *SearchEntryClass) KeyCaptureWidget() *WidgetClass {
 
 	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -198,7 +181,7 @@ func (entry *SearchEntryClass) KeyCaptureWidget() *WidgetClass {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // [method@Gtk.EventControllerKey.forward].
-func (entry *SearchEntryClass) SetKeyCaptureWidget(widget Widget) {
+func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out
 

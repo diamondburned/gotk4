@@ -18,52 +18,52 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_no_op_object_factory_get_type()), F: marshalNoOpObjectFactory},
+		{T: externglib.Type(C.atk_no_op_object_factory_get_type()), F: marshalyier},
 	})
+}
+
+// yier describes NoOpObjectFactory's methods.
+type yier interface {
+	gextras.Objector
+
+	privateNoOpObjectFactory()
 }
 
 // NoOpObjectFactory: the AtkObjectFactory which creates an AtkNoOpObject. An
 // instance of this is created by an AtkRegistry if no factory type has not been
 // specified to create an accessible object of a particular type.
-type NoOpObjectFactory interface {
-	gextras.Objector
-
-	privateNoOpObjectFactoryClass()
+type NoOpObjectFactory struct {
+	ObjectFactory
 }
 
-// NoOpObjectFactoryClass implements the NoOpObjectFactory interface.
-type NoOpObjectFactoryClass struct {
-	ObjectFactoryClass
-}
+var _ yier = (*NoOpObjectFactory)(nil)
 
-var _ NoOpObjectFactory = (*NoOpObjectFactoryClass)(nil)
-
-func wrapNoOpObjectFactory(obj *externglib.Object) NoOpObjectFactory {
-	return &NoOpObjectFactoryClass{
-		ObjectFactoryClass: ObjectFactoryClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &NoOpObjectFactory{
+		ObjectFactory: ObjectFactory{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoOpObjectFactory(obj), nil
+	return wrapyier(obj), nil
 }
 
 // NewNoOpObjectFactory creates an instance of an ObjectFactory which generates
 // primitive (non-functioning) Objects.
-func NewNoOpObjectFactory() *NoOpObjectFactoryClass {
+func NewNoOpObjectFactory() *NoOpObjectFactory {
 	var _cret *C.AtkObjectFactory // in
 
 	_cret = C.atk_no_op_object_factory_new()
 
-	var _noOpObjectFactory *NoOpObjectFactoryClass // out
+	var _noOpObjectFactory *NoOpObjectFactory // out
 
-	_noOpObjectFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoOpObjectFactoryClass)
+	_noOpObjectFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoOpObjectFactory)
 
 	return _noOpObjectFactory
 }
 
-func (*NoOpObjectFactoryClass) privateNoOpObjectFactoryClass() {}
+func (*NoOpObjectFactory) privateNoOpObjectFactory() {}

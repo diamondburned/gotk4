@@ -42,12 +42,6 @@ type Ray struct {
 	native C.graphene_ray_t
 }
 
-// WrapRay wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRay(ptr unsafe.Pointer) *Ray {
-	return (*Ray)(ptr)
-}
-
 func marshalRay(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Ray)(unsafe.Pointer(b)), nil
@@ -63,7 +57,7 @@ func NewRayAlloc() *Ray {
 
 	_ray = (*Ray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ray, func(v *Ray) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_ray_free((*C.graphene_ray_t)(unsafe.Pointer(v)))
 	})
 
 	return _ray

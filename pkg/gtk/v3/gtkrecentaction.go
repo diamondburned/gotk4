@@ -20,8 +20,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_action_get_type()), F: marshalRecentAction},
+		{T: externglib.Type(C.gtk_recent_action_get_type()), F: marshalRecentActioner},
 	})
+}
+
+// RecentActioner describes RecentAction's methods.
+type RecentActioner interface {
+	gextras.Objector
+
+	ShowNumbers() bool
+	SetShowNumbers(showNumbers bool)
 }
 
 // RecentAction represents a list of recently used files, which can be shown by
@@ -31,55 +39,37 @@ func init() {
 // action for a <menuitem>. To construct a menu toolbutton showing the recently
 // used files in the popup menu, use a RecentAction as the action for a
 // <toolitem> element.
-type RecentAction interface {
-	gextras.Objector
-
-	// ShowNumbers returns the value set by
-	// gtk_recent_chooser_menu_set_show_numbers().
-	//
-	// Deprecated: since version 3.10.
-	ShowNumbers() bool
-	// SetShowNumbers sets whether a number should be added to the items shown
-	// by the widgets representing @action. The numbers are shown to provide a
-	// unique character for a mnemonic to be used inside the menu item's label.
-	// Only the first ten items get a number to avoid clashes.
-	//
-	// Deprecated: since version 3.10.
-	SetShowNumbers(showNumbers bool)
-}
-
-// RecentActionClass implements the RecentAction interface.
-type RecentActionClass struct {
+type RecentAction struct {
 	*externglib.Object
-	ActionClass
-	BuildableIface
-	RecentChooserIface
+	Action
+	Buildable
+	RecentChooser
 }
 
-var _ RecentAction = (*RecentActionClass)(nil)
+var _ RecentActioner = (*RecentAction)(nil)
 
-func wrapRecentAction(obj *externglib.Object) RecentAction {
-	return &RecentActionClass{
+func wrapRecentActioner(obj *externglib.Object) RecentActioner {
+	return &RecentAction{
 		Object: obj,
-		ActionClass: ActionClass{
+		Action: Action{
 			Object: obj,
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		RecentChooserIface: RecentChooserIface{
+		RecentChooser: RecentChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRecentAction(p uintptr) (interface{}, error) {
+func marshalRecentActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentAction(obj), nil
+	return wrapRecentActioner(obj), nil
 }
 
 // NewRecentAction creates a new RecentAction object. To add the action to a
@@ -87,7 +77,7 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewRecentAction(name string, label string, tooltip string, stockId string) *RecentActionClass {
+func NewRecentAction(name string, label string, tooltip string, stockId string) *RecentAction {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _arg3 *C.gchar     // out
@@ -105,9 +95,9 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 
 	_cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
 
-	var _recentAction *RecentActionClass // out
+	var _recentAction *RecentAction // out
 
-	_recentAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentActionClass)
+	_recentAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentAction)
 
 	return _recentAction
 }
@@ -117,7 +107,7 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManager) *RecentActionClass {
+func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManagerrer) *RecentAction {
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.gchar            // out
 	var _arg3 *C.gchar            // out
@@ -137,9 +127,9 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _recentAction *RecentActionClass // out
+	var _recentAction *RecentAction // out
 
-	_recentAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentActionClass)
+	_recentAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentAction)
 
 	return _recentAction
 }
@@ -148,7 +138,7 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 // gtk_recent_chooser_menu_set_show_numbers().
 //
 // Deprecated: since version 3.10.
-func (action *RecentActionClass) ShowNumbers() bool {
+func (action *RecentAction) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentAction // out
 	var _cret C.gboolean         // in
 
@@ -171,7 +161,7 @@ func (action *RecentActionClass) ShowNumbers() bool {
 // first ten items get a number to avoid clashes.
 //
 // Deprecated: since version 3.10.
-func (action *RecentActionClass) SetShowNumbers(showNumbers bool) {
+func (action *RecentAction) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentAction // out
 	var _arg1 C.gboolean         // out
 

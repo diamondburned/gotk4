@@ -20,8 +20,20 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_mark_get_type()), F: marshalTextMark},
+		{T: externglib.Type(C.gtk_text_mark_get_type()), F: marshalTextMarker},
 	})
+}
+
+// TextMarker describes TextMark's methods.
+type TextMarker interface {
+	gextras.Objector
+
+	Buffer() *TextBuffer
+	Deleted() bool
+	LeftGravity() bool
+	Name() string
+	Visible() bool
+	SetVisible(setting bool)
 }
 
 // TextMark: you may wish to begin by reading the [text widget conceptual
@@ -51,48 +63,22 @@ func init() {
 // TextMark object around.
 //
 // Marks are typically created using the gtk_text_buffer_create_mark() function.
-type TextMark interface {
-	gextras.Objector
-
-	// Buffer gets the buffer this mark is located inside, or nil if the mark is
-	// deleted.
-	Buffer() *TextBufferClass
-	// Deleted returns true if the mark has been removed from its buffer with
-	// gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way
-	// to add it to a buffer again.
-	Deleted() bool
-	// LeftGravity determines whether the mark has left gravity.
-	LeftGravity() bool
-	// Name returns the mark name; returns NULL for anonymous marks.
-	Name() string
-	// Visible returns true if the mark is visible (i.e. a cursor is displayed
-	// for it).
-	Visible() bool
-	// SetVisible sets the visibility of @mark; the insertion point is normally
-	// visible, i.e. you can see it as a vertical bar. Also, the text widget
-	// uses a visible mark to indicate where a drop will occur when
-	// dragging-and-dropping text. Most other marks are not visible. Marks are
-	// not visible by default.
-	SetVisible(setting bool)
-}
-
-// TextMarkClass implements the TextMark interface.
-type TextMarkClass struct {
+type TextMark struct {
 	*externglib.Object
 }
 
-var _ TextMark = (*TextMarkClass)(nil)
+var _ TextMarker = (*TextMark)(nil)
 
-func wrapTextMark(obj *externglib.Object) TextMark {
-	return &TextMarkClass{
+func wrapTextMarker(obj *externglib.Object) TextMarker {
+	return &TextMark{
 		Object: obj,
 	}
 }
 
-func marshalTextMark(p uintptr) (interface{}, error) {
+func marshalTextMarker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextMark(obj), nil
+	return wrapTextMarker(obj), nil
 }
 
 // NewTextMark creates a text mark. Add it to a buffer using
@@ -104,7 +90,7 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 // the mark will end up on the right of newly-inserted text. The standard
 // left-to-right cursor is a mark with right gravity (when you type, the cursor
 // stays on the right side of the text you’re typing).
-func NewTextMark(name string, leftGravity bool) *TextMarkClass {
+func NewTextMark(name string, leftGravity bool) *TextMark {
 	var _arg1 *C.gchar       // out
 	var _arg2 C.gboolean     // out
 	var _cret *C.GtkTextMark // in
@@ -117,16 +103,16 @@ func NewTextMark(name string, leftGravity bool) *TextMarkClass {
 
 	_cret = C.gtk_text_mark_new(_arg1, _arg2)
 
-	var _textMark *TextMarkClass // out
+	var _textMark *TextMark // out
 
-	_textMark = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextMarkClass)
+	_textMark = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextMark)
 
 	return _textMark
 }
 
 // Buffer gets the buffer this mark is located inside, or nil if the mark is
 // deleted.
-func (mark *TextMarkClass) Buffer() *TextBufferClass {
+func (mark *TextMark) Buffer() *TextBuffer {
 	var _arg0 *C.GtkTextMark   // out
 	var _cret *C.GtkTextBuffer // in
 
@@ -134,9 +120,9 @@ func (mark *TextMarkClass) Buffer() *TextBufferClass {
 
 	_cret = C.gtk_text_mark_get_buffer(_arg0)
 
-	var _textBuffer *TextBufferClass // out
+	var _textBuffer *TextBuffer // out
 
-	_textBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextBufferClass)
+	_textBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextBuffer)
 
 	return _textBuffer
 }
@@ -144,7 +130,7 @@ func (mark *TextMarkClass) Buffer() *TextBufferClass {
 // Deleted returns true if the mark has been removed from its buffer with
 // gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way to
 // add it to a buffer again.
-func (mark *TextMarkClass) Deleted() bool {
+func (mark *TextMark) Deleted() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
@@ -162,7 +148,7 @@ func (mark *TextMarkClass) Deleted() bool {
 }
 
 // LeftGravity determines whether the mark has left gravity.
-func (mark *TextMarkClass) LeftGravity() bool {
+func (mark *TextMark) LeftGravity() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
@@ -180,7 +166,7 @@ func (mark *TextMarkClass) LeftGravity() bool {
 }
 
 // Name returns the mark name; returns NULL for anonymous marks.
-func (mark *TextMarkClass) Name() string {
+func (mark *TextMark) Name() string {
 	var _arg0 *C.GtkTextMark // out
 	var _cret *C.gchar       // in
 
@@ -197,7 +183,7 @@ func (mark *TextMarkClass) Name() string {
 
 // Visible returns true if the mark is visible (i.e. a cursor is displayed for
 // it).
-func (mark *TextMarkClass) Visible() bool {
+func (mark *TextMark) Visible() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
@@ -218,7 +204,7 @@ func (mark *TextMarkClass) Visible() bool {
 // visible, i.e. you can see it as a vertical bar. Also, the text widget uses a
 // visible mark to indicate where a drop will occur when dragging-and-dropping
 // text. Most other marks are not visible. Marks are not visible by default.
-func (mark *TextMarkClass) SetVisible(setting bool) {
+func (mark *TextMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out
 

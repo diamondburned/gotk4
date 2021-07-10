@@ -20,8 +20,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTag},
+		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTagger},
 	})
+}
+
+// TextTagger describes TextTag's methods.
+type TextTagger interface {
+	gextras.Objector
+
+	Changed(sizeChanged bool)
+	Priority() int
+	SetPriority(priority int)
 }
 
 // TextTag: you may wish to begin by reading the [text widget conceptual
@@ -38,52 +47,27 @@ func init() {
 // corresponds to “font”. These “set” properties reflect whether a property has
 // been set or not. They are maintained by GTK+ and you should not set them
 // independently.
-type TextTag interface {
-	gextras.Objector
-
-	// Changed emits the TextTagTable::tag-changed signal on the TextTagTable
-	// where the tag is included.
-	//
-	// The signal is already emitted when setting a TextTag property. This
-	// function is useful for a TextTag subclass.
-	Changed(sizeChanged bool)
-	// Priority: get the tag priority.
-	Priority() int
-	// SetPriority sets the priority of a TextTag. Valid priorities start at 0
-	// and go to one less than gtk_text_tag_table_get_size(). Each tag in a
-	// table has a unique priority; setting the priority of one tag shifts the
-	// priorities of all the other tags in the table to maintain a unique
-	// priority for each tag. Higher priority tags “win” if two tags both set
-	// the same text attribute. When adding a tag to a tag table, it will be
-	// assigned the highest priority in the table by default; so normally the
-	// precedence of a set of tags is the order in which they were added to the
-	// table, or created with gtk_text_buffer_create_tag(), which adds the tag
-	// to the buffer’s table automatically.
-	SetPriority(priority int)
-}
-
-// TextTagClass implements the TextTag interface.
-type TextTagClass struct {
+type TextTag struct {
 	*externglib.Object
 }
 
-var _ TextTag = (*TextTagClass)(nil)
+var _ TextTagger = (*TextTag)(nil)
 
-func wrapTextTag(obj *externglib.Object) TextTag {
-	return &TextTagClass{
+func wrapTextTagger(obj *externglib.Object) TextTagger {
+	return &TextTag{
 		Object: obj,
 	}
 }
 
-func marshalTextTag(p uintptr) (interface{}, error) {
+func marshalTextTagger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextTag(obj), nil
+	return wrapTextTagger(obj), nil
 }
 
 // NewTextTag creates a TextTag. Configure the tag using object arguments, i.e.
 // using g_object_set().
-func NewTextTag(name string) *TextTagClass {
+func NewTextTag(name string) *TextTag {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkTextTag // in
 
@@ -92,9 +76,9 @@ func NewTextTag(name string) *TextTagClass {
 
 	_cret = C.gtk_text_tag_new(_arg1)
 
-	var _textTag *TextTagClass // out
+	var _textTag *TextTag // out
 
-	_textTag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextTagClass)
+	_textTag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextTag)
 
 	return _textTag
 }
@@ -104,7 +88,7 @@ func NewTextTag(name string) *TextTagClass {
 //
 // The signal is already emitted when setting a TextTag property. This function
 // is useful for a TextTag subclass.
-func (tag *TextTagClass) Changed(sizeChanged bool) {
+func (tag *TextTag) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gboolean    // out
 
@@ -117,7 +101,7 @@ func (tag *TextTagClass) Changed(sizeChanged bool) {
 }
 
 // Priority: get the tag priority.
-func (tag *TextTagClass) Priority() int {
+func (tag *TextTag) Priority() int {
 	var _arg0 *C.GtkTextTag // out
 	var _cret C.gint        // in
 
@@ -142,7 +126,7 @@ func (tag *TextTagClass) Priority() int {
 // which they were added to the table, or created with
 // gtk_text_buffer_create_tag(), which adds the tag to the buffer’s table
 // automatically.
-func (tag *TextTagClass) SetPriority(priority int) {
+func (tag *TextTag) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gint        // out
 

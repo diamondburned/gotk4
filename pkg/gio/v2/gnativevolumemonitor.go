@@ -28,35 +28,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_native_volume_monitor_get_type()), F: marshalNativeVolumeMonitor},
+		{T: externglib.Type(C.g_native_volume_monitor_get_type()), F: marshalNativeVolumeMonitorrer},
 	})
 }
 
-type NativeVolumeMonitor interface {
+// NativeVolumeMonitorrer describes NativeVolumeMonitor's methods.
+type NativeVolumeMonitorrer interface {
 	gextras.Objector
 
-	privateNativeVolumeMonitorClass()
+	privateNativeVolumeMonitor()
 }
 
-// NativeVolumeMonitorClass implements the NativeVolumeMonitor interface.
-type NativeVolumeMonitorClass struct {
-	VolumeMonitorClass
+type NativeVolumeMonitor struct {
+	VolumeMonitor
 }
 
-var _ NativeVolumeMonitor = (*NativeVolumeMonitorClass)(nil)
+var _ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
 
-func wrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitor {
-	return &NativeVolumeMonitorClass{
-		VolumeMonitorClass: VolumeMonitorClass{
+func wrapNativeVolumeMonitorrer(obj *externglib.Object) NativeVolumeMonitorrer {
+	return &NativeVolumeMonitor{
+		VolumeMonitor: VolumeMonitor{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
+func marshalNativeVolumeMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNativeVolumeMonitor(obj), nil
+	return wrapNativeVolumeMonitorrer(obj), nil
 }
 
-func (*NativeVolumeMonitorClass) privateNativeVolumeMonitorClass() {}
+func (*NativeVolumeMonitor) privateNativeVolumeMonitor() {}

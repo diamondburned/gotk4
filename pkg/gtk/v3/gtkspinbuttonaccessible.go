@@ -21,48 +21,48 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_spin_button_accessible_get_type()), F: marshalSpinButtonAccessible},
+		{T: externglib.Type(C.gtk_spin_button_accessible_get_type()), F: marshalSpinButtonAccessibler},
 	})
 }
 
-type SpinButtonAccessible interface {
+// SpinButtonAccessibler describes SpinButtonAccessible's methods.
+type SpinButtonAccessibler interface {
 	gextras.Objector
 
-	privateSpinButtonAccessibleClass()
+	privateSpinButtonAccessible()
 }
 
-// SpinButtonAccessibleClass implements the SpinButtonAccessible interface.
-type SpinButtonAccessibleClass struct {
-	EntryAccessibleClass
-	atk.ActionIface
+type SpinButtonAccessible struct {
+	EntryAccessible
+	atk.Action
 }
 
-var _ SpinButtonAccessible = (*SpinButtonAccessibleClass)(nil)
+var _ SpinButtonAccessibler = (*SpinButtonAccessible)(nil)
 
-func wrapSpinButtonAccessible(obj *externglib.Object) SpinButtonAccessible {
-	return &SpinButtonAccessibleClass{
-		EntryAccessibleClass: EntryAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapSpinButtonAccessibler(obj *externglib.Object) SpinButtonAccessibler {
+	return &SpinButtonAccessible{
+		EntryAccessible: EntryAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSpinButtonAccessible(p uintptr) (interface{}, error) {
+func marshalSpinButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinButtonAccessible(obj), nil
+	return wrapSpinButtonAccessibler(obj), nil
 }
 
-func (*SpinButtonAccessibleClass) privateSpinButtonAccessibleClass() {}
+func (*SpinButtonAccessible) privateSpinButtonAccessible() {}

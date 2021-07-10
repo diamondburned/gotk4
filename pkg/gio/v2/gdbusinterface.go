@@ -29,64 +29,58 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_interface_get_type()), F: marshalDBusInterface},
+		{T: externglib.Type(C.g_dbus_interface_get_type()), F: marshalDBusInterfacer},
 	})
 }
 
-// DBusInterfaceOverrider contains methods that are overridable.
+// DBusInterfacerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusInterfaceOverrider interface {
+type DBusInterfacerOverrider interface {
 	// DupObject gets the BusObject that @interface_ belongs to, if any.
-	DupObject() *DBusObjectIface
+	DupObject() *DBusObject
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by @interface_.
 	Info() *DBusInterfaceInfo
 	// SetObject sets the BusObject for @interface_ to @object.
 	//
 	// Note that @interface_ will hold a weak reference to @object.
-	SetObject(object DBusObject)
+	SetObject(object DBusObjecter)
+}
+
+// DBusInterfacer describes DBusInterface's methods.
+type DBusInterfacer interface {
+	gextras.Objector
+
+	DupObject() *DBusObject
+	Info() *DBusInterfaceInfo
+	SetObject(object DBusObjecter)
 }
 
 // DBusInterface: the BusInterface type is the base type for D-Bus interfaces
 // both on the service side (see BusInterfaceSkeleton) and client side (see
 // BusProxy).
-type DBusInterface interface {
-	gextras.Objector
-
-	// DupObject gets the BusObject that @interface_ belongs to, if any.
-	DupObject() *DBusObjectIface
-	// Info gets D-Bus introspection information for the D-Bus interface
-	// implemented by @interface_.
-	Info() *DBusInterfaceInfo
-	// SetObject sets the BusObject for @interface_ to @object.
-	//
-	// Note that @interface_ will hold a weak reference to @object.
-	SetObject(object DBusObject)
-}
-
-// DBusInterfaceIface implements the DBusInterface interface.
-type DBusInterfaceIface struct {
+type DBusInterface struct {
 	*externglib.Object
 }
 
-var _ DBusInterface = (*DBusInterfaceIface)(nil)
+var _ DBusInterfacer = (*DBusInterface)(nil)
 
-func wrapDBusInterface(obj *externglib.Object) DBusInterface {
-	return &DBusInterfaceIface{
+func wrapDBusInterfacer(obj *externglib.Object) DBusInterfacer {
+	return &DBusInterface{
 		Object: obj,
 	}
 }
 
-func marshalDBusInterface(p uintptr) (interface{}, error) {
+func marshalDBusInterfacer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusInterface(obj), nil
+	return wrapDBusInterfacer(obj), nil
 }
 
 // DupObject gets the BusObject that @interface_ belongs to, if any.
-func (interface_ *DBusInterfaceIface) DupObject() *DBusObjectIface {
+func (interface_ *DBusInterface) DupObject() *DBusObject {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
 
@@ -94,16 +88,16 @@ func (interface_ *DBusInterfaceIface) DupObject() *DBusObjectIface {
 
 	_cret = C.g_dbus_interface_dup_object(_arg0)
 
-	var _dBusObject *DBusObjectIface // out
+	var _dBusObject *DBusObject // out
 
-	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectIface)
+	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObject)
 
 	return _dBusObject
 }
 
 // Info gets D-Bus introspection information for the D-Bus interface implemented
 // by @interface_.
-func (interface_ *DBusInterfaceIface) Info() *DBusInterfaceInfo {
+func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
 
@@ -125,7 +119,7 @@ func (interface_ *DBusInterfaceIface) Info() *DBusInterfaceInfo {
 // SetObject sets the BusObject for @interface_ to @object.
 //
 // Note that @interface_ will hold a weak reference to @object.
-func (interface_ *DBusInterfaceIface) SetObject(object DBusObject) {
+func (interface_ *DBusInterface) SetObject(object DBusObjecter) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out
 

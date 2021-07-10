@@ -28,32 +28,40 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_volume_monitor_get_type()), F: marshalVolumeMonitor},
+		{T: externglib.Type(C.g_volume_monitor_get_type()), F: marshalVolumeMonitorrer},
 	})
 }
 
-// VolumeMonitorOverrider contains methods that are overridable.
+// VolumeMonitorrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type VolumeMonitorOverrider interface {
-	DriveChanged(drive Drive)
-	DriveConnected(drive Drive)
-	DriveDisconnected(drive Drive)
-	DriveEjectButton(drive Drive)
-	DriveStopButton(drive Drive)
+type VolumeMonitorrerOverrider interface {
+	DriveChanged(drive Driver)
+	DriveConnected(drive Driver)
+	DriveDisconnected(drive Driver)
+	DriveEjectButton(drive Driver)
+	DriveStopButton(drive Driver)
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-	MountForUUID(uuid string) *MountIface
+	MountForUUID(uuid string) *Mount
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid())
-	VolumeForUUID(uuid string) *VolumeIface
-	MountAdded(mount Mount)
-	MountChanged(mount Mount)
-	MountPreUnmount(mount Mount)
-	MountRemoved(mount Mount)
-	VolumeAdded(volume Volume)
-	VolumeChanged(volume Volume)
-	VolumeRemoved(volume Volume)
+	VolumeForUUID(uuid string) *Volume
+	MountAdded(mount Mounter)
+	MountChanged(mount Mounter)
+	MountPreUnmount(mount Mounter)
+	MountRemoved(mount Mounter)
+	VolumeAdded(volume Volumer)
+	VolumeChanged(volume Volumer)
+	VolumeRemoved(volume Volumer)
+}
+
+// VolumeMonitorrer describes VolumeMonitor's methods.
+type VolumeMonitorrer interface {
+	gextras.Objector
+
+	MountForUUID(uuid string) *Mount
+	VolumeForUUID(uuid string) *Volume
 }
 
 // VolumeMonitor is for listing the user interesting devices and volumes on the
@@ -66,37 +74,26 @@ type VolumeMonitorOverrider interface {
 //
 // In order to receive updates about volumes and mounts monitored through GVFS,
 // a main loop must be running.
-type VolumeMonitor interface {
-	gextras.Objector
-
-	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-	MountForUUID(uuid string) *MountIface
-	// VolumeForUUID finds a #GVolume object by its UUID (see
-	// g_volume_get_uuid())
-	VolumeForUUID(uuid string) *VolumeIface
-}
-
-// VolumeMonitorClass implements the VolumeMonitor interface.
-type VolumeMonitorClass struct {
+type VolumeMonitor struct {
 	*externglib.Object
 }
 
-var _ VolumeMonitor = (*VolumeMonitorClass)(nil)
+var _ VolumeMonitorrer = (*VolumeMonitor)(nil)
 
-func wrapVolumeMonitor(obj *externglib.Object) VolumeMonitor {
-	return &VolumeMonitorClass{
+func wrapVolumeMonitorrer(obj *externglib.Object) VolumeMonitorrer {
+	return &VolumeMonitor{
 		Object: obj,
 	}
 }
 
-func marshalVolumeMonitor(p uintptr) (interface{}, error) {
+func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolumeMonitor(obj), nil
+	return wrapVolumeMonitorrer(obj), nil
 }
 
 // MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-func (volumeMonitor *VolumeMonitorClass) MountForUUID(uuid string) *MountIface {
+func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
 	var _cret *C.GMount         // in
@@ -107,15 +104,15 @@ func (volumeMonitor *VolumeMonitorClass) MountForUUID(uuid string) *MountIface {
 
 	_cret = C.g_volume_monitor_get_mount_for_uuid(_arg0, _arg1)
 
-	var _mount *MountIface // out
+	var _mount *Mount // out
 
-	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountIface)
+	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Mount)
 
 	return _mount
 }
 
 // VolumeForUUID finds a #GVolume object by its UUID (see g_volume_get_uuid())
-func (volumeMonitor *VolumeMonitorClass) VolumeForUUID(uuid string) *VolumeIface {
+func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
 	var _cret *C.GVolume        // in
@@ -126,9 +123,9 @@ func (volumeMonitor *VolumeMonitorClass) VolumeForUUID(uuid string) *VolumeIface
 
 	_cret = C.g_volume_monitor_get_volume_for_uuid(_arg0, _arg1)
 
-	var _volume *VolumeIface // out
+	var _volume *Volume // out
 
-	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*VolumeIface)
+	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Volume)
 
 	return _volume
 }

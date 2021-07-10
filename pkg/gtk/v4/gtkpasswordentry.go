@@ -19,8 +19,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_password_entry_get_type()), F: marshalPasswordEntry},
+		{T: externglib.Type(C.gtk_password_entry_get_type()), F: marshalyier},
 	})
+}
+
+// yier describes PasswordEntry's methods.
+type yier interface {
+	gextras.Objector
+
+	ExtraMenu() *gio.MenuModel
+	ShowPeekIcon() bool
+	SetExtraMenu(model gio.MenuModeller)
+	SetShowPeekIcon(showPeekIcon bool)
 }
 
 // PasswordEntry: `GtkPasswordEntry` is an entry that has been tailored for
@@ -53,78 +63,58 @@ func init() {
 // Accessibility
 //
 // `GtkPasswordEntry` uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
-type PasswordEntry interface {
-	gextras.Objector
-
-	// ExtraMenu gets the menu model set with
-	// gtk_password_entry_set_extra_menu().
-	ExtraMenu() *gio.MenuModelClass
-	// ShowPeekIcon returns whether the entry is showing an icon to reveal the
-	// contents.
-	ShowPeekIcon() bool
-	// SetExtraMenu sets a menu model to add when constructing the context menu
-	// for @entry.
-	SetExtraMenu(model gio.MenuModel)
-	// SetShowPeekIcon sets whether the entry should have a clickable icon to
-	// reveal the contents.
-	//
-	// Setting this to false also hides the text again.
-	SetShowPeekIcon(showPeekIcon bool)
-}
-
-// PasswordEntryClass implements the PasswordEntry interface.
-type PasswordEntryClass struct {
+type PasswordEntry struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	EditableIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Editable
 }
 
-var _ PasswordEntry = (*PasswordEntryClass)(nil)
+var _ yier = (*PasswordEntry)(nil)
 
-func wrapPasswordEntry(obj *externglib.Object) PasswordEntry {
-	return &PasswordEntryClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &PasswordEntry{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		EditableIface: EditableIface{
+		Editable: Editable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
@@ -132,27 +122,27 @@ func wrapPasswordEntry(obj *externglib.Object) PasswordEntry {
 	}
 }
 
-func marshalPasswordEntry(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPasswordEntry(obj), nil
+	return wrapyier(obj), nil
 }
 
 // NewPasswordEntry creates a `GtkPasswordEntry`.
-func NewPasswordEntry() *PasswordEntryClass {
+func NewPasswordEntry() *PasswordEntry {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_password_entry_new()
 
-	var _passwordEntry *PasswordEntryClass // out
+	var _passwordEntry *PasswordEntry // out
 
-	_passwordEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PasswordEntryClass)
+	_passwordEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PasswordEntry)
 
 	return _passwordEntry
 }
 
 // ExtraMenu gets the menu model set with gtk_password_entry_set_extra_menu().
-func (entry *PasswordEntryClass) ExtraMenu() *gio.MenuModelClass {
+func (entry *PasswordEntry) ExtraMenu() *gio.MenuModel {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret *C.GMenuModel       // in
 
@@ -160,16 +150,16 @@ func (entry *PasswordEntryClass) ExtraMenu() *gio.MenuModelClass {
 
 	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
 
-	var _menuModel *gio.MenuModelClass // out
+	var _menuModel *gio.MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModelClass)
+	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
 
 	return _menuModel
 }
 
 // ShowPeekIcon returns whether the entry is showing an icon to reveal the
 // contents.
-func (entry *PasswordEntryClass) ShowPeekIcon() bool {
+func (entry *PasswordEntry) ShowPeekIcon() bool {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret C.gboolean          // in
 
@@ -188,7 +178,7 @@ func (entry *PasswordEntryClass) ShowPeekIcon() bool {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // @entry.
-func (entry *PasswordEntryClass) SetExtraMenu(model gio.MenuModel) {
+func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
 
@@ -202,7 +192,7 @@ func (entry *PasswordEntryClass) SetExtraMenu(model gio.MenuModel) {
 // the contents.
 //
 // Setting this to false also hides the text again.
-func (entry *PasswordEntryClass) SetShowPeekIcon(showPeekIcon bool) {
+func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 C.gboolean          // out
 

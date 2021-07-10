@@ -29,8 +29,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_memory_output_stream_get_type()), F: marshalMemoryOutputStream},
+		{T: externglib.Type(C.g_memory_output_stream_get_type()), F: marshalMemoryOutputStreamer},
 	})
+}
+
+// MemoryOutputStreamer describes MemoryOutputStream's methods.
+type MemoryOutputStreamer interface {
+	gextras.Objector
+
+	Data() interface{}
+	DataSize() uint
+	Size() uint
+	StealData() interface{}
 }
 
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for
@@ -38,84 +48,48 @@ func init() {
 //
 // As of GLib 2.34, OutputStream trivially implements OutputStream: it always
 // polls as ready.
-type MemoryOutputStream interface {
-	gextras.Objector
-
-	// Data gets any loaded data from the @ostream.
-	//
-	// Note that the returned pointer may become invalid on the next write or
-	// truncate operation on the stream.
-	Data() interface{}
-	// DataSize returns the number of bytes from the start up to including the
-	// last byte written in the stream that has not been truncated away.
-	DataSize() uint
-	// Size gets the size of the currently allocated data area (available from
-	// g_memory_output_stream_get_data()).
-	//
-	// You probably don't want to use this function on resizable streams. See
-	// g_memory_output_stream_get_data_size() instead. For resizable streams the
-	// size returned by this function is an implementation detail and may be
-	// change at any time in response to operations on the stream.
-	//
-	// If the stream is fixed-sized (ie: no realloc was passed to
-	// g_memory_output_stream_new()) then this is the maximum size of the stream
-	// and further writes will return G_IO_ERROR_NO_SPACE.
-	//
-	// In any case, if you want the number of bytes currently written to the
-	// stream, use g_memory_output_stream_get_data_size().
-	Size() uint
-	// StealData gets any loaded data from the @ostream. Ownership of the data
-	// is transferred to the caller; when no longer needed it must be freed
-	// using the free function set in @ostream's OutputStream:destroy-function
-	// property.
-	//
-	// @ostream must be closed before calling this function.
-	StealData() interface{}
-}
-
-// MemoryOutputStreamClass implements the MemoryOutputStream interface.
-type MemoryOutputStreamClass struct {
+type MemoryOutputStream struct {
 	*externglib.Object
-	OutputStreamClass
-	PollableOutputStreamIface
-	SeekableIface
+	OutputStream
+	PollableOutputStream
+	Seekable
 }
 
-var _ MemoryOutputStream = (*MemoryOutputStreamClass)(nil)
+var _ MemoryOutputStreamer = (*MemoryOutputStream)(nil)
 
-func wrapMemoryOutputStream(obj *externglib.Object) MemoryOutputStream {
-	return &MemoryOutputStreamClass{
+func wrapMemoryOutputStreamer(obj *externglib.Object) MemoryOutputStreamer {
+	return &MemoryOutputStream{
 		Object: obj,
-		OutputStreamClass: OutputStreamClass{
+		OutputStream: OutputStream{
 			Object: obj,
 		},
-		PollableOutputStreamIface: PollableOutputStreamIface{
-			OutputStreamClass: OutputStreamClass{
+		PollableOutputStream: PollableOutputStream{
+			OutputStream: OutputStream{
 				Object: obj,
 			},
 		},
-		SeekableIface: SeekableIface{
+		Seekable: Seekable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
+func marshalMemoryOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryOutputStream(obj), nil
+	return wrapMemoryOutputStreamer(obj), nil
 }
 
 // NewMemoryOutputStreamResizable creates a new OutputStream, using g_realloc()
 // and g_free() for memory allocation.
-func NewMemoryOutputStreamResizable() *MemoryOutputStreamClass {
+func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 	var _cret *C.GOutputStream // in
 
 	_cret = C.g_memory_output_stream_new_resizable()
 
-	var _memoryOutputStream *MemoryOutputStreamClass // out
+	var _memoryOutputStream *MemoryOutputStream // out
 
-	_memoryOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryOutputStreamClass)
+	_memoryOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryOutputStream)
 
 	return _memoryOutputStream
 }
@@ -124,7 +98,7 @@ func NewMemoryOutputStreamResizable() *MemoryOutputStreamClass {
 //
 // Note that the returned pointer may become invalid on the next write or
 // truncate operation on the stream.
-func (ostream *MemoryOutputStreamClass) Data() interface{} {
+func (ostream *MemoryOutputStream) Data() interface{} {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
 
@@ -141,7 +115,7 @@ func (ostream *MemoryOutputStreamClass) Data() interface{} {
 
 // DataSize returns the number of bytes from the start up to including the last
 // byte written in the stream that has not been truncated away.
-func (ostream *MemoryOutputStreamClass) DataSize() uint {
+func (ostream *MemoryOutputStream) DataSize() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
 
@@ -170,7 +144,7 @@ func (ostream *MemoryOutputStreamClass) DataSize() uint {
 //
 // In any case, if you want the number of bytes currently written to the stream,
 // use g_memory_output_stream_get_data_size().
-func (ostream *MemoryOutputStreamClass) Size() uint {
+func (ostream *MemoryOutputStream) Size() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
 
@@ -190,7 +164,7 @@ func (ostream *MemoryOutputStreamClass) Size() uint {
 // free function set in @ostream's OutputStream:destroy-function property.
 //
 // @ostream must be closed before calling this function.
-func (ostream *MemoryOutputStreamClass) StealData() interface{} {
+func (ostream *MemoryOutputStream) StealData() interface{} {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
 

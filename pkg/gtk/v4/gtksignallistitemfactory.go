@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_signal_list_item_factory_get_type()), F: marshalSignalListItemFactory},
+		{T: externglib.Type(C.gtk_signal_list_item_factory_get_type()), F: marshalyier},
 	})
+}
+
+// yier describes SignalListItemFactory's methods.
+type yier interface {
+	gextras.Objector
+
+	privateSignalListItemFactory()
 }
 
 // SignalListItemFactory: `GtkSignalListItemFactory` is a `GtkListItemFactory`
@@ -63,46 +70,39 @@ func init() {
 // signal is recommended. The signal can be connected in the
 // [signal@Gtk.SignalListItemFactory::setup] signal and removed again during
 // [signal@Gtk.SignalListItemFactory::teardown].
-type SignalListItemFactory interface {
-	gextras.Objector
-
-	privateSignalListItemFactoryClass()
+type SignalListItemFactory struct {
+	ListItemFactory
 }
 
-// SignalListItemFactoryClass implements the SignalListItemFactory interface.
-type SignalListItemFactoryClass struct {
-	ListItemFactoryClass
-}
+var _ yier = (*SignalListItemFactory)(nil)
 
-var _ SignalListItemFactory = (*SignalListItemFactoryClass)(nil)
-
-func wrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactory {
-	return &SignalListItemFactoryClass{
-		ListItemFactoryClass: ListItemFactoryClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &SignalListItemFactory{
+		ListItemFactory: ListItemFactory{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSignalListItemFactory(obj), nil
+	return wrapyier(obj), nil
 }
 
 // NewSignalListItemFactory creates a new `GtkSignalListItemFactory`.
 //
 // You need to connect signal handlers before you use it.
-func NewSignalListItemFactory() *SignalListItemFactoryClass {
+func NewSignalListItemFactory() *SignalListItemFactory {
 	var _cret *C.GtkListItemFactory // in
 
 	_cret = C.gtk_signal_list_item_factory_new()
 
-	var _signalListItemFactory *SignalListItemFactoryClass // out
+	var _signalListItemFactory *SignalListItemFactory // out
 
-	_signalListItemFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SignalListItemFactoryClass)
+	_signalListItemFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SignalListItemFactory)
 
 	return _signalListItemFactory
 }
 
-func (*SignalListItemFactoryClass) privateSignalListItemFactoryClass() {}
+func (*SignalListItemFactory) privateSignalListItemFactory() {}

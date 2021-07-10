@@ -21,43 +21,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_spinner_accessible_get_type()), F: marshalSpinnerAccessible},
+		{T: externglib.Type(C.gtk_spinner_accessible_get_type()), F: marshalSpinnerAccessibler},
 	})
 }
 
-type SpinnerAccessible interface {
+// SpinnerAccessibler describes SpinnerAccessible's methods.
+type SpinnerAccessibler interface {
 	gextras.Objector
 
-	privateSpinnerAccessibleClass()
+	privateSpinnerAccessible()
 }
 
-// SpinnerAccessibleClass implements the SpinnerAccessible interface.
-type SpinnerAccessibleClass struct {
-	WidgetAccessibleClass
-	atk.ImageIface
+type SpinnerAccessible struct {
+	WidgetAccessible
+	atk.Image
 }
 
-var _ SpinnerAccessible = (*SpinnerAccessibleClass)(nil)
+var _ SpinnerAccessibler = (*SpinnerAccessible)(nil)
 
-func wrapSpinnerAccessible(obj *externglib.Object) SpinnerAccessible {
-	return &SpinnerAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapSpinnerAccessibler(obj *externglib.Object) SpinnerAccessibler {
+	return &SpinnerAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSpinnerAccessible(p uintptr) (interface{}, error) {
+func marshalSpinnerAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinnerAccessible(obj), nil
+	return wrapSpinnerAccessibler(obj), nil
 }
 
-func (*SpinnerAccessibleClass) privateSpinnerAccessibleClass() {}
+func (*SpinnerAccessible) privateSpinnerAccessible() {}

@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_widget_paintable_get_type()), F: marshalWidgetPaintable},
+		{T: externglib.Type(C.gtk_widget_paintable_get_type()), F: marshalWidgetPaintabler},
 	})
+}
+
+// WidgetPaintabler describes WidgetPaintable's methods.
+type WidgetPaintabler interface {
+	gextras.Objector
+
+	Widget() *Widget
+	SetWidget(widget Widgetter)
 }
 
 // WidgetPaintable: `GtkWidgetPaintable` is a `GdkPaintable` that displays the
@@ -42,36 +50,26 @@ func init() {
 // recursion when this happens. If you do this however, ensure that the
 // [property@Gtk.Picture:can-shrink] property is set to true or you might end up
 // with an infinitely growing widget.
-type WidgetPaintable interface {
-	gextras.Objector
-
-	// Widget returns the widget that is observed or nil if none.
-	Widget() *WidgetClass
-	// SetWidget sets the widget that should be observed.
-	SetWidget(widget Widget)
-}
-
-// WidgetPaintableClass implements the WidgetPaintable interface.
-type WidgetPaintableClass struct {
+type WidgetPaintable struct {
 	*externglib.Object
 }
 
-var _ WidgetPaintable = (*WidgetPaintableClass)(nil)
+var _ WidgetPaintabler = (*WidgetPaintable)(nil)
 
-func wrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
-	return &WidgetPaintableClass{
+func wrapWidgetPaintabler(obj *externglib.Object) WidgetPaintabler {
+	return &WidgetPaintable{
 		Object: obj,
 	}
 }
 
-func marshalWidgetPaintable(p uintptr) (interface{}, error) {
+func marshalWidgetPaintabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidgetPaintable(obj), nil
+	return wrapWidgetPaintabler(obj), nil
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.
-func NewWidgetPaintable(widget Widget) *WidgetPaintableClass {
+func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
 
@@ -79,15 +77,15 @@ func NewWidgetPaintable(widget Widget) *WidgetPaintableClass {
 
 	_cret = C.gtk_widget_paintable_new(_arg1)
 
-	var _widgetPaintable *WidgetPaintableClass // out
+	var _widgetPaintable *WidgetPaintable // out
 
-	_widgetPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WidgetPaintableClass)
+	_widgetPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WidgetPaintable)
 
 	return _widgetPaintable
 }
 
 // Widget returns the widget that is observed or nil if none.
-func (self *WidgetPaintableClass) Widget() *WidgetClass {
+func (self *WidgetPaintable) Widget() *Widget {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _cret *C.GtkWidget          // in
 
@@ -95,15 +93,15 @@ func (self *WidgetPaintableClass) Widget() *WidgetClass {
 
 	_cret = C.gtk_widget_paintable_get_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // SetWidget sets the widget that should be observed.
-func (self *WidgetPaintableClass) SetWidget(widget Widget) {
+func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 

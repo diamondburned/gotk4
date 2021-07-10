@@ -18,8 +18,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendar},
+		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarrer},
 	})
+}
+
+// Calendarrer describes Calendar's methods.
+type Calendarrer interface {
+	gextras.Objector
+
+	ClearMarks()
+	DayIsMarked(day uint) bool
+	ShowDayNames() bool
+	ShowHeading() bool
+	ShowWeekNumbers() bool
+	MarkDay(day uint)
+	SetShowDayNames(value bool)
+	SetShowHeading(value bool)
+	SetShowWeekNumbers(value bool)
+	UnmarkDay(day uint)
 }
 
 // Calendar: `GtkCalendar` is a widget that displays a Gregorian calendar, one
@@ -62,104 +78,67 @@ func init() {
 // style class. The label of the current day get the .today style class.
 //
 // Marked day labels get the :selected state assigned.
-type Calendar interface {
-	gextras.Objector
-
-	// ClearMarks: remove all visual markers.
-	ClearMarks()
-	// DayIsMarked returns if the @day of the @calendar is already marked.
-	DayIsMarked(day uint) bool
-	// ShowDayNames returns whether @self is currently showing the names of the
-	// week days.
-	//
-	// This is the value of the [property@Gtk.Calendar:show-day-names] property.
-	ShowDayNames() bool
-	// ShowHeading returns whether @self is currently showing the heading.
-	//
-	// This is the value of the [property@Gtk.Calendar:show-heading] property.
-	ShowHeading() bool
-	// ShowWeekNumbers returns whether @self is showing week numbers right now.
-	//
-	// This is the value of the [property@Gtk.Calendar:show-week-numbers]
-	// property.
-	ShowWeekNumbers() bool
-	// MarkDay places a visual marker on a particular day.
-	MarkDay(day uint)
-	// SetShowDayNames sets whether the calendar shows day names.
-	SetShowDayNames(value bool)
-	// SetShowHeading sets whether the calendar should show a heading.
-	//
-	// The heading contains the current year and month as well as buttons for
-	// changing both.
-	SetShowHeading(value bool)
-	// SetShowWeekNumbers sets whether week numbers are shown in the calendar.
-	SetShowWeekNumbers(value bool)
-	// UnmarkDay removes the visual marker from a particular day.
-	UnmarkDay(day uint)
-}
-
-// CalendarClass implements the Calendar interface.
-type CalendarClass struct {
+type Calendar struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ Calendar = (*CalendarClass)(nil)
+var _ Calendarrer = (*Calendar)(nil)
 
-func wrapCalendar(obj *externglib.Object) Calendar {
-	return &CalendarClass{
+func wrapCalendarrer(obj *externglib.Object) Calendarrer {
+	return &Calendar{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCalendar(p uintptr) (interface{}, error) {
+func marshalCalendarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCalendar(obj), nil
+	return wrapCalendarrer(obj), nil
 }
 
 // NewCalendar creates a new calendar, with the current date being selected.
-func NewCalendar() *CalendarClass {
+func NewCalendar() *Calendar {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_calendar_new()
 
-	var _calendar *CalendarClass // out
+	var _calendar *Calendar // out
 
-	_calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CalendarClass)
+	_calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Calendar)
 
 	return _calendar
 }
 
 // ClearMarks: remove all visual markers.
-func (calendar *CalendarClass) ClearMarks() {
+func (calendar *Calendar) ClearMarks() {
 	var _arg0 *C.GtkCalendar // out
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
@@ -168,7 +147,7 @@ func (calendar *CalendarClass) ClearMarks() {
 }
 
 // DayIsMarked returns if the @day of the @calendar is already marked.
-func (calendar *CalendarClass) DayIsMarked(day uint) bool {
+func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _cret C.gboolean     // in
@@ -191,7 +170,7 @@ func (calendar *CalendarClass) DayIsMarked(day uint) bool {
 // days.
 //
 // This is the value of the [property@Gtk.Calendar:show-day-names] property.
-func (self *CalendarClass) ShowDayNames() bool {
+func (self *Calendar) ShowDayNames() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
 
@@ -211,7 +190,7 @@ func (self *CalendarClass) ShowDayNames() bool {
 // ShowHeading returns whether @self is currently showing the heading.
 //
 // This is the value of the [property@Gtk.Calendar:show-heading] property.
-func (self *CalendarClass) ShowHeading() bool {
+func (self *Calendar) ShowHeading() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
 
@@ -231,7 +210,7 @@ func (self *CalendarClass) ShowHeading() bool {
 // ShowWeekNumbers returns whether @self is showing week numbers right now.
 //
 // This is the value of the [property@Gtk.Calendar:show-week-numbers] property.
-func (self *CalendarClass) ShowWeekNumbers() bool {
+func (self *Calendar) ShowWeekNumbers() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
 
@@ -249,7 +228,7 @@ func (self *CalendarClass) ShowWeekNumbers() bool {
 }
 
 // MarkDay places a visual marker on a particular day.
-func (calendar *CalendarClass) MarkDay(day uint) {
+func (calendar *Calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -260,7 +239,7 @@ func (calendar *CalendarClass) MarkDay(day uint) {
 }
 
 // SetShowDayNames sets whether the calendar shows day names.
-func (self *CalendarClass) SetShowDayNames(value bool) {
+func (self *Calendar) SetShowDayNames(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
@@ -276,7 +255,7 @@ func (self *CalendarClass) SetShowDayNames(value bool) {
 //
 // The heading contains the current year and month as well as buttons for
 // changing both.
-func (self *CalendarClass) SetShowHeading(value bool) {
+func (self *Calendar) SetShowHeading(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
@@ -289,7 +268,7 @@ func (self *CalendarClass) SetShowHeading(value bool) {
 }
 
 // SetShowWeekNumbers sets whether week numbers are shown in the calendar.
-func (self *CalendarClass) SetShowWeekNumbers(value bool) {
+func (self *Calendar) SetShowWeekNumbers(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
@@ -302,7 +281,7 @@ func (self *CalendarClass) SetShowWeekNumbers(value bool) {
 }
 
 // UnmarkDay removes the visual marker from a particular day.
-func (calendar *CalendarClass) UnmarkDay(day uint) {
+func (calendar *Calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 

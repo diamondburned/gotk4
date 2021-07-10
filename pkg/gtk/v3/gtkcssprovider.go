@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_css_provider_error_get_type()), F: marshalCSSProviderError},
-		{T: externglib.Type(C.gtk_css_provider_get_type()), F: marshalCSSProvider},
+		{T: externglib.Type(C.gtk_css_provider_get_type()), F: marshalCSSProviderrer},
 	})
 }
 
@@ -48,12 +48,22 @@ func marshalCSSProviderError(p uintptr) (interface{}, error) {
 	return CSSProviderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// CSSProviderOverrider contains methods that are overridable.
+// CSSProviderrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CSSProviderOverrider interface {
+type CSSProviderrerOverrider interface {
 	ParsingError(section *CSSSection, err error)
+}
+
+// CSSProviderrer describes CSSProvider's methods.
+type CSSProviderrer interface {
+	gextras.Objector
+
+	LoadFromData(data []byte) error
+	LoadFromPath(path string) error
+	LoadFromResource(resourcePath string)
+	String() string
 }
 
 // CSSProvider is an object implementing the StyleProvider interface. It is able
@@ -79,69 +89,44 @@ type CSSProviderOverrider interface {
 //
 // In the same way, GTK+ tries to load a gtk-keys.css file for the current key
 // theme, as defined by Settings:gtk-key-theme-name.
-type CSSProvider interface {
-	gextras.Objector
-
-	// LoadFromData loads @data into @css_provider, and by doing so clears any
-	// previously loaded information.
-	LoadFromData(data []byte) error
-	// LoadFromPath loads the data contained in @path into @css_provider, making
-	// it clear any previously loaded information.
-	LoadFromPath(path string) error
-	// LoadFromResource loads the data contained in the resource at
-	// @resource_path into the CssProvider, clearing any previously loaded
-	// information.
-	//
-	// To track errors while loading CSS, connect to the
-	// CssProvider::parsing-error signal.
-	LoadFromResource(resourcePath string)
-	// String converts the @provider into a string representation in CSS format.
-	//
-	// Using gtk_css_provider_load_from_data() with the return value from this
-	// function on a new provider created with gtk_css_provider_new() will
-	// basically create a duplicate of this @provider.
-	String() string
-}
-
-// CSSProviderClass implements the CSSProvider interface.
-type CSSProviderClass struct {
+type CSSProvider struct {
 	*externglib.Object
-	StyleProviderIface
+	StyleProvider
 }
 
-var _ CSSProvider = (*CSSProviderClass)(nil)
+var _ CSSProviderrer = (*CSSProvider)(nil)
 
-func wrapCSSProvider(obj *externglib.Object) CSSProvider {
-	return &CSSProviderClass{
+func wrapCSSProviderrer(obj *externglib.Object) CSSProviderrer {
+	return &CSSProvider{
 		Object: obj,
-		StyleProviderIface: StyleProviderIface{
+		StyleProvider: StyleProvider{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCSSProvider(p uintptr) (interface{}, error) {
+func marshalCSSProviderrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCSSProvider(obj), nil
+	return wrapCSSProviderrer(obj), nil
 }
 
 // NewCSSProvider returns a newly created CssProvider.
-func NewCSSProvider() *CSSProviderClass {
+func NewCSSProvider() *CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
 	_cret = C.gtk_css_provider_new()
 
-	var _cssProvider *CSSProviderClass // out
+	var _cssProvider *CSSProvider // out
 
-	_cssProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CSSProviderClass)
+	_cssProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CSSProvider)
 
 	return _cssProvider
 }
 
 // LoadFromData loads @data into @css_provider, and by doing so clears any
 // previously loaded information.
-func (cssProvider *CSSProviderClass) LoadFromData(data []byte) error {
+func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar
 	var _arg2 C.gssize
@@ -162,7 +147,7 @@ func (cssProvider *CSSProviderClass) LoadFromData(data []byte) error {
 
 // LoadFromPath loads the data contained in @path into @css_provider, making it
 // clear any previously loaded information.
-func (cssProvider *CSSProviderClass) LoadFromPath(path string) error {
+func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
 	var _cerr *C.GError         // in
@@ -185,7 +170,7 @@ func (cssProvider *CSSProviderClass) LoadFromPath(path string) error {
 //
 // To track errors while loading CSS, connect to the CssProvider::parsing-error
 // signal.
-func (cssProvider *CSSProviderClass) LoadFromResource(resourcePath string) {
+func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
 
@@ -201,7 +186,7 @@ func (cssProvider *CSSProviderClass) LoadFromResource(resourcePath string) {
 // Using gtk_css_provider_load_from_data() with the return value from this
 // function on a new provider created with gtk_css_provider_new() will basically
 // create a duplicate of this @provider.
-func (provider *CSSProviderClass) String() string {
+func (provider *CSSProvider) String() string {
 	var _arg0 *C.GtkCssProvider // out
 	var _cret *C.char           // in
 

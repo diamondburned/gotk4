@@ -30,16 +30,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_app_info_get_type()), F: marshalAppInfo},
-		{T: externglib.Type(C.g_app_launch_context_get_type()), F: marshalAppLaunchContext},
+		{T: externglib.Type(C.g_app_info_get_type()), F: marshalAppInfoer},
+		{T: externglib.Type(C.g_app_launch_context_get_type()), F: marshalAppLaunchContexter},
 	})
 }
 
-// AppInfoOverrider contains methods that are overridable.
+// AppInfoerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AppInfoOverrider interface {
+type AppInfoerOverrider interface {
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
 	// content type.
@@ -57,13 +57,13 @@ type AppInfoOverrider interface {
 	// g_app_info_can_delete().
 	DoDelete() bool
 	// Dup creates a duplicate of a Info.
-	Dup() *AppInfoIface
+	Dup() *AppInfo
 	// Equal checks if two Infos are equal.
 	//
 	// Note that the check *may not* compare each individual field, and only
 	// does an identity check. In case detecting changes in the contents is
 	// needed, program code must additionally compare relevant fields.
-	Equal(appinfo2 AppInfo) bool
+	Equal(appinfo2 AppInfoer) bool
 	// Commandline gets the commandline with which the application will be
 	// started.
 	Commandline() string
@@ -76,7 +76,7 @@ type AppInfoOverrider interface {
 	// Executable gets the executable's name for the installed application.
 	Executable() string
 	// Icon gets the icon for the application.
-	Icon() *IconIface
+	Icon() *Icon
 	// ID gets the ID of an application. An id is a string that identifies the
 	// application. The exact format of the id is platform dependent. For
 	// instance, on Unix this is the desktop file id from the xdg menu
@@ -94,7 +94,7 @@ type AppInfoOverrider interface {
 	// exported directly by the application.
 	SupportedTypes() []string
 	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-	LaunchUrisFinish(result AsyncResult) error
+	LaunchUrisFinish(result AsyncResulter) error
 	// RemoveSupportsType removes a supported type from an application, if
 	// possible.
 	RemoveSupportsType(contentType string) error
@@ -116,6 +116,34 @@ type AppInfoOverrider interface {
 	SupportsFiles() bool
 	// SupportsUris checks if the application supports reading files and
 	// directories from URIs.
+	SupportsUris() bool
+}
+
+// AppInfoer describes AppInfo's methods.
+type AppInfoer interface {
+	gextras.Objector
+
+	AddSupportsType(contentType string) error
+	CanDelete() bool
+	CanRemoveSupportsType() bool
+	Delete() bool
+	Dup() *AppInfo
+	Equal(appinfo2 AppInfoer) bool
+	Commandline() string
+	Description() string
+	DisplayName() string
+	Executable() string
+	Icon() *Icon
+	ID() string
+	Name() string
+	SupportedTypes() []string
+	LaunchUrisFinish(result AsyncResulter) error
+	RemoveSupportsType(contentType string) error
+	SetAsDefaultForExtension(extension string) error
+	SetAsDefaultForType(contentType string) error
+	SetAsLastUsedForType(contentType string) error
+	ShouldShow() bool
+	SupportsFiles() bool
 	SupportsUris() bool
 }
 
@@ -161,111 +189,28 @@ type AppInfoOverrider interface {
 // should be noted that it's generally not safe for applications to rely on the
 // format of a particular URIs. Different launcher applications (e.g. file
 // managers) may have different ideas of what a given URI means.
-type AppInfo interface {
-	gextras.Objector
-
-	// AddSupportsType adds a content type to the application information to
-	// indicate the application is capable of opening files with the given
-	// content type.
-	AddSupportsType(contentType string) error
-	// CanDelete obtains the information whether the Info can be deleted. See
-	// g_app_info_delete().
-	CanDelete() bool
-	// CanRemoveSupportsType checks if a supported content type can be removed
-	// from an application.
-	CanRemoveSupportsType() bool
-	// Delete tries to delete a Info.
-	//
-	// On some platforms, there may be a difference between user-defined Infos
-	// which can be deleted, and system-wide ones which cannot. See
-	// g_app_info_can_delete().
-	Delete() bool
-	// Dup creates a duplicate of a Info.
-	Dup() *AppInfoIface
-	// Equal checks if two Infos are equal.
-	//
-	// Note that the check *may not* compare each individual field, and only
-	// does an identity check. In case detecting changes in the contents is
-	// needed, program code must additionally compare relevant fields.
-	Equal(appinfo2 AppInfo) bool
-	// Commandline gets the commandline with which the application will be
-	// started.
-	Commandline() string
-	// Description gets a human-readable description of an installed
-	// application.
-	Description() string
-	// DisplayName gets the display name of the application. The display name is
-	// often more descriptive to the user than the name itself.
-	DisplayName() string
-	// Executable gets the executable's name for the installed application.
-	Executable() string
-	// Icon gets the icon for the application.
-	Icon() *IconIface
-	// ID gets the ID of an application. An id is a string that identifies the
-	// application. The exact format of the id is platform dependent. For
-	// instance, on Unix this is the desktop file id from the xdg menu
-	// specification.
-	//
-	// Note that the returned ID may be nil, depending on how the @appinfo has
-	// been constructed.
-	ID() string
-	// Name gets the installed name of the application.
-	Name() string
-	// SupportedTypes retrieves the list of content types that @app_info claims
-	// to support. If this information is not provided by the environment, this
-	// function will return nil. This function does not take in consideration
-	// associations added with g_app_info_add_supports_type(), but only those
-	// exported directly by the application.
-	SupportedTypes() []string
-	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-	LaunchUrisFinish(result AsyncResult) error
-	// RemoveSupportsType removes a supported type from an application, if
-	// possible.
-	RemoveSupportsType(contentType string) error
-	// SetAsDefaultForExtension sets the application as the default handler for
-	// the given file extension.
-	SetAsDefaultForExtension(extension string) error
-	// SetAsDefaultForType sets the application as the default handler for a
-	// given type.
-	SetAsDefaultForType(contentType string) error
-	// SetAsLastUsedForType sets the application as the last used application
-	// for a given type. This will make the application appear as first in the
-	// list returned by g_app_info_get_recommended_for_type(), regardless of the
-	// default application for that content type.
-	SetAsLastUsedForType(contentType string) error
-	// ShouldShow checks if the application info should be shown in menus that
-	// list available applications.
-	ShouldShow() bool
-	// SupportsFiles checks if the application accepts files as arguments.
-	SupportsFiles() bool
-	// SupportsUris checks if the application supports reading files and
-	// directories from URIs.
-	SupportsUris() bool
-}
-
-// AppInfoIface implements the AppInfo interface.
-type AppInfoIface struct {
+type AppInfo struct {
 	*externglib.Object
 }
 
-var _ AppInfo = (*AppInfoIface)(nil)
+var _ AppInfoer = (*AppInfo)(nil)
 
-func wrapAppInfo(obj *externglib.Object) AppInfo {
-	return &AppInfoIface{
+func wrapAppInfoer(obj *externglib.Object) AppInfoer {
+	return &AppInfo{
 		Object: obj,
 	}
 }
 
-func marshalAppInfo(p uintptr) (interface{}, error) {
+func marshalAppInfoer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppInfo(obj), nil
+	return wrapAppInfoer(obj), nil
 }
 
 // AddSupportsType adds a content type to the application information to
 // indicate the application is capable of opening files with the given content
 // type.
-func (appinfo *AppInfoIface) AddSupportsType(contentType string) error {
+func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
@@ -285,7 +230,7 @@ func (appinfo *AppInfoIface) AddSupportsType(contentType string) error {
 
 // CanDelete obtains the information whether the Info can be deleted. See
 // g_app_info_delete().
-func (appinfo *AppInfoIface) CanDelete() bool {
+func (appinfo *AppInfo) CanDelete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
@@ -304,7 +249,7 @@ func (appinfo *AppInfoIface) CanDelete() bool {
 
 // CanRemoveSupportsType checks if a supported content type can be removed from
 // an application.
-func (appinfo *AppInfoIface) CanRemoveSupportsType() bool {
+func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
@@ -326,7 +271,7 @@ func (appinfo *AppInfoIface) CanRemoveSupportsType() bool {
 // On some platforms, there may be a difference between user-defined Infos which
 // can be deleted, and system-wide ones which cannot. See
 // g_app_info_can_delete().
-func (appinfo *AppInfoIface) Delete() bool {
+func (appinfo *AppInfo) Delete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
@@ -344,7 +289,7 @@ func (appinfo *AppInfoIface) Delete() bool {
 }
 
 // Dup creates a duplicate of a Info.
-func (appinfo *AppInfoIface) Dup() *AppInfoIface {
+func (appinfo *AppInfo) Dup() *AppInfo {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GAppInfo // in
 
@@ -352,9 +297,9 @@ func (appinfo *AppInfoIface) Dup() *AppInfoIface {
 
 	_cret = C.g_app_info_dup(_arg0)
 
-	var _appInfo *AppInfoIface // out
+	var _appInfo *AppInfo // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoIface)
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
 
 	return _appInfo
 }
@@ -364,7 +309,7 @@ func (appinfo *AppInfoIface) Dup() *AppInfoIface {
 // Note that the check *may not* compare each individual field, and only does an
 // identity check. In case detecting changes in the contents is needed, program
 // code must additionally compare relevant fields.
-func (appinfo1 *AppInfoIface) Equal(appinfo2 AppInfo) bool {
+func (appinfo1 *AppInfo) Equal(appinfo2 AppInfoer) bool {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -384,7 +329,7 @@ func (appinfo1 *AppInfoIface) Equal(appinfo2 AppInfo) bool {
 }
 
 // Commandline gets the commandline with which the application will be started.
-func (appinfo *AppInfoIface) Commandline() string {
+func (appinfo *AppInfo) Commandline() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
@@ -400,7 +345,7 @@ func (appinfo *AppInfoIface) Commandline() string {
 }
 
 // Description gets a human-readable description of an installed application.
-func (appinfo *AppInfoIface) Description() string {
+func (appinfo *AppInfo) Description() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
@@ -417,7 +362,7 @@ func (appinfo *AppInfoIface) Description() string {
 
 // DisplayName gets the display name of the application. The display name is
 // often more descriptive to the user than the name itself.
-func (appinfo *AppInfoIface) DisplayName() string {
+func (appinfo *AppInfo) DisplayName() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
@@ -433,7 +378,7 @@ func (appinfo *AppInfoIface) DisplayName() string {
 }
 
 // Executable gets the executable's name for the installed application.
-func (appinfo *AppInfoIface) Executable() string {
+func (appinfo *AppInfo) Executable() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
@@ -449,7 +394,7 @@ func (appinfo *AppInfoIface) Executable() string {
 }
 
 // Icon gets the icon for the application.
-func (appinfo *AppInfoIface) Icon() *IconIface {
+func (appinfo *AppInfo) Icon() *Icon {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GIcon    // in
 
@@ -457,9 +402,9 @@ func (appinfo *AppInfoIface) Icon() *IconIface {
 
 	_cret = C.g_app_info_get_icon(_arg0)
 
-	var _icon *IconIface // out
+	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconIface)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Icon)
 
 	return _icon
 }
@@ -470,7 +415,7 @@ func (appinfo *AppInfoIface) Icon() *IconIface {
 //
 // Note that the returned ID may be nil, depending on how the @appinfo has been
 // constructed.
-func (appinfo *AppInfoIface) ID() string {
+func (appinfo *AppInfo) ID() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
@@ -486,7 +431,7 @@ func (appinfo *AppInfoIface) ID() string {
 }
 
 // Name gets the installed name of the application.
-func (appinfo *AppInfoIface) Name() string {
+func (appinfo *AppInfo) Name() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
@@ -506,7 +451,7 @@ func (appinfo *AppInfoIface) Name() string {
 // function will return nil. This function does not take in consideration
 // associations added with g_app_info_add_supports_type(), but only those
 // exported directly by the application.
-func (appinfo *AppInfoIface) SupportedTypes() []string {
+func (appinfo *AppInfo) SupportedTypes() []string {
 	var _arg0 *C.GAppInfo // out
 	var _cret **C.char
 
@@ -534,7 +479,7 @@ func (appinfo *AppInfoIface) SupportedTypes() []string {
 }
 
 // LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-func (appinfo *AppInfoIface) LaunchUrisFinish(result AsyncResult) error {
+func (appinfo *AppInfo) LaunchUrisFinish(result AsyncResulter) error {
 	var _arg0 *C.GAppInfo     // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -552,7 +497,7 @@ func (appinfo *AppInfoIface) LaunchUrisFinish(result AsyncResult) error {
 }
 
 // RemoveSupportsType removes a supported type from an application, if possible.
-func (appinfo *AppInfoIface) RemoveSupportsType(contentType string) error {
+func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
@@ -572,7 +517,7 @@ func (appinfo *AppInfoIface) RemoveSupportsType(contentType string) error {
 
 // SetAsDefaultForExtension sets the application as the default handler for the
 // given file extension.
-func (appinfo *AppInfoIface) SetAsDefaultForExtension(extension string) error {
+func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
@@ -592,7 +537,7 @@ func (appinfo *AppInfoIface) SetAsDefaultForExtension(extension string) error {
 
 // SetAsDefaultForType sets the application as the default handler for a given
 // type.
-func (appinfo *AppInfoIface) SetAsDefaultForType(contentType string) error {
+func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
@@ -614,7 +559,7 @@ func (appinfo *AppInfoIface) SetAsDefaultForType(contentType string) error {
 // given type. This will make the application appear as first in the list
 // returned by g_app_info_get_recommended_for_type(), regardless of the default
 // application for that content type.
-func (appinfo *AppInfoIface) SetAsLastUsedForType(contentType string) error {
+func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
@@ -634,7 +579,7 @@ func (appinfo *AppInfoIface) SetAsLastUsedForType(contentType string) error {
 
 // ShouldShow checks if the application info should be shown in menus that list
 // available applications.
-func (appinfo *AppInfoIface) ShouldShow() bool {
+func (appinfo *AppInfo) ShouldShow() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
@@ -652,7 +597,7 @@ func (appinfo *AppInfoIface) ShouldShow() bool {
 }
 
 // SupportsFiles checks if the application accepts files as arguments.
-func (appinfo *AppInfoIface) SupportsFiles() bool {
+func (appinfo *AppInfo) SupportsFiles() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
@@ -671,7 +616,7 @@ func (appinfo *AppInfoIface) SupportsFiles() bool {
 
 // SupportsUris checks if the application supports reading files and directories
 // from URIs.
-func (appinfo *AppInfoIface) SupportsUris() bool {
+func (appinfo *AppInfo) SupportsUris() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
@@ -688,71 +633,60 @@ func (appinfo *AppInfoIface) SupportsUris() bool {
 	return _ok
 }
 
-// AppLaunchContextOverrider contains methods that are overridable.
+// AppLaunchContexterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AppLaunchContextOverrider interface {
+type AppLaunchContexterOverrider interface {
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
 	LaunchFailed(startupNotifyId string)
-	Launched(info AppInfo, platformData *glib.Variant)
+	Launched(info AppInfoer, platformData *glib.Variant)
+}
+
+// AppLaunchContexter describes AppLaunchContext's methods.
+type AppLaunchContexter interface {
+	gextras.Objector
+
+	Environment() []string
+	LaunchFailed(startupNotifyId string)
+	Setenv(variable string, value string)
+	Unsetenv(variable string)
 }
 
 // AppLaunchContext: integrating the launch with the launching application. This
 // is used to handle for instance startup notification and launching the new
 // application on the same screen as the launching window.
-type AppLaunchContext interface {
-	gextras.Objector
-
-	// Environment gets the complete environment variable list to be passed to
-	// the child process when @context is used to launch an application. This is
-	// a nil-terminated array of strings, where each string has the form
-	// `KEY=VALUE`.
-	Environment() []string
-	// LaunchFailed: called when an application has failed to launch, so that it
-	// can cancel the application startup notification started in
-	// g_app_launch_context_get_startup_notify_id().
-	LaunchFailed(startupNotifyId string)
-	// Setenv arranges for @variable to be set to @value in the child's
-	// environment when @context is used to launch an application.
-	Setenv(variable string, value string)
-	// Unsetenv arranges for @variable to be unset in the child's environment
-	// when @context is used to launch an application.
-	Unsetenv(variable string)
-}
-
-// AppLaunchContextClass implements the AppLaunchContext interface.
-type AppLaunchContextClass struct {
+type AppLaunchContext struct {
 	*externglib.Object
 }
 
-var _ AppLaunchContext = (*AppLaunchContextClass)(nil)
+var _ AppLaunchContexter = (*AppLaunchContext)(nil)
 
-func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
-	return &AppLaunchContextClass{
+func wrapAppLaunchContexter(obj *externglib.Object) AppLaunchContexter {
+	return &AppLaunchContext{
 		Object: obj,
 	}
 }
 
-func marshalAppLaunchContext(p uintptr) (interface{}, error) {
+func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppLaunchContext(obj), nil
+	return wrapAppLaunchContexter(obj), nil
 }
 
 // NewAppLaunchContext creates a new application launch context. This is not
 // normally used, instead you instantiate a subclass of this, such as
 // AppLaunchContext.
-func NewAppLaunchContext() *AppLaunchContextClass {
+func NewAppLaunchContext() *AppLaunchContext {
 	var _cret *C.GAppLaunchContext // in
 
 	_cret = C.g_app_launch_context_new()
 
-	var _appLaunchContext *AppLaunchContextClass // out
+	var _appLaunchContext *AppLaunchContext // out
 
-	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContextClass)
+	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContext)
 
 	return _appLaunchContext
 }
@@ -760,7 +694,7 @@ func NewAppLaunchContext() *AppLaunchContextClass {
 // Environment gets the complete environment variable list to be passed to the
 // child process when @context is used to launch an application. This is a
 // nil-terminated array of strings, where each string has the form `KEY=VALUE`.
-func (context *AppLaunchContextClass) Environment() []string {
+func (context *AppLaunchContext) Environment() []string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _cret **C.char
 
@@ -791,7 +725,7 @@ func (context *AppLaunchContextClass) Environment() []string {
 // LaunchFailed: called when an application has failed to launch, so that it can
 // cancel the application startup notification started in
 // g_app_launch_context_get_startup_notify_id().
-func (context *AppLaunchContextClass) LaunchFailed(startupNotifyId string) {
+func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 
@@ -804,7 +738,7 @@ func (context *AppLaunchContextClass) LaunchFailed(startupNotifyId string) {
 
 // Setenv arranges for @variable to be set to @value in the child's environment
 // when @context is used to launch an application.
-func (context *AppLaunchContextClass) Setenv(variable string, value string) {
+func (context *AppLaunchContext) Setenv(variable string, value string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.char              // out
@@ -820,7 +754,7 @@ func (context *AppLaunchContextClass) Setenv(variable string, value string) {
 
 // Unsetenv arranges for @variable to be unset in the child's environment when
 // @context is used to launch an application.
-func (context *AppLaunchContextClass) Unsetenv(variable string) {
+func (context *AppLaunchContext) Unsetenv(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 

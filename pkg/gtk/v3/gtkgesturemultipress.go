@@ -21,8 +21,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_multi_press_get_type()), F: marshalGestureMultiPress},
+		{T: externglib.Type(C.gtk_gesture_multi_press_get_type()), F: marshalGestureMultiPresser},
 	})
+}
+
+// GestureMultiPresser describes GestureMultiPress's methods.
+type GestureMultiPresser interface {
+	gextras.Objector
+
+	Area() (gdk.Rectangle, bool)
+	SetArea(rect *gdk.Rectangle)
 }
 
 // GestureMultiPress is a Gesture implementation able to recognize multiple
@@ -34,36 +42,17 @@ func init() {
 // Callers may also restrict the area that is considered valid for a >1
 // touch/button press through gtk_gesture_multi_press_set_area(), so any click
 // happening outside that area is considered to be a first click of its own.
-type GestureMultiPress interface {
-	gextras.Objector
-
-	// Area: if an area was set through gtk_gesture_multi_press_set_area(), this
-	// function will return true and fill in @rect with the press area. See
-	// gtk_gesture_multi_press_set_area() for more details on what the press
-	// area represents.
-	Area() (gdk.Rectangle, bool)
-	// SetArea: if @rect is non-nil, the press area will be checked to be
-	// confined within the rectangle, otherwise the button count will be reset
-	// so the press is seen as being the first one. If @rect is nil, the area
-	// will be reset to an unrestricted state.
-	//
-	// Note: The rectangle is only used to determine whether any non-first click
-	// falls within the expected area. This is not akin to an input shape.
-	SetArea(rect *gdk.Rectangle)
+type GestureMultiPress struct {
+	GestureSingle
 }
 
-// GestureMultiPressClass implements the GestureMultiPress interface.
-type GestureMultiPressClass struct {
-	GestureSingleClass
-}
+var _ GestureMultiPresser = (*GestureMultiPress)(nil)
 
-var _ GestureMultiPress = (*GestureMultiPressClass)(nil)
-
-func wrapGestureMultiPress(obj *externglib.Object) GestureMultiPress {
-	return &GestureMultiPressClass{
-		GestureSingleClass: GestureSingleClass{
-			GestureClass: GestureClass{
-				EventControllerClass: EventControllerClass{
+func wrapGestureMultiPresser(obj *externglib.Object) GestureMultiPresser {
+	return &GestureMultiPress{
+		GestureSingle: GestureSingle{
+			Gesture: Gesture{
+				EventController: EventController{
 					Object: obj,
 				},
 			},
@@ -71,15 +60,15 @@ func wrapGestureMultiPress(obj *externglib.Object) GestureMultiPress {
 	}
 }
 
-func marshalGestureMultiPress(p uintptr) (interface{}, error) {
+func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureMultiPress(obj), nil
+	return wrapGestureMultiPresser(obj), nil
 }
 
 // NewGestureMultiPress returns a newly created Gesture that recognizes single
 // and multiple presses.
-func NewGestureMultiPress(widget Widget) *GestureMultiPressClass {
+func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
@@ -87,9 +76,9 @@ func NewGestureMultiPress(widget Widget) *GestureMultiPressClass {
 
 	_cret = C.gtk_gesture_multi_press_new(_arg1)
 
-	var _gestureMultiPress *GestureMultiPressClass // out
+	var _gestureMultiPress *GestureMultiPress // out
 
-	_gestureMultiPress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureMultiPressClass)
+	_gestureMultiPress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureMultiPress)
 
 	return _gestureMultiPress
 }
@@ -98,7 +87,7 @@ func NewGestureMultiPress(widget Widget) *GestureMultiPressClass {
 // function will return true and fill in @rect with the press area. See
 // gtk_gesture_multi_press_set_area() for more details on what the press area
 // represents.
-func (gesture *GestureMultiPressClass) Area() (gdk.Rectangle, bool) {
+func (gesture *GestureMultiPress) Area() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGestureMultiPress // out
 	var _arg1 C.GdkRectangle          // in
 	var _cret C.gboolean              // in
@@ -125,7 +114,7 @@ func (gesture *GestureMultiPressClass) Area() (gdk.Rectangle, bool) {
 //
 // Note: The rectangle is only used to determine whether any non-first click
 // falls within the expected area. This is not akin to an input shape.
-func (gesture *GestureMultiPressClass) SetArea(rect *gdk.Rectangle) {
+func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkGestureMultiPress // out
 	var _arg1 *C.GdkRectangle         // out
 

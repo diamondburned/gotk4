@@ -20,17 +20,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbar},
+		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbarrer},
 	})
 }
 
-// StatusbarOverrider contains methods that are overridable.
+// StatusbarrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type StatusbarOverrider interface {
+type StatusbarrerOverrider interface {
 	TextPopped(contextId uint, text string)
 	TextPushed(contextId uint, text string)
+}
+
+// Statusbarrer describes Statusbar's methods.
+type Statusbarrer interface {
+	gextras.Objector
+
+	ContextID(contextDescription string) uint
+	MessageArea() *Box
+	Pop(contextId uint)
+	Push(contextId uint, text string) uint
+	Remove(contextId uint, messageId uint)
+	RemoveAll(contextId uint)
 }
 
 // Statusbar is usually placed along the bottom of an application's main Window.
@@ -65,98 +77,73 @@ type StatusbarOverrider interface {
 // CSS node
 //
 // GtkStatusbar has a single CSS node with name statusbar.
-type Statusbar interface {
-	gextras.Objector
-
-	// ContextID returns a new context identifier, given a description of the
-	// actual context. Note that the description is not shown in the UI.
-	ContextID(contextDescription string) uint
-	// MessageArea retrieves the box containing the label widget.
-	MessageArea() *BoxClass
-	// Pop removes the first message in the Statusbar’s stack with the given
-	// context id.
-	//
-	// Note that this may not change the displayed message, if the message at
-	// the top of the stack has a different context id.
-	Pop(contextId uint)
-	// Push pushes a new message onto a statusbar’s stack.
-	Push(contextId uint, text string) uint
-	// Remove forces the removal of a message from a statusbar’s stack. The
-	// exact @context_id and @message_id must be specified.
-	Remove(contextId uint, messageId uint)
-	// RemoveAll forces the removal of all messages from a statusbar's stack
-	// with the exact @context_id.
-	RemoveAll(contextId uint)
-}
-
-// StatusbarClass implements the Statusbar interface.
-type StatusbarClass struct {
+type Statusbar struct {
 	*externglib.Object
-	BoxClass
-	BuildableIface
-	OrientableIface
+	Box
+	Buildable
+	Orientable
 }
 
-var _ Statusbar = (*StatusbarClass)(nil)
+var _ Statusbarrer = (*Statusbar)(nil)
 
-func wrapStatusbar(obj *externglib.Object) Statusbar {
-	return &StatusbarClass{
+func wrapStatusbarrer(obj *externglib.Object) Statusbarrer {
+	return &Statusbar{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalStatusbar(p uintptr) (interface{}, error) {
+func marshalStatusbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStatusbar(obj), nil
+	return wrapStatusbarrer(obj), nil
 }
 
 // NewStatusbar creates a new Statusbar ready for messages.
-func NewStatusbar() *StatusbarClass {
+func NewStatusbar() *Statusbar {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_statusbar_new()
 
-	var _statusbar *StatusbarClass // out
+	var _statusbar *Statusbar // out
 
-	_statusbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StatusbarClass)
+	_statusbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Statusbar)
 
 	return _statusbar
 }
 
 // ContextID returns a new context identifier, given a description of the actual
 // context. Note that the description is not shown in the UI.
-func (statusbar *StatusbarClass) ContextID(contextDescription string) uint {
+func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 *C.gchar        // out
 	var _cret C.guint         // in
@@ -175,7 +162,7 @@ func (statusbar *StatusbarClass) ContextID(contextDescription string) uint {
 }
 
 // MessageArea retrieves the box containing the label widget.
-func (statusbar *StatusbarClass) MessageArea() *BoxClass {
+func (statusbar *Statusbar) MessageArea() *Box {
 	var _arg0 *C.GtkStatusbar // out
 	var _cret *C.GtkWidget    // in
 
@@ -183,9 +170,9 @@ func (statusbar *StatusbarClass) MessageArea() *BoxClass {
 
 	_cret = C.gtk_statusbar_get_message_area(_arg0)
 
-	var _box *BoxClass // out
+	var _box *Box // out
 
-	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*BoxClass)
+	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
 
 	return _box
 }
@@ -195,7 +182,7 @@ func (statusbar *StatusbarClass) MessageArea() *BoxClass {
 //
 // Note that this may not change the displayed message, if the message at the
 // top of the stack has a different context id.
-func (statusbar *StatusbarClass) Pop(contextId uint) {
+func (statusbar *Statusbar) Pop(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
@@ -206,7 +193,7 @@ func (statusbar *StatusbarClass) Pop(contextId uint) {
 }
 
 // Push pushes a new message onto a statusbar’s stack.
-func (statusbar *StatusbarClass) Push(contextId uint, text string) uint {
+func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 *C.gchar        // out
@@ -228,7 +215,7 @@ func (statusbar *StatusbarClass) Push(contextId uint, text string) uint {
 
 // Remove forces the removal of a message from a statusbar’s stack. The exact
 // @context_id and @message_id must be specified.
-func (statusbar *StatusbarClass) Remove(contextId uint, messageId uint) {
+func (statusbar *Statusbar) Remove(contextId uint, messageId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out
@@ -242,7 +229,7 @@ func (statusbar *StatusbarClass) Remove(contextId uint, messageId uint) {
 
 // RemoveAll forces the removal of all messages from a statusbar's stack with
 // the exact @context_id.
-func (statusbar *StatusbarClass) RemoveAll(contextId uint) {
+func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 

@@ -21,38 +21,38 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_notebook_page_accessible_get_type()), F: marshalNotebookPageAccessible},
+		{T: externglib.Type(C.gtk_notebook_page_accessible_get_type()), F: marshalNotebookPageAccessibler},
 	})
 }
 
-type NotebookPageAccessible interface {
+// NotebookPageAccessibler describes NotebookPageAccessible's methods.
+type NotebookPageAccessibler interface {
 	gextras.Objector
 
 	Invalidate()
 }
 
-// NotebookPageAccessibleClass implements the NotebookPageAccessible interface.
-type NotebookPageAccessibleClass struct {
-	atk.ObjectClass
+type NotebookPageAccessible struct {
+	atk.Object
 }
 
-var _ NotebookPageAccessible = (*NotebookPageAccessibleClass)(nil)
+var _ NotebookPageAccessibler = (*NotebookPageAccessible)(nil)
 
-func wrapNotebookPageAccessible(obj *externglib.Object) NotebookPageAccessible {
-	return &NotebookPageAccessibleClass{
-		ObjectClass: atk.ObjectClass{
+func wrapNotebookPageAccessibler(obj *externglib.Object) NotebookPageAccessibler {
+	return &NotebookPageAccessible{
+		Object: atk.Object{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNotebookPageAccessible(p uintptr) (interface{}, error) {
+func marshalNotebookPageAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotebookPageAccessible(obj), nil
+	return wrapNotebookPageAccessibler(obj), nil
 }
 
-func NewNotebookPageAccessible(notebook NotebookAccessible, child Widget) *NotebookPageAccessibleClass {
+func NewNotebookPageAccessible(notebook NotebookAccessibler, child Widgetter) *NotebookPageAccessible {
 	var _arg1 *C.GtkNotebookAccessible // out
 	var _arg2 *C.GtkWidget             // out
 	var _cret *C.AtkObject             // in
@@ -62,14 +62,14 @@ func NewNotebookPageAccessible(notebook NotebookAccessible, child Widget) *Noteb
 
 	_cret = C.gtk_notebook_page_accessible_new(_arg1, _arg2)
 
-	var _notebookPageAccessible *NotebookPageAccessibleClass // out
+	var _notebookPageAccessible *NotebookPageAccessible // out
 
-	_notebookPageAccessible = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NotebookPageAccessibleClass)
+	_notebookPageAccessible = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NotebookPageAccessible)
 
 	return _notebookPageAccessible
 }
 
-func (page *NotebookPageAccessibleClass) Invalidate() {
+func (page *NotebookPageAccessible) Invalidate() {
 	var _arg0 *C.GtkNotebookPageAccessible // out
 
 	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer(page.Native()))

@@ -19,8 +19,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplay},
+		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplayyer},
 	})
+}
+
+// WaylandDisplayyer describes WaylandDisplay's methods.
+type WaylandDisplayyer interface {
+	gextras.Objector
+
+	StartupNotificationID() string
+	QueryRegistry(global string) bool
+	SetCursorTheme(name string, size int)
+	SetStartupNotificationID(startupId string)
 }
 
 // WaylandDisplay: the Wayland implementation of `GdkDisplay`.
@@ -32,53 +42,29 @@ func init() {
 //
 // You can find out what Wayland globals are supported by a display with
 // [method@GdkWayland.WaylandDisplay.query_registry].
-type WaylandDisplay interface {
-	gextras.Objector
-
-	// StartupNotificationID gets the startup notification ID for a Wayland
-	// display, or nil if no ID has been defined.
-	StartupNotificationID() string
-	// QueryRegistry returns true if the the interface was found in the display
-	// `wl_registry.global` handler.
-	QueryRegistry(global string) bool
-	// SetCursorTheme sets the cursor theme for the given @display.
-	SetCursorTheme(name string, size int)
-	// SetStartupNotificationID sets the startup notification ID for a display.
-	//
-	// This is usually taken from the value of the `DESKTOP_STARTUP_ID`
-	// environment variable, but in some cases (such as the application not
-	// being launched using exec()) it can come from other sources.
-	//
-	// The startup ID is also what is used to signal that the startup is
-	// complete (for example, when opening a window or when calling
-	// [method@Gdk.Display.notify_startup_complete]).
-	SetStartupNotificationID(startupId string)
+type WaylandDisplay struct {
+	gdk.Display
 }
 
-// WaylandDisplayClass implements the WaylandDisplay interface.
-type WaylandDisplayClass struct {
-	gdk.DisplayClass
-}
+var _ WaylandDisplayyer = (*WaylandDisplay)(nil)
 
-var _ WaylandDisplay = (*WaylandDisplayClass)(nil)
-
-func wrapWaylandDisplay(obj *externglib.Object) WaylandDisplay {
-	return &WaylandDisplayClass{
-		DisplayClass: gdk.DisplayClass{
+func wrapWaylandDisplayyer(obj *externglib.Object) WaylandDisplayyer {
+	return &WaylandDisplay{
+		Display: gdk.Display{
 			Object: obj,
 		},
 	}
 }
 
-func marshalWaylandDisplay(p uintptr) (interface{}, error) {
+func marshalWaylandDisplayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandDisplay(obj), nil
+	return wrapWaylandDisplayyer(obj), nil
 }
 
 // StartupNotificationID gets the startup notification ID for a Wayland display,
 // or nil if no ID has been defined.
-func (display *WaylandDisplayClass) StartupNotificationID() string {
+func (display *WaylandDisplay) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
@@ -95,7 +81,7 @@ func (display *WaylandDisplayClass) StartupNotificationID() string {
 
 // QueryRegistry returns true if the the interface was found in the display
 // `wl_registry.global` handler.
-func (display *WaylandDisplayClass) QueryRegistry(global string) bool {
+func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in
@@ -116,7 +102,7 @@ func (display *WaylandDisplayClass) QueryRegistry(global string) bool {
 }
 
 // SetCursorTheme sets the cursor theme for the given @display.
-func (display *WaylandDisplayClass) SetCursorTheme(name string, size int) {
+func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -138,7 +124,7 @@ func (display *WaylandDisplayClass) SetCursorTheme(name string, size int) {
 // The startup ID is also what is used to signal that the startup is complete
 // (for example, when opening a window or when calling
 // [method@Gdk.Display.notify_startup_complete]).
-func (display *WaylandDisplayClass) SetStartupNotificationID(startupId string) {
+func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 

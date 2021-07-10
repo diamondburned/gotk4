@@ -25,7 +25,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_recent_chooser_error_get_type()), F: marshalRecentChooserError},
 		{T: externglib.Type(C.gtk_recent_sort_type_get_type()), F: marshalRecentSortType},
-		{T: externglib.Type(C.gtk_recent_chooser_get_type()), F: marshalRecentChooser},
+		{T: externglib.Type(C.gtk_recent_chooser_get_type()), F: marshalRecentChooserrer},
 	})
 }
 
@@ -97,23 +97,23 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 	return cret
 }
 
-// RecentChooserOverrider contains methods that are overridable.
+// RecentChooserrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RecentChooserOverrider interface {
+type RecentChooserrerOverrider interface {
 	// AddFilter adds @filter to the list of RecentFilter objects held by
 	// @chooser.
 	//
 	// If no previous filter objects were defined, this function will call
 	// gtk_recent_chooser_set_filter().
-	AddFilter(filter RecentFilter)
+	AddFilter(filter RecentFilterrer)
 	// CurrentURI gets the URI currently selected by @chooser.
 	CurrentURI() string
 	ItemActivated()
 	// RemoveFilter removes @filter from the list of RecentFilter objects held
 	// by @chooser.
-	RemoveFilter(filter RecentFilter)
+	RemoveFilter(filter RecentFilterrer)
 	// SelectAll selects all the items inside @chooser, if the @chooser supports
 	// multiple selection.
 	SelectAll()
@@ -128,116 +128,67 @@ type RecentChooserOverrider interface {
 	UnselectURI(uri string)
 }
 
+// RecentChooserrer describes RecentChooser's methods.
+type RecentChooserrer interface {
+	gextras.Objector
+
+	AddFilter(filter RecentFilterrer)
+	CurrentItem() *RecentInfo
+	CurrentURI() string
+	Filter() *RecentFilter
+	Limit() int
+	LocalOnly() bool
+	SelectMultiple() bool
+	ShowIcons() bool
+	ShowNotFound() bool
+	ShowPrivate() bool
+	ShowTips() bool
+	SortType() RecentSortType
+	RemoveFilter(filter RecentFilterrer)
+	SelectAll()
+	SelectURI(uri string) error
+	SetCurrentURI(uri string) error
+	SetFilter(filter RecentFilterrer)
+	SetLimit(limit int)
+	SetLocalOnly(localOnly bool)
+	SetSelectMultiple(selectMultiple bool)
+	SetShowIcons(showIcons bool)
+	SetShowNotFound(showNotFound bool)
+	SetShowPrivate(showPrivate bool)
+	SetShowTips(showTips bool)
+	UnselectAll()
+	UnselectURI(uri string)
+}
+
 // RecentChooser is an interface that can be implemented by widgets displaying
 // the list of recently used files. In GTK+, the main objects that implement
 // this interface are RecentChooserWidget, RecentChooserDialog and
 // RecentChooserMenu.
 //
 // Recently used files are supported since GTK+ 2.10.
-type RecentChooser interface {
-	gextras.Objector
-
-	// AddFilter adds @filter to the list of RecentFilter objects held by
-	// @chooser.
-	//
-	// If no previous filter objects were defined, this function will call
-	// gtk_recent_chooser_set_filter().
-	AddFilter(filter RecentFilter)
-	// CurrentItem gets the RecentInfo currently selected by @chooser.
-	CurrentItem() *RecentInfo
-	// CurrentURI gets the URI currently selected by @chooser.
-	CurrentURI() string
-	// Filter gets the RecentFilter object currently used by @chooser to affect
-	// the display of the recently used resources.
-	Filter() *RecentFilterClass
-	// Limit gets the number of items returned by gtk_recent_chooser_get_items()
-	// and gtk_recent_chooser_get_uris().
-	Limit() int
-	// LocalOnly gets whether only local resources should be shown in the
-	// recently used resources selector. See gtk_recent_chooser_set_local_only()
-	LocalOnly() bool
-	// SelectMultiple gets whether @chooser can select multiple items.
-	SelectMultiple() bool
-	// ShowIcons retrieves whether @chooser should show an icon near the
-	// resource.
-	ShowIcons() bool
-	// ShowNotFound retrieves whether @chooser should show the recently used
-	// resources that were not found.
-	ShowNotFound() bool
-	// ShowPrivate returns whether @chooser should display recently used
-	// resources registered as private.
-	ShowPrivate() bool
-	// ShowTips gets whether @chooser should display tooltips containing the
-	// full path of a recently user resource.
-	ShowTips() bool
-	// SortType gets the value set by gtk_recent_chooser_set_sort_type().
-	SortType() RecentSortType
-	// RemoveFilter removes @filter from the list of RecentFilter objects held
-	// by @chooser.
-	RemoveFilter(filter RecentFilter)
-	// SelectAll selects all the items inside @chooser, if the @chooser supports
-	// multiple selection.
-	SelectAll()
-	// SelectURI selects @uri inside @chooser.
-	SelectURI(uri string) error
-	// SetCurrentURI sets @uri as the current URI for @chooser.
-	SetCurrentURI(uri string) error
-	// SetFilter sets @filter as the current RecentFilter object used by
-	// @chooser to affect the displayed recently used resources.
-	SetFilter(filter RecentFilter)
-	// SetLimit sets the number of items that should be returned by
-	// gtk_recent_chooser_get_items() and gtk_recent_chooser_get_uris().
-	SetLimit(limit int)
-	// SetLocalOnly sets whether only local resources, that is resources using
-	// the file:// URI scheme, should be shown in the recently used resources
-	// selector. If @local_only is true (the default) then the shown resources
-	// are guaranteed to be accessible through the operating system native file
-	// system.
-	SetLocalOnly(localOnly bool)
-	// SetSelectMultiple sets whether @chooser can select multiple items.
-	SetSelectMultiple(selectMultiple bool)
-	// SetShowIcons sets whether @chooser should show an icon near the resource
-	// when displaying it.
-	SetShowIcons(showIcons bool)
-	// SetShowNotFound sets whether @chooser should display the recently used
-	// resources that it didn’t find. This only applies to local resources.
-	SetShowNotFound(showNotFound bool)
-	// SetShowPrivate: whether to show recently used resources marked registered
-	// as private.
-	SetShowPrivate(showPrivate bool)
-	// SetShowTips sets whether to show a tooltips containing the full path of
-	// each recently used resource in a RecentChooser widget.
-	SetShowTips(showTips bool)
-	// UnselectAll unselects all the items inside @chooser.
-	UnselectAll()
-	// UnselectURI unselects @uri inside @chooser.
-	UnselectURI(uri string)
-}
-
-// RecentChooserIface implements the RecentChooser interface.
-type RecentChooserIface struct {
+type RecentChooser struct {
 	*externglib.Object
 }
 
-var _ RecentChooser = (*RecentChooserIface)(nil)
+var _ RecentChooserrer = (*RecentChooser)(nil)
 
-func wrapRecentChooser(obj *externglib.Object) RecentChooser {
-	return &RecentChooserIface{
+func wrapRecentChooserrer(obj *externglib.Object) RecentChooserrer {
+	return &RecentChooser{
 		Object: obj,
 	}
 }
 
-func marshalRecentChooser(p uintptr) (interface{}, error) {
+func marshalRecentChooserrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooser(obj), nil
+	return wrapRecentChooserrer(obj), nil
 }
 
 // AddFilter adds @filter to the list of RecentFilter objects held by @chooser.
 //
 // If no previous filter objects were defined, this function will call
 // gtk_recent_chooser_set_filter().
-func (chooser *RecentChooserIface) AddFilter(filter RecentFilter) {
+func (chooser *RecentChooser) AddFilter(filter RecentFilterrer) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.GtkRecentFilter  // out
 
@@ -248,7 +199,7 @@ func (chooser *RecentChooserIface) AddFilter(filter RecentFilter) {
 }
 
 // CurrentItem gets the RecentInfo currently selected by @chooser.
-func (chooser *RecentChooserIface) CurrentItem() *RecentInfo {
+func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GtkRecentInfo    // in
 
@@ -268,7 +219,7 @@ func (chooser *RecentChooserIface) CurrentItem() *RecentInfo {
 }
 
 // CurrentURI gets the URI currently selected by @chooser.
-func (chooser *RecentChooserIface) CurrentURI() string {
+func (chooser *RecentChooser) CurrentURI() string {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.gchar            // in
 
@@ -286,7 +237,7 @@ func (chooser *RecentChooserIface) CurrentURI() string {
 
 // Filter gets the RecentFilter object currently used by @chooser to affect the
 // display of the recently used resources.
-func (chooser *RecentChooserIface) Filter() *RecentFilterClass {
+func (chooser *RecentChooser) Filter() *RecentFilter {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GtkRecentFilter  // in
 
@@ -294,16 +245,16 @@ func (chooser *RecentChooserIface) Filter() *RecentFilterClass {
 
 	_cret = C.gtk_recent_chooser_get_filter(_arg0)
 
-	var _recentFilter *RecentFilterClass // out
+	var _recentFilter *RecentFilter // out
 
-	_recentFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentFilterClass)
+	_recentFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentFilter)
 
 	return _recentFilter
 }
 
 // Limit gets the number of items returned by gtk_recent_chooser_get_items() and
 // gtk_recent_chooser_get_uris().
-func (chooser *RecentChooserIface) Limit() int {
+func (chooser *RecentChooser) Limit() int {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gint              // in
 
@@ -320,7 +271,7 @@ func (chooser *RecentChooserIface) Limit() int {
 
 // LocalOnly gets whether only local resources should be shown in the recently
 // used resources selector. See gtk_recent_chooser_set_local_only()
-func (chooser *RecentChooserIface) LocalOnly() bool {
+func (chooser *RecentChooser) LocalOnly() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
@@ -338,7 +289,7 @@ func (chooser *RecentChooserIface) LocalOnly() bool {
 }
 
 // SelectMultiple gets whether @chooser can select multiple items.
-func (chooser *RecentChooserIface) SelectMultiple() bool {
+func (chooser *RecentChooser) SelectMultiple() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
@@ -356,7 +307,7 @@ func (chooser *RecentChooserIface) SelectMultiple() bool {
 }
 
 // ShowIcons retrieves whether @chooser should show an icon near the resource.
-func (chooser *RecentChooserIface) ShowIcons() bool {
+func (chooser *RecentChooser) ShowIcons() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
@@ -375,7 +326,7 @@ func (chooser *RecentChooserIface) ShowIcons() bool {
 
 // ShowNotFound retrieves whether @chooser should show the recently used
 // resources that were not found.
-func (chooser *RecentChooserIface) ShowNotFound() bool {
+func (chooser *RecentChooser) ShowNotFound() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
@@ -394,7 +345,7 @@ func (chooser *RecentChooserIface) ShowNotFound() bool {
 
 // ShowPrivate returns whether @chooser should display recently used resources
 // registered as private.
-func (chooser *RecentChooserIface) ShowPrivate() bool {
+func (chooser *RecentChooser) ShowPrivate() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
@@ -413,7 +364,7 @@ func (chooser *RecentChooserIface) ShowPrivate() bool {
 
 // ShowTips gets whether @chooser should display tooltips containing the full
 // path of a recently user resource.
-func (chooser *RecentChooserIface) ShowTips() bool {
+func (chooser *RecentChooser) ShowTips() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
 
@@ -431,7 +382,7 @@ func (chooser *RecentChooserIface) ShowTips() bool {
 }
 
 // SortType gets the value set by gtk_recent_chooser_set_sort_type().
-func (chooser *RecentChooserIface) SortType() RecentSortType {
+func (chooser *RecentChooser) SortType() RecentSortType {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.GtkRecentSortType // in
 
@@ -448,7 +399,7 @@ func (chooser *RecentChooserIface) SortType() RecentSortType {
 
 // RemoveFilter removes @filter from the list of RecentFilter objects held by
 // @chooser.
-func (chooser *RecentChooserIface) RemoveFilter(filter RecentFilter) {
+func (chooser *RecentChooser) RemoveFilter(filter RecentFilterrer) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.GtkRecentFilter  // out
 
@@ -460,7 +411,7 @@ func (chooser *RecentChooserIface) RemoveFilter(filter RecentFilter) {
 
 // SelectAll selects all the items inside @chooser, if the @chooser supports
 // multiple selection.
-func (chooser *RecentChooserIface) SelectAll() {
+func (chooser *RecentChooser) SelectAll() {
 	var _arg0 *C.GtkRecentChooser // out
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
@@ -469,7 +420,7 @@ func (chooser *RecentChooserIface) SelectAll() {
 }
 
 // SelectURI selects @uri inside @chooser.
-func (chooser *RecentChooserIface) SelectURI(uri string) error {
+func (chooser *RecentChooser) SelectURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
 	var _cerr *C.GError           // in
@@ -488,7 +439,7 @@ func (chooser *RecentChooserIface) SelectURI(uri string) error {
 }
 
 // SetCurrentURI sets @uri as the current URI for @chooser.
-func (chooser *RecentChooserIface) SetCurrentURI(uri string) error {
+func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
 	var _cerr *C.GError           // in
@@ -508,7 +459,7 @@ func (chooser *RecentChooserIface) SetCurrentURI(uri string) error {
 
 // SetFilter sets @filter as the current RecentFilter object used by @chooser to
 // affect the displayed recently used resources.
-func (chooser *RecentChooserIface) SetFilter(filter RecentFilter) {
+func (chooser *RecentChooser) SetFilter(filter RecentFilterrer) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.GtkRecentFilter  // out
 
@@ -520,7 +471,7 @@ func (chooser *RecentChooserIface) SetFilter(filter RecentFilter) {
 
 // SetLimit sets the number of items that should be returned by
 // gtk_recent_chooser_get_items() and gtk_recent_chooser_get_uris().
-func (chooser *RecentChooserIface) SetLimit(limit int) {
+func (chooser *RecentChooser) SetLimit(limit int) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gint              // out
 
@@ -534,7 +485,7 @@ func (chooser *RecentChooserIface) SetLimit(limit int) {
 // file:// URI scheme, should be shown in the recently used resources selector.
 // If @local_only is true (the default) then the shown resources are guaranteed
 // to be accessible through the operating system native file system.
-func (chooser *RecentChooserIface) SetLocalOnly(localOnly bool) {
+func (chooser *RecentChooser) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
@@ -547,7 +498,7 @@ func (chooser *RecentChooserIface) SetLocalOnly(localOnly bool) {
 }
 
 // SetSelectMultiple sets whether @chooser can select multiple items.
-func (chooser *RecentChooserIface) SetSelectMultiple(selectMultiple bool) {
+func (chooser *RecentChooser) SetSelectMultiple(selectMultiple bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
@@ -561,7 +512,7 @@ func (chooser *RecentChooserIface) SetSelectMultiple(selectMultiple bool) {
 
 // SetShowIcons sets whether @chooser should show an icon near the resource when
 // displaying it.
-func (chooser *RecentChooserIface) SetShowIcons(showIcons bool) {
+func (chooser *RecentChooser) SetShowIcons(showIcons bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
@@ -575,7 +526,7 @@ func (chooser *RecentChooserIface) SetShowIcons(showIcons bool) {
 
 // SetShowNotFound sets whether @chooser should display the recently used
 // resources that it didn’t find. This only applies to local resources.
-func (chooser *RecentChooserIface) SetShowNotFound(showNotFound bool) {
+func (chooser *RecentChooser) SetShowNotFound(showNotFound bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
@@ -589,7 +540,7 @@ func (chooser *RecentChooserIface) SetShowNotFound(showNotFound bool) {
 
 // SetShowPrivate: whether to show recently used resources marked registered as
 // private.
-func (chooser *RecentChooserIface) SetShowPrivate(showPrivate bool) {
+func (chooser *RecentChooser) SetShowPrivate(showPrivate bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
@@ -603,7 +554,7 @@ func (chooser *RecentChooserIface) SetShowPrivate(showPrivate bool) {
 
 // SetShowTips sets whether to show a tooltips containing the full path of each
 // recently used resource in a RecentChooser widget.
-func (chooser *RecentChooserIface) SetShowTips(showTips bool) {
+func (chooser *RecentChooser) SetShowTips(showTips bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
 
@@ -616,7 +567,7 @@ func (chooser *RecentChooserIface) SetShowTips(showTips bool) {
 }
 
 // UnselectAll unselects all the items inside @chooser.
-func (chooser *RecentChooserIface) UnselectAll() {
+func (chooser *RecentChooser) UnselectAll() {
 	var _arg0 *C.GtkRecentChooser // out
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
@@ -625,7 +576,7 @@ func (chooser *RecentChooserIface) UnselectAll() {
 }
 
 // UnselectURI unselects @uri inside @chooser.
-func (chooser *RecentChooserIface) UnselectURI(uri string) {
+func (chooser *RecentChooser) UnselectURI(uri string) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
 

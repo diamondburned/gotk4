@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.atk_value_type_get_type()), F: marshalValueType},
-		{T: externglib.Type(C.atk_value_get_type()), F: marshalValue},
+		{T: externglib.Type(C.atk_value_get_type()), F: marshalValueer},
 	})
 }
 
@@ -52,11 +52,11 @@ func marshalValueType(p uintptr) (interface{}, error) {
 	return ValueType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ValueOverrider contains methods that are overridable.
+// ValueerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ValueOverrider interface {
+type ValueerOverrider interface {
 	// CurrentValue gets the value of this object.
 	//
 	// Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
@@ -104,6 +104,21 @@ type ValueOverrider interface {
 	// In the practice several implementors were not able to decide it, and
 	// returned TRUE in any case. For that reason it is not required anymore to
 	// return if the value was properly assigned or not.
+	SetValue(newValue float64)
+}
+
+// Valueer describes Value's methods.
+type Valueer interface {
+	gextras.Objector
+
+	CurrentValue() externglib.Value
+	Increment() float64
+	MaximumValue() externglib.Value
+	MinimumIncrement() externglib.Value
+	MinimumValue() externglib.Value
+	Range() *Range
+	ValueAndText() (float64, string)
+	SetCurrentValue(value *externglib.Value) bool
 	SetValue(newValue float64)
 }
 
@@ -198,82 +213,28 @@ type ValueOverrider interface {
 // that if there is a textual description associated with the new numeric value,
 // that description should be included regardless of whether or not it has also
 // changed. </para> </refsect1>
-type Value interface {
-	gextras.Objector
-
-	// CurrentValue gets the value of this object.
-	//
-	// Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
-	CurrentValue() externglib.Value
-	// Increment gets the minimum increment by which the value of this object
-	// may be changed. If zero, the minimum increment is undefined, which may
-	// mean that it is limited only by the floating point precision of the
-	// platform.
-	Increment() float64
-	// MaximumValue gets the maximum value of this object.
-	//
-	// Deprecated: Since 2.12. Use atk_value_get_range() instead.
-	MaximumValue() externglib.Value
-	// MinimumIncrement gets the minimum increment by which the value of this
-	// object may be changed. If zero, the minimum increment is undefined, which
-	// may mean that it is limited only by the floating point precision of the
-	// platform.
-	//
-	// Deprecated: Since 2.12. Use atk_value_get_increment() instead.
-	MinimumIncrement() externglib.Value
-	// MinimumValue gets the minimum value of this object.
-	//
-	// Deprecated: Since 2.12. Use atk_value_get_range() instead.
-	MinimumValue() externglib.Value
-	// Range gets the range of this object.
-	Range() *Range
-	// ValueAndText gets the current value and the human readable text
-	// alternative of @obj. @text is a newly created string, that must be freed
-	// by the caller. Can be NULL if no descriptor is available.
-	ValueAndText() (float64, string)
-	// SetCurrentValue sets the value of this object.
-	//
-	// Deprecated: Since 2.12. Use atk_value_set_value() instead.
-	SetCurrentValue(value *externglib.Value) bool
-	// SetValue sets the value of this object.
-	//
-	// This method is intended to provide a way to change the value of the
-	// object. In any case, it is possible that the value can't be modified (ie:
-	// a read-only component). If the value changes due this call, it is
-	// possible that the text could change, and will trigger an
-	// Value::value-changed signal emission.
-	//
-	// Note for implementors: the deprecated atk_value_set_current_value()
-	// method returned TRUE or FALSE depending if the value was assigned or not.
-	// In the practice several implementors were not able to decide it, and
-	// returned TRUE in any case. For that reason it is not required anymore to
-	// return if the value was properly assigned or not.
-	SetValue(newValue float64)
-}
-
-// ValueIface implements the Value interface.
-type ValueIface struct {
+type Value struct {
 	*externglib.Object
 }
 
-var _ Value = (*ValueIface)(nil)
+var _ Valueer = (*Value)(nil)
 
-func wrapValue(obj *externglib.Object) Value {
-	return &ValueIface{
+func wrapValueer(obj *externglib.Object) Valueer {
+	return &Value{
 		Object: obj,
 	}
 }
 
-func marshalValue(p uintptr) (interface{}, error) {
+func marshalValueer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapValue(obj), nil
+	return wrapValueer(obj), nil
 }
 
 // CurrentValue gets the value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
-func (obj *ValueIface) CurrentValue() externglib.Value {
+func (obj *Value) CurrentValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
 
@@ -291,7 +252,7 @@ func (obj *ValueIface) CurrentValue() externglib.Value {
 // Increment gets the minimum increment by which the value of this object may be
 // changed. If zero, the minimum increment is undefined, which may mean that it
 // is limited only by the floating point precision of the platform.
-func (obj *ValueIface) Increment() float64 {
+func (obj *Value) Increment() float64 {
 	var _arg0 *C.AtkValue // out
 	var _cret C.gdouble   // in
 
@@ -309,7 +270,7 @@ func (obj *ValueIface) Increment() float64 {
 // MaximumValue gets the maximum value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_get_range() instead.
-func (obj *ValueIface) MaximumValue() externglib.Value {
+func (obj *Value) MaximumValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
 
@@ -329,7 +290,7 @@ func (obj *ValueIface) MaximumValue() externglib.Value {
 // that it is limited only by the floating point precision of the platform.
 //
 // Deprecated: Since 2.12. Use atk_value_get_increment() instead.
-func (obj *ValueIface) MinimumIncrement() externglib.Value {
+func (obj *Value) MinimumIncrement() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
 
@@ -347,7 +308,7 @@ func (obj *ValueIface) MinimumIncrement() externglib.Value {
 // MinimumValue gets the minimum value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_get_range() instead.
-func (obj *ValueIface) MinimumValue() externglib.Value {
+func (obj *Value) MinimumValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
 
@@ -363,7 +324,7 @@ func (obj *ValueIface) MinimumValue() externglib.Value {
 }
 
 // Range gets the range of this object.
-func (obj *ValueIface) Range() *Range {
+func (obj *Value) Range() *Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.AtkRange // in
 
@@ -375,7 +336,7 @@ func (obj *ValueIface) Range() *Range {
 
 	__range = (*Range)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(__range, func(v *Range) {
-		C.free(unsafe.Pointer(v))
+		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
 	})
 
 	return __range
@@ -384,7 +345,7 @@ func (obj *ValueIface) Range() *Range {
 // ValueAndText gets the current value and the human readable text alternative
 // of @obj. @text is a newly created string, that must be freed by the caller.
 // Can be NULL if no descriptor is available.
-func (obj *ValueIface) ValueAndText() (float64, string) {
+func (obj *Value) ValueAndText() (float64, string) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // in
 	var _arg2 *C.gchar    // in
@@ -406,7 +367,7 @@ func (obj *ValueIface) ValueAndText() (float64, string) {
 // SetCurrentValue sets the value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_set_value() instead.
-func (obj *ValueIface) SetCurrentValue(value *externglib.Value) bool {
+func (obj *Value) SetCurrentValue(value *externglib.Value) bool {
 	var _arg0 *C.AtkValue // out
 	var _arg1 *C.GValue   // out
 	var _cret C.gboolean  // in
@@ -437,7 +398,7 @@ func (obj *ValueIface) SetCurrentValue(value *externglib.Value) bool {
 // practice several implementors were not able to decide it, and returned TRUE
 // in any case. For that reason it is not required anymore to return if the
 // value was properly assigned or not.
-func (obj *ValueIface) SetValue(newValue float64) {
+func (obj *Value) SetValue(newValue float64) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // out
 

@@ -21,45 +21,45 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_expander_accessible_get_type()), F: marshalExpanderAccessible},
+		{T: externglib.Type(C.gtk_expander_accessible_get_type()), F: marshalExpanderAccessibler},
 	})
 }
 
-type ExpanderAccessible interface {
+// ExpanderAccessibler describes ExpanderAccessible's methods.
+type ExpanderAccessibler interface {
 	gextras.Objector
 
-	privateExpanderAccessibleClass()
+	privateExpanderAccessible()
 }
 
-// ExpanderAccessibleClass implements the ExpanderAccessible interface.
-type ExpanderAccessibleClass struct {
-	ContainerAccessibleClass
-	atk.ActionIface
+type ExpanderAccessible struct {
+	ContainerAccessible
+	atk.Action
 }
 
-var _ ExpanderAccessible = (*ExpanderAccessibleClass)(nil)
+var _ ExpanderAccessibler = (*ExpanderAccessible)(nil)
 
-func wrapExpanderAccessible(obj *externglib.Object) ExpanderAccessible {
-	return &ExpanderAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapExpanderAccessibler(obj *externglib.Object) ExpanderAccessibler {
+	return &ExpanderAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalExpanderAccessible(p uintptr) (interface{}, error) {
+func marshalExpanderAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapExpanderAccessible(obj), nil
+	return wrapExpanderAccessibler(obj), nil
 }
 
-func (*ExpanderAccessibleClass) privateExpanderAccessibleClass() {}
+func (*ExpanderAccessible) privateExpanderAccessible() {}

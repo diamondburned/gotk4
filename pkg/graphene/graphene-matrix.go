@@ -30,12 +30,6 @@ type Matrix struct {
 	native C.graphene_matrix_t
 }
 
-// WrapMatrix wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMatrix(ptr unsafe.Pointer) *Matrix {
-	return (*Matrix)(ptr)
-}
-
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Matrix)(unsafe.Pointer(b)), nil
@@ -51,7 +45,7 @@ func NewMatrixAlloc() *Matrix {
 
 	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_matrix, func(v *Matrix) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_matrix_free((*C.graphene_matrix_t)(unsafe.Pointer(v)))
 	})
 
 	return _matrix

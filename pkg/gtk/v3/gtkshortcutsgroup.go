@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_group_get_type()), F: marshalShortcutsGroup},
+		{T: externglib.Type(C.gtk_shortcuts_group_get_type()), F: marshalShortcutsGrouper},
 	})
+}
+
+// ShortcutsGrouper describes ShortcutsGroup's methods.
+type ShortcutsGrouper interface {
+	gextras.Objector
+
+	privateShortcutsGroup()
 }
 
 // ShortcutsGroup represents a group of related keyboard shortcuts or gestures.
@@ -30,62 +37,55 @@ func init() {
 // the application context.
 //
 // This widget is only meant to be used with ShortcutsWindow.
-type ShortcutsGroup interface {
-	gextras.Objector
-
-	privateShortcutsGroupClass()
-}
-
-// ShortcutsGroupClass implements the ShortcutsGroup interface.
-type ShortcutsGroupClass struct {
+type ShortcutsGroup struct {
 	*externglib.Object
-	BoxClass
-	BuildableIface
-	OrientableIface
+	Box
+	Buildable
+	Orientable
 }
 
-var _ ShortcutsGroup = (*ShortcutsGroupClass)(nil)
+var _ ShortcutsGrouper = (*ShortcutsGroup)(nil)
 
-func wrapShortcutsGroup(obj *externglib.Object) ShortcutsGroup {
-	return &ShortcutsGroupClass{
+func wrapShortcutsGrouper(obj *externglib.Object) ShortcutsGrouper {
+	return &ShortcutsGroup{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalShortcutsGroup(p uintptr) (interface{}, error) {
+func marshalShortcutsGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsGroup(obj), nil
+	return wrapShortcutsGrouper(obj), nil
 }
 
-func (*ShortcutsGroupClass) privateShortcutsGroupClass() {}
+func (*ShortcutsGroup) privateShortcutsGroup() {}

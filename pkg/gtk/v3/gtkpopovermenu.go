@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_popover_menu_get_type()), F: marshalPopoverMenu},
+		{T: externglib.Type(C.gtk_popover_menu_get_type()), F: marshalPopoverMenuer},
 	})
+}
+
+// PopoverMenuer describes PopoverMenu's methods.
+type PopoverMenuer interface {
+	gextras.Objector
+
+	OpenSubmenu(name string)
 }
 
 // PopoverMenu is a subclass of Popover that treats its children like menus and
@@ -92,79 +99,65 @@ func init() {
 // Just like normal popovers created using gtk_popover_new_from_model,
 // PopoverMenu instances have a single css node called "popover" and get the
 // .menu style class.
-type PopoverMenu interface {
-	gextras.Objector
-
-	// OpenSubmenu opens a submenu of the @popover. The @name must be one of the
-	// names given to the submenus of @popover with PopoverMenu:submenu, or
-	// "main" to switch back to the main menu.
-	//
-	// ModelButton will open submenus automatically when the
-	// ModelButton:menu-name property is set, so this function is only needed
-	// when you are using other kinds of widgets to initiate menu changes.
-	OpenSubmenu(name string)
-}
-
-// PopoverMenuClass implements the PopoverMenu interface.
-type PopoverMenuClass struct {
+type PopoverMenu struct {
 	*externglib.Object
-	PopoverClass
-	BuildableIface
+	Popover
+	Buildable
 }
 
-var _ PopoverMenu = (*PopoverMenuClass)(nil)
+var _ PopoverMenuer = (*PopoverMenu)(nil)
 
-func wrapPopoverMenu(obj *externglib.Object) PopoverMenu {
-	return &PopoverMenuClass{
+func wrapPopoverMenuer(obj *externglib.Object) PopoverMenuer {
+	return &PopoverMenu{
 		Object: obj,
-		PopoverClass: PopoverClass{
+		Popover: Popover{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPopoverMenu(p uintptr) (interface{}, error) {
+func marshalPopoverMenuer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopoverMenu(obj), nil
+	return wrapPopoverMenuer(obj), nil
 }
 
 // NewPopoverMenu creates a new popover menu.
-func NewPopoverMenu() *PopoverMenuClass {
+func NewPopoverMenu() *PopoverMenu {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_popover_menu_new()
 
-	var _popoverMenu *PopoverMenuClass // out
+	var _popoverMenu *PopoverMenu // out
 
-	_popoverMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverMenuClass)
+	_popoverMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverMenu)
 
 	return _popoverMenu
 }
@@ -176,7 +169,7 @@ func NewPopoverMenu() *PopoverMenuClass {
 // ModelButton will open submenus automatically when the ModelButton:menu-name
 // property is set, so this function is only needed when you are using other
 // kinds of widgets to initiate menu changes.
-func (popover *PopoverMenuClass) OpenSubmenu(name string) {
+func (popover *PopoverMenu) OpenSubmenu(name string) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.gchar          // out
 

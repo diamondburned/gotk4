@@ -19,7 +19,7 @@ import "C"
 // IDs for the Virtual Core Pointer and Keyboard in > XInput 2), but calling
 // this function on any slave devices (i.e. > those managed via XInput 1.x),
 // will return 0.
-func X11DeviceGetID(device X11DeviceCore) int {
+func X11DeviceGetID(device X11DeviceCorer) int {
 	var _arg1 *C.GdkDevice // out
 	var _cret C.gint       // in
 

@@ -121,12 +121,6 @@ type GlyphGeometry struct {
 	native C.PangoGlyphGeometry
 }
 
-// WrapGlyphGeometry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapGlyphGeometry(ptr unsafe.Pointer) *GlyphGeometry {
-	return (*GlyphGeometry)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (g *GlyphGeometry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
@@ -136,12 +130,6 @@ func (g *GlyphGeometry) Native() unsafe.Pointer {
 // positioning information and visual attributes.
 type GlyphInfo struct {
 	native C.PangoGlyphInfo
-}
-
-// WrapGlyphInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapGlyphInfo(ptr unsafe.Pointer) *GlyphInfo {
-	return (*GlyphInfo)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -156,12 +144,6 @@ func (g *GlyphInfo) Native() unsafe.Pointer {
 // simplifies memory management.
 type GlyphString struct {
 	native C.PangoGlyphString
-}
-
-// WrapGlyphString wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapGlyphString(ptr unsafe.Pointer) *GlyphString {
-	return (*GlyphString)(ptr)
 }
 
 func marshalGlyphString(p uintptr) (interface{}, error) {
@@ -179,7 +161,7 @@ func NewGlyphString() *GlyphString {
 
 	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.free(unsafe.Pointer(v))
+		C.pango_glyph_string_free((*C.PangoGlyphString)(unsafe.Pointer(v)))
 	})
 
 	return _glyphString
@@ -203,7 +185,7 @@ func (_string *GlyphString) Copy() *GlyphString {
 
 	_glyphString = (*GlyphString)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.free(unsafe.Pointer(v))
+		C.pango_glyph_string_free((*C.PangoGlyphString)(unsafe.Pointer(v)))
 	})
 
 	return _glyphString
@@ -217,7 +199,7 @@ func (_string *GlyphString) Copy() *GlyphString {
 // Examples of logical (red) and ink (green) rects:
 //
 // ! (rects1.png) ! (rects2.png)
-func (glyphs *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectangle) {
+func (glyphs *GlyphString) Extents(font Fonter) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out
 	var _arg2 C.PangoRectangle    // in
@@ -242,7 +224,7 @@ func (glyphs *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Re
 // The extents are relative to the start of the glyph string range (the origin
 // of their coordinate system is at the start of the range, not at the start of
 // the entire glyph string).
-func (glyphs *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Rectangle, logicalRect Rectangle) {
+func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out
@@ -380,12 +362,6 @@ func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis,
 // be added in the future.
 type GlyphVisAttr struct {
 	native C.PangoGlyphVisAttr
-}
-
-// WrapGlyphVisAttr wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapGlyphVisAttr(ptr unsafe.Pointer) *GlyphVisAttr {
-	return (*GlyphVisAttr)(ptr)
 }
 
 // Native returns the underlying C source pointer.

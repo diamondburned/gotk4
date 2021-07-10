@@ -20,44 +20,44 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_motion_get_type()), F: marshalEventControllerMotion},
+		{T: externglib.Type(C.gtk_event_controller_motion_get_type()), F: marshalEventControllerMotioner},
 	})
+}
+
+// EventControllerMotioner describes EventControllerMotion's methods.
+type EventControllerMotioner interface {
+	gextras.Objector
+
+	privateEventControllerMotion()
 }
 
 // EventControllerMotion is an event controller meant for situations where you
 // need to track the position of the pointer.
 //
 // This object was added in 3.24.
-type EventControllerMotion interface {
-	gextras.Objector
-
-	privateEventControllerMotionClass()
+type EventControllerMotion struct {
+	EventController
 }
 
-// EventControllerMotionClass implements the EventControllerMotion interface.
-type EventControllerMotionClass struct {
-	EventControllerClass
-}
+var _ EventControllerMotioner = (*EventControllerMotion)(nil)
 
-var _ EventControllerMotion = (*EventControllerMotionClass)(nil)
-
-func wrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
-	return &EventControllerMotionClass{
-		EventControllerClass: EventControllerClass{
+func wrapEventControllerMotioner(obj *externglib.Object) EventControllerMotioner {
+	return &EventControllerMotion{
+		EventController: EventController{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEventControllerMotion(p uintptr) (interface{}, error) {
+func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerMotion(obj), nil
+	return wrapEventControllerMotioner(obj), nil
 }
 
 // NewEventControllerMotion creates a new event controller that will handle
 // motion events for the given @widget.
-func NewEventControllerMotion(widget Widget) *EventControllerMotionClass {
+func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
@@ -65,11 +65,11 @@ func NewEventControllerMotion(widget Widget) *EventControllerMotionClass {
 
 	_cret = C.gtk_event_controller_motion_new(_arg1)
 
-	var _eventControllerMotion *EventControllerMotionClass // out
+	var _eventControllerMotion *EventControllerMotion // out
 
-	_eventControllerMotion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerMotionClass)
+	_eventControllerMotion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerMotion)
 
 	return _eventControllerMotion
 }
 
-func (*EventControllerMotionClass) privateEventControllerMotionClass() {}
+func (*EventControllerMotion) privateEventControllerMotion() {}

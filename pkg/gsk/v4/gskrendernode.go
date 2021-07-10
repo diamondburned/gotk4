@@ -22,7 +22,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_render_node_get_type()), F: marshalRenderNode},
+		{T: externglib.Type(C.gsk_render_node_get_type()), F: marshalRenderNoder},
 	})
 }
 
@@ -51,6 +51,18 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	fn(start, end, err, userData)
 }
 
+// RenderNoder describes RenderNode's methods.
+type RenderNoder interface {
+	gextras.Objector
+
+	Draw(cr *cairo.Context)
+	Bounds() graphene.Rect
+	NodeType() RenderNodeType
+	ref() *RenderNode
+	unref()
+	WriteToFile(filename string) error
+}
+
 // RenderNode: `GskRenderNode` is the basic block in a scene graph to be
 // rendered using `GskRenderer`.
 //
@@ -64,58 +76,22 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 // [class@Gsk.Renderer] it's safe to release any reference you have on them. All
 // [class@Gsk.RenderNode]s are immutable, you can only specify their properties
 // during construction.
-type RenderNode interface {
-	gextras.Objector
-
-	// Draw the contents of @node to the given cairo context.
-	//
-	// Typically, you'll use this function to implement fallback rendering of
-	// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-	// drawing context associated to a `GdkSurface`'s rendering buffer.
-	//
-	// For advanced nodes that cannot be supported using Cairo, in particular
-	// for nodes doing 3D operations, this function may fail.
-	Draw(cr *cairo.Context)
-	// Bounds retrieves the boundaries of the @node.
-	//
-	// The node will not draw outside of its boundaries.
-	Bounds() graphene.Rect
-	// NodeType returns the type of the @node.
-	NodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
-	ref() *RenderNodeClass
-	// Unref releases a reference on the given `GskRenderNode`.
-	//
-	// If the reference was the last, the resources associated to the @node are
-	// freed.
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	//
-	// See those two functions for details on the arguments.
-	//
-	// It is mostly intended for use inside a debugger to quickly dump a render
-	// node to a file for later inspection.
-	WriteToFile(filename string) error
-}
-
-// RenderNodeClass implements the RenderNode interface.
-type RenderNodeClass struct {
+type RenderNode struct {
 	*externglib.Object
 }
 
-var _ RenderNode = (*RenderNodeClass)(nil)
+var _ RenderNoder = (*RenderNode)(nil)
 
-func wrapRenderNode(obj *externglib.Object) RenderNode {
-	return &RenderNodeClass{
+func wrapRenderNoder(obj *externglib.Object) RenderNoder {
+	return &RenderNode{
 		Object: obj,
 	}
 }
 
-func marshalRenderNode(p uintptr) (interface{}, error) {
+func marshalRenderNoder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRenderNode(obj), nil
+	return wrapRenderNoder(obj), nil
 }
 
 // Draw the contents of @node to the given cairo context.
@@ -126,7 +102,7 @@ func marshalRenderNode(p uintptr) (interface{}, error) {
 //
 // For advanced nodes that cannot be supported using Cairo, in particular for
 // nodes doing 3D operations, this function may fail.
-func (node *RenderNodeClass) Draw(cr *cairo.Context) {
+func (node *RenderNode) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
 
@@ -139,7 +115,7 @@ func (node *RenderNodeClass) Draw(cr *cairo.Context) {
 // Bounds retrieves the boundaries of the @node.
 //
 // The node will not draw outside of its boundaries.
-func (node *RenderNodeClass) Bounds() graphene.Rect {
+func (node *RenderNode) Bounds() graphene.Rect {
 	var _arg0 *C.GskRenderNode  // out
 	var _arg1 C.graphene_rect_t // in
 
@@ -155,7 +131,7 @@ func (node *RenderNodeClass) Bounds() graphene.Rect {
 }
 
 // NodeType returns the type of the @node.
-func (node *RenderNodeClass) NodeType() RenderNodeType {
+func (node *RenderNode) NodeType() RenderNodeType {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret C.GskRenderNodeType // in
 
@@ -171,7 +147,7 @@ func (node *RenderNodeClass) NodeType() RenderNodeType {
 }
 
 // Ref acquires a reference on the given `GskRenderNode`.
-func (node *RenderNodeClass) ref() *RenderNodeClass {
+func (node *RenderNode) ref() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -179,9 +155,9 @@ func (node *RenderNodeClass) ref() *RenderNodeClass {
 
 	_cret = C.gsk_render_node_ref(_arg0)
 
-	var _renderNode *RenderNodeClass // out
+	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RenderNodeClass)
+	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RenderNode)
 
 	return _renderNode
 }
@@ -190,7 +166,7 @@ func (node *RenderNodeClass) ref() *RenderNodeClass {
 //
 // If the reference was the last, the resources associated to the @node are
 // freed.
-func (node *RenderNodeClass) unref() {
+func (node *RenderNode) unref() {
 	var _arg0 *C.GskRenderNode // out
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
@@ -205,7 +181,7 @@ func (node *RenderNodeClass) unref() {
 //
 // It is mostly intended for use inside a debugger to quickly dump a render node
 // to a file for later inspection.
-func (node *RenderNodeClass) WriteToFile(filename string) error {
+func (node *RenderNode) WriteToFile(filename string) error {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.char          // out
 	var _cerr *C.GError        // in
@@ -228,12 +204,6 @@ type ColorStop struct {
 	native C.GskColorStop
 }
 
-// WrapColorStop wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapColorStop(ptr unsafe.Pointer) *ColorStop {
-	return (*ColorStop)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (c *ColorStop) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
@@ -244,12 +214,6 @@ type ParseLocation struct {
 	native C.GskParseLocation
 }
 
-// WrapParseLocation wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapParseLocation(ptr unsafe.Pointer) *ParseLocation {
-	return (*ParseLocation)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (p *ParseLocation) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
@@ -258,12 +222,6 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 // Shadow: the shadow parameters in a shadow node.
 type Shadow struct {
 	native C.GskShadow
-}
-
-// WrapShadow wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapShadow(ptr unsafe.Pointer) *Shadow {
-	return (*Shadow)(ptr)
 }
 
 // Native returns the underlying C source pointer.

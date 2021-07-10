@@ -19,35 +19,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_device_core_get_type()), F: marshalX11DeviceCore},
+		{T: externglib.Type(C.gdk_x11_device_core_get_type()), F: marshalX11DeviceCorer},
 	})
 }
 
-type X11DeviceCore interface {
+// X11DeviceCorer describes X11DeviceCore's methods.
+type X11DeviceCorer interface {
 	gextras.Objector
 
-	privateX11DeviceCoreClass()
+	privateX11DeviceCore()
 }
 
-// X11DeviceCoreClass implements the X11DeviceCore interface.
-type X11DeviceCoreClass struct {
-	gdk.DeviceClass
+type X11DeviceCore struct {
+	gdk.Device
 }
 
-var _ X11DeviceCore = (*X11DeviceCoreClass)(nil)
+var _ X11DeviceCorer = (*X11DeviceCore)(nil)
 
-func wrapX11DeviceCore(obj *externglib.Object) X11DeviceCore {
-	return &X11DeviceCoreClass{
-		DeviceClass: gdk.DeviceClass{
+func wrapX11DeviceCorer(obj *externglib.Object) X11DeviceCorer {
+	return &X11DeviceCore{
+		Device: gdk.Device{
 			Object: obj,
 		},
 	}
 }
 
-func marshalX11DeviceCore(p uintptr) (interface{}, error) {
+func marshalX11DeviceCorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11DeviceCore(obj), nil
+	return wrapX11DeviceCorer(obj), nil
 }
 
-func (*X11DeviceCoreClass) privateX11DeviceCoreClass() {}
+func (*X11DeviceCore) privateX11DeviceCore() {}

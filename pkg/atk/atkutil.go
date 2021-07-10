@@ -21,7 +21,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.atk_coord_type_get_type()), F: marshalCoordType},
 		{T: externglib.Type(C.atk_key_event_type_get_type()), F: marshalKeyEventType},
-		{T: externglib.Type(C.atk_util_get_type()), F: marshalUtil},
+		{T: externglib.Type(C.atk_util_get_type()), F: marshalUtiller},
 	})
 }
 
@@ -94,7 +94,7 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 // ATK itself. As Object::focus-event was deprecated in favor of a
 // Object::state-change signal, in order to notify a focus change on your
 // implementation, you can use atk_object_notify_state_change() instead.
-func FocusTrackerNotify(object Object) {
+func FocusTrackerNotify(object Objecter) {
 	var _arg1 *C.AtkObject // out
 
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
@@ -103,27 +103,27 @@ func FocusTrackerNotify(object Object) {
 }
 
 // GetFocusObject gets the currently focused object.
-func GetFocusObject() *ObjectClass {
+func GetFocusObject() *Object {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_focus_object()
 
-	var _object *ObjectClass // out
+	var _object *Object // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
 
 	return _object
 }
 
 // GetRoot gets the root accessible container for the current application.
-func GetRoot() *ObjectClass {
+func GetRoot() *Object {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_root()
 
-	var _object *ObjectClass // out
+	var _object *Object // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
 
 	return _object
 }
@@ -214,46 +214,40 @@ func RemoveKeyEventListener(listenerId uint) {
 	C.atk_remove_key_event_listener(_arg1)
 }
 
+// Utiller describes Util's methods.
+type Utiller interface {
+	gextras.Objector
+
+	privateUtil()
+}
+
 // Util: set of ATK utility functions which are used to support event
 // registration of various types, and obtaining the 'root' accessible of a
 // process and information about the current ATK implementation and toolkit
 // version.
-type Util interface {
-	gextras.Objector
-
-	privateUtilClass()
-}
-
-// UtilClass implements the Util interface.
-type UtilClass struct {
+type Util struct {
 	*externglib.Object
 }
 
-var _ Util = (*UtilClass)(nil)
+var _ Utiller = (*Util)(nil)
 
-func wrapUtil(obj *externglib.Object) Util {
-	return &UtilClass{
+func wrapUtiller(obj *externglib.Object) Utiller {
+	return &Util{
 		Object: obj,
 	}
 }
 
-func marshalUtil(p uintptr) (interface{}, error) {
+func marshalUtiller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUtil(obj), nil
+	return wrapUtiller(obj), nil
 }
 
-func (*UtilClass) privateUtilClass() {}
+func (*Util) privateUtil() {}
 
 // KeyEventStruct encapsulates information about a key event.
 type KeyEventStruct struct {
 	native C.AtkKeyEventStruct
-}
-
-// WrapKeyEventStruct wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapKeyEventStruct(ptr unsafe.Pointer) *KeyEventStruct {
-	return (*KeyEventStruct)(ptr)
 }
 
 // Native returns the underlying C source pointer.

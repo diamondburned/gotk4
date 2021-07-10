@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_cairo_context_get_type()), F: marshalCairoContext},
+		{T: externglib.Type(C.gdk_cairo_context_get_type()), F: marshalCairoContexter},
 	})
+}
+
+// CairoContexter describes CairoContext's methods.
+type CairoContexter interface {
+	gextras.Objector
+
+	CairoCreate() *cairo.Context
 }
 
 // CairoContext: `GdkCairoContext` is an object representing the
@@ -30,39 +37,24 @@ func init() {
 // `GdkCairoContext`s are created for a surface using
 // [method@Gdk.Surface.create_cairo_context], and the context can then be used
 // to draw on that surface.
-type CairoContext interface {
-	gextras.Objector
-
-	// CairoCreate retrieves a Cairo context to be used to draw on the
-	// `GdkSurface` of @context.
-	//
-	// A call to [method@Gdk.DrawContext.begin_frame] with this @context must
-	// have been done or this function will return nil.
-	//
-	// The returned context is guaranteed to be valid until
-	// [method@Gdk.DrawContext.end_frame] is called.
-	CairoCreate() *cairo.Context
+type CairoContext struct {
+	DrawContext
 }
 
-// CairoContextClass implements the CairoContext interface.
-type CairoContextClass struct {
-	DrawContextClass
-}
+var _ CairoContexter = (*CairoContext)(nil)
 
-var _ CairoContext = (*CairoContextClass)(nil)
-
-func wrapCairoContext(obj *externglib.Object) CairoContext {
-	return &CairoContextClass{
-		DrawContextClass: DrawContextClass{
+func wrapCairoContexter(obj *externglib.Object) CairoContexter {
+	return &CairoContext{
+		DrawContext: DrawContext{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCairoContext(p uintptr) (interface{}, error) {
+func marshalCairoContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCairoContext(obj), nil
+	return wrapCairoContexter(obj), nil
 }
 
 // CairoCreate retrieves a Cairo context to be used to draw on the `GdkSurface`
@@ -73,7 +65,7 @@ func marshalCairoContext(p uintptr) (interface{}, error) {
 //
 // The returned context is guaranteed to be valid until
 // [method@Gdk.DrawContext.end_frame] is called.
-func (self *CairoContextClass) CairoCreate() *cairo.Context {
+func (self *CairoContext) CairoCreate() *cairo.Context {
 	var _arg0 *C.GdkCairoContext // out
 	var _cret *C.cairo_t         // in
 

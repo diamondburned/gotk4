@@ -32,8 +32,21 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_connection_get_type()), F: marshalSocketConnection},
+		{T: externglib.Type(C.g_socket_connection_get_type()), F: marshalSocketConnectioner},
 	})
+}
+
+// SocketConnectioner describes SocketConnection's methods.
+type SocketConnectioner interface {
+	gextras.Objector
+
+	ConnectSocketConnectioner(address SocketAddresser, cancellable Cancellabler) error
+	ConnectAsync(address SocketAddresser, cancellable Cancellabler, callback AsyncReadyCallback)
+	ConnectFinish(result AsyncResulter) error
+	LocalAddress() (*SocketAddress, error)
+	RemoteAddress() (*SocketAddress, error)
+	Socket() *Socket
+	IsConnected() bool
 }
 
 // SocketConnection is a OStream for a connected socket. They can be created
@@ -51,65 +64,29 @@ func init() {
 //
 // To close a Connection, use g_io_stream_close(). Closing both substreams of
 // the OStream separately will not close the underlying #GSocket.
-type SocketConnection interface {
-	gextras.Objector
-
-	// ConnectSocketConnection: connect @connection to the specified remote
-	// address.
-	ConnectSocketConnection(address SocketAddress, cancellable Cancellable) error
-	// ConnectAsync: asynchronously connect @connection to the specified remote
-	// address.
-	//
-	// This clears the #GSocket:blocking flag on @connection's underlying socket
-	// if it is currently set.
-	//
-	// Use g_socket_connection_connect_finish() to retrieve the result.
-	ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectFinish gets the result of a g_socket_connection_connect_async()
-	// call.
-	ConnectFinish(result AsyncResult) error
-	// LocalAddress: try to get the local address of a socket connection.
-	LocalAddress() (*SocketAddressClass, error)
-	// RemoteAddress: try to get the remote address of a socket connection.
-	//
-	// Since GLib 2.40, when used with g_socket_client_connect() or
-	// g_socket_client_connect_async(), during emission of
-	// G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
-	// that will be used for the connection. This allows applications to print
-	// e.g. "Connecting to example.com (10.42.77.3)...".
-	RemoteAddress() (*SocketAddressClass, error)
-	// Socket gets the underlying #GSocket object of the connection. This can be
-	// useful if you want to do something unusual on it not supported by the
-	// Connection APIs.
-	Socket() *SocketClass
-	// IsConnected checks if @connection is connected. This is equivalent to
-	// calling g_socket_is_connected() on @connection's underlying #GSocket.
-	IsConnected() bool
+type SocketConnection struct {
+	IOStream
 }
 
-// SocketConnectionClass implements the SocketConnection interface.
-type SocketConnectionClass struct {
-	IOStreamClass
-}
+var _ SocketConnectioner = (*SocketConnection)(nil)
 
-var _ SocketConnection = (*SocketConnectionClass)(nil)
-
-func wrapSocketConnection(obj *externglib.Object) SocketConnection {
-	return &SocketConnectionClass{
-		IOStreamClass: IOStreamClass{
+func wrapSocketConnectioner(obj *externglib.Object) SocketConnectioner {
+	return &SocketConnection{
+		IOStream: IOStream{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSocketConnection(p uintptr) (interface{}, error) {
+func marshalSocketConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketConnection(obj), nil
+	return wrapSocketConnectioner(obj), nil
 }
 
-// ConnectSocketConnection: connect @connection to the specified remote address.
-func (connection *SocketConnectionClass) ConnectSocketConnection(address SocketAddress, cancellable Cancellable) error {
+// ConnectSocketConnectioner: connect @connection to the specified remote
+// address.
+func (connection *SocketConnection) ConnectSocketConnectioner(address SocketAddresser, cancellable Cancellabler) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GSocketAddress    // out
 	var _arg2 *C.GCancellable      // out
@@ -135,7 +112,7 @@ func (connection *SocketConnectionClass) ConnectSocketConnection(address SocketA
 // it is currently set.
 //
 // Use g_socket_connection_connect_finish() to retrieve the result.
-func (connection *SocketConnectionClass) ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback) {
+func (connection *SocketConnection) ConnectAsync(address SocketAddresser, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketConnection  // out
 	var _arg1 *C.GSocketAddress     // out
 	var _arg2 *C.GCancellable       // out
@@ -152,7 +129,7 @@ func (connection *SocketConnectionClass) ConnectAsync(address SocketAddress, can
 }
 
 // ConnectFinish gets the result of a g_socket_connection_connect_async() call.
-func (connection *SocketConnectionClass) ConnectFinish(result AsyncResult) error {
+func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cerr *C.GError            // in
@@ -170,7 +147,7 @@ func (connection *SocketConnectionClass) ConnectFinish(result AsyncResult) error
 }
 
 // LocalAddress: try to get the local address of a socket connection.
-func (connection *SocketConnectionClass) LocalAddress() (*SocketAddressClass, error) {
+func (connection *SocketConnection) LocalAddress() (*SocketAddress, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
 	var _cerr *C.GError            // in
@@ -179,10 +156,10 @@ func (connection *SocketConnectionClass) LocalAddress() (*SocketAddressClass, er
 
 	_cret = C.g_socket_connection_get_local_address(_arg0, &_cerr)
 
-	var _socketAddress *SocketAddressClass // out
-	var _goerr error                       // out
+	var _socketAddress *SocketAddress // out
+	var _goerr error                  // out
 
-	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddressClass)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddress)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -195,7 +172,7 @@ func (connection *SocketConnectionClass) LocalAddress() (*SocketAddressClass, er
 // G_SOCKET_CLIENT_CONNECTING, this function will return the remote address that
 // will be used for the connection. This allows applications to print e.g.
 // "Connecting to example.com (10.42.77.3)...".
-func (connection *SocketConnectionClass) RemoteAddress() (*SocketAddressClass, error) {
+func (connection *SocketConnection) RemoteAddress() (*SocketAddress, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
 	var _cerr *C.GError            // in
@@ -204,10 +181,10 @@ func (connection *SocketConnectionClass) RemoteAddress() (*SocketAddressClass, e
 
 	_cret = C.g_socket_connection_get_remote_address(_arg0, &_cerr)
 
-	var _socketAddress *SocketAddressClass // out
-	var _goerr error                       // out
+	var _socketAddress *SocketAddress // out
+	var _goerr error                  // out
 
-	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddressClass)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddress)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -216,7 +193,7 @@ func (connection *SocketConnectionClass) RemoteAddress() (*SocketAddressClass, e
 // Socket gets the underlying #GSocket object of the connection. This can be
 // useful if you want to do something unusual on it not supported by the
 // Connection APIs.
-func (connection *SocketConnectionClass) Socket() *SocketClass {
+func (connection *SocketConnection) Socket() *Socket {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocket           // in
 
@@ -224,16 +201,16 @@ func (connection *SocketConnectionClass) Socket() *SocketClass {
 
 	_cret = C.g_socket_connection_get_socket(_arg0)
 
-	var _socket *SocketClass // out
+	var _socket *Socket // out
 
-	_socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketClass)
+	_socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Socket)
 
 	return _socket
 }
 
 // IsConnected checks if @connection is connected. This is equivalent to calling
 // g_socket_is_connected() on @connection's underlying #GSocket.
-func (connection *SocketConnectionClass) IsConnected() bool {
+func (connection *SocketConnection) IsConnected() bool {
 	var _arg0 *C.GSocketConnection // out
 	var _cret C.gboolean           // in
 

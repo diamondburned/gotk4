@@ -18,57 +18,52 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_gl_texture_get_type()), F: marshalGLTexture},
+		{T: externglib.Type(C.gdk_gl_texture_get_type()), F: marshalGLTexturer},
 	})
 }
 
-// GLTexture: gdkTexture representing a GL texture object.
-type GLTexture interface {
+// GLTexturer describes GLTexture's methods.
+type GLTexturer interface {
 	gextras.Objector
 
-	// Release releases the GL resources held by a `GdkGLTexture`.
-	//
-	// The texture contents are still available via the
-	// [method@Gdk.Texture.download] function, after this function has been
-	// called.
 	Release()
 }
 
-// GLTextureClass implements the GLTexture interface.
-type GLTextureClass struct {
+// GLTexture: gdkTexture representing a GL texture object.
+type GLTexture struct {
 	*externglib.Object
-	TextureClass
-	PaintableIface
+	Texture
+	Paintable
 }
 
-var _ GLTexture = (*GLTextureClass)(nil)
+var _ GLTexturer = (*GLTexture)(nil)
 
-func wrapGLTexture(obj *externglib.Object) GLTexture {
-	return &GLTextureClass{
+func wrapGLTexturer(obj *externglib.Object) GLTexturer {
+	return &GLTexture{
 		Object: obj,
-		TextureClass: TextureClass{
+		Texture: Texture{
 			Object: obj,
-			PaintableIface: PaintableIface{
+			Paintable: Paintable{
 				Object: obj,
 			},
 		},
-		PaintableIface: PaintableIface{
+		Paintable: Paintable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalGLTexture(p uintptr) (interface{}, error) {
+func marshalGLTexturer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLTexture(obj), nil
+	return wrapGLTexturer(obj), nil
 }
 
 // Release releases the GL resources held by a `GdkGLTexture`.
 //
 // The texture contents are still available via the
 // [method@Gdk.Texture.download] function, after this function has been called.
-func (self *GLTextureClass) Release() {
+func (self *GLTexture) Release() {
 	var _arg0 *C.GdkGLTexture // out
 
 	_arg0 = (*C.GdkGLTexture)(unsafe.Pointer(self.Native()))

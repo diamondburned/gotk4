@@ -18,17 +18,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_manager_get_type()), F: marshalShortcutManager},
+		{T: externglib.Type(C.gtk_shortcut_manager_get_type()), F: marshalShortcutManagerrer},
 	})
 }
 
-// ShortcutManagerOverrider contains methods that are overridable.
+// ShortcutManagerrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ShortcutManagerOverrider interface {
-	AddController(controller ShortcutController)
-	RemoveController(controller ShortcutController)
+type ShortcutManagerrerOverrider interface {
+	AddController(controller ShortcutControllerrer)
+	RemoveController(controller ShortcutControllerrer)
+}
+
+// ShortcutManagerrer describes ShortcutManager's methods.
+type ShortcutManagerrer interface {
+	gextras.Objector
+
+	privateShortcutManager()
 }
 
 // ShortcutManager: the `GtkShortcutManager` interface is used to implement
@@ -43,29 +50,22 @@ type ShortcutManagerOverrider interface {
 //
 // Every widget that implements `GtkShortcutManager` will be used as a
 // GTK_SHORTCUT_SCOPE_MANAGED.
-type ShortcutManager interface {
-	gextras.Objector
-
-	privateShortcutManagerIface()
-}
-
-// ShortcutManagerIface implements the ShortcutManager interface.
-type ShortcutManagerIface struct {
+type ShortcutManager struct {
 	*externglib.Object
 }
 
-var _ ShortcutManager = (*ShortcutManagerIface)(nil)
+var _ ShortcutManagerrer = (*ShortcutManager)(nil)
 
-func wrapShortcutManager(obj *externglib.Object) ShortcutManager {
-	return &ShortcutManagerIface{
+func wrapShortcutManagerrer(obj *externglib.Object) ShortcutManagerrer {
+	return &ShortcutManager{
 		Object: obj,
 	}
 }
 
-func marshalShortcutManager(p uintptr) (interface{}, error) {
+func marshalShortcutManagerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutManager(obj), nil
+	return wrapShortcutManagerrer(obj), nil
 }
 
-func (*ShortcutManagerIface) privateShortcutManagerIface() {}
+func (*ShortcutManager) privateShortcutManager() {}

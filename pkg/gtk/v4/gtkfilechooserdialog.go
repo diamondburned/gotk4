@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialog},
+		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialogger},
 	})
+}
+
+// FileChooserDialogger describes FileChooserDialog's methods.
+type FileChooserDialogger interface {
+	gextras.Objector
+
+	privateFileChooserDialog()
 }
 
 // FileChooserDialog: `GtkFileChooserDialog` is a dialog suitable for use with
@@ -176,259 +183,252 @@ func init() {
 //
 // To summarize, make sure you use a predefined response code when you use
 // `GtkFileChooserDialog` to ensure proper operation.
-type FileChooserDialog interface {
-	gextras.Objector
-
-	privateFileChooserDialogClass()
-}
-
-// FileChooserDialogClass implements the FileChooserDialog interface.
-type FileChooserDialogClass struct {
+type FileChooserDialog struct {
 	*externglib.Object
-	DialogClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	FileChooserIface
-	NativeIface
-	RootIface
-	ShortcutManagerIface
+	Dialog
+	Accessible
+	Buildable
+	ConstraintTarget
+	FileChooser
+	Native
+	Root
+	ShortcutManager
 }
 
-var _ FileChooserDialog = (*FileChooserDialogClass)(nil)
+var _ FileChooserDialogger = (*FileChooserDialog)(nil)
 
-func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
-	return &FileChooserDialogClass{
+func wrapFileChooserDialogger(obj *externglib.Object) FileChooserDialogger {
+	return &FileChooserDialog{
 		Object: obj,
-		DialogClass: DialogClass{
+		Dialog: Dialog{
 			Object: obj,
-			WindowClass: WindowClass{
+			Window: Window{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				NativeIface: NativeIface{
+				Native: Native{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						AccessibleIface: AccessibleIface{
+						Accessible: Accessible{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
-						ConstraintTargetIface: ConstraintTargetIface{
+						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
 					},
 				},
-				RootIface: RootIface{
+				Root: Root{
 					Object: obj,
-					NativeIface: NativeIface{
+					Native: Native{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							AccessibleIface: AccessibleIface{
+							Accessible: Accessible{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
-							ConstraintTargetIface: ConstraintTargetIface{
+							ConstraintTarget: ConstraintTarget{
 								Object: obj,
 							},
 						},
 					},
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						AccessibleIface: AccessibleIface{
+						Accessible: Accessible{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
-						ConstraintTargetIface: ConstraintTargetIface{
+						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
 					},
 				},
-				ShortcutManagerIface: ShortcutManagerIface{
+				ShortcutManager: ShortcutManager{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			RootIface: RootIface{
+			Root: Root{
 				Object: obj,
-				NativeIface: NativeIface{
+				Native: Native{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						AccessibleIface: AccessibleIface{
+						Accessible: Accessible{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
-						ConstraintTargetIface: ConstraintTargetIface{
+						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
 					},
 				},
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			ShortcutManagerIface: ShortcutManagerIface{
+			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		FileChooserIface: FileChooserIface{
+		FileChooser: FileChooser{
 			Object: obj,
 		},
-		NativeIface: NativeIface{
+		Native: Native{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		RootIface: RootIface{
+		Root: Root{
 			Object: obj,
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		ShortcutManagerIface: ShortcutManagerIface{
+		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFileChooserDialog(p uintptr) (interface{}, error) {
+func marshalFileChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserDialog(obj), nil
+	return wrapFileChooserDialogger(obj), nil
 }
 
-func (*FileChooserDialogClass) privateFileChooserDialogClass() {}
+func (*FileChooserDialog) privateFileChooserDialog() {}

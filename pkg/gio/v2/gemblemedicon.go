@@ -28,8 +28,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIcon},
+		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIconner},
 	})
+}
+
+// EmblemedIconner describes EmblemedIcon's methods.
+type EmblemedIconner interface {
+	gextras.Objector
+
+	AddEmblem(emblem Emblemmer)
+	ClearEmblems()
+	GetIcon() *Icon
 }
 
 // EmblemedIcon is an implementation of #GIcon that supports adding an emblem to
@@ -38,43 +47,31 @@ func init() {
 //
 // Note that Icon allows no control over the position of the emblems. See also
 // #GEmblem for more information.
-type EmblemedIcon interface {
-	gextras.Objector
-
-	// AddEmblem adds @emblem to the #GList of #GEmblems.
-	AddEmblem(emblem Emblem)
-	// ClearEmblems removes all the emblems from @icon.
-	ClearEmblems()
-	// Icon gets the main icon for @emblemed.
-	Icon() *IconIface
-}
-
-// EmblemedIconClass implements the EmblemedIcon interface.
-type EmblemedIconClass struct {
+type EmblemedIcon struct {
 	*externglib.Object
-	IconIface
+	Icon
 }
 
-var _ EmblemedIcon = (*EmblemedIconClass)(nil)
+var _ EmblemedIconner = (*EmblemedIcon)(nil)
 
-func wrapEmblemedIcon(obj *externglib.Object) EmblemedIcon {
-	return &EmblemedIconClass{
+func wrapEmblemedIconner(obj *externglib.Object) EmblemedIconner {
+	return &EmblemedIcon{
 		Object: obj,
-		IconIface: IconIface{
+		Icon: Icon{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEmblemedIcon(p uintptr) (interface{}, error) {
+func marshalEmblemedIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEmblemedIcon(obj), nil
+	return wrapEmblemedIconner(obj), nil
 }
 
 // NewEmblemedIcon creates a new emblemed icon for @icon with the emblem
 // @emblem.
-func NewEmblemedIcon(icon Icon, emblem Emblem) *EmblemedIconClass {
+func NewEmblemedIcon(icon Iconner, emblem Emblemmer) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out
 	var _cret *C.GIcon   // in
@@ -84,15 +81,15 @@ func NewEmblemedIcon(icon Icon, emblem Emblem) *EmblemedIconClass {
 
 	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
 
-	var _emblemedIcon *EmblemedIconClass // out
+	var _emblemedIcon *EmblemedIcon // out
 
-	_emblemedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EmblemedIconClass)
+	_emblemedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EmblemedIcon)
 
 	return _emblemedIcon
 }
 
 // AddEmblem adds @emblem to the #GList of #GEmblems.
-func (emblemed *EmblemedIconClass) AddEmblem(emblem Emblem) {
+func (emblemed *EmblemedIcon) AddEmblem(emblem Emblemmer) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
 
@@ -103,7 +100,7 @@ func (emblemed *EmblemedIconClass) AddEmblem(emblem Emblem) {
 }
 
 // ClearEmblems removes all the emblems from @icon.
-func (emblemed *EmblemedIconClass) ClearEmblems() {
+func (emblemed *EmblemedIcon) ClearEmblems() {
 	var _arg0 *C.GEmblemedIcon // out
 
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
@@ -111,8 +108,8 @@ func (emblemed *EmblemedIconClass) ClearEmblems() {
 	C.g_emblemed_icon_clear_emblems(_arg0)
 }
 
-// Icon gets the main icon for @emblemed.
-func (emblemed *EmblemedIconClass) Icon() *IconIface {
+// GetIcon gets the main icon for @emblemed.
+func (emblemed *EmblemedIcon) GetIcon() *Icon {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
 
@@ -120,9 +117,9 @@ func (emblemed *EmblemedIconClass) Icon() *IconIface {
 
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
 
-	var _icon *IconIface // out
+	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconIface)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Icon)
 
 	return _icon
 }

@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flatten_list_model_get_type()), F: marshalFlattenListModel},
+		{T: externglib.Type(C.gtk_flatten_list_model_get_type()), F: marshalFlattenListModeller},
 	})
+}
+
+// FlattenListModeller describes FlattenListModel's methods.
+type FlattenListModeller interface {
+	gextras.Objector
+
+	privateFlattenListModel()
 }
 
 // FlattenListModel: `GtkFlattenListModel` is a list model that concatenates
@@ -27,29 +34,22 @@ func init() {
 //
 // `GtkFlattenListModel` takes a list model containing list models, and flattens
 // it into a single model.
-type FlattenListModel interface {
-	gextras.Objector
-
-	privateFlattenListModelClass()
-}
-
-// FlattenListModelClass implements the FlattenListModel interface.
-type FlattenListModelClass struct {
+type FlattenListModel struct {
 	*externglib.Object
 }
 
-var _ FlattenListModel = (*FlattenListModelClass)(nil)
+var _ FlattenListModeller = (*FlattenListModel)(nil)
 
-func wrapFlattenListModel(obj *externglib.Object) FlattenListModel {
-	return &FlattenListModelClass{
+func wrapFlattenListModeller(obj *externglib.Object) FlattenListModeller {
+	return &FlattenListModel{
 		Object: obj,
 	}
 }
 
-func marshalFlattenListModel(p uintptr) (interface{}, error) {
+func marshalFlattenListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlattenListModel(obj), nil
+	return wrapFlattenListModeller(obj), nil
 }
 
-func (*FlattenListModelClass) privateFlattenListModelClass() {}
+func (*FlattenListModel) privateFlattenListModel() {}

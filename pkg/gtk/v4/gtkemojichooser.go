@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_emoji_chooser_get_type()), F: marshalEmojiChooser},
+		{T: externglib.Type(C.gtk_emoji_chooser_get_type()), F: marshalEmojiChooserrer},
 	})
+}
+
+// EmojiChooserrer describes EmojiChooser's methods.
+type EmojiChooserrer interface {
+	gextras.Objector
+
+	privateEmojiChooser()
 }
 
 // EmojiChooser: the `GtkEmojiChooser` is used by text widgets such as
@@ -43,126 +50,119 @@ func init() {
 // .emoji-searchbar style class itself. The bottom toolbar used to switch
 // between different emoji categories consists of buttons with the
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
-type EmojiChooser interface {
-	gextras.Objector
-
-	privateEmojiChooserClass()
-}
-
-// EmojiChooserClass implements the EmojiChooser interface.
-type EmojiChooserClass struct {
+type EmojiChooser struct {
 	*externglib.Object
-	PopoverClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	NativeIface
-	ShortcutManagerIface
+	Popover
+	Accessible
+	Buildable
+	ConstraintTarget
+	Native
+	ShortcutManager
 }
 
-var _ EmojiChooser = (*EmojiChooserClass)(nil)
+var _ EmojiChooserrer = (*EmojiChooser)(nil)
 
-func wrapEmojiChooser(obj *externglib.Object) EmojiChooser {
-	return &EmojiChooserClass{
+func wrapEmojiChooserrer(obj *externglib.Object) EmojiChooserrer {
+	return &EmojiChooser{
 		Object: obj,
-		PopoverClass: PopoverClass{
+		Popover: Popover{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			ShortcutManagerIface: ShortcutManagerIface{
+			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		NativeIface: NativeIface{
+		Native: Native{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		ShortcutManagerIface: ShortcutManagerIface{
+		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEmojiChooser(p uintptr) (interface{}, error) {
+func marshalEmojiChooserrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEmojiChooser(obj), nil
+	return wrapEmojiChooserrer(obj), nil
 }
 
 // NewEmojiChooser creates a new `GtkEmojiChooser`.
-func NewEmojiChooser() *EmojiChooserClass {
+func NewEmojiChooser() *EmojiChooser {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_emoji_chooser_new()
 
-	var _emojiChooser *EmojiChooserClass // out
+	var _emojiChooser *EmojiChooser // out
 
-	_emojiChooser = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EmojiChooserClass)
+	_emojiChooser = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EmojiChooser)
 
 	return _emojiChooser
 }
 
-func (*EmojiChooserClass) privateEmojiChooserClass() {}
+func (*EmojiChooser) privateEmojiChooser() {}

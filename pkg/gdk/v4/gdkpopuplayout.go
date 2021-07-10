@@ -102,12 +102,6 @@ type PopupLayout struct {
 	native C.GdkPopupLayout
 }
 
-// WrapPopupLayout wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPopupLayout(ptr unsafe.Pointer) *PopupLayout {
-	return (*PopupLayout)(ptr)
-}
-
 func marshalPopupLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*PopupLayout)(unsafe.Pointer(b)), nil

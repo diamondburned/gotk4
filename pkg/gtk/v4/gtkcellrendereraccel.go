@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
-		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAccel},
+		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceller},
 	})
 }
 
@@ -40,28 +40,28 @@ func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
 	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// CellRendererAcceller describes CellRendererAccel's methods.
+type CellRendererAcceller interface {
+	gextras.Objector
+
+	privateCellRendererAccel()
+}
+
 // CellRendererAccel renders a keyboard accelerator in a cell
 //
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
 // like `Control + a`). If the cell renderer is editable, the accelerator can be
 // changed by simply typing the new combination.
-type CellRendererAccel interface {
-	gextras.Objector
-
-	privateCellRendererAccelClass()
+type CellRendererAccel struct {
+	CellRendererText
 }
 
-// CellRendererAccelClass implements the CellRendererAccel interface.
-type CellRendererAccelClass struct {
-	CellRendererTextClass
-}
+var _ CellRendererAcceller = (*CellRendererAccel)(nil)
 
-var _ CellRendererAccel = (*CellRendererAccelClass)(nil)
-
-func wrapCellRendererAccel(obj *externglib.Object) CellRendererAccel {
-	return &CellRendererAccelClass{
-		CellRendererTextClass: CellRendererTextClass{
-			CellRendererClass: CellRendererClass{
+func wrapCellRendererAcceller(obj *externglib.Object) CellRendererAcceller {
+	return &CellRendererAccel{
+		CellRendererText: CellRendererText{
+			CellRenderer: CellRenderer{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -70,23 +70,23 @@ func wrapCellRendererAccel(obj *externglib.Object) CellRendererAccel {
 	}
 }
 
-func marshalCellRendererAccel(p uintptr) (interface{}, error) {
+func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererAccel(obj), nil
+	return wrapCellRendererAcceller(obj), nil
 }
 
 // NewCellRendererAccel creates a new CellRendererAccel.
-func NewCellRendererAccel() *CellRendererAccelClass {
+func NewCellRendererAccel() *CellRendererAccel {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_accel_new()
 
-	var _cellRendererAccel *CellRendererAccelClass // out
+	var _cellRendererAccel *CellRendererAccel // out
 
-	_cellRendererAccel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererAccelClass)
+	_cellRendererAccel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererAccel)
 
 	return _cellRendererAccel
 }
 
-func (*CellRendererAccelClass) privateCellRendererAccelClass() {}
+func (*CellRendererAccel) privateCellRendererAccel() {}

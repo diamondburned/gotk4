@@ -13,7 +13,7 @@ import (
 import "C"
 
 // X11DeviceGetID returns the device ID as seen by XInput2.
-func X11DeviceGetID(device X11DeviceXI2) int {
+func X11DeviceGetID(device X11DeviceXI2er) int {
 	var _arg1 *C.GdkDevice // out
 	var _cret C.int        // in
 

@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_visual_type_get_type()), F: marshalVisualType},
-		{T: externglib.Type(C.gdk_visual_get_type()), F: marshalVisual},
+		{T: externglib.Type(C.gdk_visual_get_type()), F: marshalVisualer},
 	})
 }
 
@@ -102,80 +102,38 @@ func QueryVisualTypes() []VisualType {
 	return _visualTypes
 }
 
-// Visual contains information about a particular visual.
-type Visual interface {
+// Visualer describes Visual's methods.
+type Visualer interface {
 	gextras.Objector
 
-	// BitsPerRGB returns the number of significant bits per red, green and blue
-	// value.
-	//
-	// Not all GDK backend provide a meaningful value for this function.
-	//
-	// Deprecated: Use gdk_visual_get_red_pixel_details() and its variants to
-	// learn about the pixel layout of TrueColor and DirectColor visuals.
 	BitsPerRGB() int
-	// BluePixelDetails obtains values that are needed to calculate blue pixel
-	// values in TrueColor and DirectColor. The “mask” is the significant bits
-	// within the pixel. The “shift” is the number of bits left we must shift a
-	// primary for it to be in position (according to the "mask"). Finally,
-	// "precision" refers to how much precision the pixel value contains for a
-	// particular primary.
 	BluePixelDetails() (mask uint32, shift int, precision int)
-	// ByteOrder returns the byte order of this visual.
-	//
-	// The information returned by this function is only relevant when working
-	// with XImages, and not all backends return meaningful information for
-	// this.
-	//
-	// Deprecated: This information is not useful.
 	ByteOrder() ByteOrder
-	// ColormapSize returns the size of a colormap for this visual.
-	//
-	// You have to use platform-specific APIs to manipulate colormaps.
-	//
-	// Deprecated: This information is not useful, since GDK does not provide
-	// APIs to operate on colormaps.
 	ColormapSize() int
-	// Depth returns the bit depth of this visual.
 	Depth() int
-	// GreenPixelDetails obtains values that are needed to calculate green pixel
-	// values in TrueColor and DirectColor. The “mask” is the significant bits
-	// within the pixel. The “shift” is the number of bits left we must shift a
-	// primary for it to be in position (according to the "mask"). Finally,
-	// "precision" refers to how much precision the pixel value contains for a
-	// particular primary.
 	GreenPixelDetails() (mask uint32, shift int, precision int)
-	// RedPixelDetails obtains values that are needed to calculate red pixel
-	// values in TrueColor and DirectColor. The “mask” is the significant bits
-	// within the pixel. The “shift” is the number of bits left we must shift a
-	// primary for it to be in position (according to the "mask"). Finally,
-	// "precision" refers to how much precision the pixel value contains for a
-	// particular primary.
 	RedPixelDetails() (mask uint32, shift int, precision int)
-	// Screen gets the screen to which this visual belongs
-	Screen() *ScreenClass
-	// VisualType returns the type of visual this is (PseudoColor, TrueColor,
-	// etc).
+	Screen() *Screen
 	VisualType() VisualType
 }
 
-// VisualClass implements the Visual interface.
-type VisualClass struct {
+// Visual contains information about a particular visual.
+type Visual struct {
 	*externglib.Object
 }
 
-var _ Visual = (*VisualClass)(nil)
+var _ Visualer = (*Visual)(nil)
 
-func wrapVisual(obj *externglib.Object) Visual {
-	return &VisualClass{
+func wrapVisualer(obj *externglib.Object) Visualer {
+	return &Visual{
 		Object: obj,
 	}
 }
 
-func marshalVisual(p uintptr) (interface{}, error) {
+func marshalVisualer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVisual(obj), nil
+	return wrapVisualer(obj), nil
 }
 
 // BitsPerRGB returns the number of significant bits per red, green and blue
@@ -185,7 +143,7 @@ func marshalVisual(p uintptr) (interface{}, error) {
 //
 // Deprecated: Use gdk_visual_get_red_pixel_details() and its variants to learn
 // about the pixel layout of TrueColor and DirectColor visuals.
-func (visual *VisualClass) BitsPerRGB() int {
+func (visual *Visual) BitsPerRGB() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -206,7 +164,7 @@ func (visual *VisualClass) BitsPerRGB() int {
 // primary for it to be in position (according to the "mask"). Finally,
 // "precision" refers to how much precision the pixel value contains for a
 // particular primary.
-func (visual *VisualClass) BluePixelDetails() (mask uint32, shift int, precision int) {
+func (visual *Visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -233,7 +191,7 @@ func (visual *VisualClass) BluePixelDetails() (mask uint32, shift int, precision
 // XImages, and not all backends return meaningful information for this.
 //
 // Deprecated: This information is not useful.
-func (visual *VisualClass) ByteOrder() ByteOrder {
+func (visual *Visual) ByteOrder() ByteOrder {
 	var _arg0 *C.GdkVisual   // out
 	var _cret C.GdkByteOrder // in
 
@@ -254,7 +212,7 @@ func (visual *VisualClass) ByteOrder() ByteOrder {
 //
 // Deprecated: This information is not useful, since GDK does not provide APIs
 // to operate on colormaps.
-func (visual *VisualClass) ColormapSize() int {
+func (visual *Visual) ColormapSize() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -270,7 +228,7 @@ func (visual *VisualClass) ColormapSize() int {
 }
 
 // Depth returns the bit depth of this visual.
-func (visual *VisualClass) Depth() int {
+func (visual *Visual) Depth() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -291,7 +249,7 @@ func (visual *VisualClass) Depth() int {
 // primary for it to be in position (according to the "mask"). Finally,
 // "precision" refers to how much precision the pixel value contains for a
 // particular primary.
-func (visual *VisualClass) GreenPixelDetails() (mask uint32, shift int, precision int) {
+func (visual *Visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -317,7 +275,7 @@ func (visual *VisualClass) GreenPixelDetails() (mask uint32, shift int, precisio
 // pixel. The “shift” is the number of bits left we must shift a primary for it
 // to be in position (according to the "mask"). Finally, "precision" refers to
 // how much precision the pixel value contains for a particular primary.
-func (visual *VisualClass) RedPixelDetails() (mask uint32, shift int, precision int) {
+func (visual *Visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -339,7 +297,7 @@ func (visual *VisualClass) RedPixelDetails() (mask uint32, shift int, precision 
 }
 
 // Screen gets the screen to which this visual belongs
-func (visual *VisualClass) Screen() *ScreenClass {
+func (visual *Visual) Screen() *Screen {
 	var _arg0 *C.GdkVisual // out
 	var _cret *C.GdkScreen // in
 
@@ -347,15 +305,15 @@ func (visual *VisualClass) Screen() *ScreenClass {
 
 	_cret = C.gdk_visual_get_screen(_arg0)
 
-	var _screen *ScreenClass // out
+	var _screen *Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ScreenClass)
+	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Screen)
 
 	return _screen
 }
 
 // VisualType returns the type of visual this is (PseudoColor, TrueColor, etc).
-func (visual *VisualClass) VisualType() VisualType {
+func (visual *Visual) VisualType() VisualType {
 	var _arg0 *C.GdkVisual    // out
 	var _cret C.GdkVisualType // in
 

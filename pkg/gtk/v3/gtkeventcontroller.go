@@ -20,49 +20,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_get_type()), F: marshalEventController},
+		{T: externglib.Type(C.gtk_event_controller_get_type()), F: marshalEventControllerrer},
 	})
+}
+
+// EventControllerrer describes EventController's methods.
+type EventControllerrer interface {
+	gextras.Objector
+
+	PropagationPhase() PropagationPhase
+	Widget() *Widget
+	Reset()
 }
 
 // EventController is a base, low-level implementation for event controllers.
 // Those react to a series of Events, and possibly trigger actions as a
 // consequence of those.
-type EventController interface {
-	gextras.Objector
-
-	// PropagationPhase gets the propagation phase at which @controller handles
-	// events.
-	PropagationPhase() PropagationPhase
-	// Widget returns the Widget this controller relates to.
-	Widget() *WidgetClass
-	// Reset resets the @controller to a clean state. Every interaction the
-	// controller did through EventController::handle-event will be dropped at
-	// this point.
-	Reset()
-}
-
-// EventControllerClass implements the EventController interface.
-type EventControllerClass struct {
+type EventController struct {
 	*externglib.Object
 }
 
-var _ EventController = (*EventControllerClass)(nil)
+var _ EventControllerrer = (*EventController)(nil)
 
-func wrapEventController(obj *externglib.Object) EventController {
-	return &EventControllerClass{
+func wrapEventControllerrer(obj *externglib.Object) EventControllerrer {
+	return &EventController{
 		Object: obj,
 	}
 }
 
-func marshalEventController(p uintptr) (interface{}, error) {
+func marshalEventControllerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventController(obj), nil
+	return wrapEventControllerrer(obj), nil
 }
 
 // PropagationPhase gets the propagation phase at which @controller handles
 // events.
-func (controller *EventControllerClass) PropagationPhase() PropagationPhase {
+func (controller *EventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
 
@@ -78,7 +72,7 @@ func (controller *EventControllerClass) PropagationPhase() PropagationPhase {
 }
 
 // Widget returns the Widget this controller relates to.
-func (controller *EventControllerClass) Widget() *WidgetClass {
+func (controller *EventController) Widget() *Widget {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
@@ -86,9 +80,9 @@ func (controller *EventControllerClass) Widget() *WidgetClass {
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -96,7 +90,7 @@ func (controller *EventControllerClass) Widget() *WidgetClass {
 // Reset resets the @controller to a clean state. Every interaction the
 // controller did through EventController::handle-event will be dropped at this
 // point.
-func (controller *EventControllerClass) Reset() {
+func (controller *EventController) Reset() {
 	var _arg0 *C.GtkEventController // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))

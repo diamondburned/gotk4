@@ -38,12 +38,6 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 		native C.{{ .CType }}
 	}
 
-	// Wrap{{ .GoName }} wraps the C unsafe.Pointer to be the right type. It is
-	// primarily used internally.
-	func Wrap{{ .GoName }}(ptr unsafe.Pointer) *{{ .GoName }} {
-		return (*{{ .GoName }})(ptr)
-	}
-
 	{{ if .GLibGetType }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
 		b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))

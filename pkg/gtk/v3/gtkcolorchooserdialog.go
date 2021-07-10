@@ -20,81 +20,81 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialog},
+		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialogger},
 	})
+}
+
+// ColorChooserDialogger describes ColorChooserDialog's methods.
+type ColorChooserDialogger interface {
+	gextras.Objector
+
+	privateColorChooserDialog()
 }
 
 // ColorChooserDialog: the ColorChooserDialog widget is a dialog for choosing a
 // color. It implements the ColorChooser interface.
-type ColorChooserDialog interface {
-	gextras.Objector
-
-	privateColorChooserDialogClass()
-}
-
-// ColorChooserDialogClass implements the ColorChooserDialog interface.
-type ColorChooserDialogClass struct {
+type ColorChooserDialog struct {
 	*externglib.Object
-	DialogClass
-	BuildableIface
-	ColorChooserIface
+	Dialog
+	Buildable
+	ColorChooser
 }
 
-var _ ColorChooserDialog = (*ColorChooserDialogClass)(nil)
+var _ ColorChooserDialogger = (*ColorChooserDialog)(nil)
 
-func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
-	return &ColorChooserDialogClass{
+func wrapColorChooserDialogger(obj *externglib.Object) ColorChooserDialogger {
+	return &ColorChooserDialog{
 		Object: obj,
-		DialogClass: DialogClass{
+		Dialog: Dialog{
 			Object: obj,
-			WindowClass: WindowClass{
+			Window: Window{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ColorChooserIface: ColorChooserIface{
+		ColorChooser: ColorChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalColorChooserDialog(p uintptr) (interface{}, error) {
+func marshalColorChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorChooserDialog(obj), nil
+	return wrapColorChooserDialogger(obj), nil
 }
 
 // NewColorChooserDialog creates a new ColorChooserDialog.
-func NewColorChooserDialog(title string, parent Window) *ColorChooserDialogClass {
+func NewColorChooserDialog(title string, parent Windowwer) *ColorChooserDialog {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
@@ -105,11 +105,11 @@ func NewColorChooserDialog(title string, parent Window) *ColorChooserDialogClass
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
 
-	var _colorChooserDialog *ColorChooserDialogClass // out
+	var _colorChooserDialog *ColorChooserDialog // out
 
-	_colorChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserDialogClass)
+	_colorChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserDialog)
 
 	return _colorChooserDialog
 }
 
-func (*ColorChooserDialogClass) privateColorChooserDialogClass() {}
+func (*ColorChooserDialog) privateColorChooserDialog() {}

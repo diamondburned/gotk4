@@ -29,7 +29,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_vfs_get_type()), F: marshalVFS},
+		{T: externglib.Type(C.g_vfs_get_type()), F: marshalVFSer},
 	})
 }
 
@@ -39,7 +39,7 @@ func init() {
 //
 // The client should return a reference to the new file that has been created
 // for @uri, or nil to continue with the default implementation.
-type VFSFileLookupFunc func(vfs *VFSClass, identifier string, userData interface{}) (file *FileIface)
+type VFSFileLookupFunc func(vfs *VFS, identifier string, userData interface{}) (file *File)
 
 //export gotk4_VFSFileLookupFunc
 func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret *C.GFile) {
@@ -48,11 +48,11 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 		panic(`callback not found`)
 	}
 
-	var vfs *VFSClass        // out
+	var vfs *VFS             // out
 	var identifier string    // out
 	var userData interface{} // out
 
-	vfs = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*VFSClass)
+	vfs = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*VFS)
 	identifier = C.GoString(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -64,20 +64,20 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 	return cret
 }
 
-// VFSOverrider contains methods that are overridable.
+// VFSerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type VFSOverrider interface {
+type VFSerOverrider interface {
 	AddWritableNamespaces(list *FileAttributeInfoList)
 	// FileForPath gets a #GFile for @path.
-	FileForPath(path string) *FileIface
+	FileForPath(path string) *File
 	// FileForURI gets a #GFile for @uri.
 	//
 	// This operation never fails, but the returned object might not support any
 	// I/O operation if the URI is malformed or if the URI scheme is not
 	// supported.
-	FileForURI(uri string) *FileIface
+	FileForURI(uri string) *File
 	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
@@ -87,55 +87,42 @@ type VFSOverrider interface {
 	// ParseName: this operation never fails, but the returned object might not
 	// support any I/O operations if the @parse_name cannot be parsed by the
 	// #GVfs module.
-	ParseName(parseName string) *FileIface
+	ParseName(parseName string) *File
 }
 
-// VFS: entry point for using GIO functionality.
-type VFS interface {
+// VFSer describes VFS's methods.
+type VFSer interface {
 	gextras.Objector
 
-	// FileForPath gets a #GFile for @path.
-	FileForPath(path string) *FileIface
-	// FileForURI gets a #GFile for @uri.
-	//
-	// This operation never fails, but the returned object might not support any
-	// I/O operation if the URI is malformed or if the URI scheme is not
-	// supported.
-	FileForURI(uri string) *FileIface
-	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
+	FileForPath(path string) *File
+	FileForURI(uri string) *File
 	SupportedURISchemes() []string
-	// IsActive checks if the VFS is active.
 	IsActive() bool
-	// ParseName: this operation never fails, but the returned object might not
-	// support any I/O operations if the @parse_name cannot be parsed by the
-	// #GVfs module.
-	ParseName(parseName string) *FileIface
-	// UnregisterURIScheme unregisters the URI handler for @scheme previously
-	// registered with g_vfs_register_uri_scheme().
+	ParseName(parseName string) *File
 	UnregisterURIScheme(scheme string) bool
 }
 
-// VFSClass implements the VFS interface.
-type VFSClass struct {
+// VFS: entry point for using GIO functionality.
+type VFS struct {
 	*externglib.Object
 }
 
-var _ VFS = (*VFSClass)(nil)
+var _ VFSer = (*VFS)(nil)
 
-func wrapVFS(obj *externglib.Object) VFS {
-	return &VFSClass{
+func wrapVFSer(obj *externglib.Object) VFSer {
+	return &VFS{
 		Object: obj,
 	}
 }
 
-func marshalVFS(p uintptr) (interface{}, error) {
+func marshalVFSer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVFS(obj), nil
+	return wrapVFSer(obj), nil
 }
 
 // FileForPath gets a #GFile for @path.
-func (vfs *VFSClass) FileForPath(path string) *FileIface {
+func (vfs *VFS) FileForPath(path string) *File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -146,9 +133,9 @@ func (vfs *VFSClass) FileForPath(path string) *FileIface {
 
 	_cret = C.g_vfs_get_file_for_path(_arg0, _arg1)
 
-	var _file *FileIface // out
+	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
 
 	return _file
 }
@@ -157,7 +144,7 @@ func (vfs *VFSClass) FileForPath(path string) *FileIface {
 //
 // This operation never fails, but the returned object might not support any I/O
 // operation if the URI is malformed or if the URI scheme is not supported.
-func (vfs *VFSClass) FileForURI(uri string) *FileIface {
+func (vfs *VFS) FileForURI(uri string) *File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -168,15 +155,15 @@ func (vfs *VFSClass) FileForURI(uri string) *FileIface {
 
 	_cret = C.g_vfs_get_file_for_uri(_arg0, _arg1)
 
-	var _file *FileIface // out
+	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
 
 	return _file
 }
 
 // SupportedURISchemes gets a list of URI schemes supported by @vfs.
-func (vfs *VFSClass) SupportedURISchemes() []string {
+func (vfs *VFS) SupportedURISchemes() []string {
 	var _arg0 *C.GVfs // out
 	var _cret **C.gchar
 
@@ -204,7 +191,7 @@ func (vfs *VFSClass) SupportedURISchemes() []string {
 }
 
 // IsActive checks if the VFS is active.
-func (vfs *VFSClass) IsActive() bool {
+func (vfs *VFS) IsActive() bool {
 	var _arg0 *C.GVfs    // out
 	var _cret C.gboolean // in
 
@@ -224,7 +211,7 @@ func (vfs *VFSClass) IsActive() bool {
 // ParseName: this operation never fails, but the returned object might not
 // support any I/O operations if the @parse_name cannot be parsed by the #GVfs
 // module.
-func (vfs *VFSClass) ParseName(parseName string) *FileIface {
+func (vfs *VFS) ParseName(parseName string) *File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -235,16 +222,16 @@ func (vfs *VFSClass) ParseName(parseName string) *FileIface {
 
 	_cret = C.g_vfs_parse_name(_arg0, _arg1)
 
-	var _file *FileIface // out
+	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
 
 	return _file
 }
 
 // UnregisterURIScheme unregisters the URI handler for @scheme previously
 // registered with g_vfs_register_uri_scheme().
-func (vfs *VFSClass) UnregisterURIScheme(scheme string) bool {
+func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	var _arg0 *C.GVfs    // out
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in

@@ -28,57 +28,45 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tcp_connection_get_type()), F: marshalTCPConnection},
+		{T: externglib.Type(C.g_tcp_connection_get_type()), F: marshalTCPConnectioner},
 	})
+}
+
+// TCPConnectioner describes TCPConnection's methods.
+type TCPConnectioner interface {
+	gextras.Objector
+
+	GracefulDisconnect() bool
+	SetGracefulDisconnect(gracefulDisconnect bool)
 }
 
 // TCPConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
-type TCPConnection interface {
-	gextras.Objector
-
-	// GracefulDisconnect checks if graceful disconnects are used. See
-	// g_tcp_connection_set_graceful_disconnect().
-	GracefulDisconnect() bool
-	// SetGracefulDisconnect: this enables graceful disconnects on close. A
-	// graceful disconnect means that we signal the receiving end that the
-	// connection is terminated and wait for it to close the connection before
-	// closing the connection.
-	//
-	// A graceful disconnect means that we can be sure that we successfully sent
-	// all the outstanding data to the other end, or get an error reported.
-	// However, it also means we have to wait for all the data to reach the
-	// other side and for it to acknowledge this by closing the socket, which
-	// may take a while. For this reason it is disabled by default.
-	SetGracefulDisconnect(gracefulDisconnect bool)
+type TCPConnection struct {
+	SocketConnection
 }
 
-// TCPConnectionClass implements the TCPConnection interface.
-type TCPConnectionClass struct {
-	SocketConnectionClass
-}
+var _ TCPConnectioner = (*TCPConnection)(nil)
 
-var _ TCPConnection = (*TCPConnectionClass)(nil)
-
-func wrapTCPConnection(obj *externglib.Object) TCPConnection {
-	return &TCPConnectionClass{
-		SocketConnectionClass: SocketConnectionClass{
-			IOStreamClass: IOStreamClass{
+func wrapTCPConnectioner(obj *externglib.Object) TCPConnectioner {
+	return &TCPConnection{
+		SocketConnection: SocketConnection{
+			IOStream: IOStream{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalTCPConnection(p uintptr) (interface{}, error) {
+func marshalTCPConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTCPConnection(obj), nil
+	return wrapTCPConnectioner(obj), nil
 }
 
 // GracefulDisconnect checks if graceful disconnects are used. See
 // g_tcp_connection_set_graceful_disconnect().
-func (connection *TCPConnectionClass) GracefulDisconnect() bool {
+func (connection *TCPConnection) GracefulDisconnect() bool {
 	var _arg0 *C.GTcpConnection // out
 	var _cret C.gboolean        // in
 
@@ -105,7 +93,7 @@ func (connection *TCPConnectionClass) GracefulDisconnect() bool {
 // also means we have to wait for all the data to reach the other side and for
 // it to acknowledge this by closing the socket, which may take a while. For
 // this reason it is disabled by default.
-func (connection *TCPConnectionClass) SetGracefulDisconnect(gracefulDisconnect bool) {
+func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	var _arg0 *C.GTcpConnection // out
 	var _arg1 C.gboolean        // out
 

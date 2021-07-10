@@ -19,8 +19,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_controller_get_type()), F: marshalShortcutController},
+		{T: externglib.Type(C.gtk_shortcut_controller_get_type()), F: marshalShortcutControllerrer},
 	})
+}
+
+// ShortcutControllerrer describes ShortcutController's methods.
+type ShortcutControllerrer interface {
+	gextras.Objector
+
+	AddShortcut(shortcut Shortcutter)
+	MnemonicsModifiers() gdk.ModifierType
+	Scope() ShortcutScope
+	RemoveShortcut(shortcut Shortcutter)
 }
 
 // ShortcutController: `GtkShortcutController` is an event controller that
@@ -56,64 +66,41 @@ func init() {
 // [ctor@Gtk.ShortcutAction.parse_string] for the syntax for other kinds of
 // `GtkShortcutAction`. See [ctor@Gtk.ShortcutTrigger.parse_string] to learn
 // more about the syntax for triggers.
-type ShortcutController interface {
-	gextras.Objector
-
-	// AddShortcut adds @shortcut to the list of shortcuts handled by @self.
-	//
-	// If this controller uses an external shortcut list, this function does
-	// nothing.
-	AddShortcut(shortcut Shortcut)
-	// MnemonicsModifiers gets the mnemonics modifiers for when this controller
-	// activates its shortcuts.
-	MnemonicsModifiers() gdk.ModifierType
-	// Scope gets the scope for when this controller activates its shortcuts.
-	// See gtk_shortcut_controller_set_scope() for details.
-	Scope() ShortcutScope
-	// RemoveShortcut removes @shortcut from the list of shortcuts handled by
-	// @self.
-	//
-	// If @shortcut had not been added to @controller or this controller uses an
-	// external shortcut list, this function does nothing.
-	RemoveShortcut(shortcut Shortcut)
-}
-
-// ShortcutControllerClass implements the ShortcutController interface.
-type ShortcutControllerClass struct {
+type ShortcutController struct {
 	*externglib.Object
-	EventControllerClass
-	BuildableIface
+	EventController
+	Buildable
 }
 
-var _ ShortcutController = (*ShortcutControllerClass)(nil)
+var _ ShortcutControllerrer = (*ShortcutController)(nil)
 
-func wrapShortcutController(obj *externglib.Object) ShortcutController {
-	return &ShortcutControllerClass{
+func wrapShortcutControllerrer(obj *externglib.Object) ShortcutControllerrer {
+	return &ShortcutController{
 		Object: obj,
-		EventControllerClass: EventControllerClass{
+		EventController: EventController{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalShortcutController(p uintptr) (interface{}, error) {
+func marshalShortcutControllerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutController(obj), nil
+	return wrapShortcutControllerrer(obj), nil
 }
 
 // NewShortcutController creates a new shortcut controller.
-func NewShortcutController() *ShortcutControllerClass {
+func NewShortcutController() *ShortcutController {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_shortcut_controller_new()
 
-	var _shortcutController *ShortcutControllerClass // out
+	var _shortcutController *ShortcutController // out
 
-	_shortcutController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutControllerClass)
+	_shortcutController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutController)
 
 	return _shortcutController
 }
@@ -122,7 +109,7 @@ func NewShortcutController() *ShortcutControllerClass {
 //
 // If this controller uses an external shortcut list, this function does
 // nothing.
-func (self *ShortcutControllerClass) AddShortcut(shortcut Shortcut) {
+func (self *ShortcutController) AddShortcut(shortcut Shortcutter) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
@@ -134,7 +121,7 @@ func (self *ShortcutControllerClass) AddShortcut(shortcut Shortcut) {
 
 // MnemonicsModifiers gets the mnemonics modifiers for when this controller
 // activates its shortcuts.
-func (self *ShortcutControllerClass) MnemonicsModifiers() gdk.ModifierType {
+func (self *ShortcutController) MnemonicsModifiers() gdk.ModifierType {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GdkModifierType        // in
 
@@ -151,7 +138,7 @@ func (self *ShortcutControllerClass) MnemonicsModifiers() gdk.ModifierType {
 
 // Scope gets the scope for when this controller activates its shortcuts. See
 // gtk_shortcut_controller_set_scope() for details.
-func (self *ShortcutControllerClass) Scope() ShortcutScope {
+func (self *ShortcutController) Scope() ShortcutScope {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GtkShortcutScope       // in
 
@@ -170,7 +157,7 @@ func (self *ShortcutControllerClass) Scope() ShortcutScope {
 //
 // If @shortcut had not been added to @controller or this controller uses an
 // external shortcut list, this function does nothing.
-func (self *ShortcutControllerClass) RemoveShortcut(shortcut Shortcut) {
+func (self *ShortcutController) RemoveShortcut(shortcut Shortcutter) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 

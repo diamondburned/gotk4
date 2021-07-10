@@ -23,19 +23,18 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	}
 	{{ end }}
 
-	{{ GoDoc . 0 }}
+	// {{ .InterfaceName }} describes {{ .StructName }}'s methods.
 	type {{ .InterfaceName }} interface {
 		gextras.Objector
 
 		{{ range .Methods }}
-		{{- GoDoc . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
 		{{ else }}
 		private{{ .StructName }}()
 		{{ end }}
 	}
 
-	// {{ .StructName }} implements the {{ .InterfaceName }} interface.
+	{{ GoDoc . 0 }}
 	type {{ .StructName }} struct {
 		{{ range .Tree.ImplTypes -}}
 		{{ . }}

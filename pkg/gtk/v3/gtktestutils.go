@@ -24,7 +24,7 @@ import "C"
 // destroyed upon test function teardown.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestCreateSimpleWindow(windowTitle string, dialogText string) *WidgetClass {
+func TestCreateSimpleWindow(windowTitle string, dialogText string) *Widget {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -36,9 +36,9 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) *WidgetClass 
 
 	_cret = C.gtk_test_create_simple_window(_arg1, _arg2)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -50,7 +50,7 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) *WidgetClass 
 // other than "C“ tend to alter (translate” label strings, so this function is
 // genrally only useful in test programs with predetermined locales, see
 // gtk_test_init() for more details.
-func TestFindLabel(widget Widget, labelPattern string) *WidgetClass {
+func TestFindLabel(widget Widgetter, labelPattern string) *Widget {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -61,9 +61,9 @@ func TestFindLabel(widget Widget, labelPattern string) *WidgetClass {
 
 	_cret = C.gtk_test_find_label(_arg1, _arg2)
 
-	var _ret *WidgetClass // out
+	var _ret *Widget // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _ret
 }
@@ -74,7 +74,7 @@ func TestFindLabel(widget Widget, labelPattern string) *WidgetClass {
 // be returned. The general purpose of this function is to find the most likely
 // “action” widget, relative to another labeling widget. Such as finding a
 // button or text entry widget, given its corresponding label widget.
-func TestFindSibling(baseWidget Widget, widgetType externglib.Type) *WidgetClass {
+func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) *Widget {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.GType      // out
 	var _cret *C.GtkWidget // in
@@ -84,9 +84,9 @@ func TestFindSibling(baseWidget Widget, widgetType externglib.Type) *WidgetClass
 
 	_cret = C.gtk_test_find_sibling(_arg1, _arg2)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -98,7 +98,7 @@ func TestFindSibling(baseWidget Widget, widgetType externglib.Type) *WidgetClass
 // gtk_test_find_label(), gtk_test_find_sibling() and gtk_test_widget_click()
 // for possible caveats involving the search of such widgets and synthesizing
 // widget events.
-func TestFindWidget(widget Widget, labelPattern string, widgetType externglib.Type) *WidgetClass {
+func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib.Type) *Widget {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 	var _arg3 C.GType      // out
@@ -111,9 +111,9 @@ func TestFindWidget(widget Widget, labelPattern string, widgetType externglib.Ty
 
 	_cret = C.gtk_test_find_widget(_arg1, _arg2, _arg3)
 
-	var _ret *WidgetClass // out
+	var _ret *Widget // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _ret
 }
@@ -131,7 +131,7 @@ func TestRegisterAllTypes() {
 // @widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestSliderGetValue(widget Widget) float64 {
+func TestSliderGetValue(widget Widgetter) float64 {
 	var _arg1 *C.GtkWidget // out
 	var _cret C.double     // in
 
@@ -152,7 +152,7 @@ func TestSliderGetValue(widget Widget) float64 {
 // lower and upper limits, according to the @percentage argument.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestSliderSetPerc(widget Widget, percentage float64) {
+func TestSliderSetPerc(widget Widgetter, percentage float64) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
 
@@ -167,7 +167,7 @@ func TestSliderSetPerc(widget Widget, percentage float64) {
 // or decrease of spin button’s value.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
+func TestSpinButtonClick(spinner SpinButtonner, button uint, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
 	var _arg2 C.guint          // out
 	var _arg3 C.gboolean       // out
@@ -194,7 +194,7 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestTextGet(widget Widget) string {
+func TestTextGet(widget Widgetter) string {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.gchar     // in
 
@@ -214,7 +214,7 @@ func TestTextGet(widget Widget) string {
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestTextSet(widget Widget, _string string) {
+func TestTextSet(widget Widgetter, _string string) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 
@@ -231,7 +231,7 @@ func TestTextSet(widget Widget, _string string) {
 //
 // This function is intended to be used for syncing with actions that depend on
 // @widget relayouting or on interaction with the display server.
-func TestWidgetWaitForDraw(widget Widget) {
+func TestWidgetWaitForDraw(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))

@@ -28,17 +28,26 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitor},
+		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitorrer},
 	})
 }
 
-// FileMonitorOverrider contains methods that are overridable.
+// FileMonitorrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileMonitorOverrider interface {
+type FileMonitorrerOverrider interface {
 	// Cancel cancels a file monitor.
 	Cancel() bool
+}
+
+// FileMonitorrer describes FileMonitor's methods.
+type FileMonitorrer interface {
+	gextras.Objector
+
+	Cancel() bool
+	IsCancelled() bool
+	SetRateLimit(limitMsecs int)
 }
 
 // FileMonitor monitors a file or directory for changes.
@@ -52,39 +61,26 @@ type FileMonitorOverrider interface {
 // thread that the monitor was created in (though if the global default main
 // context is blocked, this may cause notifications to be blocked even if the
 // thread-default context is still running).
-type FileMonitor interface {
-	gextras.Objector
-
-	// Cancel cancels a file monitor.
-	Cancel() bool
-	// IsCancelled returns whether the monitor is canceled.
-	IsCancelled() bool
-	// SetRateLimit sets the rate limit to which the @monitor will report
-	// consecutive change events to the same file.
-	SetRateLimit(limitMsecs int)
-}
-
-// FileMonitorClass implements the FileMonitor interface.
-type FileMonitorClass struct {
+type FileMonitor struct {
 	*externglib.Object
 }
 
-var _ FileMonitor = (*FileMonitorClass)(nil)
+var _ FileMonitorrer = (*FileMonitor)(nil)
 
-func wrapFileMonitor(obj *externglib.Object) FileMonitor {
-	return &FileMonitorClass{
+func wrapFileMonitorrer(obj *externglib.Object) FileMonitorrer {
+	return &FileMonitor{
 		Object: obj,
 	}
 }
 
-func marshalFileMonitor(p uintptr) (interface{}, error) {
+func marshalFileMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileMonitor(obj), nil
+	return wrapFileMonitorrer(obj), nil
 }
 
 // Cancel cancels a file monitor.
-func (monitor *FileMonitorClass) Cancel() bool {
+func (monitor *FileMonitor) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
@@ -102,7 +98,7 @@ func (monitor *FileMonitorClass) Cancel() bool {
 }
 
 // IsCancelled returns whether the monitor is canceled.
-func (monitor *FileMonitorClass) IsCancelled() bool {
+func (monitor *FileMonitor) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
@@ -121,7 +117,7 @@ func (monitor *FileMonitorClass) IsCancelled() bool {
 
 // SetRateLimit sets the rate limit to which the @monitor will report
 // consecutive change events to the same file.
-func (monitor *FileMonitorClass) SetRateLimit(limitMsecs int) {
+func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
 

@@ -20,24 +20,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_print_operation_preview_get_type()), F: marshalPrintOperationPreview},
+		{T: externglib.Type(C.gtk_print_operation_preview_get_type()), F: marshalPrintOperationPreviewer},
 	})
 }
 
-// PrintOperationPreviewOverrider contains methods that are overridable.
+// PrintOperationPreviewerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PrintOperationPreviewOverrider interface {
+type PrintOperationPreviewerOverrider interface {
 	// EndPreview ends a preview.
 	//
 	// This function must be called to finish a custom print preview.
 	EndPreview()
-	GotPageSize(context PrintContext, pageSetup PageSetup)
+	GotPageSize(context PrintContexter, pageSetup PageSetupper)
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
 	IsSelected(pageNr int) bool
-	Ready(context PrintContext)
+	Ready(context PrintContexter)
 	// RenderPage renders a page to the preview, using the print context that
 	// was passed to the PrintOperation::preview handler together with @preview.
 	//
@@ -49,50 +49,37 @@ type PrintOperationPreviewOverrider interface {
 	RenderPage(pageNr int)
 }
 
-type PrintOperationPreview interface {
+// PrintOperationPreviewer describes PrintOperationPreview's methods.
+type PrintOperationPreviewer interface {
 	gextras.Objector
 
-	// EndPreview ends a preview.
-	//
-	// This function must be called to finish a custom print preview.
 	EndPreview()
-	// IsSelected returns whether the given page is included in the set of pages
-	// that have been selected for printing.
 	IsSelected(pageNr int) bool
-	// RenderPage renders a page to the preview, using the print context that
-	// was passed to the PrintOperation::preview handler together with @preview.
-	//
-	// A custom iprint preview should use this function in its ::expose handler
-	// to render the currently selected page.
-	//
-	// Note that this function requires a suitable cairo context to be
-	// associated with the print context.
 	RenderPage(pageNr int)
 }
 
-// PrintOperationPreviewIface implements the PrintOperationPreview interface.
-type PrintOperationPreviewIface struct {
+type PrintOperationPreview struct {
 	*externglib.Object
 }
 
-var _ PrintOperationPreview = (*PrintOperationPreviewIface)(nil)
+var _ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
 
-func wrapPrintOperationPreview(obj *externglib.Object) PrintOperationPreview {
-	return &PrintOperationPreviewIface{
+func wrapPrintOperationPreviewer(obj *externglib.Object) PrintOperationPreviewer {
+	return &PrintOperationPreview{
 		Object: obj,
 	}
 }
 
-func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
+func marshalPrintOperationPreviewer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPrintOperationPreview(obj), nil
+	return wrapPrintOperationPreviewer(obj), nil
 }
 
 // EndPreview ends a preview.
 //
 // This function must be called to finish a custom print preview.
-func (preview *PrintOperationPreviewIface) EndPreview() {
+func (preview *PrintOperationPreview) EndPreview() {
 	var _arg0 *C.GtkPrintOperationPreview // out
 
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(preview.Native()))
@@ -102,7 +89,7 @@ func (preview *PrintOperationPreviewIface) EndPreview() {
 
 // IsSelected returns whether the given page is included in the set of pages
 // that have been selected for printing.
-func (preview *PrintOperationPreviewIface) IsSelected(pageNr int) bool {
+func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.gint                      // out
 	var _cret C.gboolean                  // in
@@ -129,7 +116,7 @@ func (preview *PrintOperationPreviewIface) IsSelected(pageNr int) bool {
 //
 // Note that this function requires a suitable cairo context to be associated
 // with the print context.
-func (preview *PrintOperationPreviewIface) RenderPage(pageNr int) {
+func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.gint                      // out
 

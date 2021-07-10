@@ -21,35 +21,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toplevel_accessible_get_type()), F: marshalToplevelAccessible},
+		{T: externglib.Type(C.gtk_toplevel_accessible_get_type()), F: marshalToplevelAccessibler},
 	})
 }
 
-type ToplevelAccessible interface {
+// ToplevelAccessibler describes ToplevelAccessible's methods.
+type ToplevelAccessibler interface {
 	gextras.Objector
 
-	privateToplevelAccessibleClass()
+	privateToplevelAccessible()
 }
 
-// ToplevelAccessibleClass implements the ToplevelAccessible interface.
-type ToplevelAccessibleClass struct {
-	atk.ObjectClass
+type ToplevelAccessible struct {
+	atk.Object
 }
 
-var _ ToplevelAccessible = (*ToplevelAccessibleClass)(nil)
+var _ ToplevelAccessibler = (*ToplevelAccessible)(nil)
 
-func wrapToplevelAccessible(obj *externglib.Object) ToplevelAccessible {
-	return &ToplevelAccessibleClass{
-		ObjectClass: atk.ObjectClass{
+func wrapToplevelAccessibler(obj *externglib.Object) ToplevelAccessibler {
+	return &ToplevelAccessible{
+		Object: atk.Object{
 			Object: obj,
 		},
 	}
 }
 
-func marshalToplevelAccessible(p uintptr) (interface{}, error) {
+func marshalToplevelAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToplevelAccessible(obj), nil
+	return wrapToplevelAccessibler(obj), nil
 }
 
-func (*ToplevelAccessibleClass) privateToplevelAccessibleClass() {}
+func (*ToplevelAccessible) privateToplevelAccessible() {}

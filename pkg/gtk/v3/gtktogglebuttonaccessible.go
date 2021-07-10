@@ -21,60 +21,60 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_button_accessible_get_type()), F: marshalToggleButtonAccessible},
+		{T: externglib.Type(C.gtk_toggle_button_accessible_get_type()), F: marshalToggleButtonAccessibler},
 	})
 }
 
-type ToggleButtonAccessible interface {
+// ToggleButtonAccessibler describes ToggleButtonAccessible's methods.
+type ToggleButtonAccessibler interface {
 	gextras.Objector
 
-	privateToggleButtonAccessibleClass()
+	privateToggleButtonAccessible()
 }
 
-// ToggleButtonAccessibleClass implements the ToggleButtonAccessible interface.
-type ToggleButtonAccessibleClass struct {
+type ToggleButtonAccessible struct {
 	*externglib.Object
-	ButtonAccessibleClass
-	atk.ActionIface
-	atk.ImageIface
+	ButtonAccessible
+	atk.Action
+	atk.Image
 }
 
-var _ ToggleButtonAccessible = (*ToggleButtonAccessibleClass)(nil)
+var _ ToggleButtonAccessibler = (*ToggleButtonAccessible)(nil)
 
-func wrapToggleButtonAccessible(obj *externglib.Object) ToggleButtonAccessible {
-	return &ToggleButtonAccessibleClass{
+func wrapToggleButtonAccessibler(obj *externglib.Object) ToggleButtonAccessibler {
+	return &ToggleButtonAccessible{
 		Object: obj,
-		ButtonAccessibleClass: ButtonAccessibleClass{
+		ButtonAccessible: ButtonAccessible{
 			Object: obj,
-			ContainerAccessibleClass: ContainerAccessibleClass{
-				WidgetAccessibleClass: WidgetAccessibleClass{
-					AccessibleClass: AccessibleClass{
-						ObjectClass: atk.ObjectClass{
+			ContainerAccessible: ContainerAccessible{
+				WidgetAccessible: WidgetAccessible{
+					Accessible: Accessible{
+						Object: atk.Object{
 							Object: obj,
 						},
 					},
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
-			ImageIface: atk.ImageIface{
+			Image: atk.Image{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalToggleButtonAccessible(p uintptr) (interface{}, error) {
+func marshalToggleButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleButtonAccessible(obj), nil
+	return wrapToggleButtonAccessibler(obj), nil
 }
 
-func (*ToggleButtonAccessibleClass) privateToggleButtonAccessibleClass() {}
+func (*ToggleButtonAccessible) privateToggleButtonAccessible() {}

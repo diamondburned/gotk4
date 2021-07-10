@@ -28,16 +28,23 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_descriptor_based_get_type()), F: marshalFileDescriptorBased},
+		{T: externglib.Type(C.g_file_descriptor_based_get_type()), F: marshalFileDescriptorBasedder},
 	})
 }
 
-// FileDescriptorBasedOverrider contains methods that are overridable.
+// FileDescriptorBasedderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileDescriptorBasedOverrider interface {
+type FileDescriptorBasedderOverrider interface {
 	// Fd gets the underlying file descriptor.
+	Fd() int
+}
+
+// FileDescriptorBasedder describes FileDescriptorBased's methods.
+type FileDescriptorBasedder interface {
+	gextras.Objector
+
 	Fd() int
 }
 
@@ -47,34 +54,26 @@ type FileDescriptorBasedOverrider interface {
 // Note that `<gio/gfiledescriptorbased.h>` belongs to the UNIX-specific GIO
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
-type FileDescriptorBased interface {
-	gextras.Objector
-
-	// Fd gets the underlying file descriptor.
-	Fd() int
-}
-
-// FileDescriptorBasedIface implements the FileDescriptorBased interface.
-type FileDescriptorBasedIface struct {
+type FileDescriptorBased struct {
 	*externglib.Object
 }
 
-var _ FileDescriptorBased = (*FileDescriptorBasedIface)(nil)
+var _ FileDescriptorBasedder = (*FileDescriptorBased)(nil)
 
-func wrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBased {
-	return &FileDescriptorBasedIface{
+func wrapFileDescriptorBasedder(obj *externglib.Object) FileDescriptorBasedder {
+	return &FileDescriptorBased{
 		Object: obj,
 	}
 }
 
-func marshalFileDescriptorBased(p uintptr) (interface{}, error) {
+func marshalFileDescriptorBasedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileDescriptorBased(obj), nil
+	return wrapFileDescriptorBasedder(obj), nil
 }
 
 // Fd gets the underlying file descriptor.
-func (fdBased *FileDescriptorBasedIface) Fd() int {
+func (fdBased *FileDescriptorBased) Fd() int {
 	var _arg0 *C.GFileDescriptorBased // out
 	var _cret C.int                   // in
 

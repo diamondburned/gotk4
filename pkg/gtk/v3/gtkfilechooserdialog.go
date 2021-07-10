@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialog},
+		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialogger},
 	})
+}
+
+// FileChooserDialogger describes FileChooserDialog's methods.
+type FileChooserDialogger interface {
+	gextras.Objector
+
+	privateFileChooserDialog()
 }
 
 // FileChooserDialog is a dialog box suitable for use with “File/Open” or
@@ -166,71 +173,64 @@ func init() {
 // To summarize, make sure you use a [stock response
 // code][gtkfilechooserdialog-responses] when you use FileChooserDialog to
 // ensure proper operation.
-type FileChooserDialog interface {
-	gextras.Objector
-
-	privateFileChooserDialogClass()
-}
-
-// FileChooserDialogClass implements the FileChooserDialog interface.
-type FileChooserDialogClass struct {
+type FileChooserDialog struct {
 	*externglib.Object
-	DialogClass
-	BuildableIface
-	FileChooserIface
+	Dialog
+	Buildable
+	FileChooser
 }
 
-var _ FileChooserDialog = (*FileChooserDialogClass)(nil)
+var _ FileChooserDialogger = (*FileChooserDialog)(nil)
 
-func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
-	return &FileChooserDialogClass{
+func wrapFileChooserDialogger(obj *externglib.Object) FileChooserDialogger {
+	return &FileChooserDialog{
 		Object: obj,
-		DialogClass: DialogClass{
+		Dialog: Dialog{
 			Object: obj,
-			WindowClass: WindowClass{
+			Window: Window{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		FileChooserIface: FileChooserIface{
+		FileChooser: FileChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFileChooserDialog(p uintptr) (interface{}, error) {
+func marshalFileChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserDialog(obj), nil
+	return wrapFileChooserDialogger(obj), nil
 }
 
-func (*FileChooserDialogClass) privateFileChooserDialogClass() {}
+func (*FileChooserDialog) privateFileChooserDialog() {}

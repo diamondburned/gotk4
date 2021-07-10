@@ -28,16 +28,23 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_threaded_socket_service_get_type()), F: marshalThreadedSocketService},
+		{T: externglib.Type(C.g_threaded_socket_service_get_type()), F: marshalThreadedSocketServicer},
 	})
 }
 
-// ThreadedSocketServiceOverrider contains methods that are overridable.
+// ThreadedSocketServicerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ThreadedSocketServiceOverrider interface {
-	Run(connection SocketConnection, sourceObject gextras.Objector) bool
+type ThreadedSocketServicerOverrider interface {
+	Run(connection SocketConnectioner, sourceObject gextras.Objector) bool
+}
+
+// ThreadedSocketServicer describes ThreadedSocketService's methods.
+type ThreadedSocketServicer interface {
+	gextras.Objector
+
+	privateThreadedSocketService()
 }
 
 // ThreadedSocketService is a simple subclass of Service that handles incoming
@@ -53,38 +60,31 @@ type ThreadedSocketServiceOverrider interface {
 //
 // As with Service, you may connect to SocketService::run, or subclass and
 // override the default handler.
-type ThreadedSocketService interface {
-	gextras.Objector
-
-	privateThreadedSocketServiceClass()
+type ThreadedSocketService struct {
+	SocketService
 }
 
-// ThreadedSocketServiceClass implements the ThreadedSocketService interface.
-type ThreadedSocketServiceClass struct {
-	SocketServiceClass
-}
+var _ ThreadedSocketServicer = (*ThreadedSocketService)(nil)
 
-var _ ThreadedSocketService = (*ThreadedSocketServiceClass)(nil)
-
-func wrapThreadedSocketService(obj *externglib.Object) ThreadedSocketService {
-	return &ThreadedSocketServiceClass{
-		SocketServiceClass: SocketServiceClass{
-			SocketListenerClass: SocketListenerClass{
+func wrapThreadedSocketServicer(obj *externglib.Object) ThreadedSocketServicer {
+	return &ThreadedSocketService{
+		SocketService: SocketService{
+			SocketListener: SocketListener{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalThreadedSocketService(p uintptr) (interface{}, error) {
+func marshalThreadedSocketServicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapThreadedSocketService(obj), nil
+	return wrapThreadedSocketServicer(obj), nil
 }
 
 // NewThreadedSocketService creates a new SocketService with no listeners.
 // Listeners must be added with one of the Listener "add" methods.
-func NewThreadedSocketService(maxThreads int) *ThreadedSocketServiceClass {
+func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	var _arg1 C.int             // out
 	var _cret *C.GSocketService // in
 
@@ -92,11 +92,11 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketServiceClass {
 
 	_cret = C.g_threaded_socket_service_new(_arg1)
 
-	var _threadedSocketService *ThreadedSocketServiceClass // out
+	var _threadedSocketService *ThreadedSocketService // out
 
-	_threadedSocketService = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThreadedSocketServiceClass)
+	_threadedSocketService = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThreadedSocketService)
 
 	return _threadedSocketService
 }
 
-func (*ThreadedSocketServiceClass) privateThreadedSocketServiceClass() {}
+func (*ThreadedSocketService) privateThreadedSocketService() {}

@@ -105,12 +105,6 @@ type Scanner struct {
 	native C.GScanner
 }
 
-// WrapScanner wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapScanner(ptr unsafe.Pointer) *Scanner {
-	return (*Scanner)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (s *Scanner) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
@@ -371,12 +365,6 @@ func (scanner *Scanner) SyncFileOffset() {
 // the next unpeeked token.
 type ScannerConfig struct {
 	native C.GScannerConfig
-}
-
-// WrapScannerConfig wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapScannerConfig(ptr unsafe.Pointer) *ScannerConfig {
-	return (*ScannerConfig)(ptr)
 }
 
 // Native returns the underlying C source pointer.

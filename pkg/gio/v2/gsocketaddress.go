@@ -30,15 +30,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_address_get_type()), F: marshalSocketAddress},
+		{T: externglib.Type(C.g_socket_address_get_type()), F: marshalSocketAddresser},
 	})
 }
 
-// SocketAddressOverrider contains methods that are overridable.
+// SocketAddresserOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketAddressOverrider interface {
+type SocketAddresserOverrider interface {
 	// Family gets the socket family type of @address.
 	Family() SocketFamily
 	// NativeSize gets the size of @address's native struct sockaddr. You can
@@ -50,55 +50,46 @@ type SocketAddressOverrider interface {
 	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
 	// returned. If the address type is not known on the system then a
 	// G_IO_ERROR_NOT_SUPPORTED error is returned.
+	ToNative(dest interface{}, destlen uint) error
+}
+
+// SocketAddresser describes SocketAddress's methods.
+type SocketAddresser interface {
+	gextras.Objector
+
+	Family() SocketFamily
+	NativeSize() int
 	ToNative(dest interface{}, destlen uint) error
 }
 
 // SocketAddress is the equivalent of struct sockaddr in the BSD sockets API.
 // This is an abstract class; use SocketAddress for internet sockets, or
 // SocketAddress for UNIX domain sockets.
-type SocketAddress interface {
-	gextras.Objector
-
-	// Family gets the socket family type of @address.
-	Family() SocketFamily
-	// NativeSize gets the size of @address's native struct sockaddr. You can
-	// use this to allocate memory to pass to g_socket_address_to_native().
-	NativeSize() int
-	// ToNative converts a Address to a native struct sockaddr, which can be
-	// passed to low-level functions like connect() or bind().
-	//
-	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
-	// returned. If the address type is not known on the system then a
-	// G_IO_ERROR_NOT_SUPPORTED error is returned.
-	ToNative(dest interface{}, destlen uint) error
-}
-
-// SocketAddressClass implements the SocketAddress interface.
-type SocketAddressClass struct {
+type SocketAddress struct {
 	*externglib.Object
-	SocketConnectableIface
+	SocketConnectable
 }
 
-var _ SocketAddress = (*SocketAddressClass)(nil)
+var _ SocketAddresser = (*SocketAddress)(nil)
 
-func wrapSocketAddress(obj *externglib.Object) SocketAddress {
-	return &SocketAddressClass{
+func wrapSocketAddresser(obj *externglib.Object) SocketAddresser {
+	return &SocketAddress{
 		Object: obj,
-		SocketConnectableIface: SocketConnectableIface{
+		SocketConnectable: SocketConnectable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSocketAddress(p uintptr) (interface{}, error) {
+func marshalSocketAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketAddress(obj), nil
+	return wrapSocketAddresser(obj), nil
 }
 
 // NewSocketAddressFromNative creates a Address subclass corresponding to the
 // native struct sockaddr @native.
-func NewSocketAddressFromNative(native interface{}, len uint) *SocketAddressClass {
+func NewSocketAddressFromNative(native interface{}, len uint) *SocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
@@ -108,15 +99,15 @@ func NewSocketAddressFromNative(native interface{}, len uint) *SocketAddressClas
 
 	_cret = C.g_socket_address_new_from_native(_arg1, _arg2)
 
-	var _socketAddress *SocketAddressClass // out
+	var _socketAddress *SocketAddress // out
 
-	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddressClass)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddress)
 
 	return _socketAddress
 }
 
 // Family gets the socket family type of @address.
-func (address *SocketAddressClass) Family() SocketFamily {
+func (address *SocketAddress) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
 
@@ -133,7 +124,7 @@ func (address *SocketAddressClass) Family() SocketFamily {
 
 // NativeSize gets the size of @address's native struct sockaddr. You can use
 // this to allocate memory to pass to g_socket_address_to_native().
-func (address *SocketAddressClass) NativeSize() int {
+func (address *SocketAddress) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.gssize          // in
 
@@ -154,7 +145,7 @@ func (address *SocketAddressClass) NativeSize() int {
 // If not enough space is available, a G_IO_ERROR_NO_SPACE error is returned. If
 // the address type is not known on the system then a G_IO_ERROR_NOT_SUPPORTED
 // error is returned.
-func (address *SocketAddressClass) ToNative(dest interface{}, destlen uint) error {
+func (address *SocketAddress) ToNative(dest interface{}, destlen uint) error {
 	var _arg0 *C.GSocketAddress // out
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out

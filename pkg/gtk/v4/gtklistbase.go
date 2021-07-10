@@ -18,70 +18,70 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_base_get_type()), F: marshalListBase},
+		{T: externglib.Type(C.gtk_list_base_get_type()), F: marshalListBaser},
 	})
 }
 
-// ListBase: `GtkListBase` is the abstract base class for GTK's list widgets.
-type ListBase interface {
+// ListBaser describes ListBase's methods.
+type ListBaser interface {
 	gextras.Objector
 
-	privateListBaseClass()
+	privateListBase()
 }
 
-// ListBaseClass implements the ListBase interface.
-type ListBaseClass struct {
+// ListBase: `GtkListBase` is the abstract base class for GTK's list widgets.
+type ListBase struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	OrientableIface
-	ScrollableIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
+	Scrollable
 }
 
-var _ ListBase = (*ListBaseClass)(nil)
+var _ ListBaser = (*ListBase)(nil)
 
-func wrapListBase(obj *externglib.Object) ListBase {
-	return &ListBaseClass{
+func wrapListBaser(obj *externglib.Object) ListBaser {
+	return &ListBase{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
-		ScrollableIface: ScrollableIface{
+		Scrollable: Scrollable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalListBase(p uintptr) (interface{}, error) {
+func marshalListBaser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBase(obj), nil
+	return wrapListBaser(obj), nil
 }
 
-func (*ListBaseClass) privateListBaseClass() {}
+func (*ListBase) privateListBase() {}

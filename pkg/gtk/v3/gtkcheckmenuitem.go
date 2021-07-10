@@ -21,17 +21,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_menu_item_get_type()), F: marshalCheckMenuItem},
+		{T: externglib.Type(C.gtk_check_menu_item_get_type()), F: marshalCheckMenuItemmer},
 	})
 }
 
-// CheckMenuItemOverrider contains methods that are overridable.
+// CheckMenuItemmerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CheckMenuItemOverrider interface {
+type CheckMenuItemmerOverrider interface {
 	DrawIndicator(cr *cairo.Context)
 	// Toggled emits the CheckMenuItem::toggled signal.
+	Toggled()
+}
+
+// CheckMenuItemmer describes CheckMenuItem's methods.
+type CheckMenuItemmer interface {
+	gextras.Objector
+
+	Active() bool
+	DrawAsRadio() bool
+	Inconsistent() bool
+	SetActive(isActive bool)
+	SetDrawAsRadio(drawAsRadio bool)
+	SetInconsistent(setting bool)
 	Toggled()
 }
 
@@ -49,133 +62,103 @@ type CheckMenuItemOverrider interface {
 //
 // GtkCheckMenuItem has a main CSS node with name menuitem, and a subnode with
 // name check, which gets the .left or .right style class.
-type CheckMenuItem interface {
-	gextras.Objector
-
-	// Active returns whether the check menu item is active. See
-	// gtk_check_menu_item_set_active ().
-	Active() bool
-	// DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
-	DrawAsRadio() bool
-	// Inconsistent retrieves the value set by
-	// gtk_check_menu_item_set_inconsistent().
-	Inconsistent() bool
-	// SetActive sets the active state of the menu item’s check box.
-	SetActive(isActive bool)
-	// SetDrawAsRadio sets whether @check_menu_item is drawn like a
-	// RadioMenuItem
-	SetDrawAsRadio(drawAsRadio bool)
-	// SetInconsistent: if the user has selected a range of elements (such as
-	// some text or spreadsheet cells) that are affected by a boolean setting,
-	// and the current values in that range are inconsistent, you may want to
-	// display the check in an “in between” state. This function turns on “in
-	// between” display. Normally you would turn off the inconsistent state
-	// again if the user explicitly selects a setting. This has to be done
-	// manually, gtk_check_menu_item_set_inconsistent() only affects visual
-	// appearance, it doesn’t affect the semantics of the widget.
-	SetInconsistent(setting bool)
-	// Toggled emits the CheckMenuItem::toggled signal.
-	Toggled()
-}
-
-// CheckMenuItemClass implements the CheckMenuItem interface.
-type CheckMenuItemClass struct {
+type CheckMenuItem struct {
 	*externglib.Object
-	MenuItemClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	MenuItem
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ CheckMenuItem = (*CheckMenuItemClass)(nil)
+var _ CheckMenuItemmer = (*CheckMenuItem)(nil)
 
-func wrapCheckMenuItem(obj *externglib.Object) CheckMenuItem {
-	return &CheckMenuItemClass{
+func wrapCheckMenuItemmer(obj *externglib.Object) CheckMenuItemmer {
+	return &CheckMenuItem{
 		Object: obj,
-		MenuItemClass: MenuItemClass{
+		MenuItem: MenuItem{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCheckMenuItem(p uintptr) (interface{}, error) {
+func marshalCheckMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckMenuItem(obj), nil
+	return wrapCheckMenuItemmer(obj), nil
 }
 
 // NewCheckMenuItem creates a new CheckMenuItem.
-func NewCheckMenuItem() *CheckMenuItemClass {
+func NewCheckMenuItem() *CheckMenuItem {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_check_menu_item_new()
 
-	var _checkMenuItem *CheckMenuItemClass // out
+	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckMenuItemClass)
+	_checkMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckMenuItem)
 
 	return _checkMenuItem
 }
 
 // NewCheckMenuItemWithLabel creates a new CheckMenuItem with a label.
-func NewCheckMenuItemWithLabel(label string) *CheckMenuItemClass {
+func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -184,9 +167,9 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItemClass {
 
 	_cret = C.gtk_check_menu_item_new_with_label(_arg1)
 
-	var _checkMenuItem *CheckMenuItemClass // out
+	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckMenuItemClass)
+	_checkMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckMenuItem)
 
 	return _checkMenuItem
 }
@@ -194,7 +177,7 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItemClass {
 // NewCheckMenuItemWithMnemonic creates a new CheckMenuItem containing a label.
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
 // in @label indicate the mnemonic for the menu item.
-func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItemClass {
+func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -203,16 +186,16 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItemClass {
 
 	_cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
 
-	var _checkMenuItem *CheckMenuItemClass // out
+	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckMenuItemClass)
+	_checkMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckMenuItem)
 
 	return _checkMenuItem
 }
 
 // Active returns whether the check menu item is active. See
 // gtk_check_menu_item_set_active ().
-func (checkMenuItem *CheckMenuItemClass) Active() bool {
+func (checkMenuItem *CheckMenuItem) Active() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
 
@@ -230,7 +213,7 @@ func (checkMenuItem *CheckMenuItemClass) Active() bool {
 }
 
 // DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
-func (checkMenuItem *CheckMenuItemClass) DrawAsRadio() bool {
+func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
 
@@ -249,7 +232,7 @@ func (checkMenuItem *CheckMenuItemClass) DrawAsRadio() bool {
 
 // Inconsistent retrieves the value set by
 // gtk_check_menu_item_set_inconsistent().
-func (checkMenuItem *CheckMenuItemClass) Inconsistent() bool {
+func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
 
@@ -267,7 +250,7 @@ func (checkMenuItem *CheckMenuItemClass) Inconsistent() bool {
 }
 
 // SetActive sets the active state of the menu item’s check box.
-func (checkMenuItem *CheckMenuItemClass) SetActive(isActive bool) {
+func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
 
@@ -280,7 +263,7 @@ func (checkMenuItem *CheckMenuItemClass) SetActive(isActive bool) {
 }
 
 // SetDrawAsRadio sets whether @check_menu_item is drawn like a RadioMenuItem
-func (checkMenuItem *CheckMenuItemClass) SetDrawAsRadio(drawAsRadio bool) {
+func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
 
@@ -300,7 +283,7 @@ func (checkMenuItem *CheckMenuItemClass) SetDrawAsRadio(drawAsRadio bool) {
 // explicitly selects a setting. This has to be done manually,
 // gtk_check_menu_item_set_inconsistent() only affects visual appearance, it
 // doesn’t affect the semantics of the widget.
-func (checkMenuItem *CheckMenuItemClass) SetInconsistent(setting bool) {
+func (checkMenuItem *CheckMenuItem) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
 
@@ -313,7 +296,7 @@ func (checkMenuItem *CheckMenuItemClass) SetInconsistent(setting bool) {
 }
 
 // Toggled emits the CheckMenuItem::toggled signal.
-func (checkMenuItem *CheckMenuItemClass) Toggled() {
+func (checkMenuItem *CheckMenuItem) Toggled() {
 	var _arg0 *C.GtkCheckMenuItem // out
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(checkMenuItem.Native()))

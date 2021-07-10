@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_switcher_get_type()), F: marshalStackSwitcher},
+		{T: externglib.Type(C.gtk_stack_switcher_get_type()), F: marshalStackSwitcherrer},
 	})
+}
+
+// StackSwitcherrer describes StackSwitcher's methods.
+type StackSwitcherrer interface {
+	gextras.Objector
+
+	Stack() *Stack
+	SetStack(stack Stacker)
 }
 
 // StackSwitcher: the `GtkStackSwitcher` shows a row of buttons to switch
@@ -50,77 +58,67 @@ func init() {
 //
 // `GtkStackSwitcher` uses the GTK_ACCESSIBLE_ROLE_TAB_LIST role and uses the
 // GTK_ACCESSIBLE_ROLE_TAB for its buttons.
-type StackSwitcher interface {
-	gextras.Objector
-
-	// Stack retrieves the stack.
-	Stack() *StackClass
-	// SetStack sets the stack to control.
-	SetStack(stack Stack)
-}
-
-// StackSwitcherClass implements the StackSwitcher interface.
-type StackSwitcherClass struct {
+type StackSwitcher struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ StackSwitcher = (*StackSwitcherClass)(nil)
+var _ StackSwitcherrer = (*StackSwitcher)(nil)
 
-func wrapStackSwitcher(obj *externglib.Object) StackSwitcher {
-	return &StackSwitcherClass{
+func wrapStackSwitcherrer(obj *externglib.Object) StackSwitcherrer {
+	return &StackSwitcher{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalStackSwitcher(p uintptr) (interface{}, error) {
+func marshalStackSwitcherrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStackSwitcher(obj), nil
+	return wrapStackSwitcherrer(obj), nil
 }
 
 // NewStackSwitcher: create a new `GtkStackSwitcher`.
-func NewStackSwitcher() *StackSwitcherClass {
+func NewStackSwitcher() *StackSwitcher {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_stack_switcher_new()
 
-	var _stackSwitcher *StackSwitcherClass // out
+	var _stackSwitcher *StackSwitcher // out
 
-	_stackSwitcher = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackSwitcherClass)
+	_stackSwitcher = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackSwitcher)
 
 	return _stackSwitcher
 }
 
 // Stack retrieves the stack.
-func (switcher *StackSwitcherClass) Stack() *StackClass {
+func (switcher *StackSwitcher) Stack() *Stack {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _cret *C.GtkStack         // in
 
@@ -128,15 +126,15 @@ func (switcher *StackSwitcherClass) Stack() *StackClass {
 
 	_cret = C.gtk_stack_switcher_get_stack(_arg0)
 
-	var _stack *StackClass // out
+	var _stack *Stack // out
 
-	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackClass)
+	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Stack)
 
 	return _stack
 }
 
 // SetStack sets the stack to control.
-func (switcher *StackSwitcherClass) SetStack(stack Stack) {
+func (switcher *StackSwitcher) SetStack(stack Stacker) {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _arg1 *C.GtkStack         // out
 

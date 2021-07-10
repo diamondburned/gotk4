@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_click_get_type()), F: marshalGestureClick},
+		{T: externglib.Type(C.gtk_gesture_click_get_type()), F: marshalGestureClicker},
 	})
+}
+
+// GestureClicker describes GestureClick's methods.
+type GestureClicker interface {
+	gextras.Objector
+
+	privateGestureClick()
 }
 
 // GestureClick: `GtkGestureClick` is a `GtkGesture` implementation for clicks.
@@ -29,24 +36,17 @@ func init() {
 // time or distance between clicks exceed the GTK defaults,
 // [signal@Gtk.GestureClick::stopped] is emitted, and the click counter is
 // reset.
-type GestureClick interface {
-	gextras.Objector
-
-	privateGestureClickClass()
+type GestureClick struct {
+	GestureSingle
 }
 
-// GestureClickClass implements the GestureClick interface.
-type GestureClickClass struct {
-	GestureSingleClass
-}
+var _ GestureClicker = (*GestureClick)(nil)
 
-var _ GestureClick = (*GestureClickClass)(nil)
-
-func wrapGestureClick(obj *externglib.Object) GestureClick {
-	return &GestureClickClass{
-		GestureSingleClass: GestureSingleClass{
-			GestureClass: GestureClass{
-				EventControllerClass: EventControllerClass{
+func wrapGestureClicker(obj *externglib.Object) GestureClicker {
+	return &GestureClick{
+		GestureSingle: GestureSingle{
+			Gesture: Gesture{
+				EventController: EventController{
 					Object: obj,
 				},
 			},
@@ -54,24 +54,24 @@ func wrapGestureClick(obj *externglib.Object) GestureClick {
 	}
 }
 
-func marshalGestureClick(p uintptr) (interface{}, error) {
+func marshalGestureClicker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureClick(obj), nil
+	return wrapGestureClicker(obj), nil
 }
 
 // NewGestureClick returns a newly created `GtkGesture` that recognizes single
 // and multiple presses.
-func NewGestureClick() *GestureClickClass {
+func NewGestureClick() *GestureClick {
 	var _cret *C.GtkGesture // in
 
 	_cret = C.gtk_gesture_click_new()
 
-	var _gestureClick *GestureClickClass // out
+	var _gestureClick *GestureClick // out
 
-	_gestureClick = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureClickClass)
+	_gestureClick = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureClick)
 
 	return _gestureClick
 }
 
-func (*GestureClickClass) privateGestureClickClass() {}
+func (*GestureClick) privateGestureClick() {}

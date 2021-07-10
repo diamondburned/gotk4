@@ -18,41 +18,40 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drag_surface_get_type()), F: marshalDragSurface},
+		{T: externglib.Type(C.gdk_drag_surface_get_type()), F: marshalDragSurfacer},
 	})
 }
 
-// DragSurface is an interface for surfaces used during DND.
-type DragSurface interface {
+// DragSurfacer describes DragSurface's methods.
+type DragSurfacer interface {
 	gextras.Objector
 
-	// Present @drag_surface.
 	Present(width int, height int) bool
 }
 
-// DragSurfaceIface implements the DragSurface interface.
-type DragSurfaceIface struct {
-	SurfaceClass
+// DragSurface is an interface for surfaces used during DND.
+type DragSurface struct {
+	Surface
 }
 
-var _ DragSurface = (*DragSurfaceIface)(nil)
+var _ DragSurfacer = (*DragSurface)(nil)
 
-func wrapDragSurface(obj *externglib.Object) DragSurface {
-	return &DragSurfaceIface{
-		SurfaceClass: SurfaceClass{
+func wrapDragSurfacer(obj *externglib.Object) DragSurfacer {
+	return &DragSurface{
+		Surface: Surface{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDragSurface(p uintptr) (interface{}, error) {
+func marshalDragSurfacer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragSurface(obj), nil
+	return wrapDragSurfacer(obj), nil
 }
 
 // Present @drag_surface.
-func (dragSurface *DragSurfaceIface) Present(width int, height int) bool {
+func (dragSurface *DragSurface) Present(width int, height int) bool {
 	var _arg0 *C.GdkDragSurface // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

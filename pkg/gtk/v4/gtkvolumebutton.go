@@ -18,84 +18,84 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButton},
+		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButtonner},
 	})
+}
+
+// VolumeButtonner describes VolumeButton's methods.
+type VolumeButtonner interface {
+	gextras.Objector
+
+	privateVolumeButton()
 }
 
 // VolumeButton: `GtkVolumeButton` is a `GtkScaleButton` subclass tailored for
 // volume control.
 //
 // !An example GtkVolumeButton (volumebutton.png)
-type VolumeButton interface {
-	gextras.Objector
-
-	privateVolumeButtonClass()
-}
-
-// VolumeButtonClass implements the VolumeButton interface.
-type VolumeButtonClass struct {
+type VolumeButton struct {
 	*externglib.Object
-	ScaleButtonClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	OrientableIface
+	ScaleButton
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
 }
 
-var _ VolumeButton = (*VolumeButtonClass)(nil)
+var _ VolumeButtonner = (*VolumeButton)(nil)
 
-func wrapVolumeButton(obj *externglib.Object) VolumeButton {
-	return &VolumeButtonClass{
+func wrapVolumeButtonner(obj *externglib.Object) VolumeButtonner {
+	return &VolumeButton{
 		Object: obj,
-		ScaleButtonClass: ScaleButtonClass{
+		ScaleButton: ScaleButton{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalVolumeButton(p uintptr) (interface{}, error) {
+func marshalVolumeButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolumeButton(obj), nil
+	return wrapVolumeButtonner(obj), nil
 }
 
 // NewVolumeButton creates a `GtkVolumeButton`.
@@ -103,16 +103,16 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 // The button has a range between 0.0 and 1.0, with a stepping of 0.02. Volume
 // values can be obtained and modified using the functions from
 // [class@Gtk.ScaleButton].
-func NewVolumeButton() *VolumeButtonClass {
+func NewVolumeButton() *VolumeButton {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_volume_button_new()
 
-	var _volumeButton *VolumeButtonClass // out
+	var _volumeButton *VolumeButton // out
 
-	_volumeButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VolumeButtonClass)
+	_volumeButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VolumeButton)
 
 	return _volumeButton
 }
 
-func (*VolumeButtonClass) privateVolumeButtonClass() {}
+func (*VolumeButton) privateVolumeButton() {}

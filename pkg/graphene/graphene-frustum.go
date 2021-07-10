@@ -30,12 +30,6 @@ type Frustum struct {
 	native C.graphene_frustum_t
 }
 
-// WrapFrustum wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFrustum(ptr unsafe.Pointer) *Frustum {
-	return (*Frustum)(ptr)
-}
-
 func marshalFrustum(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Frustum)(unsafe.Pointer(b)), nil
@@ -51,7 +45,7 @@ func NewFrustumAlloc() *Frustum {
 
 	_frustum = (*Frustum)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_frustum, func(v *Frustum) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_frustum_free((*C.graphene_frustum_t)(unsafe.Pointer(v)))
 	})
 
 	return _frustum

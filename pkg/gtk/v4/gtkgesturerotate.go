@@ -18,58 +18,53 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_rotate_get_type()), F: marshalGestureRotate},
+		{T: externglib.Type(C.gtk_gesture_rotate_get_type()), F: marshalGestureRotater},
 	})
+}
+
+// GestureRotater describes GestureRotate's methods.
+type GestureRotater interface {
+	gextras.Objector
+
+	AngleDelta() float64
 }
 
 // GestureRotate: `GtkGestureRotate` is a `GtkGesture` for 2-finger rotations.
 //
 // Whenever the angle between both handled sequences changes, the
 // [signal@Gtk.GestureRotate::angle-changed] signal is emitted.
-type GestureRotate interface {
-	gextras.Objector
-
-	// AngleDelta gets the angle delta in radians.
-	//
-	// If @gesture is active, this function returns the angle difference in
-	// radians since the gesture was first recognized. If @gesture is not
-	// active, 0 is returned.
-	AngleDelta() float64
+type GestureRotate struct {
+	Gesture
 }
 
-// GestureRotateClass implements the GestureRotate interface.
-type GestureRotateClass struct {
-	GestureClass
-}
+var _ GestureRotater = (*GestureRotate)(nil)
 
-var _ GestureRotate = (*GestureRotateClass)(nil)
-
-func wrapGestureRotate(obj *externglib.Object) GestureRotate {
-	return &GestureRotateClass{
-		GestureClass: GestureClass{
-			EventControllerClass: EventControllerClass{
+func wrapGestureRotater(obj *externglib.Object) GestureRotater {
+	return &GestureRotate{
+		Gesture: Gesture{
+			EventController: EventController{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalGestureRotate(p uintptr) (interface{}, error) {
+func marshalGestureRotater(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureRotate(obj), nil
+	return wrapGestureRotater(obj), nil
 }
 
 // NewGestureRotate returns a newly created `GtkGesture` that recognizes 2-touch
 // rotation gestures.
-func NewGestureRotate() *GestureRotateClass {
+func NewGestureRotate() *GestureRotate {
 	var _cret *C.GtkGesture // in
 
 	_cret = C.gtk_gesture_rotate_new()
 
-	var _gestureRotate *GestureRotateClass // out
+	var _gestureRotate *GestureRotate // out
 
-	_gestureRotate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureRotateClass)
+	_gestureRotate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureRotate)
 
 	return _gestureRotate
 }
@@ -79,7 +74,7 @@ func NewGestureRotate() *GestureRotateClass {
 // If @gesture is active, this function returns the angle difference in radians
 // since the gesture was first recognized. If @gesture is not active, 0 is
 // returned.
-func (gesture *GestureRotateClass) AngleDelta() float64 {
+func (gesture *GestureRotate) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out
 	var _cret C.double            // in
 

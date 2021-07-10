@@ -20,90 +20,62 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_action_get_type()), F: marshalRadioAction},
+		{T: externglib.Type(C.gtk_radio_action_get_type()), F: marshalRadioActioner},
 	})
 }
 
-// RadioActionOverrider contains methods that are overridable.
+// RadioActionerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RadioActionOverrider interface {
-	Changed(current RadioAction)
+type RadioActionerOverrider interface {
+	Changed(current RadioActioner)
+}
+
+// RadioActioner describes RadioAction's methods.
+type RadioActioner interface {
+	gextras.Objector
+
+	CurrentValue() int
+	JoinGroup(groupSource RadioActioner)
+	SetCurrentValue(currentValue int)
 }
 
 // RadioAction is similar to RadioMenuItem. A number of radio actions can be
 // linked together so that only one may be active at any one time.
-type RadioAction interface {
-	gextras.Objector
-
-	// CurrentValue obtains the value property of the currently active member of
-	// the group to which @action belongs.
-	//
-	// Deprecated: since version 3.10.
-	CurrentValue() int
-	// JoinGroup joins a radio action object to the group of another radio
-	// action object.
-	//
-	// Use this in language bindings instead of the gtk_radio_action_get_group()
-	// and gtk_radio_action_set_group() methods
-	//
-	// A common way to set up a group of radio actions is the following:
-	//
-	//     GtkRadioAction *action;
-	//     GtkRadioAction *last_action;
-	//
-	//     while ( ...more actions to add... /)
-	//       {
-	//          action = gtk_radio_action_new (...);
-	//
-	//          gtk_radio_action_join_group (action, last_action);
-	//          last_action = action;
-	//       }
-	//
-	// Deprecated: since version 3.10.
-	JoinGroup(groupSource RadioAction)
-	// SetCurrentValue sets the currently active group member to the member with
-	// value property @current_value.
-	//
-	// Deprecated: since version 3.10.
-	SetCurrentValue(currentValue int)
-}
-
-// RadioActionClass implements the RadioAction interface.
-type RadioActionClass struct {
+type RadioAction struct {
 	*externglib.Object
-	ToggleActionClass
-	BuildableIface
+	ToggleAction
+	Buildable
 }
 
-var _ RadioAction = (*RadioActionClass)(nil)
+var _ RadioActioner = (*RadioAction)(nil)
 
-func wrapRadioAction(obj *externglib.Object) RadioAction {
-	return &RadioActionClass{
+func wrapRadioActioner(obj *externglib.Object) RadioActioner {
+	return &RadioAction{
 		Object: obj,
-		ToggleActionClass: ToggleActionClass{
+		ToggleAction: ToggleAction{
 			Object: obj,
-			ActionClass: ActionClass{
+			Action: Action{
 				Object: obj,
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRadioAction(p uintptr) (interface{}, error) {
+func marshalRadioActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioAction(obj), nil
+	return wrapRadioActioner(obj), nil
 }
 
 // NewRadioAction creates a new RadioAction object. To add the action to a
@@ -111,7 +83,7 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewRadioAction(name string, label string, tooltip string, stockId string, value int) *RadioActionClass {
+func NewRadioAction(name string, label string, tooltip string, stockId string, value int) *RadioAction {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
 	var _arg3 *C.gchar          // out
@@ -131,9 +103,9 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 
 	_cret = C.gtk_radio_action_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _radioAction *RadioActionClass // out
+	var _radioAction *RadioAction // out
 
-	_radioAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RadioActionClass)
+	_radioAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RadioAction)
 
 	return _radioAction
 }
@@ -142,7 +114,7 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 // group to which @action belongs.
 //
 // Deprecated: since version 3.10.
-func (action *RadioActionClass) CurrentValue() int {
+func (action *RadioAction) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret C.gint            // in
 
@@ -177,7 +149,7 @@ func (action *RadioActionClass) CurrentValue() int {
 //       }
 //
 // Deprecated: since version 3.10.
-func (action *RadioActionClass) JoinGroup(groupSource RadioAction) {
+func (action *RadioAction) JoinGroup(groupSource RadioActioner) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GtkRadioAction // out
 
@@ -191,7 +163,7 @@ func (action *RadioActionClass) JoinGroup(groupSource RadioAction) {
 // value property @current_value.
 //
 // Deprecated: since version 3.10.
-func (action *RadioActionClass) SetCurrentValue(currentValue int) {
+func (action *RadioAction) SetCurrentValue(currentValue int) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 C.gint            // out
 

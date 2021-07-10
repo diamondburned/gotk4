@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_aspect_frame_get_type()), F: marshalAspectFrame},
+		{T: externglib.Type(C.gtk_aspect_frame_get_type()), F: marshalAspectFramer},
 	})
+}
+
+// AspectFramer describes AspectFrame's methods.
+type AspectFramer interface {
+	gextras.Objector
+
+	Set(xalign float32, yalign float32, ratio float32, obeyChild bool)
 }
 
 // AspectFrame: the AspectFrame is useful when you want pack a widget so that it
@@ -34,66 +41,58 @@ func init() {
 // CSS nodes
 //
 // GtkAspectFrame uses a CSS node with name frame.
-type AspectFrame interface {
-	gextras.Objector
-
-	// Set parameters for an existing AspectFrame.
-	Set(xalign float32, yalign float32, ratio float32, obeyChild bool)
-}
-
-// AspectFrameClass implements the AspectFrame interface.
-type AspectFrameClass struct {
+type AspectFrame struct {
 	*externglib.Object
-	FrameClass
-	BuildableIface
+	Frame
+	Buildable
 }
 
-var _ AspectFrame = (*AspectFrameClass)(nil)
+var _ AspectFramer = (*AspectFrame)(nil)
 
-func wrapAspectFrame(obj *externglib.Object) AspectFrame {
-	return &AspectFrameClass{
+func wrapAspectFramer(obj *externglib.Object) AspectFramer {
+	return &AspectFrame{
 		Object: obj,
-		FrameClass: FrameClass{
+		Frame: Frame{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalAspectFrame(p uintptr) (interface{}, error) {
+func marshalAspectFramer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAspectFrame(obj), nil
+	return wrapAspectFramer(obj), nil
 }
 
 // NewAspectFrame: create a new AspectFrame.
-func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) *AspectFrameClass {
+func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) *AspectFrame {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gfloat     // out
 	var _arg3 C.gfloat     // out
@@ -112,15 +111,15 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 
 	_cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _aspectFrame *AspectFrameClass // out
+	var _aspectFrame *AspectFrame // out
 
-	_aspectFrame = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AspectFrameClass)
+	_aspectFrame = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AspectFrame)
 
 	return _aspectFrame
 }
 
 // Set parameters for an existing AspectFrame.
-func (aspectFrame *AspectFrameClass) Set(xalign float32, yalign float32, ratio float32, obeyChild bool) {
+func (aspectFrame *AspectFrame) Set(xalign float32, yalign float32, ratio float32, obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.gfloat          // out
 	var _arg2 C.gfloat          // out

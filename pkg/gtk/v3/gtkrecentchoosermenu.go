@@ -20,8 +20,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_chooser_menu_get_type()), F: marshalRecentChooserMenu},
+		{T: externglib.Type(C.gtk_recent_chooser_menu_get_type()), F: marshalRecentChooserMenuer},
 	})
+}
+
+// RecentChooserMenuer describes RecentChooserMenu's methods.
+type RecentChooserMenuer interface {
+	gextras.Objector
+
+	ShowNumbers() bool
+	SetShowNumbers(showNumbers bool)
 }
 
 // RecentChooserMenu is a widget suitable for displaying recently used files
@@ -42,76 +50,62 @@ func init() {
 // RecentFilter object.
 //
 // Recently used files are supported since GTK+ 2.10.
-type RecentChooserMenu interface {
-	gextras.Objector
-
-	// ShowNumbers returns the value set by
-	// gtk_recent_chooser_menu_set_show_numbers().
-	ShowNumbers() bool
-	// SetShowNumbers sets whether a number should be added to the items of
-	// @menu. The numbers are shown to provide a unique character for a mnemonic
-	// to be used inside ten menu item’s label. Only the first the items get a
-	// number to avoid clashes.
-	SetShowNumbers(showNumbers bool)
-}
-
-// RecentChooserMenuClass implements the RecentChooserMenu interface.
-type RecentChooserMenuClass struct {
+type RecentChooserMenu struct {
 	*externglib.Object
-	MenuClass
-	ActivatableIface
-	BuildableIface
-	RecentChooserIface
+	Menu
+	Activatable
+	Buildable
+	RecentChooser
 }
 
-var _ RecentChooserMenu = (*RecentChooserMenuClass)(nil)
+var _ RecentChooserMenuer = (*RecentChooserMenu)(nil)
 
-func wrapRecentChooserMenu(obj *externglib.Object) RecentChooserMenu {
-	return &RecentChooserMenuClass{
+func wrapRecentChooserMenuer(obj *externglib.Object) RecentChooserMenuer {
+	return &RecentChooserMenu{
 		Object: obj,
-		MenuClass: MenuClass{
+		Menu: Menu{
 			Object: obj,
-			MenuShellClass: MenuShellClass{
+			MenuShell: MenuShell{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		RecentChooserIface: RecentChooserIface{
+		RecentChooser: RecentChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
+func marshalRecentChooserMenuer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooserMenu(obj), nil
+	return wrapRecentChooserMenuer(obj), nil
 }
 
 // NewRecentChooserMenu creates a new RecentChooserMenu widget.
@@ -125,14 +119,14 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 // This widget creates its own RecentManager object. See the
 // gtk_recent_chooser_menu_new_for_manager() function to know how to create a
 // RecentChooserMenu widget bound to another RecentManager object.
-func NewRecentChooserMenu() *RecentChooserMenuClass {
+func NewRecentChooserMenu() *RecentChooserMenu {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_recent_chooser_menu_new()
 
-	var _recentChooserMenu *RecentChooserMenuClass // out
+	var _recentChooserMenu *RecentChooserMenu // out
 
-	_recentChooserMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserMenuClass)
+	_recentChooserMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserMenu)
 
 	return _recentChooserMenu
 }
@@ -143,7 +137,7 @@ func NewRecentChooserMenu() *RecentChooserMenuClass {
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object or if you wish to share
 // a common RecentManager object among multiple RecentChooser widgets.
-func NewRecentChooserMenuForManager(manager RecentManager) *RecentChooserMenuClass {
+func NewRecentChooserMenuForManager(manager RecentManagerrer) *RecentChooserMenu {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
@@ -151,16 +145,16 @@ func NewRecentChooserMenuForManager(manager RecentManager) *RecentChooserMenuCla
 
 	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
 
-	var _recentChooserMenu *RecentChooserMenuClass // out
+	var _recentChooserMenu *RecentChooserMenu // out
 
-	_recentChooserMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserMenuClass)
+	_recentChooserMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserMenu)
 
 	return _recentChooserMenu
 }
 
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
-func (menu *RecentChooserMenuClass) ShowNumbers() bool {
+func (menu *RecentChooserMenu) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _cret C.gboolean              // in
 
@@ -181,7 +175,7 @@ func (menu *RecentChooserMenuClass) ShowNumbers() bool {
 // The numbers are shown to provide a unique character for a mnemonic to be used
 // inside ten menu item’s label. Only the first the items get a number to avoid
 // clashes.
-func (menu *RecentChooserMenuClass) SetShowNumbers(showNumbers bool) {
+func (menu *RecentChooserMenu) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _arg1 C.gboolean              // out
 

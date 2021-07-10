@@ -21,50 +21,50 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_menu_item_accessible_get_type()), F: marshalCheckMenuItemAccessible},
+		{T: externglib.Type(C.gtk_check_menu_item_accessible_get_type()), F: marshalCheckMenuItemAccessibler},
 	})
 }
 
-type CheckMenuItemAccessible interface {
+// CheckMenuItemAccessibler describes CheckMenuItemAccessible's methods.
+type CheckMenuItemAccessibler interface {
 	gextras.Objector
 
-	privateCheckMenuItemAccessibleClass()
+	privateCheckMenuItemAccessible()
 }
 
-// CheckMenuItemAccessibleClass implements the CheckMenuItemAccessible interface.
-type CheckMenuItemAccessibleClass struct {
-	MenuItemAccessibleClass
-	atk.ActionIface
+type CheckMenuItemAccessible struct {
+	MenuItemAccessible
+	atk.Action
 }
 
-var _ CheckMenuItemAccessible = (*CheckMenuItemAccessibleClass)(nil)
+var _ CheckMenuItemAccessibler = (*CheckMenuItemAccessible)(nil)
 
-func wrapCheckMenuItemAccessible(obj *externglib.Object) CheckMenuItemAccessible {
-	return &CheckMenuItemAccessibleClass{
-		MenuItemAccessibleClass: MenuItemAccessibleClass{
-			ContainerAccessibleClass: ContainerAccessibleClass{
-				WidgetAccessibleClass: WidgetAccessibleClass{
-					AccessibleClass: AccessibleClass{
-						ObjectClass: atk.ObjectClass{
+func wrapCheckMenuItemAccessibler(obj *externglib.Object) CheckMenuItemAccessibler {
+	return &CheckMenuItemAccessible{
+		MenuItemAccessible: MenuItemAccessible{
+			ContainerAccessible: ContainerAccessible{
+				WidgetAccessible: WidgetAccessible{
+					Accessible: Accessible{
+						Object: atk.Object{
 							Object: obj,
 						},
 					},
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCheckMenuItemAccessible(p uintptr) (interface{}, error) {
+func marshalCheckMenuItemAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckMenuItemAccessible(obj), nil
+	return wrapCheckMenuItemAccessibler(obj), nil
 }
 
-func (*CheckMenuItemAccessibleClass) privateCheckMenuItemAccessibleClass() {}
+func (*CheckMenuItemAccessible) privateCheckMenuItemAccessible() {}

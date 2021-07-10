@@ -37,12 +37,6 @@ type Rect struct {
 	native C.graphene_rect_t
 }
 
-// WrapRect wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRect(ptr unsafe.Pointer) *Rect {
-	return (*Rect)(ptr)
-}
-
 func marshalRect(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Rect)(unsafe.Pointer(b)), nil

@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_focus_get_type()), F: marshalEventControllerFocus},
+		{T: externglib.Type(C.gtk_event_controller_focus_get_type()), F: marshalEventControllerFocusser},
 	})
+}
+
+// EventControllerFocusser describes EventControllerFocus's methods.
+type EventControllerFocusser interface {
+	gextras.Objector
+
+	ContainsFocus() bool
+	IsFocus() bool
 }
 
 // EventControllerFocus: `GtkEventControllerFocus` is an event controller to
@@ -31,54 +39,42 @@ func init() {
 // [property@Gtk.EventControllerFocus:contains-focus] properties which are
 // updated to reflect focus changes inside the widget hierarchy that is rooted
 // at the controllers widget.
-type EventControllerFocus interface {
-	gextras.Objector
-
-	// ContainsFocus returns true if focus is within @self or one of its
-	// children.
-	ContainsFocus() bool
-	// IsFocus returns true if focus is within @self, but not one of its
-	// children.
-	IsFocus() bool
+type EventControllerFocus struct {
+	EventController
 }
 
-// EventControllerFocusClass implements the EventControllerFocus interface.
-type EventControllerFocusClass struct {
-	EventControllerClass
-}
+var _ EventControllerFocusser = (*EventControllerFocus)(nil)
 
-var _ EventControllerFocus = (*EventControllerFocusClass)(nil)
-
-func wrapEventControllerFocus(obj *externglib.Object) EventControllerFocus {
-	return &EventControllerFocusClass{
-		EventControllerClass: EventControllerClass{
+func wrapEventControllerFocusser(obj *externglib.Object) EventControllerFocusser {
+	return &EventControllerFocus{
+		EventController: EventController{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEventControllerFocus(p uintptr) (interface{}, error) {
+func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerFocus(obj), nil
+	return wrapEventControllerFocusser(obj), nil
 }
 
 // NewEventControllerFocus creates a new event controller that will handle focus
 // events.
-func NewEventControllerFocus() *EventControllerFocusClass {
+func NewEventControllerFocus() *EventControllerFocus {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_event_controller_focus_new()
 
-	var _eventControllerFocus *EventControllerFocusClass // out
+	var _eventControllerFocus *EventControllerFocus // out
 
-	_eventControllerFocus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerFocusClass)
+	_eventControllerFocus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerFocus)
 
 	return _eventControllerFocus
 }
 
 // ContainsFocus returns true if focus is within @self or one of its children.
-func (self *EventControllerFocusClass) ContainsFocus() bool {
+func (self *EventControllerFocus) ContainsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in
 
@@ -96,7 +92,7 @@ func (self *EventControllerFocusClass) ContainsFocus() bool {
 }
 
 // IsFocus returns true if focus is within @self, but not one of its children.
-func (self *EventControllerFocusClass) IsFocus() bool {
+func (self *EventControllerFocus) IsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in
 

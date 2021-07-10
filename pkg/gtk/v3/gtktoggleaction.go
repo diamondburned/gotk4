@@ -20,78 +20,61 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_action_get_type()), F: marshalToggleAction},
+		{T: externglib.Type(C.gtk_toggle_action_get_type()), F: marshalToggleActioner},
 	})
 }
 
-// ToggleActionOverrider contains methods that are overridable.
+// ToggleActionerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToggleActionOverrider interface {
+type ToggleActionerOverrider interface {
 	// Toggled emits the “toggled” signal on the toggle action.
 	//
 	// Deprecated: since version 3.10.
+	Toggled()
+}
+
+// ToggleActioner describes ToggleAction's methods.
+type ToggleActioner interface {
+	gextras.Objector
+
+	Active() bool
+	DrawAsRadio() bool
+	SetActive(isActive bool)
+	SetDrawAsRadio(drawAsRadio bool)
 	Toggled()
 }
 
 // ToggleAction corresponds roughly to a CheckMenuItem. It has an “active” state
 // specifying whether the action has been checked or not.
-type ToggleAction interface {
-	gextras.Objector
-
-	// Active returns the checked state of the toggle action.
-	//
-	// Deprecated: since version 3.10.
-	Active() bool
-	// DrawAsRadio returns whether the action should have proxies like a radio
-	// action.
-	//
-	// Deprecated: since version 3.10.
-	DrawAsRadio() bool
-	// SetActive sets the checked state on the toggle action.
-	//
-	// Deprecated: since version 3.10.
-	SetActive(isActive bool)
-	// SetDrawAsRadio sets whether the action should have proxies like a radio
-	// action.
-	//
-	// Deprecated: since version 3.10.
-	SetDrawAsRadio(drawAsRadio bool)
-	// Toggled emits the “toggled” signal on the toggle action.
-	//
-	// Deprecated: since version 3.10.
-	Toggled()
-}
-
-// ToggleActionClass implements the ToggleAction interface.
-type ToggleActionClass struct {
+type ToggleAction struct {
 	*externglib.Object
-	ActionClass
-	BuildableIface
+	Action
+	Buildable
 }
 
-var _ ToggleAction = (*ToggleActionClass)(nil)
+var _ ToggleActioner = (*ToggleAction)(nil)
 
-func wrapToggleAction(obj *externglib.Object) ToggleAction {
-	return &ToggleActionClass{
+func wrapToggleActioner(obj *externglib.Object) ToggleActioner {
+	return &ToggleAction{
 		Object: obj,
-		ActionClass: ActionClass{
+		Action: Action{
 			Object: obj,
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalToggleAction(p uintptr) (interface{}, error) {
+func marshalToggleActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleAction(obj), nil
+	return wrapToggleActioner(obj), nil
 }
 
 // NewToggleAction creates a new ToggleAction object. To add the action to a
@@ -99,7 +82,7 @@ func marshalToggleAction(p uintptr) (interface{}, error) {
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewToggleAction(name string, label string, tooltip string, stockId string) *ToggleActionClass {
+func NewToggleAction(name string, label string, tooltip string, stockId string) *ToggleAction {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
 	var _arg3 *C.gchar           // out
@@ -117,9 +100,9 @@ func NewToggleAction(name string, label string, tooltip string, stockId string) 
 
 	_cret = C.gtk_toggle_action_new(_arg1, _arg2, _arg3, _arg4)
 
-	var _toggleAction *ToggleActionClass // out
+	var _toggleAction *ToggleAction // out
 
-	_toggleAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ToggleActionClass)
+	_toggleAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ToggleAction)
 
 	return _toggleAction
 }
@@ -127,7 +110,7 @@ func NewToggleAction(name string, label string, tooltip string, stockId string) 
 // Active returns the checked state of the toggle action.
 //
 // Deprecated: since version 3.10.
-func (action *ToggleActionClass) Active() bool {
+func (action *ToggleAction) Active() bool {
 	var _arg0 *C.GtkToggleAction // out
 	var _cret C.gboolean         // in
 
@@ -148,7 +131,7 @@ func (action *ToggleActionClass) Active() bool {
 // action.
 //
 // Deprecated: since version 3.10.
-func (action *ToggleActionClass) DrawAsRadio() bool {
+func (action *ToggleAction) DrawAsRadio() bool {
 	var _arg0 *C.GtkToggleAction // out
 	var _cret C.gboolean         // in
 
@@ -168,7 +151,7 @@ func (action *ToggleActionClass) DrawAsRadio() bool {
 // SetActive sets the checked state on the toggle action.
 //
 // Deprecated: since version 3.10.
-func (action *ToggleActionClass) SetActive(isActive bool) {
+func (action *ToggleAction) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleAction // out
 	var _arg1 C.gboolean         // out
 
@@ -184,7 +167,7 @@ func (action *ToggleActionClass) SetActive(isActive bool) {
 // action.
 //
 // Deprecated: since version 3.10.
-func (action *ToggleActionClass) SetDrawAsRadio(drawAsRadio bool) {
+func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkToggleAction // out
 	var _arg1 C.gboolean         // out
 
@@ -199,7 +182,7 @@ func (action *ToggleActionClass) SetDrawAsRadio(drawAsRadio bool) {
 // Toggled emits the “toggled” signal on the toggle action.
 //
 // Deprecated: since version 3.10.
-func (action *ToggleActionClass) Toggled() {
+func (action *ToggleAction) Toggled() {
 	var _arg0 *C.GtkToggleAction // out
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))

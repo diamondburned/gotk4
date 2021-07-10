@@ -548,6 +548,13 @@ func (value *ValueConverted) OutCast(want int) string {
 	return fmt.Sprintf("%s(%s%s)", ptr, ptr, value.Out.Type)
 }
 
+// OutInPtr returns the left-hand side for the output name and type SPECIFICALLY
+// for inputting the output name elsewhere, like giving it to SetFinalizer.
+func (value *ValueConverted) OutInPtr(want int) string {
+	has := strings.Count(value.Out.Type, "*")
+	return value._ptr(has, want)
+}
+
 func (value *ValueConverted) OutPtr(want int) string {
 	if value.Direction == ConvertGoToC && types.IsGpointer(value.Resolved.CType) && want > 0 {
 		want--

@@ -80,26 +80,23 @@ func methodCanCallDirectly(method *gir.Method) bool {
 
 // RecordHasFree returns the free/unref method if it has one.
 func RecordHasFree(record *gir.Record) *gir.Method {
-	// Possibly slower searching but allows us to prefer "unref" over "free."
-	for _, name := range acceptableFreeNames {
-		for i, method := range record.Methods {
-			if method.Name == name && methodCanCallDirectly(&method) {
-				return &record.Methods[i]
-			}
-		}
-	}
-	return nil
+	return findMethodName(record, "free")
 }
 
-var acceptableRefNames = []string{"ref"}
+// RecordHasUnref returns the unref method if it has one.
+func RecordHasUnref(record *gir.Record) *gir.Method {
+	return findMethodName(record, "unref")
+}
 
 // RecordHasRef returns the ref method if it has one.
 func RecordHasRef(record *gir.Record) *gir.Method {
+	return findMethodName(record, "ref")
+}
+
+func findMethodName(record *gir.Record, name string) *gir.Method {
 	for i, method := range record.Methods {
-		for _, name := range acceptableRefNames {
-			if name == method.Name && methodCanCallDirectly(&method) {
-				return &record.Methods[i]
-			}
+		if method.Name == name && methodCanCallDirectly(&method) {
+			return &record.Methods[i]
 		}
 	}
 	return nil

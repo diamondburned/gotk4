@@ -18,8 +18,21 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopup},
+		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopupper},
 	})
+}
+
+// Popupper describes Popup's methods.
+type Popupper interface {
+	gextras.Objector
+
+	Autohide() bool
+	Parent() *Surface
+	PositionX() int
+	PositionY() int
+	RectAnchor() Gravity
+	SurfaceAnchor() Gravity
+	Present(width int, height int, layout *PopupLayout) bool
 }
 
 // Popup: `GdkPopup` is a surface that is attached to another surface.
@@ -29,68 +42,28 @@ func init() {
 // `GdkPopup`s are typically used to implement menus and similar popups. They
 // can be modal, which is indicated by the [property@GdkPopup:autohide]
 // property.
-type Popup interface {
-	gextras.Objector
-
-	// Autohide returns whether this popup is set to hide on outside clicks.
-	Autohide() bool
-	// Parent returns the parent surface of a popup.
-	Parent() *SurfaceClass
-	// PositionX obtains the position of the popup relative to its parent.
-	PositionX() int
-	// PositionY obtains the position of the popup relative to its parent.
-	PositionY() int
-	// RectAnchor gets the current popup rectangle anchor.
-	//
-	// The value returned may change after calling [method@Gdk.Popup.present],
-	// or after the [signal@Gdk.Surface::layout] signal is emitted.
-	RectAnchor() Gravity
-	// SurfaceAnchor gets the current popup surface anchor.
-	//
-	// The value returned may change after calling [method@Gdk.Popup.present],
-	// or after the [signal@Gdk.Surface::layout] signal is emitted.
-	SurfaceAnchor() Gravity
-	// Present @popup after having processed the PopupLayout rules.
-	//
-	// If the popup was previously now showing, it will be showed, otherwise it
-	// will change position according to @layout.
-	//
-	// After calling this function, the result should be handled in response to
-	// the [signal@GdkSurface::layout] signal being emitted. The resulting popup
-	// position can be queried using [method@Gdk.Popup.get_position_x],
-	// [method@Gdk.Popup.get_position_y], and the resulting size will be sent as
-	// parameters in the layout signal. Use [method@Gdk.Popup.get_rect_anchor]
-	// and [method@Gdk.Popup.get_surface_anchor] to get the resulting anchors.
-	//
-	// Presenting may fail, for example if the @popup is set to autohide and is
-	// immediately hidden upon being presented. If presenting failed, the
-	// [signal@Gdk.Surface::layout] signal will not me emitted.
-	Present(width int, height int, layout *PopupLayout) bool
+type Popup struct {
+	Surface
 }
 
-// PopupIface implements the Popup interface.
-type PopupIface struct {
-	SurfaceClass
-}
+var _ Popupper = (*Popup)(nil)
 
-var _ Popup = (*PopupIface)(nil)
-
-func wrapPopup(obj *externglib.Object) Popup {
-	return &PopupIface{
-		SurfaceClass: SurfaceClass{
+func wrapPopupper(obj *externglib.Object) Popupper {
+	return &Popup{
+		Surface: Surface{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPopup(p uintptr) (interface{}, error) {
+func marshalPopupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopup(obj), nil
+	return wrapPopupper(obj), nil
 }
 
 // Autohide returns whether this popup is set to hide on outside clicks.
-func (popup *PopupIface) Autohide() bool {
+func (popup *Popup) Autohide() bool {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.gboolean  // in
 
@@ -108,7 +81,7 @@ func (popup *PopupIface) Autohide() bool {
 }
 
 // Parent returns the parent surface of a popup.
-func (popup *PopupIface) Parent() *SurfaceClass {
+func (popup *Popup) Parent() *Surface {
 	var _arg0 *C.GdkPopup   // out
 	var _cret *C.GdkSurface // in
 
@@ -116,15 +89,15 @@ func (popup *PopupIface) Parent() *SurfaceClass {
 
 	_cret = C.gdk_popup_get_parent(_arg0)
 
-	var _surface *SurfaceClass // out
+	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
 
 	return _surface
 }
 
 // PositionX obtains the position of the popup relative to its parent.
-func (popup *PopupIface) PositionX() int {
+func (popup *Popup) PositionX() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
@@ -140,7 +113,7 @@ func (popup *PopupIface) PositionX() int {
 }
 
 // PositionY obtains the position of the popup relative to its parent.
-func (popup *PopupIface) PositionY() int {
+func (popup *Popup) PositionY() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
@@ -159,7 +132,7 @@ func (popup *PopupIface) PositionY() int {
 //
 // The value returned may change after calling [method@Gdk.Popup.present], or
 // after the [signal@Gdk.Surface::layout] signal is emitted.
-func (popup *PopupIface) RectAnchor() Gravity {
+func (popup *Popup) RectAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
 	var _cret C.GdkGravity // in
 
@@ -178,7 +151,7 @@ func (popup *PopupIface) RectAnchor() Gravity {
 //
 // The value returned may change after calling [method@Gdk.Popup.present], or
 // after the [signal@Gdk.Surface::layout] signal is emitted.
-func (popup *PopupIface) SurfaceAnchor() Gravity {
+func (popup *Popup) SurfaceAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
 	var _cret C.GdkGravity // in
 
@@ -208,7 +181,7 @@ func (popup *PopupIface) SurfaceAnchor() Gravity {
 // Presenting may fail, for example if the @popup is set to autohide and is
 // immediately hidden upon being presented. If presenting failed, the
 // [signal@Gdk.Surface::layout] signal will not me emitted.
-func (popup *PopupIface) Present(width int, height int, layout *PopupLayout) bool {
+func (popup *Popup) Present(width int, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup       // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

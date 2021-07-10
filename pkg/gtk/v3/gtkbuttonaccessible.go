@@ -21,51 +21,51 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_button_accessible_get_type()), F: marshalButtonAccessible},
+		{T: externglib.Type(C.gtk_button_accessible_get_type()), F: marshalButtonAccessibler},
 	})
 }
 
-type ButtonAccessible interface {
+// ButtonAccessibler describes ButtonAccessible's methods.
+type ButtonAccessibler interface {
 	gextras.Objector
 
-	privateButtonAccessibleClass()
+	privateButtonAccessible()
 }
 
-// ButtonAccessibleClass implements the ButtonAccessible interface.
-type ButtonAccessibleClass struct {
+type ButtonAccessible struct {
 	*externglib.Object
-	ContainerAccessibleClass
-	atk.ActionIface
-	atk.ImageIface
+	ContainerAccessible
+	atk.Action
+	atk.Image
 }
 
-var _ ButtonAccessible = (*ButtonAccessibleClass)(nil)
+var _ ButtonAccessibler = (*ButtonAccessible)(nil)
 
-func wrapButtonAccessible(obj *externglib.Object) ButtonAccessible {
-	return &ButtonAccessibleClass{
+func wrapButtonAccessibler(obj *externglib.Object) ButtonAccessibler {
+	return &ButtonAccessible{
 		Object: obj,
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalButtonAccessible(p uintptr) (interface{}, error) {
+func marshalButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButtonAccessible(obj), nil
+	return wrapButtonAccessibler(obj), nil
 }
 
-func (*ButtonAccessibleClass) privateButtonAccessibleClass() {}
+func (*ButtonAccessible) privateButtonAccessible() {}

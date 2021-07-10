@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_device_tool_type_get_type()), F: marshalDeviceToolType},
-		{T: externglib.Type(C.gdk_device_tool_get_type()), F: marshalDeviceTool},
+		{T: externglib.Type(C.gdk_device_tool_get_type()), F: marshalDeviceTooler},
 	})
 }
 
@@ -50,54 +50,37 @@ func marshalDeviceToolType(p uintptr) (interface{}, error) {
 	return DeviceToolType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DeviceTool: physical tool associated to a `GdkDevice`.
-type DeviceTool interface {
+// DeviceTooler describes DeviceTool's methods.
+type DeviceTooler interface {
 	gextras.Objector
 
-	// Axes gets the axes of the tool.
 	Axes() AxisFlags
-	// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
-	//
-	// When non-zero, the identificator is unique for the given tool model,
-	// meaning that two identical tools will share the same @hardware_id, but
-	// will have different serial numbers (see
-	// [method@Gdk.DeviceTool.get_serial]).
-	//
-	// This is a more concrete (and device specific) method to identify a
-	// `GdkDeviceTool` than [method@Gdk.DeviceTool.get_tool_type], as a tablet
-	// may support multiple devices with the same `GdkDeviceToolType`, but
-	// different hardware identificators.
 	HardwareID() uint64
-	// Serial gets the serial number of this tool.
-	//
-	// This value can be used to identify a physical tool (eg. a tablet pen)
-	// across program executions.
 	Serial() uint64
-	// ToolType gets the `GdkDeviceToolType` of the tool.
 	ToolType() DeviceToolType
 }
 
-// DeviceToolClass implements the DeviceTool interface.
-type DeviceToolClass struct {
+// DeviceTool: physical tool associated to a `GdkDevice`.
+type DeviceTool struct {
 	*externglib.Object
 }
 
-var _ DeviceTool = (*DeviceToolClass)(nil)
+var _ DeviceTooler = (*DeviceTool)(nil)
 
-func wrapDeviceTool(obj *externglib.Object) DeviceTool {
-	return &DeviceToolClass{
+func wrapDeviceTooler(obj *externglib.Object) DeviceTooler {
+	return &DeviceTool{
 		Object: obj,
 	}
 }
 
-func marshalDeviceTool(p uintptr) (interface{}, error) {
+func marshalDeviceTooler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDeviceTool(obj), nil
+	return wrapDeviceTooler(obj), nil
 }
 
 // Axes gets the axes of the tool.
-func (tool *DeviceToolClass) Axes() AxisFlags {
+func (tool *DeviceTool) Axes() AxisFlags {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.GdkAxisFlags   // in
 
@@ -122,7 +105,7 @@ func (tool *DeviceToolClass) Axes() AxisFlags {
 // `GdkDeviceTool` than [method@Gdk.DeviceTool.get_tool_type], as a tablet may
 // support multiple devices with the same `GdkDeviceToolType`, but different
 // hardware identificators.
-func (tool *DeviceToolClass) HardwareID() uint64 {
+func (tool *DeviceTool) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
@@ -141,7 +124,7 @@ func (tool *DeviceToolClass) HardwareID() uint64 {
 //
 // This value can be used to identify a physical tool (eg. a tablet pen) across
 // program executions.
-func (tool *DeviceToolClass) Serial() uint64 {
+func (tool *DeviceTool) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
@@ -157,7 +140,7 @@ func (tool *DeviceToolClass) Serial() uint64 {
 }
 
 // ToolType gets the `GdkDeviceToolType` of the tool.
-func (tool *DeviceToolClass) ToolType() DeviceToolType {
+func (tool *DeviceTool) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
 	var _cret C.GdkDeviceToolType // in
 

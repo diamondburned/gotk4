@@ -55,7 +55,7 @@ func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 // implementations. Creates a new #GSource, as with g_pollable_source_new(), but
 // also attaching @child_source (with a dummy callback), and @cancellable, if
 // they are non-nil.
-func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.Source, cancellable Cancellable) *glib.Source {
+func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.Source, cancellable Cancellabler) *glib.Source {
 	var _arg1 C.gpointer      // out
 	var _arg2 *C.GSource      // out
 	var _arg3 *C.GCancellable // out
@@ -87,7 +87,7 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 // g_pollable_input_stream_can_poll() returns true, or else the behavior is
 // undefined. If @blocking is true, then @stream does not need to be a
 // InputStream.
-func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
+func PollableStreamRead(stream InputStreamer, buffer []byte, blocking bool, cancellable Cancellabler) (int, error) {
 	var _arg1 *C.GInputStream // out
 	var _arg2 *C.void
 	var _arg3 C.gsize
@@ -125,7 +125,7 @@ func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancel
 // g_pollable_output_stream_can_poll() returns true or else the behavior is
 // undefined. If @blocking is true, then @stream does not need to be a
 // OutputStream.
-func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
+func PollableStreamWrite(stream OutputStreamer, buffer []byte, blocking bool, cancellable Cancellabler) (int, error) {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.void
 	var _arg3 C.gsize
@@ -169,7 +169,7 @@ func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, canc
 // be a OutputStream for which g_pollable_output_stream_can_poll() returns true
 // or else the behavior is undefined. If @blocking is true, then @stream does
 // not need to be a OutputStream.
-func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) (uint, error) {
+func PollableStreamWriteAll(stream OutputStreamer, buffer []byte, blocking bool, cancellable Cancellabler) (uint, error) {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.void
 	var _arg3 C.gsize

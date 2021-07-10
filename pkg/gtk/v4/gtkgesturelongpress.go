@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_long_press_get_type()), F: marshalGestureLongPress},
+		{T: externglib.Type(C.gtk_gesture_long_press_get_type()), F: marshalGestureLongPresser},
 	})
+}
+
+// GestureLongPresser describes GestureLongPress's methods.
+type GestureLongPresser interface {
+	gextras.Objector
+
+	DelayFactor() float64
+	SetDelayFactor(delayFactor float64)
 }
 
 // GestureLongPress: `GtkGestureLongPress` is a `GtkGesture` for long presses.
@@ -36,30 +44,17 @@ func init() {
 // How long the timeout is before the ::pressed signal gets emitted is
 // determined by the [property@Gtk.Settings:gtk-long-press-time] setting. It can
 // be modified by the [property@Gtk.GestureLongPress:delay-factor] property.
-type GestureLongPress interface {
-	gextras.Objector
-
-	// DelayFactor returns the delay factor.
-	DelayFactor() float64
-	// SetDelayFactor applies the given delay factor.
-	//
-	// The default long press time will be multiplied by this value. Valid
-	// values are in the range [0.5..2.0].
-	SetDelayFactor(delayFactor float64)
+type GestureLongPress struct {
+	GestureSingle
 }
 
-// GestureLongPressClass implements the GestureLongPress interface.
-type GestureLongPressClass struct {
-	GestureSingleClass
-}
+var _ GestureLongPresser = (*GestureLongPress)(nil)
 
-var _ GestureLongPress = (*GestureLongPressClass)(nil)
-
-func wrapGestureLongPress(obj *externglib.Object) GestureLongPress {
-	return &GestureLongPressClass{
-		GestureSingleClass: GestureSingleClass{
-			GestureClass: GestureClass{
-				EventControllerClass: EventControllerClass{
+func wrapGestureLongPresser(obj *externglib.Object) GestureLongPresser {
+	return &GestureLongPress{
+		GestureSingle: GestureSingle{
+			Gesture: Gesture{
+				EventController: EventController{
 					Object: obj,
 				},
 			},
@@ -67,28 +62,28 @@ func wrapGestureLongPress(obj *externglib.Object) GestureLongPress {
 	}
 }
 
-func marshalGestureLongPress(p uintptr) (interface{}, error) {
+func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureLongPress(obj), nil
+	return wrapGestureLongPresser(obj), nil
 }
 
 // NewGestureLongPress returns a newly created `GtkGesture` that recognizes long
 // presses.
-func NewGestureLongPress() *GestureLongPressClass {
+func NewGestureLongPress() *GestureLongPress {
 	var _cret *C.GtkGesture // in
 
 	_cret = C.gtk_gesture_long_press_new()
 
-	var _gestureLongPress *GestureLongPressClass // out
+	var _gestureLongPress *GestureLongPress // out
 
-	_gestureLongPress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureLongPressClass)
+	_gestureLongPress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureLongPress)
 
 	return _gestureLongPress
 }
 
 // DelayFactor returns the delay factor.
-func (gesture *GestureLongPressClass) DelayFactor() float64 {
+func (gesture *GestureLongPress) DelayFactor() float64 {
 	var _arg0 *C.GtkGestureLongPress // out
 	var _cret C.double               // in
 
@@ -107,7 +102,7 @@ func (gesture *GestureLongPressClass) DelayFactor() float64 {
 //
 // The default long press time will be multiplied by this value. Valid values
 // are in the range [0.5..2.0].
-func (gesture *GestureLongPressClass) SetDelayFactor(delayFactor float64) {
+func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
 	var _arg0 *C.GtkGestureLongPress // out
 	var _arg1 C.double               // out
 

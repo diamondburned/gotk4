@@ -29,15 +29,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_database_get_type()), F: marshalTLSDatabase},
+		{T: externglib.Type(C.g_tls_database_get_type()), F: marshalTLSDatabaser},
 	})
 }
 
-// TLSDatabaseOverrider contains methods that are overridable.
+// TLSDatabaserOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSDatabaseOverrider interface {
+type TLSDatabaserOverrider interface {
 	// CreateCertificateHandle: create a handle string for the certificate. The
 	// database will only be able to create a handle for certificates that
 	// originate from the database. In cases where the database cannot create a
@@ -46,18 +46,18 @@ type TLSDatabaseOverrider interface {
 	// This handle should be stable across various instances of the application,
 	// and between applications. If a certificate is modified in the database,
 	// then it is not guaranteed that this handle will continue to point to it.
-	CreateCertificateHandle(certificate TLSCertificate) string
+	CreateCertificateHandle(certificate TLSCertificater) string
 	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
 	// certificate by its handle. See
 	// g_tls_database_lookup_certificate_for_handle() for more information.
 	//
 	// If the handle is no longer valid, or does not point to a certificate in
 	// this database, then nil will be returned.
-	LookupCertificateForHandleFinish(result AsyncResult) (*TLSCertificateClass, error)
+	LookupCertificateForHandleFinish(result AsyncResulter) (*TLSCertificate, error)
 	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 	// operation. See g_tls_database_lookup_certificate_issuer() for more
 	// information.
-	LookupCertificateIssuerFinish(result AsyncResult) (*TLSCertificateClass, error)
+	LookupCertificateIssuerFinish(result AsyncResulter) (*TLSCertificate, error)
 	// VerifyChainFinish: finish an asynchronous verify chain operation. See
 	// g_tls_database_verify_chain() for more information.
 	//
@@ -68,7 +68,17 @@ type TLSDatabaseOverrider interface {
 	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
 	// will be set accordingly. @error is not set when @chain is successfully
 	// analyzed but found to be invalid.
-	VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error)
+	VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
+}
+
+// TLSDatabaser describes TLSDatabase's methods.
+type TLSDatabaser interface {
+	gextras.Objector
+
+	CreateCertificateHandle(certificate TLSCertificater) string
+	LookupCertificateForHandleFinish(result AsyncResulter) (*TLSCertificate, error)
+	LookupCertificateIssuerFinish(result AsyncResulter) (*TLSCertificate, error)
+	VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
 }
 
 // TLSDatabase is used to look up certificates and other information from a
@@ -80,59 +90,22 @@ type TLSDatabaseOverrider interface {
 //
 // Most common client applications will not directly interact with Database. It
 // is used internally by Connection.
-type TLSDatabase interface {
-	gextras.Objector
-
-	// CreateCertificateHandle: create a handle string for the certificate. The
-	// database will only be able to create a handle for certificates that
-	// originate from the database. In cases where the database cannot create a
-	// handle for a certificate, nil will be returned.
-	//
-	// This handle should be stable across various instances of the application,
-	// and between applications. If a certificate is modified in the database,
-	// then it is not guaranteed that this handle will continue to point to it.
-	CreateCertificateHandle(certificate TLSCertificate) string
-	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
-	// certificate by its handle. See
-	// g_tls_database_lookup_certificate_for_handle() for more information.
-	//
-	// If the handle is no longer valid, or does not point to a certificate in
-	// this database, then nil will be returned.
-	LookupCertificateForHandleFinish(result AsyncResult) (*TLSCertificateClass, error)
-	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
-	// operation. See g_tls_database_lookup_certificate_issuer() for more
-	// information.
-	LookupCertificateIssuerFinish(result AsyncResult) (*TLSCertificateClass, error)
-	// VerifyChainFinish: finish an asynchronous verify chain operation. See
-	// g_tls_database_verify_chain() for more information.
-	//
-	// If @chain is found to be valid, then the return value will be 0. If
-	// @chain is found to be invalid, then the return value will indicate the
-	// problems found. If the function is unable to determine whether @chain is
-	// valid or not (eg, because @cancellable is triggered before it completes)
-	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
-	// will be set accordingly. @error is not set when @chain is successfully
-	// analyzed but found to be invalid.
-	VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error)
-}
-
-// TLSDatabaseClass implements the TLSDatabase interface.
-type TLSDatabaseClass struct {
+type TLSDatabase struct {
 	*externglib.Object
 }
 
-var _ TLSDatabase = (*TLSDatabaseClass)(nil)
+var _ TLSDatabaser = (*TLSDatabase)(nil)
 
-func wrapTLSDatabase(obj *externglib.Object) TLSDatabase {
-	return &TLSDatabaseClass{
+func wrapTLSDatabaser(obj *externglib.Object) TLSDatabaser {
+	return &TLSDatabase{
 		Object: obj,
 	}
 }
 
-func marshalTLSDatabase(p uintptr) (interface{}, error) {
+func marshalTLSDatabaser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSDatabase(obj), nil
+	return wrapTLSDatabaser(obj), nil
 }
 
 // CreateCertificateHandle: create a handle string for the certificate. The
@@ -143,7 +116,7 @@ func marshalTLSDatabase(p uintptr) (interface{}, error) {
 // This handle should be stable across various instances of the application, and
 // between applications. If a certificate is modified in the database, then it
 // is not guaranteed that this handle will continue to point to it.
-func (self *TLSDatabaseClass) CreateCertificateHandle(certificate TLSCertificate) string {
+func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) string {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GTlsCertificate // out
 	var _cret *C.gchar           // in
@@ -167,7 +140,7 @@ func (self *TLSDatabaseClass) CreateCertificateHandle(certificate TLSCertificate
 //
 // If the handle is no longer valid, or does not point to a certificate in this
 // database, then nil will be returned.
-func (self *TLSDatabaseClass) LookupCertificateForHandleFinish(result AsyncResult) (*TLSCertificateClass, error) {
+func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) (*TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
@@ -178,10 +151,10 @@ func (self *TLSDatabaseClass) LookupCertificateForHandleFinish(result AsyncResul
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle_finish(_arg0, _arg1, &_cerr)
 
-	var _tlsCertificate *TLSCertificateClass // out
-	var _goerr error                         // out
+	var _tlsCertificate *TLSCertificate // out
+	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificateClass)
+	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -190,7 +163,7 @@ func (self *TLSDatabaseClass) LookupCertificateForHandleFinish(result AsyncResul
 // LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 // operation. See g_tls_database_lookup_certificate_issuer() for more
 // information.
-func (self *TLSDatabaseClass) LookupCertificateIssuerFinish(result AsyncResult) (*TLSCertificateClass, error) {
+func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (*TLSCertificate, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
@@ -201,10 +174,10 @@ func (self *TLSDatabaseClass) LookupCertificateIssuerFinish(result AsyncResult) 
 
 	_cret = C.g_tls_database_lookup_certificate_issuer_finish(_arg0, _arg1, &_cerr)
 
-	var _tlsCertificate *TLSCertificateClass // out
-	var _goerr error                         // out
+	var _tlsCertificate *TLSCertificate // out
+	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificateClass)
+	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -220,7 +193,7 @@ func (self *TLSDatabaseClass) LookupCertificateIssuerFinish(result AsyncResult) 
 // will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set accordingly.
 // @error is not set when @chain is successfully analyzed but found to be
 // invalid.
-func (self *TLSDatabaseClass) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error) {
+func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase        // out
 	var _arg1 *C.GAsyncResult        // out
 	var _cret C.GTlsCertificateFlags // in

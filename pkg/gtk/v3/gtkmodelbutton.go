@@ -21,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_button_role_get_type()), F: marshalButtonRole},
-		{T: externglib.Type(C.gtk_model_button_get_type()), F: marshalModelButton},
+		{T: externglib.Type(C.gtk_model_button_get_type()), F: marshalModelButtonner},
 	})
 }
 
@@ -39,6 +39,13 @@ const (
 
 func marshalButtonRole(p uintptr) (interface{}, error) {
 	return ButtonRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ModelButtonner describes ModelButton's methods.
+type ModelButtonner interface {
+	gextras.Objector
+
+	privateModelButton()
 }
 
 // ModelButton is a button class that can use a #GAction as its model. In
@@ -110,106 +117,99 @@ func marshalButtonRole(p uintptr) (interface{}, error) {
 // Iconic model buttons (see ModelButton:iconic) change the name of their main
 // node to button and add a .model style class to it. The indicator subnode is
 // invisible in this case.
-type ModelButton interface {
-	gextras.Objector
-
-	privateModelButtonClass()
-}
-
-// ModelButtonClass implements the ModelButton interface.
-type ModelButtonClass struct {
+type ModelButton struct {
 	*externglib.Object
-	ButtonClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	Button
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ ModelButton = (*ModelButtonClass)(nil)
+var _ ModelButtonner = (*ModelButton)(nil)
 
-func wrapModelButton(obj *externglib.Object) ModelButton {
-	return &ModelButtonClass{
+func wrapModelButtonner(obj *externglib.Object) ModelButtonner {
+	return &ModelButton{
 		Object: obj,
-		ButtonClass: ButtonClass{
+		Button: Button{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalModelButton(p uintptr) (interface{}, error) {
+func marshalModelButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapModelButton(obj), nil
+	return wrapModelButtonner(obj), nil
 }
 
 // NewModelButton creates a new GtkModelButton.
-func NewModelButton() *ModelButtonClass {
+func NewModelButton() *ModelButton {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_model_button_new()
 
-	var _modelButton *ModelButtonClass // out
+	var _modelButton *ModelButton // out
 
-	_modelButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ModelButtonClass)
+	_modelButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ModelButton)
 
 	return _modelButton
 }
 
-func (*ModelButtonClass) privateModelButtonClass() {}
+func (*ModelButton) privateModelButton() {}

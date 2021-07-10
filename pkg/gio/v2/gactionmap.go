@@ -29,30 +29,40 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMap},
+		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMapper},
 	})
 }
 
-// ActionMapOverrider contains methods that are overridable.
+// ActionMapperOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionMapOverrider interface {
+type ActionMapperOverrider interface {
 	// AddAction adds an action to the @action_map.
 	//
 	// If the action map already contains an action with the same name as
 	// @action then the old action is dropped from the action map.
 	//
 	// The action map takes its own reference on @action.
-	AddAction(action Action)
+	AddAction(action Actioner)
 	// LookupAction looks up the action with the name @action_name in
 	// @action_map.
 	//
 	// If no such action exists, returns nil.
-	LookupAction(actionName string) *ActionIface
+	LookupAction(actionName string) *Action
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
+	RemoveAction(actionName string)
+}
+
+// ActionMapper describes ActionMap's methods.
+type ActionMapper interface {
+	gextras.Objector
+
+	AddAction(action Actioner)
+	AddActionEntries(entries []ActionEntry, userData interface{})
+	LookupAction(actionName string) *Action
 	RemoveAction(actionName string)
 }
 
@@ -63,80 +73,22 @@ type ActionMapOverrider interface {
 // One useful application of this interface is to map the names of actions from
 // various action groups to unique, prefixed names (e.g. by prepending "app." or
 // "win."). This is the motivation for the 'Map' part of the interface name.
-type ActionMap interface {
-	gextras.Objector
-
-	// AddAction adds an action to the @action_map.
-	//
-	// If the action map already contains an action with the same name as
-	// @action then the old action is dropped from the action map.
-	//
-	// The action map takes its own reference on @action.
-	AddAction(action Action)
-	// AddActionEntries: convenience function for creating multiple Action
-	// instances and adding them to a Map.
-	//
-	// Each action is constructed as per one Entry.
-	//
-	//    static void
-	//    activate_quit (GSimpleAction *simple,
-	//                   GVariant      *parameter,
-	//                   gpointer       user_data)
-	//    {
-	//      exit (0);
-	//    }
-	//
-	//    static void
-	//    activate_print_string (GSimpleAction *simple,
-	//                           GVariant      *parameter,
-	//                           gpointer       user_data)
-	//    {
-	//      g_print ("s\n", g_variant_get_string (parameter, NULL));
-	//    }
-	//
-	//    static GActionGroup *
-	//    create_action_group (void)
-	//    {
-	//      const GActionEntry entries[] = {
-	//        { "quit",         activate_quit              },
-	//        { "print-string", activate_print_string, "s" }
-	//      };
-	//      GSimpleActionGroup *group;
-	//
-	//      group = g_simple_action_group_new ();
-	//      g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
-	//
-	//      return G_ACTION_GROUP (group);
-	//    }
-	AddActionEntries(entries []ActionEntry, userData interface{})
-	// LookupAction looks up the action with the name @action_name in
-	// @action_map.
-	//
-	// If no such action exists, returns nil.
-	LookupAction(actionName string) *ActionIface
-	// RemoveAction removes the named action from the action map.
-	//
-	// If no action of this name is in the map then nothing happens.
-	RemoveAction(actionName string)
-}
-
-// ActionMapIface implements the ActionMap interface.
-type ActionMapIface struct {
+type ActionMap struct {
 	*externglib.Object
 }
 
-var _ ActionMap = (*ActionMapIface)(nil)
+var _ ActionMapper = (*ActionMap)(nil)
 
-func wrapActionMap(obj *externglib.Object) ActionMap {
-	return &ActionMapIface{
+func wrapActionMapper(obj *externglib.Object) ActionMapper {
+	return &ActionMap{
 		Object: obj,
 	}
 }
 
-func marshalActionMap(p uintptr) (interface{}, error) {
+func marshalActionMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionMap(obj), nil
+	return wrapActionMapper(obj), nil
 }
 
 // AddAction adds an action to the @action_map.
@@ -145,7 +97,7 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 // then the old action is dropped from the action map.
 //
 // The action map takes its own reference on @action.
-func (actionMap *ActionMapIface) AddAction(action Action) {
+func (actionMap *ActionMap) AddAction(action Actioner) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
 
@@ -190,7 +142,7 @@ func (actionMap *ActionMapIface) AddAction(action Action) {
 //
 //      return G_ACTION_GROUP (group);
 //    }
-func (actionMap *ActionMapIface) AddActionEntries(entries []ActionEntry, userData interface{}) {
+func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData interface{}) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GActionEntry
 	var _arg2 C.gint
@@ -207,7 +159,7 @@ func (actionMap *ActionMapIface) AddActionEntries(entries []ActionEntry, userDat
 // LookupAction looks up the action with the name @action_name in @action_map.
 //
 // If no such action exists, returns nil.
-func (actionMap *ActionMapIface) LookupAction(actionName string) *ActionIface {
+func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
@@ -218,9 +170,9 @@ func (actionMap *ActionMapIface) LookupAction(actionName string) *ActionIface {
 
 	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
 
-	var _action *ActionIface // out
+	var _action *Action // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionIface)
+	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Action)
 
 	return _action
 }
@@ -228,7 +180,7 @@ func (actionMap *ActionMapIface) LookupAction(actionName string) *ActionIface {
 // RemoveAction removes the named action from the action map.
 //
 // If no action of this name is in the map then nothing happens.
-func (actionMap *ActionMapIface) RemoveAction(actionName string) {
+func (actionMap *ActionMap) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 
@@ -250,12 +202,6 @@ func (actionMap *ActionMapIface) RemoveAction(actionName string) {
 // See g_action_map_add_action_entries() for an example.
 type ActionEntry struct {
 	native C.GActionEntry
-}
-
-// WrapActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
-	return (*ActionEntry)(ptr)
 }
 
 // Native returns the underlying C source pointer.

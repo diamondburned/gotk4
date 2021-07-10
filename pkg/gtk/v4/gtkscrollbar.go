@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbar},
+		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbarrer},
 	})
+}
+
+// Scrollbarrer describes Scrollbar's methods.
+type Scrollbarrer interface {
+	gextras.Objector
+
+	Adjustment() *Adjustment
+	SetAdjustment(adjustment Adjustmenter)
 }
 
 // Scrollbar: the `GtkScrollbar` widget is a horizontal or vertical scrollbar.
@@ -61,68 +69,58 @@ func init() {
 // Accessibility
 //
 // `GtkScrollbar` uses the GTK_ACCESSIBLE_ROLE_SCROLLBAR role.
-type Scrollbar interface {
-	gextras.Objector
-
-	// Adjustment returns the scrollbar's adjustment.
-	Adjustment() *AdjustmentClass
-	// SetAdjustment makes the scrollbar use the given adjustment.
-	SetAdjustment(adjustment Adjustment)
-}
-
-// ScrollbarClass implements the Scrollbar interface.
-type ScrollbarClass struct {
+type Scrollbar struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	OrientableIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
 }
 
-var _ Scrollbar = (*ScrollbarClass)(nil)
+var _ Scrollbarrer = (*Scrollbar)(nil)
 
-func wrapScrollbar(obj *externglib.Object) Scrollbar {
-	return &ScrollbarClass{
+func wrapScrollbarrer(obj *externglib.Object) Scrollbarrer {
+	return &Scrollbar{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalScrollbar(p uintptr) (interface{}, error) {
+func marshalScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrollbar(obj), nil
+	return wrapScrollbarrer(obj), nil
 }
 
 // Adjustment returns the scrollbar's adjustment.
-func (self *ScrollbarClass) Adjustment() *AdjustmentClass {
+func (self *Scrollbar) Adjustment() *Adjustment {
 	var _arg0 *C.GtkScrollbar  // out
 	var _cret *C.GtkAdjustment // in
 
@@ -130,15 +128,15 @@ func (self *ScrollbarClass) Adjustment() *AdjustmentClass {
 
 	_cret = C.gtk_scrollbar_get_adjustment(_arg0)
 
-	var _adjustment *AdjustmentClass // out
+	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AdjustmentClass)
+	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
 
 	return _adjustment
 }
 
 // SetAdjustment makes the scrollbar use the given adjustment.
-func (self *ScrollbarClass) SetAdjustment(adjustment Adjustment) {
+func (self *Scrollbar) SetAdjustment(adjustment Adjustmenter) {
 	var _arg0 *C.GtkScrollbar  // out
 	var _arg1 *C.GtkAdjustment // out
 

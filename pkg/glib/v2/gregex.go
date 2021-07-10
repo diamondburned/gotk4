@@ -347,12 +347,6 @@ type MatchInfo struct {
 	native C.GMatchInfo
 }
 
-// WrapMatchInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMatchInfo(ptr unsafe.Pointer) *MatchInfo {
-	return (*MatchInfo)(ptr)
-}
-
 func marshalMatchInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*MatchInfo)(unsafe.Pointer(b)), nil
@@ -822,12 +816,6 @@ func (matchInfo *MatchInfo) unref() {
 // excellent PCRE (http://www.pcre.org/) library written by Philip Hazel.
 type Regex struct {
 	native C.GRegex
-}
-
-// WrapRegex wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRegex(ptr unsafe.Pointer) *Regex {
-	return (*Regex)(ptr)
 }
 
 func marshalRegex(p uintptr) (interface{}, error) {

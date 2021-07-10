@@ -16,12 +16,6 @@ type SIMD4F struct {
 	native C.graphene_simd4f_t
 }
 
-// WrapSIMD4F wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSIMD4F(ptr unsafe.Pointer) *SIMD4F {
-	return (*SIMD4F)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (s *SIMD4F) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
@@ -29,12 +23,6 @@ func (s *SIMD4F) Native() unsafe.Pointer {
 
 type SIMD4X4F struct {
 	native C.graphene_simd4x4f_t
-}
-
-// WrapSIMD4X4F wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSIMD4X4F(ptr unsafe.Pointer) *SIMD4X4F {
-	return (*SIMD4X4F)(ptr)
 }
 
 // Native returns the underlying C source pointer.

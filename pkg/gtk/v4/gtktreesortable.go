@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_sortable_get_type()), F: marshalTreeSortable},
+		{T: externglib.Type(C.gtk_tree_sortable_get_type()), F: marshalTreeSortabler},
 	})
 }
 
@@ -34,7 +34,7 @@ func init() {
 //
 // For example, if @model is a product catalogue, then a compare function for
 // the “price” column could be one which returns `price_of(@a) - price_of(@b)`.
-type TreeIterCompareFunc func(model *TreeModelIface, a *TreeIter, b *TreeIter, userData interface{}) (gint int)
+type TreeIterCompareFunc func(model *TreeModel, a *TreeIter, b *TreeIter, userData interface{}) (gint int)
 
 //export gotk4_TreeIterCompareFunc
 func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.int) {
@@ -43,12 +43,12 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 		panic(`callback not found`)
 	}
 
-	var model *TreeModelIface // out
-	var a *TreeIter           // out
-	var b *TreeIter           // out
-	var userData interface{}  // out
+	var model *TreeModel     // out
+	var a *TreeIter          // out
+	var b *TreeIter          // out
+	var userData interface{} // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModelIface)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	a = (*TreeIter)(unsafe.Pointer(arg1))
 	b = (*TreeIter)(unsafe.Pointer(arg2))
 	userData = box.Get(uintptr(arg3))
@@ -61,11 +61,11 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 	return cret
 }
 
-// TreeSortableOverrider contains methods that are overridable.
+// TreeSortablerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TreeSortableOverrider interface {
+type TreeSortablerOverrider interface {
 	// SortColumnID fills in @sort_column_id and @order with the current sort
 	// column and the order. It returns true unless the @sort_column_id is
 	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
@@ -77,6 +77,15 @@ type TreeSortableOverrider interface {
 	HasDefaultSortFunc() bool
 	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
 	// @sortable.
+	SortColumnChanged()
+}
+
+// TreeSortabler describes TreeSortable's methods.
+type TreeSortabler interface {
+	gextras.Objector
+
+	SortColumnID() (int, SortType, bool)
+	HasDefaultSortFunc() bool
 	SortColumnChanged()
 }
 
@@ -85,49 +94,31 @@ type TreeSortableOverrider interface {
 // TreeSortable is an interface to be implemented by tree models which support
 // sorting. The TreeView uses the methods provided by this interface to sort the
 // model.
-type TreeSortable interface {
-	gextras.Objector
-
-	// SortColumnID fills in @sort_column_id and @order with the current sort
-	// column and the order. It returns true unless the @sort_column_id is
-	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
-	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
-	SortColumnID() (int, SortType, bool)
-	// HasDefaultSortFunc returns true if the model has a default sort function.
-	// This is used primarily by GtkTreeViewColumns in order to determine if a
-	// model can go back to the default state, or not.
-	HasDefaultSortFunc() bool
-	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
-	// @sortable.
-	SortColumnChanged()
+type TreeSortable struct {
+	TreeModel
 }
 
-// TreeSortableIface implements the TreeSortable interface.
-type TreeSortableIface struct {
-	TreeModelIface
-}
+var _ TreeSortabler = (*TreeSortable)(nil)
 
-var _ TreeSortable = (*TreeSortableIface)(nil)
-
-func wrapTreeSortable(obj *externglib.Object) TreeSortable {
-	return &TreeSortableIface{
-		TreeModelIface: TreeModelIface{
+func wrapTreeSortabler(obj *externglib.Object) TreeSortabler {
+	return &TreeSortable{
+		TreeModel: TreeModel{
 			Object: obj,
 		},
 	}
 }
 
-func marshalTreeSortable(p uintptr) (interface{}, error) {
+func marshalTreeSortabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeSortable(obj), nil
+	return wrapTreeSortabler(obj), nil
 }
 
 // SortColumnID fills in @sort_column_id and @order with the current sort column
 // and the order. It returns true unless the @sort_column_id is
 // GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
 // GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
-func (sortable *TreeSortableIface) SortColumnID() (int, SortType, bool) {
+func (sortable *TreeSortable) SortColumnID() (int, SortType, bool) {
 	var _arg0 *C.GtkTreeSortable // out
 	var _arg1 C.int              // in
 	var _arg2 C.GtkSortType      // in
@@ -153,7 +144,7 @@ func (sortable *TreeSortableIface) SortColumnID() (int, SortType, bool) {
 // HasDefaultSortFunc returns true if the model has a default sort function.
 // This is used primarily by GtkTreeViewColumns in order to determine if a model
 // can go back to the default state, or not.
-func (sortable *TreeSortableIface) HasDefaultSortFunc() bool {
+func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 	var _arg0 *C.GtkTreeSortable // out
 	var _cret C.gboolean         // in
 
@@ -172,7 +163,7 @@ func (sortable *TreeSortableIface) HasDefaultSortFunc() bool {
 
 // SortColumnChanged emits a TreeSortable::sort-column-changed signal on
 // @sortable.
-func (sortable *TreeSortableIface) SortColumnChanged() {
+func (sortable *TreeSortable) SortColumnChanged() {
 	var _arg0 *C.GtkTreeSortable // out
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))

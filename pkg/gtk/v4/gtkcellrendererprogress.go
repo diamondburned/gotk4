@@ -18,58 +18,58 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_progress_get_type()), F: marshalCellRendererProgress},
+		{T: externglib.Type(C.gtk_cell_renderer_progress_get_type()), F: marshalCellRendererProgresser},
 	})
+}
+
+// CellRendererProgresser describes CellRendererProgress's methods.
+type CellRendererProgresser interface {
+	gextras.Objector
+
+	privateCellRendererProgress()
 }
 
 // CellRendererProgress renders numbers as progress bars
 //
 // CellRendererProgress renders a numeric value as a progress par in a cell.
 // Additionally, it can display a text on top of the progress bar.
-type CellRendererProgress interface {
-	gextras.Objector
-
-	privateCellRendererProgressClass()
+type CellRendererProgress struct {
+	CellRenderer
+	Orientable
 }
 
-// CellRendererProgressClass implements the CellRendererProgress interface.
-type CellRendererProgressClass struct {
-	CellRendererClass
-	OrientableIface
-}
+var _ CellRendererProgresser = (*CellRendererProgress)(nil)
 
-var _ CellRendererProgress = (*CellRendererProgressClass)(nil)
-
-func wrapCellRendererProgress(obj *externglib.Object) CellRendererProgress {
-	return &CellRendererProgressClass{
-		CellRendererClass: CellRendererClass{
+func wrapCellRendererProgresser(obj *externglib.Object) CellRendererProgresser {
+	return &CellRendererProgress{
+		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCellRendererProgress(p uintptr) (interface{}, error) {
+func marshalCellRendererProgresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererProgress(obj), nil
+	return wrapCellRendererProgresser(obj), nil
 }
 
 // NewCellRendererProgress creates a new CellRendererProgress.
-func NewCellRendererProgress() *CellRendererProgressClass {
+func NewCellRendererProgress() *CellRendererProgress {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_progress_new()
 
-	var _cellRendererProgress *CellRendererProgressClass // out
+	var _cellRendererProgress *CellRendererProgress // out
 
-	_cellRendererProgress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererProgressClass)
+	_cellRendererProgress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererProgress)
 
 	return _cellRendererProgress
 }
 
-func (*CellRendererProgressClass) privateCellRendererProgressClass() {}
+func (*CellRendererProgress) privateCellRendererProgress() {}

@@ -18,8 +18,26 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidget},
+		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidgetter},
 	})
+}
+
+// AppChooserWidgetter describes AppChooserWidget's methods.
+type AppChooserWidgetter interface {
+	gextras.Objector
+
+	DefaultText() string
+	ShowAll() bool
+	ShowDefault() bool
+	ShowFallback() bool
+	ShowOther() bool
+	ShowRecommended() bool
+	SetDefaultText(text string)
+	SetShowAll(setting bool)
+	SetShowDefault(setting bool)
+	SetShowFallback(setting bool)
+	SetShowOther(setting bool)
+	SetShowRecommended(setting bool)
 }
 
 // AppChooserWidget: `GtkAppChooserWidget` is a widget for selecting
@@ -46,116 +64,74 @@ func init() {
 // CSS nodes
 //
 // `GtkAppChooserWidget` has a single CSS node with name appchooser.
-type AppChooserWidget interface {
-	gextras.Objector
-
-	// DefaultText returns the text that is shown if there are not applications
-	// that can handle the content type.
-	DefaultText() string
-	// ShowAll gets whether the app chooser should show all applications in a
-	// flat list.
-	ShowAll() bool
-	// ShowDefault gets whether the app chooser should show the default handler
-	// for the content type in a separate section.
-	ShowDefault() bool
-	// ShowFallback gets whether the app chooser should show related
-	// applications for the content type in a separate section.
-	ShowFallback() bool
-	// ShowOther gets whether the app chooser should show applications which are
-	// unrelated to the content type.
-	ShowOther() bool
-	// ShowRecommended gets whether the app chooser should show recommended
-	// applications for the content type in a separate section.
-	ShowRecommended() bool
-	// SetDefaultText sets the text that is shown if there are not applications
-	// that can handle the content type.
-	SetDefaultText(text string)
-	// SetShowAll sets whether the app chooser should show all applications in a
-	// flat list.
-	SetShowAll(setting bool)
-	// SetShowDefault sets whether the app chooser should show the default
-	// handler for the content type in a separate section.
-	SetShowDefault(setting bool)
-	// SetShowFallback sets whether the app chooser should show related
-	// applications for the content type in a separate section.
-	SetShowFallback(setting bool)
-	// SetShowOther sets whether the app chooser should show applications which
-	// are unrelated to the content type.
-	SetShowOther(setting bool)
-	// SetShowRecommended sets whether the app chooser should show recommended
-	// applications for the content type in a separate section.
-	SetShowRecommended(setting bool)
-}
-
-// AppChooserWidgetClass implements the AppChooserWidget interface.
-type AppChooserWidgetClass struct {
+type AppChooserWidget struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	AppChooserIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	AppChooser
+	Buildable
+	ConstraintTarget
 }
 
-var _ AppChooserWidget = (*AppChooserWidgetClass)(nil)
+var _ AppChooserWidgetter = (*AppChooserWidget)(nil)
 
-func wrapAppChooserWidget(obj *externglib.Object) AppChooserWidget {
-	return &AppChooserWidgetClass{
+func wrapAppChooserWidgetter(obj *externglib.Object) AppChooserWidgetter {
+	return &AppChooserWidget{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		AppChooserIface: AppChooserIface{
+		AppChooser: AppChooser{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalAppChooserWidget(p uintptr) (interface{}, error) {
+func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooserWidget(obj), nil
+	return wrapAppChooserWidgetter(obj), nil
 }
 
 // NewAppChooserWidget creates a new `GtkAppChooserWidget` for applications that
 // can handle content of the given type.
-func NewAppChooserWidget(contentType string) *AppChooserWidgetClass {
+func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -164,16 +140,16 @@ func NewAppChooserWidget(contentType string) *AppChooserWidgetClass {
 
 	_cret = C.gtk_app_chooser_widget_new(_arg1)
 
-	var _appChooserWidget *AppChooserWidgetClass // out
+	var _appChooserWidget *AppChooserWidget // out
 
-	_appChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserWidgetClass)
+	_appChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserWidget)
 
 	return _appChooserWidget
 }
 
 // DefaultText returns the text that is shown if there are not applications that
 // can handle the content type.
-func (self *AppChooserWidgetClass) DefaultText() string {
+func (self *AppChooserWidget) DefaultText() string {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret *C.char                // in
 
@@ -190,7 +166,7 @@ func (self *AppChooserWidgetClass) DefaultText() string {
 
 // ShowAll gets whether the app chooser should show all applications in a flat
 // list.
-func (self *AppChooserWidgetClass) ShowAll() bool {
+func (self *AppChooserWidget) ShowAll() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
@@ -209,7 +185,7 @@ func (self *AppChooserWidgetClass) ShowAll() bool {
 
 // ShowDefault gets whether the app chooser should show the default handler for
 // the content type in a separate section.
-func (self *AppChooserWidgetClass) ShowDefault() bool {
+func (self *AppChooserWidget) ShowDefault() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
@@ -228,7 +204,7 @@ func (self *AppChooserWidgetClass) ShowDefault() bool {
 
 // ShowFallback gets whether the app chooser should show related applications
 // for the content type in a separate section.
-func (self *AppChooserWidgetClass) ShowFallback() bool {
+func (self *AppChooserWidget) ShowFallback() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
@@ -247,7 +223,7 @@ func (self *AppChooserWidgetClass) ShowFallback() bool {
 
 // ShowOther gets whether the app chooser should show applications which are
 // unrelated to the content type.
-func (self *AppChooserWidgetClass) ShowOther() bool {
+func (self *AppChooserWidget) ShowOther() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
@@ -266,7 +242,7 @@ func (self *AppChooserWidgetClass) ShowOther() bool {
 
 // ShowRecommended gets whether the app chooser should show recommended
 // applications for the content type in a separate section.
-func (self *AppChooserWidgetClass) ShowRecommended() bool {
+func (self *AppChooserWidget) ShowRecommended() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
 
@@ -285,7 +261,7 @@ func (self *AppChooserWidgetClass) ShowRecommended() bool {
 
 // SetDefaultText sets the text that is shown if there are not applications that
 // can handle the content type.
-func (self *AppChooserWidgetClass) SetDefaultText(text string) {
+func (self *AppChooserWidget) SetDefaultText(text string) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 *C.char                // out
 
@@ -298,7 +274,7 @@ func (self *AppChooserWidgetClass) SetDefaultText(text string) {
 
 // SetShowAll sets whether the app chooser should show all applications in a
 // flat list.
-func (self *AppChooserWidgetClass) SetShowAll(setting bool) {
+func (self *AppChooserWidget) SetShowAll(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
@@ -312,7 +288,7 @@ func (self *AppChooserWidgetClass) SetShowAll(setting bool) {
 
 // SetShowDefault sets whether the app chooser should show the default handler
 // for the content type in a separate section.
-func (self *AppChooserWidgetClass) SetShowDefault(setting bool) {
+func (self *AppChooserWidget) SetShowDefault(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
@@ -326,7 +302,7 @@ func (self *AppChooserWidgetClass) SetShowDefault(setting bool) {
 
 // SetShowFallback sets whether the app chooser should show related applications
 // for the content type in a separate section.
-func (self *AppChooserWidgetClass) SetShowFallback(setting bool) {
+func (self *AppChooserWidget) SetShowFallback(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
@@ -340,7 +316,7 @@ func (self *AppChooserWidgetClass) SetShowFallback(setting bool) {
 
 // SetShowOther sets whether the app chooser should show applications which are
 // unrelated to the content type.
-func (self *AppChooserWidgetClass) SetShowOther(setting bool) {
+func (self *AppChooserWidget) SetShowOther(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 
@@ -354,7 +330,7 @@ func (self *AppChooserWidgetClass) SetShowOther(setting bool) {
 
 // SetShowRecommended sets whether the app chooser should show recommended
 // applications for the content type in a separate section.
-func (self *AppChooserWidgetClass) SetShowRecommended(setting bool) {
+func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
 

@@ -30,15 +30,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_action_get_type()), F: marshalAction},
+		{T: externglib.Type(C.g_action_get_type()), F: marshalActioner},
 	})
 }
 
-// ActionOverrider contains methods that are overridable.
+// ActionerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionOverrider interface {
+type ActionerOverrider interface {
 	// Activate activates the action.
 	//
 	// @parameter must be the correct type of parameter for the action (ie: the
@@ -113,6 +113,20 @@ type ActionOverrider interface {
 	// If the action is not stateful (e.g. created with g_simple_action_new())
 	// then this function will return nil. In that case, g_action_get_state()
 	// will return nil and you must not call g_action_change_state().
+	StateType() *glib.VariantType
+}
+
+// Actioner describes Action's methods.
+type Actioner interface {
+	gextras.Objector
+
+	Activate(parameter *glib.Variant)
+	ChangeState(value *glib.Variant)
+	Enabled() bool
+	Name() string
+	ParameterType() *glib.VariantType
+	State() *glib.Variant
+	StateHint() *glib.Variant
 	StateType() *glib.VariantType
 }
 
@@ -142,103 +156,22 @@ type ActionOverrider interface {
 //
 // Probably the only useful thing to do with a #GAction is to put it inside of a
 // ActionGroup.
-type Action interface {
-	gextras.Objector
-
-	// Activate activates the action.
-	//
-	// @parameter must be the correct type of parameter for the action (ie: the
-	// parameter type given at construction time). If the parameter type was nil
-	// then @parameter must also be nil.
-	//
-	// If the @parameter GVariant is floating, it is consumed.
-	Activate(parameter *glib.Variant)
-	// ChangeState: request for the state of @action to be changed to @value.
-	//
-	// The action must be stateful and @value must be of the correct type. See
-	// g_action_get_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
-	// g_action_get_state_hint().
-	//
-	// If the @value GVariant is floating, it is consumed.
-	ChangeState(value *glib.Variant)
-	// Enabled checks if @action is currently enabled.
-	//
-	// An action must be enabled in order to be activated or in order to have
-	// its state changed from outside callers.
-	Enabled() bool
-	// Name queries the name of @action.
-	Name() string
-	// ParameterType queries the type of the parameter that must be given when
-	// activating @action.
-	//
-	// When activating the action using g_action_activate(), the #GVariant given
-	// to that function must be of the type returned by this function.
-	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
-	ParameterType() *glib.VariantType
-	// State queries the current state of @action.
-	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
-	// g_action_get_state_type().
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	State() *glib.Variant
-	// StateHint requests a hint about the valid range of values for the state
-	// of @action.
-	//
-	// If nil is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	StateHint() *glib.Variant
-	// StateType queries the type of the state of @action.
-	//
-	// If the action is stateful (e.g. created with
-	// g_simple_action_new_stateful()) then this function returns the Type of
-	// the state. This is the type of the initial value given as the state. All
-	// calls to g_action_change_state() must give a #GVariant of this type and
-	// g_action_get_state() will return a #GVariant of the same type.
-	//
-	// If the action is not stateful (e.g. created with g_simple_action_new())
-	// then this function will return nil. In that case, g_action_get_state()
-	// will return nil and you must not call g_action_change_state().
-	StateType() *glib.VariantType
-}
-
-// ActionIface implements the Action interface.
-type ActionIface struct {
+type Action struct {
 	*externglib.Object
 }
 
-var _ Action = (*ActionIface)(nil)
+var _ Actioner = (*Action)(nil)
 
-func wrapAction(obj *externglib.Object) Action {
-	return &ActionIface{
+func wrapActioner(obj *externglib.Object) Actioner {
+	return &Action{
 		Object: obj,
 	}
 }
 
-func marshalAction(p uintptr) (interface{}, error) {
+func marshalActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAction(obj), nil
+	return wrapActioner(obj), nil
 }
 
 // Activate activates the action.
@@ -248,7 +181,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 // then @parameter must also be nil.
 //
 // If the @parameter GVariant is floating, it is consumed.
-func (action *ActionIface) Activate(parameter *glib.Variant) {
+func (action *Action) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
@@ -268,7 +201,7 @@ func (action *ActionIface) Activate(parameter *glib.Variant) {
 // g_action_get_state_hint().
 //
 // If the @value GVariant is floating, it is consumed.
-func (action *ActionIface) ChangeState(value *glib.Variant) {
+func (action *Action) ChangeState(value *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
@@ -282,7 +215,7 @@ func (action *ActionIface) ChangeState(value *glib.Variant) {
 //
 // An action must be enabled in order to be activated or in order to have its
 // state changed from outside callers.
-func (action *ActionIface) Enabled() bool {
+func (action *Action) Enabled() bool {
 	var _arg0 *C.GAction // out
 	var _cret C.gboolean // in
 
@@ -300,7 +233,7 @@ func (action *ActionIface) Enabled() bool {
 }
 
 // Name queries the name of @action.
-func (action *ActionIface) Name() string {
+func (action *Action) Name() string {
 	var _arg0 *C.GAction // out
 	var _cret *C.gchar   // in
 
@@ -323,7 +256,7 @@ func (action *ActionIface) Name() string {
 //
 // In the case that this function returns nil, you must not give any #GVariant,
 // but nil instead.
-func (action *ActionIface) ParameterType() *glib.VariantType {
+func (action *Action) ParameterType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 
@@ -346,7 +279,7 @@ func (action *ActionIface) ParameterType() *glib.VariantType {
 //
 // The return value (if non-nil) should be freed with g_variant_unref() when it
 // is no longer required.
-func (action *ActionIface) State() *glib.Variant {
+func (action *Action) State() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
@@ -382,7 +315,7 @@ func (action *ActionIface) State() *glib.Variant {
 //
 // The return value (if non-nil) should be freed with g_variant_unref() when it
 // is no longer required.
-func (action *ActionIface) StateHint() *glib.Variant {
+func (action *Action) StateHint() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
@@ -412,7 +345,7 @@ func (action *ActionIface) StateHint() *glib.Variant {
 // If the action is not stateful (e.g. created with g_simple_action_new()) then
 // this function will return nil. In that case, g_action_get_state() will return
 // nil and you must not call g_action_change_state().
-func (action *ActionIface) StateType() *glib.VariantType {
+func (action *Action) StateType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 

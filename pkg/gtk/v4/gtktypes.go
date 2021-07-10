@@ -42,12 +42,6 @@ type Bitset struct {
 	native C.GtkBitset
 }
 
-// WrapBitset wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBitset(ptr unsafe.Pointer) *Bitset {
-	return (*Bitset)(ptr)
-}
-
 func marshalBitset(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Bitset)(unsafe.Pointer(b)), nil

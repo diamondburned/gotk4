@@ -28,52 +28,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_zlib_compressor_get_type()), F: marshalZlibCompressor},
+		{T: externglib.Type(C.g_zlib_compressor_get_type()), F: marshalZlibCompressorrer},
 	})
 }
 
-// ZlibCompressor: zlib decompression
-type ZlibCompressor interface {
+// ZlibCompressorrer describes ZlibCompressor's methods.
+type ZlibCompressorrer interface {
 	gextras.Objector
 
-	// FileInfo returns the Compressor:file-info property.
-	FileInfo() *FileInfoClass
-	// SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's
-	// Compressor:format property is G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be
-	// used to set the file name and modification time in the GZIP header of the
-	// compressed data.
-	//
-	// Note: it is an error to call this function while a compression is in
-	// progress; it may only be called immediately after creation of
-	// @compressor, or after resetting it with g_converter_reset().
-	SetFileInfo(fileInfo FileInfo)
+	FileInfo() *FileInfo
+	SetFileInfo(fileInfo FileInfoer)
 }
 
-// ZlibCompressorClass implements the ZlibCompressor interface.
-type ZlibCompressorClass struct {
+// ZlibCompressor: zlib decompression
+type ZlibCompressor struct {
 	*externglib.Object
-	ConverterIface
+	Converter
 }
 
-var _ ZlibCompressor = (*ZlibCompressorClass)(nil)
+var _ ZlibCompressorrer = (*ZlibCompressor)(nil)
 
-func wrapZlibCompressor(obj *externglib.Object) ZlibCompressor {
-	return &ZlibCompressorClass{
+func wrapZlibCompressorrer(obj *externglib.Object) ZlibCompressorrer {
+	return &ZlibCompressor{
 		Object: obj,
-		ConverterIface: ConverterIface{
+		Converter: Converter{
 			Object: obj,
 		},
 	}
 }
 
-func marshalZlibCompressor(p uintptr) (interface{}, error) {
+func marshalZlibCompressorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapZlibCompressor(obj), nil
+	return wrapZlibCompressorrer(obj), nil
 }
 
 // FileInfo returns the Compressor:file-info property.
-func (compressor *ZlibCompressorClass) FileInfo() *FileInfoClass {
+func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 	var _arg0 *C.GZlibCompressor // out
 	var _cret *C.GFileInfo       // in
 
@@ -81,9 +72,9 @@ func (compressor *ZlibCompressorClass) FileInfo() *FileInfoClass {
 
 	_cret = C.g_zlib_compressor_get_file_info(_arg0)
 
-	var _fileInfo *FileInfoClass // out
+	var _fileInfo *FileInfo // out
 
-	_fileInfo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileInfoClass)
+	_fileInfo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileInfo)
 
 	return _fileInfo
 }
@@ -96,7 +87,7 @@ func (compressor *ZlibCompressorClass) FileInfo() *FileInfoClass {
 // Note: it is an error to call this function while a compression is in
 // progress; it may only be called immediately after creation of @compressor, or
 // after resetting it with g_converter_reset().
-func (compressor *ZlibCompressorClass) SetFileInfo(fileInfo FileInfo) {
+func (compressor *ZlibCompressor) SetFileInfo(fileInfo FileInfoer) {
 	var _arg0 *C.GZlibCompressor // out
 	var _arg1 *C.GFileInfo       // out
 

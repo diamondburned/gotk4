@@ -20,8 +20,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_target_async_get_type()), F: marshalDropTargetAsync},
+		{T: externglib.Type(C.gtk_drop_target_async_get_type()), F: marshalDropTargetAsyncer},
 	})
+}
+
+// DropTargetAsyncer describes DropTargetAsync's methods.
+type DropTargetAsyncer interface {
+	gextras.Objector
+
+	Actions() gdk.DragAction
+	Formats() *gdk.ContentFormats
+	RejectDrop(drop gdk.Dropper)
+	SetFormats(formats *gdk.ContentFormats)
 }
 
 // DropTargetAsync: `GtkDropTargetAsync` is an event controller to receive
@@ -57,47 +67,28 @@ func init() {
 // Between the ::drag-enter and ::drag-leave signals the widget is a current
 // drop target, and will receive the GTK_STATE_FLAG_DROP_ACTIVE state, which can
 // be used by themes to style the widget as a drop target.
-type DropTargetAsync interface {
-	gextras.Objector
-
-	// Actions gets the actions that this drop target supports.
-	Actions() gdk.DragAction
-	// Formats gets the data formats that this drop target accepts.
-	//
-	// If the result is nil, all formats are expected to be supported.
-	Formats() *gdk.ContentFormats
-	// RejectDrop sets the @drop as not accepted on this drag site.
-	//
-	// This function should be used when delaying the decision on whether to
-	// accept a drag or not until after reading the data.
-	RejectDrop(drop gdk.Drop)
-	// SetFormats sets the data formats that this drop target will accept.
-	SetFormats(formats *gdk.ContentFormats)
+type DropTargetAsync struct {
+	EventController
 }
 
-// DropTargetAsyncClass implements the DropTargetAsync interface.
-type DropTargetAsyncClass struct {
-	EventControllerClass
-}
+var _ DropTargetAsyncer = (*DropTargetAsync)(nil)
 
-var _ DropTargetAsync = (*DropTargetAsyncClass)(nil)
-
-func wrapDropTargetAsync(obj *externglib.Object) DropTargetAsync {
-	return &DropTargetAsyncClass{
-		EventControllerClass: EventControllerClass{
+func wrapDropTargetAsyncer(obj *externglib.Object) DropTargetAsyncer {
+	return &DropTargetAsync{
+		EventController: EventController{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDropTargetAsync(p uintptr) (interface{}, error) {
+func marshalDropTargetAsyncer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropTargetAsync(obj), nil
+	return wrapDropTargetAsyncer(obj), nil
 }
 
 // Actions gets the actions that this drop target supports.
-func (self *DropTargetAsyncClass) Actions() gdk.DragAction {
+func (self *DropTargetAsync) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _cret C.GdkDragAction       // in
 
@@ -115,7 +106,7 @@ func (self *DropTargetAsyncClass) Actions() gdk.DragAction {
 // Formats gets the data formats that this drop target accepts.
 //
 // If the result is nil, all formats are expected to be supported.
-func (self *DropTargetAsyncClass) Formats() *gdk.ContentFormats {
+func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -138,7 +129,7 @@ func (self *DropTargetAsyncClass) Formats() *gdk.ContentFormats {
 //
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
-func (self *DropTargetAsyncClass) RejectDrop(drop gdk.Drop) {
+func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkDrop            // out
 
@@ -149,7 +140,7 @@ func (self *DropTargetAsyncClass) RejectDrop(drop gdk.Drop) {
 }
 
 // SetFormats sets the data formats that this drop target will accept.
-func (self *DropTargetAsyncClass) SetFormats(formats *gdk.ContentFormats) {
+func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkContentFormats  // out
 

@@ -48,12 +48,6 @@ type ContentFormatsBuilder struct {
 	native C.GdkContentFormatsBuilder
 }
 
-// WrapContentFormatsBuilder wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapContentFormatsBuilder(ptr unsafe.Pointer) *ContentFormatsBuilder {
-	return (*ContentFormatsBuilder)(ptr)
-}
-
 func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*ContentFormatsBuilder)(unsafe.Pointer(b)), nil

@@ -21,69 +21,69 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_button_accessible_get_type()), F: marshalRadioButtonAccessible},
+		{T: externglib.Type(C.gtk_radio_button_accessible_get_type()), F: marshalRadioButtonAccessibler},
 	})
 }
 
-type RadioButtonAccessible interface {
+// RadioButtonAccessibler describes RadioButtonAccessible's methods.
+type RadioButtonAccessibler interface {
 	gextras.Objector
 
-	privateRadioButtonAccessibleClass()
+	privateRadioButtonAccessible()
 }
 
-// RadioButtonAccessibleClass implements the RadioButtonAccessible interface.
-type RadioButtonAccessibleClass struct {
+type RadioButtonAccessible struct {
 	*externglib.Object
-	ToggleButtonAccessibleClass
-	atk.ActionIface
-	atk.ImageIface
+	ToggleButtonAccessible
+	atk.Action
+	atk.Image
 }
 
-var _ RadioButtonAccessible = (*RadioButtonAccessibleClass)(nil)
+var _ RadioButtonAccessibler = (*RadioButtonAccessible)(nil)
 
-func wrapRadioButtonAccessible(obj *externglib.Object) RadioButtonAccessible {
-	return &RadioButtonAccessibleClass{
+func wrapRadioButtonAccessibler(obj *externglib.Object) RadioButtonAccessibler {
+	return &RadioButtonAccessible{
 		Object: obj,
-		ToggleButtonAccessibleClass: ToggleButtonAccessibleClass{
+		ToggleButtonAccessible: ToggleButtonAccessible{
 			Object: obj,
-			ButtonAccessibleClass: ButtonAccessibleClass{
+			ButtonAccessible: ButtonAccessible{
 				Object: obj,
-				ContainerAccessibleClass: ContainerAccessibleClass{
-					WidgetAccessibleClass: WidgetAccessibleClass{
-						AccessibleClass: AccessibleClass{
-							ObjectClass: atk.ObjectClass{
+				ContainerAccessible: ContainerAccessible{
+					WidgetAccessible: WidgetAccessible{
+						Accessible: Accessible{
+							Object: atk.Object{
 								Object: obj,
 							},
 						},
 					},
 				},
-				ActionIface: atk.ActionIface{
+				Action: atk.Action{
 					Object: obj,
 				},
-				ImageIface: atk.ImageIface{
+				Image: atk.Image{
 					Object: obj,
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
-			ImageIface: atk.ImageIface{
+			Image: atk.Image{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRadioButtonAccessible(p uintptr) (interface{}, error) {
+func marshalRadioButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioButtonAccessible(obj), nil
+	return wrapRadioButtonAccessibler(obj), nil
 }
 
-func (*RadioButtonAccessibleClass) privateRadioButtonAccessibleClass() {}
+func (*RadioButtonAccessible) privateRadioButtonAccessible() {}

@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
-		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePad},
+		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePadder},
 	})
 }
 
@@ -39,6 +39,14 @@ func marshalDevicePadFeature(p uintptr) (interface{}, error) {
 	return DevicePadFeature(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// DevicePadder describes DevicePad's methods.
+type DevicePadder interface {
+	gextras.Objector
+
+	GroupNModes(groupIdx int) int
+	NGroups() int
+}
+
 // DevicePad: `GdkDevicePad` is an interface implemented by devices of type
 // GDK_SOURCE_TABLET_PAD
 //
@@ -56,41 +64,28 @@ func marshalDevicePadFeature(p uintptr) (interface{}, error) {
 // modes. The number of available modes in a group can be found out through
 // [method@Gdk.DevicePad.get_group_n_modes], and the current mode for a given
 // group will be notified through events of type K_PAD_GROUP_MODE.
-type DevicePad interface {
-	gextras.Objector
-
-	// GroupNModes returns the number of modes that @group may have.
-	GroupNModes(groupIdx int) int
-	// NGroups returns the number of groups this pad device has.
-	//
-	// Pads have at least one group. A pad group is a subcollection of
-	// buttons/strip/rings that is affected collectively by a same current mode.
-	NGroups() int
+type DevicePad struct {
+	Device
 }
 
-// DevicePadIface implements the DevicePad interface.
-type DevicePadIface struct {
-	DeviceClass
-}
+var _ DevicePadder = (*DevicePad)(nil)
 
-var _ DevicePad = (*DevicePadIface)(nil)
-
-func wrapDevicePad(obj *externglib.Object) DevicePad {
-	return &DevicePadIface{
-		DeviceClass: DeviceClass{
+func wrapDevicePadder(obj *externglib.Object) DevicePadder {
+	return &DevicePad{
+		Device: Device{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDevicePad(p uintptr) (interface{}, error) {
+func marshalDevicePadder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDevicePad(obj), nil
+	return wrapDevicePadder(obj), nil
 }
 
 // GroupNModes returns the number of modes that @group may have.
-func (pad *DevicePadIface) GroupNModes(groupIdx int) int {
+func (pad *DevicePad) GroupNModes(groupIdx int) int {
 	var _arg0 *C.GdkDevicePad // out
 	var _arg1 C.int           // out
 	var _cret C.int           // in
@@ -111,7 +106,7 @@ func (pad *DevicePadIface) GroupNModes(groupIdx int) int {
 //
 // Pads have at least one group. A pad group is a subcollection of
 // buttons/strip/rings that is affected collectively by a same current mode.
-func (pad *DevicePadIface) NGroups() int {
+func (pad *DevicePad) NGroups() int {
 	var _arg0 *C.GdkDevicePad // out
 	var _cret C.int           // in
 

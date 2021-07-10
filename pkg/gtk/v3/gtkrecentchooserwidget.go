@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_chooser_widget_get_type()), F: marshalRecentChooserWidget},
+		{T: externglib.Type(C.gtk_recent_chooser_widget_get_type()), F: marshalRecentChooserWidgetter},
 	})
+}
+
+// RecentChooserWidgetter describes RecentChooserWidget's methods.
+type RecentChooserWidgetter interface {
+	gextras.Objector
+
+	privateRecentChooserWidget()
 }
 
 // RecentChooserWidget is a widget suitable for selecting recently used files.
@@ -33,78 +40,71 @@ func init() {
 // you should use the functions that work on a RecentChooser.
 //
 // Recently used files are supported since GTK+ 2.10.
-type RecentChooserWidget interface {
-	gextras.Objector
-
-	privateRecentChooserWidgetClass()
-}
-
-// RecentChooserWidgetClass implements the RecentChooserWidget interface.
-type RecentChooserWidgetClass struct {
+type RecentChooserWidget struct {
 	*externglib.Object
-	BoxClass
-	BuildableIface
-	OrientableIface
-	RecentChooserIface
+	Box
+	Buildable
+	Orientable
+	RecentChooser
 }
 
-var _ RecentChooserWidget = (*RecentChooserWidgetClass)(nil)
+var _ RecentChooserWidgetter = (*RecentChooserWidget)(nil)
 
-func wrapRecentChooserWidget(obj *externglib.Object) RecentChooserWidget {
-	return &RecentChooserWidgetClass{
+func wrapRecentChooserWidgetter(obj *externglib.Object) RecentChooserWidgetter {
+	return &RecentChooserWidget{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
-		RecentChooserIface: RecentChooserIface{
+		RecentChooser: RecentChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
+func marshalRecentChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooserWidget(obj), nil
+	return wrapRecentChooserWidgetter(obj), nil
 }
 
 // NewRecentChooserWidget creates a new RecentChooserWidget object. This is an
 // embeddable widget used to access the recently used resources list.
-func NewRecentChooserWidget() *RecentChooserWidgetClass {
+func NewRecentChooserWidget() *RecentChooserWidget {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_recent_chooser_widget_new()
 
-	var _recentChooserWidget *RecentChooserWidgetClass // out
+	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserWidgetClass)
+	_recentChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserWidget)
 
 	return _recentChooserWidget
 }
@@ -114,7 +114,7 @@ func NewRecentChooserWidget() *RecentChooserWidgetClass {
 //
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object.
-func NewRecentChooserWidgetForManager(manager RecentManager) *RecentChooserWidgetClass {
+func NewRecentChooserWidgetForManager(manager RecentManagerrer) *RecentChooserWidget {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
@@ -122,11 +122,11 @@ func NewRecentChooserWidgetForManager(manager RecentManager) *RecentChooserWidge
 
 	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
 
-	var _recentChooserWidget *RecentChooserWidgetClass // out
+	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserWidgetClass)
+	_recentChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserWidget)
 
 	return _recentChooserWidget
 }
 
-func (*RecentChooserWidgetClass) privateRecentChooserWidgetClass() {}
+func (*RecentChooserWidget) privateRecentChooserWidget() {}

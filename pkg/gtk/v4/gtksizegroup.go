@@ -18,8 +18,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_size_group_get_type()), F: marshalSizeGroup},
+		{T: externglib.Type(C.gtk_size_group_get_type()), F: marshalSizeGrouper},
 	})
+}
+
+// SizeGrouper describes SizeGroup's methods.
+type SizeGrouper interface {
+	gextras.Objector
+
+	AddWidget(widget Widgetter)
+	Mode() SizeGroupMode
+	RemoveWidget(widget Widgetter)
 }
 
 // SizeGroup: `GtkSizeGroup` groups widgets together so they all request the
@@ -79,47 +88,26 @@ func init() {
 // An example of a UI definition fragment with `GtkSizeGroup`: “`xml <object
 // class="GtkSizeGroup"> <property name="mode">horizontal</property> <widgets>
 // <widget name="radio1"/> <widget name="radio2"/> </widgets> </object> “`
-type SizeGroup interface {
-	gextras.Objector
-
-	// AddWidget adds a widget to a `GtkSizeGroup`.
-	//
-	// In the future, the requisition of the widget will be determined as the
-	// maximum of its requisition and the requisition of the other widgets in
-	// the size group. Whether this applies horizontally, vertically, or in both
-	// directions depends on the mode of the size group. See
-	// [method@Gtk.SizeGroup.set_mode].
-	//
-	// When the widget is destroyed or no longer referenced elsewhere, it will
-	// be removed from the size group.
-	AddWidget(widget Widget)
-	// Mode gets the current mode of the size group.
-	Mode() SizeGroupMode
-	// RemoveWidget removes a widget from a `GtkSizeGroup`.
-	RemoveWidget(widget Widget)
-}
-
-// SizeGroupClass implements the SizeGroup interface.
-type SizeGroupClass struct {
+type SizeGroup struct {
 	*externglib.Object
-	BuildableIface
+	Buildable
 }
 
-var _ SizeGroup = (*SizeGroupClass)(nil)
+var _ SizeGrouper = (*SizeGroup)(nil)
 
-func wrapSizeGroup(obj *externglib.Object) SizeGroup {
-	return &SizeGroupClass{
+func wrapSizeGrouper(obj *externglib.Object) SizeGrouper {
+	return &SizeGroup{
 		Object: obj,
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSizeGroup(p uintptr) (interface{}, error) {
+func marshalSizeGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSizeGroup(obj), nil
+	return wrapSizeGrouper(obj), nil
 }
 
 // AddWidget adds a widget to a `GtkSizeGroup`.
@@ -132,7 +120,7 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
-func (sizeGroup *SizeGroupClass) AddWidget(widget Widget) {
+func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -143,7 +131,7 @@ func (sizeGroup *SizeGroupClass) AddWidget(widget Widget) {
 }
 
 // Mode gets the current mode of the size group.
-func (sizeGroup *SizeGroupClass) Mode() SizeGroupMode {
+func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _cret C.GtkSizeGroupMode // in
 
@@ -159,7 +147,7 @@ func (sizeGroup *SizeGroupClass) Mode() SizeGroupMode {
 }
 
 // RemoveWidget removes a widget from a `GtkSizeGroup`.
-func (sizeGroup *SizeGroupClass) RemoveWidget(widget Widget) {
+func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 

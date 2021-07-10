@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_keymap_get_type()), F: marshalKeymap},
+		{T: externglib.Type(C.gdk_keymap_get_type()), F: marshalKeymapper},
 	})
 }
 
@@ -184,73 +184,47 @@ func UnicodeToKeyval(wc uint32) uint {
 	return _guint
 }
 
+// Keymapper describes Keymap's methods.
+type Keymapper interface {
+	gextras.Objector
+
+	CapsLockState() bool
+	Direction() pango.Direction
+	EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool)
+	EntriesForKeyval(keyval uint) ([]KeymapKey, bool)
+	ModifierState() uint
+	NumLockState() bool
+	ScrollLockState() bool
+	HaveBidiLayouts() bool
+	LookupKey(key *KeymapKey) uint
+}
+
 // Keymap defines the translation from keyboard state (including a hardware key,
 // a modifier mask, and active keyboard group) to a keyval. This translation has
 // two phases. The first phase is to determine the effective keyboard group and
 // level for the keyboard state; the second phase is to look up the
 // keycode/group/level triplet in the keymap and see what keyval it corresponds
 // to.
-type Keymap interface {
-	gextras.Objector
-
-	// CapsLockState returns whether the Caps Lock modifer is locked.
-	CapsLockState() bool
-	// Direction returns the direction of effective layout of the keymap.
-	Direction() pango.Direction
-	// EntriesForKeycode returns the keyvals bound to @hardware_keycode. The Nth
-	// KeymapKey in @keys is bound to the Nth keyval in @keyvals. Free the
-	// returned arrays with g_free(). When a keycode is pressed by the user, the
-	// keyval from this list of entries is selected by considering the effective
-	// keyboard group and level. See gdk_keymap_translate_keyboard_state().
-	EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool)
-	// EntriesForKeyval obtains a list of keycode/group/level combinations that
-	// will generate @keyval. Groups and levels are two kinds of keyboard mode;
-	// in general, the level determines whether the top or bottom symbol on a
-	// key is used, and the group determines whether the left or right symbol is
-	// used. On US keyboards, the shift key changes the keyboard level, and
-	// there are no groups. A group switch key might convert a keyboard between
-	// Hebrew to English modes, for example. EventKey contains a group field
-	// that indicates the active keyboard group. The level is computed from the
-	// modifier mask. The returned array should be freed with g_free().
-	EntriesForKeyval(keyval uint) ([]KeymapKey, bool)
-	// ModifierState returns the current modifier state.
-	ModifierState() uint
-	// NumLockState returns whether the Num Lock modifer is locked.
-	NumLockState() bool
-	// ScrollLockState returns whether the Scroll Lock modifer is locked.
-	ScrollLockState() bool
-	// HaveBidiLayouts determines if keyboard layouts for both right-to-left and
-	// left-to-right languages are in use.
-	HaveBidiLayouts() bool
-	// LookupKey looks up the keyval mapped to a keycode/group/level triplet. If
-	// no keyval is bound to @key, returns 0. For normal user input, you want to
-	// use gdk_keymap_translate_keyboard_state() instead of this function, since
-	// the effective group/level may not be the same as the current keyboard
-	// state.
-	LookupKey(key *KeymapKey) uint
-}
-
-// KeymapClass implements the Keymap interface.
-type KeymapClass struct {
+type Keymap struct {
 	*externglib.Object
 }
 
-var _ Keymap = (*KeymapClass)(nil)
+var _ Keymapper = (*Keymap)(nil)
 
-func wrapKeymap(obj *externglib.Object) Keymap {
-	return &KeymapClass{
+func wrapKeymapper(obj *externglib.Object) Keymapper {
+	return &Keymap{
 		Object: obj,
 	}
 }
 
-func marshalKeymap(p uintptr) (interface{}, error) {
+func marshalKeymapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapKeymap(obj), nil
+	return wrapKeymapper(obj), nil
 }
 
 // CapsLockState returns whether the Caps Lock modifer is locked.
-func (keymap *KeymapClass) CapsLockState() bool {
+func (keymap *Keymap) CapsLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
@@ -268,7 +242,7 @@ func (keymap *KeymapClass) CapsLockState() bool {
 }
 
 // Direction returns the direction of effective layout of the keymap.
-func (keymap *KeymapClass) Direction() pango.Direction {
+func (keymap *Keymap) Direction() pango.Direction {
 	var _arg0 *C.GdkKeymap     // out
 	var _cret C.PangoDirection // in
 
@@ -288,7 +262,7 @@ func (keymap *KeymapClass) Direction() pango.Direction {
 // arrays with g_free(). When a keycode is pressed by the user, the keyval from
 // this list of entries is selected by considering the effective keyboard group
 // and level. See gdk_keymap_translate_keyboard_state().
-func (keymap *KeymapClass) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
+func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GdkKeymapKey
@@ -329,7 +303,7 @@ func (keymap *KeymapClass) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey,
 // modes, for example. EventKey contains a group field that indicates the active
 // keyboard group. The level is computed from the modifier mask. The returned
 // array should be freed with g_free().
-func (keymap *KeymapClass) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
+func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GdkKeymapKey
@@ -356,7 +330,7 @@ func (keymap *KeymapClass) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 }
 
 // ModifierState returns the current modifier state.
-func (keymap *KeymapClass) ModifierState() uint {
+func (keymap *Keymap) ModifierState() uint {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.guint      // in
 
@@ -372,7 +346,7 @@ func (keymap *KeymapClass) ModifierState() uint {
 }
 
 // NumLockState returns whether the Num Lock modifer is locked.
-func (keymap *KeymapClass) NumLockState() bool {
+func (keymap *Keymap) NumLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
@@ -390,7 +364,7 @@ func (keymap *KeymapClass) NumLockState() bool {
 }
 
 // ScrollLockState returns whether the Scroll Lock modifer is locked.
-func (keymap *KeymapClass) ScrollLockState() bool {
+func (keymap *Keymap) ScrollLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
@@ -409,7 +383,7 @@ func (keymap *KeymapClass) ScrollLockState() bool {
 
 // HaveBidiLayouts determines if keyboard layouts for both right-to-left and
 // left-to-right languages are in use.
-func (keymap *KeymapClass) HaveBidiLayouts() bool {
+func (keymap *Keymap) HaveBidiLayouts() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
@@ -430,7 +404,7 @@ func (keymap *KeymapClass) HaveBidiLayouts() bool {
 // keyval is bound to @key, returns 0. For normal user input, you want to use
 // gdk_keymap_translate_keyboard_state() instead of this function, since the
 // effective group/level may not be the same as the current keyboard state.
-func (keymap *KeymapClass) LookupKey(key *KeymapKey) uint {
+func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 *C.GdkKeymapKey // out
 	var _cret C.guint         // in
@@ -450,12 +424,6 @@ func (keymap *KeymapClass) LookupKey(key *KeymapKey) uint {
 // KeymapKey is a hardware key that can be mapped to a keyval.
 type KeymapKey struct {
 	native C.GdkKeymapKey
-}
-
-// WrapKeymapKey wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
-	return (*KeymapKey)(ptr)
 }
 
 // Native returns the underlying C source pointer.

@@ -21,57 +21,57 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_image_cell_accessible_get_type()), F: marshalImageCellAccessible},
+		{T: externglib.Type(C.gtk_image_cell_accessible_get_type()), F: marshalImageCellAccessibler},
 	})
 }
 
-type ImageCellAccessible interface {
+// ImageCellAccessibler describes ImageCellAccessible's methods.
+type ImageCellAccessibler interface {
 	gextras.Objector
 
-	privateImageCellAccessibleClass()
+	privateImageCellAccessible()
 }
 
-// ImageCellAccessibleClass implements the ImageCellAccessible interface.
-type ImageCellAccessibleClass struct {
+type ImageCellAccessible struct {
 	*externglib.Object
-	RendererCellAccessibleClass
-	atk.ActionIface
-	atk.ImageIface
+	RendererCellAccessible
+	atk.Action
+	atk.Image
 }
 
-var _ ImageCellAccessible = (*ImageCellAccessibleClass)(nil)
+var _ ImageCellAccessibler = (*ImageCellAccessible)(nil)
 
-func wrapImageCellAccessible(obj *externglib.Object) ImageCellAccessible {
-	return &ImageCellAccessibleClass{
+func wrapImageCellAccessibler(obj *externglib.Object) ImageCellAccessibler {
+	return &ImageCellAccessible{
 		Object: obj,
-		RendererCellAccessibleClass: RendererCellAccessibleClass{
-			CellAccessibleClass: CellAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+		RendererCellAccessible: RendererCellAccessible{
+			CellAccessible: CellAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
-				ActionIface: atk.ActionIface{
+				Action: atk.Action{
 					Object: obj,
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalImageCellAccessible(p uintptr) (interface{}, error) {
+func marshalImageCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImageCellAccessible(obj), nil
+	return wrapImageCellAccessibler(obj), nil
 }
 
-func (*ImageCellAccessibleClass) privateImageCellAccessibleClass() {}
+func (*ImageCellAccessible) privateImageCellAccessible() {}

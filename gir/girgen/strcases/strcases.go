@@ -260,3 +260,48 @@ func SnakeNoGo(snake string) string {
 
 	return snake
 }
+
+var vowels = [255]bool{
+	'a': true,
+	'i': true,
+	'u': true,
+	'e': true,
+	'o': true,
+}
+
+// Interfacify appends the -er suffix into the given word to idiomatically
+// adhere to Go's interface naming convention.
+func Interfacify(word string) string {
+	// https://www.englishclub.com/spelling/rules-add-er-est.htm
+	switch {
+	case wordConsonantAndSuffix(word, 'y'):
+		return word[len(word)-1:] + "ier"
+	case wordConsonantAndSuffix(word, 'e'):
+		return word + "r"
+	case wordIsCVC(word):
+		return word + string(word[len(word)-1]) + "er"
+	default:
+		return word + "er"
+	}
+}
+
+// wordConsonantAndSuffix returns true if the word ends with a consonant and the
+// given suffix character.
+func wordConsonantAndSuffix(word string, char byte) bool {
+	if len(word) < 2 {
+		return false
+	}
+
+	last2 := word[len(word)-2:]
+	return !vowels[last2[0]] && last2[1] == char
+}
+
+// wordIsCVC returns true if the given word follows the C+V+C form.
+func wordIsCVC(word string) bool {
+	if len(word) < 3 {
+		return false
+	}
+
+	last3 := word[len(word)-3:]
+	return !vowels[last3[0]] && vowels[last3[1]] && !vowels[last3[2]]
+}

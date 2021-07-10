@@ -28,55 +28,54 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_converter_output_stream_get_type()), F: marshalConverterOutputStream},
+		{T: externglib.Type(C.g_converter_output_stream_get_type()), F: marshalConverterOutputStreamer},
 	})
+}
+
+// ConverterOutputStreamer describes ConverterOutputStream's methods.
+type ConverterOutputStreamer interface {
+	gextras.Objector
+
+	Converter() *Converter
 }
 
 // ConverterOutputStream: converter output stream implements Stream and allows
 // conversion of data of various types during reading.
 //
 // As of GLib 2.34, OutputStream implements OutputStream.
-type ConverterOutputStream interface {
-	gextras.Objector
-
-	// Converter gets the #GConverter that is used by @converter_stream.
-	Converter() *ConverterIface
-}
-
-// ConverterOutputStreamClass implements the ConverterOutputStream interface.
-type ConverterOutputStreamClass struct {
+type ConverterOutputStream struct {
 	*externglib.Object
-	FilterOutputStreamClass
-	PollableOutputStreamIface
+	FilterOutputStream
+	PollableOutputStream
 }
 
-var _ ConverterOutputStream = (*ConverterOutputStreamClass)(nil)
+var _ ConverterOutputStreamer = (*ConverterOutputStream)(nil)
 
-func wrapConverterOutputStream(obj *externglib.Object) ConverterOutputStream {
-	return &ConverterOutputStreamClass{
+func wrapConverterOutputStreamer(obj *externglib.Object) ConverterOutputStreamer {
+	return &ConverterOutputStream{
 		Object: obj,
-		FilterOutputStreamClass: FilterOutputStreamClass{
-			OutputStreamClass: OutputStreamClass{
+		FilterOutputStream: FilterOutputStream{
+			OutputStream: OutputStream{
 				Object: obj,
 			},
 		},
-		PollableOutputStreamIface: PollableOutputStreamIface{
-			OutputStreamClass: OutputStreamClass{
+		PollableOutputStream: PollableOutputStream{
+			OutputStream: OutputStream{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalConverterOutputStream(p uintptr) (interface{}, error) {
+func marshalConverterOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConverterOutputStream(obj), nil
+	return wrapConverterOutputStreamer(obj), nil
 }
 
 // NewConverterOutputStream creates a new converter output stream for the
 // @base_stream.
-func NewConverterOutputStream(baseStream OutputStream, converter Converter) *ConverterOutputStreamClass {
+func NewConverterOutputStream(baseStream OutputStreamer, converter Converterrer) *ConverterOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.GConverter    // out
 	var _cret *C.GOutputStream // in
@@ -86,15 +85,15 @@ func NewConverterOutputStream(baseStream OutputStream, converter Converter) *Con
 
 	_cret = C.g_converter_output_stream_new(_arg1, _arg2)
 
-	var _converterOutputStream *ConverterOutputStreamClass // out
+	var _converterOutputStream *ConverterOutputStream // out
 
-	_converterOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ConverterOutputStreamClass)
+	_converterOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ConverterOutputStream)
 
 	return _converterOutputStream
 }
 
 // Converter gets the #GConverter that is used by @converter_stream.
-func (converterStream *ConverterOutputStreamClass) Converter() *ConverterIface {
+func (converterStream *ConverterOutputStream) Converter() *Converter {
 	var _arg0 *C.GConverterOutputStream // out
 	var _cret *C.GConverter             // in
 
@@ -102,9 +101,9 @@ func (converterStream *ConverterOutputStreamClass) Converter() *ConverterIface {
 
 	_cret = C.g_converter_output_stream_get_converter(_arg0)
 
-	var _converter *ConverterIface // out
+	var _converter *Converter // out
 
-	_converter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ConverterIface)
+	_converter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Converter)
 
 	return _converter
 }

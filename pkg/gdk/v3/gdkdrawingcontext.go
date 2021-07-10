@@ -20,8 +20,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drawing_context_get_type()), F: marshalDrawingContext},
+		{T: externglib.Type(C.gdk_drawing_context_get_type()), F: marshalDrawingContexter},
 	})
+}
+
+// DrawingContexter describes DrawingContext's methods.
+type DrawingContexter interface {
+	gextras.Objector
+
+	CairoContext() *cairo.Context
+	Clip() *cairo.Region
+	Window() *Window
+	IsValid() bool
 }
 
 // DrawingContext is an object that represents the current drawing state of a
@@ -34,41 +44,22 @@ func init() {
 // and will be valid until a call to gdk_window_end_draw_frame().
 //
 // DrawingContext is available since GDK 3.22
-type DrawingContext interface {
-	gextras.Objector
-
-	// CairoContext retrieves a Cairo context to be used to draw on the Window
-	// that created the DrawingContext.
-	//
-	// The returned context is guaranteed to be valid as long as the
-	// DrawingContext is valid, that is between a call to
-	// gdk_window_begin_draw_frame() and gdk_window_end_draw_frame().
-	CairoContext() *cairo.Context
-	// Clip retrieves a copy of the clip region used when creating the @context.
-	Clip() *cairo.Region
-	// Window retrieves the window that created the drawing @context.
-	Window() *WindowClass
-	// IsValid checks whether the given DrawingContext is valid.
-	IsValid() bool
-}
-
-// DrawingContextClass implements the DrawingContext interface.
-type DrawingContextClass struct {
+type DrawingContext struct {
 	*externglib.Object
 }
 
-var _ DrawingContext = (*DrawingContextClass)(nil)
+var _ DrawingContexter = (*DrawingContext)(nil)
 
-func wrapDrawingContext(obj *externglib.Object) DrawingContext {
-	return &DrawingContextClass{
+func wrapDrawingContexter(obj *externglib.Object) DrawingContexter {
+	return &DrawingContext{
 		Object: obj,
 	}
 }
 
-func marshalDrawingContext(p uintptr) (interface{}, error) {
+func marshalDrawingContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrawingContext(obj), nil
+	return wrapDrawingContexter(obj), nil
 }
 
 // CairoContext retrieves a Cairo context to be used to draw on the Window that
@@ -77,7 +68,7 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 // The returned context is guaranteed to be valid as long as the DrawingContext
 // is valid, that is between a call to gdk_window_begin_draw_frame() and
 // gdk_window_end_draw_frame().
-func (context *DrawingContextClass) CairoContext() *cairo.Context {
+func (context *DrawingContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_t           // in
 
@@ -93,7 +84,7 @@ func (context *DrawingContextClass) CairoContext() *cairo.Context {
 }
 
 // Clip retrieves a copy of the clip region used when creating the @context.
-func (context *DrawingContextClass) Clip() *cairo.Region {
+func (context *DrawingContext) Clip() *cairo.Region {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_region_t    // in
 
@@ -112,7 +103,7 @@ func (context *DrawingContextClass) Clip() *cairo.Region {
 }
 
 // Window retrieves the window that created the drawing @context.
-func (context *DrawingContextClass) Window() *WindowClass {
+func (context *DrawingContext) Window() *Window {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.GdkWindow         // in
 
@@ -120,15 +111,15 @@ func (context *DrawingContextClass) Window() *WindowClass {
 
 	_cret = C.gdk_drawing_context_get_window(_arg0)
 
-	var _window *WindowClass // out
+	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
 
 	return _window
 }
 
 // IsValid checks whether the given DrawingContext is valid.
-func (context *DrawingContextClass) IsValid() bool {
+func (context *DrawingContext) IsValid() bool {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret C.gboolean           // in
 

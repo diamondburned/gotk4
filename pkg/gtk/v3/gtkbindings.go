@@ -44,12 +44,6 @@ type BindingArg struct {
 	native C.GtkBindingArg
 }
 
-// WrapBindingArg wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBindingArg(ptr unsafe.Pointer) *BindingArg {
-	return (*BindingArg)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (b *BindingArg) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
@@ -59,12 +53,6 @@ func (b *BindingArg) Native() unsafe.Pointer {
 // represented by a GtkBindingEntry.
 type BindingEntry struct {
 	native C.GtkBindingEntry
-}
-
-// WrapBindingEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBindingEntry(ptr unsafe.Pointer) *BindingEntry {
-	return (*BindingEntry)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -81,12 +69,6 @@ type BindingSet struct {
 	native C.GtkBindingSet
 }
 
-// WrapBindingSet wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBindingSet(ptr unsafe.Pointer) *BindingSet {
-	return (*BindingSet)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (b *BindingSet) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
@@ -96,12 +78,6 @@ func (b *BindingSet) Native() unsafe.Pointer {
 // response to a key press via a signal emission.
 type BindingSignal struct {
 	native C.GtkBindingSignal
-}
-
-// WrapBindingSignal wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBindingSignal(ptr unsafe.Pointer) *BindingSignal {
-	return (*BindingSignal)(ptr)
 }
 
 // Native returns the underlying C source pointer.

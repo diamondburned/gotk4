@@ -34,12 +34,6 @@ type RGBA struct {
 	native C.GdkRGBA
 }
 
-// WrapRGBA wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRGBA(ptr unsafe.Pointer) *RGBA {
-	return (*RGBA)(ptr)
-}
-
 func marshalRGBA(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*RGBA)(unsafe.Pointer(b)), nil
@@ -65,7 +59,7 @@ func (rgba *RGBA) Copy() *RGBA {
 
 	_rgbA = (*RGBA)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
-		C.free(unsafe.Pointer(v))
+		C.gdk_rgba_free((*C.GdkRGBA)(unsafe.Pointer(v)))
 	})
 
 	return _rgbA

@@ -29,8 +29,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_unix_fd_list_get_type()), F: marshalUnixFDList},
+		{T: externglib.Type(C.g_unix_fd_list_get_type()), F: marshalUnixFDLister},
 	})
+}
+
+// UnixFDLister describes UnixFDList's methods.
+type UnixFDLister interface {
+	gextras.Objector
+
+	Append(fd int) (int, error)
+	Get(index_ int) (int, error)
+	Length() int
 }
 
 // UnixFDList contains a list of file descriptors. It owns the file descriptors
@@ -42,67 +51,33 @@ func init() {
 //
 // Note that `<gio/gunixfdlist.h>` belongs to the UNIX-specific GIO interfaces,
 // thus you have to use the `gio-unix-2.0.pc` pkg-config file when using it.
-type UnixFDList interface {
-	gextras.Objector
-
-	// Append adds a file descriptor to @list.
-	//
-	// The file descriptor is duplicated using dup(). You keep your copy of the
-	// descriptor and the copy contained in @list will be closed when @list is
-	// finalized.
-	//
-	// A possible cause of failure is exceeding the per-process or system-wide
-	// file descriptor limit.
-	//
-	// The index of the file descriptor in the list is returned. If you use this
-	// index with g_unix_fd_list_get() then you will receive back a duplicated
-	// copy of the same file descriptor.
-	Append(fd int) (int, error)
-	// Get gets a file descriptor out of @list.
-	//
-	// @index_ specifies the index of the file descriptor to get. It is a
-	// programmer error for @index_ to be out of range; see
-	// g_unix_fd_list_get_length().
-	//
-	// The file descriptor is duplicated using dup() and set as close-on-exec
-	// before being returned. You must call close() on it when you are done.
-	//
-	// A possible cause of failure is exceeding the per-process or system-wide
-	// file descriptor limit.
-	Get(index_ int) (int, error)
-	// Length gets the length of @list (ie: the number of file descriptors
-	// contained within).
-	Length() int
-}
-
-// UnixFDListClass implements the UnixFDList interface.
-type UnixFDListClass struct {
+type UnixFDList struct {
 	*externglib.Object
 }
 
-var _ UnixFDList = (*UnixFDListClass)(nil)
+var _ UnixFDLister = (*UnixFDList)(nil)
 
-func wrapUnixFDList(obj *externglib.Object) UnixFDList {
-	return &UnixFDListClass{
+func wrapUnixFDLister(obj *externglib.Object) UnixFDLister {
+	return &UnixFDList{
 		Object: obj,
 	}
 }
 
-func marshalUnixFDList(p uintptr) (interface{}, error) {
+func marshalUnixFDLister(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixFDList(obj), nil
+	return wrapUnixFDLister(obj), nil
 }
 
 // NewUnixFDList creates a new FDList containing no file descriptors.
-func NewUnixFDList() *UnixFDListClass {
+func NewUnixFDList() *UnixFDList {
 	var _cret *C.GUnixFDList // in
 
 	_cret = C.g_unix_fd_list_new()
 
-	var _unixFDList *UnixFDListClass // out
+	var _unixFDList *UnixFDList // out
 
-	_unixFDList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDListClass)
+	_unixFDList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDList)
 
 	return _unixFDList
 }
@@ -114,7 +89,7 @@ func NewUnixFDList() *UnixFDListClass {
 // Each file descriptor in the array should be set to close-on-exec.
 //
 // If @n_fds is -1 then @fds must be terminated with -1.
-func NewUnixFDListFromArray(fds []int) *UnixFDListClass {
+func NewUnixFDListFromArray(fds []int) *UnixFDList {
 	var _arg1 *C.gint
 	var _arg2 C.gint
 	var _cret *C.GUnixFDList // in
@@ -124,9 +99,9 @@ func NewUnixFDListFromArray(fds []int) *UnixFDListClass {
 
 	_cret = C.g_unix_fd_list_new_from_array(_arg1, _arg2)
 
-	var _unixFDList *UnixFDListClass // out
+	var _unixFDList *UnixFDList // out
 
-	_unixFDList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDListClass)
+	_unixFDList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDList)
 
 	return _unixFDList
 }
@@ -143,7 +118,7 @@ func NewUnixFDListFromArray(fds []int) *UnixFDListClass {
 // The index of the file descriptor in the list is returned. If you use this
 // index with g_unix_fd_list_get() then you will receive back a duplicated copy
 // of the same file descriptor.
-func (list *UnixFDListClass) Append(fd int) (int, error) {
+func (list *UnixFDList) Append(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
@@ -173,7 +148,7 @@ func (list *UnixFDListClass) Append(fd int) (int, error) {
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
 // descriptor limit.
-func (list *UnixFDListClass) Get(index_ int) (int, error) {
+func (list *UnixFDList) Get(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
@@ -195,7 +170,7 @@ func (list *UnixFDListClass) Get(index_ int) (int, error) {
 
 // Length gets the length of @list (ie: the number of file descriptors contained
 // within).
-func (list *UnixFDListClass) Length() int {
+func (list *UnixFDList) Length() int {
 	var _arg0 *C.GUnixFDList // out
 	var _cret C.gint         // in
 

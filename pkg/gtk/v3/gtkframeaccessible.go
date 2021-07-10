@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_frame_accessible_get_type()), F: marshalFrameAccessible},
+		{T: externglib.Type(C.gtk_frame_accessible_get_type()), F: marshalFrameAccessibler},
 	})
 }
 
-type FrameAccessible interface {
+// FrameAccessibler describes FrameAccessible's methods.
+type FrameAccessibler interface {
 	gextras.Objector
 
-	privateFrameAccessibleClass()
+	privateFrameAccessible()
 }
 
-// FrameAccessibleClass implements the FrameAccessible interface.
-type FrameAccessibleClass struct {
-	ContainerAccessibleClass
+type FrameAccessible struct {
+	ContainerAccessible
 }
 
-var _ FrameAccessible = (*FrameAccessibleClass)(nil)
+var _ FrameAccessibler = (*FrameAccessible)(nil)
 
-func wrapFrameAccessible(obj *externglib.Object) FrameAccessible {
-	return &FrameAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapFrameAccessibler(obj *externglib.Object) FrameAccessibler {
+	return &FrameAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapFrameAccessible(obj *externglib.Object) FrameAccessible {
 	}
 }
 
-func marshalFrameAccessible(p uintptr) (interface{}, error) {
+func marshalFrameAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFrameAccessible(obj), nil
+	return wrapFrameAccessibler(obj), nil
 }
 
-func (*FrameAccessibleClass) privateFrameAccessibleClass() {}
+func (*FrameAccessible) privateFrameAccessible() {}

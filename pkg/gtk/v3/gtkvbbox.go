@@ -20,90 +20,90 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vbutton_box_get_type()), F: marshalVButtonBox},
+		{T: externglib.Type(C.gtk_vbutton_box_get_type()), F: marshalVButtonBoxxer},
 	})
 }
 
-type VButtonBox interface {
+// VButtonBoxxer describes VButtonBox's methods.
+type VButtonBoxxer interface {
 	gextras.Objector
 
-	privateVButtonBoxClass()
+	privateVButtonBox()
 }
 
-// VButtonBoxClass implements the VButtonBox interface.
-type VButtonBoxClass struct {
+type VButtonBox struct {
 	*externglib.Object
-	ButtonBoxClass
-	BuildableIface
-	OrientableIface
+	ButtonBox
+	Buildable
+	Orientable
 }
 
-var _ VButtonBox = (*VButtonBoxClass)(nil)
+var _ VButtonBoxxer = (*VButtonBox)(nil)
 
-func wrapVButtonBox(obj *externglib.Object) VButtonBox {
-	return &VButtonBoxClass{
+func wrapVButtonBoxxer(obj *externglib.Object) VButtonBoxxer {
+	return &VButtonBox{
 		Object: obj,
-		ButtonBoxClass: ButtonBoxClass{
+		ButtonBox: ButtonBox{
 			Object: obj,
-			BoxClass: BoxClass{
+			Box: Box{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				OrientableIface: OrientableIface{
+				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalVButtonBox(p uintptr) (interface{}, error) {
+func marshalVButtonBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVButtonBox(obj), nil
+	return wrapVButtonBoxxer(obj), nil
 }
 
 // NewVButtonBox creates a new vertical button box.
 //
 // Deprecated: Use gtk_button_box_new() with GTK_ORIENTATION_VERTICAL instead.
-func NewVButtonBox() *VButtonBoxClass {
+func NewVButtonBox() *VButtonBox {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_vbutton_box_new()
 
-	var _vButtonBox *VButtonBoxClass // out
+	var _vButtonBox *VButtonBox // out
 
-	_vButtonBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VButtonBoxClass)
+	_vButtonBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VButtonBox)
 
 	return _vButtonBox
 }
 
-func (*VButtonBoxClass) privateVButtonBoxClass() {}
+func (*VButtonBox) privateVButtonBox() {}

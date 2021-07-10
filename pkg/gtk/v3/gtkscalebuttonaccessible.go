@@ -21,60 +21,60 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scale_button_accessible_get_type()), F: marshalScaleButtonAccessible},
+		{T: externglib.Type(C.gtk_scale_button_accessible_get_type()), F: marshalScaleButtonAccessibler},
 	})
 }
 
-type ScaleButtonAccessible interface {
+// ScaleButtonAccessibler describes ScaleButtonAccessible's methods.
+type ScaleButtonAccessibler interface {
 	gextras.Objector
 
-	privateScaleButtonAccessibleClass()
+	privateScaleButtonAccessible()
 }
 
-// ScaleButtonAccessibleClass implements the ScaleButtonAccessible interface.
-type ScaleButtonAccessibleClass struct {
+type ScaleButtonAccessible struct {
 	*externglib.Object
-	ButtonAccessibleClass
-	atk.ActionIface
-	atk.ImageIface
+	ButtonAccessible
+	atk.Action
+	atk.Image
 }
 
-var _ ScaleButtonAccessible = (*ScaleButtonAccessibleClass)(nil)
+var _ ScaleButtonAccessibler = (*ScaleButtonAccessible)(nil)
 
-func wrapScaleButtonAccessible(obj *externglib.Object) ScaleButtonAccessible {
-	return &ScaleButtonAccessibleClass{
+func wrapScaleButtonAccessibler(obj *externglib.Object) ScaleButtonAccessibler {
+	return &ScaleButtonAccessible{
 		Object: obj,
-		ButtonAccessibleClass: ButtonAccessibleClass{
+		ButtonAccessible: ButtonAccessible{
 			Object: obj,
-			ContainerAccessibleClass: ContainerAccessibleClass{
-				WidgetAccessibleClass: WidgetAccessibleClass{
-					AccessibleClass: AccessibleClass{
-						ObjectClass: atk.ObjectClass{
+			ContainerAccessible: ContainerAccessible{
+				WidgetAccessible: WidgetAccessible{
+					Accessible: Accessible{
+						Object: atk.Object{
 							Object: obj,
 						},
 					},
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
-			ImageIface: atk.ImageIface{
+			Image: atk.Image{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalScaleButtonAccessible(p uintptr) (interface{}, error) {
+func marshalScaleButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScaleButtonAccessible(obj), nil
+	return wrapScaleButtonAccessibler(obj), nil
 }
 
-func (*ScaleButtonAccessibleClass) privateScaleButtonAccessibleClass() {}
+func (*ScaleButtonAccessible) privateScaleButtonAccessible() {}

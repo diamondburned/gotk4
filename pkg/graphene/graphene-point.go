@@ -27,12 +27,6 @@ type Point struct {
 	native C.graphene_point_t
 }
 
-// WrapPoint wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPoint(ptr unsafe.Pointer) *Point {
-	return (*Point)(ptr)
-}
-
 func marshalPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Point)(unsafe.Pointer(b)), nil
@@ -48,7 +42,7 @@ func NewPointAlloc() *Point {
 
 	_point = (*Point)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_point, func(v *Point) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_point_free((*C.graphene_point_t)(unsafe.Pointer(v)))
 	})
 
 	return _point

@@ -28,15 +28,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_password_get_type()), F: marshalTLSPassword},
+		{T: externglib.Type(C.g_tls_password_get_type()), F: marshalTLSPassworder},
 	})
 }
 
-// TLSPasswordOverrider contains methods that are overridable.
+// TLSPassworderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSPasswordOverrider interface {
+type TLSPassworderOverrider interface {
 	DefaultWarning() string
 	// Value: get the password value. If @length is not nil then it will be
 	// filled in with the length of the password value. (Note that the password
@@ -45,63 +45,41 @@ type TLSPasswordOverrider interface {
 	Value(length *uint) *byte
 }
 
-// TLSPassword holds a password used in TLS.
-type TLSPassword interface {
+// TLSPassworder describes TLSPassword's methods.
+type TLSPassworder interface {
 	gextras.Objector
 
-	// Description: get a description string about what the password will be
-	// used for.
 	Description() string
-	// Flags: get flags about the password.
 	Flags() TLSPasswordFlags
-	// Value: get the password value. If @length is not nil then it will be
-	// filled in with the length of the password value. (Note that the password
-	// value is not nul-terminated, so you can only pass nil for @length in
-	// contexts where you know the password will have a certain fixed length.)
 	Value(length *uint) *byte
-	// Warning: get a user readable translated warning. Usually this warning is
-	// a representation of the password flags returned from
-	// g_tls_password_get_flags().
 	Warning() string
-	// SetDescription: set a description string about what the password will be
-	// used for.
 	SetDescription(description string)
-	// SetValue: set the value for this password. The @value will be copied by
-	// the password object.
-	//
-	// Specify the @length, for a non-nul-terminated password. Pass -1 as
-	// @length if using a nul-terminated password, and @length will be
-	// calculated automatically. (Note that the terminating nul is not
-	// considered part of the password in this case.)
 	SetValue(value []byte)
-	// SetWarning: set a user readable translated warning. Usually this warning
-	// is a representation of the password flags returned from
-	// g_tls_password_get_flags().
 	SetWarning(warning string)
 }
 
-// TLSPasswordClass implements the TLSPassword interface.
-type TLSPasswordClass struct {
+// TLSPassword holds a password used in TLS.
+type TLSPassword struct {
 	*externglib.Object
 }
 
-var _ TLSPassword = (*TLSPasswordClass)(nil)
+var _ TLSPassworder = (*TLSPassword)(nil)
 
-func wrapTLSPassword(obj *externglib.Object) TLSPassword {
-	return &TLSPasswordClass{
+func wrapTLSPassworder(obj *externglib.Object) TLSPassworder {
+	return &TLSPassword{
 		Object: obj,
 	}
 }
 
-func marshalTLSPassword(p uintptr) (interface{}, error) {
+func marshalTLSPassworder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSPassword(obj), nil
+	return wrapTLSPassworder(obj), nil
 }
 
 // Description: get a description string about what the password will be used
 // for.
-func (password *TLSPasswordClass) Description() string {
+func (password *TLSPassword) Description() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
 
@@ -117,7 +95,7 @@ func (password *TLSPasswordClass) Description() string {
 }
 
 // Flags: get flags about the password.
-func (password *TLSPasswordClass) Flags() TLSPasswordFlags {
+func (password *TLSPassword) Flags() TLSPasswordFlags {
 	var _arg0 *C.GTlsPassword     // out
 	var _cret C.GTlsPasswordFlags // in
 
@@ -136,7 +114,7 @@ func (password *TLSPasswordClass) Flags() TLSPasswordFlags {
 // in with the length of the password value. (Note that the password value is
 // not nul-terminated, so you can only pass nil for @length in contexts where
 // you know the password will have a certain fixed length.)
-func (password *TLSPasswordClass) Value(length *uint) *byte {
+func (password *TLSPassword) Value(length *uint) *byte {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gsize        // out
 	var _cret *C.guchar       // in
@@ -156,7 +134,7 @@ func (password *TLSPasswordClass) Value(length *uint) *byte {
 // Warning: get a user readable translated warning. Usually this warning is a
 // representation of the password flags returned from
 // g_tls_password_get_flags().
-func (password *TLSPasswordClass) Warning() string {
+func (password *TLSPassword) Warning() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
 
@@ -173,7 +151,7 @@ func (password *TLSPasswordClass) Warning() string {
 
 // SetDescription: set a description string about what the password will be used
 // for.
-func (password *TLSPasswordClass) SetDescription(description string) {
+func (password *TLSPassword) SetDescription(description string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
@@ -191,7 +169,7 @@ func (password *TLSPasswordClass) SetDescription(description string) {
 // using a nul-terminated password, and @length will be calculated
 // automatically. (Note that the terminating nul is not considered part of the
 // password in this case.)
-func (password *TLSPasswordClass) SetValue(value []byte) {
+func (password *TLSPassword) SetValue(value []byte) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
@@ -206,7 +184,7 @@ func (password *TLSPasswordClass) SetValue(value []byte) {
 // SetWarning: set a user readable translated warning. Usually this warning is a
 // representation of the password flags returned from
 // g_tls_password_get_flags().
-func (password *TLSPasswordClass) SetWarning(warning string) {
+func (password *TLSPassword) SetWarning(warning string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 

@@ -18,59 +18,48 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_numeric_sorter_get_type()), F: marshalNumericSorter},
+		{T: externglib.Type(C.gtk_numeric_sorter_get_type()), F: marshalNumericSorterrer},
 	})
+}
+
+// NumericSorterrer describes NumericSorter's methods.
+type NumericSorterrer interface {
+	gextras.Objector
+
+	Expression() *Expression
+	SortOrder() SortType
+	SetExpression(expression Expressioner)
 }
 
 // NumericSorter: `GtkNumericSorter` is a `GtkSorter` that compares numbers.
 //
 // To obtain the numbers to compare, this sorter evaluates a
 // [class@Gtk.Expression].
-type NumericSorter interface {
-	gextras.Objector
-
-	// Expression gets the expression that is evaluated to obtain numbers from
-	// items.
-	Expression() *ExpressionClass
-	// SortOrder gets whether this sorter will sort smaller numbers first.
-	SortOrder() SortType
-	// SetExpression sets the expression that is evaluated to obtain numbers
-	// from items.
-	//
-	// Unless an expression is set on @self, the sorter will always compare
-	// items as invalid.
-	//
-	// The expression must have a return type that can be compared numerically,
-	// such as G_TYPE_INT or G_TYPE_DOUBLE.
-	SetExpression(expression Expression)
+type NumericSorter struct {
+	Sorter
 }
 
-// NumericSorterClass implements the NumericSorter interface.
-type NumericSorterClass struct {
-	SorterClass
-}
+var _ NumericSorterrer = (*NumericSorter)(nil)
 
-var _ NumericSorter = (*NumericSorterClass)(nil)
-
-func wrapNumericSorter(obj *externglib.Object) NumericSorter {
-	return &NumericSorterClass{
-		SorterClass: SorterClass{
+func wrapNumericSorterrer(obj *externglib.Object) NumericSorterrer {
+	return &NumericSorter{
+		Sorter: Sorter{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNumericSorter(p uintptr) (interface{}, error) {
+func marshalNumericSorterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNumericSorter(obj), nil
+	return wrapNumericSorterrer(obj), nil
 }
 
 // NewNumericSorter creates a new numeric sorter using the given @expression.
 //
 // Smaller numbers will be sorted first. You can call
 // [method@Gtk.NumericSorter.set_sort_order] to change this.
-func NewNumericSorter(expression Expression) *NumericSorterClass {
+func NewNumericSorter(expression Expressioner) *NumericSorter {
 	var _arg1 *C.GtkExpression    // out
 	var _cret *C.GtkNumericSorter // in
 
@@ -78,16 +67,16 @@ func NewNumericSorter(expression Expression) *NumericSorterClass {
 
 	_cret = C.gtk_numeric_sorter_new(_arg1)
 
-	var _numericSorter *NumericSorterClass // out
+	var _numericSorter *NumericSorter // out
 
-	_numericSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NumericSorterClass)
+	_numericSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NumericSorter)
 
 	return _numericSorter
 }
 
 // Expression gets the expression that is evaluated to obtain numbers from
 // items.
-func (self *NumericSorterClass) Expression() *ExpressionClass {
+func (self *NumericSorter) Expression() *Expression {
 	var _arg0 *C.GtkNumericSorter // out
 	var _cret *C.GtkExpression    // in
 
@@ -95,15 +84,15 @@ func (self *NumericSorterClass) Expression() *ExpressionClass {
 
 	_cret = C.gtk_numeric_sorter_get_expression(_arg0)
 
-	var _expression *ExpressionClass // out
+	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ExpressionClass)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
 
 	return _expression
 }
 
 // SortOrder gets whether this sorter will sort smaller numbers first.
-func (self *NumericSorterClass) SortOrder() SortType {
+func (self *NumericSorter) SortOrder() SortType {
 	var _arg0 *C.GtkNumericSorter // out
 	var _cret C.GtkSortType       // in
 
@@ -126,7 +115,7 @@ func (self *NumericSorterClass) SortOrder() SortType {
 //
 // The expression must have a return type that can be compared numerically, such
 // as G_TYPE_INT or G_TYPE_DOUBLE.
-func (self *NumericSorterClass) SetExpression(expression Expression) {
+func (self *NumericSorter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkNumericSorter // out
 	var _arg1 *C.GtkExpression    // out
 

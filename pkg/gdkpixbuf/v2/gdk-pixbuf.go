@@ -25,8 +25,40 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuf},
+		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuffer},
 	})
+}
+
+// Pixbuffer describes Pixbuf's methods.
+type Pixbuffer interface {
+	gextras.Objector
+
+	AddAlpha(substituteColor bool, r byte, g byte, b byte) *Pixbuf
+	ApplyEmbeddedOrientation() *Pixbuf
+	Copy() *Pixbuf
+	CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuffer, destX int, destY int)
+	CopyOptions(destPixbuf Pixbuffer) bool
+	Fill(pixel uint32)
+	Flip(horizontal bool) *Pixbuf
+	BitsPerSample() int
+	ByteLength() uint
+	Colorspace() Colorspace
+	HasAlpha() bool
+	Height() int
+	NChannels() int
+	Option(key string) string
+	Options() *glib.HashTable
+	Rowstride() int
+	Width() int
+	NewSubpixbuf(srcX int, srcY int, width int, height int) *Pixbuf
+	ReadPixels() *byte
+	RemoveOption(key string) bool
+	SaturateAndPixelate(dest Pixbuffer, saturation float32, pixelate bool)
+	SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error)
+	SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error
+	SaveToStreamv(stream gio.OutputStreamer, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellabler) error
+	Savev(filename string, typ string, optionKeys []string, optionValues []string) error
+	SetOption(key string, value string) bool
 }
 
 // Pixbuf: pixel buffer.
@@ -153,191 +185,22 @@ func init() {
 // file formats. The formatted data can be written to a file or to a memory
 // buffer. `GdkPixbuf` can also call a user-defined callback on the data, which
 // allows to e.g. write the image to a socket or store it in a database.
-type Pixbuf interface {
-	gextras.Objector
-
-	// AddAlpha takes an existing pixbuf and adds an alpha channel to it.
-	//
-	// If the existing pixbuf already had an alpha channel, the channel values
-	// are copied from the original; otherwise, the alpha channel is initialized
-	// to 255 (full opacity).
-	//
-	// If `substitute_color` is `TRUE`, then the color specified by the (`r`,
-	// `g`, `b`) arguments will be assigned zero opacity. That is, if you pass
-	// `(255, 255, 255)` for the substitute color, all white pixels will become
-	// fully transparent.
-	//
-	// If `substitute_color` is `FALSE`, then the (`r`, `g`, `b`) arguments will
-	// be ignored.
-	AddAlpha(substituteColor bool, r byte, g byte, b byte) *PixbufClass
-	// ApplyEmbeddedOrientation takes an existing pixbuf and checks for the
-	// presence of an associated "orientation" option.
-	//
-	// The orientation option may be provided by the JPEG loader (which reads
-	// the exif orientation tag) or the TIFF loader (which reads the TIFF
-	// orientation tag, and compensates it for the partial transforms performed
-	// by libtiff).
-	//
-	// If an orientation option/tag is present, the appropriate transform will
-	// be performed so that the pixbuf is oriented correctly.
-	ApplyEmbeddedOrientation() *PixbufClass
-	// Copy creates a new `GdkPixbuf` with a copy of the information in the
-	// specified `pixbuf`.
-	//
-	// Note that this does not copy the options set on the original `GdkPixbuf`,
-	// use gdk_pixbuf_copy_options() for this.
-	Copy() *PixbufClass
-	// CopyArea copies a rectangular area from `src_pixbuf` to `dest_pixbuf`.
-	//
-	// Conversion of pixbuf formats is done automatically.
-	//
-	// If the source rectangle overlaps the destination rectangle on the same
-	// pixbuf, it will be overwritten during the copy operation. Therefore, you
-	// can not use this function to scroll a pixbuf.
-	CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int)
-	// CopyOptions copies the key/value pair options attached to a `GdkPixbuf`
-	// to another `GdkPixbuf`.
-	//
-	// This is useful to keep original metadata after having manipulated a file.
-	// However be careful to remove metadata which you've already applied, such
-	// as the "orientation" option after rotating the image.
-	CopyOptions(destPixbuf Pixbuf) bool
-	// Fill clears a pixbuf to the given RGBA value, converting the RGBA value
-	// into the pixbuf's pixel format.
-	//
-	// The alpha component will be ignored if the pixbuf doesn't have an alpha
-	// channel.
-	Fill(pixel uint32)
-	// Flip flips a pixbuf horizontally or vertically and returns the result in
-	// a new pixbuf.
-	Flip(horizontal bool) *PixbufClass
-	// BitsPerSample queries the number of bits per color sample in a pixbuf.
-	BitsPerSample() int
-	// ByteLength returns the length of the pixel data, in bytes.
-	ByteLength() uint
-	// Colorspace queries the color space of a pixbuf.
-	Colorspace() Colorspace
-	// HasAlpha queries whether a pixbuf has an alpha channel (opacity
-	// information).
-	HasAlpha() bool
-	// Height queries the height of a pixbuf.
-	Height() int
-	// NChannels queries the number of channels of a pixbuf.
-	NChannels() int
-	// Option looks up @key in the list of options that may have been attached
-	// to the @pixbuf when it was loaded, or that may have been attached by
-	// another function using gdk_pixbuf_set_option().
-	//
-	// For instance, the ANI loader provides "Title" and "Artist" options. The
-	// ICO, XBM, and XPM loaders provide "x_hot" and "y_hot" hot-spot options
-	// for cursor definitions. The PNG loader provides the tEXt ancillary chunk
-	// key/value pairs as options. Since 2.12, the TIFF and JPEG loaders return
-	// an "orientation" option string that corresponds to the embedded TIFF/Exif
-	// orientation tag (if present). Since 2.32, the TIFF loader sets the
-	// "multipage" option string to "yes" when a multi-page TIFF is loaded.
-	// Since 2.32 the JPEG and PNG loaders set "x-dpi" and "y-dpi" if the file
-	// contains image density information in dots per inch. Since 2.36.6, the
-	// JPEG loader sets the "comment" option with the comment EXIF tag.
-	Option(key string) string
-	// Options returns a `GHashTable` with a list of all the options that may
-	// have been attached to the `pixbuf` when it was loaded, or that may have
-	// been attached by another function using
-	// [method@GdkPixbuf.Pixbuf.set_option].
-	Options() *glib.HashTable
-	// Rowstride queries the rowstride of a pixbuf, which is the number of bytes
-	// between the start of a row and the start of the next row.
-	Rowstride() int
-	// Width queries the width of a pixbuf.
-	Width() int
-	// NewSubpixbuf creates a new pixbuf which represents a sub-region of
-	// `src_pixbuf`.
-	//
-	// The new pixbuf shares its pixels with the original pixbuf, so writing to
-	// one affects both. The new pixbuf holds a reference to `src_pixbuf`, so
-	// `src_pixbuf` will not be finalized until the new pixbuf is finalized.
-	//
-	// Note that if `src_pixbuf` is read-only, this function will force it to be
-	// mutable.
-	NewSubpixbuf(srcX int, srcY int, width int, height int) *PixbufClass
-	// ReadPixels provides a read-only pointer to the raw pixel data.
-	//
-	// This function allows skipping the implicit copy that must be made if
-	// gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
-	ReadPixels() *byte
-	// RemoveOption removes the key/value pair option attached to a `GdkPixbuf`.
-	RemoveOption(key string) bool
-	// SaturateAndPixelate modifies saturation and optionally pixelates `src`,
-	// placing the result in `dest`.
-	//
-	// The `src` and `dest` pixbufs must have the same image format, size, and
-	// rowstride.
-	//
-	// The `src` and `dest` arguments may be the same pixbuf with no ill
-	// effects.
-	//
-	// If `saturation` is 1.0 then saturation is not changed. If it's less than
-	// 1.0, saturation is reduced (the image turns toward grayscale); if greater
-	// than 1.0, saturation is increased (the image gets more vivid colors).
-	//
-	// If `pixelate` is `TRUE`, then pixels are faded in a checkerboard pattern
-	// to create a pixelated image.
-	SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool)
-	// SaveToBufferv: vector version of `gdk_pixbuf_save_to_buffer()`.
-	//
-	// Saves pixbuf to a new buffer in format @type, which is currently "jpeg",
-	// "tiff", "png", "ico" or "bmp".
-	//
-	// See [method@GdkPixbuf.Pixbuf.save_to_buffer] for more details.
-	SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error)
-	// SaveToCallbackv: vector version of `gdk_pixbuf_save_to_callback()`.
-	//
-	// Saves pixbuf to a callback in format @type, which is currently "jpeg",
-	// "png", "tiff", "ico" or "bmp".
-	//
-	// If @error is set, `FALSE` will be returned.
-	//
-	// See [method@GdkPixbuf.Pixbuf.save_to_callback] for more details.
-	SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error
-	// SaveToStreamv saves `pixbuf` to an output stream.
-	//
-	// Supported file formats are currently "jpeg", "tiff", "png", "ico" or
-	// "bmp".
-	//
-	// See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details.
-	SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error
-	// Savev: vector version of `gdk_pixbuf_save()`.
-	//
-	// Saves pixbuf to a file in `type`, which is currently "jpeg", "png",
-	// "tiff", "ico" or "bmp".
-	//
-	// If @error is set, `FALSE` will be returned.
-	//
-	// See [method@GdkPixbuf.Pixbuf.save] for more details.
-	Savev(filename string, typ string, optionKeys []string, optionValues []string) error
-	// SetOption attaches a key/value pair as an option to a `GdkPixbuf`.
-	//
-	// If `key` already exists in the list of options attached to the `pixbuf`,
-	// the new value is ignored and `FALSE` is returned.
-	SetOption(key string, value string) bool
-}
-
-// PixbufClass implements the Pixbuf interface.
-type PixbufClass struct {
+type Pixbuf struct {
 	*externglib.Object
 }
 
-var _ Pixbuf = (*PixbufClass)(nil)
+var _ Pixbuffer = (*Pixbuf)(nil)
 
-func wrapPixbuf(obj *externglib.Object) Pixbuf {
-	return &PixbufClass{
+func wrapPixbuffer(obj *externglib.Object) Pixbuffer {
+	return &Pixbuf{
 		Object: obj,
 	}
 }
 
-func marshalPixbuf(p uintptr) (interface{}, error) {
+func marshalPixbuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbuf(obj), nil
+	return wrapPixbuffer(obj), nil
 }
 
 // NewPixbufFromFile creates a new pixbuf by loading an image from a file.
@@ -352,7 +215,7 @@ func marshalPixbuf(p uintptr) (interface{}, error) {
 //    - the image buffer contains invalid data
 //
 // The error domains are `GDK_PIXBUF_ERROR` and `G_FILE_ERROR`.
-func NewPixbufFromFile(filename string) (*PixbufClass, error) {
+func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
 	var _cerr *C.GError    // in
@@ -362,10 +225,10 @@ func NewPixbufFromFile(filename string) (*PixbufClass, error) {
 
 	_cret = C.gdk_pixbuf_new_from_file(_arg1, &_cerr)
 
-	var _pixbuf *PixbufClass // out
-	var _goerr error         // out
+	var _pixbuf *Pixbuf // out
+	var _goerr error    // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -393,7 +256,7 @@ func NewPixbufFromFile(filename string) (*PixbufClass, error) {
 // to be scaled to the exact given width. When not preserving aspect ratio, a
 // `width` or `height` of -1 means to not scale the image at all in that
 // dimension. Negative values for `width` and `height` are allowed since 2.8.
-func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAspectRatio bool) (*PixbufClass, error) {
+func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
 	var _arg3 C.int        // out
@@ -411,10 +274,10 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 
 	_cret = C.gdk_pixbuf_new_from_file_at_scale(_arg1, _arg2, _arg3, _arg4, &_cerr)
 
-	var _pixbuf *PixbufClass // out
-	var _goerr error         // out
+	var _pixbuf *Pixbuf // out
+	var _goerr error    // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -438,7 +301,7 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 // `height`, if the aspect ratio requires it. To load and image at the requested
 // size, regardless of aspect ratio, use
 // [ctor@GdkPixbuf.Pixbuf.new_from_file_at_scale].
-func NewPixbufFromFileAtSize(filename string, width int, height int) (*PixbufClass, error) {
+func NewPixbufFromFileAtSize(filename string, width int, height int) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
 	var _arg3 C.int        // out
@@ -452,10 +315,10 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (*PixbufCla
 
 	_cret = C.gdk_pixbuf_new_from_file_at_size(_arg1, _arg2, _arg3, &_cerr)
 
-	var _pixbuf *PixbufClass // out
-	var _goerr error         // out
+	var _pixbuf *Pixbuf // out
+	var _goerr error    // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -491,7 +354,7 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (*PixbufCla
 // data located at runtime, you could have corrupt inline data in addition.
 //
 // Deprecated: Use `GResource` instead.
-func NewPixbufFromInline(data []byte, copyPixels bool) (*PixbufClass, error) {
+func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 	var _arg2 *C.guint8
 	var _arg1 C.gint
 	var _arg3 C.gboolean   // out
@@ -506,10 +369,10 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (*PixbufClass, error) {
 
 	_cret = C.gdk_pixbuf_new_from_inline(_arg1, _arg2, _arg3, &_cerr)
 
-	var _pixbuf *PixbufClass // out
-	var _goerr error         // out
+	var _pixbuf *Pixbuf // out
+	var _goerr error    // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -520,7 +383,7 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (*PixbufClass, error) {
 //
 // The file format is detected automatically. If `NULL` is returned, then @error
 // will be set.
-func NewPixbufFromResource(resourcePath string) (*PixbufClass, error) {
+func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
 	var _cerr *C.GError    // in
@@ -530,10 +393,10 @@ func NewPixbufFromResource(resourcePath string) (*PixbufClass, error) {
 
 	_cret = C.gdk_pixbuf_new_from_resource(_arg1, &_cerr)
 
-	var _pixbuf *PixbufClass // out
-	var _goerr error         // out
+	var _pixbuf *Pixbuf // out
+	var _goerr error    // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -553,7 +416,7 @@ func NewPixbufFromResource(resourcePath string) (*PixbufClass, error) {
 // image at all in that dimension.
 //
 // The stream is not closed.
-func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, preserveAspectRatio bool) (*PixbufClass, error) {
+func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
 	var _arg3 C.int        // out
@@ -571,10 +434,10 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 
 	_cret = C.gdk_pixbuf_new_from_resource_at_scale(_arg1, _arg2, _arg3, _arg4, &_cerr)
 
-	var _pixbuf *PixbufClass // out
-	var _goerr error         // out
+	var _pixbuf *Pixbuf // out
+	var _goerr error    // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -593,7 +456,7 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 // `G_IO_ERROR` domains.
 //
 // The stream is not closed.
-func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (*PixbufClass, error) {
+func NewPixbufFromStream(stream gio.InputStreamer, cancellable gio.Cancellabler) (*Pixbuf, error) {
 	var _arg1 *C.GInputStream // out
 	var _arg2 *C.GCancellable // out
 	var _cret *C.GdkPixbuf    // in
@@ -604,10 +467,10 @@ func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (*
 
 	_cret = C.gdk_pixbuf_new_from_stream(_arg1, _arg2, &_cerr)
 
-	var _pixbuf *PixbufClass // out
-	var _goerr error         // out
+	var _pixbuf *Pixbuf // out
+	var _goerr error    // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -635,7 +498,7 @@ func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (*
 // scale the image at all in that dimension.
 //
 // The stream is not closed.
-func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, preserveAspectRatio bool, cancellable gio.Cancellable) (*PixbufClass, error) {
+func NewPixbufFromStreamAtScale(stream gio.InputStreamer, width int, height int, preserveAspectRatio bool, cancellable gio.Cancellabler) (*Pixbuf, error) {
 	var _arg1 *C.GInputStream // out
 	var _arg2 C.gint          // out
 	var _arg3 C.gint          // out
@@ -654,10 +517,10 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 
 	_cret = C.gdk_pixbuf_new_from_stream_at_scale(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
-	var _pixbuf *PixbufClass // out
-	var _goerr error         // out
+	var _pixbuf *Pixbuf // out
+	var _goerr error    // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -667,7 +530,7 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 //
 // This data is commonly the result of including an XPM file into a program's C
 // source.
-func NewPixbufFromXpmData(data []string) *PixbufClass {
+func NewPixbufFromXpmData(data []string) *Pixbuf {
 	var _arg1 **C.char
 	var _cret *C.GdkPixbuf // in
 
@@ -683,9 +546,9 @@ func NewPixbufFromXpmData(data []string) *PixbufClass {
 
 	_cret = C.gdk_pixbuf_new_from_xpm_data(_arg1)
 
-	var _pixbuf *PixbufClass // out
+	var _pixbuf *Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 
 	return _pixbuf
 }
@@ -703,7 +566,7 @@ func NewPixbufFromXpmData(data []string) *PixbufClass {
 //
 // If `substitute_color` is `FALSE`, then the (`r`, `g`, `b`) arguments will be
 // ignored.
-func (pixbuf *PixbufClass) AddAlpha(substituteColor bool, r byte, g byte, b byte) *PixbufClass {
+func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r byte, g byte, b byte) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
 	var _arg2 C.guchar     // out
@@ -721,9 +584,9 @@ func (pixbuf *PixbufClass) AddAlpha(substituteColor bool, r byte, g byte, b byte
 
 	_cret = C.gdk_pixbuf_add_alpha(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var _ret *PixbufClass // out
+	var _ret *Pixbuf // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 
 	return _ret
 }
@@ -737,7 +600,7 @@ func (pixbuf *PixbufClass) AddAlpha(substituteColor bool, r byte, g byte, b byte
 //
 // If an orientation option/tag is present, the appropriate transform will be
 // performed so that the pixbuf is oriented correctly.
-func (src *PixbufClass) ApplyEmbeddedOrientation() *PixbufClass {
+func (src *Pixbuf) ApplyEmbeddedOrientation() *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GdkPixbuf // in
 
@@ -745,9 +608,9 @@ func (src *PixbufClass) ApplyEmbeddedOrientation() *PixbufClass {
 
 	_cret = C.gdk_pixbuf_apply_embedded_orientation(_arg0)
 
-	var _pixbuf *PixbufClass // out
+	var _pixbuf *Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 
 	return _pixbuf
 }
@@ -757,7 +620,7 @@ func (src *PixbufClass) ApplyEmbeddedOrientation() *PixbufClass {
 //
 // Note that this does not copy the options set on the original `GdkPixbuf`, use
 // gdk_pixbuf_copy_options() for this.
-func (pixbuf *PixbufClass) Copy() *PixbufClass {
+func (pixbuf *Pixbuf) Copy() *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GdkPixbuf // in
 
@@ -765,9 +628,9 @@ func (pixbuf *PixbufClass) Copy() *PixbufClass {
 
 	_cret = C.gdk_pixbuf_copy(_arg0)
 
-	var _ret *PixbufClass // out
+	var _ret *Pixbuf // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 
 	return _ret
 }
@@ -779,7 +642,7 @@ func (pixbuf *PixbufClass) Copy() *PixbufClass {
 // If the source rectangle overlaps the destination rectangle on the same
 // pixbuf, it will be overwritten during the copy operation. Therefore, you can
 // not use this function to scroll a pixbuf.
-func (srcPixbuf *PixbufClass) CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int) {
+func (srcPixbuf *Pixbuf) CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuffer, destX int, destY int) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -807,7 +670,7 @@ func (srcPixbuf *PixbufClass) CopyArea(srcX int, srcY int, width int, height int
 // This is useful to keep original metadata after having manipulated a file.
 // However be careful to remove metadata which you've already applied, such as
 // the "orientation" option after rotating the image.
-func (srcPixbuf *PixbufClass) CopyOptions(destPixbuf Pixbuf) bool {
+func (srcPixbuf *Pixbuf) CopyOptions(destPixbuf Pixbuffer) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
 	var _cret C.gboolean   // in
@@ -831,7 +694,7 @@ func (srcPixbuf *PixbufClass) CopyOptions(destPixbuf Pixbuf) bool {
 //
 // The alpha component will be ignored if the pixbuf doesn't have an alpha
 // channel.
-func (pixbuf *PixbufClass) Fill(pixel uint32) {
+func (pixbuf *Pixbuf) Fill(pixel uint32) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.guint32    // out
 
@@ -843,7 +706,7 @@ func (pixbuf *PixbufClass) Fill(pixel uint32) {
 
 // Flip flips a pixbuf horizontally or vertically and returns the result in a
 // new pixbuf.
-func (src *PixbufClass) Flip(horizontal bool) *PixbufClass {
+func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
 	var _cret *C.GdkPixbuf // in
@@ -855,15 +718,15 @@ func (src *PixbufClass) Flip(horizontal bool) *PixbufClass {
 
 	_cret = C.gdk_pixbuf_flip(_arg0, _arg1)
 
-	var _pixbuf *PixbufClass // out
+	var _pixbuf *Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 
 	return _pixbuf
 }
 
 // BitsPerSample queries the number of bits per color sample in a pixbuf.
-func (pixbuf *PixbufClass) BitsPerSample() int {
+func (pixbuf *Pixbuf) BitsPerSample() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -879,7 +742,7 @@ func (pixbuf *PixbufClass) BitsPerSample() int {
 }
 
 // ByteLength returns the length of the pixel data, in bytes.
-func (pixbuf *PixbufClass) ByteLength() uint {
+func (pixbuf *Pixbuf) ByteLength() uint {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.gsize      // in
 
@@ -895,7 +758,7 @@ func (pixbuf *PixbufClass) ByteLength() uint {
 }
 
 // Colorspace queries the color space of a pixbuf.
-func (pixbuf *PixbufClass) Colorspace() Colorspace {
+func (pixbuf *Pixbuf) Colorspace() Colorspace {
 	var _arg0 *C.GdkPixbuf    // out
 	var _cret C.GdkColorspace // in
 
@@ -911,7 +774,7 @@ func (pixbuf *PixbufClass) Colorspace() Colorspace {
 }
 
 // HasAlpha queries whether a pixbuf has an alpha channel (opacity information).
-func (pixbuf *PixbufClass) HasAlpha() bool {
+func (pixbuf *Pixbuf) HasAlpha() bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.gboolean   // in
 
@@ -929,7 +792,7 @@ func (pixbuf *PixbufClass) HasAlpha() bool {
 }
 
 // Height queries the height of a pixbuf.
-func (pixbuf *PixbufClass) Height() int {
+func (pixbuf *Pixbuf) Height() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -945,7 +808,7 @@ func (pixbuf *PixbufClass) Height() int {
 }
 
 // NChannels queries the number of channels of a pixbuf.
-func (pixbuf *PixbufClass) NChannels() int {
+func (pixbuf *Pixbuf) NChannels() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -974,7 +837,7 @@ func (pixbuf *PixbufClass) NChannels() int {
 // set "x-dpi" and "y-dpi" if the file contains image density information in
 // dots per inch. Since 2.36.6, the JPEG loader sets the "comment" option with
 // the comment EXIF tag.
-func (pixbuf *PixbufClass) Option(key string) string {
+func (pixbuf *Pixbuf) Option(key string) string {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.gchar     // in
@@ -995,7 +858,7 @@ func (pixbuf *PixbufClass) Option(key string) string {
 // Options returns a `GHashTable` with a list of all the options that may have
 // been attached to the `pixbuf` when it was loaded, or that may have been
 // attached by another function using [method@GdkPixbuf.Pixbuf.set_option].
-func (pixbuf *PixbufClass) Options() *glib.HashTable {
+func (pixbuf *Pixbuf) Options() *glib.HashTable {
 	var _arg0 *C.GdkPixbuf  // out
 	var _cret *C.GHashTable // in
 
@@ -1015,7 +878,7 @@ func (pixbuf *PixbufClass) Options() *glib.HashTable {
 
 // Rowstride queries the rowstride of a pixbuf, which is the number of bytes
 // between the start of a row and the start of the next row.
-func (pixbuf *PixbufClass) Rowstride() int {
+func (pixbuf *Pixbuf) Rowstride() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -1031,7 +894,7 @@ func (pixbuf *PixbufClass) Rowstride() int {
 }
 
 // Width queries the width of a pixbuf.
-func (pixbuf *PixbufClass) Width() int {
+func (pixbuf *Pixbuf) Width() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -1055,7 +918,7 @@ func (pixbuf *PixbufClass) Width() int {
 //
 // Note that if `src_pixbuf` is read-only, this function will force it to be
 // mutable.
-func (srcPixbuf *PixbufClass) NewSubpixbuf(srcX int, srcY int, width int, height int) *PixbufClass {
+func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -1071,9 +934,9 @@ func (srcPixbuf *PixbufClass) NewSubpixbuf(srcX int, srcY int, width int, height
 
 	_cret = C.gdk_pixbuf_new_subpixbuf(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var _pixbuf *PixbufClass // out
+	var _pixbuf *Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
 
 	return _pixbuf
 }
@@ -1082,7 +945,7 @@ func (srcPixbuf *PixbufClass) NewSubpixbuf(srcX int, srcY int, width int, height
 //
 // This function allows skipping the implicit copy that must be made if
 // gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
-func (pixbuf *PixbufClass) ReadPixels() *byte {
+func (pixbuf *Pixbuf) ReadPixels() *byte {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.guint8    // in
 
@@ -1098,7 +961,7 @@ func (pixbuf *PixbufClass) ReadPixels() *byte {
 }
 
 // RemoveOption removes the key/value pair option attached to a `GdkPixbuf`.
-func (pixbuf *PixbufClass) RemoveOption(key string) bool {
+func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gboolean   // in
@@ -1132,7 +995,7 @@ func (pixbuf *PixbufClass) RemoveOption(key string) bool {
 //
 // If `pixelate` is `TRUE`, then pixels are faded in a checkerboard pattern to
 // create a pixelated image.
-func (src *PixbufClass) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool) {
+func (src *Pixbuf) SaturateAndPixelate(dest Pixbuffer, saturation float32, pixelate bool) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
 	var _arg2 C.gfloat     // out
@@ -1154,7 +1017,7 @@ func (src *PixbufClass) SaturateAndPixelate(dest Pixbuf, saturation float32, pix
 // "tiff", "png", "ico" or "bmp".
 //
 // See [method@GdkPixbuf.Pixbuf.save_to_buffer] for more details.
-func (pixbuf *PixbufClass) SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error) {
+func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar
 	var _arg2 C.gsize // in
@@ -1207,7 +1070,7 @@ func (pixbuf *PixbufClass) SaveToBufferv(typ string, optionKeys []string, option
 // If @error is set, `FALSE` will be returned.
 //
 // See [method@GdkPixbuf.Pixbuf.save_to_callback] for more details.
-func (pixbuf *PixbufClass) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error {
+func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf        // out
 	var _arg1 C.GdkPixbufSaveFunc // out
 	var _arg2 C.gpointer
@@ -1254,7 +1117,7 @@ func (pixbuf *PixbufClass) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, 
 // Supported file formats are currently "jpeg", "tiff", "png", "ico" or "bmp".
 //
 // See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details.
-func (pixbuf *PixbufClass) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error {
+func (pixbuf *Pixbuf) SaveToStreamv(stream gio.OutputStreamer, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellabler) error {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.char          // out
@@ -1304,7 +1167,7 @@ func (pixbuf *PixbufClass) SaveToStreamv(stream gio.OutputStream, typ string, op
 // If @error is set, `FALSE` will be returned.
 //
 // See [method@GdkPixbuf.Pixbuf.save] for more details.
-func (pixbuf *PixbufClass) Savev(filename string, typ string, optionKeys []string, optionValues []string) error {
+func (pixbuf *Pixbuf) Savev(filename string, typ string, optionKeys []string, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
@@ -1349,7 +1212,7 @@ func (pixbuf *PixbufClass) Savev(filename string, typ string, optionKeys []strin
 //
 // If `key` already exists in the list of options attached to the `pixbuf`, the
 // new value is ignored and `FALSE` is returned.
-func (pixbuf *PixbufClass) SetOption(key string, value string) bool {
+func (pixbuf *Pixbuf) SetOption(key string, value string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out

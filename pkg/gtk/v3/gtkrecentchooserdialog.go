@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_chooser_dialog_get_type()), F: marshalRecentChooserDialog},
+		{T: externglib.Type(C.gtk_recent_chooser_dialog_get_type()), F: marshalRecentChooserDialogger},
 	})
+}
+
+// RecentChooserDialogger describes RecentChooserDialog's methods.
+type RecentChooserDialogger interface {
+	gextras.Objector
+
+	privateRecentChooserDialog()
 }
 
 // RecentChooserDialog is a dialog box suitable for displaying the recently used
@@ -64,71 +71,64 @@ func init() {
 //    gtk_widget_destroy (dialog);
 //
 // Recently used files are supported since GTK+ 2.10.
-type RecentChooserDialog interface {
-	gextras.Objector
-
-	privateRecentChooserDialogClass()
-}
-
-// RecentChooserDialogClass implements the RecentChooserDialog interface.
-type RecentChooserDialogClass struct {
+type RecentChooserDialog struct {
 	*externglib.Object
-	DialogClass
-	BuildableIface
-	RecentChooserIface
+	Dialog
+	Buildable
+	RecentChooser
 }
 
-var _ RecentChooserDialog = (*RecentChooserDialogClass)(nil)
+var _ RecentChooserDialogger = (*RecentChooserDialog)(nil)
 
-func wrapRecentChooserDialog(obj *externglib.Object) RecentChooserDialog {
-	return &RecentChooserDialogClass{
+func wrapRecentChooserDialogger(obj *externglib.Object) RecentChooserDialogger {
+	return &RecentChooserDialog{
 		Object: obj,
-		DialogClass: DialogClass{
+		Dialog: Dialog{
 			Object: obj,
-			WindowClass: WindowClass{
+			Window: Window{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		RecentChooserIface: RecentChooserIface{
+		RecentChooser: RecentChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRecentChooserDialog(p uintptr) (interface{}, error) {
+func marshalRecentChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooserDialog(obj), nil
+	return wrapRecentChooserDialogger(obj), nil
 }
 
-func (*RecentChooserDialogClass) privateRecentChooserDialogClass() {}
+func (*RecentChooserDialog) privateRecentChooserDialog() {}

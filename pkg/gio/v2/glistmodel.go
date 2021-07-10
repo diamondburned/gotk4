@@ -28,15 +28,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_list_model_get_type()), F: marshalListModel},
+		{T: externglib.Type(C.g_list_model_get_type()), F: marshalListModeller},
 	})
 }
 
-// ListModelOverrider contains methods that are overridable.
+// ListModellerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ListModelOverrider interface {
+type ListModellerOverrider interface {
 	// Item: get the item at @position. If @position is greater than the number
 	// of items in @list, nil is returned.
 	//
@@ -55,6 +55,16 @@ type ListModelOverrider interface {
 	// efficient than iterating the list with increasing values for @position
 	// until g_list_model_get_item() returns nil.
 	NItems() uint
+}
+
+// ListModeller describes ListModel's methods.
+type ListModeller interface {
+	gextras.Objector
+
+	ItemType() externglib.Type
+	NItems() uint
+	GetObject(position uint) *externglib.Object
+	ItemsChanged(position uint, removed uint, added uint)
 }
 
 // ListModel is an interface that represents a mutable list of #GObjects. Its
@@ -99,66 +109,22 @@ type ListModelOverrider interface {
 // implementation, but typically it will be from the thread that owns the
 // [thread-default main context][g-main-context-push-thread-default] in effect
 // at the time that the model was created.
-type ListModel interface {
-	gextras.Objector
-
-	// ItemType gets the type of the items in @list. All items returned from
-	// g_list_model_get_type() are of that type or a subtype, or are an
-	// implementation of that interface.
-	//
-	// The item type of a Model can not change during the life of the model.
-	ItemType() externglib.Type
-	// NItems gets the number of items in @list.
-	//
-	// Depending on the model implementation, calling this function may be less
-	// efficient than iterating the list with increasing values for @position
-	// until g_list_model_get_item() returns nil.
-	NItems() uint
-	// GetObject: get the item at @position. If @position is greater than the
-	// number of items in @list, nil is returned.
-	//
-	// nil is never returned for an index that is smaller than the length of the
-	// list. See g_list_model_get_n_items().
-	GetObject(position uint) *externglib.Object
-	// ItemsChanged emits the Model::items-changed signal on @list.
-	//
-	// This function should only be called by classes implementing Model. It has
-	// to be called after the internal representation of @list has been updated,
-	// because handlers connected to this signal might query the new state of
-	// the list.
-	//
-	// Implementations must only make changes to the model (as visible to its
-	// consumer) in places that will not cause problems for that consumer. For
-	// models that are driven directly by a write API (such as Store), changes
-	// can be reported in response to uses of that API. For models that
-	// represent remote data, changes should only be made from a fresh mainloop
-	// dispatch. It is particularly not permitted to make changes in response to
-	// a call to the Model consumer API.
-	//
-	// Stated another way: in general, it is assumed that code making a series
-	// of accesses to the model via the API, without returning to the mainloop,
-	// and without calling other code, will continue to view the same contents
-	// of the model.
-	ItemsChanged(position uint, removed uint, added uint)
-}
-
-// ListModelIface implements the ListModel interface.
-type ListModelIface struct {
+type ListModel struct {
 	*externglib.Object
 }
 
-var _ ListModel = (*ListModelIface)(nil)
+var _ ListModeller = (*ListModel)(nil)
 
-func wrapListModel(obj *externglib.Object) ListModel {
-	return &ListModelIface{
+func wrapListModeller(obj *externglib.Object) ListModeller {
+	return &ListModel{
 		Object: obj,
 	}
 }
 
-func marshalListModel(p uintptr) (interface{}, error) {
+func marshalListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListModel(obj), nil
+	return wrapListModeller(obj), nil
 }
 
 // ItemType gets the type of the items in @list. All items returned from
@@ -166,7 +132,7 @@ func marshalListModel(p uintptr) (interface{}, error) {
 // implementation of that interface.
 //
 // The item type of a Model can not change during the life of the model.
-func (list *ListModelIface) ItemType() externglib.Type {
+func (list *ListModel) ItemType() externglib.Type {
 	var _arg0 *C.GListModel // out
 	var _cret C.GType       // in
 
@@ -186,7 +152,7 @@ func (list *ListModelIface) ItemType() externglib.Type {
 // Depending on the model implementation, calling this function may be less
 // efficient than iterating the list with increasing values for @position until
 // g_list_model_get_item() returns nil.
-func (list *ListModelIface) NItems() uint {
+func (list *ListModel) NItems() uint {
 	var _arg0 *C.GListModel // out
 	var _cret C.guint       // in
 
@@ -206,7 +172,7 @@ func (list *ListModelIface) NItems() uint {
 //
 // nil is never returned for an index that is smaller than the length of the
 // list. See g_list_model_get_n_items().
-func (list *ListModelIface) GetObject(position uint) *externglib.Object {
+func (list *ListModel) GetObject(position uint) *externglib.Object {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _cret *C.GObject    // in
@@ -242,7 +208,7 @@ func (list *ListModelIface) GetObject(position uint) *externglib.Object {
 // accesses to the model via the API, without returning to the mainloop, and
 // without calling other code, will continue to view the same contents of the
 // model.
-func (list *ListModelIface) ItemsChanged(position uint, removed uint, added uint) {
+func (list *ListModel) ItemsChanged(position uint, removed uint, added uint) {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

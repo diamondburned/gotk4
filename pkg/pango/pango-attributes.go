@@ -709,12 +709,6 @@ type AttrColor struct {
 	native C.PangoAttrColor
 }
 
-// WrapAttrColor wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrColor(ptr unsafe.Pointer) *AttrColor {
-	return (*AttrColor)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (a *AttrColor) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -724,12 +718,6 @@ func (a *AttrColor) Native() unsafe.Pointer {
 // with a float or double value.
 type AttrFloat struct {
 	native C.PangoAttrFloat
-}
-
-// WrapAttrFloat wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrFloat(ptr unsafe.Pointer) *AttrFloat {
-	return (*AttrFloat)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -743,12 +731,6 @@ type AttrFontDesc struct {
 	native C.PangoAttrFontDesc
 }
 
-// WrapAttrFontDesc wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrFontDesc(ptr unsafe.Pointer) *AttrFontDesc {
-	return (*AttrFontDesc)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (a *AttrFontDesc) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -760,12 +742,6 @@ type AttrFontFeatures struct {
 	native C.PangoAttrFontFeatures
 }
 
-// WrapAttrFontFeatures wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrFontFeatures(ptr unsafe.Pointer) *AttrFontFeatures {
-	return (*AttrFontFeatures)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (a *AttrFontFeatures) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -775,12 +751,6 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 // integer or enumeration value.
 type AttrInt struct {
 	native C.PangoAttrInt
-}
-
-// WrapAttrInt wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrInt(ptr unsafe.Pointer) *AttrInt {
-	return (*AttrInt)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -798,12 +768,6 @@ func (a *AttrInt) Native() unsafe.Pointer {
 // queried.
 type AttrIterator struct {
 	native C.PangoAttrIterator
-}
-
-// WrapAttrIterator wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrIterator(ptr unsafe.Pointer) *AttrIterator {
-	return (*AttrIterator)(ptr)
 }
 
 func marshalAttrIterator(p uintptr) (interface{}, error) {
@@ -890,12 +854,6 @@ type AttrLanguage struct {
 	native C.PangoAttrLanguage
 }
 
-// WrapAttrLanguage wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrLanguage(ptr unsafe.Pointer) *AttrLanguage {
-	return (*AttrLanguage)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (a *AttrLanguage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -914,12 +872,6 @@ func (a *AttrLanguage) Native() unsafe.Pointer {
 // should not use a single `PangoAttrList` for more than one paragraph of text.
 type AttrList struct {
 	native C.PangoAttrList
-}
-
-// WrapAttrList wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrList(ptr unsafe.Pointer) *AttrList {
-	return (*AttrList)(ptr)
 }
 
 func marshalAttrList(p uintptr) (interface{}, error) {
@@ -1171,12 +1123,6 @@ type AttrShape struct {
 	native C.PangoAttrShape
 }
 
-// WrapAttrShape wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrShape(ptr unsafe.Pointer) *AttrShape {
-	return (*AttrShape)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (a *AttrShape) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -1188,12 +1134,6 @@ type AttrSize struct {
 	native C.PangoAttrSize
 }
 
-// WrapAttrSize wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrSize(ptr unsafe.Pointer) *AttrSize {
-	return (*AttrSize)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (a *AttrSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -1203,12 +1143,6 @@ func (a *AttrSize) Native() unsafe.Pointer {
 // with a string value.
 type AttrString struct {
 	native C.PangoAttrString
-}
-
-// WrapAttrString wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttrString(ptr unsafe.Pointer) *AttrString {
-	return (*AttrString)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -1226,12 +1160,6 @@ func (a *AttrString) Native() unsafe.Pointer {
 // will have an all-inclusive range of [0,G_MAXUINT].
 type Attribute struct {
 	native C.PangoAttribute
-}
-
-// WrapAttribute wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAttribute(ptr unsafe.Pointer) *Attribute {
-	return (*Attribute)(ptr)
 }
 
 func marshalAttribute(p uintptr) (interface{}, error) {
@@ -1299,12 +1227,6 @@ type Color struct {
 	native C.PangoColor
 }
 
-// WrapColor wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapColor(ptr unsafe.Pointer) *Color {
-	return (*Color)(ptr)
-}
-
 func marshalColor(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Color)(unsafe.Pointer(b)), nil
@@ -1332,7 +1254,7 @@ func (src *Color) Copy() *Color {
 
 	_color = (*Color)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_color, func(v *Color) {
-		C.free(unsafe.Pointer(v))
+		C.pango_color_free((*C.PangoColor)(unsafe.Pointer(v)))
 	})
 
 	return _color

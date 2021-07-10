@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBox},
+		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBoxxer},
 	})
+}
+
+// VBoxxer describes VBox's methods.
+type VBoxxer interface {
+	gextras.Objector
+
+	privateVBox()
 }
 
 // VBox is a container that organizes child widgets into a single column.
@@ -47,62 +54,55 @@ func init() {
 // first-child or last-child styling, the recommendation is to switch to Grid.
 // For more information about migrating to Grid, see [Migrating from other
 // containers to GtkGrid][gtk-migrating-GtkGrid].
-type VBox interface {
-	gextras.Objector
-
-	privateVBoxClass()
-}
-
-// VBoxClass implements the VBox interface.
-type VBoxClass struct {
+type VBox struct {
 	*externglib.Object
-	BoxClass
-	BuildableIface
-	OrientableIface
+	Box
+	Buildable
+	Orientable
 }
 
-var _ VBox = (*VBoxClass)(nil)
+var _ VBoxxer = (*VBox)(nil)
 
-func wrapVBox(obj *externglib.Object) VBox {
-	return &VBoxClass{
+func wrapVBoxxer(obj *externglib.Object) VBoxxer {
+	return &VBox{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalVBox(p uintptr) (interface{}, error) {
+func marshalVBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVBox(obj), nil
+	return wrapVBoxxer(obj), nil
 }
 
 // NewVBox creates a new VBox.
@@ -111,7 +111,7 @@ func marshalVBox(p uintptr) (interface{}, error) {
 // which is a quick and easy change. But the recommendation is to switch to
 // Grid, since Box is going to go away eventually. See [Migrating from other
 // containers to GtkGrid][gtk-migrating-GtkGrid].
-func NewVBox(homogeneous bool, spacing int) *VBoxClass {
+func NewVBox(homogeneous bool, spacing int) *VBox {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out
 	var _cret *C.GtkWidget // in
@@ -123,11 +123,11 @@ func NewVBox(homogeneous bool, spacing int) *VBoxClass {
 
 	_cret = C.gtk_vbox_new(_arg1, _arg2)
 
-	var _vBox *VBoxClass // out
+	var _vBox *VBox // out
 
-	_vBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VBoxClass)
+	_vBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VBox)
 
 	return _vBox
 }
 
-func (*VBoxClass) privateVBoxClass() {}
+func (*VBox) privateVBox() {}

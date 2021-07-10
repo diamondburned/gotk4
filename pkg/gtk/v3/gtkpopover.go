@@ -22,16 +22,37 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_popover_get_type()), F: marshalPopover},
+		{T: externglib.Type(C.gtk_popover_get_type()), F: marshalPopoverrer},
 	})
 }
 
-// PopoverOverrider contains methods that are overridable.
+// PopoverrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PopoverOverrider interface {
+type PopoverrerOverrider interface {
 	Closed()
+}
+
+// Popoverrer describes Popover's methods.
+type Popoverrer interface {
+	gextras.Objector
+
+	BindModel(model gio.MenuModeller, actionNamespace string)
+	ConstrainTo() PopoverConstraint
+	DefaultWidget() *Widget
+	Modal() bool
+	PointingTo() (gdk.Rectangle, bool)
+	Position() PositionType
+	RelativeTo() *Widget
+	TransitionsEnabled() bool
+	Popdown()
+	Popup()
+	SetDefaultWidget(widget Widgetter)
+	SetModal(modal bool)
+	SetPointingTo(rect *gdk.Rectangle)
+	SetRelativeTo(relativeTo Widgetter)
+	SetTransitionsEnabled(transitionsEnabled bool)
 }
 
 // Popover is a bubble-like context window, primarily meant to provide
@@ -92,141 +113,52 @@ type PopoverOverrider interface {
 // Particular uses of GtkPopover, such as touch selection popups or magnifiers
 // in Entry or TextView get style classes like .touch-selection or .magnifier to
 // differentiate from plain popovers.
-type Popover interface {
-	gextras.Objector
-
-	// BindModel establishes a binding between a Popover and a Model.
-	//
-	// The contents of @popover are removed and then refilled with menu items
-	// according to @model. When @model changes, @popover is updated. Calling
-	// this function twice on @popover with different @model will cause the
-	// first binding to be replaced with a binding to the new model. If @model
-	// is nil then any previous binding is undone and all children are removed.
-	//
-	// If @action_namespace is non-nil then the effect is as if all actions
-	// mentioned in the @model have their names prefixed with the namespace,
-	// plus a dot. For example, if the action “quit” is mentioned and
-	// @action_namespace is “app” then the effective action name is “app.quit”.
-	//
-	// This function uses Actionable to define the action name and target values
-	// on the created menu items. If you want to use an action group other than
-	// “app” and “win”, or if you want to use a MenuShell outside of a
-	// ApplicationWindow, then you will need to attach your own action group to
-	// the widget hierarchy using gtk_widget_insert_action_group(). As an
-	// example, if you created a group with a “quit” action and inserted it with
-	// the name “mygroup” then you would use the action name “mygroup.quit” in
-	// your Model.
-	BindModel(model gio.MenuModel, actionNamespace string)
-	// ConstrainTo returns the constraint for placing this popover. See
-	// gtk_popover_set_constrain_to().
-	ConstrainTo() PopoverConstraint
-	// DefaultWidget gets the widget that should be set as the default while the
-	// popover is shown.
-	DefaultWidget() *WidgetClass
-	// Modal returns whether the popover is modal, see gtk_popover_set_modal to
-	// see the implications of this.
-	Modal() bool
-	// PointingTo: if a rectangle to point to has been set, this function will
-	// return true and fill in @rect with such rectangle, otherwise it will
-	// return false and fill in @rect with the attached widget coordinates.
-	PointingTo() (gdk.Rectangle, bool)
-	// Position returns the preferred position of @popover.
-	Position() PositionType
-	// RelativeTo returns the widget @popover is currently attached to
-	RelativeTo() *WidgetClass
-	// TransitionsEnabled returns whether show/hide transitions are enabled on
-	// this popover.
-	//
-	// Deprecated: You can show or hide the popover without transitions using
-	// gtk_widget_show() and gtk_widget_hide() while gtk_popover_popup() and
-	// gtk_popover_popdown() will use transitions.
-	TransitionsEnabled() bool
-	// Popdown pops @popover down.This is different than a gtk_widget_hide()
-	// call in that it shows the popover with a transition. If you want to hide
-	// the popover without a transition, use gtk_widget_hide().
-	Popdown()
-	// Popup pops @popover up. This is different than a gtk_widget_show() call
-	// in that it shows the popover with a transition. If you want to show the
-	// popover without a transition, use gtk_widget_show().
-	Popup()
-	// SetDefaultWidget sets the widget that should be set as default widget
-	// while the popover is shown (see gtk_window_set_default()). Popover
-	// remembers the previous default widget and reestablishes it when the
-	// popover is dismissed.
-	SetDefaultWidget(widget Widget)
-	// SetModal sets whether @popover is modal, a modal popover will grab all
-	// input within the toplevel and grab the keyboard focus on it when being
-	// displayed. Clicking outside the popover area or pressing Esc will dismiss
-	// the popover and ungrab input.
-	SetModal(modal bool)
-	// SetPointingTo sets the rectangle that @popover will point to, in the
-	// coordinate space of the widget @popover is attached to, see
-	// gtk_popover_set_relative_to().
-	SetPointingTo(rect *gdk.Rectangle)
-	// SetRelativeTo sets a new widget to be attached to @popover. If @popover
-	// is visible, the position will be updated.
-	//
-	// Note: the ownership of popovers is always given to their @relative_to
-	// widget, so if @relative_to is set to nil on an attached @popover, it will
-	// be detached from its previous widget, and consequently destroyed unless
-	// extra references are kept.
-	SetRelativeTo(relativeTo Widget)
-	// SetTransitionsEnabled sets whether show/hide transitions are enabled on
-	// this popover
-	//
-	// Deprecated: You can show or hide the popover without transitions using
-	// gtk_widget_show() and gtk_widget_hide() while gtk_popover_popup() and
-	// gtk_popover_popdown() will use transitions.
-	SetTransitionsEnabled(transitionsEnabled bool)
-}
-
-// PopoverClass implements the Popover interface.
-type PopoverClass struct {
+type Popover struct {
 	*externglib.Object
-	BinClass
-	BuildableIface
+	Bin
+	Buildable
 }
 
-var _ Popover = (*PopoverClass)(nil)
+var _ Popoverrer = (*Popover)(nil)
 
-func wrapPopover(obj *externglib.Object) Popover {
-	return &PopoverClass{
+func wrapPopoverrer(obj *externglib.Object) Popoverrer {
+	return &Popover{
 		Object: obj,
-		BinClass: BinClass{
+		Bin: Bin{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPopover(p uintptr) (interface{}, error) {
+func marshalPopoverrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopover(obj), nil
+	return wrapPopoverrer(obj), nil
 }
 
 // NewPopover creates a new popover to point to @relative_to
-func NewPopover(relativeTo Widget) *PopoverClass {
+func NewPopover(relativeTo Widgetter) *Popover {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -234,9 +166,9 @@ func NewPopover(relativeTo Widget) *PopoverClass {
 
 	_cret = C.gtk_popover_new(_arg1)
 
-	var _popover *PopoverClass // out
+	var _popover *Popover // out
 
-	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverClass)
+	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Popover)
 
 	return _popover
 }
@@ -250,7 +182,7 @@ func NewPopover(relativeTo Widget) *PopoverClass {
 //
 // Actions can also be added using gtk_widget_insert_action_group() on the menus
 // attach widget or on any of its parent widgets.
-func NewPopoverFromModel(relativeTo Widget, model gio.MenuModel) *PopoverClass {
+func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover {
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -260,9 +192,9 @@ func NewPopoverFromModel(relativeTo Widget, model gio.MenuModel) *PopoverClass {
 
 	_cret = C.gtk_popover_new_from_model(_arg1, _arg2)
 
-	var _popover *PopoverClass // out
+	var _popover *Popover // out
 
-	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverClass)
+	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Popover)
 
 	return _popover
 }
@@ -287,7 +219,7 @@ func NewPopoverFromModel(relativeTo Widget, model gio.MenuModel) *PopoverClass {
 // using gtk_widget_insert_action_group(). As an example, if you created a group
 // with a “quit” action and inserted it with the name “mygroup” then you would
 // use the action name “mygroup.quit” in your Model.
-func (popover *PopoverClass) BindModel(model gio.MenuModel, actionNamespace string) {
+func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GMenuModel // out
 	var _arg2 *C.gchar      // out
@@ -302,7 +234,7 @@ func (popover *PopoverClass) BindModel(model gio.MenuModel, actionNamespace stri
 
 // ConstrainTo returns the constraint for placing this popover. See
 // gtk_popover_set_constrain_to().
-func (popover *PopoverClass) ConstrainTo() PopoverConstraint {
+func (popover *Popover) ConstrainTo() PopoverConstraint {
 	var _arg0 *C.GtkPopover          // out
 	var _cret C.GtkPopoverConstraint // in
 
@@ -319,7 +251,7 @@ func (popover *PopoverClass) ConstrainTo() PopoverConstraint {
 
 // DefaultWidget gets the widget that should be set as the default while the
 // popover is shown.
-func (popover *PopoverClass) DefaultWidget() *WidgetClass {
+func (popover *Popover) DefaultWidget() *Widget {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
 
@@ -327,16 +259,16 @@ func (popover *PopoverClass) DefaultWidget() *WidgetClass {
 
 	_cret = C.gtk_popover_get_default_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // Modal returns whether the popover is modal, see gtk_popover_set_modal to see
 // the implications of this.
-func (popover *PopoverClass) Modal() bool {
+func (popover *Popover) Modal() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
 
@@ -356,7 +288,7 @@ func (popover *PopoverClass) Modal() bool {
 // PointingTo: if a rectangle to point to has been set, this function will
 // return true and fill in @rect with such rectangle, otherwise it will return
 // false and fill in @rect with the attached widget coordinates.
-func (popover *PopoverClass) PointingTo() (gdk.Rectangle, bool) {
+func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkPopover  // out
 	var _arg1 C.GdkRectangle // in
 	var _cret C.gboolean     // in
@@ -377,7 +309,7 @@ func (popover *PopoverClass) PointingTo() (gdk.Rectangle, bool) {
 }
 
 // Position returns the preferred position of @popover.
-func (popover *PopoverClass) Position() PositionType {
+func (popover *Popover) Position() PositionType {
 	var _arg0 *C.GtkPopover     // out
 	var _cret C.GtkPositionType // in
 
@@ -393,7 +325,7 @@ func (popover *PopoverClass) Position() PositionType {
 }
 
 // RelativeTo returns the widget @popover is currently attached to
-func (popover *PopoverClass) RelativeTo() *WidgetClass {
+func (popover *Popover) RelativeTo() *Widget {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
 
@@ -401,9 +333,9 @@ func (popover *PopoverClass) RelativeTo() *WidgetClass {
 
 	_cret = C.gtk_popover_get_relative_to(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -414,7 +346,7 @@ func (popover *PopoverClass) RelativeTo() *WidgetClass {
 // Deprecated: You can show or hide the popover without transitions using
 // gtk_widget_show() and gtk_widget_hide() while gtk_popover_popup() and
 // gtk_popover_popdown() will use transitions.
-func (popover *PopoverClass) TransitionsEnabled() bool {
+func (popover *Popover) TransitionsEnabled() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
 
@@ -434,7 +366,7 @@ func (popover *PopoverClass) TransitionsEnabled() bool {
 // Popdown pops @popover down.This is different than a gtk_widget_hide() call in
 // that it shows the popover with a transition. If you want to hide the popover
 // without a transition, use gtk_widget_hide().
-func (popover *PopoverClass) Popdown() {
+func (popover *Popover) Popdown() {
 	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
@@ -445,7 +377,7 @@ func (popover *PopoverClass) Popdown() {
 // Popup pops @popover up. This is different than a gtk_widget_show() call in
 // that it shows the popover with a transition. If you want to show the popover
 // without a transition, use gtk_widget_show().
-func (popover *PopoverClass) Popup() {
+func (popover *Popover) Popup() {
 	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
@@ -456,7 +388,7 @@ func (popover *PopoverClass) Popup() {
 // SetDefaultWidget sets the widget that should be set as default widget while
 // the popover is shown (see gtk_window_set_default()). Popover remembers the
 // previous default widget and reestablishes it when the popover is dismissed.
-func (popover *PopoverClass) SetDefaultWidget(widget Widget) {
+func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -470,7 +402,7 @@ func (popover *PopoverClass) SetDefaultWidget(widget Widget) {
 // within the toplevel and grab the keyboard focus on it when being displayed.
 // Clicking outside the popover area or pressing Esc will dismiss the popover
 // and ungrab input.
-func (popover *PopoverClass) SetModal(modal bool) {
+func (popover *Popover) SetModal(modal bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 
@@ -485,7 +417,7 @@ func (popover *PopoverClass) SetModal(modal bool) {
 // SetPointingTo sets the rectangle that @popover will point to, in the
 // coordinate space of the widget @popover is attached to, see
 // gtk_popover_set_relative_to().
-func (popover *PopoverClass) SetPointingTo(rect *gdk.Rectangle) {
+func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
 
@@ -502,7 +434,7 @@ func (popover *PopoverClass) SetPointingTo(rect *gdk.Rectangle) {
 // so if @relative_to is set to nil on an attached @popover, it will be detached
 // from its previous widget, and consequently destroyed unless extra references
 // are kept.
-func (popover *PopoverClass) SetRelativeTo(relativeTo Widget) {
+func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -518,7 +450,7 @@ func (popover *PopoverClass) SetRelativeTo(relativeTo Widget) {
 // Deprecated: You can show or hide the popover without transitions using
 // gtk_widget_show() and gtk_widget_hide() while gtk_popover_popup() and
 // gtk_popover_popdown() will use transitions.
-func (popover *PopoverClass) SetTransitionsEnabled(transitionsEnabled bool) {
+func (popover *Popover) SetTransitionsEnabled(transitionsEnabled bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
 

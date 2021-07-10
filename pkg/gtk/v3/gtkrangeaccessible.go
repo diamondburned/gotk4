@@ -21,28 +21,28 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_range_accessible_get_type()), F: marshalRangeAccessible},
+		{T: externglib.Type(C.gtk_range_accessible_get_type()), F: marshalRangeAccessibler},
 	})
 }
 
-type RangeAccessible interface {
+// RangeAccessibler describes RangeAccessible's methods.
+type RangeAccessibler interface {
 	gextras.Objector
 
-	privateRangeAccessibleClass()
+	privateRangeAccessible()
 }
 
-// RangeAccessibleClass implements the RangeAccessible interface.
-type RangeAccessibleClass struct {
-	WidgetAccessibleClass
+type RangeAccessible struct {
+	WidgetAccessible
 }
 
-var _ RangeAccessible = (*RangeAccessibleClass)(nil)
+var _ RangeAccessibler = (*RangeAccessible)(nil)
 
-func wrapRangeAccessible(obj *externglib.Object) RangeAccessible {
-	return &RangeAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapRangeAccessibler(obj *externglib.Object) RangeAccessibler {
+	return &RangeAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
@@ -50,10 +50,10 @@ func wrapRangeAccessible(obj *externglib.Object) RangeAccessible {
 	}
 }
 
-func marshalRangeAccessible(p uintptr) (interface{}, error) {
+func marshalRangeAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRangeAccessible(obj), nil
+	return wrapRangeAccessibler(obj), nil
 }
 
-func (*RangeAccessibleClass) privateRangeAccessibleClass() {}
+func (*RangeAccessible) privateRangeAccessible() {}

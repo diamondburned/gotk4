@@ -26,7 +26,7 @@ import "C"
 // sandboxed applications for example.
 //
 // Deprecated: Use gtk_show_uri_on_window() instead.
-func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
+func ShowURI(screen gdk.Screener, uri string, timestamp uint32) error {
 	var _arg1 *C.GdkScreen // out
 	var _arg2 *C.gchar     // out
 	var _arg3 C.guint32    // out
@@ -58,7 +58,7 @@ func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
-func ShowURIOnWindow(parent Window, uri string, timestamp uint32) error {
+func ShowURIOnWindow(parent Windowwer, uri string, timestamp uint32) error {
 	var _arg1 *C.GtkWindow // out
 	var _arg2 *C.char      // out
 	var _arg3 C.guint32    // out

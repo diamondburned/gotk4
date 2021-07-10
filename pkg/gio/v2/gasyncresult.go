@@ -30,15 +30,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_async_result_get_type()), F: marshalAsyncResult},
+		{T: externglib.Type(C.g_async_result_get_type()), F: marshalAsyncResulter},
 	})
 }
 
-// AsyncResultOverrider contains methods that are overridable.
+// AsyncResulterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AsyncResultOverrider interface {
+type AsyncResulterOverrider interface {
 	// SourceObject gets the source object from a Result.
 	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.
@@ -46,6 +46,16 @@ type AsyncResultOverrider interface {
 	// IsTagged checks if @res has the given @source_tag (generally a function
 	// pointer indicating the function @res was created by).
 	IsTagged(sourceTag interface{}) bool
+}
+
+// AsyncResulter describes AsyncResult's methods.
+type AsyncResulter interface {
+	gextras.Objector
+
+	SourceObject() *externglib.Object
+	UserData() interface{}
+	IsTagged(sourceTag interface{}) bool
+	LegacyPropagateError() error
 }
 
 // AsyncResult provides a base class for implementing asynchronous function
@@ -128,48 +138,26 @@ type AsyncResultOverrider interface {
 // Priorities are integers, with lower numbers indicating higher priority. It is
 // recommended to choose priorities between G_PRIORITY_LOW and G_PRIORITY_HIGH,
 // with G_PRIORITY_DEFAULT as a default.
-type AsyncResult interface {
-	gextras.Objector
-
-	// SourceObject gets the source object from a Result.
-	SourceObject() *externglib.Object
-	// UserData gets the user data from a Result.
-	UserData() interface{}
-	// IsTagged checks if @res has the given @source_tag (generally a function
-	// pointer indicating the function @res was created by).
-	IsTagged(sourceTag interface{}) bool
-	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
-	// g_simple_async_result_propagate_error(). Otherwise it returns false.
-	//
-	// This can be used for legacy error handling in async *_finish() wrapper
-	// functions that traditionally handled AsyncResult error returns themselves
-	// rather than calling into the virtual method. This should not be used in
-	// new code; Result errors that are set by virtual methods should also be
-	// extracted by virtual methods, to enable subclasses to chain up correctly.
-	LegacyPropagateError() error
-}
-
-// AsyncResultIface implements the AsyncResult interface.
-type AsyncResultIface struct {
+type AsyncResult struct {
 	*externglib.Object
 }
 
-var _ AsyncResult = (*AsyncResultIface)(nil)
+var _ AsyncResulter = (*AsyncResult)(nil)
 
-func wrapAsyncResult(obj *externglib.Object) AsyncResult {
-	return &AsyncResultIface{
+func wrapAsyncResulter(obj *externglib.Object) AsyncResulter {
+	return &AsyncResult{
 		Object: obj,
 	}
 }
 
-func marshalAsyncResult(p uintptr) (interface{}, error) {
+func marshalAsyncResulter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAsyncResult(obj), nil
+	return wrapAsyncResulter(obj), nil
 }
 
 // SourceObject gets the source object from a Result.
-func (res *AsyncResultIface) SourceObject() *externglib.Object {
+func (res *AsyncResult) SourceObject() *externglib.Object {
 	var _arg0 *C.GAsyncResult // out
 	var _cret *C.GObject      // in
 
@@ -185,7 +173,7 @@ func (res *AsyncResultIface) SourceObject() *externglib.Object {
 }
 
 // UserData gets the user data from a Result.
-func (res *AsyncResultIface) UserData() interface{} {
+func (res *AsyncResult) UserData() interface{} {
 	var _arg0 *C.GAsyncResult // out
 	var _cret C.gpointer      // in
 
@@ -202,7 +190,7 @@ func (res *AsyncResultIface) UserData() interface{} {
 
 // IsTagged checks if @res has the given @source_tag (generally a function
 // pointer indicating the function @res was created by).
-func (res *AsyncResultIface) IsTagged(sourceTag interface{}) bool {
+func (res *AsyncResult) IsTagged(sourceTag interface{}) bool {
 	var _arg0 *C.GAsyncResult // out
 	var _arg1 C.gpointer      // out
 	var _cret C.gboolean      // in
@@ -229,7 +217,7 @@ func (res *AsyncResultIface) IsTagged(sourceTag interface{}) bool {
 // rather than calling into the virtual method. This should not be used in new
 // code; Result errors that are set by virtual methods should also be extracted
 // by virtual methods, to enable subclasses to chain up correctly.
-func (res *AsyncResultIface) LegacyPropagateError() error {
+func (res *AsyncResult) LegacyPropagateError() error {
 	var _arg0 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 

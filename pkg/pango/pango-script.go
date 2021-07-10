@@ -285,12 +285,6 @@ type ScriptIter struct {
 	native C.PangoScriptIter
 }
 
-// WrapScriptIter wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapScriptIter(ptr unsafe.Pointer) *ScriptIter {
-	return (*ScriptIter)(ptr)
-}
-
 func marshalScriptIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*ScriptIter)(unsafe.Pointer(b)), nil
@@ -312,7 +306,7 @@ func NewScriptIter(text string, length int) *ScriptIter {
 
 	_scriptIter = (*ScriptIter)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_scriptIter, func(v *ScriptIter) {
-		C.free(unsafe.Pointer(v))
+		C.pango_script_iter_free((*C.PangoScriptIter)(unsafe.Pointer(v)))
 	})
 
 	return _scriptIter

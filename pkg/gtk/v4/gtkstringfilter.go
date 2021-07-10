@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_string_filter_match_mode_get_type()), F: marshalStringFilterMatchMode},
-		{T: externglib.Type(C.gtk_string_filter_get_type()), F: marshalStringFilter},
+		{T: externglib.Type(C.gtk_string_filter_get_type()), F: marshalStringFilterrer},
 	})
 }
 
@@ -40,6 +40,19 @@ func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 	return StringFilterMatchMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// StringFilterrer describes StringFilter's methods.
+type StringFilterrer interface {
+	gextras.Objector
+
+	Expression() *Expression
+	IgnoreCase() bool
+	MatchMode() StringFilterMatchMode
+	Search() string
+	SetExpression(expression Expressioner)
+	SetIgnoreCase(ignoreCase bool)
+	SetSearch(search string)
+}
+
 // StringFilter: `GtkStringFilter` determines whether to include items by
 // comparing strings to a fixed search term.
 //
@@ -53,55 +66,31 @@ func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 //
 // It is also possible to make case-insensitive comparisons, with
 // [method@Gtk.StringFilter.set_ignore_case].
-type StringFilter interface {
-	gextras.Objector
-
-	// Expression gets the expression that the string filter uses to obtain
-	// strings from items.
-	Expression() *ExpressionClass
-	// IgnoreCase returns whether the filter ignores case differences.
-	IgnoreCase() bool
-	// MatchMode returns the match mode that the filter is using.
-	MatchMode() StringFilterMatchMode
-	// Search gets the search term.
-	Search() string
-	// SetExpression sets the expression that the string filter uses to obtain
-	// strings from items.
-	//
-	// The expression must have a value type of G_TYPE_STRING.
-	SetExpression(expression Expression)
-	// SetIgnoreCase sets whether the filter ignores case differences.
-	SetIgnoreCase(ignoreCase bool)
-	// SetSearch sets the string to search for.
-	SetSearch(search string)
+type StringFilter struct {
+	Filter
 }
 
-// StringFilterClass implements the StringFilter interface.
-type StringFilterClass struct {
-	FilterClass
-}
+var _ StringFilterrer = (*StringFilter)(nil)
 
-var _ StringFilter = (*StringFilterClass)(nil)
-
-func wrapStringFilter(obj *externglib.Object) StringFilter {
-	return &StringFilterClass{
-		FilterClass: FilterClass{
+func wrapStringFilterrer(obj *externglib.Object) StringFilterrer {
+	return &StringFilter{
+		Filter: Filter{
 			Object: obj,
 		},
 	}
 }
 
-func marshalStringFilter(p uintptr) (interface{}, error) {
+func marshalStringFilterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStringFilter(obj), nil
+	return wrapStringFilterrer(obj), nil
 }
 
 // NewStringFilter creates a new string filter.
 //
 // You will want to set up the filter by providing a string to search for and by
 // providing a property to look up on the item.
-func NewStringFilter(expression Expression) *StringFilterClass {
+func NewStringFilter(expression Expressioner) *StringFilter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringFilter // in
 
@@ -109,16 +98,16 @@ func NewStringFilter(expression Expression) *StringFilterClass {
 
 	_cret = C.gtk_string_filter_new(_arg1)
 
-	var _stringFilter *StringFilterClass // out
+	var _stringFilter *StringFilter // out
 
-	_stringFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StringFilterClass)
+	_stringFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StringFilter)
 
 	return _stringFilter
 }
 
 // Expression gets the expression that the string filter uses to obtain strings
 // from items.
-func (self *StringFilterClass) Expression() *ExpressionClass {
+func (self *StringFilter) Expression() *Expression {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.GtkExpression   // in
 
@@ -126,15 +115,15 @@ func (self *StringFilterClass) Expression() *ExpressionClass {
 
 	_cret = C.gtk_string_filter_get_expression(_arg0)
 
-	var _expression *ExpressionClass // out
+	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ExpressionClass)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
 
 	return _expression
 }
 
 // IgnoreCase returns whether the filter ignores case differences.
-func (self *StringFilterClass) IgnoreCase() bool {
+func (self *StringFilter) IgnoreCase() bool {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret C.gboolean         // in
 
@@ -152,7 +141,7 @@ func (self *StringFilterClass) IgnoreCase() bool {
 }
 
 // MatchMode returns the match mode that the filter is using.
-func (self *StringFilterClass) MatchMode() StringFilterMatchMode {
+func (self *StringFilter) MatchMode() StringFilterMatchMode {
 	var _arg0 *C.GtkStringFilter         // out
 	var _cret C.GtkStringFilterMatchMode // in
 
@@ -168,7 +157,7 @@ func (self *StringFilterClass) MatchMode() StringFilterMatchMode {
 }
 
 // Search gets the search term.
-func (self *StringFilterClass) Search() string {
+func (self *StringFilter) Search() string {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.char            // in
 
@@ -187,7 +176,7 @@ func (self *StringFilterClass) Search() string {
 // strings from items.
 //
 // The expression must have a value type of G_TYPE_STRING.
-func (self *StringFilterClass) SetExpression(expression Expression) {
+func (self *StringFilter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.GtkExpression   // out
 
@@ -198,7 +187,7 @@ func (self *StringFilterClass) SetExpression(expression Expression) {
 }
 
 // SetIgnoreCase sets whether the filter ignores case differences.
-func (self *StringFilterClass) SetIgnoreCase(ignoreCase bool) {
+func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 C.gboolean         // out
 
@@ -211,7 +200,7 @@ func (self *StringFilterClass) SetIgnoreCase(ignoreCase bool) {
 }
 
 // SetSearch sets the string to search for.
-func (self *StringFilterClass) SetSearch(search string) {
+func (self *StringFilter) SetSearch(search string) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.char            // out
 

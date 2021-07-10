@@ -293,12 +293,6 @@ type HashTable struct {
 	native C.GHashTable
 }
 
-// WrapHashTable wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapHashTable(ptr unsafe.Pointer) *HashTable {
-	return (*HashTable)(ptr)
-}
-
 func marshalHashTable(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*HashTable)(unsafe.Pointer(b)), nil
@@ -317,12 +311,6 @@ func (h *HashTable) Native() unsafe.Pointer {
 // not defined.
 type HashTableIter struct {
 	native C.GHashTableIter
-}
-
-// WrapHashTableIter wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapHashTableIter(ptr unsafe.Pointer) *HashTableIter {
-	return (*HashTableIter)(ptr)
 }
 
 // Native returns the underlying C source pointer.

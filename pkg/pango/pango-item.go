@@ -28,12 +28,6 @@ type Analysis struct {
 	native C.PangoAnalysis
 }
 
-// WrapAnalysis wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAnalysis(ptr unsafe.Pointer) *Analysis {
-	return (*Analysis)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (a *Analysis) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
@@ -45,12 +39,6 @@ func (a *Analysis) Native() unsafe.Pointer {
 // [func@itemize].
 type Item struct {
 	native C.PangoItem
-}
-
-// WrapItem wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapItem(ptr unsafe.Pointer) *Item {
-	return (*Item)(ptr)
 }
 
 func marshalItem(p uintptr) (interface{}, error) {
@@ -68,7 +56,7 @@ func NewItem() *Item {
 
 	_item = (*Item)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_item, func(v *Item) {
-		C.free(unsafe.Pointer(v))
+		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
 	return _item
@@ -112,7 +100,7 @@ func (item *Item) Copy() *Item {
 
 	_ret = (*Item)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_ret, func(v *Item) {
-		C.free(unsafe.Pointer(v))
+		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
 	return _ret
@@ -153,7 +141,7 @@ func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 
 	_item = (*Item)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_item, func(v *Item) {
-		C.free(unsafe.Pointer(v))
+		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
 	return _item

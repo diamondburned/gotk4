@@ -20,15 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_actionable_get_type()), F: marshalActionable},
+		{T: externglib.Type(C.gtk_actionable_get_type()), F: marshalActionabler},
 	})
 }
 
-// ActionableOverrider contains methods that are overridable.
+// ActionablerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionableOverrider interface {
+type ActionablerOverrider interface {
 	// ActionName gets the action name for @actionable.
 	ActionName() string
 	// ActionTargetValue gets the current target value of @actionable.
@@ -66,6 +66,17 @@ type ActionableOverrider interface {
 	// the target value of the button, the button will now be rendered as active
 	// (and the other buttons, with different targets, rendered inactive).
 	SetActionTargetValue(targetValue *glib.Variant)
+}
+
+// Actionabler describes Actionable's methods.
+type Actionabler interface {
+	gextras.Objector
+
+	ActionName() string
+	ActionTargetValue() *glib.Variant
+	SetActionName(actionName string)
+	SetActionTargetValue(targetValue *glib.Variant)
+	SetDetailedActionName(detailedActionName string)
 }
 
 // Actionable: the `GtkActionable` interface provides a convenient way of
@@ -81,91 +92,42 @@ type ActionableOverrider interface {
 // or “app.” prefix that are associated with the `GtkApplicationWindow` or
 // `GtkApplication`, but other action groups that are added with
 // [method@Gtk.Widget.insert_action_group] will be consulted as well.
-type Actionable interface {
-	gextras.Objector
-
-	// ActionName gets the action name for @actionable.
-	ActionName() string
-	// ActionTargetValue gets the current target value of @actionable.
-	ActionTargetValue() *glib.Variant
-	// SetActionName specifies the name of the action with which this widget
-	// should be associated.
-	//
-	// If @action_name is nil then the widget will be unassociated from any
-	// previous action.
-	//
-	// Usually this function is used when the widget is located (or will be
-	// located) within the hierarchy of a `GtkApplicationWindow`.
-	//
-	// Names are of the form “win.save” or “app.quit” for actions on the
-	// containing `GtkApplicationWindow` or its associated `GtkApplication`,
-	// respectively. This is the same form used for actions in the `GMenu`
-	// associated with the window.
-	SetActionName(actionName string)
-	// SetActionTargetValue sets the target value of an actionable widget.
-	//
-	// If @target_value is nil then the target value is unset.
-	//
-	// The target value has two purposes. First, it is used as the parameter to
-	// activation of the action associated with the `GtkActionable` widget.
-	// Second, it is used to determine if the widget should be rendered as
-	// “active” — the widget is active if the state is equal to the given
-	// target.
-	//
-	// Consider the example of associating a set of buttons with a `GAction`
-	// with string state in a typical “radio button” situation. Each button will
-	// be associated with the same action, but with a different target value for
-	// that action. Clicking on a particular button will activate the action
-	// with the target of that button, which will typically cause the action’s
-	// state to change to that value. Since the action’s state is now equal to
-	// the target value of the button, the button will now be rendered as active
-	// (and the other buttons, with different targets, rendered inactive).
-	SetActionTargetValue(targetValue *glib.Variant)
-	// SetDetailedActionName sets the action-name and associated string target
-	// value of an actionable widget.
-	//
-	// @detailed_action_name is a string in the format accepted by
-	// g_action_parse_detailed_name().
-	SetDetailedActionName(detailedActionName string)
-}
-
-// ActionableIface implements the Actionable interface.
-type ActionableIface struct {
+type Actionable struct {
 	*externglib.Object
-	WidgetClass
+	Widget
 }
 
-var _ Actionable = (*ActionableIface)(nil)
+var _ Actionabler = (*Actionable)(nil)
 
-func wrapActionable(obj *externglib.Object) Actionable {
-	return &ActionableIface{
+func wrapActionabler(obj *externglib.Object) Actionabler {
+	return &Actionable{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalActionable(p uintptr) (interface{}, error) {
+func marshalActionabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionable(obj), nil
+	return wrapActionabler(obj), nil
 }
 
 // ActionName gets the action name for @actionable.
-func (actionable *ActionableIface) ActionName() string {
+func (actionable *Actionable) ActionName() string {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.char          // in
 
@@ -181,7 +143,7 @@ func (actionable *ActionableIface) ActionName() string {
 }
 
 // ActionTargetValue gets the current target value of @actionable.
-func (actionable *ActionableIface) ActionTargetValue() *glib.Variant {
+func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.GVariant      // in
 
@@ -212,7 +174,7 @@ func (actionable *ActionableIface) ActionTargetValue() *glib.Variant {
 // Names are of the form “win.save” or “app.quit” for actions on the containing
 // `GtkApplicationWindow` or its associated `GtkApplication`, respectively. This
 // is the same form used for actions in the `GMenu` associated with the window.
-func (actionable *ActionableIface) SetActionName(actionName string) {
+func (actionable *Actionable) SetActionName(actionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.char          // out
 
@@ -240,7 +202,7 @@ func (actionable *ActionableIface) SetActionName(actionName string) {
 // change to that value. Since the action’s state is now equal to the target
 // value of the button, the button will now be rendered as active (and the other
 // buttons, with different targets, rendered inactive).
-func (actionable *ActionableIface) SetActionTargetValue(targetValue *glib.Variant) {
+func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.GVariant      // out
 
@@ -255,7 +217,7 @@ func (actionable *ActionableIface) SetActionTargetValue(targetValue *glib.Varian
 //
 // @detailed_action_name is a string in the format accepted by
 // g_action_parse_detailed_name().
-func (actionable *ActionableIface) SetDetailedActionName(detailedActionName string) {
+func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.char          // out
 

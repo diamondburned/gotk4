@@ -28,8 +28,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_address_get_type()), F: marshalNetworkAddress},
+		{T: externglib.Type(C.g_network_address_get_type()), F: marshalNetworkAddresser},
 	})
+}
+
+// NetworkAddresser describes NetworkAddress's methods.
+type NetworkAddresser interface {
+	gextras.Objector
+
+	Hostname() string
+	Port() uint16
+	Scheme() string
 }
 
 // NetworkAddress provides an easy way to resolve a hostname and then attempt to
@@ -40,39 +49,26 @@ func init() {
 // object is kept alive which may have unexpected results if alive for too long.
 //
 // See Connectable for an example of using the connectable interface.
-type NetworkAddress interface {
-	gextras.Objector
-
-	// Hostname gets @addr's hostname. This might be either UTF-8 or
-	// ASCII-encoded, depending on what @addr was created with.
-	Hostname() string
-	// Port gets @addr's port number
-	Port() uint16
-	// Scheme gets @addr's scheme
-	Scheme() string
-}
-
-// NetworkAddressClass implements the NetworkAddress interface.
-type NetworkAddressClass struct {
+type NetworkAddress struct {
 	*externglib.Object
-	SocketConnectableIface
+	SocketConnectable
 }
 
-var _ NetworkAddress = (*NetworkAddressClass)(nil)
+var _ NetworkAddresser = (*NetworkAddress)(nil)
 
-func wrapNetworkAddress(obj *externglib.Object) NetworkAddress {
-	return &NetworkAddressClass{
+func wrapNetworkAddresser(obj *externglib.Object) NetworkAddresser {
+	return &NetworkAddress{
 		Object: obj,
-		SocketConnectableIface: SocketConnectableIface{
+		SocketConnectable: SocketConnectable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNetworkAddress(p uintptr) (interface{}, error) {
+func marshalNetworkAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNetworkAddress(obj), nil
+	return wrapNetworkAddresser(obj), nil
 }
 
 // NewNetworkAddress creates a new Connectable for connecting to the given
@@ -82,7 +78,7 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 // `localhost` may refer to the IPv4 loopback address only, or to both IPv4 and
 // IPv6; use g_network_address_new_loopback() to create a Address that is
 // guaranteed to resolve to both addresses.
-func NewNetworkAddress(hostname string, port uint16) *NetworkAddressClass {
+func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
 	var _cret *C.GSocketConnectable // in
@@ -93,9 +89,9 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddressClass {
 
 	_cret = C.g_network_address_new(_arg1, _arg2)
 
-	var _networkAddress *NetworkAddressClass // out
+	var _networkAddress *NetworkAddress // out
 
-	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddressClass)
+	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddress)
 
 	return _networkAddress
 }
@@ -111,7 +107,7 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddressClass {
 //
 // g_network_address_get_hostname() will always return `localhost` for a Address
 // created with this constructor.
-func NewNetworkAddressLoopback(port uint16) *NetworkAddressClass {
+func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 	var _arg1 C.guint16             // out
 	var _cret *C.GSocketConnectable // in
 
@@ -119,16 +115,16 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddressClass {
 
 	_cret = C.g_network_address_new_loopback(_arg1)
 
-	var _networkAddress *NetworkAddressClass // out
+	var _networkAddress *NetworkAddress // out
 
-	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddressClass)
+	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddress)
 
 	return _networkAddress
 }
 
 // Hostname gets @addr's hostname. This might be either UTF-8 or ASCII-encoded,
 // depending on what @addr was created with.
-func (addr *NetworkAddressClass) Hostname() string {
+func (addr *NetworkAddress) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 
@@ -144,7 +140,7 @@ func (addr *NetworkAddressClass) Hostname() string {
 }
 
 // Port gets @addr's port number
-func (addr *NetworkAddressClass) Port() uint16 {
+func (addr *NetworkAddress) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret C.guint16          // in
 
@@ -160,7 +156,7 @@ func (addr *NetworkAddressClass) Port() uint16 {
 }
 
 // Scheme gets @addr's scheme
-func (addr *NetworkAddressClass) Scheme() string {
+func (addr *NetworkAddress) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 

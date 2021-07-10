@@ -20,8 +20,8 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_assistant_page_type_get_type()), F: marshalAssistantPageType},
-		{T: externglib.Type(C.gtk_assistant_get_type()), F: marshalAssistant},
-		{T: externglib.Type(C.gtk_assistant_page_get_type()), F: marshalAssistantPage},
+		{T: externglib.Type(C.gtk_assistant_get_type()), F: marshalAssistanter},
+		{T: externglib.Type(C.gtk_assistant_page_get_type()), F: marshalAssistantPager},
 	})
 }
 
@@ -94,6 +94,32 @@ func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
 	return cret
 }
 
+// Assistanter describes Assistant's methods.
+type Assistanter interface {
+	gextras.Objector
+
+	AddActionWidget(child Widgetter)
+	AppendPage(page Widgetter) int
+	Commit()
+	CurrentPage() int
+	NPages() int
+	NthPage(pageNum int) *Widget
+	Page(child Widgetter) *AssistantPage
+	PageComplete(page Widgetter) bool
+	PageTitle(page Widgetter) string
+	PageType(page Widgetter) AssistantPageType
+	InsertPage(page Widgetter, position int) int
+	NextPage()
+	PrependPage(page Widgetter) int
+	PreviousPage()
+	RemoveActionWidget(child Widgetter)
+	RemovePage(pageNum int)
+	SetCurrentPage(pageNum int)
+	SetPageComplete(page Widgetter, complete bool)
+	SetPageTitle(page Widgetter, title string)
+	UpdateButtonsState()
+}
+
 // Assistant: `GtkAssistant` is used to represent a complex as a series of
 // steps.
 //
@@ -132,280 +158,196 @@ func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
 //
 // `GtkAssistant` has a single CSS node with the name window and style class
 // .assistant.
-type Assistant interface {
-	gextras.Objector
-
-	// AddActionWidget adds a widget to the action area of a `GtkAssistant`.
-	AddActionWidget(child Widget)
-	// AppendPage appends a page to the @assistant.
-	AppendPage(page Widget) int
-	// Commit erases the visited page history.
-	//
-	// GTK will then hide the back button on the current page, and removes the
-	// cancel button from subsequent pages.
-	//
-	// Use this when the information provided up to the current page is
-	// hereafter deemed permanent and cannot be modified or undone. For example,
-	// showing a progress page to track a long-running, unreversible operation
-	// after the user has clicked apply on a confirmation page.
-	Commit()
-	// CurrentPage returns the page number of the current page.
-	CurrentPage() int
-	// NPages returns the number of pages in the @assistant
-	NPages() int
-	// NthPage returns the child widget contained in page number @page_num.
-	NthPage(pageNum int) *WidgetClass
-	// Page returns the `GtkAssistantPage` object for @child.
-	Page(child Widget) *AssistantPageClass
-	// PageComplete gets whether @page is complete.
-	PageComplete(page Widget) bool
-	// PageTitle gets the title for @page.
-	PageTitle(page Widget) string
-	// PageType gets the page type of @page.
-	PageType(page Widget) AssistantPageType
-	// InsertPage inserts a page in the @assistant at a given position.
-	InsertPage(page Widget, position int) int
-	// NextPage: navigate to the next page.
-	//
-	// It is a programming error to call this function when there is no next
-	// page.
-	//
-	// This function is for use when creating pages of the
-	// GTK_ASSISTANT_PAGE_CUSTOM type.
-	NextPage()
-	// PrependPage prepends a page to the @assistant.
-	PrependPage(page Widget) int
-	// PreviousPage: navigate to the previous visited page.
-	//
-	// It is a programming error to call this function when no previous page is
-	// available.
-	//
-	// This function is for use when creating pages of the
-	// GTK_ASSISTANT_PAGE_CUSTOM type.
-	PreviousPage()
-	// RemoveActionWidget removes a widget from the action area of a
-	// `GtkAssistant`.
-	RemoveActionWidget(child Widget)
-	// RemovePage removes the @page_num’s page from @assistant.
-	RemovePage(pageNum int)
-	// SetCurrentPage switches the page to @page_num.
-	//
-	// Note that this will only be necessary in custom buttons, as the
-	// @assistant flow can be set with gtk_assistant_set_forward_page_func().
-	SetCurrentPage(pageNum int)
-	// SetPageComplete sets whether @page contents are complete.
-	//
-	// This will make @assistant update the buttons state to be able to continue
-	// the task.
-	SetPageComplete(page Widget, complete bool)
-	// SetPageTitle sets a title for @page.
-	//
-	// The title is displayed in the header area of the assistant when @page is
-	// the current page.
-	SetPageTitle(page Widget, title string)
-	// UpdateButtonsState forces @assistant to recompute the buttons state.
-	//
-	// GTK automatically takes care of this in most situations, e.g. when the
-	// user goes to a different page, or when the visibility or completeness of
-	// a page changes.
-	//
-	// One situation where it can be necessary to call this function is when
-	// changing a value on the current page affects the future page flow of the
-	// assistant.
-	UpdateButtonsState()
-}
-
-// AssistantClass implements the Assistant interface.
-type AssistantClass struct {
+type Assistant struct {
 	*externglib.Object
-	WindowClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	NativeIface
-	RootIface
-	ShortcutManagerIface
+	Window
+	Accessible
+	Buildable
+	ConstraintTarget
+	Native
+	Root
+	ShortcutManager
 }
 
-var _ Assistant = (*AssistantClass)(nil)
+var _ Assistanter = (*Assistant)(nil)
 
-func wrapAssistant(obj *externglib.Object) Assistant {
-	return &AssistantClass{
+func wrapAssistanter(obj *externglib.Object) Assistanter {
+	return &Assistant{
 		Object: obj,
-		WindowClass: WindowClass{
+		Window: Window{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			RootIface: RootIface{
+			Root: Root{
 				Object: obj,
-				NativeIface: NativeIface{
+				Native: Native{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						AccessibleIface: AccessibleIface{
+						Accessible: Accessible{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
-						ConstraintTargetIface: ConstraintTargetIface{
+						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
 					},
 				},
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			ShortcutManagerIface: ShortcutManagerIface{
+			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		NativeIface: NativeIface{
+		Native: Native{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		RootIface: RootIface{
+		Root: Root{
 			Object: obj,
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		ShortcutManagerIface: ShortcutManagerIface{
+		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
 	}
 }
 
-func marshalAssistant(p uintptr) (interface{}, error) {
+func marshalAssistanter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAssistant(obj), nil
+	return wrapAssistanter(obj), nil
 }
 
 // NewAssistant creates a new `GtkAssistant`.
-func NewAssistant() *AssistantClass {
+func NewAssistant() *Assistant {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_assistant_new()
 
-	var _assistant *AssistantClass // out
+	var _assistant *Assistant // out
 
-	_assistant = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AssistantClass)
+	_assistant = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Assistant)
 
 	return _assistant
 }
 
 // AddActionWidget adds a widget to the action area of a `GtkAssistant`.
-func (assistant *AssistantClass) AddActionWidget(child Widget) {
+func (assistant *Assistant) AddActionWidget(child Widgetter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -416,7 +358,7 @@ func (assistant *AssistantClass) AddActionWidget(child Widget) {
 }
 
 // AppendPage appends a page to the @assistant.
-func (assistant *AssistantClass) AppendPage(page Widget) int {
+func (assistant *Assistant) AppendPage(page Widgetter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -442,7 +384,7 @@ func (assistant *AssistantClass) AppendPage(page Widget) int {
 // deemed permanent and cannot be modified or undone. For example, showing a
 // progress page to track a long-running, unreversible operation after the user
 // has clicked apply on a confirmation page.
-func (assistant *AssistantClass) Commit() {
+func (assistant *Assistant) Commit() {
 	var _arg0 *C.GtkAssistant // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
@@ -451,7 +393,7 @@ func (assistant *AssistantClass) Commit() {
 }
 
 // CurrentPage returns the page number of the current page.
-func (assistant *AssistantClass) CurrentPage() int {
+func (assistant *Assistant) CurrentPage() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.int           // in
 
@@ -467,7 +409,7 @@ func (assistant *AssistantClass) CurrentPage() int {
 }
 
 // NPages returns the number of pages in the @assistant
-func (assistant *AssistantClass) NPages() int {
+func (assistant *Assistant) NPages() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.int           // in
 
@@ -483,7 +425,7 @@ func (assistant *AssistantClass) NPages() int {
 }
 
 // NthPage returns the child widget contained in page number @page_num.
-func (assistant *AssistantClass) NthPage(pageNum int) *WidgetClass {
+func (assistant *Assistant) NthPage(pageNum int) *Widget {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 	var _cret *C.GtkWidget    // in
@@ -493,15 +435,15 @@ func (assistant *AssistantClass) NthPage(pageNum int) *WidgetClass {
 
 	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // Page returns the `GtkAssistantPage` object for @child.
-func (assistant *AssistantClass) Page(child Widget) *AssistantPageClass {
+func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
 	var _arg0 *C.GtkAssistant     // out
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.GtkAssistantPage // in
@@ -511,15 +453,15 @@ func (assistant *AssistantClass) Page(child Widget) *AssistantPageClass {
 
 	_cret = C.gtk_assistant_get_page(_arg0, _arg1)
 
-	var _assistantPage *AssistantPageClass // out
+	var _assistantPage *AssistantPage // out
 
-	_assistantPage = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AssistantPageClass)
+	_assistantPage = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AssistantPage)
 
 	return _assistantPage
 }
 
 // PageComplete gets whether @page is complete.
-func (assistant *AssistantClass) PageComplete(page Widget) bool {
+func (assistant *Assistant) PageComplete(page Widgetter) bool {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
@@ -539,7 +481,7 @@ func (assistant *AssistantClass) PageComplete(page Widget) bool {
 }
 
 // PageTitle gets the title for @page.
-func (assistant *AssistantClass) PageTitle(page Widget) string {
+func (assistant *Assistant) PageTitle(page Widgetter) string {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.char         // in
@@ -557,7 +499,7 @@ func (assistant *AssistantClass) PageTitle(page Widget) string {
 }
 
 // PageType gets the page type of @page.
-func (assistant *AssistantClass) PageType(page Widget) AssistantPageType {
+func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out
 	var _cret C.GtkAssistantPageType // in
@@ -575,7 +517,7 @@ func (assistant *AssistantClass) PageType(page Widget) AssistantPageType {
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
-func (assistant *AssistantClass) InsertPage(page Widget, position int) int {
+func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.int           // out
@@ -600,7 +542,7 @@ func (assistant *AssistantClass) InsertPage(page Widget, position int) int {
 //
 // This function is for use when creating pages of the GTK_ASSISTANT_PAGE_CUSTOM
 // type.
-func (assistant *AssistantClass) NextPage() {
+func (assistant *Assistant) NextPage() {
 	var _arg0 *C.GtkAssistant // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
@@ -609,7 +551,7 @@ func (assistant *AssistantClass) NextPage() {
 }
 
 // PrependPage prepends a page to the @assistant.
-func (assistant *AssistantClass) PrependPage(page Widget) int {
+func (assistant *Assistant) PrependPage(page Widgetter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -633,7 +575,7 @@ func (assistant *AssistantClass) PrependPage(page Widget) int {
 //
 // This function is for use when creating pages of the GTK_ASSISTANT_PAGE_CUSTOM
 // type.
-func (assistant *AssistantClass) PreviousPage() {
+func (assistant *Assistant) PreviousPage() {
 	var _arg0 *C.GtkAssistant // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
@@ -642,7 +584,7 @@ func (assistant *AssistantClass) PreviousPage() {
 }
 
 // RemoveActionWidget removes a widget from the action area of a `GtkAssistant`.
-func (assistant *AssistantClass) RemoveActionWidget(child Widget) {
+func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -653,7 +595,7 @@ func (assistant *AssistantClass) RemoveActionWidget(child Widget) {
 }
 
 // RemovePage removes the @page_num’s page from @assistant.
-func (assistant *AssistantClass) RemovePage(pageNum int) {
+func (assistant *Assistant) RemovePage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 
@@ -667,7 +609,7 @@ func (assistant *AssistantClass) RemovePage(pageNum int) {
 //
 // Note that this will only be necessary in custom buttons, as the @assistant
 // flow can be set with gtk_assistant_set_forward_page_func().
-func (assistant *AssistantClass) SetCurrentPage(pageNum int) {
+func (assistant *Assistant) SetCurrentPage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 
@@ -681,7 +623,7 @@ func (assistant *AssistantClass) SetCurrentPage(pageNum int) {
 //
 // This will make @assistant update the buttons state to be able to continue the
 // task.
-func (assistant *AssistantClass) SetPageComplete(page Widget, complete bool) {
+func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -699,7 +641,7 @@ func (assistant *AssistantClass) SetPageComplete(page Widget, complete bool) {
 //
 // The title is displayed in the header area of the assistant when @page is the
 // current page.
-func (assistant *AssistantClass) SetPageTitle(page Widget, title string) {
+func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out
@@ -721,7 +663,7 @@ func (assistant *AssistantClass) SetPageTitle(page Widget, title string) {
 // One situation where it can be necessary to call this function is when
 // changing a value on the current page affects the future page flow of the
 // assistant.
-func (assistant *AssistantClass) UpdateButtonsState() {
+func (assistant *Assistant) UpdateButtonsState() {
 	var _arg0 *C.GtkAssistant // out
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
@@ -729,36 +671,35 @@ func (assistant *AssistantClass) UpdateButtonsState() {
 	C.gtk_assistant_update_buttons_state(_arg0)
 }
 
-// AssistantPage: `GtkAssistantPage` is an auxiliary object used by
-// `GtkAssistant.
-type AssistantPage interface {
+// AssistantPager describes AssistantPage's methods.
+type AssistantPager interface {
 	gextras.Objector
 
-	// Child returns the child to which @page belongs.
-	Child() *WidgetClass
+	Child() *Widget
 }
 
-// AssistantPageClass implements the AssistantPage interface.
-type AssistantPageClass struct {
+// AssistantPage: `GtkAssistantPage` is an auxiliary object used by
+// `GtkAssistant.
+type AssistantPage struct {
 	*externglib.Object
 }
 
-var _ AssistantPage = (*AssistantPageClass)(nil)
+var _ AssistantPager = (*AssistantPage)(nil)
 
-func wrapAssistantPage(obj *externglib.Object) AssistantPage {
-	return &AssistantPageClass{
+func wrapAssistantPager(obj *externglib.Object) AssistantPager {
+	return &AssistantPage{
 		Object: obj,
 	}
 }
 
-func marshalAssistantPage(p uintptr) (interface{}, error) {
+func marshalAssistantPager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAssistantPage(obj), nil
+	return wrapAssistantPager(obj), nil
 }
 
 // Child returns the child to which @page belongs.
-func (page *AssistantPageClass) Child() *WidgetClass {
+func (page *AssistantPage) Child() *Widget {
 	var _arg0 *C.GtkAssistantPage // out
 	var _cret *C.GtkWidget        // in
 
@@ -766,9 +707,9 @@ func (page *AssistantPageClass) Child() *WidgetClass {
 
 	_cret = C.gtk_assistant_page_get_child(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }

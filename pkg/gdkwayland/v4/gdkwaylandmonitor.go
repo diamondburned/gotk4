@@ -19,8 +19,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_monitor_get_type()), F: marshalWaylandMonitor},
+		{T: externglib.Type(C.gdk_wayland_monitor_get_type()), F: marshalWaylandMonitorrer},
 	})
+}
+
+// WaylandMonitorrer describes WaylandMonitor's methods.
+type WaylandMonitorrer interface {
+	gextras.Objector
+
+	privateWaylandMonitor()
 }
 
 // WaylandMonitor: the Wayland implementation of `GdkMonitor`.
@@ -28,31 +35,24 @@ func init() {
 // Beyond the [class@Gdk.Monitor] API, the Wayland implementation offers access
 // to the Wayland `wl_output` object with
 // [method@GdkWayland.WaylandMonitor.get_wl_output].
-type WaylandMonitor interface {
-	gextras.Objector
-
-	privateWaylandMonitorClass()
+type WaylandMonitor struct {
+	gdk.Monitor
 }
 
-// WaylandMonitorClass implements the WaylandMonitor interface.
-type WaylandMonitorClass struct {
-	gdk.MonitorClass
-}
+var _ WaylandMonitorrer = (*WaylandMonitor)(nil)
 
-var _ WaylandMonitor = (*WaylandMonitorClass)(nil)
-
-func wrapWaylandMonitor(obj *externglib.Object) WaylandMonitor {
-	return &WaylandMonitorClass{
-		MonitorClass: gdk.MonitorClass{
+func wrapWaylandMonitorrer(obj *externglib.Object) WaylandMonitorrer {
+	return &WaylandMonitor{
+		Monitor: gdk.Monitor{
 			Object: obj,
 		},
 	}
 }
 
-func marshalWaylandMonitor(p uintptr) (interface{}, error) {
+func marshalWaylandMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandMonitor(obj), nil
+	return wrapWaylandMonitorrer(obj), nil
 }
 
-func (*WaylandMonitorClass) privateWaylandMonitorClass() {}
+func (*WaylandMonitor) privateWaylandMonitor() {}

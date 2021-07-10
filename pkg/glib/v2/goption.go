@@ -112,12 +112,6 @@ type OptionEntry struct {
 	native C.GOptionEntry
 }
 
-// WrapOptionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapOptionEntry(ptr unsafe.Pointer) *OptionEntry {
-	return (*OptionEntry)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (o *OptionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
@@ -132,12 +126,6 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 // then add to its Context.
 type OptionGroup struct {
 	native C.GOptionGroup
-}
-
-// WrapOptionGroup wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapOptionGroup(ptr unsafe.Pointer) *OptionGroup {
-	return (*OptionGroup)(ptr)
 }
 
 func marshalOptionGroup(p uintptr) (interface{}, error) {

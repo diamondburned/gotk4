@@ -63,12 +63,6 @@ type KeyFile struct {
 	native C.GKeyFile
 }
 
-// WrapKeyFile wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapKeyFile(ptr unsafe.Pointer) *KeyFile {
-	return (*KeyFile)(ptr)
-}
-
 func marshalKeyFile(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*KeyFile)(unsafe.Pointer(b)), nil

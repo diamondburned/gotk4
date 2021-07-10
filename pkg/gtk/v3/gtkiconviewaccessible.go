@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_icon_view_accessible_get_type()), F: marshalIconViewAccessible},
+		{T: externglib.Type(C.gtk_icon_view_accessible_get_type()), F: marshalIconViewAccessibler},
 	})
 }
 
-type IconViewAccessible interface {
+// IconViewAccessibler describes IconViewAccessible's methods.
+type IconViewAccessibler interface {
 	gextras.Objector
 
-	privateIconViewAccessibleClass()
+	privateIconViewAccessible()
 }
 
-// IconViewAccessibleClass implements the IconViewAccessible interface.
-type IconViewAccessibleClass struct {
-	ContainerAccessibleClass
+type IconViewAccessible struct {
+	ContainerAccessible
 }
 
-var _ IconViewAccessible = (*IconViewAccessibleClass)(nil)
+var _ IconViewAccessibler = (*IconViewAccessible)(nil)
 
-func wrapIconViewAccessible(obj *externglib.Object) IconViewAccessible {
-	return &IconViewAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapIconViewAccessibler(obj *externglib.Object) IconViewAccessibler {
+	return &IconViewAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapIconViewAccessible(obj *externglib.Object) IconViewAccessible {
 	}
 }
 
-func marshalIconViewAccessible(p uintptr) (interface{}, error) {
+func marshalIconViewAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconViewAccessible(obj), nil
+	return wrapIconViewAccessibler(obj), nil
 }
 
-func (*IconViewAccessibleClass) privateIconViewAccessibleClass() {}
+func (*IconViewAccessible) privateIconViewAccessible() {}

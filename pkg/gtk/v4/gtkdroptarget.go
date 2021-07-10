@@ -20,8 +20,22 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTarget},
+		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTargetter},
 	})
+}
+
+// DropTargetter describes DropTarget's methods.
+type DropTargetter interface {
+	gextras.Objector
+
+	Actions() gdk.DragAction
+	Drop() *gdk.Drop
+	Formats() *gdk.ContentFormats
+	Preload() bool
+	Value() *externglib.Value
+	Reject()
+	SetGTypes(types []externglib.Type)
+	SetPreload(preload bool)
 }
 
 // DropTarget: `GtkDropTarget` is an event controller to receive Drag-and-Drop
@@ -85,60 +99,28 @@ func init() {
 // If you are not interested in receiving the drop, but just want to update UI
 // state during a Drag-and-Drop operation (e.g. switching tabs), you can use
 // [class@Gtk.DropControllerMotion].
-type DropTarget interface {
-	gextras.Objector
-
-	// Actions gets the actions that this drop target supports.
-	Actions() gdk.DragAction
-	// Drop gets the currently handled drop operation.
-	//
-	// If no drop operation is going on, nil is returned.
-	Drop() *gdk.DropClass
-	// Formats gets the data formats that this drop target accepts.
-	//
-	// If the result is nil, all formats are expected to be supported.
-	Formats() *gdk.ContentFormats
-	// Preload gets whether data should be preloaded on hover.
-	Preload() bool
-	// Value gets the current drop data, as a `GValue`.
-	Value() *externglib.Value
-	// Reject rejects the ongoing drop operation.
-	//
-	// If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:drop]
-	// is nil, this function does nothing.
-	//
-	// This function should be used when delaying the decision on whether to
-	// accept a drag or not until after reading the data.
-	Reject()
-	// SetGTypes sets the supported `GTypes` for this drop target.
-	SetGTypes(types []externglib.Type)
-	// SetPreload sets whether data should be preloaded on hover.
-	SetPreload(preload bool)
+type DropTarget struct {
+	EventController
 }
 
-// DropTargetClass implements the DropTarget interface.
-type DropTargetClass struct {
-	EventControllerClass
-}
+var _ DropTargetter = (*DropTarget)(nil)
 
-var _ DropTarget = (*DropTargetClass)(nil)
-
-func wrapDropTarget(obj *externglib.Object) DropTarget {
-	return &DropTargetClass{
-		EventControllerClass: EventControllerClass{
+func wrapDropTargetter(obj *externglib.Object) DropTargetter {
+	return &DropTarget{
+		EventController: EventController{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDropTarget(p uintptr) (interface{}, error) {
+func marshalDropTargetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropTarget(obj), nil
+	return wrapDropTargetter(obj), nil
 }
 
 // Actions gets the actions that this drop target supports.
-func (self *DropTargetClass) Actions() gdk.DragAction {
+func (self *DropTarget) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.GdkDragAction  // in
 
@@ -156,7 +138,7 @@ func (self *DropTargetClass) Actions() gdk.DragAction {
 // Drop gets the currently handled drop operation.
 //
 // If no drop operation is going on, nil is returned.
-func (self *DropTargetClass) Drop() *gdk.DropClass {
+func (self *DropTarget) Drop() *gdk.Drop {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GdkDrop       // in
 
@@ -164,9 +146,9 @@ func (self *DropTargetClass) Drop() *gdk.DropClass {
 
 	_cret = C.gtk_drop_target_get_drop(_arg0)
 
-	var _drop *gdk.DropClass // out
+	var _drop *gdk.Drop // out
 
-	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DropClass)
+	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Drop)
 
 	return _drop
 }
@@ -174,7 +156,7 @@ func (self *DropTargetClass) Drop() *gdk.DropClass {
 // Formats gets the data formats that this drop target accepts.
 //
 // If the result is nil, all formats are expected to be supported.
-func (self *DropTargetClass) Formats() *gdk.ContentFormats {
+func (self *DropTarget) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTarget     // out
 	var _cret *C.GdkContentFormats // in
 
@@ -194,7 +176,7 @@ func (self *DropTargetClass) Formats() *gdk.ContentFormats {
 }
 
 // Preload gets whether data should be preloaded on hover.
-func (self *DropTargetClass) Preload() bool {
+func (self *DropTarget) Preload() bool {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.gboolean       // in
 
@@ -212,7 +194,7 @@ func (self *DropTargetClass) Preload() bool {
 }
 
 // Value gets the current drop data, as a `GValue`.
-func (self *DropTargetClass) Value() *externglib.Value {
+func (self *DropTarget) Value() *externglib.Value {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GValue        // in
 
@@ -234,7 +216,7 @@ func (self *DropTargetClass) Value() *externglib.Value {
 //
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
-func (self *DropTargetClass) Reject() {
+func (self *DropTarget) Reject() {
 	var _arg0 *C.GtkDropTarget // out
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
@@ -243,7 +225,7 @@ func (self *DropTargetClass) Reject() {
 }
 
 // SetGTypes sets the supported `GTypes` for this drop target.
-func (self *DropTargetClass) SetGTypes(types []externglib.Type) {
+func (self *DropTarget) SetGTypes(types []externglib.Type) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 *C.GType
 	var _arg2 C.gsize
@@ -263,7 +245,7 @@ func (self *DropTargetClass) SetGTypes(types []externglib.Type) {
 }
 
 // SetPreload sets whether data should be preloaded on hover.
-func (self *DropTargetClass) SetPreload(preload bool) {
+func (self *DropTarget) SetPreload(preload bool) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 C.gboolean       // out
 

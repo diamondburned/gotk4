@@ -20,15 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_streamable_content_get_type()), F: marshalStreamableContent},
+		{T: externglib.Type(C.atk_streamable_content_get_type()), F: marshalStreamableContenter},
 	})
 }
 
-// StreamableContentOverrider contains methods that are overridable.
+// StreamableContenterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type StreamableContentOverrider interface {
+type StreamableContenterOverrider interface {
 	// MIMEType gets the character string of the specified mime type. The first
 	// mime type is at position 0, the second at position 1, and so on.
 	MIMEType(i int) string
@@ -44,6 +44,16 @@ type StreamableContentOverrider interface {
 	//
 	// Note that it is possible for get_uri to return NULL but for get_stream to
 	// work nonetheless, since not all GIOChannels connect to URIs.
+	URI(mimeType string) string
+}
+
+// StreamableContenter describes StreamableContent's methods.
+type StreamableContenter interface {
+	gextras.Objector
+
+	MIMEType(i int) string
+	NMIMETypes() int
+	Stream(mimeType string) *glib.IOChannel
 	URI(mimeType string) string
 }
 
@@ -62,49 +72,27 @@ type StreamableContentOverrider interface {
 // performance issues. Unlike most ATK interfaces, this interface is not
 // strongly tied to the current user-agent view of the a particular document,
 // but may in some cases give access to the underlying model data.
-type StreamableContent interface {
-	gextras.Objector
-
-	// MIMEType gets the character string of the specified mime type. The first
-	// mime type is at position 0, the second at position 1, and so on.
-	MIMEType(i int) string
-	// NMIMETypes gets the number of mime types supported by this object.
-	NMIMETypes() int
-	// Stream gets the content in the specified mime type.
-	Stream(mimeType string) *glib.IOChannel
-	// URI: get a string representing a URI in IETF standard format (see
-	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
-	// be streamed in the specified mime-type, if one is available. If mime_type
-	// is NULL, the URI for the default (and possibly only) mime-type is
-	// returned.
-	//
-	// Note that it is possible for get_uri to return NULL but for get_stream to
-	// work nonetheless, since not all GIOChannels connect to URIs.
-	URI(mimeType string) string
-}
-
-// StreamableContentIface implements the StreamableContent interface.
-type StreamableContentIface struct {
+type StreamableContent struct {
 	*externglib.Object
 }
 
-var _ StreamableContent = (*StreamableContentIface)(nil)
+var _ StreamableContenter = (*StreamableContent)(nil)
 
-func wrapStreamableContent(obj *externglib.Object) StreamableContent {
-	return &StreamableContentIface{
+func wrapStreamableContenter(obj *externglib.Object) StreamableContenter {
+	return &StreamableContent{
 		Object: obj,
 	}
 }
 
-func marshalStreamableContent(p uintptr) (interface{}, error) {
+func marshalStreamableContenter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStreamableContent(obj), nil
+	return wrapStreamableContenter(obj), nil
 }
 
 // MIMEType gets the character string of the specified mime type. The first mime
 // type is at position 0, the second at position 1, and so on.
-func (streamable *StreamableContentIface) MIMEType(i int) string {
+func (streamable *StreamableContent) MIMEType(i int) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 C.gint                  // out
 	var _cret *C.gchar                // in
@@ -122,7 +110,7 @@ func (streamable *StreamableContentIface) MIMEType(i int) string {
 }
 
 // NMIMETypes gets the number of mime types supported by this object.
-func (streamable *StreamableContentIface) NMIMETypes() int {
+func (streamable *StreamableContent) NMIMETypes() int {
 	var _arg0 *C.AtkStreamableContent // out
 	var _cret C.gint                  // in
 
@@ -138,7 +126,7 @@ func (streamable *StreamableContentIface) NMIMETypes() int {
 }
 
 // Stream gets the content in the specified mime type.
-func (streamable *StreamableContentIface) Stream(mimeType string) *glib.IOChannel {
+func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
 	var _cret *C.GIOChannel           // in
@@ -167,7 +155,7 @@ func (streamable *StreamableContentIface) Stream(mimeType string) *glib.IOChanne
 //
 // Note that it is possible for get_uri to return NULL but for get_stream to
 // work nonetheless, since not all GIOChannels connect to URIs.
-func (streamable *StreamableContentIface) URI(mimeType string) string {
+func (streamable *StreamableContent) URI(mimeType string) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
 	var _cret *C.gchar                // in

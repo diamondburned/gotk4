@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_input_source_get_type()), F: marshalInputSource},
-		{T: externglib.Type(C.gdk_device_get_type()), F: marshalDevice},
+		{T: externglib.Type(C.gdk_device_get_type()), F: marshalDevicer},
 	})
 }
 
@@ -52,128 +52,57 @@ func marshalInputSource(p uintptr) (interface{}, error) {
 	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Devicer describes Device's methods.
+type Devicer interface {
+	gextras.Objector
+
+	CapsLockState() bool
+	DeviceTool() *DeviceTool
+	Direction() pango.Direction
+	Display() *Display
+	HasCursor() bool
+	ModifierState() ModifierType
+	Name() string
+	NumLockState() bool
+	NumTouches() uint
+	ProductID() string
+	ScrollLockState() bool
+	Seat() *Seat
+	Source() InputSource
+	SurfaceAtPosition() (winX float64, winY float64, surface *Surface)
+	Timestamp() uint32
+	VendorID() string
+	HasBidiLayouts() bool
+}
+
 // Device: the `GdkDevice` object represents an input device, such as a
 // keyboard, a mouse, or a touchpad.
 //
 // See the [class@Gdk.Seat] documentation for more information about the various
 // kinds of devices, and their relationships.
-type Device interface {
-	gextras.Objector
-
-	// CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
-	// locked.
-	//
-	// This is only relevant for keyboard devices.
-	CapsLockState() bool
-	// DeviceTool retrieves the current tool for @device.
-	DeviceTool() *DeviceToolClass
-	// Direction returns the direction of effective layout of the keyboard.
-	//
-	// This is only relevant for keyboard devices.
-	//
-	// The direction of a layout is the direction of the majority of its
-	// symbols. See [func@Pango.unichar_direction].
-	Direction() pango.Direction
-	// Display returns the `GdkDisplay` to which @device pertains.
-	Display() *DisplayClass
-	// HasCursor determines whether the pointer follows device motion.
-	//
-	// This is not meaningful for keyboard devices, which don't have a pointer.
-	HasCursor() bool
-	// ModifierState retrieves the current modifier state of the keyboard.
-	//
-	// This is only relevant for keyboard devices.
-	ModifierState() ModifierType
-	// Name: the name of the device, suitable for showing in a user interface.
-	Name() string
-	// NumLockState retrieves whether the Num Lock modifier of the keyboard is
-	// locked.
-	//
-	// This is only relevant for keyboard devices.
-	NumLockState() bool
-	// NumTouches retrieves the number of touch points associated to @device.
-	NumTouches() uint
-	// ProductID returns the product ID of this device.
-	//
-	// This ID is retrieved from the device, and does not change. See
-	// [method@Gdk.Device.get_vendor_id] for more information.
-	ProductID() string
-	// ScrollLockState retrieves whether the Scroll Lock modifier of the
-	// keyboard is locked.
-	//
-	// This is only relevant for keyboard devices.
-	ScrollLockState() bool
-	// Seat returns the `GdkSeat` the device belongs to.
-	Seat() *SeatClass
-	// Source determines the type of the device.
-	Source() InputSource
-	// SurfaceAtPosition obtains the surface underneath @device, returning the
-	// location of the device in @win_x and @win_y
-	//
-	// Returns nil if the surface tree under @device is not known to GDK (for
-	// example, belongs to another application).
-	SurfaceAtPosition() (winX float64, winY float64, surface *SurfaceClass)
-	// Timestamp returns the timestamp of the last activity for this device.
-	//
-	// In practice, this means the timestamp of the last event that was received
-	// from the OS for this device. (GTK may occasionally produce events for a
-	// device that are not received from the OS, and will not update the
-	// timestamp).
-	Timestamp() uint32
-	// VendorID returns the vendor ID of this device.
-	//
-	// This ID is retrieved from the device, and does not change.
-	//
-	// This function, together with [method@Gdk.Device.get_product_id], can be
-	// used to eg. compose `GSettings` paths to store settings for this device.
-	//
-	// “`c static GSettings * get_device_settings (GdkDevice *device) { const
-	// char *vendor, *product; GSettings *settings; GdkDevice *device; char
-	// *path;
-	//
-	//      vendor = gdk_device_get_vendor_id (device);
-	//      product = gdk_device_get_product_id (device);
-	//
-	//      path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
-	//      settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
-	//      g_free (path);
-	//
-	//      return settings;
-	//    }
-	//
-	// “`
-	VendorID() string
-	// HasBidiLayouts determines if layouts for both right-to-left and
-	// left-to-right languages are in use on the keyboard.
-	//
-	// This is only relevant for keyboard devices.
-	HasBidiLayouts() bool
-}
-
-// DeviceClass implements the Device interface.
-type DeviceClass struct {
+type Device struct {
 	*externglib.Object
 }
 
-var _ Device = (*DeviceClass)(nil)
+var _ Devicer = (*Device)(nil)
 
-func wrapDevice(obj *externglib.Object) Device {
-	return &DeviceClass{
+func wrapDevicer(obj *externglib.Object) Devicer {
+	return &Device{
 		Object: obj,
 	}
 }
 
-func marshalDevice(p uintptr) (interface{}, error) {
+func marshalDevicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDevice(obj), nil
+	return wrapDevicer(obj), nil
 }
 
 // CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
 // locked.
 //
 // This is only relevant for keyboard devices.
-func (device *DeviceClass) CapsLockState() bool {
+func (device *Device) CapsLockState() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
@@ -191,7 +120,7 @@ func (device *DeviceClass) CapsLockState() bool {
 }
 
 // DeviceTool retrieves the current tool for @device.
-func (device *DeviceClass) DeviceTool() *DeviceToolClass {
+func (device *Device) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkDevice     // out
 	var _cret *C.GdkDeviceTool // in
 
@@ -199,9 +128,9 @@ func (device *DeviceClass) DeviceTool() *DeviceToolClass {
 
 	_cret = C.gdk_device_get_device_tool(_arg0)
 
-	var _deviceTool *DeviceToolClass // out
+	var _deviceTool *DeviceTool // out
 
-	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceToolClass)
+	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceTool)
 
 	return _deviceTool
 }
@@ -212,7 +141,7 @@ func (device *DeviceClass) DeviceTool() *DeviceToolClass {
 //
 // The direction of a layout is the direction of the majority of its symbols.
 // See [func@Pango.unichar_direction].
-func (device *DeviceClass) Direction() pango.Direction {
+func (device *Device) Direction() pango.Direction {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.PangoDirection // in
 
@@ -228,7 +157,7 @@ func (device *DeviceClass) Direction() pango.Direction {
 }
 
 // Display returns the `GdkDisplay` to which @device pertains.
-func (device *DeviceClass) Display() *DisplayClass {
+func (device *Device) Display() *Display {
 	var _arg0 *C.GdkDevice  // out
 	var _cret *C.GdkDisplay // in
 
@@ -236,9 +165,9 @@ func (device *DeviceClass) Display() *DisplayClass {
 
 	_cret = C.gdk_device_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
@@ -246,7 +175,7 @@ func (device *DeviceClass) Display() *DisplayClass {
 // HasCursor determines whether the pointer follows device motion.
 //
 // This is not meaningful for keyboard devices, which don't have a pointer.
-func (device *DeviceClass) HasCursor() bool {
+func (device *Device) HasCursor() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
@@ -266,7 +195,7 @@ func (device *DeviceClass) HasCursor() bool {
 // ModifierState retrieves the current modifier state of the keyboard.
 //
 // This is only relevant for keyboard devices.
-func (device *DeviceClass) ModifierState() ModifierType {
+func (device *Device) ModifierState() ModifierType {
 	var _arg0 *C.GdkDevice      // out
 	var _cret C.GdkModifierType // in
 
@@ -282,7 +211,7 @@ func (device *DeviceClass) ModifierState() ModifierType {
 }
 
 // Name: the name of the device, suitable for showing in a user interface.
-func (device *DeviceClass) Name() string {
+func (device *Device) Name() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
 
@@ -301,7 +230,7 @@ func (device *DeviceClass) Name() string {
 // locked.
 //
 // This is only relevant for keyboard devices.
-func (device *DeviceClass) NumLockState() bool {
+func (device *Device) NumLockState() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
@@ -319,7 +248,7 @@ func (device *DeviceClass) NumLockState() bool {
 }
 
 // NumTouches retrieves the number of touch points associated to @device.
-func (device *DeviceClass) NumTouches() uint {
+func (device *Device) NumTouches() uint {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.guint      // in
 
@@ -338,7 +267,7 @@ func (device *DeviceClass) NumTouches() uint {
 //
 // This ID is retrieved from the device, and does not change. See
 // [method@Gdk.Device.get_vendor_id] for more information.
-func (device *DeviceClass) ProductID() string {
+func (device *Device) ProductID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
 
@@ -357,7 +286,7 @@ func (device *DeviceClass) ProductID() string {
 // locked.
 //
 // This is only relevant for keyboard devices.
-func (device *DeviceClass) ScrollLockState() bool {
+func (device *Device) ScrollLockState() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
@@ -375,7 +304,7 @@ func (device *DeviceClass) ScrollLockState() bool {
 }
 
 // Seat returns the `GdkSeat` the device belongs to.
-func (device *DeviceClass) Seat() *SeatClass {
+func (device *Device) Seat() *Seat {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkSeat   // in
 
@@ -383,15 +312,15 @@ func (device *DeviceClass) Seat() *SeatClass {
 
 	_cret = C.gdk_device_get_seat(_arg0)
 
-	var _seat *SeatClass // out
+	var _seat *Seat // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeatClass)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Seat)
 
 	return _seat
 }
 
 // Source determines the type of the device.
-func (device *DeviceClass) Source() InputSource {
+func (device *Device) Source() InputSource {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.GdkInputSource // in
 
@@ -411,7 +340,7 @@ func (device *DeviceClass) Source() InputSource {
 //
 // Returns nil if the surface tree under @device is not known to GDK (for
 // example, belongs to another application).
-func (device *DeviceClass) SurfaceAtPosition() (winX float64, winY float64, surface *SurfaceClass) {
+func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface *Surface) {
 	var _arg0 *C.GdkDevice  // out
 	var _arg1 C.double      // in
 	var _arg2 C.double      // in
@@ -421,13 +350,13 @@ func (device *DeviceClass) SurfaceAtPosition() (winX float64, winY float64, surf
 
 	_cret = C.gdk_device_get_surface_at_position(_arg0, &_arg1, &_arg2)
 
-	var _winX float64          // out
-	var _winY float64          // out
-	var _surface *SurfaceClass // out
+	var _winX float64     // out
+	var _winY float64     // out
+	var _surface *Surface // out
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
 
 	return _winX, _winY, _surface
 }
@@ -437,7 +366,7 @@ func (device *DeviceClass) SurfaceAtPosition() (winX float64, winY float64, surf
 // In practice, this means the timestamp of the last event that was received
 // from the OS for this device. (GTK may occasionally produce events for a
 // device that are not received from the OS, and will not update the timestamp).
-func (device *DeviceClass) Timestamp() uint32 {
+func (device *Device) Timestamp() uint32 {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.guint32    // in
 
@@ -473,7 +402,7 @@ func (device *DeviceClass) Timestamp() uint32 {
 //    }
 //
 // “`
-func (device *DeviceClass) VendorID() string {
+func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
 
@@ -492,7 +421,7 @@ func (device *DeviceClass) VendorID() string {
 // languages are in use on the keyboard.
 //
 // This is only relevant for keyboard devices.
-func (device *DeviceClass) HasBidiLayouts() bool {
+func (device *Device) HasBidiLayouts() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
@@ -512,12 +441,6 @@ func (device *DeviceClass) HasBidiLayouts() bool {
 // TimeCoord stores a single event in a motion history.
 type TimeCoord struct {
 	native C.GdkTimeCoord
-}
-
-// WrapTimeCoord wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
-	return (*TimeCoord)(ptr)
 }
 
 // Native returns the underlying C source pointer.

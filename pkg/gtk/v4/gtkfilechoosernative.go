@@ -18,8 +18,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_native_get_type()), F: marshalFileChooserNative},
+		{T: externglib.Type(C.gtk_file_chooser_native_get_type()), F: marshalFileChooserNativer},
 	})
+}
+
+// FileChooserNativer describes FileChooserNative's methods.
+type FileChooserNativer interface {
+	gextras.Objector
+
+	AcceptLabel() string
+	CancelLabel() string
+	SetAcceptLabel(acceptLabel string)
+	SetCancelLabel(cancelLabel string)
 }
 
 // FileChooserNative: `GtkFileChooserNative` is an abstraction of a dialog
@@ -163,62 +173,34 @@ func init() {
 // not supported:
 //
 // * Shortcut folders.
-type FileChooserNative interface {
-	gextras.Objector
-
-	// AcceptLabel retrieves the custom label text for the accept button.
-	AcceptLabel() string
-	// CancelLabel retrieves the custom label text for the cancel button.
-	CancelLabel() string
-	// SetAcceptLabel sets the custom label text for the accept button.
-	//
-	// If characters in @label are preceded by an underscore, they are
-	// underlined. If you need a literal underscore character in a label, use
-	// “__” (two underscores). The first underlined character represents a
-	// keyboard accelerator called a mnemonic.
-	//
-	// Pressing Alt and that key should activate the button.
-	SetAcceptLabel(acceptLabel string)
-	// SetCancelLabel sets the custom label text for the cancel button.
-	//
-	// If characters in @label are preceded by an underscore, they are
-	// underlined. If you need a literal underscore character in a label, use
-	// “__” (two underscores). The first underlined character represents a
-	// keyboard accelerator called a mnemonic.
-	//
-	// Pressing Alt and that key should activate the button.
-	SetCancelLabel(cancelLabel string)
-}
-
-// FileChooserNativeClass implements the FileChooserNative interface.
-type FileChooserNativeClass struct {
+type FileChooserNative struct {
 	*externglib.Object
-	NativeDialogClass
-	FileChooserIface
+	NativeDialog
+	FileChooser
 }
 
-var _ FileChooserNative = (*FileChooserNativeClass)(nil)
+var _ FileChooserNativer = (*FileChooserNative)(nil)
 
-func wrapFileChooserNative(obj *externglib.Object) FileChooserNative {
-	return &FileChooserNativeClass{
+func wrapFileChooserNativer(obj *externglib.Object) FileChooserNativer {
+	return &FileChooserNative{
 		Object: obj,
-		NativeDialogClass: NativeDialogClass{
+		NativeDialog: NativeDialog{
 			Object: obj,
 		},
-		FileChooserIface: FileChooserIface{
+		FileChooser: FileChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFileChooserNative(p uintptr) (interface{}, error) {
+func marshalFileChooserNativer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserNative(obj), nil
+	return wrapFileChooserNativer(obj), nil
 }
 
 // AcceptLabel retrieves the custom label text for the accept button.
-func (self *FileChooserNativeClass) AcceptLabel() string {
+func (self *FileChooserNative) AcceptLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _cret *C.char                 // in
 
@@ -234,7 +216,7 @@ func (self *FileChooserNativeClass) AcceptLabel() string {
 }
 
 // CancelLabel retrieves the custom label text for the cancel button.
-func (self *FileChooserNativeClass) CancelLabel() string {
+func (self *FileChooserNative) CancelLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _cret *C.char                 // in
 
@@ -257,7 +239,7 @@ func (self *FileChooserNativeClass) CancelLabel() string {
 // accelerator called a mnemonic.
 //
 // Pressing Alt and that key should activate the button.
-func (self *FileChooserNativeClass) SetAcceptLabel(acceptLabel string) {
+func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out
 
@@ -276,7 +258,7 @@ func (self *FileChooserNativeClass) SetAcceptLabel(acceptLabel string) {
 // accelerator called a mnemonic.
 //
 // Pressing Alt and that key should activate the button.
-func (self *FileChooserNativeClass) SetCancelLabel(cancelLabel string) {
+func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out
 

@@ -18,35 +18,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_multi_selection_get_type()), F: marshalMultiSelection},
+		{T: externglib.Type(C.gtk_multi_selection_get_type()), F: marshalMultiSelectioner},
 	})
+}
+
+// MultiSelectioner describes MultiSelection's methods.
+type MultiSelectioner interface {
+	gextras.Objector
+
+	privateMultiSelection()
 }
 
 // MultiSelection: `GtkMultiSelection` is a `GtkSelectionModel` that allows
 // selecting multiple elements.
-type MultiSelection interface {
-	gextras.Objector
-
-	privateMultiSelectionClass()
-}
-
-// MultiSelectionClass implements the MultiSelection interface.
-type MultiSelectionClass struct {
+type MultiSelection struct {
 	*externglib.Object
 }
 
-var _ MultiSelection = (*MultiSelectionClass)(nil)
+var _ MultiSelectioner = (*MultiSelection)(nil)
 
-func wrapMultiSelection(obj *externglib.Object) MultiSelection {
-	return &MultiSelectionClass{
+func wrapMultiSelectioner(obj *externglib.Object) MultiSelectioner {
+	return &MultiSelection{
 		Object: obj,
 	}
 }
 
-func marshalMultiSelection(p uintptr) (interface{}, error) {
+func marshalMultiSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMultiSelection(obj), nil
+	return wrapMultiSelectioner(obj), nil
 }
 
-func (*MultiSelectionClass) privateMultiSelectionClass() {}
+func (*MultiSelection) privateMultiSelection() {}

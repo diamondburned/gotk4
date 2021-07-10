@@ -20,52 +20,32 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStylus},
+		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStylusser},
 	})
+}
+
+// GestureStylusser describes GestureStylus's methods.
+type GestureStylusser interface {
+	gextras.Objector
+
+	Backlog() ([]gdk.TimeCoord, bool)
+	DeviceTool() *gdk.DeviceTool
 }
 
 // GestureStylus: `GtkGestureStylus` is a `GtkGesture` specific to stylus input.
 //
 // The provided signals just relay the basic information of the stylus events.
-type GestureStylus interface {
-	gextras.Objector
-
-	// Backlog returns the accumulated backlog of tracking information.
-	//
-	// By default, GTK will limit rate of input events. On stylus input where
-	// accuracy of strokes is paramount, this function returns the accumulated
-	// coordinate/timing state before the emission of the current
-	// [Gtk.GestureStylus::motion] signal.
-	//
-	// This function may only be called within a
-	// [signal@Gtk.GestureStylus::motion] signal handler, the state given in
-	// this signal and obtainable through [method@Gtk.GestureStylus.get_axis]
-	// express the latest (most up-to-date) state in motion history.
-	//
-	// The @backlog is provided in chronological order.
-	Backlog() ([]gdk.TimeCoord, bool)
-	// DeviceTool returns the `GdkDeviceTool` currently driving input through
-	// this gesture.
-	//
-	// This function must be called from the handler of one of the
-	// [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
-	// [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
-	// signals.
-	DeviceTool() *gdk.DeviceToolClass
+type GestureStylus struct {
+	GestureSingle
 }
 
-// GestureStylusClass implements the GestureStylus interface.
-type GestureStylusClass struct {
-	GestureSingleClass
-}
+var _ GestureStylusser = (*GestureStylus)(nil)
 
-var _ GestureStylus = (*GestureStylusClass)(nil)
-
-func wrapGestureStylus(obj *externglib.Object) GestureStylus {
-	return &GestureStylusClass{
-		GestureSingleClass: GestureSingleClass{
-			GestureClass: GestureClass{
-				EventControllerClass: EventControllerClass{
+func wrapGestureStylusser(obj *externglib.Object) GestureStylusser {
+	return &GestureStylus{
+		GestureSingle: GestureSingle{
+			Gesture: Gesture{
+				EventController: EventController{
 					Object: obj,
 				},
 			},
@@ -73,21 +53,21 @@ func wrapGestureStylus(obj *externglib.Object) GestureStylus {
 	}
 }
 
-func marshalGestureStylus(p uintptr) (interface{}, error) {
+func marshalGestureStylusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureStylus(obj), nil
+	return wrapGestureStylusser(obj), nil
 }
 
 // NewGestureStylus creates a new `GtkGestureStylus`.
-func NewGestureStylus() *GestureStylusClass {
+func NewGestureStylus() *GestureStylus {
 	var _cret *C.GtkGesture // in
 
 	_cret = C.gtk_gesture_stylus_new()
 
-	var _gestureStylus *GestureStylusClass // out
+	var _gestureStylus *GestureStylus // out
 
-	_gestureStylus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureStylusClass)
+	_gestureStylus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureStylus)
 
 	return _gestureStylus
 }
@@ -105,7 +85,7 @@ func NewGestureStylus() *GestureStylusClass {
 // state in motion history.
 //
 // The @backlog is provided in chronological order.
-func (gesture *GestureStylusClass) Backlog() ([]gdk.TimeCoord, bool) {
+func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 *C.GdkTimeCoord
 	var _arg2 C.guint    // in
@@ -136,7 +116,7 @@ func (gesture *GestureStylusClass) Backlog() ([]gdk.TimeCoord, bool) {
 // [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
 // [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
 // signals.
-func (gesture *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
+func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	var _arg0 *C.GtkGestureStylus // out
 	var _cret *C.GdkDeviceTool    // in
 
@@ -144,9 +124,9 @@ func (gesture *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
 
-	var _deviceTool *gdk.DeviceToolClass // out
+	var _deviceTool *gdk.DeviceTool // out
 
-	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceToolClass)
+	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceTool)
 
 	return _deviceTool
 }

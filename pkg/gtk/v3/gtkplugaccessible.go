@@ -21,30 +21,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_plug_accessible_get_type()), F: marshalPlugAccessible},
+		{T: externglib.Type(C.gtk_plug_accessible_get_type()), F: marshalPlugAccessibler},
 	})
 }
 
-type PlugAccessible interface {
+// PlugAccessibler describes PlugAccessible's methods.
+type PlugAccessibler interface {
 	gextras.Objector
 
 	ID() string
 }
 
-// PlugAccessibleClass implements the PlugAccessible interface.
-type PlugAccessibleClass struct {
-	WindowAccessibleClass
+type PlugAccessible struct {
+	WindowAccessible
 }
 
-var _ PlugAccessible = (*PlugAccessibleClass)(nil)
+var _ PlugAccessibler = (*PlugAccessible)(nil)
 
-func wrapPlugAccessible(obj *externglib.Object) PlugAccessible {
-	return &PlugAccessibleClass{
-		WindowAccessibleClass: WindowAccessibleClass{
-			ContainerAccessibleClass: ContainerAccessibleClass{
-				WidgetAccessibleClass: WidgetAccessibleClass{
-					AccessibleClass: AccessibleClass{
-						ObjectClass: atk.ObjectClass{
+func wrapPlugAccessibler(obj *externglib.Object) PlugAccessibler {
+	return &PlugAccessible{
+		WindowAccessible: WindowAccessible{
+			ContainerAccessible: ContainerAccessible{
+				WidgetAccessible: WidgetAccessible{
+					Accessible: Accessible{
+						Object: atk.Object{
 							Object: obj,
 						},
 					},
@@ -54,13 +54,13 @@ func wrapPlugAccessible(obj *externglib.Object) PlugAccessible {
 	}
 }
 
-func marshalPlugAccessible(p uintptr) (interface{}, error) {
+func marshalPlugAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlugAccessible(obj), nil
+	return wrapPlugAccessibler(obj), nil
 }
 
-func (plug *PlugAccessibleClass) ID() string {
+func (plug *PlugAccessible) ID() string {
 	var _arg0 *C.GtkPlugAccessible // out
 	var _cret *C.gchar             // in
 

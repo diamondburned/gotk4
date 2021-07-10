@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_legacy_get_type()), F: marshalEventControllerLegacy},
+		{T: externglib.Type(C.gtk_event_controller_legacy_get_type()), F: marshalyier},
 	})
+}
+
+// yier describes EventControllerLegacy's methods.
+type yier interface {
+	gextras.Objector
+
+	privateEventControllerLegacy()
 }
 
 // EventControllerLegacy: `GtkEventControllerLegacy` is an event controller that
@@ -27,44 +34,37 @@ func init() {
 //
 // It should only be used as a last resort if none of the other event
 // controllers or gestures do the job.
-type EventControllerLegacy interface {
-	gextras.Objector
-
-	privateEventControllerLegacyClass()
+type EventControllerLegacy struct {
+	EventController
 }
 
-// EventControllerLegacyClass implements the EventControllerLegacy interface.
-type EventControllerLegacyClass struct {
-	EventControllerClass
-}
+var _ yier = (*EventControllerLegacy)(nil)
 
-var _ EventControllerLegacy = (*EventControllerLegacyClass)(nil)
-
-func wrapEventControllerLegacy(obj *externglib.Object) EventControllerLegacy {
-	return &EventControllerLegacyClass{
-		EventControllerClass: EventControllerClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &EventControllerLegacy{
+		EventController: EventController{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerLegacy(obj), nil
+	return wrapyier(obj), nil
 }
 
 // NewEventControllerLegacy creates a new legacy event controller.
-func NewEventControllerLegacy() *EventControllerLegacyClass {
+func NewEventControllerLegacy() *EventControllerLegacy {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_event_controller_legacy_new()
 
-	var _eventControllerLegacy *EventControllerLegacyClass // out
+	var _eventControllerLegacy *EventControllerLegacy // out
 
-	_eventControllerLegacy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerLegacyClass)
+	_eventControllerLegacy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerLegacy)
 
 	return _eventControllerLegacy
 }
 
-func (*EventControllerLegacyClass) privateEventControllerLegacyClass() {}
+func (*EventControllerLegacy) privateEventControllerLegacy() {}

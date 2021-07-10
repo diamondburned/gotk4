@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_calendar_display_options_get_type()), F: marshalCalendarDisplayOptions},
-		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendar},
+		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarrer},
 	})
 }
 
@@ -56,7 +56,7 @@ func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail
 // information for the specified day. Examples for such details are holidays or
 // appointments. The function returns nil when no information is available.
-type CalendarDetailFunc func(calendar *CalendarClass, year uint, month uint, day uint, userData interface{}) (utf8 string)
+type CalendarDetailFunc func(calendar *Calendar, year uint, month uint, day uint, userData interface{}) (utf8 string)
 
 //export gotk4_CalendarDetailFunc
 func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) (cret *C.gchar) {
@@ -65,13 +65,13 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 		panic(`callback not found`)
 	}
 
-	var calendar *CalendarClass // out
-	var year uint               // out
-	var month uint              // out
-	var day uint                // out
-	var userData interface{}    // out
+	var calendar *Calendar   // out
+	var year uint            // out
+	var month uint           // out
+	var day uint             // out
+	var userData interface{} // out
 
-	calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*CalendarClass)
+	calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Calendar)
 	year = uint(arg1)
 	month = uint(arg2)
 	day = uint(arg3)
@@ -85,11 +85,11 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 	return cret
 }
 
-// CalendarOverrider contains methods that are overridable.
+// CalendarrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CalendarOverrider interface {
+type CalendarrerOverrider interface {
 	DaySelected()
 	DaySelectedDoubleClick()
 	MonthChanged()
@@ -97,6 +97,24 @@ type CalendarOverrider interface {
 	NextYear()
 	PrevMonth()
 	PrevYear()
+}
+
+// Calendarrer describes Calendar's methods.
+type Calendarrer interface {
+	gextras.Objector
+
+	ClearMarks()
+	Date() (year uint, month uint, day uint)
+	DayIsMarked(day uint) bool
+	DetailHeightRows() int
+	DetailWidthChars() int
+	DisplayOptions() CalendarDisplayOptions
+	MarkDay(day uint)
+	SelectDay(day uint)
+	SelectMonth(month uint, year uint)
+	SetDetailHeightRows(rows int)
+	SetDetailWidthChars(chars int)
+	UnmarkDay(day uint)
 }
 
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
@@ -119,87 +137,53 @@ type CalendarOverrider interface {
 // Users should be aware that, although the Gregorian calendar is the legal
 // calendar in most countries, it was adopted progressively between 1582 and
 // 1929. Display before these dates is likely to be historically incorrect.
-type Calendar interface {
-	gextras.Objector
-
-	// ClearMarks: remove all visual markers.
-	ClearMarks()
-	// Date obtains the selected date from a Calendar.
-	Date() (year uint, month uint, day uint)
-	// DayIsMarked returns if the @day of the @calendar is already marked.
-	DayIsMarked(day uint) bool
-	// DetailHeightRows queries the height of detail cells, in rows. See
-	// Calendar:detail-width-chars.
-	DetailHeightRows() int
-	// DetailWidthChars queries the width of detail cells, in characters. See
-	// Calendar:detail-width-chars.
-	DetailWidthChars() int
-	// DisplayOptions returns the current display options of @calendar.
-	DisplayOptions() CalendarDisplayOptions
-	// MarkDay places a visual marker on a particular day.
-	MarkDay(day uint)
-	// SelectDay selects a day from the current month.
-	SelectDay(day uint)
-	// SelectMonth shifts the calendar to a different month.
-	SelectMonth(month uint, year uint)
-	// SetDetailHeightRows updates the height of detail cells. See
-	// Calendar:detail-height-rows.
-	SetDetailHeightRows(rows int)
-	// SetDetailWidthChars updates the width of detail cells. See
-	// Calendar:detail-width-chars.
-	SetDetailWidthChars(chars int)
-	// UnmarkDay removes the visual marker from a particular day.
-	UnmarkDay(day uint)
-}
-
-// CalendarClass implements the Calendar interface.
-type CalendarClass struct {
+type Calendar struct {
 	*externglib.Object
-	WidgetClass
-	BuildableIface
+	Widget
+	Buildable
 }
 
-var _ Calendar = (*CalendarClass)(nil)
+var _ Calendarrer = (*Calendar)(nil)
 
-func wrapCalendar(obj *externglib.Object) Calendar {
-	return &CalendarClass{
+func wrapCalendarrer(obj *externglib.Object) Calendarrer {
+	return &Calendar{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCalendar(p uintptr) (interface{}, error) {
+func marshalCalendarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCalendar(obj), nil
+	return wrapCalendarrer(obj), nil
 }
 
 // NewCalendar creates a new calendar, with the current date being selected.
-func NewCalendar() *CalendarClass {
+func NewCalendar() *Calendar {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_calendar_new()
 
-	var _calendar *CalendarClass // out
+	var _calendar *Calendar // out
 
-	_calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CalendarClass)
+	_calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Calendar)
 
 	return _calendar
 }
 
 // ClearMarks: remove all visual markers.
-func (calendar *CalendarClass) ClearMarks() {
+func (calendar *Calendar) ClearMarks() {
 	var _arg0 *C.GtkCalendar // out
 
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
@@ -208,7 +192,7 @@ func (calendar *CalendarClass) ClearMarks() {
 }
 
 // Date obtains the selected date from a Calendar.
-func (calendar *CalendarClass) Date() (year uint, month uint, day uint) {
+func (calendar *Calendar) Date() (year uint, month uint, day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // in
 	var _arg2 C.guint        // in
@@ -230,7 +214,7 @@ func (calendar *CalendarClass) Date() (year uint, month uint, day uint) {
 }
 
 // DayIsMarked returns if the @day of the @calendar is already marked.
-func (calendar *CalendarClass) DayIsMarked(day uint) bool {
+func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _cret C.gboolean     // in
@@ -251,7 +235,7 @@ func (calendar *CalendarClass) DayIsMarked(day uint) bool {
 
 // DetailHeightRows queries the height of detail cells, in rows. See
 // Calendar:detail-width-chars.
-func (calendar *CalendarClass) DetailHeightRows() int {
+func (calendar *Calendar) DetailHeightRows() int {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gint         // in
 
@@ -268,7 +252,7 @@ func (calendar *CalendarClass) DetailHeightRows() int {
 
 // DetailWidthChars queries the width of detail cells, in characters. See
 // Calendar:detail-width-chars.
-func (calendar *CalendarClass) DetailWidthChars() int {
+func (calendar *Calendar) DetailWidthChars() int {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gint         // in
 
@@ -284,7 +268,7 @@ func (calendar *CalendarClass) DetailWidthChars() int {
 }
 
 // DisplayOptions returns the current display options of @calendar.
-func (calendar *CalendarClass) DisplayOptions() CalendarDisplayOptions {
+func (calendar *Calendar) DisplayOptions() CalendarDisplayOptions {
 	var _arg0 *C.GtkCalendar              // out
 	var _cret C.GtkCalendarDisplayOptions // in
 
@@ -300,7 +284,7 @@ func (calendar *CalendarClass) DisplayOptions() CalendarDisplayOptions {
 }
 
 // MarkDay places a visual marker on a particular day.
-func (calendar *CalendarClass) MarkDay(day uint) {
+func (calendar *Calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -311,7 +295,7 @@ func (calendar *CalendarClass) MarkDay(day uint) {
 }
 
 // SelectDay selects a day from the current month.
-func (calendar *CalendarClass) SelectDay(day uint) {
+func (calendar *Calendar) SelectDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -322,7 +306,7 @@ func (calendar *CalendarClass) SelectDay(day uint) {
 }
 
 // SelectMonth shifts the calendar to a different month.
-func (calendar *CalendarClass) SelectMonth(month uint, year uint) {
+func (calendar *Calendar) SelectMonth(month uint, year uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _arg2 C.guint        // out
@@ -336,7 +320,7 @@ func (calendar *CalendarClass) SelectMonth(month uint, year uint) {
 
 // SetDetailHeightRows updates the height of detail cells. See
 // Calendar:detail-height-rows.
-func (calendar *CalendarClass) SetDetailHeightRows(rows int) {
+func (calendar *Calendar) SetDetailHeightRows(rows int) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gint         // out
 
@@ -348,7 +332,7 @@ func (calendar *CalendarClass) SetDetailHeightRows(rows int) {
 
 // SetDetailWidthChars updates the width of detail cells. See
 // Calendar:detail-width-chars.
-func (calendar *CalendarClass) SetDetailWidthChars(chars int) {
+func (calendar *Calendar) SetDetailWidthChars(chars int) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gint         // out
 
@@ -359,7 +343,7 @@ func (calendar *CalendarClass) SetDetailWidthChars(chars int) {
 }
 
 // UnmarkDay removes the visual marker from a particular day.
-func (calendar *CalendarClass) UnmarkDay(day uint) {
+func (calendar *Calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 

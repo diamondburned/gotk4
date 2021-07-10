@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_accel_map_get_type()), F: marshalAccelMap},
+		{T: externglib.Type(C.gtk_accel_map_get_type()), F: marshalAccelMapper},
 	})
+}
+
+// AccelMapper describes AccelMap's methods.
+type AccelMapper interface {
+	gextras.Objector
+
+	privateAccelMap()
 }
 
 // AccelMap: accelerator maps are used to define runtime configurable
@@ -74,29 +81,22 @@ func init() {
 // connecting to AccelMap::changed signal, one can monitor changes of all
 // accelerators. It is also possible to monitor only single accelerator path by
 // using it as a detail of the AccelMap::changed signal.
-type AccelMap interface {
-	gextras.Objector
-
-	privateAccelMapClass()
-}
-
-// AccelMapClass implements the AccelMap interface.
-type AccelMapClass struct {
+type AccelMap struct {
 	*externglib.Object
 }
 
-var _ AccelMap = (*AccelMapClass)(nil)
+var _ AccelMapper = (*AccelMap)(nil)
 
-func wrapAccelMap(obj *externglib.Object) AccelMap {
-	return &AccelMapClass{
+func wrapAccelMapper(obj *externglib.Object) AccelMapper {
+	return &AccelMap{
 		Object: obj,
 	}
 }
 
-func marshalAccelMap(p uintptr) (interface{}, error) {
+func marshalAccelMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccelMap(obj), nil
+	return wrapAccelMapper(obj), nil
 }
 
-func (*AccelMapClass) privateAccelMapClass() {}
+func (*AccelMap) privateAccelMap() {}

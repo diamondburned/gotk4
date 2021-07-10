@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_at_context_get_type()), F: marshalATContext},
+		{T: externglib.Type(C.gtk_at_context_get_type()), F: marshalATContexter},
 	})
+}
+
+// ATContexter describes ATContext's methods.
+type ATContexter interface {
+	gextras.Objector
+
+	Accessible() *Accessible
+	AccessibleRole() AccessibleRole
 }
 
 // ATContext: `GtkATContext` is an abstract class provided by GTK to communicate
@@ -28,36 +36,26 @@ func init() {
 // Each platform supported by GTK implements a `GtkATContext` subclass, and is
 // responsible for updating the accessible state in response to state changes in
 // `GtkAccessible`.
-type ATContext interface {
-	gextras.Objector
-
-	// Accessible retrieves the `GtkAccessible` using this context.
-	Accessible() *AccessibleIface
-	// AccessibleRole retrieves the accessible role of this context.
-	AccessibleRole() AccessibleRole
-}
-
-// ATContextClass implements the ATContext interface.
-type ATContextClass struct {
+type ATContext struct {
 	*externglib.Object
 }
 
-var _ ATContext = (*ATContextClass)(nil)
+var _ ATContexter = (*ATContext)(nil)
 
-func wrapATContext(obj *externglib.Object) ATContext {
-	return &ATContextClass{
+func wrapATContexter(obj *externglib.Object) ATContexter {
+	return &ATContext{
 		Object: obj,
 	}
 }
 
-func marshalATContext(p uintptr) (interface{}, error) {
+func marshalATContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapATContext(obj), nil
+	return wrapATContexter(obj), nil
 }
 
 // Accessible retrieves the `GtkAccessible` using this context.
-func (self *ATContextClass) Accessible() *AccessibleIface {
+func (self *ATContext) Accessible() *Accessible {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
 
@@ -65,15 +63,15 @@ func (self *ATContextClass) Accessible() *AccessibleIface {
 
 	_cret = C.gtk_at_context_get_accessible(_arg0)
 
-	var _accessible *AccessibleIface // out
+	var _accessible *Accessible // out
 
-	_accessible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccessibleIface)
+	_accessible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Accessible)
 
 	return _accessible
 }
 
 // AccessibleRole retrieves the accessible role of this context.
-func (self *ATContextClass) AccessibleRole() AccessibleRole {
+func (self *ATContext) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkATContext     // out
 	var _cret C.GtkAccessibleRole // in
 

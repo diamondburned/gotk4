@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_handle_get_type()), F: marshalWindowHandle},
+		{T: externglib.Type(C.gtk_window_handle_get_type()), F: marshalWindowHandler},
 	})
+}
+
+// WindowHandler describes WindowHandle's methods.
+type WindowHandler interface {
+	gextras.Objector
+
+	Child() *Widget
+	SetChild(child Widgetter)
 }
 
 // WindowHandle: `GtkWindowHandle` is a titlebar area widget.
@@ -36,77 +44,67 @@ func init() {
 // Accessibility
 //
 // `GtkWindowHandle` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type WindowHandle interface {
-	gextras.Objector
-
-	// Child gets the child widget of @self.
-	Child() *WidgetClass
-	// SetChild sets the child widget of @self.
-	SetChild(child Widget)
-}
-
-// WindowHandleClass implements the WindowHandle interface.
-type WindowHandleClass struct {
+type WindowHandle struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ WindowHandle = (*WindowHandleClass)(nil)
+var _ WindowHandler = (*WindowHandle)(nil)
 
-func wrapWindowHandle(obj *externglib.Object) WindowHandle {
-	return &WindowHandleClass{
+func wrapWindowHandler(obj *externglib.Object) WindowHandler {
+	return &WindowHandle{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalWindowHandle(p uintptr) (interface{}, error) {
+func marshalWindowHandler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowHandle(obj), nil
+	return wrapWindowHandler(obj), nil
 }
 
 // NewWindowHandle creates a new `GtkWindowHandle`.
-func NewWindowHandle() *WindowHandleClass {
+func NewWindowHandle() *WindowHandle {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_window_handle_new()
 
-	var _windowHandle *WindowHandleClass // out
+	var _windowHandle *WindowHandle // out
 
-	_windowHandle = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowHandleClass)
+	_windowHandle = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowHandle)
 
 	return _windowHandle
 }
 
 // Child gets the child widget of @self.
-func (self *WindowHandleClass) Child() *WidgetClass {
+func (self *WindowHandle) Child() *Widget {
 	var _arg0 *C.GtkWindowHandle // out
 	var _cret *C.GtkWidget       // in
 
@@ -114,15 +112,15 @@ func (self *WindowHandleClass) Child() *WidgetClass {
 
 	_cret = C.gtk_window_handle_get_child(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // SetChild sets the child widget of @self.
-func (self *WindowHandleClass) SetChild(child Widget) {
+func (self *WindowHandle) SetChild(child Widgetter) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out
 

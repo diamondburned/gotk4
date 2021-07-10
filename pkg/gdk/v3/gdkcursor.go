@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_cursor_type_get_type()), F: marshalCursorType},
-		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursor},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorrer},
 	})
 }
 
@@ -202,55 +202,35 @@ func marshalCursorType(p uintptr) (interface{}, error) {
 	return CursorType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Cursor represents a cursor. Its contents are private.
-type Cursor interface {
+// Cursorrer describes Cursor's methods.
+type Cursorrer interface {
 	gextras.Objector
 
-	// CursorType returns the cursor type for this cursor.
 	CursorType() CursorType
-	// Display returns the display on which the Cursor is defined.
-	Display() *DisplayClass
-	// Image returns a Pixbuf with the image used to display the cursor.
-	//
-	// Note that depending on the capabilities of the windowing system and on
-	// the cursor, GDK may not be able to obtain the image data. In this case,
-	// nil is returned.
-	Image() *gdkpixbuf.PixbufClass
-	// Surface returns a cairo image surface with the image used to display the
-	// cursor.
-	//
-	// Note that depending on the capabilities of the windowing system and on
-	// the cursor, GDK may not be able to obtain the image data. In this case,
-	// nil is returned.
+	Display() *Display
+	Image() *gdkpixbuf.Pixbuf
 	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
-	// Ref adds a reference to @cursor.
-	//
-	// Deprecated: Use g_object_ref() instead.
-	ref() *CursorClass
-	// Unref removes a reference from @cursor, deallocating the cursor if no
-	// references remain.
-	//
-	// Deprecated: Use g_object_unref() instead.
+	ref() *Cursor
 	unref()
 }
 
-// CursorClass implements the Cursor interface.
-type CursorClass struct {
+// Cursor represents a cursor. Its contents are private.
+type Cursor struct {
 	*externglib.Object
 }
 
-var _ Cursor = (*CursorClass)(nil)
+var _ Cursorrer = (*Cursor)(nil)
 
-func wrapCursor(obj *externglib.Object) Cursor {
-	return &CursorClass{
+func wrapCursorrer(obj *externglib.Object) Cursorrer {
+	return &Cursor{
 		Object: obj,
 	}
 }
 
-func marshalCursor(p uintptr) (interface{}, error) {
+func marshalCursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCursor(obj), nil
+	return wrapCursorrer(obj), nil
 }
 
 // NewCursorFromName creates a new cursor by looking up @name in the current
@@ -275,7 +255,7 @@ func marshalCursor(p uintptr) (interface{}, error) {
 // (ns_resize_cursor.png) "ns-resize" - ! (nesw_resize_cursor.png) "nesw-resize"
 // - ! (nwse_resize_cursor.png) "nwse-resize" - ! (zoom_in_cursor.png) "zoom-in"
 // - ! (zoom_out_cursor.png) "zoom-out"
-func NewCursorFromName(display Display, name string) *CursorClass {
+func NewCursorFromName(display Displayyer, name string) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.gchar      // out
 	var _cret *C.GdkCursor  // in
@@ -286,9 +266,9 @@ func NewCursorFromName(display Display, name string) *CursorClass {
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
-	var _cursor *CursorClass // out
+	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
 
 	return _cursor
 }
@@ -308,7 +288,7 @@ func NewCursorFromName(display Display, name string) *CursorClass {
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int) *CursorClass {
+func NewCursorFromPixbuf(display Displayyer, pixbuf gdkpixbuf.Pixbuffer, x int, y int) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
 	var _arg3 C.gint        // out
@@ -322,9 +302,9 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 
 	_cret = C.gdk_cursor_new_from_pixbuf(_arg1, _arg2, _arg3, _arg4)
 
-	var _cursor *CursorClass // out
+	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
 
 	return _cursor
 }
@@ -340,7 +320,7 @@ func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int)
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y float64) *CursorClass {
+func NewCursorFromSurface(display Displayyer, surface *cairo.Surface, x float64, y float64) *Cursor {
 	var _arg1 *C.GdkDisplay      // out
 	var _arg2 *C.cairo_surface_t // out
 	var _arg3 C.gdouble          // out
@@ -354,15 +334,15 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 
 	_cret = C.gdk_cursor_new_from_surface(_arg1, _arg2, _arg3, _arg4)
 
-	var _cursor *CursorClass // out
+	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
 
 	return _cursor
 }
 
 // CursorType returns the cursor type for this cursor.
-func (cursor *CursorClass) CursorType() CursorType {
+func (cursor *Cursor) CursorType() CursorType {
 	var _arg0 *C.GdkCursor    // out
 	var _cret C.GdkCursorType // in
 
@@ -378,7 +358,7 @@ func (cursor *CursorClass) CursorType() CursorType {
 }
 
 // Display returns the display on which the Cursor is defined.
-func (cursor *CursorClass) Display() *DisplayClass {
+func (cursor *Cursor) Display() *Display {
 	var _arg0 *C.GdkCursor  // out
 	var _cret *C.GdkDisplay // in
 
@@ -386,9 +366,9 @@ func (cursor *CursorClass) Display() *DisplayClass {
 
 	_cret = C.gdk_cursor_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
@@ -398,7 +378,7 @@ func (cursor *CursorClass) Display() *DisplayClass {
 // Note that depending on the capabilities of the windowing system and on the
 // cursor, GDK may not be able to obtain the image data. In this case, nil is
 // returned.
-func (cursor *CursorClass) Image() *gdkpixbuf.PixbufClass {
+func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkPixbuf // in
 
@@ -406,9 +386,9 @@ func (cursor *CursorClass) Image() *gdkpixbuf.PixbufClass {
 
 	_cret = C.gdk_cursor_get_image(_arg0)
 
-	var _pixbuf *gdkpixbuf.PixbufClass // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -419,7 +399,7 @@ func (cursor *CursorClass) Image() *gdkpixbuf.PixbufClass {
 // Note that depending on the capabilities of the windowing system and on the
 // cursor, GDK may not be able to obtain the image data. In this case, nil is
 // returned.
-func (cursor *CursorClass) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
+func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
 	var _arg0 *C.GdkCursor       // out
 	var _arg1 C.gdouble          // in
 	var _arg2 C.gdouble          // in
@@ -446,7 +426,7 @@ func (cursor *CursorClass) Surface() (xHot float64, yHot float64, surface *cairo
 // Ref adds a reference to @cursor.
 //
 // Deprecated: Use g_object_ref() instead.
-func (cursor *CursorClass) ref() *CursorClass {
+func (cursor *Cursor) ref() *Cursor {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
@@ -454,9 +434,9 @@ func (cursor *CursorClass) ref() *CursorClass {
 
 	_cret = C.gdk_cursor_ref(_arg0)
 
-	var _ret *CursorClass // out
+	var _ret *Cursor // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CursorClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
 
 	return _ret
 }
@@ -465,7 +445,7 @@ func (cursor *CursorClass) ref() *CursorClass {
 // references remain.
 //
 // Deprecated: Use g_object_unref() instead.
-func (cursor *CursorClass) unref() {
+func (cursor *Cursor) unref() {
 	var _arg0 *C.GdkCursor // out
 
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))

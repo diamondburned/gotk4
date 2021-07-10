@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_get_type()), F: marshalSeparator},
+		{T: externglib.Type(C.gtk_separator_get_type()), F: marshalSeparatorrer},
 	})
+}
+
+// Separatorrer describes Separator's methods.
+type Separatorrer interface {
+	gextras.Objector
+
+	privateSeparator()
 }
 
 // Separator: `GtkSeparator` is a horizontal or vertical separator widget.
@@ -39,61 +46,54 @@ func init() {
 // Accessibility
 //
 // `GtkSeparator` uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
-type Separator interface {
-	gextras.Objector
-
-	privateSeparatorClass()
-}
-
-// SeparatorClass implements the Separator interface.
-type SeparatorClass struct {
+type Separator struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	OrientableIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
 }
 
-var _ Separator = (*SeparatorClass)(nil)
+var _ Separatorrer = (*Separator)(nil)
 
-func wrapSeparator(obj *externglib.Object) Separator {
-	return &SeparatorClass{
+func wrapSeparatorrer(obj *externglib.Object) Separatorrer {
+	return &Separator{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSeparator(p uintptr) (interface{}, error) {
+func marshalSeparatorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparator(obj), nil
+	return wrapSeparatorrer(obj), nil
 }
 
-func (*SeparatorClass) privateSeparatorClass() {}
+func (*Separator) privateSeparator() {}

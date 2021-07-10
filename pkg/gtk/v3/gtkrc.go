@@ -26,7 +26,7 @@ func init() {
 		{T: externglib.Type(C.gtk_path_type_get_type()), F: marshalPathType},
 		{T: externglib.Type(C.gtk_rc_token_type_get_type()), F: marshalRCTokenType},
 		{T: externglib.Type(C.gtk_rc_flags_get_type()), F: marshalRCFlags},
-		{T: externglib.Type(C.gtk_rc_style_get_type()), F: marshalRCStyle},
+		{T: externglib.Type(C.gtk_rc_style_get_type()), F: marshalRCStyler},
 	})
 }
 
@@ -224,7 +224,7 @@ func RCFindModuleInPath(moduleFile string) string {
 // returns nil.
 //
 // Deprecated: Use CssProvider instead.
-func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) string {
+func RCFindPixmapInPath(settings Settingser, scanner *glib.Scanner, pixmapFile string) string {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.GScanner    // out
 	var _arg3 *C.gchar       // out
@@ -334,7 +334,7 @@ func RCGetModuleDir() string {
 // not be created.)
 //
 // Deprecated: Use StyleContext instead.
-func RCGetStyle(widget Widget) *StyleClass {
+func RCGetStyle(widget Widgetter) *Style {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 
@@ -342,9 +342,9 @@ func RCGetStyle(widget Widget) *StyleClass {
 
 	_cret = C.gtk_rc_get_style(_arg1)
 
-	var _style *StyleClass // out
+	var _style *Style // out
 
-	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StyleClass)
+	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Style)
 
 	return _style
 }
@@ -364,7 +364,7 @@ func RCGetStyle(widget Widget) *StyleClass {
 //                               G_OBJECT_TYPE (widget));
 //
 // Deprecated: Use StyleContext instead.
-func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, typ externglib.Type) *StyleClass {
+func RCGetStyleByPaths(settings Settingser, widgetPath string, classPath string, typ externglib.Type) *Style {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.char        // out
 	var _arg3 *C.char        // out
@@ -380,9 +380,9 @@ func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, t
 
 	_cret = C.gtk_rc_get_style_by_paths(_arg1, _arg2, _arg3, _arg4)
 
-	var _style *StyleClass // out
+	var _style *Style // out
 
-	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StyleClass)
+	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Style)
 
 	return _style
 }
@@ -445,7 +445,7 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 // colors.
 //
 // Deprecated: Use CssProvider instead.
-func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
+func RCParseColorFull(scanner *glib.Scanner, style RCStyler) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
 	var _arg3 C.GdkColor    // in
@@ -523,7 +523,7 @@ func RCReparseAll() bool {
 // reread all previously read RC files.
 //
 // Deprecated: Use CssProvider instead.
-func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
+func RCReparseAllForSettings(settings Settingser, forceLoad bool) bool {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 C.gboolean     // out
 	var _cret C.gboolean     // in
@@ -554,7 +554,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 // widgets that have a style set explicitly on them with gtk_widget_set_style().
 //
 // Deprecated: Use CssProvider instead.
-func RCResetStyles(settings Settings) {
+func RCResetStyles(settings Settingser) {
 	var _arg1 *C.GtkSettings // out
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
@@ -582,59 +582,55 @@ func RCSetDefaultFiles(filenames []string) {
 	C.gtk_rc_set_default_files(_arg1)
 }
 
-// RCStyleOverrider contains methods that are overridable.
+// RCStylerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RCStyleOverrider interface {
-	Merge(src RCStyle)
-	Parse(settings Settings, scanner *glib.Scanner) uint
+type RCStylerOverrider interface {
+	Merge(src RCStyler)
+	Parse(settings Settingser, scanner *glib.Scanner) uint
+}
+
+// RCStyler describes RCStyle's methods.
+type RCStyler interface {
+	gextras.Objector
+
+	Copy() *RCStyle
 }
 
 // RCStyle: the RcStyle-struct is used to represent a set of information about
 // the appearance of a widget. This can later be composited together with other
 // RcStyle-struct<!-- -->s to form a Style.
-type RCStyle interface {
-	gextras.Objector
-
-	// Copy makes a copy of the specified RcStyle. This function will correctly
-	// copy an RC style that is a member of a class derived from RcStyle.
-	//
-	// Deprecated: Use CssProvider instead.
-	Copy() *RCStyleClass
-}
-
-// RCStyleClass implements the RCStyle interface.
-type RCStyleClass struct {
+type RCStyle struct {
 	*externglib.Object
 }
 
-var _ RCStyle = (*RCStyleClass)(nil)
+var _ RCStyler = (*RCStyle)(nil)
 
-func wrapRCStyle(obj *externglib.Object) RCStyle {
-	return &RCStyleClass{
+func wrapRCStyler(obj *externglib.Object) RCStyler {
+	return &RCStyle{
 		Object: obj,
 	}
 }
 
-func marshalRCStyle(p uintptr) (interface{}, error) {
+func marshalRCStyler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRCStyle(obj), nil
+	return wrapRCStyler(obj), nil
 }
 
 // NewRCStyle creates a new RcStyle with no fields set and a reference count of
 // 1.
 //
 // Deprecated: Use CssProvider instead.
-func NewRCStyle() *RCStyleClass {
+func NewRCStyle() *RCStyle {
 	var _cret *C.GtkRcStyle // in
 
 	_cret = C.gtk_rc_style_new()
 
-	var _rcStyle *RCStyleClass // out
+	var _rcStyle *RCStyle // out
 
-	_rcStyle = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RCStyleClass)
+	_rcStyle = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RCStyle)
 
 	return _rcStyle
 }
@@ -643,7 +639,7 @@ func NewRCStyle() *RCStyleClass {
 // an RC style that is a member of a class derived from RcStyle.
 //
 // Deprecated: Use CssProvider instead.
-func (orig *RCStyleClass) Copy() *RCStyleClass {
+func (orig *RCStyle) Copy() *RCStyle {
 	var _arg0 *C.GtkRcStyle // out
 	var _cret *C.GtkRcStyle // in
 
@@ -651,9 +647,9 @@ func (orig *RCStyleClass) Copy() *RCStyleClass {
 
 	_cret = C.gtk_rc_style_copy(_arg0)
 
-	var _rcStyle *RCStyleClass // out
+	var _rcStyle *RCStyle // out
 
-	_rcStyle = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RCStyleClass)
+	_rcStyle = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RCStyle)
 
 	return _rcStyle
 }
@@ -661,12 +657,6 @@ func (orig *RCStyleClass) Copy() *RCStyleClass {
 // RCProperty: deprecated
 type RCProperty struct {
 	native C.GtkRcProperty
-}
-
-// WrapRCProperty wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRCProperty(ptr unsafe.Pointer) *RCProperty {
-	return (*RCProperty)(ptr)
 }
 
 // Native returns the underlying C source pointer.

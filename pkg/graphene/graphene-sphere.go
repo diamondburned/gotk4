@@ -27,12 +27,6 @@ type Sphere struct {
 	native C.graphene_sphere_t
 }
 
-// WrapSphere wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSphere(ptr unsafe.Pointer) *Sphere {
-	return (*Sphere)(ptr)
-}
-
 func marshalSphere(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Sphere)(unsafe.Pointer(b)), nil
@@ -48,7 +42,7 @@ func NewSphereAlloc() *Sphere {
 
 	_sphere = (*Sphere)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_sphere, func(v *Sphere) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_sphere_free((*C.graphene_sphere_t)(unsafe.Pointer(v)))
 	})
 
 	return _sphere

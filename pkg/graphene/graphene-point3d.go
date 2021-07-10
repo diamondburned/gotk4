@@ -27,12 +27,6 @@ type Point3D struct {
 	native C.graphene_point3d_t
 }
 
-// WrapPoint3D wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPoint3D(ptr unsafe.Pointer) *Point3D {
-	return (*Point3D)(ptr)
-}
-
 func marshalPoint3D(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Point3D)(unsafe.Pointer(b)), nil
@@ -48,7 +42,7 @@ func NewPoint3DAlloc() *Point3D {
 
 	_point3D = (*Point3D)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_point3D, func(v *Point3D) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_point3d_free((*C.graphene_point3d_t)(unsafe.Pointer(v)))
 	})
 
 	return _point3D

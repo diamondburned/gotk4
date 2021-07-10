@@ -19,8 +19,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplay},
+		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayyer},
 	})
+}
+
+// Displayyer describes Display's methods.
+type Displayyer interface {
+	gextras.Objector
+
+	Beep()
+	Close()
+	DeviceIsGrabbed(device Devicer) bool
+	Flush()
+	AppLaunchContext() *AppLaunchContext
+	Clipboard() *Clipboard
+	DefaultSeat() *Seat
+	MonitorAtSurface(surface Surfacer) *Monitor
+	Name() string
+	PrimaryClipboard() *Clipboard
+	Setting(name string, value *externglib.Value) bool
+	StartupNotificationID() string
+	IsClosed() bool
+	IsComposited() bool
+	IsRGBA() bool
+	MapKeycode(keycode uint) ([]KeymapKey, []uint, bool)
+	MapKeyval(keyval uint) ([]KeymapKey, bool)
+	NotifyStartupComplete(startupId string)
+	PutEvent(event Eventer)
+	SupportsInputShapes() bool
+	Sync()
 }
 
 // Display: `GdkDisplay` objects are the GDK representation of a workstation.
@@ -38,165 +65,26 @@ func init() {
 //
 // Output devices are represented by [class@Gdk.Monitor] objects, which can be
 // accessed with [method@Gdk.Display.get_monitor_at_surface] and similar APIs.
-type Display interface {
-	gextras.Objector
-
-	// Beep emits a short beep on @display
-	Beep()
-	// Close closes the connection to the windowing system for the given
-	// display.
-	//
-	// This cleans up associated resources.
-	Close()
-	// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
-	// @display.
-	DeviceIsGrabbed(device Device) bool
-	// Flush flushes any requests queued for the windowing system.
-	//
-	// This happens automatically when the main loop blocks waiting for new
-	// events, but if your application is drawing without returning control to
-	// the main loop, you may need to call this function explicitly. A common
-	// case where this function needs to be called is when an application is
-	// executing drawing commands from a thread other than the thread where the
-	// main loop is running.
-	//
-	// This is most useful for X11. On windowing systems where requests are
-	// handled synchronously, this function will do nothing.
-	Flush()
-	// AppLaunchContext returns a `GdkAppLaunchContext` suitable for launching
-	// applications on the given display.
-	AppLaunchContext() *AppLaunchContextClass
-	// Clipboard gets the clipboard used for copy/paste operations.
-	Clipboard() *ClipboardClass
-	// DefaultSeat returns the default `GdkSeat` for this display.
-	//
-	// Note that a display may not have a seat. In this case, this function will
-	// return nil.
-	DefaultSeat() *SeatClass
-	// MonitorAtSurface gets the monitor in which the largest area of @surface
-	// resides.
-	//
-	// Returns a monitor close to @surface if it is outside of all monitors.
-	MonitorAtSurface(surface Surface) *MonitorClass
-	// Name gets the name of the display.
-	Name() string
-	// PrimaryClipboard gets the clipboard used for the primary selection.
-	//
-	// On backends where the primary clipboard is not supported natively, GDK
-	// emulates this clipboard locally.
-	PrimaryClipboard() *ClipboardClass
-	// Setting retrieves a desktop-wide setting such as double-click time for
-	// the @display.
-	Setting(name string, value *externglib.Value) bool
-	// StartupNotificationID gets the startup notification ID for a Wayland
-	// display, or nil if no ID has been defined.
-	StartupNotificationID() string
-	// IsClosed finds out if the display has been closed.
-	IsClosed() bool
-	// IsComposited returns whether surfaces can reasonably be expected to have
-	// their alpha channel drawn correctly on the screen.
-	//
-	// Check [method@Gdk.Display.is_rgba] for whether the display supports an
-	// alpha channel.
-	//
-	// On X11 this function returns whether a compositing manager is compositing
-	// on @display.
-	//
-	// On modern displays, this value is always true.
-	IsComposited() bool
-	// IsRGBA returns whether surfaces on this @display are created with an
-	// alpha channel.
-	//
-	// Even if a true is returned, it is possible that the surface’s alpha
-	// channel won’t be honored when displaying the surface on the screen: in
-	// particular, for X an appropriate windowing manager and compositing
-	// manager must be running to provide appropriate display. Use
-	// [method@Gdk.Display.is_composited] to check if that is the case.
-	//
-	// On modern displays, this value is always true.
-	IsRGBA() bool
-	// MapKeycode returns the keyvals bound to @keycode.
-	//
-	// The Nth `GdkKeymapKey` in @keys is bound to the Nth keyval in @keyvals.
-	//
-	// When a keycode is pressed by the user, the keyval from this list of
-	// entries is selected by considering the effective keyboard group and
-	// level.
-	//
-	// Free the returned arrays with g_free().
-	MapKeycode(keycode uint) ([]KeymapKey, []uint, bool)
-	// MapKeyval obtains a list of keycode/group/level combinations that will
-	// generate @keyval.
-	//
-	// Groups and levels are two kinds of keyboard mode; in general, the level
-	// determines whether the top or bottom symbol on a key is used, and the
-	// group determines whether the left or right symbol is used.
-	//
-	// On US keyboards, the shift key changes the keyboard level, and there are
-	// no groups. A group switch key might convert a keyboard between Hebrew to
-	// English modes, for example.
-	//
-	// `GdkEventKey` contains a group field that indicates the active keyboard
-	// group. The level is computed from the modifier mask.
-	//
-	// The returned array should be freed with g_free().
-	MapKeyval(keyval uint) ([]KeymapKey, bool)
-	// NotifyStartupComplete indicates to the GUI environment that the
-	// application has finished loading, using a given identifier.
-	//
-	// GTK will call this function automatically for [class@Gtk.Window] with
-	// custom startup-notification identifier unless
-	// [method@Gtk.Window.set_auto_startup_notification] is called to disable
-	// that feature.
-	NotifyStartupComplete(startupId string)
-	// PutEvent appends the given event onto the front of the event queue for
-	// @display.
-	//
-	// This function is only useful in very special situations and should not be
-	// used by applications.
-	PutEvent(event Event)
-	// SupportsInputShapes returns true if the display supports input shapes.
-	//
-	// This means that [method@Gdk.Surface.set_input_region] can be used to
-	// modify the input shape of surfaces on @display.
-	//
-	// On modern displays, this value is always true.
-	SupportsInputShapes() bool
-	// Sync flushes any requests queued for the windowing system and waits until
-	// all requests have been handled.
-	//
-	// This is often used for making sure that the display is synchronized with
-	// the current state of the program. Calling [method@Gdk.Display.sync]
-	// before [method@GdkX11.Display.error_trap_pop] makes sure that any errors
-	// generated from earlier requests are handled before the error trap is
-	// removed.
-	//
-	// This is most useful for X11. On windowing systems where requests are
-	// handled synchronously, this function will do nothing.
-	Sync()
-}
-
-// DisplayClass implements the Display interface.
-type DisplayClass struct {
+type Display struct {
 	*externglib.Object
 }
 
-var _ Display = (*DisplayClass)(nil)
+var _ Displayyer = (*Display)(nil)
 
-func wrapDisplay(obj *externglib.Object) Display {
-	return &DisplayClass{
+func wrapDisplayyer(obj *externglib.Object) Displayyer {
+	return &Display{
 		Object: obj,
 	}
 }
 
-func marshalDisplay(p uintptr) (interface{}, error) {
+func marshalDisplayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDisplay(obj), nil
+	return wrapDisplayyer(obj), nil
 }
 
 // Beep emits a short beep on @display
-func (display *DisplayClass) Beep() {
+func (display *Display) Beep() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
@@ -207,7 +95,7 @@ func (display *DisplayClass) Beep() {
 // Close closes the connection to the windowing system for the given display.
 //
 // This cleans up associated resources.
-func (display *DisplayClass) Close() {
+func (display *Display) Close() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
@@ -217,7 +105,7 @@ func (display *DisplayClass) Close() {
 
 // DeviceIsGrabbed returns true if there is an ongoing grab on @device for
 // @display.
-func (display *DisplayClass) DeviceIsGrabbed(device Device) bool {
+func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkDevice  // out
 	var _cret C.gboolean    // in
@@ -246,7 +134,7 @@ func (display *DisplayClass) DeviceIsGrabbed(device Device) bool {
 //
 // This is most useful for X11. On windowing systems where requests are handled
 // synchronously, this function will do nothing.
-func (display *DisplayClass) Flush() {
+func (display *Display) Flush() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
@@ -256,7 +144,7 @@ func (display *DisplayClass) Flush() {
 
 // AppLaunchContext returns a `GdkAppLaunchContext` suitable for launching
 // applications on the given display.
-func (display *DisplayClass) AppLaunchContext() *AppLaunchContextClass {
+func (display *Display) AppLaunchContext() *AppLaunchContext {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
 
@@ -264,15 +152,15 @@ func (display *DisplayClass) AppLaunchContext() *AppLaunchContextClass {
 
 	_cret = C.gdk_display_get_app_launch_context(_arg0)
 
-	var _appLaunchContext *AppLaunchContextClass // out
+	var _appLaunchContext *AppLaunchContext // out
 
-	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContextClass)
+	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContext)
 
 	return _appLaunchContext
 }
 
 // Clipboard gets the clipboard used for copy/paste operations.
-func (display *DisplayClass) Clipboard() *ClipboardClass {
+func (display *Display) Clipboard() *Clipboard {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
@@ -280,9 +168,9 @@ func (display *DisplayClass) Clipboard() *ClipboardClass {
 
 	_cret = C.gdk_display_get_clipboard(_arg0)
 
-	var _clipboard *ClipboardClass // out
+	var _clipboard *Clipboard // out
 
-	_clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ClipboardClass)
+	_clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Clipboard)
 
 	return _clipboard
 }
@@ -291,7 +179,7 @@ func (display *DisplayClass) Clipboard() *ClipboardClass {
 //
 // Note that a display may not have a seat. In this case, this function will
 // return nil.
-func (display *DisplayClass) DefaultSeat() *SeatClass {
+func (display *Display) DefaultSeat() *Seat {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
 
@@ -299,9 +187,9 @@ func (display *DisplayClass) DefaultSeat() *SeatClass {
 
 	_cret = C.gdk_display_get_default_seat(_arg0)
 
-	var _seat *SeatClass // out
+	var _seat *Seat // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeatClass)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Seat)
 
 	return _seat
 }
@@ -310,7 +198,7 @@ func (display *DisplayClass) DefaultSeat() *SeatClass {
 // resides.
 //
 // Returns a monitor close to @surface if it is outside of all monitors.
-func (display *DisplayClass) MonitorAtSurface(surface Surface) *MonitorClass {
+func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GdkMonitor // in
@@ -320,15 +208,15 @@ func (display *DisplayClass) MonitorAtSurface(surface Surface) *MonitorClass {
 
 	_cret = C.gdk_display_get_monitor_at_surface(_arg0, _arg1)
 
-	var _monitor *MonitorClass // out
+	var _monitor *Monitor // out
 
-	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MonitorClass)
+	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Monitor)
 
 	return _monitor
 }
 
 // Name gets the name of the display.
-func (display *DisplayClass) Name() string {
+func (display *Display) Name() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
@@ -347,7 +235,7 @@ func (display *DisplayClass) Name() string {
 //
 // On backends where the primary clipboard is not supported natively, GDK
 // emulates this clipboard locally.
-func (display *DisplayClass) PrimaryClipboard() *ClipboardClass {
+func (display *Display) PrimaryClipboard() *Clipboard {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
 
@@ -355,16 +243,16 @@ func (display *DisplayClass) PrimaryClipboard() *ClipboardClass {
 
 	_cret = C.gdk_display_get_primary_clipboard(_arg0)
 
-	var _clipboard *ClipboardClass // out
+	var _clipboard *Clipboard // out
 
-	_clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ClipboardClass)
+	_clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Clipboard)
 
 	return _clipboard
 }
 
 // Setting retrieves a desktop-wide setting such as double-click time for the
 // @display.
-func (display *DisplayClass) Setting(name string, value *externglib.Value) bool {
+func (display *Display) Setting(name string, value *externglib.Value) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.GValue     // out
@@ -388,7 +276,7 @@ func (display *DisplayClass) Setting(name string, value *externglib.Value) bool 
 
 // StartupNotificationID gets the startup notification ID for a Wayland display,
 // or nil if no ID has been defined.
-func (display *DisplayClass) StartupNotificationID() string {
+func (display *Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
@@ -404,7 +292,7 @@ func (display *DisplayClass) StartupNotificationID() string {
 }
 
 // IsClosed finds out if the display has been closed.
-func (display *DisplayClass) IsClosed() bool {
+func (display *Display) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -431,7 +319,7 @@ func (display *DisplayClass) IsClosed() bool {
 // @display.
 //
 // On modern displays, this value is always true.
-func (display *DisplayClass) IsComposited() bool {
+func (display *Display) IsComposited() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -458,7 +346,7 @@ func (display *DisplayClass) IsComposited() bool {
 // [method@Gdk.Display.is_composited] to check if that is the case.
 //
 // On modern displays, this value is always true.
-func (display *DisplayClass) IsRGBA() bool {
+func (display *Display) IsRGBA() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -483,7 +371,7 @@ func (display *DisplayClass) IsRGBA() bool {
 // is selected by considering the effective keyboard group and level.
 //
 // Free the returned arrays with g_free().
-func (display *DisplayClass) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
+func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 	var _arg2 *C.GdkKeymapKey
@@ -530,7 +418,7 @@ func (display *DisplayClass) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool
 // group. The level is computed from the modifier mask.
 //
 // The returned array should be freed with g_free().
-func (display *DisplayClass) MapKeyval(keyval uint) ([]KeymapKey, bool) {
+func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 	var _arg2 *C.GdkKeymapKey
@@ -563,7 +451,7 @@ func (display *DisplayClass) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 // startup-notification identifier unless
 // [method@Gtk.Window.set_auto_startup_notification] is called to disable that
 // feature.
-func (display *DisplayClass) NotifyStartupComplete(startupId string) {
+func (display *Display) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
@@ -579,7 +467,7 @@ func (display *DisplayClass) NotifyStartupComplete(startupId string) {
 //
 // This function is only useful in very special situations and should not be
 // used by applications.
-func (display *DisplayClass) PutEvent(event Event) {
+func (display *Display) PutEvent(event Eventer) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkEvent   // out
 
@@ -595,7 +483,7 @@ func (display *DisplayClass) PutEvent(event Event) {
 // the input shape of surfaces on @display.
 //
 // On modern displays, this value is always true.
-func (display *DisplayClass) SupportsInputShapes() bool {
+func (display *Display) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
@@ -622,7 +510,7 @@ func (display *DisplayClass) SupportsInputShapes() bool {
 //
 // This is most useful for X11. On windowing systems where requests are handled
 // synchronously, this function will do nothing.
-func (display *DisplayClass) Sync() {
+func (display *Display) Sync() {
 	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))

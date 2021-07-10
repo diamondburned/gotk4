@@ -20,19 +20,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_content_provider_get_type()), F: marshalContentProvider},
+		{T: externglib.Type(C.gdk_content_provider_get_type()), F: marshalContentProviderrer},
 	})
 }
 
-// ContentProviderOverrider contains methods that are overridable.
+// ContentProviderrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ContentProviderOverrider interface {
-	AttachClipboard(clipboard Clipboard)
+type ContentProviderrerOverrider interface {
+	AttachClipboard(clipboard Clipboarder)
 	// ContentChanged emits the ::content-changed signal.
 	ContentChanged()
-	DetachClipboard(clipboard Clipboard)
+	DetachClipboard(clipboard Clipboarder)
 	// Value gets the contents of @provider stored in @value.
 	//
 	// The @value will have been initialized to the `GType` the value should be
@@ -51,6 +51,16 @@ type ContentProviderOverrider interface {
 	//
 	// This can be assumed to be a subset of
 	// [method@Gdk.ContentProvider.ref_formats].
+	RefStorableFormats() *ContentFormats
+}
+
+// ContentProviderrer describes ContentProvider's methods.
+type ContentProviderrer interface {
+	gextras.Objector
+
+	ContentChanged()
+	Value(value *externglib.Value) error
+	RefFormats() *ContentFormats
 	RefStorableFormats() *ContentFormats
 }
 
@@ -64,54 +74,27 @@ type ContentProviderOverrider interface {
 // GDK knows how to handle common text and image formats out-of-the-box. See
 // [class@Gdk.ContentSerializer] and [class@Gdk.ContentDeserializer] if you want
 // to add support for application-specific data formats.
-type ContentProvider interface {
-	gextras.Objector
-
-	// ContentChanged emits the ::content-changed signal.
-	ContentChanged()
-	// Value gets the contents of @provider stored in @value.
-	//
-	// The @value will have been initialized to the `GType` the value should be
-	// provided in. This given `GType` does not need to be listed in the formats
-	// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
-	// given `GType` is not supported, this operation can fail and
-	// IO_ERROR_NOT_SUPPORTED will be reported.
-	Value(value *externglib.Value) error
-	// RefFormats gets the formats that the provider can provide its current
-	// contents in.
-	RefFormats() *ContentFormats
-	// RefStorableFormats gets the formats that the provider suggests other
-	// applications to store the data in.
-	//
-	// An example of such an application would be a clipboard manager.
-	//
-	// This can be assumed to be a subset of
-	// [method@Gdk.ContentProvider.ref_formats].
-	RefStorableFormats() *ContentFormats
-}
-
-// ContentProviderClass implements the ContentProvider interface.
-type ContentProviderClass struct {
+type ContentProvider struct {
 	*externglib.Object
 }
 
-var _ ContentProvider = (*ContentProviderClass)(nil)
+var _ ContentProviderrer = (*ContentProvider)(nil)
 
-func wrapContentProvider(obj *externglib.Object) ContentProvider {
-	return &ContentProviderClass{
+func wrapContentProviderrer(obj *externglib.Object) ContentProviderrer {
+	return &ContentProvider{
 		Object: obj,
 	}
 }
 
-func marshalContentProvider(p uintptr) (interface{}, error) {
+func marshalContentProviderrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContentProvider(obj), nil
+	return wrapContentProviderrer(obj), nil
 }
 
 // NewContentProviderForValue: create a content provider that provides the given
 // @value.
-func NewContentProviderForValue(value *externglib.Value) *ContentProviderClass {
+func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 	var _arg1 *C.GValue             // out
 	var _cret *C.GdkContentProvider // in
 
@@ -119,9 +102,9 @@ func NewContentProviderForValue(value *externglib.Value) *ContentProviderClass {
 
 	_cret = C.gdk_content_provider_new_for_value(_arg1)
 
-	var _contentProvider *ContentProviderClass // out
+	var _contentProvider *ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContentProviderClass)
+	_contentProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContentProvider)
 
 	return _contentProvider
 }
@@ -138,7 +121,7 @@ func NewContentProviderForValue(value *externglib.Value) *ContentProviderClass {
 // a call such as “`c gdk_content_provider_new_union ((GdkContentProvider *[2])
 // { gdk_content_provider_new_typed (G_TYPE_FILE, file),
 // gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture) }, 2); “`
-func NewContentProviderUnion(providers []*ContentProviderClass) *ContentProviderClass {
+func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	var _arg1 **C.GdkContentProvider
 	var _arg2 C.gsize
 	var _cret *C.GdkContentProvider // in
@@ -154,15 +137,15 @@ func NewContentProviderUnion(providers []*ContentProviderClass) *ContentProvider
 
 	_cret = C.gdk_content_provider_new_union(_arg1, _arg2)
 
-	var _contentProvider *ContentProviderClass // out
+	var _contentProvider *ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContentProviderClass)
+	_contentProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContentProvider)
 
 	return _contentProvider
 }
 
 // ContentChanged emits the ::content-changed signal.
-func (provider *ContentProviderClass) ContentChanged() {
+func (provider *ContentProvider) ContentChanged() {
 	var _arg0 *C.GdkContentProvider // out
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
@@ -177,7 +160,7 @@ func (provider *ContentProviderClass) ContentChanged() {
 // returned by [method@Gdk.ContentProvider.ref_formats]. However, if the given
 // `GType` is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED
 // will be reported.
-func (provider *ContentProviderClass) Value(value *externglib.Value) error {
+func (provider *ContentProvider) Value(value *externglib.Value) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GValue             // out
 	var _cerr *C.GError             // in
@@ -196,7 +179,7 @@ func (provider *ContentProviderClass) Value(value *externglib.Value) error {
 
 // RefFormats gets the formats that the provider can provide its current
 // contents in.
-func (provider *ContentProviderClass) RefFormats() *ContentFormats {
+func (provider *ContentProvider) RefFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
@@ -222,7 +205,7 @@ func (provider *ContentProviderClass) RefFormats() *ContentFormats {
 //
 // This can be assumed to be a subset of
 // [method@Gdk.ContentProvider.ref_formats].
-func (provider *ContentProviderClass) RefStorableFormats() *ContentFormats {
+func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 

@@ -18,35 +18,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_selection_filter_model_get_type()), F: marshalSelectionFilterModel},
+		{T: externglib.Type(C.gtk_selection_filter_model_get_type()), F: marshalSelectionFilterModeller},
 	})
+}
+
+// SelectionFilterModeller describes SelectionFilterModel's methods.
+type SelectionFilterModeller interface {
+	gextras.Objector
+
+	privateSelectionFilterModel()
 }
 
 // SelectionFilterModel: `GtkSelectionFilterModel` is a list model that presents
 // the selection from a `GtkSelectionModel`.
-type SelectionFilterModel interface {
-	gextras.Objector
-
-	privateSelectionFilterModelClass()
-}
-
-// SelectionFilterModelClass implements the SelectionFilterModel interface.
-type SelectionFilterModelClass struct {
+type SelectionFilterModel struct {
 	*externglib.Object
 }
 
-var _ SelectionFilterModel = (*SelectionFilterModelClass)(nil)
+var _ SelectionFilterModeller = (*SelectionFilterModel)(nil)
 
-func wrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModel {
-	return &SelectionFilterModelClass{
+func wrapSelectionFilterModeller(obj *externglib.Object) SelectionFilterModeller {
+	return &SelectionFilterModel{
 		Object: obj,
 	}
 }
 
-func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
+func marshalSelectionFilterModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSelectionFilterModel(obj), nil
+	return wrapSelectionFilterModeller(obj), nil
 }
 
-func (*SelectionFilterModelClass) privateSelectionFilterModelClass() {}
+func (*SelectionFilterModel) privateSelectionFilterModel() {}

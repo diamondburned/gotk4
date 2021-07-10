@@ -31,7 +31,7 @@ import "C"
 
 // DBusInterfaceGetPropertyFunc: the type of the @get_property function in
 // BusInterfaceVTable.
-type DBusInterfaceGetPropertyFunc func(connection *DBusConnectionClass, sender string, objectPath string, interfaceName string, propertyName string, userData interface{}) (err error, variant *glib.Variant)
+type DBusInterfaceGetPropertyFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, userData interface{}) (err error, variant *glib.Variant)
 
 //export gotk4_DBusInterfaceGetPropertyFunc
 func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) (cret *C.GVariant) {
@@ -40,14 +40,14 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var sender string                   // out
-	var objectPath string               // out
-	var interfaceName string            // out
-	var propertyName string             // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var sender string              // out
+	var objectPath string          // out
+	var interfaceName string       // out
+	var propertyName string        // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -65,7 +65,7 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 
 // DBusInterfaceMethodCallFunc: the type of the @method_call function in
 // BusInterfaceVTable.
-type DBusInterfaceMethodCallFunc func(connection *DBusConnectionClass, sender string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, invocation *DBusMethodInvocationClass, userData interface{})
+type DBusInterfaceMethodCallFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, invocation *DBusMethodInvocation, userData interface{})
 
 //export gotk4_DBusInterfaceMethodCallFunc
 func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 *C.GDBusMethodInvocation, arg7 C.gpointer) {
@@ -74,16 +74,16 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass       // out
-	var sender string                         // out
-	var objectPath string                     // out
-	var interfaceName string                  // out
-	var methodName string                     // out
-	var parameters *glib.Variant              // out
-	var invocation *DBusMethodInvocationClass // out
-	var userData interface{}                  // out
+	var connection *DBusConnection       // out
+	var sender string                    // out
+	var objectPath string                // out
+	var interfaceName string             // out
+	var methodName string                // out
+	var parameters *glib.Variant         // out
+	var invocation *DBusMethodInvocation // out
+	var userData interface{}             // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -93,7 +93,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	invocation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6)))).(*DBusMethodInvocationClass)
+	invocation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6)))).(*DBusMethodInvocation)
 	userData = box.Get(uintptr(arg7))
 
 	fn := v.(DBusInterfaceMethodCallFunc)
@@ -102,7 +102,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 
 // DBusInterfaceSetPropertyFunc: the type of the @set_property function in
 // BusInterfaceVTable.
-type DBusInterfaceSetPropertyFunc func(connection *DBusConnectionClass, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, userData interface{}) (err error, ok bool)
+type DBusInterfaceSetPropertyFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, userData interface{}) (err error, ok bool)
 
 //export gotk4_DBusInterfaceSetPropertyFunc
 func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) (cret C.gboolean) {
@@ -111,15 +111,15 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var sender string                   // out
-	var objectPath string               // out
-	var interfaceName string            // out
-	var propertyName string             // out
-	var value *glib.Variant             // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var sender string              // out
+	var objectPath string          // out
+	var interfaceName string       // out
+	var propertyName string        // out
+	var value *glib.Variant        // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -201,7 +201,7 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 // with @connection), then a warning is logged to standard error. Applications
 // can check this ahead of time using g_dbus_message_to_blob() passing a
 // BusCapabilityFlags value obtained from @connection.
-type DBusMessageFilterFunction func(connection *DBusConnectionClass, message *DBusMessageClass, incoming bool, userData interface{}) (dBusMessage *DBusMessageClass)
+type DBusMessageFilterFunction func(connection *DBusConnection, message *DBusMessage, incoming bool, userData interface{}) (dBusMessage *DBusMessage)
 
 //export gotk4_DBusMessageFilterFunction
 func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessage, arg2 C.gboolean, arg3 C.gpointer) (cret *C.GDBusMessage) {
@@ -210,13 +210,13 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var message *DBusMessageClass       // out
-	var incoming bool                   // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var message *DBusMessage       // out
+	var incoming bool              // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
-	message = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1)))).(*DBusMessageClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
+	message = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1)))).(*DBusMessage)
 	if arg2 != 0 {
 		incoming = true
 	}
@@ -232,7 +232,7 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 
 // DBusSignalCallback: signature for callback function used in
 // g_dbus_connection_signal_subscribe().
-type DBusSignalCallback func(connection *DBusConnectionClass, senderName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant, userData interface{})
+type DBusSignalCallback func(connection *DBusConnection, senderName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant, userData interface{})
 
 //export gotk4_DBusSignalCallback
 func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.gpointer) {
@@ -241,15 +241,15 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var senderName string               // out
-	var objectPath string               // out
-	var interfaceName string            // out
-	var signalName string               // out
-	var parameters *glib.Variant        // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var senderName string          // out
+	var objectPath string          // out
+	var interfaceName string       // out
+	var signalName string          // out
+	var parameters *glib.Variant   // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	senderName = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -270,7 +270,7 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 //
 // Subtrees are flat. @node, if non-nil, is always exactly one segment of the
 // object path (ie: it never contains a slash).
-type DBusSubtreeDispatchFunc func(connection *DBusConnectionClass, sender string, objectPath string, interfaceName string, node string, userData interface{}) (outUserData interface{}, dBusInterfaceVTable *DBusInterfaceVTable)
+type DBusSubtreeDispatchFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, node string, userData interface{}) (outUserData interface{}, dBusInterfaceVTable *DBusInterfaceVTable)
 
 //export gotk4_DBusSubtreeDispatchFunc
 func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.gpointer, arg6 C.gpointer) (cret *C.GDBusInterfaceVTable) {
@@ -279,14 +279,14 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var sender string                   // out
-	var objectPath string               // out
-	var interfaceName string            // out
-	var node string                     // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var sender string              // out
+	var objectPath string          // out
+	var interfaceName string       // out
+	var node string                // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	interfaceName = C.GoString(arg3)
@@ -314,7 +314,7 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 // the `/` character.
 //
 // The return value will be freed with g_strfreev().
-type DBusSubtreeEnumerateFunc func(connection *DBusConnectionClass, sender string, objectPath string, userData interface{}) (utf8s []string)
+type DBusSubtreeEnumerateFunc func(connection *DBusConnection, sender string, objectPath string, userData interface{}) (utf8s []string)
 
 //export gotk4_DBusSubtreeEnumerateFunc
 func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret **C.gchar) {
@@ -323,12 +323,12 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var sender string                   // out
-	var objectPath string               // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var sender string              // out
+	var objectPath string          // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	userData = box.Get(uintptr(arg3))
@@ -365,7 +365,7 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 // The difference between returning nil and an array containing zero items is
 // that the standard DBus interfaces will returned to the remote introspector in
 // the empty array case, but not in the nil case.
-type DBusSubtreeIntrospectFunc func(connection *DBusConnectionClass, sender string, objectPath string, node string, userData interface{}) (dBusInterfaceInfos []*DBusInterfaceInfo)
+type DBusSubtreeIntrospectFunc func(connection *DBusConnection, sender string, objectPath string, node string, userData interface{}) (dBusInterfaceInfos []*DBusInterfaceInfo)
 
 //export gotk4_DBusSubtreeIntrospectFunc
 func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) (cret **C.GDBusInterfaceInfo) {
@@ -374,13 +374,13 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 		panic(`callback not found`)
 	}
 
-	var connection *DBusConnectionClass // out
-	var sender string                   // out
-	var objectPath string               // out
-	var node string                     // out
-	var userData interface{}            // out
+	var connection *DBusConnection // out
+	var sender string              // out
+	var objectPath string          // out
+	var node string                // out
+	var userData interface{}       // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnectionClass)
+	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
 	sender = C.GoString(arg1)
 	objectPath = C.GoString(arg2)
 	node = C.GoString(arg3)
@@ -409,7 +409,7 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
-func BusGetFinish(res AsyncResult) (*DBusConnectionClass, error) {
+func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
@@ -418,10 +418,10 @@ func BusGetFinish(res AsyncResult) (*DBusConnectionClass, error) {
 
 	_cret = C.g_bus_get_finish(_arg1, &_cerr)
 
-	var _dBusConnection *DBusConnectionClass // out
-	var _goerr error                         // out
+	var _dBusConnection *DBusConnection // out
+	var _goerr error                    // out
 
-	_dBusConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusConnectionClass)
+	_dBusConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusConnection)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
@@ -469,12 +469,6 @@ type DBusInterfaceVTable struct {
 	native C.GDBusInterfaceVTable
 }
 
-// WrapDBusInterfaceVTable wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusInterfaceVTable(ptr unsafe.Pointer) *DBusInterfaceVTable {
-	return (*DBusInterfaceVTable)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (d *DBusInterfaceVTable) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
@@ -484,12 +478,6 @@ func (d *DBusInterfaceVTable) Native() unsafe.Pointer {
 // g_dbus_connection_register_subtree().
 type DBusSubtreeVTable struct {
 	native C.GDBusSubtreeVTable
-}
-
-// WrapDBusSubtreeVTable wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusSubtreeVTable(ptr unsafe.Pointer) *DBusSubtreeVTable {
-	return (*DBusSubtreeVTable)(ptr)
 }
 
 // Native returns the underlying C source pointer.

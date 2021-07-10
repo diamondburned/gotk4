@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.pango_render_part_get_type()), F: marshalRenderPart},
-		{T: externglib.Type(C.pango_renderer_get_type()), F: marshalRenderer},
+		{T: externglib.Type(C.pango_renderer_get_type()), F: marshalRendererrer},
 	})
 }
 
@@ -45,11 +45,11 @@ func marshalRenderPart(p uintptr) (interface{}, error) {
 	return RenderPart(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RendererOverrider contains methods that are overridable.
+// RendererrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RendererOverrider interface {
+type RendererrerOverrider interface {
 	Begin()
 	// DrawErrorUnderline: draw a squiggly line that approximately covers the
 	// given rectangle in the style of an underline used to indicate a spelling
@@ -78,9 +78,26 @@ type RendererOverrider interface {
 	DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
 	// DrawGlyphs draws the glyphs in @glyphs with the specified
 	// `PangoRenderer`.
-	DrawGlyphs(font Font, glyphs *GlyphString, x int, y int)
+	DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int)
 	DrawShape(attr *AttrShape, x int, y int)
 	End()
+}
+
+// Rendererrer describes Renderer's methods.
+type Rendererrer interface {
+	gextras.Objector
+
+	Activate()
+	Deactivate()
+	DrawErrorUnderline(x int, y int, width int, height int)
+	DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
+	DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int)
+	DrawLayout(layout Layouter, x int, y int)
+	DrawLayoutLine(line *LayoutLine, x int, y int)
+	Layout() *Layout
+	LayoutLine() *LayoutLine
+	Matrix() *Matrix
+	SetMatrix(matrix *Matrix)
 }
 
 // Renderer: `PangoRenderer` is a base class for objects that can render text
@@ -89,95 +106,22 @@ type RendererOverrider interface {
 // By subclassing `PangoRenderer` and overriding operations such as @draw_glyphs
 // and @draw_rectangle, renderers for particular font backends and destinations
 // can be created.
-type Renderer interface {
-	gextras.Objector
-
-	// Activate does initial setup before rendering operations on @renderer.
-	//
-	// [method@Pango.Renderer.deactivate] should be called when done drawing.
-	// Calls such as [method@Pango.Renderer.draw_layout] automatically activate
-	// the layout before drawing on it. Calls to `pango_renderer_activate()` and
-	// `pango_renderer_deactivate()` can be nested and the renderer will only be
-	// initialized and deinitialized once.
-	Activate()
-	// Deactivate cleans up after rendering operations on @renderer.
-	//
-	// See docs for [method@Pango.Renderer.activate].
-	Deactivate()
-	// DrawErrorUnderline: draw a squiggly line that approximately covers the
-	// given rectangle in the style of an underline used to indicate a spelling
-	// error.
-	//
-	// The width of the underline is rounded to an integer number of up/down
-	// segments and the resulting rectangle is centered in the original
-	// rectangle.
-	//
-	// This should be called while @renderer is already active. Use
-	// [method@Pango.Renderer.activate] to activate a renderer.
-	DrawErrorUnderline(x int, y int, width int, height int)
-	// DrawGlyphItem draws the glyphs in @glyph_item with the specified
-	// `PangoRenderer`, embedding the text associated with the glyphs in the
-	// output if the output format supports it.
-	//
-	// This is useful for rendering text in PDF.
-	//
-	// Note that @text is the start of the text for layout, which is then
-	// indexed by `glyph_item->item->offset`.
-	//
-	// If @text is nil, this simply calls [method@Pango.Renderer.draw_glyphs].
-	//
-	// The default implementation of this method simply falls back to
-	// [method@Pango.Renderer.draw_glyphs].
-	DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
-	// DrawGlyphs draws the glyphs in @glyphs with the specified
-	// `PangoRenderer`.
-	DrawGlyphs(font Font, glyphs *GlyphString, x int, y int)
-	// DrawLayout draws @layout with the specified `PangoRenderer`.
-	DrawLayout(layout Layout, x int, y int)
-	// DrawLayoutLine draws @line with the specified `PangoRenderer`.
-	DrawLayoutLine(line *LayoutLine, x int, y int)
-	// Layout gets the layout currently being rendered using @renderer.
-	//
-	// Calling this function only makes sense from inside a subclass's methods,
-	// like in its draw_shape vfunc, for example.
-	//
-	// The returned layout should not be modified while still being rendered.
-	Layout() *LayoutClass
-	// LayoutLine gets the layout line currently being rendered using @renderer.
-	//
-	// Calling this function only makes sense from inside a subclass's methods,
-	// like in its draw_shape vfunc, for example.
-	//
-	// The returned layout line should not be modified while still being
-	// rendered.
-	LayoutLine() *LayoutLine
-	// Matrix gets the transformation matrix that will be applied when
-	// rendering.
-	//
-	// See [method@Pango.Renderer.set_matrix].
-	Matrix() *Matrix
-	// SetMatrix sets the transformation matrix that will be applied when
-	// rendering.
-	SetMatrix(matrix *Matrix)
-}
-
-// RendererClass implements the Renderer interface.
-type RendererClass struct {
+type Renderer struct {
 	*externglib.Object
 }
 
-var _ Renderer = (*RendererClass)(nil)
+var _ Rendererrer = (*Renderer)(nil)
 
-func wrapRenderer(obj *externglib.Object) Renderer {
-	return &RendererClass{
+func wrapRendererrer(obj *externglib.Object) Rendererrer {
+	return &Renderer{
 		Object: obj,
 	}
 }
 
-func marshalRenderer(p uintptr) (interface{}, error) {
+func marshalRendererrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRenderer(obj), nil
+	return wrapRendererrer(obj), nil
 }
 
 // Activate does initial setup before rendering operations on @renderer.
@@ -187,7 +131,7 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 // before drawing on it. Calls to `pango_renderer_activate()` and
 // `pango_renderer_deactivate()` can be nested and the renderer will only be
 // initialized and deinitialized once.
-func (renderer *RendererClass) Activate() {
+func (renderer *Renderer) Activate() {
 	var _arg0 *C.PangoRenderer // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
@@ -198,7 +142,7 @@ func (renderer *RendererClass) Activate() {
 // Deactivate cleans up after rendering operations on @renderer.
 //
 // See docs for [method@Pango.Renderer.activate].
-func (renderer *RendererClass) Deactivate() {
+func (renderer *Renderer) Deactivate() {
 	var _arg0 *C.PangoRenderer // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
@@ -214,7 +158,7 @@ func (renderer *RendererClass) Deactivate() {
 //
 // This should be called while @renderer is already active. Use
 // [method@Pango.Renderer.activate] to activate a renderer.
-func (renderer *RendererClass) DrawErrorUnderline(x int, y int, width int, height int) {
+func (renderer *Renderer) DrawErrorUnderline(x int, y int, width int, height int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 C.int            // out
 	var _arg2 C.int            // out
@@ -243,7 +187,7 @@ func (renderer *RendererClass) DrawErrorUnderline(x int, y int, width int, heigh
 //
 // The default implementation of this method simply falls back to
 // [method@Pango.Renderer.draw_glyphs].
-func (renderer *RendererClass) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int) {
+func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.PangoGlyphItem // out
@@ -261,7 +205,7 @@ func (renderer *RendererClass) DrawGlyphItem(text string, glyphItem *GlyphItem, 
 }
 
 // DrawGlyphs draws the glyphs in @glyphs with the specified `PangoRenderer`.
-func (renderer *RendererClass) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int) {
+func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int) {
 	var _arg0 *C.PangoRenderer    // out
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
@@ -278,7 +222,7 @@ func (renderer *RendererClass) DrawGlyphs(font Font, glyphs *GlyphString, x int,
 }
 
 // DrawLayout draws @layout with the specified `PangoRenderer`.
-func (renderer *RendererClass) DrawLayout(layout Layout, x int, y int) {
+func (renderer *Renderer) DrawLayout(layout Layouter, x int, y int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoLayout   // out
 	var _arg2 C.int            // out
@@ -293,7 +237,7 @@ func (renderer *RendererClass) DrawLayout(layout Layout, x int, y int) {
 }
 
 // DrawLayoutLine draws @line with the specified `PangoRenderer`.
-func (renderer *RendererClass) DrawLayoutLine(line *LayoutLine, x int, y int) {
+func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x int, y int) {
 	var _arg0 *C.PangoRenderer   // out
 	var _arg1 *C.PangoLayoutLine // out
 	var _arg2 C.int              // out
@@ -313,7 +257,7 @@ func (renderer *RendererClass) DrawLayoutLine(line *LayoutLine, x int, y int) {
 // in its draw_shape vfunc, for example.
 //
 // The returned layout should not be modified while still being rendered.
-func (renderer *RendererClass) Layout() *LayoutClass {
+func (renderer *Renderer) Layout() *Layout {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoLayout   // in
 
@@ -321,9 +265,9 @@ func (renderer *RendererClass) Layout() *LayoutClass {
 
 	_cret = C.pango_renderer_get_layout(_arg0)
 
-	var _layout *LayoutClass // out
+	var _layout *Layout // out
 
-	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LayoutClass)
+	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Layout)
 
 	return _layout
 }
@@ -334,7 +278,7 @@ func (renderer *RendererClass) Layout() *LayoutClass {
 // in its draw_shape vfunc, for example.
 //
 // The returned layout line should not be modified while still being rendered.
-func (renderer *RendererClass) LayoutLine() *LayoutLine {
+func (renderer *Renderer) LayoutLine() *LayoutLine {
 	var _arg0 *C.PangoRenderer   // out
 	var _cret *C.PangoLayoutLine // in
 
@@ -356,7 +300,7 @@ func (renderer *RendererClass) LayoutLine() *LayoutLine {
 // Matrix gets the transformation matrix that will be applied when rendering.
 //
 // See [method@Pango.Renderer.set_matrix].
-func (renderer *RendererClass) Matrix() *Matrix {
+func (renderer *Renderer) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
 
@@ -372,7 +316,7 @@ func (renderer *RendererClass) Matrix() *Matrix {
 }
 
 // SetMatrix sets the transformation matrix that will be applied when rendering.
-func (renderer *RendererClass) SetMatrix(matrix *Matrix) {
+func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out
 

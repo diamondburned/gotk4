@@ -44,12 +44,6 @@ type TabArray struct {
 	native C.PangoTabArray
 }
 
-// WrapTabArray wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTabArray(ptr unsafe.Pointer) *TabArray {
-	return (*TabArray)(ptr)
-}
-
 func marshalTabArray(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*TabArray)(unsafe.Pointer(b)), nil
@@ -72,7 +66,7 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 
 	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.free(unsafe.Pointer(v))
+		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
 	})
 
 	return _tabArray
@@ -96,7 +90,7 @@ func (src *TabArray) Copy() *TabArray {
 
 	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.free(unsafe.Pointer(v))
+		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
 	})
 
 	return _tabArray

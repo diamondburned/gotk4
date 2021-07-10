@@ -37,12 +37,6 @@ type FileAttributeInfo struct {
 	native C.GFileAttributeInfo
 }
 
-// WrapFileAttributeInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileAttributeInfo(ptr unsafe.Pointer) *FileAttributeInfo {
-	return (*FileAttributeInfo)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (f *FileAttributeInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
@@ -52,12 +46,6 @@ func (f *FileAttributeInfo) Native() unsafe.Pointer {
 // attributes. The registry stores Key-Value pair formats as AttributeInfos.
 type FileAttributeInfoList struct {
 	native C.GFileAttributeInfoList
-}
-
-// WrapFileAttributeInfoList wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileAttributeInfoList(ptr unsafe.Pointer) *FileAttributeInfoList {
-	return (*FileAttributeInfoList)(ptr)
 }
 
 func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {

@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_seat_capabilities_get_type()), F: marshalSeatCapabilities},
-		{T: externglib.Type(C.gdk_seat_get_type()), F: marshalSeat},
+		{T: externglib.Type(C.gdk_seat_get_type()), F: marshalSeater},
 	})
 }
 
@@ -49,42 +49,38 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 	return SeatCapabilities(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Seat: the `GdkSeat` object represents a collection of input devices that
-// belong to a user.
-type Seat interface {
+// Seater describes Seat's methods.
+type Seater interface {
 	gextras.Objector
 
-	// Capabilities returns the capabilities this `GdkSeat` currently has.
 	Capabilities() SeatCapabilities
-	// Display returns the `GdkDisplay` this seat belongs to.
-	Display() *DisplayClass
-	// Keyboard returns the device that routes keyboard events.
-	Keyboard() *DeviceClass
-	// Pointer returns the device that routes pointer events.
-	Pointer() *DeviceClass
+	Display() *Display
+	Keyboard() *Device
+	Pointer() *Device
 }
 
-// SeatClass implements the Seat interface.
-type SeatClass struct {
+// Seat: the `GdkSeat` object represents a collection of input devices that
+// belong to a user.
+type Seat struct {
 	*externglib.Object
 }
 
-var _ Seat = (*SeatClass)(nil)
+var _ Seater = (*Seat)(nil)
 
-func wrapSeat(obj *externglib.Object) Seat {
-	return &SeatClass{
+func wrapSeater(obj *externglib.Object) Seater {
+	return &Seat{
 		Object: obj,
 	}
 }
 
-func marshalSeat(p uintptr) (interface{}, error) {
+func marshalSeater(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeat(obj), nil
+	return wrapSeater(obj), nil
 }
 
 // Capabilities returns the capabilities this `GdkSeat` currently has.
-func (seat *SeatClass) Capabilities() SeatCapabilities {
+func (seat *Seat) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
 
@@ -100,7 +96,7 @@ func (seat *SeatClass) Capabilities() SeatCapabilities {
 }
 
 // Display returns the `GdkDisplay` this seat belongs to.
-func (seat *SeatClass) Display() *DisplayClass {
+func (seat *Seat) Display() *Display {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in
 
@@ -108,15 +104,15 @@ func (seat *SeatClass) Display() *DisplayClass {
 
 	_cret = C.gdk_seat_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
 
 // Keyboard returns the device that routes keyboard events.
-func (seat *SeatClass) Keyboard() *DeviceClass {
+func (seat *Seat) Keyboard() *Device {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
@@ -124,15 +120,15 @@ func (seat *SeatClass) Keyboard() *DeviceClass {
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
 
-	var _device *DeviceClass // out
+	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
 
 	return _device
 }
 
 // Pointer returns the device that routes pointer events.
-func (seat *SeatClass) Pointer() *DeviceClass {
+func (seat *Seat) Pointer() *Device {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
@@ -140,9 +136,9 @@ func (seat *SeatClass) Pointer() *DeviceClass {
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
 
-	var _device *DeviceClass // out
+	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
 
 	return _device
 }

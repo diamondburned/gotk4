@@ -29,15 +29,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_initable_get_type()), F: marshalInitable},
+		{T: externglib.Type(C.g_initable_get_type()), F: marshalInitabler},
 	})
 }
 
-// InitableOverrider contains methods that are overridable.
+// InitablerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type InitableOverrider interface {
+type InitablerOverrider interface {
 	// Init initializes the object implementing the interface.
 	//
 	// This method is intended for language bindings. If writing in C,
@@ -76,7 +76,14 @@ type InitableOverrider interface {
 	// pattern, a caller would expect to be able to call g_initable_init() on
 	// the result of g_object_new(), regardless of whether it is in fact a new
 	// instance.
-	Init(cancellable Cancellable) error
+	Init(cancellable Cancellabler) error
+}
+
+// Initabler describes Initable's methods.
+type Initabler interface {
+	gextras.Objector
+
+	Init(cancellable Cancellabler) error
 }
 
 // Initable is implemented by objects that can fail during initialization. If an
@@ -101,67 +108,22 @@ type InitableOverrider interface {
 // the binding could check for objects implementing GInitable during normal
 // construction and automatically initialize them, throwing an exception on
 // failure.
-type Initable interface {
-	gextras.Objector
-
-	// Init initializes the object implementing the interface.
-	//
-	// This method is intended for language bindings. If writing in C,
-	// g_initable_new() should typically be used instead.
-	//
-	// The object must be initialized before any real use after initial
-	// construction, either with this function or g_async_initable_init_async().
-	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
-	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
-	// object doesn't support cancellable initialization the error
-	// G_IO_ERROR_NOT_SUPPORTED will be returned.
-	//
-	// If the object is not initialized, or initialization returns with an
-	// error, then all operations on the object except g_object_ref() and
-	// g_object_unref() are considered to be invalid, and have undefined
-	// behaviour. See the [introduction][ginitable] for more details.
-	//
-	// Callers should not assume that a class which implements #GInitable can be
-	// initialized multiple times, unless the class explicitly documents itself
-	// as supporting this. Generally, a class’ implementation of init() can
-	// assume (and assert) that it will only be called once. Previously, this
-	// documentation recommended all #GInitable implementations should be
-	// idempotent; that recommendation was relaxed in GLib 2.54.
-	//
-	// If a class explicitly supports being initialized multiple times, it is
-	// recommended that the method is idempotent: multiple calls with the same
-	// arguments should return the same results. Only the first call initializes
-	// the object; further calls return the result of the first call.
-	//
-	// One reason why a class might need to support idempotent initialization is
-	// if it is designed to be used via the singleton pattern, with a
-	// Class.constructor that sometimes returns an existing instance. In this
-	// pattern, a caller would expect to be able to call g_initable_init() on
-	// the result of g_object_new(), regardless of whether it is in fact a new
-	// instance.
-	Init(cancellable Cancellable) error
-}
-
-// InitableIface implements the Initable interface.
-type InitableIface struct {
+type Initable struct {
 	*externglib.Object
 }
 
-var _ Initable = (*InitableIface)(nil)
+var _ Initabler = (*Initable)(nil)
 
-func wrapInitable(obj *externglib.Object) Initable {
-	return &InitableIface{
+func wrapInitabler(obj *externglib.Object) Initabler {
+	return &Initable{
 		Object: obj,
 	}
 }
 
-func marshalInitable(p uintptr) (interface{}, error) {
+func marshalInitabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInitable(obj), nil
+	return wrapInitabler(obj), nil
 }
 
 // Init initializes the object implementing the interface.
@@ -201,7 +163,7 @@ func marshalInitable(p uintptr) (interface{}, error) {
 // that sometimes returns an existing instance. In this pattern, a caller would
 // expect to be able to call g_initable_init() on the result of g_object_new(),
 // regardless of whether it is in fact a new instance.
-func (initable *InitableIface) Init(cancellable Cancellable) error {
+func (initable *Initable) Init(cancellable Cancellabler) error {
 	var _arg0 *C.GInitable    // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in

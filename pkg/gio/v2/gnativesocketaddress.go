@@ -29,49 +29,49 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_native_socket_address_get_type()), F: marshalNativeSocketAddress},
+		{T: externglib.Type(C.g_native_socket_address_get_type()), F: marshalNativeSocketAddresser},
 	})
 }
 
-// NativeSocketAddress: socket address of some unknown native type.
-type NativeSocketAddress interface {
+// NativeSocketAddresser describes NativeSocketAddress's methods.
+type NativeSocketAddresser interface {
 	gextras.Objector
 
-	privateNativeSocketAddressClass()
+	privateNativeSocketAddress()
 }
 
-// NativeSocketAddressClass implements the NativeSocketAddress interface.
-type NativeSocketAddressClass struct {
+// NativeSocketAddress: socket address of some unknown native type.
+type NativeSocketAddress struct {
 	*externglib.Object
-	SocketAddressClass
-	SocketConnectableIface
+	SocketAddress
+	SocketConnectable
 }
 
-var _ NativeSocketAddress = (*NativeSocketAddressClass)(nil)
+var _ NativeSocketAddresser = (*NativeSocketAddress)(nil)
 
-func wrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
-	return &NativeSocketAddressClass{
+func wrapNativeSocketAddresser(obj *externglib.Object) NativeSocketAddresser {
+	return &NativeSocketAddress{
 		Object: obj,
-		SocketAddressClass: SocketAddressClass{
+		SocketAddress: SocketAddress{
 			Object: obj,
-			SocketConnectableIface: SocketConnectableIface{
+			SocketConnectable: SocketConnectable{
 				Object: obj,
 			},
 		},
-		SocketConnectableIface: SocketConnectableIface{
+		SocketConnectable: SocketConnectable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
+func marshalNativeSocketAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNativeSocketAddress(obj), nil
+	return wrapNativeSocketAddresser(obj), nil
 }
 
 // NewNativeSocketAddress creates a new SocketAddress for @native and @len.
-func NewNativeSocketAddress(native interface{}, len uint) *NativeSocketAddressClass {
+func NewNativeSocketAddress(native interface{}, len uint) *NativeSocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
@@ -81,11 +81,11 @@ func NewNativeSocketAddress(native interface{}, len uint) *NativeSocketAddressCl
 
 	_cret = C.g_native_socket_address_new(_arg1, _arg2)
 
-	var _nativeSocketAddress *NativeSocketAddressClass // out
+	var _nativeSocketAddress *NativeSocketAddress // out
 
-	_nativeSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NativeSocketAddressClass)
+	_nativeSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NativeSocketAddress)
 
 	return _nativeSocketAddress
 }
 
-func (*NativeSocketAddressClass) privateNativeSocketAddressClass() {}
+func (*NativeSocketAddress) privateNativeSocketAddress() {}

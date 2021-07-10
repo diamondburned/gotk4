@@ -246,12 +246,6 @@ type URI struct {
 	native C.GUri
 }
 
-// WrapURI wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapURI(ptr unsafe.Pointer) *URI {
-	return (*URI)(ptr)
-}
-
 func marshalURI(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*URI)(unsafe.Pointer(b)), nil
@@ -503,12 +497,6 @@ func (uri *URI) String() string {
 // for a usage example.
 type URIParamsIter struct {
 	native C.GUriParamsIter
-}
-
-// WrapURIParamsIter wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapURIParamsIter(ptr unsafe.Pointer) *URIParamsIter {
-	return (*URIParamsIter)(ptr)
 }
 
 // Native returns the underlying C source pointer.

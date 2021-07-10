@@ -32,12 +32,6 @@ type FrameTimings struct {
 	native C.GdkFrameTimings
 }
 
-// WrapFrameTimings wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFrameTimings(ptr unsafe.Pointer) *FrameTimings {
-	return (*FrameTimings)(ptr)
-}
-
 func marshalFrameTimings(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*FrameTimings)(unsafe.Pointer(b)), nil

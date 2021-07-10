@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_statusbar_accessible_get_type()), F: marshalStatusbarAccessible},
+		{T: externglib.Type(C.gtk_statusbar_accessible_get_type()), F: marshalStatusbarAccessibler},
 	})
 }
 
-type StatusbarAccessible interface {
+// StatusbarAccessibler describes StatusbarAccessible's methods.
+type StatusbarAccessibler interface {
 	gextras.Objector
 
-	privateStatusbarAccessibleClass()
+	privateStatusbarAccessible()
 }
 
-// StatusbarAccessibleClass implements the StatusbarAccessible interface.
-type StatusbarAccessibleClass struct {
-	ContainerAccessibleClass
+type StatusbarAccessible struct {
+	ContainerAccessible
 }
 
-var _ StatusbarAccessible = (*StatusbarAccessibleClass)(nil)
+var _ StatusbarAccessibler = (*StatusbarAccessible)(nil)
 
-func wrapStatusbarAccessible(obj *externglib.Object) StatusbarAccessible {
-	return &StatusbarAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapStatusbarAccessibler(obj *externglib.Object) StatusbarAccessibler {
+	return &StatusbarAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapStatusbarAccessible(obj *externglib.Object) StatusbarAccessible {
 	}
 }
 
-func marshalStatusbarAccessible(p uintptr) (interface{}, error) {
+func marshalStatusbarAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStatusbarAccessible(obj), nil
+	return wrapStatusbarAccessibler(obj), nil
 }
 
-func (*StatusbarAccessibleClass) privateStatusbarAccessibleClass() {}
+func (*StatusbarAccessible) privateStatusbarAccessible() {}

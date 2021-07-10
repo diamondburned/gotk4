@@ -20,7 +20,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_file_chooser_action_get_type()), F: marshalFileChooserAction},
 		{T: externglib.Type(C.gtk_file_chooser_error_get_type()), F: marshalFileChooserError},
-		{T: externglib.Type(C.gtk_file_chooser_get_type()), F: marshalFileChooser},
+		{T: externglib.Type(C.gtk_file_chooser_get_type()), F: marshalFileChooserrer},
 	})
 }
 
@@ -64,6 +64,27 @@ func marshalFileChooserError(p uintptr) (interface{}, error) {
 	return FileChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// FileChooserrer describes FileChooser's methods.
+type FileChooserrer interface {
+	gextras.Objector
+
+	AddChoice(id string, label string, options []string, optionLabels []string)
+	AddFilter(filter FileFilterrer)
+	Action() FileChooserAction
+	Choice(id string) string
+	CreateFolders() bool
+	CurrentName() string
+	Filter() *FileFilter
+	SelectMultiple() bool
+	RemoveChoice(id string)
+	RemoveFilter(filter FileFilterrer)
+	SetChoice(id string, option string)
+	SetCreateFolders(createFolders bool)
+	SetCurrentName(name string)
+	SetFilter(filter FileFilterrer)
+	SetSelectMultiple(selectMultiple bool)
+}
+
 // FileChooser: `GtkFileChooser` is an interface that can be implemented by file
 // selection widgets.
 //
@@ -105,110 +126,22 @@ func marshalFileChooserError(p uintptr) (interface{}, error) {
 // choice can have multiple options. If a choice has no option, it will be
 // rendered as a check button with the given label; if a choice has options, it
 // will be rendered as a combo box.
-type FileChooser interface {
-	gextras.Objector
-
-	// AddChoice adds a 'choice' to the file chooser.
-	//
-	// This is typically implemented as a combobox or, for boolean choices, as a
-	// checkbutton. You can select a value using
-	// [method@Gtk.FileChooser.set_choice] before the dialog is shown, and you
-	// can obtain the user-selected value in the [signal@Gtk.Dialog::response]
-	// signal handler using [method@Gtk.FileChooser.get_choice].
-	AddChoice(id string, label string, options []string, optionLabels []string)
-	// AddFilter adds @filter to the list of filters that the user can select
-	// between.
-	//
-	// When a filter is selected, only files that are passed by that filter are
-	// displayed.
-	//
-	// Note that the @chooser takes ownership of the filter if it is floating,
-	// so you have to ref and sink it if you want to keep a reference.
-	AddFilter(filter FileFilter)
-	// Action gets the type of operation that the file chooser is performing.
-	Action() FileChooserAction
-	// Choice gets the currently selected option in the 'choice' with the given
-	// ID.
-	Choice(id string) string
-	// CreateFolders gets whether file chooser will offer to create new folders.
-	CreateFolders() bool
-	// CurrentName gets the current name in the file selector, as entered by the
-	// user.
-	//
-	// This is meant to be used in save dialogs, to get the currently typed
-	// filename when the file itself does not exist yet.
-	CurrentName() string
-	// Filter gets the current filter.
-	Filter() *FileFilterClass
-	// SelectMultiple gets whether multiple files can be selected in the file
-	// chooser.
-	SelectMultiple() bool
-	// RemoveChoice removes a 'choice' that has been added with
-	// gtk_file_chooser_add_choice().
-	RemoveChoice(id string)
-	// RemoveFilter removes @filter from the list of filters that the user can
-	// select between.
-	RemoveFilter(filter FileFilter)
-	// SetChoice selects an option in a 'choice' that has been added with
-	// gtk_file_chooser_add_choice().
-	//
-	// For a boolean choice, the possible options are "true" and "false".
-	SetChoice(id string, option string)
-	// SetCreateFolders sets whether file chooser will offer to create new
-	// folders.
-	//
-	// This is only relevant if the action is not set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN.
-	SetCreateFolders(createFolders bool)
-	// SetCurrentName sets the current name in the file selector, as if entered
-	// by the user.
-	//
-	// Note that the name passed in here is a UTF-8 string rather than a
-	// filename. This function is meant for such uses as a suggested name in a
-	// “Save As...” dialog. You can pass “Untitled.doc” or a similarly suitable
-	// suggestion for the @name.
-	//
-	// If you want to preselect a particular existing file, you should use
-	// [method@Gtk.FileChooser.set_file] instead.
-	//
-	// Please see the documentation for those functions for an example of using
-	// [method@Gtk.FileChooser.set_current_name] as well.
-	SetCurrentName(name string)
-	// SetFilter sets the current filter.
-	//
-	// Only the files that pass the filter will be displayed. If the
-	// user-selectable list of filters is non-empty, then the filter should be
-	// one of the filters in that list.
-	//
-	// Setting the current filter when the list of filters is empty is useful if
-	// you want to restrict the displayed set of files without letting the user
-	// change it.
-	SetFilter(filter FileFilter)
-	// SetSelectMultiple sets whether multiple files can be selected in the file
-	// chooser.
-	//
-	// This is only relevant if the action is set to be
-	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	SetSelectMultiple(selectMultiple bool)
-}
-
-// FileChooserIface implements the FileChooser interface.
-type FileChooserIface struct {
+type FileChooser struct {
 	*externglib.Object
 }
 
-var _ FileChooser = (*FileChooserIface)(nil)
+var _ FileChooserrer = (*FileChooser)(nil)
 
-func wrapFileChooser(obj *externglib.Object) FileChooser {
-	return &FileChooserIface{
+func wrapFileChooserrer(obj *externglib.Object) FileChooserrer {
+	return &FileChooser{
 		Object: obj,
 	}
 }
 
-func marshalFileChooser(p uintptr) (interface{}, error) {
+func marshalFileChooserrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooser(obj), nil
+	return wrapFileChooserrer(obj), nil
 }
 
 // AddChoice adds a 'choice' to the file chooser.
@@ -218,7 +151,7 @@ func marshalFileChooser(p uintptr) (interface{}, error) {
 // before the dialog is shown, and you can obtain the user-selected value in the
 // [signal@Gtk.Dialog::response] signal handler using
 // [method@Gtk.FileChooser.get_choice].
-func (chooser *FileChooserIface) AddChoice(id string, label string, options []string, optionLabels []string) {
+func (chooser *FileChooser) AddChoice(id string, label string, options []string, optionLabels []string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out
@@ -260,7 +193,7 @@ func (chooser *FileChooserIface) AddChoice(id string, label string, options []st
 //
 // Note that the @chooser takes ownership of the filter if it is floating, so
 // you have to ref and sink it if you want to keep a reference.
-func (chooser *FileChooserIface) AddFilter(filter FileFilter) {
+func (chooser *FileChooser) AddFilter(filter FileFilterrer) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
@@ -271,7 +204,7 @@ func (chooser *FileChooserIface) AddFilter(filter FileFilter) {
 }
 
 // Action gets the type of operation that the file chooser is performing.
-func (chooser *FileChooserIface) Action() FileChooserAction {
+func (chooser *FileChooser) Action() FileChooserAction {
 	var _arg0 *C.GtkFileChooser      // out
 	var _cret C.GtkFileChooserAction // in
 
@@ -287,7 +220,7 @@ func (chooser *FileChooserIface) Action() FileChooserAction {
 }
 
 // Choice gets the currently selected option in the 'choice' with the given ID.
-func (chooser *FileChooserIface) Choice(id string) string {
+func (chooser *FileChooser) Choice(id string) string {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cret *C.char           // in
@@ -306,7 +239,7 @@ func (chooser *FileChooserIface) Choice(id string) string {
 }
 
 // CreateFolders gets whether file chooser will offer to create new folders.
-func (chooser *FileChooserIface) CreateFolders() bool {
+func (chooser *FileChooser) CreateFolders() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
 
@@ -328,7 +261,7 @@ func (chooser *FileChooserIface) CreateFolders() bool {
 //
 // This is meant to be used in save dialogs, to get the currently typed filename
 // when the file itself does not exist yet.
-func (chooser *FileChooserIface) CurrentName() string {
+func (chooser *FileChooser) CurrentName() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.char           // in
 
@@ -345,7 +278,7 @@ func (chooser *FileChooserIface) CurrentName() string {
 }
 
 // Filter gets the current filter.
-func (chooser *FileChooserIface) Filter() *FileFilterClass {
+func (chooser *FileChooser) Filter() *FileFilter {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GtkFileFilter  // in
 
@@ -353,16 +286,16 @@ func (chooser *FileChooserIface) Filter() *FileFilterClass {
 
 	_cret = C.gtk_file_chooser_get_filter(_arg0)
 
-	var _fileFilter *FileFilterClass // out
+	var _fileFilter *FileFilter // out
 
-	_fileFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileFilterClass)
+	_fileFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileFilter)
 
 	return _fileFilter
 }
 
 // SelectMultiple gets whether multiple files can be selected in the file
 // chooser.
-func (chooser *FileChooserIface) SelectMultiple() bool {
+func (chooser *FileChooser) SelectMultiple() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
 
@@ -381,7 +314,7 @@ func (chooser *FileChooserIface) SelectMultiple() bool {
 
 // RemoveChoice removes a 'choice' that has been added with
 // gtk_file_chooser_add_choice().
-func (chooser *FileChooserIface) RemoveChoice(id string) {
+func (chooser *FileChooser) RemoveChoice(id string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 
@@ -394,7 +327,7 @@ func (chooser *FileChooserIface) RemoveChoice(id string) {
 
 // RemoveFilter removes @filter from the list of filters that the user can
 // select between.
-func (chooser *FileChooserIface) RemoveFilter(filter FileFilter) {
+func (chooser *FileChooser) RemoveFilter(filter FileFilterrer) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
@@ -408,7 +341,7 @@ func (chooser *FileChooserIface) RemoveFilter(filter FileFilter) {
 // gtk_file_chooser_add_choice().
 //
 // For a boolean choice, the possible options are "true" and "false".
-func (chooser *FileChooserIface) SetChoice(id string, option string) {
+func (chooser *FileChooser) SetChoice(id string, option string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out
@@ -426,7 +359,7 @@ func (chooser *FileChooserIface) SetChoice(id string, option string) {
 //
 // This is only relevant if the action is not set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN.
-func (chooser *FileChooserIface) SetCreateFolders(createFolders bool) {
+func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
 
@@ -451,7 +384,7 @@ func (chooser *FileChooserIface) SetCreateFolders(createFolders bool) {
 //
 // Please see the documentation for those functions for an example of using
 // [method@Gtk.FileChooser.set_current_name] as well.
-func (chooser *FileChooserIface) SetCurrentName(name string) {
+func (chooser *FileChooser) SetCurrentName(name string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 
@@ -471,7 +404,7 @@ func (chooser *FileChooserIface) SetCurrentName(name string) {
 // Setting the current filter when the list of filters is empty is useful if you
 // want to restrict the displayed set of files without letting the user change
 // it.
-func (chooser *FileChooserIface) SetFilter(filter FileFilter) {
+func (chooser *FileChooser) SetFilter(filter FileFilterrer) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
@@ -486,7 +419,7 @@ func (chooser *FileChooserIface) SetFilter(filter FileFilter) {
 //
 // This is only relevant if the action is set to be GTK_FILE_CHOOSER_ACTION_OPEN
 // or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-func (chooser *FileChooserIface) SetSelectMultiple(selectMultiple bool) {
+func (chooser *FileChooser) SetSelectMultiple(selectMultiple bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
 

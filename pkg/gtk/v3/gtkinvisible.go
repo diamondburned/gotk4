@@ -21,8 +21,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_invisible_get_type()), F: marshalInvisible},
+		{T: externglib.Type(C.gtk_invisible_get_type()), F: marshalInvisibler},
 	})
+}
+
+// Invisibler describes Invisible's methods.
+type Invisibler interface {
+	gextras.Objector
+
+	Screen() *gdk.Screen
+	SetScreen(screen gdk.Screener)
 }
 
 // Invisible: the Invisible widget is used internally in GTK+, and is probably
@@ -30,63 +38,53 @@ func init() {
 //
 // It is used for reliable pointer grabs and selection handling in the code for
 // drag-and-drop.
-type Invisible interface {
-	gextras.Objector
-
-	// Screen returns the Screen object associated with @invisible
-	Screen() *gdk.ScreenClass
-	// SetScreen sets the Screen where the Invisible object will be displayed.
-	SetScreen(screen gdk.Screen)
-}
-
-// InvisibleClass implements the Invisible interface.
-type InvisibleClass struct {
+type Invisible struct {
 	*externglib.Object
-	WidgetClass
-	BuildableIface
+	Widget
+	Buildable
 }
 
-var _ Invisible = (*InvisibleClass)(nil)
+var _ Invisibler = (*Invisible)(nil)
 
-func wrapInvisible(obj *externglib.Object) Invisible {
-	return &InvisibleClass{
+func wrapInvisibler(obj *externglib.Object) Invisibler {
+	return &Invisible{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalInvisible(p uintptr) (interface{}, error) {
+func marshalInvisibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInvisible(obj), nil
+	return wrapInvisibler(obj), nil
 }
 
 // NewInvisible creates a new Invisible.
-func NewInvisible() *InvisibleClass {
+func NewInvisible() *Invisible {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_invisible_new()
 
-	var _invisible *InvisibleClass // out
+	var _invisible *Invisible // out
 
-	_invisible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InvisibleClass)
+	_invisible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Invisible)
 
 	return _invisible
 }
 
 // NewInvisibleForScreen creates a new Invisible object for a specified screen
-func NewInvisibleForScreen(screen gdk.Screen) *InvisibleClass {
+func NewInvisibleForScreen(screen gdk.Screener) *Invisible {
 	var _arg1 *C.GdkScreen // out
 	var _cret *C.GtkWidget // in
 
@@ -94,15 +92,15 @@ func NewInvisibleForScreen(screen gdk.Screen) *InvisibleClass {
 
 	_cret = C.gtk_invisible_new_for_screen(_arg1)
 
-	var _invisible *InvisibleClass // out
+	var _invisible *Invisible // out
 
-	_invisible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InvisibleClass)
+	_invisible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Invisible)
 
 	return _invisible
 }
 
 // Screen returns the Screen object associated with @invisible
-func (invisible *InvisibleClass) Screen() *gdk.ScreenClass {
+func (invisible *Invisible) Screen() *gdk.Screen {
 	var _arg0 *C.GtkInvisible // out
 	var _cret *C.GdkScreen    // in
 
@@ -110,15 +108,15 @@ func (invisible *InvisibleClass) Screen() *gdk.ScreenClass {
 
 	_cret = C.gtk_invisible_get_screen(_arg0)
 
-	var _screen *gdk.ScreenClass // out
+	var _screen *gdk.Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.ScreenClass)
+	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Screen)
 
 	return _screen
 }
 
 // SetScreen sets the Screen where the Invisible object will be displayed.
-func (invisible *InvisibleClass) SetScreen(screen gdk.Screen) {
+func (invisible *Invisible) SetScreen(screen gdk.Screener) {
 	var _arg0 *C.GtkInvisible // out
 	var _arg1 *C.GdkScreen    // out
 

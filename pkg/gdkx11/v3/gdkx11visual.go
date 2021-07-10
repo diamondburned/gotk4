@@ -19,35 +19,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_visual_get_type()), F: marshalX11Visual},
+		{T: externglib.Type(C.gdk_x11_visual_get_type()), F: marshalX11Visualer},
 	})
 }
 
-type X11Visual interface {
+// X11Visualer describes X11Visual's methods.
+type X11Visualer interface {
 	gextras.Objector
 
-	privateX11VisualClass()
+	privateX11Visual()
 }
 
-// X11VisualClass implements the X11Visual interface.
-type X11VisualClass struct {
-	gdk.VisualClass
+type X11Visual struct {
+	gdk.Visual
 }
 
-var _ X11Visual = (*X11VisualClass)(nil)
+var _ X11Visualer = (*X11Visual)(nil)
 
-func wrapX11Visual(obj *externglib.Object) X11Visual {
-	return &X11VisualClass{
-		VisualClass: gdk.VisualClass{
+func wrapX11Visualer(obj *externglib.Object) X11Visualer {
+	return &X11Visual{
+		Visual: gdk.Visual{
 			Object: obj,
 		},
 	}
 }
 
-func marshalX11Visual(p uintptr) (interface{}, error) {
+func marshalX11Visualer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Visual(obj), nil
+	return wrapX11Visualer(obj), nil
 }
 
-func (*X11VisualClass) privateX11VisualClass() {}
+func (*X11Visual) privateX11Visual() {}

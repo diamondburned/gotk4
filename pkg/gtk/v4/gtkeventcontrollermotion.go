@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_motion_get_type()), F: marshalEventControllerMotion},
+		{T: externglib.Type(C.gtk_event_controller_motion_get_type()), F: marshalEventControllerMotioner},
 	})
+}
+
+// EventControllerMotioner describes EventControllerMotion's methods.
+type EventControllerMotioner interface {
+	gextras.Objector
+
+	ContainsPointer() bool
+	IsPointer() bool
 }
 
 // EventControllerMotion: `GtkEventControllerMotion` is an event controller
@@ -31,54 +39,42 @@ func init() {
 // [property@Gtk.EventControllerMotion:contains-pointer] properties which are
 // updated to reflect changes in the pointer position as it moves over the
 // widget.
-type EventControllerMotion interface {
-	gextras.Objector
-
-	// ContainsPointer returns if a pointer is within @self or one of its
-	// children.
-	ContainsPointer() bool
-	// IsPointer returns if a pointer is within @self, but not one of its
-	// children.
-	IsPointer() bool
+type EventControllerMotion struct {
+	EventController
 }
 
-// EventControllerMotionClass implements the EventControllerMotion interface.
-type EventControllerMotionClass struct {
-	EventControllerClass
-}
+var _ EventControllerMotioner = (*EventControllerMotion)(nil)
 
-var _ EventControllerMotion = (*EventControllerMotionClass)(nil)
-
-func wrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
-	return &EventControllerMotionClass{
-		EventControllerClass: EventControllerClass{
+func wrapEventControllerMotioner(obj *externglib.Object) EventControllerMotioner {
+	return &EventControllerMotion{
+		EventController: EventController{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEventControllerMotion(p uintptr) (interface{}, error) {
+func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerMotion(obj), nil
+	return wrapEventControllerMotioner(obj), nil
 }
 
 // NewEventControllerMotion creates a new event controller that will handle
 // motion events.
-func NewEventControllerMotion() *EventControllerMotionClass {
+func NewEventControllerMotion() *EventControllerMotion {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_event_controller_motion_new()
 
-	var _eventControllerMotion *EventControllerMotionClass // out
+	var _eventControllerMotion *EventControllerMotion // out
 
-	_eventControllerMotion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerMotionClass)
+	_eventControllerMotion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerMotion)
 
 	return _eventControllerMotion
 }
 
 // ContainsPointer returns if a pointer is within @self or one of its children.
-func (self *EventControllerMotionClass) ContainsPointer() bool {
+func (self *EventControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 
@@ -96,7 +92,7 @@ func (self *EventControllerMotionClass) ContainsPointer() bool {
 }
 
 // IsPointer returns if a pointer is within @self, but not one of its children.
-func (self *EventControllerMotionClass) IsPointer() bool {
+func (self *EventControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 

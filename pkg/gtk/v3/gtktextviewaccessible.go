@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_view_accessible_get_type()), F: marshalTextViewAccessible},
+		{T: externglib.Type(C.gtk_text_view_accessible_get_type()), F: marshalTextViewAccessibler},
 	})
 }
 
-type TextViewAccessible interface {
+// TextViewAccessibler describes TextViewAccessible's methods.
+type TextViewAccessibler interface {
 	gextras.Objector
 
-	privateTextViewAccessibleClass()
+	privateTextViewAccessible()
 }
 
-// TextViewAccessibleClass implements the TextViewAccessible interface.
-type TextViewAccessibleClass struct {
-	ContainerAccessibleClass
+type TextViewAccessible struct {
+	ContainerAccessible
 }
 
-var _ TextViewAccessible = (*TextViewAccessibleClass)(nil)
+var _ TextViewAccessibler = (*TextViewAccessible)(nil)
 
-func wrapTextViewAccessible(obj *externglib.Object) TextViewAccessible {
-	return &TextViewAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapTextViewAccessibler(obj *externglib.Object) TextViewAccessibler {
+	return &TextViewAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapTextViewAccessible(obj *externglib.Object) TextViewAccessible {
 	}
 }
 
-func marshalTextViewAccessible(p uintptr) (interface{}, error) {
+func marshalTextViewAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextViewAccessible(obj), nil
+	return wrapTextViewAccessibler(obj), nil
 }
 
-func (*TextViewAccessibleClass) privateTextViewAccessibleClass() {}
+func (*TextViewAccessible) privateTextViewAccessible() {}

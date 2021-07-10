@@ -18,8 +18,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabel},
+		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabeller},
 	})
+}
+
+// EditableLabeller describes EditableLabel's methods.
+type EditableLabeller interface {
+	gextras.Objector
+
+	Editing() bool
+	StartEditing()
+	StopEditing(commit bool)
 }
 
 // EditableLabel: `GtkEditableLabel` is a label that allows users to edit the
@@ -44,75 +53,58 @@ func init() {
 //
 // For all the subnodes added to the text node in various situations, see
 // [class@Gtk.Text].
-type EditableLabel interface {
-	gextras.Objector
-
-	// Editing returns whether the label is currently in “editing mode”.
-	Editing() bool
-	// StartEditing switches the label into “editing mode”.
-	StartEditing()
-	// StopEditing switches the label out of “editing mode”.
-	//
-	// If @commit is true, the resulting text is kept as the
-	// [property@Gtk.Editable:text] property value, otherwise the resulting text
-	// is discarded and the label will keep its previous
-	// [property@Gtk.Editable:text] property value.
-	StopEditing(commit bool)
-}
-
-// EditableLabelClass implements the EditableLabel interface.
-type EditableLabelClass struct {
+type EditableLabel struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	EditableIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Editable
 }
 
-var _ EditableLabel = (*EditableLabelClass)(nil)
+var _ EditableLabeller = (*EditableLabel)(nil)
 
-func wrapEditableLabel(obj *externglib.Object) EditableLabel {
-	return &EditableLabelClass{
+func wrapEditableLabeller(obj *externglib.Object) EditableLabeller {
+	return &EditableLabel{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		EditableIface: EditableIface{
+		Editable: Editable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
@@ -120,14 +112,14 @@ func wrapEditableLabel(obj *externglib.Object) EditableLabel {
 	}
 }
 
-func marshalEditableLabel(p uintptr) (interface{}, error) {
+func marshalEditableLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEditableLabel(obj), nil
+	return wrapEditableLabeller(obj), nil
 }
 
 // NewEditableLabel creates a new `GtkEditableLabel` widget.
-func NewEditableLabel(str string) *EditableLabelClass {
+func NewEditableLabel(str string) *EditableLabel {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
@@ -136,15 +128,15 @@ func NewEditableLabel(str string) *EditableLabelClass {
 
 	_cret = C.gtk_editable_label_new(_arg1)
 
-	var _editableLabel *EditableLabelClass // out
+	var _editableLabel *EditableLabel // out
 
-	_editableLabel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EditableLabelClass)
+	_editableLabel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EditableLabel)
 
 	return _editableLabel
 }
 
 // Editing returns whether the label is currently in “editing mode”.
-func (self *EditableLabelClass) Editing() bool {
+func (self *EditableLabel) Editing() bool {
 	var _arg0 *C.GtkEditableLabel // out
 	var _cret C.gboolean          // in
 
@@ -162,7 +154,7 @@ func (self *EditableLabelClass) Editing() bool {
 }
 
 // StartEditing switches the label into “editing mode”.
-func (self *EditableLabelClass) StartEditing() {
+func (self *EditableLabel) StartEditing() {
 	var _arg0 *C.GtkEditableLabel // out
 
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
@@ -176,7 +168,7 @@ func (self *EditableLabelClass) StartEditing() {
 // [property@Gtk.Editable:text] property value, otherwise the resulting text is
 // discarded and the label will keep its previous [property@Gtk.Editable:text]
 // property value.
-func (self *EditableLabelClass) StopEditing(commit bool) {
+func (self *EditableLabel) StopEditing(commit bool) {
 	var _arg0 *C.GtkEditableLabel // out
 	var _arg1 C.gboolean          // out
 

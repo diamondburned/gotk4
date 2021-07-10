@@ -21,16 +21,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_plug_get_type()), F: marshalPlug},
+		{T: externglib.Type(C.gtk_plug_get_type()), F: marshalPlugger},
 	})
 }
 
-// PlugOverrider contains methods that are overridable.
+// PluggerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PlugOverrider interface {
+type PluggerOverrider interface {
 	Embedded()
+}
+
+// Plugger describes Plug's methods.
+type Plugger interface {
+	gextras.Objector
+
+	Embedded() bool
+	SocketWindow() *gdk.Window
 }
 
 // Plug: together with Socket, Plug provides the ability to embed widgets from
@@ -49,68 +57,58 @@ type PlugOverrider interface {
 // X11 platform and GDK_WINDOWING_X11 is defined. They can only be used on a
 // X11Display. To use Plug and Socket, you need to include the `gtk/gtkx.h`
 // header.
-type Plug interface {
-	gextras.Objector
-
-	// Embedded determines whether the plug is embedded in a socket.
-	Embedded() bool
-	// SocketWindow retrieves the socket the plug is embedded in.
-	SocketWindow() *gdk.WindowClass
-}
-
-// PlugClass implements the Plug interface.
-type PlugClass struct {
+type Plug struct {
 	*externglib.Object
-	WindowClass
-	BuildableIface
+	Window
+	Buildable
 }
 
-var _ Plug = (*PlugClass)(nil)
+var _ Plugger = (*Plug)(nil)
 
-func wrapPlug(obj *externglib.Object) Plug {
-	return &PlugClass{
+func wrapPlugger(obj *externglib.Object) Plugger {
+	return &Plug{
 		Object: obj,
-		WindowClass: WindowClass{
+		Window: Window{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPlug(p uintptr) (interface{}, error) {
+func marshalPlugger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlug(obj), nil
+	return wrapPlugger(obj), nil
 }
 
 // Embedded determines whether the plug is embedded in a socket.
-func (plug *PlugClass) Embedded() bool {
+func (plug *Plug) Embedded() bool {
 	var _arg0 *C.GtkPlug // out
 	var _cret C.gboolean // in
 
@@ -128,7 +126,7 @@ func (plug *PlugClass) Embedded() bool {
 }
 
 // SocketWindow retrieves the socket the plug is embedded in.
-func (plug *PlugClass) SocketWindow() *gdk.WindowClass {
+func (plug *Plug) SocketWindow() *gdk.Window {
 	var _arg0 *C.GtkPlug   // out
 	var _cret *C.GdkWindow // in
 
@@ -136,9 +134,9 @@ func (plug *PlugClass) SocketWindow() *gdk.WindowClass {
 
 	_cret = C.gtk_plug_get_socket_window(_arg0)
 
-	var _window *gdk.WindowClass // out
+	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
 
 	return _window
 }

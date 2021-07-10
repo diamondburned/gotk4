@@ -22,53 +22,45 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_mount_operation_get_type()), F: marshalMountOperation},
+		{T: externglib.Type(C.gtk_mount_operation_get_type()), F: marshalMountOperationer},
 	})
+}
+
+// MountOperationer describes MountOperation's methods.
+type MountOperationer interface {
+	gextras.Objector
+
+	Parent() *Window
+	Screen() *gdk.Screen
+	IsShowing() bool
+	SetParent(parent Windowwer)
+	SetScreen(screen gdk.Screener)
 }
 
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
-type MountOperation interface {
-	gextras.Objector
-
-	// Parent gets the transient parent used by the MountOperation
-	Parent() *WindowClass
-	// Screen gets the screen on which windows of the MountOperation will be
-	// shown.
-	Screen() *gdk.ScreenClass
-	// IsShowing returns whether the MountOperation is currently displaying a
-	// window.
-	IsShowing() bool
-	// SetParent sets the transient parent for windows shown by the
-	// MountOperation.
-	SetParent(parent Window)
-	// SetScreen sets the screen to show windows of the MountOperation on.
-	SetScreen(screen gdk.Screen)
+type MountOperation struct {
+	gio.MountOperation
 }
 
-// MountOperationClass implements the MountOperation interface.
-type MountOperationClass struct {
-	gio.MountOperationClass
-}
+var _ MountOperationer = (*MountOperation)(nil)
 
-var _ MountOperation = (*MountOperationClass)(nil)
-
-func wrapMountOperation(obj *externglib.Object) MountOperation {
-	return &MountOperationClass{
-		MountOperationClass: gio.MountOperationClass{
+func wrapMountOperationer(obj *externglib.Object) MountOperationer {
+	return &MountOperation{
+		MountOperation: gio.MountOperation{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMountOperation(p uintptr) (interface{}, error) {
+func marshalMountOperationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMountOperation(obj), nil
+	return wrapMountOperationer(obj), nil
 }
 
 // NewMountOperation creates a new MountOperation
-func NewMountOperation(parent Window) *MountOperationClass {
+func NewMountOperation(parent Windowwer) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in
 
@@ -76,15 +68,15 @@ func NewMountOperation(parent Window) *MountOperationClass {
 
 	_cret = C.gtk_mount_operation_new(_arg1)
 
-	var _mountOperation *MountOperationClass // out
+	var _mountOperation *MountOperation // out
 
-	_mountOperation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountOperationClass)
+	_mountOperation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountOperation)
 
 	return _mountOperation
 }
 
 // Parent gets the transient parent used by the MountOperation
-func (op *MountOperationClass) Parent() *WindowClass {
+func (op *MountOperation) Parent() *Window {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GtkWindow         // in
 
@@ -92,15 +84,15 @@ func (op *MountOperationClass) Parent() *WindowClass {
 
 	_cret = C.gtk_mount_operation_get_parent(_arg0)
 
-	var _window *WindowClass // out
+	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
 
 	return _window
 }
 
 // Screen gets the screen on which windows of the MountOperation will be shown.
-func (op *MountOperationClass) Screen() *gdk.ScreenClass {
+func (op *MountOperation) Screen() *gdk.Screen {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GdkScreen         // in
 
@@ -108,16 +100,16 @@ func (op *MountOperationClass) Screen() *gdk.ScreenClass {
 
 	_cret = C.gtk_mount_operation_get_screen(_arg0)
 
-	var _screen *gdk.ScreenClass // out
+	var _screen *gdk.Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.ScreenClass)
+	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Screen)
 
 	return _screen
 }
 
 // IsShowing returns whether the MountOperation is currently displaying a
 // window.
-func (op *MountOperationClass) IsShowing() bool {
+func (op *MountOperation) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret C.gboolean           // in
 
@@ -135,7 +127,7 @@ func (op *MountOperationClass) IsShowing() bool {
 }
 
 // SetParent sets the transient parent for windows shown by the MountOperation.
-func (op *MountOperationClass) SetParent(parent Window) {
+func (op *MountOperation) SetParent(parent Windowwer) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out
 
@@ -146,7 +138,7 @@ func (op *MountOperationClass) SetParent(parent Window) {
 }
 
 // SetScreen sets the screen to show windows of the MountOperation on.
-func (op *MountOperationClass) SetScreen(screen gdk.Screen) {
+func (op *MountOperation) SetScreen(screen gdk.Screener) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkScreen         // out
 

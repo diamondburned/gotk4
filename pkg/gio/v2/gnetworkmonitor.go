@@ -32,15 +32,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitor},
+		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorrer},
 	})
 }
 
-// NetworkMonitorOverrider contains methods that are overridable.
+// NetworkMonitorrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type NetworkMonitorOverrider interface {
+type NetworkMonitorrerOverrider interface {
 	// CanReach attempts to determine whether or not the host pointed to by
 	// @connectable can be reached, without actually trying to connect to it.
 	//
@@ -56,7 +56,7 @@ type NetworkMonitorOverrider interface {
 	// may still block for a brief period of time (eg, trying to do multicast
 	// DNS on the local network), so if you do not want to block, you should use
 	// g_network_monitor_can_reach_async().
-	CanReach(connectable SocketConnectable, cancellable Cancellable) error
+	CanReach(connectable SocketConnectabler, cancellable Cancellabler) error
 	// CanReachAsync: asynchronously attempts to determine whether or not the
 	// host pointed to by @connectable can be reached, without actually trying
 	// to connect to it.
@@ -66,11 +66,23 @@ type NetworkMonitorOverrider interface {
 	// When the operation is finished, @callback will be called. You can then
 	// call g_network_monitor_can_reach_finish() to get the result of the
 	// operation.
-	CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
+	CanReachAsync(connectable SocketConnectabler, cancellable Cancellabler, callback AsyncReadyCallback)
 	// CanReachFinish finishes an async network connectivity test. See
 	// g_network_monitor_can_reach_async().
-	CanReachFinish(result AsyncResult) error
+	CanReachFinish(result AsyncResulter) error
 	NetworkChanged(networkAvailable bool)
+}
+
+// NetworkMonitorrer describes NetworkMonitor's methods.
+type NetworkMonitorrer interface {
+	gextras.Objector
+
+	CanReach(connectable SocketConnectabler, cancellable Cancellabler) error
+	CanReachAsync(connectable SocketConnectabler, cancellable Cancellabler, callback AsyncReadyCallback)
+	CanReachFinish(result AsyncResulter) error
+	Connectivity() NetworkConnectivity
+	NetworkAvailable() bool
+	NetworkMetered() bool
 }
 
 // NetworkMonitor provides an easy-to-use cross-platform API for monitoring
@@ -78,87 +90,24 @@ type NetworkMonitorOverrider interface {
 // the kernel's netlink interface and on NetworkManager.
 //
 // There is also an implementation for use inside Flatpak sandboxes.
-type NetworkMonitor interface {
-	gextras.Objector
-
-	// CanReach attempts to determine whether or not the host pointed to by
-	// @connectable can be reached, without actually trying to connect to it.
-	//
-	// This may return true even when Monitor:network-available is false, if,
-	// for example, @monitor can determine that @connectable refers to a host on
-	// a local network.
-	//
-	// If @monitor believes that an attempt to connect to @connectable will
-	// succeed, it will return true. Otherwise, it will return false and set
-	// @error to an appropriate error (such as G_IO_ERROR_HOST_UNREACHABLE).
-	//
-	// Note that although this does not attempt to connect to @connectable, it
-	// may still block for a brief period of time (eg, trying to do multicast
-	// DNS on the local network), so if you do not want to block, you should use
-	// g_network_monitor_can_reach_async().
-	CanReach(connectable SocketConnectable, cancellable Cancellable) error
-	// CanReachAsync: asynchronously attempts to determine whether or not the
-	// host pointed to by @connectable can be reached, without actually trying
-	// to connect to it.
-	//
-	// For more details, see g_network_monitor_can_reach().
-	//
-	// When the operation is finished, @callback will be called. You can then
-	// call g_network_monitor_can_reach_finish() to get the result of the
-	// operation.
-	CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
-	// CanReachFinish finishes an async network connectivity test. See
-	// g_network_monitor_can_reach_async().
-	CanReachFinish(result AsyncResult) error
-	// Connectivity gets a more detailed networking state than
-	// g_network_monitor_get_network_available().
-	//
-	// If Monitor:network-available is false, then the connectivity state will
-	// be G_NETWORK_CONNECTIVITY_LOCAL.
-	//
-	// If Monitor:network-available is true, then the connectivity state will be
-	// G_NETWORK_CONNECTIVITY_FULL (if there is full Internet connectivity),
-	// G_NETWORK_CONNECTIVITY_LIMITED (if the host has a default route, but
-	// appears to be unable to actually reach the full Internet), or
-	// G_NETWORK_CONNECTIVITY_PORTAL (if the host is trapped behind a "captive
-	// portal" that requires some sort of login or acknowledgement before
-	// allowing full Internet access).
-	//
-	// Note that in the case of G_NETWORK_CONNECTIVITY_LIMITED and
-	// G_NETWORK_CONNECTIVITY_PORTAL, it is possible that some sites are
-	// reachable but others are not. In this case, applications can attempt to
-	// connect to remote servers, but should gracefully fall back to their
-	// "offline" behavior if the connection attempt fails.
-	Connectivity() NetworkConnectivity
-	// NetworkAvailable checks if the network is available. "Available" here
-	// means that the system has a default route available for at least one of
-	// IPv4 or IPv6. It does not necessarily imply that the public Internet is
-	// reachable. See Monitor:network-available for more details.
-	NetworkAvailable() bool
-	// NetworkMetered checks if the network is metered. See
-	// Monitor:network-metered for more details.
-	NetworkMetered() bool
+type NetworkMonitor struct {
+	Initable
 }
 
-// NetworkMonitorIface implements the NetworkMonitor interface.
-type NetworkMonitorIface struct {
-	InitableIface
-}
+var _ NetworkMonitorrer = (*NetworkMonitor)(nil)
 
-var _ NetworkMonitor = (*NetworkMonitorIface)(nil)
-
-func wrapNetworkMonitor(obj *externglib.Object) NetworkMonitor {
-	return &NetworkMonitorIface{
-		InitableIface: InitableIface{
+func wrapNetworkMonitorrer(obj *externglib.Object) NetworkMonitorrer {
+	return &NetworkMonitor{
+		Initable: Initable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalNetworkMonitor(p uintptr) (interface{}, error) {
+func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNetworkMonitor(obj), nil
+	return wrapNetworkMonitorrer(obj), nil
 }
 
 // CanReach attempts to determine whether or not the host pointed to by
@@ -176,7 +125,7 @@ func marshalNetworkMonitor(p uintptr) (interface{}, error) {
 // still block for a brief period of time (eg, trying to do multicast DNS on the
 // local network), so if you do not want to block, you should use
 // g_network_monitor_can_reach_async().
-func (monitor *NetworkMonitorIface) CanReach(connectable SocketConnectable, cancellable Cancellable) error {
+func (monitor *NetworkMonitor) CanReach(connectable SocketConnectabler, cancellable Cancellabler) error {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
@@ -203,7 +152,7 @@ func (monitor *NetworkMonitorIface) CanReach(connectable SocketConnectable, canc
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_network_monitor_can_reach_finish() to get the result of the operation.
-func (monitor *NetworkMonitorIface) CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
+func (monitor *NetworkMonitor) CanReachAsync(connectable SocketConnectabler, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
@@ -221,7 +170,7 @@ func (monitor *NetworkMonitorIface) CanReachAsync(connectable SocketConnectable,
 
 // CanReachFinish finishes an async network connectivity test. See
 // g_network_monitor_can_reach_async().
-func (monitor *NetworkMonitorIface) CanReachFinish(result AsyncResult) error {
+func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 	var _arg0 *C.GNetworkMonitor // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -257,7 +206,7 @@ func (monitor *NetworkMonitorIface) CanReachFinish(result AsyncResult) error {
 // but others are not. In this case, applications can attempt to connect to
 // remote servers, but should gracefully fall back to their "offline" behavior
 // if the connection attempt fails.
-func (monitor *NetworkMonitorIface) Connectivity() NetworkConnectivity {
+func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 	var _arg0 *C.GNetworkMonitor     // out
 	var _cret C.GNetworkConnectivity // in
 
@@ -276,7 +225,7 @@ func (monitor *NetworkMonitorIface) Connectivity() NetworkConnectivity {
 // that the system has a default route available for at least one of IPv4 or
 // IPv6. It does not necessarily imply that the public Internet is reachable.
 // See Monitor:network-available for more details.
-func (monitor *NetworkMonitorIface) NetworkAvailable() bool {
+func (monitor *NetworkMonitor) NetworkAvailable() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
 
@@ -295,7 +244,7 @@ func (monitor *NetworkMonitorIface) NetworkAvailable() bool {
 
 // NetworkMetered checks if the network is metered. See Monitor:network-metered
 // for more details.
-func (monitor *NetworkMonitorIface) NetworkMetered() bool {
+func (monitor *NetworkMonitor) NetworkMetered() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
 

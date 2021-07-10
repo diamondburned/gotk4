@@ -506,12 +506,6 @@ type EventAny struct {
 	native C.GdkEventAny
 }
 
-// WrapEventAny wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventAny(ptr unsafe.Pointer) *EventAny {
-	return (*EventAny)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventAny) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -546,12 +540,6 @@ type EventButton struct {
 	native C.GdkEventButton
 }
 
-// WrapEventButton wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventButton(ptr unsafe.Pointer) *EventButton {
-	return (*EventButton)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventButton) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -560,12 +548,6 @@ func (e *EventButton) Native() unsafe.Pointer {
 // EventConfigure: generated when a window size or position has changed.
 type EventConfigure struct {
 	native C.GdkEventConfigure
-}
-
-// WrapEventConfigure wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventConfigure(ptr unsafe.Pointer) *EventConfigure {
-	return (*EventConfigure)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -578,12 +560,6 @@ type EventCrossing struct {
 	native C.GdkEventCrossing
 }
 
-// WrapEventCrossing wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventCrossing(ptr unsafe.Pointer) *EventCrossing {
-	return (*EventCrossing)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventCrossing) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -592,12 +568,6 @@ func (e *EventCrossing) Native() unsafe.Pointer {
 // EventDND: generated during DND operations.
 type EventDND struct {
 	native C.GdkEventDND
-}
-
-// WrapEventDND wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventDND(ptr unsafe.Pointer) *EventDND {
-	return (*EventDND)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -611,12 +581,6 @@ type EventExpose struct {
 	native C.GdkEventExpose
 }
 
-// WrapEventExpose wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventExpose(ptr unsafe.Pointer) *EventExpose {
-	return (*EventExpose)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventExpose) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -625,12 +589,6 @@ func (e *EventExpose) Native() unsafe.Pointer {
 // EventFocus describes a change of keyboard focus.
 type EventFocus struct {
 	native C.GdkEventFocus
-}
-
-// WrapEventFocus wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventFocus(ptr unsafe.Pointer) *EventFocus {
-	return (*EventFocus)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -647,12 +605,6 @@ type EventGrabBroken struct {
 	native C.GdkEventGrabBroken
 }
 
-// WrapEventGrabBroken wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventGrabBroken(ptr unsafe.Pointer) *EventGrabBroken {
-	return (*EventGrabBroken)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventGrabBroken) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -663,12 +615,6 @@ type EventKey struct {
 	native C.GdkEventKey
 }
 
-// WrapEventKey wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventKey(ptr unsafe.Pointer) *EventKey {
-	return (*EventKey)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -677,12 +623,6 @@ func (e *EventKey) Native() unsafe.Pointer {
 // EventMotion: generated when the pointer moves.
 type EventMotion struct {
 	native C.GdkEventMotion
-}
-
-// WrapEventMotion wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventMotion(ptr unsafe.Pointer) *EventMotion {
-	return (*EventMotion)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -697,12 +637,6 @@ type EventOwnerChange struct {
 	native C.GdkEventOwnerChange
 }
 
-// WrapEventOwnerChange wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventOwnerChange(ptr unsafe.Pointer) *EventOwnerChange {
-	return (*EventOwnerChange)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventOwnerChange) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -712,12 +646,6 @@ func (e *EventOwnerChange) Native() unsafe.Pointer {
 // sensors.
 type EventPadAxis struct {
 	native C.GdkEventPadAxis
-}
-
-// WrapEventPadAxis wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventPadAxis(ptr unsafe.Pointer) *EventPadAxis {
-	return (*EventPadAxis)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -731,12 +659,6 @@ type EventPadButton struct {
 	native C.GdkEventPadButton
 }
 
-// WrapEventPadButton wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventPadButton(ptr unsafe.Pointer) *EventPadButton {
-	return (*EventPadButton)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventPadButton) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -748,12 +670,6 @@ type EventPadGroupMode struct {
 	native C.GdkEventPadGroupMode
 }
 
-// WrapEventPadGroupMode wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventPadGroupMode(ptr unsafe.Pointer) *EventPadGroupMode {
-	return (*EventPadGroupMode)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventPadGroupMode) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -762,12 +678,6 @@ func (e *EventPadGroupMode) Native() unsafe.Pointer {
 // EventProperty describes a property change on a window.
 type EventProperty struct {
 	native C.GdkEventProperty
-}
-
-// WrapEventProperty wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventProperty(ptr unsafe.Pointer) *EventProperty {
-	return (*EventProperty)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -788,12 +698,6 @@ type EventProximity struct {
 	native C.GdkEventProximity
 }
 
-// WrapEventProximity wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventProximity(ptr unsafe.Pointer) *EventProximity {
-	return (*EventProximity)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventProximity) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -810,12 +714,6 @@ type EventScroll struct {
 	native C.GdkEventScroll
 }
 
-// WrapEventScroll wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventScroll(ptr unsafe.Pointer) *EventScroll {
-	return (*EventScroll)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventScroll) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -827,12 +725,6 @@ type EventSelection struct {
 	native C.GdkEventSelection
 }
 
-// WrapEventSelection wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventSelection(ptr unsafe.Pointer) *EventSelection {
-	return (*EventSelection)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventSelection) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -840,12 +732,6 @@ func (e *EventSelection) Native() unsafe.Pointer {
 
 type EventSequence struct {
 	native C.GdkEventSequence
-}
-
-// WrapEventSequence wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventSequence(ptr unsafe.Pointer) *EventSequence {
-	return (*EventSequence)(ptr)
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
@@ -861,12 +747,6 @@ func (e *EventSequence) Native() unsafe.Pointer {
 // EventSetting: generated when a setting is modified.
 type EventSetting struct {
 	native C.GdkEventSetting
-}
-
-// WrapEventSetting wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventSetting(ptr unsafe.Pointer) *EventSetting {
-	return (*EventSetting)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -887,12 +767,6 @@ type EventTouch struct {
 	native C.GdkEventTouch
 }
 
-// WrapEventTouch wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventTouch(ptr unsafe.Pointer) *EventTouch {
-	return (*EventTouch)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventTouch) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -903,12 +777,6 @@ type EventTouchpadPinch struct {
 	native C.GdkEventTouchpadPinch
 }
 
-// WrapEventTouchpadPinch wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventTouchpadPinch(ptr unsafe.Pointer) *EventTouchpadPinch {
-	return (*EventTouchpadPinch)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventTouchpadPinch) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -917,12 +785,6 @@ func (e *EventTouchpadPinch) Native() unsafe.Pointer {
 // EventTouchpadSwipe: generated during touchpad swipe gestures.
 type EventTouchpadSwipe struct {
 	native C.GdkEventTouchpadSwipe
-}
-
-// WrapEventTouchpadSwipe wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventTouchpadSwipe(ptr unsafe.Pointer) *EventTouchpadSwipe {
-	return (*EventTouchpadSwipe)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -939,12 +801,6 @@ type EventVisibility struct {
 	native C.GdkEventVisibility
 }
 
-// WrapEventVisibility wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventVisibility(ptr unsafe.Pointer) *EventVisibility {
-	return (*EventVisibility)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (e *EventVisibility) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
@@ -953,12 +809,6 @@ func (e *EventVisibility) Native() unsafe.Pointer {
 // EventWindowState: generated when the state of a toplevel window changes.
 type EventWindowState struct {
 	native C.GdkEventWindowState
-}
-
-// WrapEventWindowState wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventWindowState(ptr unsafe.Pointer) *EventWindowState {
-	return (*EventWindowState)(ptr)
 }
 
 // Native returns the underlying C source pointer.

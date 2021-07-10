@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_section_get_type()), F: marshalShortcutsSection},
+		{T: externglib.Type(C.gtk_shortcuts_section_get_type()), F: marshalShortcutsSectioner},
 	})
+}
+
+// ShortcutsSectioner describes ShortcutsSection's methods.
+type ShortcutsSectioner interface {
+	gextras.Objector
+
+	privateShortcutsSection()
 }
 
 // ShortcutsSection: `GtkShortcutsSection` collects all the keyboard shortcuts
@@ -35,76 +42,69 @@ func init() {
 // columns.
 //
 // This widget is only meant to be used with [class@Gtk.ShortcutsWindow].
-type ShortcutsSection interface {
-	gextras.Objector
-
-	privateShortcutsSectionClass()
-}
-
-// ShortcutsSectionClass implements the ShortcutsSection interface.
-type ShortcutsSectionClass struct {
+type ShortcutsSection struct {
 	*externglib.Object
-	BoxClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	OrientableIface
+	Box
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
 }
 
-var _ ShortcutsSection = (*ShortcutsSectionClass)(nil)
+var _ ShortcutsSectioner = (*ShortcutsSection)(nil)
 
-func wrapShortcutsSection(obj *externglib.Object) ShortcutsSection {
-	return &ShortcutsSectionClass{
+func wrapShortcutsSectioner(obj *externglib.Object) ShortcutsSectioner {
+	return &ShortcutsSection{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalShortcutsSection(p uintptr) (interface{}, error) {
+func marshalShortcutsSectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsSection(obj), nil
+	return wrapShortcutsSectioner(obj), nil
 }
 
-func (*ShortcutsSectionClass) privateShortcutsSectionClass() {}
+func (*ShortcutsSection) privateShortcutsSection() {}

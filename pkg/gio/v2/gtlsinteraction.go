@@ -32,15 +32,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_interaction_get_type()), F: marshalTLSInteraction},
+		{T: externglib.Type(C.g_tls_interaction_get_type()), F: marshalTLSInteractioner},
 	})
 }
 
-// TLSInteractionOverrider contains methods that are overridable.
+// TLSInteractionerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSInteractionOverrider interface {
+type TLSInteractionerOverrider interface {
 	// AskPassword: run synchronous interaction to ask the user for a password.
 	// In general, g_tls_interaction_invoke_ask_password() should be used
 	// instead of this function.
@@ -55,7 +55,7 @@ type TLSInteractionOverrider interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	AskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error)
+	AskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error)
 	// AskPasswordAsync: run asynchronous interaction to ask the user for a
 	// password. In general, g_tls_interaction_invoke_ask_password() should be
 	// used instead of this function.
@@ -72,7 +72,7 @@ type TLSInteractionOverrider interface {
 	// not support immediate cancellation.
 	//
 	// Certain implementations may not support immediate cancellation.
-	AskPasswordAsync(password TLSPassword, cancellable Cancellable, callback AsyncReadyCallback)
+	AskPasswordAsync(password TLSPassworder, cancellable Cancellabler, callback AsyncReadyCallback)
 	// AskPasswordFinish: complete an ask password user interaction request.
 	// This should be once the g_tls_interaction_ask_password_async() completion
 	// callback is called.
@@ -83,7 +83,7 @@ type TLSInteractionOverrider interface {
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code.
-	AskPasswordFinish(result AsyncResult) (TLSInteractionResult, error)
+	AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
 	// RequestCertificateFinish: complete a request certificate user interaction
 	// request. This should be once the
 	// g_tls_interaction_request_certificate_async() completion callback is
@@ -96,7 +96,18 @@ type TLSInteractionOverrider interface {
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code.
-	RequestCertificateFinish(result AsyncResult) (TLSInteractionResult, error)
+	RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
+}
+
+// TLSInteractioner describes TLSInteraction's methods.
+type TLSInteractioner interface {
+	gextras.Objector
+
+	AskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error)
+	AskPasswordAsync(password TLSPassworder, cancellable Cancellabler, callback AsyncReadyCallback)
+	AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
+	InvokeAskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error)
+	RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
 }
 
 // TLSInteraction provides a mechanism for the TLS connection and database code
@@ -118,105 +129,22 @@ type TLSInteractionOverrider interface {
 // initialization function. Any interactions not implemented will return
 // G_TLS_INTERACTION_UNHANDLED. If a derived class implements an async method,
 // it must also implement the corresponding finish method.
-type TLSInteraction interface {
-	gextras.Objector
-
-	// AskPassword: run synchronous interaction to ask the user for a password.
-	// In general, g_tls_interaction_invoke_ask_password() should be used
-	// instead of this function.
-	//
-	// Derived subclasses usually implement a password prompt, although they may
-	// also choose to provide a password from elsewhere. The @password value
-	// will be filled in and then @callback will be called. Alternatively the
-	// user may abort this password request, which will usually abort the TLS
-	// connection.
-	//
-	// If the interaction is cancelled by the cancellation object, or by the
-	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
-	// not support immediate cancellation.
-	AskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error)
-	// AskPasswordAsync: run asynchronous interaction to ask the user for a
-	// password. In general, g_tls_interaction_invoke_ask_password() should be
-	// used instead of this function.
-	//
-	// Derived subclasses usually implement a password prompt, although they may
-	// also choose to provide a password from elsewhere. The @password value
-	// will be filled in and then @callback will be called. Alternatively the
-	// user may abort this password request, which will usually abort the TLS
-	// connection.
-	//
-	// If the interaction is cancelled by the cancellation object, or by the
-	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
-	// not support immediate cancellation.
-	//
-	// Certain implementations may not support immediate cancellation.
-	AskPasswordAsync(password TLSPassword, cancellable Cancellable, callback AsyncReadyCallback)
-	// AskPasswordFinish: complete an ask password user interaction request.
-	// This should be once the g_tls_interaction_ask_password_async() completion
-	// callback is called.
-	//
-	// If G_TLS_INTERACTION_HANDLED is returned, then the Password passed to
-	// g_tls_interaction_ask_password() will have its password filled in.
-	//
-	// If the interaction is cancelled by the cancellation object, or by the
-	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-	// contains a G_IO_ERROR_CANCELLED error code.
-	AskPasswordFinish(result AsyncResult) (TLSInteractionResult, error)
-	// InvokeAskPassword: invoke the interaction to ask the user for a password.
-	// It invokes this interaction in the main loop, specifically the Context
-	// returned by g_main_context_get_thread_default() when the interaction is
-	// created. This is called by called by Connection or Database to ask the
-	// user for a password.
-	//
-	// Derived subclasses usually implement a password prompt, although they may
-	// also choose to provide a password from elsewhere. The @password value
-	// will be filled in and then @callback will be called. Alternatively the
-	// user may abort this password request, which will usually abort the TLS
-	// connection.
-	//
-	// The implementation can either be a synchronous (eg: modal dialog) or an
-	// asynchronous one (eg: modeless dialog). This function will take care of
-	// calling which ever one correctly.
-	//
-	// If the interaction is cancelled by the cancellation object, or by the
-	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
-	// not support immediate cancellation.
-	InvokeAskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error)
-	// RequestCertificateFinish: complete a request certificate user interaction
-	// request. This should be once the
-	// g_tls_interaction_request_certificate_async() completion callback is
-	// called.
-	//
-	// If G_TLS_INTERACTION_HANDLED is returned, then the Connection passed to
-	// g_tls_interaction_request_certificate_async() will have had its
-	// Connection:certificate filled in.
-	//
-	// If the interaction is cancelled by the cancellation object, or by the
-	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-	// contains a G_IO_ERROR_CANCELLED error code.
-	RequestCertificateFinish(result AsyncResult) (TLSInteractionResult, error)
-}
-
-// TLSInteractionClass implements the TLSInteraction interface.
-type TLSInteractionClass struct {
+type TLSInteraction struct {
 	*externglib.Object
 }
 
-var _ TLSInteraction = (*TLSInteractionClass)(nil)
+var _ TLSInteractioner = (*TLSInteraction)(nil)
 
-func wrapTLSInteraction(obj *externglib.Object) TLSInteraction {
-	return &TLSInteractionClass{
+func wrapTLSInteractioner(obj *externglib.Object) TLSInteractioner {
+	return &TLSInteraction{
 		Object: obj,
 	}
 }
 
-func marshalTLSInteraction(p uintptr) (interface{}, error) {
+func marshalTLSInteractioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSInteraction(obj), nil
+	return wrapTLSInteractioner(obj), nil
 }
 
 // AskPassword: run synchronous interaction to ask the user for a password. In
@@ -232,7 +160,7 @@ func marshalTLSInteraction(p uintptr) (interface{}, error) {
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
-func (interaction *TLSInteractionClass) AskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) AskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GTlsPassword         // out
 	var _arg2 *C.GCancellable         // out
@@ -269,7 +197,7 @@ func (interaction *TLSInteractionClass) AskPassword(password TLSPassword, cancel
 // immediate cancellation.
 //
 // Certain implementations may not support immediate cancellation.
-func (interaction *TLSInteractionClass) AskPasswordAsync(password TLSPassword, cancellable Cancellable, callback AsyncReadyCallback) {
+func (interaction *TLSInteraction) AskPasswordAsync(password TLSPassworder, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsInteraction    // out
 	var _arg1 *C.GTlsPassword       // out
 	var _arg2 *C.GCancellable       // out
@@ -295,7 +223,7 @@ func (interaction *TLSInteractionClass) AskPasswordAsync(password TLSPassword, c
 // If the interaction is cancelled by the cancellation object, or by the user
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code.
-func (interaction *TLSInteractionClass) AskPasswordFinish(result AsyncResult) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.GTlsInteractionResult // in
@@ -333,7 +261,7 @@ func (interaction *TLSInteractionClass) AskPasswordFinish(result AsyncResult) (T
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
-func (interaction *TLSInteractionClass) InvokeAskPassword(password TLSPassword, cancellable Cancellable) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) InvokeAskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GTlsPassword         // out
 	var _arg2 *C.GCancellable         // out
@@ -366,7 +294,7 @@ func (interaction *TLSInteractionClass) InvokeAskPassword(password TLSPassword, 
 // If the interaction is cancelled by the cancellation object, or by the user
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code.
-func (interaction *TLSInteractionClass) RequestCertificateFinish(result AsyncResult) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.GTlsInteractionResult // in

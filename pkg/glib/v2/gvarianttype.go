@@ -159,12 +159,6 @@ type VariantType struct {
 	native C.GVariantType
 }
 
-// WrapVariantType wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapVariantType(ptr unsafe.Pointer) *VariantType {
-	return (*VariantType)(ptr)
-}
-
 func marshalVariantType(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*VariantType)(unsafe.Pointer(b)), nil
@@ -184,7 +178,7 @@ func NewVariantType(typeString string) *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v))
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
@@ -203,7 +197,7 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v))
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
@@ -224,7 +218,7 @@ func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType 
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v))
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
@@ -243,7 +237,7 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v))
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
@@ -264,7 +258,7 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v))
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType
@@ -289,7 +283,7 @@ func (typ *VariantType) Copy() *VariantType {
 
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.free(unsafe.Pointer(v))
+		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
 
 	return _variantType

@@ -20,15 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_action_get_type()), F: marshalAction},
+		{T: externglib.Type(C.gtk_action_get_type()), F: marshalActioner},
 	})
 }
 
-// ActionOverrider contains methods that are overridable.
+// ActionerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionOverrider interface {
+type ActionerOverrider interface {
 	// Activate emits the “activate” signal on the specified action, if it isn't
 	// insensitive. This gets called by the proxy widgets when they get
 	// activated.
@@ -37,27 +37,70 @@ type ActionOverrider interface {
 	//
 	// Deprecated: Use g_action_group_activate_action() on a #GAction instead.
 	Activate()
-	ConnectProxy(proxy Widget)
+	ConnectProxy(proxy Widgetter)
 	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
 	// item or the toolbar item it creates, this function returns an instance of
 	// that menu.
 	//
 	// Deprecated: Use #GAction and Model instead, and create a Menu with
 	// gtk_menu_new_from_model().
-	CreateMenu() *WidgetClass
+	CreateMenu() *Widget
 	// CreateMenuItem creates a menu item widget that proxies for the given
 	// action.
 	//
 	// Deprecated: Use g_menu_item_new() and associate it with a #GAction
 	// instead.
-	CreateMenuItem() *WidgetClass
+	CreateMenuItem() *Widget
 	// CreateToolItem creates a toolbar item widget that proxies for the given
 	// action.
 	//
 	// Deprecated: Use a ToolItem and associate it with a #GAction using
 	// gtk_actionable_set_action_name() instead.
-	CreateToolItem() *WidgetClass
-	DisconnectProxy(proxy Widget)
+	CreateToolItem() *Widget
+	DisconnectProxy(proxy Widgetter)
+}
+
+// Actioner describes Action's methods.
+type Actioner interface {
+	gextras.Objector
+
+	Activate()
+	BlockActivate()
+	ConnectAccelerator()
+	CreateIcon(iconSize int) *Widget
+	CreateMenu() *Widget
+	CreateMenuItem() *Widget
+	CreateToolItem() *Widget
+	DisconnectAccelerator()
+	AccelPath() string
+	AlwaysShowImage() bool
+	IconName() string
+	IsImportant() bool
+	Label() string
+	Name() string
+	Sensitive() bool
+	ShortLabel() string
+	StockID() string
+	Tooltip() string
+	Visible() bool
+	VisibleHorizontal() bool
+	VisibleVertical() bool
+	IsSensitive() bool
+	IsVisible() bool
+	SetAccelGroup(accelGroup AccelGrouper)
+	SetAccelPath(accelPath string)
+	SetAlwaysShowImage(alwaysShow bool)
+	SetIconName(iconName string)
+	SetIsImportant(isImportant bool)
+	SetLabel(label string)
+	SetSensitive(sensitive bool)
+	SetShortLabel(shortLabel string)
+	SetStockID(stockId string)
+	SetTooltip(tooltip string)
+	SetVisible(visible bool)
+	SetVisibleHorizontal(visibleHorizontal bool)
+	SetVisibleVertical(visibleVertical bool)
+	UnblockActivate()
 }
 
 // Action: > In GTK+ 3.10, GtkAction has been deprecated. Use #GAction >
@@ -103,256 +146,26 @@ type ActionOverrider interface {
 // Activatable:use-action-appearance property set to true.
 //
 // When the proxy is activated, it should activate its action.
-type Action interface {
-	gextras.Objector
-
-	// Activate emits the “activate” signal on the specified action, if it isn't
-	// insensitive. This gets called by the proxy widgets when they get
-	// activated.
-	//
-	// It can also be used to manually activate an action.
-	//
-	// Deprecated: Use g_action_group_activate_action() on a #GAction instead.
-	Activate()
-	// BlockActivate: disable activation signals from the action
-	//
-	// This is needed when updating the state of your proxy Activatable widget
-	// could result in calling gtk_action_activate(), this is a convenience
-	// function to avoid recursing in those cases (updating toggle state for
-	// instance).
-	//
-	// Deprecated: Use g_simple_action_set_enabled() to disable the Action
-	// instead.
-	BlockActivate()
-	// ConnectAccelerator installs the accelerator for @action if @action has an
-	// accel path and group. See gtk_action_set_accel_path() and
-	// gtk_action_set_accel_group()
-	//
-	// Since multiple proxies may independently trigger the installation of the
-	// accelerator, the @action counts the number of times this function has
-	// been called and doesn’t remove the accelerator until
-	// gtk_action_disconnect_accelerator() has been called as many times.
-	//
-	// Deprecated: Use #GAction and the accelerator group on an associated Menu
-	// instead.
-	ConnectAccelerator()
-	// CreateIcon: this function is intended for use by action implementations
-	// to create icons displayed in the proxy widgets.
-	//
-	// Deprecated: Use g_menu_item_set_icon() to set an icon on a Item, or
-	// gtk_container_add() to add a Image to a Button.
-	CreateIcon(iconSize int) *WidgetClass
-	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
-	// item or the toolbar item it creates, this function returns an instance of
-	// that menu.
-	//
-	// Deprecated: Use #GAction and Model instead, and create a Menu with
-	// gtk_menu_new_from_model().
-	CreateMenu() *WidgetClass
-	// CreateMenuItem creates a menu item widget that proxies for the given
-	// action.
-	//
-	// Deprecated: Use g_menu_item_new() and associate it with a #GAction
-	// instead.
-	CreateMenuItem() *WidgetClass
-	// CreateToolItem creates a toolbar item widget that proxies for the given
-	// action.
-	//
-	// Deprecated: Use a ToolItem and associate it with a #GAction using
-	// gtk_actionable_set_action_name() instead.
-	CreateToolItem() *WidgetClass
-	// DisconnectAccelerator undoes the effect of one call to
-	// gtk_action_connect_accelerator().
-	//
-	// Deprecated: Use #GAction and the accelerator group on an associated Menu
-	// instead.
-	DisconnectAccelerator()
-	// AccelPath returns the accel path for this action.
-	//
-	// Deprecated: Use #GAction and the accelerator path on an associated Menu
-	// instead.
-	AccelPath() string
-	// AlwaysShowImage returns whether @action's menu item proxies will always
-	// show their image, if available.
-	//
-	// Deprecated: Use g_menu_item_get_attribute_value() on a Item instead.
-	AlwaysShowImage() bool
-	// IconName gets the icon name of @action.
-	//
-	// Deprecated: Use #GAction instead, and g_menu_item_get_attribute_value()
-	// to get an icon from a Item associated with a #GAction.
-	IconName() string
-	// IsImportant checks whether @action is important or not
-	//
-	// Deprecated: Use #GAction instead, and control and monitor whether labels
-	// are shown directly.
-	IsImportant() bool
-	// Label gets the label text of @action.
-	//
-	// Deprecated: Use #GAction instead, and get a label from a menu item with
-	// g_menu_item_get_attribute_value(). For Actionable widgets, use the
-	// widget-specific API to get a label.
-	Label() string
-	// Name returns the name of the action.
-	//
-	// Deprecated: Use g_action_get_name() on a #GAction instead.
-	Name() string
-	// Sensitive returns whether the action itself is sensitive. Note that this
-	// doesn’t necessarily mean effective sensitivity. See
-	// gtk_action_is_sensitive() for that.
-	//
-	// Deprecated: Use g_action_get_enabled() on a #GAction instead.
-	Sensitive() bool
-	// ShortLabel gets the short label text of @action.
-	//
-	// Deprecated: Use #GAction instead, which has no equivalent of short
-	// labels.
-	ShortLabel() string
-	// StockID gets the stock id of @action.
-	//
-	// Deprecated: Use #GAction instead, which has no equivalent of stock items.
-	StockID() string
-	// Tooltip gets the tooltip text of @action.
-	//
-	// Deprecated: Use #GAction instead, and get tooltips from associated
-	// Actionable widgets with gtk_widget_get_tooltip_text().
-	Tooltip() string
-	// Visible returns whether the action itself is visible. Note that this
-	// doesn’t necessarily mean effective visibility. See
-	// gtk_action_is_sensitive() for that.
-	//
-	// Deprecated: Use #GAction instead, and control and monitor the state of
-	// Actionable widgets directly.
-	Visible() bool
-	// VisibleHorizontal checks whether @action is visible when horizontal
-	//
-	// Deprecated: Use #GAction instead, and control and monitor the visibility
-	// of associated widgets and menu items directly.
-	VisibleHorizontal() bool
-	// VisibleVertical checks whether @action is visible when horizontal
-	//
-	// Deprecated: Use #GAction instead, and control and monitor the visibility
-	// of associated widgets and menu items directly.
-	VisibleVertical() bool
-	// IsSensitive returns whether the action is effectively sensitive.
-	//
-	// Deprecated: Use g_action_get_enabled() on a #GAction instead.
-	IsSensitive() bool
-	// IsVisible returns whether the action is effectively visible.
-	//
-	// Deprecated: Use #GAction instead, and control and monitor the state of
-	// Actionable widgets directly.
-	IsVisible() bool
-	// SetAccelGroup sets the AccelGroup in which the accelerator for this
-	// action will be installed.
-	//
-	// Deprecated: Use #GAction and the accelerator group on an associated Menu
-	// instead.
-	SetAccelGroup(accelGroup AccelGroup)
-	// SetAccelPath sets the accel path for this action. All proxy widgets
-	// associated with the action will have this accel path, so that their
-	// accelerators are consistent.
-	//
-	// Note that @accel_path string will be stored in a #GQuark. Therefore, if
-	// you pass a static string, you can save some memory by interning it first
-	// with g_intern_static_string().
-	//
-	// Deprecated: Use #GAction and the accelerator path on an associated Menu
-	// instead.
-	SetAccelPath(accelPath string)
-	// SetAlwaysShowImage sets whether @action's menu item proxies will ignore
-	// the Settings:gtk-menu-images setting and always show their image, if
-	// available.
-	//
-	// Use this if the menu item would be useless or hard to use without their
-	// image.
-	//
-	// Deprecated: Use g_menu_item_set_icon() on a Item instead, if the item
-	// should have an image.
-	SetAlwaysShowImage(alwaysShow bool)
-	// SetIconName sets the icon name on @action
-	//
-	// Deprecated: Use #GAction instead, and g_menu_item_set_icon() to set an
-	// icon on a Item associated with a #GAction, or gtk_container_add() to add
-	// a Image to a Button.
-	SetIconName(iconName string)
-	// SetIsImportant sets whether the action is important, this attribute is
-	// used primarily by toolbar items to decide whether to show a label or not.
-	//
-	// Deprecated: Use #GAction instead, and control and monitor whether labels
-	// are shown directly.
-	SetIsImportant(isImportant bool)
-	// SetLabel sets the label of @action.
-	//
-	// Deprecated: Use #GAction instead, and set a label on a menu item with
-	// g_menu_item_set_label(). For Actionable widgets, use the widget-specific
-	// API to set a label.
-	SetLabel(label string)
-	// SetSensitive sets the :sensitive property of the action to @sensitive.
-	// Note that this doesn’t necessarily mean effective sensitivity. See
-	// gtk_action_is_sensitive() for that.
-	//
-	// Deprecated: Use g_simple_action_set_enabled() on a Action instead.
-	SetSensitive(sensitive bool)
-	// SetShortLabel sets a shorter label text on @action.
-	//
-	// Deprecated: Use #GAction instead, which has no equivalent of short
-	// labels.
-	SetShortLabel(shortLabel string)
-	// SetStockID sets the stock id on @action
-	//
-	// Deprecated: Use #GAction instead, which has no equivalent of stock items.
-	SetStockID(stockId string)
-	// SetTooltip sets the tooltip text on @action
-	//
-	// Deprecated: Use #GAction instead, and set tooltips on associated
-	// Actionable widgets with gtk_widget_set_tooltip_text().
-	SetTooltip(tooltip string)
-	// SetVisible sets the :visible property of the action to @visible. Note
-	// that this doesn’t necessarily mean effective visibility. See
-	// gtk_action_is_visible() for that.
-	//
-	// Deprecated: Use #GAction instead, and control and monitor the state of
-	// Actionable widgets directly.
-	SetVisible(visible bool)
-	// SetVisibleHorizontal sets whether @action is visible when horizontal
-	//
-	// Deprecated: Use #GAction instead, and control and monitor the visibility
-	// of associated widgets and menu items directly.
-	SetVisibleHorizontal(visibleHorizontal bool)
-	// SetVisibleVertical sets whether @action is visible when vertical
-	//
-	// Deprecated: Use #GAction instead, and control and monitor the visibility
-	// of associated widgets and menu items directly.
-	SetVisibleVertical(visibleVertical bool)
-	// UnblockActivate: reenable activation signals from the action
-	//
-	// Deprecated: Use g_simple_action_set_enabled() to enable the Action
-	// instead.
-	UnblockActivate()
-}
-
-// ActionClass implements the Action interface.
-type ActionClass struct {
+type Action struct {
 	*externglib.Object
-	BuildableIface
+	Buildable
 }
 
-var _ Action = (*ActionClass)(nil)
+var _ Actioner = (*Action)(nil)
 
-func wrapAction(obj *externglib.Object) Action {
-	return &ActionClass{
+func wrapActioner(obj *externglib.Object) Actioner {
+	return &Action{
 		Object: obj,
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalAction(p uintptr) (interface{}, error) {
+func marshalActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAction(obj), nil
+	return wrapActioner(obj), nil
 }
 
 // NewAction creates a new Action object. To add the action to a ActionGroup and
@@ -362,7 +175,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 //
 // Deprecated: Use #GAction instead, associating it to a widget with Actionable
 // or creating a Menu with gtk_menu_new_from_model().
-func NewAction(name string, label string, tooltip string, stockId string) *ActionClass {
+func NewAction(name string, label string, tooltip string, stockId string) *Action {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _arg3 *C.gchar     // out
@@ -380,9 +193,9 @@ func NewAction(name string, label string, tooltip string, stockId string) *Actio
 
 	_cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
 
-	var _action *ActionClass // out
+	var _action *Action // out
 
-	_action = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ActionClass)
+	_action = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Action)
 
 	return _action
 }
@@ -393,7 +206,7 @@ func NewAction(name string, label string, tooltip string, stockId string) *Actio
 // It can also be used to manually activate an action.
 //
 // Deprecated: Use g_action_group_activate_action() on a #GAction instead.
-func (action *ActionClass) Activate() {
+func (action *Action) Activate() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
@@ -408,7 +221,7 @@ func (action *ActionClass) Activate() {
 // avoid recursing in those cases (updating toggle state for instance).
 //
 // Deprecated: Use g_simple_action_set_enabled() to disable the Action instead.
-func (action *ActionClass) BlockActivate() {
+func (action *Action) BlockActivate() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
@@ -427,7 +240,7 @@ func (action *ActionClass) BlockActivate() {
 //
 // Deprecated: Use #GAction and the accelerator group on an associated Menu
 // instead.
-func (action *ActionClass) ConnectAccelerator() {
+func (action *Action) ConnectAccelerator() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
@@ -440,7 +253,7 @@ func (action *ActionClass) ConnectAccelerator() {
 //
 // Deprecated: Use g_menu_item_set_icon() to set an icon on a Item, or
 // gtk_container_add() to add a Image to a Button.
-func (action *ActionClass) CreateIcon(iconSize int) *WidgetClass {
+func (action *Action) CreateIcon(iconSize int) *Widget {
 	var _arg0 *C.GtkAction  // out
 	var _arg1 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -450,9 +263,9 @@ func (action *ActionClass) CreateIcon(iconSize int) *WidgetClass {
 
 	_cret = C.gtk_action_create_icon(_arg0, _arg1)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -463,7 +276,7 @@ func (action *ActionClass) CreateIcon(iconSize int) *WidgetClass {
 //
 // Deprecated: Use #GAction and Model instead, and create a Menu with
 // gtk_menu_new_from_model().
-func (action *ActionClass) CreateMenu() *WidgetClass {
+func (action *Action) CreateMenu() *Widget {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -471,9 +284,9 @@ func (action *ActionClass) CreateMenu() *WidgetClass {
 
 	_cret = C.gtk_action_create_menu(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -481,7 +294,7 @@ func (action *ActionClass) CreateMenu() *WidgetClass {
 // CreateMenuItem creates a menu item widget that proxies for the given action.
 //
 // Deprecated: Use g_menu_item_new() and associate it with a #GAction instead.
-func (action *ActionClass) CreateMenuItem() *WidgetClass {
+func (action *Action) CreateMenuItem() *Widget {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -489,9 +302,9 @@ func (action *ActionClass) CreateMenuItem() *WidgetClass {
 
 	_cret = C.gtk_action_create_menu_item(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -501,7 +314,7 @@ func (action *ActionClass) CreateMenuItem() *WidgetClass {
 //
 // Deprecated: Use a ToolItem and associate it with a #GAction using
 // gtk_actionable_set_action_name() instead.
-func (action *ActionClass) CreateToolItem() *WidgetClass {
+func (action *Action) CreateToolItem() *Widget {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -509,9 +322,9 @@ func (action *ActionClass) CreateToolItem() *WidgetClass {
 
 	_cret = C.gtk_action_create_tool_item(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -521,7 +334,7 @@ func (action *ActionClass) CreateToolItem() *WidgetClass {
 //
 // Deprecated: Use #GAction and the accelerator group on an associated Menu
 // instead.
-func (action *ActionClass) DisconnectAccelerator() {
+func (action *Action) DisconnectAccelerator() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
@@ -533,7 +346,7 @@ func (action *ActionClass) DisconnectAccelerator() {
 //
 // Deprecated: Use #GAction and the accelerator path on an associated Menu
 // instead.
-func (action *ActionClass) AccelPath() string {
+func (action *Action) AccelPath() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -552,7 +365,7 @@ func (action *ActionClass) AccelPath() string {
 // their image, if available.
 //
 // Deprecated: Use g_menu_item_get_attribute_value() on a Item instead.
-func (action *ActionClass) AlwaysShowImage() bool {
+func (action *Action) AlwaysShowImage() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -573,7 +386,7 @@ func (action *ActionClass) AlwaysShowImage() bool {
 //
 // Deprecated: Use #GAction instead, and g_menu_item_get_attribute_value() to
 // get an icon from a Item associated with a #GAction.
-func (action *ActionClass) IconName() string {
+func (action *Action) IconName() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -592,7 +405,7 @@ func (action *ActionClass) IconName() string {
 //
 // Deprecated: Use #GAction instead, and control and monitor whether labels are
 // shown directly.
-func (action *ActionClass) IsImportant() bool {
+func (action *Action) IsImportant() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -614,7 +427,7 @@ func (action *ActionClass) IsImportant() bool {
 // Deprecated: Use #GAction instead, and get a label from a menu item with
 // g_menu_item_get_attribute_value(). For Actionable widgets, use the
 // widget-specific API to get a label.
-func (action *ActionClass) Label() string {
+func (action *Action) Label() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -632,7 +445,7 @@ func (action *ActionClass) Label() string {
 // Name returns the name of the action.
 //
 // Deprecated: Use g_action_get_name() on a #GAction instead.
-func (action *ActionClass) Name() string {
+func (action *Action) Name() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -652,7 +465,7 @@ func (action *ActionClass) Name() string {
 // for that.
 //
 // Deprecated: Use g_action_get_enabled() on a #GAction instead.
-func (action *ActionClass) Sensitive() bool {
+func (action *Action) Sensitive() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -672,7 +485,7 @@ func (action *ActionClass) Sensitive() bool {
 // ShortLabel gets the short label text of @action.
 //
 // Deprecated: Use #GAction instead, which has no equivalent of short labels.
-func (action *ActionClass) ShortLabel() string {
+func (action *Action) ShortLabel() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -690,7 +503,7 @@ func (action *ActionClass) ShortLabel() string {
 // StockID gets the stock id of @action.
 //
 // Deprecated: Use #GAction instead, which has no equivalent of stock items.
-func (action *ActionClass) StockID() string {
+func (action *Action) StockID() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -709,7 +522,7 @@ func (action *ActionClass) StockID() string {
 //
 // Deprecated: Use #GAction instead, and get tooltips from associated Actionable
 // widgets with gtk_widget_get_tooltip_text().
-func (action *ActionClass) Tooltip() string {
+func (action *Action) Tooltip() string {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.gchar     // in
 
@@ -730,7 +543,7 @@ func (action *ActionClass) Tooltip() string {
 //
 // Deprecated: Use #GAction instead, and control and monitor the state of
 // Actionable widgets directly.
-func (action *ActionClass) Visible() bool {
+func (action *Action) Visible() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -751,7 +564,7 @@ func (action *ActionClass) Visible() bool {
 //
 // Deprecated: Use #GAction instead, and control and monitor the visibility of
 // associated widgets and menu items directly.
-func (action *ActionClass) VisibleHorizontal() bool {
+func (action *Action) VisibleHorizontal() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -772,7 +585,7 @@ func (action *ActionClass) VisibleHorizontal() bool {
 //
 // Deprecated: Use #GAction instead, and control and monitor the visibility of
 // associated widgets and menu items directly.
-func (action *ActionClass) VisibleVertical() bool {
+func (action *Action) VisibleVertical() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -792,7 +605,7 @@ func (action *ActionClass) VisibleVertical() bool {
 // IsSensitive returns whether the action is effectively sensitive.
 //
 // Deprecated: Use g_action_get_enabled() on a #GAction instead.
-func (action *ActionClass) IsSensitive() bool {
+func (action *Action) IsSensitive() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -813,7 +626,7 @@ func (action *ActionClass) IsSensitive() bool {
 //
 // Deprecated: Use #GAction instead, and control and monitor the state of
 // Actionable widgets directly.
-func (action *ActionClass) IsVisible() bool {
+func (action *Action) IsVisible() bool {
 	var _arg0 *C.GtkAction // out
 	var _cret C.gboolean   // in
 
@@ -835,7 +648,7 @@ func (action *ActionClass) IsVisible() bool {
 //
 // Deprecated: Use #GAction and the accelerator group on an associated Menu
 // instead.
-func (action *ActionClass) SetAccelGroup(accelGroup AccelGroup) {
+func (action *Action) SetAccelGroup(accelGroup AccelGrouper) {
 	var _arg0 *C.GtkAction     // out
 	var _arg1 *C.GtkAccelGroup // out
 
@@ -855,7 +668,7 @@ func (action *ActionClass) SetAccelGroup(accelGroup AccelGroup) {
 //
 // Deprecated: Use #GAction and the accelerator path on an associated Menu
 // instead.
-func (action *ActionClass) SetAccelPath(accelPath string) {
+func (action *Action) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -874,7 +687,7 @@ func (action *ActionClass) SetAccelPath(accelPath string) {
 //
 // Deprecated: Use g_menu_item_set_icon() on a Item instead, if the item should
 // have an image.
-func (action *ActionClass) SetAlwaysShowImage(alwaysShow bool) {
+func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -891,7 +704,7 @@ func (action *ActionClass) SetAlwaysShowImage(alwaysShow bool) {
 // Deprecated: Use #GAction instead, and g_menu_item_set_icon() to set an icon
 // on a Item associated with a #GAction, or gtk_container_add() to add a Image
 // to a Button.
-func (action *ActionClass) SetIconName(iconName string) {
+func (action *Action) SetIconName(iconName string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -907,7 +720,7 @@ func (action *ActionClass) SetIconName(iconName string) {
 //
 // Deprecated: Use #GAction instead, and control and monitor whether labels are
 // shown directly.
-func (action *ActionClass) SetIsImportant(isImportant bool) {
+func (action *Action) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -924,7 +737,7 @@ func (action *ActionClass) SetIsImportant(isImportant bool) {
 // Deprecated: Use #GAction instead, and set a label on a menu item with
 // g_menu_item_set_label(). For Actionable widgets, use the widget-specific API
 // to set a label.
-func (action *ActionClass) SetLabel(label string) {
+func (action *Action) SetLabel(label string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -940,7 +753,7 @@ func (action *ActionClass) SetLabel(label string) {
 // gtk_action_is_sensitive() for that.
 //
 // Deprecated: Use g_simple_action_set_enabled() on a Action instead.
-func (action *ActionClass) SetSensitive(sensitive bool) {
+func (action *Action) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -955,7 +768,7 @@ func (action *ActionClass) SetSensitive(sensitive bool) {
 // SetShortLabel sets a shorter label text on @action.
 //
 // Deprecated: Use #GAction instead, which has no equivalent of short labels.
-func (action *ActionClass) SetShortLabel(shortLabel string) {
+func (action *Action) SetShortLabel(shortLabel string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -969,7 +782,7 @@ func (action *ActionClass) SetShortLabel(shortLabel string) {
 // SetStockID sets the stock id on @action
 //
 // Deprecated: Use #GAction instead, which has no equivalent of stock items.
-func (action *ActionClass) SetStockID(stockId string) {
+func (action *Action) SetStockID(stockId string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -984,7 +797,7 @@ func (action *ActionClass) SetStockID(stockId string) {
 //
 // Deprecated: Use #GAction instead, and set tooltips on associated Actionable
 // widgets with gtk_widget_set_tooltip_text().
-func (action *ActionClass) SetTooltip(tooltip string) {
+func (action *Action) SetTooltip(tooltip string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
 
@@ -1001,7 +814,7 @@ func (action *ActionClass) SetTooltip(tooltip string) {
 //
 // Deprecated: Use #GAction instead, and control and monitor the state of
 // Actionable widgets directly.
-func (action *ActionClass) SetVisible(visible bool) {
+func (action *Action) SetVisible(visible bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -1017,7 +830,7 @@ func (action *ActionClass) SetVisible(visible bool) {
 //
 // Deprecated: Use #GAction instead, and control and monitor the visibility of
 // associated widgets and menu items directly.
-func (action *ActionClass) SetVisibleHorizontal(visibleHorizontal bool) {
+func (action *Action) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -1033,7 +846,7 @@ func (action *ActionClass) SetVisibleHorizontal(visibleHorizontal bool) {
 //
 // Deprecated: Use #GAction instead, and control and monitor the visibility of
 // associated widgets and menu items directly.
-func (action *ActionClass) SetVisibleVertical(visibleVertical bool) {
+func (action *Action) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
 
@@ -1048,7 +861,7 @@ func (action *ActionClass) SetVisibleVertical(visibleVertical bool) {
 // UnblockActivate: reenable activation signals from the action
 //
 // Deprecated: Use g_simple_action_set_enabled() to enable the Action instead.
-func (action *ActionClass) UnblockActivate() {
+func (action *Action) UnblockActivate() {
 	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))

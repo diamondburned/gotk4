@@ -18,8 +18,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBox},
+		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBoxxer},
 	})
+}
+
+// Boxxer describes Box's methods.
+type Boxxer interface {
+	gextras.Objector
+
+	Append(child Widgetter)
+	BaselinePosition() BaselinePosition
+	Homogeneous() bool
+	Spacing() int
+	InsertChildAfter(child Widgetter, sibling Widgetter)
+	Prepend(child Widgetter)
+	Remove(child Widgetter)
+	ReorderChildAfter(child Widgetter, sibling Widgetter)
+	SetHomogeneous(homogeneous bool)
+	SetSpacing(spacing int)
 }
 
 // Box: the `GtkBox` widget arranges child widgets into a single row or column.
@@ -56,95 +72,58 @@ func init() {
 // Accessibility
 //
 // `GtkBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type Box interface {
-	gextras.Objector
-
-	// Append adds @child as the last child to @box.
-	Append(child Widget)
-	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-	BaselinePosition() BaselinePosition
-	// Homogeneous returns whether the box is homogeneous (all children are the
-	// same size).
-	Homogeneous() bool
-	// Spacing gets the value set by gtk_box_set_spacing().
-	Spacing() int
-	// InsertChildAfter inserts @child in the position after @sibling in the
-	// list of @box children.
-	//
-	// If @sibling is nil, insert @child at the first position.
-	InsertChildAfter(child Widget, sibling Widget)
-	// Prepend adds @child as the first child to @box.
-	Prepend(child Widget)
-	// Remove removes a child widget from @box.
-	//
-	// The child must have been added before with [method@Gtk.Box.append],
-	// [method@Gtk.Box.prepend], or [method@Gtk.Box.insert_child_after].
-	Remove(child Widget)
-	// ReorderChildAfter moves @child to the position after @sibling in the list
-	// of @box children.
-	//
-	// If @sibling is nil, move @child to the first position.
-	ReorderChildAfter(child Widget, sibling Widget)
-	// SetHomogeneous sets whether or not all children of @box are given equal
-	// space in the box.
-	SetHomogeneous(homogeneous bool)
-	// SetSpacing sets the number of pixels to place between children of @box.
-	SetSpacing(spacing int)
-}
-
-// BoxClass implements the Box interface.
-type BoxClass struct {
+type Box struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	OrientableIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
 }
 
-var _ Box = (*BoxClass)(nil)
+var _ Boxxer = (*Box)(nil)
 
-func wrapBox(obj *externglib.Object) Box {
-	return &BoxClass{
+func wrapBoxxer(obj *externglib.Object) Boxxer {
+	return &Box{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalBox(p uintptr) (interface{}, error) {
+func marshalBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBox(obj), nil
+	return wrapBoxxer(obj), nil
 }
 
 // Append adds @child as the last child to @box.
-func (box *BoxClass) Append(child Widget) {
+func (box *Box) Append(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -155,7 +134,7 @@ func (box *BoxClass) Append(child Widget) {
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
-func (box *BoxClass) BaselinePosition() BaselinePosition {
+func (box *Box) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBox             // out
 	var _cret C.GtkBaselinePosition // in
 
@@ -172,7 +151,7 @@ func (box *BoxClass) BaselinePosition() BaselinePosition {
 
 // Homogeneous returns whether the box is homogeneous (all children are the same
 // size).
-func (box *BoxClass) Homogeneous() bool {
+func (box *Box) Homogeneous() bool {
 	var _arg0 *C.GtkBox  // out
 	var _cret C.gboolean // in
 
@@ -190,7 +169,7 @@ func (box *BoxClass) Homogeneous() bool {
 }
 
 // Spacing gets the value set by gtk_box_set_spacing().
-func (box *BoxClass) Spacing() int {
+func (box *Box) Spacing() int {
 	var _arg0 *C.GtkBox // out
 	var _cret C.int     // in
 
@@ -209,7 +188,7 @@ func (box *BoxClass) Spacing() int {
 // @box children.
 //
 // If @sibling is nil, insert @child at the first position.
-func (box *BoxClass) InsertChildAfter(child Widget, sibling Widget) {
+func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -222,7 +201,7 @@ func (box *BoxClass) InsertChildAfter(child Widget, sibling Widget) {
 }
 
 // Prepend adds @child as the first child to @box.
-func (box *BoxClass) Prepend(child Widget) {
+func (box *Box) Prepend(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -236,7 +215,7 @@ func (box *BoxClass) Prepend(child Widget) {
 //
 // The child must have been added before with [method@Gtk.Box.append],
 // [method@Gtk.Box.prepend], or [method@Gtk.Box.insert_child_after].
-func (box *BoxClass) Remove(child Widget) {
+func (box *Box) Remove(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -250,7 +229,7 @@ func (box *BoxClass) Remove(child Widget) {
 // @box children.
 //
 // If @sibling is nil, move @child to the first position.
-func (box *BoxClass) ReorderChildAfter(child Widget, sibling Widget) {
+func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -264,7 +243,7 @@ func (box *BoxClass) ReorderChildAfter(child Widget, sibling Widget) {
 
 // SetHomogeneous sets whether or not all children of @box are given equal space
 // in the box.
-func (box *BoxClass) SetHomogeneous(homogeneous bool) {
+func (box *Box) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBox  // out
 	var _arg1 C.gboolean // out
 
@@ -277,7 +256,7 @@ func (box *BoxClass) SetHomogeneous(homogeneous bool) {
 }
 
 // SetSpacing sets the number of pixels to place between children of @box.
-func (box *BoxClass) SetSpacing(spacing int) {
+func (box *Box) SetSpacing(spacing int) {
 	var _arg0 *C.GtkBox // out
 	var _arg1 C.int     // out
 

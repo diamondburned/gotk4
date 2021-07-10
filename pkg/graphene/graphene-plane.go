@@ -30,12 +30,6 @@ type Plane struct {
 	native C.graphene_plane_t
 }
 
-// WrapPlane wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPlane(ptr unsafe.Pointer) *Plane {
-	return (*Plane)(ptr)
-}
-
 func marshalPlane(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Plane)(unsafe.Pointer(b)), nil
@@ -51,7 +45,7 @@ func NewPlaneAlloc() *Plane {
 
 	_plane = (*Plane)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_plane, func(v *Plane) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_plane_free((*C.graphene_plane_t)(unsafe.Pointer(v)))
 	})
 
 	return _plane

@@ -35,12 +35,6 @@ type IconSet struct {
 	native C.GtkIconSet
 }
 
-// WrapIconSet wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIconSet(ptr unsafe.Pointer) *IconSet {
-	return (*IconSet)(ptr)
-}
-
 func marshalIconSet(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*IconSet)(unsafe.Pointer(b)), nil
@@ -64,7 +58,7 @@ func NewIconSet() *IconSet {
 }
 
 // NewIconSetFromPixbuf constructs a struct IconSet.
-func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *IconSet {
+func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) *IconSet {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GtkIconSet // in
 
@@ -198,7 +192,7 @@ func (iconSet *IconSet) ref() *IconSet {
 // instead.
 //
 // Deprecated: Use IconTheme instead.
-func (iconSet *IconSet) RenderIconPixbuf(context StyleContext, size int) *gdkpixbuf.PixbufClass {
+func (iconSet *IconSet) RenderIconPixbuf(context StyleContexter, size int) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.GtkIconSize      // out
@@ -210,9 +204,9 @@ func (iconSet *IconSet) RenderIconPixbuf(context StyleContext, size int) *gdkpix
 
 	_cret = C.gtk_icon_set_render_icon_pixbuf(_arg0, _arg1, _arg2)
 
-	var _pixbuf *gdkpixbuf.PixbufClass // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -225,7 +219,7 @@ func (iconSet *IconSet) RenderIconPixbuf(context StyleContext, size int) *gdkpix
 // returned instead.
 //
 // Deprecated: Use IconTheme instead.
-func (iconSet *IconSet) RenderIconSurface(context StyleContext, size int, scale int, forWindow gdk.Window) *cairo.Surface {
+func (iconSet *IconSet) RenderIconSurface(context StyleContexter, size int, scale int, forWindow gdk.Windowwer) *cairo.Surface {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.GtkIconSize      // out
@@ -267,12 +261,6 @@ type IconSource struct {
 	native C.GtkIconSource
 }
 
-// WrapIconSource wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIconSource(ptr unsafe.Pointer) *IconSource {
-	return (*IconSource)(ptr)
-}
-
 func marshalIconSource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*IconSource)(unsafe.Pointer(b)), nil
@@ -288,7 +276,7 @@ func NewIconSource() *IconSource {
 
 	_iconSource = (*IconSource)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_icon_source_free((*C.GtkIconSource)(unsafe.Pointer(v)))
 	})
 
 	return _iconSource
@@ -314,7 +302,7 @@ func (source *IconSource) Copy() *IconSource {
 
 	_iconSource = (*IconSource)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_icon_source_free((*C.GtkIconSource)(unsafe.Pointer(v)))
 	})
 
 	return _iconSource
@@ -419,7 +407,7 @@ func (source *IconSource) IconName() string {
 // reference count on the pixbuf is not incremented.
 //
 // Deprecated: Use IconTheme instead.
-func (source *IconSource) Pixbuf() *gdkpixbuf.PixbufClass {
+func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkIconSource // out
 	var _cret *C.GdkPixbuf     // in
 
@@ -427,9 +415,9 @@ func (source *IconSource) Pixbuf() *gdkpixbuf.PixbufClass {
 
 	_cret = C.gtk_icon_source_get_pixbuf(_arg0)
 
-	var _pixbuf *gdkpixbuf.PixbufClass // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -568,7 +556,7 @@ func (source *IconSource) SetIconName(iconName string) {
 // for IconSet.
 //
 // Deprecated: Use IconTheme instead.
-func (source *IconSource) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
+func (source *IconSource) SetPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 *C.GdkPixbuf     // out
 
@@ -651,12 +639,6 @@ type SelectionData struct {
 	native C.GtkSelectionData
 }
 
-// WrapSelectionData wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSelectionData(ptr unsafe.Pointer) *SelectionData {
-	return (*SelectionData)(ptr)
-}
-
 func marshalSelectionData(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*SelectionData)(unsafe.Pointer(b)), nil
@@ -680,7 +662,7 @@ func (data *SelectionData) Copy() *SelectionData {
 
 	_selectionData = (*SelectionData)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_selectionData, func(v *SelectionData) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_selection_data_free((*C.GtkSelectionData)(unsafe.Pointer(v)))
 	})
 
 	return _selectionData
@@ -696,7 +678,7 @@ func (data *SelectionData) free() {
 }
 
 // Display retrieves the display of the selection.
-func (selectionData *SelectionData) Display() *gdk.DisplayClass {
+func (selectionData *SelectionData) Display() *gdk.Display {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret *C.GdkDisplay       // in
 
@@ -704,9 +686,9 @@ func (selectionData *SelectionData) Display() *gdk.DisplayClass {
 
 	_cret = C.gtk_selection_data_get_display(_arg0)
 
-	var _display *gdk.DisplayClass // out
+	var _display *gdk.Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Display)
 
 	return _display
 }
@@ -744,7 +726,7 @@ func (selectionData *SelectionData) Length() int {
 }
 
 // Pixbuf gets the contents of the selection data as a Pixbuf.
-func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.PixbufClass {
+func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret *C.GdkPixbuf        // in
 
@@ -752,9 +734,9 @@ func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.PixbufClass {
 
 	_cret = C.gtk_selection_data_get_pixbuf(_arg0)
 
-	var _pixbuf *gdkpixbuf.PixbufClass // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -807,7 +789,7 @@ func (selectionData *SelectionData) Uris() []string {
 
 // SetPixbuf sets the contents of the selection from a Pixbuf The pixbuf is
 // converted to the form determined by @selection_data->target.
-func (selectionData *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) bool {
+func (selectionData *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbuffer) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 *C.GdkPixbuf        // out
 	var _cret C.gboolean          // in
@@ -905,7 +887,7 @@ func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
 // TargetsIncludeRichText: given a SelectionData object holding a list of
 // targets, determines if any of the targets in @targets can be used to provide
 // rich text.
-func (selectionData *SelectionData) TargetsIncludeRichText(buffer TextBuffer) bool {
+func (selectionData *SelectionData) TargetsIncludeRichText(buffer TextBufferrer) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 *C.GtkTextBuffer    // out
 	var _cret C.gboolean          // in
@@ -996,12 +978,6 @@ type WidgetPath struct {
 	native C.GtkWidgetPath
 }
 
-// WrapWidgetPath wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapWidgetPath(ptr unsafe.Pointer) *WidgetPath {
-	return (*WidgetPath)(ptr)
-}
-
 func marshalWidgetPath(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*WidgetPath)(unsafe.Pointer(b)), nil
@@ -1033,7 +1009,7 @@ func (w *WidgetPath) Native() unsafe.Pointer {
 // represented by @path. This function is a shortcut for adding information from
 // @widget to the given @path. This includes setting the name or adding the
 // style classes from @widget.
-func (path *WidgetPath) AppendForWidget(widget Widget) int {
+func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 *C.GtkWidget     // out
 	var _cret C.gint           // in

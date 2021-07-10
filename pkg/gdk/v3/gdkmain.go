@@ -162,7 +162,7 @@ func GetProgramClass() string {
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_device_grab() instead.
-func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
+func KeyboardGrab(window Windowwer, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
 	var _arg2 C.gboolean      // out
 	var _arg3 C.guint32       // out

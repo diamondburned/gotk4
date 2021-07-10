@@ -23,7 +23,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_expander_style_get_type()), F: marshalExpanderStyle},
-		{T: externglib.Type(C.gtk_style_get_type()), F: marshalStyle},
+		{T: externglib.Type(C.gtk_style_get_type()), F: marshalStyler},
 	})
 }
 
@@ -46,15 +46,27 @@ func marshalExpanderStyle(p uintptr) (interface{}, error) {
 	return ExpanderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// StyleOverrider contains methods that are overridable.
+// StylerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type StyleOverrider interface {
-	Copy(src Style)
-	InitFromRC(rcStyle RCStyle)
+type StylerOverrider interface {
+	Copy(src Styler)
+	InitFromRC(rcStyle RCStyler)
 	Realize()
 	Unrealize()
+}
+
+// Styler describes Style's methods.
+type Styler interface {
+	gextras.Objector
+
+	Copy() *Style
+	Detach()
+	StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value
+	HasContext() bool
+	LookupColor(colorName string) (gdk.Color, bool)
+	LookupIconSet(stockId string) *IconSet
 }
 
 // Style object encapsulates the information that provides the look and feel for
@@ -71,68 +83,35 @@ type StyleOverrider interface {
 //
 // Usually applications should not need to use or modify the Style of their
 // widgets.
-type Style interface {
-	gextras.Objector
-
-	// Copy creates a copy of the passed in Style object.
-	//
-	// Deprecated: Use StyleContext instead.
-	Copy() *StyleClass
-	// Detach detaches a style from a window. If the style is not attached to
-	// any windows anymore, it is unrealized. See gtk_style_attach().
-	//
-	// Deprecated: Use StyleContext instead.
-	Detach()
-	// StyleProperty queries the value of a style property corresponding to a
-	// widget class is in the given style.
-	StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value
-	// HasContext returns whether @style has an associated StyleContext.
-	HasContext() bool
-	// LookupColor looks up @color_name in the style’s logical color mappings,
-	// filling in @color and returning true if found, otherwise returning false.
-	// Do not cache the found mapping, because it depends on the Style and might
-	// change when a theme switch occurs.
-	//
-	// Deprecated: Use gtk_style_context_lookup_color() instead.
-	LookupColor(colorName string) (gdk.Color, bool)
-	// LookupIconSet looks up @stock_id in the icon factories associated with
-	// @style and the default icon factory, returning an icon set if found,
-	// otherwise nil.
-	//
-	// Deprecated: Use gtk_style_context_lookup_icon_set() instead.
-	LookupIconSet(stockId string) *IconSet
-}
-
-// StyleClass implements the Style interface.
-type StyleClass struct {
+type Style struct {
 	*externglib.Object
 }
 
-var _ Style = (*StyleClass)(nil)
+var _ Styler = (*Style)(nil)
 
-func wrapStyle(obj *externglib.Object) Style {
-	return &StyleClass{
+func wrapStyler(obj *externglib.Object) Styler {
+	return &Style{
 		Object: obj,
 	}
 }
 
-func marshalStyle(p uintptr) (interface{}, error) {
+func marshalStyler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyle(obj), nil
+	return wrapStyler(obj), nil
 }
 
 // NewStyle creates a new Style.
 //
 // Deprecated: Use StyleContext.
-func NewStyle() *StyleClass {
+func NewStyle() *Style {
 	var _cret *C.GtkStyle // in
 
 	_cret = C.gtk_style_new()
 
-	var _style *StyleClass // out
+	var _style *Style // out
 
-	_style = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StyleClass)
+	_style = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Style)
 
 	return _style
 }
@@ -140,7 +119,7 @@ func NewStyle() *StyleClass {
 // Copy creates a copy of the passed in Style object.
 //
 // Deprecated: Use StyleContext instead.
-func (style *StyleClass) Copy() *StyleClass {
+func (style *Style) Copy() *Style {
 	var _arg0 *C.GtkStyle // out
 	var _cret *C.GtkStyle // in
 
@@ -148,9 +127,9 @@ func (style *StyleClass) Copy() *StyleClass {
 
 	_cret = C.gtk_style_copy(_arg0)
 
-	var _ret *StyleClass // out
+	var _ret *Style // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StyleClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Style)
 
 	return _ret
 }
@@ -159,7 +138,7 @@ func (style *StyleClass) Copy() *StyleClass {
 // windows anymore, it is unrealized. See gtk_style_attach().
 //
 // Deprecated: Use StyleContext instead.
-func (style *StyleClass) Detach() {
+func (style *Style) Detach() {
 	var _arg0 *C.GtkStyle // out
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
@@ -169,7 +148,7 @@ func (style *StyleClass) Detach() {
 
 // StyleProperty queries the value of a style property corresponding to a widget
 // class is in the given style.
-func (style *StyleClass) StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value {
+func (style *Style) StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value {
 	var _arg0 *C.GtkStyle // out
 	var _arg1 C.GType     // out
 	var _arg2 *C.gchar    // out
@@ -190,7 +169,7 @@ func (style *StyleClass) StyleProperty(widgetType externglib.Type, propertyName 
 }
 
 // HasContext returns whether @style has an associated StyleContext.
-func (style *StyleClass) HasContext() bool {
+func (style *Style) HasContext() bool {
 	var _arg0 *C.GtkStyle // out
 	var _cret C.gboolean  // in
 
@@ -213,7 +192,7 @@ func (style *StyleClass) HasContext() bool {
 // when a theme switch occurs.
 //
 // Deprecated: Use gtk_style_context_lookup_color() instead.
-func (style *StyleClass) LookupColor(colorName string) (gdk.Color, bool) {
+func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 	var _arg0 *C.GtkStyle // out
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GdkColor  // in
@@ -240,7 +219,7 @@ func (style *StyleClass) LookupColor(colorName string) (gdk.Color, bool) {
 // and the default icon factory, returning an icon set if found, otherwise nil.
 //
 // Deprecated: Use gtk_style_context_lookup_icon_set() instead.
-func (style *StyleClass) LookupIconSet(stockId string) *IconSet {
+func (style *Style) LookupIconSet(stockId string) *IconSet {
 	var _arg0 *C.GtkStyle   // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkIconSet // in

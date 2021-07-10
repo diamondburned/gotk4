@@ -21,9 +21,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_gl_shader_get_type()), F: marshalGLShader},
+		{T: externglib.Type(C.gsk_gl_shader_get_type()), F: marshalGLShaderrer},
 		{T: externglib.Type(C.gsk_shader_args_builder_get_type()), F: marshalShaderArgsBuilder},
 	})
+}
+
+// GLShaderrer describes GLShader's methods.
+type GLShaderrer interface {
+	gextras.Objector
+
+	Compile(renderer Rendererrer) error
+	FindUniformByName(name string) int
+	ArgsSize() uint
+	NTextures() int
+	NUniforms() int
+	Resource() string
+	UniformName(idx int) string
+	UniformOffset(idx int) int
+	UniformType(idx int) GLUniformType
 }
 
 // GLShader: `GskGLShader` is a snippet of GLSL that is meant to run in the
@@ -119,70 +134,27 @@ func init() {
 //    fragColor = position * source1 + (1.0 - position) * source2;
 //
 // } “`
-type GLShader interface {
-	gextras.Objector
-
-	// Compile tries to compile the @shader for the given @renderer.
-	//
-	// If there is a problem, this function returns false and reports an error.
-	// You should use this function before relying on the shader for rendering
-	// and use a fallback with a simpler shader or without shaders if it fails.
-	//
-	// Note that this will modify the rendering state (for example change the
-	// current GL context) and requires the renderer to be set up. This means
-	// that the widget has to be realized. Commonly you want to call this from
-	// the realize signal of a widget, or during widget snapshot.
-	Compile(renderer Renderer) error
-	// FindUniformByName looks for a uniform by the name @name, and returns the
-	// index of the uniform, or -1 if it was not found.
-	FindUniformByName(name string) int
-	// ArgsSize: get the size of the data block used to specify arguments for
-	// this shader.
-	ArgsSize() uint
-	// NTextures returns the number of textures that the shader requires.
-	//
-	// This can be used to check that the a passed shader works in your usecase.
-	// It is determined by looking at the highest u_textureN value that the
-	// shader defines.
-	NTextures() int
-	// NUniforms: get the number of declared uniforms for this shader.
-	NUniforms() int
-	// Resource gets the resource path for the GLSL sourcecode being used to
-	// render this shader.
-	Resource() string
-	// UniformName: get the name of the declared uniform for this shader at
-	// index @idx.
-	UniformName(idx int) string
-	// UniformOffset: get the offset into the data block where data for this
-	// uniforms is stored.
-	UniformOffset(idx int) int
-	// UniformType: get the type of the declared uniform for this shader at
-	// index @idx.
-	UniformType(idx int) GLUniformType
-}
-
-// GLShaderClass implements the GLShader interface.
-type GLShaderClass struct {
+type GLShader struct {
 	*externglib.Object
 }
 
-var _ GLShader = (*GLShaderClass)(nil)
+var _ GLShaderrer = (*GLShader)(nil)
 
-func wrapGLShader(obj *externglib.Object) GLShader {
-	return &GLShaderClass{
+func wrapGLShaderrer(obj *externglib.Object) GLShaderrer {
+	return &GLShader{
 		Object: obj,
 	}
 }
 
-func marshalGLShader(p uintptr) (interface{}, error) {
+func marshalGLShaderrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLShader(obj), nil
+	return wrapGLShaderrer(obj), nil
 }
 
 // NewGLShaderFromResource creates a `GskGLShader` that will render pixels using
 // the specified code.
-func NewGLShaderFromResource(resourcePath string) *GLShaderClass {
+func NewGLShaderFromResource(resourcePath string) *GLShader {
 	var _arg1 *C.char        // out
 	var _cret *C.GskGLShader // in
 
@@ -191,9 +163,9 @@ func NewGLShaderFromResource(resourcePath string) *GLShaderClass {
 
 	_cret = C.gsk_gl_shader_new_from_resource(_arg1)
 
-	var _glShader *GLShaderClass // out
+	var _glShader *GLShader // out
 
-	_glShader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GLShaderClass)
+	_glShader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GLShader)
 
 	return _glShader
 }
@@ -208,7 +180,7 @@ func NewGLShaderFromResource(resourcePath string) *GLShaderClass {
 // current GL context) and requires the renderer to be set up. This means that
 // the widget has to be realized. Commonly you want to call this from the
 // realize signal of a widget, or during widget snapshot.
-func (shader *GLShaderClass) Compile(renderer Renderer) error {
+func (shader *GLShader) Compile(renderer Rendererrer) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
 	var _cerr *C.GError      // in
@@ -227,7 +199,7 @@ func (shader *GLShaderClass) Compile(renderer Renderer) error {
 
 // FindUniformByName looks for a uniform by the name @name, and returns the
 // index of the uniform, or -1 if it was not found.
-func (shader *GLShaderClass) FindUniformByName(name string) int {
+func (shader *GLShader) FindUniformByName(name string) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
 	var _cret C.int          // in
@@ -247,7 +219,7 @@ func (shader *GLShaderClass) FindUniformByName(name string) int {
 
 // ArgsSize: get the size of the data block used to specify arguments for this
 // shader.
-func (shader *GLShaderClass) ArgsSize() uint {
+func (shader *GLShader) ArgsSize() uint {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.gsize        // in
 
@@ -267,7 +239,7 @@ func (shader *GLShaderClass) ArgsSize() uint {
 // This can be used to check that the a passed shader works in your usecase. It
 // is determined by looking at the highest u_textureN value that the shader
 // defines.
-func (shader *GLShaderClass) NTextures() int {
+func (shader *GLShader) NTextures() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
@@ -283,7 +255,7 @@ func (shader *GLShaderClass) NTextures() int {
 }
 
 // NUniforms: get the number of declared uniforms for this shader.
-func (shader *GLShaderClass) NUniforms() int {
+func (shader *GLShader) NUniforms() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
@@ -300,7 +272,7 @@ func (shader *GLShaderClass) NUniforms() int {
 
 // Resource gets the resource path for the GLSL sourcecode being used to render
 // this shader.
-func (shader *GLShaderClass) Resource() string {
+func (shader *GLShader) Resource() string {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.char        // in
 
@@ -317,7 +289,7 @@ func (shader *GLShaderClass) Resource() string {
 
 // UniformName: get the name of the declared uniform for this shader at index
 // @idx.
-func (shader *GLShaderClass) UniformName(idx int) string {
+func (shader *GLShader) UniformName(idx int) string {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret *C.char        // in
@@ -336,7 +308,7 @@ func (shader *GLShaderClass) UniformName(idx int) string {
 
 // UniformOffset: get the offset into the data block where data for this
 // uniforms is stored.
-func (shader *GLShaderClass) UniformOffset(idx int) int {
+func (shader *GLShader) UniformOffset(idx int) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret C.int          // in
@@ -355,7 +327,7 @@ func (shader *GLShaderClass) UniformOffset(idx int) int {
 
 // UniformType: get the type of the declared uniform for this shader at index
 // @idx.
-func (shader *GLShaderClass) UniformType(idx int) GLUniformType {
+func (shader *GLShader) UniformType(idx int) GLUniformType {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 C.int              // out
 	var _cret C.GskGLUniformType // in
@@ -375,12 +347,6 @@ func (shader *GLShaderClass) UniformType(idx int) GLUniformType {
 // ShaderArgsBuilder: object to build the uniforms data for a GLShader.
 type ShaderArgsBuilder struct {
 	native C.GskShaderArgsBuilder
-}
-
-// WrapShaderArgsBuilder wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapShaderArgsBuilder(ptr unsafe.Pointer) *ShaderArgsBuilder {
-	return (*ShaderArgsBuilder)(ptr)
 }
 
 func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {

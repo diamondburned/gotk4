@@ -18,36 +18,36 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshot},
+		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshotter},
 	})
+}
+
+// Snapshotter describes Snapshot's methods.
+type Snapshotter interface {
+	gextras.Objector
+
+	privateSnapshot()
 }
 
 // Snapshot: base type for snapshot operations.
 //
 // The subclass of `GdkSnapshot` used by GTK is [class@Gtk.Snapshot].
-type Snapshot interface {
-	gextras.Objector
-
-	privateSnapshotClass()
-}
-
-// SnapshotClass implements the Snapshot interface.
-type SnapshotClass struct {
+type Snapshot struct {
 	*externglib.Object
 }
 
-var _ Snapshot = (*SnapshotClass)(nil)
+var _ Snapshotter = (*Snapshot)(nil)
 
-func wrapSnapshot(obj *externglib.Object) Snapshot {
-	return &SnapshotClass{
+func wrapSnapshotter(obj *externglib.Object) Snapshotter {
+	return &Snapshot{
 		Object: obj,
 	}
 }
 
-func marshalSnapshot(p uintptr) (interface{}, error) {
+func marshalSnapshotter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSnapshot(obj), nil
+	return wrapSnapshotter(obj), nil
 }
 
-func (*SnapshotClass) privateSnapshotClass() {}
+func (*Snapshot) privateSnapshot() {}

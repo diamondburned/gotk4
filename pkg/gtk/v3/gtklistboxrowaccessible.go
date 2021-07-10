@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_box_row_accessible_get_type()), F: marshalListBoxRowAccessible},
+		{T: externglib.Type(C.gtk_list_box_row_accessible_get_type()), F: marshalListBoxRowAccessibler},
 	})
 }
 
-type ListBoxRowAccessible interface {
+// ListBoxRowAccessibler describes ListBoxRowAccessible's methods.
+type ListBoxRowAccessibler interface {
 	gextras.Objector
 
-	privateListBoxRowAccessibleClass()
+	privateListBoxRowAccessible()
 }
 
-// ListBoxRowAccessibleClass implements the ListBoxRowAccessible interface.
-type ListBoxRowAccessibleClass struct {
-	ContainerAccessibleClass
+type ListBoxRowAccessible struct {
+	ContainerAccessible
 }
 
-var _ ListBoxRowAccessible = (*ListBoxRowAccessibleClass)(nil)
+var _ ListBoxRowAccessibler = (*ListBoxRowAccessible)(nil)
 
-func wrapListBoxRowAccessible(obj *externglib.Object) ListBoxRowAccessible {
-	return &ListBoxRowAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapListBoxRowAccessibler(obj *externglib.Object) ListBoxRowAccessibler {
+	return &ListBoxRowAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapListBoxRowAccessible(obj *externglib.Object) ListBoxRowAccessible {
 	}
 }
 
-func marshalListBoxRowAccessible(p uintptr) (interface{}, error) {
+func marshalListBoxRowAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBoxRowAccessible(obj), nil
+	return wrapListBoxRowAccessibler(obj), nil
 }
 
-func (*ListBoxRowAccessibleClass) privateListBoxRowAccessibleClass() {}
+func (*ListBoxRowAccessible) privateListBoxRowAccessible() {}

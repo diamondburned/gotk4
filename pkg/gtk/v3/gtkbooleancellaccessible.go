@@ -21,51 +21,51 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_boolean_cell_accessible_get_type()), F: marshalBooleanCellAccessible},
+		{T: externglib.Type(C.gtk_boolean_cell_accessible_get_type()), F: marshalBooleanCellAccessibler},
 	})
 }
 
-type BooleanCellAccessible interface {
+// BooleanCellAccessibler describes BooleanCellAccessible's methods.
+type BooleanCellAccessibler interface {
 	gextras.Objector
 
-	privateBooleanCellAccessibleClass()
+	privateBooleanCellAccessible()
 }
 
-// BooleanCellAccessibleClass implements the BooleanCellAccessible interface.
-type BooleanCellAccessibleClass struct {
-	RendererCellAccessibleClass
-	atk.ActionIface
+type BooleanCellAccessible struct {
+	RendererCellAccessible
+	atk.Action
 }
 
-var _ BooleanCellAccessible = (*BooleanCellAccessibleClass)(nil)
+var _ BooleanCellAccessibler = (*BooleanCellAccessible)(nil)
 
-func wrapBooleanCellAccessible(obj *externglib.Object) BooleanCellAccessible {
-	return &BooleanCellAccessibleClass{
-		RendererCellAccessibleClass: RendererCellAccessibleClass{
-			CellAccessibleClass: CellAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapBooleanCellAccessibler(obj *externglib.Object) BooleanCellAccessibler {
+	return &BooleanCellAccessible{
+		RendererCellAccessible: RendererCellAccessible{
+			CellAccessible: CellAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
-				ActionIface: atk.ActionIface{
+				Action: atk.Action{
 					Object: obj,
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalBooleanCellAccessible(p uintptr) (interface{}, error) {
+func marshalBooleanCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBooleanCellAccessible(obj), nil
+	return wrapBooleanCellAccessibler(obj), nil
 }
 
-func (*BooleanCellAccessibleClass) privateBooleanCellAccessibleClass() {}
+func (*BooleanCellAccessible) privateBooleanCellAccessible() {}

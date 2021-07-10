@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbar},
+		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbarrer},
 	})
+}
+
+// Scrollbarrer describes Scrollbar's methods.
+type Scrollbarrer interface {
+	gextras.Objector
+
+	privateScrollbar()
 }
 
 // Scrollbar: the Scrollbar widget is a horizontal or vertical scrollbar,
@@ -62,56 +69,49 @@ func init() {
 // include the positional classes (.left, .right, .top, .bottom) and style
 // classes related to overlay scrolling (.overlay-indicator, .dragging,
 // .hovering).
-type Scrollbar interface {
-	gextras.Objector
-
-	privateScrollbarClass()
-}
-
-// ScrollbarClass implements the Scrollbar interface.
-type ScrollbarClass struct {
+type Scrollbar struct {
 	*externglib.Object
-	RangeClass
-	BuildableIface
-	OrientableIface
+	Range
+	Buildable
+	Orientable
 }
 
-var _ Scrollbar = (*ScrollbarClass)(nil)
+var _ Scrollbarrer = (*Scrollbar)(nil)
 
-func wrapScrollbar(obj *externglib.Object) Scrollbar {
-	return &ScrollbarClass{
+func wrapScrollbarrer(obj *externglib.Object) Scrollbarrer {
+	return &Scrollbar{
 		Object: obj,
-		RangeClass: RangeClass{
+		Range: Range{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalScrollbar(p uintptr) (interface{}, error) {
+func marshalScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrollbar(obj), nil
+	return wrapScrollbarrer(obj), nil
 }
 
-func (*ScrollbarClass) privateScrollbarClass() {}
+func (*Scrollbar) privateScrollbar() {}

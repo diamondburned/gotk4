@@ -20,17 +20,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButton},
+		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButtonner},
 	})
 }
 
-// ToggleButtonOverrider contains methods that are overridable.
+// ToggleButtonnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToggleButtonOverrider interface {
+type ToggleButtonnerOverrider interface {
 	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 	// is no good reason for an application ever to call this function.
+	Toggled()
+}
+
+// ToggleButtonner describes ToggleButton's methods.
+type ToggleButtonner interface {
+	gextras.Objector
+
+	Active() bool
+	Inconsistent() bool
+	Mode() bool
+	SetActive(isActive bool)
+	SetInconsistent(setting bool)
+	SetMode(drawIndicator bool)
 	Toggled()
 }
 
@@ -93,146 +106,104 @@ type ToggleButtonOverrider interface {
 //      gtk_container_add (GTK_CONTAINER (window), box);
 //      gtk_widget_show_all (window);
 //    }
-type ToggleButton interface {
-	gextras.Objector
-
-	// Active queries a ToggleButton and returns its current state. Returns true
-	// if the toggle button is pressed in and false if it is raised.
-	Active() bool
-	// Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
-	Inconsistent() bool
-	// Mode retrieves whether the button is displayed as a separate indicator
-	// and label. See gtk_toggle_button_set_mode().
-	Mode() bool
-	// SetActive sets the status of the toggle button. Set to true if you want
-	// the GtkToggleButton to be “pressed in”, and false to raise it. This
-	// action causes the ToggleButton::toggled signal and the Button::clicked
-	// signal to be emitted.
-	SetActive(isActive bool)
-	// SetInconsistent: if the user has selected a range of elements (such as
-	// some text or spreadsheet cells) that are affected by a toggle button, and
-	// the current values in that range are inconsistent, you may want to
-	// display the toggle in an “in between” state. This function turns on “in
-	// between” display. Normally you would turn off the inconsistent state
-	// again if the user toggles the toggle button. This has to be done
-	// manually, gtk_toggle_button_set_inconsistent() only affects visual
-	// appearance, it doesn’t affect the semantics of the button.
-	SetInconsistent(setting bool)
-	// SetMode sets whether the button is displayed as a separate indicator and
-	// label. You can call this function on a checkbutton or a radiobutton with
-	// @draw_indicator = false to make the button look like a normal button.
-	//
-	// This can be used to create linked strip of buttons that work like a
-	// StackSwitcher.
-	//
-	// This function only affects instances of classes like CheckButton and
-	// RadioButton that derive from ToggleButton, not instances of ToggleButton
-	// itself.
-	SetMode(drawIndicator bool)
-	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
-	// is no good reason for an application ever to call this function.
-	Toggled()
-}
-
-// ToggleButtonClass implements the ToggleButton interface.
-type ToggleButtonClass struct {
+type ToggleButton struct {
 	*externglib.Object
-	ButtonClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	Button
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ ToggleButton = (*ToggleButtonClass)(nil)
+var _ ToggleButtonner = (*ToggleButton)(nil)
 
-func wrapToggleButton(obj *externglib.Object) ToggleButton {
-	return &ToggleButtonClass{
+func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
+	return &ToggleButton{
 		Object: obj,
-		ButtonClass: ButtonClass{
+		Button: Button{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalToggleButton(p uintptr) (interface{}, error) {
+func marshalToggleButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleButton(obj), nil
+	return wrapToggleButtonner(obj), nil
 }
 
 // NewToggleButton creates a new toggle button. A widget should be packed into
 // the button, as in gtk_button_new().
-func NewToggleButton() *ToggleButtonClass {
+func NewToggleButton() *ToggleButton {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_toggle_button_new()
 
-	var _toggleButton *ToggleButtonClass // out
+	var _toggleButton *ToggleButton // out
 
-	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButtonClass)
+	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButton)
 
 	return _toggleButton
 }
 
 // NewToggleButtonWithLabel creates a new toggle button with a text label.
-func NewToggleButtonWithLabel(label string) *ToggleButtonClass {
+func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -241,9 +212,9 @@ func NewToggleButtonWithLabel(label string) *ToggleButtonClass {
 
 	_cret = C.gtk_toggle_button_new_with_label(_arg1)
 
-	var _toggleButton *ToggleButtonClass // out
+	var _toggleButton *ToggleButton // out
 
-	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButtonClass)
+	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButton)
 
 	return _toggleButton
 }
@@ -251,7 +222,7 @@ func NewToggleButtonWithLabel(label string) *ToggleButtonClass {
 // NewToggleButtonWithMnemonic creates a new ToggleButton containing a label.
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
 // in @label indicate the mnemonic for the button.
-func NewToggleButtonWithMnemonic(label string) *ToggleButtonClass {
+func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -260,16 +231,16 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButtonClass {
 
 	_cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 
-	var _toggleButton *ToggleButtonClass // out
+	var _toggleButton *ToggleButton // out
 
-	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButtonClass)
+	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButton)
 
 	return _toggleButton
 }
 
 // Active queries a ToggleButton and returns its current state. Returns true if
 // the toggle button is pressed in and false if it is raised.
-func (toggleButton *ToggleButtonClass) Active() bool {
+func (toggleButton *ToggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
@@ -287,7 +258,7 @@ func (toggleButton *ToggleButtonClass) Active() bool {
 }
 
 // Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
-func (toggleButton *ToggleButtonClass) Inconsistent() bool {
+func (toggleButton *ToggleButton) Inconsistent() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
@@ -306,7 +277,7 @@ func (toggleButton *ToggleButtonClass) Inconsistent() bool {
 
 // Mode retrieves whether the button is displayed as a separate indicator and
 // label. See gtk_toggle_button_set_mode().
-func (toggleButton *ToggleButtonClass) Mode() bool {
+func (toggleButton *ToggleButton) Mode() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
@@ -327,7 +298,7 @@ func (toggleButton *ToggleButtonClass) Mode() bool {
 // GtkToggleButton to be “pressed in”, and false to raise it. This action causes
 // the ToggleButton::toggled signal and the Button::clicked signal to be
 // emitted.
-func (toggleButton *ToggleButtonClass) SetActive(isActive bool) {
+func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
@@ -347,7 +318,7 @@ func (toggleButton *ToggleButtonClass) SetActive(isActive bool) {
 // the toggle button. This has to be done manually,
 // gtk_toggle_button_set_inconsistent() only affects visual appearance, it
 // doesn’t affect the semantics of the button.
-func (toggleButton *ToggleButtonClass) SetInconsistent(setting bool) {
+func (toggleButton *ToggleButton) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
@@ -369,7 +340,7 @@ func (toggleButton *ToggleButtonClass) SetInconsistent(setting bool) {
 // This function only affects instances of classes like CheckButton and
 // RadioButton that derive from ToggleButton, not instances of ToggleButton
 // itself.
-func (toggleButton *ToggleButtonClass) SetMode(drawIndicator bool) {
+func (toggleButton *ToggleButton) SetMode(drawIndicator bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
@@ -383,7 +354,7 @@ func (toggleButton *ToggleButtonClass) SetMode(drawIndicator bool) {
 
 // Toggled emits the ToggleButton::toggled signal on the ToggleButton. There is
 // no good reason for an application ever to call this function.
-func (toggleButton *ToggleButtonClass) Toggled() {
+func (toggleButton *ToggleButton) Toggled() {
 	var _arg0 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))

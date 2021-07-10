@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_settings_get_type()), F: marshalSettings},
+		{T: externglib.Type(C.gtk_settings_get_type()), F: marshalSettingser},
 	})
+}
+
+// Settingser describes Settings's methods.
+type Settingser interface {
+	gextras.Objector
+
+	ResetProperty(name string)
 }
 
 // Settings: `GtkSettings` provides a mechanism to share global settings between
@@ -48,38 +55,26 @@ func init() {
 // There is one `GtkSettings` instance per display. It can be obtained with
 // [type_func@GtkSettings.get_for_display], but in many cases, it is more
 // convenient to use [method@Gtk.Widget.get_settings].
-type Settings interface {
-	gextras.Objector
-
-	// ResetProperty undoes the effect of calling g_object_set() to install an
-	// application-specific value for a setting.
-	//
-	// After this call, the setting will again follow the session-wide value for
-	// this setting.
-	ResetProperty(name string)
-}
-
-// SettingsClass implements the Settings interface.
-type SettingsClass struct {
+type Settings struct {
 	*externglib.Object
-	StyleProviderIface
+	StyleProvider
 }
 
-var _ Settings = (*SettingsClass)(nil)
+var _ Settingser = (*Settings)(nil)
 
-func wrapSettings(obj *externglib.Object) Settings {
-	return &SettingsClass{
+func wrapSettingser(obj *externglib.Object) Settingser {
+	return &Settings{
 		Object: obj,
-		StyleProviderIface: StyleProviderIface{
+		StyleProvider: StyleProvider{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSettings(p uintptr) (interface{}, error) {
+func marshalSettingser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSettings(obj), nil
+	return wrapSettingser(obj), nil
 }
 
 // ResetProperty undoes the effect of calling g_object_set() to install an
@@ -87,7 +82,7 @@ func marshalSettings(p uintptr) (interface{}, error) {
 //
 // After this call, the setting will again follow the session-wide value for
 // this setting.
-func (settings *SettingsClass) ResetProperty(name string) {
+func (settings *Settings) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.char        // out
 

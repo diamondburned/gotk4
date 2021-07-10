@@ -27,12 +27,6 @@ type Triangle struct {
 	native C.graphene_triangle_t
 }
 
-// WrapTriangle wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTriangle(ptr unsafe.Pointer) *Triangle {
-	return (*Triangle)(ptr)
-}
-
 func marshalTriangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Triangle)(unsafe.Pointer(b)), nil
@@ -48,7 +42,7 @@ func NewTriangleAlloc() *Triangle {
 
 	_triangle = (*Triangle)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_triangle, func(v *Triangle) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_triangle_free((*C.graphene_triangle_t)(unsafe.Pointer(v)))
 	})
 
 	return _triangle

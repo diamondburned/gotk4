@@ -19,33 +19,40 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_buildable_get_type()), F: marshalBuildable},
+		{T: externglib.Type(C.gtk_buildable_get_type()), F: marshalBuildabler},
 	})
 }
 
-// BuildableOverrider contains methods that are overridable.
+// BuildablerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type BuildableOverrider interface {
+type BuildablerOverrider interface {
 	// AddChild adds a child to @buildable. @type is an optional string
 	// describing how the child should be added.
-	AddChild(builder Builder, child gextras.Objector, typ string)
+	AddChild(builder Builderrer, child gextras.Objector, typ string)
 	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
 	// once for each custom tag handled by the @buildable.
-	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
+	CustomFinished(builder Builderrer, child gextras.Objector, tagname string, data interface{})
 	// CustomTagEnd: called at the end of each custom element handled by the
 	// buildable.
-	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	CustomTagEnd(builder Builderrer, child gextras.Objector, tagname string, data interface{})
 	// CustomTagStart: called for each unknown element under `<child>`.
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (BuildableParser, interface{}, bool)
+	CustomTagStart(builder Builderrer, child gextras.Objector, tagname string) (BuildableParser, interface{}, bool)
 	ID() string
 	// InternalChild retrieves the internal child called @childname of the
 	// @buildable object.
-	InternalChild(builder Builder, childname string) *externglib.Object
-	ParserFinished(builder Builder)
-	SetBuildableProperty(builder Builder, name string, value *externglib.Value)
+	InternalChild(builder Builderrer, childname string) *externglib.Object
+	ParserFinished(builder Builderrer)
+	SetBuildableProperty(builder Builderrer, name string, value *externglib.Value)
 	SetID(id string)
+}
+
+// Buildabler describes Buildable's methods.
+type Buildabler interface {
+	gextras.Objector
+
+	BuildableID() string
 }
 
 // Buildable: `GtkBuildable` allows objects to extend and customize their
@@ -61,40 +68,29 @@ type BuildableOverrider interface {
 //
 // An object only needs to implement this interface if it needs to extend the
 // `GtkBuilder` XML format or run any extra routines at deserialization time.
-type Buildable interface {
-	gextras.Objector
-
-	// BuildableID gets the ID of the @buildable object.
-	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
-	// used to construct the @buildable.
-	BuildableID() string
-}
-
-// BuildableIface implements the Buildable interface.
-type BuildableIface struct {
+type Buildable struct {
 	*externglib.Object
 }
 
-var _ Buildable = (*BuildableIface)(nil)
+var _ Buildabler = (*Buildable)(nil)
 
-func wrapBuildable(obj *externglib.Object) Buildable {
-	return &BuildableIface{
+func wrapBuildabler(obj *externglib.Object) Buildabler {
+	return &Buildable{
 		Object: obj,
 	}
 }
 
-func marshalBuildable(p uintptr) (interface{}, error) {
+func marshalBuildabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuildable(obj), nil
+	return wrapBuildabler(obj), nil
 }
 
 // BuildableID gets the ID of the @buildable object.
 //
 // `GtkBuilder` sets the name based on the ID attribute of the <object> tag used
 // to construct the @buildable.
-func (buildable *BuildableIface) BuildableID() string {
+func (buildable *Buildable) BuildableID() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.char         // in
 
@@ -112,12 +108,6 @@ func (buildable *BuildableIface) BuildableID() string {
 // BuildableParser: sub-parser for `GtkBuildable` implementations.
 type BuildableParser struct {
 	native C.GtkBuildableParser
-}
-
-// WrapBuildableParser wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBuildableParser(ptr unsafe.Pointer) *BuildableParser {
-	return (*BuildableParser)(ptr)
 }
 
 // Native returns the underlying C source pointer.

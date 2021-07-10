@@ -20,8 +20,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_print_context_get_type()), F: marshalPrintContext},
+		{T: externglib.Type(C.gtk_print_context_get_type()), F: marshalPrintContexter},
 	})
+}
+
+// PrintContexter describes PrintContext's methods.
+type PrintContexter interface {
+	gextras.Objector
+
+	CreatePangoContext() *pango.Context
+	CreatePangoLayout() *pango.Layout
+	CairoContext() *cairo.Context
+	DPIX() float64
+	DPIY() float64
+	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
+	Height() float64
+	PageSetup() *PageSetup
+	PangoFontmap() *pango.FontMap
+	Width() float64
+	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
 }
 
 // PrintContext: `GtkPrintContext` encapsulates context information that is
@@ -88,67 +105,27 @@ func init() {
 //    g_object_unref (layout);
 //
 // } “`
-type PrintContext interface {
-	gextras.Objector
-
-	// CreatePangoContext creates a new `PangoContext` that can be used with the
-	// `GtkPrintContext`.
-	CreatePangoContext() *pango.ContextClass
-	// CreatePangoLayout creates a new `PangoLayout` that is suitable for use
-	// with the `GtkPrintContext`.
-	CreatePangoLayout() *pango.LayoutClass
-	// CairoContext obtains the cairo context that is associated with the
-	// `GtkPrintContext`.
-	CairoContext() *cairo.Context
-	// DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
-	// per inch.
-	DPIX() float64
-	// DPIY obtains the vertical resolution of the `GtkPrintContext`, in dots
-	// per inch.
-	DPIY() float64
-	// HardMargins obtains the hardware printer margins of the
-	// `GtkPrintContext`, in units.
-	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
-	// Height obtains the height of the `GtkPrintContext`, in pixels.
-	Height() float64
-	// PageSetup obtains the `GtkPageSetup` that determines the page dimensions
-	// of the `GtkPrintContext`.
-	PageSetup() *PageSetupClass
-	// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
-	// `GtkPrintContext`.
-	PangoFontmap() *pango.FontMapClass
-	// Width obtains the width of the `GtkPrintContext`, in pixels.
-	Width() float64
-	// SetCairoContext sets a new cairo context on a print context.
-	//
-	// This function is intended to be used when implementing an internal print
-	// preview, it is not needed for printing, since GTK itself creates a
-	// suitable cairo context in that case.
-	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
-}
-
-// PrintContextClass implements the PrintContext interface.
-type PrintContextClass struct {
+type PrintContext struct {
 	*externglib.Object
 }
 
-var _ PrintContext = (*PrintContextClass)(nil)
+var _ PrintContexter = (*PrintContext)(nil)
 
-func wrapPrintContext(obj *externglib.Object) PrintContext {
-	return &PrintContextClass{
+func wrapPrintContexter(obj *externglib.Object) PrintContexter {
+	return &PrintContext{
 		Object: obj,
 	}
 }
 
-func marshalPrintContext(p uintptr) (interface{}, error) {
+func marshalPrintContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPrintContext(obj), nil
+	return wrapPrintContexter(obj), nil
 }
 
 // CreatePangoContext creates a new `PangoContext` that can be used with the
 // `GtkPrintContext`.
-func (context *PrintContextClass) CreatePangoContext() *pango.ContextClass {
+func (context *PrintContext) CreatePangoContext() *pango.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoContext    // in
 
@@ -156,16 +133,16 @@ func (context *PrintContextClass) CreatePangoContext() *pango.ContextClass {
 
 	_cret = C.gtk_print_context_create_pango_context(_arg0)
 
-	var _ret *pango.ContextClass // out
+	var _ret *pango.Context // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.ContextClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Context)
 
 	return _ret
 }
 
 // CreatePangoLayout creates a new `PangoLayout` that is suitable for use with
 // the `GtkPrintContext`.
-func (context *PrintContextClass) CreatePangoLayout() *pango.LayoutClass {
+func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoLayout     // in
 
@@ -173,16 +150,16 @@ func (context *PrintContextClass) CreatePangoLayout() *pango.LayoutClass {
 
 	_cret = C.gtk_print_context_create_pango_layout(_arg0)
 
-	var _layout *pango.LayoutClass // out
+	var _layout *pango.Layout // out
 
-	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.LayoutClass)
+	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Layout)
 
 	return _layout
 }
 
 // CairoContext obtains the cairo context that is associated with the
 // `GtkPrintContext`.
-func (context *PrintContextClass) CairoContext() *cairo.Context {
+func (context *PrintContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.cairo_t         // in
 
@@ -199,7 +176,7 @@ func (context *PrintContextClass) CairoContext() *cairo.Context {
 
 // DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots per
 // inch.
-func (context *PrintContextClass) DPIX() float64 {
+func (context *PrintContext) DPIX() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
@@ -216,7 +193,7 @@ func (context *PrintContextClass) DPIX() float64 {
 
 // DPIY obtains the vertical resolution of the `GtkPrintContext`, in dots per
 // inch.
-func (context *PrintContextClass) DPIY() float64 {
+func (context *PrintContext) DPIY() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
@@ -233,7 +210,7 @@ func (context *PrintContextClass) DPIY() float64 {
 
 // HardMargins obtains the hardware printer margins of the `GtkPrintContext`, in
 // units.
-func (context *PrintContextClass) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
+func (context *PrintContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrintContext // out
 	var _arg1 C.double           // in
 	var _arg2 C.double           // in
@@ -263,7 +240,7 @@ func (context *PrintContextClass) HardMargins() (top float64, bottom float64, le
 }
 
 // Height obtains the height of the `GtkPrintContext`, in pixels.
-func (context *PrintContextClass) Height() float64 {
+func (context *PrintContext) Height() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
@@ -280,7 +257,7 @@ func (context *PrintContextClass) Height() float64 {
 
 // PageSetup obtains the `GtkPageSetup` that determines the page dimensions of
 // the `GtkPrintContext`.
-func (context *PrintContextClass) PageSetup() *PageSetupClass {
+func (context *PrintContext) PageSetup() *PageSetup {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.GtkPageSetup    // in
 
@@ -288,16 +265,16 @@ func (context *PrintContextClass) PageSetup() *PageSetupClass {
 
 	_cret = C.gtk_print_context_get_page_setup(_arg0)
 
-	var _pageSetup *PageSetupClass // out
+	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PageSetupClass)
+	_pageSetup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PageSetup)
 
 	return _pageSetup
 }
 
 // PangoFontmap returns a `PangoFontMap` that is suitable for use with the
 // `GtkPrintContext`.
-func (context *PrintContextClass) PangoFontmap() *pango.FontMapClass {
+func (context *PrintContext) PangoFontmap() *pango.FontMap {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoFontMap    // in
 
@@ -305,15 +282,15 @@ func (context *PrintContextClass) PangoFontmap() *pango.FontMapClass {
 
 	_cret = C.gtk_print_context_get_pango_fontmap(_arg0)
 
-	var _fontMap *pango.FontMapClass // out
+	var _fontMap *pango.FontMap // out
 
-	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontMapClass)
+	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontMap)
 
 	return _fontMap
 }
 
 // Width obtains the width of the `GtkPrintContext`, in pixels.
-func (context *PrintContextClass) Width() float64 {
+func (context *PrintContext) Width() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
@@ -333,7 +310,7 @@ func (context *PrintContextClass) Width() float64 {
 // This function is intended to be used when implementing an internal print
 // preview, it is not needed for printing, since GTK itself creates a suitable
 // cairo context in that case.
-func (context *PrintContextClass) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64) {
+func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64) {
 	var _arg0 *C.GtkPrintContext // out
 	var _arg1 *C.cairo_t         // out
 	var _arg2 C.double           // out

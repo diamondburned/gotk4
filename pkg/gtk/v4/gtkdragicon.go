@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIcon},
+		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIconner},
 	})
+}
+
+// DragIconner describes DragIcon's methods.
+type DragIconner interface {
+	gextras.Objector
+
+	Child() *Widget
+	SetChild(child Widgetter)
 }
 
 // DragIcon: `GtkDragIcon` is a `GtkRoot` implementation for drag icons.
@@ -33,105 +41,95 @@ func init() {
 // whatever widget should be used for the drag icon.
 //
 // Keep in mind that drag icons do not allow user input.
-type DragIcon interface {
-	gextras.Objector
-
-	// Child gets the widget currently used as drag icon.
-	Child() *WidgetClass
-	// SetChild sets the widget to display as the drag icon.
-	SetChild(child Widget)
-}
-
-// DragIconClass implements the DragIcon interface.
-type DragIconClass struct {
+type DragIcon struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	NativeIface
-	RootIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Native
+	Root
 }
 
-var _ DragIcon = (*DragIconClass)(nil)
+var _ DragIconner = (*DragIcon)(nil)
 
-func wrapDragIcon(obj *externglib.Object) DragIcon {
-	return &DragIconClass{
+func wrapDragIconner(obj *externglib.Object) DragIconner {
+	return &DragIcon{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		NativeIface: NativeIface{
+		Native: Native{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		RootIface: RootIface{
+		Root: Root{
 			Object: obj,
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
@@ -139,14 +137,14 @@ func wrapDragIcon(obj *externglib.Object) DragIcon {
 	}
 }
 
-func marshalDragIcon(p uintptr) (interface{}, error) {
+func marshalDragIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragIcon(obj), nil
+	return wrapDragIconner(obj), nil
 }
 
 // Child gets the widget currently used as drag icon.
-func (self *DragIconClass) Child() *WidgetClass {
+func (self *DragIcon) Child() *Widget {
 	var _arg0 *C.GtkDragIcon // out
 	var _cret *C.GtkWidget   // in
 
@@ -154,15 +152,15 @@ func (self *DragIconClass) Child() *WidgetClass {
 
 	_cret = C.gtk_drag_icon_get_child(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // SetChild sets the widget to display as the drag icon.
-func (self *DragIconClass) SetChild(child Widget) {
+func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg0 *C.GtkDragIcon // out
 	var _arg1 *C.GtkWidget   // out
 

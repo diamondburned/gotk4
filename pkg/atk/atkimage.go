@@ -18,15 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_image_get_type()), F: marshalImage},
+		{T: externglib.Type(C.atk_image_get_type()), F: marshalImager},
 	})
 }
 
-// ImageOverrider contains methods that are overridable.
+// ImagerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ImageOverrider interface {
+type ImagerOverrider interface {
 	// ImageDescription: get a textual description of this image.
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.
@@ -39,6 +39,16 @@ type ImageOverrider interface {
 	// to -1.
 	ImageSize() (width int, height int)
 	// SetImageDescription sets the textual description for this image.
+	SetImageDescription(description string) bool
+}
+
+// Imager describes Image's methods.
+type Imager interface {
+	gextras.Objector
+
+	ImageDescription() string
+	ImageLocale() string
+	ImageSize() (width int, height int)
 	SetImageDescription(description string) bool
 }
 
@@ -53,45 +63,26 @@ type ImageOverrider interface {
 // magnifiers), and descriptive information. The descriptive information is
 // provided for alternative, text-only presentation of the most significant
 // information present in the image.
-type Image interface {
-	gextras.Objector
-
-	// ImageDescription: get a textual description of this image.
-	ImageDescription() string
-	// ImageLocale retrieves the locale identifier associated to the Image.
-	ImageLocale() string
-	// ImageSize: get the width and height in pixels for the specified image.
-	// The values of @width and @height are returned as -1 if the values cannot
-	// be obtained (for instance, if the object is not onscreen).
-	//
-	// If the size can not be obtained (e.g. missing support), x and y are set
-	// to -1.
-	ImageSize() (width int, height int)
-	// SetImageDescription sets the textual description for this image.
-	SetImageDescription(description string) bool
-}
-
-// ImageIface implements the Image interface.
-type ImageIface struct {
+type Image struct {
 	*externglib.Object
 }
 
-var _ Image = (*ImageIface)(nil)
+var _ Imager = (*Image)(nil)
 
-func wrapImage(obj *externglib.Object) Image {
-	return &ImageIface{
+func wrapImager(obj *externglib.Object) Imager {
+	return &Image{
 		Object: obj,
 	}
 }
 
-func marshalImage(p uintptr) (interface{}, error) {
+func marshalImager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImage(obj), nil
+	return wrapImager(obj), nil
 }
 
 // ImageDescription: get a textual description of this image.
-func (image *ImageIface) ImageDescription() string {
+func (image *Image) ImageDescription() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
 
@@ -107,7 +98,7 @@ func (image *ImageIface) ImageDescription() string {
 }
 
 // ImageLocale retrieves the locale identifier associated to the Image.
-func (image *ImageIface) ImageLocale() string {
+func (image *Image) ImageLocale() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
 
@@ -128,7 +119,7 @@ func (image *ImageIface) ImageLocale() string {
 //
 // If the size can not be obtained (e.g. missing support), x and y are set to
 // -1.
-func (image *ImageIface) ImageSize() (width int, height int) {
+func (image *Image) ImageSize() (width int, height int) {
 	var _arg0 *C.AtkImage // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -147,7 +138,7 @@ func (image *ImageIface) ImageSize() (width int, height int) {
 }
 
 // SetImageDescription sets the textual description for this image.
-func (image *ImageIface) SetImageDescription(description string) bool {
+func (image *Image) SetImageDescription(description string) bool {
 	var _arg0 *C.AtkImage // out
 	var _arg1 *C.gchar    // out
 	var _cret C.gboolean  // in

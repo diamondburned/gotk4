@@ -30,15 +30,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_application_command_line_get_type()), F: marshalApplicationCommandLine},
+		{T: externglib.Type(C.g_application_command_line_get_type()), F: marshalApplicationCommandLiner},
 	})
 }
 
-// ApplicationCommandLineOverrider contains methods that are overridable.
+// ApplicationCommandLinerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ApplicationCommandLineOverrider interface {
+type ApplicationCommandLinerOverrider interface {
 	// Stdin gets the stdin of the invoking process.
 	//
 	// The Stream can be used to read data passed to the standard input of the
@@ -48,9 +48,25 @@ type ApplicationCommandLineOverrider interface {
 	// future, support may be expanded to other platforms.
 	//
 	// You must only call this function once per commandline invocation.
-	Stdin() *InputStreamClass
+	Stdin() *InputStream
 	PrintLiteral(message string)
 	PrinterrLiteral(message string)
+}
+
+// ApplicationCommandLiner describes ApplicationCommandLine's methods.
+type ApplicationCommandLiner interface {
+	gextras.Objector
+
+	CreateFileForArg(arg string) *File
+	Cwd() string
+	Environ() []string
+	ExitStatus() int
+	IsRemote() bool
+	OptionsDict() *glib.VariantDict
+	PlatformData() *glib.Variant
+	Stdin() *InputStream
+	env(name string) string
+	SetExitStatus(exitStatus int)
 }
 
 // ApplicationCommandLine represents a command-line invocation of an
@@ -124,129 +140,22 @@ type ApplicationCommandLineOverrider interface {
 //
 // The complete example can be found here: gapplication-example-cmdline3.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c)
-type ApplicationCommandLine interface {
-	gextras.Objector
-
-	// CreateFileForArg creates a #GFile corresponding to a filename that was
-	// given as part of the invocation of @cmdline.
-	//
-	// This differs from g_file_new_for_commandline_arg() in that it resolves
-	// relative pathnames using the current working directory of the invoking
-	// process rather than the local process.
-	CreateFileForArg(arg string) *FileIface
-	// Cwd gets the working directory of the command line invocation. The string
-	// may contain non-utf8 data.
-	//
-	// It is possible that the remote application did not send a working
-	// directory, so this may be nil.
-	//
-	// The return value should not be modified or freed and is valid for as long
-	// as @cmdline exists.
-	Cwd() string
-	// Environ gets the contents of the 'environ' variable of the command line
-	// invocation, as would be returned by g_get_environ(), ie as a
-	// nil-terminated list of strings in the form 'NAME=VALUE'. The strings may
-	// contain non-utf8 data.
-	//
-	// The remote application usually does not send an environment. Use
-	// G_APPLICATION_SEND_ENVIRONMENT to affect that. Even with this flag set it
-	// is possible that the environment is still not available (due to
-	// invocation messages from other applications).
-	//
-	// The return value should not be modified or freed and is valid for as long
-	// as @cmdline exists.
-	//
-	// See g_application_command_line_getenv() if you are only interested in the
-	// value of a single environment variable.
-	Environ() []string
-	// ExitStatus gets the exit status of @cmdline. See
-	// g_application_command_line_set_exit_status() for more information.
-	ExitStatus() int
-	// IsRemote determines if @cmdline represents a remote invocation.
-	IsRemote() bool
-	// OptionsDict gets the options there were passed to
-	// g_application_command_line().
-	//
-	// If you did not override local_command_line() then these are the same
-	// options that were parsed according to the Entrys added to the application
-	// with g_application_add_main_option_entries() and possibly modified from
-	// your GApplication::handle-local-options handler.
-	//
-	// If no options were sent then an empty dictionary is returned so that you
-	// don't need to check for nil.
-	OptionsDict() *glib.VariantDict
-	// PlatformData gets the platform data associated with the invocation of
-	// @cmdline.
-	//
-	// This is a #GVariant dictionary containing information about the context
-	// in which the invocation occurred. It typically contains information like
-	// the current working directory and the startup notification ID.
-	//
-	// For local invocation, it will be nil.
-	PlatformData() *glib.Variant
-	// Stdin gets the stdin of the invoking process.
-	//
-	// The Stream can be used to read data passed to the standard input of the
-	// invoking process. This doesn't work on all platforms. Presently, it is
-	// only available on UNIX when using a D-Bus daemon capable of passing file
-	// descriptors. If stdin is not available then nil will be returned. In the
-	// future, support may be expanded to other platforms.
-	//
-	// You must only call this function once per commandline invocation.
-	Stdin() *InputStreamClass
-	// Env gets the value of a particular environment variable of the command
-	// line invocation, as would be returned by g_getenv(). The strings may
-	// contain non-utf8 data.
-	//
-	// The remote application usually does not send an environment. Use
-	// G_APPLICATION_SEND_ENVIRONMENT to affect that. Even with this flag set it
-	// is possible that the environment is still not available (due to
-	// invocation messages from other applications).
-	//
-	// The return value should not be modified or freed and is valid for as long
-	// as @cmdline exists.
-	env(name string) string
-	// SetExitStatus sets the exit status that will be used when the invoking
-	// process exits.
-	//
-	// The return value of the #GApplication::command-line signal is passed to
-	// this function when the handler returns. This is the usual way of setting
-	// the exit status.
-	//
-	// In the event that you want the remote invocation to continue running and
-	// want to decide on the exit status in the future, you can use this call.
-	// For the case of a remote invocation, the remote process will typically
-	// exit when the last reference is dropped on @cmdline. The exit status of
-	// the remote process will be equal to the last value that was set with this
-	// function.
-	//
-	// In the case that the commandline invocation is local, the situation is
-	// slightly more complicated. If the commandline invocation results in the
-	// mainloop running (ie: because the use-count of the application increased
-	// to a non-zero value) then the application is considered to have been
-	// 'successful' in a certain sense, and the exit status is always zero. If
-	// the application use count is zero, though, the exit status of the local
-	// CommandLine is used.
-	SetExitStatus(exitStatus int)
-}
-
-// ApplicationCommandLineClass implements the ApplicationCommandLine interface.
-type ApplicationCommandLineClass struct {
+type ApplicationCommandLine struct {
 	*externglib.Object
 }
 
-var _ ApplicationCommandLine = (*ApplicationCommandLineClass)(nil)
+var _ ApplicationCommandLiner = (*ApplicationCommandLine)(nil)
 
-func wrapApplicationCommandLine(obj *externglib.Object) ApplicationCommandLine {
-	return &ApplicationCommandLineClass{
+func wrapApplicationCommandLiner(obj *externglib.Object) ApplicationCommandLiner {
+	return &ApplicationCommandLine{
 		Object: obj,
 	}
 }
 
-func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
+func marshalApplicationCommandLiner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationCommandLine(obj), nil
+	return wrapApplicationCommandLiner(obj), nil
 }
 
 // CreateFileForArg creates a #GFile corresponding to a filename that was given
@@ -255,7 +164,7 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 // This differs from g_file_new_for_commandline_arg() in that it resolves
 // relative pathnames using the current working directory of the invoking
 // process rather than the local process.
-func (cmdline *ApplicationCommandLineClass) CreateFileForArg(arg string) *FileIface {
+func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
 	var _cret *C.GFile                   // in
@@ -266,9 +175,9 @@ func (cmdline *ApplicationCommandLineClass) CreateFileForArg(arg string) *FileIf
 
 	_cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
 
-	var _file *FileIface // out
+	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
 
 	return _file
 }
@@ -281,7 +190,7 @@ func (cmdline *ApplicationCommandLineClass) CreateFileForArg(arg string) *FileIf
 //
 // The return value should not be modified or freed and is valid for as long as
 // @cmdline exists.
-func (cmdline *ApplicationCommandLineClass) Cwd() string {
+func (cmdline *ApplicationCommandLine) Cwd() string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.gchar                   // in
 
@@ -311,7 +220,7 @@ func (cmdline *ApplicationCommandLineClass) Cwd() string {
 //
 // See g_application_command_line_getenv() if you are only interested in the
 // value of a single environment variable.
-func (cmdline *ApplicationCommandLineClass) Environ() []string {
+func (cmdline *ApplicationCommandLine) Environ() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret **C.gchar
 
@@ -340,7 +249,7 @@ func (cmdline *ApplicationCommandLineClass) Environ() []string {
 
 // ExitStatus gets the exit status of @cmdline. See
 // g_application_command_line_set_exit_status() for more information.
-func (cmdline *ApplicationCommandLineClass) ExitStatus() int {
+func (cmdline *ApplicationCommandLine) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.int                      // in
 
@@ -356,7 +265,7 @@ func (cmdline *ApplicationCommandLineClass) ExitStatus() int {
 }
 
 // IsRemote determines if @cmdline represents a remote invocation.
-func (cmdline *ApplicationCommandLineClass) IsRemote() bool {
+func (cmdline *ApplicationCommandLine) IsRemote() bool {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.gboolean                 // in
 
@@ -383,7 +292,7 @@ func (cmdline *ApplicationCommandLineClass) IsRemote() bool {
 //
 // If no options were sent then an empty dictionary is returned so that you
 // don't need to check for nil.
-func (cmdline *ApplicationCommandLineClass) OptionsDict() *glib.VariantDict {
+func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariantDict            // in
 
@@ -410,7 +319,7 @@ func (cmdline *ApplicationCommandLineClass) OptionsDict() *glib.VariantDict {
 // current working directory and the startup notification ID.
 //
 // For local invocation, it will be nil.
-func (cmdline *ApplicationCommandLineClass) PlatformData() *glib.Variant {
+func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariant                // in
 
@@ -438,7 +347,7 @@ func (cmdline *ApplicationCommandLineClass) PlatformData() *glib.Variant {
 // future, support may be expanded to other platforms.
 //
 // You must only call this function once per commandline invocation.
-func (cmdline *ApplicationCommandLineClass) Stdin() *InputStreamClass {
+func (cmdline *ApplicationCommandLine) Stdin() *InputStream {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GInputStream            // in
 
@@ -446,9 +355,9 @@ func (cmdline *ApplicationCommandLineClass) Stdin() *InputStreamClass {
 
 	_cret = C.g_application_command_line_get_stdin(_arg0)
 
-	var _inputStream *InputStreamClass // out
+	var _inputStream *InputStream // out
 
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStreamClass)
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
 
 	return _inputStream
 }
@@ -464,7 +373,7 @@ func (cmdline *ApplicationCommandLineClass) Stdin() *InputStreamClass {
 //
 // The return value should not be modified or freed and is valid for as long as
 // @cmdline exists.
-func (cmdline *ApplicationCommandLineClass) env(name string) string {
+func (cmdline *ApplicationCommandLine) env(name string) string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
 	var _cret *C.gchar                   // in
@@ -501,7 +410,7 @@ func (cmdline *ApplicationCommandLineClass) env(name string) string {
 // non-zero value) then the application is considered to have been 'successful'
 // in a certain sense, and the exit status is always zero. If the application
 // use count is zero, though, the exit status of the local CommandLine is used.
-func (cmdline *ApplicationCommandLineClass) SetExitStatus(exitStatus int) {
+func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out
 

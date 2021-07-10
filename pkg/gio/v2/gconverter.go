@@ -28,18 +28,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_converter_get_type()), F: marshalConverter},
+		{T: externglib.Type(C.g_converter_get_type()), F: marshalConverterrer},
 	})
 }
 
-// ConverterOverrider contains methods that are overridable.
+// ConverterrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ConverterOverrider interface {
+type ConverterrerOverrider interface {
 	// Reset resets all internal state in the converter, making it behave as if
 	// it was just created. If the converter has any internal state that would
 	// produce output then that output is lost.
+	Reset()
+}
+
+// Converterrer describes Converter's methods.
+type Converterrer interface {
+	gextras.Objector
+
 	Reset()
 }
 
@@ -48,38 +55,28 @@ type ConverterOverrider interface {
 //
 // Some example conversions are: character set conversion, compression,
 // decompression and regular expression replace.
-type Converter interface {
-	gextras.Objector
-
-	// Reset resets all internal state in the converter, making it behave as if
-	// it was just created. If the converter has any internal state that would
-	// produce output then that output is lost.
-	Reset()
-}
-
-// ConverterIface implements the Converter interface.
-type ConverterIface struct {
+type Converter struct {
 	*externglib.Object
 }
 
-var _ Converter = (*ConverterIface)(nil)
+var _ Converterrer = (*Converter)(nil)
 
-func wrapConverter(obj *externglib.Object) Converter {
-	return &ConverterIface{
+func wrapConverterrer(obj *externglib.Object) Converterrer {
+	return &Converter{
 		Object: obj,
 	}
 }
 
-func marshalConverter(p uintptr) (interface{}, error) {
+func marshalConverterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConverter(obj), nil
+	return wrapConverterrer(obj), nil
 }
 
 // Reset resets all internal state in the converter, making it behave as if it
 // was just created. If the converter has any internal state that would produce
 // output then that output is lost.
-func (converter *ConverterIface) Reset() {
+func (converter *Converter) Reset() {
 	var _arg0 *C.GConverter // out
 
 	_arg0 = (*C.GConverter)(unsafe.Pointer(converter.Native()))

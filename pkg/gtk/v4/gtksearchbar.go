@@ -18,8 +18,23 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBar},
+		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarrer},
 	})
+}
+
+// SearchBarrer describes SearchBar's methods.
+type SearchBarrer interface {
+	gextras.Objector
+
+	ConnectEntry(entry Editabler)
+	Child() *Widget
+	KeyCaptureWidget() *Widget
+	SearchMode() bool
+	ShowCloseButton() bool
+	SetChild(child Widgetter)
+	SetKeyCaptureWidget(widget Widgetter)
+	SetSearchMode(searchMode bool)
+	SetShowCloseButton(visible bool)
 }
 
 // SearchBar: `GtkSearchBar` is a container made to have a search entry.
@@ -62,107 +77,64 @@ func init() {
 // Accessibility
 //
 // `GtkSearchBar` uses the GTK_ACCESSIBLE_ROLE_SEARCH role.
-type SearchBar interface {
-	gextras.Objector
-
-	// ConnectEntry connects the `GtkEditable widget passed as the one to be
-	// used in this search bar.
-	//
-	// The entry should be a descendant of the search bar. Calling this function
-	// manually is only required if the entry isn’t the direct child of the
-	// search bar (as in our main example).
-	ConnectEntry(entry Editable)
-	// Child gets the child widget of @bar.
-	Child() *WidgetClass
-	// KeyCaptureWidget gets the widget that @bar is capturing key events from.
-	KeyCaptureWidget() *WidgetClass
-	// SearchMode returns whether the search mode is on or off.
-	SearchMode() bool
-	// ShowCloseButton returns whether the close button is shown.
-	ShowCloseButton() bool
-	// SetChild sets the child widget of @bar.
-	SetChild(child Widget)
-	// SetKeyCaptureWidget sets @widget as the widget that @bar will capture key
-	// events from.
-	//
-	// If key events are handled by the search bar, the bar will be shown, and
-	// the entry populated with the entered text.
-	//
-	// Note that despite the name of this function, the events are only
-	// 'captured' in the bubble phase, which means that editable child widgets
-	// of @widget will receive text input before it gets captured. If that is
-	// not desired, you can capture and forward the events yourself with
-	// [method@Gtk.EventControllerKey.forward].
-	SetKeyCaptureWidget(widget Widget)
-	// SetSearchMode switches the search mode on or off.
-	SetSearchMode(searchMode bool)
-	// SetShowCloseButton shows or hides the close button.
-	//
-	// Applications that already have a “search” toggle button should not show a
-	// close button in their search bar, as it duplicates the role of the toggle
-	// button.
-	SetShowCloseButton(visible bool)
-}
-
-// SearchBarClass implements the SearchBar interface.
-type SearchBarClass struct {
+type SearchBar struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ SearchBar = (*SearchBarClass)(nil)
+var _ SearchBarrer = (*SearchBar)(nil)
 
-func wrapSearchBar(obj *externglib.Object) SearchBar {
-	return &SearchBarClass{
+func wrapSearchBarrer(obj *externglib.Object) SearchBarrer {
+	return &SearchBar{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSearchBar(p uintptr) (interface{}, error) {
+func marshalSearchBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSearchBar(obj), nil
+	return wrapSearchBarrer(obj), nil
 }
 
 // NewSearchBar creates a `GtkSearchBar`.
 //
 // You will need to tell it about which widget is going to be your text entry
 // using [method@Gtk.SearchBar.connect_entry].
-func NewSearchBar() *SearchBarClass {
+func NewSearchBar() *SearchBar {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_search_bar_new()
 
-	var _searchBar *SearchBarClass // out
+	var _searchBar *SearchBar // out
 
-	_searchBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchBarClass)
+	_searchBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchBar)
 
 	return _searchBar
 }
@@ -173,7 +145,7 @@ func NewSearchBar() *SearchBarClass {
 // The entry should be a descendant of the search bar. Calling this function
 // manually is only required if the entry isn’t the direct child of the search
 // bar (as in our main example).
-func (bar *SearchBarClass) ConnectEntry(entry Editable) {
+func (bar *SearchBar) ConnectEntry(entry Editabler) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEditable  // out
 
@@ -184,7 +156,7 @@ func (bar *SearchBarClass) ConnectEntry(entry Editable) {
 }
 
 // Child gets the child widget of @bar.
-func (bar *SearchBarClass) Child() *WidgetClass {
+func (bar *SearchBar) Child() *Widget {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
 
@@ -192,15 +164,15 @@ func (bar *SearchBarClass) Child() *WidgetClass {
 
 	_cret = C.gtk_search_bar_get_child(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // KeyCaptureWidget gets the widget that @bar is capturing key events from.
-func (bar *SearchBarClass) KeyCaptureWidget() *WidgetClass {
+func (bar *SearchBar) KeyCaptureWidget() *Widget {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
 
@@ -208,15 +180,15 @@ func (bar *SearchBarClass) KeyCaptureWidget() *WidgetClass {
 
 	_cret = C.gtk_search_bar_get_key_capture_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // SearchMode returns whether the search mode is on or off.
-func (bar *SearchBarClass) SearchMode() bool {
+func (bar *SearchBar) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
@@ -234,7 +206,7 @@ func (bar *SearchBarClass) SearchMode() bool {
 }
 
 // ShowCloseButton returns whether the close button is shown.
-func (bar *SearchBarClass) ShowCloseButton() bool {
+func (bar *SearchBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
@@ -252,7 +224,7 @@ func (bar *SearchBarClass) ShowCloseButton() bool {
 }
 
 // SetChild sets the child widget of @bar.
-func (bar *SearchBarClass) SetChild(child Widget) {
+func (bar *SearchBar) SetChild(child Widgetter) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -273,7 +245,7 @@ func (bar *SearchBarClass) SetChild(child Widget) {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // [method@Gtk.EventControllerKey.forward].
-func (bar *SearchBarClass) SetKeyCaptureWidget(widget Widget) {
+func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -284,7 +256,7 @@ func (bar *SearchBarClass) SetKeyCaptureWidget(widget Widget) {
 }
 
 // SetSearchMode switches the search mode on or off.
-func (bar *SearchBarClass) SetSearchMode(searchMode bool) {
+func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
@@ -301,7 +273,7 @@ func (bar *SearchBarClass) SetSearchMode(searchMode bool) {
 // Applications that already have a “search” toggle button should not show a
 // close button in their search bar, as it duplicates the role of the toggle
 // button.
-func (bar *SearchBarClass) SetShowCloseButton(visible bool) {
+func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 

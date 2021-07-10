@@ -29,8 +29,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_credentials_get_type()), F: marshalCredentials},
+		{T: externglib.Type(C.g_credentials_get_type()), F: marshalCredentialser},
 	})
+}
+
+// Credentialser describes Credentials's methods.
+type Credentialser interface {
+	gextras.Objector
+
+	UnixPid() (int, error)
+	UnixUser() (uint, error)
+	IsSameUser(otherCredentials Credentialser) error
+	SetUnixUser(uid uint) error
+	String() string
 }
 
 // Credentials: the #GCredentials type is a reference-counted wrapper for native
@@ -63,72 +74,34 @@ func init() {
 //
 // On Solaris (including OpenSolaris and its derivatives), the native credential
 // type is a `ucred_t`. This corresponds to G_CREDENTIALS_TYPE_SOLARIS_UCRED.
-type Credentials interface {
-	gextras.Objector
-
-	// UnixPid tries to get the UNIX process identifier from @credentials. This
-	// method is only available on UNIX platforms.
-	//
-	// This operation can fail if #GCredentials is not supported on the OS or if
-	// the native credentials type does not contain information about the UNIX
-	// process ID (for example this is the case for
-	// G_CREDENTIALS_TYPE_APPLE_XUCRED).
-	UnixPid() (int, error)
-	// UnixUser tries to get the UNIX user identifier from @credentials. This
-	// method is only available on UNIX platforms.
-	//
-	// This operation can fail if #GCredentials is not supported on the OS or if
-	// the native credentials type does not contain information about the UNIX
-	// user.
-	UnixUser() (uint, error)
-	// IsSameUser checks if @credentials and @other_credentials is the same
-	// user.
-	//
-	// This operation can fail if #GCredentials is not supported on the the OS.
-	IsSameUser(otherCredentials Credentials) error
-	// SetUnixUser tries to set the UNIX user identifier on @credentials. This
-	// method is only available on UNIX platforms.
-	//
-	// This operation can fail if #GCredentials is not supported on the OS or if
-	// the native credentials type does not contain information about the UNIX
-	// user. It can also fail if the OS does not allow the use of "spoofed"
-	// credentials.
-	SetUnixUser(uid uint) error
-	// String creates a human-readable textual representation of @credentials
-	// that can be used in logging and debug messages. The format of the
-	// returned string may change in future GLib release.
-	String() string
-}
-
-// CredentialsClass implements the Credentials interface.
-type CredentialsClass struct {
+type Credentials struct {
 	*externglib.Object
 }
 
-var _ Credentials = (*CredentialsClass)(nil)
+var _ Credentialser = (*Credentials)(nil)
 
-func wrapCredentials(obj *externglib.Object) Credentials {
-	return &CredentialsClass{
+func wrapCredentialser(obj *externglib.Object) Credentialser {
+	return &Credentials{
 		Object: obj,
 	}
 }
 
-func marshalCredentials(p uintptr) (interface{}, error) {
+func marshalCredentialser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCredentials(obj), nil
+	return wrapCredentialser(obj), nil
 }
 
 // NewCredentials creates a new #GCredentials object with credentials matching
 // the the current process.
-func NewCredentials() *CredentialsClass {
+func NewCredentials() *Credentials {
 	var _cret *C.GCredentials // in
 
 	_cret = C.g_credentials_new()
 
-	var _credentials *CredentialsClass // out
+	var _credentials *Credentials // out
 
-	_credentials = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CredentialsClass)
+	_credentials = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Credentials)
 
 	return _credentials
 }
@@ -139,7 +112,7 @@ func NewCredentials() *CredentialsClass {
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX process
 // ID (for example this is the case for G_CREDENTIALS_TYPE_APPLE_XUCRED).
-func (credentials *CredentialsClass) UnixPid() (int, error) {
+func (credentials *Credentials) UnixPid() (int, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.pid_t         // in
 	var _cerr *C.GError       // in
@@ -162,7 +135,7 @@ func (credentials *CredentialsClass) UnixPid() (int, error) {
 //
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX user.
-func (credentials *CredentialsClass) UnixUser() (uint, error) {
+func (credentials *Credentials) UnixUser() (uint, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.uid_t         // in
 	var _cerr *C.GError       // in
@@ -183,7 +156,7 @@ func (credentials *CredentialsClass) UnixUser() (uint, error) {
 // IsSameUser checks if @credentials and @other_credentials is the same user.
 //
 // This operation can fail if #GCredentials is not supported on the the OS.
-func (credentials *CredentialsClass) IsSameUser(otherCredentials Credentials) error {
+func (credentials *Credentials) IsSameUser(otherCredentials Credentialser) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
 	var _cerr *C.GError       // in
@@ -206,7 +179,7 @@ func (credentials *CredentialsClass) IsSameUser(otherCredentials Credentials) er
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX user. It
 // can also fail if the OS does not allow the use of "spoofed" credentials.
-func (credentials *CredentialsClass) SetUnixUser(uid uint) error {
+func (credentials *Credentials) SetUnixUser(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
 	var _cerr *C.GError       // in
@@ -226,7 +199,7 @@ func (credentials *CredentialsClass) SetUnixUser(uid uint) error {
 // String creates a human-readable textual representation of @credentials that
 // can be used in logging and debug messages. The format of the returned string
 // may change in future GLib release.
-func (credentials *CredentialsClass) String() string {
+func (credentials *Credentials) String() string {
 	var _arg0 *C.GCredentials // out
 	var _cret *C.gchar        // in
 

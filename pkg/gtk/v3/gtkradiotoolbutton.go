@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_tool_button_get_type()), F: marshalRadioToolButton},
+		{T: externglib.Type(C.gtk_radio_tool_button_get_type()), F: marshalRadioToolButtonner},
 	})
+}
+
+// RadioToolButtonner describes RadioToolButton's methods.
+type RadioToolButtonner interface {
+	gextras.Objector
+
+	privateRadioToolButton()
 }
 
 // RadioToolButton is a ToolItem that contains a radio button, that is, a button
@@ -36,128 +43,121 @@ func init() {
 // CSS nodes
 //
 // GtkRadioToolButton has a single CSS node with name toolbutton.
-type RadioToolButton interface {
-	gextras.Objector
-
-	privateRadioToolButtonClass()
-}
-
-// RadioToolButtonClass implements the RadioToolButton interface.
-type RadioToolButtonClass struct {
+type RadioToolButton struct {
 	*externglib.Object
-	ToggleToolButtonClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	ToggleToolButton
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ RadioToolButton = (*RadioToolButtonClass)(nil)
+var _ RadioToolButtonner = (*RadioToolButton)(nil)
 
-func wrapRadioToolButton(obj *externglib.Object) RadioToolButton {
-	return &RadioToolButtonClass{
+func wrapRadioToolButtonner(obj *externglib.Object) RadioToolButtonner {
+	return &RadioToolButton{
 		Object: obj,
-		ToggleToolButtonClass: ToggleToolButtonClass{
+		ToggleToolButton: ToggleToolButton{
 			Object: obj,
-			ToolButtonClass: ToolButtonClass{
+			ToolButton: ToolButton{
 				Object: obj,
-				ToolItemClass: ToolItemClass{
+				ToolItem: ToolItem{
 					Object: obj,
-					BinClass: BinClass{
+					Bin: Bin{
 						Object: obj,
-						ContainerClass: ContainerClass{
+						Container: Container{
 							Object: obj,
-							WidgetClass: WidgetClass{
+							Widget: Widget{
 								Object: obj,
 								InitiallyUnowned: externglib.InitiallyUnowned{
 									Object: obj,
 								},
-								BuildableIface: BuildableIface{
+								Buildable: Buildable{
 									Object: obj,
 								},
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					ActivatableIface: ActivatableIface{
+					Activatable: Activatable{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				ActionableIface: ActionableIface{
+				Actionable: Actionable{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
 				},
-				ActivatableIface: ActivatableIface{
+				Activatable: Activatable{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRadioToolButton(p uintptr) (interface{}, error) {
+func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioToolButton(obj), nil
+	return wrapRadioToolButtonner(obj), nil
 }
 
 // NewRadioToolButtonFromWidget creates a new RadioToolButton adding it to the
 // same group as @gruup
-func NewRadioToolButtonFromWidget(group RadioToolButton) *RadioToolButtonClass {
+func NewRadioToolButtonFromWidget(group RadioToolButtonner) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _cret *C.GtkToolItem        // in
 
@@ -165,9 +165,9 @@ func NewRadioToolButtonFromWidget(group RadioToolButton) *RadioToolButtonClass {
 
 	_cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
 
-	var _radioToolButton *RadioToolButtonClass // out
+	var _radioToolButton *RadioToolButton // out
 
-	_radioToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioToolButtonClass)
+	_radioToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioToolButton)
 
 	return _radioToolButton
 }
@@ -177,7 +177,7 @@ func NewRadioToolButtonFromWidget(group RadioToolButton) *RadioToolButtonClass {
 // label from the stock item indicated by @stock_id.
 //
 // Deprecated: gtk_radio_tool_button_new_from_widget.
-func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string) *RadioToolButtonClass {
+func NewRadioToolButtonWithStockFromWidget(group RadioToolButtonner, stockId string) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _arg2 *C.gchar              // out
 	var _cret *C.GtkToolItem        // in
@@ -188,11 +188,11 @@ func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string
 
 	_cret = C.gtk_radio_tool_button_new_with_stock_from_widget(_arg1, _arg2)
 
-	var _radioToolButton *RadioToolButtonClass // out
+	var _radioToolButton *RadioToolButton // out
 
-	_radioToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioToolButtonClass)
+	_radioToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioToolButton)
 
 	return _radioToolButton
 }
 
-func (*RadioToolButtonClass) privateRadioToolButtonClass() {}
+func (*RadioToolButton) privateRadioToolButton() {}

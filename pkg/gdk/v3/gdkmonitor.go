@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
-		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitor},
+		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitorrer},
 	})
 }
 
@@ -46,6 +46,23 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 	return SubpixelLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Monitorrer describes Monitor's methods.
+type Monitorrer interface {
+	gextras.Objector
+
+	Display() *Display
+	Geometry() Rectangle
+	HeightMm() int
+	Manufacturer() string
+	Model() string
+	RefreshRate() int
+	ScaleFactor() int
+	SubpixelLayout() SubpixelLayout
+	WidthMm() int
+	Workarea() Rectangle
+	IsPrimary() bool
+}
+
 // Monitor objects represent the individual outputs that are associated with a
 // Display. GdkDisplay has APIs to enumerate monitors with
 // gdk_display_get_n_monitors() and gdk_display_get_monitor(), and to find
@@ -54,83 +71,26 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 //
 // GdkMonitor was introduced in GTK+ 3.22 and supersedes earlier APIs in
 // GdkScreen to obtain monitor-related information.
-type Monitor interface {
-	gextras.Objector
-
-	// Display gets the display that this monitor belongs to.
-	Display() *DisplayClass
-	// Geometry retrieves the size and position of an individual monitor within
-	// the display coordinate space. The returned geometry is in ”application
-	// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
-	Geometry() Rectangle
-	// HeightMm gets the height in millimeters of the monitor.
-	HeightMm() int
-	// Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
-	// available.
-	//
-	// Note that this value might also vary depending on actual display backend.
-	//
-	// PNP ID registry is located at https://uefi.org/pnp_id_list
-	Manufacturer() string
-	// Model gets the a string identifying the monitor model, if available.
-	Model() string
-	// RefreshRate gets the refresh rate of the monitor, if available.
-	//
-	// The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
-	// 60000.
-	RefreshRate() int
-	// ScaleFactor gets the internal scale factor that maps from monitor
-	// coordinates to the actual device pixels. On traditional systems this is
-	// 1, but on very high density outputs this can be a higher value (often 2).
-	//
-	// This can be used if you want to create pixel based data for a particular
-	// monitor, but most of the time you’re drawing to a window where it is
-	// better to use gdk_window_get_scale_factor() instead.
-	ScaleFactor() int
-	// SubpixelLayout gets information about the layout of red, green and blue
-	// primaries for each pixel in this monitor, if available.
-	SubpixelLayout() SubpixelLayout
-	// WidthMm gets the width in millimeters of the monitor.
-	WidthMm() int
-	// Workarea retrieves the size and position of the “work area” on a monitor
-	// within the display coordinate space. The returned geometry is in
-	// ”application pixels”, not in ”device pixels” (see
-	// gdk_monitor_get_scale_factor()).
-	//
-	// The work area should be considered when positioning menus and similar
-	// popups, to avoid placing them below panels, docks or other desktop
-	// components.
-	//
-	// Note that not all backends may have a concept of workarea. This function
-	// will return the monitor geometry if a workarea is not available, or does
-	// not apply.
-	Workarea() Rectangle
-	// IsPrimary gets whether this monitor should be considered primary (see
-	// gdk_display_get_primary_monitor()).
-	IsPrimary() bool
-}
-
-// MonitorClass implements the Monitor interface.
-type MonitorClass struct {
+type Monitor struct {
 	*externglib.Object
 }
 
-var _ Monitor = (*MonitorClass)(nil)
+var _ Monitorrer = (*Monitor)(nil)
 
-func wrapMonitor(obj *externglib.Object) Monitor {
-	return &MonitorClass{
+func wrapMonitorrer(obj *externglib.Object) Monitorrer {
+	return &Monitor{
 		Object: obj,
 	}
 }
 
-func marshalMonitor(p uintptr) (interface{}, error) {
+func marshalMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMonitor(obj), nil
+	return wrapMonitorrer(obj), nil
 }
 
 // Display gets the display that this monitor belongs to.
-func (monitor *MonitorClass) Display() *DisplayClass {
+func (monitor *Monitor) Display() *Display {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.GdkDisplay // in
 
@@ -138,9 +98,9 @@ func (monitor *MonitorClass) Display() *DisplayClass {
 
 	_cret = C.gdk_monitor_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
@@ -148,7 +108,7 @@ func (monitor *MonitorClass) Display() *DisplayClass {
 // Geometry retrieves the size and position of an individual monitor within the
 // display coordinate space. The returned geometry is in ”application pixels”,
 // not in ”device pixels” (see gdk_monitor_get_scale_factor()).
-func (monitor *MonitorClass) Geometry() Rectangle {
+func (monitor *Monitor) Geometry() Rectangle {
 	var _arg0 *C.GdkMonitor  // out
 	var _arg1 C.GdkRectangle // in
 
@@ -164,7 +124,7 @@ func (monitor *MonitorClass) Geometry() Rectangle {
 }
 
 // HeightMm gets the height in millimeters of the monitor.
-func (monitor *MonitorClass) HeightMm() int {
+func (monitor *Monitor) HeightMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -185,7 +145,7 @@ func (monitor *MonitorClass) HeightMm() int {
 // Note that this value might also vary depending on actual display backend.
 //
 // PNP ID registry is located at https://uefi.org/pnp_id_list
-func (monitor *MonitorClass) Manufacturer() string {
+func (monitor *Monitor) Manufacturer() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
 
@@ -201,7 +161,7 @@ func (monitor *MonitorClass) Manufacturer() string {
 }
 
 // Model gets the a string identifying the monitor model, if available.
-func (monitor *MonitorClass) Model() string {
+func (monitor *Monitor) Model() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
 
@@ -219,7 +179,7 @@ func (monitor *MonitorClass) Model() string {
 // RefreshRate gets the refresh rate of the monitor, if available.
 //
 // The value is in milli-Hertz, so a refresh rate of 60Hz is returned as 60000.
-func (monitor *MonitorClass) RefreshRate() int {
+func (monitor *Monitor) RefreshRate() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -241,7 +201,7 @@ func (monitor *MonitorClass) RefreshRate() int {
 // This can be used if you want to create pixel based data for a particular
 // monitor, but most of the time you’re drawing to a window where it is better
 // to use gdk_window_get_scale_factor() instead.
-func (monitor *MonitorClass) ScaleFactor() int {
+func (monitor *Monitor) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -258,7 +218,7 @@ func (monitor *MonitorClass) ScaleFactor() int {
 
 // SubpixelLayout gets information about the layout of red, green and blue
 // primaries for each pixel in this monitor, if available.
-func (monitor *MonitorClass) SubpixelLayout() SubpixelLayout {
+func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 	var _arg0 *C.GdkMonitor       // out
 	var _cret C.GdkSubpixelLayout // in
 
@@ -274,7 +234,7 @@ func (monitor *MonitorClass) SubpixelLayout() SubpixelLayout {
 }
 
 // WidthMm gets the width in millimeters of the monitor.
-func (monitor *MonitorClass) WidthMm() int {
+func (monitor *Monitor) WidthMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -299,7 +259,7 @@ func (monitor *MonitorClass) WidthMm() int {
 // Note that not all backends may have a concept of workarea. This function will
 // return the monitor geometry if a workarea is not available, or does not
 // apply.
-func (monitor *MonitorClass) Workarea() Rectangle {
+func (monitor *Monitor) Workarea() Rectangle {
 	var _arg0 *C.GdkMonitor  // out
 	var _arg1 C.GdkRectangle // in
 
@@ -316,7 +276,7 @@ func (monitor *MonitorClass) Workarea() Rectangle {
 
 // IsPrimary gets whether this monitor should be considered primary (see
 // gdk_display_get_primary_monitor()).
-func (monitor *MonitorClass) IsPrimary() bool {
+func (monitor *Monitor) IsPrimary() bool {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.gboolean    // in
 

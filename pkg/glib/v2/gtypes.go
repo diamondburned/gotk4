@@ -101,12 +101,6 @@ type TimeVal struct {
 	native C.GTimeVal
 }
 
-// WrapTimeVal wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTimeVal(ptr unsafe.Pointer) *TimeVal {
-	return (*TimeVal)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (t *TimeVal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)

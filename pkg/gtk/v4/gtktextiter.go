@@ -87,12 +87,6 @@ type TextIter struct {
 	native C.GtkTextIter
 }
 
-// WrapTextIter wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextIter(ptr unsafe.Pointer) *TextIter {
-	return (*TextIter)(ptr)
-}
-
 func marshalTextIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*TextIter)(unsafe.Pointer(b)), nil
@@ -341,7 +335,7 @@ func (iter *TextIter) BackwardSentenceStarts(count int) bool {
 // If no matching tag toggles are found, returns false, otherwise true. Does not
 // return toggles located at @iter, only toggles before @iter. Sets @iter to the
 // location of the toggle, or the start of the buffer if no toggle is found.
-func (iter *TextIter) BackwardToTagToggle(tag TextTag) bool {
+func (iter *TextIter) BackwardToTagToggle(tag TextTagger) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -614,7 +608,7 @@ func (iter *TextIter) Copy() *TextIter {
 
 	_textIter = (*TextIter)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_textIter, func(v *TextIter) {
-		C.free(unsafe.Pointer(v))
+		C.gtk_text_iter_free((*C.GtkTextIter)(unsafe.Pointer(v)))
 	})
 
 	return _textIter
@@ -710,7 +704,7 @@ func (iter *TextIter) EndsSentence() bool {
 // range. In other words, unlike [method@Gtk.TextIter.starts_tag], if this
 // function returns true, [method@Gtk.TextIter.has_tag] will return false for
 // the same parameters.
-func (iter *TextIter) EndsTag(tag TextTag) bool {
+func (iter *TextIter) EndsTag(tag TextTagger) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -1049,7 +1043,7 @@ func (iter *TextIter) ForwardToLineEnd() bool {
 // If no matching tag toggles are found, returns false, otherwise true. Does not
 // return toggles located at @iter, only toggles after @iter. Sets @iter to the
 // location of the toggle, or to the end of the buffer if no toggle is found.
-func (iter *TextIter) ForwardToTagToggle(tag TextTag) bool {
+func (iter *TextIter) ForwardToTagToggle(tag TextTagger) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -1264,7 +1258,7 @@ func (iter *TextIter) free() {
 }
 
 // Buffer returns the `GtkTextBuffer` this iterator is associated with.
-func (iter *TextIter) Buffer() *TextBufferClass {
+func (iter *TextIter) Buffer() *TextBuffer {
 	var _arg0 *C.GtkTextIter   // out
 	var _cret *C.GtkTextBuffer // in
 
@@ -1272,9 +1266,9 @@ func (iter *TextIter) Buffer() *TextBufferClass {
 
 	_cret = C.gtk_text_iter_get_buffer(_arg0)
 
-	var _textBuffer *TextBufferClass // out
+	var _textBuffer *TextBuffer // out
 
-	_textBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextBufferClass)
+	_textBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextBuffer)
 
 	return _textBuffer
 }
@@ -1340,7 +1334,7 @@ func (iter *TextIter) CharsInLine() int {
 // returned.
 //
 // Otherwise, nil is returned.
-func (iter *TextIter) ChildAnchor() *TextChildAnchorClass {
+func (iter *TextIter) ChildAnchor() *TextChildAnchor {
 	var _arg0 *C.GtkTextIter        // out
 	var _cret *C.GtkTextChildAnchor // in
 
@@ -1348,9 +1342,9 @@ func (iter *TextIter) ChildAnchor() *TextChildAnchorClass {
 
 	_cret = C.gtk_text_iter_get_child_anchor(_arg0)
 
-	var _textChildAnchor *TextChildAnchorClass // out
+	var _textChildAnchor *TextChildAnchor // out
 
-	_textChildAnchor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextChildAnchorClass)
+	_textChildAnchor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextChildAnchor)
 
 	return _textChildAnchor
 }
@@ -1591,7 +1585,7 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 // tagged with @tag.
 //
 // See also [method@Gtk.TextIter.starts_tag] and [method@Gtk.TextIter.ends_tag].
-func (iter *TextIter) HasTag(tag TextTag) bool {
+func (iter *TextIter) HasTag(tag TextTagger) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -1899,7 +1893,7 @@ func (iter *TextIter) StartsSentence() bool {
 // tagged range. In other words, unlike [method@Gtk.TextIter.ends_tag], if this
 // function returns true, [method@Gtk.TextIter.has_tag will also return true for
 // the same parameters.
-func (iter *TextIter) StartsTag(tag TextTag) bool {
+func (iter *TextIter) StartsTag(tag TextTagger) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -1944,7 +1938,7 @@ func (iter *TextIter) StartsWord() bool {
 //
 // This is equivalent to (gtk_text_iter_starts_tag() ||
 // gtk_text_iter_ends_tag())
-func (iter *TextIter) TogglesTag(tag TextTag) bool {
+func (iter *TextIter) TogglesTag(tag TextTagger) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in

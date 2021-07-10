@@ -46,12 +46,6 @@ type RequestedSize struct {
 	native C.GtkRequestedSize
 }
 
-// WrapRequestedSize wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRequestedSize(ptr unsafe.Pointer) *RequestedSize {
-	return (*RequestedSize)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (r *RequestedSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)

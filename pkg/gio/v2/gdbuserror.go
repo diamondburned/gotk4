@@ -27,12 +27,6 @@ type DBusErrorEntry struct {
 	native C.GDBusErrorEntry
 }
 
-// WrapDBusErrorEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
-	return (*DBusErrorEntry)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (d *DBusErrorEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)

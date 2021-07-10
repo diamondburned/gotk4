@@ -20,16 +20,27 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hsv_get_type()), F: marshalHSV},
+		{T: externglib.Type(C.gtk_hsv_get_type()), F: marshalHSVer},
 	})
 }
 
-// HSVOverrider contains methods that are overridable.
+// HSVerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type HSVOverrider interface {
+type HSVerOverrider interface {
 	Changed()
+}
+
+// HSVer describes HSV's methods.
+type HSVer interface {
+	gextras.Objector
+
+	Color() (h float64, s float64, v float64)
+	Metrics() (size int, ringWidth int)
+	IsAdjusting() bool
+	SetColor(h float64, s float64, v float64)
+	SetMetrics(size int, ringWidth int)
 }
 
 // HSV is the “color wheel” part of a complete color selector widget. It allows
@@ -38,75 +49,54 @@ type HSVOverrider interface {
 // selection point inside the inner triangle changes value and saturation.
 //
 // HSV has been deprecated together with ColorSelection, where it was used.
-type HSV interface {
-	gextras.Objector
-
-	// Color queries the current color in an HSV color selector. Returned values
-	// will be in the [0.0, 1.0] range.
-	Color() (h float64, s float64, v float64)
-	// Metrics queries the size and ring width of an HSV color selector.
-	Metrics() (size int, ringWidth int)
-	// IsAdjusting: HSV color selector can be said to be adjusting if multiple
-	// rapid changes are being made to its value, for example, when the user is
-	// adjusting the value with the mouse. This function queries whether the HSV
-	// color selector is being adjusted or not.
-	IsAdjusting() bool
-	// SetColor sets the current color in an HSV color selector. Color component
-	// values must be in the [0.0, 1.0] range.
-	SetColor(h float64, s float64, v float64)
-	// SetMetrics sets the size and ring width of an HSV color selector.
-	SetMetrics(size int, ringWidth int)
-}
-
-// HSVClass implements the HSV interface.
-type HSVClass struct {
+type HSV struct {
 	*externglib.Object
-	WidgetClass
-	BuildableIface
+	Widget
+	Buildable
 }
 
-var _ HSV = (*HSVClass)(nil)
+var _ HSVer = (*HSV)(nil)
 
-func wrapHSV(obj *externglib.Object) HSV {
-	return &HSVClass{
+func wrapHSVer(obj *externglib.Object) HSVer {
+	return &HSV{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalHSV(p uintptr) (interface{}, error) {
+func marshalHSVer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHSV(obj), nil
+	return wrapHSVer(obj), nil
 }
 
 // NewHSV creates a new HSV color selector.
-func NewHSV() *HSVClass {
+func NewHSV() *HSV {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_hsv_new()
 
-	var _hsV *HSVClass // out
+	var _hsV *HSV // out
 
-	_hsV = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HSVClass)
+	_hsV = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HSV)
 
 	return _hsV
 }
 
 // Color queries the current color in an HSV color selector. Returned values
 // will be in the [0.0, 1.0] range.
-func (hsv *HSVClass) Color() (h float64, s float64, v float64) {
+func (hsv *HSV) Color() (h float64, s float64, v float64) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.gdouble // in
 	var _arg2 C.gdouble // in
@@ -128,7 +118,7 @@ func (hsv *HSVClass) Color() (h float64, s float64, v float64) {
 }
 
 // Metrics queries the size and ring width of an HSV color selector.
-func (hsv *HSVClass) Metrics() (size int, ringWidth int) {
+func (hsv *HSV) Metrics() (size int, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.gint    // in
 	var _arg2 C.gint    // in
@@ -150,7 +140,7 @@ func (hsv *HSVClass) Metrics() (size int, ringWidth int) {
 // changes are being made to its value, for example, when the user is adjusting
 // the value with the mouse. This function queries whether the HSV color
 // selector is being adjusted or not.
-func (hsv *HSVClass) IsAdjusting() bool {
+func (hsv *HSV) IsAdjusting() bool {
 	var _arg0 *C.GtkHSV  // out
 	var _cret C.gboolean // in
 
@@ -169,7 +159,7 @@ func (hsv *HSVClass) IsAdjusting() bool {
 
 // SetColor sets the current color in an HSV color selector. Color component
 // values must be in the [0.0, 1.0] range.
-func (hsv *HSVClass) SetColor(h float64, s float64, v float64) {
+func (hsv *HSV) SetColor(h float64, s float64, v float64) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.double  // out
 	var _arg2 C.double  // out
@@ -184,7 +174,7 @@ func (hsv *HSVClass) SetColor(h float64, s float64, v float64) {
 }
 
 // SetMetrics sets the size and ring width of an HSV color selector.
-func (hsv *HSVClass) SetMetrics(size int, ringWidth int) {
+func (hsv *HSV) SetMetrics(size int, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.gint    // out
 	var _arg2 C.gint    // out

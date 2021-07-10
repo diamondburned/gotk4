@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_combo_get_type()), F: marshalCellRendererCombo},
+		{T: externglib.Type(C.gtk_cell_renderer_combo_get_type()), F: marshalCellRendererComboer},
 	})
+}
+
+// CellRendererComboer describes CellRendererCombo's methods.
+type CellRendererComboer interface {
+	gextras.Objector
+
+	privateCellRendererCombo()
 }
 
 // CellRendererCombo renders text in a cell like CellRendererText from which it
@@ -36,23 +43,16 @@ func init() {
 // can be set in a handler for the CellRenderer::editing-started signal.
 //
 // The CellRendererCombo cell renderer was added in GTK+ 2.6.
-type CellRendererCombo interface {
-	gextras.Objector
-
-	privateCellRendererComboClass()
+type CellRendererCombo struct {
+	CellRendererText
 }
 
-// CellRendererComboClass implements the CellRendererCombo interface.
-type CellRendererComboClass struct {
-	CellRendererTextClass
-}
+var _ CellRendererComboer = (*CellRendererCombo)(nil)
 
-var _ CellRendererCombo = (*CellRendererComboClass)(nil)
-
-func wrapCellRendererCombo(obj *externglib.Object) CellRendererCombo {
-	return &CellRendererComboClass{
-		CellRendererTextClass: CellRendererTextClass{
-			CellRendererClass: CellRendererClass{
+func wrapCellRendererComboer(obj *externglib.Object) CellRendererComboer {
+	return &CellRendererCombo{
+		CellRendererText: CellRendererText{
+			CellRenderer: CellRenderer{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -61,10 +61,10 @@ func wrapCellRendererCombo(obj *externglib.Object) CellRendererCombo {
 	}
 }
 
-func marshalCellRendererCombo(p uintptr) (interface{}, error) {
+func marshalCellRendererComboer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererCombo(obj), nil
+	return wrapCellRendererComboer(obj), nil
 }
 
 // NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is
@@ -73,16 +73,16 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 // value in a TreeModel. For example, you can bind the “text” property on the
 // cell renderer to a string value in the model, thus rendering a different
 // string in each row of the TreeView.
-func NewCellRendererCombo() *CellRendererComboClass {
+func NewCellRendererCombo() *CellRendererCombo {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_combo_new()
 
-	var _cellRendererCombo *CellRendererComboClass // out
+	var _cellRendererCombo *CellRendererCombo // out
 
-	_cellRendererCombo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererComboClass)
+	_cellRendererCombo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererCombo)
 
 	return _cellRendererCombo
 }
 
-func (*CellRendererComboClass) privateCellRendererComboClass() {}
+func (*CellRendererCombo) privateCellRendererCombo() {}

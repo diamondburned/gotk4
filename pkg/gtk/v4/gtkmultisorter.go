@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_multi_sorter_get_type()), F: marshalMultiSorter},
+		{T: externglib.Type(C.gtk_multi_sorter_get_type()), F: marshalMultiSorterrer},
 	})
+}
+
+// MultiSorterrer describes MultiSorter's methods.
+type MultiSorterrer interface {
+	gextras.Objector
+
+	Append(sorter Sorterrer)
+	Remove(position uint)
 }
 
 // MultiSorter: `GtkMultiSorter` combines multiple sorters by trying them in
@@ -27,46 +35,30 @@ func init() {
 //
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
-type MultiSorter interface {
-	gextras.Objector
-
-	// Append: add @sorter to @self to use for sorting at the end.
-	//
-	// @self will consult all existing sorters before it will sort with the
-	// given @sorter.
-	Append(sorter Sorter)
-	// Remove removes the sorter at the given @position from the list of sorter
-	// used by @self.
-	//
-	// If @position is larger than the number of sorters, nothing happens.
-	Remove(position uint)
-}
-
-// MultiSorterClass implements the MultiSorter interface.
-type MultiSorterClass struct {
+type MultiSorter struct {
 	*externglib.Object
-	SorterClass
-	BuildableIface
+	Sorter
+	Buildable
 }
 
-var _ MultiSorter = (*MultiSorterClass)(nil)
+var _ MultiSorterrer = (*MultiSorter)(nil)
 
-func wrapMultiSorter(obj *externglib.Object) MultiSorter {
-	return &MultiSorterClass{
+func wrapMultiSorterrer(obj *externglib.Object) MultiSorterrer {
+	return &MultiSorter{
 		Object: obj,
-		SorterClass: SorterClass{
+		Sorter: Sorter{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMultiSorter(p uintptr) (interface{}, error) {
+func marshalMultiSorterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMultiSorter(obj), nil
+	return wrapMultiSorterrer(obj), nil
 }
 
 // NewMultiSorter creates a new multi sorter.
@@ -74,14 +66,14 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 // This sorter compares items by trying each of the sorters in turn, until one
 // returns non-zero. In particular, if no sorter has been added to it, it will
 // always compare items as equal.
-func NewMultiSorter() *MultiSorterClass {
+func NewMultiSorter() *MultiSorter {
 	var _cret *C.GtkMultiSorter // in
 
 	_cret = C.gtk_multi_sorter_new()
 
-	var _multiSorter *MultiSorterClass // out
+	var _multiSorter *MultiSorter // out
 
-	_multiSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MultiSorterClass)
+	_multiSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MultiSorter)
 
 	return _multiSorter
 }
@@ -90,7 +82,7 @@ func NewMultiSorter() *MultiSorterClass {
 //
 // @self will consult all existing sorters before it will sort with the given
 // @sorter.
-func (self *MultiSorterClass) Append(sorter Sorter) {
+func (self *MultiSorter) Append(sorter Sorterrer) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 *C.GtkSorter      // out
 
@@ -104,7 +96,7 @@ func (self *MultiSorterClass) Append(sorter Sorter) {
 // by @self.
 //
 // If @position is larger than the number of sorters, nothing happens.
-func (self *MultiSorterClass) Remove(position uint) {
+func (self *MultiSorter) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 C.guint           // out
 

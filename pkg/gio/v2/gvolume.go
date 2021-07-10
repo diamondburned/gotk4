@@ -29,15 +29,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_volume_get_type()), F: marshalVolume},
+		{T: externglib.Type(C.g_volume_get_type()), F: marshalVolumer},
 	})
 }
 
-// VolumeOverrider contains methods that are overridable.
+// VolumerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type VolumeOverrider interface {
+type VolumerOverrider interface {
 	// CanEject checks if a volume can be ejected.
 	CanEject() bool
 	// CanMount checks if a volume can be mounted.
@@ -48,11 +48,11 @@ type VolumeOverrider interface {
 	// returned.
 	//
 	// Deprecated: Use g_volume_eject_with_operation_finish() instead.
-	EjectFinish(result AsyncResult) error
+	EjectFinish(result AsyncResulter) error
 	// EjectWithOperationFinish finishes ejecting a volume. If any errors
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
-	EjectWithOperationFinish(result AsyncResult) error
+	EjectWithOperationFinish(result AsyncResulter) error
 	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
 	// that @volume has. Use g_volume_get_identifier() to obtain the identifiers
 	// themselves.
@@ -71,23 +71,23 @@ type VolumeOverrider interface {
 	// Activation roots are typically used in Monitor implementations to find
 	// the underlying mount to shadow, see g_mount_is_shadowed() for more
 	// details.
-	ActivationRoot() *FileIface
+	ActivationRoot() *File
 	// Drive gets the drive for the @volume.
-	Drive() *DriveIface
+	Drive() *Drive
 	// Icon gets the icon for @volume.
-	Icon() *IconIface
+	Icon() *Icon
 	// Identifier gets the identifier of the given kind for @volume. See the
 	// [introduction][volume-identifier] for more information about volume
 	// identifiers.
 	Identifier(kind string) string
 	// Mount gets the mount for the @volume.
-	Mount() *MountIface
+	Mount() *Mount
 	// Name gets the name of @volume.
 	Name() string
 	// SortKey gets the sort key for @volume, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for @volume.
-	SymbolicIcon() *IconIface
+	SymbolicIcon() *Icon
 	// UUID gets the UUID for the @volume. The reference is typically based on
 	// the file system UUID for the volume in question and should be considered
 	// an opaque string. Returns nil if there is no UUID available.
@@ -99,10 +99,32 @@ type VolumeOverrider interface {
 	// If the mount operation succeeded, g_volume_get_mount() on @volume is
 	// guaranteed to return the mount right after calling this function; there's
 	// no need to listen for the 'mount-added' signal on Monitor.
-	MountFinish(result AsyncResult) error
+	MountFinish(result AsyncResulter) error
 	Removed()
 	// ShouldAutomount returns whether the volume should be automatically
 	// mounted.
+	ShouldAutomount() bool
+}
+
+// Volumer describes Volume's methods.
+type Volumer interface {
+	gextras.Objector
+
+	CanEject() bool
+	CanMount() bool
+	EjectFinish(result AsyncResulter) error
+	EjectWithOperationFinish(result AsyncResulter) error
+	EnumerateIdentifiers() []string
+	ActivationRoot() *File
+	Drive() *Drive
+	Icon() *Icon
+	Identifier(kind string) string
+	Mount() *Mount
+	Name() string
+	SortKey() string
+	SymbolicIcon() *Icon
+	UUID() string
+	MountFinish(result AsyncResulter) error
 	ShouldAutomount() bool
 }
 
@@ -139,96 +161,26 @@ type VolumeOverrider interface {
 // g_volume_get_identifier() to obtain an identifier for a volume.
 //
 //    Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs hal volume monitor is in use. Other volume monitors will generally be able to provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used to obtain a hal device by means of libhal_manager_find_device_string_match().
-type Volume interface {
-	gextras.Objector
-
-	// CanEject checks if a volume can be ejected.
-	CanEject() bool
-	// CanMount checks if a volume can be mounted.
-	CanMount() bool
-	// EjectFinish finishes ejecting a volume. If any errors occurred during the
-	// operation, @error will be set to contain the errors and false will be
-	// returned.
-	//
-	// Deprecated: Use g_volume_eject_with_operation_finish() instead.
-	EjectFinish(result AsyncResult) error
-	// EjectWithOperationFinish finishes ejecting a volume. If any errors
-	// occurred during the operation, @error will be set to contain the errors
-	// and false will be returned.
-	EjectWithOperationFinish(result AsyncResult) error
-	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
-	// that @volume has. Use g_volume_get_identifier() to obtain the identifiers
-	// themselves.
-	EnumerateIdentifiers() []string
-	// ActivationRoot gets the activation root for a #GVolume if it is known
-	// ahead of mount time. Returns nil otherwise. If not nil and if @volume is
-	// mounted, then the result of g_mount_get_root() on the #GMount object
-	// obtained from g_volume_get_mount() will always either be equal or a
-	// prefix of what this function returns. In other words, in code
-	//
-	//    (g_file_has_prefix (volume_activation_root, mount_root) ||
-	//     g_file_equal (volume_activation_root, mount_root))
-	//
-	// will always be true.
-	//
-	// Activation roots are typically used in Monitor implementations to find
-	// the underlying mount to shadow, see g_mount_is_shadowed() for more
-	// details.
-	ActivationRoot() *FileIface
-	// Drive gets the drive for the @volume.
-	Drive() *DriveIface
-	// Icon gets the icon for @volume.
-	Icon() *IconIface
-	// Identifier gets the identifier of the given kind for @volume. See the
-	// [introduction][volume-identifier] for more information about volume
-	// identifiers.
-	Identifier(kind string) string
-	// Mount gets the mount for the @volume.
-	Mount() *MountIface
-	// Name gets the name of @volume.
-	Name() string
-	// SortKey gets the sort key for @volume, if any.
-	SortKey() string
-	// SymbolicIcon gets the symbolic icon for @volume.
-	SymbolicIcon() *IconIface
-	// UUID gets the UUID for the @volume. The reference is typically based on
-	// the file system UUID for the volume in question and should be considered
-	// an opaque string. Returns nil if there is no UUID available.
-	UUID() string
-	// MountFinish finishes mounting a volume. If any errors occurred during the
-	// operation, @error will be set to contain the errors and false will be
-	// returned.
-	//
-	// If the mount operation succeeded, g_volume_get_mount() on @volume is
-	// guaranteed to return the mount right after calling this function; there's
-	// no need to listen for the 'mount-added' signal on Monitor.
-	MountFinish(result AsyncResult) error
-	// ShouldAutomount returns whether the volume should be automatically
-	// mounted.
-	ShouldAutomount() bool
-}
-
-// VolumeIface implements the Volume interface.
-type VolumeIface struct {
+type Volume struct {
 	*externglib.Object
 }
 
-var _ Volume = (*VolumeIface)(nil)
+var _ Volumer = (*Volume)(nil)
 
-func wrapVolume(obj *externglib.Object) Volume {
-	return &VolumeIface{
+func wrapVolumer(obj *externglib.Object) Volumer {
+	return &Volume{
 		Object: obj,
 	}
 }
 
-func marshalVolume(p uintptr) (interface{}, error) {
+func marshalVolumer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolume(obj), nil
+	return wrapVolumer(obj), nil
 }
 
 // CanEject checks if a volume can be ejected.
-func (volume *VolumeIface) CanEject() bool {
+func (volume *Volume) CanEject() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
 
@@ -246,7 +198,7 @@ func (volume *VolumeIface) CanEject() bool {
 }
 
 // CanMount checks if a volume can be mounted.
-func (volume *VolumeIface) CanMount() bool {
+func (volume *Volume) CanMount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
 
@@ -268,7 +220,7 @@ func (volume *VolumeIface) CanMount() bool {
 // returned.
 //
 // Deprecated: Use g_volume_eject_with_operation_finish() instead.
-func (volume *VolumeIface) EjectFinish(result AsyncResult) error {
+func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -288,7 +240,7 @@ func (volume *VolumeIface) EjectFinish(result AsyncResult) error {
 // EjectWithOperationFinish finishes ejecting a volume. If any errors occurred
 // during the operation, @error will be set to contain the errors and false will
 // be returned.
-func (volume *VolumeIface) EjectWithOperationFinish(result AsyncResult) error {
+func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -308,7 +260,7 @@ func (volume *VolumeIface) EjectWithOperationFinish(result AsyncResult) error {
 // EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier] that
 // @volume has. Use g_volume_get_identifier() to obtain the identifiers
 // themselves.
-func (volume *VolumeIface) EnumerateIdentifiers() []string {
+func (volume *Volume) EnumerateIdentifiers() []string {
 	var _arg0 *C.GVolume // out
 	var _cret **C.char
 
@@ -349,7 +301,7 @@ func (volume *VolumeIface) EnumerateIdentifiers() []string {
 //
 // Activation roots are typically used in Monitor implementations to find the
 // underlying mount to shadow, see g_mount_is_shadowed() for more details.
-func (volume *VolumeIface) ActivationRoot() *FileIface {
+func (volume *Volume) ActivationRoot() *File {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GFile   // in
 
@@ -357,15 +309,15 @@ func (volume *VolumeIface) ActivationRoot() *FileIface {
 
 	_cret = C.g_volume_get_activation_root(_arg0)
 
-	var _file *FileIface // out
+	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
 
 	return _file
 }
 
 // Drive gets the drive for the @volume.
-func (volume *VolumeIface) Drive() *DriveIface {
+func (volume *Volume) Drive() *Drive {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GDrive  // in
 
@@ -373,15 +325,15 @@ func (volume *VolumeIface) Drive() *DriveIface {
 
 	_cret = C.g_volume_get_drive(_arg0)
 
-	var _drive *DriveIface // out
+	var _drive *Drive // out
 
-	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DriveIface)
+	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Drive)
 
 	return _drive
 }
 
 // Icon gets the icon for @volume.
-func (volume *VolumeIface) Icon() *IconIface {
+func (volume *Volume) Icon() *Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
@@ -389,9 +341,9 @@ func (volume *VolumeIface) Icon() *IconIface {
 
 	_cret = C.g_volume_get_icon(_arg0)
 
-	var _icon *IconIface // out
+	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
 
 	return _icon
 }
@@ -399,7 +351,7 @@ func (volume *VolumeIface) Icon() *IconIface {
 // Identifier gets the identifier of the given kind for @volume. See the
 // [introduction][volume-identifier] for more information about volume
 // identifiers.
-func (volume *VolumeIface) Identifier(kind string) string {
+func (volume *Volume) Identifier(kind string) string {
 	var _arg0 *C.GVolume // out
 	var _arg1 *C.char    // out
 	var _cret *C.char    // in
@@ -419,7 +371,7 @@ func (volume *VolumeIface) Identifier(kind string) string {
 }
 
 // Mount gets the mount for the @volume.
-func (volume *VolumeIface) Mount() *MountIface {
+func (volume *Volume) Mount() *Mount {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GMount  // in
 
@@ -427,15 +379,15 @@ func (volume *VolumeIface) Mount() *MountIface {
 
 	_cret = C.g_volume_get_mount(_arg0)
 
-	var _mount *MountIface // out
+	var _mount *Mount // out
 
-	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountIface)
+	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Mount)
 
 	return _mount
 }
 
 // Name gets the name of @volume.
-func (volume *VolumeIface) Name() string {
+func (volume *Volume) Name() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
 
@@ -452,7 +404,7 @@ func (volume *VolumeIface) Name() string {
 }
 
 // SortKey gets the sort key for @volume, if any.
-func (volume *VolumeIface) SortKey() string {
+func (volume *Volume) SortKey() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.gchar   // in
 
@@ -468,7 +420,7 @@ func (volume *VolumeIface) SortKey() string {
 }
 
 // SymbolicIcon gets the symbolic icon for @volume.
-func (volume *VolumeIface) SymbolicIcon() *IconIface {
+func (volume *Volume) SymbolicIcon() *Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
@@ -476,9 +428,9 @@ func (volume *VolumeIface) SymbolicIcon() *IconIface {
 
 	_cret = C.g_volume_get_symbolic_icon(_arg0)
 
-	var _icon *IconIface // out
+	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
 
 	return _icon
 }
@@ -486,7 +438,7 @@ func (volume *VolumeIface) SymbolicIcon() *IconIface {
 // UUID gets the UUID for the @volume. The reference is typically based on the
 // file system UUID for the volume in question and should be considered an
 // opaque string. Returns nil if there is no UUID available.
-func (volume *VolumeIface) UUID() string {
+func (volume *Volume) UUID() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
 
@@ -509,7 +461,7 @@ func (volume *VolumeIface) UUID() string {
 // If the mount operation succeeded, g_volume_get_mount() on @volume is
 // guaranteed to return the mount right after calling this function; there's no
 // need to listen for the 'mount-added' signal on Monitor.
-func (volume *VolumeIface) MountFinish(result AsyncResult) error {
+func (volume *Volume) MountFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -527,7 +479,7 @@ func (volume *VolumeIface) MountFinish(result AsyncResult) error {
 }
 
 // ShouldAutomount returns whether the volume should be automatically mounted.
-func (volume *VolumeIface) ShouldAutomount() bool {
+func (volume *Volume) ShouldAutomount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
 

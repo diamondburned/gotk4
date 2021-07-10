@@ -18,15 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_selection_get_type()), F: marshalSelection},
+		{T: externglib.Type(C.atk_selection_get_type()), F: marshalSelectioner},
 	})
 }
 
-// SelectionOverrider contains methods that are overridable.
+// SelectionerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SelectionOverrider interface {
+type SelectionerOverrider interface {
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.
 	AddSelection(i int) bool
@@ -50,7 +50,7 @@ type SelectionOverrider interface {
 	// nil or on a zero value for indication of whether AtkSelectionIface is
 	// implemented, they should use type checking/interface checking macros or
 	// the atk_get_accessible_value() convenience method.
-	RefSelection(i int) *ObjectClass
+	RefSelection(i int) *Object
 	// RemoveSelection removes the specified child of the object from the
 	// object's selection.
 	RemoveSelection(i int) bool
@@ -58,6 +58,19 @@ type SelectionOverrider interface {
 	// object supports multiple selections.
 	SelectAllSelection() bool
 	SelectionChanged()
+}
+
+// Selectioner describes Selection's methods.
+type Selectioner interface {
+	gextras.Objector
+
+	AddSelection(i int) bool
+	ClearSelection() bool
+	SelectionCount() int
+	IsChildSelected(i int) bool
+	RefSelection(i int) *Object
+	RemoveSelection(i int) bool
+	SelectAllSelection() bool
 }
 
 // Selection should be implemented by UI components with children which are
@@ -69,63 +82,27 @@ type SelectionOverrider interface {
 // Note that other types of "selection" (for instance text selection) are
 // accomplished a other ATK interfaces - Selection is limited to the
 // selection/deselection of children.
-type Selection interface {
-	gextras.Objector
-
-	// AddSelection adds the specified accessible child of the object to the
-	// object's selection.
-	AddSelection(i int) bool
-	// ClearSelection clears the selection in the object so that no children in
-	// the object are selected.
-	ClearSelection() bool
-	// SelectionCount gets the number of accessible children currently selected.
-	// Note: callers should not rely on nil or on a zero value for indication of
-	// whether AtkSelectionIface is implemented, they should use type
-	// checking/interface checking macros or the atk_get_accessible_value()
-	// convenience method.
-	SelectionCount() int
-	// IsChildSelected determines if the current child of this object is
-	// selected Note: callers should not rely on nil or on a zero value for
-	// indication of whether AtkSelectionIface is implemented, they should use
-	// type checking/interface checking macros or the atk_get_accessible_value()
-	// convenience method.
-	IsChildSelected(i int) bool
-	// RefSelection gets a reference to the accessible object representing the
-	// specified selected child of the object. Note: callers should not rely on
-	// nil or on a zero value for indication of whether AtkSelectionIface is
-	// implemented, they should use type checking/interface checking macros or
-	// the atk_get_accessible_value() convenience method.
-	RefSelection(i int) *ObjectClass
-	// RemoveSelection removes the specified child of the object from the
-	// object's selection.
-	RemoveSelection(i int) bool
-	// SelectAllSelection causes every child of the object to be selected if the
-	// object supports multiple selections.
-	SelectAllSelection() bool
-}
-
-// SelectionIface implements the Selection interface.
-type SelectionIface struct {
+type Selection struct {
 	*externglib.Object
 }
 
-var _ Selection = (*SelectionIface)(nil)
+var _ Selectioner = (*Selection)(nil)
 
-func wrapSelection(obj *externglib.Object) Selection {
-	return &SelectionIface{
+func wrapSelectioner(obj *externglib.Object) Selectioner {
+	return &Selection{
 		Object: obj,
 	}
 }
 
-func marshalSelection(p uintptr) (interface{}, error) {
+func marshalSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSelection(obj), nil
+	return wrapSelectioner(obj), nil
 }
 
 // AddSelection adds the specified accessible child of the object to the
 // object's selection.
-func (selection *SelectionIface) AddSelection(i int) bool {
+func (selection *Selection) AddSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
@@ -146,7 +123,7 @@ func (selection *SelectionIface) AddSelection(i int) bool {
 
 // ClearSelection clears the selection in the object so that no children in the
 // object are selected.
-func (selection *SelectionIface) ClearSelection() bool {
+func (selection *Selection) ClearSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 
@@ -168,7 +145,7 @@ func (selection *SelectionIface) ClearSelection() bool {
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
-func (selection *SelectionIface) SelectionCount() int {
+func (selection *Selection) SelectionCount() int {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gint          // in
 
@@ -188,7 +165,7 @@ func (selection *SelectionIface) SelectionCount() int {
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
-func (selection *SelectionIface) IsChildSelected(i int) bool {
+func (selection *Selection) IsChildSelected(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
@@ -212,7 +189,7 @@ func (selection *SelectionIface) IsChildSelected(i int) bool {
 // or on a zero value for indication of whether AtkSelectionIface is
 // implemented, they should use type checking/interface checking macros or the
 // atk_get_accessible_value() convenience method.
-func (selection *SelectionIface) RefSelection(i int) *ObjectClass {
+func (selection *Selection) RefSelection(i int) *Object {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -222,16 +199,16 @@ func (selection *SelectionIface) RefSelection(i int) *ObjectClass {
 
 	_cret = C.atk_selection_ref_selection(_arg0, _arg1)
 
-	var _object *ObjectClass // out
+	var _object *Object // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Object)
 
 	return _object
 }
 
 // RemoveSelection removes the specified child of the object from the object's
 // selection.
-func (selection *SelectionIface) RemoveSelection(i int) bool {
+func (selection *Selection) RemoveSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
@@ -252,7 +229,7 @@ func (selection *SelectionIface) RemoveSelection(i int) bool {
 
 // SelectAllSelection causes every child of the object to be selected if the
 // object supports multiple selections.
-func (selection *SelectionIface) SelectAllSelection() bool {
+func (selection *Selection) SelectAllSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 

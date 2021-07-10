@@ -21,8 +21,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_group_get_type()), F: marshalWindowGroup},
+		{T: externglib.Type(C.gtk_window_group_get_type()), F: marshalWindowGrouper},
 	})
+}
+
+// WindowGrouper describes WindowGroup's methods.
+type WindowGrouper interface {
+	gextras.Objector
+
+	AddWindow(window Windowwer)
+	CurrentDeviceGrab(device gdk.Devicer) *Widget
+	CurrentGrab() *Widget
+	RemoveWindow(window Windowwer)
 }
 
 // WindowGroup restricts the effect of grabs to windows in the same group,
@@ -38,56 +48,40 @@ func init() {
 // window group are subsequently destroyed, then they will be removed from the
 // window group and drop their references on the window group; when all window
 // have been removed, the window group will be freed.
-type WindowGroup interface {
-	gextras.Objector
-
-	// AddWindow adds a window to a WindowGroup.
-	AddWindow(window Window)
-	// CurrentDeviceGrab returns the current grab widget for @device, or nil if
-	// none.
-	CurrentDeviceGrab(device gdk.Device) *WidgetClass
-	// CurrentGrab gets the current grab widget of the given group, see
-	// gtk_grab_add().
-	CurrentGrab() *WidgetClass
-	// RemoveWindow removes a window from a WindowGroup.
-	RemoveWindow(window Window)
-}
-
-// WindowGroupClass implements the WindowGroup interface.
-type WindowGroupClass struct {
+type WindowGroup struct {
 	*externglib.Object
 }
 
-var _ WindowGroup = (*WindowGroupClass)(nil)
+var _ WindowGrouper = (*WindowGroup)(nil)
 
-func wrapWindowGroup(obj *externglib.Object) WindowGroup {
-	return &WindowGroupClass{
+func wrapWindowGrouper(obj *externglib.Object) WindowGrouper {
+	return &WindowGroup{
 		Object: obj,
 	}
 }
 
-func marshalWindowGroup(p uintptr) (interface{}, error) {
+func marshalWindowGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowGroup(obj), nil
+	return wrapWindowGrouper(obj), nil
 }
 
 // NewWindowGroup creates a new WindowGroup object. Grabs added with
 // gtk_grab_add() only affect windows within the same WindowGroup.
-func NewWindowGroup() *WindowGroupClass {
+func NewWindowGroup() *WindowGroup {
 	var _cret *C.GtkWindowGroup // in
 
 	_cret = C.gtk_window_group_new()
 
-	var _windowGroup *WindowGroupClass // out
+	var _windowGroup *WindowGroup // out
 
-	_windowGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WindowGroupClass)
+	_windowGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WindowGroup)
 
 	return _windowGroup
 }
 
 // AddWindow adds a window to a WindowGroup.
-func (windowGroup *WindowGroupClass) AddWindow(window Window) {
+func (windowGroup *WindowGroup) AddWindow(window Windowwer) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -99,7 +93,7 @@ func (windowGroup *WindowGroupClass) AddWindow(window Window) {
 
 // CurrentDeviceGrab returns the current grab widget for @device, or nil if
 // none.
-func (windowGroup *WindowGroupClass) CurrentDeviceGrab(device gdk.Device) *WidgetClass {
+func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) *Widget {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GdkDevice      // out
 	var _cret *C.GtkWidget      // in
@@ -109,16 +103,16 @@ func (windowGroup *WindowGroupClass) CurrentDeviceGrab(device gdk.Device) *Widge
 
 	_cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // CurrentGrab gets the current grab widget of the given group, see
 // gtk_grab_add().
-func (windowGroup *WindowGroupClass) CurrentGrab() *WidgetClass {
+func (windowGroup *WindowGroup) CurrentGrab() *Widget {
 	var _arg0 *C.GtkWindowGroup // out
 	var _cret *C.GtkWidget      // in
 
@@ -126,15 +120,15 @@ func (windowGroup *WindowGroupClass) CurrentGrab() *WidgetClass {
 
 	_cret = C.gtk_window_group_get_current_grab(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // RemoveWindow removes a window from a WindowGroup.
-func (windowGroup *WindowGroupClass) RemoveWindow(window Window) {
+func (windowGroup *WindowGroup) RemoveWindow(window Windowwer) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 

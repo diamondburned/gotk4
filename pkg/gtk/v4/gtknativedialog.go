@@ -18,15 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialog},
+		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialogger},
 	})
 }
 
-// NativeDialogOverrider contains methods that are overridable.
+// NativeDialoggerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type NativeDialogOverrider interface {
+type NativeDialoggerOverrider interface {
 	// Hide hides the dialog if it is visible, aborting any interaction.
 	//
 	// Once this is called the [signal@Gtk.NativeDialog::response] signal will
@@ -46,6 +46,22 @@ type NativeDialogOverrider interface {
 	Show()
 }
 
+// NativeDialogger describes NativeDialog's methods.
+type NativeDialogger interface {
+	gextras.Objector
+
+	Destroy()
+	Modal() bool
+	Title() string
+	TransientFor() *Window
+	Visible() bool
+	Hide()
+	SetModal(modal bool)
+	SetTitle(title string)
+	SetTransientFor(parent Windowwer)
+	Show()
+}
+
 // NativeDialog: native dialogs are platform dialogs that don't use `GtkDialog`.
 //
 // They are used in order to integrate better with a platform, by looking the
@@ -61,82 +77,22 @@ type NativeDialogOverrider interface {
 // Note that unlike `GtkDialog`, `GtkNativeDialog` objects are not toplevel
 // widgets, and GTK does not keep them alive. It is your responsibility to keep
 // a reference until you are done with the object.
-type NativeDialog interface {
-	gextras.Objector
-
-	// Destroy destroys a dialog.
-	//
-	// When a dialog is destroyed, it will break any references it holds to
-	// other objects.
-	//
-	// If it is visible it will be hidden and any underlying window system
-	// resources will be destroyed.
-	//
-	// Note that this does not release any reference to the object (as opposed
-	// to destroying a `GtkWindow`) because there is no reference from the
-	// windowing system to the `GtkNativeDialog`.
-	Destroy()
-	// Modal returns whether the dialog is modal.
-	Modal() bool
-	// Title gets the title of the `GtkNativeDialog`.
-	Title() string
-	// TransientFor fetches the transient parent for this window.
-	TransientFor() *WindowClass
-	// Visible determines whether the dialog is visible.
-	Visible() bool
-	// Hide hides the dialog if it is visible, aborting any interaction.
-	//
-	// Once this is called the [signal@Gtk.NativeDialog::response] signal will
-	// *not* be emitted until after the next call to
-	// [method@Gtk.NativeDialog.show].
-	//
-	// If the dialog is not visible this does nothing.
-	Hide()
-	// SetModal sets a dialog modal or non-modal.
-	//
-	// Modal dialogs prevent interaction with other windows in the same
-	// application. To keep modal dialogs on top of main application windows,
-	// use [method@Gtk.NativeDialog.set_transient_for] to make the dialog
-	// transient for the parent; most window managers will then disallow
-	// lowering the dialog below the parent.
-	SetModal(modal bool)
-	// SetTitle sets the title of the `GtkNativeDialog.`
-	SetTitle(title string)
-	// SetTransientFor: dialog windows should be set transient for the main
-	// application window they were spawned from.
-	//
-	// This allows window managers to e.g. keep the dialog on top of the main
-	// window, or center the dialog over the main window.
-	//
-	// Passing nil for @parent unsets the current transient window.
-	SetTransientFor(parent Window)
-	// Show shows the dialog on the display.
-	//
-	// When the user accepts the state of the dialog the dialog will be
-	// automatically hidden and the [signal@Gtk.NativeDialog::response] signal
-	// will be emitted.
-	//
-	// Multiple calls while the dialog is visible will be ignored.
-	Show()
-}
-
-// NativeDialogClass implements the NativeDialog interface.
-type NativeDialogClass struct {
+type NativeDialog struct {
 	*externglib.Object
 }
 
-var _ NativeDialog = (*NativeDialogClass)(nil)
+var _ NativeDialogger = (*NativeDialog)(nil)
 
-func wrapNativeDialog(obj *externglib.Object) NativeDialog {
-	return &NativeDialogClass{
+func wrapNativeDialogger(obj *externglib.Object) NativeDialogger {
+	return &NativeDialog{
 		Object: obj,
 	}
 }
 
-func marshalNativeDialog(p uintptr) (interface{}, error) {
+func marshalNativeDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNativeDialog(obj), nil
+	return wrapNativeDialogger(obj), nil
 }
 
 // Destroy destroys a dialog.
@@ -150,7 +106,7 @@ func marshalNativeDialog(p uintptr) (interface{}, error) {
 // Note that this does not release any reference to the object (as opposed to
 // destroying a `GtkWindow`) because there is no reference from the windowing
 // system to the `GtkNativeDialog`.
-func (self *NativeDialogClass) Destroy() {
+func (self *NativeDialog) Destroy() {
 	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
@@ -159,7 +115,7 @@ func (self *NativeDialogClass) Destroy() {
 }
 
 // Modal returns whether the dialog is modal.
-func (self *NativeDialogClass) Modal() bool {
+func (self *NativeDialog) Modal() bool {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gboolean         // in
 
@@ -177,7 +133,7 @@ func (self *NativeDialogClass) Modal() bool {
 }
 
 // Title gets the title of the `GtkNativeDialog`.
-func (self *NativeDialogClass) Title() string {
+func (self *NativeDialog) Title() string {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret *C.char            // in
 
@@ -193,7 +149,7 @@ func (self *NativeDialogClass) Title() string {
 }
 
 // TransientFor fetches the transient parent for this window.
-func (self *NativeDialogClass) TransientFor() *WindowClass {
+func (self *NativeDialog) TransientFor() *Window {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret *C.GtkWindow       // in
 
@@ -201,15 +157,15 @@ func (self *NativeDialogClass) TransientFor() *WindowClass {
 
 	_cret = C.gtk_native_dialog_get_transient_for(_arg0)
 
-	var _window *WindowClass // out
+	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowClass)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
 
 	return _window
 }
 
 // Visible determines whether the dialog is visible.
-func (self *NativeDialogClass) Visible() bool {
+func (self *NativeDialog) Visible() bool {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gboolean         // in
 
@@ -232,7 +188,7 @@ func (self *NativeDialogClass) Visible() bool {
 // be emitted until after the next call to [method@Gtk.NativeDialog.show].
 //
 // If the dialog is not visible this does nothing.
-func (self *NativeDialogClass) Hide() {
+func (self *NativeDialog) Hide() {
 	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
@@ -247,7 +203,7 @@ func (self *NativeDialogClass) Hide() {
 // [method@Gtk.NativeDialog.set_transient_for] to make the dialog transient for
 // the parent; most window managers will then disallow lowering the dialog below
 // the parent.
-func (self *NativeDialogClass) SetModal(modal bool) {
+func (self *NativeDialog) SetModal(modal bool) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 C.gboolean         // out
 
@@ -260,7 +216,7 @@ func (self *NativeDialogClass) SetModal(modal bool) {
 }
 
 // SetTitle sets the title of the `GtkNativeDialog.`
-func (self *NativeDialogClass) SetTitle(title string) {
+func (self *NativeDialog) SetTitle(title string) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.char            // out
 
@@ -278,7 +234,7 @@ func (self *NativeDialogClass) SetTitle(title string) {
 // window, or center the dialog over the main window.
 //
 // Passing nil for @parent unsets the current transient window.
-func (self *NativeDialogClass) SetTransientFor(parent Window) {
+func (self *NativeDialog) SetTransientFor(parent Windowwer) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.GtkWindow       // out
 
@@ -295,7 +251,7 @@ func (self *NativeDialogClass) SetTransientFor(parent Window) {
 // be emitted.
 //
 // Multiple calls while the dialog is visible will be ignored.
-func (self *NativeDialogClass) Show() {
+func (self *NativeDialog) Show() {
 	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))

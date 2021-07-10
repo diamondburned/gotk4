@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_frame_clock_phase_get_type()), F: marshalFrameClockPhase},
-		{T: externglib.Type(C.gdk_frame_clock_get_type()), F: marshalFrameClock},
+		{T: externglib.Type(C.gdk_frame_clock_get_type()), F: marshalFrameClocker},
 	})
 }
 
@@ -56,6 +56,20 @@ func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 	return FrameClockPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// FrameClocker describes FrameClock's methods.
+type FrameClocker interface {
+	gextras.Objector
+
+	BeginUpdating()
+	EndUpdating()
+	CurrentTimings() *FrameTimings
+	FrameCounter() int64
+	FrameTime() int64
+	HistoryStart() int64
+	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
+	Timings(frameCounter int64) *FrameTimings
+}
+
 // FrameClock tells the application when to update and repaint a window. This
 // may be synced to the vertical refresh rate of the monitor, for example. Even
 // when the frame clock uses a simple timer rather than a hardware-based
@@ -85,64 +99,22 @@ func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 // looking at the difference in time between an initial value from
 // gdk_frame_clock_get_frame_time() and the value inside the FrameClock::update
 // signal of the clock, they will stay exactly synchronized.
-type FrameClock interface {
-	gextras.Objector
-
-	// BeginUpdating starts updates for an animation. Until a matching call to
-	// gdk_frame_clock_end_updating() is made, the frame clock will continually
-	// request a new frame with the GDK_FRAME_CLOCK_PHASE_UPDATE phase. This
-	// function may be called multiple times and frames will be requested until
-	// gdk_frame_clock_end_updating() is called the same number of times.
-	BeginUpdating()
-	// EndUpdating stops updates for an animation. See the documentation for
-	// gdk_frame_clock_begin_updating().
-	EndUpdating()
-	// CurrentTimings gets the frame timings for the current frame.
-	CurrentTimings() *FrameTimings
-	// FrameCounter maintains a 64-bit counter that increments for each frame
-	// drawn.
-	FrameCounter() int64
-	// FrameTime gets the time that should currently be used for animations.
-	// Inside the processing of a frame, it’s the time used to compute the
-	// animation position of everything in a frame. Outside of a frame, it's the
-	// time of the conceptual “previous frame,” which may be either the actual
-	// previous frame time, or if that’s too old, an updated time.
-	FrameTime() int64
-	// HistoryStart internally keeps a history of FrameTimings objects for
-	// recent frames that can be retrieved with gdk_frame_clock_get_timings().
-	// The set of stored frames is the set from the counter values given by
-	// gdk_frame_clock_get_history_start() and
-	// gdk_frame_clock_get_frame_counter(), inclusive.
-	HistoryStart() int64
-	// RefreshInfo: using the frame history stored in the frame clock, finds the
-	// last known presentation time and refresh interval, and assuming that
-	// presentation times are separated by the refresh interval, predicts a
-	// presentation time that is a multiple of the refresh interval after the
-	// last presentation time, and later than @base_time.
-	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
-	// Timings retrieves a FrameTimings object holding timing information for
-	// the current frame or a recent frame. The FrameTimings object may not yet
-	// be complete: see gdk_frame_timings_get_complete().
-	Timings(frameCounter int64) *FrameTimings
-}
-
-// FrameClockClass implements the FrameClock interface.
-type FrameClockClass struct {
+type FrameClock struct {
 	*externglib.Object
 }
 
-var _ FrameClock = (*FrameClockClass)(nil)
+var _ FrameClocker = (*FrameClock)(nil)
 
-func wrapFrameClock(obj *externglib.Object) FrameClock {
-	return &FrameClockClass{
+func wrapFrameClocker(obj *externglib.Object) FrameClocker {
+	return &FrameClock{
 		Object: obj,
 	}
 }
 
-func marshalFrameClock(p uintptr) (interface{}, error) {
+func marshalFrameClocker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFrameClock(obj), nil
+	return wrapFrameClocker(obj), nil
 }
 
 // BeginUpdating starts updates for an animation. Until a matching call to
@@ -150,7 +122,7 @@ func marshalFrameClock(p uintptr) (interface{}, error) {
 // request a new frame with the GDK_FRAME_CLOCK_PHASE_UPDATE phase. This
 // function may be called multiple times and frames will be requested until
 // gdk_frame_clock_end_updating() is called the same number of times.
-func (frameClock *FrameClockClass) BeginUpdating() {
+func (frameClock *FrameClock) BeginUpdating() {
 	var _arg0 *C.GdkFrameClock // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
@@ -160,7 +132,7 @@ func (frameClock *FrameClockClass) BeginUpdating() {
 
 // EndUpdating stops updates for an animation. See the documentation for
 // gdk_frame_clock_begin_updating().
-func (frameClock *FrameClockClass) EndUpdating() {
+func (frameClock *FrameClock) EndUpdating() {
 	var _arg0 *C.GdkFrameClock // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
@@ -169,7 +141,7 @@ func (frameClock *FrameClockClass) EndUpdating() {
 }
 
 // CurrentTimings gets the frame timings for the current frame.
-func (frameClock *FrameClockClass) CurrentTimings() *FrameTimings {
+func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
 	var _cret *C.GdkFrameTimings // in
 
@@ -189,7 +161,7 @@ func (frameClock *FrameClockClass) CurrentTimings() *FrameTimings {
 }
 
 // FrameCounter maintains a 64-bit counter that increments for each frame drawn.
-func (frameClock *FrameClockClass) FrameCounter() int64 {
+func (frameClock *FrameClock) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.gint64         // in
 
@@ -209,7 +181,7 @@ func (frameClock *FrameClockClass) FrameCounter() int64 {
 // position of everything in a frame. Outside of a frame, it's the time of the
 // conceptual “previous frame,” which may be either the actual previous frame
 // time, or if that’s too old, an updated time.
-func (frameClock *FrameClockClass) FrameTime() int64 {
+func (frameClock *FrameClock) FrameTime() int64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.gint64         // in
 
@@ -229,7 +201,7 @@ func (frameClock *FrameClockClass) FrameTime() int64 {
 // stored frames is the set from the counter values given by
 // gdk_frame_clock_get_history_start() and gdk_frame_clock_get_frame_counter(),
 // inclusive.
-func (frameClock *FrameClockClass) HistoryStart() int64 {
+func (frameClock *FrameClock) HistoryStart() int64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.gint64         // in
 
@@ -249,7 +221,7 @@ func (frameClock *FrameClockClass) HistoryStart() int64 {
 // presentation times are separated by the refresh interval, predicts a
 // presentation time that is a multiple of the refresh interval after the last
 // presentation time, and later than @base_time.
-func (frameClock *FrameClockClass) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64) {
+func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64) {
 	var _arg0 *C.GdkFrameClock // out
 	var _arg1 C.gint64         // out
 	var _arg2 C.gint64         // in
@@ -272,7 +244,7 @@ func (frameClock *FrameClockClass) RefreshInfo(baseTime int64) (refreshIntervalR
 // Timings retrieves a FrameTimings object holding timing information for the
 // current frame or a recent frame. The FrameTimings object may not yet be
 // complete: see gdk_frame_timings_get_complete().
-func (frameClock *FrameClockClass) Timings(frameCounter int64) *FrameTimings {
+func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
 	var _arg1 C.gint64           // out
 	var _cret *C.GdkFrameTimings // in

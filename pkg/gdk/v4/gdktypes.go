@@ -271,12 +271,6 @@ type ContentFormats struct {
 	native C.GdkContentFormats
 }
 
-// WrapContentFormats wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapContentFormats(ptr unsafe.Pointer) *ContentFormats {
-	return (*ContentFormats)(ptr)
-}
-
 func marshalContentFormats(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*ContentFormats)(unsafe.Pointer(b)), nil
@@ -603,12 +597,6 @@ type KeymapKey struct {
 	native C.GdkKeymapKey
 }
 
-// WrapKeymapKey wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
-	return (*KeymapKey)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (k *KeymapKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&k.native)
@@ -631,12 +619,6 @@ func (k *KeymapKey) Native() unsafe.Pointer {
 // in 2D and 3D.
 type Rectangle struct {
 	native C.GdkRectangle
-}
-
-// WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
-	return (*Rectangle)(ptr)
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {

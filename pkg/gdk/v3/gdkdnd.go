@@ -100,7 +100,7 @@ func marshalDragAction(p uintptr) (interface{}, error) {
 //
 // This function does not need to be called in managed drag and drop operations.
 // See gdk_drag_context_manage_dnd() for more information.
-func DragAbort(context DragContext, time_ uint32) {
+func DragAbort(context DragContexter, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
 
@@ -116,7 +116,7 @@ func DragAbort(context DragContext, time_ uint32) {
 //
 // This function does not need to be called in managed drag and drop operations.
 // See gdk_drag_context_manage_dnd() for more information.
-func DragDrop(context DragContext, time_ uint32) {
+func DragDrop(context DragContexter, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
 
@@ -135,7 +135,7 @@ func DragDrop(context DragContext, time_ uint32) {
 // The DragContext will only take the first gdk_drag_drop_done() call as
 // effective, if this function is called multiple times, all subsequent calls
 // will be ignored.
-func DragDropDone(context DragContext, success bool) {
+func DragDropDone(context DragContexter, success bool) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
 
@@ -150,7 +150,7 @@ func DragDropDone(context DragContext, success bool) {
 // DragDropSucceeded returns whether the dropped data has been successfully
 // transferred. This function is intended to be used while handling a
 // GDK_DROP_FINISHED event, its return value is meaningless at other times.
-func DragDropSucceeded(context DragContext) bool {
+func DragDropSucceeded(context DragContexter) bool {
 	var _arg1 *C.GdkDragContext // out
 	var _cret C.gboolean        // in
 
@@ -172,7 +172,7 @@ func DragDropSucceeded(context DragContext) bool {
 //
 // This function is called by the drag source to obtain the @dest_window and
 // @protocol parameters for gdk_drag_motion().
-func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Screen, xRoot int, yRoot int) (*WindowClass, DragProtocol) {
+func DragFindWindowForScreen(context DragContexter, dragWindow Windowwer, screen Screener, xRoot int, yRoot int) (*Window, DragProtocol) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkWindow      // out
 	var _arg3 *C.GdkScreen      // out
@@ -189,10 +189,10 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 
 	C.gdk_drag_find_window_for_screen(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7)
 
-	var _destWindow *WindowClass // out
-	var _protocol DragProtocol   // out
+	var _destWindow *Window    // out
+	var _protocol DragProtocol // out
 
-	_destWindow = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))).(*WindowClass)
+	_destWindow = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))).(*Window)
 	_protocol = (DragProtocol)(_arg7)
 
 	return _destWindow, _protocol
@@ -201,7 +201,7 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 // DropFinish ends the drag operation after a drop.
 //
 // This function is called by the drag destination.
-func DropFinish(context DragContext, success bool, time_ uint32) {
+func DropFinish(context DragContexter, success bool, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
 	var _arg3 C.guint32         // out
@@ -219,7 +219,7 @@ func DropFinish(context DragContext, success bool, time_ uint32) {
 //
 // This function is called by the drag destination in response to a drop
 // initiated by the drag source.
-func DropReply(context DragContext, accepted bool, time_ uint32) {
+func DropReply(context DragContexter, accepted bool, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
 	var _arg3 C.guint32         // out

@@ -19,8 +19,20 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_draw_context_get_type()), F: marshalDrawContext},
+		{T: externglib.Type(C.gdk_draw_context_get_type()), F: marshalDrawContexter},
 	})
+}
+
+// DrawContexter describes DrawContext's methods.
+type DrawContexter interface {
+	gextras.Objector
+
+	BeginFrame(region *cairo.Region)
+	EndFrame()
+	Display() *Display
+	FrameRegion() *cairo.Region
+	Surface() *Surface
+	IsInFrame() bool
 }
 
 // DrawContext: base class for objects implementing different rendering methods.
@@ -32,83 +44,22 @@ func init() {
 // You will always interact with one of those subclasses.
 //
 // A `GdkDrawContext` is always associated with a single toplevel surface.
-type DrawContext interface {
-	gextras.Objector
-
-	// BeginFrame indicates that you are beginning the process of redrawing
-	// @region on the @context's surface.
-	//
-	// Calling this function begins a drawing operation using @context on the
-	// surface that @context was created from. The actual requirements and
-	// guarantees for the drawing operation vary for different implementations
-	// of drawing, so a [class@Gdk.CairoContext] and a [class@Gdk.GLContext]
-	// need to be treated differently.
-	//
-	// A call to this function is a requirement for drawing and must be followed
-	// by a call to [method@Gdk.DrawContext.end_frame], which will complete the
-	// drawing operation and ensure the contents become visible on screen.
-	//
-	// Note that the @region passed to this function is the minimum region that
-	// needs to be drawn and depending on implementation, windowing system and
-	// hardware in use, it might be necessary to draw a larger region. Drawing
-	// implementation must use [method@Gdk.DrawContext.get_frame_region() to
-	// query the region that must be drawn.
-	//
-	// When using GTK, the widget system automatically places calls to
-	// gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
-	// use of [class@Gsk.Renderer]s, so application code does not need to call
-	// these functions explicitly.
-	BeginFrame(region *cairo.Region)
-	// EndFrame ends a drawing operation started with
-	// gdk_draw_context_begin_frame().
-	//
-	// This makes the drawing available on screen. See
-	// [method@Gdk.DrawContext.begin_frame] for more details about drawing.
-	//
-	// When using a [class@Gdk.GLContext], this function may call `glFlush()`
-	// implicitly before returning; it is not recommended to call `glFlush()`
-	// explicitly before calling this function.
-	EndFrame()
-	// Display retrieves the `GdkDisplay` the @context is created for
-	Display() *DisplayClass
-	// FrameRegion retrieves the region that is currently being repainted.
-	//
-	// After a call to [method@Gdk.DrawContext.begin_frame] this function will
-	// return a union of the region passed to that function and the area of the
-	// surface that the @context determined needs to be repainted.
-	//
-	// If @context is not in between calls to
-	// [method@Gdk.DrawContext.begin_frame] and
-	// [method@Gdk.DrawContext.end_frame], nil will be returned.
-	FrameRegion() *cairo.Region
-	// Surface retrieves the surface that @context is bound to.
-	Surface() *SurfaceClass
-	// IsInFrame returns true if @context is in the process of drawing to its
-	// surface.
-	//
-	// This is the case between calls to [method@Gdk.DrawContext.begin_frame]
-	// and [method@Gdk.DrawContext.end_frame]. In this situation, drawing
-	// commands may be effecting the contents of the @context's surface.
-	IsInFrame() bool
-}
-
-// DrawContextClass implements the DrawContext interface.
-type DrawContextClass struct {
+type DrawContext struct {
 	*externglib.Object
 }
 
-var _ DrawContext = (*DrawContextClass)(nil)
+var _ DrawContexter = (*DrawContext)(nil)
 
-func wrapDrawContext(obj *externglib.Object) DrawContext {
-	return &DrawContextClass{
+func wrapDrawContexter(obj *externglib.Object) DrawContexter {
+	return &DrawContext{
 		Object: obj,
 	}
 }
 
-func marshalDrawContext(p uintptr) (interface{}, error) {
+func marshalDrawContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrawContext(obj), nil
+	return wrapDrawContexter(obj), nil
 }
 
 // BeginFrame indicates that you are beginning the process of redrawing @region
@@ -134,7 +85,7 @@ func marshalDrawContext(p uintptr) (interface{}, error) {
 // gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the use
 // of [class@Gsk.Renderer]s, so application code does not need to call these
 // functions explicitly.
-func (context *DrawContextClass) BeginFrame(region *cairo.Region) {
+func (context *DrawContext) BeginFrame(region *cairo.Region) {
 	var _arg0 *C.GdkDrawContext // out
 	var _arg1 *C.cairo_region_t // out
 
@@ -153,7 +104,7 @@ func (context *DrawContextClass) BeginFrame(region *cairo.Region) {
 // When using a [class@Gdk.GLContext], this function may call `glFlush()`
 // implicitly before returning; it is not recommended to call `glFlush()`
 // explicitly before calling this function.
-func (context *DrawContextClass) EndFrame() {
+func (context *DrawContext) EndFrame() {
 	var _arg0 *C.GdkDrawContext // out
 
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
@@ -162,7 +113,7 @@ func (context *DrawContextClass) EndFrame() {
 }
 
 // Display retrieves the `GdkDisplay` the @context is created for
-func (context *DrawContextClass) Display() *DisplayClass {
+func (context *DrawContext) Display() *Display {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkDisplay     // in
 
@@ -170,9 +121,9 @@ func (context *DrawContextClass) Display() *DisplayClass {
 
 	_cret = C.gdk_draw_context_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
@@ -185,7 +136,7 @@ func (context *DrawContextClass) Display() *DisplayClass {
 //
 // If @context is not in between calls to [method@Gdk.DrawContext.begin_frame]
 // and [method@Gdk.DrawContext.end_frame], nil will be returned.
-func (context *DrawContextClass) FrameRegion() *cairo.Region {
+func (context *DrawContext) FrameRegion() *cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.cairo_region_t // in
 
@@ -201,7 +152,7 @@ func (context *DrawContextClass) FrameRegion() *cairo.Region {
 }
 
 // Surface retrieves the surface that @context is bound to.
-func (context *DrawContextClass) Surface() *SurfaceClass {
+func (context *DrawContext) Surface() *Surface {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkSurface     // in
 
@@ -209,9 +160,9 @@ func (context *DrawContextClass) Surface() *SurfaceClass {
 
 	_cret = C.gdk_draw_context_get_surface(_arg0)
 
-	var _surface *SurfaceClass // out
+	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
 
 	return _surface
 }
@@ -222,7 +173,7 @@ func (context *DrawContextClass) Surface() *SurfaceClass {
 // This is the case between calls to [method@Gdk.DrawContext.begin_frame] and
 // [method@Gdk.DrawContext.end_frame]. In this situation, drawing commands may
 // be effecting the contents of the @context's surface.
-func (context *DrawContextClass) IsInFrame() bool {
+func (context *DrawContext) IsInFrame() bool {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret C.gboolean        // in
 

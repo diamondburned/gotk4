@@ -67,12 +67,6 @@ type Node struct {
 	native C.GNode
 }
 
-// WrapNode wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapNode(ptr unsafe.Pointer) *Node {
-	return (*Node)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (n *Node) Native() unsafe.Pointer {
 	return unsafe.Pointer(&n.native)

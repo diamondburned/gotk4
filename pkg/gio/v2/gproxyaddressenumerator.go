@@ -28,8 +28,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumerator},
+		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumeratorrer},
 	})
+}
+
+// ProxyAddressEnumeratorrer describes ProxyAddressEnumerator's methods.
+type ProxyAddressEnumeratorrer interface {
+	gextras.Objector
+
+	privateProxyAddressEnumerator()
 }
 
 // ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
@@ -40,31 +47,24 @@ func init() {
 // g_socket_connectable_enumerate()) as appropriate when a proxy is configured;
 // there should be no need to manually wrap a AddressEnumerator instance with
 // one.
-type ProxyAddressEnumerator interface {
-	gextras.Objector
-
-	privateProxyAddressEnumeratorClass()
+type ProxyAddressEnumerator struct {
+	SocketAddressEnumerator
 }
 
-// ProxyAddressEnumeratorClass implements the ProxyAddressEnumerator interface.
-type ProxyAddressEnumeratorClass struct {
-	SocketAddressEnumeratorClass
-}
+var _ ProxyAddressEnumeratorrer = (*ProxyAddressEnumerator)(nil)
 
-var _ ProxyAddressEnumerator = (*ProxyAddressEnumeratorClass)(nil)
-
-func wrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumerator {
-	return &ProxyAddressEnumeratorClass{
-		SocketAddressEnumeratorClass: SocketAddressEnumeratorClass{
+func wrapProxyAddressEnumeratorrer(obj *externglib.Object) ProxyAddressEnumeratorrer {
+	return &ProxyAddressEnumerator{
+		SocketAddressEnumerator: SocketAddressEnumerator{
 			Object: obj,
 		},
 	}
 }
 
-func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
+func marshalProxyAddressEnumeratorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProxyAddressEnumerator(obj), nil
+	return wrapProxyAddressEnumeratorrer(obj), nil
 }
 
-func (*ProxyAddressEnumeratorClass) privateProxyAddressEnumeratorClass() {}
+func (*ProxyAddressEnumerator) privateProxyAddressEnumerator() {}

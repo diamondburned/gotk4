@@ -21,60 +21,60 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_link_button_accessible_get_type()), F: marshalLinkButtonAccessible},
+		{T: externglib.Type(C.gtk_link_button_accessible_get_type()), F: marshalLinkButtonAccessibler},
 	})
 }
 
-type LinkButtonAccessible interface {
+// LinkButtonAccessibler describes LinkButtonAccessible's methods.
+type LinkButtonAccessibler interface {
 	gextras.Objector
 
-	privateLinkButtonAccessibleClass()
+	privateLinkButtonAccessible()
 }
 
-// LinkButtonAccessibleClass implements the LinkButtonAccessible interface.
-type LinkButtonAccessibleClass struct {
+type LinkButtonAccessible struct {
 	*externglib.Object
-	ButtonAccessibleClass
-	atk.ActionIface
-	atk.ImageIface
+	ButtonAccessible
+	atk.Action
+	atk.Image
 }
 
-var _ LinkButtonAccessible = (*LinkButtonAccessibleClass)(nil)
+var _ LinkButtonAccessibler = (*LinkButtonAccessible)(nil)
 
-func wrapLinkButtonAccessible(obj *externglib.Object) LinkButtonAccessible {
-	return &LinkButtonAccessibleClass{
+func wrapLinkButtonAccessibler(obj *externglib.Object) LinkButtonAccessibler {
+	return &LinkButtonAccessible{
 		Object: obj,
-		ButtonAccessibleClass: ButtonAccessibleClass{
+		ButtonAccessible: ButtonAccessible{
 			Object: obj,
-			ContainerAccessibleClass: ContainerAccessibleClass{
-				WidgetAccessibleClass: WidgetAccessibleClass{
-					AccessibleClass: AccessibleClass{
-						ObjectClass: atk.ObjectClass{
+			ContainerAccessible: ContainerAccessible{
+				WidgetAccessible: WidgetAccessible{
+					Accessible: Accessible{
+						Object: atk.Object{
 							Object: obj,
 						},
 					},
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
-			ImageIface: atk.ImageIface{
+			Image: atk.Image{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalLinkButtonAccessible(p uintptr) (interface{}, error) {
+func marshalLinkButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLinkButtonAccessible(obj), nil
+	return wrapLinkButtonAccessibler(obj), nil
 }
 
-func (*LinkButtonAccessibleClass) privateLinkButtonAccessibleClass() {}
+func (*LinkButtonAccessible) privateLinkButtonAccessible() {}

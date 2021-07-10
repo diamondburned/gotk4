@@ -28,8 +28,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_buffered_output_stream_get_type()), F: marshalBufferedOutputStream},
+		{T: externglib.Type(C.g_buffered_output_stream_get_type()), F: marshalBufferedOutputStreamer},
 	})
+}
+
+// BufferedOutputStreamer describes BufferedOutputStream's methods.
+type BufferedOutputStreamer interface {
+	gextras.Objector
+
+	AutoGrow() bool
+	BufferSize() uint
+	SetAutoGrow(autoGrow bool)
+	SetBufferSize(size uint)
 }
 
 // BufferedOutputStream: buffered output stream implements OutputStream and
@@ -46,52 +56,35 @@ func init() {
 // output stream's buffer, use g_buffered_output_stream_set_buffer_size(). Note
 // that the buffer's size cannot be reduced below the size of the data within
 // the buffer.
-type BufferedOutputStream interface {
-	gextras.Objector
-
-	// AutoGrow checks if the buffer automatically grows as data is added.
-	AutoGrow() bool
-	// BufferSize gets the size of the buffer in the @stream.
-	BufferSize() uint
-	// SetAutoGrow sets whether or not the @stream's buffer should automatically
-	// grow. If @auto_grow is true, then each write will just make the buffer
-	// larger, and you must manually flush the buffer to actually write out the
-	// data to the underlying stream.
-	SetAutoGrow(autoGrow bool)
-	// SetBufferSize sets the size of the internal buffer to @size.
-	SetBufferSize(size uint)
+type BufferedOutputStream struct {
+	FilterOutputStream
+	Seekable
 }
 
-// BufferedOutputStreamClass implements the BufferedOutputStream interface.
-type BufferedOutputStreamClass struct {
-	FilterOutputStreamClass
-	SeekableIface
-}
+var _ BufferedOutputStreamer = (*BufferedOutputStream)(nil)
 
-var _ BufferedOutputStream = (*BufferedOutputStreamClass)(nil)
-
-func wrapBufferedOutputStream(obj *externglib.Object) BufferedOutputStream {
-	return &BufferedOutputStreamClass{
-		FilterOutputStreamClass: FilterOutputStreamClass{
-			OutputStreamClass: OutputStreamClass{
+func wrapBufferedOutputStreamer(obj *externglib.Object) BufferedOutputStreamer {
+	return &BufferedOutputStream{
+		FilterOutputStream: FilterOutputStream{
+			OutputStream: OutputStream{
 				Object: obj,
 			},
 		},
-		SeekableIface: SeekableIface{
+		Seekable: Seekable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
+func marshalBufferedOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBufferedOutputStream(obj), nil
+	return wrapBufferedOutputStreamer(obj), nil
 }
 
 // NewBufferedOutputStream creates a new buffered output stream for a base
 // stream.
-func NewBufferedOutputStream(baseStream OutputStream) *BufferedOutputStreamClass {
+func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _cret *C.GOutputStream // in
 
@@ -99,16 +92,16 @@ func NewBufferedOutputStream(baseStream OutputStream) *BufferedOutputStreamClass
 
 	_cret = C.g_buffered_output_stream_new(_arg1)
 
-	var _bufferedOutputStream *BufferedOutputStreamClass // out
+	var _bufferedOutputStream *BufferedOutputStream // out
 
-	_bufferedOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BufferedOutputStreamClass)
+	_bufferedOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BufferedOutputStream)
 
 	return _bufferedOutputStream
 }
 
 // NewBufferedOutputStreamSized creates a new buffered output stream with a
 // given buffer size.
-func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) *BufferedOutputStreamClass {
+func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 C.gsize          // out
 	var _cret *C.GOutputStream // in
@@ -118,15 +111,15 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) *BufferedO
 
 	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)
 
-	var _bufferedOutputStream *BufferedOutputStreamClass // out
+	var _bufferedOutputStream *BufferedOutputStream // out
 
-	_bufferedOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BufferedOutputStreamClass)
+	_bufferedOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BufferedOutputStream)
 
 	return _bufferedOutputStream
 }
 
 // AutoGrow checks if the buffer automatically grows as data is added.
-func (stream *BufferedOutputStreamClass) AutoGrow() bool {
+func (stream *BufferedOutputStream) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gboolean               // in
 
@@ -144,7 +137,7 @@ func (stream *BufferedOutputStreamClass) AutoGrow() bool {
 }
 
 // BufferSize gets the size of the buffer in the @stream.
-func (stream *BufferedOutputStreamClass) BufferSize() uint {
+func (stream *BufferedOutputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gsize                  // in
 
@@ -163,7 +156,7 @@ func (stream *BufferedOutputStreamClass) BufferSize() uint {
 // grow. If @auto_grow is true, then each write will just make the buffer
 // larger, and you must manually flush the buffer to actually write out the data
 // to the underlying stream.
-func (stream *BufferedOutputStreamClass) SetAutoGrow(autoGrow bool) {
+func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gboolean               // out
 
@@ -176,7 +169,7 @@ func (stream *BufferedOutputStreamClass) SetAutoGrow(autoGrow bool) {
 }
 
 // SetBufferSize sets the size of the internal buffer to @size.
-func (stream *BufferedOutputStreamClass) SetBufferSize(size uint) {
+func (stream *BufferedOutputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gsize                  // out
 

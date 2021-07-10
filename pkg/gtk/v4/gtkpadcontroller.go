@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_pad_action_type_get_type()), F: marshalPadActionType},
-		{T: externglib.Type(C.gtk_pad_controller_get_type()), F: marshalPadController},
+		{T: externglib.Type(C.gtk_pad_controller_get_type()), F: marshalPadControllerrer},
 	})
 }
 
@@ -37,6 +37,13 @@ const (
 
 func marshalPadActionType(p uintptr) (interface{}, error) {
 	return PadActionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PadControllerrer describes PadController's methods.
+type PadControllerrer interface {
+	gextras.Objector
+
+	SetActionEntries(entries []PadActionEntry)
 }
 
 // PadController: `GtkPadController` is an event controller for the pads found
@@ -79,43 +86,31 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 // The actions belonging to rings/strips will be activated with a parameter of
 // type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
 // required that those are made stateful and accepting this `GVariantType`.
-type PadController interface {
-	gextras.Objector
-
-	// SetActionEntries: convenience function to add a group of action entries
-	// on @controller.
-	//
-	// See [struct@Gtk.PadActionEntry] and
-	// [method@Gtk.PadController.set_action].
-	SetActionEntries(entries []PadActionEntry)
+type PadController struct {
+	EventController
 }
 
-// PadControllerClass implements the PadController interface.
-type PadControllerClass struct {
-	EventControllerClass
-}
+var _ PadControllerrer = (*PadController)(nil)
 
-var _ PadController = (*PadControllerClass)(nil)
-
-func wrapPadController(obj *externglib.Object) PadController {
-	return &PadControllerClass{
-		EventControllerClass: EventControllerClass{
+func wrapPadControllerrer(obj *externglib.Object) PadControllerrer {
+	return &PadController{
+		EventController: EventController{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPadController(p uintptr) (interface{}, error) {
+func marshalPadControllerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPadController(obj), nil
+	return wrapPadControllerrer(obj), nil
 }
 
 // SetActionEntries: convenience function to add a group of action entries on
 // @controller.
 //
 // See [struct@Gtk.PadActionEntry] and [method@Gtk.PadController.set_action].
-func (controller *PadControllerClass) SetActionEntries(entries []PadActionEntry) {
+func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 	var _arg0 *C.GtkPadController // out
 	var _arg1 *C.GtkPadActionEntry
 	var _arg2 C.int
@@ -130,12 +125,6 @@ func (controller *PadControllerClass) SetActionEntries(entries []PadActionEntry)
 // PadActionEntry: struct defining a pad action entry.
 type PadActionEntry struct {
 	native C.GtkPadActionEntry
-}
-
-// WrapPadActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
-	return (*PadActionEntry)(ptr)
 }
 
 // Native returns the underlying C source pointer.

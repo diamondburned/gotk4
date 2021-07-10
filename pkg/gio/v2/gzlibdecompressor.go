@@ -28,43 +28,38 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressor},
+		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressorrer},
 	})
 }
 
-// ZlibDecompressor: zlib decompression
-type ZlibDecompressor interface {
+// ZlibDecompressorrer describes ZlibDecompressor's methods.
+type ZlibDecompressorrer interface {
 	gextras.Objector
 
-	// FileInfo retrieves the Info constructed from the GZIP header data of
-	// compressed data processed by @compressor, or nil if @decompressor's
-	// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
-	// header data was not fully processed yet, or it not present in the data
-	// stream at all.
-	FileInfo() *FileInfoClass
+	FileInfo() *FileInfo
 }
 
-// ZlibDecompressorClass implements the ZlibDecompressor interface.
-type ZlibDecompressorClass struct {
+// ZlibDecompressor: zlib decompression
+type ZlibDecompressor struct {
 	*externglib.Object
-	ConverterIface
+	Converter
 }
 
-var _ ZlibDecompressor = (*ZlibDecompressorClass)(nil)
+var _ ZlibDecompressorrer = (*ZlibDecompressor)(nil)
 
-func wrapZlibDecompressor(obj *externglib.Object) ZlibDecompressor {
-	return &ZlibDecompressorClass{
+func wrapZlibDecompressorrer(obj *externglib.Object) ZlibDecompressorrer {
+	return &ZlibDecompressor{
 		Object: obj,
-		ConverterIface: ConverterIface{
+		Converter: Converter{
 			Object: obj,
 		},
 	}
 }
 
-func marshalZlibDecompressor(p uintptr) (interface{}, error) {
+func marshalZlibDecompressorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapZlibDecompressor(obj), nil
+	return wrapZlibDecompressorrer(obj), nil
 }
 
 // FileInfo retrieves the Info constructed from the GZIP header data of
@@ -72,7 +67,7 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 // Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
 // header data was not fully processed yet, or it not present in the data stream
 // at all.
-func (decompressor *ZlibDecompressorClass) FileInfo() *FileInfoClass {
+func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 	var _arg0 *C.GZlibDecompressor // out
 	var _cret *C.GFileInfo         // in
 
@@ -80,9 +75,9 @@ func (decompressor *ZlibDecompressorClass) FileInfo() *FileInfoClass {
 
 	_cret = C.g_zlib_decompressor_get_file_info(_arg0)
 
-	var _fileInfo *FileInfoClass // out
+	var _fileInfo *FileInfo // out
 
-	_fileInfo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileInfoClass)
+	_fileInfo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileInfo)
 
 	return _fileInfo
 }

@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_widget_get_type()), F: marshalColorChooserWidget},
+		{T: externglib.Type(C.gtk_color_chooser_widget_get_type()), F: marshalColorChooserWidgetter},
 	})
+}
+
+// ColorChooserWidgetter describes ColorChooserWidget's methods.
+type ColorChooserWidgetter interface {
+	gextras.Objector
+
+	privateColorChooserWidget()
 }
 
 // ColorChooserWidget: the `GtkColorChooserWidget` widget lets the user select a
@@ -48,74 +55,67 @@ func init() {
 // CSS names
 //
 // `GtkColorChooserWidget` has a single CSS node with name colorchooser.
-type ColorChooserWidget interface {
-	gextras.Objector
-
-	privateColorChooserWidgetClass()
-}
-
-// ColorChooserWidgetClass implements the ColorChooserWidget interface.
-type ColorChooserWidgetClass struct {
+type ColorChooserWidget struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ColorChooserIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ColorChooser
+	ConstraintTarget
 }
 
-var _ ColorChooserWidget = (*ColorChooserWidgetClass)(nil)
+var _ ColorChooserWidgetter = (*ColorChooserWidget)(nil)
 
-func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
-	return &ColorChooserWidgetClass{
+func wrapColorChooserWidgetter(obj *externglib.Object) ColorChooserWidgetter {
+	return &ColorChooserWidget{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ColorChooserIface: ColorChooserIface{
+		ColorChooser: ColorChooser{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalColorChooserWidget(p uintptr) (interface{}, error) {
+func marshalColorChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorChooserWidget(obj), nil
+	return wrapColorChooserWidgetter(obj), nil
 }
 
 // NewColorChooserWidget creates a new `GtkColorChooserWidget`.
-func NewColorChooserWidget() *ColorChooserWidgetClass {
+func NewColorChooserWidget() *ColorChooserWidget {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_color_chooser_widget_new()
 
-	var _colorChooserWidget *ColorChooserWidgetClass // out
+	var _colorChooserWidget *ColorChooserWidget // out
 
-	_colorChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserWidgetClass)
+	_colorChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserWidget)
 
 	return _colorChooserWidget
 }
 
-func (*ColorChooserWidgetClass) privateColorChooserWidgetClass() {}
+func (*ColorChooserWidget) privateColorChooserWidget() {}

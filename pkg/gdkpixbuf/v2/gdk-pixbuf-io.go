@@ -43,7 +43,7 @@ const (
 //
 // PixbufLoader uses a function of this type to emit the "<link
 // linkend="GdkPixbufLoader-area-prepared">area_prepared</link>" signal.
-type PixbufModulePreparedFunc func(pixbuf *PixbufClass, anim *PixbufAnimationClass, userData interface{})
+type PixbufModulePreparedFunc func(pixbuf *Pixbuf, anim *PixbufAnimation, userData interface{})
 
 //export gotk4_PixbufModulePreparedFunc
 func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
@@ -52,12 +52,12 @@ func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimatio
 		panic(`callback not found`)
 	}
 
-	var pixbuf *PixbufClass        // out
-	var anim *PixbufAnimationClass // out
-	var userData interface{}       // out
+	var pixbuf *Pixbuf        // out
+	var anim *PixbufAnimation // out
+	var userData interface{}  // out
 
-	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*PixbufClass)
-	anim = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*PixbufAnimationClass)
+	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Pixbuf)
+	anim = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*PixbufAnimation)
 	userData = box.Get(uintptr(arg2))
 
 	fn := v.(PixbufModulePreparedFunc)
@@ -103,7 +103,7 @@ func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 //
 // PixbufLoader uses a function of this type to emit the "<link
 // linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
-type PixbufModuleUpdatedFunc func(pixbuf *PixbufClass, x int, y int, width int, height int, userData interface{})
+type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x int, y int, width int, height int, userData interface{})
 
 //export gotk4_PixbufModuleUpdatedFunc
 func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
@@ -112,14 +112,14 @@ func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, ar
 		panic(`callback not found`)
 	}
 
-	var pixbuf *PixbufClass  // out
+	var pixbuf *Pixbuf       // out
 	var x int                // out
 	var y int                // out
 	var width int            // out
 	var height int           // out
 	var userData interface{} // out
 
-	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*PixbufClass)
+	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Pixbuf)
 	x = int(arg1)
 	y = int(arg2)
 	width = int(arg3)
@@ -137,12 +137,6 @@ func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, ar
 // `gdk_pixbuf_format_*` family of functions.
 type PixbufFormat struct {
 	native C.GdkPixbufFormat
-}
-
-// WrapPixbufFormat wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPixbufFormat(ptr unsafe.Pointer) *PixbufFormat {
-	return (*PixbufFormat)(ptr)
 }
 
 func marshalPixbufFormat(p uintptr) (interface{}, error) {
@@ -168,7 +162,7 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 
 	_pixbufFormat = (*PixbufFormat)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_pixbufFormat, func(v *PixbufFormat) {
-		C.free(unsafe.Pointer(v))
+		C.gdk_pixbuf_format_free((*C.GdkPixbufFormat)(unsafe.Pointer(v)))
 	})
 
 	return _pixbufFormat

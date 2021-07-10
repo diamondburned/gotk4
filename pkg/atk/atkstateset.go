@@ -18,66 +18,58 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_state_set_get_type()), F: marshalStateSet},
+		{T: externglib.Type(C.atk_state_set_get_type()), F: marshalStateSetter},
 	})
+}
+
+// StateSetter describes StateSet's methods.
+type StateSetter interface {
+	gextras.Objector
+
+	AndSets(compareSet StateSetter) *StateSet
+	ClearStates()
+	IsEmpty() bool
+	OrSets(compareSet StateSetter) *StateSet
+	XorSets(compareSet StateSetter) *StateSet
 }
 
 // StateSet is a read-only representation of the full set of States that apply
 // to an object at a given time. This set is not meant to be modified, but
 // rather created when #atk_object_ref_state_set() is called.
-type StateSet interface {
-	gextras.Objector
-
-	// AndSets constructs the intersection of the two sets, returning nil if the
-	// intersection is empty.
-	AndSets(compareSet StateSet) *StateSetClass
-	// ClearStates removes all states from the state set.
-	ClearStates()
-	// IsEmpty checks whether the state set is empty, i.e. has no states set.
-	IsEmpty() bool
-	// OrSets constructs the union of the two sets.
-	OrSets(compareSet StateSet) *StateSetClass
-	// XorSets constructs the exclusive-or of the two sets, returning nil is
-	// empty. The set returned by this operation contains the states in exactly
-	// one of the two sets.
-	XorSets(compareSet StateSet) *StateSetClass
-}
-
-// StateSetClass implements the StateSet interface.
-type StateSetClass struct {
+type StateSet struct {
 	*externglib.Object
 }
 
-var _ StateSet = (*StateSetClass)(nil)
+var _ StateSetter = (*StateSet)(nil)
 
-func wrapStateSet(obj *externglib.Object) StateSet {
-	return &StateSetClass{
+func wrapStateSetter(obj *externglib.Object) StateSetter {
+	return &StateSet{
 		Object: obj,
 	}
 }
 
-func marshalStateSet(p uintptr) (interface{}, error) {
+func marshalStateSetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStateSet(obj), nil
+	return wrapStateSetter(obj), nil
 }
 
 // NewStateSet creates a new empty state set.
-func NewStateSet() *StateSetClass {
+func NewStateSet() *StateSet {
 	var _cret *C.AtkStateSet // in
 
 	_cret = C.atk_state_set_new()
 
-	var _stateSet *StateSetClass // out
+	var _stateSet *StateSet // out
 
-	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSetClass)
+	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSet)
 
 	return _stateSet
 }
 
 // AndSets constructs the intersection of the two sets, returning nil if the
 // intersection is empty.
-func (set *StateSetClass) AndSets(compareSet StateSet) *StateSetClass {
+func (set *StateSet) AndSets(compareSet StateSetter) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
@@ -87,15 +79,15 @@ func (set *StateSetClass) AndSets(compareSet StateSet) *StateSetClass {
 
 	_cret = C.atk_state_set_and_sets(_arg0, _arg1)
 
-	var _stateSet *StateSetClass // out
+	var _stateSet *StateSet // out
 
-	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSetClass)
+	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSet)
 
 	return _stateSet
 }
 
 // ClearStates removes all states from the state set.
-func (set *StateSetClass) ClearStates() {
+func (set *StateSet) ClearStates() {
 	var _arg0 *C.AtkStateSet // out
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
@@ -104,7 +96,7 @@ func (set *StateSetClass) ClearStates() {
 }
 
 // IsEmpty checks whether the state set is empty, i.e. has no states set.
-func (set *StateSetClass) IsEmpty() bool {
+func (set *StateSet) IsEmpty() bool {
 	var _arg0 *C.AtkStateSet // out
 	var _cret C.gboolean     // in
 
@@ -122,7 +114,7 @@ func (set *StateSetClass) IsEmpty() bool {
 }
 
 // OrSets constructs the union of the two sets.
-func (set *StateSetClass) OrSets(compareSet StateSet) *StateSetClass {
+func (set *StateSet) OrSets(compareSet StateSetter) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
@@ -132,9 +124,9 @@ func (set *StateSetClass) OrSets(compareSet StateSet) *StateSetClass {
 
 	_cret = C.atk_state_set_or_sets(_arg0, _arg1)
 
-	var _stateSet *StateSetClass // out
+	var _stateSet *StateSet // out
 
-	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSetClass)
+	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSet)
 
 	return _stateSet
 }
@@ -142,7 +134,7 @@ func (set *StateSetClass) OrSets(compareSet StateSet) *StateSetClass {
 // XorSets constructs the exclusive-or of the two sets, returning nil is empty.
 // The set returned by this operation contains the states in exactly one of the
 // two sets.
-func (set *StateSetClass) XorSets(compareSet StateSet) *StateSetClass {
+func (set *StateSet) XorSets(compareSet StateSetter) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
@@ -152,9 +144,9 @@ func (set *StateSetClass) XorSets(compareSet StateSet) *StateSetClass {
 
 	_cret = C.atk_state_set_xor_sets(_arg0, _arg1)
 
-	var _stateSet *StateSetClass // out
+	var _stateSet *StateSet // out
 
-	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSetClass)
+	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSet)
 
 	return _stateSet
 }

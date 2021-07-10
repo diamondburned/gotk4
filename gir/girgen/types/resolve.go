@@ -367,11 +367,6 @@ func (typ *Resolved) ptr(sub1 bool) string {
 	return strings.Repeat("*", int(ptr))
 }
 
-const (
-	ImplClassSuffix     = "Class"
-	ImplInterfaceSuffix = "Iface"
-)
-
 // Name returns the type name without the namespace or pointer.
 func (typ *Resolved) Name() string {
 	if typ.Builtin != nil {
@@ -379,15 +374,7 @@ func (typ *Resolved) Name() string {
 		return strings.ReplaceAll(parts[len(parts)-1], "*", "")
 	}
 
-	name := strcases.PascalToGo(typ.Extern.Name())
-	switch typ.Extern.Type.(type) {
-	case *gir.Class:
-		name += ImplClassSuffix
-	case *gir.Interface:
-		name += ImplInterfaceSuffix
-	}
-
-	return name
+	return strcases.PascalToGo(typ.Extern.Name())
 }
 
 // ImplType returns the implementation type. This is only different to
@@ -436,8 +423,17 @@ func (typ *Resolved) PublicType(needsNamespace bool) string {
 	name := typ.Extern.Name()
 	name = strcases.PascalToGo(name)
 
-	// Classes have a pointer in C, but we implement it as an interface in Go.
-	ptrStr := typ.ptr(typ.IsClass() || typ.IsInterface())
+	var ptrStr string
+
+	switch typ.Extern.Type.(type) {
+	case *gir.Class, *gir.Interface:
+		name = strcases.Interfacify(name)
+		// Classes have a pointer in C, but we implement it as an interface in
+		// Go.
+		ptrStr = typ.ptr(true)
+	default:
+		ptrStr = typ.ptr(false)
+	}
 
 	if !needsNamespace {
 		return ptrStr + name

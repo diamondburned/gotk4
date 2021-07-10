@@ -18,9 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_overlay_layout_get_type()), F: marshalOverlayLayout},
-		{T: externglib.Type(C.gtk_overlay_layout_child_get_type()), F: marshalOverlayLayoutChild},
+		{T: externglib.Type(C.gtk_overlay_layout_get_type()), F: marshalOverlayLayouter},
+		{T: externglib.Type(C.gtk_overlay_layout_child_get_type()), F: marshalOverlayLayoutChilder},
 	})
+}
+
+// OverlayLayouter describes OverlayLayout's methods.
+type OverlayLayouter interface {
+	gextras.Objector
+
+	privateOverlayLayout()
 }
 
 // OverlayLayout: `GtkOverlayLayout` is the layout manager used by `GtkOverlay`.
@@ -30,86 +37,75 @@ func init() {
 // This is not a reusable layout manager, since it expects its widget to be a
 // `GtkOverlay`. It only listed here so that its layout properties get
 // documented.
-type OverlayLayout interface {
-	gextras.Objector
-
-	privateOverlayLayoutClass()
+type OverlayLayout struct {
+	LayoutManager
 }
 
-// OverlayLayoutClass implements the OverlayLayout interface.
-type OverlayLayoutClass struct {
-	LayoutManagerClass
-}
+var _ OverlayLayouter = (*OverlayLayout)(nil)
 
-var _ OverlayLayout = (*OverlayLayoutClass)(nil)
-
-func wrapOverlayLayout(obj *externglib.Object) OverlayLayout {
-	return &OverlayLayoutClass{
-		LayoutManagerClass: LayoutManagerClass{
+func wrapOverlayLayouter(obj *externglib.Object) OverlayLayouter {
+	return &OverlayLayout{
+		LayoutManager: LayoutManager{
 			Object: obj,
 		},
 	}
 }
 
-func marshalOverlayLayout(p uintptr) (interface{}, error) {
+func marshalOverlayLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOverlayLayout(obj), nil
+	return wrapOverlayLayouter(obj), nil
 }
 
 // NewOverlayLayout creates a new `GtkOverlayLayout` instance.
-func NewOverlayLayout() *OverlayLayoutClass {
+func NewOverlayLayout() *OverlayLayout {
 	var _cret *C.GtkLayoutManager // in
 
 	_cret = C.gtk_overlay_layout_new()
 
-	var _overlayLayout *OverlayLayoutClass // out
+	var _overlayLayout *OverlayLayout // out
 
-	_overlayLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*OverlayLayoutClass)
+	_overlayLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*OverlayLayout)
 
 	return _overlayLayout
 }
 
-func (*OverlayLayoutClass) privateOverlayLayoutClass() {}
+func (*OverlayLayout) privateOverlayLayout() {}
 
-// OverlayLayoutChild: `GtkLayoutChild` subclass for children in a
-// `GtkOverlayLayout`.
-type OverlayLayoutChild interface {
+// OverlayLayoutChilder describes OverlayLayoutChild's methods.
+type OverlayLayoutChilder interface {
 	gextras.Objector
 
-	// ClipOverlay retrieves whether the child is clipped.
 	ClipOverlay() bool
-	// Measure retrieves whether the child is measured.
 	Measure() bool
-	// SetClipOverlay sets whether to clip this child.
 	SetClipOverlay(clipOverlay bool)
-	// SetMeasure sets whether to measure this child.
 	SetMeasure(measure bool)
 }
 
-// OverlayLayoutChildClass implements the OverlayLayoutChild interface.
-type OverlayLayoutChildClass struct {
-	LayoutChildClass
+// OverlayLayoutChild: `GtkLayoutChild` subclass for children in a
+// `GtkOverlayLayout`.
+type OverlayLayoutChild struct {
+	LayoutChild
 }
 
-var _ OverlayLayoutChild = (*OverlayLayoutChildClass)(nil)
+var _ OverlayLayoutChilder = (*OverlayLayoutChild)(nil)
 
-func wrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChild {
-	return &OverlayLayoutChildClass{
-		LayoutChildClass: LayoutChildClass{
+func wrapOverlayLayoutChilder(obj *externglib.Object) OverlayLayoutChilder {
+	return &OverlayLayoutChild{
+		LayoutChild: LayoutChild{
 			Object: obj,
 		},
 	}
 }
 
-func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
+func marshalOverlayLayoutChilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOverlayLayoutChild(obj), nil
+	return wrapOverlayLayoutChilder(obj), nil
 }
 
 // ClipOverlay retrieves whether the child is clipped.
-func (child *OverlayLayoutChildClass) ClipOverlay() bool {
+func (child *OverlayLayoutChild) ClipOverlay() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
@@ -127,7 +123,7 @@ func (child *OverlayLayoutChildClass) ClipOverlay() bool {
 }
 
 // Measure retrieves whether the child is measured.
-func (child *OverlayLayoutChildClass) Measure() bool {
+func (child *OverlayLayoutChild) Measure() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
@@ -145,7 +141,7 @@ func (child *OverlayLayoutChildClass) Measure() bool {
 }
 
 // SetClipOverlay sets whether to clip this child.
-func (child *OverlayLayoutChildClass) SetClipOverlay(clipOverlay bool) {
+func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 
@@ -158,7 +154,7 @@ func (child *OverlayLayoutChildClass) SetClipOverlay(clipOverlay bool) {
 }
 
 // SetMeasure sets whether to measure this child.
-func (child *OverlayLayoutChildClass) SetMeasure(measure bool) {
+func (child *OverlayLayoutChild) SetMeasure(measure bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 

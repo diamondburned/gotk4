@@ -28,8 +28,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_unix_socket_address_get_type()), F: marshalUnixSocketAddress},
+		{T: externglib.Type(C.g_unix_socket_address_get_type()), F: marshalUnixSocketAddresser},
 	})
+}
+
+// UnixSocketAddresser describes UnixSocketAddress's methods.
+type UnixSocketAddresser interface {
+	gextras.Objector
+
+	AddressType() UnixSocketAddressType
+	IsAbstract() bool
+	Path() string
+	PathLen() uint
 }
 
 // UnixSocketAddress: support for UNIX-domain (also known as local) sockets.
@@ -45,63 +55,40 @@ func init() {
 // Note that `<gio/gunixsocketaddress.h>` belongs to the UNIX-specific GIO
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
-type UnixSocketAddress interface {
-	gextras.Objector
-
-	// AddressType gets @address's type.
-	AddressType() UnixSocketAddressType
-	// IsAbstract tests if @address is abstract.
-	//
-	// Deprecated: Use g_unix_socket_address_get_address_type().
-	IsAbstract() bool
-	// Path gets @address's path, or for abstract sockets the "name".
-	//
-	// Guaranteed to be zero-terminated, but an abstract socket may contain
-	// embedded zeros, and thus you should use
-	// g_unix_socket_address_get_path_len() to get the true length of this
-	// string.
-	Path() string
-	// PathLen gets the length of @address's path.
-	//
-	// For details, see g_unix_socket_address_get_path().
-	PathLen() uint
-}
-
-// UnixSocketAddressClass implements the UnixSocketAddress interface.
-type UnixSocketAddressClass struct {
+type UnixSocketAddress struct {
 	*externglib.Object
-	SocketAddressClass
-	SocketConnectableIface
+	SocketAddress
+	SocketConnectable
 }
 
-var _ UnixSocketAddress = (*UnixSocketAddressClass)(nil)
+var _ UnixSocketAddresser = (*UnixSocketAddress)(nil)
 
-func wrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
-	return &UnixSocketAddressClass{
+func wrapUnixSocketAddresser(obj *externglib.Object) UnixSocketAddresser {
+	return &UnixSocketAddress{
 		Object: obj,
-		SocketAddressClass: SocketAddressClass{
+		SocketAddress: SocketAddress{
 			Object: obj,
-			SocketConnectableIface: SocketConnectableIface{
+			SocketConnectable: SocketConnectable{
 				Object: obj,
 			},
 		},
-		SocketConnectableIface: SocketConnectableIface{
+		SocketConnectable: SocketConnectable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
+func marshalUnixSocketAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixSocketAddress(obj), nil
+	return wrapUnixSocketAddresser(obj), nil
 }
 
 // NewUnixSocketAddress creates a new SocketAddress for @path.
 //
 // To create abstract socket addresses, on systems that support that, use
 // g_unix_socket_address_new_abstract().
-func NewUnixSocketAddress(path string) *UnixSocketAddressClass {
+func NewUnixSocketAddress(path string) *UnixSocketAddress {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GSocketAddress // in
 
@@ -110,9 +97,9 @@ func NewUnixSocketAddress(path string) *UnixSocketAddressClass {
 
 	_cret = C.g_unix_socket_address_new(_arg1)
 
-	var _unixSocketAddress *UnixSocketAddressClass // out
+	var _unixSocketAddress *UnixSocketAddress // out
 
-	_unixSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixSocketAddressClass)
+	_unixSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixSocketAddress)
 
 	return _unixSocketAddress
 }
@@ -121,7 +108,7 @@ func NewUnixSocketAddress(path string) *UnixSocketAddressClass {
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED SocketAddress for @path.
 //
 // Deprecated: Use g_unix_socket_address_new_with_type().
-func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddressClass {
+func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
 	var _arg1 *C.gchar
 	var _arg2 C.gint
 	var _cret *C.GSocketAddress // in
@@ -131,15 +118,15 @@ func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddressClass {
 
 	_cret = C.g_unix_socket_address_new_abstract(_arg1, _arg2)
 
-	var _unixSocketAddress *UnixSocketAddressClass // out
+	var _unixSocketAddress *UnixSocketAddress // out
 
-	_unixSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixSocketAddressClass)
+	_unixSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixSocketAddress)
 
 	return _unixSocketAddress
 }
 
 // AddressType gets @address's type.
-func (address *UnixSocketAddressClass) AddressType() UnixSocketAddressType {
+func (address *UnixSocketAddress) AddressType() UnixSocketAddressType {
 	var _arg0 *C.GUnixSocketAddress    // out
 	var _cret C.GUnixSocketAddressType // in
 
@@ -157,7 +144,7 @@ func (address *UnixSocketAddressClass) AddressType() UnixSocketAddressType {
 // IsAbstract tests if @address is abstract.
 //
 // Deprecated: Use g_unix_socket_address_get_address_type().
-func (address *UnixSocketAddressClass) IsAbstract() bool {
+func (address *UnixSocketAddress) IsAbstract() bool {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gboolean            // in
 
@@ -179,7 +166,7 @@ func (address *UnixSocketAddressClass) IsAbstract() bool {
 // Guaranteed to be zero-terminated, but an abstract socket may contain embedded
 // zeros, and thus you should use g_unix_socket_address_get_path_len() to get
 // the true length of this string.
-func (address *UnixSocketAddressClass) Path() string {
+func (address *UnixSocketAddress) Path() string {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret *C.char               // in
 
@@ -197,7 +184,7 @@ func (address *UnixSocketAddressClass) Path() string {
 // PathLen gets the length of @address's path.
 //
 // For details, see g_unix_socket_address_get_path().
-func (address *UnixSocketAddressClass) PathLen() uint {
+func (address *UnixSocketAddress) PathLen() uint {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gsize               // in
 

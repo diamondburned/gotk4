@@ -298,12 +298,6 @@ type MainContext struct {
 	native C.GMainContext
 }
 
-// WrapMainContext wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMainContext(ptr unsafe.Pointer) *MainContext {
-	return (*MainContext)(ptr)
-}
-
 func marshalMainContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*MainContext)(unsafe.Pointer(b)), nil
@@ -724,12 +718,6 @@ type MainLoop struct {
 	native C.GMainLoop
 }
 
-// WrapMainLoop wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMainLoop(ptr unsafe.Pointer) *MainLoop {
-	return (*MainLoop)(ptr)
-}
-
 func marshalMainLoop(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*MainLoop)(unsafe.Pointer(b)), nil
@@ -861,12 +849,6 @@ func (loop *MainLoop) unref() {
 // source.
 type Source struct {
 	native C.GSource
-}
-
-// WrapSource wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSource(ptr unsafe.Pointer) *Source {
-	return (*Source)(ptr)
 }
 
 func marshalSource(p uintptr) (interface{}, error) {
@@ -1424,12 +1406,6 @@ type SourceCallbackFuncs struct {
 	native C.GSourceCallbackFuncs
 }
 
-// WrapSourceCallbackFuncs wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSourceCallbackFuncs(ptr unsafe.Pointer) *SourceCallbackFuncs {
-	return (*SourceCallbackFuncs)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
@@ -1457,12 +1433,6 @@ func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
 // been met, and returns true if so.
 type SourceFuncs struct {
 	native C.GSourceFuncs
-}
-
-// WrapSourceFuncs wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSourceFuncs(ptr unsafe.Pointer) *SourceFuncs {
-	return (*SourceFuncs)(ptr)
 }
 
 // Native returns the underlying C source pointer.

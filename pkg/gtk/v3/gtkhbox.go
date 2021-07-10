@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hbox_get_type()), F: marshalHBox},
+		{T: externglib.Type(C.gtk_hbox_get_type()), F: marshalHBoxxer},
 	})
+}
+
+// HBoxxer describes HBox's methods.
+type HBoxxer interface {
+	gextras.Objector
+
+	privateHBox()
 }
 
 // HBox is a container that organizes child widgets into a single row.
@@ -41,62 +48,55 @@ func init() {
 // first-child or last-child styling, the recommendation is to switch to Grid.
 // For more information about migrating to Grid, see [Migrating from other
 // containers to GtkGrid][gtk-migrating-GtkGrid].
-type HBox interface {
-	gextras.Objector
-
-	privateHBoxClass()
-}
-
-// HBoxClass implements the HBox interface.
-type HBoxClass struct {
+type HBox struct {
 	*externglib.Object
-	BoxClass
-	BuildableIface
-	OrientableIface
+	Box
+	Buildable
+	Orientable
 }
 
-var _ HBox = (*HBoxClass)(nil)
+var _ HBoxxer = (*HBox)(nil)
 
-func wrapHBox(obj *externglib.Object) HBox {
-	return &HBoxClass{
+func wrapHBoxxer(obj *externglib.Object) HBoxxer {
+	return &HBox{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalHBox(p uintptr) (interface{}, error) {
+func marshalHBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHBox(obj), nil
+	return wrapHBoxxer(obj), nil
 }
 
 // NewHBox creates a new HBox.
@@ -105,7 +105,7 @@ func marshalHBox(p uintptr) (interface{}, error) {
 // instead, which is a quick and easy change. But the recommendation is to
 // switch to Grid, since Box is going to go away eventually. See [Migrating from
 // other containers to GtkGrid][gtk-migrating-GtkGrid].
-func NewHBox(homogeneous bool, spacing int) *HBoxClass {
+func NewHBox(homogeneous bool, spacing int) *HBox {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out
 	var _cret *C.GtkWidget // in
@@ -117,11 +117,11 @@ func NewHBox(homogeneous bool, spacing int) *HBoxClass {
 
 	_cret = C.gtk_hbox_new(_arg1, _arg2)
 
-	var _hBox *HBoxClass // out
+	var _hBox *HBox // out
 
-	_hBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HBoxClass)
+	_hBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HBox)
 
 	return _hBox
 }
 
-func (*HBoxClass) privateHBoxClass() {}
+func (*HBox) privateHBox() {}

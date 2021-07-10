@@ -28,16 +28,27 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_skeleton_get_type()), F: marshalDBusObjectSkeleton},
+		{T: externglib.Type(C.g_dbus_object_skeleton_get_type()), F: marshalDBusObjectSkeletonner},
 	})
 }
 
-// DBusObjectSkeletonOverrider contains methods that are overridable.
+// DBusObjectSkeletonnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusObjectSkeletonOverrider interface {
-	AuthorizeMethod(interface_ DBusInterfaceSkeleton, invocation DBusMethodInvocation) bool
+type DBusObjectSkeletonnerOverrider interface {
+	AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation DBusMethodInvocationer) bool
+}
+
+// DBusObjectSkeletonner describes DBusObjectSkeleton's methods.
+type DBusObjectSkeletonner interface {
+	gextras.Objector
+
+	AddInterface(interface_ DBusInterfaceSkeletonner)
+	Flush()
+	RemoveInterface(interface_ DBusInterfaceSkeletonner)
+	RemoveInterfaceByName(interfaceName string)
+	SetObjectPath(objectPath string)
 }
 
 // DBusObjectSkeleton instance is essentially a group of D-Bus interfaces. The
@@ -45,58 +56,30 @@ type DBusObjectSkeletonOverrider interface {
 // runtime.
 //
 // This type is intended to be used with BusObjectManager.
-type DBusObjectSkeleton interface {
-	gextras.Objector
-
-	// AddInterface adds @interface_ to @object.
-	//
-	// If @object already contains a BusInterfaceSkeleton with the same
-	// interface name, it is removed before @interface_ is added.
-	//
-	// Note that @object takes its own reference on @interface_ and holds it
-	// until removed.
-	AddInterface(interface_ DBusInterfaceSkeleton)
-	// Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
-	// interfaces belonging to @object. See that method for when flushing is
-	// useful.
-	Flush()
-	// RemoveInterface removes @interface_ from @object.
-	RemoveInterface(interface_ DBusInterfaceSkeleton)
-	// RemoveInterfaceByName removes the BusInterface with @interface_name from
-	// @object.
-	//
-	// If no D-Bus interface of the given interface exists, this function does
-	// nothing.
-	RemoveInterfaceByName(interfaceName string)
-	// SetObjectPath sets the object path for @object.
-	SetObjectPath(objectPath string)
-}
-
-// DBusObjectSkeletonClass implements the DBusObjectSkeleton interface.
-type DBusObjectSkeletonClass struct {
+type DBusObjectSkeleton struct {
 	*externglib.Object
-	DBusObjectIface
+	DBusObject
 }
 
-var _ DBusObjectSkeleton = (*DBusObjectSkeletonClass)(nil)
+var _ DBusObjectSkeletonner = (*DBusObjectSkeleton)(nil)
 
-func wrapDBusObjectSkeleton(obj *externglib.Object) DBusObjectSkeleton {
-	return &DBusObjectSkeletonClass{
+func wrapDBusObjectSkeletonner(obj *externglib.Object) DBusObjectSkeletonner {
+	return &DBusObjectSkeleton{
 		Object: obj,
-		DBusObjectIface: DBusObjectIface{
+		DBusObject: DBusObject{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
+func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectSkeleton(obj), nil
+	return wrapDBusObjectSkeletonner(obj), nil
 }
 
 // NewDBusObjectSkeleton creates a new BusObjectSkeleton.
-func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeletonClass {
+func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	var _arg1 *C.gchar               // out
 	var _cret *C.GDBusObjectSkeleton // in
 
@@ -105,9 +88,9 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeletonClass {
 
 	_cret = C.g_dbus_object_skeleton_new(_arg1)
 
-	var _dBusObjectSkeleton *DBusObjectSkeletonClass // out
+	var _dBusObjectSkeleton *DBusObjectSkeleton // out
 
-	_dBusObjectSkeleton = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectSkeletonClass)
+	_dBusObjectSkeleton = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectSkeleton)
 
 	return _dBusObjectSkeleton
 }
@@ -119,7 +102,7 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeletonClass {
 //
 // Note that @object takes its own reference on @interface_ and holds it until
 // removed.
-func (object *DBusObjectSkeletonClass) AddInterface(interface_ DBusInterfaceSkeleton) {
+func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
@@ -131,7 +114,7 @@ func (object *DBusObjectSkeletonClass) AddInterface(interface_ DBusInterfaceSkel
 
 // Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
 // interfaces belonging to @object. See that method for when flushing is useful.
-func (object *DBusObjectSkeletonClass) Flush() {
+func (object *DBusObjectSkeleton) Flush() {
 	var _arg0 *C.GDBusObjectSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
@@ -140,7 +123,7 @@ func (object *DBusObjectSkeletonClass) Flush() {
 }
 
 // RemoveInterface removes @interface_ from @object.
-func (object *DBusObjectSkeletonClass) RemoveInterface(interface_ DBusInterfaceSkeleton) {
+func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
@@ -155,7 +138,7 @@ func (object *DBusObjectSkeletonClass) RemoveInterface(interface_ DBusInterfaceS
 //
 // If no D-Bus interface of the given interface exists, this function does
 // nothing.
-func (object *DBusObjectSkeletonClass) RemoveInterfaceByName(interfaceName string) {
+func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 
@@ -167,7 +150,7 @@ func (object *DBusObjectSkeletonClass) RemoveInterfaceByName(interfaceName strin
 }
 
 // SetObjectPath sets the object path for @object.
-func (object *DBusObjectSkeletonClass) SetObjectPath(objectPath string) {
+func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 

@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_box_accessible_get_type()), F: marshalListBoxAccessible},
+		{T: externglib.Type(C.gtk_list_box_accessible_get_type()), F: marshalListBoxAccessibler},
 	})
 }
 
-type ListBoxAccessible interface {
+// ListBoxAccessibler describes ListBoxAccessible's methods.
+type ListBoxAccessibler interface {
 	gextras.Objector
 
-	privateListBoxAccessibleClass()
+	privateListBoxAccessible()
 }
 
-// ListBoxAccessibleClass implements the ListBoxAccessible interface.
-type ListBoxAccessibleClass struct {
-	ContainerAccessibleClass
+type ListBoxAccessible struct {
+	ContainerAccessible
 }
 
-var _ ListBoxAccessible = (*ListBoxAccessibleClass)(nil)
+var _ ListBoxAccessibler = (*ListBoxAccessible)(nil)
 
-func wrapListBoxAccessible(obj *externglib.Object) ListBoxAccessible {
-	return &ListBoxAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapListBoxAccessibler(obj *externglib.Object) ListBoxAccessibler {
+	return &ListBoxAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapListBoxAccessible(obj *externglib.Object) ListBoxAccessible {
 	}
 }
 
-func marshalListBoxAccessible(p uintptr) (interface{}, error) {
+func marshalListBoxAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBoxAccessible(obj), nil
+	return wrapListBoxAccessibler(obj), nil
 }
 
-func (*ListBoxAccessibleClass) privateListBoxAccessibleClass() {}
+func (*ListBoxAccessible) privateListBoxAccessible() {}

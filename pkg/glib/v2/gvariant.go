@@ -342,12 +342,6 @@ type Variant struct {
 	native C.GVariant
 }
 
-// WrapVariant wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapVariant(ptr unsafe.Pointer) *Variant {
-	return (*Variant)(ptr)
-}
-
 func marshalVariant(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Variant)(unsafe.Pointer(b)), nil
@@ -1899,12 +1893,6 @@ type VariantBuilder struct {
 	native C.GVariantBuilder
 }
 
-// WrapVariantBuilder wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapVariantBuilder(ptr unsafe.Pointer) *VariantBuilder {
-	return (*VariantBuilder)(ptr)
-}
-
 func marshalVariantBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*VariantBuilder)(unsafe.Pointer(b)), nil
@@ -2144,12 +2132,6 @@ func (builder *VariantBuilder) unref() {
 //      }
 type VariantDict struct {
 	native C.GVariantDict
-}
-
-// WrapVariantDict wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapVariantDict(ptr unsafe.Pointer) *VariantDict {
-	return (*VariantDict)(ptr)
 }
 
 func marshalVariantDict(p uintptr) (interface{}, error) {

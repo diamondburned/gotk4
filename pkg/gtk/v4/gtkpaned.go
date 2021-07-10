@@ -18,8 +18,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPaned},
+		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPanedder},
 	})
+}
+
+// Panedder describes Paned's methods.
+type Panedder interface {
+	gextras.Objector
+
+	EndChild() *Widget
+	Position() int
+	ResizeEndChild() bool
+	ResizeStartChild() bool
+	ShrinkEndChild() bool
+	ShrinkStartChild() bool
+	StartChild() *Widget
+	WideHandle() bool
+	SetEndChild(child Widgetter)
+	SetPosition(position int)
+	SetResizeEndChild(resize bool)
+	SetResizeStartChild(resize bool)
+	SetShrinkEndChild(resize bool)
+	SetShrinkStartChild(resize bool)
+	SetStartChild(child Widgetter)
+	SetWideHandle(wide bool)
 }
 
 // Paned: `GtkPaned` has two panes, arranged either horizontally or vertically.
@@ -80,102 +102,60 @@ func init() {
 // gtk_paned_set_end_child_resize (GTK_PANED (hpaned), FALSE);
 // gtk_paned_set_end_child_shrink (GTK_PANED (hpaned), FALSE);
 // gtk_widget_set_size_request (frame2, 50, -1); “`
-type Paned interface {
-	gextras.Objector
-
-	// EndChild retrieves the end child of the given `GtkPaned`.
-	//
-	// See also: `GtkPaned`:end-child
-	EndChild() *WidgetClass
-	// Position obtains the position of the divider between the two panes.
-	Position() int
-	// ResizeEndChild returns whether the end child can be resized.
-	ResizeEndChild() bool
-	// ResizeStartChild returns whether the start child can be resized.
-	ResizeStartChild() bool
-	// ShrinkEndChild returns whether the end child can be shrunk.
-	ShrinkEndChild() bool
-	// ShrinkStartChild returns whether the start child can be shrunk.
-	ShrinkStartChild() bool
-	// StartChild retrieves the start child of the given `GtkPaned`.
-	//
-	// See also: `GtkPaned`:start-child
-	StartChild() *WidgetClass
-	// WideHandle gets whether the separator should be wide.
-	WideHandle() bool
-	// SetEndChild sets the end child of @paned to @child.
-	SetEndChild(child Widget)
-	// SetPosition sets the position of the divider between the two panes.
-	SetPosition(position int)
-	// SetResizeEndChild sets the `GtkPaned`:resize-end-child property
-	SetResizeEndChild(resize bool)
-	// SetResizeStartChild sets the `GtkPaned`:resize-start-child property
-	SetResizeStartChild(resize bool)
-	// SetShrinkEndChild sets the `GtkPaned`:shrink-end-child property
-	SetShrinkEndChild(resize bool)
-	// SetShrinkStartChild sets the `GtkPaned`:shrink-start-child property
-	SetShrinkStartChild(resize bool)
-	// SetStartChild sets the start child of @paned to @child.
-	SetStartChild(child Widget)
-	// SetWideHandle sets whether the separator should be wide.
-	SetWideHandle(wide bool)
-}
-
-// PanedClass implements the Paned interface.
-type PanedClass struct {
+type Paned struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	OrientableIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
 }
 
-var _ Paned = (*PanedClass)(nil)
+var _ Panedder = (*Paned)(nil)
 
-func wrapPaned(obj *externglib.Object) Paned {
-	return &PanedClass{
+func wrapPanedder(obj *externglib.Object) Panedder {
+	return &Paned{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPaned(p uintptr) (interface{}, error) {
+func marshalPanedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPaned(obj), nil
+	return wrapPanedder(obj), nil
 }
 
 // EndChild retrieves the end child of the given `GtkPaned`.
 //
 // See also: `GtkPaned`:end-child
-func (paned *PanedClass) EndChild() *WidgetClass {
+func (paned *Paned) EndChild() *Widget {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
@@ -183,15 +163,15 @@ func (paned *PanedClass) EndChild() *WidgetClass {
 
 	_cret = C.gtk_paned_get_end_child(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // Position obtains the position of the divider between the two panes.
-func (paned *PanedClass) Position() int {
+func (paned *Paned) Position() int {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.int       // in
 
@@ -207,7 +187,7 @@ func (paned *PanedClass) Position() int {
 }
 
 // ResizeEndChild returns whether the end child can be resized.
-func (paned *PanedClass) ResizeEndChild() bool {
+func (paned *Paned) ResizeEndChild() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
@@ -225,7 +205,7 @@ func (paned *PanedClass) ResizeEndChild() bool {
 }
 
 // ResizeStartChild returns whether the start child can be resized.
-func (paned *PanedClass) ResizeStartChild() bool {
+func (paned *Paned) ResizeStartChild() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
@@ -243,7 +223,7 @@ func (paned *PanedClass) ResizeStartChild() bool {
 }
 
 // ShrinkEndChild returns whether the end child can be shrunk.
-func (paned *PanedClass) ShrinkEndChild() bool {
+func (paned *Paned) ShrinkEndChild() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
@@ -261,7 +241,7 @@ func (paned *PanedClass) ShrinkEndChild() bool {
 }
 
 // ShrinkStartChild returns whether the start child can be shrunk.
-func (paned *PanedClass) ShrinkStartChild() bool {
+func (paned *Paned) ShrinkStartChild() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
@@ -281,7 +261,7 @@ func (paned *PanedClass) ShrinkStartChild() bool {
 // StartChild retrieves the start child of the given `GtkPaned`.
 //
 // See also: `GtkPaned`:start-child
-func (paned *PanedClass) StartChild() *WidgetClass {
+func (paned *Paned) StartChild() *Widget {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
@@ -289,15 +269,15 @@ func (paned *PanedClass) StartChild() *WidgetClass {
 
 	_cret = C.gtk_paned_get_start_child(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // WideHandle gets whether the separator should be wide.
-func (paned *PanedClass) WideHandle() bool {
+func (paned *Paned) WideHandle() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
@@ -315,7 +295,7 @@ func (paned *PanedClass) WideHandle() bool {
 }
 
 // SetEndChild sets the end child of @paned to @child.
-func (paned *PanedClass) SetEndChild(child Widget) {
+func (paned *Paned) SetEndChild(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -326,7 +306,7 @@ func (paned *PanedClass) SetEndChild(child Widget) {
 }
 
 // SetPosition sets the position of the divider between the two panes.
-func (paned *PanedClass) SetPosition(position int) {
+func (paned *Paned) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.int       // out
 
@@ -337,7 +317,7 @@ func (paned *PanedClass) SetPosition(position int) {
 }
 
 // SetResizeEndChild sets the `GtkPaned`:resize-end-child property
-func (paned *PanedClass) SetResizeEndChild(resize bool) {
+func (paned *Paned) SetResizeEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -350,7 +330,7 @@ func (paned *PanedClass) SetResizeEndChild(resize bool) {
 }
 
 // SetResizeStartChild sets the `GtkPaned`:resize-start-child property
-func (paned *PanedClass) SetResizeStartChild(resize bool) {
+func (paned *Paned) SetResizeStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -363,7 +343,7 @@ func (paned *PanedClass) SetResizeStartChild(resize bool) {
 }
 
 // SetShrinkEndChild sets the `GtkPaned`:shrink-end-child property
-func (paned *PanedClass) SetShrinkEndChild(resize bool) {
+func (paned *Paned) SetShrinkEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -376,7 +356,7 @@ func (paned *PanedClass) SetShrinkEndChild(resize bool) {
 }
 
 // SetShrinkStartChild sets the `GtkPaned`:shrink-start-child property
-func (paned *PanedClass) SetShrinkStartChild(resize bool) {
+func (paned *Paned) SetShrinkStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
@@ -389,7 +369,7 @@ func (paned *PanedClass) SetShrinkStartChild(resize bool) {
 }
 
 // SetStartChild sets the start child of @paned to @child.
-func (paned *PanedClass) SetStartChild(child Widget) {
+func (paned *Paned) SetStartChild(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -400,7 +380,7 @@ func (paned *PanedClass) SetStartChild(child Widget) {
 }
 
 // SetWideHandle sets whether the separator should be wide.
-func (paned *PanedClass) SetWideHandle(wide bool) {
+func (paned *Paned) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 

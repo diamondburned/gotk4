@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_paned_accessible_get_type()), F: marshalPanedAccessible},
+		{T: externglib.Type(C.gtk_paned_accessible_get_type()), F: marshalPanedAccessibler},
 	})
 }
 
-type PanedAccessible interface {
+// PanedAccessibler describes PanedAccessible's methods.
+type PanedAccessibler interface {
 	gextras.Objector
 
-	privatePanedAccessibleClass()
+	privatePanedAccessible()
 }
 
-// PanedAccessibleClass implements the PanedAccessible interface.
-type PanedAccessibleClass struct {
-	ContainerAccessibleClass
+type PanedAccessible struct {
+	ContainerAccessible
 }
 
-var _ PanedAccessible = (*PanedAccessibleClass)(nil)
+var _ PanedAccessibler = (*PanedAccessible)(nil)
 
-func wrapPanedAccessible(obj *externglib.Object) PanedAccessible {
-	return &PanedAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapPanedAccessibler(obj *externglib.Object) PanedAccessibler {
+	return &PanedAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapPanedAccessible(obj *externglib.Object) PanedAccessible {
 	}
 }
 
-func marshalPanedAccessible(p uintptr) (interface{}, error) {
+func marshalPanedAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPanedAccessible(obj), nil
+	return wrapPanedAccessibler(obj), nil
 }
 
-func (*PanedAccessibleClass) privatePanedAccessibleClass() {}
+func (*PanedAccessible) privatePanedAccessible() {}

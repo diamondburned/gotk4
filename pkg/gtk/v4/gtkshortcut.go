@@ -20,8 +20,20 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcut},
+		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcutter},
 	})
+}
+
+// Shortcutter describes Shortcut's methods.
+type Shortcutter interface {
+	gextras.Objector
+
+	Action() *ShortcutAction
+	Arguments() *glib.Variant
+	Trigger() *ShortcutTrigger
+	SetAction(action ShortcutActioner)
+	SetArguments(args *glib.Variant)
+	SetTrigger(trigger ShortcutTriggerrer)
 }
 
 // Shortcut: `GtkShortcut` describes a keyboard shortcut.
@@ -38,46 +50,27 @@ func init() {
 // `GtkShortcut` does provide functionality to make it easy for users to work
 // with shortcuts, either by providing informational strings for display
 // purposes or by allowing shortcuts to be configured.
-type Shortcut interface {
-	gextras.Objector
-
-	// Action gets the action that is activated by this shortcut.
-	Action() *ShortcutActionClass
-	// Arguments gets the arguments that are passed when activating the
-	// shortcut.
-	Arguments() *glib.Variant
-	// Trigger gets the trigger used to trigger @self.
-	Trigger() *ShortcutTriggerClass
-	// SetAction sets the new action for @self to be @action.
-	SetAction(action ShortcutAction)
-	// SetArguments sets the arguments to pass when activating the shortcut.
-	SetArguments(args *glib.Variant)
-	// SetTrigger sets the new trigger for @self to be @trigger.
-	SetTrigger(trigger ShortcutTrigger)
-}
-
-// ShortcutClass implements the Shortcut interface.
-type ShortcutClass struct {
+type Shortcut struct {
 	*externglib.Object
 }
 
-var _ Shortcut = (*ShortcutClass)(nil)
+var _ Shortcutter = (*Shortcut)(nil)
 
-func wrapShortcut(obj *externglib.Object) Shortcut {
-	return &ShortcutClass{
+func wrapShortcutter(obj *externglib.Object) Shortcutter {
+	return &Shortcut{
 		Object: obj,
 	}
 }
 
-func marshalShortcut(p uintptr) (interface{}, error) {
+func marshalShortcutter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcut(obj), nil
+	return wrapShortcutter(obj), nil
 }
 
 // NewShortcut creates a new `GtkShortcut` that is triggered by @trigger and
 // then activates @action.
-func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) *ShortcutClass {
+func NewShortcut(trigger ShortcutTriggerrer, action ShortcutActioner) *Shortcut {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutAction  // out
 	var _cret *C.GtkShortcut        // in
@@ -87,15 +80,15 @@ func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) *ShortcutClass 
 
 	_cret = C.gtk_shortcut_new(_arg1, _arg2)
 
-	var _shortcut *ShortcutClass // out
+	var _shortcut *Shortcut // out
 
-	_shortcut = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutClass)
+	_shortcut = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Shortcut)
 
 	return _shortcut
 }
 
 // Action gets the action that is activated by this shortcut.
-func (self *ShortcutClass) Action() *ShortcutActionClass {
+func (self *Shortcut) Action() *ShortcutAction {
 	var _arg0 *C.GtkShortcut       // out
 	var _cret *C.GtkShortcutAction // in
 
@@ -103,15 +96,15 @@ func (self *ShortcutClass) Action() *ShortcutActionClass {
 
 	_cret = C.gtk_shortcut_get_action(_arg0)
 
-	var _shortcutAction *ShortcutActionClass // out
+	var _shortcutAction *ShortcutAction // out
 
-	_shortcutAction = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutActionClass)
+	_shortcutAction = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutAction)
 
 	return _shortcutAction
 }
 
 // Arguments gets the arguments that are passed when activating the shortcut.
-func (self *ShortcutClass) Arguments() *glib.Variant {
+func (self *Shortcut) Arguments() *glib.Variant {
 	var _arg0 *C.GtkShortcut // out
 	var _cret *C.GVariant    // in
 
@@ -131,7 +124,7 @@ func (self *ShortcutClass) Arguments() *glib.Variant {
 }
 
 // Trigger gets the trigger used to trigger @self.
-func (self *ShortcutClass) Trigger() *ShortcutTriggerClass {
+func (self *Shortcut) Trigger() *ShortcutTrigger {
 	var _arg0 *C.GtkShortcut        // out
 	var _cret *C.GtkShortcutTrigger // in
 
@@ -139,15 +132,15 @@ func (self *ShortcutClass) Trigger() *ShortcutTriggerClass {
 
 	_cret = C.gtk_shortcut_get_trigger(_arg0)
 
-	var _shortcutTrigger *ShortcutTriggerClass // out
+	var _shortcutTrigger *ShortcutTrigger // out
 
-	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutTriggerClass)
+	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutTrigger)
 
 	return _shortcutTrigger
 }
 
 // SetAction sets the new action for @self to be @action.
-func (self *ShortcutClass) SetAction(action ShortcutAction) {
+func (self *Shortcut) SetAction(action ShortcutActioner) {
 	var _arg0 *C.GtkShortcut       // out
 	var _arg1 *C.GtkShortcutAction // out
 
@@ -158,7 +151,7 @@ func (self *ShortcutClass) SetAction(action ShortcutAction) {
 }
 
 // SetArguments sets the arguments to pass when activating the shortcut.
-func (self *ShortcutClass) SetArguments(args *glib.Variant) {
+func (self *Shortcut) SetArguments(args *glib.Variant) {
 	var _arg0 *C.GtkShortcut // out
 	var _arg1 *C.GVariant    // out
 
@@ -169,7 +162,7 @@ func (self *ShortcutClass) SetArguments(args *glib.Variant) {
 }
 
 // SetTrigger sets the new trigger for @self to be @trigger.
-func (self *ShortcutClass) SetTrigger(trigger ShortcutTrigger) {
+func (self *Shortcut) SetTrigger(trigger ShortcutTriggerrer) {
 	var _arg0 *C.GtkShortcut        // out
 	var _arg1 *C.GtkShortcutTrigger // out
 

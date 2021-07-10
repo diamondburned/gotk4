@@ -21,28 +21,28 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_level_bar_accessible_get_type()), F: marshalLevelBarAccessible},
+		{T: externglib.Type(C.gtk_level_bar_accessible_get_type()), F: marshalLevelBarAccessibler},
 	})
 }
 
-type LevelBarAccessible interface {
+// LevelBarAccessibler describes LevelBarAccessible's methods.
+type LevelBarAccessibler interface {
 	gextras.Objector
 
-	privateLevelBarAccessibleClass()
+	privateLevelBarAccessible()
 }
 
-// LevelBarAccessibleClass implements the LevelBarAccessible interface.
-type LevelBarAccessibleClass struct {
-	WidgetAccessibleClass
+type LevelBarAccessible struct {
+	WidgetAccessible
 }
 
-var _ LevelBarAccessible = (*LevelBarAccessibleClass)(nil)
+var _ LevelBarAccessibler = (*LevelBarAccessible)(nil)
 
-func wrapLevelBarAccessible(obj *externglib.Object) LevelBarAccessible {
-	return &LevelBarAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapLevelBarAccessibler(obj *externglib.Object) LevelBarAccessibler {
+	return &LevelBarAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
@@ -50,10 +50,10 @@ func wrapLevelBarAccessible(obj *externglib.Object) LevelBarAccessible {
 	}
 }
 
-func marshalLevelBarAccessible(p uintptr) (interface{}, error) {
+func marshalLevelBarAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLevelBarAccessible(obj), nil
+	return wrapLevelBarAccessibler(obj), nil
 }
 
-func (*LevelBarAccessibleClass) privateLevelBarAccessibleClass() {}
+func (*LevelBarAccessible) privateLevelBarAccessible() {}

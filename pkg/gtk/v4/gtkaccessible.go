@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_accessible_get_type()), F: marshalAccessible},
+		{T: externglib.Type(C.gtk_accessible_get_type()), F: marshalAccessibler},
 	})
+}
+
+// Accessibler describes Accessible's methods.
+type Accessibler interface {
+	gextras.Objector
+
+	AccessibleRole() AccessibleRole
 }
 
 // Accessible: `GtkAccessible` is an interface for describing UI elements for
@@ -39,36 +46,27 @@ func init() {
 // that should be reflected by assistive technologies. For instance, if a
 // `GtkWidget` visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will
 // also change to reflect the [property@Gtk.Widget:visible] property.
-type Accessible interface {
-	gextras.Objector
-
-	// AccessibleRole retrieves the `GtkAccessibleRole` for the given
-	// `GtkAccessible`.
-	AccessibleRole() AccessibleRole
-}
-
-// AccessibleIface implements the Accessible interface.
-type AccessibleIface struct {
+type Accessible struct {
 	*externglib.Object
 }
 
-var _ Accessible = (*AccessibleIface)(nil)
+var _ Accessibler = (*Accessible)(nil)
 
-func wrapAccessible(obj *externglib.Object) Accessible {
-	return &AccessibleIface{
+func wrapAccessibler(obj *externglib.Object) Accessibler {
+	return &Accessible{
 		Object: obj,
 	}
 }
 
-func marshalAccessible(p uintptr) (interface{}, error) {
+func marshalAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccessible(obj), nil
+	return wrapAccessibler(obj), nil
 }
 
 // AccessibleRole retrieves the `GtkAccessibleRole` for the given
 // `GtkAccessible`.
-func (self *AccessibleIface) AccessibleRole() AccessibleRole {
+func (self *Accessible) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkAccessible    // out
 	var _cret C.GtkAccessibleRole // in
 

@@ -18,37 +18,37 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_window_get_type()), F: marshalWindow},
+		{T: externglib.Type(C.atk_window_get_type()), F: marshalWindowwer},
 	})
+}
+
+// Windowwer describes Window's methods.
+type Windowwer interface {
+	gextras.Objector
+
+	privateWindow()
 }
 
 // Window should be implemented by the UI elements that represent a top-level
 // window, such as the main window of an application or dialog.
-type Window interface {
-	gextras.Objector
-
-	privateWindowIface()
+type Window struct {
+	Object
 }
 
-// WindowIface implements the Window interface.
-type WindowIface struct {
-	ObjectClass
-}
+var _ Windowwer = (*Window)(nil)
 
-var _ Window = (*WindowIface)(nil)
-
-func wrapWindow(obj *externglib.Object) Window {
-	return &WindowIface{
-		ObjectClass: ObjectClass{
+func wrapWindowwer(obj *externglib.Object) Windowwer {
+	return &Window{
+		Object: Object{
 			Object: obj,
 		},
 	}
 }
 
-func marshalWindow(p uintptr) (interface{}, error) {
+func marshalWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindow(obj), nil
+	return wrapWindowwer(obj), nil
 }
 
-func (*WindowIface) privateWindowIface() {}
+func (*Window) privateWindow() {}

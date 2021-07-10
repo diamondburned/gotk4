@@ -25,15 +25,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_theming_engine_get_type()), F: marshalThemingEngine},
+		{T: externglib.Type(C.gtk_theming_engine_get_type()), F: marshalThemingEnginer},
 	})
 }
 
-// ThemingEngineOverrider contains methods that are overridable.
+// ThemingEnginerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ThemingEngineOverrider interface {
+type ThemingEnginerOverrider interface {
 	RenderActivity(cr *cairo.Context, x float64, y float64, width float64, height float64)
 	RenderArrow(cr *cairo.Context, angle float64, x float64, y float64, size float64)
 	RenderBackground(cr *cairo.Context, x float64, y float64, width float64, height float64)
@@ -42,11 +42,26 @@ type ThemingEngineOverrider interface {
 	RenderFocus(cr *cairo.Context, x float64, y float64, width float64, height float64)
 	RenderFrame(cr *cairo.Context, x float64, y float64, width float64, height float64)
 	RenderHandle(cr *cairo.Context, x float64, y float64, width float64, height float64)
-	RenderIcon(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, x float64, y float64)
+	RenderIcon(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuffer, x float64, y float64)
 	RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x float64, y float64)
-	RenderLayout(cr *cairo.Context, x float64, y float64, layout pango.Layout)
+	RenderLayout(cr *cairo.Context, x float64, y float64, layout pango.Layouter)
 	RenderLine(cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
 	RenderOption(cr *cairo.Context, x float64, y float64, width float64, height float64)
+}
+
+// ThemingEnginer describes ThemingEngine's methods.
+type ThemingEnginer interface {
+	gextras.Objector
+
+	Direction() TextDirection
+	JunctionSides() JunctionSides
+	Path() *WidgetPath
+	Screen() *gdk.Screen
+	State() StateFlags
+	StyleProperty(propertyName string) externglib.Value
+	HasClass(styleClass string) bool
+	HasRegion(styleRegion string) (RegionFlags, bool)
+	LookupColor(colorName string) (gdk.RGBA, bool)
 }
 
 // ThemingEngine was the object used for rendering themed content in GTK+
@@ -56,76 +71,29 @@ type ThemingEngineOverrider interface {
 // ThemingEngine has been deprecated in GTK+ 3.14 and will be ignored for
 // rendering. The advancements in CSS theming are good enough to allow themers
 // to achieve their goals without the need to modify source code.
-type ThemingEngine interface {
-	gextras.Objector
-
-	// Direction returns the widget direction used for rendering.
-	//
-	// Deprecated: Use gtk_theming_engine_get_state() and check for
-	// K_STATE_FLAG_DIR_LTR and K_STATE_FLAG_DIR_RTL instead.
-	Direction() TextDirection
-	// JunctionSides returns the widget direction used for rendering.
-	//
-	// Deprecated: since version 3.14.
-	JunctionSides() JunctionSides
-	// Path returns the widget path used for style matching.
-	//
-	// Deprecated: since version 3.14.
-	Path() *WidgetPath
-	// Screen returns the Screen to which @engine currently rendering to.
-	//
-	// Deprecated: since version 3.14.
-	Screen() *gdk.ScreenClass
-	// State returns the state used when rendering.
-	//
-	// Deprecated: since version 3.14.
-	State() StateFlags
-	// StyleProperty gets the value for a widget style property.
-	//
-	// Deprecated: since version 3.14.
-	StyleProperty(propertyName string) externglib.Value
-	// HasClass returns true if the currently rendered contents have defined the
-	// given class name.
-	//
-	// Deprecated: since version 3.14.
-	HasClass(styleClass string) bool
-	// HasRegion returns true if the currently rendered contents have the region
-	// defined. If @flags_return is not nil, it is set to the flags affecting
-	// the region.
-	//
-	// Deprecated: since version 3.14.
-	HasRegion(styleRegion string) (RegionFlags, bool)
-	// LookupColor looks up and resolves a color name in the current style’s
-	// color map.
-	//
-	// Deprecated: since version 3.14.
-	LookupColor(colorName string) (gdk.RGBA, bool)
-}
-
-// ThemingEngineClass implements the ThemingEngine interface.
-type ThemingEngineClass struct {
+type ThemingEngine struct {
 	*externglib.Object
 }
 
-var _ ThemingEngine = (*ThemingEngineClass)(nil)
+var _ ThemingEnginer = (*ThemingEngine)(nil)
 
-func wrapThemingEngine(obj *externglib.Object) ThemingEngine {
-	return &ThemingEngineClass{
+func wrapThemingEnginer(obj *externglib.Object) ThemingEnginer {
+	return &ThemingEngine{
 		Object: obj,
 	}
 }
 
-func marshalThemingEngine(p uintptr) (interface{}, error) {
+func marshalThemingEnginer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapThemingEngine(obj), nil
+	return wrapThemingEnginer(obj), nil
 }
 
 // Direction returns the widget direction used for rendering.
 //
 // Deprecated: Use gtk_theming_engine_get_state() and check for
 // K_STATE_FLAG_DIR_LTR and K_STATE_FLAG_DIR_RTL instead.
-func (engine *ThemingEngineClass) Direction() TextDirection {
+func (engine *ThemingEngine) Direction() TextDirection {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkTextDirection  // in
 
@@ -143,7 +111,7 @@ func (engine *ThemingEngineClass) Direction() TextDirection {
 // JunctionSides returns the widget direction used for rendering.
 //
 // Deprecated: since version 3.14.
-func (engine *ThemingEngineClass) JunctionSides() JunctionSides {
+func (engine *ThemingEngine) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkJunctionSides  // in
 
@@ -161,7 +129,7 @@ func (engine *ThemingEngineClass) JunctionSides() JunctionSides {
 // Path returns the widget path used for style matching.
 //
 // Deprecated: since version 3.14.
-func (engine *ThemingEngineClass) Path() *WidgetPath {
+func (engine *ThemingEngine) Path() *WidgetPath {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GtkWidgetPath    // in
 
@@ -183,7 +151,7 @@ func (engine *ThemingEngineClass) Path() *WidgetPath {
 // Screen returns the Screen to which @engine currently rendering to.
 //
 // Deprecated: since version 3.14.
-func (engine *ThemingEngineClass) Screen() *gdk.ScreenClass {
+func (engine *ThemingEngine) Screen() *gdk.Screen {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GdkScreen        // in
 
@@ -191,9 +159,9 @@ func (engine *ThemingEngineClass) Screen() *gdk.ScreenClass {
 
 	_cret = C.gtk_theming_engine_get_screen(_arg0)
 
-	var _screen *gdk.ScreenClass // out
+	var _screen *gdk.Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.ScreenClass)
+	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Screen)
 
 	return _screen
 }
@@ -201,7 +169,7 @@ func (engine *ThemingEngineClass) Screen() *gdk.ScreenClass {
 // State returns the state used when rendering.
 //
 // Deprecated: since version 3.14.
-func (engine *ThemingEngineClass) State() StateFlags {
+func (engine *ThemingEngine) State() StateFlags {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkStateFlags     // in
 
@@ -219,7 +187,7 @@ func (engine *ThemingEngineClass) State() StateFlags {
 // StyleProperty gets the value for a widget style property.
 //
 // Deprecated: since version 3.14.
-func (engine *ThemingEngineClass) StyleProperty(propertyName string) externglib.Value {
+func (engine *ThemingEngine) StyleProperty(propertyName string) externglib.Value {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GValue            // in
@@ -241,7 +209,7 @@ func (engine *ThemingEngineClass) StyleProperty(propertyName string) externglib.
 // given class name.
 //
 // Deprecated: since version 3.14.
-func (engine *ThemingEngineClass) HasClass(styleClass string) bool {
+func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
@@ -266,7 +234,7 @@ func (engine *ThemingEngineClass) HasClass(styleClass string) bool {
 // region.
 //
 // Deprecated: since version 3.14.
-func (engine *ThemingEngineClass) HasRegion(styleRegion string) (RegionFlags, bool) {
+func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GtkRegionFlags    // in
@@ -293,7 +261,7 @@ func (engine *ThemingEngineClass) HasRegion(styleRegion string) (RegionFlags, bo
 // map.
 //
 // Deprecated: since version 3.14.
-func (engine *ThemingEngineClass) LookupColor(colorName string) (gdk.RGBA, bool) {
+func (engine *ThemingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GdkRGBA           // in

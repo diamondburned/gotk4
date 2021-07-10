@@ -19,8 +19,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_get_type()), F: marshalEventController},
+		{T: externglib.Type(C.gtk_event_controller_get_type()), F: marshalEventControllerrer},
 	})
+}
+
+// EventControllerrer describes EventController's methods.
+type EventControllerrer interface {
+	gextras.Objector
+
+	CurrentEvent() *gdk.Event
+	CurrentEventDevice() *gdk.Device
+	CurrentEventState() gdk.ModifierType
+	CurrentEventTime() uint32
+	Name() string
+	PropagationLimit() PropagationLimit
+	PropagationPhase() PropagationPhase
+	Widget() *Widget
+	Reset()
+	SetName(name string)
 }
 
 // EventController: `GtkEventController` is the base class for event
@@ -36,58 +52,27 @@ func init() {
 // See the chapter of input handling (input-handling.html) for an overview of
 // the basic concepts, such as the capture and bubble phases of even
 // propagation.
-type EventController interface {
-	gextras.Objector
-
-	// CurrentEvent returns the event that is currently being handled by the
-	// controller, and nil at other times.
-	CurrentEvent() *gdk.EventClass
-	// CurrentEventDevice returns the device of the event that is currently
-	// being handled by the controller, and nil otherwise.
-	CurrentEventDevice() *gdk.DeviceClass
-	// CurrentEventState returns the modifier state of the event that is
-	// currently being handled by the controller, and 0 otherwise.
-	CurrentEventState() gdk.ModifierType
-	// CurrentEventTime returns the timestamp of the event that is currently
-	// being handled by the controller, and 0 otherwise.
-	CurrentEventTime() uint32
-	// Name gets the name of @controller.
-	Name() string
-	// PropagationLimit gets the propagation limit of the event controller.
-	PropagationLimit() PropagationLimit
-	// PropagationPhase gets the propagation phase at which @controller handles
-	// events.
-	PropagationPhase() PropagationPhase
-	// Widget returns the Widget this controller relates to.
-	Widget() *WidgetClass
-	// Reset resets the @controller to a clean state.
-	Reset()
-	// SetName sets a name on the controller that can be used for debugging.
-	SetName(name string)
-}
-
-// EventControllerClass implements the EventController interface.
-type EventControllerClass struct {
+type EventController struct {
 	*externglib.Object
 }
 
-var _ EventController = (*EventControllerClass)(nil)
+var _ EventControllerrer = (*EventController)(nil)
 
-func wrapEventController(obj *externglib.Object) EventController {
-	return &EventControllerClass{
+func wrapEventControllerrer(obj *externglib.Object) EventControllerrer {
+	return &EventController{
 		Object: obj,
 	}
 }
 
-func marshalEventController(p uintptr) (interface{}, error) {
+func marshalEventControllerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventController(obj), nil
+	return wrapEventControllerrer(obj), nil
 }
 
 // CurrentEvent returns the event that is currently being handled by the
 // controller, and nil at other times.
-func (controller *EventControllerClass) CurrentEvent() *gdk.EventClass {
+func (controller *EventController) CurrentEvent() *gdk.Event {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkEvent           // in
 
@@ -95,16 +80,16 @@ func (controller *EventControllerClass) CurrentEvent() *gdk.EventClass {
 
 	_cret = C.gtk_event_controller_get_current_event(_arg0)
 
-	var _event *gdk.EventClass // out
+	var _event *gdk.Event // out
 
-	_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.EventClass)
+	_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Event)
 
 	return _event
 }
 
 // CurrentEventDevice returns the device of the event that is currently being
 // handled by the controller, and nil otherwise.
-func (controller *EventControllerClass) CurrentEventDevice() *gdk.DeviceClass {
+func (controller *EventController) CurrentEventDevice() *gdk.Device {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkDevice          // in
 
@@ -112,16 +97,16 @@ func (controller *EventControllerClass) CurrentEventDevice() *gdk.DeviceClass {
 
 	_cret = C.gtk_event_controller_get_current_event_device(_arg0)
 
-	var _device *gdk.DeviceClass // out
+	var _device *gdk.Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Device)
 
 	return _device
 }
 
 // CurrentEventState returns the modifier state of the event that is currently
 // being handled by the controller, and 0 otherwise.
-func (controller *EventControllerClass) CurrentEventState() gdk.ModifierType {
+func (controller *EventController) CurrentEventState() gdk.ModifierType {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GdkModifierType     // in
 
@@ -138,7 +123,7 @@ func (controller *EventControllerClass) CurrentEventState() gdk.ModifierType {
 
 // CurrentEventTime returns the timestamp of the event that is currently being
 // handled by the controller, and 0 otherwise.
-func (controller *EventControllerClass) CurrentEventTime() uint32 {
+func (controller *EventController) CurrentEventTime() uint32 {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.guint32             // in
 
@@ -154,7 +139,7 @@ func (controller *EventControllerClass) CurrentEventTime() uint32 {
 }
 
 // Name gets the name of @controller.
-func (controller *EventControllerClass) Name() string {
+func (controller *EventController) Name() string {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.char               // in
 
@@ -170,7 +155,7 @@ func (controller *EventControllerClass) Name() string {
 }
 
 // PropagationLimit gets the propagation limit of the event controller.
-func (controller *EventControllerClass) PropagationLimit() PropagationLimit {
+func (controller *EventController) PropagationLimit() PropagationLimit {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationLimit // in
 
@@ -187,7 +172,7 @@ func (controller *EventControllerClass) PropagationLimit() PropagationLimit {
 
 // PropagationPhase gets the propagation phase at which @controller handles
 // events.
-func (controller *EventControllerClass) PropagationPhase() PropagationPhase {
+func (controller *EventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
 
@@ -203,7 +188,7 @@ func (controller *EventControllerClass) PropagationPhase() PropagationPhase {
 }
 
 // Widget returns the Widget this controller relates to.
-func (controller *EventControllerClass) Widget() *WidgetClass {
+func (controller *EventController) Widget() *Widget {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
@@ -211,15 +196,15 @@ func (controller *EventControllerClass) Widget() *WidgetClass {
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // Reset resets the @controller to a clean state.
-func (controller *EventControllerClass) Reset() {
+func (controller *EventController) Reset() {
 	var _arg0 *C.GtkEventController // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
@@ -228,7 +213,7 @@ func (controller *EventControllerClass) Reset() {
 }
 
 // SetName sets a name on the controller that can be used for debugging.
-func (controller *EventControllerClass) SetName(name string) {
+func (controller *EventController) SetName(name string) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 *C.char               // out
 

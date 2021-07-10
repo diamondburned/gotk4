@@ -18,48 +18,42 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_simple_anim_get_type()), F: marshalPixbufSimpleAnim},
+		{T: externglib.Type(C.gdk_pixbuf_simple_anim_get_type()), F: marshalPixbufSimpleAnimmer},
 	})
 }
 
-// PixbufSimpleAnim: opaque struct representing a simple animation.
-type PixbufSimpleAnim interface {
+// PixbufSimpleAnimmer describes PixbufSimpleAnim's methods.
+type PixbufSimpleAnimmer interface {
 	gextras.Objector
 
-	// AddFrame adds a new frame to @animation. The @pixbuf must have the
-	// dimensions specified when the animation was constructed.
-	AddFrame(pixbuf Pixbuf)
-	// Loop gets whether @animation should loop indefinitely when it reaches the
-	// end.
+	AddFrame(pixbuf Pixbuffer)
 	Loop() bool
-	// SetLoop sets whether @animation should loop indefinitely when it reaches
-	// the end.
 	SetLoop(loop bool)
 }
 
-// PixbufSimpleAnimClass implements the PixbufSimpleAnim interface.
-type PixbufSimpleAnimClass struct {
-	PixbufAnimationClass
+// PixbufSimpleAnim: opaque struct representing a simple animation.
+type PixbufSimpleAnim struct {
+	PixbufAnimation
 }
 
-var _ PixbufSimpleAnim = (*PixbufSimpleAnimClass)(nil)
+var _ PixbufSimpleAnimmer = (*PixbufSimpleAnim)(nil)
 
-func wrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnim {
-	return &PixbufSimpleAnimClass{
-		PixbufAnimationClass: PixbufAnimationClass{
+func wrapPixbufSimpleAnimmer(obj *externglib.Object) PixbufSimpleAnimmer {
+	return &PixbufSimpleAnim{
+		PixbufAnimation: PixbufAnimation{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
+func marshalPixbufSimpleAnimmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufSimpleAnim(obj), nil
+	return wrapPixbufSimpleAnimmer(obj), nil
 }
 
 // NewPixbufSimpleAnim creates a new, empty animation.
-func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnimClass {
+func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnim {
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out
 	var _arg3 C.gfloat               // out
@@ -71,16 +65,16 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnimC
 
 	_cret = C.gdk_pixbuf_simple_anim_new(_arg1, _arg2, _arg3)
 
-	var _pixbufSimpleAnim *PixbufSimpleAnimClass // out
+	var _pixbufSimpleAnim *PixbufSimpleAnim // out
 
-	_pixbufSimpleAnim = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufSimpleAnimClass)
+	_pixbufSimpleAnim = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufSimpleAnim)
 
 	return _pixbufSimpleAnim
 }
 
 // AddFrame adds a new frame to @animation. The @pixbuf must have the dimensions
 // specified when the animation was constructed.
-func (animation *PixbufSimpleAnimClass) AddFrame(pixbuf Pixbuf) {
+func (animation *PixbufSimpleAnim) AddFrame(pixbuf Pixbuffer) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
 
@@ -92,7 +86,7 @@ func (animation *PixbufSimpleAnimClass) AddFrame(pixbuf Pixbuf) {
 
 // Loop gets whether @animation should loop indefinitely when it reaches the
 // end.
-func (animation *PixbufSimpleAnimClass) Loop() bool {
+func (animation *PixbufSimpleAnim) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _cret C.gboolean             // in
 
@@ -111,7 +105,7 @@ func (animation *PixbufSimpleAnimClass) Loop() bool {
 
 // SetLoop sets whether @animation should loop indefinitely when it reaches the
 // end.
-func (animation *PixbufSimpleAnimClass) SetLoop(loop bool) {
+func (animation *PixbufSimpleAnim) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 C.gboolean             // out
 

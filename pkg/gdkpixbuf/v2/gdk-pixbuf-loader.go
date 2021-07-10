@@ -19,19 +19,31 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_loader_get_type()), F: marshalPixbufLoader},
+		{T: externglib.Type(C.gdk_pixbuf_loader_get_type()), F: marshalPixbufLoaderrer},
 	})
 }
 
-// PixbufLoaderOverrider contains methods that are overridable.
+// PixbufLoaderrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PixbufLoaderOverrider interface {
+type PixbufLoaderrerOverrider interface {
 	AreaPrepared()
 	AreaUpdated(x int, y int, width int, height int)
 	Closed()
 	SizePrepared(width int, height int)
+}
+
+// PixbufLoaderrer describes PixbufLoader's methods.
+type PixbufLoaderrer interface {
+	gextras.Objector
+
+	Close() error
+	Animation() *PixbufAnimation
+	Format() *PixbufFormat
+	Pixbuf() *Pixbuf
+	SetSize(width int, height int)
+	Write(buf []byte) error
 }
 
 // PixbufLoader: incremental image loader.
@@ -80,95 +92,33 @@ type PixbufLoaderOverrider interface {
 // [method@GdkPixbuf.PixbufAnimation.get_iter] to get a
 // [class@GdkPixbuf.PixbufAnimationIter] to retrieve the pixbuf for the desired
 // time stamp.
-type PixbufLoader interface {
-	gextras.Objector
-
-	// Close informs a pixbuf loader that no further writes with
-	// gdk_pixbuf_loader_write() will occur, so that it can free its internal
-	// loading structures.
-	//
-	// This function also tries to parse any data that hasn't yet been parsed;
-	// if the remaining data is partial or corrupt, an error will be returned.
-	//
-	// If `FALSE` is returned, `error` will be set to an error from the
-	// `GDK_PIXBUF_ERROR` or `G_FILE_ERROR` domains.
-	//
-	// If you're just cancelling a load rather than expecting it to be finished,
-	// passing `NULL` for `error` to ignore it is reasonable.
-	//
-	// Remember that this function does not release a reference on the loader,
-	// so you will need to explicitly release any reference you hold.
-	Close() error
-	// Animation queries the PixbufAnimation that a pixbuf loader is currently
-	// creating.
-	//
-	// In general it only makes sense to call this function after the
-	// [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted by
-	// the loader.
-	//
-	// If the loader doesn't have enough bytes yet, and hasn't emitted the
-	// `area-prepared` signal, this function will return `NULL`.
-	Animation() *PixbufAnimationClass
-	// Format obtains the available information about the format of the
-	// currently loading image file.
-	Format() *PixbufFormat
-	// Pixbuf queries the Pixbuf that a pixbuf loader is currently creating.
-	//
-	// In general it only makes sense to call this function after the
-	// [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted by
-	// the loader; this means that enough data has been read to know the size of
-	// the image that will be allocated.
-	//
-	// If the loader has not received enough data via gdk_pixbuf_loader_write(),
-	// then this function returns `NULL`.
-	//
-	// The returned pixbuf will be the same in all future calls to the loader,
-	// so if you want to keep using it, you should acquire a reference to it.
-	//
-	// Additionally, if the loader is an animation, it will return the "static
-	// image" of the animation (see gdk_pixbuf_animation_get_static_image()).
-	Pixbuf() *PixbufClass
-	// SetSize causes the image to be scaled while it is loaded.
-	//
-	// The desired image size can be determined relative to the original size of
-	// the image by calling gdk_pixbuf_loader_set_size() from a signal handler
-	// for the ::size-prepared signal.
-	//
-	// Attempts to set the desired image size are ignored after the emission of
-	// the ::size-prepared signal.
-	SetSize(width int, height int)
-	// Write parses the next `count` bytes in the given image buffer.
-	Write(buf []byte) error
-}
-
-// PixbufLoaderClass implements the PixbufLoader interface.
-type PixbufLoaderClass struct {
+type PixbufLoader struct {
 	*externglib.Object
 }
 
-var _ PixbufLoader = (*PixbufLoaderClass)(nil)
+var _ PixbufLoaderrer = (*PixbufLoader)(nil)
 
-func wrapPixbufLoader(obj *externglib.Object) PixbufLoader {
-	return &PixbufLoaderClass{
+func wrapPixbufLoaderrer(obj *externglib.Object) PixbufLoaderrer {
+	return &PixbufLoader{
 		Object: obj,
 	}
 }
 
-func marshalPixbufLoader(p uintptr) (interface{}, error) {
+func marshalPixbufLoaderrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufLoader(obj), nil
+	return wrapPixbufLoaderrer(obj), nil
 }
 
 // NewPixbufLoader creates a new pixbuf loader object.
-func NewPixbufLoader() *PixbufLoaderClass {
+func NewPixbufLoader() *PixbufLoader {
 	var _cret *C.GdkPixbufLoader // in
 
 	_cret = C.gdk_pixbuf_loader_new()
 
-	var _pixbufLoader *PixbufLoaderClass // out
+	var _pixbufLoader *PixbufLoader // out
 
-	_pixbufLoader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufLoaderClass)
+	_pixbufLoader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufLoader)
 
 	return _pixbufLoader
 }
@@ -186,7 +136,7 @@ func NewPixbufLoader() *PixbufLoaderClass {
 // "image/x-xpixmap" are among the supported mime types. To obtain the full list
 // of supported mime types, call gdk_pixbuf_format_get_mime_types() on each of
 // the PixbufFormat structs returned by gdk_pixbuf_get_formats().
-func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoaderClass, error) {
+func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in
 	var _cerr *C.GError          // in
@@ -196,10 +146,10 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoaderClass, error) {
 
 	_cret = C.gdk_pixbuf_loader_new_with_mime_type(_arg1, &_cerr)
 
-	var _pixbufLoader *PixbufLoaderClass // out
-	var _goerr error                     // out
+	var _pixbufLoader *PixbufLoader // out
+	var _goerr error                // out
 
-	_pixbufLoader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufLoaderClass)
+	_pixbufLoader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufLoader)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr
@@ -218,7 +168,7 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoaderClass, error) {
 // supported formats. To obtain the full list of supported image formats, call
 // gdk_pixbuf_format_get_name() on each of the PixbufFormat structs returned by
 // gdk_pixbuf_get_formats().
-func NewPixbufLoaderWithType(imageType string) (*PixbufLoaderClass, error) {
+func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in
 	var _cerr *C.GError          // in
@@ -228,10 +178,10 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoaderClass, error) {
 
 	_cret = C.gdk_pixbuf_loader_new_with_type(_arg1, &_cerr)
 
-	var _pixbufLoader *PixbufLoaderClass // out
-	var _goerr error                     // out
+	var _pixbufLoader *PixbufLoader // out
+	var _goerr error                // out
 
-	_pixbufLoader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufLoaderClass)
+	_pixbufLoader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufLoader)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufLoader, _goerr
@@ -252,7 +202,7 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoaderClass, error) {
 //
 // Remember that this function does not release a reference on the loader, so
 // you will need to explicitly release any reference you hold.
-func (loader *PixbufLoaderClass) Close() error {
+func (loader *PixbufLoader) Close() error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cerr *C.GError          // in
 
@@ -276,7 +226,7 @@ func (loader *PixbufLoaderClass) Close() error {
 //
 // If the loader doesn't have enough bytes yet, and hasn't emitted the
 // `area-prepared` signal, this function will return `NULL`.
-func (loader *PixbufLoaderClass) Animation() *PixbufAnimationClass {
+func (loader *PixbufLoader) Animation() *PixbufAnimation {
 	var _arg0 *C.GdkPixbufLoader    // out
 	var _cret *C.GdkPixbufAnimation // in
 
@@ -284,16 +234,16 @@ func (loader *PixbufLoaderClass) Animation() *PixbufAnimationClass {
 
 	_cret = C.gdk_pixbuf_loader_get_animation(_arg0)
 
-	var _pixbufAnimation *PixbufAnimationClass // out
+	var _pixbufAnimation *PixbufAnimation // out
 
-	_pixbufAnimation = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PixbufAnimationClass)
+	_pixbufAnimation = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PixbufAnimation)
 
 	return _pixbufAnimation
 }
 
 // Format obtains the available information about the format of the currently
 // loading image file.
-func (loader *PixbufLoaderClass) Format() *PixbufFormat {
+func (loader *PixbufLoader) Format() *PixbufFormat {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbufFormat // in
 
@@ -323,7 +273,7 @@ func (loader *PixbufLoaderClass) Format() *PixbufFormat {
 //
 // Additionally, if the loader is an animation, it will return the "static
 // image" of the animation (see gdk_pixbuf_animation_get_static_image()).
-func (loader *PixbufLoaderClass) Pixbuf() *PixbufClass {
+func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbuf       // in
 
@@ -331,9 +281,9 @@ func (loader *PixbufLoaderClass) Pixbuf() *PixbufClass {
 
 	_cret = C.gdk_pixbuf_loader_get_pixbuf(_arg0)
 
-	var _pixbuf *PixbufClass // out
+	var _pixbuf *Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Pixbuf)
 
 	return _pixbuf
 }
@@ -346,7 +296,7 @@ func (loader *PixbufLoaderClass) Pixbuf() *PixbufClass {
 //
 // Attempts to set the desired image size are ignored after the emission of the
 // ::size-prepared signal.
-func (loader *PixbufLoaderClass) SetSize(width int, height int) {
+func (loader *PixbufLoader) SetSize(width int, height int) {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -359,7 +309,7 @@ func (loader *PixbufLoaderClass) SetSize(width int, height int) {
 }
 
 // Write parses the next `count` bytes in the given image buffer.
-func (loader *PixbufLoaderClass) Write(buf []byte) error {
+func (loader *PixbufLoader) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar
 	var _arg2 C.gsize

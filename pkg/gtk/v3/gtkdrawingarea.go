@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drawing_area_get_type()), F: marshalDrawingArea},
+		{T: externglib.Type(C.gtk_drawing_area_get_type()), F: marshalDrawingAreaer},
 	})
+}
+
+// DrawingAreaer describes DrawingArea's methods.
+type DrawingAreaer interface {
+	gextras.Objector
+
+	privateDrawingArea()
 }
 
 // DrawingArea: the DrawingArea widget is used for creating custom user
@@ -100,56 +107,49 @@ func init() {
 // user-visible indication that the drawing area is focused. Use
 // gtk_widget_has_focus() in your expose event handler to decide whether to draw
 // the focus indicator. See gtk_render_focus() for one way to draw focus.
-type DrawingArea interface {
-	gextras.Objector
-
-	privateDrawingAreaClass()
-}
-
-// DrawingAreaClass implements the DrawingArea interface.
-type DrawingAreaClass struct {
+type DrawingArea struct {
 	*externglib.Object
-	WidgetClass
-	BuildableIface
+	Widget
+	Buildable
 }
 
-var _ DrawingArea = (*DrawingAreaClass)(nil)
+var _ DrawingAreaer = (*DrawingArea)(nil)
 
-func wrapDrawingArea(obj *externglib.Object) DrawingArea {
-	return &DrawingAreaClass{
+func wrapDrawingAreaer(obj *externglib.Object) DrawingAreaer {
+	return &DrawingArea{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDrawingArea(p uintptr) (interface{}, error) {
+func marshalDrawingAreaer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrawingArea(obj), nil
+	return wrapDrawingAreaer(obj), nil
 }
 
 // NewDrawingArea creates a new drawing area.
-func NewDrawingArea() *DrawingAreaClass {
+func NewDrawingArea() *DrawingArea {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_drawing_area_new()
 
-	var _drawingArea *DrawingAreaClass // out
+	var _drawingArea *DrawingArea // out
 
-	_drawingArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DrawingAreaClass)
+	_drawingArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DrawingArea)
 
 	return _drawingArea
 }
 
-func (*DrawingAreaClass) privateDrawingAreaClass() {}
+func (*DrawingArea) privateDrawingArea() {}

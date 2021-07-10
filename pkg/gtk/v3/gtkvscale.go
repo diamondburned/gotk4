@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vscale_get_type()), F: marshalVScale},
+		{T: externglib.Type(C.gtk_vscale_get_type()), F: marshalVScaler},
 	})
+}
+
+// VScaler describes VScale's methods.
+type VScaler interface {
+	gextras.Objector
+
+	privateVScale()
 }
 
 // VScale: the VScale widget is used to allow the user to select a value using a
@@ -31,71 +38,64 @@ func init() {
 // shown can be set using the parent Scale class’s functions.
 //
 // GtkVScale has been deprecated, use Scale instead.
-type VScale interface {
-	gextras.Objector
-
-	privateVScaleClass()
-}
-
-// VScaleClass implements the VScale interface.
-type VScaleClass struct {
+type VScale struct {
 	*externglib.Object
-	ScaleClass
-	BuildableIface
-	OrientableIface
+	Scale
+	Buildable
+	Orientable
 }
 
-var _ VScale = (*VScaleClass)(nil)
+var _ VScaler = (*VScale)(nil)
 
-func wrapVScale(obj *externglib.Object) VScale {
-	return &VScaleClass{
+func wrapVScaler(obj *externglib.Object) VScaler {
+	return &VScale{
 		Object: obj,
-		ScaleClass: ScaleClass{
+		Scale: Scale{
 			Object: obj,
-			RangeClass: RangeClass{
+			Range: Range{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				OrientableIface: OrientableIface{
+				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalVScale(p uintptr) (interface{}, error) {
+func marshalVScaler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVScale(obj), nil
+	return wrapVScaler(obj), nil
 }
 
 // NewVScale creates a new VScale.
 //
 // Deprecated: Use gtk_scale_new() with GTK_ORIENTATION_VERTICAL instead.
-func NewVScale(adjustment Adjustment) *VScaleClass {
+func NewVScale(adjustment Adjustmenter) *VScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
@@ -103,9 +103,9 @@ func NewVScale(adjustment Adjustment) *VScaleClass {
 
 	_cret = C.gtk_vscale_new(_arg1)
 
-	var _vScale *VScaleClass // out
+	var _vScale *VScale // out
 
-	_vScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScaleClass)
+	_vScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScale)
 
 	return _vScale
 }
@@ -121,7 +121,7 @@ func NewVScale(adjustment Adjustment) *VScaleClass {
 //
 // Deprecated: Use gtk_scale_new_with_range() with GTK_ORIENTATION_VERTICAL
 // instead.
-func NewVScaleWithRange(min float64, max float64, step float64) *VScaleClass {
+func NewVScaleWithRange(min float64, max float64, step float64) *VScale {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
 	var _arg3 C.gdouble    // out
@@ -133,11 +133,11 @@ func NewVScaleWithRange(min float64, max float64, step float64) *VScaleClass {
 
 	_cret = C.gtk_vscale_new_with_range(_arg1, _arg2, _arg3)
 
-	var _vScale *VScaleClass // out
+	var _vScale *VScale // out
 
-	_vScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScaleClass)
+	_vScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScale)
 
 	return _vScale
 }
 
-func (*VScaleClass) privateVScaleClass() {}
+func (*VScale) privateVScale() {}

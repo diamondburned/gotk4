@@ -23,8 +23,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetup},
+		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetupper},
 	})
+}
+
+// PageSetupper describes PageSetup's methods.
+type PageSetupper interface {
+	gextras.Objector
+
+	Copy() *PageSetup
+	Orientation() PageOrientation
+	PaperSize() *PaperSize
+	LoadFile(fileName string) error
+	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
+	SetPaperSize(size *PaperSize)
+	SetPaperSizeAndDefaultMargins(size *PaperSize)
+	ToFile(fileName string) error
+	ToGVariant() *glib.Variant
+	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 }
 
 // PageSetup object stores the page size, orientation and margins. The idea is
@@ -68,63 +84,33 @@ func init() {
 //    }
 //
 // Printing support was added in GTK+ 2.10.
-type PageSetup interface {
-	gextras.Objector
-
-	// Copy copies a PageSetup.
-	Copy() *PageSetupClass
-	// Orientation gets the page orientation of the PageSetup.
-	Orientation() PageOrientation
-	// PaperSize gets the paper size of the PageSetup.
-	PaperSize() *PaperSize
-	// LoadFile reads the page setup from the file @file_name. See
-	// gtk_page_setup_to_file().
-	LoadFile(fileName string) error
-	// LoadKeyFile reads the page setup from the group @group_name in the key
-	// file @key_file.
-	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
-	// SetPaperSize sets the paper size of the PageSetup without changing the
-	// margins. See gtk_page_setup_set_paper_size_and_default_margins().
-	SetPaperSize(size *PaperSize)
-	// SetPaperSizeAndDefaultMargins sets the paper size of the PageSetup and
-	// modifies the margins according to the new paper size.
-	SetPaperSizeAndDefaultMargins(size *PaperSize)
-	// ToFile: this function saves the information from @setup to @file_name.
-	ToFile(fileName string) error
-	// ToGVariant: serialize page setup to an a{sv} variant.
-	ToGVariant() *glib.Variant
-	// ToKeyFile: this function adds the page setup from @setup to @key_file.
-	ToKeyFile(keyFile *glib.KeyFile, groupName string)
-}
-
-// PageSetupClass implements the PageSetup interface.
-type PageSetupClass struct {
+type PageSetup struct {
 	*externglib.Object
 }
 
-var _ PageSetup = (*PageSetupClass)(nil)
+var _ PageSetupper = (*PageSetup)(nil)
 
-func wrapPageSetup(obj *externglib.Object) PageSetup {
-	return &PageSetupClass{
+func wrapPageSetupper(obj *externglib.Object) PageSetupper {
+	return &PageSetup{
 		Object: obj,
 	}
 }
 
-func marshalPageSetup(p uintptr) (interface{}, error) {
+func marshalPageSetupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPageSetup(obj), nil
+	return wrapPageSetupper(obj), nil
 }
 
 // NewPageSetup creates a new PageSetup.
-func NewPageSetup() *PageSetupClass {
+func NewPageSetup() *PageSetup {
 	var _cret *C.GtkPageSetup // in
 
 	_cret = C.gtk_page_setup_new()
 
-	var _pageSetup *PageSetupClass // out
+	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetupClass)
+	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
 
 	return _pageSetup
 }
@@ -132,7 +118,7 @@ func NewPageSetup() *PageSetupClass {
 // NewPageSetupFromFile reads the page setup from the file @file_name. Returns a
 // new PageSetup object with the restored page setup, or nil if an error
 // occurred. See gtk_page_setup_to_file().
-func NewPageSetupFromFile(fileName string) (*PageSetupClass, error) {
+func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkPageSetup // in
 	var _cerr *C.GError       // in
@@ -142,10 +128,10 @@ func NewPageSetupFromFile(fileName string) (*PageSetupClass, error) {
 
 	_cret = C.gtk_page_setup_new_from_file(_arg1, &_cerr)
 
-	var _pageSetup *PageSetupClass // out
-	var _goerr error               // out
+	var _pageSetup *PageSetup // out
+	var _goerr error          // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetupClass)
+	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pageSetup, _goerr
@@ -153,7 +139,7 @@ func NewPageSetupFromFile(fileName string) (*PageSetupClass, error) {
 
 // NewPageSetupFromGVariant: desrialize a page setup from an a{sv} variant in
 // the format produced by gtk_page_setup_to_gvariant().
-func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetupClass {
+func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPageSetup // in
 
@@ -161,9 +147,9 @@ func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetupClass {
 
 	_cret = C.gtk_page_setup_new_from_gvariant(_arg1)
 
-	var _pageSetup *PageSetupClass // out
+	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetupClass)
+	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
 
 	return _pageSetup
 }
@@ -171,7 +157,7 @@ func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetupClass {
 // NewPageSetupFromKeyFile reads the page setup from the group @group_name in
 // the key file @key_file. Returns a new PageSetup object with the restored page
 // setup, or nil if an error occurred.
-func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetupClass, error) {
+func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetup, error) {
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.gchar        // out
 	var _cret *C.GtkPageSetup // in
@@ -183,17 +169,17 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 
 	_cret = C.gtk_page_setup_new_from_key_file(_arg1, _arg2, &_cerr)
 
-	var _pageSetup *PageSetupClass // out
-	var _goerr error               // out
+	var _pageSetup *PageSetup // out
+	var _goerr error          // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetupClass)
+	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pageSetup, _goerr
 }
 
 // Copy copies a PageSetup.
-func (other *PageSetupClass) Copy() *PageSetupClass {
+func (other *PageSetup) Copy() *PageSetup {
 	var _arg0 *C.GtkPageSetup // out
 	var _cret *C.GtkPageSetup // in
 
@@ -201,15 +187,15 @@ func (other *PageSetupClass) Copy() *PageSetupClass {
 
 	_cret = C.gtk_page_setup_copy(_arg0)
 
-	var _pageSetup *PageSetupClass // out
+	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetupClass)
+	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
 
 	return _pageSetup
 }
 
 // Orientation gets the page orientation of the PageSetup.
-func (setup *PageSetupClass) Orientation() PageOrientation {
+func (setup *PageSetup) Orientation() PageOrientation {
 	var _arg0 *C.GtkPageSetup      // out
 	var _cret C.GtkPageOrientation // in
 
@@ -225,7 +211,7 @@ func (setup *PageSetupClass) Orientation() PageOrientation {
 }
 
 // PaperSize gets the paper size of the PageSetup.
-func (setup *PageSetupClass) PaperSize() *PaperSize {
+func (setup *PageSetup) PaperSize() *PaperSize {
 	var _arg0 *C.GtkPageSetup // out
 	var _cret *C.GtkPaperSize // in
 
@@ -242,7 +228,7 @@ func (setup *PageSetupClass) PaperSize() *PaperSize {
 
 // LoadFile reads the page setup from the file @file_name. See
 // gtk_page_setup_to_file().
-func (setup *PageSetupClass) LoadFile(fileName string) error {
+func (setup *PageSetup) LoadFile(fileName string) error {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.char         // out
 	var _cerr *C.GError       // in
@@ -262,7 +248,7 @@ func (setup *PageSetupClass) LoadFile(fileName string) error {
 
 // LoadKeyFile reads the page setup from the group @group_name in the key file
 // @key_file.
-func (setup *PageSetupClass) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
+func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.gchar        // out
@@ -284,7 +270,7 @@ func (setup *PageSetupClass) LoadKeyFile(keyFile *glib.KeyFile, groupName string
 
 // SetPaperSize sets the paper size of the PageSetup without changing the
 // margins. See gtk_page_setup_set_paper_size_and_default_margins().
-func (setup *PageSetupClass) SetPaperSize(size *PaperSize) {
+func (setup *PageSetup) SetPaperSize(size *PaperSize) {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GtkPaperSize // out
 
@@ -296,7 +282,7 @@ func (setup *PageSetupClass) SetPaperSize(size *PaperSize) {
 
 // SetPaperSizeAndDefaultMargins sets the paper size of the PageSetup and
 // modifies the margins according to the new paper size.
-func (setup *PageSetupClass) SetPaperSizeAndDefaultMargins(size *PaperSize) {
+func (setup *PageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GtkPaperSize // out
 
@@ -307,7 +293,7 @@ func (setup *PageSetupClass) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 }
 
 // ToFile: this function saves the information from @setup to @file_name.
-func (setup *PageSetupClass) ToFile(fileName string) error {
+func (setup *PageSetup) ToFile(fileName string) error {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.char         // out
 	var _cerr *C.GError       // in
@@ -326,7 +312,7 @@ func (setup *PageSetupClass) ToFile(fileName string) error {
 }
 
 // ToGVariant: serialize page setup to an a{sv} variant.
-func (setup *PageSetupClass) ToGVariant() *glib.Variant {
+func (setup *PageSetup) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkPageSetup // out
 	var _cret *C.GVariant     // in
 
@@ -346,7 +332,7 @@ func (setup *PageSetupClass) ToGVariant() *glib.Variant {
 }
 
 // ToKeyFile: this function adds the page setup from @setup to @key_file.
-func (setup *PageSetupClass) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
+func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _arg0 *C.GtkPageSetup // out
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.gchar        // out

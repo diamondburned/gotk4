@@ -28,59 +28,53 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_inet_socket_address_get_type()), F: marshalInetSocketAddress},
+		{T: externglib.Type(C.g_inet_socket_address_get_type()), F: marshalInetSocketAddresser},
 	})
+}
+
+// InetSocketAddresser describes InetSocketAddress's methods.
+type InetSocketAddresser interface {
+	gextras.Objector
+
+	Address() *InetAddress
+	Flowinfo() uint32
+	Port() uint16
+	ScopeID() uint32
 }
 
 // InetSocketAddress: IPv4 or IPv6 socket address; that is, the combination of a
 // Address and a port number.
-type InetSocketAddress interface {
-	gextras.Objector
-
-	// Address gets @address's Address.
-	Address() *InetAddressClass
-	// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
-	// IPv6 address.
-	Flowinfo() uint32
-	// Port gets @address's port.
-	Port() uint16
-	// ScopeID gets the `sin6_scope_id` field from @address, which must be an
-	// IPv6 address.
-	ScopeID() uint32
-}
-
-// InetSocketAddressClass implements the InetSocketAddress interface.
-type InetSocketAddressClass struct {
+type InetSocketAddress struct {
 	*externglib.Object
-	SocketAddressClass
-	SocketConnectableIface
+	SocketAddress
+	SocketConnectable
 }
 
-var _ InetSocketAddress = (*InetSocketAddressClass)(nil)
+var _ InetSocketAddresser = (*InetSocketAddress)(nil)
 
-func wrapInetSocketAddress(obj *externglib.Object) InetSocketAddress {
-	return &InetSocketAddressClass{
+func wrapInetSocketAddresser(obj *externglib.Object) InetSocketAddresser {
+	return &InetSocketAddress{
 		Object: obj,
-		SocketAddressClass: SocketAddressClass{
+		SocketAddress: SocketAddress{
 			Object: obj,
-			SocketConnectableIface: SocketConnectableIface{
+			SocketConnectable: SocketConnectable{
 				Object: obj,
 			},
 		},
-		SocketConnectableIface: SocketConnectableIface{
+		SocketConnectable: SocketConnectable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalInetSocketAddress(p uintptr) (interface{}, error) {
+func marshalInetSocketAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInetSocketAddress(obj), nil
+	return wrapInetSocketAddresser(obj), nil
 }
 
 // NewInetSocketAddress creates a new SocketAddress for @address and @port.
-func NewInetSocketAddress(address InetAddress, port uint16) *InetSocketAddressClass {
+func NewInetSocketAddress(address InetAddresser, port uint16) *InetSocketAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
 	var _cret *C.GSocketAddress // in
@@ -90,9 +84,9 @@ func NewInetSocketAddress(address InetAddress, port uint16) *InetSocketAddressCl
 
 	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
 
-	var _inetSocketAddress *InetSocketAddressClass // out
+	var _inetSocketAddress *InetSocketAddress // out
 
-	_inetSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetSocketAddressClass)
+	_inetSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetSocketAddress)
 
 	return _inetSocketAddress
 }
@@ -102,7 +96,7 @@ func NewInetSocketAddress(address InetAddress, port uint16) *InetSocketAddressCl
 //
 // If @address is an IPv6 address, it can also contain a scope ID (separated
 // from the address by a `%`).
-func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddressClass {
+func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddress {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // out
 	var _cret *C.GSocketAddress // in
@@ -113,15 +107,15 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 
 	_cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
 
-	var _inetSocketAddress *InetSocketAddressClass // out
+	var _inetSocketAddress *InetSocketAddress // out
 
-	_inetSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetSocketAddressClass)
+	_inetSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetSocketAddress)
 
 	return _inetSocketAddress
 }
 
 // Address gets @address's Address.
-func (address *InetSocketAddressClass) Address() *InetAddressClass {
+func (address *InetSocketAddress) Address() *InetAddress {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret *C.GInetAddress       // in
 
@@ -129,16 +123,16 @@ func (address *InetSocketAddressClass) Address() *InetAddressClass {
 
 	_cret = C.g_inet_socket_address_get_address(_arg0)
 
-	var _inetAddress *InetAddressClass // out
+	var _inetAddress *InetAddress // out
 
-	_inetAddress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InetAddressClass)
+	_inetAddress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InetAddress)
 
 	return _inetAddress
 }
 
 // Flowinfo gets the `sin6_flowinfo` field from @address, which must be an IPv6
 // address.
-func (address *InetSocketAddressClass) Flowinfo() uint32 {
+func (address *InetSocketAddress) Flowinfo() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
 
@@ -154,7 +148,7 @@ func (address *InetSocketAddressClass) Flowinfo() uint32 {
 }
 
 // Port gets @address's port.
-func (address *InetSocketAddressClass) Port() uint16 {
+func (address *InetSocketAddress) Port() uint16 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint16             // in
 
@@ -171,7 +165,7 @@ func (address *InetSocketAddressClass) Port() uint16 {
 
 // ScopeID gets the `sin6_scope_id` field from @address, which must be an IPv6
 // address.
-func (address *InetSocketAddressClass) ScopeID() uint32 {
+func (address *InetSocketAddress) ScopeID() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
 

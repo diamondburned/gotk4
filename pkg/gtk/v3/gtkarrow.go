@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrow},
+		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrowwer},
 	})
+}
+
+// Arrowwer describes Arrow's methods.
+type Arrowwer interface {
+	gextras.Objector
+
+	privateArrow()
 }
 
 // Arrow should be used to draw simple arrows that need to point in one of the
@@ -42,49 +49,42 @@ func init() {
 // K_ARROW_LEFT and K_ARROW_RIGHT, depending on the text direction. To get the
 // same effect with an image, use the icon names “pan-start-symbolic“ and
 // “pan-end-symbolic“, which react to the text direction.
-type Arrow interface {
-	gextras.Objector
-
-	privateArrowClass()
-}
-
-// ArrowClass implements the Arrow interface.
-type ArrowClass struct {
+type Arrow struct {
 	*externglib.Object
-	MiscClass
-	BuildableIface
+	Misc
+	Buildable
 }
 
-var _ Arrow = (*ArrowClass)(nil)
+var _ Arrowwer = (*Arrow)(nil)
 
-func wrapArrow(obj *externglib.Object) Arrow {
-	return &ArrowClass{
+func wrapArrowwer(obj *externglib.Object) Arrowwer {
+	return &Arrow{
 		Object: obj,
-		MiscClass: MiscClass{
+		Misc: Misc{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalArrow(p uintptr) (interface{}, error) {
+func marshalArrowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapArrow(obj), nil
+	return wrapArrowwer(obj), nil
 }
 
-func (*ArrowClass) privateArrowClass() {}
+func (*Arrow) privateArrow() {}

@@ -28,8 +28,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_memory_monitor_get_type()), F: marshalMemoryMonitor},
+		{T: externglib.Type(C.g_memory_monitor_get_type()), F: marshalMemoryMonitorrer},
 	})
+}
+
+// MemoryMonitorrer describes MemoryMonitor's methods.
+type MemoryMonitorrer interface {
+	gextras.Objector
+
+	privateMemoryMonitor()
 }
 
 // MemoryMonitor will monitor system memory and suggest to the application when
@@ -74,31 +81,24 @@ func init() {
 //
 // Don't forget to disconnect the Monitor::low-memory-warning signal, and unref
 // the Monitor itself when exiting.
-type MemoryMonitor interface {
-	gextras.Objector
-
-	privateMemoryMonitorIface()
+type MemoryMonitor struct {
+	Initable
 }
 
-// MemoryMonitorIface implements the MemoryMonitor interface.
-type MemoryMonitorIface struct {
-	InitableIface
-}
+var _ MemoryMonitorrer = (*MemoryMonitor)(nil)
 
-var _ MemoryMonitor = (*MemoryMonitorIface)(nil)
-
-func wrapMemoryMonitor(obj *externglib.Object) MemoryMonitor {
-	return &MemoryMonitorIface{
-		InitableIface: InitableIface{
+func wrapMemoryMonitorrer(obj *externglib.Object) MemoryMonitorrer {
+	return &MemoryMonitor{
+		Initable: Initable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMemoryMonitor(p uintptr) (interface{}, error) {
+func marshalMemoryMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryMonitor(obj), nil
+	return wrapMemoryMonitorrer(obj), nil
 }
 
-func (*MemoryMonitorIface) privateMemoryMonitorIface() {}
+func (*MemoryMonitor) privateMemoryMonitor() {}

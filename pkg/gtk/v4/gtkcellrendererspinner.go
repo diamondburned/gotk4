@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_spinner_get_type()), F: marshalCellRendererSpinner},
+		{T: externglib.Type(C.gtk_cell_renderer_spinner_get_type()), F: marshalCellRendererSpinnerrer},
 	})
+}
+
+// CellRendererSpinnerrer describes CellRendererSpinner's methods.
+type CellRendererSpinnerrer interface {
+	gextras.Objector
+
+	privateCellRendererSpinner()
 }
 
 // CellRendererSpinner renders a spinning animation in a cell
@@ -33,22 +40,15 @@ func init() {
 // intervals. The usual way to set the cell renderer properties for each cell is
 // to bind them to columns in your tree model using e.g.
 // gtk_tree_view_column_add_attribute().
-type CellRendererSpinner interface {
-	gextras.Objector
-
-	privateCellRendererSpinnerClass()
+type CellRendererSpinner struct {
+	CellRenderer
 }
 
-// CellRendererSpinnerClass implements the CellRendererSpinner interface.
-type CellRendererSpinnerClass struct {
-	CellRendererClass
-}
+var _ CellRendererSpinnerrer = (*CellRendererSpinner)(nil)
 
-var _ CellRendererSpinner = (*CellRendererSpinnerClass)(nil)
-
-func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
-	return &CellRendererSpinnerClass{
-		CellRendererClass: CellRendererClass{
+func wrapCellRendererSpinnerrer(obj *externglib.Object) CellRendererSpinnerrer {
+	return &CellRendererSpinner{
+		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -56,24 +56,24 @@ func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
 	}
 }
 
-func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
+func marshalCellRendererSpinnerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererSpinner(obj), nil
+	return wrapCellRendererSpinnerrer(obj), nil
 }
 
 // NewCellRendererSpinner returns a new cell renderer which will show a spinner
 // to indicate activity.
-func NewCellRendererSpinner() *CellRendererSpinnerClass {
+func NewCellRendererSpinner() *CellRendererSpinner {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_spinner_new()
 
-	var _cellRendererSpinner *CellRendererSpinnerClass // out
+	var _cellRendererSpinner *CellRendererSpinner // out
 
-	_cellRendererSpinner = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererSpinnerClass)
+	_cellRendererSpinner = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererSpinner)
 
 	return _cellRendererSpinner
 }
 
-func (*CellRendererSpinnerClass) privateCellRendererSpinnerClass() {}
+func (*CellRendererSpinner) privateCellRendererSpinner() {}

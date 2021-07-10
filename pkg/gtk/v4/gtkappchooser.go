@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_get_type()), F: marshalAppChooser},
+		{T: externglib.Type(C.gtk_app_chooser_get_type()), F: marshalAppChooserrer},
 	})
+}
+
+// AppChooserrer describes AppChooser's methods.
+type AppChooserrer interface {
+	gextras.Objector
+
+	ContentType() string
+	Refresh()
 }
 
 // AppChooser: `GtkAppChooser` is an interface for widgets which allow the user
@@ -40,54 +48,43 @@ func init() {
 //
 // To obtain the application that has been selected in a `GtkAppChooser`, use
 // [method@Gtk.AppChooser.get_app_info].
-type AppChooser interface {
-	gextras.Objector
-
-	// ContentType returns the content type for which the `GtkAppChooser` shows
-	// applications.
-	ContentType() string
-	// Refresh reloads the list of applications.
-	Refresh()
-}
-
-// AppChooserIface implements the AppChooser interface.
-type AppChooserIface struct {
+type AppChooser struct {
 	*externglib.Object
-	WidgetClass
+	Widget
 }
 
-var _ AppChooser = (*AppChooserIface)(nil)
+var _ AppChooserrer = (*AppChooser)(nil)
 
-func wrapAppChooser(obj *externglib.Object) AppChooser {
-	return &AppChooserIface{
+func wrapAppChooserrer(obj *externglib.Object) AppChooserrer {
+	return &AppChooser{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalAppChooser(p uintptr) (interface{}, error) {
+func marshalAppChooserrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooser(obj), nil
+	return wrapAppChooserrer(obj), nil
 }
 
 // ContentType returns the content type for which the `GtkAppChooser` shows
 // applications.
-func (self *AppChooserIface) ContentType() string {
+func (self *AppChooser) ContentType() string {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.char          // in
 
@@ -104,7 +101,7 @@ func (self *AppChooserIface) ContentType() string {
 }
 
 // Refresh reloads the list of applications.
-func (self *AppChooserIface) Refresh() {
+func (self *AppChooser) Refresh() {
 	var _arg0 *C.GtkAppChooser // out
 
 	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))

@@ -19,15 +19,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_editable_get_type()), F: marshalCellEditable},
+		{T: externglib.Type(C.gtk_cell_editable_get_type()), F: marshalCellEditabler},
 	})
 }
 
-// CellEditableOverrider contains methods that are overridable.
+// CellEditablerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CellEditableOverrider interface {
+type CellEditablerOverrider interface {
 	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
 	// RemoveWidget emits the CellEditable::remove-widget signal.
@@ -44,7 +44,16 @@ type CellEditableOverrider interface {
 	// Note that the @cell_editable is created on-demand for the current edit;
 	// its lifetime is temporary and does not persist across other edits and/or
 	// cells.
-	StartEditing(event gdk.Event)
+	StartEditing(event gdk.Eventer)
+}
+
+// CellEditabler describes CellEditable's methods.
+type CellEditabler interface {
+	gextras.Objector
+
+	EditingDone()
+	RemoveWidget()
+	StartEditing(event gdk.Eventer)
 }
 
 // CellEditable: interface for widgets that can be used for editing cells
@@ -52,65 +61,42 @@ type CellEditableOverrider interface {
 // The CellEditable interface must be implemented for widgets to be usable to
 // edit the contents of a TreeView cell. It provides a way to specify how
 // temporary widgets should be configured for editing, get the new value, etc.
-type CellEditable interface {
-	gextras.Objector
-
-	// EditingDone emits the CellEditable::editing-done signal.
-	EditingDone()
-	// RemoveWidget emits the CellEditable::remove-widget signal.
-	RemoveWidget()
-	// StartEditing begins editing on a @cell_editable.
-	//
-	// The CellRenderer for the cell creates and returns a CellEditable from
-	// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
-	//
-	// gtk_cell_editable_start_editing() can then set up @cell_editable suitably
-	// for editing a cell, e.g. making the Esc key emit
-	// CellEditable::editing-done.
-	//
-	// Note that the @cell_editable is created on-demand for the current edit;
-	// its lifetime is temporary and does not persist across other edits and/or
-	// cells.
-	StartEditing(event gdk.Event)
-}
-
-// CellEditableIface implements the CellEditable interface.
-type CellEditableIface struct {
+type CellEditable struct {
 	*externglib.Object
-	WidgetClass
+	Widget
 }
 
-var _ CellEditable = (*CellEditableIface)(nil)
+var _ CellEditabler = (*CellEditable)(nil)
 
-func wrapCellEditable(obj *externglib.Object) CellEditable {
-	return &CellEditableIface{
+func wrapCellEditabler(obj *externglib.Object) CellEditabler {
+	return &CellEditable{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalCellEditable(p uintptr) (interface{}, error) {
+func marshalCellEditabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellEditable(obj), nil
+	return wrapCellEditabler(obj), nil
 }
 
 // EditingDone emits the CellEditable::editing-done signal.
-func (cellEditable *CellEditableIface) EditingDone() {
+func (cellEditable *CellEditable) EditingDone() {
 	var _arg0 *C.GtkCellEditable // out
 
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
@@ -119,7 +105,7 @@ func (cellEditable *CellEditableIface) EditingDone() {
 }
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
-func (cellEditable *CellEditableIface) RemoveWidget() {
+func (cellEditable *CellEditable) RemoveWidget() {
 	var _arg0 *C.GtkCellEditable // out
 
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
@@ -137,7 +123,7 @@ func (cellEditable *CellEditableIface) RemoveWidget() {
 //
 // Note that the @cell_editable is created on-demand for the current edit; its
 // lifetime is temporary and does not persist across other edits and/or cells.
-func (cellEditable *CellEditableIface) StartEditing(event gdk.Event) {
+func (cellEditable *CellEditable) StartEditing(event gdk.Eventer) {
 	var _arg0 *C.GtkCellEditable // out
 	var _arg1 *C.GdkEvent        // out
 

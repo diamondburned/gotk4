@@ -18,19 +18,28 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_object_factory_get_type()), F: marshalObjectFactory},
+		{T: externglib.Type(C.atk_object_factory_get_type()), F: marshalyier},
 	})
 }
 
-// ObjectFactoryOverrider contains methods that are overridable.
+// yierOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ObjectFactoryOverrider interface {
+type yierOverrider interface {
 	// Invalidate: inform @factory that it is no longer being used to create
 	// accessibles. When called, @factory may need to inform Objects which it
 	// has created that they need to be re-instantiated. Note: primarily used
 	// for runtime replacement of ObjectFactorys in object registries.
+	Invalidate()
+}
+
+// yier describes ObjectFactory's methods.
+type yier interface {
+	gextras.Objector
+
+	CreateAccessible(obj gextras.Objector) *Object
+	AccessibleType() externglib.Type
 	Invalidate()
 }
 
@@ -38,44 +47,27 @@ type ObjectFactoryOverrider interface {
 // create an accessible object for a specific GType. The function
 // atk_registry_set_factory_type() is normally called to store in the registry
 // the factory type to be used to create an accessible of a particular GType.
-type ObjectFactory interface {
-	gextras.Objector
-
-	// CreateAccessible provides an Object that implements an accessibility
-	// interface on behalf of @obj
-	CreateAccessible(obj gextras.Objector) *ObjectClass
-	// AccessibleType gets the GType of the accessible which is created by the
-	// factory.
-	AccessibleType() externglib.Type
-	// Invalidate: inform @factory that it is no longer being used to create
-	// accessibles. When called, @factory may need to inform Objects which it
-	// has created that they need to be re-instantiated. Note: primarily used
-	// for runtime replacement of ObjectFactorys in object registries.
-	Invalidate()
-}
-
-// ObjectFactoryClass implements the ObjectFactory interface.
-type ObjectFactoryClass struct {
+type ObjectFactory struct {
 	*externglib.Object
 }
 
-var _ ObjectFactory = (*ObjectFactoryClass)(nil)
+var _ yier = (*ObjectFactory)(nil)
 
-func wrapObjectFactory(obj *externglib.Object) ObjectFactory {
-	return &ObjectFactoryClass{
+func wrapyier(obj *externglib.Object) yier {
+	return &ObjectFactory{
 		Object: obj,
 	}
 }
 
-func marshalObjectFactory(p uintptr) (interface{}, error) {
+func marshalyier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapObjectFactory(obj), nil
+	return wrapyier(obj), nil
 }
 
 // CreateAccessible provides an Object that implements an accessibility
 // interface on behalf of @obj
-func (factory *ObjectFactoryClass) CreateAccessible(obj gextras.Objector) *ObjectClass {
+func (factory *ObjectFactory) CreateAccessible(obj gextras.Objector) *Object {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
 	var _cret *C.AtkObject        // in
@@ -85,16 +77,16 @@ func (factory *ObjectFactoryClass) CreateAccessible(obj gextras.Objector) *Objec
 
 	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
 
-	var _object *ObjectClass // out
+	var _object *Object // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Object)
 
 	return _object
 }
 
 // AccessibleType gets the GType of the accessible which is created by the
 // factory.
-func (factory *ObjectFactoryClass) AccessibleType() externglib.Type {
+func (factory *ObjectFactory) AccessibleType() externglib.Type {
 	var _arg0 *C.AtkObjectFactory // out
 	var _cret C.GType             // in
 
@@ -113,7 +105,7 @@ func (factory *ObjectFactoryClass) AccessibleType() externglib.Type {
 // accessibles. When called, @factory may need to inform Objects which it has
 // created that they need to be re-instantiated. Note: primarily used for
 // runtime replacement of ObjectFactorys in object registries.
-func (factory *ObjectFactoryClass) Invalidate() {
+func (factory *ObjectFactory) Invalidate() {
 	var _arg0 *C.AtkObjectFactory // out
 
 	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))

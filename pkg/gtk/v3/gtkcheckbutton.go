@@ -21,16 +21,23 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButton},
+		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtonner},
 	})
 }
 
-// CheckButtonOverrider contains methods that are overridable.
+// CheckButtonnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CheckButtonOverrider interface {
+type CheckButtonnerOverrider interface {
 	DrawIndicator(cr *cairo.Context)
+}
+
+// CheckButtonner describes CheckButton's methods.
+type CheckButtonner interface {
+	gextras.Objector
+
+	privateCheckButton()
 }
 
 // CheckButton places a discrete ToggleButton next to a widget, (usually a
@@ -49,132 +56,125 @@ type CheckButtonOverrider interface {
 // A GtkCheckButton without indicator changes the name of its main node to
 // button and adds a .check style class to it. The subnode is invisible in this
 // case.
-type CheckButton interface {
-	gextras.Objector
-
-	privateCheckButtonClass()
-}
-
-// CheckButtonClass implements the CheckButton interface.
-type CheckButtonClass struct {
+type CheckButton struct {
 	*externglib.Object
-	ToggleButtonClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	ToggleButton
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ CheckButton = (*CheckButtonClass)(nil)
+var _ CheckButtonner = (*CheckButton)(nil)
 
-func wrapCheckButton(obj *externglib.Object) CheckButton {
-	return &CheckButtonClass{
+func wrapCheckButtonner(obj *externglib.Object) CheckButtonner {
+	return &CheckButton{
 		Object: obj,
-		ToggleButtonClass: ToggleButtonClass{
+		ToggleButton: ToggleButton{
 			Object: obj,
-			ButtonClass: ButtonClass{
+			Button: Button{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				ActionableIface: ActionableIface{
+				Actionable: Actionable{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
 				},
-				ActivatableIface: ActivatableIface{
+				Activatable: Activatable{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCheckButton(p uintptr) (interface{}, error) {
+func marshalCheckButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckButton(obj), nil
+	return wrapCheckButtonner(obj), nil
 }
 
 // NewCheckButton creates a new CheckButton.
-func NewCheckButton() *CheckButtonClass {
+func NewCheckButton() *CheckButton {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_check_button_new()
 
-	var _checkButton *CheckButtonClass // out
+	var _checkButton *CheckButton // out
 
-	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButtonClass)
+	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButton)
 
 	return _checkButton
 }
 
 // NewCheckButtonWithLabel creates a new CheckButton with a Label to the right
 // of it.
-func NewCheckButtonWithLabel(label string) *CheckButtonClass {
+func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -183,9 +183,9 @@ func NewCheckButtonWithLabel(label string) *CheckButtonClass {
 
 	_cret = C.gtk_check_button_new_with_label(_arg1)
 
-	var _checkButton *CheckButtonClass // out
+	var _checkButton *CheckButton // out
 
-	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButtonClass)
+	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButton)
 
 	return _checkButton
 }
@@ -193,7 +193,7 @@ func NewCheckButtonWithLabel(label string) *CheckButtonClass {
 // NewCheckButtonWithMnemonic creates a new CheckButton containing a label. The
 // label will be created using gtk_label_new_with_mnemonic(), so underscores in
 // @label indicate the mnemonic for the check button.
-func NewCheckButtonWithMnemonic(label string) *CheckButtonClass {
+func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -202,11 +202,11 @@ func NewCheckButtonWithMnemonic(label string) *CheckButtonClass {
 
 	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
 
-	var _checkButton *CheckButtonClass // out
+	var _checkButton *CheckButton // out
 
-	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButtonClass)
+	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButton)
 
 	return _checkButton
 }
 
-func (*CheckButtonClass) privateCheckButtonClass() {}
+func (*CheckButton) privateCheckButton() {}

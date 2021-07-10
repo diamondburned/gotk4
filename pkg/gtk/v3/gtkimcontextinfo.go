@@ -19,12 +19,6 @@ type IMContextInfo struct {
 	native C.GtkIMContextInfo
 }
 
-// WrapIMContextInfo wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIMContextInfo(ptr unsafe.Pointer) *IMContextInfo {
-	return (*IMContextInfo)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (i *IMContextInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)

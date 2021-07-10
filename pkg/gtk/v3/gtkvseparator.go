@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vseparator_get_type()), F: marshalVSeparator},
+		{T: externglib.Type(C.gtk_vseparator_get_type()), F: marshalVSeparatorrer},
 	})
+}
+
+// VSeparatorrer describes VSeparator's methods.
+type VSeparatorrer interface {
+	gextras.Objector
+
+	privateVSeparator()
 }
 
 // VSeparator: the VSeparator widget is a vertical separator, used to group the
@@ -29,71 +36,64 @@ func init() {
 // appear sunken into the interface.
 //
 // GtkVSeparator has been deprecated, use Separator instead.
-type VSeparator interface {
-	gextras.Objector
-
-	privateVSeparatorClass()
-}
-
-// VSeparatorClass implements the VSeparator interface.
-type VSeparatorClass struct {
+type VSeparator struct {
 	*externglib.Object
-	SeparatorClass
-	BuildableIface
-	OrientableIface
+	Separator
+	Buildable
+	Orientable
 }
 
-var _ VSeparator = (*VSeparatorClass)(nil)
+var _ VSeparatorrer = (*VSeparator)(nil)
 
-func wrapVSeparator(obj *externglib.Object) VSeparator {
-	return &VSeparatorClass{
+func wrapVSeparatorrer(obj *externglib.Object) VSeparatorrer {
+	return &VSeparator{
 		Object: obj,
-		SeparatorClass: SeparatorClass{
+		Separator: Separator{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalVSeparator(p uintptr) (interface{}, error) {
+func marshalVSeparatorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVSeparator(obj), nil
+	return wrapVSeparatorrer(obj), nil
 }
 
 // NewVSeparator creates a new VSeparator.
 //
 // Deprecated: Use gtk_separator_new() with GTK_ORIENTATION_VERTICAL instead.
-func NewVSeparator() *VSeparatorClass {
+func NewVSeparator() *VSeparator {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_vseparator_new()
 
-	var _vSeparator *VSeparatorClass // out
+	var _vSeparator *VSeparator // out
 
-	_vSeparator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VSeparatorClass)
+	_vSeparator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VSeparator)
 
 	return _vSeparator
 }
 
-func (*VSeparatorClass) privateVSeparatorClass() {}
+func (*VSeparator) privateVSeparator() {}

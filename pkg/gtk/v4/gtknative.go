@@ -20,8 +20,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_native_get_type()), F: marshalNative},
+		{T: externglib.Type(C.gtk_native_get_type()), F: marshalNativer},
 	})
+}
+
+// Nativer describes Native's methods.
+type Nativer interface {
+	gextras.Objector
+
+	Renderer() *gsk.Renderer
+	Surface() *gdk.Surface
+	SurfaceTransform() (x float64, y float64)
+	Realize()
+	Unrealize()
 }
 
 // Native: `GtkNative` is the interface implemented by all widgets that have
@@ -39,65 +50,42 @@ func init() {
 // In addition to a [class@Gdk.Surface], a `GtkNative` also provides a
 // [class@Gsk.Renderer] for rendering on that surface. To get the renderer, use
 // [method@Gtk.Native.get_renderer].
-type Native interface {
-	gextras.Objector
-
-	// Renderer returns the renderer that is used for this `GtkNative`.
-	Renderer() *gsk.RendererClass
-	// Surface returns the surface of this `GtkNative`.
-	Surface() *gdk.SurfaceClass
-	// SurfaceTransform retrieves the surface transform of @self.
-	//
-	// This is the translation from @self's surface coordinates into @self's
-	// widget coordinates.
-	SurfaceTransform() (x float64, y float64)
-	// Realize realizes a `GtkNative`.
-	//
-	// This should only be used by subclasses.
-	Realize()
-	// Unrealize unrealizes a `GtkNative`.
-	//
-	// This should only be used by subclasses.
-	Unrealize()
-}
-
-// NativeIface implements the Native interface.
-type NativeIface struct {
+type Native struct {
 	*externglib.Object
-	WidgetClass
+	Widget
 }
 
-var _ Native = (*NativeIface)(nil)
+var _ Nativer = (*Native)(nil)
 
-func wrapNative(obj *externglib.Object) Native {
-	return &NativeIface{
+func wrapNativer(obj *externglib.Object) Nativer {
+	return &Native{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalNative(p uintptr) (interface{}, error) {
+func marshalNativer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNative(obj), nil
+	return wrapNativer(obj), nil
 }
 
 // Renderer returns the renderer that is used for this `GtkNative`.
-func (self *NativeIface) Renderer() *gsk.RendererClass {
+func (self *Native) Renderer() *gsk.Renderer {
 	var _arg0 *C.GtkNative   // out
 	var _cret *C.GskRenderer // in
 
@@ -105,15 +93,15 @@ func (self *NativeIface) Renderer() *gsk.RendererClass {
 
 	_cret = C.gtk_native_get_renderer(_arg0)
 
-	var _renderer *gsk.RendererClass // out
+	var _renderer *gsk.Renderer // out
 
-	_renderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gsk.RendererClass)
+	_renderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gsk.Renderer)
 
 	return _renderer
 }
 
 // Surface returns the surface of this `GtkNative`.
-func (self *NativeIface) Surface() *gdk.SurfaceClass {
+func (self *Native) Surface() *gdk.Surface {
 	var _arg0 *C.GtkNative  // out
 	var _cret *C.GdkSurface // in
 
@@ -121,9 +109,9 @@ func (self *NativeIface) Surface() *gdk.SurfaceClass {
 
 	_cret = C.gtk_native_get_surface(_arg0)
 
-	var _surface *gdk.SurfaceClass // out
+	var _surface *gdk.Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Surface)
 
 	return _surface
 }
@@ -132,7 +120,7 @@ func (self *NativeIface) Surface() *gdk.SurfaceClass {
 //
 // This is the translation from @self's surface coordinates into @self's widget
 // coordinates.
-func (self *NativeIface) SurfaceTransform() (x float64, y float64) {
+func (self *Native) SurfaceTransform() (x float64, y float64) {
 	var _arg0 *C.GtkNative // out
 	var _arg1 C.double     // in
 	var _arg2 C.double     // in
@@ -153,7 +141,7 @@ func (self *NativeIface) SurfaceTransform() (x float64, y float64) {
 // Realize realizes a `GtkNative`.
 //
 // This should only be used by subclasses.
-func (self *NativeIface) Realize() {
+func (self *Native) Realize() {
 	var _arg0 *C.GtkNative // out
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
@@ -164,7 +152,7 @@ func (self *NativeIface) Realize() {
 // Unrealize unrealizes a `GtkNative`.
 //
 // This should only be used by subclasses.
-func (self *NativeIface) Unrealize() {
+func (self *Native) Unrealize() {
 	var _arg0 *C.GtkNative // out
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))

@@ -18,48 +18,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_relation_get_type()), F: marshalRelation},
+		{T: externglib.Type(C.atk_relation_get_type()), F: marshalRelationer},
 	})
+}
+
+// Relationer describes Relation's methods.
+type Relationer interface {
+	gextras.Objector
+
+	AddTarget(target Objecter)
+	RelationType() RelationType
+	RemoveTarget(target Objecter) bool
 }
 
 // Relation describes a relation between an object and one or more other
 // objects. The actual relations that an object has with other objects are
 // defined as an AtkRelationSet, which is a set of AtkRelations.
-type Relation interface {
-	gextras.Objector
-
-	// AddTarget adds the specified AtkObject to the target for the relation, if
-	// it is not already present. See also atk_object_add_relationship().
-	AddTarget(target Object)
-	// RelationType gets the type of @relation
-	RelationType() RelationType
-	// RemoveTarget: remove the specified AtkObject from the target for the
-	// relation.
-	RemoveTarget(target Object) bool
-}
-
-// RelationClass implements the Relation interface.
-type RelationClass struct {
+type Relation struct {
 	*externglib.Object
 }
 
-var _ Relation = (*RelationClass)(nil)
+var _ Relationer = (*Relation)(nil)
 
-func wrapRelation(obj *externglib.Object) Relation {
-	return &RelationClass{
+func wrapRelationer(obj *externglib.Object) Relationer {
+	return &Relation{
 		Object: obj,
 	}
 }
 
-func marshalRelation(p uintptr) (interface{}, error) {
+func marshalRelationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRelation(obj), nil
+	return wrapRelationer(obj), nil
 }
 
 // AddTarget adds the specified AtkObject to the target for the relation, if it
 // is not already present. See also atk_object_add_relationship().
-func (relation *RelationClass) AddTarget(target Object) {
+func (relation *Relation) AddTarget(target Objecter) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 
@@ -70,7 +65,7 @@ func (relation *RelationClass) AddTarget(target Object) {
 }
 
 // RelationType gets the type of @relation
-func (relation *RelationClass) RelationType() RelationType {
+func (relation *Relation) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
 	var _cret C.AtkRelationType // in
 
@@ -87,7 +82,7 @@ func (relation *RelationClass) RelationType() RelationType {
 
 // RemoveTarget: remove the specified AtkObject from the target for the
 // relation.
-func (relation *RelationClass) RemoveTarget(target Object) bool {
+func (relation *Relation) RemoveTarget(target Objecter) bool {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 	var _cret C.gboolean     // in

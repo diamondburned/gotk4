@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_custom_layout_get_type()), F: marshalCustomLayout},
+		{T: externglib.Type(C.gtk_custom_layout_get_type()), F: marshalCustomLayouter},
 	})
+}
+
+// CustomLayouter describes CustomLayout's methods.
+type CustomLayouter interface {
+	gextras.Objector
+
+	privateCustomLayout()
 }
 
 // CustomLayout: `GtkCustomLayout` uses closures for size negotiation.
@@ -27,31 +34,24 @@ func init() {
 // A `GtkCustomLayout `uses closures matching to the old `GtkWidget` virtual
 // functions for size negotiation, as a convenience API to ease the porting
 // towards the corresponding `GtkLayoutManager virtual functions.
-type CustomLayout interface {
-	gextras.Objector
-
-	privateCustomLayoutClass()
+type CustomLayout struct {
+	LayoutManager
 }
 
-// CustomLayoutClass implements the CustomLayout interface.
-type CustomLayoutClass struct {
-	LayoutManagerClass
-}
+var _ CustomLayouter = (*CustomLayout)(nil)
 
-var _ CustomLayout = (*CustomLayoutClass)(nil)
-
-func wrapCustomLayout(obj *externglib.Object) CustomLayout {
-	return &CustomLayoutClass{
-		LayoutManagerClass: LayoutManagerClass{
+func wrapCustomLayouter(obj *externglib.Object) CustomLayouter {
+	return &CustomLayout{
+		LayoutManager: LayoutManager{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCustomLayout(p uintptr) (interface{}, error) {
+func marshalCustomLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCustomLayout(obj), nil
+	return wrapCustomLayouter(obj), nil
 }
 
-func (*CustomLayoutClass) privateCustomLayoutClass() {}
+func (*CustomLayout) privateCustomLayout() {}

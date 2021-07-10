@@ -20,8 +20,21 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_frame_get_type()), F: marshalFrame},
+		{T: externglib.Type(C.gtk_frame_get_type()), F: marshalFramer},
 	})
+}
+
+// Framer describes Frame's methods.
+type Framer interface {
+	gextras.Objector
+
+	Label() string
+	LabelAlign() (xalign float32, yalign float32)
+	LabelWidget() *Widget
+	ShadowType() ShadowType
+	SetLabel(label string)
+	SetLabelAlign(xalign float32, yalign float32)
+	SetLabelWidget(labelWidget Widgetter)
 }
 
 // Frame: the frame widget is a bin that surrounds its child with a decorative
@@ -63,81 +76,53 @@ func init() {
 // to disable drawing of the border. To do this from code, call
 // gtk_frame_set_shadow_type() with GTK_SHADOW_NONE to add the “.flat” class or
 // any other shadow type to remove it.
-type Frame interface {
-	gextras.Objector
-
-	// Label: if the frame’s label widget is a Label, returns the text in the
-	// label widget. (The frame will have a Label for the label widget if a
-	// non-nil argument was passed to gtk_frame_new().)
-	Label() string
-	// LabelAlign retrieves the X and Y alignment of the frame’s label. See
-	// gtk_frame_set_label_align().
-	LabelAlign() (xalign float32, yalign float32)
-	// LabelWidget retrieves the label widget for the frame. See
-	// gtk_frame_set_label_widget().
-	LabelWidget() *WidgetClass
-	// ShadowType retrieves the shadow type of the frame. See
-	// gtk_frame_set_shadow_type().
-	ShadowType() ShadowType
-	// SetLabel removes the current Frame:label-widget. If @label is not nil,
-	// creates a new Label with that text and adds it as the Frame:label-widget.
-	SetLabel(label string)
-	// SetLabelAlign sets the alignment of the frame widget’s label. The default
-	// values for a newly created frame are 0.0 and 0.5.
-	SetLabelAlign(xalign float32, yalign float32)
-	// SetLabelWidget sets the Frame:label-widget for the frame. This is the
-	// widget that will appear embedded in the top edge of the frame as a title.
-	SetLabelWidget(labelWidget Widget)
-}
-
-// FrameClass implements the Frame interface.
-type FrameClass struct {
+type Frame struct {
 	*externglib.Object
-	BinClass
-	BuildableIface
+	Bin
+	Buildable
 }
 
-var _ Frame = (*FrameClass)(nil)
+var _ Framer = (*Frame)(nil)
 
-func wrapFrame(obj *externglib.Object) Frame {
-	return &FrameClass{
+func wrapFramer(obj *externglib.Object) Framer {
+	return &Frame{
 		Object: obj,
-		BinClass: BinClass{
+		Bin: Bin{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFrame(p uintptr) (interface{}, error) {
+func marshalFramer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFrame(obj), nil
+	return wrapFramer(obj), nil
 }
 
 // NewFrame creates a new Frame, with optional label @label. If @label is nil,
 // the label is omitted.
-func NewFrame(label string) *FrameClass {
+func NewFrame(label string) *Frame {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -146,9 +131,9 @@ func NewFrame(label string) *FrameClass {
 
 	_cret = C.gtk_frame_new(_arg1)
 
-	var _frame *FrameClass // out
+	var _frame *Frame // out
 
-	_frame = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FrameClass)
+	_frame = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Frame)
 
 	return _frame
 }
@@ -156,7 +141,7 @@ func NewFrame(label string) *FrameClass {
 // Label: if the frame’s label widget is a Label, returns the text in the label
 // widget. (The frame will have a Label for the label widget if a non-nil
 // argument was passed to gtk_frame_new().)
-func (frame *FrameClass) Label() string {
+func (frame *Frame) Label() string {
 	var _arg0 *C.GtkFrame // out
 	var _cret *C.gchar    // in
 
@@ -173,7 +158,7 @@ func (frame *FrameClass) Label() string {
 
 // LabelAlign retrieves the X and Y alignment of the frame’s label. See
 // gtk_frame_set_label_align().
-func (frame *FrameClass) LabelAlign() (xalign float32, yalign float32) {
+func (frame *Frame) LabelAlign() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 C.gfloat    // in
 	var _arg2 C.gfloat    // in
@@ -193,7 +178,7 @@ func (frame *FrameClass) LabelAlign() (xalign float32, yalign float32) {
 
 // LabelWidget retrieves the label widget for the frame. See
 // gtk_frame_set_label_widget().
-func (frame *FrameClass) LabelWidget() *WidgetClass {
+func (frame *Frame) LabelWidget() *Widget {
 	var _arg0 *C.GtkFrame  // out
 	var _cret *C.GtkWidget // in
 
@@ -201,16 +186,16 @@ func (frame *FrameClass) LabelWidget() *WidgetClass {
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // ShadowType retrieves the shadow type of the frame. See
 // gtk_frame_set_shadow_type().
-func (frame *FrameClass) ShadowType() ShadowType {
+func (frame *Frame) ShadowType() ShadowType {
 	var _arg0 *C.GtkFrame     // out
 	var _cret C.GtkShadowType // in
 
@@ -227,7 +212,7 @@ func (frame *FrameClass) ShadowType() ShadowType {
 
 // SetLabel removes the current Frame:label-widget. If @label is not nil,
 // creates a new Label with that text and adds it as the Frame:label-widget.
-func (frame *FrameClass) SetLabel(label string) {
+func (frame *Frame) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 *C.gchar    // out
 
@@ -240,7 +225,7 @@ func (frame *FrameClass) SetLabel(label string) {
 
 // SetLabelAlign sets the alignment of the frame widget’s label. The default
 // values for a newly created frame are 0.0 and 0.5.
-func (frame *FrameClass) SetLabelAlign(xalign float32, yalign float32) {
+func (frame *Frame) SetLabelAlign(xalign float32, yalign float32) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 C.gfloat    // out
 	var _arg2 C.gfloat    // out
@@ -254,7 +239,7 @@ func (frame *FrameClass) SetLabelAlign(xalign float32, yalign float32) {
 
 // SetLabelWidget sets the Frame:label-widget for the frame. This is the widget
 // that will appear embedded in the top edge of the frame as a title.
-func (frame *FrameClass) SetLabelWidget(labelWidget Widget) {
+func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 

@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tearoff_menu_item_get_type()), F: marshalTearoffMenuItem},
+		{T: externglib.Type(C.gtk_tearoff_menu_item_get_type()), F: marshalTearoffMenuItemmer},
 	})
+}
+
+// TearoffMenuItemmer describes TearoffMenuItem's methods.
+type TearoffMenuItemmer interface {
+	gextras.Objector
+
+	privateTearoffMenuItem()
 }
 
 // TearoffMenuItem is a special MenuItem which is used to tear off and reattach
@@ -38,109 +45,102 @@ func init() {
 //
 // > TearoffMenuItem is deprecated and should not be used in newly > written
 // code. Menus are not meant to be torn around.
-type TearoffMenuItem interface {
-	gextras.Objector
-
-	privateTearoffMenuItemClass()
-}
-
-// TearoffMenuItemClass implements the TearoffMenuItem interface.
-type TearoffMenuItemClass struct {
+type TearoffMenuItem struct {
 	*externglib.Object
-	MenuItemClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	MenuItem
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ TearoffMenuItem = (*TearoffMenuItemClass)(nil)
+var _ TearoffMenuItemmer = (*TearoffMenuItem)(nil)
 
-func wrapTearoffMenuItem(obj *externglib.Object) TearoffMenuItem {
-	return &TearoffMenuItemClass{
+func wrapTearoffMenuItemmer(obj *externglib.Object) TearoffMenuItemmer {
+	return &TearoffMenuItem{
 		Object: obj,
-		MenuItemClass: MenuItemClass{
+		MenuItem: MenuItem{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
+func marshalTearoffMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTearoffMenuItem(obj), nil
+	return wrapTearoffMenuItemmer(obj), nil
 }
 
 // NewTearoffMenuItem creates a new TearoffMenuItem.
 //
 // Deprecated: TearoffMenuItem is deprecated and should not be used in newly
 // written code.
-func NewTearoffMenuItem() *TearoffMenuItemClass {
+func NewTearoffMenuItem() *TearoffMenuItem {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_tearoff_menu_item_new()
 
-	var _tearoffMenuItem *TearoffMenuItemClass // out
+	var _tearoffMenuItem *TearoffMenuItem // out
 
-	_tearoffMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TearoffMenuItemClass)
+	_tearoffMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TearoffMenuItem)
 
 	return _tearoffMenuItem
 }
 
-func (*TearoffMenuItemClass) privateTearoffMenuItemClass() {}
+func (*TearoffMenuItem) privateTearoffMenuItem() {}

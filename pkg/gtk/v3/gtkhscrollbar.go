@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hscrollbar_get_type()), F: marshalHScrollbar},
+		{T: externglib.Type(C.gtk_hscrollbar_get_type()), F: marshalHScrollbarrer},
 	})
+}
+
+// HScrollbarrer describes HScrollbar's methods.
+type HScrollbarrer interface {
+	gextras.Objector
+
+	privateHScrollbar()
 }
 
 // HScrollbar: the HScrollbar widget is a widget arranged horizontally creating
@@ -31,71 +38,64 @@ func init() {
 // what the fields in an adjustment represent for a scrollbar.
 //
 // GtkHScrollbar has been deprecated, use Scrollbar instead.
-type HScrollbar interface {
-	gextras.Objector
-
-	privateHScrollbarClass()
-}
-
-// HScrollbarClass implements the HScrollbar interface.
-type HScrollbarClass struct {
+type HScrollbar struct {
 	*externglib.Object
-	ScrollbarClass
-	BuildableIface
-	OrientableIface
+	Scrollbar
+	Buildable
+	Orientable
 }
 
-var _ HScrollbar = (*HScrollbarClass)(nil)
+var _ HScrollbarrer = (*HScrollbar)(nil)
 
-func wrapHScrollbar(obj *externglib.Object) HScrollbar {
-	return &HScrollbarClass{
+func wrapHScrollbarrer(obj *externglib.Object) HScrollbarrer {
+	return &HScrollbar{
 		Object: obj,
-		ScrollbarClass: ScrollbarClass{
+		Scrollbar: Scrollbar{
 			Object: obj,
-			RangeClass: RangeClass{
+			Range: Range{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				OrientableIface: OrientableIface{
+				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalHScrollbar(p uintptr) (interface{}, error) {
+func marshalHScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHScrollbar(obj), nil
+	return wrapHScrollbarrer(obj), nil
 }
 
 // NewHScrollbar creates a new horizontal scrollbar.
 //
 // Deprecated: Use gtk_scrollbar_new() with GTK_ORIENTATION_HORIZONTAL instead.
-func NewHScrollbar(adjustment Adjustment) *HScrollbarClass {
+func NewHScrollbar(adjustment Adjustmenter) *HScrollbar {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
@@ -103,11 +103,11 @@ func NewHScrollbar(adjustment Adjustment) *HScrollbarClass {
 
 	_cret = C.gtk_hscrollbar_new(_arg1)
 
-	var _hScrollbar *HScrollbarClass // out
+	var _hScrollbar *HScrollbar // out
 
-	_hScrollbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScrollbarClass)
+	_hScrollbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScrollbar)
 
 	return _hScrollbar
 }
 
-func (*HScrollbarClass) privateHScrollbarClass() {}
+func (*HScrollbar) privateHScrollbar() {}

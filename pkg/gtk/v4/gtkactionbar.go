@@ -18,8 +18,21 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_action_bar_get_type()), F: marshalActionBar},
+		{T: externglib.Type(C.gtk_action_bar_get_type()), F: marshalActionBarrer},
 	})
+}
+
+// ActionBarrer describes ActionBar's methods.
+type ActionBarrer interface {
+	gextras.Objector
+
+	CenterWidget() *Widget
+	Revealed() bool
+	PackEnd(child Widgetter)
+	PackStart(child Widgetter)
+	Remove(child Widgetter)
+	SetCenterWidget(centerWidget Widgetter)
+	SetRevealed(revealed bool)
 }
 
 // ActionBar: `GtkActionBar` is designed to present contextual actions.
@@ -38,93 +51,67 @@ func init() {
 // CSS nodes
 //
 // `GtkActionBar` has a single CSS node with name actionbar.
-type ActionBar interface {
-	gextras.Objector
-
-	// CenterWidget retrieves the center bar widget of the bar.
-	CenterWidget() *WidgetClass
-	// Revealed gets whether the contents of the action bar are revealed.
-	Revealed() bool
-	// PackEnd adds @child to @action_bar, packed with reference to the end of
-	// the @action_bar.
-	PackEnd(child Widget)
-	// PackStart adds @child to @action_bar, packed with reference to the start
-	// of the @action_bar.
-	PackStart(child Widget)
-	// Remove removes a child from @action_bar.
-	Remove(child Widget)
-	// SetCenterWidget sets the center widget for the `GtkActionBar`.
-	SetCenterWidget(centerWidget Widget)
-	// SetRevealed reveals or conceals the content of the action bar.
-	//
-	// Note: this does not show or hide @action_bar in the
-	// [property@Gtk.Widget:visible] sense, so revealing has no effect if the
-	// action bar is hidden.
-	SetRevealed(revealed bool)
-}
-
-// ActionBarClass implements the ActionBar interface.
-type ActionBarClass struct {
+type ActionBar struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ ActionBar = (*ActionBarClass)(nil)
+var _ ActionBarrer = (*ActionBar)(nil)
 
-func wrapActionBar(obj *externglib.Object) ActionBar {
-	return &ActionBarClass{
+func wrapActionBarrer(obj *externglib.Object) ActionBarrer {
+	return &ActionBar{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalActionBar(p uintptr) (interface{}, error) {
+func marshalActionBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionBar(obj), nil
+	return wrapActionBarrer(obj), nil
 }
 
 // NewActionBar creates a new `GtkActionBar` widget.
-func NewActionBar() *ActionBarClass {
+func NewActionBar() *ActionBar {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_action_bar_new()
 
-	var _actionBar *ActionBarClass // out
+	var _actionBar *ActionBar // out
 
-	_actionBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionBarClass)
+	_actionBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionBar)
 
 	return _actionBar
 }
 
 // CenterWidget retrieves the center bar widget of the bar.
-func (actionBar *ActionBarClass) CenterWidget() *WidgetClass {
+func (actionBar *ActionBar) CenterWidget() *Widget {
 	var _arg0 *C.GtkActionBar // out
 	var _cret *C.GtkWidget    // in
 
@@ -132,15 +119,15 @@ func (actionBar *ActionBarClass) CenterWidget() *WidgetClass {
 
 	_cret = C.gtk_action_bar_get_center_widget(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // Revealed gets whether the contents of the action bar are revealed.
-func (actionBar *ActionBarClass) Revealed() bool {
+func (actionBar *ActionBar) Revealed() bool {
 	var _arg0 *C.GtkActionBar // out
 	var _cret C.gboolean      // in
 
@@ -159,7 +146,7 @@ func (actionBar *ActionBarClass) Revealed() bool {
 
 // PackEnd adds @child to @action_bar, packed with reference to the end of the
 // @action_bar.
-func (actionBar *ActionBarClass) PackEnd(child Widget) {
+func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -171,7 +158,7 @@ func (actionBar *ActionBarClass) PackEnd(child Widget) {
 
 // PackStart adds @child to @action_bar, packed with reference to the start of
 // the @action_bar.
-func (actionBar *ActionBarClass) PackStart(child Widget) {
+func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -182,7 +169,7 @@ func (actionBar *ActionBarClass) PackStart(child Widget) {
 }
 
 // Remove removes a child from @action_bar.
-func (actionBar *ActionBarClass) Remove(child Widget) {
+func (actionBar *ActionBar) Remove(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -193,7 +180,7 @@ func (actionBar *ActionBarClass) Remove(child Widget) {
 }
 
 // SetCenterWidget sets the center widget for the `GtkActionBar`.
-func (actionBar *ActionBarClass) SetCenterWidget(centerWidget Widget) {
+func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -208,7 +195,7 @@ func (actionBar *ActionBarClass) SetCenterWidget(centerWidget Widget) {
 // Note: this does not show or hide @action_bar in the
 // [property@Gtk.Widget:visible] sense, so revealing has no effect if the action
 // bar is hidden.
-func (actionBar *ActionBarClass) SetRevealed(revealed bool) {
+func (actionBar *ActionBar) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 C.gboolean      // out
 

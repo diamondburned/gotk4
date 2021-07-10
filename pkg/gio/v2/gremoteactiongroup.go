@@ -29,15 +29,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_remote_action_group_get_type()), F: marshalRemoteActionGroup},
+		{T: externglib.Type(C.g_remote_action_group_get_type()), F: marshalRemoteActionGrouper},
 	})
 }
 
-// RemoteActionGroupOverrider contains methods that are overridable.
+// RemoteActionGrouperOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RemoteActionGroupOverrider interface {
+type RemoteActionGrouperOverrider interface {
 	// ActivateActionFull activates the remote action.
 	//
 	// This is the same as g_action_group_activate_action() except that it
@@ -57,6 +57,14 @@ type RemoteActionGroupOverrider interface {
 	//
 	// @platform_data must be non-nil and must have the type
 	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
+	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
+}
+
+// RemoteActionGrouper describes RemoteActionGroup's methods.
+type RemoteActionGrouper interface {
+	gextras.Objector
+
+	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
 	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
 }
 
@@ -77,50 +85,24 @@ type RemoteActionGroupOverrider interface {
 // exported Group implements ActionGroup and use the `_full` variants of the
 // calls if available. This provides a mechanism by which to receive platform
 // data for action invocations that arrive by way of D-Bus.
-type RemoteActionGroup interface {
-	gextras.Objector
-
-	// ActivateActionFull activates the remote action.
-	//
-	// This is the same as g_action_group_activate_action() except that it
-	// allows for provision of "platform data" to be sent along with the
-	// activation request. This typically contains details such as the user
-	// interaction timestamp or startup notification information.
-	//
-	// @platform_data must be non-nil and must have the type
-	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
-	// ChangeActionStateFull changes the state of a remote action.
-	//
-	// This is the same as g_action_group_change_action_state() except that it
-	// allows for provision of "platform data" to be sent along with the state
-	// change request. This typically contains details such as the user
-	// interaction timestamp or startup notification information.
-	//
-	// @platform_data must be non-nil and must have the type
-	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
+type RemoteActionGroup struct {
+	ActionGroup
 }
 
-// RemoteActionGroupIface implements the RemoteActionGroup interface.
-type RemoteActionGroupIface struct {
-	ActionGroupIface
-}
+var _ RemoteActionGrouper = (*RemoteActionGroup)(nil)
 
-var _ RemoteActionGroup = (*RemoteActionGroupIface)(nil)
-
-func wrapRemoteActionGroup(obj *externglib.Object) RemoteActionGroup {
-	return &RemoteActionGroupIface{
-		ActionGroupIface: ActionGroupIface{
+func wrapRemoteActionGrouper(obj *externglib.Object) RemoteActionGrouper {
+	return &RemoteActionGroup{
+		ActionGroup: ActionGroup{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
+func marshalRemoteActionGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRemoteActionGroup(obj), nil
+	return wrapRemoteActionGrouper(obj), nil
 }
 
 // ActivateActionFull activates the remote action.
@@ -132,7 +114,7 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 //
 // @platform_data must be non-nil and must have the type G_VARIANT_TYPE_VARDICT.
 // If it is floating, it will be consumed.
-func (remote *RemoteActionGroupIface) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
+func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GVariant           // out
@@ -156,7 +138,7 @@ func (remote *RemoteActionGroupIface) ActivateActionFull(actionName string, para
 //
 // @platform_data must be non-nil and must have the type G_VARIANT_TYPE_VARDICT.
 // If it is floating, it will be consumed.
-func (remote *RemoteActionGroupIface) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
+func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GVariant           // out

@@ -30,17 +30,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_icon_get_type()), F: marshalIcon},
+		{T: externglib.Type(C.g_icon_get_type()), F: marshalIconner},
 	})
 }
 
-// IconOverrider contains methods that are overridable.
+// IconnerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type IconOverrider interface {
+type IconnerOverrider interface {
 	// Equal checks if two icons are equal.
-	Equal(icon2 Icon) bool
+	Equal(icon2 Iconner) bool
 	// Hash gets a hash for an icon.
 	Hash() uint
 	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
@@ -50,6 +50,15 @@ type IconOverrider interface {
 	// machine, (as opposed to over the network), and within the same file
 	// system namespace.
 	Serialize() *glib.Variant
+}
+
+// Iconner describes Icon's methods.
+type Iconner interface {
+	gextras.Objector
+
+	Equal(icon2 Iconner) bool
+	Serialize() *glib.Variant
+	String() string
 }
 
 // Icon is a very minimal interface for icons. It provides functions for
@@ -77,57 +86,26 @@ type IconOverrider interface {
 // Additionally, you must provide an implementation of g_icon_serialize() that
 // gives a result that is understood by g_icon_deserialize(), yielding one of
 // the built-in icon types.
-type Icon interface {
-	gextras.Objector
-
-	// Equal checks if two icons are equal.
-	Equal(icon2 Icon) bool
-	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
-	// be retrieved back by calling g_icon_deserialize() on the returned value.
-	// As serialization will avoid using raw icon data when possible, it only
-	// makes sense to transfer the #GVariant between processes on the same
-	// machine, (as opposed to over the network), and within the same file
-	// system namespace.
-	Serialize() *glib.Variant
-	// String generates a textual representation of @icon that can be used for
-	// serialization such as when passing @icon to a different process or saving
-	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
-	// from the returned string.
-	//
-	// The encoding of the returned string is proprietary to #GIcon except in
-	// the following two cases
-	//
-	// - If @icon is a Icon, the returned string is a native path (such as
-	// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a
-	// native file. If the file is not native, the returned string is the result
-	// of g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
-	//
-	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
-	// is simply the name (such as `network-server`).
-	String() string
-}
-
-// IconIface implements the Icon interface.
-type IconIface struct {
+type Icon struct {
 	*externglib.Object
 }
 
-var _ Icon = (*IconIface)(nil)
+var _ Iconner = (*Icon)(nil)
 
-func wrapIcon(obj *externglib.Object) Icon {
-	return &IconIface{
+func wrapIconner(obj *externglib.Object) Iconner {
+	return &Icon{
 		Object: obj,
 	}
 }
 
-func marshalIcon(p uintptr) (interface{}, error) {
+func marshalIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIcon(obj), nil
+	return wrapIconner(obj), nil
 }
 
 // Equal checks if two icons are equal.
-func (icon1 *IconIface) Equal(icon2 Icon) bool {
+func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _arg0 *C.GIcon   // out
 	var _arg1 *C.GIcon   // out
 	var _cret C.gboolean // in
@@ -151,7 +129,7 @@ func (icon1 *IconIface) Equal(icon2 Icon) bool {
 // serialization will avoid using raw icon data when possible, it only makes
 // sense to transfer the #GVariant between processes on the same machine, (as
 // opposed to over the network), and within the same file system namespace.
-func (icon *IconIface) Serialize() *glib.Variant {
+func (icon *Icon) Serialize() *glib.Variant {
 	var _arg0 *C.GIcon    // out
 	var _cret *C.GVariant // in
 
@@ -185,7 +163,7 @@ func (icon *IconIface) Serialize() *glib.Variant {
 //
 // - If @icon is a Icon with exactly one name and no fallbacks, the encoding is
 // simply the name (such as `network-server`).
-func (icon *IconIface) String() string {
+func (icon *Icon) String() string {
 	var _arg0 *C.GIcon // out
 	var _cret *C.gchar // in
 

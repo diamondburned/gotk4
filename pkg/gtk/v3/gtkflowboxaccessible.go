@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flow_box_accessible_get_type()), F: marshalFlowBoxAccessible},
+		{T: externglib.Type(C.gtk_flow_box_accessible_get_type()), F: marshalFlowBoxAccessibler},
 	})
 }
 
-type FlowBoxAccessible interface {
+// FlowBoxAccessibler describes FlowBoxAccessible's methods.
+type FlowBoxAccessibler interface {
 	gextras.Objector
 
-	privateFlowBoxAccessibleClass()
+	privateFlowBoxAccessible()
 }
 
-// FlowBoxAccessibleClass implements the FlowBoxAccessible interface.
-type FlowBoxAccessibleClass struct {
-	ContainerAccessibleClass
+type FlowBoxAccessible struct {
+	ContainerAccessible
 }
 
-var _ FlowBoxAccessible = (*FlowBoxAccessibleClass)(nil)
+var _ FlowBoxAccessibler = (*FlowBoxAccessible)(nil)
 
-func wrapFlowBoxAccessible(obj *externglib.Object) FlowBoxAccessible {
-	return &FlowBoxAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapFlowBoxAccessibler(obj *externglib.Object) FlowBoxAccessibler {
+	return &FlowBoxAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapFlowBoxAccessible(obj *externglib.Object) FlowBoxAccessible {
 	}
 }
 
-func marshalFlowBoxAccessible(p uintptr) (interface{}, error) {
+func marshalFlowBoxAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlowBoxAccessible(obj), nil
+	return wrapFlowBoxAccessibler(obj), nil
 }
 
-func (*FlowBoxAccessibleClass) privateFlowBoxAccessibleClass() {}
+func (*FlowBoxAccessible) privateFlowBoxAccessible() {}

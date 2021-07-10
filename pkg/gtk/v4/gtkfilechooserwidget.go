@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidget},
+		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidgetter},
 	})
+}
+
+// FileChooserWidgetter describes FileChooserWidget's methods.
+type FileChooserWidgetter interface {
+	gextras.Objector
+
+	privateFileChooserWidget()
 }
 
 // FileChooserWidget: `GtkFileChooserWidget` is a widget for choosing files.
@@ -31,61 +38,54 @@ func init() {
 // CSS nodes
 //
 // `GtkFileChooserWidget` has a single CSS node with name filechooser.
-type FileChooserWidget interface {
-	gextras.Objector
-
-	privateFileChooserWidgetClass()
-}
-
-// FileChooserWidgetClass implements the FileChooserWidget interface.
-type FileChooserWidgetClass struct {
+type FileChooserWidget struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	FileChooserIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
+	FileChooser
 }
 
-var _ FileChooserWidget = (*FileChooserWidgetClass)(nil)
+var _ FileChooserWidgetter = (*FileChooserWidget)(nil)
 
-func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidget {
-	return &FileChooserWidgetClass{
+func wrapFileChooserWidgetter(obj *externglib.Object) FileChooserWidgetter {
+	return &FileChooserWidget{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		FileChooserIface: FileChooserIface{
+		FileChooser: FileChooser{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFileChooserWidget(p uintptr) (interface{}, error) {
+func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserWidget(obj), nil
+	return wrapFileChooserWidgetter(obj), nil
 }
 
-func (*FileChooserWidgetClass) privateFileChooserWidgetClass() {}
+func (*FileChooserWidget) privateFileChooserWidget() {}

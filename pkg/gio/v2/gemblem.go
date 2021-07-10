@@ -28,8 +28,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_emblem_get_type()), F: marshalEmblem},
+		{T: externglib.Type(C.g_emblem_get_type()), F: marshalEmblemmer},
 	})
+}
+
+// Emblemmer describes Emblem's methods.
+type Emblemmer interface {
+	gextras.Objector
+
+	GetIcon() *Icon
+	Origin() EmblemOrigin
 }
 
 // Emblem is an implementation of #GIcon that supports having an emblem, which
@@ -37,40 +45,30 @@ func init() {
 //
 // Currently, only metainformation about the emblem's origin is supported. More
 // may be added in the future.
-type Emblem interface {
-	gextras.Objector
-
-	// Icon gives back the icon from @emblem.
-	Icon() *IconIface
-	// Origin gets the origin of the emblem.
-	Origin() EmblemOrigin
-}
-
-// EmblemClass implements the Emblem interface.
-type EmblemClass struct {
+type Emblem struct {
 	*externglib.Object
-	IconIface
+	Icon
 }
 
-var _ Emblem = (*EmblemClass)(nil)
+var _ Emblemmer = (*Emblem)(nil)
 
-func wrapEmblem(obj *externglib.Object) Emblem {
-	return &EmblemClass{
+func wrapEmblemmer(obj *externglib.Object) Emblemmer {
+	return &Emblem{
 		Object: obj,
-		IconIface: IconIface{
+		Icon: Icon{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEmblem(p uintptr) (interface{}, error) {
+func marshalEmblemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEmblem(obj), nil
+	return wrapEmblemmer(obj), nil
 }
 
 // NewEmblem creates a new emblem for @icon.
-func NewEmblem(icon Icon) *EmblemClass {
+func NewEmblem(icon Iconner) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
 
@@ -78,15 +76,15 @@ func NewEmblem(icon Icon) *EmblemClass {
 
 	_cret = C.g_emblem_new(_arg1)
 
-	var _emblem *EmblemClass // out
+	var _emblem *Emblem // out
 
-	_emblem = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EmblemClass)
+	_emblem = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Emblem)
 
 	return _emblem
 }
 
-// Icon gives back the icon from @emblem.
-func (emblem *EmblemClass) Icon() *IconIface {
+// GetIcon gives back the icon from @emblem.
+func (emblem *Emblem) GetIcon() *Icon {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
@@ -94,15 +92,15 @@ func (emblem *EmblemClass) Icon() *IconIface {
 
 	_cret = C.g_emblem_get_icon(_arg0)
 
-	var _icon *IconIface // out
+	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconIface)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Icon)
 
 	return _icon
 }
 
 // Origin gets the origin of the emblem.
-func (emblem *EmblemClass) Origin() EmblemOrigin {
+func (emblem *Emblem) Origin() EmblemOrigin {
 	var _arg0 *C.GEmblem      // out
 	var _cret C.GEmblemOrigin // in
 

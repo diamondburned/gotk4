@@ -20,37 +20,37 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_app_launch_context_get_type()), F: marshalX11AppLaunchContext},
+		{T: externglib.Type(C.gdk_x11_app_launch_context_get_type()), F: marshalX11AppLaunchContexter},
 	})
 }
 
-type X11AppLaunchContext interface {
+// X11AppLaunchContexter describes X11AppLaunchContext's methods.
+type X11AppLaunchContexter interface {
 	gextras.Objector
 
-	privateX11AppLaunchContextClass()
+	privateX11AppLaunchContext()
 }
 
-// X11AppLaunchContextClass implements the X11AppLaunchContext interface.
-type X11AppLaunchContextClass struct {
-	gdk.AppLaunchContextClass
+type X11AppLaunchContext struct {
+	gdk.AppLaunchContext
 }
 
-var _ X11AppLaunchContext = (*X11AppLaunchContextClass)(nil)
+var _ X11AppLaunchContexter = (*X11AppLaunchContext)(nil)
 
-func wrapX11AppLaunchContext(obj *externglib.Object) X11AppLaunchContext {
-	return &X11AppLaunchContextClass{
-		AppLaunchContextClass: gdk.AppLaunchContextClass{
-			AppLaunchContextClass: gio.AppLaunchContextClass{
+func wrapX11AppLaunchContexter(obj *externglib.Object) X11AppLaunchContexter {
+	return &X11AppLaunchContext{
+		AppLaunchContext: gdk.AppLaunchContext{
+			AppLaunchContext: gio.AppLaunchContext{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
+func marshalX11AppLaunchContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11AppLaunchContext(obj), nil
+	return wrapX11AppLaunchContexter(obj), nil
 }
 
-func (*X11AppLaunchContextClass) privateX11AppLaunchContextClass() {}
+func (*X11AppLaunchContext) privateX11AppLaunchContext() {}

@@ -18,23 +18,32 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_hypertext_get_type()), F: marshalHypertext},
+		{T: externglib.Type(C.atk_hypertext_get_type()), F: marshalHypertexter},
 	})
 }
 
-// HypertextOverrider contains methods that are overridable.
+// HypertexterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type HypertextOverrider interface {
+type HypertexterOverrider interface {
 	// Link gets the link in this hypertext document at index @link_index
-	Link(linkIndex int) *HyperlinkClass
+	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by @char_index.
 	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
 	NLinks() int
 	LinkSelected(linkIndex int)
+}
+
+// Hypertexter describes Hypertext's methods.
+type Hypertexter interface {
+	gextras.Objector
+
+	Link(linkIndex int) *Hyperlink
+	LinkIndex(charIndex int) int
+	NLinks() int
 }
 
 // Hypertext: interface used for objects which implement linking between
@@ -44,39 +53,26 @@ type HypertextOverrider interface {
 // content. While this interface is derived from Text, there is no requirement
 // that Hypertext instances have textual content; they may implement Image as
 // well, and Hyperlinks need not have non-zero text offsets.
-type Hypertext interface {
-	gextras.Objector
-
-	// Link gets the link in this hypertext document at index @link_index
-	Link(linkIndex int) *HyperlinkClass
-	// LinkIndex gets the index into the array of hyperlinks that is associated
-	// with the character specified by @char_index.
-	LinkIndex(charIndex int) int
-	// NLinks gets the number of links within this hypertext document.
-	NLinks() int
-}
-
-// HypertextIface implements the Hypertext interface.
-type HypertextIface struct {
+type Hypertext struct {
 	*externglib.Object
 }
 
-var _ Hypertext = (*HypertextIface)(nil)
+var _ Hypertexter = (*Hypertext)(nil)
 
-func wrapHypertext(obj *externglib.Object) Hypertext {
-	return &HypertextIface{
+func wrapHypertexter(obj *externglib.Object) Hypertexter {
+	return &Hypertext{
 		Object: obj,
 	}
 }
 
-func marshalHypertext(p uintptr) (interface{}, error) {
+func marshalHypertexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHypertext(obj), nil
+	return wrapHypertexter(obj), nil
 }
 
 // Link gets the link in this hypertext document at index @link_index
-func (hypertext *HypertextIface) Link(linkIndex int) *HyperlinkClass {
+func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkHyperlink // in
@@ -86,16 +82,16 @@ func (hypertext *HypertextIface) Link(linkIndex int) *HyperlinkClass {
 
 	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
 
-	var _hyperlink *HyperlinkClass // out
+	var _hyperlink *Hyperlink // out
 
-	_hyperlink = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HyperlinkClass)
+	_hyperlink = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Hyperlink)
 
 	return _hyperlink
 }
 
 // LinkIndex gets the index into the array of hyperlinks that is associated with
 // the character specified by @char_index.
-func (hypertext *HypertextIface) LinkIndex(charIndex int) int {
+func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
 	var _cret C.gint          // in
@@ -113,7 +109,7 @@ func (hypertext *HypertextIface) LinkIndex(charIndex int) int {
 }
 
 // NLinks gets the number of links within this hypertext document.
-func (hypertext *HypertextIface) NLinks() int {
+func (hypertext *Hypertext) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
 	var _cret C.gint          // in
 

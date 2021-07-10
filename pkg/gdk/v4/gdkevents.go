@@ -24,20 +24,20 @@ func init() {
 		{T: externglib.Type(C.gdk_notify_type_get_type()), F: marshalNotifyType},
 		{T: externglib.Type(C.gdk_scroll_direction_get_type()), F: marshalScrollDirection},
 		{T: externglib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
-		{T: externglib.Type(C.gdk_button_event_get_type()), F: marshalButtonEvent},
-		{T: externglib.Type(C.gdk_crossing_event_get_type()), F: marshalCrossingEvent},
-		{T: externglib.Type(C.gdk_dnd_event_get_type()), F: marshalDNDEvent},
-		{T: externglib.Type(C.gdk_delete_event_get_type()), F: marshalDeleteEvent},
-		{T: externglib.Type(C.gdk_event_get_type()), F: marshalEvent},
-		{T: externglib.Type(C.gdk_focus_event_get_type()), F: marshalFocusEvent},
-		{T: externglib.Type(C.gdk_grab_broken_event_get_type()), F: marshalGrabBrokenEvent},
-		{T: externglib.Type(C.gdk_key_event_get_type()), F: marshalKeyEvent},
-		{T: externglib.Type(C.gdk_motion_event_get_type()), F: marshalMotionEvent},
-		{T: externglib.Type(C.gdk_pad_event_get_type()), F: marshalPadEvent},
-		{T: externglib.Type(C.gdk_proximity_event_get_type()), F: marshalProximityEvent},
-		{T: externglib.Type(C.gdk_scroll_event_get_type()), F: marshalScrollEvent},
-		{T: externglib.Type(C.gdk_touch_event_get_type()), F: marshalTouchEvent},
-		{T: externglib.Type(C.gdk_touchpad_event_get_type()), F: marshalTouchpadEvent},
+		{T: externglib.Type(C.gdk_button_event_get_type()), F: marshalButtonEventer},
+		{T: externglib.Type(C.gdk_crossing_event_get_type()), F: marshalCrossingEventer},
+		{T: externglib.Type(C.gdk_dnd_event_get_type()), F: marshalDNDEventer},
+		{T: externglib.Type(C.gdk_delete_event_get_type()), F: marshalDeleteEventer},
+		{T: externglib.Type(C.gdk_event_get_type()), F: marshalEventer},
+		{T: externglib.Type(C.gdk_focus_event_get_type()), F: marshalFocusEventer},
+		{T: externglib.Type(C.gdk_grab_broken_event_get_type()), F: marshalGrabBrokenEventer},
+		{T: externglib.Type(C.gdk_key_event_get_type()), F: marshalKeyEventer},
+		{T: externglib.Type(C.gdk_motion_event_get_type()), F: marshalMotionEventer},
+		{T: externglib.Type(C.gdk_pad_event_get_type()), F: marshalPadEventer},
+		{T: externglib.Type(C.gdk_proximity_event_get_type()), F: marshalProximityEventer},
+		{T: externglib.Type(C.gdk_scroll_event_get_type()), F: marshalScrollEventer},
+		{T: externglib.Type(C.gdk_touch_event_get_type()), F: marshalTouchEventer},
+		{T: externglib.Type(C.gdk_touchpad_event_get_type()), F: marshalTouchpadEventer},
 		{T: externglib.Type(C.gdk_event_sequence_get_type()), F: marshalEventSequence},
 	})
 }
@@ -263,7 +263,7 @@ func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
 //
 // This assumes that both events have X/Y information. If not, this function
 // returns false.
-func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
+func EventsGetAngle(event1 Eventer, event2 Eventer) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
 	var _arg3 C.double    // in
@@ -289,7 +289,7 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 //
 // This assumes that both events have X/Y information. If not, this function
 // returns false.
-func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
+func EventsGetCenter(event1 Eventer, event2 Eventer) (x float64, y float64, ok bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
 	var _arg3 C.double    // in
@@ -318,7 +318,7 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 //
 // This assumes that both events have X/Y information. If not, this function
 // returns false.
-func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
+func EventsGetDistance(event1 Eventer, event2 Eventer) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
 	var _arg3 C.double    // in
@@ -340,37 +340,36 @@ func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	return _distance, _ok
 }
 
-// ButtonEvent: event related to a button on a pointer device.
-type ButtonEvent interface {
+// ButtonEventer describes ButtonEvent's methods.
+type ButtonEventer interface {
 	gextras.Objector
 
-	// Button: extract the button number from a button event.
 	Button() uint
 }
 
-// ButtonEventClass implements the ButtonEvent interface.
-type ButtonEventClass struct {
-	EventClass
+// ButtonEvent: event related to a button on a pointer device.
+type ButtonEvent struct {
+	Event
 }
 
-var _ ButtonEvent = (*ButtonEventClass)(nil)
+var _ ButtonEventer = (*ButtonEvent)(nil)
 
-func wrapButtonEvent(obj *externglib.Object) ButtonEvent {
-	return &ButtonEventClass{
-		EventClass: EventClass{
+func wrapButtonEventer(obj *externglib.Object) ButtonEventer {
+	return &ButtonEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalButtonEvent(p uintptr) (interface{}, error) {
+func marshalButtonEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButtonEvent(obj), nil
+	return wrapButtonEventer(obj), nil
 }
 
 // Button: extract the button number from a button event.
-func (event *ButtonEventClass) Button() uint {
+func (event *ButtonEvent) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -385,41 +384,38 @@ func (event *ButtonEventClass) Button() uint {
 	return _guint
 }
 
-// CrossingEvent: event caused by a pointing device moving between surfaces.
-type CrossingEvent interface {
+// CrossingEventer describes CrossingEvent's methods.
+type CrossingEventer interface {
 	gextras.Objector
 
-	// Detail extracts the notify detail from a crossing event.
 	Detail() NotifyType
-	// Focus checks if the @event surface is the focus surface.
 	Focus() bool
-	// Mode extracts the crossing mode from a crossing event.
 	Mode() CrossingMode
 }
 
-// CrossingEventClass implements the CrossingEvent interface.
-type CrossingEventClass struct {
-	EventClass
+// CrossingEvent: event caused by a pointing device moving between surfaces.
+type CrossingEvent struct {
+	Event
 }
 
-var _ CrossingEvent = (*CrossingEventClass)(nil)
+var _ CrossingEventer = (*CrossingEvent)(nil)
 
-func wrapCrossingEvent(obj *externglib.Object) CrossingEvent {
-	return &CrossingEventClass{
-		EventClass: EventClass{
+func wrapCrossingEventer(obj *externglib.Object) CrossingEventer {
+	return &CrossingEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCrossingEvent(p uintptr) (interface{}, error) {
+func marshalCrossingEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCrossingEvent(obj), nil
+	return wrapCrossingEventer(obj), nil
 }
 
 // Detail extracts the notify detail from a crossing event.
-func (event *CrossingEventClass) Detail() NotifyType {
+func (event *CrossingEvent) Detail() NotifyType {
 	var _arg0 *C.GdkEvent     // out
 	var _cret C.GdkNotifyType // in
 
@@ -435,7 +431,7 @@ func (event *CrossingEventClass) Detail() NotifyType {
 }
 
 // Focus checks if the @event surface is the focus surface.
-func (event *CrossingEventClass) Focus() bool {
+func (event *CrossingEvent) Focus() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -453,7 +449,7 @@ func (event *CrossingEventClass) Focus() bool {
 }
 
 // Mode extracts the crossing mode from a crossing event.
-func (event *CrossingEventClass) Mode() CrossingMode {
+func (event *CrossingEvent) Mode() CrossingMode {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkCrossingMode // in
 
@@ -468,37 +464,36 @@ func (event *CrossingEventClass) Mode() CrossingMode {
 	return _crossingMode
 }
 
-// DNDEvent: event related to drag and drop operations.
-type DNDEvent interface {
+// DNDEventer describes DNDEvent's methods.
+type DNDEventer interface {
 	gextras.Objector
 
-	// Drop gets the `GdkDrop` object from a DND event.
-	Drop() *DropClass
+	Drop() *Drop
 }
 
-// DNDEventClass implements the DNDEvent interface.
-type DNDEventClass struct {
-	EventClass
+// DNDEvent: event related to drag and drop operations.
+type DNDEvent struct {
+	Event
 }
 
-var _ DNDEvent = (*DNDEventClass)(nil)
+var _ DNDEventer = (*DNDEvent)(nil)
 
-func wrapDNDEvent(obj *externglib.Object) DNDEvent {
-	return &DNDEventClass{
-		EventClass: EventClass{
+func wrapDNDEventer(obj *externglib.Object) DNDEventer {
+	return &DNDEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDNDEvent(p uintptr) (interface{}, error) {
+func marshalDNDEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDNDEvent(obj), nil
+	return wrapDNDEventer(obj), nil
 }
 
 // Drop gets the `GdkDrop` object from a DND event.
-func (event *DNDEventClass) Drop() *DropClass {
+func (event *DNDEvent) Drop() *Drop {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkDrop  // in
 
@@ -506,42 +501,63 @@ func (event *DNDEventClass) Drop() *DropClass {
 
 	_cret = C.gdk_dnd_event_get_drop(_arg0)
 
-	var _drop *DropClass // out
+	var _drop *Drop // out
 
-	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DropClass)
+	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Drop)
 
 	return _drop
 }
 
-// DeleteEvent: event related to closing a top-level surface.
-type DeleteEvent interface {
+// DeleteEventer describes DeleteEvent's methods.
+type DeleteEventer interface {
 	gextras.Objector
 
-	privateDeleteEventClass()
+	privateDeleteEvent()
 }
 
-// DeleteEventClass implements the DeleteEvent interface.
-type DeleteEventClass struct {
-	EventClass
+// DeleteEvent: event related to closing a top-level surface.
+type DeleteEvent struct {
+	Event
 }
 
-var _ DeleteEvent = (*DeleteEventClass)(nil)
+var _ DeleteEventer = (*DeleteEvent)(nil)
 
-func wrapDeleteEvent(obj *externglib.Object) DeleteEvent {
-	return &DeleteEventClass{
-		EventClass: EventClass{
+func wrapDeleteEventer(obj *externglib.Object) DeleteEventer {
+	return &DeleteEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDeleteEvent(p uintptr) (interface{}, error) {
+func marshalDeleteEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDeleteEvent(obj), nil
+	return wrapDeleteEventer(obj), nil
 }
 
-func (*DeleteEventClass) privateDeleteEventClass() {}
+func (*DeleteEvent) privateDeleteEvent() {}
+
+// Eventer describes Event's methods.
+type Eventer interface {
+	gextras.Objector
+
+	Axes() ([]float64, bool)
+	Device() *Device
+	DeviceTool() *DeviceTool
+	Display() *Display
+	EventSequence() *EventSequence
+	EventType() EventType
+	ModifierState() ModifierType
+	PointerEmulated() bool
+	Position() (x float64, y float64, ok bool)
+	Seat() *Seat
+	Surface() *Surface
+	Time() uint32
+	ref() *Event
+	TriggersContextMenu() bool
+	unref()
+}
 
 // Event `GdkEvent`s are immutable data structures, created by GDK to represent
 // windowing system events.
@@ -549,88 +565,26 @@ func (*DeleteEventClass) privateDeleteEventClass() {}
 // In GTK applications the events are handled automatically by toplevel widgets
 // and passed on to the event controllers of appropriate widgets, so using
 // `GdkEvent` and its related API is rarely needed.
-type Event interface {
-	gextras.Objector
-
-	// Axes extracts all axis values from an event.
-	Axes() ([]float64, bool)
-	// Device returns the device of an event.
-	Device() *DeviceClass
-	// DeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
-	//
-	// If the was not generated by a device that supports different tools (such
-	// as a tablet), this function will return nil.
-	//
-	// Note: the `GdkDeviceTool` will be constant during the application
-	// lifetime, if settings must be stored persistently across runs, see
-	// [method@Gdk.DeviceTool.get_serial].
-	DeviceTool() *DeviceToolClass
-	// Display retrieves the display associated to the @event.
-	Display() *DisplayClass
-	// EventSequence retuns the event sequence to which the event belongs.
-	//
-	// Related touch events are connected in a sequence. Other events typically
-	// don't have event sequence information.
-	EventSequence() *EventSequence
-	// EventType retrieves the type of the event.
-	EventType() EventType
-	// ModifierState returns the modifier state field of an event.
-	ModifierState() ModifierType
-	// PointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	//
-	// Emulated pointer events typically originate from a touch events.
-	PointerEmulated() bool
-	// Position: extract the event surface relative x/y coordinates from an
-	// event.
-	Position() (x float64, y float64, ok bool)
-	// Seat returns the seat that originated the event.
-	Seat() *SeatClass
-	// Surface extracts the surface associated with an event.
-	Surface() *SurfaceClass
-	// Time returns the timestamp of @event.
-	//
-	// Not all events have timestamps. In that case, this function returns
-	// GDK_CURRENT_TIME.
-	Time() uint32
-	// Ref: increase the ref count of @event.
-	ref() *EventClass
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-	// menu, according to platform conventions.
-	//
-	// The right mouse button typically triggers context menus.
-	//
-	// This function should always be used instead of simply checking for
-	// event->button == GDK_BUTTON_SECONDARY.
-	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
-	//
-	// If the last reference is dropped, the structure is freed.
-	unref()
-}
-
-// EventClass implements the Event interface.
-type EventClass struct {
+type Event struct {
 	*externglib.Object
 }
 
-var _ Event = (*EventClass)(nil)
+var _ Eventer = (*Event)(nil)
 
-func wrapEvent(obj *externglib.Object) Event {
-	return &EventClass{
+func wrapEventer(obj *externglib.Object) Eventer {
+	return &Event{
 		Object: obj,
 	}
 }
 
-func marshalEvent(p uintptr) (interface{}, error) {
+func marshalEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEvent(obj), nil
+	return wrapEventer(obj), nil
 }
 
 // Axes extracts all axis values from an event.
-func (event *EventClass) Axes() ([]float64, bool) {
+func (event *Event) Axes() ([]float64, bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 *C.double
 	var _arg2 C.guint    // in
@@ -653,7 +607,7 @@ func (event *EventClass) Axes() ([]float64, bool) {
 }
 
 // Device returns the device of an event.
-func (event *EventClass) Device() *DeviceClass {
+func (event *Event) Device() *Device {
 	var _arg0 *C.GdkEvent  // out
 	var _cret *C.GdkDevice // in
 
@@ -661,9 +615,9 @@ func (event *EventClass) Device() *DeviceClass {
 
 	_cret = C.gdk_event_get_device(_arg0)
 
-	var _device *DeviceClass // out
+	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceClass)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
 
 	return _device
 }
@@ -677,7 +631,7 @@ func (event *EventClass) Device() *DeviceClass {
 // Note: the `GdkDeviceTool` will be constant during the application lifetime,
 // if settings must be stored persistently across runs, see
 // [method@Gdk.DeviceTool.get_serial].
-func (event *EventClass) DeviceTool() *DeviceToolClass {
+func (event *Event) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkEvent      // out
 	var _cret *C.GdkDeviceTool // in
 
@@ -685,15 +639,15 @@ func (event *EventClass) DeviceTool() *DeviceToolClass {
 
 	_cret = C.gdk_event_get_device_tool(_arg0)
 
-	var _deviceTool *DeviceToolClass // out
+	var _deviceTool *DeviceTool // out
 
-	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceToolClass)
+	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceTool)
 
 	return _deviceTool
 }
 
 // Display retrieves the display associated to the @event.
-func (event *EventClass) Display() *DisplayClass {
+func (event *Event) Display() *Display {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkDisplay // in
 
@@ -701,9 +655,9 @@ func (event *EventClass) Display() *DisplayClass {
 
 	_cret = C.gdk_event_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
@@ -712,7 +666,7 @@ func (event *EventClass) Display() *DisplayClass {
 //
 // Related touch events are connected in a sequence. Other events typically
 // don't have event sequence information.
-func (event *EventClass) EventSequence() *EventSequence {
+func (event *Event) EventSequence() *EventSequence {
 	var _arg0 *C.GdkEvent         // out
 	var _cret *C.GdkEventSequence // in
 
@@ -728,7 +682,7 @@ func (event *EventClass) EventSequence() *EventSequence {
 }
 
 // EventType retrieves the type of the event.
-func (event *EventClass) EventType() EventType {
+func (event *Event) EventType() EventType {
 	var _arg0 *C.GdkEvent    // out
 	var _cret C.GdkEventType // in
 
@@ -744,7 +698,7 @@ func (event *EventClass) EventType() EventType {
 }
 
 // ModifierState returns the modifier state field of an event.
-func (event *EventClass) ModifierState() ModifierType {
+func (event *Event) ModifierState() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
 
@@ -762,7 +716,7 @@ func (event *EventClass) ModifierState() ModifierType {
 // PointerEmulated returns whether this event is an 'emulated' pointer event.
 //
 // Emulated pointer events typically originate from a touch events.
-func (event *EventClass) PointerEmulated() bool {
+func (event *Event) PointerEmulated() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -780,7 +734,7 @@ func (event *EventClass) PointerEmulated() bool {
 }
 
 // Position: extract the event surface relative x/y coordinates from an event.
-func (event *EventClass) Position() (x float64, y float64, ok bool) {
+func (event *Event) Position() (x float64, y float64, ok bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
@@ -804,7 +758,7 @@ func (event *EventClass) Position() (x float64, y float64, ok bool) {
 }
 
 // Seat returns the seat that originated the event.
-func (event *EventClass) Seat() *SeatClass {
+func (event *Event) Seat() *Seat {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkSeat  // in
 
@@ -812,15 +766,15 @@ func (event *EventClass) Seat() *SeatClass {
 
 	_cret = C.gdk_event_get_seat(_arg0)
 
-	var _seat *SeatClass // out
+	var _seat *Seat // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeatClass)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Seat)
 
 	return _seat
 }
 
 // Surface extracts the surface associated with an event.
-func (event *EventClass) Surface() *SurfaceClass {
+func (event *Event) Surface() *Surface {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
@@ -828,9 +782,9 @@ func (event *EventClass) Surface() *SurfaceClass {
 
 	_cret = C.gdk_event_get_surface(_arg0)
 
-	var _surface *SurfaceClass // out
+	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
 
 	return _surface
 }
@@ -839,7 +793,7 @@ func (event *EventClass) Surface() *SurfaceClass {
 //
 // Not all events have timestamps. In that case, this function returns
 // GDK_CURRENT_TIME.
-func (event *EventClass) Time() uint32 {
+func (event *Event) Time() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint32   // in
 
@@ -855,7 +809,7 @@ func (event *EventClass) Time() uint32 {
 }
 
 // Ref: increase the ref count of @event.
-func (event *EventClass) ref() *EventClass {
+func (event *Event) ref() *Event {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkEvent // in
 
@@ -863,9 +817,9 @@ func (event *EventClass) ref() *EventClass {
 
 	_cret = C.gdk_event_ref(_arg0)
 
-	var _ret *EventClass // out
+	var _ret *Event // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventClass)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Event)
 
 	return _ret
 }
@@ -877,7 +831,7 @@ func (event *EventClass) ref() *EventClass {
 //
 // This function should always be used instead of simply checking for
 // event->button == GDK_BUTTON_SECONDARY.
-func (event *EventClass) TriggersContextMenu() bool {
+func (event *Event) TriggersContextMenu() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -897,7 +851,7 @@ func (event *EventClass) TriggersContextMenu() bool {
 // Unref: decrease the ref count of @event.
 //
 // If the last reference is dropped, the structure is freed.
-func (event *EventClass) unref() {
+func (event *Event) unref() {
 	var _arg0 *C.GdkEvent // out
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
@@ -905,39 +859,37 @@ func (event *EventClass) unref() {
 	C.gdk_event_unref(_arg0)
 }
 
-// FocusEvent: event related to a keyboard focus change.
-type FocusEvent interface {
+// FocusEventer describes FocusEvent's methods.
+type FocusEventer interface {
 	gextras.Objector
 
-	// In extracts whether this event is about focus entering or leaving the
-	// surface.
 	In() bool
 }
 
-// FocusEventClass implements the FocusEvent interface.
-type FocusEventClass struct {
-	EventClass
+// FocusEvent: event related to a keyboard focus change.
+type FocusEvent struct {
+	Event
 }
 
-var _ FocusEvent = (*FocusEventClass)(nil)
+var _ FocusEventer = (*FocusEvent)(nil)
 
-func wrapFocusEvent(obj *externglib.Object) FocusEvent {
-	return &FocusEventClass{
-		EventClass: EventClass{
+func wrapFocusEventer(obj *externglib.Object) FocusEventer {
+	return &FocusEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFocusEvent(p uintptr) (interface{}, error) {
+func marshalFocusEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFocusEvent(obj), nil
+	return wrapFocusEventer(obj), nil
 }
 
 // In extracts whether this event is about focus entering or leaving the
 // surface.
-func (event *FocusEventClass) In() bool {
+func (event *FocusEvent) In() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -954,39 +906,37 @@ func (event *FocusEventClass) In() bool {
 	return _ok
 }
 
-// GrabBrokenEvent: event related to a broken windowing system grab.
-type GrabBrokenEvent interface {
+// GrabBrokenEventer describes GrabBrokenEvent's methods.
+type GrabBrokenEventer interface {
 	gextras.Objector
 
-	// GrabSurface extracts the grab surface from a grab broken event.
-	GrabSurface() *SurfaceClass
-	// Implicit checks whether the grab broken event is for an implicit grab.
+	GrabSurface() *Surface
 	Implicit() bool
 }
 
-// GrabBrokenEventClass implements the GrabBrokenEvent interface.
-type GrabBrokenEventClass struct {
-	EventClass
+// GrabBrokenEvent: event related to a broken windowing system grab.
+type GrabBrokenEvent struct {
+	Event
 }
 
-var _ GrabBrokenEvent = (*GrabBrokenEventClass)(nil)
+var _ GrabBrokenEventer = (*GrabBrokenEvent)(nil)
 
-func wrapGrabBrokenEvent(obj *externglib.Object) GrabBrokenEvent {
-	return &GrabBrokenEventClass{
-		EventClass: EventClass{
+func wrapGrabBrokenEventer(obj *externglib.Object) GrabBrokenEventer {
+	return &GrabBrokenEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
+func marshalGrabBrokenEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGrabBrokenEvent(obj), nil
+	return wrapGrabBrokenEventer(obj), nil
 }
 
 // GrabSurface extracts the grab surface from a grab broken event.
-func (event *GrabBrokenEventClass) GrabSurface() *SurfaceClass {
+func (event *GrabBrokenEvent) GrabSurface() *Surface {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
@@ -994,15 +944,15 @@ func (event *GrabBrokenEventClass) GrabSurface() *SurfaceClass {
 
 	_cret = C.gdk_grab_broken_event_get_grab_surface(_arg0)
 
-	var _surface *SurfaceClass // out
+	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SurfaceClass)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
 
 	return _surface
 }
 
 // Implicit checks whether the grab broken event is for an implicit grab.
-func (event *GrabBrokenEventClass) Implicit() bool {
+func (event *GrabBrokenEvent) Implicit() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -1019,51 +969,42 @@ func (event *GrabBrokenEventClass) Implicit() bool {
 	return _ok
 }
 
-// KeyEvent: event related to a key-based device.
-type KeyEvent interface {
+// KeyEventer describes KeyEvent's methods.
+type KeyEventer interface {
 	gextras.Objector
 
-	// ConsumedModifiers extracts the consumed modifiers from a key event.
 	ConsumedModifiers() ModifierType
-	// Keycode extracts the keycode from a key event.
 	Keycode() uint
-	// Keyval extracts the keyval from a key event.
 	Keyval() uint
-	// Layout extracts the layout from a key event.
 	Layout() uint
-	// Level extracts the shift level from a key event.
 	Level() uint
-	// Match gets a keyval and modifier combination that will match the event.
-	//
-	// See [method@Gdk.KeyEvent.matches].
 	Match() (uint, ModifierType, bool)
-	// IsModifier extracts whether the key event is for a modifier key.
 	IsModifier() bool
 }
 
-// KeyEventClass implements the KeyEvent interface.
-type KeyEventClass struct {
-	EventClass
+// KeyEvent: event related to a key-based device.
+type KeyEvent struct {
+	Event
 }
 
-var _ KeyEvent = (*KeyEventClass)(nil)
+var _ KeyEventer = (*KeyEvent)(nil)
 
-func wrapKeyEvent(obj *externglib.Object) KeyEvent {
-	return &KeyEventClass{
-		EventClass: EventClass{
+func wrapKeyEventer(obj *externglib.Object) KeyEventer {
+	return &KeyEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalKeyEvent(p uintptr) (interface{}, error) {
+func marshalKeyEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapKeyEvent(obj), nil
+	return wrapKeyEventer(obj), nil
 }
 
 // ConsumedModifiers extracts the consumed modifiers from a key event.
-func (event *KeyEventClass) ConsumedModifiers() ModifierType {
+func (event *KeyEvent) ConsumedModifiers() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
 
@@ -1079,7 +1020,7 @@ func (event *KeyEventClass) ConsumedModifiers() ModifierType {
 }
 
 // Keycode extracts the keycode from a key event.
-func (event *KeyEventClass) Keycode() uint {
+func (event *KeyEvent) Keycode() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1095,7 +1036,7 @@ func (event *KeyEventClass) Keycode() uint {
 }
 
 // Keyval extracts the keyval from a key event.
-func (event *KeyEventClass) Keyval() uint {
+func (event *KeyEvent) Keyval() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1111,7 +1052,7 @@ func (event *KeyEventClass) Keyval() uint {
 }
 
 // Layout extracts the layout from a key event.
-func (event *KeyEventClass) Layout() uint {
+func (event *KeyEvent) Layout() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1127,7 +1068,7 @@ func (event *KeyEventClass) Layout() uint {
 }
 
 // Level extracts the shift level from a key event.
-func (event *KeyEventClass) Level() uint {
+func (event *KeyEvent) Level() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1145,7 +1086,7 @@ func (event *KeyEventClass) Level() uint {
 // Match gets a keyval and modifier combination that will match the event.
 //
 // See [method@Gdk.KeyEvent.matches].
-func (event *KeyEventClass) Match() (uint, ModifierType, bool) {
+func (event *KeyEvent) Match() (uint, ModifierType, bool) {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // in
 	var _arg2 C.GdkModifierType // in
@@ -1169,7 +1110,7 @@ func (event *KeyEventClass) Match() (uint, ModifierType, bool) {
 }
 
 // IsModifier extracts whether the key event is for a modifier key.
-func (event *KeyEventClass) IsModifier() bool {
+func (event *KeyEvent) IsModifier() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -1186,71 +1127,68 @@ func (event *KeyEventClass) IsModifier() bool {
 	return _ok
 }
 
-// MotionEvent: event related to a pointer or touch device motion.
-type MotionEvent interface {
+// MotionEventer describes MotionEvent's methods.
+type MotionEventer interface {
 	gextras.Objector
 
-	privateMotionEventClass()
+	privateMotionEvent()
 }
 
-// MotionEventClass implements the MotionEvent interface.
-type MotionEventClass struct {
-	EventClass
+// MotionEvent: event related to a pointer or touch device motion.
+type MotionEvent struct {
+	Event
 }
 
-var _ MotionEvent = (*MotionEventClass)(nil)
+var _ MotionEventer = (*MotionEvent)(nil)
 
-func wrapMotionEvent(obj *externglib.Object) MotionEvent {
-	return &MotionEventClass{
-		EventClass: EventClass{
+func wrapMotionEventer(obj *externglib.Object) MotionEventer {
+	return &MotionEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMotionEvent(p uintptr) (interface{}, error) {
+func marshalMotionEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMotionEvent(obj), nil
+	return wrapMotionEventer(obj), nil
 }
 
-func (*MotionEventClass) privateMotionEventClass() {}
+func (*MotionEvent) privateMotionEvent() {}
 
-// PadEvent: event related to a pad-based device.
-type PadEvent interface {
+// PadEventer describes PadEvent's methods.
+type PadEventer interface {
 	gextras.Objector
 
-	// AxisValue extracts the information from a pad strip or ring event.
 	AxisValue() (uint, float64)
-	// Button extracts information about the pressed button from a pad event.
 	Button() uint
-	// GroupMode extracts group and mode information from a pad event.
 	GroupMode() (group uint, mode uint)
 }
 
-// PadEventClass implements the PadEvent interface.
-type PadEventClass struct {
-	EventClass
+// PadEvent: event related to a pad-based device.
+type PadEvent struct {
+	Event
 }
 
-var _ PadEvent = (*PadEventClass)(nil)
+var _ PadEventer = (*PadEvent)(nil)
 
-func wrapPadEvent(obj *externglib.Object) PadEvent {
-	return &PadEventClass{
-		EventClass: EventClass{
+func wrapPadEventer(obj *externglib.Object) PadEventer {
+	return &PadEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPadEvent(p uintptr) (interface{}, error) {
+func marshalPadEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPadEvent(obj), nil
+	return wrapPadEventer(obj), nil
 }
 
 // AxisValue extracts the information from a pad strip or ring event.
-func (event *PadEventClass) AxisValue() (uint, float64) {
+func (event *PadEvent) AxisValue() (uint, float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.double    // in
@@ -1269,7 +1207,7 @@ func (event *PadEventClass) AxisValue() (uint, float64) {
 }
 
 // Button extracts information about the pressed button from a pad event.
-func (event *PadEventClass) Button() uint {
+func (event *PadEvent) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1285,7 +1223,7 @@ func (event *PadEventClass) Button() uint {
 }
 
 // GroupMode extracts group and mode information from a pad event.
-func (event *PadEventClass) GroupMode() (group uint, mode uint) {
+func (event *PadEvent) GroupMode() (group uint, mode uint) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
@@ -1303,82 +1241,70 @@ func (event *PadEventClass) GroupMode() (group uint, mode uint) {
 	return _group, _mode
 }
 
-// ProximityEvent: event related to the proximity of a tool to a device.
-type ProximityEvent interface {
+// ProximityEventer describes ProximityEvent's methods.
+type ProximityEventer interface {
 	gextras.Objector
 
-	privateProximityEventClass()
+	privateProximityEvent()
 }
 
-// ProximityEventClass implements the ProximityEvent interface.
-type ProximityEventClass struct {
-	EventClass
+// ProximityEvent: event related to the proximity of a tool to a device.
+type ProximityEvent struct {
+	Event
 }
 
-var _ ProximityEvent = (*ProximityEventClass)(nil)
+var _ ProximityEventer = (*ProximityEvent)(nil)
 
-func wrapProximityEvent(obj *externglib.Object) ProximityEvent {
-	return &ProximityEventClass{
-		EventClass: EventClass{
+func wrapProximityEventer(obj *externglib.Object) ProximityEventer {
+	return &ProximityEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalProximityEvent(p uintptr) (interface{}, error) {
+func marshalProximityEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProximityEvent(obj), nil
+	return wrapProximityEventer(obj), nil
 }
 
-func (*ProximityEventClass) privateProximityEventClass() {}
+func (*ProximityEvent) privateProximityEvent() {}
 
-// ScrollEvent: event related to a scrolling motion.
-type ScrollEvent interface {
+// ScrollEventer describes ScrollEvent's methods.
+type ScrollEventer interface {
 	gextras.Objector
 
-	// Deltas extracts the scroll deltas of a scroll event.
-	//
-	// The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
 	Deltas() (deltaX float64, deltaY float64)
-	// Direction extracts the direction of a scroll event.
 	Direction() ScrollDirection
-	// IsStop: check whether a scroll event is a stop scroll event.
-	//
-	// Scroll sequences with smooth scroll information may provide a stop scroll
-	// event once the interaction with the device finishes, e.g. by lifting a
-	// finger. This stop scroll event is the signal that a widget may trigger
-	// kinetic scrolling based on the current velocity.
-	//
-	// Stop scroll events always have a delta of 0/0.
 	IsStop() bool
 }
 
-// ScrollEventClass implements the ScrollEvent interface.
-type ScrollEventClass struct {
-	EventClass
+// ScrollEvent: event related to a scrolling motion.
+type ScrollEvent struct {
+	Event
 }
 
-var _ ScrollEvent = (*ScrollEventClass)(nil)
+var _ ScrollEventer = (*ScrollEvent)(nil)
 
-func wrapScrollEvent(obj *externglib.Object) ScrollEvent {
-	return &ScrollEventClass{
-		EventClass: EventClass{
+func wrapScrollEventer(obj *externglib.Object) ScrollEventer {
+	return &ScrollEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalScrollEvent(p uintptr) (interface{}, error) {
+func marshalScrollEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrollEvent(obj), nil
+	return wrapScrollEventer(obj), nil
 }
 
 // Deltas extracts the scroll deltas of a scroll event.
 //
 // The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
-func (event *ScrollEventClass) Deltas() (deltaX float64, deltaY float64) {
+func (event *ScrollEvent) Deltas() (deltaX float64, deltaY float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
@@ -1397,7 +1323,7 @@ func (event *ScrollEventClass) Deltas() (deltaX float64, deltaY float64) {
 }
 
 // Direction extracts the direction of a scroll event.
-func (event *ScrollEventClass) Direction() ScrollDirection {
+func (event *ScrollEvent) Direction() ScrollDirection {
 	var _arg0 *C.GdkEvent          // out
 	var _cret C.GdkScrollDirection // in
 
@@ -1420,7 +1346,7 @@ func (event *ScrollEventClass) Direction() ScrollDirection {
 // kinetic scrolling based on the current velocity.
 //
 // Stop scroll events always have a delta of 0/0.
-func (event *ScrollEventClass) IsStop() bool {
+func (event *ScrollEvent) IsStop() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -1437,38 +1363,36 @@ func (event *ScrollEventClass) IsStop() bool {
 	return _ok
 }
 
-// TouchEvent: event related to a touch-based device.
-type TouchEvent interface {
+// TouchEventer describes TouchEvent's methods.
+type TouchEventer interface {
 	gextras.Objector
 
-	// EmulatingPointer extracts whether a touch event is emulating a pointer
-	// event.
 	EmulatingPointer() bool
 }
 
-// TouchEventClass implements the TouchEvent interface.
-type TouchEventClass struct {
-	EventClass
+// TouchEvent: event related to a touch-based device.
+type TouchEvent struct {
+	Event
 }
 
-var _ TouchEvent = (*TouchEventClass)(nil)
+var _ TouchEventer = (*TouchEvent)(nil)
 
-func wrapTouchEvent(obj *externglib.Object) TouchEvent {
-	return &TouchEventClass{
-		EventClass: EventClass{
+func wrapTouchEventer(obj *externglib.Object) TouchEventer {
+	return &TouchEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalTouchEvent(p uintptr) (interface{}, error) {
+func marshalTouchEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTouchEvent(obj), nil
+	return wrapTouchEventer(obj), nil
 }
 
 // EmulatingPointer extracts whether a touch event is emulating a pointer event.
-func (event *TouchEventClass) EmulatingPointer() bool {
+func (event *TouchEvent) EmulatingPointer() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
@@ -1485,50 +1409,45 @@ func (event *TouchEventClass) EmulatingPointer() bool {
 	return _ok
 }
 
+// TouchpadEventer describes TouchpadEvent's methods.
+type TouchpadEventer interface {
+	gextras.Objector
+
+	Deltas() (dx float64, dy float64)
+	GesturePhase() TouchpadGesturePhase
+	NFingers() uint
+	PinchAngleDelta() float64
+	PinchScale() float64
+}
+
 // TouchpadEvent: event related to a gesture on a touchpad device.
 //
 // Unlike touchscreens, where the windowing system sends basic sequences of
 // begin, update, end events, and leaves gesture recognition to the clients,
 // touchpad gestures are typically processed by the system, resulting in these
 // events.
-type TouchpadEvent interface {
-	gextras.Objector
-
-	// Deltas extracts delta information from a touchpad event.
-	Deltas() (dx float64, dy float64)
-	// GesturePhase extracts the touchpad gesture phase from a touchpad event.
-	GesturePhase() TouchpadGesturePhase
-	// NFingers extracts the number of fingers from a touchpad event.
-	NFingers() uint
-	// PinchAngleDelta extracts the angle delta from a touchpad pinch event.
-	PinchAngleDelta() float64
-	// PinchScale extracts the scale from a touchpad pinch event.
-	PinchScale() float64
+type TouchpadEvent struct {
+	Event
 }
 
-// TouchpadEventClass implements the TouchpadEvent interface.
-type TouchpadEventClass struct {
-	EventClass
-}
+var _ TouchpadEventer = (*TouchpadEvent)(nil)
 
-var _ TouchpadEvent = (*TouchpadEventClass)(nil)
-
-func wrapTouchpadEvent(obj *externglib.Object) TouchpadEvent {
-	return &TouchpadEventClass{
-		EventClass: EventClass{
+func wrapTouchpadEventer(obj *externglib.Object) TouchpadEventer {
+	return &TouchpadEvent{
+		Event: Event{
 			Object: obj,
 		},
 	}
 }
 
-func marshalTouchpadEvent(p uintptr) (interface{}, error) {
+func marshalTouchpadEventer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTouchpadEvent(obj), nil
+	return wrapTouchpadEventer(obj), nil
 }
 
 // Deltas extracts delta information from a touchpad event.
-func (event *TouchpadEventClass) Deltas() (dx float64, dy float64) {
+func (event *TouchpadEvent) Deltas() (dx float64, dy float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
@@ -1547,7 +1466,7 @@ func (event *TouchpadEventClass) Deltas() (dx float64, dy float64) {
 }
 
 // GesturePhase extracts the touchpad gesture phase from a touchpad event.
-func (event *TouchpadEventClass) GesturePhase() TouchpadGesturePhase {
+func (event *TouchpadEvent) GesturePhase() TouchpadGesturePhase {
 	var _arg0 *C.GdkEvent               // out
 	var _cret C.GdkTouchpadGesturePhase // in
 
@@ -1563,7 +1482,7 @@ func (event *TouchpadEventClass) GesturePhase() TouchpadGesturePhase {
 }
 
 // NFingers extracts the number of fingers from a touchpad event.
-func (event *TouchpadEventClass) NFingers() uint {
+func (event *TouchpadEvent) NFingers() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1579,7 +1498,7 @@ func (event *TouchpadEventClass) NFingers() uint {
 }
 
 // PinchAngleDelta extracts the angle delta from a touchpad pinch event.
-func (event *TouchpadEventClass) PinchAngleDelta() float64 {
+func (event *TouchpadEvent) PinchAngleDelta() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in
 
@@ -1595,7 +1514,7 @@ func (event *TouchpadEventClass) PinchAngleDelta() float64 {
 }
 
 // PinchScale extracts the scale from a touchpad pinch event.
-func (event *TouchpadEventClass) PinchScale() float64 {
+func (event *TouchpadEvent) PinchScale() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in
 
@@ -1614,12 +1533,6 @@ func (event *TouchpadEventClass) PinchScale() float64 {
 // of related touch events.
 type EventSequence struct {
 	native C.GdkEventSequence
-}
-
-// WrapEventSequence wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventSequence(ptr unsafe.Pointer) *EventSequence {
-	return (*EventSequence)(ptr)
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {

@@ -28,49 +28,48 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_icon_get_type()), F: marshalFileIcon},
+		{T: externglib.Type(C.g_file_icon_get_type()), F: marshalFileIconner},
 	})
 }
 
-// FileIcon specifies an icon by pointing to an image file to be used as icon.
-type FileIcon interface {
+// FileIconner describes FileIcon's methods.
+type FileIconner interface {
 	gextras.Objector
 
-	// File gets the #GFile associated with the given @icon.
-	File() *FileIface
+	File() *File
 }
 
-// FileIconClass implements the FileIcon interface.
-type FileIconClass struct {
+// FileIcon specifies an icon by pointing to an image file to be used as icon.
+type FileIcon struct {
 	*externglib.Object
-	IconIface
-	LoadableIconIface
+	Icon
+	LoadableIcon
 }
 
-var _ FileIcon = (*FileIconClass)(nil)
+var _ FileIconner = (*FileIcon)(nil)
 
-func wrapFileIcon(obj *externglib.Object) FileIcon {
-	return &FileIconClass{
+func wrapFileIconner(obj *externglib.Object) FileIconner {
+	return &FileIcon{
 		Object: obj,
-		IconIface: IconIface{
+		Icon: Icon{
 			Object: obj,
 		},
-		LoadableIconIface: LoadableIconIface{
-			IconIface: IconIface{
+		LoadableIcon: LoadableIcon{
+			Icon: Icon{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalFileIcon(p uintptr) (interface{}, error) {
+func marshalFileIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileIcon(obj), nil
+	return wrapFileIconner(obj), nil
 }
 
 // NewFileIcon creates a new icon for a file.
-func NewFileIcon(file File) *FileIconClass {
+func NewFileIcon(file Filer) *FileIcon {
 	var _arg1 *C.GFile // out
 	var _cret *C.GIcon // in
 
@@ -78,15 +77,15 @@ func NewFileIcon(file File) *FileIconClass {
 
 	_cret = C.g_file_icon_new(_arg1)
 
-	var _fileIcon *FileIconClass // out
+	var _fileIcon *FileIcon // out
 
-	_fileIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIconClass)
+	_fileIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIcon)
 
 	return _fileIcon
 }
 
 // File gets the #GFile associated with the given @icon.
-func (icon *FileIconClass) File() *FileIface {
+func (icon *FileIcon) File() *File {
 	var _arg0 *C.GFileIcon // out
 	var _cret *C.GFile     // in
 
@@ -94,9 +93,9 @@ func (icon *FileIconClass) File() *FileIface {
 
 	_cret = C.g_file_icon_get_file(_arg0)
 
-	var _file *FileIface // out
+	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileIface)
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*File)
 
 	return _file
 }

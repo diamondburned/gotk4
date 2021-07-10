@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidget},
+		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidgetter},
 	})
+}
+
+// FontChooserWidgetter describes FontChooserWidget's methods.
+type FontChooserWidgetter interface {
+	gextras.Objector
+
+	privateFontChooserWidget()
 }
 
 // FontChooserWidget: the FontChooserWidget widget lists the available fonts,
@@ -41,79 +48,72 @@ func init() {
 // CSS nodes
 //
 // GtkFontChooserWidget has a single CSS node with name fontchooser.
-type FontChooserWidget interface {
-	gextras.Objector
-
-	privateFontChooserWidgetClass()
-}
-
-// FontChooserWidgetClass implements the FontChooserWidget interface.
-type FontChooserWidgetClass struct {
+type FontChooserWidget struct {
 	*externglib.Object
-	BoxClass
-	BuildableIface
-	FontChooserIface
-	OrientableIface
+	Box
+	Buildable
+	FontChooser
+	Orientable
 }
 
-var _ FontChooserWidget = (*FontChooserWidgetClass)(nil)
+var _ FontChooserWidgetter = (*FontChooserWidget)(nil)
 
-func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
-	return &FontChooserWidgetClass{
+func wrapFontChooserWidgetter(obj *externglib.Object) FontChooserWidgetter {
+	return &FontChooserWidget{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		FontChooserIface: FontChooserIface{
+		FontChooser: FontChooser{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFontChooserWidget(p uintptr) (interface{}, error) {
+func marshalFontChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontChooserWidget(obj), nil
+	return wrapFontChooserWidgetter(obj), nil
 }
 
 // NewFontChooserWidget creates a new FontChooserWidget.
-func NewFontChooserWidget() *FontChooserWidgetClass {
+func NewFontChooserWidget() *FontChooserWidget {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_font_chooser_widget_new()
 
-	var _fontChooserWidget *FontChooserWidgetClass // out
+	var _fontChooserWidget *FontChooserWidget // out
 
-	_fontChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontChooserWidgetClass)
+	_fontChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontChooserWidget)
 
 	return _fontChooserWidget
 }
 
-func (*FontChooserWidgetClass) privateFontChooserWidgetClass() {}
+func (*FontChooserWidget) privateFontChooserWidget() {}

@@ -45,12 +45,6 @@ type TimeZone struct {
 	native C.GTimeZone
 }
 
-// WrapTimeZone wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTimeZone(ptr unsafe.Pointer) *TimeZone {
-	return (*TimeZone)(ptr)
-}
-
 func marshalTimeZone(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*TimeZone)(unsafe.Pointer(b)), nil

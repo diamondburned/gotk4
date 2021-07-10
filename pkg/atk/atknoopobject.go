@@ -18,97 +18,97 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_no_op_object_get_type()), F: marshalNoOpObject},
+		{T: externglib.Type(C.atk_no_op_object_get_type()), F: marshalNoOpObjecter},
 	})
+}
+
+// NoOpObjecter describes NoOpObject's methods.
+type NoOpObjecter interface {
+	gextras.Objector
+
+	privateNoOpObject()
 }
 
 // NoOpObject is an AtkObject which purports to implement all ATK interfaces. It
 // is the type of AtkObject which is created if an accessible object is
 // requested for an object type for which no factory type is specified.
-type NoOpObject interface {
-	gextras.Objector
-
-	privateNoOpObjectClass()
-}
-
-// NoOpObjectClass implements the NoOpObject interface.
-type NoOpObjectClass struct {
+type NoOpObject struct {
 	*externglib.Object
-	ObjectClass
-	ActionIface
-	ComponentIface
-	DocumentIface
-	EditableTextIface
-	HypertextIface
-	ImageIface
-	SelectionIface
-	TableIface
-	TableCellIface
-	TextIface
-	ValueIface
-	WindowIface
+	Object
+	Action
+	Component
+	Document
+	EditableText
+	Hypertext
+	Image
+	Selection
+	Table
+	TableCell
+	Text
+	Value
+	Window
 }
 
-var _ NoOpObject = (*NoOpObjectClass)(nil)
+var _ NoOpObjecter = (*NoOpObject)(nil)
 
-func wrapNoOpObject(obj *externglib.Object) NoOpObject {
-	return &NoOpObjectClass{
+func wrapNoOpObjecter(obj *externglib.Object) NoOpObjecter {
+	return &NoOpObject{
 		Object: obj,
-		ObjectClass: ObjectClass{
+		Object: Object{
 			Object: obj,
 		},
-		ActionIface: ActionIface{
+		Action: Action{
 			Object: obj,
 		},
-		ComponentIface: ComponentIface{
+		Component: Component{
 			Object: obj,
 		},
-		DocumentIface: DocumentIface{
+		Document: Document{
 			Object: obj,
 		},
-		EditableTextIface: EditableTextIface{
+		EditableText: EditableText{
 			Object: obj,
 		},
-		HypertextIface: HypertextIface{
+		Hypertext: Hypertext{
 			Object: obj,
 		},
-		ImageIface: ImageIface{
+		Image: Image{
 			Object: obj,
 		},
-		SelectionIface: SelectionIface{
+		Selection: Selection{
 			Object: obj,
 		},
-		TableIface: TableIface{
+		Table: Table{
 			Object: obj,
 		},
-		TableCellIface: TableCellIface{
-			ObjectClass: ObjectClass{
+		TableCell: TableCell{
+			Object: Object{
 				Object: obj,
 			},
 		},
-		TextIface: TextIface{
+		Text: Text{
 			Object: obj,
 		},
-		ValueIface: ValueIface{
+		Value: Value{
 			Object: obj,
 		},
-		WindowIface: WindowIface{
-			ObjectClass: ObjectClass{
+		Window: Window{
+			Object: Object{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalNoOpObject(p uintptr) (interface{}, error) {
+func marshalNoOpObjecter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoOpObject(obj), nil
+	return wrapNoOpObjecter(obj), nil
 }
 
 // NewNoOpObject provides a default (non-functioning stub) Object. Application
 // maintainers should not use this method.
-func NewNoOpObject(obj gextras.Objector) *NoOpObjectClass {
+func NewNoOpObject(obj gextras.Objector) *NoOpObject {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
 
@@ -116,11 +116,11 @@ func NewNoOpObject(obj gextras.Objector) *NoOpObjectClass {
 
 	_cret = C.atk_no_op_object_new(_arg1)
 
-	var _noOpObject *NoOpObjectClass // out
+	var _noOpObject *NoOpObject // out
 
-	_noOpObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoOpObjectClass)
+	_noOpObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoOpObject)
 
 	return _noOpObject
 }
 
-func (*NoOpObjectClass) privateNoOpObjectClass() {}
+func (*NoOpObject) privateNoOpObject() {}

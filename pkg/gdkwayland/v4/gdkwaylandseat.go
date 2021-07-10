@@ -19,8 +19,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_seat_get_type()), F: marshalWaylandSeat},
+		{T: externglib.Type(C.gdk_wayland_seat_get_type()), F: marshalWaylandSeater},
 	})
+}
+
+// WaylandSeater describes WaylandSeat's methods.
+type WaylandSeater interface {
+	gextras.Objector
+
+	privateWaylandSeat()
 }
 
 // WaylandSeat: the Wayland implementation of `GdkSeat`.
@@ -28,31 +35,24 @@ func init() {
 // Beyond the regular [class@Gdk.Seat] API, the Wayland implementation provides
 // access to the Wayland `wl_seat` object with
 // [method@GdkWayland.WaylandSeat.get_wl_seat].
-type WaylandSeat interface {
-	gextras.Objector
-
-	privateWaylandSeatClass()
+type WaylandSeat struct {
+	gdk.Seat
 }
 
-// WaylandSeatClass implements the WaylandSeat interface.
-type WaylandSeatClass struct {
-	gdk.SeatClass
-}
+var _ WaylandSeater = (*WaylandSeat)(nil)
 
-var _ WaylandSeat = (*WaylandSeatClass)(nil)
-
-func wrapWaylandSeat(obj *externglib.Object) WaylandSeat {
-	return &WaylandSeatClass{
-		SeatClass: gdk.SeatClass{
+func wrapWaylandSeater(obj *externglib.Object) WaylandSeater {
+	return &WaylandSeat{
+		Seat: gdk.Seat{
 			Object: obj,
 		},
 	}
 }
 
-func marshalWaylandSeat(p uintptr) (interface{}, error) {
+func marshalWaylandSeater(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandSeat(obj), nil
+	return wrapWaylandSeater(obj), nil
 }
 
-func (*WaylandSeatClass) privateWaylandSeatClass() {}
+func (*WaylandSeat) privateWaylandSeat() {}

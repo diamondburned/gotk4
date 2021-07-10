@@ -21,51 +21,51 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_view_accessible_get_type()), F: marshalTreeViewAccessible},
+		{T: externglib.Type(C.gtk_tree_view_accessible_get_type()), F: marshalTreeViewAccessibler},
 	})
 }
 
-type TreeViewAccessible interface {
+// TreeViewAccessibler describes TreeViewAccessible's methods.
+type TreeViewAccessibler interface {
 	gextras.Objector
 
-	privateTreeViewAccessibleClass()
+	privateTreeViewAccessible()
 }
 
-// TreeViewAccessibleClass implements the TreeViewAccessible interface.
-type TreeViewAccessibleClass struct {
+type TreeViewAccessible struct {
 	*externglib.Object
-	ContainerAccessibleClass
-	atk.TableIface
-	CellAccessibleParentIface
+	ContainerAccessible
+	atk.Table
+	CellAccessibleParent
 }
 
-var _ TreeViewAccessible = (*TreeViewAccessibleClass)(nil)
+var _ TreeViewAccessibler = (*TreeViewAccessible)(nil)
 
-func wrapTreeViewAccessible(obj *externglib.Object) TreeViewAccessible {
-	return &TreeViewAccessibleClass{
+func wrapTreeViewAccessibler(obj *externglib.Object) TreeViewAccessibler {
+	return &TreeViewAccessible{
 		Object: obj,
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
 			},
 		},
-		TableIface: atk.TableIface{
+		Table: atk.Table{
 			Object: obj,
 		},
-		CellAccessibleParentIface: CellAccessibleParentIface{
+		CellAccessibleParent: CellAccessibleParent{
 			Object: obj,
 		},
 	}
 }
 
-func marshalTreeViewAccessible(p uintptr) (interface{}, error) {
+func marshalTreeViewAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeViewAccessible(obj), nil
+	return wrapTreeViewAccessibler(obj), nil
 }
 
-func (*TreeViewAccessibleClass) privateTreeViewAccessibleClass() {}
+func (*TreeViewAccessible) privateTreeViewAccessible() {}

@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_printer_get_type()), F: marshalPrinter},
+		{T: externglib.Type(C.gtk_printer_get_type()), F: marshalPrinterrer},
 	})
 }
 
@@ -69,7 +69,7 @@ func marshalPrintCapabilities(p uintptr) (interface{}, error) {
 //
 // Note that you need to ref @printer, if you want to keep a reference to it
 // after the function has returned.
-type PrinterFunc func(printer *PrinterClass, data interface{}) (ok bool)
+type PrinterFunc func(printer *Printer, data interface{}) (ok bool)
 
 //export gotk4_PrinterFunc
 func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) (cret C.gboolean) {
@@ -78,10 +78,10 @@ func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) (cret C.gboolean) {
 		panic(`callback not found`)
 	}
 
-	var printer *PrinterClass // out
-	var data interface{}      // out
+	var printer *Printer // out
+	var data interface{} // out
 
-	printer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*PrinterClass)
+	printer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Printer)
 	data = box.Get(uintptr(arg1))
 
 	fn := v.(PrinterFunc)
@@ -94,6 +94,32 @@ func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) (cret C.gboolean) {
 	return cret
 }
 
+// Printerrer describes Printer's methods.
+type Printerrer interface {
+	gextras.Objector
+
+	AcceptsPDF() bool
+	AcceptsPS() bool
+	Compare(b Printerrer) int
+	Capabilities() PrintCapabilities
+	DefaultPageSize() *PageSetup
+	Description() string
+	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
+	HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool)
+	IconName() string
+	JobCount() int
+	Location() string
+	Name() string
+	StateMessage() string
+	HasDetails() bool
+	IsAcceptingJobs() bool
+	IsActive() bool
+	IsDefault() bool
+	IsPaused() bool
+	IsVirtual() bool
+	RequestDetails()
+}
+
 // Printer: `GtkPrinter` object represents a printer.
 //
 // You only need to deal directly with printers if you use the non-portable
@@ -103,104 +129,26 @@ func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) (cret C.gboolean) {
 // its description, its location, the number of queued jobs, etc. Most
 // importantly, a `GtkPrinter` object can be used to create a
 // [class@Gtk.PrintJob] object, which lets you print to the printer.
-type Printer interface {
-	gextras.Objector
-
-	// AcceptsPDF returns whether the printer accepts input in PDF format.
-	AcceptsPDF() bool
-	// AcceptsPS returns whether the printer accepts input in PostScript format.
-	AcceptsPS() bool
-	// Compare compares two printers.
-	Compare(b Printer) int
-	// Capabilities returns the printer’s capabilities.
-	//
-	// This is useful when you’re using `GtkPrintUnixDialog`’s
-	// manual-capabilities setting and need to know which settings the printer
-	// can handle and which you must handle yourself.
-	//
-	// This will return 0 unless the printer’s details are available, see
-	// [method@Gtk.Printer.has_details] and
-	// [method@Gtk.Printer.request_details].
-	Capabilities() PrintCapabilities
-	// DefaultPageSize returns default page size of @printer.
-	DefaultPageSize() *PageSetupClass
-	// Description gets the description of the printer.
-	Description() string
-	// HardMargins: retrieve the hard margins of @printer.
-	//
-	// These are the margins that define the area at the borders of the paper
-	// that the printer cannot print to.
-	//
-	// Note: This will not succeed unless the printer’s details are available,
-	// see [method@Gtk.Printer.has_details] and
-	// [method@Gtk.Printer.request_details].
-	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
-	// HardMarginsForPaperSize: retrieve the hard margins of @printer for
-	// @paper_size.
-	//
-	// These are the margins that define the area at the borders of the paper
-	// that the printer cannot print to.
-	//
-	// Note: This will not succeed unless the printer’s details are available,
-	// see [method@Gtk.Printer.has_details] and
-	// [method@Gtk.Printer.request_details].
-	HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool)
-	// IconName gets the name of the icon to use for the printer.
-	IconName() string
-	// JobCount gets the number of jobs currently queued on the printer.
-	JobCount() int
-	// Location returns a description of the location of the printer.
-	Location() string
-	// Name returns the name of the printer.
-	Name() string
-	// StateMessage returns the state message describing the current state of
-	// the printer.
-	StateMessage() string
-	// HasDetails returns whether the printer details are available.
-	HasDetails() bool
-	// IsAcceptingJobs returns whether the printer is accepting jobs
-	IsAcceptingJobs() bool
-	// IsActive returns whether the printer is currently active (i.e. accepts
-	// new jobs).
-	IsActive() bool
-	// IsDefault returns whether the printer is the default printer.
-	IsDefault() bool
-	// IsPaused returns whether the printer is currently paused.
-	//
-	// A paused printer still accepts jobs, but it is not printing them.
-	IsPaused() bool
-	// IsVirtual returns whether the printer is virtual (i.e. does not represent
-	// actual printer hardware, but something like a CUPS class).
-	IsVirtual() bool
-	// RequestDetails requests the printer details.
-	//
-	// When the details are available, the
-	// [signal@Gtk.Printer::details-acquired] signal will be emitted on
-	// @printer.
-	RequestDetails()
-}
-
-// PrinterClass implements the Printer interface.
-type PrinterClass struct {
+type Printer struct {
 	*externglib.Object
 }
 
-var _ Printer = (*PrinterClass)(nil)
+var _ Printerrer = (*Printer)(nil)
 
-func wrapPrinter(obj *externglib.Object) Printer {
-	return &PrinterClass{
+func wrapPrinterrer(obj *externglib.Object) Printerrer {
+	return &Printer{
 		Object: obj,
 	}
 }
 
-func marshalPrinter(p uintptr) (interface{}, error) {
+func marshalPrinterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPrinter(obj), nil
+	return wrapPrinterrer(obj), nil
 }
 
 // AcceptsPDF returns whether the printer accepts input in PDF format.
-func (printer *PrinterClass) AcceptsPDF() bool {
+func (printer *Printer) AcceptsPDF() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -218,7 +166,7 @@ func (printer *PrinterClass) AcceptsPDF() bool {
 }
 
 // AcceptsPS returns whether the printer accepts input in PostScript format.
-func (printer *PrinterClass) AcceptsPS() bool {
+func (printer *Printer) AcceptsPS() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -236,7 +184,7 @@ func (printer *PrinterClass) AcceptsPS() bool {
 }
 
 // Compare compares two printers.
-func (a *PrinterClass) Compare(b Printer) int {
+func (a *Printer) Compare(b Printerrer) int {
 	var _arg0 *C.GtkPrinter // out
 	var _arg1 *C.GtkPrinter // out
 	var _cret C.int         // in
@@ -261,7 +209,7 @@ func (a *PrinterClass) Compare(b Printer) int {
 //
 // This will return 0 unless the printer’s details are available, see
 // [method@Gtk.Printer.has_details] and [method@Gtk.Printer.request_details].
-func (printer *PrinterClass) Capabilities() PrintCapabilities {
+func (printer *Printer) Capabilities() PrintCapabilities {
 	var _arg0 *C.GtkPrinter          // out
 	var _cret C.GtkPrintCapabilities // in
 
@@ -277,7 +225,7 @@ func (printer *PrinterClass) Capabilities() PrintCapabilities {
 }
 
 // DefaultPageSize returns default page size of @printer.
-func (printer *PrinterClass) DefaultPageSize() *PageSetupClass {
+func (printer *Printer) DefaultPageSize() *PageSetup {
 	var _arg0 *C.GtkPrinter   // out
 	var _cret *C.GtkPageSetup // in
 
@@ -285,15 +233,15 @@ func (printer *PrinterClass) DefaultPageSize() *PageSetupClass {
 
 	_cret = C.gtk_printer_get_default_page_size(_arg0)
 
-	var _pageSetup *PageSetupClass // out
+	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetupClass)
+	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
 
 	return _pageSetup
 }
 
 // Description gets the description of the printer.
-func (printer *PrinterClass) Description() string {
+func (printer *Printer) Description() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
@@ -315,7 +263,7 @@ func (printer *PrinterClass) Description() string {
 //
 // Note: This will not succeed unless the printer’s details are available, see
 // [method@Gtk.Printer.has_details] and [method@Gtk.Printer.request_details].
-func (printer *PrinterClass) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
+func (printer *Printer) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrinter // out
 	var _arg1 C.double      // in
 	var _arg2 C.double      // in
@@ -352,7 +300,7 @@ func (printer *PrinterClass) HardMargins() (top float64, bottom float64, left fl
 //
 // Note: This will not succeed unless the printer’s details are available, see
 // [method@Gtk.Printer.has_details] and [method@Gtk.Printer.request_details].
-func (printer *PrinterClass) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool) {
+func (printer *Printer) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrinter   // out
 	var _arg1 *C.GtkPaperSize // out
 	var _arg2 C.double        // in
@@ -384,7 +332,7 @@ func (printer *PrinterClass) HardMarginsForPaperSize(paperSize *PaperSize) (top 
 }
 
 // IconName gets the name of the icon to use for the printer.
-func (printer *PrinterClass) IconName() string {
+func (printer *Printer) IconName() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
@@ -400,7 +348,7 @@ func (printer *PrinterClass) IconName() string {
 }
 
 // JobCount gets the number of jobs currently queued on the printer.
-func (printer *PrinterClass) JobCount() int {
+func (printer *Printer) JobCount() int {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.int         // in
 
@@ -416,7 +364,7 @@ func (printer *PrinterClass) JobCount() int {
 }
 
 // Location returns a description of the location of the printer.
-func (printer *PrinterClass) Location() string {
+func (printer *Printer) Location() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
@@ -432,7 +380,7 @@ func (printer *PrinterClass) Location() string {
 }
 
 // Name returns the name of the printer.
-func (printer *PrinterClass) Name() string {
+func (printer *Printer) Name() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
@@ -449,7 +397,7 @@ func (printer *PrinterClass) Name() string {
 
 // StateMessage returns the state message describing the current state of the
 // printer.
-func (printer *PrinterClass) StateMessage() string {
+func (printer *Printer) StateMessage() string {
 	var _arg0 *C.GtkPrinter // out
 	var _cret *C.char       // in
 
@@ -465,7 +413,7 @@ func (printer *PrinterClass) StateMessage() string {
 }
 
 // HasDetails returns whether the printer details are available.
-func (printer *PrinterClass) HasDetails() bool {
+func (printer *Printer) HasDetails() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -483,7 +431,7 @@ func (printer *PrinterClass) HasDetails() bool {
 }
 
 // IsAcceptingJobs returns whether the printer is accepting jobs
-func (printer *PrinterClass) IsAcceptingJobs() bool {
+func (printer *Printer) IsAcceptingJobs() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -502,7 +450,7 @@ func (printer *PrinterClass) IsAcceptingJobs() bool {
 
 // IsActive returns whether the printer is currently active (i.e. accepts new
 // jobs).
-func (printer *PrinterClass) IsActive() bool {
+func (printer *Printer) IsActive() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -520,7 +468,7 @@ func (printer *PrinterClass) IsActive() bool {
 }
 
 // IsDefault returns whether the printer is the default printer.
-func (printer *PrinterClass) IsDefault() bool {
+func (printer *Printer) IsDefault() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -540,7 +488,7 @@ func (printer *PrinterClass) IsDefault() bool {
 // IsPaused returns whether the printer is currently paused.
 //
 // A paused printer still accepts jobs, but it is not printing them.
-func (printer *PrinterClass) IsPaused() bool {
+func (printer *Printer) IsPaused() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -559,7 +507,7 @@ func (printer *PrinterClass) IsPaused() bool {
 
 // IsVirtual returns whether the printer is virtual (i.e. does not represent
 // actual printer hardware, but something like a CUPS class).
-func (printer *PrinterClass) IsVirtual() bool {
+func (printer *Printer) IsVirtual() bool {
 	var _arg0 *C.GtkPrinter // out
 	var _cret C.gboolean    // in
 
@@ -580,7 +528,7 @@ func (printer *PrinterClass) IsVirtual() bool {
 //
 // When the details are available, the [signal@Gtk.Printer::details-acquired]
 // signal will be emitted on @printer.
-func (printer *PrinterClass) RequestDetails() {
+func (printer *Printer) RequestDetails() {
 	var _arg0 *C.GtkPrinter // out
 
 	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(printer.Native()))

@@ -29,15 +29,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_control_message_get_type()), F: marshalSocketControlMessage},
+		{T: externglib.Type(C.g_socket_control_message_get_type()), F: marshalSocketControlMessager},
 	})
 }
 
-// SocketControlMessageOverrider contains methods that are overridable.
+// SocketControlMessagerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketControlMessageOverrider interface {
+type SocketControlMessagerOverrider interface {
 	// Level returns the "level" (i.e. the originating protocol) of the control
 	// message. This is often SOL_SOCKET.
 	Level() int
@@ -50,6 +50,16 @@ type SocketControlMessageOverrider interface {
 	//
 	// @data is guaranteed to have enough space to fit the size returned by
 	// g_socket_control_message_get_size() on this object.
+	Serialize(data interface{})
+}
+
+// SocketControlMessager describes SocketControlMessage's methods.
+type SocketControlMessager interface {
+	gextras.Objector
+
+	Level() int
+	MsgType() int
+	Size() uint
 	Serialize(data interface{})
 }
 
@@ -71,48 +81,27 @@ type SocketControlMessageOverrider interface {
 // class and implement the deserialize method. Also, make sure your class is
 // registered with the GType typesystem before calling
 // g_socket_receive_message() to read such a message.
-type SocketControlMessage interface {
-	gextras.Objector
-
-	// Level returns the "level" (i.e. the originating protocol) of the control
-	// message. This is often SOL_SOCKET.
-	Level() int
-	// MsgType returns the protocol specific type of the control message. For
-	// instance, for UNIX fd passing this would be SCM_RIGHTS.
-	MsgType() int
-	// Size returns the space required for the control message, not including
-	// headers or alignment.
-	Size() uint
-	// Serialize converts the data in the message to bytes placed in the
-	// message.
-	//
-	// @data is guaranteed to have enough space to fit the size returned by
-	// g_socket_control_message_get_size() on this object.
-	Serialize(data interface{})
-}
-
-// SocketControlMessageClass implements the SocketControlMessage interface.
-type SocketControlMessageClass struct {
+type SocketControlMessage struct {
 	*externglib.Object
 }
 
-var _ SocketControlMessage = (*SocketControlMessageClass)(nil)
+var _ SocketControlMessager = (*SocketControlMessage)(nil)
 
-func wrapSocketControlMessage(obj *externglib.Object) SocketControlMessage {
-	return &SocketControlMessageClass{
+func wrapSocketControlMessager(obj *externglib.Object) SocketControlMessager {
+	return &SocketControlMessage{
 		Object: obj,
 	}
 }
 
-func marshalSocketControlMessage(p uintptr) (interface{}, error) {
+func marshalSocketControlMessager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketControlMessage(obj), nil
+	return wrapSocketControlMessager(obj), nil
 }
 
 // Level returns the "level" (i.e. the originating protocol) of the control
 // message. This is often SOL_SOCKET.
-func (message *SocketControlMessageClass) Level() int {
+func (message *SocketControlMessage) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
@@ -129,7 +118,7 @@ func (message *SocketControlMessageClass) Level() int {
 
 // MsgType returns the protocol specific type of the control message. For
 // instance, for UNIX fd passing this would be SCM_RIGHTS.
-func (message *SocketControlMessageClass) MsgType() int {
+func (message *SocketControlMessage) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
@@ -146,7 +135,7 @@ func (message *SocketControlMessageClass) MsgType() int {
 
 // Size returns the space required for the control message, not including
 // headers or alignment.
-func (message *SocketControlMessageClass) Size() uint {
+func (message *SocketControlMessage) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.gsize                  // in
 
@@ -165,7 +154,7 @@ func (message *SocketControlMessageClass) Size() uint {
 //
 // @data is guaranteed to have enough space to fit the size returned by
 // g_socket_control_message_get_size() on this object.
-func (message *SocketControlMessageClass) Serialize(data interface{}) {
+func (message *SocketControlMessage) Serialize(data interface{}) {
 	var _arg0 *C.GSocketControlMessage // out
 	var _arg1 C.gpointer               // out
 

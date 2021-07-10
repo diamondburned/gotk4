@@ -18,37 +18,37 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_custom_sorter_get_type()), F: marshalCustomSorter},
+		{T: externglib.Type(C.gtk_custom_sorter_get_type()), F: marshalCustomSorterrer},
 	})
+}
+
+// CustomSorterrer describes CustomSorter's methods.
+type CustomSorterrer interface {
+	gextras.Objector
+
+	privateCustomSorter()
 }
 
 // CustomSorter: `GtkCustomSorter` is a `GtkSorter` implementation that sorts
 // via a callback function.
-type CustomSorter interface {
-	gextras.Objector
-
-	privateCustomSorterClass()
+type CustomSorter struct {
+	Sorter
 }
 
-// CustomSorterClass implements the CustomSorter interface.
-type CustomSorterClass struct {
-	SorterClass
-}
+var _ CustomSorterrer = (*CustomSorter)(nil)
 
-var _ CustomSorter = (*CustomSorterClass)(nil)
-
-func wrapCustomSorter(obj *externglib.Object) CustomSorter {
-	return &CustomSorterClass{
-		SorterClass: SorterClass{
+func wrapCustomSorterrer(obj *externglib.Object) CustomSorterrer {
+	return &CustomSorter{
+		Sorter: Sorter{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCustomSorter(p uintptr) (interface{}, error) {
+func marshalCustomSorterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCustomSorter(obj), nil
+	return wrapCustomSorterrer(obj), nil
 }
 
-func (*CustomSorterClass) privateCustomSorterClass() {}
+func (*CustomSorter) privateCustomSorter() {}

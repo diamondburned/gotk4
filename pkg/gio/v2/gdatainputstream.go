@@ -32,214 +32,71 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_data_input_stream_get_type()), F: marshalDataInputStream},
+		{T: externglib.Type(C.g_data_input_stream_get_type()), F: marshalDataInputStreamer},
 	})
+}
+
+// DataInputStreamer describes DataInputStream's methods.
+type DataInputStreamer interface {
+	gextras.Objector
+
+	ByteOrder() DataStreamByteOrder
+	NewlineType() DataStreamNewlineType
+	ReadByte(cancellable Cancellabler) (byte, error)
+	ReadInt16(cancellable Cancellabler) (int16, error)
+	ReadInt32(cancellable Cancellabler) (int32, error)
+	ReadInt64(cancellable Cancellabler) (int64, error)
+	ReadLine(cancellable Cancellabler) (uint, []byte, error)
+	ReadLineAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	ReadLineFinish(result AsyncResulter) (uint, []byte, error)
+	ReadLineFinishUTF8(result AsyncResulter) (uint, string, error)
+	ReadLineUTF8(cancellable Cancellabler) (uint, string, error)
+	ReadUint16(cancellable Cancellabler) (uint16, error)
+	ReadUint32(cancellable Cancellabler) (uint32, error)
+	ReadUint64(cancellable Cancellabler) (uint64, error)
+	ReadUntil(stopChars string, cancellable Cancellabler) (uint, string, error)
+	ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	ReadUntilFinish(result AsyncResulter) (uint, string, error)
+	ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellabler) (uint, string, error)
+	ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	ReadUptoFinish(result AsyncResulter) (uint, string, error)
 }
 
 // DataInputStream: data input stream implements Stream and includes functions
 // for reading structured data directly from a binary input stream.
-type DataInputStream interface {
-	gextras.Objector
-
-	// ByteOrder gets the byte order for the data input stream.
-	ByteOrder() DataStreamByteOrder
-	// NewlineType gets the current newline type for the @stream.
-	NewlineType() DataStreamNewlineType
-	// ReadByte reads an unsigned 8-bit/1-byte value from @stream.
-	ReadByte(cancellable Cancellable) (byte, error)
-	// ReadInt16 reads a 16-bit/2-byte value from @stream.
-	//
-	// In order to get the correct byte order for this read operation, see
-	// g_data_input_stream_get_byte_order() and
-	// g_data_input_stream_set_byte_order().
-	ReadInt16(cancellable Cancellable) (int16, error)
-	// ReadInt32 reads a signed 32-bit/4-byte value from @stream.
-	//
-	// In order to get the correct byte order for this read operation, see
-	// g_data_input_stream_get_byte_order() and
-	// g_data_input_stream_set_byte_order().
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadInt32(cancellable Cancellable) (int32, error)
-	// ReadInt64 reads a 64-bit/8-byte value from @stream.
-	//
-	// In order to get the correct byte order for this read operation, see
-	// g_data_input_stream_get_byte_order() and
-	// g_data_input_stream_set_byte_order().
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadInt64(cancellable Cancellable) (int64, error)
-	// ReadLine reads a line from the data input stream. Note that no encoding
-	// checks or conversion is performed; the input is not guaranteed to be
-	// UTF-8, and may in fact have embedded NUL characters.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadLine(cancellable Cancellable) (uint, []byte, error)
-	// ReadLineAsync: the asynchronous version of
-	// g_data_input_stream_read_line(). It is an error to have two outstanding
-	// calls to this function.
-	//
-	// When the operation is finished, @callback will be called. You can then
-	// call g_data_input_stream_read_line_finish() to get the result of the
-	// operation.
-	ReadLineAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// ReadLineFinish: finish an asynchronous call started by
-	// g_data_input_stream_read_line_async(). Note the warning about string
-	// encoding in g_data_input_stream_read_line() applies here as well.
-	ReadLineFinish(result AsyncResult) (uint, []byte, error)
-	// ReadLineFinishUTF8: finish an asynchronous call started by
-	// g_data_input_stream_read_line_async().
-	ReadLineFinishUTF8(result AsyncResult) (uint, string, error)
-	// ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadLineUTF8(cancellable Cancellable) (uint, string, error)
-	// ReadUint16 reads an unsigned 16-bit/2-byte value from @stream.
-	//
-	// In order to get the correct byte order for this read operation, see
-	// g_data_input_stream_get_byte_order() and
-	// g_data_input_stream_set_byte_order().
-	ReadUint16(cancellable Cancellable) (uint16, error)
-	// ReadUint32 reads an unsigned 32-bit/4-byte value from @stream.
-	//
-	// In order to get the correct byte order for this read operation, see
-	// g_data_input_stream_get_byte_order() and
-	// g_data_input_stream_set_byte_order().
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadUint32(cancellable Cancellable) (uint32, error)
-	// ReadUint64 reads an unsigned 64-bit/8-byte value from @stream.
-	//
-	// In order to get the correct byte order for this read operation, see
-	// g_data_input_stream_get_byte_order().
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadUint64(cancellable Cancellable) (uint64, error)
-	// ReadUntil reads a string from the data input stream, up to the first
-	// occurrence of any of the stop characters.
-	//
-	// Note that, in contrast to g_data_input_stream_read_until_async(), this
-	// function consumes the stop character that it finds.
-	//
-	// Don't use this function in new code. Its functionality is inconsistent
-	// with g_data_input_stream_read_until_async(). Both functions will be
-	// marked as deprecated in a future release. Use
-	// g_data_input_stream_read_upto() instead, but note that that function does
-	// not consume the stop character.
-	//
-	// Deprecated: Use g_data_input_stream_read_upto() instead, which has more
-	// consistent behaviour regarding the stop character.
-	ReadUntil(stopChars string, cancellable Cancellable) (uint, string, error)
-	// ReadUntilAsync: the asynchronous version of
-	// g_data_input_stream_read_until(). It is an error to have two outstanding
-	// calls to this function.
-	//
-	// Note that, in contrast to g_data_input_stream_read_until(), this function
-	// does not consume the stop character that it finds. You must read it for
-	// yourself.
-	//
-	// When the operation is finished, @callback will be called. You can then
-	// call g_data_input_stream_read_until_finish() to get the result of the
-	// operation.
-	//
-	// Don't use this function in new code. Its functionality is inconsistent
-	// with g_data_input_stream_read_until(). Both functions will be marked as
-	// deprecated in a future release. Use g_data_input_stream_read_upto_async()
-	// instead.
-	//
-	// Deprecated: Use g_data_input_stream_read_upto_async() instead, which has
-	// more consistent behaviour regarding the stop character.
-	ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// ReadUntilFinish: finish an asynchronous call started by
-	// g_data_input_stream_read_until_async().
-	//
-	// Deprecated: Use g_data_input_stream_read_upto_finish() instead, which has
-	// more consistent behaviour regarding the stop character.
-	ReadUntilFinish(result AsyncResult) (uint, string, error)
-	// ReadUpto reads a string from the data input stream, up to the first
-	// occurrence of any of the stop characters.
-	//
-	// In contrast to g_data_input_stream_read_until(), this function does not
-	// consume the stop character. You have to use
-	// g_data_input_stream_read_byte() to get it before calling
-	// g_data_input_stream_read_upto() again.
-	//
-	// Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
-	//
-	// The returned string will always be nul-terminated on success.
-	ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error)
-	// ReadUptoAsync: the asynchronous version of
-	// g_data_input_stream_read_upto(). It is an error to have two outstanding
-	// calls to this function.
-	//
-	// In contrast to g_data_input_stream_read_until(), this function does not
-	// consume the stop character. You have to use
-	// g_data_input_stream_read_byte() to get it before calling
-	// g_data_input_stream_read_upto() again.
-	//
-	// Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
-	//
-	// When the operation is finished, @callback will be called. You can then
-	// call g_data_input_stream_read_upto_finish() to get the result of the
-	// operation.
-	ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// ReadUptoFinish: finish an asynchronous call started by
-	// g_data_input_stream_read_upto_async().
-	//
-	// Note that this function does not consume the stop character. You have to
-	// use g_data_input_stream_read_byte() to get it before calling
-	// g_data_input_stream_read_upto_async() again.
-	//
-	// The returned string will always be nul-terminated on success.
-	ReadUptoFinish(result AsyncResult) (uint, string, error)
+type DataInputStream struct {
+	BufferedInputStream
+	Seekable
 }
 
-// DataInputStreamClass implements the DataInputStream interface.
-type DataInputStreamClass struct {
-	BufferedInputStreamClass
-	SeekableIface
-}
+var _ DataInputStreamer = (*DataInputStream)(nil)
 
-var _ DataInputStream = (*DataInputStreamClass)(nil)
-
-func wrapDataInputStream(obj *externglib.Object) DataInputStream {
-	return &DataInputStreamClass{
-		BufferedInputStreamClass: BufferedInputStreamClass{
-			FilterInputStreamClass: FilterInputStreamClass{
-				InputStreamClass: InputStreamClass{
+func wrapDataInputStreamer(obj *externglib.Object) DataInputStreamer {
+	return &DataInputStream{
+		BufferedInputStream: BufferedInputStream{
+			FilterInputStream: FilterInputStream{
+				InputStream: InputStream{
 					Object: obj,
 				},
 			},
-			SeekableIface: SeekableIface{
+			Seekable: Seekable{
 				Object: obj,
 			},
 		},
-		SeekableIface: SeekableIface{
+		Seekable: Seekable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDataInputStream(p uintptr) (interface{}, error) {
+func marshalDataInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDataInputStream(obj), nil
+	return wrapDataInputStreamer(obj), nil
 }
 
 // NewDataInputStream creates a new data input stream for the @base_stream.
-func NewDataInputStream(baseStream InputStream) *DataInputStreamClass {
+func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 	var _arg1 *C.GInputStream     // out
 	var _cret *C.GDataInputStream // in
 
@@ -247,15 +104,15 @@ func NewDataInputStream(baseStream InputStream) *DataInputStreamClass {
 
 	_cret = C.g_data_input_stream_new(_arg1)
 
-	var _dataInputStream *DataInputStreamClass // out
+	var _dataInputStream *DataInputStream // out
 
-	_dataInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DataInputStreamClass)
+	_dataInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DataInputStream)
 
 	return _dataInputStream
 }
 
 // ByteOrder gets the byte order for the data input stream.
-func (stream *DataInputStreamClass) ByteOrder() DataStreamByteOrder {
+func (stream *DataInputStream) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataInputStream    // out
 	var _cret C.GDataStreamByteOrder // in
 
@@ -271,7 +128,7 @@ func (stream *DataInputStreamClass) ByteOrder() DataStreamByteOrder {
 }
 
 // NewlineType gets the current newline type for the @stream.
-func (stream *DataInputStreamClass) NewlineType() DataStreamNewlineType {
+func (stream *DataInputStream) NewlineType() DataStreamNewlineType {
 	var _arg0 *C.GDataInputStream      // out
 	var _cret C.GDataStreamNewlineType // in
 
@@ -287,7 +144,7 @@ func (stream *DataInputStreamClass) NewlineType() DataStreamNewlineType {
 }
 
 // ReadByte reads an unsigned 8-bit/1-byte value from @stream.
-func (stream *DataInputStreamClass) ReadByte(cancellable Cancellable) (byte, error) {
+func (stream *DataInputStream) ReadByte(cancellable Cancellabler) (byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guchar            // in
@@ -312,7 +169,7 @@ func (stream *DataInputStreamClass) ReadByte(cancellable Cancellable) (byte, err
 // In order to get the correct byte order for this read operation, see
 // g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
-func (stream *DataInputStreamClass) ReadInt16(cancellable Cancellable) (int16, error) {
+func (stream *DataInputStream) ReadInt16(cancellable Cancellabler) (int16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.gint16            // in
@@ -341,7 +198,7 @@ func (stream *DataInputStreamClass) ReadInt16(cancellable Cancellable) (int16, e
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (stream *DataInputStreamClass) ReadInt32(cancellable Cancellable) (int32, error) {
+func (stream *DataInputStream) ReadInt32(cancellable Cancellabler) (int32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.gint32            // in
@@ -370,7 +227,7 @@ func (stream *DataInputStreamClass) ReadInt32(cancellable Cancellable) (int32, e
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (stream *DataInputStreamClass) ReadInt64(cancellable Cancellable) (int64, error) {
+func (stream *DataInputStream) ReadInt64(cancellable Cancellabler) (int64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.gint64            // in
@@ -397,7 +254,7 @@ func (stream *DataInputStreamClass) ReadInt64(cancellable Cancellable) (int64, e
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (stream *DataInputStreamClass) ReadLine(cancellable Cancellable) (uint, []byte, error) {
+func (stream *DataInputStream) ReadLine(cancellable Cancellabler) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 C.gsize             // in
 	var _arg2 *C.GCancellable     // out
@@ -437,7 +294,7 @@ func (stream *DataInputStreamClass) ReadLine(cancellable Cancellable) (uint, []b
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_data_input_stream_read_line_finish() to get the result of the operation.
-func (stream *DataInputStreamClass) ReadLineAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadLineAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg1 C.gint                // out
 	var _arg2 *C.GCancellable       // out
@@ -456,7 +313,7 @@ func (stream *DataInputStreamClass) ReadLineAsync(ioPriority int, cancellable Ca
 // ReadLineFinish: finish an asynchronous call started by
 // g_data_input_stream_read_line_async(). Note the warning about string encoding
 // in g_data_input_stream_read_line() applies here as well.
-func (stream *DataInputStreamClass) ReadLineFinish(result AsyncResult) (uint, []byte, error) {
+func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -493,7 +350,7 @@ func (stream *DataInputStreamClass) ReadLineFinish(result AsyncResult) (uint, []
 
 // ReadLineFinishUTF8: finish an asynchronous call started by
 // g_data_input_stream_read_line_async().
-func (stream *DataInputStreamClass) ReadLineFinishUTF8(result AsyncResult) (uint, string, error) {
+func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -522,7 +379,7 @@ func (stream *DataInputStreamClass) ReadLineFinishUTF8(result AsyncResult) (uint
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (stream *DataInputStreamClass) ReadLineUTF8(cancellable Cancellable) (uint, string, error) {
+func (stream *DataInputStream) ReadLineUTF8(cancellable Cancellabler) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 C.gsize             // in
 	var _arg2 *C.GCancellable     // out
@@ -551,7 +408,7 @@ func (stream *DataInputStreamClass) ReadLineUTF8(cancellable Cancellable) (uint,
 // In order to get the correct byte order for this read operation, see
 // g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
-func (stream *DataInputStreamClass) ReadUint16(cancellable Cancellable) (uint16, error) {
+func (stream *DataInputStream) ReadUint16(cancellable Cancellabler) (uint16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guint16           // in
@@ -580,7 +437,7 @@ func (stream *DataInputStreamClass) ReadUint16(cancellable Cancellable) (uint16,
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (stream *DataInputStreamClass) ReadUint32(cancellable Cancellable) (uint32, error) {
+func (stream *DataInputStream) ReadUint32(cancellable Cancellabler) (uint32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guint32           // in
@@ -608,7 +465,7 @@ func (stream *DataInputStreamClass) ReadUint32(cancellable Cancellable) (uint32,
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (stream *DataInputStreamClass) ReadUint64(cancellable Cancellable) (uint64, error) {
+func (stream *DataInputStream) ReadUint64(cancellable Cancellabler) (uint64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
 	var _cret C.guint64           // in
@@ -641,7 +498,7 @@ func (stream *DataInputStreamClass) ReadUint64(cancellable Cancellable) (uint64,
 //
 // Deprecated: Use g_data_input_stream_read_upto() instead, which has more
 // consistent behaviour regarding the stop character.
-func (stream *DataInputStreamClass) ReadUntil(stopChars string, cancellable Cancellable) (uint, string, error) {
+func (stream *DataInputStream) ReadUntil(stopChars string, cancellable Cancellabler) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gsize             // in
@@ -684,7 +541,7 @@ func (stream *DataInputStreamClass) ReadUntil(stopChars string, cancellable Canc
 //
 // Deprecated: Use g_data_input_stream_read_upto_async() instead, which has more
 // consistent behaviour regarding the stop character.
-func (stream *DataInputStreamClass) ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.gint                // out
@@ -708,7 +565,7 @@ func (stream *DataInputStreamClass) ReadUntilAsync(stopChars string, ioPriority 
 //
 // Deprecated: Use g_data_input_stream_read_upto_finish() instead, which has
 // more consistent behaviour regarding the stop character.
-func (stream *DataInputStreamClass) ReadUntilFinish(result AsyncResult) (uint, string, error) {
+func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -742,7 +599,7 @@ func (stream *DataInputStreamClass) ReadUntilFinish(result AsyncResult) (uint, s
 // Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
 //
 // The returned string will always be nul-terminated on success.
-func (stream *DataInputStreamClass) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string, error) {
+func (stream *DataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellabler) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gssize            // out
@@ -782,7 +639,7 @@ func (stream *DataInputStreamClass) ReadUpto(stopChars string, stopCharsLen int,
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_data_input_stream_read_upto_finish() to get the result of the operation.
-func (stream *DataInputStreamClass) ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.gssize              // out
@@ -811,7 +668,7 @@ func (stream *DataInputStreamClass) ReadUptoAsync(stopChars string, stopCharsLen
 // g_data_input_stream_read_upto_async() again.
 //
 // The returned string will always be nul-terminated on success.
-func (stream *DataInputStreamClass) ReadUptoFinish(result AsyncResult) (uint, string, error) {
+func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in

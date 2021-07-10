@@ -131,12 +131,6 @@ type IOChannel struct {
 	native C.GIOChannel
 }
 
-// WrapIOChannel wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIOChannel(ptr unsafe.Pointer) *IOChannel {
-	return (*IOChannel)(ptr)
-}
-
 func marshalIOChannel(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*IOChannel)(unsafe.Pointer(b)), nil
@@ -757,12 +751,6 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 // generic way.
 type IOFuncs struct {
 	native C.GIOFuncs
-}
-
-// WrapIOFuncs wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIOFuncs(ptr unsafe.Pointer) *IOFuncs {
-	return (*IOFuncs)(ptr)
 }
 
 // Native returns the underlying C source pointer.

@@ -18,8 +18,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_manager_get_type()), F: marshalDisplayManager},
+		{T: externglib.Type(C.gdk_display_manager_get_type()), F: marshalDisplayManagerrer},
 	})
+}
+
+// DisplayManagerrer describes DisplayManager's methods.
+type DisplayManagerrer interface {
+	gextras.Objector
+
+	DefaultDisplay() *Display
+	OpenDisplay(name string) *Display
+	SetDefaultDisplay(display Displayyer)
 }
 
 // DisplayManager: the purpose of the DisplayManager singleton object is to
@@ -57,38 +66,26 @@ func init() {
 //      else
 //    #endif
 //      g_error ("Unsupported GDK backend");
-type DisplayManager interface {
-	gextras.Objector
-
-	// DefaultDisplay gets the default Display.
-	DefaultDisplay() *DisplayClass
-	// OpenDisplay opens a display.
-	OpenDisplay(name string) *DisplayClass
-	// SetDefaultDisplay sets @display as the default display.
-	SetDefaultDisplay(display Display)
-}
-
-// DisplayManagerClass implements the DisplayManager interface.
-type DisplayManagerClass struct {
+type DisplayManager struct {
 	*externglib.Object
 }
 
-var _ DisplayManager = (*DisplayManagerClass)(nil)
+var _ DisplayManagerrer = (*DisplayManager)(nil)
 
-func wrapDisplayManager(obj *externglib.Object) DisplayManager {
-	return &DisplayManagerClass{
+func wrapDisplayManagerrer(obj *externglib.Object) DisplayManagerrer {
+	return &DisplayManager{
 		Object: obj,
 	}
 }
 
-func marshalDisplayManager(p uintptr) (interface{}, error) {
+func marshalDisplayManagerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDisplayManager(obj), nil
+	return wrapDisplayManagerrer(obj), nil
 }
 
 // DefaultDisplay gets the default Display.
-func (manager *DisplayManagerClass) DefaultDisplay() *DisplayClass {
+func (manager *DisplayManager) DefaultDisplay() *Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GdkDisplay        // in
 
@@ -96,15 +93,15 @@ func (manager *DisplayManagerClass) DefaultDisplay() *DisplayClass {
 
 	_cret = C.gdk_display_manager_get_default_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
 
 // OpenDisplay opens a display.
-func (manager *DisplayManagerClass) OpenDisplay(name string) *DisplayClass {
+func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.gchar             // out
 	var _cret *C.GdkDisplay        // in
@@ -115,15 +112,15 @@ func (manager *DisplayManagerClass) OpenDisplay(name string) *DisplayClass {
 
 	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
 
 // SetDefaultDisplay sets @display as the default display.
-func (manager *DisplayManagerClass) SetDefaultDisplay(display Display) {
+func (manager *DisplayManager) SetDefaultDisplay(display Displayyer) {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.GdkDisplay        // out
 

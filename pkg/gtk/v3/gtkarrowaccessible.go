@@ -21,43 +21,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_arrow_accessible_get_type()), F: marshalArrowAccessible},
+		{T: externglib.Type(C.gtk_arrow_accessible_get_type()), F: marshalArrowAccessibler},
 	})
 }
 
-type ArrowAccessible interface {
+// ArrowAccessibler describes ArrowAccessible's methods.
+type ArrowAccessibler interface {
 	gextras.Objector
 
-	privateArrowAccessibleClass()
+	privateArrowAccessible()
 }
 
-// ArrowAccessibleClass implements the ArrowAccessible interface.
-type ArrowAccessibleClass struct {
-	WidgetAccessibleClass
-	atk.ImageIface
+type ArrowAccessible struct {
+	WidgetAccessible
+	atk.Image
 }
 
-var _ ArrowAccessible = (*ArrowAccessibleClass)(nil)
+var _ ArrowAccessibler = (*ArrowAccessible)(nil)
 
-func wrapArrowAccessible(obj *externglib.Object) ArrowAccessible {
-	return &ArrowAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapArrowAccessibler(obj *externglib.Object) ArrowAccessibler {
+	return &ArrowAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalArrowAccessible(p uintptr) (interface{}, error) {
+func marshalArrowAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapArrowAccessible(obj), nil
+	return wrapArrowAccessibler(obj), nil
 }
 
-func (*ArrowAccessibleClass) privateArrowAccessibleClass() {}
+func (*ArrowAccessible) privateArrowAccessible() {}

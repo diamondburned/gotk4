@@ -19,50 +19,42 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_keymap_get_type()), F: marshalX11Keymap},
+		{T: externglib.Type(C.gdk_x11_keymap_get_type()), F: marshalX11Keymapper},
 	})
 }
 
-type X11Keymap interface {
+// X11Keymapper describes X11Keymap's methods.
+type X11Keymapper interface {
 	gextras.Objector
 
-	// GroupForState extracts the group from the state field sent in an X Key
-	// event. This is only needed for code processing raw X events, since
-	// EventKey directly includes an is_modifier field.
 	GroupForState(state uint) int
-	// KeyIsModifier determines whether a particular key code represents a key
-	// that is a modifier. That is, it’s a key that normally just affects the
-	// keyboard state and the behavior of other keys rather than producing a
-	// direct effect itself. This is only needed for code processing raw X
-	// events, since EventKey directly includes an is_modifier field.
 	KeyIsModifier(keycode uint) bool
 }
 
-// X11KeymapClass implements the X11Keymap interface.
-type X11KeymapClass struct {
-	gdk.KeymapClass
+type X11Keymap struct {
+	gdk.Keymap
 }
 
-var _ X11Keymap = (*X11KeymapClass)(nil)
+var _ X11Keymapper = (*X11Keymap)(nil)
 
-func wrapX11Keymap(obj *externglib.Object) X11Keymap {
-	return &X11KeymapClass{
-		KeymapClass: gdk.KeymapClass{
+func wrapX11Keymapper(obj *externglib.Object) X11Keymapper {
+	return &X11Keymap{
+		Keymap: gdk.Keymap{
 			Object: obj,
 		},
 	}
 }
 
-func marshalX11Keymap(p uintptr) (interface{}, error) {
+func marshalX11Keymapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Keymap(obj), nil
+	return wrapX11Keymapper(obj), nil
 }
 
 // GroupForState extracts the group from the state field sent in an X Key event.
 // This is only needed for code processing raw X events, since EventKey directly
 // includes an is_modifier field.
-func (keymap *X11KeymapClass) GroupForState(state uint) int {
+func (keymap *X11Keymap) GroupForState(state uint) int {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _cret C.gint       // in
@@ -84,7 +76,7 @@ func (keymap *X11KeymapClass) GroupForState(state uint) int {
 // state and the behavior of other keys rather than producing a direct effect
 // itself. This is only needed for code processing raw X events, since EventKey
 // directly includes an is_modifier field.
-func (keymap *X11KeymapClass) KeyIsModifier(keycode uint) bool {
+func (keymap *X11Keymap) KeyIsModifier(keycode uint) bool {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in

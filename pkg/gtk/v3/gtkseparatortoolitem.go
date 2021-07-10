@@ -20,8 +20,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_tool_item_get_type()), F: marshalSeparatorToolItem},
+		{T: externglib.Type(C.gtk_separator_tool_item_get_type()), F: marshalSeparatorToolItemmer},
 	})
+}
+
+// SeparatorToolItemmer describes SeparatorToolItem's methods.
+type SeparatorToolItemmer interface {
+	gextras.Objector
+
+	Draw() bool
+	SetDraw(draw bool)
 }
 
 // SeparatorToolItem is a ToolItem that separates groups of other ToolItems.
@@ -38,92 +46,79 @@ func init() {
 // CSS nodes
 //
 // GtkSeparatorToolItem has a single CSS node with name separator.
-type SeparatorToolItem interface {
-	gextras.Objector
-
-	// Draw returns whether @item is drawn as a line, or just blank. See
-	// gtk_separator_tool_item_set_draw().
-	Draw() bool
-	// SetDraw: whether @item is drawn as a vertical line, or just blank.
-	// Setting this to false along with gtk_tool_item_set_expand() is useful to
-	// create an item that forces following items to the end of the toolbar.
-	SetDraw(draw bool)
-}
-
-// SeparatorToolItemClass implements the SeparatorToolItem interface.
-type SeparatorToolItemClass struct {
+type SeparatorToolItem struct {
 	*externglib.Object
-	ToolItemClass
-	ActivatableIface
-	BuildableIface
+	ToolItem
+	Activatable
+	Buildable
 }
 
-var _ SeparatorToolItem = (*SeparatorToolItemClass)(nil)
+var _ SeparatorToolItemmer = (*SeparatorToolItem)(nil)
 
-func wrapSeparatorToolItem(obj *externglib.Object) SeparatorToolItem {
-	return &SeparatorToolItemClass{
+func wrapSeparatorToolItemmer(obj *externglib.Object) SeparatorToolItemmer {
+	return &SeparatorToolItem{
 		Object: obj,
-		ToolItemClass: ToolItemClass{
+		ToolItem: ToolItem{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
+func marshalSeparatorToolItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparatorToolItem(obj), nil
+	return wrapSeparatorToolItemmer(obj), nil
 }
 
 // NewSeparatorToolItem: create a new SeparatorToolItem
-func NewSeparatorToolItem() *SeparatorToolItemClass {
+func NewSeparatorToolItem() *SeparatorToolItem {
 	var _cret *C.GtkToolItem // in
 
 	_cret = C.gtk_separator_tool_item_new()
 
-	var _separatorToolItem *SeparatorToolItemClass // out
+	var _separatorToolItem *SeparatorToolItem // out
 
-	_separatorToolItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeparatorToolItemClass)
+	_separatorToolItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeparatorToolItem)
 
 	return _separatorToolItem
 }
 
 // Draw returns whether @item is drawn as a line, or just blank. See
 // gtk_separator_tool_item_set_draw().
-func (item *SeparatorToolItemClass) Draw() bool {
+func (item *SeparatorToolItem) Draw() bool {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _cret C.gboolean              // in
 
@@ -143,7 +138,7 @@ func (item *SeparatorToolItemClass) Draw() bool {
 // SetDraw: whether @item is drawn as a vertical line, or just blank. Setting
 // this to false along with gtk_tool_item_set_expand() is useful to create an
 // item that forces following items to the end of the toolbar.
-func (item *SeparatorToolItemClass) SetDraw(draw bool) {
+func (item *SeparatorToolItem) SetDraw(draw bool) {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _arg1 C.gboolean              // out
 

@@ -18,38 +18,38 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_cairo_renderer_get_type()), F: marshalCairoRenderer},
+		{T: externglib.Type(C.gsk_cairo_renderer_get_type()), F: marshalCairoRendererrer},
 	})
+}
+
+// CairoRendererrer describes CairoRenderer's methods.
+type CairoRendererrer interface {
+	gextras.Objector
+
+	privateCairoRenderer()
 }
 
 // CairoRenderer: GSK renderer that is using cairo.
 //
 // Since it is using cairo, this renderer cannot support 3D transformations.
-type CairoRenderer interface {
-	gextras.Objector
-
-	privateCairoRendererClass()
+type CairoRenderer struct {
+	Renderer
 }
 
-// CairoRendererClass implements the CairoRenderer interface.
-type CairoRendererClass struct {
-	RendererClass
-}
+var _ CairoRendererrer = (*CairoRenderer)(nil)
 
-var _ CairoRenderer = (*CairoRendererClass)(nil)
-
-func wrapCairoRenderer(obj *externglib.Object) CairoRenderer {
-	return &CairoRendererClass{
-		RendererClass: RendererClass{
+func wrapCairoRendererrer(obj *externglib.Object) CairoRendererrer {
+	return &CairoRenderer{
+		Renderer: Renderer{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCairoRenderer(p uintptr) (interface{}, error) {
+func marshalCairoRendererrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCairoRenderer(obj), nil
+	return wrapCairoRendererrer(obj), nil
 }
 
 // NewCairoRenderer creates a new Cairo renderer.
@@ -59,16 +59,16 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 //
 // The Cairo renderer is incomplete. It cannot render 3D transformed content and
 // will instead render an error marker. Its usage should be avoided.
-func NewCairoRenderer() *CairoRendererClass {
+func NewCairoRenderer() *CairoRenderer {
 	var _cret *C.GskRenderer // in
 
 	_cret = C.gsk_cairo_renderer_new()
 
-	var _cairoRenderer *CairoRendererClass // out
+	var _cairoRenderer *CairoRenderer // out
 
-	_cairoRenderer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CairoRendererClass)
+	_cairoRenderer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CairoRenderer)
 
 	return _cairoRenderer
 }
 
-func (*CairoRendererClass) privateCairoRendererClass() {}
+func (*CairoRenderer) privateCairoRenderer() {}

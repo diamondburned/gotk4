@@ -21,49 +21,49 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_accessible_get_type()), F: marshalCellAccessible},
+		{T: externglib.Type(C.gtk_cell_accessible_get_type()), F: marshalCellAccessibler},
 	})
 }
 
-// CellAccessibleOverrider contains methods that are overridable.
+// CellAccessiblerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CellAccessibleOverrider interface {
+type CellAccessiblerOverrider interface {
 	UpdateCache(emitSignal bool)
 }
 
-type CellAccessible interface {
+// CellAccessibler describes CellAccessible's methods.
+type CellAccessibler interface {
 	gextras.Objector
 
-	privateCellAccessibleClass()
+	privateCellAccessible()
 }
 
-// CellAccessibleClass implements the CellAccessible interface.
-type CellAccessibleClass struct {
-	AccessibleClass
-	atk.ActionIface
+type CellAccessible struct {
+	Accessible
+	atk.Action
 }
 
-var _ CellAccessible = (*CellAccessibleClass)(nil)
+var _ CellAccessibler = (*CellAccessible)(nil)
 
-func wrapCellAccessible(obj *externglib.Object) CellAccessible {
-	return &CellAccessibleClass{
-		AccessibleClass: AccessibleClass{
-			ObjectClass: atk.ObjectClass{
+func wrapCellAccessibler(obj *externglib.Object) CellAccessibler {
+	return &CellAccessible{
+		Accessible: Accessible{
+			Object: atk.Object{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalCellAccessible(p uintptr) (interface{}, error) {
+func marshalCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellAccessible(obj), nil
+	return wrapCellAccessibler(obj), nil
 }
 
-func (*CellAccessibleClass) privateCellAccessibleClass() {}
+func (*CellAccessible) privateCellAccessible() {}

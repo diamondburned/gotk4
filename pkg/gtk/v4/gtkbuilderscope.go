@@ -19,8 +19,8 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_builder_closure_flags_get_type()), F: marshalBuilderClosureFlags},
-		{T: externglib.Type(C.gtk_builder_scope_get_type()), F: marshalBuilderScope},
-		{T: externglib.Type(C.gtk_builder_cscope_get_type()), F: marshalBuilderCScope},
+		{T: externglib.Type(C.gtk_builder_scope_get_type()), F: marshalBuilderScoper},
+		{T: externglib.Type(C.gtk_builder_cscope_get_type()), F: marshalBuilderCScoper},
 	})
 }
 
@@ -43,13 +43,20 @@ func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
 	return BuilderClosureFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// BuilderScopeOverrider contains methods that are overridable.
+// BuilderScoperOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type BuilderScopeOverrider interface {
-	TypeFromFunction(builder Builder, functionName string) externglib.Type
-	TypeFromName(builder Builder, typeName string) externglib.Type
+type BuilderScoperOverrider interface {
+	TypeFromFunction(builder Builderrer, functionName string) externglib.Type
+	TypeFromName(builder Builderrer, typeName string) externglib.Type
+}
+
+// BuilderScoper describes BuilderScope's methods.
+type BuilderScoper interface {
+	gextras.Objector
+
+	privateBuilderScope()
 }
 
 // BuilderScope: `GtkBuilderScope` is an interface to provide language binding
@@ -66,32 +73,32 @@ type BuilderScopeOverrider interface {
 //
 // By default, GTK will use its own implementation of `GtkBuilderScope` for the
 // C language which can be created via [ctor@Gtk.BuilderCScope.new].
-type BuilderScope interface {
-	gextras.Objector
-
-	privateBuilderScopeIface()
-}
-
-// BuilderScopeIface implements the BuilderScope interface.
-type BuilderScopeIface struct {
+type BuilderScope struct {
 	*externglib.Object
 }
 
-var _ BuilderScope = (*BuilderScopeIface)(nil)
+var _ BuilderScoper = (*BuilderScope)(nil)
 
-func wrapBuilderScope(obj *externglib.Object) BuilderScope {
-	return &BuilderScopeIface{
+func wrapBuilderScoper(obj *externglib.Object) BuilderScoper {
+	return &BuilderScope{
 		Object: obj,
 	}
 }
 
-func marshalBuilderScope(p uintptr) (interface{}, error) {
+func marshalBuilderScoper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderScope(obj), nil
+	return wrapBuilderScoper(obj), nil
 }
 
-func (*BuilderScopeIface) privateBuilderScopeIface() {}
+func (*BuilderScope) privateBuilderScope() {}
+
+// BuilderCScoper describes BuilderCScope's methods.
+type BuilderCScoper interface {
+	gextras.Objector
+
+	privateBuilderCScope()
+}
 
 // BuilderCScope: `GtkBuilderScope` implementation for the C language.
 //
@@ -108,33 +115,26 @@ func (*BuilderScopeIface) privateBuilderScopeIface() {}
 // Note that unless [method@Gtk.BuilderCScope.add_callback_symbol] is called for
 // all signal callbacks which are referenced by the loaded XML, this
 // functionality will require that `GModule` be supported on the platform.
-type BuilderCScope interface {
-	gextras.Objector
-
-	privateBuilderCScopeClass()
-}
-
-// BuilderCScopeClass implements the BuilderCScope interface.
-type BuilderCScopeClass struct {
+type BuilderCScope struct {
 	*externglib.Object
-	BuilderScopeIface
+	BuilderScope
 }
 
-var _ BuilderCScope = (*BuilderCScopeClass)(nil)
+var _ BuilderCScoper = (*BuilderCScope)(nil)
 
-func wrapBuilderCScope(obj *externglib.Object) BuilderCScope {
-	return &BuilderCScopeClass{
+func wrapBuilderCScoper(obj *externglib.Object) BuilderCScoper {
+	return &BuilderCScope{
 		Object: obj,
-		BuilderScopeIface: BuilderScopeIface{
+		BuilderScope: BuilderScope{
 			Object: obj,
 		},
 	}
 }
 
-func marshalBuilderCScope(p uintptr) (interface{}, error) {
+func marshalBuilderCScoper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderCScope(obj), nil
+	return wrapBuilderCScoper(obj), nil
 }
 
 // NewBuilderCScope creates a new `GtkBuilderCScope` object to use with future
@@ -142,16 +142,16 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 //
 // Calling this function is only necessary if you want to add custom callbacks
 // via [method@Gtk.BuilderCScope.add_callback_symbol].
-func NewBuilderCScope() *BuilderCScopeClass {
+func NewBuilderCScope() *BuilderCScope {
 	var _cret *C.GtkBuilderScope // in
 
 	_cret = C.gtk_builder_cscope_new()
 
-	var _builderCScope *BuilderCScopeClass // out
+	var _builderCScope *BuilderCScope // out
 
-	_builderCScope = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BuilderCScopeClass)
+	_builderCScope = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BuilderCScope)
 
 	return _builderCScope
 }
 
-func (*BuilderCScopeClass) privateBuilderCScopeClass() {}
+func (*BuilderCScope) privateBuilderCScope() {}

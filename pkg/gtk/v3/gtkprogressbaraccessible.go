@@ -21,28 +21,28 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_progress_bar_accessible_get_type()), F: marshalProgressBarAccessible},
+		{T: externglib.Type(C.gtk_progress_bar_accessible_get_type()), F: marshalProgressBarAccessibler},
 	})
 }
 
-type ProgressBarAccessible interface {
+// ProgressBarAccessibler describes ProgressBarAccessible's methods.
+type ProgressBarAccessibler interface {
 	gextras.Objector
 
-	privateProgressBarAccessibleClass()
+	privateProgressBarAccessible()
 }
 
-// ProgressBarAccessibleClass implements the ProgressBarAccessible interface.
-type ProgressBarAccessibleClass struct {
-	WidgetAccessibleClass
+type ProgressBarAccessible struct {
+	WidgetAccessible
 }
 
-var _ ProgressBarAccessible = (*ProgressBarAccessibleClass)(nil)
+var _ ProgressBarAccessibler = (*ProgressBarAccessible)(nil)
 
-func wrapProgressBarAccessible(obj *externglib.Object) ProgressBarAccessible {
-	return &ProgressBarAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapProgressBarAccessibler(obj *externglib.Object) ProgressBarAccessibler {
+	return &ProgressBarAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
@@ -50,10 +50,10 @@ func wrapProgressBarAccessible(obj *externglib.Object) ProgressBarAccessible {
 	}
 }
 
-func marshalProgressBarAccessible(p uintptr) (interface{}, error) {
+func marshalProgressBarAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProgressBarAccessible(obj), nil
+	return wrapProgressBarAccessibler(obj), nil
 }
 
-func (*ProgressBarAccessibleClass) privateProgressBarAccessibleClass() {}
+func (*ProgressBarAccessible) privateProgressBarAccessible() {}

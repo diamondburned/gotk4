@@ -43,7 +43,7 @@ func init() {
 // the [thread-default main context][g-main-context-push-thread-default] where
 // the #GTask was created. All other users of ReadyCallback must likewise call
 // it asynchronously in a later iteration of the main context.
-type AsyncReadyCallback func(sourceObject *externglib.Object, res *AsyncResultIface, userData interface{})
+type AsyncReadyCallback func(sourceObject *externglib.Object, res *AsyncResult, userData interface{})
 
 //export gotk4_AsyncReadyCallback
 func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
@@ -53,11 +53,11 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 	}
 
 	var sourceObject *externglib.Object // out
-	var res *AsyncResultIface           // out
+	var res *AsyncResult                // out
 	var userData interface{}            // out
 
 	sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*AsyncResultIface)
+	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*AsyncResult)
 	userData = box.Get(uintptr(arg2))
 
 	fn := v.(AsyncReadyCallback)
@@ -66,7 +66,7 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 
 // CancellableSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_cancellable_source_new().
-type CancellableSourceFunc func(cancellable *CancellableClass, userData interface{}) (ok bool)
+type CancellableSourceFunc func(cancellable *Cancellable, userData interface{}) (ok bool)
 
 //export gotk4_CancellableSourceFunc
 func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.gboolean) {
@@ -75,10 +75,10 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.
 		panic(`callback not found`)
 	}
 
-	var cancellable *CancellableClass // out
-	var userData interface{}          // out
+	var cancellable *Cancellable // out
+	var userData interface{}     // out
 
-	cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*CancellableClass)
+	cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Cancellable)
 	userData = box.Get(uintptr(arg1))
 
 	fn := v.(CancellableSourceFunc)
@@ -97,7 +97,7 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.
 //
 // This function is called in the [thread-default main
 // loop][g-main-context-push-thread-default] that @manager was constructed in.
-type DBusProxyTypeFunc func(manager *DBusObjectManagerClientClass, objectPath string, interfaceName string, userData interface{}) (gType externglib.Type)
+type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string, userData interface{}) (gType externglib.Type)
 
 //export gotk4_DBusProxyTypeFunc
 func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
@@ -106,12 +106,12 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 		panic(`callback not found`)
 	}
 
-	var manager *DBusObjectManagerClientClass // out
-	var objectPath string                     // out
-	var interfaceName string                  // out
-	var userData interface{}                  // out
+	var manager *DBusObjectManagerClient // out
+	var objectPath string                // out
+	var interfaceName string             // out
+	var userData interface{}             // out
 
-	manager = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusObjectManagerClientClass)
+	manager = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusObjectManagerClient)
 	objectPath = C.GoString(arg1)
 	interfaceName = C.GoString(arg2)
 	userData = box.Get(uintptr(arg3))
@@ -126,7 +126,7 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 
 // DatagramBasedSourceFunc: this is the function type of the callback used for
 // the #GSource returned by g_datagram_based_create_source().
-type DatagramBasedSourceFunc func(datagramBased *DatagramBasedIface, condition glib.IOCondition, userData interface{}) (ok bool)
+type DatagramBasedSourceFunc func(datagramBased *DatagramBased, condition glib.IOCondition, userData interface{}) (ok bool)
 
 //export gotk4_DatagramBasedSourceFunc
 func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
@@ -135,11 +135,11 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 		panic(`callback not found`)
 	}
 
-	var datagramBased *DatagramBasedIface // out
-	var condition glib.IOCondition        // out
-	var userData interface{}              // out
+	var datagramBased *DatagramBased // out
+	var condition glib.IOCondition   // out
+	var userData interface{}         // out
 
-	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DatagramBasedIface)
+	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DatagramBased)
 	condition = (glib.IOCondition)(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -293,7 +293,7 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gboolean
 
 // SocketSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_socket_create_source().
-type SocketSourceFunc func(socket *SocketClass, condition glib.IOCondition, userData interface{}) (ok bool)
+type SocketSourceFunc func(socket *Socket, condition glib.IOCondition, userData interface{}) (ok bool)
 
 //export gotk4_SocketSourceFunc
 func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
@@ -302,11 +302,11 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 		panic(`callback not found`)
 	}
 
-	var socket *SocketClass        // out
+	var socket *Socket             // out
 	var condition glib.IOCondition // out
 	var userData interface{}       // out
 
-	socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*SocketClass)
+	socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Socket)
 	condition = (glib.IOCondition)(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -323,12 +323,6 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 // FileAttributeMatcher determines if a string matches a file attribute.
 type FileAttributeMatcher struct {
 	native C.GFileAttributeMatcher
-}
-
-// WrapFileAttributeMatcher wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileAttributeMatcher(ptr unsafe.Pointer) *FileAttributeMatcher {
-	return (*FileAttributeMatcher)(ptr)
 }
 
 func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
@@ -550,12 +544,6 @@ type InputMessage struct {
 	native C.GInputMessage
 }
 
-// WrapInputMessage wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInputMessage(ptr unsafe.Pointer) *InputMessage {
-	return (*InputMessage)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (i *InputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
@@ -566,12 +554,6 @@ func (i *InputMessage) Native() unsafe.Pointer {
 // the first buffer, switching to the next as needed.
 type InputVector struct {
 	native C.GInputVector
-}
-
-// WrapInputVector wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInputVector(ptr unsafe.Pointer) *InputVector {
-	return (*InputVector)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -590,12 +572,6 @@ type OutputMessage struct {
 	native C.GOutputMessage
 }
 
-// WrapOutputMessage wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapOutputMessage(ptr unsafe.Pointer) *OutputMessage {
-	return (*OutputMessage)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (o *OutputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
@@ -606,12 +582,6 @@ func (o *OutputMessage) Native() unsafe.Pointer {
 // they were one buffer.
 type OutputVector struct {
 	native C.GOutputVector
-}
-
-// WrapOutputVector wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
-	return (*OutputVector)(ptr)
 }
 
 // Native returns the underlying C source pointer.
@@ -771,12 +741,6 @@ type Resource struct {
 	native C.GResource
 }
 
-// WrapResource wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapResource(ptr unsafe.Pointer) *Resource {
-	return (*Resource)(ptr)
-}
-
 func marshalResource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Resource)(unsafe.Pointer(b)), nil
@@ -835,12 +799,6 @@ type SrvTarget struct {
 	native C.GSrvTarget
 }
 
-// WrapSrvTarget wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSrvTarget(ptr unsafe.Pointer) *SrvTarget {
-	return (*SrvTarget)(ptr)
-}
-
 func marshalSrvTarget(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*SrvTarget)(unsafe.Pointer(b)), nil
@@ -866,7 +824,7 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 
 	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.free(unsafe.Pointer(v))
+		C.g_srv_target_free((*C.GSrvTarget)(unsafe.Pointer(v)))
 	})
 
 	return _srvTarget
@@ -890,7 +848,7 @@ func (target *SrvTarget) Copy() *SrvTarget {
 
 	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.free(unsafe.Pointer(v))
+		C.g_srv_target_free((*C.GSrvTarget)(unsafe.Pointer(v)))
 	})
 
 	return _srvTarget

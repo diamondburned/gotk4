@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vpaned_get_type()), F: marshalVPaned},
+		{T: externglib.Type(C.gtk_vpaned_get_type()), F: marshalVPanedder},
 	})
+}
+
+// VPanedder describes VPaned's methods.
+type VPanedder interface {
+	gextras.Objector
+
+	privateVPaned()
 }
 
 // VPaned: the VPaned widget is a container widget with two children arranged
@@ -29,77 +36,70 @@ func init() {
 // dragging a handle. See Paned for details.
 //
 // GtkVPaned has been deprecated, use Paned instead.
-type VPaned interface {
-	gextras.Objector
-
-	privateVPanedClass()
-}
-
-// VPanedClass implements the VPaned interface.
-type VPanedClass struct {
+type VPaned struct {
 	*externglib.Object
-	PanedClass
-	BuildableIface
-	OrientableIface
+	Paned
+	Buildable
+	Orientable
 }
 
-var _ VPaned = (*VPanedClass)(nil)
+var _ VPanedder = (*VPaned)(nil)
 
-func wrapVPaned(obj *externglib.Object) VPaned {
-	return &VPanedClass{
+func wrapVPanedder(obj *externglib.Object) VPanedder {
+	return &VPaned{
 		Object: obj,
-		PanedClass: PanedClass{
+		Paned: Paned{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalVPaned(p uintptr) (interface{}, error) {
+func marshalVPanedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVPaned(obj), nil
+	return wrapVPanedder(obj), nil
 }
 
 // NewVPaned: create a new VPaned
 //
 // Deprecated: Use gtk_paned_new() with GTK_ORIENTATION_VERTICAL instead.
-func NewVPaned() *VPanedClass {
+func NewVPaned() *VPaned {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_vpaned_new()
 
-	var _vPaned *VPanedClass // out
+	var _vPaned *VPaned // out
 
-	_vPaned = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VPanedClass)
+	_vPaned = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VPaned)
 
 	return _vPaned
 }
 
-func (*VPanedClass) privateVPanedClass() {}
+func (*VPaned) privateVPaned() {}

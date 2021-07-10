@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_socket_accessible_get_type()), F: marshalSocketAccessible},
+		{T: externglib.Type(C.gtk_socket_accessible_get_type()), F: marshalSocketAccessibler},
 	})
 }
 
-type SocketAccessible interface {
+// SocketAccessibler describes SocketAccessible's methods.
+type SocketAccessibler interface {
 	gextras.Objector
 
 	Embed(path string)
 }
 
-// SocketAccessibleClass implements the SocketAccessible interface.
-type SocketAccessibleClass struct {
-	ContainerAccessibleClass
+type SocketAccessible struct {
+	ContainerAccessible
 }
 
-var _ SocketAccessible = (*SocketAccessibleClass)(nil)
+var _ SocketAccessibler = (*SocketAccessible)(nil)
 
-func wrapSocketAccessible(obj *externglib.Object) SocketAccessible {
-	return &SocketAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapSocketAccessibler(obj *externglib.Object) SocketAccessibler {
+	return &SocketAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,13 +52,13 @@ func wrapSocketAccessible(obj *externglib.Object) SocketAccessible {
 	}
 }
 
-func marshalSocketAccessible(p uintptr) (interface{}, error) {
+func marshalSocketAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketAccessible(obj), nil
+	return wrapSocketAccessibler(obj), nil
 }
 
-func (socket *SocketAccessibleClass) Embed(path string) {
+func (socket *SocketAccessible) Embed(path string) {
 	var _arg0 *C.GtkSocketAccessible // out
 	var _arg1 *C.gchar               // out
 

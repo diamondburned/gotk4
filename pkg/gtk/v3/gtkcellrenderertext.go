@@ -20,16 +20,23 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_text_get_type()), F: marshalCellRendererText},
+		{T: externglib.Type(C.gtk_cell_renderer_text_get_type()), F: marshalCellRendererTexter},
 	})
 }
 
-// CellRendererTextOverrider contains methods that are overridable.
+// CellRendererTexterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CellRendererTextOverrider interface {
+type CellRendererTexterOverrider interface {
 	Edited(path string, newText string)
+}
+
+// CellRendererTexter describes CellRendererText's methods.
+type CellRendererTexter interface {
+	gextras.Objector
+
+	SetFixedHeightFromFont(numberOfRows int)
 }
 
 // CellRendererText renders a given text in its cell, using the font, color and
@@ -38,30 +45,15 @@ type CellRendererTextOverrider interface {
 //
 // If the CellRenderer:mode is GTK_CELL_RENDERER_MODE_EDITABLE, the
 // CellRendererText allows to edit its text using an entry.
-type CellRendererText interface {
-	gextras.Objector
-
-	// SetFixedHeightFromFont sets the height of a renderer to explicitly be
-	// determined by the “font” and “y_pad” property set on it. Further changes
-	// in these properties do not affect the height, so they must be accompanied
-	// by a subsequent call to this function. Using this function is unflexible,
-	// and should really only be used if calculating the size of a cell is too
-	// slow (ie, a massive number of cells displayed). If @number_of_rows is -1,
-	// then the fixed height is unset, and the height is determined by the
-	// properties again.
-	SetFixedHeightFromFont(numberOfRows int)
+type CellRendererText struct {
+	CellRenderer
 }
 
-// CellRendererTextClass implements the CellRendererText interface.
-type CellRendererTextClass struct {
-	CellRendererClass
-}
+var _ CellRendererTexter = (*CellRendererText)(nil)
 
-var _ CellRendererText = (*CellRendererTextClass)(nil)
-
-func wrapCellRendererText(obj *externglib.Object) CellRendererText {
-	return &CellRendererTextClass{
-		CellRendererClass: CellRendererClass{
+func wrapCellRendererTexter(obj *externglib.Object) CellRendererTexter {
+	return &CellRendererText{
+		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -69,10 +61,10 @@ func wrapCellRendererText(obj *externglib.Object) CellRendererText {
 	}
 }
 
-func marshalCellRendererText(p uintptr) (interface{}, error) {
+func marshalCellRendererTexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererText(obj), nil
+	return wrapCellRendererTexter(obj), nil
 }
 
 // NewCellRendererText creates a new CellRendererText. Adjust how text is drawn
@@ -81,14 +73,14 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 // value in a TreeModel. For example, you can bind the “text” property on the
 // cell renderer to a string value in the model, thus rendering a different
 // string in each row of the TreeView
-func NewCellRendererText() *CellRendererTextClass {
+func NewCellRendererText() *CellRendererText {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_text_new()
 
-	var _cellRendererText *CellRendererTextClass // out
+	var _cellRendererText *CellRendererText // out
 
-	_cellRendererText = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererTextClass)
+	_cellRendererText = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererText)
 
 	return _cellRendererText
 }
@@ -100,7 +92,7 @@ func NewCellRendererText() *CellRendererTextClass {
 // should really only be used if calculating the size of a cell is too slow (ie,
 // a massive number of cells displayed). If @number_of_rows is -1, then the
 // fixed height is unset, and the height is determined by the properties again.
-func (renderer *CellRendererTextClass) SetFixedHeightFromFont(numberOfRows int) {
+func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg0 *C.GtkCellRendererText // out
 	var _arg1 C.gint                 // out
 

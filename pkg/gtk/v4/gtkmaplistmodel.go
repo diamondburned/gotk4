@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_map_list_model_get_type()), F: marshalMapListModel},
+		{T: externglib.Type(C.gtk_map_list_model_get_type()), F: marshalMapListModeller},
 	})
 }
 
@@ -51,6 +51,13 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointe
 	return cret
 }
 
+// MapListModeller describes MapListModel's methods.
+type MapListModeller interface {
+	gextras.Objector
+
+	HasMap() bool
+}
+
 // MapListModel: `GtkMapListModel` maps the items in a list model to different
 // items.
 //
@@ -71,34 +78,26 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointe
 //
 // `GtkMapListModel` will attempt to discard the mapped objects as soon as they
 // are no longer needed and recreate them if necessary.
-type MapListModel interface {
-	gextras.Objector
-
-	// HasMap checks if a map function is currently set on @self.
-	HasMap() bool
-}
-
-// MapListModelClass implements the MapListModel interface.
-type MapListModelClass struct {
+type MapListModel struct {
 	*externglib.Object
 }
 
-var _ MapListModel = (*MapListModelClass)(nil)
+var _ MapListModeller = (*MapListModel)(nil)
 
-func wrapMapListModel(obj *externglib.Object) MapListModel {
-	return &MapListModelClass{
+func wrapMapListModeller(obj *externglib.Object) MapListModeller {
+	return &MapListModel{
 		Object: obj,
 	}
 }
 
-func marshalMapListModel(p uintptr) (interface{}, error) {
+func marshalMapListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMapListModel(obj), nil
+	return wrapMapListModeller(obj), nil
 }
 
 // HasMap checks if a map function is currently set on @self.
-func (self *MapListModelClass) HasMap() bool {
+func (self *MapListModel) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
 

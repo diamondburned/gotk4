@@ -21,144 +21,91 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_selection_get_type()), F: marshalFontSelection},
-		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialog},
+		{T: externglib.Type(C.gtk_font_selection_get_type()), F: marshalFontSelectioner},
+		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialogger},
 	})
 }
 
-type FontSelection interface {
+// FontSelectioner describes FontSelection's methods.
+type FontSelectioner interface {
 	gextras.Objector
 
-	// Face gets the FontFace representing the selected font group details (i.e.
-	// family, slant, weight, width, etc).
-	//
-	// Deprecated: Use FontChooser.
-	Face() *pango.FontFaceClass
-	// FaceList: this returns the TreeView which lists all styles available for
-	// the selected font. For example, “Regular”, “Bold”, etc.
-	//
-	// Deprecated: Use FontChooser.
-	FaceList() *WidgetClass
-	// Family gets the FontFamily representing the selected font family.
-	//
-	// Deprecated: Use FontChooser.
-	Family() *pango.FontFamilyClass
-	// FamilyList: this returns the TreeView that lists font families, for
-	// example, “Sans”, “Serif”, etc.
-	//
-	// Deprecated: Use FontChooser.
-	FamilyList() *WidgetClass
-	// FontName gets the currently-selected font name.
-	//
-	// Note that this can be a different string than what you set with
-	// gtk_font_selection_set_font_name(), as the font selection widget may
-	// normalize font names and thus return a string with a different structure.
-	// For example, “Helvetica Italic Bold 12” could be normalized to “Helvetica
-	// Bold Italic 12”. Use pango_font_description_equal() if you want to
-	// compare two font descriptions.
-	//
-	// Deprecated: Use FontChooser.
+	Face() *pango.FontFace
+	FaceList() *Widget
+	Family() *pango.FontFamily
+	FamilyList() *Widget
 	FontName() string
-	// PreviewEntry: this returns the Entry used to display the font as a
-	// preview.
-	//
-	// Deprecated: Use FontChooser.
-	PreviewEntry() *WidgetClass
-	// PreviewText gets the text displayed in the preview area.
-	//
-	// Deprecated: Use FontChooser.
+	PreviewEntry() *Widget
 	PreviewText() string
-	// Size: the selected font size.
-	//
-	// Deprecated: Use FontChooser.
 	Size() int
-	// SizeEntry: this returns the Entry used to allow the user to edit the font
-	// number manually instead of selecting it from the list of font sizes.
-	//
-	// Deprecated: Use FontChooser.
-	SizeEntry() *WidgetClass
-	// SizeList: this returns the TreeView used to list font sizes.
-	//
-	// Deprecated: Use FontChooser.
-	SizeList() *WidgetClass
-	// SetFontName sets the currently-selected font.
-	//
-	// Note that the @fontsel needs to know the screen in which it will appear
-	// for this to work; this can be guaranteed by simply making sure that the
-	// @fontsel is inserted in a toplevel window before you call this function.
-	//
-	// Deprecated: Use FontChooser.
+	SizeEntry() *Widget
+	SizeList() *Widget
 	SetFontName(fontname string) bool
-	// SetPreviewText sets the text displayed in the preview area. The @text is
-	// used to show how the selected font looks.
-	//
-	// Deprecated: Use FontChooser.
 	SetPreviewText(text string)
 }
 
-// FontSelectionClass implements the FontSelection interface.
-type FontSelectionClass struct {
+type FontSelection struct {
 	*externglib.Object
-	BoxClass
-	BuildableIface
-	OrientableIface
+	Box
+	Buildable
+	Orientable
 }
 
-var _ FontSelection = (*FontSelectionClass)(nil)
+var _ FontSelectioner = (*FontSelection)(nil)
 
-func wrapFontSelection(obj *externglib.Object) FontSelection {
-	return &FontSelectionClass{
+func wrapFontSelectioner(obj *externglib.Object) FontSelectioner {
+	return &FontSelection{
 		Object: obj,
-		BoxClass: BoxClass{
+		Box: Box{
 			Object: obj,
-			ContainerClass: ContainerClass{
+			Container: Container{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFontSelection(p uintptr) (interface{}, error) {
+func marshalFontSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontSelection(obj), nil
+	return wrapFontSelectioner(obj), nil
 }
 
 // NewFontSelection creates a new FontSelection.
 //
 // Deprecated: Use FontChooserWidget instead.
-func NewFontSelection() *FontSelectionClass {
+func NewFontSelection() *FontSelection {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_font_selection_new()
 
-	var _fontSelection *FontSelectionClass // out
+	var _fontSelection *FontSelection // out
 
-	_fontSelection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontSelectionClass)
+	_fontSelection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontSelection)
 
 	return _fontSelection
 }
@@ -167,7 +114,7 @@ func NewFontSelection() *FontSelectionClass {
 // family, slant, weight, width, etc).
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) Face() *pango.FontFaceClass {
+func (fontsel *FontSelection) Face() *pango.FontFace {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFace    // in
 
@@ -175,9 +122,9 @@ func (fontsel *FontSelectionClass) Face() *pango.FontFaceClass {
 
 	_cret = C.gtk_font_selection_get_face(_arg0)
 
-	var _fontFace *pango.FontFaceClass // out
+	var _fontFace *pango.FontFace // out
 
-	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontFaceClass)
+	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontFace)
 
 	return _fontFace
 }
@@ -186,7 +133,7 @@ func (fontsel *FontSelectionClass) Face() *pango.FontFaceClass {
 // selected font. For example, “Regular”, “Bold”, etc.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) FaceList() *WidgetClass {
+func (fontsel *FontSelection) FaceList() *Widget {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -194,9 +141,9 @@ func (fontsel *FontSelectionClass) FaceList() *WidgetClass {
 
 	_cret = C.gtk_font_selection_get_face_list(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -204,7 +151,7 @@ func (fontsel *FontSelectionClass) FaceList() *WidgetClass {
 // Family gets the FontFamily representing the selected font family.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) Family() *pango.FontFamilyClass {
+func (fontsel *FontSelection) Family() *pango.FontFamily {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFamily  // in
 
@@ -212,9 +159,9 @@ func (fontsel *FontSelectionClass) Family() *pango.FontFamilyClass {
 
 	_cret = C.gtk_font_selection_get_family(_arg0)
 
-	var _fontFamily *pango.FontFamilyClass // out
+	var _fontFamily *pango.FontFamily // out
 
-	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontFamilyClass)
+	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontFamily)
 
 	return _fontFamily
 }
@@ -223,7 +170,7 @@ func (fontsel *FontSelectionClass) Family() *pango.FontFamilyClass {
 // “Sans”, “Serif”, etc.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) FamilyList() *WidgetClass {
+func (fontsel *FontSelection) FamilyList() *Widget {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -231,9 +178,9 @@ func (fontsel *FontSelectionClass) FamilyList() *WidgetClass {
 
 	_cret = C.gtk_font_selection_get_family_list(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -248,7 +195,7 @@ func (fontsel *FontSelectionClass) FamilyList() *WidgetClass {
 // font descriptions.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) FontName() string {
+func (fontsel *FontSelection) FontName() string {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.gchar            // in
 
@@ -267,7 +214,7 @@ func (fontsel *FontSelectionClass) FontName() string {
 // PreviewEntry: this returns the Entry used to display the font as a preview.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) PreviewEntry() *WidgetClass {
+func (fontsel *FontSelection) PreviewEntry() *Widget {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -275,9 +222,9 @@ func (fontsel *FontSelectionClass) PreviewEntry() *WidgetClass {
 
 	_cret = C.gtk_font_selection_get_preview_entry(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -285,7 +232,7 @@ func (fontsel *FontSelectionClass) PreviewEntry() *WidgetClass {
 // PreviewText gets the text displayed in the preview area.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) PreviewText() string {
+func (fontsel *FontSelection) PreviewText() string {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.gchar            // in
 
@@ -303,7 +250,7 @@ func (fontsel *FontSelectionClass) PreviewText() string {
 // Size: the selected font size.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) Size() int {
+func (fontsel *FontSelection) Size() int {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret C.gint              // in
 
@@ -322,7 +269,7 @@ func (fontsel *FontSelectionClass) Size() int {
 // number manually instead of selecting it from the list of font sizes.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) SizeEntry() *WidgetClass {
+func (fontsel *FontSelection) SizeEntry() *Widget {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -330,9 +277,9 @@ func (fontsel *FontSelectionClass) SizeEntry() *WidgetClass {
 
 	_cret = C.gtk_font_selection_get_size_entry(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -340,7 +287,7 @@ func (fontsel *FontSelectionClass) SizeEntry() *WidgetClass {
 // SizeList: this returns the TreeView used to list font sizes.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) SizeList() *WidgetClass {
+func (fontsel *FontSelection) SizeList() *Widget {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -348,9 +295,9 @@ func (fontsel *FontSelectionClass) SizeList() *WidgetClass {
 
 	_cret = C.gtk_font_selection_get_size_list(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -362,7 +309,7 @@ func (fontsel *FontSelectionClass) SizeList() *WidgetClass {
 // is inserted in a toplevel window before you call this function.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) SetFontName(fontname string) bool {
+func (fontsel *FontSelection) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontSelection // out
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
@@ -386,7 +333,7 @@ func (fontsel *FontSelectionClass) SetFontName(fontname string) bool {
 // to show how the selected font looks.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelectionClass) SetPreviewText(text string) {
+func (fontsel *FontSelection) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelection // out
 	var _arg1 *C.gchar            // out
 
@@ -397,107 +344,79 @@ func (fontsel *FontSelectionClass) SetPreviewText(text string) {
 	C.gtk_font_selection_set_preview_text(_arg0, _arg1)
 }
 
-type FontSelectionDialog interface {
+// FontSelectionDialogger describes FontSelectionDialog's methods.
+type FontSelectionDialogger interface {
 	gextras.Objector
 
-	// CancelButton gets the “Cancel” button.
-	//
-	// Deprecated: Use FontChooserDialog.
-	CancelButton() *WidgetClass
-	// FontName gets the currently-selected font name.
-	//
-	// Note that this can be a different string than what you set with
-	// gtk_font_selection_dialog_set_font_name(), as the font selection widget
-	// may normalize font names and thus return a string with a different
-	// structure. For example, “Helvetica Italic Bold 12” could be normalized to
-	// “Helvetica Bold Italic 12”. Use pango_font_description_equal() if you
-	// want to compare two font descriptions.
-	//
-	// Deprecated: Use FontChooserDialog.
+	CancelButton() *Widget
 	FontName() string
-	// FontSelection retrieves the FontSelection widget embedded in the dialog.
-	//
-	// Deprecated: Use FontChooserDialog.
-	FontSelection() *WidgetClass
-	// OkButton gets the “OK” button.
-	//
-	// Deprecated: Use FontChooserDialog.
-	OkButton() *WidgetClass
-	// PreviewText gets the text displayed in the preview area.
-	//
-	// Deprecated: Use FontChooserDialog.
+	FontSelection() *Widget
+	OkButton() *Widget
 	PreviewText() string
-	// SetFontName sets the currently selected font.
-	//
-	// Deprecated: Use FontChooserDialog.
 	SetFontName(fontname string) bool
-	// SetPreviewText sets the text displayed in the preview area.
-	//
-	// Deprecated: Use FontChooserDialog.
 	SetPreviewText(text string)
 }
 
-// FontSelectionDialogClass implements the FontSelectionDialog interface.
-type FontSelectionDialogClass struct {
+type FontSelectionDialog struct {
 	*externglib.Object
-	DialogClass
-	BuildableIface
+	Dialog
+	Buildable
 }
 
-var _ FontSelectionDialog = (*FontSelectionDialogClass)(nil)
+var _ FontSelectionDialogger = (*FontSelectionDialog)(nil)
 
-func wrapFontSelectionDialog(obj *externglib.Object) FontSelectionDialog {
-	return &FontSelectionDialogClass{
+func wrapFontSelectionDialogger(obj *externglib.Object) FontSelectionDialogger {
+	return &FontSelectionDialog{
 		Object: obj,
-		DialogClass: DialogClass{
+		Dialog: Dialog{
 			Object: obj,
-			WindowClass: WindowClass{
+			Window: Window{
 				Object: obj,
-				BinClass: BinClass{
+				Bin: Bin{
 					Object: obj,
-					ContainerClass: ContainerClass{
+					Container: Container{
 						Object: obj,
-						WidgetClass: WidgetClass{
+						Widget: Widget{
 							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableIface: BuildableIface{
+							Buildable: Buildable{
 								Object: obj,
 							},
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFontSelectionDialog(p uintptr) (interface{}, error) {
+func marshalFontSelectionDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontSelectionDialog(obj), nil
+	return wrapFontSelectionDialogger(obj), nil
 }
 
 // NewFontSelectionDialog creates a new FontSelectionDialog.
 //
 // Deprecated: Use FontChooserDialog.
-func NewFontSelectionDialog(title string) *FontSelectionDialogClass {
+func NewFontSelectionDialog(title string) *FontSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
@@ -506,9 +425,9 @@ func NewFontSelectionDialog(title string) *FontSelectionDialogClass {
 
 	_cret = C.gtk_font_selection_dialog_new(_arg1)
 
-	var _fontSelectionDialog *FontSelectionDialogClass // out
+	var _fontSelectionDialog *FontSelectionDialog // out
 
-	_fontSelectionDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontSelectionDialogClass)
+	_fontSelectionDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontSelectionDialog)
 
 	return _fontSelectionDialog
 }
@@ -516,7 +435,7 @@ func NewFontSelectionDialog(title string) *FontSelectionDialogClass {
 // CancelButton gets the “Cancel” button.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialogClass) CancelButton() *WidgetClass {
+func (fsd *FontSelectionDialog) CancelButton() *Widget {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
@@ -524,9 +443,9 @@ func (fsd *FontSelectionDialogClass) CancelButton() *WidgetClass {
 
 	_cret = C.gtk_font_selection_dialog_get_cancel_button(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -541,7 +460,7 @@ func (fsd *FontSelectionDialogClass) CancelButton() *WidgetClass {
 // font descriptions.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialogClass) FontName() string {
+func (fsd *FontSelectionDialog) FontName() string {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.gchar                  // in
 
@@ -560,7 +479,7 @@ func (fsd *FontSelectionDialogClass) FontName() string {
 // FontSelection retrieves the FontSelection widget embedded in the dialog.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialogClass) FontSelection() *WidgetClass {
+func (fsd *FontSelectionDialog) FontSelection() *Widget {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
@@ -568,9 +487,9 @@ func (fsd *FontSelectionDialogClass) FontSelection() *WidgetClass {
 
 	_cret = C.gtk_font_selection_dialog_get_font_selection(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -578,7 +497,7 @@ func (fsd *FontSelectionDialogClass) FontSelection() *WidgetClass {
 // OkButton gets the “OK” button.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialogClass) OkButton() *WidgetClass {
+func (fsd *FontSelectionDialog) OkButton() *Widget {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
@@ -586,9 +505,9 @@ func (fsd *FontSelectionDialogClass) OkButton() *WidgetClass {
 
 	_cret = C.gtk_font_selection_dialog_get_ok_button(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
@@ -596,7 +515,7 @@ func (fsd *FontSelectionDialogClass) OkButton() *WidgetClass {
 // PreviewText gets the text displayed in the preview area.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialogClass) PreviewText() string {
+func (fsd *FontSelectionDialog) PreviewText() string {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.gchar                  // in
 
@@ -614,7 +533,7 @@ func (fsd *FontSelectionDialogClass) PreviewText() string {
 // SetFontName sets the currently selected font.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialogClass) SetFontName(fontname string) bool {
+func (fsd *FontSelectionDialog) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _arg1 *C.gchar                  // out
 	var _cret C.gboolean                // in
@@ -637,7 +556,7 @@ func (fsd *FontSelectionDialogClass) SetFontName(fontname string) bool {
 // SetPreviewText sets the text displayed in the preview area.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialogClass) SetPreviewText(text string) {
+func (fsd *FontSelectionDialog) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _arg1 *C.gchar                  // out
 

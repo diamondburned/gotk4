@@ -20,9 +20,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_fixed_layout_get_type()), F: marshalFixedLayout},
-		{T: externglib.Type(C.gtk_fixed_layout_child_get_type()), F: marshalFixedLayoutChild},
+		{T: externglib.Type(C.gtk_fixed_layout_get_type()), F: marshalFixedLayouter},
+		{T: externglib.Type(C.gtk_fixed_layout_child_get_type()), F: marshalFixedLayoutChilder},
 	})
+}
+
+// FixedLayouter describes FixedLayout's methods.
+type FixedLayouter interface {
+	gextras.Objector
+
+	privateFixedLayout()
 }
 
 // FixedLayout: `GtkFixedLayout` is a layout manager which can place child
@@ -54,82 +61,73 @@ func init() {
 // Finally, fixed positioning makes it kind of annoying to add/remove UI
 // elements, since you have to reposition all the other elements. This is a
 // long-term maintenance problem for your application.
-type FixedLayout interface {
-	gextras.Objector
-
-	privateFixedLayoutClass()
+type FixedLayout struct {
+	LayoutManager
 }
 
-// FixedLayoutClass implements the FixedLayout interface.
-type FixedLayoutClass struct {
-	LayoutManagerClass
-}
+var _ FixedLayouter = (*FixedLayout)(nil)
 
-var _ FixedLayout = (*FixedLayoutClass)(nil)
-
-func wrapFixedLayout(obj *externglib.Object) FixedLayout {
-	return &FixedLayoutClass{
-		LayoutManagerClass: LayoutManagerClass{
+func wrapFixedLayouter(obj *externglib.Object) FixedLayouter {
+	return &FixedLayout{
+		LayoutManager: LayoutManager{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFixedLayout(p uintptr) (interface{}, error) {
+func marshalFixedLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixedLayout(obj), nil
+	return wrapFixedLayouter(obj), nil
 }
 
 // NewFixedLayout creates a new `GtkFixedLayout`.
-func NewFixedLayout() *FixedLayoutClass {
+func NewFixedLayout() *FixedLayout {
 	var _cret *C.GtkLayoutManager // in
 
 	_cret = C.gtk_fixed_layout_new()
 
-	var _fixedLayout *FixedLayoutClass // out
+	var _fixedLayout *FixedLayout // out
 
-	_fixedLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FixedLayoutClass)
+	_fixedLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FixedLayout)
 
 	return _fixedLayout
 }
 
-func (*FixedLayoutClass) privateFixedLayoutClass() {}
+func (*FixedLayout) privateFixedLayout() {}
 
-// FixedLayoutChild: `GtkLayoutChild` subclass for children in a
-// `GtkFixedLayout`.
-type FixedLayoutChild interface {
+// FixedLayoutChilder describes FixedLayoutChild's methods.
+type FixedLayoutChilder interface {
 	gextras.Objector
 
-	// Transform retrieves the transformation of the child.
 	Transform() *gsk.Transform
-	// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
 	SetTransform(transform *gsk.Transform)
 }
 
-// FixedLayoutChildClass implements the FixedLayoutChild interface.
-type FixedLayoutChildClass struct {
-	LayoutChildClass
+// FixedLayoutChild: `GtkLayoutChild` subclass for children in a
+// `GtkFixedLayout`.
+type FixedLayoutChild struct {
+	LayoutChild
 }
 
-var _ FixedLayoutChild = (*FixedLayoutChildClass)(nil)
+var _ FixedLayoutChilder = (*FixedLayoutChild)(nil)
 
-func wrapFixedLayoutChild(obj *externglib.Object) FixedLayoutChild {
-	return &FixedLayoutChildClass{
-		LayoutChildClass: LayoutChildClass{
+func wrapFixedLayoutChilder(obj *externglib.Object) FixedLayoutChilder {
+	return &FixedLayoutChild{
+		LayoutChild: LayoutChild{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
+func marshalFixedLayoutChilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixedLayoutChild(obj), nil
+	return wrapFixedLayoutChilder(obj), nil
 }
 
 // Transform retrieves the transformation of the child.
-func (child *FixedLayoutChildClass) Transform() *gsk.Transform {
+func (child *FixedLayoutChild) Transform() *gsk.Transform {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _cret *C.GskTransform        // in
 
@@ -149,7 +147,7 @@ func (child *FixedLayoutChildClass) Transform() *gsk.Transform {
 }
 
 // SetTransform sets the transformation of the child of a `GtkFixedLayout`.
-func (child *FixedLayoutChildClass) SetTransform(transform *gsk.Transform) {
+func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _arg1 *C.GskTransform        // out
 

@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_media_controls_get_type()), F: marshalMediaControls},
+		{T: externglib.Type(C.gtk_media_controls_get_type()), F: marshalMediaControlser},
 	})
+}
+
+// MediaControlser describes MediaControls's methods.
+type MediaControlser interface {
+	gextras.Objector
+
+	MediaStream() *MediaStream
+	SetMediaStream(stream MediaStreamer)
 }
 
 // MediaControls: `GtkMediaControls` is a widget to show controls for a video.
@@ -27,65 +35,55 @@ func init() {
 // !An example GtkMediaControls (media-controls.png)
 //
 // Usually, `GtkMediaControls` is used as part of [class@Gtk.Video].
-type MediaControls interface {
-	gextras.Objector
-
-	// MediaStream gets the media stream managed by @controls or nil if none.
-	MediaStream() *MediaStreamClass
-	// SetMediaStream sets the stream that is controlled by @controls.
-	SetMediaStream(stream MediaStream)
-}
-
-// MediaControlsClass implements the MediaControls interface.
-type MediaControlsClass struct {
+type MediaControls struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ MediaControls = (*MediaControlsClass)(nil)
+var _ MediaControlser = (*MediaControls)(nil)
 
-func wrapMediaControls(obj *externglib.Object) MediaControls {
-	return &MediaControlsClass{
+func wrapMediaControlser(obj *externglib.Object) MediaControlser {
+	return &MediaControls{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMediaControls(p uintptr) (interface{}, error) {
+func marshalMediaControlser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMediaControls(obj), nil
+	return wrapMediaControlser(obj), nil
 }
 
 // NewMediaControls creates a new `GtkMediaControls` managing the @stream passed
 // to it.
-func NewMediaControls(stream MediaStream) *MediaControlsClass {
+func NewMediaControls(stream MediaStreamer) *MediaControls {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
 
@@ -93,15 +91,15 @@ func NewMediaControls(stream MediaStream) *MediaControlsClass {
 
 	_cret = C.gtk_media_controls_new(_arg1)
 
-	var _mediaControls *MediaControlsClass // out
+	var _mediaControls *MediaControls // out
 
-	_mediaControls = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MediaControlsClass)
+	_mediaControls = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MediaControls)
 
 	return _mediaControls
 }
 
 // MediaStream gets the media stream managed by @controls or nil if none.
-func (controls *MediaControlsClass) MediaStream() *MediaStreamClass {
+func (controls *MediaControls) MediaStream() *MediaStream {
 	var _arg0 *C.GtkMediaControls // out
 	var _cret *C.GtkMediaStream   // in
 
@@ -109,15 +107,15 @@ func (controls *MediaControlsClass) MediaStream() *MediaStreamClass {
 
 	_cret = C.gtk_media_controls_get_media_stream(_arg0)
 
-	var _mediaStream *MediaStreamClass // out
+	var _mediaStream *MediaStream // out
 
-	_mediaStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MediaStreamClass)
+	_mediaStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MediaStream)
 
 	return _mediaStream
 }
 
 // SetMediaStream sets the stream that is controlled by @controls.
-func (controls *MediaControlsClass) SetMediaStream(stream MediaStream) {
+func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
 	var _arg0 *C.GtkMediaControls // out
 	var _arg1 *C.GtkMediaStream   // out
 

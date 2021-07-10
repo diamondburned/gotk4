@@ -28,16 +28,36 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_inet_address_get_type()), F: marshalInetAddress},
+		{T: externglib.Type(C.g_inet_address_get_type()), F: marshalInetAddresser},
 	})
 }
 
-// InetAddressOverrider contains methods that are overridable.
+// InetAddresserOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type InetAddressOverrider interface {
+type InetAddresserOverrider interface {
 	// String converts @address to string form.
+	String() string
+}
+
+// InetAddresser describes InetAddress's methods.
+type InetAddresser interface {
+	gextras.Objector
+
+	Equal(otherAddress InetAddresser) bool
+	Family() SocketFamily
+	IsAny() bool
+	IsLinkLocal() bool
+	IsLoopback() bool
+	IsMcGlobal() bool
+	IsMcLinkLocal() bool
+	IsMcNodeLocal() bool
+	IsMcOrgLocal() bool
+	IsMcSiteLocal() bool
+	IsMulticast() bool
+	IsSiteLocal() bool
+	NativeSize() uint
 	String() string
 }
 
@@ -48,68 +68,27 @@ type InetAddressOverrider interface {
 //
 // To actually connect to a remote host, you will need a SocketAddress (which
 // includes a Address as well as a port number).
-type InetAddress interface {
-	gextras.Objector
-
-	// Equal checks if two Address instances are equal, e.g. the same address.
-	Equal(otherAddress InetAddress) bool
-	// Family gets @address's family
-	Family() SocketFamily
-	// IsAny tests whether @address is the "any" address for its family.
-	IsAny() bool
-	// IsLinkLocal tests whether @address is a link-local address (that is, if
-	// it identifies a host on a local network that is not connected to the
-	// Internet).
-	IsLinkLocal() bool
-	// IsLoopback tests whether @address is the loopback address for its family.
-	IsLoopback() bool
-	// IsMcGlobal tests whether @address is a global multicast address.
-	IsMcGlobal() bool
-	// IsMcLinkLocal tests whether @address is a link-local multicast address.
-	IsMcLinkLocal() bool
-	// IsMcNodeLocal tests whether @address is a node-local multicast address.
-	IsMcNodeLocal() bool
-	// IsMcOrgLocal tests whether @address is an organization-local multicast
-	// address.
-	IsMcOrgLocal() bool
-	// IsMcSiteLocal tests whether @address is a site-local multicast address.
-	IsMcSiteLocal() bool
-	// IsMulticast tests whether @address is a multicast address.
-	IsMulticast() bool
-	// IsSiteLocal tests whether @address is a site-local address such as
-	// 10.0.0.1 (that is, the address identifies a host on a local network that
-	// can not be reached directly from the Internet, but which may have
-	// outgoing Internet connectivity via a NAT or firewall).
-	IsSiteLocal() bool
-	// NativeSize gets the size of the native raw binary address for @address.
-	// This is the size of the data that you get from g_inet_address_to_bytes().
-	NativeSize() uint
-	// String converts @address to string form.
-	String() string
-}
-
-// InetAddressClass implements the InetAddress interface.
-type InetAddressClass struct {
+type InetAddress struct {
 	*externglib.Object
 }
 
-var _ InetAddress = (*InetAddressClass)(nil)
+var _ InetAddresser = (*InetAddress)(nil)
 
-func wrapInetAddress(obj *externglib.Object) InetAddress {
-	return &InetAddressClass{
+func wrapInetAddresser(obj *externglib.Object) InetAddresser {
+	return &InetAddress{
 		Object: obj,
 	}
 }
 
-func marshalInetAddress(p uintptr) (interface{}, error) {
+func marshalInetAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInetAddress(obj), nil
+	return wrapInetAddresser(obj), nil
 }
 
 // NewInetAddressFromString parses @string as an IP address and creates a new
 // Address.
-func NewInetAddressFromString(_string string) *InetAddressClass {
+func NewInetAddressFromString(_string string) *InetAddress {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GInetAddress // in
 
@@ -118,15 +97,15 @@ func NewInetAddressFromString(_string string) *InetAddressClass {
 
 	_cret = C.g_inet_address_new_from_string(_arg1)
 
-	var _inetAddress *InetAddressClass // out
+	var _inetAddress *InetAddress // out
 
-	_inetAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetAddressClass)
+	_inetAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetAddress)
 
 	return _inetAddress
 }
 
 // Equal checks if two Address instances are equal, e.g. the same address.
-func (address *InetAddressClass) Equal(otherAddress InetAddress) bool {
+func (address *InetAddress) Equal(otherAddress InetAddresser) bool {
 	var _arg0 *C.GInetAddress // out
 	var _arg1 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -146,7 +125,7 @@ func (address *InetAddressClass) Equal(otherAddress InetAddress) bool {
 }
 
 // Family gets @address's family
-func (address *InetAddressClass) Family() SocketFamily {
+func (address *InetAddress) Family() SocketFamily {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.GSocketFamily // in
 
@@ -162,7 +141,7 @@ func (address *InetAddressClass) Family() SocketFamily {
 }
 
 // IsAny tests whether @address is the "any" address for its family.
-func (address *InetAddressClass) IsAny() bool {
+func (address *InetAddress) IsAny() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -181,7 +160,7 @@ func (address *InetAddressClass) IsAny() bool {
 
 // IsLinkLocal tests whether @address is a link-local address (that is, if it
 // identifies a host on a local network that is not connected to the Internet).
-func (address *InetAddressClass) IsLinkLocal() bool {
+func (address *InetAddress) IsLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -199,7 +178,7 @@ func (address *InetAddressClass) IsLinkLocal() bool {
 }
 
 // IsLoopback tests whether @address is the loopback address for its family.
-func (address *InetAddressClass) IsLoopback() bool {
+func (address *InetAddress) IsLoopback() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -217,7 +196,7 @@ func (address *InetAddressClass) IsLoopback() bool {
 }
 
 // IsMcGlobal tests whether @address is a global multicast address.
-func (address *InetAddressClass) IsMcGlobal() bool {
+func (address *InetAddress) IsMcGlobal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -235,7 +214,7 @@ func (address *InetAddressClass) IsMcGlobal() bool {
 }
 
 // IsMcLinkLocal tests whether @address is a link-local multicast address.
-func (address *InetAddressClass) IsMcLinkLocal() bool {
+func (address *InetAddress) IsMcLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -253,7 +232,7 @@ func (address *InetAddressClass) IsMcLinkLocal() bool {
 }
 
 // IsMcNodeLocal tests whether @address is a node-local multicast address.
-func (address *InetAddressClass) IsMcNodeLocal() bool {
+func (address *InetAddress) IsMcNodeLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -272,7 +251,7 @@ func (address *InetAddressClass) IsMcNodeLocal() bool {
 
 // IsMcOrgLocal tests whether @address is an organization-local multicast
 // address.
-func (address *InetAddressClass) IsMcOrgLocal() bool {
+func (address *InetAddress) IsMcOrgLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -290,7 +269,7 @@ func (address *InetAddressClass) IsMcOrgLocal() bool {
 }
 
 // IsMcSiteLocal tests whether @address is a site-local multicast address.
-func (address *InetAddressClass) IsMcSiteLocal() bool {
+func (address *InetAddress) IsMcSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -308,7 +287,7 @@ func (address *InetAddressClass) IsMcSiteLocal() bool {
 }
 
 // IsMulticast tests whether @address is a multicast address.
-func (address *InetAddressClass) IsMulticast() bool {
+func (address *InetAddress) IsMulticast() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -329,7 +308,7 @@ func (address *InetAddressClass) IsMulticast() bool {
 // (that is, the address identifies a host on a local network that can not be
 // reached directly from the Internet, but which may have outgoing Internet
 // connectivity via a NAT or firewall).
-func (address *InetAddressClass) IsSiteLocal() bool {
+func (address *InetAddress) IsSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
@@ -348,7 +327,7 @@ func (address *InetAddressClass) IsSiteLocal() bool {
 
 // NativeSize gets the size of the native raw binary address for @address. This
 // is the size of the data that you get from g_inet_address_to_bytes().
-func (address *InetAddressClass) NativeSize() uint {
+func (address *InetAddress) NativeSize() uint {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gsize         // in
 
@@ -364,7 +343,7 @@ func (address *InetAddressClass) NativeSize() uint {
 }
 
 // String converts @address to string form.
-func (address *InetAddressClass) String() string {
+func (address *InetAddress) String() string {
 	var _arg0 *C.GInetAddress // out
 	var _cret *C.gchar        // in
 

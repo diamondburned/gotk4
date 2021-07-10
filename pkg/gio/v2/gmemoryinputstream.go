@@ -28,64 +28,64 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_memory_input_stream_get_type()), F: marshalMemoryInputStream},
+		{T: externglib.Type(C.g_memory_input_stream_get_type()), F: marshalMemoryInputStreamer},
 	})
+}
+
+// MemoryInputStreamer describes MemoryInputStream's methods.
+type MemoryInputStreamer interface {
+	gextras.Objector
+
+	privateMemoryInputStream()
 }
 
 // MemoryInputStream is a class for using arbitrary memory chunks as input for
 // GIO streaming input operations.
 //
 // As of GLib 2.34, InputStream implements InputStream.
-type MemoryInputStream interface {
-	gextras.Objector
-
-	privateMemoryInputStreamClass()
-}
-
-// MemoryInputStreamClass implements the MemoryInputStream interface.
-type MemoryInputStreamClass struct {
+type MemoryInputStream struct {
 	*externglib.Object
-	InputStreamClass
-	PollableInputStreamIface
-	SeekableIface
+	InputStream
+	PollableInputStream
+	Seekable
 }
 
-var _ MemoryInputStream = (*MemoryInputStreamClass)(nil)
+var _ MemoryInputStreamer = (*MemoryInputStream)(nil)
 
-func wrapMemoryInputStream(obj *externglib.Object) MemoryInputStream {
-	return &MemoryInputStreamClass{
+func wrapMemoryInputStreamer(obj *externglib.Object) MemoryInputStreamer {
+	return &MemoryInputStream{
 		Object: obj,
-		InputStreamClass: InputStreamClass{
+		InputStream: InputStream{
 			Object: obj,
 		},
-		PollableInputStreamIface: PollableInputStreamIface{
-			InputStreamClass: InputStreamClass{
+		PollableInputStream: PollableInputStream{
+			InputStream: InputStream{
 				Object: obj,
 			},
 		},
-		SeekableIface: SeekableIface{
+		Seekable: Seekable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalMemoryInputStream(p uintptr) (interface{}, error) {
+func marshalMemoryInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryInputStream(obj), nil
+	return wrapMemoryInputStreamer(obj), nil
 }
 
 // NewMemoryInputStream creates a new empty InputStream.
-func NewMemoryInputStream() *MemoryInputStreamClass {
+func NewMemoryInputStream() *MemoryInputStream {
 	var _cret *C.GInputStream // in
 
 	_cret = C.g_memory_input_stream_new()
 
-	var _memoryInputStream *MemoryInputStreamClass // out
+	var _memoryInputStream *MemoryInputStream // out
 
-	_memoryInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryInputStreamClass)
+	_memoryInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryInputStream)
 
 	return _memoryInputStream
 }
 
-func (*MemoryInputStreamClass) privateMemoryInputStreamClass() {}
+func (*MemoryInputStream) privateMemoryInputStream() {}

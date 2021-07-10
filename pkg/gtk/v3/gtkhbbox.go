@@ -20,90 +20,90 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hbutton_box_get_type()), F: marshalHButtonBox},
+		{T: externglib.Type(C.gtk_hbutton_box_get_type()), F: marshalHButtonBoxxer},
 	})
 }
 
-type HButtonBox interface {
+// HButtonBoxxer describes HButtonBox's methods.
+type HButtonBoxxer interface {
 	gextras.Objector
 
-	privateHButtonBoxClass()
+	privateHButtonBox()
 }
 
-// HButtonBoxClass implements the HButtonBox interface.
-type HButtonBoxClass struct {
+type HButtonBox struct {
 	*externglib.Object
-	ButtonBoxClass
-	BuildableIface
-	OrientableIface
+	ButtonBox
+	Buildable
+	Orientable
 }
 
-var _ HButtonBox = (*HButtonBoxClass)(nil)
+var _ HButtonBoxxer = (*HButtonBox)(nil)
 
-func wrapHButtonBox(obj *externglib.Object) HButtonBox {
-	return &HButtonBoxClass{
+func wrapHButtonBoxxer(obj *externglib.Object) HButtonBoxxer {
+	return &HButtonBox{
 		Object: obj,
-		ButtonBoxClass: ButtonBoxClass{
+		ButtonBox: ButtonBox{
 			Object: obj,
-			BoxClass: BoxClass{
+			Box: Box{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				OrientableIface: OrientableIface{
+				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalHButtonBox(p uintptr) (interface{}, error) {
+func marshalHButtonBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHButtonBox(obj), nil
+	return wrapHButtonBoxxer(obj), nil
 }
 
 // NewHButtonBox creates a new horizontal button box.
 //
 // Deprecated: Use gtk_button_box_new() with GTK_ORIENTATION_HORIZONTAL instead.
-func NewHButtonBox() *HButtonBoxClass {
+func NewHButtonBox() *HButtonBox {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_hbutton_box_new()
 
-	var _hButtonBox *HButtonBoxClass // out
+	var _hButtonBox *HButtonBox // out
 
-	_hButtonBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HButtonBoxClass)
+	_hButtonBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HButtonBox)
 
 	return _hButtonBox
 }
 
-func (*HButtonBoxClass) privateHButtonBoxClass() {}
+func (*HButtonBox) privateHButtonBox() {}

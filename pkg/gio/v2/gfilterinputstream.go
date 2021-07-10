@@ -28,50 +28,45 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_filter_input_stream_get_type()), F: marshalFilterInputStream},
+		{T: externglib.Type(C.g_filter_input_stream_get_type()), F: marshalFilterInputStreamer},
 	})
+}
+
+// FilterInputStreamer describes FilterInputStream's methods.
+type FilterInputStreamer interface {
+	gextras.Objector
+
+	BaseStream() *InputStream
+	CloseBaseStream() bool
+	SetCloseBaseStream(closeBase bool)
 }
 
 // FilterInputStream: base class for input stream implementations that perform
 // some kind of filtering operation on a base stream. Typical examples of
 // filtering operations are character set conversion, compression and byte order
 // flipping.
-type FilterInputStream interface {
-	gextras.Objector
-
-	// BaseStream gets the base stream for the filter stream.
-	BaseStream() *InputStreamClass
-	// CloseBaseStream returns whether the base stream will be closed when
-	// @stream is closed.
-	CloseBaseStream() bool
-	// SetCloseBaseStream sets whether the base stream will be closed when
-	// @stream is closed.
-	SetCloseBaseStream(closeBase bool)
+type FilterInputStream struct {
+	InputStream
 }
 
-// FilterInputStreamClass implements the FilterInputStream interface.
-type FilterInputStreamClass struct {
-	InputStreamClass
-}
+var _ FilterInputStreamer = (*FilterInputStream)(nil)
 
-var _ FilterInputStream = (*FilterInputStreamClass)(nil)
-
-func wrapFilterInputStream(obj *externglib.Object) FilterInputStream {
-	return &FilterInputStreamClass{
-		InputStreamClass: InputStreamClass{
+func wrapFilterInputStreamer(obj *externglib.Object) FilterInputStreamer {
+	return &FilterInputStream{
+		InputStream: InputStream{
 			Object: obj,
 		},
 	}
 }
 
-func marshalFilterInputStream(p uintptr) (interface{}, error) {
+func marshalFilterInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilterInputStream(obj), nil
+	return wrapFilterInputStreamer(obj), nil
 }
 
 // BaseStream gets the base stream for the filter stream.
-func (stream *FilterInputStreamClass) BaseStream() *InputStreamClass {
+func (stream *FilterInputStream) BaseStream() *InputStream {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret *C.GInputStream       // in
 
@@ -79,16 +74,16 @@ func (stream *FilterInputStreamClass) BaseStream() *InputStreamClass {
 
 	_cret = C.g_filter_input_stream_get_base_stream(_arg0)
 
-	var _inputStream *InputStreamClass // out
+	var _inputStream *InputStream // out
 
-	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InputStreamClass)
+	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InputStream)
 
 	return _inputStream
 }
 
 // CloseBaseStream returns whether the base stream will be closed when @stream
 // is closed.
-func (stream *FilterInputStreamClass) CloseBaseStream() bool {
+func (stream *FilterInputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret C.gboolean            // in
 
@@ -107,7 +102,7 @@ func (stream *FilterInputStreamClass) CloseBaseStream() bool {
 
 // SetCloseBaseStream sets whether the base stream will be closed when @stream
 // is closed.
-func (stream *FilterInputStreamClass) SetCloseBaseStream(closeBase bool) {
+func (stream *FilterInputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterInputStream // out
 	var _arg1 C.gboolean            // out
 

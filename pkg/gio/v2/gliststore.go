@@ -32,8 +32,22 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_list_store_get_type()), F: marshalListStore},
+		{T: externglib.Type(C.g_list_store_get_type()), F: marshalListStorer},
 	})
+}
+
+// ListStorer describes ListStore's methods.
+type ListStorer interface {
+	gextras.Objector
+
+	Append(item gextras.Objector)
+	Find(item gextras.Objector) (uint, bool)
+	Insert(position uint, item gextras.Objector)
+	InsertSorted(item gextras.Objector, compareFunc glib.CompareDataFunc) uint
+	Remove(position uint)
+	RemoveAll()
+	Sort(compareFunc glib.CompareDataFunc)
+	Splice(position uint, nRemovals uint, additions []*externglib.Object)
 }
 
 // ListStore is a simple implementation of Model that stores all items in
@@ -41,93 +55,31 @@ func init() {
 //
 // It provides insertions, deletions, and lookups in logarithmic time with a
 // fast path for the common case of iterating the list linearly.
-type ListStore interface {
-	gextras.Objector
-
-	// Append appends @item to @store. @item must be of type Store:item-type.
-	//
-	// This function takes a ref on @item.
-	//
-	// Use g_list_store_splice() to append multiple items at the same time
-	// efficiently.
-	Append(item gextras.Objector)
-	// Find looks up the given @item in the list store by looping over the items
-	// until the first occurrence of @item. If @item was not found, then
-	// @position will not be set, and this method will return false.
-	//
-	// If you need to compare the two items with a custom comparison function,
-	// use g_list_store_find_with_equal_func() with a custom Func instead.
-	Find(item gextras.Objector) (uint, bool)
-	// Insert inserts @item into @store at @position. @item must be of type
-	// Store:item-type or derived from it. @position must be smaller than the
-	// length of the list, or equal to it to append.
-	//
-	// This function takes a ref on @item.
-	//
-	// Use g_list_store_splice() to insert multiple items at the same time
-	// efficiently.
-	Insert(position uint, item gextras.Objector)
-	// InsertSorted inserts @item into @store at a position to be determined by
-	// the @compare_func.
-	//
-	// The list must already be sorted before calling this function or the
-	// result is undefined. Usually you would approach this by only ever
-	// inserting items by way of this function.
-	//
-	// This function takes a ref on @item.
-	InsertSorted(item gextras.Objector, compareFunc glib.CompareDataFunc) uint
-	// Remove removes the item from @store that is at @position. @position must
-	// be smaller than the current length of the list.
-	//
-	// Use g_list_store_splice() to remove multiple items at the same time
-	// efficiently.
-	Remove(position uint)
-	// RemoveAll removes all items from @store.
-	RemoveAll()
-	// Sort the items in @store according to @compare_func.
-	Sort(compareFunc glib.CompareDataFunc)
-	// Splice changes @store by removing @n_removals items and adding
-	// @n_additions items to it. @additions must contain @n_additions items of
-	// type Store:item-type. nil is not permitted.
-	//
-	// This function is more efficient than g_list_store_insert() and
-	// g_list_store_remove(), because it only emits Model::items-changed once
-	// for the change.
-	//
-	// This function takes a ref on each item in @additions.
-	//
-	// The parameters @position and @n_removals must be correct (ie: @position +
-	// @n_removals must be less than or equal to the length of the list at the
-	// time this function is called).
-	Splice(position uint, nRemovals uint, additions []*externglib.Object)
-}
-
-// ListStoreClass implements the ListStore interface.
-type ListStoreClass struct {
+type ListStore struct {
 	*externglib.Object
-	ListModelIface
+	ListModel
 }
 
-var _ ListStore = (*ListStoreClass)(nil)
+var _ ListStorer = (*ListStore)(nil)
 
-func wrapListStore(obj *externglib.Object) ListStore {
-	return &ListStoreClass{
+func wrapListStorer(obj *externglib.Object) ListStorer {
+	return &ListStore{
 		Object: obj,
-		ListModelIface: ListModelIface{
+		ListModel: ListModel{
 			Object: obj,
 		},
 	}
 }
 
-func marshalListStore(p uintptr) (interface{}, error) {
+func marshalListStorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListStore(obj), nil
+	return wrapListStorer(obj), nil
 }
 
 // NewListStore creates a new Store with items of type @item_type. @item_type
 // must be a subclass of #GObject.
-func NewListStore(itemType externglib.Type) *ListStoreClass {
+func NewListStore(itemType externglib.Type) *ListStore {
 	var _arg1 C.GType       // out
 	var _cret *C.GListStore // in
 
@@ -135,9 +87,9 @@ func NewListStore(itemType externglib.Type) *ListStoreClass {
 
 	_cret = C.g_list_store_new(_arg1)
 
-	var _listStore *ListStoreClass // out
+	var _listStore *ListStore // out
 
-	_listStore = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ListStoreClass)
+	_listStore = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ListStore)
 
 	return _listStore
 }
@@ -148,7 +100,7 @@ func NewListStore(itemType externglib.Type) *ListStoreClass {
 //
 // Use g_list_store_splice() to append multiple items at the same time
 // efficiently.
-func (store *ListStoreClass) Append(item gextras.Objector) {
+func (store *ListStore) Append(item gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
 
@@ -164,7 +116,7 @@ func (store *ListStoreClass) Append(item gextras.Objector) {
 //
 // If you need to compare the two items with a custom comparison function, use
 // g_list_store_find_with_equal_func() with a custom Func instead.
-func (store *ListStoreClass) Find(item gextras.Objector) (uint, bool) {
+func (store *ListStore) Find(item gextras.Objector) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.guint       // in
@@ -194,7 +146,7 @@ func (store *ListStoreClass) Find(item gextras.Objector) (uint, bool) {
 //
 // Use g_list_store_splice() to insert multiple items at the same time
 // efficiently.
-func (store *ListStoreClass) Insert(position uint, item gextras.Objector) {
+func (store *ListStore) Insert(position uint, item gextras.Objector) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.gpointer    // out
@@ -214,7 +166,7 @@ func (store *ListStoreClass) Insert(position uint, item gextras.Objector) {
 // way of this function.
 //
 // This function takes a ref on @item.
-func (store *ListStoreClass) InsertSorted(item gextras.Objector, compareFunc glib.CompareDataFunc) uint {
+func (store *ListStore) InsertSorted(item gextras.Objector, compareFunc glib.CompareDataFunc) uint {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.gpointer         // out
 	var _arg2 C.GCompareDataFunc // out
@@ -240,7 +192,7 @@ func (store *ListStoreClass) InsertSorted(item gextras.Objector, compareFunc gli
 //
 // Use g_list_store_splice() to remove multiple items at the same time
 // efficiently.
-func (store *ListStoreClass) Remove(position uint) {
+func (store *ListStore) Remove(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 
@@ -251,7 +203,7 @@ func (store *ListStoreClass) Remove(position uint) {
 }
 
 // RemoveAll removes all items from @store.
-func (store *ListStoreClass) RemoveAll() {
+func (store *ListStore) RemoveAll() {
 	var _arg0 *C.GListStore // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
@@ -260,7 +212,7 @@ func (store *ListStoreClass) RemoveAll() {
 }
 
 // Sort the items in @store according to @compare_func.
-func (store *ListStoreClass) Sort(compareFunc glib.CompareDataFunc) {
+func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.GCompareDataFunc // out
 	var _arg2 C.gpointer
@@ -285,7 +237,7 @@ func (store *ListStoreClass) Sort(compareFunc glib.CompareDataFunc) {
 // The parameters @position and @n_removals must be correct (ie: @position +
 // @n_removals must be less than or equal to the length of the list at the time
 // this function is called).
-func (store *ListStoreClass) Splice(position uint, nRemovals uint, additions []*externglib.Object) {
+func (store *ListStore) Splice(position uint, nRemovals uint, additions []*externglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

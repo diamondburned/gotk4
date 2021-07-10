@@ -17,7 +17,7 @@ import "C"
 //
 // This function is intended to be used to synchronize with rendering pipelines,
 // to benchmark windowing system rendering operations.
-func TestRenderSync(window Window) {
+func TestRenderSync(window Windowwer) {
 	var _arg1 *C.GdkWindow // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))

@@ -18,8 +18,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_spinner_get_type()), F: marshalSpinner},
+		{T: externglib.Type(C.gtk_spinner_get_type()), F: marshalSpinnerrer},
 	})
+}
+
+// Spinnerrer describes Spinner's methods.
+type Spinnerrer interface {
+	gextras.Objector
+
+	Spinning() bool
+	SetSpinning(spinning bool)
+	Start()
+	Stop()
 }
 
 // Spinner: `GtkSpinner` widget displays an icon-size spinning animation.
@@ -37,81 +47,67 @@ func init() {
 //
 // `GtkSpinner` has a single CSS node with the name spinner. When the animation
 // is active, the :checked pseudoclass is added to this node.
-type Spinner interface {
-	gextras.Objector
-
-	// Spinning returns whether the spinner is spinning.
-	Spinning() bool
-	// SetSpinning sets the activity of the spinner.
-	SetSpinning(spinning bool)
-	// Start starts the animation of the spinner.
-	Start()
-	// Stop stops the animation of the spinner.
-	Stop()
-}
-
-// SpinnerClass implements the Spinner interface.
-type SpinnerClass struct {
+type Spinner struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ Spinner = (*SpinnerClass)(nil)
+var _ Spinnerrer = (*Spinner)(nil)
 
-func wrapSpinner(obj *externglib.Object) Spinner {
-	return &SpinnerClass{
+func wrapSpinnerrer(obj *externglib.Object) Spinnerrer {
+	return &Spinner{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSpinner(p uintptr) (interface{}, error) {
+func marshalSpinnerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinner(obj), nil
+	return wrapSpinnerrer(obj), nil
 }
 
 // NewSpinner returns a new spinner widget. Not yet started.
-func NewSpinner() *SpinnerClass {
+func NewSpinner() *Spinner {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_spinner_new()
 
-	var _spinner *SpinnerClass // out
+	var _spinner *Spinner // out
 
-	_spinner = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SpinnerClass)
+	_spinner = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Spinner)
 
 	return _spinner
 }
 
 // Spinning returns whether the spinner is spinning.
-func (spinner *SpinnerClass) Spinning() bool {
+func (spinner *Spinner) Spinning() bool {
 	var _arg0 *C.GtkSpinner // out
 	var _cret C.gboolean    // in
 
@@ -129,7 +125,7 @@ func (spinner *SpinnerClass) Spinning() bool {
 }
 
 // SetSpinning sets the activity of the spinner.
-func (spinner *SpinnerClass) SetSpinning(spinning bool) {
+func (spinner *Spinner) SetSpinning(spinning bool) {
 	var _arg0 *C.GtkSpinner // out
 	var _arg1 C.gboolean    // out
 
@@ -142,7 +138,7 @@ func (spinner *SpinnerClass) SetSpinning(spinning bool) {
 }
 
 // Start starts the animation of the spinner.
-func (spinner *SpinnerClass) Start() {
+func (spinner *Spinner) Start() {
 	var _arg0 *C.GtkSpinner // out
 
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
@@ -151,7 +147,7 @@ func (spinner *SpinnerClass) Start() {
 }
 
 // Stop stops the animation of the spinner.
-func (spinner *SpinnerClass) Stop() {
+func (spinner *Spinner) Stop() {
 	var _arg0 *C.GtkSpinner // out
 
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))

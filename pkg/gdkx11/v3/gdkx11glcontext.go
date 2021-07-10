@@ -19,35 +19,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_gl_context_get_type()), F: marshalX11GLContext},
+		{T: externglib.Type(C.gdk_x11_gl_context_get_type()), F: marshalX11GLContexter},
 	})
 }
 
-type X11GLContext interface {
+// X11GLContexter describes X11GLContext's methods.
+type X11GLContexter interface {
 	gextras.Objector
 
-	privateX11GLContextClass()
+	privateX11GLContext()
 }
 
-// X11GLContextClass implements the X11GLContext interface.
-type X11GLContextClass struct {
-	gdk.GLContextClass
+type X11GLContext struct {
+	gdk.GLContext
 }
 
-var _ X11GLContext = (*X11GLContextClass)(nil)
+var _ X11GLContexter = (*X11GLContext)(nil)
 
-func wrapX11GLContext(obj *externglib.Object) X11GLContext {
-	return &X11GLContextClass{
-		GLContextClass: gdk.GLContextClass{
+func wrapX11GLContexter(obj *externglib.Object) X11GLContexter {
+	return &X11GLContext{
+		GLContext: gdk.GLContext{
 			Object: obj,
 		},
 	}
 }
 
-func marshalX11GLContext(p uintptr) (interface{}, error) {
+func marshalX11GLContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11GLContext(obj), nil
+	return wrapX11GLContexter(obj), nil
 }
 
-func (*X11GLContextClass) privateX11GLContextClass() {}
+func (*X11GLContext) privateX11GLContext() {}

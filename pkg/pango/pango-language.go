@@ -29,12 +29,6 @@ type Language struct {
 	native C.PangoLanguage
 }
 
-// WrapLanguage wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapLanguage(ptr unsafe.Pointer) *Language {
-	return (*Language)(ptr)
-}
-
 func marshalLanguage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Language)(unsafe.Pointer(b)), nil

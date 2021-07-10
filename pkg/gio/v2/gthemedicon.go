@@ -28,8 +28,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIcon},
+		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIconner},
 	})
+}
+
+// ThemedIconner describes ThemedIcon's methods.
+type ThemedIconner interface {
+	gextras.Objector
+
+	AppendName(iconname string)
+	Names() []string
+	PrependName(iconname string)
 }
 
 // ThemedIcon is an implementation of #GIcon that supports icon themes. Icon
@@ -38,48 +47,30 @@ func init() {
 // just the icon names. Ideally something like gtk_icon_theme_choose_icon()
 // should be used to resolve the list of names so that fallback icons work
 // nicely with themes that inherit other themes.
-type ThemedIcon interface {
-	gextras.Objector
-
-	// AppendName: append a name to the list of icons from within @icon.
-	//
-	// Note that doing so invalidates the hash computed by prior calls to
-	// g_icon_hash().
-	AppendName(iconname string)
-	// Names gets the names of icons from within @icon.
-	Names() []string
-	// PrependName: prepend a name to the list of icons from within @icon.
-	//
-	// Note that doing so invalidates the hash computed by prior calls to
-	// g_icon_hash().
-	PrependName(iconname string)
-}
-
-// ThemedIconClass implements the ThemedIcon interface.
-type ThemedIconClass struct {
+type ThemedIcon struct {
 	*externglib.Object
-	IconIface
+	Icon
 }
 
-var _ ThemedIcon = (*ThemedIconClass)(nil)
+var _ ThemedIconner = (*ThemedIcon)(nil)
 
-func wrapThemedIcon(obj *externglib.Object) ThemedIcon {
-	return &ThemedIconClass{
+func wrapThemedIconner(obj *externglib.Object) ThemedIconner {
+	return &ThemedIcon{
 		Object: obj,
-		IconIface: IconIface{
+		Icon: Icon{
 			Object: obj,
 		},
 	}
 }
 
-func marshalThemedIcon(p uintptr) (interface{}, error) {
+func marshalThemedIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapThemedIcon(obj), nil
+	return wrapThemedIconner(obj), nil
 }
 
 // NewThemedIcon creates a new themed icon for @iconname.
-func NewThemedIcon(iconname string) *ThemedIconClass {
+func NewThemedIcon(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
 
@@ -88,15 +79,15 @@ func NewThemedIcon(iconname string) *ThemedIconClass {
 
 	_cret = C.g_themed_icon_new(_arg1)
 
-	var _themedIcon *ThemedIconClass // out
+	var _themedIcon *ThemedIcon // out
 
-	_themedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThemedIconClass)
+	_themedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThemedIcon)
 
 	return _themedIcon
 }
 
 // NewThemedIconFromNames creates a new themed icon for @iconnames.
-func NewThemedIconFromNames(iconnames []string) *ThemedIconClass {
+func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	var _arg1 **C.char
 	var _arg2 C.int
 	var _cret *C.GIcon // in
@@ -114,9 +105,9 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIconClass {
 
 	_cret = C.g_themed_icon_new_from_names(_arg1, _arg2)
 
-	var _themedIcon *ThemedIconClass // out
+	var _themedIcon *ThemedIcon // out
 
-	_themedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThemedIconClass)
+	_themedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThemedIcon)
 
 	return _themedIcon
 }
@@ -136,7 +127,7 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIconClass {
 //
 //    icon1 = g_themed_icon_new_from_names (names, 4);
 //    icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");
-func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIconClass {
+func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
 
@@ -145,9 +136,9 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIconClass {
 
 	_cret = C.g_themed_icon_new_with_default_fallbacks(_arg1)
 
-	var _themedIcon *ThemedIconClass // out
+	var _themedIcon *ThemedIcon // out
 
-	_themedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThemedIconClass)
+	_themedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThemedIcon)
 
 	return _themedIcon
 }
@@ -156,7 +147,7 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIconClass {
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
-func (icon *ThemedIconClass) AppendName(iconname string) {
+func (icon *ThemedIcon) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
@@ -168,7 +159,7 @@ func (icon *ThemedIconClass) AppendName(iconname string) {
 }
 
 // Names gets the names of icons from within @icon.
-func (icon *ThemedIconClass) Names() []string {
+func (icon *ThemedIcon) Names() []string {
 	var _arg0 *C.GThemedIcon // out
 	var _cret **C.gchar
 
@@ -199,7 +190,7 @@ func (icon *ThemedIconClass) Names() []string {
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
-func (icon *ThemedIconClass) PrependName(iconname string) {
+func (icon *ThemedIcon) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 

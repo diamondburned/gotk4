@@ -31,12 +31,6 @@ type Vec4 struct {
 	native C.graphene_vec4_t
 }
 
-// WrapVec4 wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapVec4(ptr unsafe.Pointer) *Vec4 {
-	return (*Vec4)(ptr)
-}
-
 func marshalVec4(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Vec4)(unsafe.Pointer(b)), nil
@@ -52,7 +46,7 @@ func NewVec4Alloc() *Vec4 {
 
 	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_vec4, func(v *Vec4) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_vec4_free((*C.graphene_vec4_t)(unsafe.Pointer(v)))
 	})
 
 	return _vec4

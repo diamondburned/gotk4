@@ -29,7 +29,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitor},
+		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitorrer},
 		{T: externglib.Type(C.g_unix_mount_entry_get_type()), F: marshalUnixMountEntry},
 		{T: externglib.Type(C.g_unix_mount_point_get_type()), F: marshalUnixMountPoint},
 	})
@@ -315,7 +315,7 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 }
 
 // UnixMountGuessIcon guesses the icon of a Unix mount.
-func UnixMountGuessIcon(mountEntry *UnixMountEntry) *IconIface {
+func UnixMountGuessIcon(mountEntry *UnixMountEntry) *Icon {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.GIcon           // in
 
@@ -323,9 +323,9 @@ func UnixMountGuessIcon(mountEntry *UnixMountEntry) *IconIface {
 
 	_cret = C.g_unix_mount_guess_icon(_arg1)
 
-	var _icon *IconIface // out
+	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
 
 	return _icon
 }
@@ -368,7 +368,7 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 }
 
 // UnixMountGuessSymbolicIcon guesses the symbolic icon of a Unix mount.
-func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) *IconIface {
+func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) *Icon {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.GIcon           // in
 
@@ -376,9 +376,9 @@ func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) *IconIface {
 
 	_cret = C.g_unix_mount_guess_symbolic_icon(_arg1)
 
-	var _icon *IconIface // out
+	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
 
 	return _icon
 }
@@ -462,38 +462,30 @@ func UnixMountsChangedSince(time uint64) bool {
 	return _ok
 }
 
-// UnixMountMonitor watches Mounts for changes.
-type UnixMountMonitor interface {
+// UnixMountMonitorrer describes UnixMountMonitor's methods.
+type UnixMountMonitorrer interface {
 	gextras.Objector
 
-	// SetRateLimit: this function does nothing.
-	//
-	// Before 2.44, this was a partially-effective way of controlling the rate
-	// at which events would be reported under some uncommon circumstances.
-	// Since @mount_monitor is a singleton, it also meant that calling this
-	// function would have side effects for other users of the monitor.
-	//
-	// Deprecated: This function does nothing. Don't call it.
 	SetRateLimit(limitMsec int)
 }
 
-// UnixMountMonitorClass implements the UnixMountMonitor interface.
-type UnixMountMonitorClass struct {
+// UnixMountMonitor watches Mounts for changes.
+type UnixMountMonitor struct {
 	*externglib.Object
 }
 
-var _ UnixMountMonitor = (*UnixMountMonitorClass)(nil)
+var _ UnixMountMonitorrer = (*UnixMountMonitor)(nil)
 
-func wrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
-	return &UnixMountMonitorClass{
+func wrapUnixMountMonitorrer(obj *externglib.Object) UnixMountMonitorrer {
+	return &UnixMountMonitor{
 		Object: obj,
 	}
 }
 
-func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
+func marshalUnixMountMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixMountMonitor(obj), nil
+	return wrapUnixMountMonitorrer(obj), nil
 }
 
 // NewUnixMountMonitor: deprecated alias for g_unix_mount_monitor_get().
@@ -501,14 +493,14 @@ func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
 // This function was never a true constructor, which is why it was renamed.
 //
 // Deprecated: Use g_unix_mount_monitor_get() instead.
-func NewUnixMountMonitor() *UnixMountMonitorClass {
+func NewUnixMountMonitor() *UnixMountMonitor {
 	var _cret *C.GUnixMountMonitor // in
 
 	_cret = C.g_unix_mount_monitor_new()
 
-	var _unixMountMonitor *UnixMountMonitorClass // out
+	var _unixMountMonitor *UnixMountMonitor // out
 
-	_unixMountMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixMountMonitorClass)
+	_unixMountMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixMountMonitor)
 
 	return _unixMountMonitor
 }
@@ -521,7 +513,7 @@ func NewUnixMountMonitor() *UnixMountMonitorClass {
 // have side effects for other users of the monitor.
 //
 // Deprecated: This function does nothing. Don't call it.
-func (mountMonitor *UnixMountMonitorClass) SetRateLimit(limitMsec int) {
+func (mountMonitor *UnixMountMonitor) SetRateLimit(limitMsec int) {
 	var _arg0 *C.GUnixMountMonitor // out
 	var _arg1 C.int                // out
 
@@ -535,12 +527,6 @@ func (mountMonitor *UnixMountMonitorClass) SetRateLimit(limitMsec int) {
 // <filename>/media/cdrom</filename>). This corresponds roughly to a mtab entry.
 type UnixMountEntry struct {
 	native C.GUnixMountEntry
-}
-
-// WrapUnixMountEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixMountEntry(ptr unsafe.Pointer) *UnixMountEntry {
-	return (*UnixMountEntry)(ptr)
 }
 
 func marshalUnixMountEntry(p uintptr) (interface{}, error) {
@@ -557,12 +543,6 @@ func (u *UnixMountEntry) Native() unsafe.Pointer {
 // This corresponds roughly to a fstab entry.
 type UnixMountPoint struct {
 	native C.GUnixMountPoint
-}
-
-// WrapUnixMountPoint wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixMountPoint(ptr unsafe.Pointer) *UnixMountPoint {
-	return (*UnixMountPoint)(ptr)
 }
 
 func marshalUnixMountPoint(p uintptr) (interface{}, error) {
@@ -606,7 +586,7 @@ func (mountPoint *UnixMountPoint) Copy() *UnixMountPoint {
 
 	_unixMountPoint = (*UnixMountPoint)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_unixMountPoint, func(v *UnixMountPoint) {
-		C.free(unsafe.Pointer(v))
+		C.g_unix_mount_point_free((*C.GUnixMountPoint)(unsafe.Pointer(v)))
 	})
 
 	return _unixMountPoint
@@ -704,7 +684,7 @@ func (mountPoint *UnixMountPoint) GuessCanEject() bool {
 }
 
 // GuessIcon guesses the icon of a Unix mount point.
-func (mountPoint *UnixMountPoint) GuessIcon() *IconIface {
+func (mountPoint *UnixMountPoint) GuessIcon() *Icon {
 	var _arg0 *C.GUnixMountPoint // out
 	var _cret *C.GIcon           // in
 
@@ -712,9 +692,9 @@ func (mountPoint *UnixMountPoint) GuessIcon() *IconIface {
 
 	_cret = C.g_unix_mount_point_guess_icon(_arg0)
 
-	var _icon *IconIface // out
+	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
 
 	return _icon
 }
@@ -738,7 +718,7 @@ func (mountPoint *UnixMountPoint) GuessName() string {
 }
 
 // GuessSymbolicIcon guesses the symbolic icon of a Unix mount point.
-func (mountPoint *UnixMountPoint) GuessSymbolicIcon() *IconIface {
+func (mountPoint *UnixMountPoint) GuessSymbolicIcon() *Icon {
 	var _arg0 *C.GUnixMountPoint // out
 	var _cret *C.GIcon           // in
 
@@ -746,9 +726,9 @@ func (mountPoint *UnixMountPoint) GuessSymbolicIcon() *IconIface {
 
 	_cret = C.g_unix_mount_point_guess_symbolic_icon(_arg0)
 
-	var _icon *IconIface // out
+	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
 
 	return _icon
 }

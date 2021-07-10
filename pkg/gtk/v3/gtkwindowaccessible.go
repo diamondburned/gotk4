@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_accessible_get_type()), F: marshalWindowAccessible},
+		{T: externglib.Type(C.gtk_window_accessible_get_type()), F: marshalWindowAccessibler},
 	})
 }
 
-type WindowAccessible interface {
+// WindowAccessibler describes WindowAccessible's methods.
+type WindowAccessibler interface {
 	gextras.Objector
 
-	privateWindowAccessibleClass()
+	privateWindowAccessible()
 }
 
-// WindowAccessibleClass implements the WindowAccessible interface.
-type WindowAccessibleClass struct {
-	ContainerAccessibleClass
+type WindowAccessible struct {
+	ContainerAccessible
 }
 
-var _ WindowAccessible = (*WindowAccessibleClass)(nil)
+var _ WindowAccessibler = (*WindowAccessible)(nil)
 
-func wrapWindowAccessible(obj *externglib.Object) WindowAccessible {
-	return &WindowAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapWindowAccessibler(obj *externglib.Object) WindowAccessibler {
+	return &WindowAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapWindowAccessible(obj *externglib.Object) WindowAccessible {
 	}
 }
 
-func marshalWindowAccessible(p uintptr) (interface{}, error) {
+func marshalWindowAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowAccessible(obj), nil
+	return wrapWindowAccessibler(obj), nil
 }
 
-func (*WindowAccessibleClass) privateWindowAccessibleClass() {}
+func (*WindowAccessible) privateWindowAccessible() {}

@@ -28,33 +28,32 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tcp_wrapper_connection_get_type()), F: marshalTCPWrapperConnection},
+		{T: externglib.Type(C.g_tcp_wrapper_connection_get_type()), F: marshalTCPWrapperConnectioner},
 	})
+}
+
+// TCPWrapperConnectioner describes TCPWrapperConnection's methods.
+type TCPWrapperConnectioner interface {
+	gextras.Objector
+
+	BaseIOStream() *IOStream
 }
 
 // TCPWrapperConnection can be used to wrap a OStream that is based on a
 // #GSocket, but which is not actually a Connection. This is used by Client so
 // that it can always return a Connection, even when the connection it has
 // actually created is not directly a Connection.
-type TCPWrapperConnection interface {
-	gextras.Objector
-
-	// BaseIOStream gets @conn's base OStream
-	BaseIOStream() *IOStreamClass
+type TCPWrapperConnection struct {
+	TCPConnection
 }
 
-// TCPWrapperConnectionClass implements the TCPWrapperConnection interface.
-type TCPWrapperConnectionClass struct {
-	TCPConnectionClass
-}
+var _ TCPWrapperConnectioner = (*TCPWrapperConnection)(nil)
 
-var _ TCPWrapperConnection = (*TCPWrapperConnectionClass)(nil)
-
-func wrapTCPWrapperConnection(obj *externglib.Object) TCPWrapperConnection {
-	return &TCPWrapperConnectionClass{
-		TCPConnectionClass: TCPConnectionClass{
-			SocketConnectionClass: SocketConnectionClass{
-				IOStreamClass: IOStreamClass{
+func wrapTCPWrapperConnectioner(obj *externglib.Object) TCPWrapperConnectioner {
+	return &TCPWrapperConnection{
+		TCPConnection: TCPConnection{
+			SocketConnection: SocketConnection{
+				IOStream: IOStream{
 					Object: obj,
 				},
 			},
@@ -62,15 +61,15 @@ func wrapTCPWrapperConnection(obj *externglib.Object) TCPWrapperConnection {
 	}
 }
 
-func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
+func marshalTCPWrapperConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTCPWrapperConnection(obj), nil
+	return wrapTCPWrapperConnectioner(obj), nil
 }
 
 // NewTCPWrapperConnection wraps @base_io_stream and @socket together as a
 // Connection.
-func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) *TCPWrapperConnectionClass {
+func NewTCPWrapperConnection(baseIoStream IOStreamer, socket Socketter) *TCPWrapperConnection {
 	var _arg1 *C.GIOStream         // out
 	var _arg2 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in
@@ -80,15 +79,15 @@ func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) *TCPWrapperCo
 
 	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
 
-	var _tcpWrapperConnection *TCPWrapperConnectionClass // out
+	var _tcpWrapperConnection *TCPWrapperConnection // out
 
-	_tcpWrapperConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TCPWrapperConnectionClass)
+	_tcpWrapperConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TCPWrapperConnection)
 
 	return _tcpWrapperConnection
 }
 
 // BaseIOStream gets @conn's base OStream
-func (conn *TCPWrapperConnectionClass) BaseIOStream() *IOStreamClass {
+func (conn *TCPWrapperConnection) BaseIOStream() *IOStream {
 	var _arg0 *C.GTcpWrapperConnection // out
 	var _cret *C.GIOStream             // in
 
@@ -96,9 +95,9 @@ func (conn *TCPWrapperConnectionClass) BaseIOStream() *IOStreamClass {
 
 	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
 
-	var _ioStream *IOStreamClass // out
+	var _ioStream *IOStream // out
 
-	_ioStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IOStreamClass)
+	_ioStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IOStream)
 
 	return _ioStream
 }

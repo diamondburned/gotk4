@@ -18,52 +18,44 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bool_filter_get_type()), F: marshalBoolFilter},
+		{T: externglib.Type(C.gtk_bool_filter_get_type()), F: marshalBoolFilterrer},
 	})
+}
+
+// BoolFilterrer describes BoolFilter's methods.
+type BoolFilterrer interface {
+	gextras.Objector
+
+	Expression() *Expression
+	Invert() bool
+	SetExpression(expression Expressioner)
+	SetInvert(invert bool)
 }
 
 // BoolFilter: `GtkBoolFilter` evaluates a boolean `GtkExpression` to determine
 // whether to include items.
-type BoolFilter interface {
-	gextras.Objector
-
-	// Expression gets the expression that the filter uses to evaluate if an
-	// item should be filtered.
-	Expression() *ExpressionClass
-	// Invert returns whether the filter inverts the expression.
-	Invert() bool
-	// SetExpression sets the expression that the filter uses to check if items
-	// should be filtered.
-	//
-	// The expression must have a value type of G_TYPE_BOOLEAN.
-	SetExpression(expression Expression)
-	// SetInvert sets whether the filter should invert the expression.
-	SetInvert(invert bool)
+type BoolFilter struct {
+	Filter
 }
 
-// BoolFilterClass implements the BoolFilter interface.
-type BoolFilterClass struct {
-	FilterClass
-}
+var _ BoolFilterrer = (*BoolFilter)(nil)
 
-var _ BoolFilter = (*BoolFilterClass)(nil)
-
-func wrapBoolFilter(obj *externglib.Object) BoolFilter {
-	return &BoolFilterClass{
-		FilterClass: FilterClass{
+func wrapBoolFilterrer(obj *externglib.Object) BoolFilterrer {
+	return &BoolFilter{
+		Filter: Filter{
 			Object: obj,
 		},
 	}
 }
 
-func marshalBoolFilter(p uintptr) (interface{}, error) {
+func marshalBoolFilterrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBoolFilter(obj), nil
+	return wrapBoolFilterrer(obj), nil
 }
 
 // NewBoolFilter creates a new bool filter.
-func NewBoolFilter(expression Expression) *BoolFilterClass {
+func NewBoolFilter(expression Expressioner) *BoolFilter {
 	var _arg1 *C.GtkExpression // out
 	var _cret *C.GtkBoolFilter // in
 
@@ -71,16 +63,16 @@ func NewBoolFilter(expression Expression) *BoolFilterClass {
 
 	_cret = C.gtk_bool_filter_new(_arg1)
 
-	var _boolFilter *BoolFilterClass // out
+	var _boolFilter *BoolFilter // out
 
-	_boolFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BoolFilterClass)
+	_boolFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BoolFilter)
 
 	return _boolFilter
 }
 
 // Expression gets the expression that the filter uses to evaluate if an item
 // should be filtered.
-func (self *BoolFilterClass) Expression() *ExpressionClass {
+func (self *BoolFilter) Expression() *Expression {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret *C.GtkExpression // in
 
@@ -88,15 +80,15 @@ func (self *BoolFilterClass) Expression() *ExpressionClass {
 
 	_cret = C.gtk_bool_filter_get_expression(_arg0)
 
-	var _expression *ExpressionClass // out
+	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ExpressionClass)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
 
 	return _expression
 }
 
 // Invert returns whether the filter inverts the expression.
-func (self *BoolFilterClass) Invert() bool {
+func (self *BoolFilter) Invert() bool {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret C.gboolean       // in
 
@@ -117,7 +109,7 @@ func (self *BoolFilterClass) Invert() bool {
 // should be filtered.
 //
 // The expression must have a value type of G_TYPE_BOOLEAN.
-func (self *BoolFilterClass) SetExpression(expression Expression) {
+func (self *BoolFilter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 *C.GtkExpression // out
 
@@ -128,7 +120,7 @@ func (self *BoolFilterClass) SetExpression(expression Expression) {
 }
 
 // SetInvert sets whether the filter should invert the expression.
-func (self *BoolFilterClass) SetInvert(invert bool) {
+func (self *BoolFilter) SetInvert(invert bool) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 C.gboolean       // out
 

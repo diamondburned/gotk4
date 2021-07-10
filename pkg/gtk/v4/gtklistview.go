@@ -18,8 +18,22 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_view_get_type()), F: marshalListView},
+		{T: externglib.Type(C.gtk_list_view_get_type()), F: marshalListViewer},
 	})
+}
+
+// ListViewer describes ListView's methods.
+type ListViewer interface {
+	gextras.Objector
+
+	EnableRubberband() bool
+	Factory() *ListItemFactory
+	ShowSeparators() bool
+	SingleClickActivate() bool
+	SetEnableRubberband(enableRubberband bool)
+	SetFactory(factory yier)
+	SetShowSeparators(showSeparators bool)
+	SetSingleClickActivate(singleClickActivate bool)
 }
 
 // ListView: `GtkListView` presents a large dynamic list of items.
@@ -103,110 +117,81 @@ func init() {
 //
 // `GtkListView` uses the GTK_ACCESSIBLE_ROLE_LIST role, and the list items use
 // the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
-type ListView interface {
-	gextras.Objector
-
-	// EnableRubberband returns whether rows can be selected by dragging with
-	// the mouse.
-	EnableRubberband() bool
-	// Factory gets the factory that's currently used to populate list items.
-	Factory() *ListItemFactoryClass
-	// ShowSeparators returns whether the list box should show separators
-	// between rows.
-	ShowSeparators() bool
-	// SingleClickActivate returns whether rows will be activated on single
-	// click and selected on hover.
-	SingleClickActivate() bool
-	// SetEnableRubberband sets whether selections can be changed by dragging
-	// with the mouse.
-	SetEnableRubberband(enableRubberband bool)
-	// SetFactory sets the `GtkListItemFactory` to use for populating list
-	// items.
-	SetFactory(factory ListItemFactory)
-	// SetShowSeparators sets whether the list box should show separators
-	// between rows.
-	SetShowSeparators(showSeparators bool)
-	// SetSingleClickActivate sets whether rows should be activated on single
-	// click and selected on hover.
-	SetSingleClickActivate(singleClickActivate bool)
-}
-
-// ListViewClass implements the ListView interface.
-type ListViewClass struct {
+type ListView struct {
 	*externglib.Object
-	ListBaseClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	OrientableIface
-	ScrollableIface
+	ListBase
+	Accessible
+	Buildable
+	ConstraintTarget
+	Orientable
+	Scrollable
 }
 
-var _ ListView = (*ListViewClass)(nil)
+var _ ListViewer = (*ListView)(nil)
 
-func wrapListView(obj *externglib.Object) ListView {
-	return &ListViewClass{
+func wrapListViewer(obj *externglib.Object) ListViewer {
+	return &ListView{
 		Object: obj,
-		ListBaseClass: ListBaseClass{
+		ListBase: ListBase{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
-			ScrollableIface: ScrollableIface{
+			Scrollable: Scrollable{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
-		ScrollableIface: ScrollableIface{
+		Scrollable: Scrollable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalListView(p uintptr) (interface{}, error) {
+func marshalListViewer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListView(obj), nil
+	return wrapListViewer(obj), nil
 }
 
 // EnableRubberband returns whether rows can be selected by dragging with the
 // mouse.
-func (self *ListViewClass) EnableRubberband() bool {
+func (self *ListView) EnableRubberband() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
@@ -224,7 +209,7 @@ func (self *ListViewClass) EnableRubberband() bool {
 }
 
 // Factory gets the factory that's currently used to populate list items.
-func (self *ListViewClass) Factory() *ListItemFactoryClass {
+func (self *ListView) Factory() *ListItemFactory {
 	var _arg0 *C.GtkListView        // out
 	var _cret *C.GtkListItemFactory // in
 
@@ -232,16 +217,16 @@ func (self *ListViewClass) Factory() *ListItemFactoryClass {
 
 	_cret = C.gtk_list_view_get_factory(_arg0)
 
-	var _listItemFactory *ListItemFactoryClass // out
+	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactoryClass)
+	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
 
 	return _listItemFactory
 }
 
 // ShowSeparators returns whether the list box should show separators between
 // rows.
-func (self *ListViewClass) ShowSeparators() bool {
+func (self *ListView) ShowSeparators() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
@@ -260,7 +245,7 @@ func (self *ListViewClass) ShowSeparators() bool {
 
 // SingleClickActivate returns whether rows will be activated on single click
 // and selected on hover.
-func (self *ListViewClass) SingleClickActivate() bool {
+func (self *ListView) SingleClickActivate() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
@@ -279,7 +264,7 @@ func (self *ListViewClass) SingleClickActivate() bool {
 
 // SetEnableRubberband sets whether selections can be changed by dragging with
 // the mouse.
-func (self *ListViewClass) SetEnableRubberband(enableRubberband bool) {
+func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
@@ -292,7 +277,7 @@ func (self *ListViewClass) SetEnableRubberband(enableRubberband bool) {
 }
 
 // SetFactory sets the `GtkListItemFactory` to use for populating list items.
-func (self *ListViewClass) SetFactory(factory ListItemFactory) {
+func (self *ListView) SetFactory(factory yier) {
 	var _arg0 *C.GtkListView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -304,7 +289,7 @@ func (self *ListViewClass) SetFactory(factory ListItemFactory) {
 
 // SetShowSeparators sets whether the list box should show separators between
 // rows.
-func (self *ListViewClass) SetShowSeparators(showSeparators bool) {
+func (self *ListView) SetShowSeparators(showSeparators bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
@@ -318,7 +303,7 @@ func (self *ListViewClass) SetShowSeparators(showSeparators bool) {
 
 // SetSingleClickActivate sets whether rows should be activated on single click
 // and selected on hover.
-func (self *ListViewClass) SetSingleClickActivate(singleClickActivate bool) {
+func (self *ListView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 

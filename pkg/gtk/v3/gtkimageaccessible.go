@@ -21,43 +21,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_image_accessible_get_type()), F: marshalImageAccessible},
+		{T: externglib.Type(C.gtk_image_accessible_get_type()), F: marshalImageAccessibler},
 	})
 }
 
-type ImageAccessible interface {
+// ImageAccessibler describes ImageAccessible's methods.
+type ImageAccessibler interface {
 	gextras.Objector
 
-	privateImageAccessibleClass()
+	privateImageAccessible()
 }
 
-// ImageAccessibleClass implements the ImageAccessible interface.
-type ImageAccessibleClass struct {
-	WidgetAccessibleClass
-	atk.ImageIface
+type ImageAccessible struct {
+	WidgetAccessible
+	atk.Image
 }
 
-var _ ImageAccessible = (*ImageAccessibleClass)(nil)
+var _ ImageAccessibler = (*ImageAccessible)(nil)
 
-func wrapImageAccessible(obj *externglib.Object) ImageAccessible {
-	return &ImageAccessibleClass{
-		WidgetAccessibleClass: WidgetAccessibleClass{
-			AccessibleClass: AccessibleClass{
-				ObjectClass: atk.ObjectClass{
+func wrapImageAccessibler(obj *externglib.Object) ImageAccessibler {
+	return &ImageAccessible{
+		WidgetAccessible: WidgetAccessible{
+			Accessible: Accessible{
+				Object: atk.Object{
 					Object: obj,
 				},
 			},
 		},
-		ImageIface: atk.ImageIface{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
 }
 
-func marshalImageAccessible(p uintptr) (interface{}, error) {
+func marshalImageAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImageAccessible(obj), nil
+	return wrapImageAccessibler(obj), nil
 }
 
-func (*ImageAccessibleClass) privateImageAccessibleClass() {}
+func (*ImageAccessible) privateImageAccessible() {}

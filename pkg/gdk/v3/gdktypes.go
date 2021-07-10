@@ -470,12 +470,6 @@ type Point struct {
 	native C.GdkPoint
 }
 
-// WrapPoint wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPoint(ptr unsafe.Pointer) *Point {
-	return (*Point)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (p *Point) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
@@ -485,12 +479,6 @@ func (p *Point) Native() unsafe.Pointer {
 // #cairo_rectangle_int_t.
 type Rectangle struct {
 	native C.GdkRectangle
-}
-
-// WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
-	return (*Rectangle)(ptr)
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {

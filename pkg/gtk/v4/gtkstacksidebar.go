@@ -18,8 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_sidebar_get_type()), F: marshalStackSidebar},
+		{T: externglib.Type(C.gtk_stack_sidebar_get_type()), F: marshalStackSidebarrer},
 	})
+}
+
+// StackSidebarrer describes StackSidebar's methods.
+type StackSidebarrer interface {
+	gextras.Objector
+
+	Stack() *Stack
+	SetStack(stack Stacker)
 }
 
 // StackSidebar: `GtkStackSidebar` uses a sidebar to switch between `GtkStack`
@@ -38,80 +46,67 @@ func init() {
 //
 // When circumstances require it, `GtkStackSidebar` adds the .needs-attention
 // style class to the widgets representing the stack pages.
-type StackSidebar interface {
-	gextras.Objector
-
-	// Stack retrieves the stack.
-	Stack() *StackClass
-	// SetStack: set the `GtkStack` associated with this `GtkStackSidebar`.
-	//
-	// The sidebar widget will automatically update according to the order and
-	// items within the given `GtkStack`.
-	SetStack(stack Stack)
-}
-
-// StackSidebarClass implements the StackSidebar interface.
-type StackSidebarClass struct {
+type StackSidebar struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ StackSidebar = (*StackSidebarClass)(nil)
+var _ StackSidebarrer = (*StackSidebar)(nil)
 
-func wrapStackSidebar(obj *externglib.Object) StackSidebar {
-	return &StackSidebarClass{
+func wrapStackSidebarrer(obj *externglib.Object) StackSidebarrer {
+	return &StackSidebar{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalStackSidebar(p uintptr) (interface{}, error) {
+func marshalStackSidebarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStackSidebar(obj), nil
+	return wrapStackSidebarrer(obj), nil
 }
 
 // NewStackSidebar creates a new `GtkStackSidebar`.
-func NewStackSidebar() *StackSidebarClass {
+func NewStackSidebar() *StackSidebar {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_stack_sidebar_new()
 
-	var _stackSidebar *StackSidebarClass // out
+	var _stackSidebar *StackSidebar // out
 
-	_stackSidebar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackSidebarClass)
+	_stackSidebar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackSidebar)
 
 	return _stackSidebar
 }
 
 // Stack retrieves the stack.
-func (self *StackSidebarClass) Stack() *StackClass {
+func (self *StackSidebar) Stack() *Stack {
 	var _arg0 *C.GtkStackSidebar // out
 	var _cret *C.GtkStack        // in
 
@@ -119,9 +114,9 @@ func (self *StackSidebarClass) Stack() *StackClass {
 
 	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
 
-	var _stack *StackClass // out
+	var _stack *Stack // out
 
-	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackClass)
+	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Stack)
 
 	return _stack
 }
@@ -130,7 +125,7 @@ func (self *StackSidebarClass) Stack() *StackClass {
 //
 // The sidebar widget will automatically update according to the order and items
 // within the given `GtkStack`.
-func (self *StackSidebarClass) SetStack(stack Stack) {
+func (self *StackSidebar) SetStack(stack Stacker) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out
 

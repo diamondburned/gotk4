@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_places_open_flags_get_type()), F: marshalPlacesOpenFlags},
-		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebar},
+		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarrer},
 	})
 }
 
@@ -66,6 +66,30 @@ func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 	return PlacesOpenFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PlacesSidebarrer describes PlacesSidebar's methods.
+type PlacesSidebarrer interface {
+	gextras.Objector
+
+	LocalOnly() bool
+	OpenFlags() PlacesOpenFlags
+	ShowConnectToServer() bool
+	ShowDesktop() bool
+	ShowEnterLocation() bool
+	ShowOtherLocations() bool
+	ShowRecent() bool
+	ShowStarredLocation() bool
+	ShowTrash() bool
+	SetDropTargetsVisible(visible bool, context gdk.DragContexter)
+	SetLocalOnly(localOnly bool)
+	SetShowConnectToServer(showConnectToServer bool)
+	SetShowDesktop(showDesktop bool)
+	SetShowEnterLocation(showEnterLocation bool)
+	SetShowOtherLocations(showOtherLocations bool)
+	SetShowRecent(showRecent bool)
+	SetShowStarredLocation(showStarredLocation bool)
+	SetShowTrash(showTrash bool)
+}
+
 // PlacesSidebar is a widget that displays a list of frequently-used places in
 // the file system: the user’s home directory, the user’s bookmarks, and volumes
 // and drives. This widget is used as a sidebar in FileChooser and may be used
@@ -100,167 +124,75 @@ func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 // used: - .sidebar-new-bookmark-row for the 'Add new bookmark' row -
 // .sidebar-placeholder-row for a row that is a placeholder - .has-open-popup
 // when a popup is open for a row
-type PlacesSidebar interface {
-	gextras.Objector
-
-	// LocalOnly returns the value previously set with
-	// gtk_places_sidebar_set_local_only().
-	LocalOnly() bool
-	// OpenFlags gets the open flags.
-	OpenFlags() PlacesOpenFlags
-	// ShowConnectToServer returns the value previously set with
-	// gtk_places_sidebar_set_show_connect_to_server()
-	//
-	// Deprecated: It is recommended to group this functionality with the drives
-	// and network location under the new 'Other Location' item.
-	ShowConnectToServer() bool
-	// ShowDesktop returns the value previously set with
-	// gtk_places_sidebar_set_show_desktop()
-	ShowDesktop() bool
-	// ShowEnterLocation returns the value previously set with
-	// gtk_places_sidebar_set_show_enter_location()
-	ShowEnterLocation() bool
-	// ShowOtherLocations returns the value previously set with
-	// gtk_places_sidebar_set_show_other_locations()
-	ShowOtherLocations() bool
-	// ShowRecent returns the value previously set with
-	// gtk_places_sidebar_set_show_recent()
-	ShowRecent() bool
-	// ShowStarredLocation returns the value previously set with
-	// gtk_places_sidebar_set_show_starred_location()
-	ShowStarredLocation() bool
-	// ShowTrash returns the value previously set with
-	// gtk_places_sidebar_set_show_trash()
-	ShowTrash() bool
-	// SetDropTargetsVisible: make the GtkPlacesSidebar show drop targets, so it
-	// can show the available drop targets and a "new bookmark" row. This
-	// improves the Drag-and-Drop experience of the user and allows applications
-	// to show all available drop targets at once.
-	//
-	// This needs to be called when the application is aware of an ongoing drag
-	// that might target the sidebar. The drop-targets-visible state will be
-	// unset automatically if the drag finishes in the GtkPlacesSidebar. You
-	// only need to unset the state when the drag ends on some other widget on
-	// your application.
-	SetDropTargetsVisible(visible bool, context gdk.DragContext)
-	// SetLocalOnly sets whether the @sidebar should only show local files.
-	SetLocalOnly(localOnly bool)
-	// SetShowConnectToServer sets whether the @sidebar should show an item for
-	// connecting to a network server; this is off by default. An application
-	// may want to turn this on if it implements a way for the user to connect
-	// to network servers directly.
-	//
-	// If you enable this, you should connect to the
-	// PlacesSidebar::show-connect-to-server signal.
-	//
-	// Deprecated: It is recommended to group this functionality with the drives
-	// and network location under the new 'Other Location' item.
-	SetShowConnectToServer(showConnectToServer bool)
-	// SetShowDesktop sets whether the @sidebar should show an item for the
-	// Desktop folder. The default value for this option is determined by the
-	// desktop environment and the user’s configuration, but this function can
-	// be used to override it on a per-application basis.
-	SetShowDesktop(showDesktop bool)
-	// SetShowEnterLocation sets whether the @sidebar should show an item for
-	// entering a location; this is off by default. An application may want to
-	// turn this on if manually entering URLs is an expected user action.
-	//
-	// If you enable this, you should connect to the
-	// PlacesSidebar::show-enter-location signal.
-	SetShowEnterLocation(showEnterLocation bool)
-	// SetShowOtherLocations sets whether the @sidebar should show an item for
-	// the application to show an Other Locations view; this is off by default.
-	// When set to true, persistent devices such as hard drives are hidden,
-	// otherwise they are shown in the sidebar. An application may want to turn
-	// this on if it implements a way for the user to see and interact with
-	// drives and network servers directly.
-	//
-	// If you enable this, you should connect to the
-	// PlacesSidebar::show-other-locations signal.
-	SetShowOtherLocations(showOtherLocations bool)
-	// SetShowRecent sets whether the @sidebar should show an item for recent
-	// files. The default value for this option is determined by the desktop
-	// environment, but this function can be used to override it on a
-	// per-application basis.
-	SetShowRecent(showRecent bool)
-	// SetShowStarredLocation: if you enable this, you should connect to the
-	// PlacesSidebar::show-starred-location signal.
-	SetShowStarredLocation(showStarredLocation bool)
-	// SetShowTrash sets whether the @sidebar should show an item for the Trash
-	// location.
-	SetShowTrash(showTrash bool)
-}
-
-// PlacesSidebarClass implements the PlacesSidebar interface.
-type PlacesSidebarClass struct {
+type PlacesSidebar struct {
 	*externglib.Object
-	ScrolledWindowClass
-	BuildableIface
+	ScrolledWindow
+	Buildable
 }
 
-var _ PlacesSidebar = (*PlacesSidebarClass)(nil)
+var _ PlacesSidebarrer = (*PlacesSidebar)(nil)
 
-func wrapPlacesSidebar(obj *externglib.Object) PlacesSidebar {
-	return &PlacesSidebarClass{
+func wrapPlacesSidebarrer(obj *externglib.Object) PlacesSidebarrer {
+	return &PlacesSidebar{
 		Object: obj,
-		ScrolledWindowClass: ScrolledWindowClass{
+		ScrolledWindow: ScrolledWindow{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPlacesSidebar(p uintptr) (interface{}, error) {
+func marshalPlacesSidebarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlacesSidebar(obj), nil
+	return wrapPlacesSidebarrer(obj), nil
 }
 
 // NewPlacesSidebar creates a new PlacesSidebar widget.
 //
 // The application should connect to at least the PlacesSidebar::open-location
 // signal to be notified when the user makes a selection in the sidebar.
-func NewPlacesSidebar() *PlacesSidebarClass {
+func NewPlacesSidebar() *PlacesSidebar {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_places_sidebar_new()
 
-	var _placesSidebar *PlacesSidebarClass // out
+	var _placesSidebar *PlacesSidebar // out
 
-	_placesSidebar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PlacesSidebarClass)
+	_placesSidebar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PlacesSidebar)
 
 	return _placesSidebar
 }
 
 // LocalOnly returns the value previously set with
 // gtk_places_sidebar_set_local_only().
-func (sidebar *PlacesSidebarClass) LocalOnly() bool {
+func (sidebar *PlacesSidebar) LocalOnly() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
@@ -278,7 +210,7 @@ func (sidebar *PlacesSidebarClass) LocalOnly() bool {
 }
 
 // OpenFlags gets the open flags.
-func (sidebar *PlacesSidebarClass) OpenFlags() PlacesOpenFlags {
+func (sidebar *PlacesSidebar) OpenFlags() PlacesOpenFlags {
 	var _arg0 *C.GtkPlacesSidebar  // out
 	var _cret C.GtkPlacesOpenFlags // in
 
@@ -298,7 +230,7 @@ func (sidebar *PlacesSidebarClass) OpenFlags() PlacesOpenFlags {
 //
 // Deprecated: It is recommended to group this functionality with the drives and
 // network location under the new 'Other Location' item.
-func (sidebar *PlacesSidebarClass) ShowConnectToServer() bool {
+func (sidebar *PlacesSidebar) ShowConnectToServer() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
@@ -317,7 +249,7 @@ func (sidebar *PlacesSidebarClass) ShowConnectToServer() bool {
 
 // ShowDesktop returns the value previously set with
 // gtk_places_sidebar_set_show_desktop()
-func (sidebar *PlacesSidebarClass) ShowDesktop() bool {
+func (sidebar *PlacesSidebar) ShowDesktop() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
@@ -336,7 +268,7 @@ func (sidebar *PlacesSidebarClass) ShowDesktop() bool {
 
 // ShowEnterLocation returns the value previously set with
 // gtk_places_sidebar_set_show_enter_location()
-func (sidebar *PlacesSidebarClass) ShowEnterLocation() bool {
+func (sidebar *PlacesSidebar) ShowEnterLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
@@ -355,7 +287,7 @@ func (sidebar *PlacesSidebarClass) ShowEnterLocation() bool {
 
 // ShowOtherLocations returns the value previously set with
 // gtk_places_sidebar_set_show_other_locations()
-func (sidebar *PlacesSidebarClass) ShowOtherLocations() bool {
+func (sidebar *PlacesSidebar) ShowOtherLocations() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
@@ -374,7 +306,7 @@ func (sidebar *PlacesSidebarClass) ShowOtherLocations() bool {
 
 // ShowRecent returns the value previously set with
 // gtk_places_sidebar_set_show_recent()
-func (sidebar *PlacesSidebarClass) ShowRecent() bool {
+func (sidebar *PlacesSidebar) ShowRecent() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
@@ -393,7 +325,7 @@ func (sidebar *PlacesSidebarClass) ShowRecent() bool {
 
 // ShowStarredLocation returns the value previously set with
 // gtk_places_sidebar_set_show_starred_location()
-func (sidebar *PlacesSidebarClass) ShowStarredLocation() bool {
+func (sidebar *PlacesSidebar) ShowStarredLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
@@ -412,7 +344,7 @@ func (sidebar *PlacesSidebarClass) ShowStarredLocation() bool {
 
 // ShowTrash returns the value previously set with
 // gtk_places_sidebar_set_show_trash()
-func (sidebar *PlacesSidebarClass) ShowTrash() bool {
+func (sidebar *PlacesSidebar) ShowTrash() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
@@ -438,7 +370,7 @@ func (sidebar *PlacesSidebarClass) ShowTrash() bool {
 // might target the sidebar. The drop-targets-visible state will be unset
 // automatically if the drag finishes in the GtkPlacesSidebar. You only need to
 // unset the state when the drag ends on some other widget on your application.
-func (sidebar *PlacesSidebarClass) SetDropTargetsVisible(visible bool, context gdk.DragContext) {
+func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context gdk.DragContexter) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 	var _arg2 *C.GdkDragContext   // out
@@ -453,7 +385,7 @@ func (sidebar *PlacesSidebarClass) SetDropTargetsVisible(visible bool, context g
 }
 
 // SetLocalOnly sets whether the @sidebar should only show local files.
-func (sidebar *PlacesSidebarClass) SetLocalOnly(localOnly bool) {
+func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
@@ -475,7 +407,7 @@ func (sidebar *PlacesSidebarClass) SetLocalOnly(localOnly bool) {
 //
 // Deprecated: It is recommended to group this functionality with the drives and
 // network location under the new 'Other Location' item.
-func (sidebar *PlacesSidebarClass) SetShowConnectToServer(showConnectToServer bool) {
+func (sidebar *PlacesSidebar) SetShowConnectToServer(showConnectToServer bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
@@ -491,7 +423,7 @@ func (sidebar *PlacesSidebarClass) SetShowConnectToServer(showConnectToServer bo
 // folder. The default value for this option is determined by the desktop
 // environment and the user’s configuration, but this function can be used to
 // override it on a per-application basis.
-func (sidebar *PlacesSidebarClass) SetShowDesktop(showDesktop bool) {
+func (sidebar *PlacesSidebar) SetShowDesktop(showDesktop bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
@@ -509,7 +441,7 @@ func (sidebar *PlacesSidebarClass) SetShowDesktop(showDesktop bool) {
 //
 // If you enable this, you should connect to the
 // PlacesSidebar::show-enter-location signal.
-func (sidebar *PlacesSidebarClass) SetShowEnterLocation(showEnterLocation bool) {
+func (sidebar *PlacesSidebar) SetShowEnterLocation(showEnterLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
@@ -530,7 +462,7 @@ func (sidebar *PlacesSidebarClass) SetShowEnterLocation(showEnterLocation bool) 
 //
 // If you enable this, you should connect to the
 // PlacesSidebar::show-other-locations signal.
-func (sidebar *PlacesSidebarClass) SetShowOtherLocations(showOtherLocations bool) {
+func (sidebar *PlacesSidebar) SetShowOtherLocations(showOtherLocations bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
@@ -545,7 +477,7 @@ func (sidebar *PlacesSidebarClass) SetShowOtherLocations(showOtherLocations bool
 // SetShowRecent sets whether the @sidebar should show an item for recent files.
 // The default value for this option is determined by the desktop environment,
 // but this function can be used to override it on a per-application basis.
-func (sidebar *PlacesSidebarClass) SetShowRecent(showRecent bool) {
+func (sidebar *PlacesSidebar) SetShowRecent(showRecent bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
@@ -559,7 +491,7 @@ func (sidebar *PlacesSidebarClass) SetShowRecent(showRecent bool) {
 
 // SetShowStarredLocation: if you enable this, you should connect to the
 // PlacesSidebar::show-starred-location signal.
-func (sidebar *PlacesSidebarClass) SetShowStarredLocation(showStarredLocation bool) {
+func (sidebar *PlacesSidebar) SetShowStarredLocation(showStarredLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
@@ -573,7 +505,7 @@ func (sidebar *PlacesSidebarClass) SetShowStarredLocation(showStarredLocation bo
 
 // SetShowTrash sets whether the @sidebar should show an item for the Trash
 // location.
-func (sidebar *PlacesSidebarClass) SetShowTrash(showTrash bool) {
+func (sidebar *PlacesSidebar) SetShowTrash(showTrash bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 

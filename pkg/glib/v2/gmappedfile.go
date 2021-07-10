@@ -30,12 +30,6 @@ type MappedFile struct {
 	native C.GMappedFile
 }
 
-// WrapMappedFile wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMappedFile(ptr unsafe.Pointer) *MappedFile {
-	return (*MappedFile)(ptr)
-}
-
 func marshalMappedFile(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*MappedFile)(unsafe.Pointer(b)), nil

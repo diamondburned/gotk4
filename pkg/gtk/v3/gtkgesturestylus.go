@@ -21,34 +21,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStylus},
+		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStylusser},
 	})
+}
+
+// GestureStylusser describes GestureStylus's methods.
+type GestureStylusser interface {
+	gextras.Objector
+
+	DeviceTool() *gdk.DeviceTool
 }
 
 // GestureStylus is a Gesture implementation specific to stylus input. The
 // provided signals just provide the basic information
-type GestureStylus interface {
-	gextras.Objector
-
-	// DeviceTool returns the DeviceTool currently driving input through this
-	// gesture. This function must be called from either the
-	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
-	// GestureStylus::proximity signal handlers.
-	DeviceTool() *gdk.DeviceToolClass
+type GestureStylus struct {
+	GestureSingle
 }
 
-// GestureStylusClass implements the GestureStylus interface.
-type GestureStylusClass struct {
-	GestureSingleClass
-}
+var _ GestureStylusser = (*GestureStylus)(nil)
 
-var _ GestureStylus = (*GestureStylusClass)(nil)
-
-func wrapGestureStylus(obj *externglib.Object) GestureStylus {
-	return &GestureStylusClass{
-		GestureSingleClass: GestureSingleClass{
-			GestureClass: GestureClass{
-				EventControllerClass: EventControllerClass{
+func wrapGestureStylusser(obj *externglib.Object) GestureStylusser {
+	return &GestureStylus{
+		GestureSingle: GestureSingle{
+			Gesture: Gesture{
+				EventController: EventController{
 					Object: obj,
 				},
 			},
@@ -56,14 +52,14 @@ func wrapGestureStylus(obj *externglib.Object) GestureStylus {
 	}
 }
 
-func marshalGestureStylus(p uintptr) (interface{}, error) {
+func marshalGestureStylusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureStylus(obj), nil
+	return wrapGestureStylusser(obj), nil
 }
 
 // NewGestureStylus creates a new GestureStylus.
-func NewGestureStylus(widget Widget) *GestureStylusClass {
+func NewGestureStylus(widget Widgetter) *GestureStylus {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
@@ -71,9 +67,9 @@ func NewGestureStylus(widget Widget) *GestureStylusClass {
 
 	_cret = C.gtk_gesture_stylus_new(_arg1)
 
-	var _gestureStylus *GestureStylusClass // out
+	var _gestureStylus *GestureStylus // out
 
-	_gestureStylus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureStylusClass)
+	_gestureStylus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureStylus)
 
 	return _gestureStylus
 }
@@ -82,7 +78,7 @@ func NewGestureStylus(widget Widget) *GestureStylusClass {
 // gesture. This function must be called from either the GestureStylus::down,
 // GestureStylus::motion, GestureStylus::up or GestureStylus::proximity signal
 // handlers.
-func (gesture *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
+func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	var _arg0 *C.GtkGestureStylus // out
 	var _cret *C.GdkDeviceTool    // in
 
@@ -90,9 +86,9 @@ func (gesture *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
 
-	var _deviceTool *gdk.DeviceToolClass // out
+	var _deviceTool *gdk.DeviceTool // out
 
-	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceToolClass)
+	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceTool)
 
 	return _deviceTool
 }

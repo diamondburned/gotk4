@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_pan_get_type()), F: marshalGesturePan},
+		{T: externglib.Type(C.gtk_gesture_pan_get_type()), F: marshalGesturePanner},
 	})
+}
+
+// GesturePanner describes GesturePan's methods.
+type GesturePanner interface {
+	gextras.Objector
+
+	Orientation() Orientation
 }
 
 // GesturePan is a Gesture implementation able to recognize pan gestures, those
@@ -36,27 +43,18 @@ func init() {
 // Once a panning gesture along the expected axis is recognized, the
 // GesturePan::pan signal will be emitted as input events are received,
 // containing the offset in the given axis.
-type GesturePan interface {
-	gextras.Objector
-
-	// Orientation returns the orientation of the pan gestures that this
-	// @gesture expects.
-	Orientation() Orientation
+type GesturePan struct {
+	GestureDrag
 }
 
-// GesturePanClass implements the GesturePan interface.
-type GesturePanClass struct {
-	GestureDragClass
-}
+var _ GesturePanner = (*GesturePan)(nil)
 
-var _ GesturePan = (*GesturePanClass)(nil)
-
-func wrapGesturePan(obj *externglib.Object) GesturePan {
-	return &GesturePanClass{
-		GestureDragClass: GestureDragClass{
-			GestureSingleClass: GestureSingleClass{
-				GestureClass: GestureClass{
-					EventControllerClass: EventControllerClass{
+func wrapGesturePanner(obj *externglib.Object) GesturePanner {
+	return &GesturePan{
+		GestureDrag: GestureDrag{
+			GestureSingle: GestureSingle{
+				Gesture: Gesture{
+					EventController: EventController{
 						Object: obj,
 					},
 				},
@@ -65,15 +63,15 @@ func wrapGesturePan(obj *externglib.Object) GesturePan {
 	}
 }
 
-func marshalGesturePan(p uintptr) (interface{}, error) {
+func marshalGesturePanner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGesturePan(obj), nil
+	return wrapGesturePanner(obj), nil
 }
 
 // Orientation returns the orientation of the pan gestures that this @gesture
 // expects.
-func (gesture *GesturePanClass) Orientation() Orientation {
+func (gesture *GesturePan) Orientation() Orientation {
 	var _arg0 *C.GtkGesturePan // out
 	var _cret C.GtkOrientation // in
 

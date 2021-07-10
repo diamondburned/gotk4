@@ -21,29 +21,29 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_popover_accessible_get_type()), F: marshalPopoverAccessible},
+		{T: externglib.Type(C.gtk_popover_accessible_get_type()), F: marshalPopoverAccessibler},
 	})
 }
 
-type PopoverAccessible interface {
+// PopoverAccessibler describes PopoverAccessible's methods.
+type PopoverAccessibler interface {
 	gextras.Objector
 
-	privatePopoverAccessibleClass()
+	privatePopoverAccessible()
 }
 
-// PopoverAccessibleClass implements the PopoverAccessible interface.
-type PopoverAccessibleClass struct {
-	ContainerAccessibleClass
+type PopoverAccessible struct {
+	ContainerAccessible
 }
 
-var _ PopoverAccessible = (*PopoverAccessibleClass)(nil)
+var _ PopoverAccessibler = (*PopoverAccessible)(nil)
 
-func wrapPopoverAccessible(obj *externglib.Object) PopoverAccessible {
-	return &PopoverAccessibleClass{
-		ContainerAccessibleClass: ContainerAccessibleClass{
-			WidgetAccessibleClass: WidgetAccessibleClass{
-				AccessibleClass: AccessibleClass{
-					ObjectClass: atk.ObjectClass{
+func wrapPopoverAccessibler(obj *externglib.Object) PopoverAccessibler {
+	return &PopoverAccessible{
+		ContainerAccessible: ContainerAccessible{
+			WidgetAccessible: WidgetAccessible{
+				Accessible: Accessible{
+					Object: atk.Object{
 						Object: obj,
 					},
 				},
@@ -52,10 +52,10 @@ func wrapPopoverAccessible(obj *externglib.Object) PopoverAccessible {
 	}
 }
 
-func marshalPopoverAccessible(p uintptr) (interface{}, error) {
+func marshalPopoverAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopoverAccessible(obj), nil
+	return wrapPopoverAccessibler(obj), nil
 }
 
-func (*PopoverAccessibleClass) privatePopoverAccessibleClass() {}
+func (*PopoverAccessible) privatePopoverAccessible() {}

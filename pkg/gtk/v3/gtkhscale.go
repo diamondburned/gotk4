@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hscale_get_type()), F: marshalHScale},
+		{T: externglib.Type(C.gtk_hscale_get_type()), F: marshalHScaler},
 	})
+}
+
+// HScaler describes HScale's methods.
+type HScaler interface {
+	gextras.Objector
+
+	privateHScale()
 }
 
 // HScale: the HScale widget is used to allow the user to select a value using a
@@ -31,71 +38,64 @@ func init() {
 // shown can be set using the parent Scale class’s functions.
 //
 // GtkHScale has been deprecated, use Scale instead.
-type HScale interface {
-	gextras.Objector
-
-	privateHScaleClass()
-}
-
-// HScaleClass implements the HScale interface.
-type HScaleClass struct {
+type HScale struct {
 	*externglib.Object
-	ScaleClass
-	BuildableIface
-	OrientableIface
+	Scale
+	Buildable
+	Orientable
 }
 
-var _ HScale = (*HScaleClass)(nil)
+var _ HScaler = (*HScale)(nil)
 
-func wrapHScale(obj *externglib.Object) HScale {
-	return &HScaleClass{
+func wrapHScaler(obj *externglib.Object) HScaler {
+	return &HScale{
 		Object: obj,
-		ScaleClass: ScaleClass{
+		Scale: Scale{
 			Object: obj,
-			RangeClass: RangeClass{
+			Range: Range{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				OrientableIface: OrientableIface{
+				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			OrientableIface: OrientableIface{
+			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		OrientableIface: OrientableIface{
+		Orientable: Orientable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalHScale(p uintptr) (interface{}, error) {
+func marshalHScaler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHScale(obj), nil
+	return wrapHScaler(obj), nil
 }
 
 // NewHScale creates a new HScale.
 //
 // Deprecated: Use gtk_scale_new() with GTK_ORIENTATION_HORIZONTAL instead.
-func NewHScale(adjustment Adjustment) *HScaleClass {
+func NewHScale(adjustment Adjustmenter) *HScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
@@ -103,9 +103,9 @@ func NewHScale(adjustment Adjustment) *HScaleClass {
 
 	_cret = C.gtk_hscale_new(_arg1)
 
-	var _hScale *HScaleClass // out
+	var _hScale *HScale // out
 
-	_hScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScaleClass)
+	_hScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScale)
 
 	return _hScale
 }
@@ -121,7 +121,7 @@ func NewHScale(adjustment Adjustment) *HScaleClass {
 //
 // Deprecated: Use gtk_scale_new_with_range() with GTK_ORIENTATION_HORIZONTAL
 // instead.
-func NewHScaleWithRange(min float64, max float64, step float64) *HScaleClass {
+func NewHScaleWithRange(min float64, max float64, step float64) *HScale {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
 	var _arg3 C.gdouble    // out
@@ -133,11 +133,11 @@ func NewHScaleWithRange(min float64, max float64, step float64) *HScaleClass {
 
 	_cret = C.gtk_hscale_new_with_range(_arg1, _arg2, _arg3)
 
-	var _hScale *HScaleClass // out
+	var _hScale *HScale // out
 
-	_hScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScaleClass)
+	_hScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScale)
 
 	return _hScale
 }
 
-func (*HScaleClass) privateHScaleClass() {}
+func (*HScale) privateHScale() {}

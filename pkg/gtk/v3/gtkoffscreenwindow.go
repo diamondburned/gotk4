@@ -22,8 +22,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_offscreen_window_get_type()), F: marshalOffscreenWindow},
+		{T: externglib.Type(C.gtk_offscreen_window_get_type()), F: marshalOffscreenWindowwer},
 	})
+}
+
+// OffscreenWindowwer describes OffscreenWindow's methods.
+type OffscreenWindowwer interface {
+	gextras.Objector
+
+	Pixbuf() *gdkpixbuf.Pixbuf
+	Surface() *cairo.Surface
 }
 
 // OffscreenWindow is strictly intended to be used for obtaining snapshots of
@@ -41,80 +49,66 @@ func init() {
 //
 // When contained offscreen widgets are redrawn, GtkOffscreenWindow will emit a
 // Widget::damage-event signal.
-type OffscreenWindow interface {
-	gextras.Objector
-
-	// Pixbuf retrieves a snapshot of the contained widget in the form of a
-	// Pixbuf. This is a new pixbuf with a reference count of 1, and the
-	// application should unreference it once it is no longer needed.
-	Pixbuf() *gdkpixbuf.PixbufClass
-	// Surface retrieves a snapshot of the contained widget in the form of a
-	// #cairo_surface_t. If you need to keep this around over window resizes
-	// then you should add a reference to it.
-	Surface() *cairo.Surface
-}
-
-// OffscreenWindowClass implements the OffscreenWindow interface.
-type OffscreenWindowClass struct {
+type OffscreenWindow struct {
 	*externglib.Object
-	WindowClass
-	BuildableIface
+	Window
+	Buildable
 }
 
-var _ OffscreenWindow = (*OffscreenWindowClass)(nil)
+var _ OffscreenWindowwer = (*OffscreenWindow)(nil)
 
-func wrapOffscreenWindow(obj *externglib.Object) OffscreenWindow {
-	return &OffscreenWindowClass{
+func wrapOffscreenWindowwer(obj *externglib.Object) OffscreenWindowwer {
+	return &OffscreenWindow{
 		Object: obj,
-		WindowClass: WindowClass{
+		Window: Window{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalOffscreenWindow(p uintptr) (interface{}, error) {
+func marshalOffscreenWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOffscreenWindow(obj), nil
+	return wrapOffscreenWindowwer(obj), nil
 }
 
 // NewOffscreenWindow creates a toplevel container widget that is used to
 // retrieve snapshots of widgets without showing them on the screen.
-func NewOffscreenWindow() *OffscreenWindowClass {
+func NewOffscreenWindow() *OffscreenWindow {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_offscreen_window_new()
 
-	var _offscreenWindow *OffscreenWindowClass // out
+	var _offscreenWindow *OffscreenWindow // out
 
-	_offscreenWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*OffscreenWindowClass)
+	_offscreenWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*OffscreenWindow)
 
 	return _offscreenWindow
 }
@@ -122,7 +116,7 @@ func NewOffscreenWindow() *OffscreenWindowClass {
 // Pixbuf retrieves a snapshot of the contained widget in the form of a Pixbuf.
 // This is a new pixbuf with a reference count of 1, and the application should
 // unreference it once it is no longer needed.
-func (offscreen *OffscreenWindowClass) Pixbuf() *gdkpixbuf.PixbufClass {
+func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.GdkPixbuf          // in
 
@@ -130,9 +124,9 @@ func (offscreen *OffscreenWindowClass) Pixbuf() *gdkpixbuf.PixbufClass {
 
 	_cret = C.gtk_offscreen_window_get_pixbuf(_arg0)
 
-	var _pixbuf *gdkpixbuf.PixbufClass // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.PixbufClass)
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
 
 	return _pixbuf
 }
@@ -140,7 +134,7 @@ func (offscreen *OffscreenWindowClass) Pixbuf() *gdkpixbuf.PixbufClass {
 // Surface retrieves a snapshot of the contained widget in the form of a
 // #cairo_surface_t. If you need to keep this around over window resizes then
 // you should add a reference to it.
-func (offscreen *OffscreenWindowClass) Surface() *cairo.Surface {
+func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.cairo_surface_t    // in
 

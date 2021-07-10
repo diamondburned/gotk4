@@ -20,8 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_menu_item_get_type()), F: marshalSeparatorMenuItem},
+		{T: externglib.Type(C.gtk_separator_menu_item_get_type()), F: marshalSeparatorMenuItemmer},
 	})
+}
+
+// SeparatorMenuItemmer describes SeparatorMenuItem's methods.
+type SeparatorMenuItemmer interface {
+	gextras.Objector
+
+	privateSeparatorMenuItem()
 }
 
 // SeparatorMenuItem: the SeparatorMenuItem is a separator used to group items
@@ -32,106 +39,99 @@ func init() {
 // CSS nodes
 //
 // GtkSeparatorMenuItem has a single CSS node with name separator.
-type SeparatorMenuItem interface {
-	gextras.Objector
-
-	privateSeparatorMenuItemClass()
-}
-
-// SeparatorMenuItemClass implements the SeparatorMenuItem interface.
-type SeparatorMenuItemClass struct {
+type SeparatorMenuItem struct {
 	*externglib.Object
-	MenuItemClass
-	ActionableIface
-	ActivatableIface
-	BuildableIface
+	MenuItem
+	Actionable
+	Activatable
+	Buildable
 }
 
-var _ SeparatorMenuItem = (*SeparatorMenuItemClass)(nil)
+var _ SeparatorMenuItemmer = (*SeparatorMenuItem)(nil)
 
-func wrapSeparatorMenuItem(obj *externglib.Object) SeparatorMenuItem {
-	return &SeparatorMenuItemClass{
+func wrapSeparatorMenuItemmer(obj *externglib.Object) SeparatorMenuItemmer {
+	return &SeparatorMenuItem{
 		Object: obj,
-		MenuItemClass: MenuItemClass{
+		MenuItem: MenuItem{
 			Object: obj,
-			BinClass: BinClass{
+			Bin: Bin{
 				Object: obj,
-				ContainerClass: ContainerClass{
+				Container: Container{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			ActionableIface: ActionableIface{
+			Actionable: Actionable{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableIface: ActivatableIface{
+			Activatable: Activatable{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		ActionableIface: ActionableIface{
+		Actionable: Actionable{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableIface: ActivatableIface{
+		Activatable: Activatable{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
+func marshalSeparatorMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparatorMenuItem(obj), nil
+	return wrapSeparatorMenuItemmer(obj), nil
 }
 
 // NewSeparatorMenuItem creates a new SeparatorMenuItem.
-func NewSeparatorMenuItem() *SeparatorMenuItemClass {
+func NewSeparatorMenuItem() *SeparatorMenuItem {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_separator_menu_item_new()
 
-	var _separatorMenuItem *SeparatorMenuItemClass // out
+	var _separatorMenuItem *SeparatorMenuItem // out
 
-	_separatorMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeparatorMenuItemClass)
+	_separatorMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeparatorMenuItem)
 
 	return _separatorMenuItem
 }
 
-func (*SeparatorMenuItemClass) privateSeparatorMenuItemClass() {}
+func (*SeparatorMenuItem) privateSeparatorMenuItem() {}

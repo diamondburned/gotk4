@@ -19,8 +19,20 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_clipboard_get_type()), F: marshalClipboard},
+		{T: externglib.Type(C.gdk_clipboard_get_type()), F: marshalClipboarder},
 	})
+}
+
+// Clipboarder describes Clipboard's methods.
+type Clipboarder interface {
+	gextras.Objector
+
+	Content() *ContentProvider
+	Display() *Display
+	Formats() *ContentFormats
+	IsLocal() bool
+	SetContent(provider ContentProviderrer) bool
+	SetValue(value *externglib.Value)
 }
 
 // Clipboard: the `GdkClipboard` object represents data shared between
@@ -40,68 +52,29 @@ func init() {
 // [method@Gdk.Clipboard.read_text_async] or
 // [method@Gdk.Clipboard.read_texture_async]. For other data, use
 // [method@Gdk.Clipboard.read_async], which provides a `GInputStream` object.
-type Clipboard interface {
-	gextras.Objector
-
-	// Content returns the `GdkContentProvider` currently set on @clipboard.
-	//
-	// If the @clipboard is empty or its contents are not owned by the current
-	// process, nil will be returned.
-	Content() *ContentProviderClass
-	// Display gets the `GdkDisplay` that the clipboard was created for.
-	Display() *DisplayClass
-	// Formats gets the formats that the clipboard can provide its current
-	// contents in.
-	Formats() *ContentFormats
-	// IsLocal returns if the clipboard is local.
-	//
-	// A clipboard is considered local if it was last claimed by the running
-	// application.
-	//
-	// Note that [method@Gdk.Clipboard.get_content] may return nil even on a
-	// local clipboard. In this case the clipboard is empty.
-	IsLocal() bool
-	// SetContent sets a new content provider on @clipboard.
-	//
-	// The clipboard will claim the `GdkDisplay`'s resources and advertise these
-	// new contents to other applications.
-	//
-	// In the rare case of a failure, this function will return false. The
-	// clipboard will then continue reporting its old contents and ignore
-	// @provider.
-	//
-	// If the contents are read by either an external application or the
-	// @clipboard's read functions, @clipboard will select the best format to
-	// transfer the contents and then request that format from @provider.
-	SetContent(provider ContentProvider) bool
-	// SetValue sets the @clipboard to contain the given @value.
-	SetValue(value *externglib.Value)
-}
-
-// ClipboardClass implements the Clipboard interface.
-type ClipboardClass struct {
+type Clipboard struct {
 	*externglib.Object
 }
 
-var _ Clipboard = (*ClipboardClass)(nil)
+var _ Clipboarder = (*Clipboard)(nil)
 
-func wrapClipboard(obj *externglib.Object) Clipboard {
-	return &ClipboardClass{
+func wrapClipboarder(obj *externglib.Object) Clipboarder {
+	return &Clipboard{
 		Object: obj,
 	}
 }
 
-func marshalClipboard(p uintptr) (interface{}, error) {
+func marshalClipboarder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapClipboard(obj), nil
+	return wrapClipboarder(obj), nil
 }
 
 // Content returns the `GdkContentProvider` currently set on @clipboard.
 //
 // If the @clipboard is empty or its contents are not owned by the current
 // process, nil will be returned.
-func (clipboard *ClipboardClass) Content() *ContentProviderClass {
+func (clipboard *Clipboard) Content() *ContentProvider {
 	var _arg0 *C.GdkClipboard       // out
 	var _cret *C.GdkContentProvider // in
 
@@ -109,15 +82,15 @@ func (clipboard *ClipboardClass) Content() *ContentProviderClass {
 
 	_cret = C.gdk_clipboard_get_content(_arg0)
 
-	var _contentProvider *ContentProviderClass // out
+	var _contentProvider *ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ContentProviderClass)
+	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ContentProvider)
 
 	return _contentProvider
 }
 
 // Display gets the `GdkDisplay` that the clipboard was created for.
-func (clipboard *ClipboardClass) Display() *DisplayClass {
+func (clipboard *Clipboard) Display() *Display {
 	var _arg0 *C.GdkClipboard // out
 	var _cret *C.GdkDisplay   // in
 
@@ -125,16 +98,16 @@ func (clipboard *ClipboardClass) Display() *DisplayClass {
 
 	_cret = C.gdk_clipboard_get_display(_arg0)
 
-	var _display *DisplayClass // out
+	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayClass)
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
 
 	return _display
 }
 
 // Formats gets the formats that the clipboard can provide its current contents
 // in.
-func (clipboard *ClipboardClass) Formats() *ContentFormats {
+func (clipboard *Clipboard) Formats() *ContentFormats {
 	var _arg0 *C.GdkClipboard      // out
 	var _cret *C.GdkContentFormats // in
 
@@ -160,7 +133,7 @@ func (clipboard *ClipboardClass) Formats() *ContentFormats {
 //
 // Note that [method@Gdk.Clipboard.get_content] may return nil even on a local
 // clipboard. In this case the clipboard is empty.
-func (clipboard *ClipboardClass) IsLocal() bool {
+func (clipboard *Clipboard) IsLocal() bool {
 	var _arg0 *C.GdkClipboard // out
 	var _cret C.gboolean      // in
 
@@ -188,7 +161,7 @@ func (clipboard *ClipboardClass) IsLocal() bool {
 // If the contents are read by either an external application or the
 // @clipboard's read functions, @clipboard will select the best format to
 // transfer the contents and then request that format from @provider.
-func (clipboard *ClipboardClass) SetContent(provider ContentProvider) bool {
+func (clipboard *Clipboard) SetContent(provider ContentProviderrer) bool {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg1 *C.GdkContentProvider // out
 	var _cret C.gboolean            // in
@@ -208,7 +181,7 @@ func (clipboard *ClipboardClass) SetContent(provider ContentProvider) bool {
 }
 
 // SetValue sets the @clipboard to contain the given @value.
-func (clipboard *ClipboardClass) SetValue(value *externglib.Value) {
+func (clipboard *Clipboard) SetValue(value *externglib.Value) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GValue       // out
 

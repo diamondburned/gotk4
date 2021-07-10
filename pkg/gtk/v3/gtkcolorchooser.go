@@ -21,20 +21,30 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_get_type()), F: marshalColorChooser},
+		{T: externglib.Type(C.gtk_color_chooser_get_type()), F: marshalColorChooserrer},
 	})
 }
 
-// ColorChooserOverrider contains methods that are overridable.
+// ColorChooserrerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ColorChooserOverrider interface {
+type ColorChooserrerOverrider interface {
 	ColorActivated(color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
 	RGBA() gdk.RGBA
 	// SetRGBA sets the color.
 	SetRGBA(color *gdk.RGBA)
+}
+
+// ColorChooserrer describes ColorChooser's methods.
+type ColorChooserrer interface {
+	gextras.Objector
+
+	RGBA() gdk.RGBA
+	UseAlpha() bool
+	SetRGBA(color *gdk.RGBA)
+	SetUseAlpha(useAlpha bool)
 }
 
 // ColorChooser is an interface that is implemented by widgets for choosing
@@ -43,41 +53,26 @@ type ColorChooserOverrider interface {
 //
 // In GTK+, the main widgets that implement this interface are
 // ColorChooserWidget, ColorChooserDialog and ColorButton.
-type ColorChooser interface {
-	gextras.Objector
-
-	// RGBA gets the currently-selected color.
-	RGBA() gdk.RGBA
-	// UseAlpha returns whether the color chooser shows the alpha channel.
-	UseAlpha() bool
-	// SetRGBA sets the color.
-	SetRGBA(color *gdk.RGBA)
-	// SetUseAlpha sets whether or not the color chooser should use the alpha
-	// channel.
-	SetUseAlpha(useAlpha bool)
-}
-
-// ColorChooserIface implements the ColorChooser interface.
-type ColorChooserIface struct {
+type ColorChooser struct {
 	*externglib.Object
 }
 
-var _ ColorChooser = (*ColorChooserIface)(nil)
+var _ ColorChooserrer = (*ColorChooser)(nil)
 
-func wrapColorChooser(obj *externglib.Object) ColorChooser {
-	return &ColorChooserIface{
+func wrapColorChooserrer(obj *externglib.Object) ColorChooserrer {
+	return &ColorChooser{
 		Object: obj,
 	}
 }
 
-func marshalColorChooser(p uintptr) (interface{}, error) {
+func marshalColorChooserrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorChooser(obj), nil
+	return wrapColorChooserrer(obj), nil
 }
 
 // RGBA gets the currently-selected color.
-func (chooser *ColorChooserIface) RGBA() gdk.RGBA {
+func (chooser *ColorChooser) RGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GdkRGBA          // in
 
@@ -93,7 +88,7 @@ func (chooser *ColorChooserIface) RGBA() gdk.RGBA {
 }
 
 // UseAlpha returns whether the color chooser shows the alpha channel.
-func (chooser *ColorChooserIface) UseAlpha() bool {
+func (chooser *ColorChooser) UseAlpha() bool {
 	var _arg0 *C.GtkColorChooser // out
 	var _cret C.gboolean         // in
 
@@ -111,7 +106,7 @@ func (chooser *ColorChooserIface) UseAlpha() bool {
 }
 
 // SetRGBA sets the color.
-func (chooser *ColorChooserIface) SetRGBA(color *gdk.RGBA) {
+func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 *C.GdkRGBA         // out
 
@@ -123,7 +118,7 @@ func (chooser *ColorChooserIface) SetRGBA(color *gdk.RGBA) {
 
 // SetUseAlpha sets whether or not the color chooser should use the alpha
 // channel.
-func (chooser *ColorChooserIface) SetUseAlpha(useAlpha bool) {
+func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.gboolean         // out
 

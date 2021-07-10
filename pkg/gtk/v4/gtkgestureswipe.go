@@ -18,8 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_swipe_get_type()), F: marshalGestureSwipe},
+		{T: externglib.Type(C.gtk_gesture_swipe_get_type()), F: marshalGestureSwiper},
 	})
+}
+
+// GestureSwiper describes GestureSwipe's methods.
+type GestureSwiper interface {
+	gextras.Objector
+
+	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
 // GestureSwipe: `GtkGestureSwipe` is a `GtkGesture` for swipe gestures.
@@ -33,29 +40,17 @@ func init() {
 // [signal@Gtk.Gesture::update] handler.
 //
 // All velocities are reported in pixels/sec units.
-type GestureSwipe interface {
-	gextras.Objector
-
-	// Velocity gets the current velocity.
-	//
-	// If the gesture is recognized, this function returns true and fills in
-	// @velocity_x and @velocity_y with the recorded velocity, as per the last
-	// events processed.
-	Velocity() (velocityX float64, velocityY float64, ok bool)
+type GestureSwipe struct {
+	GestureSingle
 }
 
-// GestureSwipeClass implements the GestureSwipe interface.
-type GestureSwipeClass struct {
-	GestureSingleClass
-}
+var _ GestureSwiper = (*GestureSwipe)(nil)
 
-var _ GestureSwipe = (*GestureSwipeClass)(nil)
-
-func wrapGestureSwipe(obj *externglib.Object) GestureSwipe {
-	return &GestureSwipeClass{
-		GestureSingleClass: GestureSingleClass{
-			GestureClass: GestureClass{
-				EventControllerClass: EventControllerClass{
+func wrapGestureSwiper(obj *externglib.Object) GestureSwiper {
+	return &GestureSwipe{
+		GestureSingle: GestureSingle{
+			Gesture: Gesture{
+				EventController: EventController{
 					Object: obj,
 				},
 			},
@@ -63,21 +58,21 @@ func wrapGestureSwipe(obj *externglib.Object) GestureSwipe {
 	}
 }
 
-func marshalGestureSwipe(p uintptr) (interface{}, error) {
+func marshalGestureSwiper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureSwipe(obj), nil
+	return wrapGestureSwiper(obj), nil
 }
 
 // NewGestureSwipe returns a newly created `GtkGesture` that recognizes swipes.
-func NewGestureSwipe() *GestureSwipeClass {
+func NewGestureSwipe() *GestureSwipe {
 	var _cret *C.GtkGesture // in
 
 	_cret = C.gtk_gesture_swipe_new()
 
-	var _gestureSwipe *GestureSwipeClass // out
+	var _gestureSwipe *GestureSwipe // out
 
-	_gestureSwipe = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureSwipeClass)
+	_gestureSwipe = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureSwipe)
 
 	return _gestureSwipe
 }
@@ -87,7 +82,7 @@ func NewGestureSwipe() *GestureSwipeClass {
 // If the gesture is recognized, this function returns true and fills in
 // @velocity_x and @velocity_y with the recorded velocity, as per the last
 // events processed.
-func (gesture *GestureSwipeClass) Velocity() (velocityX float64, velocityY float64, ok bool) {
+func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
 	var _arg0 *C.GtkGestureSwipe // out
 	var _arg1 C.double           // in
 	var _arg2 C.double           // in

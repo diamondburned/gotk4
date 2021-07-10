@@ -19,35 +19,35 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_drag_get_type()), F: marshalX11Drag},
+		{T: externglib.Type(C.gdk_x11_drag_get_type()), F: marshalX11Dragger},
 	})
 }
 
-type X11Drag interface {
+// X11Dragger describes X11Drag's methods.
+type X11Dragger interface {
 	gextras.Objector
 
-	privateX11DragClass()
+	privateX11Drag()
 }
 
-// X11DragClass implements the X11Drag interface.
-type X11DragClass struct {
-	gdk.DragClass
+type X11Drag struct {
+	gdk.Drag
 }
 
-var _ X11Drag = (*X11DragClass)(nil)
+var _ X11Dragger = (*X11Drag)(nil)
 
-func wrapX11Drag(obj *externglib.Object) X11Drag {
-	return &X11DragClass{
-		DragClass: gdk.DragClass{
+func wrapX11Dragger(obj *externglib.Object) X11Dragger {
+	return &X11Drag{
+		Drag: gdk.Drag{
 			Object: obj,
 		},
 	}
 }
 
-func marshalX11Drag(p uintptr) (interface{}, error) {
+func marshalX11Dragger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Drag(obj), nil
+	return wrapX11Dragger(obj), nil
 }
 
-func (*X11DragClass) privateX11DragClass() {}
+func (*X11Drag) privateX11Drag() {}

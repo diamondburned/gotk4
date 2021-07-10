@@ -21,55 +21,55 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_menu_item_accessible_get_type()), F: marshalRadioMenuItemAccessible},
+		{T: externglib.Type(C.gtk_radio_menu_item_accessible_get_type()), F: marshalRadioMenuItemAccessibler},
 	})
 }
 
-type RadioMenuItemAccessible interface {
+// RadioMenuItemAccessibler describes RadioMenuItemAccessible's methods.
+type RadioMenuItemAccessibler interface {
 	gextras.Objector
 
-	privateRadioMenuItemAccessibleClass()
+	privateRadioMenuItemAccessible()
 }
 
-// RadioMenuItemAccessibleClass implements the RadioMenuItemAccessible interface.
-type RadioMenuItemAccessibleClass struct {
-	CheckMenuItemAccessibleClass
-	atk.ActionIface
+type RadioMenuItemAccessible struct {
+	CheckMenuItemAccessible
+	atk.Action
 }
 
-var _ RadioMenuItemAccessible = (*RadioMenuItemAccessibleClass)(nil)
+var _ RadioMenuItemAccessibler = (*RadioMenuItemAccessible)(nil)
 
-func wrapRadioMenuItemAccessible(obj *externglib.Object) RadioMenuItemAccessible {
-	return &RadioMenuItemAccessibleClass{
-		CheckMenuItemAccessibleClass: CheckMenuItemAccessibleClass{
-			MenuItemAccessibleClass: MenuItemAccessibleClass{
-				ContainerAccessibleClass: ContainerAccessibleClass{
-					WidgetAccessibleClass: WidgetAccessibleClass{
-						AccessibleClass: AccessibleClass{
-							ObjectClass: atk.ObjectClass{
+func wrapRadioMenuItemAccessibler(obj *externglib.Object) RadioMenuItemAccessibler {
+	return &RadioMenuItemAccessible{
+		CheckMenuItemAccessible: CheckMenuItemAccessible{
+			MenuItemAccessible: MenuItemAccessible{
+				ContainerAccessible: ContainerAccessible{
+					WidgetAccessible: WidgetAccessible{
+						Accessible: Accessible{
+							Object: atk.Object{
 								Object: obj,
 							},
 						},
 					},
 				},
-				ActionIface: atk.ActionIface{
+				Action: atk.Action{
 					Object: obj,
 				},
 			},
-			ActionIface: atk.ActionIface{
+			Action: atk.Action{
 				Object: obj,
 			},
 		},
-		ActionIface: atk.ActionIface{
+		Action: atk.Action{
 			Object: obj,
 		},
 	}
 }
 
-func marshalRadioMenuItemAccessible(p uintptr) (interface{}, error) {
+func marshalRadioMenuItemAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioMenuItemAccessible(obj), nil
+	return wrapRadioMenuItemAccessibler(obj), nil
 }
 
-func (*RadioMenuItemAccessibleClass) privateRadioMenuItemAccessibleClass() {}
+func (*RadioMenuItemAccessible) privateRadioMenuItemAccessible() {}

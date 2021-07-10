@@ -30,12 +30,6 @@ type Quaternion struct {
 	native C.graphene_quaternion_t
 }
 
-// WrapQuaternion wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapQuaternion(ptr unsafe.Pointer) *Quaternion {
-	return (*Quaternion)(ptr)
-}
-
 func marshalQuaternion(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Quaternion)(unsafe.Pointer(b)), nil
@@ -51,7 +45,7 @@ func NewQuaternionAlloc() *Quaternion {
 
 	_quaternion = (*Quaternion)(unsafe.Pointer(_cret))
 	runtime.SetFinalizer(_quaternion, func(v *Quaternion) {
-		C.free(unsafe.Pointer(v))
+		C.graphene_quaternion_free((*C.graphene_quaternion_t)(unsafe.Pointer(v)))
 	})
 
 	return _quaternion

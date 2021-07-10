@@ -88,12 +88,6 @@ type Rectangle struct {
 	native C.PangoRectangle
 }
 
-// WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
-	return (*Rectangle)(ptr)
-}
-
 // Native returns the underlying C source pointer.
 func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)

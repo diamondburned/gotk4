@@ -20,8 +20,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDrag},
+		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDragger},
 	})
+}
+
+// GestureDragger describes GestureDrag's methods.
+type GestureDragger interface {
+	gextras.Objector
+
+	Offset() (x float64, y float64, ok bool)
+	StartPoint() (x float64, y float64, ok bool)
 }
 
 // GestureDrag is a Gesture implementation that recognizes drag operations. The
@@ -29,31 +37,17 @@ func init() {
 // GestureDrag::drag-update and GestureDrag::drag-end signals, or the relevant
 // coordinates be extracted through gtk_gesture_drag_get_offset() and
 // gtk_gesture_drag_get_start_point().
-type GestureDrag interface {
-	gextras.Objector
-
-	// Offset: if the @gesture is active, this function returns true and fills
-	// in @x and @y with the coordinates of the current point, as an offset to
-	// the starting drag point.
-	Offset() (x float64, y float64, ok bool)
-	// StartPoint: if the @gesture is active, this function returns true and
-	// fills in @x and @y with the drag start coordinates, in window-relative
-	// coordinates.
-	StartPoint() (x float64, y float64, ok bool)
+type GestureDrag struct {
+	GestureSingle
 }
 
-// GestureDragClass implements the GestureDrag interface.
-type GestureDragClass struct {
-	GestureSingleClass
-}
+var _ GestureDragger = (*GestureDrag)(nil)
 
-var _ GestureDrag = (*GestureDragClass)(nil)
-
-func wrapGestureDrag(obj *externglib.Object) GestureDrag {
-	return &GestureDragClass{
-		GestureSingleClass: GestureSingleClass{
-			GestureClass: GestureClass{
-				EventControllerClass: EventControllerClass{
+func wrapGestureDragger(obj *externglib.Object) GestureDragger {
+	return &GestureDrag{
+		GestureSingle: GestureSingle{
+			Gesture: Gesture{
+				EventController: EventController{
 					Object: obj,
 				},
 			},
@@ -61,14 +55,14 @@ func wrapGestureDrag(obj *externglib.Object) GestureDrag {
 	}
 }
 
-func marshalGestureDrag(p uintptr) (interface{}, error) {
+func marshalGestureDragger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureDrag(obj), nil
+	return wrapGestureDragger(obj), nil
 }
 
 // NewGestureDrag returns a newly created Gesture that recognizes drags.
-func NewGestureDrag(widget Widget) *GestureDragClass {
+func NewGestureDrag(widget Widgetter) *GestureDrag {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
@@ -76,9 +70,9 @@ func NewGestureDrag(widget Widget) *GestureDragClass {
 
 	_cret = C.gtk_gesture_drag_new(_arg1)
 
-	var _gestureDrag *GestureDragClass // out
+	var _gestureDrag *GestureDrag // out
 
-	_gestureDrag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureDragClass)
+	_gestureDrag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureDrag)
 
 	return _gestureDrag
 }
@@ -86,7 +80,7 @@ func NewGestureDrag(widget Widget) *GestureDragClass {
 // Offset: if the @gesture is active, this function returns true and fills in @x
 // and @y with the coordinates of the current point, as an offset to the
 // starting drag point.
-func (gesture *GestureDragClass) Offset() (x float64, y float64, ok bool) {
+func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
 	var _arg1 C.gdouble         // in
 	var _arg2 C.gdouble         // in
@@ -111,7 +105,7 @@ func (gesture *GestureDragClass) Offset() (x float64, y float64, ok bool) {
 
 // StartPoint: if the @gesture is active, this function returns true and fills
 // in @x and @y with the drag start coordinates, in window-relative coordinates.
-func (gesture *GestureDragClass) StartPoint() (x float64, y float64, ok bool) {
+func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
 	var _arg1 C.gdouble         // in
 	var _arg2 C.gdouble         // in

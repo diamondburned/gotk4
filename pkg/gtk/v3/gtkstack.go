@@ -21,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_stack_transition_type_get_type()), F: marshalStackTransitionType},
-		{T: externglib.Type(C.gtk_stack_get_type()), F: marshalStack},
+		{T: externglib.Type(C.gtk_stack_get_type()), F: marshalStacker},
 	})
 }
 
@@ -82,6 +82,31 @@ func marshalStackTransitionType(p uintptr) (interface{}, error) {
 	return StackTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Stacker describes Stack's methods.
+type Stacker interface {
+	gextras.Objector
+
+	AddNamed(child Widgetter, name string)
+	AddTitled(child Widgetter, name string, title string)
+	ChildByName(name string) *Widget
+	Hhomogeneous() bool
+	Homogeneous() bool
+	InterpolateSize() bool
+	TransitionDuration() uint
+	TransitionRunning() bool
+	TransitionType() StackTransitionType
+	Vhomogeneous() bool
+	VisibleChild() *Widget
+	VisibleChildName() string
+	SetHhomogeneous(hhomogeneous bool)
+	SetHomogeneous(homogeneous bool)
+	SetInterpolateSize(interpolateSize bool)
+	SetTransitionDuration(duration uint)
+	SetVhomogeneous(vhomogeneous bool)
+	SetVisibleChild(child Widgetter)
+	SetVisibleChildName(name string)
+}
+
 // Stack: the GtkStack widget is a container which only shows one of its
 // children at a time. In contrast to GtkNotebook, GtkStack does not provide a
 // means for users to change the visible child. Instead, the StackSwitcher
@@ -97,146 +122,59 @@ func marshalStackTransitionType(p uintptr) (interface{}, error) {
 // CSS nodes
 //
 // GtkStack has a single CSS node named stack.
-type Stack interface {
-	gextras.Objector
-
-	// AddNamed adds a child to @stack. The child is identified by the @name.
-	AddNamed(child Widget, name string)
-	// AddTitled adds a child to @stack. The child is identified by the @name.
-	// The @title will be used by StackSwitcher to represent @child in a tab
-	// bar, so it should be short.
-	AddTitled(child Widget, name string, title string)
-	// ChildByName finds the child of the Stack with the name given as the
-	// argument. Returns nil if there is no child with this name.
-	ChildByName(name string) *WidgetClass
-	// Hhomogeneous gets whether @stack is horizontally homogeneous. See
-	// gtk_stack_set_hhomogeneous().
-	Hhomogeneous() bool
-	// Homogeneous gets whether @stack is homogeneous. See
-	// gtk_stack_set_homogeneous().
-	Homogeneous() bool
-	// InterpolateSize returns wether the Stack is set up to interpolate between
-	// the sizes of children on page switch.
-	InterpolateSize() bool
-	// TransitionDuration returns the amount of time (in milliseconds) that
-	// transitions between pages in @stack will take.
-	TransitionDuration() uint
-	// TransitionRunning returns whether the @stack is currently in a transition
-	// from one page to another.
-	TransitionRunning() bool
-	// TransitionType gets the type of animation that will be used for
-	// transitions between pages in @stack.
-	TransitionType() StackTransitionType
-	// Vhomogeneous gets whether @stack is vertically homogeneous. See
-	// gtk_stack_set_vhomogeneous().
-	Vhomogeneous() bool
-	// VisibleChild gets the currently visible child of @stack, or nil if there
-	// are no visible children.
-	VisibleChild() *WidgetClass
-	// VisibleChildName returns the name of the currently visible child of
-	// @stack, or nil if there is no visible child.
-	VisibleChildName() string
-	// SetHhomogeneous sets the Stack to be horizontally homogeneous or not. If
-	// it is homogeneous, the Stack will request the same width for all its
-	// children. If it isn't, the stack may change width when a different child
-	// becomes visible.
-	SetHhomogeneous(hhomogeneous bool)
-	// SetHomogeneous sets the Stack to be homogeneous or not. If it is
-	// homogeneous, the Stack will request the same size for all its children.
-	// If it isn't, the stack may change size when a different child becomes
-	// visible.
-	//
-	// Since 3.16, homogeneity can be controlled separately for horizontal and
-	// vertical size, with the Stack:hhomogeneous and Stack:vhomogeneous.
-	SetHomogeneous(homogeneous bool)
-	// SetInterpolateSize sets whether or not @stack will interpolate its size
-	// when changing the visible child. If the Stack:interpolate-size property
-	// is set to true, @stack will interpolate its size between the current one
-	// and the one it'll take after changing the visible child, according to the
-	// set transition duration.
-	SetInterpolateSize(interpolateSize bool)
-	// SetTransitionDuration sets the duration that transitions between pages in
-	// @stack will take.
-	SetTransitionDuration(duration uint)
-	// SetVhomogeneous sets the Stack to be vertically homogeneous or not. If it
-	// is homogeneous, the Stack will request the same height for all its
-	// children. If it isn't, the stack may change height when a different child
-	// becomes visible.
-	SetVhomogeneous(vhomogeneous bool)
-	// SetVisibleChild makes @child the visible child of @stack.
-	//
-	// If @child is different from the currently visible child, the transition
-	// between the two will be animated with the current transition type of
-	// @stack.
-	//
-	// Note that the @child widget has to be visible itself (see
-	// gtk_widget_show()) in order to become the visible child of @stack.
-	SetVisibleChild(child Widget)
-	// SetVisibleChildName makes the child with the given name visible.
-	//
-	// If @child is different from the currently visible child, the transition
-	// between the two will be animated with the current transition type of
-	// @stack.
-	//
-	// Note that the child widget has to be visible itself (see
-	// gtk_widget_show()) in order to become the visible child of @stack.
-	SetVisibleChildName(name string)
-}
-
-// StackClass implements the Stack interface.
-type StackClass struct {
+type Stack struct {
 	*externglib.Object
-	ContainerClass
-	BuildableIface
+	Container
+	Buildable
 }
 
-var _ Stack = (*StackClass)(nil)
+var _ Stacker = (*Stack)(nil)
 
-func wrapStack(obj *externglib.Object) Stack {
-	return &StackClass{
+func wrapStacker(obj *externglib.Object) Stacker {
+	return &Stack{
 		Object: obj,
-		ContainerClass: ContainerClass{
+		Container: Container{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
 	}
 }
 
-func marshalStack(p uintptr) (interface{}, error) {
+func marshalStacker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStack(obj), nil
+	return wrapStacker(obj), nil
 }
 
 // NewStack creates a new Stack container.
-func NewStack() *StackClass {
+func NewStack() *Stack {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_stack_new()
 
-	var _stack *StackClass // out
+	var _stack *Stack // out
 
-	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackClass)
+	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Stack)
 
 	return _stack
 }
 
 // AddNamed adds a child to @stack. The child is identified by the @name.
-func (stack *StackClass) AddNamed(child Widget, name string) {
+func (stack *Stack) AddNamed(child Widgetter, name string) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -252,7 +190,7 @@ func (stack *StackClass) AddNamed(child Widget, name string) {
 // AddTitled adds a child to @stack. The child is identified by the @name. The
 // @title will be used by StackSwitcher to represent @child in a tab bar, so it
 // should be short.
-func (stack *StackClass) AddTitled(child Widget, name string, title string) {
+func (stack *Stack) AddTitled(child Widgetter, name string, title string) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -270,7 +208,7 @@ func (stack *StackClass) AddTitled(child Widget, name string, title string) {
 
 // ChildByName finds the child of the Stack with the name given as the argument.
 // Returns nil if there is no child with this name.
-func (stack *StackClass) ChildByName(name string) *WidgetClass {
+func (stack *Stack) ChildByName(name string) *Widget {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -281,16 +219,16 @@ func (stack *StackClass) ChildByName(name string) *WidgetClass {
 
 	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // Hhomogeneous gets whether @stack is horizontally homogeneous. See
 // gtk_stack_set_hhomogeneous().
-func (stack *StackClass) Hhomogeneous() bool {
+func (stack *Stack) Hhomogeneous() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
 
@@ -309,7 +247,7 @@ func (stack *StackClass) Hhomogeneous() bool {
 
 // Homogeneous gets whether @stack is homogeneous. See
 // gtk_stack_set_homogeneous().
-func (stack *StackClass) Homogeneous() bool {
+func (stack *Stack) Homogeneous() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
 
@@ -328,7 +266,7 @@ func (stack *StackClass) Homogeneous() bool {
 
 // InterpolateSize returns wether the Stack is set up to interpolate between the
 // sizes of children on page switch.
-func (stack *StackClass) InterpolateSize() bool {
+func (stack *Stack) InterpolateSize() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
 
@@ -347,7 +285,7 @@ func (stack *StackClass) InterpolateSize() bool {
 
 // TransitionDuration returns the amount of time (in milliseconds) that
 // transitions between pages in @stack will take.
-func (stack *StackClass) TransitionDuration() uint {
+func (stack *Stack) TransitionDuration() uint {
 	var _arg0 *C.GtkStack // out
 	var _cret C.guint     // in
 
@@ -364,7 +302,7 @@ func (stack *StackClass) TransitionDuration() uint {
 
 // TransitionRunning returns whether the @stack is currently in a transition
 // from one page to another.
-func (stack *StackClass) TransitionRunning() bool {
+func (stack *Stack) TransitionRunning() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
 
@@ -383,7 +321,7 @@ func (stack *StackClass) TransitionRunning() bool {
 
 // TransitionType gets the type of animation that will be used for transitions
 // between pages in @stack.
-func (stack *StackClass) TransitionType() StackTransitionType {
+func (stack *Stack) TransitionType() StackTransitionType {
 	var _arg0 *C.GtkStack              // out
 	var _cret C.GtkStackTransitionType // in
 
@@ -400,7 +338,7 @@ func (stack *StackClass) TransitionType() StackTransitionType {
 
 // Vhomogeneous gets whether @stack is vertically homogeneous. See
 // gtk_stack_set_vhomogeneous().
-func (stack *StackClass) Vhomogeneous() bool {
+func (stack *Stack) Vhomogeneous() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
 
@@ -419,7 +357,7 @@ func (stack *StackClass) Vhomogeneous() bool {
 
 // VisibleChild gets the currently visible child of @stack, or nil if there are
 // no visible children.
-func (stack *StackClass) VisibleChild() *WidgetClass {
+func (stack *Stack) VisibleChild() *Widget {
 	var _arg0 *C.GtkStack  // out
 	var _cret *C.GtkWidget // in
 
@@ -427,16 +365,16 @@ func (stack *StackClass) VisibleChild() *WidgetClass {
 
 	_cret = C.gtk_stack_get_visible_child(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // VisibleChildName returns the name of the currently visible child of @stack,
 // or nil if there is no visible child.
-func (stack *StackClass) VisibleChildName() string {
+func (stack *Stack) VisibleChildName() string {
 	var _arg0 *C.GtkStack // out
 	var _cret *C.gchar    // in
 
@@ -455,7 +393,7 @@ func (stack *StackClass) VisibleChildName() string {
 // is homogeneous, the Stack will request the same width for all its children.
 // If it isn't, the stack may change width when a different child becomes
 // visible.
-func (stack *StackClass) SetHhomogeneous(hhomogeneous bool) {
+func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
 
@@ -473,7 +411,7 @@ func (stack *StackClass) SetHhomogeneous(hhomogeneous bool) {
 //
 // Since 3.16, homogeneity can be controlled separately for horizontal and
 // vertical size, with the Stack:hhomogeneous and Stack:vhomogeneous.
-func (stack *StackClass) SetHomogeneous(homogeneous bool) {
+func (stack *Stack) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
 
@@ -490,7 +428,7 @@ func (stack *StackClass) SetHomogeneous(homogeneous bool) {
 // true, @stack will interpolate its size between the current one and the one
 // it'll take after changing the visible child, according to the set transition
 // duration.
-func (stack *StackClass) SetInterpolateSize(interpolateSize bool) {
+func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
 
@@ -504,7 +442,7 @@ func (stack *StackClass) SetInterpolateSize(interpolateSize bool) {
 
 // SetTransitionDuration sets the duration that transitions between pages in
 // @stack will take.
-func (stack *StackClass) SetTransitionDuration(duration uint) {
+func (stack *Stack) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.guint     // out
 
@@ -517,7 +455,7 @@ func (stack *StackClass) SetTransitionDuration(duration uint) {
 // SetVhomogeneous sets the Stack to be vertically homogeneous or not. If it is
 // homogeneous, the Stack will request the same height for all its children. If
 // it isn't, the stack may change height when a different child becomes visible.
-func (stack *StackClass) SetVhomogeneous(vhomogeneous bool) {
+func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
 
@@ -536,7 +474,7 @@ func (stack *StackClass) SetVhomogeneous(vhomogeneous bool) {
 //
 // Note that the @child widget has to be visible itself (see gtk_widget_show())
 // in order to become the visible child of @stack.
-func (stack *StackClass) SetVisibleChild(child Widget) {
+func (stack *Stack) SetVisibleChild(child Widgetter) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -553,7 +491,7 @@ func (stack *StackClass) SetVisibleChild(child Widget) {
 //
 // Note that the child widget has to be visible itself (see gtk_widget_show())
 // in order to become the visible child of @stack.
-func (stack *StackClass) SetVisibleChildName(name string) {
+func (stack *Stack) SetVisibleChildName(name string) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 *C.gchar    // out
 

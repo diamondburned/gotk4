@@ -18,33 +18,33 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_device_manager_xi2_get_type()), F: marshalX11DeviceManagerXI2},
+		{T: externglib.Type(C.gdk_x11_device_manager_xi2_get_type()), F: marshalX11DeviceManagerXI2er},
 	})
 }
 
-type X11DeviceManagerXI2 interface {
+// X11DeviceManagerXI2er describes X11DeviceManagerXI2's methods.
+type X11DeviceManagerXI2er interface {
 	gextras.Objector
 
-	privateX11DeviceManagerXI2Class()
+	privateX11DeviceManagerXI2()
 }
 
-// X11DeviceManagerXI2Class implements the X11DeviceManagerXI2 interface.
-type X11DeviceManagerXI2Class struct {
+type X11DeviceManagerXI2 struct {
 	*externglib.Object
 }
 
-var _ X11DeviceManagerXI2 = (*X11DeviceManagerXI2Class)(nil)
+var _ X11DeviceManagerXI2er = (*X11DeviceManagerXI2)(nil)
 
-func wrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
-	return &X11DeviceManagerXI2Class{
+func wrapX11DeviceManagerXI2er(obj *externglib.Object) X11DeviceManagerXI2er {
+	return &X11DeviceManagerXI2{
 		Object: obj,
 	}
 }
 
-func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {
+func marshalX11DeviceManagerXI2er(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11DeviceManagerXI2(obj), nil
+	return wrapX11DeviceManagerXI2er(obj), nil
 }
 
-func (*X11DeviceManagerXI2Class) privateX11DeviceManagerXI2Class() {}
+func (*X11DeviceManagerXI2) privateX11DeviceManagerXI2() {}

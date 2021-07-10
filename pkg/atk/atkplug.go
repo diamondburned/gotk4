@@ -18,79 +18,62 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_plug_get_type()), F: marshalPlug},
+		{T: externglib.Type(C.atk_plug_get_type()), F: marshalPlugger},
 	})
 }
 
-// PlugOverrider contains methods that are overridable.
+// PluggerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PlugOverrider interface {
+type PluggerOverrider interface {
 	ObjectID() string
 }
 
-// Plug: see Socket
-type Plug interface {
+// Plugger describes Plug's methods.
+type Plugger interface {
 	gextras.Objector
 
-	// ID gets the unique ID of an Plug object, which can be used to embed
-	// inside of an Socket using atk_socket_embed().
-	//
-	// Internally, this calls a class function that should be registered by the
-	// IPC layer (usually at-spi2-atk). The implementor of an Plug object should
-	// call this function (after atk-bridge is loaded) and pass the value to the
-	// process implementing the Socket, so it could embed the plug.
 	ID() string
-	// SetChild sets @child as accessible child of @plug and @plug as accessible
-	// parent of @child. @child can be NULL.
-	//
-	// In some cases, one can not use the AtkPlug type directly as accessible
-	// object for the toplevel widget of the application. For instance in the
-	// gtk case, GtkPlugAccessible can not inherit both from GtkWindowAccessible
-	// and from AtkPlug. In such a case, one can create, in addition to the
-	// standard accessible object for the toplevel widget, an AtkPlug object,
-	// and make the former the child of the latter by calling
-	// atk_plug_set_child().
-	SetChild(child Object)
+	SetChild(child Objecter)
 }
 
-// PlugClass implements the Plug interface.
-type PlugClass struct {
+// Plug: see Socket
+type Plug struct {
 	*externglib.Object
-	ObjectClass
-	ComponentIface
+	Object
+	Component
 }
 
-var _ Plug = (*PlugClass)(nil)
+var _ Plugger = (*Plug)(nil)
 
-func wrapPlug(obj *externglib.Object) Plug {
-	return &PlugClass{
+func wrapPlugger(obj *externglib.Object) Plugger {
+	return &Plug{
 		Object: obj,
-		ObjectClass: ObjectClass{
+		Object: Object{
 			Object: obj,
 		},
-		ComponentIface: ComponentIface{
+		Component: Component{
 			Object: obj,
 		},
 	}
 }
 
-func marshalPlug(p uintptr) (interface{}, error) {
+func marshalPlugger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlug(obj), nil
+	return wrapPlugger(obj), nil
 }
 
 // NewPlug creates a new Plug instance.
-func NewPlug() *PlugClass {
+func NewPlug() *Plug {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_plug_new()
 
-	var _plug *PlugClass // out
+	var _plug *Plug // out
 
-	_plug = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PlugClass)
+	_plug = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Plug)
 
 	return _plug
 }
@@ -102,7 +85,7 @@ func NewPlug() *PlugClass {
 // layer (usually at-spi2-atk). The implementor of an Plug object should call
 // this function (after atk-bridge is loaded) and pass the value to the process
 // implementing the Socket, so it could embed the plug.
-func (plug *PlugClass) ID() string {
+func (plug *Plug) ID() string {
 	var _arg0 *C.AtkPlug // out
 	var _cret *C.gchar   // in
 
@@ -127,7 +110,7 @@ func (plug *PlugClass) ID() string {
 // AtkPlug. In such a case, one can create, in addition to the standard
 // accessible object for the toplevel widget, an AtkPlug object, and make the
 // former the child of the latter by calling atk_plug_set_child().
-func (plug *PlugClass) SetChild(child Object) {
+func (plug *Plug) SetChild(child Objecter) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
 

@@ -18,8 +18,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_down_get_type()), F: marshalDropDown},
+		{T: externglib.Type(C.gtk_drop_down_get_type()), F: marshalDropDowner},
 	})
+}
+
+// DropDowner describes DropDown's methods.
+type DropDowner interface {
+	gextras.Objector
+
+	EnableSearch() bool
+	Expression() *Expression
+	Factory() *ListItemFactory
+	ListFactory() *ListItemFactory
+	Selected() uint
+	SelectedItem() *externglib.Object
+	SetEnableSearch(enableSearch bool)
+	SetExpression(expression Expressioner)
+	SetFactory(factory yier)
+	SetListFactory(factory yier)
+	SetSelected(position uint)
 }
 
 // DropDown: `GtkDropDown` is a widget that allows the user to choose an item
@@ -51,102 +68,55 @@ func init() {
 // Accessibility
 //
 // `GtkDropDown` uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
-type DropDown interface {
-	gextras.Objector
-
-	// EnableSearch returns whether search is enabled.
-	EnableSearch() bool
-	// Expression gets the expression set that is used to obtain strings from
-	// items.
-	//
-	// See [method@Gtk.DropDown.set_expression].
-	Expression() *ExpressionClass
-	// Factory gets the factory that's currently used to populate list items.
-	//
-	// The factory returned by this function is always used for the item in the
-	// button. It is also used for items in the popup if
-	// [property@Gtk.DropDown:list-factory] is not set.
-	Factory() *ListItemFactoryClass
-	// ListFactory gets the factory that's currently used to populate list items
-	// in the popup.
-	ListFactory() *ListItemFactoryClass
-	// Selected gets the position of the selected item.
-	Selected() uint
-	// SelectedItem gets the selected item. If no item is selected, nil is
-	// returned.
-	SelectedItem() *externglib.Object
-	// SetEnableSearch sets whether a search entry will be shown in the popup
-	// that allows to search for items in the list.
-	//
-	// Note that [property@Gtk.DropDown:expression] must be set for search to
-	// work.
-	SetEnableSearch(enableSearch bool)
-	// SetExpression sets the expression that gets evaluated to obtain strings
-	// from items.
-	//
-	// This is used for search in the popup. The expression must have a value
-	// type of G_TYPE_STRING.
-	SetExpression(expression Expression)
-	// SetFactory sets the `GtkListItemFactory` to use for populating list
-	// items.
-	SetFactory(factory ListItemFactory)
-	// SetListFactory sets the `GtkListItemFactory` to use for populating list
-	// items in the popup.
-	SetListFactory(factory ListItemFactory)
-	// SetSelected selects the item at the given position.
-	SetSelected(position uint)
-}
-
-// DropDownClass implements the DropDown interface.
-type DropDownClass struct {
+type DropDown struct {
 	*externglib.Object
-	WidgetClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
+	Widget
+	Accessible
+	Buildable
+	ConstraintTarget
 }
 
-var _ DropDown = (*DropDownClass)(nil)
+var _ DropDowner = (*DropDown)(nil)
 
-func wrapDropDown(obj *externglib.Object) DropDown {
-	return &DropDownClass{
+func wrapDropDowner(obj *externglib.Object) DropDowner {
+	return &DropDown{
 		Object: obj,
-		WidgetClass: WidgetClass{
+		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
 }
 
-func marshalDropDown(p uintptr) (interface{}, error) {
+func marshalDropDowner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropDown(obj), nil
+	return wrapDropDowner(obj), nil
 }
 
 // NewDropDownFromStrings creates a new `GtkDropDown` that is populated with the
 // strings.
-func NewDropDownFromStrings(strings []string) *DropDownClass {
+func NewDropDownFromStrings(strings []string) *DropDown {
 	var _arg1 **C.char
 	var _cret *C.GtkWidget // in
 
@@ -162,15 +132,15 @@ func NewDropDownFromStrings(strings []string) *DropDownClass {
 
 	_cret = C.gtk_drop_down_new_from_strings(_arg1)
 
-	var _dropDown *DropDownClass // out
+	var _dropDown *DropDown // out
 
-	_dropDown = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DropDownClass)
+	_dropDown = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DropDown)
 
 	return _dropDown
 }
 
 // EnableSearch returns whether search is enabled.
-func (self *DropDownClass) EnableSearch() bool {
+func (self *DropDown) EnableSearch() bool {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gboolean     // in
 
@@ -190,7 +160,7 @@ func (self *DropDownClass) EnableSearch() bool {
 // Expression gets the expression set that is used to obtain strings from items.
 //
 // See [method@Gtk.DropDown.set_expression].
-func (self *DropDownClass) Expression() *ExpressionClass {
+func (self *DropDown) Expression() *Expression {
 	var _arg0 *C.GtkDropDown   // out
 	var _cret *C.GtkExpression // in
 
@@ -198,9 +168,9 @@ func (self *DropDownClass) Expression() *ExpressionClass {
 
 	_cret = C.gtk_drop_down_get_expression(_arg0)
 
-	var _expression *ExpressionClass // out
+	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ExpressionClass)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
 
 	return _expression
 }
@@ -210,7 +180,7 @@ func (self *DropDownClass) Expression() *ExpressionClass {
 // The factory returned by this function is always used for the item in the
 // button. It is also used for items in the popup if
 // [property@Gtk.DropDown:list-factory] is not set.
-func (self *DropDownClass) Factory() *ListItemFactoryClass {
+func (self *DropDown) Factory() *ListItemFactory {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
 
@@ -218,16 +188,16 @@ func (self *DropDownClass) Factory() *ListItemFactoryClass {
 
 	_cret = C.gtk_drop_down_get_factory(_arg0)
 
-	var _listItemFactory *ListItemFactoryClass // out
+	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactoryClass)
+	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
 
 	return _listItemFactory
 }
 
 // ListFactory gets the factory that's currently used to populate list items in
 // the popup.
-func (self *DropDownClass) ListFactory() *ListItemFactoryClass {
+func (self *DropDown) ListFactory() *ListItemFactory {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
 
@@ -235,15 +205,15 @@ func (self *DropDownClass) ListFactory() *ListItemFactoryClass {
 
 	_cret = C.gtk_drop_down_get_list_factory(_arg0)
 
-	var _listItemFactory *ListItemFactoryClass // out
+	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactoryClass)
+	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
 
 	return _listItemFactory
 }
 
 // Selected gets the position of the selected item.
-func (self *DropDownClass) Selected() uint {
+func (self *DropDown) Selected() uint {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.guint        // in
 
@@ -259,7 +229,7 @@ func (self *DropDownClass) Selected() uint {
 }
 
 // SelectedItem gets the selected item. If no item is selected, nil is returned.
-func (self *DropDownClass) SelectedItem() *externglib.Object {
+func (self *DropDown) SelectedItem() *externglib.Object {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gpointer     // in
 
@@ -278,7 +248,7 @@ func (self *DropDownClass) SelectedItem() *externglib.Object {
 // allows to search for items in the list.
 //
 // Note that [property@Gtk.DropDown:expression] must be set for search to work.
-func (self *DropDownClass) SetEnableSearch(enableSearch bool) {
+func (self *DropDown) SetEnableSearch(enableSearch bool) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.gboolean     // out
 
@@ -295,7 +265,7 @@ func (self *DropDownClass) SetEnableSearch(enableSearch bool) {
 //
 // This is used for search in the popup. The expression must have a value type
 // of G_TYPE_STRING.
-func (self *DropDownClass) SetExpression(expression Expression) {
+func (self *DropDown) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkDropDown   // out
 	var _arg1 *C.GtkExpression // out
 
@@ -306,7 +276,7 @@ func (self *DropDownClass) SetExpression(expression Expression) {
 }
 
 // SetFactory sets the `GtkListItemFactory` to use for populating list items.
-func (self *DropDownClass) SetFactory(factory ListItemFactory) {
+func (self *DropDown) SetFactory(factory yier) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -318,7 +288,7 @@ func (self *DropDownClass) SetFactory(factory ListItemFactory) {
 
 // SetListFactory sets the `GtkListItemFactory` to use for populating list items
 // in the popup.
-func (self *DropDownClass) SetListFactory(factory ListItemFactory) {
+func (self *DropDown) SetListFactory(factory yier) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -329,7 +299,7 @@ func (self *DropDownClass) SetListFactory(factory ListItemFactory) {
 }
 
 // SetSelected selects the item at the given position.
-func (self *DropDownClass) SetSelected(position uint) {
+func (self *DropDown) SetSelected(position uint) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.guint        // out
 

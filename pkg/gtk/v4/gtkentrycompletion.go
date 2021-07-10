@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_entry_completion_get_type()), F: marshalEntryCompletion},
+		{T: externglib.Type(C.gtk_entry_completion_get_type()), F: marshalEntryCompletioner},
 	})
 }
 
@@ -31,7 +31,7 @@ func init() {
 // g_utf8_casefold()). If this is not appropriate, match functions have access
 // to the unmodified key via `gtk_editable_get_text (GTK_EDITABLE
 // (gtk_entry_completion_get_entry ()))`.
-type EntryCompletionMatchFunc func(completion *EntryCompletionClass, key string, iter *TreeIter, userData interface{}) (ok bool)
+type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter, userData interface{}) (ok bool)
 
 //export gotk4_EntryCompletionMatchFunc
 func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
@@ -40,12 +40,12 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, ar
 		panic(`callback not found`)
 	}
 
-	var completion *EntryCompletionClass // out
-	var key string                       // out
-	var iter *TreeIter                   // out
-	var userData interface{}             // out
+	var completion *EntryCompletion // out
+	var key string                  // out
+	var iter *TreeIter              // out
+	var userData interface{}        // out
 
-	completion = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*EntryCompletionClass)
+	completion = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*EntryCompletion)
 	key = C.GoString(arg1)
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
 	userData = box.Get(uintptr(arg3))
@@ -58,6 +58,33 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, ar
 	}
 
 	return cret
+}
+
+// EntryCompletioner describes EntryCompletion's methods.
+type EntryCompletioner interface {
+	gextras.Objector
+
+	Complete()
+	ComputePrefix(key string) string
+	CompletionPrefix() string
+	Entry() *Widget
+	InlineCompletion() bool
+	InlineSelection() bool
+	MinimumKeyLength() int
+	Model() *TreeModel
+	PopupCompletion() bool
+	PopupSetWidth() bool
+	PopupSingleMatch() bool
+	TextColumn() int
+	InsertPrefix()
+	SetInlineCompletion(inlineCompletion bool)
+	SetInlineSelection(inlineSelection bool)
+	SetMinimumKeyLength(length int)
+	SetModel(model TreeModeller)
+	SetPopupCompletion(popupCompletion bool)
+	SetPopupSetWidth(popupSetWidth bool)
+	SetPopupSingleMatch(popupSingleMatch bool)
+	SetTextColumn(column int)
 }
 
 // EntryCompletion: `GtkEntryCompletion` is an auxiliary object to provide
@@ -96,133 +123,43 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, ar
 // [method@Gtk.TreeModelFilter.get_model]. Don’t forget to use
 // [method@Gtk.TreeModelFilter.convert_iter_to_child_iter] to obtain a matching
 // iter.
-type EntryCompletion interface {
-	gextras.Objector
-
-	// Complete requests a completion operation, or in other words a refiltering
-	// of the current list with completions, using the current key.
-	//
-	// The completion list view will be updated accordingly.
-	Complete()
-	// ComputePrefix computes the common prefix that is shared by all rows in
-	// @completion that start with @key.
-	//
-	// If no row matches @key, nil will be returned. Note that a text column
-	// must have been set for this function to work, see
-	// [method@Gtk.EntryCompletion.set_text_column] for details.
-	ComputePrefix(key string) string
-	// CompletionPrefix: get the original text entered by the user that
-	// triggered the completion or nil if there’s no completion ongoing.
-	CompletionPrefix() string
-	// Entry gets the entry @completion has been attached to.
-	Entry() *WidgetClass
-	// InlineCompletion returns whether the common prefix of the possible
-	// completions should be automatically inserted in the entry.
-	InlineCompletion() bool
-	// InlineSelection returns true if inline-selection mode is turned on.
-	InlineSelection() bool
-	// MinimumKeyLength returns the minimum key length as set for @completion.
-	MinimumKeyLength() int
-	// Model returns the model the `GtkEntryCompletion` is using as data source.
-	//
-	// Returns nil if the model is unset.
-	Model() *TreeModelIface
-	// PopupCompletion returns whether the completions should be presented in a
-	// popup window.
-	PopupCompletion() bool
-	// PopupSetWidth returns whether the completion popup window will be resized
-	// to the width of the entry.
-	PopupSetWidth() bool
-	// PopupSingleMatch returns whether the completion popup window will appear
-	// even if there is only a single match.
-	PopupSingleMatch() bool
-	// TextColumn returns the column in the model of @completion to get strings
-	// from.
-	TextColumn() int
-	// InsertPrefix requests a prefix insertion.
-	InsertPrefix()
-	// SetInlineCompletion sets whether the common prefix of the possible
-	// completions should be automatically inserted in the entry.
-	SetInlineCompletion(inlineCompletion bool)
-	// SetInlineSelection sets whether it is possible to cycle through the
-	// possible completions inside the entry.
-	SetInlineSelection(inlineSelection bool)
-	// SetMinimumKeyLength requires the length of the search key for @completion
-	// to be at least @length.
-	//
-	// This is useful for long lists, where completing using a small key takes a
-	// lot of time and will come up with meaningless results anyway (ie, a too
-	// large dataset).
-	SetMinimumKeyLength(length int)
-	// SetModel sets the model for a `GtkEntryCompletion`.
-	//
-	// If @completion already has a model set, it will remove it before setting
-	// the new model. If model is nil, then it will unset the model.
-	SetModel(model TreeModel)
-	// SetPopupCompletion sets whether the completions should be presented in a
-	// popup window.
-	SetPopupCompletion(popupCompletion bool)
-	// SetPopupSetWidth sets whether the completion popup window will be resized
-	// to be the same width as the entry.
-	SetPopupSetWidth(popupSetWidth bool)
-	// SetPopupSingleMatch sets whether the completion popup window will appear
-	// even if there is only a single match.
-	//
-	// You may want to set this to false if you are using
-	// [property@Gtk.EntryCompletion:inline-completion].
-	SetPopupSingleMatch(popupSingleMatch bool)
-	// SetTextColumn: convenience function for setting up the most used case of
-	// this code: a completion list with just strings.
-	//
-	// This function will set up @completion to have a list displaying all (and
-	// just) strings in the completion list, and to get those strings from
-	// @column in the model of @completion.
-	//
-	// This functions creates and adds a `GtkCellRendererText` for the selected
-	// column. If you need to set the text column, but don't want the cell
-	// renderer, use g_object_set() to set the
-	// [property@Gtk.EntryCompletion:text-column] property directly.
-	SetTextColumn(column int)
-}
-
-// EntryCompletionClass implements the EntryCompletion interface.
-type EntryCompletionClass struct {
+type EntryCompletion struct {
 	*externglib.Object
 	*externglib.Object
-	BuildableIface
-	CellLayoutIface
+	Buildable
+	CellLayout
 }
 
-var _ EntryCompletion = (*EntryCompletionClass)(nil)
+var _ EntryCompletioner = (*EntryCompletion)(nil)
 
-func wrapEntryCompletion(obj *externglib.Object) EntryCompletion {
-	return &EntryCompletionClass{
+func wrapEntryCompletioner(obj *externglib.Object) EntryCompletioner {
+	return &EntryCompletion{
 		Object: obj,
 		Object: obj,
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		CellLayoutIface: CellLayoutIface{
+		CellLayout: CellLayout{
 			Object: obj,
 		},
 	}
 }
 
-func marshalEntryCompletion(p uintptr) (interface{}, error) {
+func marshalEntryCompletioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryCompletion(obj), nil
+	return wrapEntryCompletioner(obj), nil
 }
 
 // NewEntryCompletion creates a new `GtkEntryCompletion` object.
-func NewEntryCompletion() *EntryCompletionClass {
+func NewEntryCompletion() *EntryCompletion {
 	var _cret *C.GtkEntryCompletion // in
 
 	_cret = C.gtk_entry_completion_new()
 
-	var _entryCompletion *EntryCompletionClass // out
+	var _entryCompletion *EntryCompletion // out
 
-	_entryCompletion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EntryCompletionClass)
+	_entryCompletion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EntryCompletion)
 
 	return _entryCompletion
 }
@@ -232,7 +169,7 @@ func NewEntryCompletion() *EntryCompletionClass {
 //
 // The `GtkCellArea` is used to layout cells in the underlying
 // `GtkTreeViewColumn` for the drop-down menu.
-func NewEntryCompletionWithArea(area CellArea) *EntryCompletionClass {
+func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 	var _arg1 *C.GtkCellArea        // out
 	var _cret *C.GtkEntryCompletion // in
 
@@ -240,9 +177,9 @@ func NewEntryCompletionWithArea(area CellArea) *EntryCompletionClass {
 
 	_cret = C.gtk_entry_completion_new_with_area(_arg1)
 
-	var _entryCompletion *EntryCompletionClass // out
+	var _entryCompletion *EntryCompletion // out
 
-	_entryCompletion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EntryCompletionClass)
+	_entryCompletion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EntryCompletion)
 
 	return _entryCompletion
 }
@@ -251,7 +188,7 @@ func NewEntryCompletionWithArea(area CellArea) *EntryCompletionClass {
 // the current list with completions, using the current key.
 //
 // The completion list view will be updated accordingly.
-func (completion *EntryCompletionClass) Complete() {
+func (completion *EntryCompletion) Complete() {
 	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
@@ -265,7 +202,7 @@ func (completion *EntryCompletionClass) Complete() {
 // If no row matches @key, nil will be returned. Note that a text column must
 // have been set for this function to work, see
 // [method@Gtk.EntryCompletion.set_text_column] for details.
-func (completion *EntryCompletionClass) ComputePrefix(key string) string {
+func (completion *EntryCompletion) ComputePrefix(key string) string {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.char               // out
 	var _cret *C.char               // in
@@ -286,7 +223,7 @@ func (completion *EntryCompletionClass) ComputePrefix(key string) string {
 
 // CompletionPrefix: get the original text entered by the user that triggered
 // the completion or nil if there’s no completion ongoing.
-func (completion *EntryCompletionClass) CompletionPrefix() string {
+func (completion *EntryCompletion) CompletionPrefix() string {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.char               // in
 
@@ -302,7 +239,7 @@ func (completion *EntryCompletionClass) CompletionPrefix() string {
 }
 
 // Entry gets the entry @completion has been attached to.
-func (completion *EntryCompletionClass) Entry() *WidgetClass {
+func (completion *EntryCompletion) Entry() *Widget {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkWidget          // in
 
@@ -310,16 +247,16 @@ func (completion *EntryCompletionClass) Entry() *WidgetClass {
 
 	_cret = C.gtk_entry_completion_get_entry(_arg0)
 
-	var _widget *WidgetClass // out
+	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WidgetClass)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
 
 	return _widget
 }
 
 // InlineCompletion returns whether the common prefix of the possible
 // completions should be automatically inserted in the entry.
-func (completion *EntryCompletionClass) InlineCompletion() bool {
+func (completion *EntryCompletion) InlineCompletion() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
@@ -337,7 +274,7 @@ func (completion *EntryCompletionClass) InlineCompletion() bool {
 }
 
 // InlineSelection returns true if inline-selection mode is turned on.
-func (completion *EntryCompletionClass) InlineSelection() bool {
+func (completion *EntryCompletion) InlineSelection() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
@@ -355,7 +292,7 @@ func (completion *EntryCompletionClass) InlineSelection() bool {
 }
 
 // MinimumKeyLength returns the minimum key length as set for @completion.
-func (completion *EntryCompletionClass) MinimumKeyLength() int {
+func (completion *EntryCompletion) MinimumKeyLength() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
 
@@ -373,7 +310,7 @@ func (completion *EntryCompletionClass) MinimumKeyLength() int {
 // Model returns the model the `GtkEntryCompletion` is using as data source.
 //
 // Returns nil if the model is unset.
-func (completion *EntryCompletionClass) Model() *TreeModelIface {
+func (completion *EntryCompletion) Model() *TreeModel {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkTreeModel       // in
 
@@ -381,16 +318,16 @@ func (completion *EntryCompletionClass) Model() *TreeModelIface {
 
 	_cret = C.gtk_entry_completion_get_model(_arg0)
 
-	var _treeModel *TreeModelIface // out
+	var _treeModel *TreeModel // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModelIface)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModel)
 
 	return _treeModel
 }
 
 // PopupCompletion returns whether the completions should be presented in a
 // popup window.
-func (completion *EntryCompletionClass) PopupCompletion() bool {
+func (completion *EntryCompletion) PopupCompletion() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
@@ -409,7 +346,7 @@ func (completion *EntryCompletionClass) PopupCompletion() bool {
 
 // PopupSetWidth returns whether the completion popup window will be resized to
 // the width of the entry.
-func (completion *EntryCompletionClass) PopupSetWidth() bool {
+func (completion *EntryCompletion) PopupSetWidth() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
@@ -428,7 +365,7 @@ func (completion *EntryCompletionClass) PopupSetWidth() bool {
 
 // PopupSingleMatch returns whether the completion popup window will appear even
 // if there is only a single match.
-func (completion *EntryCompletionClass) PopupSingleMatch() bool {
+func (completion *EntryCompletion) PopupSingleMatch() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
@@ -447,7 +384,7 @@ func (completion *EntryCompletionClass) PopupSingleMatch() bool {
 
 // TextColumn returns the column in the model of @completion to get strings
 // from.
-func (completion *EntryCompletionClass) TextColumn() int {
+func (completion *EntryCompletion) TextColumn() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
 
@@ -463,7 +400,7 @@ func (completion *EntryCompletionClass) TextColumn() int {
 }
 
 // InsertPrefix requests a prefix insertion.
-func (completion *EntryCompletionClass) InsertPrefix() {
+func (completion *EntryCompletion) InsertPrefix() {
 	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
@@ -473,7 +410,7 @@ func (completion *EntryCompletionClass) InsertPrefix() {
 
 // SetInlineCompletion sets whether the common prefix of the possible
 // completions should be automatically inserted in the entry.
-func (completion *EntryCompletionClass) SetInlineCompletion(inlineCompletion bool) {
+func (completion *EntryCompletion) SetInlineCompletion(inlineCompletion bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -487,7 +424,7 @@ func (completion *EntryCompletionClass) SetInlineCompletion(inlineCompletion boo
 
 // SetInlineSelection sets whether it is possible to cycle through the possible
 // completions inside the entry.
-func (completion *EntryCompletionClass) SetInlineSelection(inlineSelection bool) {
+func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -505,7 +442,7 @@ func (completion *EntryCompletionClass) SetInlineSelection(inlineSelection bool)
 // This is useful for long lists, where completing using a small key takes a lot
 // of time and will come up with meaningless results anyway (ie, a too large
 // dataset).
-func (completion *EntryCompletionClass) SetMinimumKeyLength(length int) {
+func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 
@@ -519,7 +456,7 @@ func (completion *EntryCompletionClass) SetMinimumKeyLength(length int) {
 //
 // If @completion already has a model set, it will remove it before setting the
 // new model. If model is nil, then it will unset the model.
-func (completion *EntryCompletionClass) SetModel(model TreeModel) {
+func (completion *EntryCompletion) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.GtkTreeModel       // out
 
@@ -531,7 +468,7 @@ func (completion *EntryCompletionClass) SetModel(model TreeModel) {
 
 // SetPopupCompletion sets whether the completions should be presented in a
 // popup window.
-func (completion *EntryCompletionClass) SetPopupCompletion(popupCompletion bool) {
+func (completion *EntryCompletion) SetPopupCompletion(popupCompletion bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -545,7 +482,7 @@ func (completion *EntryCompletionClass) SetPopupCompletion(popupCompletion bool)
 
 // SetPopupSetWidth sets whether the completion popup window will be resized to
 // be the same width as the entry.
-func (completion *EntryCompletionClass) SetPopupSetWidth(popupSetWidth bool) {
+func (completion *EntryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -562,7 +499,7 @@ func (completion *EntryCompletionClass) SetPopupSetWidth(popupSetWidth bool) {
 //
 // You may want to set this to false if you are using
 // [property@Gtk.EntryCompletion:inline-completion].
-func (completion *EntryCompletionClass) SetPopupSingleMatch(popupSingleMatch bool) {
+func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
@@ -585,7 +522,7 @@ func (completion *EntryCompletionClass) SetPopupSingleMatch(popupSingleMatch boo
 // column. If you need to set the text column, but don't want the cell renderer,
 // use g_object_set() to set the [property@Gtk.EntryCompletion:text-column]
 // property directly.
-func (completion *EntryCompletionClass) SetTextColumn(column int) {
+func (completion *EntryCompletion) SetTextColumn(column int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 

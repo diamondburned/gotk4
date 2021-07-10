@@ -18,8 +18,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_application_window_get_type()), F: marshalApplicationWindow},
+		{T: externglib.Type(C.gtk_application_window_get_type()), F: marshalApplicationWindowwer},
 	})
+}
+
+// ApplicationWindowwer describes ApplicationWindow's methods.
+type ApplicationWindowwer interface {
+	gextras.Objector
+
+	HelpOverlay() *ShortcutsWindow
+	ID() uint
+	ShowMenubar() bool
+	SetHelpOverlay(helpOverlay ShortcutsWindowwer)
+	SetShowMenubar(showMenubar bool)
 }
 
 // ApplicationWindow: `GtkApplicationWindow` is a `GtkWindow` subclass that
@@ -80,211 +91,183 @@ func init() {
 // // ...
 //
 // GtkWidget *window = gtk_application_window_new (app); “`
-type ApplicationWindow interface {
-	gextras.Objector
-
-	// HelpOverlay gets the `GtkShortcutsWindow` that is associated with
-	// @window.
-	//
-	// See [method@Gtk.ApplicationWindow.set_help_overlay].
-	HelpOverlay() *ShortcutsWindowClass
-	// ID returns the unique ID of the window.
-	//
-	//    If the window has not yet been added to a `GtkApplication`, returns `0`.
-	ID() uint
-	// ShowMenubar returns whether the window will display a menubar for the app
-	// menu and menubar as needed.
-	ShowMenubar() bool
-	// SetHelpOverlay associates a shortcuts window with the application window.
-	//
-	// Additionally, sets up an action with the name `win.show-help-overlay` to
-	// present it.
-	//
-	// @window takes responsibility for destroying @help_overlay.
-	SetHelpOverlay(helpOverlay ShortcutsWindow)
-	// SetShowMenubar sets whether the window will display a menubar for the app
-	// menu and menubar as needed.
-	SetShowMenubar(showMenubar bool)
-}
-
-// ApplicationWindowClass implements the ApplicationWindow interface.
-type ApplicationWindowClass struct {
+type ApplicationWindow struct {
 	*externglib.Object
-	WindowClass
-	AccessibleIface
-	BuildableIface
-	ConstraintTargetIface
-	NativeIface
-	RootIface
-	ShortcutManagerIface
+	Window
+	Accessible
+	Buildable
+	ConstraintTarget
+	Native
+	Root
+	ShortcutManager
 }
 
-var _ ApplicationWindow = (*ApplicationWindowClass)(nil)
+var _ ApplicationWindowwer = (*ApplicationWindow)(nil)
 
-func wrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
-	return &ApplicationWindowClass{
+func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
+	return &ApplicationWindow{
 		Object: obj,
-		WindowClass: WindowClass{
+		Window: Window{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
-			AccessibleIface: AccessibleIface{
+			Accessible: Accessible{
 				Object: obj,
 			},
-			BuildableIface: BuildableIface{
+			Buildable: Buildable{
 				Object: obj,
 			},
-			ConstraintTargetIface: ConstraintTargetIface{
+			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			RootIface: RootIface{
+			Root: Root{
 				Object: obj,
-				NativeIface: NativeIface{
+				Native: Native{
 					Object: obj,
-					WidgetClass: WidgetClass{
+					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						AccessibleIface: AccessibleIface{
+						Accessible: Accessible{
 							Object: obj,
 						},
-						BuildableIface: BuildableIface{
+						Buildable: Buildable{
 							Object: obj,
 						},
-						ConstraintTargetIface: ConstraintTargetIface{
+						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
 					},
 				},
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			ShortcutManagerIface: ShortcutManagerIface{
+			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
 		},
-		AccessibleIface: AccessibleIface{
+		Accessible: Accessible{
 			Object: obj,
 		},
-		BuildableIface: BuildableIface{
+		Buildable: Buildable{
 			Object: obj,
 		},
-		ConstraintTargetIface: ConstraintTargetIface{
+		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		NativeIface: NativeIface{
+		Native: Native{
 			Object: obj,
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		RootIface: RootIface{
+		Root: Root{
 			Object: obj,
-			NativeIface: NativeIface{
+			Native: Native{
 				Object: obj,
-				WidgetClass: WidgetClass{
+				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					AccessibleIface: AccessibleIface{
+					Accessible: Accessible{
 						Object: obj,
 					},
-					BuildableIface: BuildableIface{
+					Buildable: Buildable{
 						Object: obj,
 					},
-					ConstraintTargetIface: ConstraintTargetIface{
+					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
 				},
 			},
-			WidgetClass: WidgetClass{
+			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				AccessibleIface: AccessibleIface{
+				Accessible: Accessible{
 					Object: obj,
 				},
-				BuildableIface: BuildableIface{
+				Buildable: Buildable{
 					Object: obj,
 				},
-				ConstraintTargetIface: ConstraintTargetIface{
+				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
 			},
 		},
-		ShortcutManagerIface: ShortcutManagerIface{
+		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
 	}
 }
 
-func marshalApplicationWindow(p uintptr) (interface{}, error) {
+func marshalApplicationWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationWindow(obj), nil
+	return wrapApplicationWindowwer(obj), nil
 }
 
 // NewApplicationWindow creates a new `GtkApplicationWindow`.
-func NewApplicationWindow(application Application) *ApplicationWindowClass {
+func NewApplicationWindow(application Applicationer) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
 
@@ -292,9 +275,9 @@ func NewApplicationWindow(application Application) *ApplicationWindowClass {
 
 	_cret = C.gtk_application_window_new(_arg1)
 
-	var _applicationWindow *ApplicationWindowClass // out
+	var _applicationWindow *ApplicationWindow // out
 
-	_applicationWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ApplicationWindowClass)
+	_applicationWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ApplicationWindow)
 
 	return _applicationWindow
 }
@@ -302,7 +285,7 @@ func NewApplicationWindow(application Application) *ApplicationWindowClass {
 // HelpOverlay gets the `GtkShortcutsWindow` that is associated with @window.
 //
 // See [method@Gtk.ApplicationWindow.set_help_overlay].
-func (window *ApplicationWindowClass) HelpOverlay() *ShortcutsWindowClass {
+func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret *C.GtkShortcutsWindow   // in
 
@@ -310,9 +293,9 @@ func (window *ApplicationWindowClass) HelpOverlay() *ShortcutsWindowClass {
 
 	_cret = C.gtk_application_window_get_help_overlay(_arg0)
 
-	var _shortcutsWindow *ShortcutsWindowClass // out
+	var _shortcutsWindow *ShortcutsWindow // out
 
-	_shortcutsWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutsWindowClass)
+	_shortcutsWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutsWindow)
 
 	return _shortcutsWindow
 }
@@ -320,7 +303,7 @@ func (window *ApplicationWindowClass) HelpOverlay() *ShortcutsWindowClass {
 // ID returns the unique ID of the window.
 //
 //    If the window has not yet been added to a `GtkApplication`, returns `0`.
-func (window *ApplicationWindowClass) ID() uint {
+func (window *ApplicationWindow) ID() uint {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.guint                 // in
 
@@ -337,7 +320,7 @@ func (window *ApplicationWindowClass) ID() uint {
 
 // ShowMenubar returns whether the window will display a menubar for the app
 // menu and menubar as needed.
-func (window *ApplicationWindowClass) ShowMenubar() bool {
+func (window *ApplicationWindow) ShowMenubar() bool {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.gboolean              // in
 
@@ -360,7 +343,7 @@ func (window *ApplicationWindowClass) ShowMenubar() bool {
 // present it.
 //
 // @window takes responsibility for destroying @help_overlay.
-func (window *ApplicationWindowClass) SetHelpOverlay(helpOverlay ShortcutsWindow) {
+func (window *ApplicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindowwer) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 *C.GtkShortcutsWindow   // out
 
@@ -372,7 +355,7 @@ func (window *ApplicationWindowClass) SetHelpOverlay(helpOverlay ShortcutsWindow
 
 // SetShowMenubar sets whether the window will display a menubar for the app
 // menu and menubar as needed.
-func (window *ApplicationWindowClass) SetShowMenubar(showMenubar bool) {
+func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 C.gboolean              // out
 

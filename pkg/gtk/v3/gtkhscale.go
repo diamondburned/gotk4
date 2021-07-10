@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -40,7 +41,9 @@ type HScaler interface {
 // GtkHScale has been deprecated, use Scale instead.
 type HScale struct {
 	*externglib.Object
+
 	Scale
+	atk.ImplementorIface
 	Buildable
 	Orientable
 }
@@ -59,9 +62,15 @@ func wrapHScaler(obj *externglib.Object) HScaler {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
@@ -70,12 +79,18 @@ func wrapHScaler(obj *externglib.Object) HScaler {
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

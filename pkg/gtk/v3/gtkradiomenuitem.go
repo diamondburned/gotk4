@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -58,7 +59,9 @@ type RadioMenuItemmer interface {
 // name radio, which gets the .left or .right style class.
 type RadioMenuItem struct {
 	*externglib.Object
+
 	CheckMenuItem
+	atk.ImplementorIface
 	Actionable
 	Activatable
 	Buildable
@@ -82,23 +85,38 @@ func wrapRadioMenuItemmer(obj *externglib.Object) RadioMenuItemmer {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							ImplementorIface: atk.ImplementorIface{
+								Object: obj,
+							},
 							Buildable: Buildable{
 								Object: obj,
 							},
+						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Actionable: Actionable{
 					Object: obj,
 					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						ImplementorIface: atk.ImplementorIface{
 							Object: obj,
 						},
 						Buildable: Buildable{
@@ -113,11 +131,17 @@ func wrapRadioMenuItemmer(obj *externglib.Object) RadioMenuItemmer {
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Actionable: Actionable{
 				Object: obj,
 				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
@@ -132,11 +156,17 @@ func wrapRadioMenuItemmer(obj *externglib.Object) RadioMenuItemmer {
 				Object: obj,
 			},
 		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
 		Actionable: Actionable{
 			Object: obj,
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{

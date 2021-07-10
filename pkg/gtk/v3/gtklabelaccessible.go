@@ -33,19 +33,37 @@ type LabelAccessibler interface {
 }
 
 type LabelAccessible struct {
+	*externglib.Object
+
 	WidgetAccessible
+	atk.Component
+	atk.Hypertext
+	atk.Text
 }
 
 var _ LabelAccessibler = (*LabelAccessible)(nil)
 
 func wrapLabelAccessibler(obj *externglib.Object) LabelAccessibler {
 	return &LabelAccessible{
+		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				Object: atk.Object{
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Hypertext: atk.Hypertext{
+			Object: obj,
+		},
+		Text: atk.Text{
+			Object: obj,
 		},
 	}
 }

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -131,8 +132,11 @@ type ApplicationWindowwer interface {
 // user-visible string to display - "icon": icon name to display
 type ApplicationWindow struct {
 	*externglib.Object
+
 	Window
+	atk.ImplementorIface
 	gio.ActionGroup
+	gio.ActionMap
 	Buildable
 }
 
@@ -152,23 +156,41 @@ func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
+						},
 						Buildable: Buildable{
 							Object: obj,
 						},
+					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
 			},
 		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
 		ActionGroup: gio.ActionGroup{
+			Object: obj,
+		},
+		ActionMap: gio.ActionMap{
 			Object: obj,
 		},
 		Buildable: Buildable{

@@ -87,6 +87,7 @@ type PrintUnixDialogger interface {
 // classes dialog and print are added.
 type PrintUnixDialog struct {
 	*externglib.Object
+
 	Dialog
 	Accessible
 	Buildable

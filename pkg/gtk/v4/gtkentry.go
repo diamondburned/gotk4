@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_entry_icon_position_get_type()), F: marshalEntryIconPosition},
-		{T: externglib.Type(C.gtk_entry_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_entry_get_type()), F: marshalEntrier},
 	})
 }
 
@@ -40,16 +40,16 @@ func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// yierOverrider contains methods that are overridable.
+// EntrierOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type yierOverrider interface {
+type EntrierOverrider interface {
 	Activate()
 }
 
-// yier describes Entry's methods.
-type yier interface {
+// Entrier describes Entry's methods.
+type Entrier interface {
 	gextras.Objector
 
 	ActivatesDefault() bool
@@ -172,6 +172,7 @@ type yier interface {
 // `GtkEntry` uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type Entry struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -180,9 +181,9 @@ type Entry struct {
 	Editable
 }
 
-var _ yier = (*Entry)(nil)
+var _ Entrier = (*Entry)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapEntrier(obj *externglib.Object) Entrier {
 	return &Entry{
 		Object: obj,
 		Widget: Widget{
@@ -248,10 +249,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalEntrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapEntrier(obj), nil
 }
 
 // NewEntry creates a new entry.

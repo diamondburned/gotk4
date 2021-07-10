@@ -26,9 +26,9 @@ func init() {
 type Relationer interface {
 	gextras.Objector
 
-	AddTarget(target Objecter)
+	AddTarget(target ObjectClasser)
 	RelationType() RelationType
-	RemoveTarget(target Objecter) bool
+	RemoveTarget(target ObjectClasser) bool
 }
 
 // Relation describes a relation between an object and one or more other
@@ -54,7 +54,7 @@ func marshalRelationer(p uintptr) (interface{}, error) {
 
 // AddTarget adds the specified AtkObject to the target for the relation, if it
 // is not already present. See also atk_object_add_relationship().
-func (relation *Relation) AddTarget(target Objecter) {
+func (relation *Relation) AddTarget(target ObjectClasser) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 
@@ -82,7 +82,7 @@ func (relation *Relation) RelationType() RelationType {
 
 // RemoveTarget: remove the specified AtkObject from the target for the
 // relation.
-func (relation *Relation) RemoveTarget(target Objecter) bool {
+func (relation *Relation) RemoveTarget(target ObjectClasser) bool {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 	var _cret C.gboolean     // in

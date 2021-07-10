@@ -22,7 +22,7 @@ func init() {
 		{T: externglib.Type(C.atk_layer_get_type()), F: marshalLayer},
 		{T: externglib.Type(C.atk_role_get_type()), F: marshalRole},
 		{T: externglib.Type(C.atk_implementor_get_type()), F: marshalImplementorIfacer},
-		{T: externglib.Type(C.atk_object_get_type()), F: marshalObjecter},
+		{T: externglib.Type(C.atk_object_get_type()), F: marshalObjectClasser},
 	})
 }
 
@@ -539,11 +539,11 @@ func marshalImplementorIfacer(p uintptr) (interface{}, error) {
 
 func (*ImplementorIface) privateImplementorIface() {}
 
-// ObjecterOverrider contains methods that are overridable.
+// ObjectClasserOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ObjecterOverrider interface {
+type ObjectClasserOverrider interface {
 	ActiveDescendantChanged(child interface{})
 	ChildrenChanged(changeIndex uint, changedChild interface{})
 	FocusEvent(focusIn bool)
@@ -575,7 +575,7 @@ type ObjecterOverrider interface {
 	//
 	// If you are only interested on the parent assigned with
 	// atk_object_set_parent(), use atk_object_peek_parent().
-	Parent() *Object
+	Parent() *ObjectClass
 	// Role gets the role of the accessible.
 	Role() Role
 	// Initialize: this function is called when implementing subclasses of
@@ -605,13 +605,13 @@ type ObjecterOverrider interface {
 	SetName(name string)
 	// SetParent sets the accessible parent of the accessible. @parent can be
 	// NULL.
-	SetParent(parent Objecter)
+	SetParent(parent ObjectClasser)
 	StateChange(name string, stateSet bool)
 	VisibleDataChanged()
 }
 
-// Objecter describes Object's methods.
-type Objecter interface {
+// ObjectClasser describes ObjectClass's methods.
+type ObjectClasser interface {
 	gextras.Objector
 
 	AccessibleID() string
@@ -622,18 +622,18 @@ type Objecter interface {
 	NAccessibleChildren() int
 	Name() string
 	ObjectLocale() string
-	Parent() *Object
+	Parent() *ObjectClass
 	Role() Role
 	Initialize(data interface{})
-	PeekParent() *Object
-	RefAccessibleChild(i int) *Object
+	PeekParent() *ObjectClass
+	RefAccessibleChild(i int) *ObjectClass
 	RefRelationSet() *RelationSet
 	RefStateSet() *StateSet
 	RemovePropertyChangeHandler(handlerId uint)
 	SetAccessibleID(name string)
 	SetDescription(description string)
 	SetName(name string)
-	SetParent(parent Objecter)
+	SetParent(parent ObjectClasser)
 }
 
 // Object: this class is the primary class for accessibility support via the
@@ -652,26 +652,26 @@ type Objecter interface {
 // implementation is insufficient, via instances of a new Object subclass.
 //
 // See also: ObjectFactory, Registry. (GTK+ users see also Accessible).
-type Object struct {
+type ObjectClass struct {
 	*externglib.Object
 }
 
-var _ Objecter = (*Object)(nil)
+var _ ObjectClasser = (*ObjectClass)(nil)
 
-func wrapObjecter(obj *externglib.Object) Objecter {
-	return &Object{
+func wrapObjectClasser(obj *externglib.Object) ObjectClasser {
+	return &ObjectClass{
 		Object: obj,
 	}
 }
 
-func marshalObjecter(p uintptr) (interface{}, error) {
+func marshalObjectClasser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapObjecter(obj), nil
+	return wrapObjectClasser(obj), nil
 }
 
 // AccessibleID gets the accessible id of the accessible.
-func (accessible *Object) AccessibleID() string {
+func (accessible *ObjectClass) AccessibleID() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
@@ -687,7 +687,7 @@ func (accessible *Object) AccessibleID() string {
 }
 
 // Description gets the accessible description of the accessible.
-func (accessible *Object) Description() string {
+func (accessible *ObjectClass) Description() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
@@ -704,7 +704,7 @@ func (accessible *Object) Description() string {
 
 // IndexInParent gets the 0-based index of this accessible in its parent;
 // returns -1 if the accessible does not have an accessible parent.
-func (accessible *Object) IndexInParent() int {
+func (accessible *ObjectClass) IndexInParent() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -722,7 +722,7 @@ func (accessible *Object) IndexInParent() int {
 // Layer gets the layer of the accessible.
 //
 // Deprecated: Use atk_component_get_layer instead.
-func (accessible *Object) Layer() Layer {
+func (accessible *ObjectClass) Layer() Layer {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkLayer   // in
 
@@ -741,7 +741,7 @@ func (accessible *Object) Layer() Layer {
 // returned if the layer of the accessible is not ATK_LAYER_MDI.
 //
 // Deprecated: Use atk_component_get_mdi_zorder instead.
-func (accessible *Object) MDIZOrder() int {
+func (accessible *ObjectClass) MDIZOrder() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -757,7 +757,7 @@ func (accessible *Object) MDIZOrder() int {
 }
 
 // NAccessibleChildren gets the number of accessible children of the accessible.
-func (accessible *Object) NAccessibleChildren() int {
+func (accessible *ObjectClass) NAccessibleChildren() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -773,7 +773,7 @@ func (accessible *Object) NAccessibleChildren() int {
 }
 
 // Name gets the accessible name of the accessible.
-func (accessible *Object) Name() string {
+func (accessible *ObjectClass) Name() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
@@ -790,7 +790,7 @@ func (accessible *Object) Name() string {
 
 // ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
 // locale of @accessible.
-func (accessible *Object) ObjectLocale() string {
+func (accessible *ObjectClass) ObjectLocale() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
@@ -813,7 +813,7 @@ func (accessible *Object) ObjectLocale() string {
 //
 // If you are only interested on the parent assigned with
 // atk_object_set_parent(), use atk_object_peek_parent().
-func (accessible *Object) Parent() *Object {
+func (accessible *ObjectClass) Parent() *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
 
@@ -821,15 +821,15 @@ func (accessible *Object) Parent() *Object {
 
 	_cret = C.atk_object_get_parent(_arg0)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
 
 // Role gets the role of the accessible.
-func (accessible *Object) Role() Role {
+func (accessible *ObjectClass) Role() Role {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkRole    // in
 
@@ -848,7 +848,7 @@ func (accessible *Object) Role() Role {
 // It does initialization required for the new object. It is intended that this
 // function should called only in the ..._new() functions used to create an
 // instance of a subclass of Object
-func (accessible *Object) Initialize(data interface{}) {
+func (accessible *ObjectClass) Initialize(data interface{}) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gpointer   // out
 
@@ -865,7 +865,7 @@ func (accessible *Object) Initialize(data interface{}) {
 // This method is intended as an utility for ATK implementors, and not to be
 // exposed to accessible tools. See atk_object_get_parent() for further
 // reference.
-func (accessible *Object) PeekParent() *Object {
+func (accessible *ObjectClass) PeekParent() *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
 
@@ -873,9 +873,9 @@ func (accessible *Object) PeekParent() *Object {
 
 	_cret = C.atk_object_peek_parent(_arg0)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -883,7 +883,7 @@ func (accessible *Object) PeekParent() *Object {
 // RefAccessibleChild gets a reference to the specified accessible child of the
 // object. The accessible children are 0-based so the first accessible child is
 // at index 0, the second at index 1 and so on.
-func (accessible *Object) RefAccessibleChild(i int) *Object {
+func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -893,15 +893,15 @@ func (accessible *Object) RefAccessibleChild(i int) *Object {
 
 	_cret = C.atk_object_ref_accessible_child(_arg0, _arg1)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
 
 // RefRelationSet gets the RelationSet associated with the object.
-func (accessible *Object) RefRelationSet() *RelationSet {
+func (accessible *ObjectClass) RefRelationSet() *RelationSet {
 	var _arg0 *C.AtkObject      // out
 	var _cret *C.AtkRelationSet // in
 
@@ -918,7 +918,7 @@ func (accessible *Object) RefRelationSet() *RelationSet {
 
 // RefStateSet gets a reference to the state set of the accessible; the caller
 // must unreference it when it is no longer needed.
-func (accessible *Object) RefStateSet() *StateSet {
+func (accessible *ObjectClass) RefStateSet() *StateSet {
 	var _arg0 *C.AtkObject   // out
 	var _cret *C.AtkStateSet // in
 
@@ -936,7 +936,7 @@ func (accessible *Object) RefStateSet() *StateSet {
 // RemovePropertyChangeHandler removes a property change handler.
 //
 // Deprecated: See atk_object_connect_property_change_handler().
-func (accessible *Object) RemovePropertyChangeHandler(handlerId uint) {
+func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.guint      // out
 
@@ -951,7 +951,7 @@ func (accessible *Object) RemovePropertyChangeHandler(handlerId uint) {
 // development. Typically, this is the gtkbuilder ID. Such an ID will be
 // available for instance to identify a given well-known accessible object for
 // tailored screen reading, or for automatic regression testing.
-func (accessible *Object) SetAccessibleID(name string) {
+func (accessible *ObjectClass) SetAccessibleID(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
@@ -966,7 +966,7 @@ func (accessible *Object) SetAccessibleID(name string) {
 // set the description to NULL. This is reserved for the initial value. In this
 // aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a
 // empty value you can use "".
-func (accessible *Object) SetDescription(description string) {
+func (accessible *ObjectClass) SetDescription(description string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
@@ -981,7 +981,7 @@ func (accessible *Object) SetDescription(description string) {
 // NULL. This is reserved for the initial value. In this aspect NULL is similar
 // to ATK_ROLE_UNKNOWN. If you want to set the name to a empty value you can use
 // "".
-func (accessible *Object) SetName(name string) {
+func (accessible *ObjectClass) SetName(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
@@ -993,7 +993,7 @@ func (accessible *Object) SetName(name string) {
 }
 
 // SetParent sets the accessible parent of the accessible. @parent can be NULL.
-func (accessible *Object) SetParent(parent Objecter) {
+func (accessible *ObjectClass) SetParent(parent ObjectClasser) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.AtkObject // out
 

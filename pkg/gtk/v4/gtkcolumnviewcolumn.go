@@ -37,7 +37,7 @@ type ColumnViewColumner interface {
 	Title() string
 	Visible() bool
 	SetExpand(expand bool)
-	SetFactory(factory yier)
+	SetFactory(factory ListItemFactorier)
 	SetFixedWidth(fixedWidth int)
 	SetHeaderMenu(menu gio.MenuModeller)
 	SetResizable(resizable bool)
@@ -86,7 +86,7 @@ func marshalColumnViewColumner(p uintptr) (interface{}, error) {
 //
 // “`c column = gtk_column_view_column_new (_("Name"),
 // gtk_builder_list_item_factory_new_from_resource ("/name.ui")); “`
-func NewColumnViewColumn(title string, factory yier) *ColumnViewColumn {
+func NewColumnViewColumn(title string, factory ListItemFactorier) *ColumnViewColumn {
 	var _arg1 *C.char                // out
 	var _arg2 *C.GtkListItemFactory  // out
 	var _cret *C.GtkColumnViewColumn // in
@@ -276,7 +276,7 @@ func (self *ColumnViewColumn) SetExpand(expand bool) {
 
 // SetFactory sets the `GtkListItemFactory` to use for populating list items for
 // this column.
-func (self *ColumnViewColumn) SetFactory(factory yier) {
+func (self *ColumnViewColumn) SetFactory(factory ListItemFactorier) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GtkListItemFactory  // out
 

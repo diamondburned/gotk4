@@ -51,6 +51,7 @@ type NetworkAddresser interface {
 // See Connectable for an example of using the connectable interface.
 type NetworkAddress struct {
 	*externglib.Object
+
 	SocketConnectable
 }
 

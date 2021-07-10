@@ -70,6 +70,7 @@ type LockButtonner interface {
 // [property@Gtk.LockButton:tooltip-not-authorized] properties.
 type LockButton struct {
 	*externglib.Object
+
 	Button
 	Accessible
 	Actionable

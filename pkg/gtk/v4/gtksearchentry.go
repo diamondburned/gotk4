@@ -18,12 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalSearchEntrier},
 	})
 }
 
-// yier describes SearchEntry's methods.
-type yier interface {
+// SearchEntrier describes SearchEntry's methods.
+type SearchEntrier interface {
 	gextras.Objector
 
 	KeyCaptureWidget() *Widget
@@ -75,6 +75,7 @@ type yier interface {
 // `GtkSearchEntry` uses the GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
 type SearchEntry struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -82,9 +83,9 @@ type SearchEntry struct {
 	Editable
 }
 
-var _ yier = (*SearchEntry)(nil)
+var _ SearchEntrier = (*SearchEntry)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapSearchEntrier(obj *externglib.Object) SearchEntrier {
 	return &SearchEntry{
 		Object: obj,
 		Widget: Widget{
@@ -132,10 +133,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalSearchEntrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapSearchEntrier(obj), nil
 }
 
 // NewSearchEntry creates a `GtkSearchEntry`.

@@ -67,6 +67,7 @@ type Settingser interface {
 // GtkSettings instance for the default screen.
 type Settings struct {
 	*externglib.Object
+
 	StyleProvider
 }
 

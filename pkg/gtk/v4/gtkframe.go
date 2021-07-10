@@ -71,6 +71,7 @@ type Framer interface {
 // like “border-style” on this node.
 type Frame struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

@@ -209,6 +209,7 @@ type TreeViewer interface {
 	ConvertTreeToWidgetCoords(tx int, ty int) (wx int, wy int)
 	ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int)
 	ConvertWidgetToTreeCoords(wx int, wy int) (tx int, ty int)
+	CreateRowDragIcon(path *TreePath) *gdk.Paintable
 	ExpandAll()
 	ExpandRow(path *TreePath, openAll bool) bool
 	ExpandToPath(path *TreePath)
@@ -349,6 +350,7 @@ type TreeViewer interface {
 // used.
 type TreeView struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -628,6 +630,25 @@ func (treeView *TreeView) ConvertWidgetToTreeCoords(wx int, wy int) (tx int, ty 
 	_ty = int(_arg4)
 
 	return _tx, _ty
+}
+
+// CreateRowDragIcon creates a #cairo_surface_t representation of the row at
+// @path. This image is used for a drag icon.
+func (treeView *TreeView) CreateRowDragIcon(path *TreePath) *gdk.Paintable {
+	var _arg0 *C.GtkTreeView  // out
+	var _arg1 *C.GtkTreePath  // out
+	var _cret *C.GdkPaintable // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
+
+	_cret = C.gtk_tree_view_create_row_drag_icon(_arg0, _arg1)
+
+	var _paintable *gdk.Paintable // out
+
+	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.Paintable)
+
+	return _paintable
 }
 
 // ExpandAll: recursively expands all nodes in the @tree_view.

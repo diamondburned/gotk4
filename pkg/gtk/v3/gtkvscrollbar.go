@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -40,7 +41,9 @@ type VScrollbarrer interface {
 // GtkVScrollbar has been deprecated, use Scrollbar instead.
 type VScrollbar struct {
 	*externglib.Object
+
 	Scrollbar
+	atk.ImplementorIface
 	Buildable
 	Orientable
 }
@@ -59,9 +62,15 @@ func wrapVScrollbarrer(obj *externglib.Object) VScrollbarrer {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
@@ -70,12 +79,18 @@ func wrapVScrollbarrer(obj *externglib.Object) VScrollbarrer {
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

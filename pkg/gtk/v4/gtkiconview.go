@@ -79,6 +79,7 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 type IconViewer interface {
 	gextras.Objector
 
+	CreateDragIcon(path *TreePath) *gdk.Paintable
 	ActivateOnSingleClick() bool
 	CellRect(path *TreePath, cell CellRendererrer) (gdk.Rectangle, bool)
 	ColumnSpacing() int
@@ -156,6 +157,7 @@ type IconViewer interface {
 // For rubberband selection, a subnode with name rubberband is used.
 type IconView struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -252,6 +254,25 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 	_iconView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconView)
 
 	return _iconView
+}
+
+// CreateDragIcon creates a #cairo_surface_t representation of the item at
+// @path. This image is used for a drag icon.
+func (iconView *IconView) CreateDragIcon(path *TreePath) *gdk.Paintable {
+	var _arg0 *C.GtkIconView  // out
+	var _arg1 *C.GtkTreePath  // out
+	var _cret *C.GdkPaintable // in
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
+
+	_cret = C.gtk_icon_view_create_drag_icon(_arg0, _arg1)
+
+	var _paintable *gdk.Paintable // out
+
+	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.Paintable)
+
+	return _paintable
 }
 
 // ActivateOnSingleClick gets the setting set by

@@ -33,14 +33,14 @@ type ToplevelAccessibler interface {
 }
 
 type ToplevelAccessible struct {
-	atk.Object
+	atk.ObjectClass
 }
 
 var _ ToplevelAccessibler = (*ToplevelAccessible)(nil)
 
 func wrapToplevelAccessibler(obj *externglib.Object) ToplevelAccessibler {
 	return &ToplevelAccessible{
-		Object: atk.Object{
+		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
 	}

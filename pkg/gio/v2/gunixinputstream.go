@@ -51,6 +51,7 @@ type UnixInputStreamer interface {
 // using it.
 type UnixInputStream struct {
 	*externglib.Object
+
 	InputStream
 	FileDescriptorBased
 	PollableInputStream

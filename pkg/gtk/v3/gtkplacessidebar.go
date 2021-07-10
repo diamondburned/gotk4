@@ -5,8 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -70,7 +72,10 @@ func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 type PlacesSidebarrer interface {
 	gextras.Objector
 
+	AddShortcut(location gio.Filer)
 	LocalOnly() bool
+	Location() *gio.File
+	NthBookmark(n int) *gio.File
 	OpenFlags() PlacesOpenFlags
 	ShowConnectToServer() bool
 	ShowDesktop() bool
@@ -79,8 +84,10 @@ type PlacesSidebarrer interface {
 	ShowRecent() bool
 	ShowStarredLocation() bool
 	ShowTrash() bool
+	RemoveShortcut(location gio.Filer)
 	SetDropTargetsVisible(visible bool, context gdk.DragContexter)
 	SetLocalOnly(localOnly bool)
+	SetLocation(location gio.Filer)
 	SetShowConnectToServer(showConnectToServer bool)
 	SetShowDesktop(showDesktop bool)
 	SetShowEnterLocation(showEnterLocation bool)
@@ -126,7 +133,9 @@ type PlacesSidebarrer interface {
 // when a popup is open for a row
 type PlacesSidebar struct {
 	*externglib.Object
+
 	ScrolledWindow
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -146,21 +155,36 @@ func wrapPlacesSidebarrer(obj *externglib.Object) PlacesSidebarrer {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
+						},
 						Buildable: Buildable{
 							Object: obj,
 						},
+					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -190,6 +214,26 @@ func NewPlacesSidebar() *PlacesSidebar {
 	return _placesSidebar
 }
 
+// AddShortcut applications may want to present some folders in the places
+// sidebar if they could be immediately useful to users. For example, a drawing
+// program could add a “/usr/share/clipart” location when the sidebar is being
+// used in an “Insert Clipart” dialog box.
+//
+// This function adds the specified @location to a special place for immutable
+// shortcuts. The shortcuts are application-specific; they are not shared across
+// applications, and they are not persistent. If this function is called
+// multiple times with different locations, then they are added to the sidebar’s
+// list in the same order as the function is called.
+func (sidebar *PlacesSidebar) AddShortcut(location gio.Filer) {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg1 *C.GFile            // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+
+	C.gtk_places_sidebar_add_shortcut(_arg0, _arg1)
+}
+
 // LocalOnly returns the value previously set with
 // gtk_places_sidebar_set_local_only().
 func (sidebar *PlacesSidebar) LocalOnly() bool {
@@ -207,6 +251,51 @@ func (sidebar *PlacesSidebar) LocalOnly() bool {
 	}
 
 	return _ok
+}
+
+// Location gets the currently selected location in the @sidebar. This can be
+// nil when nothing is selected, for example, when
+// gtk_places_sidebar_set_location() has been called with a location that is not
+// among the sidebar’s list of places to show.
+//
+// You can use this function to get the selection in the @sidebar. Also, if you
+// connect to the PlacesSidebar::populate-popup signal, you can use this
+// function to get the location that is being referred to during the callbacks
+// for your menu items.
+func (sidebar *PlacesSidebar) Location() *gio.File {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret *C.GFile            // in
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
+
+	_cret = C.gtk_places_sidebar_get_location(_arg0)
+
+	var _file *gio.File // out
+
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.File)
+
+	return _file
+}
+
+// NthBookmark: this function queries the bookmarks added by the user to the
+// places sidebar, and returns one of them. This function is used by FileChooser
+// to implement the “Alt-1”, “Alt-2”, etc. shortcuts, which activate the
+// cooresponding bookmark.
+func (sidebar *PlacesSidebar) NthBookmark(n int) *gio.File {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg1 C.gint              // out
+	var _cret *C.GFile            // in
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
+	_arg1 = C.gint(n)
+
+	_cret = C.gtk_places_sidebar_get_nth_bookmark(_arg0, _arg1)
+
+	var _file *gio.File // out
+
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.File)
+
+	return _file
 }
 
 // OpenFlags gets the open flags.
@@ -361,6 +450,19 @@ func (sidebar *PlacesSidebar) ShowTrash() bool {
 	return _ok
 }
 
+// RemoveShortcut removes an application-specific shortcut that has been
+// previously been inserted with gtk_places_sidebar_add_shortcut(). If the
+// @location is not a shortcut in the sidebar, then nothing is done.
+func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg1 *C.GFile            // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+
+	C.gtk_places_sidebar_remove_shortcut(_arg0, _arg1)
+}
+
 // SetDropTargetsVisible: make the GtkPlacesSidebar show drop targets, so it can
 // show the available drop targets and a "new bookmark" row. This improves the
 // Drag-and-Drop experience of the user and allows applications to show all
@@ -395,6 +497,21 @@ func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 	}
 
 	C.gtk_places_sidebar_set_local_only(_arg0, _arg1)
+}
+
+// SetLocation sets the location that is being shown in the widgets surrounding
+// the @sidebar, for example, in a folder view in a file manager. In turn, the
+// @sidebar will highlight that location if it is being shown in the list of
+// places, or it will unhighlight everything if the @location is not among the
+// places in the list.
+func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _arg1 *C.GFile            // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+
+	C.gtk_places_sidebar_set_location(_arg0, _arg1)
 }
 
 // SetShowConnectToServer sets whether the @sidebar should show an item for

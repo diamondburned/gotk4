@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -60,7 +61,9 @@ type FontButtonner interface {
 // GtkFontButton has a single CSS node with name button and style class .font.
 type FontButton struct {
 	*externglib.Object
+
 	Button
+	atk.ImplementorIface
 	Actionable
 	Activatable
 	Buildable
@@ -83,23 +86,38 @@ func wrapFontButtonner(obj *externglib.Object) FontButtonner {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
+						},
 						Buildable: Buildable{
 							Object: obj,
 						},
+					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Actionable: Actionable{
 				Object: obj,
 				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
@@ -114,11 +132,17 @@ func wrapFontButtonner(obj *externglib.Object) FontButtonner {
 				Object: obj,
 			},
 		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
 		Actionable: Actionable{
 			Object: obj,
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{

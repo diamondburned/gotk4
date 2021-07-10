@@ -60,6 +60,7 @@ type StackSwitcherrer interface {
 // GTK_ACCESSIBLE_ROLE_TAB for its buttons.
 type StackSwitcher struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

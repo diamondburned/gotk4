@@ -50,6 +50,7 @@ type ConstraintGuider interface {
 // Unlike a `GtkWidget`, a `GtkConstraintGuide` will not be drawn.
 type ConstraintGuide struct {
 	*externglib.Object
+
 	ConstraintTarget
 }
 

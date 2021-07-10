@@ -212,6 +212,27 @@ func NewPixbufAnimationFromStream(stream gio.InputStreamer, cancellable gio.Canc
 	return _pixbufAnimation, _goerr
 }
 
+// NewPixbufAnimationFromStreamFinish finishes an asynchronous pixbuf animation
+// creation operation started with
+// [func@GdkPixbuf.PixbufAnimation.new_from_stream_async].
+func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufAnimation, error) {
+	var _arg1 *C.GAsyncResult       // out
+	var _cret *C.GdkPixbufAnimation // in
+	var _cerr *C.GError             // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
+
+	_cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, &_cerr)
+
+	var _pixbufAnimation *PixbufAnimation // out
+	var _goerr error                      // out
+
+	_pixbufAnimation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimation)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbufAnimation, _goerr
+}
+
 // Height queries the height of the bounding box of a pixbuf animation.
 func (animation *PixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out

@@ -49,6 +49,7 @@ type AspectFramer interface {
 // `GtkAspectFrame` uses a CSS node with name `frame`.
 type AspectFrame struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

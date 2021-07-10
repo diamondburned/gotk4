@@ -34,8 +34,10 @@ type MenuButtonAccessibler interface {
 
 type MenuButtonAccessible struct {
 	*externglib.Object
+
 	ToggleButtonAccessible
 	atk.Action
+	atk.Component
 	atk.Image
 }
 
@@ -51,13 +53,22 @@ func wrapMenuButtonAccessibler(obj *externglib.Object) MenuButtonAccessibler {
 				ContainerAccessible: ContainerAccessible{
 					WidgetAccessible: WidgetAccessible{
 						Accessible: Accessible{
-							Object: atk.Object{
+							ObjectClass: atk.ObjectClass{
 								Object: obj,
 							},
 						},
+						Component: atk.Component{
+							Object: obj,
+						},
+					},
+					Component: atk.Component{
+						Object: obj,
 					},
 				},
 				Action: atk.Action{
+					Object: obj,
+				},
+				Component: atk.Component{
 					Object: obj,
 				},
 				Image: atk.Image{
@@ -67,11 +78,17 @@ func wrapMenuButtonAccessibler(obj *externglib.Object) MenuButtonAccessibler {
 			Action: atk.Action{
 				Object: obj,
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
 			Image: atk.Image{
 				Object: obj,
 			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
 			Object: obj,
 		},
 		Image: atk.Image{

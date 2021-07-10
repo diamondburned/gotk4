@@ -185,6 +185,7 @@ type FileChooserDialogger interface {
 // `GtkFileChooserDialog` to ensure proper operation.
 type FileChooserDialog struct {
 	*externglib.Object
+
 	Dialog
 	Accessible
 	Buildable

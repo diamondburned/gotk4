@@ -49,6 +49,7 @@ type SimpleProxyResolverrer interface {
 // and used manually, such as with g_socket_client_set_proxy_resolver().
 type SimpleProxyResolver struct {
 	*externglib.Object
+
 	ProxyResolver
 }
 

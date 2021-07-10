@@ -81,6 +81,7 @@ type Buttonner interface {
 // `GtkButton` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Button struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Actionable

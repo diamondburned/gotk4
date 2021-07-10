@@ -75,6 +75,7 @@ type ShortcutsWindowwer interface {
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
 type ShortcutsWindow struct {
 	*externglib.Object
+
 	Window
 	Accessible
 	Buildable

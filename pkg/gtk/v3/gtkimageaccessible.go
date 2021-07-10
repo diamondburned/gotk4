@@ -33,7 +33,10 @@ type ImageAccessibler interface {
 }
 
 type ImageAccessible struct {
+	*externglib.Object
+
 	WidgetAccessible
+	atk.Component
 	atk.Image
 }
 
@@ -41,12 +44,19 @@ var _ ImageAccessibler = (*ImageAccessible)(nil)
 
 func wrapImageAccessibler(obj *externglib.Object) ImageAccessibler {
 	return &ImageAccessible{
+		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				Object: atk.Object{
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
 		},
 		Image: atk.Image{
 			Object: obj,

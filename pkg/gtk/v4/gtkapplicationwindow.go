@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,7 +94,10 @@ type ApplicationWindowwer interface {
 // GtkWidget *window = gtk_application_window_new (app); “`
 type ApplicationWindow struct {
 	*externglib.Object
+
 	Window
+	gio.ActionGroup
+	gio.ActionMap
 	Accessible
 	Buildable
 	ConstraintTarget
@@ -190,6 +194,12 @@ func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
+		},
+		ActionGroup: gio.ActionGroup{
+			Object: obj,
+		},
+		ActionMap: gio.ActionMap{
+			Object: obj,
 		},
 		Accessible: Accessible{
 			Object: obj,

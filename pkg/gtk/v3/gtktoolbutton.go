@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -73,7 +74,9 @@ type ToolButtonner interface {
 // GtkToolButton has a single CSS node with name toolbutton.
 type ToolButton struct {
 	*externglib.Object
+
 	ToolItem
+	atk.ImplementorIface
 	Actionable
 	Activatable
 	Buildable
@@ -95,17 +98,29 @@ func wrapToolButtonner(obj *externglib.Object) ToolButtonner {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
+						},
 						Buildable: Buildable{
 							Object: obj,
 						},
+					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Activatable: Activatable{
 				Object: obj,
@@ -114,11 +129,17 @@ func wrapToolButtonner(obj *externglib.Object) ToolButtonner {
 				Object: obj,
 			},
 		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
 		Actionable: Actionable{
 			Object: obj,
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{

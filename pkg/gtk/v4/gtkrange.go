@@ -72,6 +72,7 @@ type Ranger interface {
 // range widgets. See [method@Gtk.Range.set_fill_level].
 type Range struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

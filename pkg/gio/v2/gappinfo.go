@@ -30,16 +30,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_app_info_get_type()), F: marshalAppInfoer},
+		{T: externglib.Type(C.g_app_info_get_type()), F: marshalAppInfor},
 		{T: externglib.Type(C.g_app_launch_context_get_type()), F: marshalAppLaunchContexter},
 	})
 }
 
-// AppInfoerOverrider contains methods that are overridable.
+// AppInforOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AppInfoerOverrider interface {
+type AppInforOverrider interface {
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
 	// content type.
@@ -63,7 +63,7 @@ type AppInfoerOverrider interface {
 	// Note that the check *may not* compare each individual field, and only
 	// does an identity check. In case detecting changes in the contents is
 	// needed, program code must additionally compare relevant fields.
-	Equal(appinfo2 AppInfoer) bool
+	Equal(appinfo2 AppInfor) bool
 	// Commandline gets the commandline with which the application will be
 	// started.
 	Commandline() string
@@ -119,8 +119,8 @@ type AppInfoerOverrider interface {
 	SupportsUris() bool
 }
 
-// AppInfoer describes AppInfo's methods.
-type AppInfoer interface {
+// AppInfor describes AppInfo's methods.
+type AppInfor interface {
 	gextras.Objector
 
 	AddSupportsType(contentType string) error
@@ -128,7 +128,7 @@ type AppInfoer interface {
 	CanRemoveSupportsType() bool
 	Delete() bool
 	Dup() *AppInfo
-	Equal(appinfo2 AppInfoer) bool
+	Equal(appinfo2 AppInfor) bool
 	Commandline() string
 	Description() string
 	DisplayName() string
@@ -193,18 +193,18 @@ type AppInfo struct {
 	*externglib.Object
 }
 
-var _ AppInfoer = (*AppInfo)(nil)
+var _ AppInfor = (*AppInfo)(nil)
 
-func wrapAppInfoer(obj *externglib.Object) AppInfoer {
+func wrapAppInfor(obj *externglib.Object) AppInfor {
 	return &AppInfo{
 		Object: obj,
 	}
 }
 
-func marshalAppInfoer(p uintptr) (interface{}, error) {
+func marshalAppInfor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppInfoer(obj), nil
+	return wrapAppInfor(obj), nil
 }
 
 // AddSupportsType adds a content type to the application information to
@@ -309,7 +309,7 @@ func (appinfo *AppInfo) Dup() *AppInfo {
 // Note that the check *may not* compare each individual field, and only does an
 // identity check. In case detecting changes in the contents is needed, program
 // code must additionally compare relevant fields.
-func (appinfo1 *AppInfo) Equal(appinfo2 AppInfoer) bool {
+func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -642,7 +642,7 @@ type AppLaunchContexterOverrider interface {
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
 	LaunchFailed(startupNotifyId string)
-	Launched(info AppInfoer, platformData *glib.Variant)
+	Launched(info AppInfor, platformData *glib.Variant)
 }
 
 // AppLaunchContexter describes AppLaunchContext's methods.

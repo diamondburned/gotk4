@@ -6,6 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -122,6 +124,24 @@ func (section *CSSSection) EndPosition() uint {
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// File gets the file that @section was parsed from. If no such file exists, for
+// example because the CSS was loaded via @gtk_css_provider_load_from_data(),
+// then nil is returned.
+func (section *CSSSection) File() *gio.File {
+	var _arg0 *C.GtkCssSection // out
+	var _cret *C.GFile         // in
+
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
+
+	_cret = C.gtk_css_section_get_file(_arg0)
+
+	var _file *gio.File // out
+
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.File)
+
+	return _file
 }
 
 // Parent gets the parent section for the given @section. The parent section is

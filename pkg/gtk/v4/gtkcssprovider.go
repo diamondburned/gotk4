@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,6 +28,7 @@ type CSSProviderrer interface {
 	gextras.Objector
 
 	LoadFromData(data []byte)
+	LoadFromFile(file gio.Filer)
 	LoadFromPath(path string)
 	LoadFromResource(resourcePath string)
 	LoadNamed(name string, variant string)
@@ -63,6 +65,7 @@ type CSSProviderrer interface {
 // [signal@Gtk.CssProvider::parsing-error] signal.
 type CSSProvider struct {
 	*externglib.Object
+
 	StyleProvider
 }
 
@@ -109,6 +112,19 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) {
 	_arg1 = (*C.char)(unsafe.Pointer(&data[0]))
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2)
+}
+
+// LoadFromFile loads the data contained in @file into @css_provider.
+//
+// This clears any previously loaded information.
+func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) {
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.GFile          // out
+
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_css_provider_load_from_file(_arg0, _arg1)
 }
 
 // LoadFromPath loads the data contained in @path into @css_provider.

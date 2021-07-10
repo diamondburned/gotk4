@@ -34,7 +34,10 @@ type TreeViewAccessibler interface {
 
 type TreeViewAccessible struct {
 	*externglib.Object
+
 	ContainerAccessible
+	atk.Component
+	atk.Selection
 	atk.Table
 	CellAccessibleParent
 }
@@ -47,11 +50,23 @@ func wrapTreeViewAccessibler(obj *externglib.Object) TreeViewAccessibler {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Selection: atk.Selection{
+			Object: obj,
 		},
 		Table: atk.Table{
 			Object: obj,

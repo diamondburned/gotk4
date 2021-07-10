@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -136,7 +137,9 @@ type Menuer interface {
 // .bottom style classes.
 type Menu struct {
 	*externglib.Object
+
 	MenuShell
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -154,17 +157,29 @@ func wrapMenuer(obj *externglib.Object) Menuer {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

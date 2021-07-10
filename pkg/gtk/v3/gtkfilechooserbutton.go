@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -77,7 +78,9 @@ type FileChooserButtonner interface {
 // a subnode for the internal button with name “button” and style class “.file”.
 type FileChooserButton struct {
 	*externglib.Object
+
 	Box
+	atk.ImplementorIface
 	Buildable
 	FileChooser
 	Orientable
@@ -97,13 +100,22 @@ func wrapFileChooserButtonner(obj *externglib.Object) FileChooserButtonner {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
@@ -111,6 +123,9 @@ func wrapFileChooserButtonner(obj *externglib.Object) FileChooserButtonner {
 			Orientable: Orientable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

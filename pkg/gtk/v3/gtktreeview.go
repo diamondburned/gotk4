@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -321,7 +322,7 @@ type TreeViewer interface {
 	SetRubberBanding(enable bool)
 	SetRulesHint(setting bool)
 	SetSearchColumn(column int)
-	SetSearchEntry(entry yier)
+	SetSearchEntry(entry Entrier)
 	SetShowExpanders(enabled bool)
 	SetTooltipCell(tooltip Tooltipper, path *TreePath, column TreeViewColumner, cell CellRendererrer)
 	SetTooltipColumn(column int)
@@ -406,7 +407,9 @@ type TreeViewer interface {
 // is used.
 type TreeView struct {
 	*externglib.Object
+
 	Container
+	atk.ImplementorIface
 	Buildable
 	Scrollable
 }
@@ -423,13 +426,22 @@ func wrapTreeViewer(obj *externglib.Object) TreeViewer {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -1990,7 +2002,7 @@ func (treeView *TreeView) SetSearchColumn(column int) {
 // this @tree_view. This is useful when you want to provide a search entry in
 // our interface at all time at a fixed position. Passing nil for @entry will
 // make the interactive search code use the built-in popup entry again.
-func (treeView *TreeView) SetSearchEntry(entry yier) {
+func (treeView *TreeView) SetSearchEntry(entry Entrier) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 *C.GtkEntry    // out
 

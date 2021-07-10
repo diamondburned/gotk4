@@ -74,6 +74,7 @@ type Fixedder interface {
 // should be aware of the tradeoffs.
 type Fixed struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

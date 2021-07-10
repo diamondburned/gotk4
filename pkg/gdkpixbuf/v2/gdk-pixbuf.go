@@ -187,6 +187,8 @@ type Pixbuffer interface {
 // allows to e.g. write the image to a socket or store it in a database.
 type Pixbuf struct {
 	*externglib.Object
+
+	gio.Icon
 }
 
 var _ Pixbuffer = (*Pixbuf)(nil)
@@ -194,6 +196,9 @@ var _ Pixbuffer = (*Pixbuf)(nil)
 func wrapPixbuffer(obj *externglib.Object) Pixbuffer {
 	return &Pixbuf{
 		Object: obj,
+		Icon: gio.Icon{
+			Object: obj,
+		},
 	}
 }
 
@@ -516,6 +521,26 @@ func NewPixbufFromStreamAtScale(stream gio.InputStreamer, width int, height int,
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.gdk_pixbuf_new_from_stream_at_scale(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _pixbuf *Pixbuf // out
+	var _goerr error    // out
+
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
+// NewPixbufFromStreamFinish finishes an asynchronous pixbuf creation operation
+// started with gdk_pixbuf_new_from_stream_async().
+func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GdkPixbuf    // in
+	var _cerr *C.GError       // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
+
+	_cret = C.gdk_pixbuf_new_from_stream_finish(_arg1, &_cerr)
 
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out

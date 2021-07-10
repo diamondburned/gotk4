@@ -62,6 +62,7 @@ type LinkButtonner interface {
 // `GtkLinkButton` uses the K_ACCESSIBLE_ROLE_LINK role.
 type LinkButton struct {
 	*externglib.Object
+
 	Button
 	Accessible
 	Actionable

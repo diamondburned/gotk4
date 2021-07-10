@@ -73,6 +73,7 @@ type CenterBoxxer interface {
 // `GtkCenterBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type CenterBox struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

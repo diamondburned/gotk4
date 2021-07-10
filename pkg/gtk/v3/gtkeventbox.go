@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -39,7 +40,9 @@ type EventBoxxer interface {
 // not have their own window.
 type EventBox struct {
 	*externglib.Object
+
 	Bin
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -57,17 +60,29 @@ func wrapEventBoxxer(obj *externglib.Object) EventBoxxer {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

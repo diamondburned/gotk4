@@ -101,6 +101,7 @@ type MessageDialogger interface {
 // the message area as an internal child with the name “message_area”.
 type MessageDialog struct {
 	*externglib.Object
+
 	Dialog
 	Accessible
 	Buildable

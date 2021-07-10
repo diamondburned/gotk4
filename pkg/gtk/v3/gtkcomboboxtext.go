@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -88,7 +89,9 @@ type ComboBoxTexter interface {
 // .linked class to the node of its internal box.
 type ComboBoxText struct {
 	*externglib.Object
+
 	ComboBox
+	atk.ImplementorIface
 	Buildable
 	CellEditable
 	CellLayout
@@ -110,17 +113,29 @@ func wrapComboBoxTexter(obj *externglib.Object) ComboBoxTexter {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
+						},
 						Buildable: Buildable{
 							Object: obj,
 						},
+					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
@@ -132,6 +147,9 @@ func wrapComboBoxTexter(obj *externglib.Object) ComboBoxTexter {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
@@ -141,6 +159,9 @@ func wrapComboBoxTexter(obj *externglib.Object) ComboBoxTexter {
 				Object: obj,
 			},
 		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
 		Buildable: Buildable{
 			Object: obj,
 		},
@@ -149,6 +170,9 @@ func wrapComboBoxTexter(obj *externglib.Object) ComboBoxTexter {
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{

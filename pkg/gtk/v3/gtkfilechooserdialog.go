@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -175,7 +176,9 @@ type FileChooserDialogger interface {
 // ensure proper operation.
 type FileChooserDialog struct {
 	*externglib.Object
+
 	Dialog
+	atk.ImplementorIface
 	Buildable
 	FileChooser
 }
@@ -198,25 +201,43 @@ func wrapFileChooserDialogger(obj *externglib.Object) FileChooserDialogger {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							ImplementorIface: atk.ImplementorIface{
+								Object: obj,
+							},
 							Buildable: Buildable{
 								Object: obj,
 							},
+						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

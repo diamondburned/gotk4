@@ -230,6 +230,7 @@ type SimpleAsyncResulter interface {
 //    }
 type SimpleAsyncResult struct {
 	*externglib.Object
+
 	AsyncResult
 }
 

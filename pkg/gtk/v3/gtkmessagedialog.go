@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -101,7 +102,9 @@ type MessageDialogger interface {
 // message area as an internal child with the name “message_area”.
 type MessageDialog struct {
 	*externglib.Object
+
 	Dialog
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -123,25 +126,43 @@ func wrapMessageDialogger(obj *externglib.Object) MessageDialogger {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							ImplementorIface: atk.ImplementorIface{
+								Object: obj,
+							},
 							Buildable: Buildable{
 								Object: obj,
 							},
+						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -46,7 +47,9 @@ type Spinnerrer interface {
 // active, the :checked pseudoclass is added to this node.
 type Spinner struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -60,9 +63,15 @@ func wrapSpinnerrer(obj *externglib.Object) Spinnerrer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

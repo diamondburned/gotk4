@@ -78,6 +78,7 @@ type MemoryTexturer interface {
 // MemoryTexture: `GdkTexture` representing image data in memory.
 type MemoryTexture struct {
 	*externglib.Object
+
 	Texture
 	Paintable
 }

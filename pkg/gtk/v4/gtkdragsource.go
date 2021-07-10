@@ -32,6 +32,7 @@ type DragSourcer interface {
 	Content() *gdk.ContentProvider
 	Drag() *gdk.Drag
 	SetContent(content gdk.ContentProviderrer)
+	SetIcon(paintable gdk.Paintabler, hotX int, hotY int)
 }
 
 // DragSource: `GtkDragSource` is an event controller to initiate Drag-And-Drop
@@ -201,4 +202,28 @@ func (source *DragSource) SetContent(content gdk.ContentProviderrer) {
 	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
 
 	C.gtk_drag_source_set_content(_arg0, _arg1)
+}
+
+// SetIcon sets a paintable to use as icon during DND operations.
+//
+// The hotspot coordinates determine the point on the icon that gets aligned
+// with the hotspot of the cursor.
+//
+// If @paintable is nil, a default icon is used.
+//
+// This function can be called before a drag is started, or in a
+// [signal@Gtk.DragSource::prepare] or [signal@Gtk.DragSource::drag-begin]
+// signal handler.
+func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX int, hotY int) {
+	var _arg0 *C.GtkDragSource // out
+	var _arg1 *C.GdkPaintable  // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg2 = C.int(hotX)
+	_arg3 = C.int(hotY)
+
+	C.gtk_drag_source_set_icon(_arg0, _arg1, _arg2, _arg3)
 }

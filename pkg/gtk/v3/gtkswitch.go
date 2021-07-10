@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -58,7 +59,9 @@ type Switcher interface {
 // named slider. Neither of them is using any style classes.
 type Switch struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Actionable
 	Activatable
 	Buildable
@@ -74,15 +77,24 @@ func wrapSwitcher(obj *externglib.Object) Switcher {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Actionable: Actionable{
 			Object: obj,
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{

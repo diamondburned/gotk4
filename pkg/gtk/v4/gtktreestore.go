@@ -72,7 +72,7 @@ type TreeStorer interface {
 //    </object>
 type TreeStore struct {
 	*externglib.Object
-	*externglib.Object
+
 	Buildable
 	TreeDragDest
 	TreeDragSource
@@ -84,7 +84,6 @@ var _ TreeStorer = (*TreeStore)(nil)
 
 func wrapTreeStorer(obj *externglib.Object) TreeStorer {
 	return &TreeStore{
-		Object: obj,
 		Object: obj,
 		Buildable: Buildable{
 			Object: obj,

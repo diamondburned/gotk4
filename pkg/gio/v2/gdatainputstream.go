@@ -66,6 +66,7 @@ type DataInputStreamer interface {
 // for reading structured data directly from a binary input stream.
 type DataInputStream struct {
 	BufferedInputStream
+
 	Seekable
 }
 

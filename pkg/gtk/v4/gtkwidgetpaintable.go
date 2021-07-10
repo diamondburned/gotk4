@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,6 +53,8 @@ type WidgetPaintabler interface {
 // with an infinitely growing widget.
 type WidgetPaintable struct {
 	*externglib.Object
+
+	gdk.Paintable
 }
 
 var _ WidgetPaintabler = (*WidgetPaintable)(nil)
@@ -59,6 +62,9 @@ var _ WidgetPaintabler = (*WidgetPaintable)(nil)
 func wrapWidgetPaintabler(obj *externglib.Object) WidgetPaintabler {
 	return &WidgetPaintable{
 		Object: obj,
+		Paintable: gdk.Paintable{
+			Object: obj,
+		},
 	}
 }
 

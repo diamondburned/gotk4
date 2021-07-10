@@ -79,6 +79,7 @@ type SearchBarrer interface {
 // `GtkSearchBar` uses the GTK_ACCESSIBLE_ROLE_SEARCH role.
 type SearchBar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

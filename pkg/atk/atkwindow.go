@@ -32,14 +32,14 @@ type Windowwer interface {
 // Window should be implemented by the UI elements that represent a top-level
 // window, such as the main window of an application or dialog.
 type Window struct {
-	Object
+	ObjectClass
 }
 
 var _ Windowwer = (*Window)(nil)
 
 func wrapWindowwer(obj *externglib.Object) Windowwer {
 	return &Window{
-		Object: Object{
+		ObjectClass: ObjectClass{
 			Object: obj,
 		},
 	}

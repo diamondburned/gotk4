@@ -58,6 +58,7 @@ type DBusObjectSkeletonner interface {
 // This type is intended to be used with BusObjectManager.
 type DBusObjectSkeleton struct {
 	*externglib.Object
+
 	DBusObject
 }
 

@@ -128,6 +128,7 @@ type FileFilterrer interface {
 //    </object>
 type FileFilter struct {
 	*externglib.Object
+
 	externglib.InitiallyUnowned
 	Buildable
 }

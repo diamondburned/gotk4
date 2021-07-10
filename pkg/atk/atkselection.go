@@ -50,7 +50,7 @@ type SelectionerOverrider interface {
 	// nil or on a zero value for indication of whether AtkSelectionIface is
 	// implemented, they should use type checking/interface checking macros or
 	// the atk_get_accessible_value() convenience method.
-	RefSelection(i int) *Object
+	RefSelection(i int) *ObjectClass
 	// RemoveSelection removes the specified child of the object from the
 	// object's selection.
 	RemoveSelection(i int) bool
@@ -68,7 +68,7 @@ type Selectioner interface {
 	ClearSelection() bool
 	SelectionCount() int
 	IsChildSelected(i int) bool
-	RefSelection(i int) *Object
+	RefSelection(i int) *ObjectClass
 	RemoveSelection(i int) bool
 	SelectAllSelection() bool
 }
@@ -189,7 +189,7 @@ func (selection *Selection) IsChildSelected(i int) bool {
 // or on a zero value for indication of whether AtkSelectionIface is
 // implemented, they should use type checking/interface checking macros or the
 // atk_get_accessible_value() convenience method.
-func (selection *Selection) RefSelection(i int) *Object {
+func (selection *Selection) RefSelection(i int) *ObjectClass {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -199,9 +199,9 @@ func (selection *Selection) RefSelection(i int) *Object {
 
 	_cret = C.atk_selection_ref_selection(_arg0, _arg1)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }

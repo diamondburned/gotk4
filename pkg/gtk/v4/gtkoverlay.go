@@ -71,6 +71,7 @@ type Overlayyer interface {
 // “.left”, “.right”, “.top”, and/or “.bottom” according to their position.
 type Overlay struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

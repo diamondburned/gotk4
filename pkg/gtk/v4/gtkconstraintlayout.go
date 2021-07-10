@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,6 +30,8 @@ type ConstraintLayouter interface {
 
 	AddConstraint(constraint Constrainter)
 	AddGuide(guide ConstraintGuider)
+	ObserveConstraints() *gio.ListModel
+	ObserveGuides() *gio.ListModel
 	RemoveAllConstraints()
 	RemoveConstraint(constraint Constrainter)
 	RemoveGuide(guide ConstraintGuider)
@@ -180,6 +183,7 @@ type ConstraintLayouter interface {
 // 12 [button1(button2 / 2 + 12)] “`
 type ConstraintLayout struct {
 	*externglib.Object
+
 	LayoutManager
 	Buildable
 }
@@ -254,6 +258,54 @@ func (layout *ConstraintLayout) AddGuide(guide ConstraintGuider) {
 	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
+}
+
+// ObserveConstraints returns a `GListModel` to track the constraints that are
+// part of the layout.
+//
+// Calling this function will enable extra internal bookkeeping to track
+// constraints and emit signals on the returned listmodel. It may slow down
+// operations a lot.
+//
+// Applications should try hard to avoid calling this function because of the
+// slowdowns.
+func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
+	var _arg0 *C.GtkConstraintLayout // out
+	var _cret *C.GListModel          // in
+
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
+
+	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
+}
+
+// ObserveGuides returns a `GListModel` to track the guides that are part of the
+// layout.
+//
+// Calling this function will enable extra internal bookkeeping to track guides
+// and emit signals on the returned listmodel. It may slow down operations a
+// lot.
+//
+// Applications should try hard to avoid calling this function because of the
+// slowdowns.
+func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
+	var _arg0 *C.GtkConstraintLayout // out
+	var _cret *C.GListModel          // in
+
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
+
+	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
 }
 
 // RemoveAllConstraints removes all constraints from the layout manager.

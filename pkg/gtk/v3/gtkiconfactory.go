@@ -21,12 +21,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_icon_factory_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_icon_factory_get_type()), F: marshalIconFactorier},
 	})
 }
 
-// yier describes IconFactory's methods.
-type yier interface {
+// IconFactorier describes IconFactory's methods.
+type IconFactorier interface {
 	gextras.Objector
 
 	Add(stockId string, iconSet *IconSet)
@@ -105,12 +105,13 @@ type yier interface {
 //    </object>
 type IconFactory struct {
 	*externglib.Object
+
 	Buildable
 }
 
-var _ yier = (*IconFactory)(nil)
+var _ IconFactorier = (*IconFactory)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapIconFactorier(obj *externglib.Object) IconFactorier {
 	return &IconFactory{
 		Object: obj,
 		Buildable: Buildable{
@@ -119,10 +120,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalIconFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapIconFactorier(obj), nil
 }
 
 // NewIconFactory creates a new IconFactory. An icon factory manages a

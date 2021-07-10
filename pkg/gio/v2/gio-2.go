@@ -109,6 +109,7 @@ type BytesIconner interface {
 // to be used as icon.
 type BytesIcon struct {
 	*externglib.Object
+
 	Icon
 	LoadableIcon
 }
@@ -149,6 +150,7 @@ type DBusActionGrouper interface {
 // g_dbus_connection_export_action_group().
 type DBusActionGroup struct {
 	*externglib.Object
+
 	ActionGroup
 	RemoteActionGroup
 }
@@ -383,7 +385,7 @@ type DBusConnectioner interface {
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c)
 type DBusConnection struct {
 	*externglib.Object
-	*externglib.Object
+
 	AsyncInitable
 	Initable
 }
@@ -392,7 +394,6 @@ var _ DBusConnectioner = (*DBusConnection)(nil)
 
 func wrapDBusConnectioner(obj *externglib.Object) DBusConnectioner {
 	return &DBusConnection{
-		Object: obj,
 		Object: obj,
 		AsyncInitable: AsyncInitable{
 			Object: obj,
@@ -2236,6 +2237,7 @@ type DBusServerrer interface {
 // server.
 type DBusServer struct {
 	*externglib.Object
+
 	Initable
 }
 
@@ -3344,6 +3346,7 @@ type PropertyActioner interface {
 // possibly combine its use with g_settings_bind().
 type PropertyAction struct {
 	*externglib.Object
+
 	Action
 }
 
@@ -3411,6 +3414,7 @@ type SimpleActioner interface {
 // See also Action.
 type SimpleAction struct {
 	*externglib.Object
+
 	Action
 }
 
@@ -3714,6 +3718,7 @@ type Subprocesser interface {
 // WIFEXITED-style POSIX macros).
 type Subprocess struct {
 	*externglib.Object
+
 	Initable
 }
 

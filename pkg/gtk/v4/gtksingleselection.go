@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,10 +29,12 @@ type SingleSelectioner interface {
 
 	Autoselect() bool
 	CanUnselect() bool
+	Model() *gio.ListModel
 	Selected() uint
 	SelectedItem() *externglib.Object
 	SetAutoselect(autoselect bool)
 	SetCanUnselect(canUnselect bool)
+	SetModel(model gio.ListModeller)
 	SetSelected(position uint)
 }
 
@@ -44,6 +47,9 @@ type SingleSelectioner interface {
 // model will preserve the selection.
 type SingleSelection struct {
 	*externglib.Object
+
+	gio.ListModel
+	SelectionModel
 }
 
 var _ SingleSelectioner = (*SingleSelection)(nil)
@@ -51,6 +57,14 @@ var _ SingleSelectioner = (*SingleSelection)(nil)
 func wrapSingleSelectioner(obj *externglib.Object) SingleSelectioner {
 	return &SingleSelection{
 		Object: obj,
+		ListModel: gio.ListModel{
+			Object: obj,
+		},
+		SelectionModel: SelectionModel{
+			ListModel: gio.ListModel{
+				Object: obj,
+			},
+		},
 	}
 }
 
@@ -58,6 +72,22 @@ func marshalSingleSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSingleSelectioner(obj), nil
+}
+
+// NewSingleSelection creates a new selection to handle @model.
+func NewSingleSelection(model gio.ListModeller) *SingleSelection {
+	var _arg1 *C.GListModel         // out
+	var _cret *C.GtkSingleSelection // in
+
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+
+	_cret = C.gtk_single_selection_new(_arg1)
+
+	var _singleSelection *SingleSelection // out
+
+	_singleSelection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SingleSelection)
+
+	return _singleSelection
 }
 
 // Autoselect checks if autoselect has been enabled or disabled via
@@ -96,6 +126,22 @@ func (self *SingleSelection) CanUnselect() bool {
 	}
 
 	return _ok
+}
+
+// Model gets the model that @self is wrapping.
+func (self *SingleSelection) Model() *gio.ListModel {
+	var _arg0 *C.GtkSingleSelection // out
+	var _cret *C.GListModel         // in
+
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_single_selection_get_model(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
 }
 
 // Selected gets the position of the selected item.
@@ -167,6 +213,19 @@ func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 	}
 
 	C.gtk_single_selection_set_can_unselect(_arg0, _arg1)
+}
+
+// SetModel sets the model that @self should wrap.
+//
+// If @model is nil, @self will be empty.
+func (self *SingleSelection) SetModel(model gio.ListModeller) {
+	var _arg0 *C.GtkSingleSelection // out
+	var _arg1 *C.GListModel         // out
+
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_single_selection_set_model(_arg0, _arg1)
 }
 
 // SetSelected selects the item at the given position.

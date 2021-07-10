@@ -45,6 +45,7 @@ type AppChooserDialogger interface {
 // [method@Gtk.AppChooserDialog.set_heading].
 type AppChooserDialog struct {
 	*externglib.Object
+
 	Dialog
 	Accessible
 	AppChooser

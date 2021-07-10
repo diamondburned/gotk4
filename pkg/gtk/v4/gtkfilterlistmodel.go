@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,9 +29,11 @@ type FilterListModeller interface {
 
 	Filter() *Filter
 	Incremental() bool
+	Model() *gio.ListModel
 	Pending() uint
 	SetFilter(filter Filterrer)
 	SetIncremental(incremental bool)
+	SetModel(model gio.ListModeller)
 }
 
 // FilterListModel: `GtkFilterListModel` is a list model that filters the
@@ -44,6 +47,8 @@ type FilterListModeller interface {
 // for details.
 type FilterListModel struct {
 	*externglib.Object
+
+	gio.ListModel
 }
 
 var _ FilterListModeller = (*FilterListModel)(nil)
@@ -51,6 +56,9 @@ var _ FilterListModeller = (*FilterListModel)(nil)
 func wrapFilterListModeller(obj *externglib.Object) FilterListModeller {
 	return &FilterListModel{
 		Object: obj,
+		ListModel: gio.ListModel{
+			Object: obj,
+		},
 	}
 }
 
@@ -58,6 +66,25 @@ func marshalFilterListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFilterListModeller(obj), nil
+}
+
+// NewFilterListModel creates a new `GtkFilterListModel` that will filter @model
+// using the given @filter.
+func NewFilterListModel(model gio.ListModeller, filter Filterrer) *FilterListModel {
+	var _arg1 *C.GListModel         // out
+	var _arg2 *C.GtkFilter          // out
+	var _cret *C.GtkFilterListModel // in
+
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+
+	_cret = C.gtk_filter_list_model_new(_arg1, _arg2)
+
+	var _filterListModel *FilterListModel // out
+
+	_filterListModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FilterListModel)
+
+	return _filterListModel
 }
 
 // Filter gets the `GtkFilter` currently set on @self.
@@ -94,6 +121,22 @@ func (self *FilterListModel) Incremental() bool {
 	}
 
 	return _ok
+}
+
+// Model gets the model currently filtered or nil if none.
+func (self *FilterListModel) Model() *gio.ListModel {
+	var _arg0 *C.GtkFilterListModel // out
+	var _cret *C.GListModel         // in
+
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_filter_list_model_get_model(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
 }
 
 // Pending returns the number of items that have not been filtered yet.
@@ -162,4 +205,19 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 	}
 
 	C.gtk_filter_list_model_set_incremental(_arg0, _arg1)
+}
+
+// SetModel sets the model to be filtered.
+//
+// Note that GTK makes no effort to ensure that @model conforms to the item type
+// of @self. It assumes that the caller knows what they are doing and have set
+// up an appropriate filter to ensure that item types match.
+func (self *FilterListModel) SetModel(model gio.ListModeller) {
+	var _arg0 *C.GtkFilterListModel // out
+	var _arg1 *C.GListModel         // out
+
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_filter_list_model_set_model(_arg0, _arg1)
 }

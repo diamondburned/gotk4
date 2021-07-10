@@ -84,6 +84,7 @@ type ComboBoxTexter interface {
 // .linked class to the node of its internal box.
 type ComboBoxText struct {
 	*externglib.Object
+
 	ComboBox
 	Accessible
 	Buildable

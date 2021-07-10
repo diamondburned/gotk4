@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,6 +64,7 @@ func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 type IconPaintabler interface {
 	gextras.Objector
 
+	File() *gio.File
 	IconName() string
 	IsSymbolic() bool
 }
@@ -73,6 +75,8 @@ type IconPaintabler interface {
 // `GtkIconPaintable` implements `GdkPaintable`.
 type IconPaintable struct {
 	*externglib.Object
+
+	gdk.Paintable
 }
 
 var _ IconPaintabler = (*IconPaintable)(nil)
@@ -80,6 +84,9 @@ var _ IconPaintabler = (*IconPaintable)(nil)
 func wrapIconPaintabler(obj *externglib.Object) IconPaintabler {
 	return &IconPaintable{
 		Object: obj,
+		Paintable: gdk.Paintable{
+			Object: obj,
+		},
 	}
 }
 
@@ -87,6 +94,47 @@ func marshalIconPaintabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapIconPaintabler(obj), nil
+}
+
+// NewIconPaintableForFile creates a `GtkIconPaintable` for a file with a given
+// size and scale.
+//
+// The icon can then be rendered by using it as a `GdkPaintable`.
+func NewIconPaintableForFile(file gio.Filer, size int, scale int) *IconPaintable {
+	var _arg1 *C.GFile            // out
+	var _arg2 C.int               // out
+	var _arg3 C.int               // out
+	var _cret *C.GtkIconPaintable // in
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg2 = C.int(size)
+	_arg3 = C.int(scale)
+
+	_cret = C.gtk_icon_paintable_new_for_file(_arg1, _arg2, _arg3)
+
+	var _iconPaintable *IconPaintable // out
+
+	_iconPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconPaintable)
+
+	return _iconPaintable
+}
+
+// File gets the `GFile` that was used to load the icon.
+//
+// Returns nil if the icon was not loaded from a file.
+func (self *IconPaintable) File() *gio.File {
+	var _arg0 *C.GtkIconPaintable // out
+	var _cret *C.GFile            // in
+
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_icon_paintable_get_file(_arg0)
+
+	var _file *gio.File // out
+
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.File)
+
+	return _file
 }
 
 // IconName: get the icon name being used for this icon.
@@ -148,6 +196,7 @@ type IconThemer interface {
 	ResourcePath() []string
 	SearchPath() []string
 	ThemeName() string
+	HasGIcon(gicon gio.Iconner) bool
 	HasIcon(iconName string) bool
 	SetSearchPath(path []string)
 	SetThemeName(themeName string)
@@ -404,6 +453,27 @@ func (self *IconTheme) ThemeName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// HasGIcon checks whether an icon theme includes an icon for a particular
+// `GIcon`.
+func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.GIcon        // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+
+	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // HasIcon checks whether an icon theme includes an icon for a particular name.

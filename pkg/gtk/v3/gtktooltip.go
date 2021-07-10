@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,6 +33,7 @@ type Tooltipper interface {
 
 	SetCustom(customWidget Widgetter)
 	SetIcon(pixbuf gdkpixbuf.Pixbuffer)
+	SetIconFromGIcon(gicon gio.Iconner, size int)
 	SetIconFromIconName(iconName string, size int)
 	SetIconFromStock(stockId string, size int)
 	SetMarkup(markup string)
@@ -116,6 +118,21 @@ func (tooltip *Tooltip) SetIcon(pixbuf gdkpixbuf.Pixbuffer) {
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_tooltip_set_icon(_arg0, _arg1)
+}
+
+// SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
+// to be the icon indicated by @gicon with the size indicated by @size. If
+// @gicon is nil, the image will be hidden.
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
+
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+	_arg2 = C.GtkIconSize(size)
+
+	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1, _arg2)
 }
 
 // SetIconFromIconName sets the icon of the tooltip (which is in front of the

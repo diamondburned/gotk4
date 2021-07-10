@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -39,7 +40,9 @@ type Binner interface {
 // HandleBox or ScrolledWindow.
 type Bin struct {
 	*externglib.Object
+
 	Container
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -55,13 +58,22 @@ func wrapBinner(obj *externglib.Object) Binner {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

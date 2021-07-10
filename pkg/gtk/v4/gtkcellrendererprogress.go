@@ -35,6 +35,7 @@ type CellRendererProgresser interface {
 // Additionally, it can display a text on top of the progress bar.
 type CellRendererProgress struct {
 	CellRenderer
+
 	Orientable
 }
 

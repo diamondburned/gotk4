@@ -172,7 +172,7 @@ type TreeModelFilterrer interface {
 // obtain references on these child levels yourself.
 type TreeModelFilter struct {
 	*externglib.Object
-	*externglib.Object
+
 	TreeDragSource
 	TreeModel
 }
@@ -181,7 +181,6 @@ var _ TreeModelFilterrer = (*TreeModelFilter)(nil)
 
 func wrapTreeModelFilterrer(obj *externglib.Object) TreeModelFilterrer {
 	return &TreeModelFilter{
-		Object: obj,
 		Object: obj,
 		TreeDragSource: TreeDragSource{
 			Object: obj,

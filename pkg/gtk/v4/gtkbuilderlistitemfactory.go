@@ -18,12 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_builder_list_item_factory_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_builder_list_item_factory_get_type()), F: marshalBuilderListItemFactorier},
 	})
 }
 
-// yier describes BuilderListItemFactory's methods.
-type yier interface {
+// BuilderListItemFactorier describes BuilderListItemFactory's methods.
+type BuilderListItemFactorier interface {
 	gextras.Objector
 
 	Resource() string
@@ -45,9 +45,9 @@ type BuilderListItemFactory struct {
 	ListItemFactory
 }
 
-var _ yier = (*BuilderListItemFactory)(nil)
+var _ BuilderListItemFactorier = (*BuilderListItemFactory)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapBuilderListItemFactorier(obj *externglib.Object) BuilderListItemFactorier {
 	return &BuilderListItemFactory{
 		ListItemFactory: ListItemFactory{
 			Object: obj,
@@ -55,10 +55,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalBuilderListItemFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapBuilderListItemFactorier(obj), nil
 }
 
 // NewBuilderListItemFactoryFromResource creates a new

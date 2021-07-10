@@ -35,13 +35,14 @@ type Plugger interface {
 	gextras.Objector
 
 	ID() string
-	SetChild(child Objecter)
+	SetChild(child ObjectClasser)
 }
 
 // Plug: see Socket
 type Plug struct {
 	*externglib.Object
-	Object
+
+	ObjectClass
 	Component
 }
 
@@ -50,7 +51,7 @@ var _ Plugger = (*Plug)(nil)
 func wrapPlugger(obj *externglib.Object) Plugger {
 	return &Plug{
 		Object: obj,
-		Object: Object{
+		ObjectClass: ObjectClass{
 			Object: obj,
 		},
 		Component: Component{
@@ -110,7 +111,7 @@ func (plug *Plug) ID() string {
 // AtkPlug. In such a case, one can create, in addition to the standard
 // accessible object for the toplevel widget, an AtkPlug object, and make the
 // former the child of the latter by calling atk_plug_set_child().
-func (plug *Plug) SetChild(child Objecter) {
+func (plug *Plug) SetChild(child ObjectClasser) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
 

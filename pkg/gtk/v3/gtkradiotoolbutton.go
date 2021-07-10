@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -45,7 +46,9 @@ type RadioToolButtonner interface {
 // GtkRadioToolButton has a single CSS node with name toolbutton.
 type RadioToolButton struct {
 	*externglib.Object
+
 	ToggleToolButton
+	atk.ImplementorIface
 	Actionable
 	Activatable
 	Buildable
@@ -71,17 +74,29 @@ func wrapRadioToolButtonner(obj *externglib.Object) RadioToolButtonner {
 								InitiallyUnowned: externglib.InitiallyUnowned{
 									Object: obj,
 								},
+								ImplementorIface: atk.ImplementorIface{
+									Object: obj,
+								},
 								Buildable: Buildable{
 									Object: obj,
 								},
+							},
+							ImplementorIface: atk.ImplementorIface{
+								Object: obj,
 							},
 							Buildable: Buildable{
 								Object: obj,
 							},
 						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
+						},
 						Buildable: Buildable{
 							Object: obj,
 						},
+					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
 					},
 					Activatable: Activatable{
 						Object: obj,
@@ -90,11 +105,17 @@ func wrapRadioToolButtonner(obj *externglib.Object) RadioToolButtonner {
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Actionable: Actionable{
 					Object: obj,
 					Widget: Widget{
 						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						ImplementorIface: atk.ImplementorIface{
 							Object: obj,
 						},
 						Buildable: Buildable{
@@ -109,11 +130,17 @@ func wrapRadioToolButtonner(obj *externglib.Object) RadioToolButtonner {
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Actionable: Actionable{
 				Object: obj,
 				Widget: Widget{
 					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
@@ -128,11 +155,17 @@ func wrapRadioToolButtonner(obj *externglib.Object) RadioToolButtonner {
 				Object: obj,
 			},
 		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
 		Actionable: Actionable{
 			Object: obj,
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{

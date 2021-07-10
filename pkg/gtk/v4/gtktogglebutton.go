@@ -108,6 +108,7 @@ type ToggleButtonner interface {
 // } “`
 type ToggleButton struct {
 	*externglib.Object
+
 	Button
 	Accessible
 	Actionable

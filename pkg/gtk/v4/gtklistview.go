@@ -28,10 +28,12 @@ type ListViewer interface {
 
 	EnableRubberband() bool
 	Factory() *ListItemFactory
+	Model() *SelectionModel
 	ShowSeparators() bool
 	SingleClickActivate() bool
 	SetEnableRubberband(enableRubberband bool)
-	SetFactory(factory yier)
+	SetFactory(factory ListItemFactorier)
+	SetModel(model SelectionModeller)
 	SetShowSeparators(showSeparators bool)
 	SetSingleClickActivate(singleClickActivate bool)
 }
@@ -119,6 +121,7 @@ type ListViewer interface {
 // the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListView struct {
 	*externglib.Object
+
 	ListBase
 	Accessible
 	Buildable
@@ -189,6 +192,29 @@ func marshalListViewer(p uintptr) (interface{}, error) {
 	return wrapListViewer(obj), nil
 }
 
+// NewListView creates a new `GtkListView` that uses the given @factory for
+// mapping items to widgets.
+//
+// The function takes ownership of the arguments, so you can write code like “`c
+// list_view = gtk_list_view_new (create_model (),
+// gtk_builder_list_item_factory_new_from_resource ("/resource.ui")); “`
+func NewListView(model SelectionModeller, factory ListItemFactorier) *ListView {
+	var _arg1 *C.GtkSelectionModel  // out
+	var _arg2 *C.GtkListItemFactory // out
+	var _cret *C.GtkWidget          // in
+
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+
+	_cret = C.gtk_list_view_new(_arg1, _arg2)
+
+	var _listView *ListView // out
+
+	_listView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListView)
+
+	return _listView
+}
+
 // EnableRubberband returns whether rows can be selected by dragging with the
 // mouse.
 func (self *ListView) EnableRubberband() bool {
@@ -222,6 +248,22 @@ func (self *ListView) Factory() *ListItemFactory {
 	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
 
 	return _listItemFactory
+}
+
+// Model gets the model that's currently used to read the items displayed.
+func (self *ListView) Model() *SelectionModel {
+	var _arg0 *C.GtkListView       // out
+	var _cret *C.GtkSelectionModel // in
+
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_list_view_get_model(_arg0)
+
+	var _selectionModel *SelectionModel // out
+
+	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SelectionModel)
+
+	return _selectionModel
 }
 
 // ShowSeparators returns whether the list box should show separators between
@@ -277,7 +319,7 @@ func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 }
 
 // SetFactory sets the `GtkListItemFactory` to use for populating list items.
-func (self *ListView) SetFactory(factory yier) {
+func (self *ListView) SetFactory(factory ListItemFactorier) {
 	var _arg0 *C.GtkListView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -285,6 +327,19 @@ func (self *ListView) SetFactory(factory yier) {
 	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_list_view_set_factory(_arg0, _arg1)
+}
+
+// SetModel sets the model to use.
+//
+// This must be a [iface@Gtk.SelectionModel] to use.
+func (self *ListView) SetModel(model SelectionModeller) {
+	var _arg0 *C.GtkListView       // out
+	var _arg1 *C.GtkSelectionModel // out
+
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_list_view_set_model(_arg0, _arg1)
 }
 
 // SetShowSeparators sets whether the list box should show separators between

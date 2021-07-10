@@ -50,6 +50,7 @@ type ColorButtonner interface {
 // style class.
 type ColorButton struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

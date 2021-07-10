@@ -52,6 +52,7 @@ type DataOutputStreamer interface {
 // for writing data directly to an output stream.
 type DataOutputStream struct {
 	FilterOutputStream
+
 	Seekable
 }
 

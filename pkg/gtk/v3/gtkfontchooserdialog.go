@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -41,7 +42,9 @@ type FontChooserDialogger interface {
 // the buttons with the names “select_button” and “cancel_button”.
 type FontChooserDialog struct {
 	*externglib.Object
+
 	Dialog
+	atk.ImplementorIface
 	Buildable
 	FontChooser
 }
@@ -64,25 +67,43 @@ func wrapFontChooserDialogger(obj *externglib.Object) FontChooserDialogger {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							ImplementorIface: atk.ImplementorIface{
+								Object: obj,
+							},
 							Buildable: Buildable{
 								Object: obj,
 							},
+						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

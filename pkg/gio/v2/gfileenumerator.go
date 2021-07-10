@@ -102,7 +102,7 @@ type FileEnumeratorrer interface {
 	Close(cancellable Cancellabler) error
 	CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
 	CloseFinish(result AsyncResulter) error
-	Child(info FileInfoer) *File
+	Child(info FileInfor) *File
 	Container() *File
 	HasPending() bool
 	IsClosed() bool
@@ -235,7 +235,7 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 //    gchar *name = g_file_info_get_name (info);
 //    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
 //                                     name);
-func (enumerator *FileEnumerator) Child(info FileInfoer) *File {
+func (enumerator *FileEnumerator) Child(info FileInfor) *File {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // out
 	var _cret *C.GFile           // in

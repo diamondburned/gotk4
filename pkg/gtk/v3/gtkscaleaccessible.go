@@ -33,21 +33,42 @@ type ScaleAccessibler interface {
 }
 
 type ScaleAccessible struct {
+	*externglib.Object
+
 	RangeAccessible
+	atk.Component
+	atk.Value
 }
 
 var _ ScaleAccessibler = (*ScaleAccessible)(nil)
 
 func wrapScaleAccessibler(obj *externglib.Object) ScaleAccessibler {
 	return &ScaleAccessible{
+		Object: obj,
 		RangeAccessible: RangeAccessible{
+			Object: obj,
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+			Value: atk.Value{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Value: atk.Value{
+			Object: obj,
 		},
 	}
 }

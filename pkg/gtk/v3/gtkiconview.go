@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -174,7 +175,9 @@ type IconViewer interface {
 // For rubberband selection, a subnode with name rubberband is used.
 type IconView struct {
 	*externglib.Object
+
 	Container
+	atk.ImplementorIface
 	Buildable
 	CellLayout
 	Scrollable
@@ -192,13 +195,22 @@ func wrapIconViewer(obj *externglib.Object) IconViewer {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

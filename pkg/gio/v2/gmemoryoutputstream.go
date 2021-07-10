@@ -50,6 +50,7 @@ type MemoryOutputStreamer interface {
 // polls as ready.
 type MemoryOutputStream struct {
 	*externglib.Object
+
 	OutputStream
 	PollableOutputStream
 	Seekable

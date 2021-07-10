@@ -33,21 +33,46 @@ type TextViewAccessibler interface {
 }
 
 type TextViewAccessible struct {
+	*externglib.Object
+
 	ContainerAccessible
+	atk.Component
+	atk.EditableText
+	atk.StreamableContent
+	atk.Text
 }
 
 var _ TextViewAccessibler = (*TextViewAccessible)(nil)
 
 func wrapTextViewAccessibler(obj *externglib.Object) TextViewAccessibler {
 	return &TextViewAccessible{
+		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		EditableText: atk.EditableText{
+			Object: obj,
+		},
+		StreamableContent: atk.StreamableContent{
+			Object: obj,
+		},
+		Text: atk.Text{
+			Object: obj,
 		},
 	}
 }

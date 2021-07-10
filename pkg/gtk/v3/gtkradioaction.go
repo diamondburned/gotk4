@@ -45,6 +45,7 @@ type RadioActioner interface {
 // linked together so that only one may be active at any one time.
 type RadioAction struct {
 	*externglib.Object
+
 	ToggleAction
 	Buildable
 }

@@ -339,6 +339,7 @@ type UIManagerrer interface {
 //    </object>
 type UIManager struct {
 	*externglib.Object
+
 	Buildable
 }
 

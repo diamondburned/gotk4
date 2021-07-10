@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -43,7 +44,9 @@ type HSeparatorrer interface {
 // GtkHSeparator has been deprecated, use Separator instead.
 type HSeparator struct {
 	*externglib.Object
+
 	Separator
+	atk.ImplementorIface
 	Buildable
 	Orientable
 }
@@ -60,9 +63,15 @@ func wrapHSeparatorrer(obj *externglib.Object) HSeparatorrer {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
@@ -70,6 +79,9 @@ func wrapHSeparatorrer(obj *externglib.Object) HSeparatorrer {
 			Orientable: Orientable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

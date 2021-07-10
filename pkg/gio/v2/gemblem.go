@@ -47,6 +47,7 @@ type Emblemmer interface {
 // may be added in the future.
 type Emblem struct {
 	*externglib.Object
+
 	Icon
 }
 

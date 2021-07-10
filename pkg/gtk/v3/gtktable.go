@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -87,7 +88,9 @@ type Tabler interface {
 // does support height-for-width geometry management.
 type Table struct {
 	*externglib.Object
+
 	Container
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -103,13 +106,22 @@ func wrapTabler(obj *externglib.Object) Tabler {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

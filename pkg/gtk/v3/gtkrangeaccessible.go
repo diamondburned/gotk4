@@ -33,19 +33,33 @@ type RangeAccessibler interface {
 }
 
 type RangeAccessible struct {
+	*externglib.Object
+
 	WidgetAccessible
+	atk.Component
+	atk.Value
 }
 
 var _ RangeAccessibler = (*RangeAccessible)(nil)
 
 func wrapRangeAccessibler(obj *externglib.Object) RangeAccessibler {
 	return &RangeAccessible{
+		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				Object: atk.Object{
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Value: atk.Value{
+			Object: obj,
 		},
 	}
 }

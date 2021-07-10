@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -51,7 +52,9 @@ type HSVer interface {
 // HSV has been deprecated together with ColorSelection, where it was used.
 type HSV struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -65,9 +68,15 @@ func wrapHSVer(obj *externglib.Object) HSVer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

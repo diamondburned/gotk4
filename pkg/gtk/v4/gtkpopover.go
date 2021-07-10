@@ -120,6 +120,7 @@ type Popoverrer interface {
 // box-shadow.
 type Popover struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

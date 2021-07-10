@@ -94,7 +94,7 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 // ATK itself. As Object::focus-event was deprecated in favor of a
 // Object::state-change signal, in order to notify a focus change on your
 // implementation, you can use atk_object_notify_state_change() instead.
-func FocusTrackerNotify(object Objecter) {
+func FocusTrackerNotify(object ObjectClasser) {
 	var _arg1 *C.AtkObject // out
 
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
@@ -103,27 +103,27 @@ func FocusTrackerNotify(object Objecter) {
 }
 
 // GetFocusObject gets the currently focused object.
-func GetFocusObject() *Object {
+func GetFocusObject() *ObjectClass {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_focus_object()
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
 
 // GetRoot gets the root accessible container for the current application.
-func GetRoot() *Object {
+func GetRoot() *ObjectClass {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_root()
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }

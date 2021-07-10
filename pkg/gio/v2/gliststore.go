@@ -57,6 +57,7 @@ type ListStorer interface {
 // fast path for the common case of iterating the list linearly.
 type ListStore struct {
 	*externglib.Object
+
 	ListModel
 }
 

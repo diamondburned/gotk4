@@ -57,6 +57,7 @@ type UnixSocketAddresser interface {
 // using it.
 type UnixSocketAddress struct {
 	*externglib.Object
+
 	SocketAddress
 	SocketConnectable
 }

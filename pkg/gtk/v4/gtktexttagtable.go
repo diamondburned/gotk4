@@ -74,6 +74,7 @@ type TextTagTabler interface {
 // </child> </object> “`
 type TextTagTable struct {
 	*externglib.Object
+
 	Buildable
 }
 

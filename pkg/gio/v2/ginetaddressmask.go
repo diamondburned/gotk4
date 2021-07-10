@@ -51,6 +51,7 @@ type InetAddressMasker interface {
 // "10.0.0.0/8", or "fe80::/10".
 type InetAddressMask struct {
 	*externglib.Object
+
 	Initable
 }
 

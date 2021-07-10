@@ -43,6 +43,7 @@ type NativeSocketAddresser interface {
 // NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress struct {
 	*externglib.Object
+
 	SocketAddress
 	SocketConnectable
 }

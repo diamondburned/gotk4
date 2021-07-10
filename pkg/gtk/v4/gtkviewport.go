@@ -52,6 +52,7 @@ type Viewporter interface {
 // `GtkViewport` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Viewport struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

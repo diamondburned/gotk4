@@ -6,7 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,6 +35,8 @@ type Dropper interface {
 	Drag() *Drag
 	Formats() *ContentFormats
 	Surface() *Surface
+	ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error)
+	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
 }
 
 // Drop: the `GdkDrop` object represents the target of an ongoing DND operation.
@@ -181,4 +185,59 @@ func (self *Drop) Surface() *Surface {
 	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
 
 	return _surface
+}
+
+// ReadFinish finishes an async drop read operation.
+//
+// Note that you must not use blocking read calls on the returned stream in the
+// GTK thread, since some platforms might require communication with GTK to
+// complete the data transfer. You can use async APIs such as
+// g_input_stream_read_bytes_async().
+//
+// See [method@Gdk.Drop.read_async].
+func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error) {
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.char         // in
+	var _cret *C.GInputStream // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	_cret = C.gdk_drop_read_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	var _outMimeType string           // out
+	var _inputStream *gio.InputStream // out
+	var _goerr error                  // out
+
+	_outMimeType = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.InputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _outMimeType, _inputStream, _goerr
+}
+
+// ReadValueFinish finishes an async drop read.
+//
+// See [method@Gdk.Drop.read_value_async].
+func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error) {
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GValue       // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	_cret = C.gdk_drop_read_value_finish(_arg0, _arg1, &_cerr)
+
+	var _value *externglib.Value // out
+	var _goerr error             // out
+
+	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _value, _goerr
 }

@@ -119,6 +119,8 @@ type MediaStreamer interface {
 // [method@Gtk.MediaStream.error], [method@Gtk.MediaStream.error_valist].
 type MediaStream struct {
 	*externglib.Object
+
+	gdk.Paintable
 }
 
 var _ MediaStreamer = (*MediaStream)(nil)
@@ -126,6 +128,9 @@ var _ MediaStreamer = (*MediaStream)(nil)
 func wrapMediaStreamer(obj *externglib.Object) MediaStreamer {
 	return &MediaStream{
 		Object: obj,
+		Paintable: gdk.Paintable{
+			Object: obj,
+		},
 	}
 }
 

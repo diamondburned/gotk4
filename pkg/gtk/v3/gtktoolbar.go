@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -94,7 +95,9 @@ type Toolbarrer interface {
 // GtkToolbar has a single CSS node with name toolbar.
 type Toolbar struct {
 	*externglib.Object
+
 	Container
+	atk.ImplementorIface
 	Buildable
 	Orientable
 	ToolShell
@@ -112,13 +115,22 @@ func wrapToolbarrer(obj *externglib.Object) Toolbarrer {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -131,6 +143,9 @@ func wrapToolbarrer(obj *externglib.Object) Toolbarrer {
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{

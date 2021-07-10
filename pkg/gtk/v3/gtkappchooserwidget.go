@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,6 +24,16 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidgetter},
 	})
+}
+
+// AppChooserWidgetterOverrider contains methods that are overridable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AppChooserWidgetterOverrider interface {
+	ApplicationActivated(appInfo gio.AppInfor)
+	ApplicationSelected(appInfo gio.AppInfor)
+	PopulatePopup(menu Menuer, appInfo gio.AppInfor)
 }
 
 // AppChooserWidgetter describes AppChooserWidget's methods.
@@ -63,7 +75,9 @@ type AppChooserWidgetter interface {
 // GtkAppChooserWidget has a single CSS node with name appchooser.
 type AppChooserWidget struct {
 	*externglib.Object
+
 	Box
+	atk.ImplementorIface
 	AppChooser
 	Buildable
 	Orientable
@@ -83,13 +97,22 @@ func wrapAppChooserWidgetter(obj *externglib.Object) AppChooserWidgetter {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
@@ -98,11 +121,17 @@ func wrapAppChooserWidgetter(obj *externglib.Object) AppChooserWidgetter {
 				Object: obj,
 			},
 		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
 		AppChooser: AppChooser{
 			Object: obj,
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{

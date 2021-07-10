@@ -34,8 +34,10 @@ type LockButtonAccessibler interface {
 
 type LockButtonAccessible struct {
 	*externglib.Object
+
 	ButtonAccessible
 	atk.Action
+	atk.Component
 	atk.Image
 }
 
@@ -49,13 +51,22 @@ func wrapLockButtonAccessibler(obj *externglib.Object) LockButtonAccessibler {
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
-						Object: atk.Object{
+						ObjectClass: atk.ObjectClass{
 							Object: obj,
 						},
 					},
+					Component: atk.Component{
+						Object: obj,
+					},
+				},
+				Component: atk.Component{
+					Object: obj,
 				},
 			},
 			Action: atk.Action{
+				Object: obj,
+			},
+			Component: atk.Component{
 				Object: obj,
 			},
 			Image: atk.Image{
@@ -63,6 +74,9 @@ func wrapLockButtonAccessibler(obj *externglib.Object) LockButtonAccessibler {
 			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
 			Object: obj,
 		},
 		Image: atk.Image{

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -46,7 +47,9 @@ type FontSelectioner interface {
 
 type FontSelection struct {
 	*externglib.Object
+
 	Box
+	atk.ImplementorIface
 	Buildable
 	Orientable
 }
@@ -65,13 +68,22 @@ func wrapFontSelectioner(obj *externglib.Object) FontSelectioner {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
@@ -79,6 +91,9 @@ func wrapFontSelectioner(obj *externglib.Object) FontSelectioner {
 			Orientable: Orientable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -359,7 +374,9 @@ type FontSelectionDialogger interface {
 
 type FontSelectionDialog struct {
 	*externglib.Object
+
 	Dialog
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -381,25 +398,43 @@ func wrapFontSelectionDialogger(obj *externglib.Object) FontSelectionDialogger {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							ImplementorIface: atk.ImplementorIface{
+								Object: obj,
+							},
 							Buildable: Buildable{
 								Object: obj,
 							},
+						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

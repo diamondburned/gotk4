@@ -196,6 +196,7 @@ type Editabler interface {
 // them on the delegate obtained via [method@Gtk.Editable.get_delegate].
 type Editable struct {
 	*externglib.Object
+
 	Widget
 }
 

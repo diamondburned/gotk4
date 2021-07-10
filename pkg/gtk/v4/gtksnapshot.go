@@ -67,6 +67,7 @@ type Snapshotter interface {
 	Scale(factorX float32, factorY float32)
 	Scale3D(factorX float32, factorY float32, factorZ float32)
 	ToNode() *gsk.RenderNode
+	ToPaintable(size *graphene.Size) *gdk.Paintable
 	Transform(transform *gsk.Transform)
 	TransformMatrix(matrix *graphene.Matrix)
 	Translate(point *graphene.Point)
@@ -711,6 +712,29 @@ func (snapshot *Snapshot) ToNode() *gsk.RenderNode {
 	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gsk.RenderNode)
 
 	return _renderNode
+}
+
+// ToPaintable returns a paintable encapsulating the render node that was
+// constructed by @snapshot.
+//
+// After calling this function, it is no longer possible to add more nodes to
+// @snapshot. The only function that should be called after this is
+// g_object_unref().
+func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.graphene_size_t // out
+	var _cret *C.GdkPaintable    // in
+
+	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
+	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(size))
+
+	_cret = C.gtk_snapshot_to_paintable(_arg0, _arg1)
+
+	var _paintable *gdk.Paintable // out
+
+	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.Paintable)
+
+	return _paintable
 }
 
 // Transform transforms @snapshot's coordinate system with the given @transform.

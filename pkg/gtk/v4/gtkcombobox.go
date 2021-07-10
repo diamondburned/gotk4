@@ -107,6 +107,7 @@ type ComboBoxxer interface {
 // `GtkComboBox` uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type ComboBox struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

@@ -238,6 +238,7 @@ type ListBoxxer interface {
 // the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListBox struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -688,6 +689,7 @@ type ListBoxRowwer interface {
 // `GtkListBox`.
 type ListBoxRow struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Actionable

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,14 +40,21 @@ type VulkanContexter interface {
 // Support for `GdkVulkanContext` is platform-specific and context creation can
 // fail, returning nil context.
 type VulkanContext struct {
+	*externglib.Object
+
 	DrawContext
+	gio.Initable
 }
 
 var _ VulkanContexter = (*VulkanContext)(nil)
 
 func wrapVulkanContexter(obj *externglib.Object) VulkanContexter {
 	return &VulkanContext{
+		Object: obj,
 		DrawContext: DrawContext{
+			Object: obj,
+		},
+		Initable: gio.Initable{
 			Object: obj,
 		},
 	}

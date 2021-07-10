@@ -42,6 +42,7 @@ type FileIconner interface {
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
 type FileIcon struct {
 	*externglib.Object
+
 	Icon
 	LoadableIcon
 }

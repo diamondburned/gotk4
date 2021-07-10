@@ -141,6 +141,7 @@ type TreeViewColumner interface {
 // CSS node structure for treeviews and their headers.
 type TreeViewColumn struct {
 	*externglib.Object
+
 	externglib.InitiallyUnowned
 	Buildable
 	CellLayout

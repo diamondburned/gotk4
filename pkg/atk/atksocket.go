@@ -68,7 +68,8 @@ type Socketter interface {
 // layer.
 type Socket struct {
 	*externglib.Object
-	Object
+
+	ObjectClass
 	Component
 }
 
@@ -77,7 +78,7 @@ var _ Socketter = (*Socket)(nil)
 func wrapSocketter(obj *externglib.Object) Socketter {
 	return &Socket{
 		Object: obj,
-		Object: Object{
+		ObjectClass: ObjectClass{
 			Object: obj,
 		},
 		Component: Component{

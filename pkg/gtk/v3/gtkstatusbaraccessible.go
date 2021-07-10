@@ -34,6 +34,8 @@ type StatusbarAccessibler interface {
 
 type StatusbarAccessible struct {
 	ContainerAccessible
+
+	atk.Component
 }
 
 var _ StatusbarAccessibler = (*StatusbarAccessible)(nil)
@@ -43,11 +45,20 @@ func wrapStatusbarAccessibler(obj *externglib.Object) StatusbarAccessibler {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
 		},
 	}
 }

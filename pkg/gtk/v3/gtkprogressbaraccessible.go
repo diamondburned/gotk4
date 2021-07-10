@@ -33,19 +33,33 @@ type ProgressBarAccessibler interface {
 }
 
 type ProgressBarAccessible struct {
+	*externglib.Object
+
 	WidgetAccessible
+	atk.Component
+	atk.Value
 }
 
 var _ ProgressBarAccessibler = (*ProgressBarAccessible)(nil)
 
 func wrapProgressBarAccessibler(obj *externglib.Object) ProgressBarAccessibler {
 	return &ProgressBarAccessible{
+		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				Object: atk.Object{
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Value: atk.Value{
+			Object: obj,
 		},
 	}
 }

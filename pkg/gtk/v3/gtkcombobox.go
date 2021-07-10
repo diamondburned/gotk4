@@ -50,7 +50,7 @@ type ComboBoxxer interface {
 	HasEntry() bool
 	IDColumn() int
 	Model() *TreeModel
-	PopupAccessible() *atk.Object
+	PopupAccessible() *atk.ObjectClass
 	PopupFixedWidth() bool
 	RowSpanColumn() int
 	Title() string
@@ -112,7 +112,9 @@ type ComboBoxxer interface {
 // node with name arrow.
 type ComboBox struct {
 	*externglib.Object
+
 	Bin
+	atk.ImplementorIface
 	Buildable
 	CellEditable
 	CellLayout
@@ -132,17 +134,29 @@ func wrapComboBoxxer(obj *externglib.Object) ComboBoxxer {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -152,6 +166,9 @@ func wrapComboBoxxer(obj *externglib.Object) ComboBoxxer {
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
@@ -479,7 +496,7 @@ func (comboBox *ComboBox) Model() *TreeModel {
 //
 // This function is mostly intended for use by accessibility technologies;
 // applications should have little use for it.
-func (comboBox *ComboBox) PopupAccessible() *atk.Object {
+func (comboBox *ComboBox) PopupAccessible() *atk.ObjectClass {
 	var _arg0 *C.GtkComboBox // out
 	var _cret *C.AtkObject   // in
 
@@ -487,9 +504,9 @@ func (comboBox *ComboBox) PopupAccessible() *atk.Object {
 
 	_cret = C.gtk_combo_box_get_popup_accessible(_arg0)
 
-	var _object *atk.Object // out
+	var _object *atk.ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*atk.Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*atk.ObjectClass)
 
 	return _object
 }

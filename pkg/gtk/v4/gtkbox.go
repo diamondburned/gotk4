@@ -74,6 +74,7 @@ type Boxxer interface {
 // `GtkBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Box struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

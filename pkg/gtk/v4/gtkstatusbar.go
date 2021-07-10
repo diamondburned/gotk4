@@ -72,6 +72,7 @@ type Statusbarrer interface {
 // `GtkStatusbar` has a single CSS node with name `statusbar`.
 type Statusbar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

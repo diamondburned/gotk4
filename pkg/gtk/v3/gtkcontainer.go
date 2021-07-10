@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -289,7 +290,9 @@ type Containerrer interface {
 //    </object>
 type Container struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -303,9 +306,15 @@ func wrapContainerrer(obj *externglib.Object) Containerrer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

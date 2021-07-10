@@ -49,6 +49,7 @@ type EmblemedIconner interface {
 // #GEmblem for more information.
 type EmblemedIcon struct {
 	*externglib.Object
+
 	Icon
 }
 

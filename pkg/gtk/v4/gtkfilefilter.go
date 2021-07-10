@@ -72,6 +72,7 @@ type FileFilterrer interface {
 // </patterns> </object> “`
 type FileFilter struct {
 	*externglib.Object
+
 	Filter
 	Buildable
 }

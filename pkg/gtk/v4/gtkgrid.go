@@ -105,6 +105,7 @@ type Gridder interface {
 // `GtkGrid` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Grid struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

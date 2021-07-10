@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -88,6 +89,7 @@ type ToolSheller interface {
 // additional information when embedding ToolItem widgets.
 type ToolShell struct {
 	*externglib.Object
+
 	Widget
 }
 
@@ -99,6 +101,9 @@ func wrapToolSheller(obj *externglib.Object) ToolSheller {
 		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			ImplementorIface: atk.ImplementorIface{
 				Object: obj,
 			},
 			Buildable: Buildable{

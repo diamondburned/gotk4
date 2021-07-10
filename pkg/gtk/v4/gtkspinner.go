@@ -49,6 +49,7 @@ type Spinnerrer interface {
 // is active, the :checked pseudoclass is added to this node.
 type Spinner struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

@@ -206,6 +206,7 @@ type FlowBoxxer interface {
 // uses the GTK_ACCESSIBLE_ROLE_GRID_CELL role.
 type FlowBox struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -674,6 +675,7 @@ type FlowBoxChilder interface {
 // `GtkFlowBox`.
 type FlowBoxChild struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

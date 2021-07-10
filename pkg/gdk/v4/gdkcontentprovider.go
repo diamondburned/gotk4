@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,6 +53,10 @@ type ContentProviderrerOverrider interface {
 	// This can be assumed to be a subset of
 	// [method@Gdk.ContentProvider.ref_formats].
 	RefStorableFormats() *ContentFormats
+	// WriteMIMETypeFinish finishes an asynchronous write operation.
+	//
+	// See [method@Gdk.ContentProvider.write_mime_type_async].
+	WriteMIMETypeFinish(result gio.AsyncResulter) error
 }
 
 // ContentProviderrer describes ContentProvider's methods.
@@ -62,6 +67,7 @@ type ContentProviderrer interface {
 	Value(value *externglib.Value) error
 	RefFormats() *ContentFormats
 	RefStorableFormats() *ContentFormats
+	WriteMIMETypeFinish(result gio.AsyncResulter) error
 }
 
 // ContentProvider: `GdkContentProvider` is used to provide content for the
@@ -222,4 +228,24 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	})
 
 	return _contentFormats
+}
+
+// WriteMIMETypeFinish finishes an asynchronous write operation.
+//
+// See [method@Gdk.ContentProvider.write_mime_type_async].
+func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) error {
+	var _arg0 *C.GdkContentProvider // out
+	var _arg1 *C.GAsyncResult       // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -48,7 +49,9 @@ type SeparatorToolItemmer interface {
 // GtkSeparatorToolItem has a single CSS node with name separator.
 type SeparatorToolItem struct {
 	*externglib.Object
+
 	ToolItem
+	atk.ImplementorIface
 	Activatable
 	Buildable
 }
@@ -69,17 +72,29 @@ func wrapSeparatorToolItemmer(obj *externglib.Object) SeparatorToolItemmer {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						ImplementorIface: atk.ImplementorIface{
+							Object: obj,
+						},
 						Buildable: Buildable{
 							Object: obj,
 						},
+					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Activatable: Activatable{
 				Object: obj,
@@ -87,6 +102,9 @@ func wrapSeparatorToolItemmer(obj *externglib.Object) SeparatorToolItemmer {
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Activatable: Activatable{
 			Object: obj,

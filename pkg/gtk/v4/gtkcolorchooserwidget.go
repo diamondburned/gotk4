@@ -57,6 +57,7 @@ type ColorChooserWidgetter interface {
 // `GtkColorChooserWidget` has a single CSS node with name colorchooser.
 type ColorChooserWidget struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

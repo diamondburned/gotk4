@@ -143,6 +143,7 @@ type DrawingAreaer interface {
 // creating your own `GtkWidget` subclass.
 type DrawingArea struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

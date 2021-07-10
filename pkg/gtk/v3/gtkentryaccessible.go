@@ -33,22 +33,40 @@ type EntryAccessibler interface {
 }
 
 type EntryAccessible struct {
+	*externglib.Object
+
 	WidgetAccessible
 	atk.Action
+	atk.Component
+	atk.EditableText
+	atk.Text
 }
 
 var _ EntryAccessibler = (*EntryAccessible)(nil)
 
 func wrapEntryAccessibler(obj *externglib.Object) EntryAccessibler {
 	return &EntryAccessible{
+		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				Object: atk.Object{
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		EditableText: atk.EditableText{
+			Object: obj,
+		},
+		Text: atk.Text{
 			Object: obj,
 		},
 	}

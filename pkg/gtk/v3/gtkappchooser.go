@@ -5,7 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,6 +30,7 @@ func init() {
 type AppChooserrer interface {
 	gextras.Objector
 
+	AppInfo() *gio.AppInfo
 	ContentType() string
 	Refresh()
 }
@@ -50,6 +53,7 @@ type AppChooserrer interface {
 // gtk_app_chooser_get_app_info().
 type AppChooser struct {
 	*externglib.Object
+
 	Widget
 }
 
@@ -63,6 +67,9 @@ func wrapAppChooserrer(obj *externglib.Object) AppChooserrer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
@@ -74,6 +81,22 @@ func marshalAppChooserrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserrer(obj), nil
+}
+
+// AppInfo returns the currently selected application.
+func (self *AppChooser) AppInfo() *gio.AppInfo {
+	var _arg0 *C.GtkAppChooser // out
+	var _cret *C.GAppInfo      // in
+
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_app_chooser_get_app_info(_arg0)
+
+	var _appInfo *gio.AppInfo // out
+
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.AppInfo)
+
+	return _appInfo
 }
 
 // ContentType returns the current value of the AppChooser:content-type

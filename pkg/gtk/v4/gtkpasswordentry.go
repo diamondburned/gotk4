@@ -19,12 +19,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_password_entry_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_password_entry_get_type()), F: marshalPasswordEntrier},
 	})
 }
 
-// yier describes PasswordEntry's methods.
-type yier interface {
+// PasswordEntrier describes PasswordEntry's methods.
+type PasswordEntrier interface {
 	gextras.Objector
 
 	ExtraMenu() *gio.MenuModel
@@ -65,6 +65,7 @@ type yier interface {
 // `GtkPasswordEntry` uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type PasswordEntry struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -72,9 +73,9 @@ type PasswordEntry struct {
 	Editable
 }
 
-var _ yier = (*PasswordEntry)(nil)
+var _ PasswordEntrier = (*PasswordEntry)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapPasswordEntrier(obj *externglib.Object) PasswordEntrier {
 	return &PasswordEntry{
 		Object: obj,
 		Widget: Widget{
@@ -122,10 +123,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalPasswordEntrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapPasswordEntrier(obj), nil
 }
 
 // NewPasswordEntry creates a `GtkPasswordEntry`.

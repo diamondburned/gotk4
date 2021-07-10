@@ -26,7 +26,7 @@ func init() {
 		{T: externglib.Type(C.pango_font_mask_get_type()), F: marshalFontMask},
 		{T: externglib.Type(C.pango_font_get_type()), F: marshalFonter},
 		{T: externglib.Type(C.pango_font_face_get_type()), F: marshalFontFacer},
-		{T: externglib.Type(C.pango_font_family_get_type()), F: marshalyier},
+		{T: externglib.Type(C.pango_font_family_get_type()), F: marshalFontFamilier},
 		{T: externglib.Type(C.pango_font_description_get_type()), F: marshalFontDescription},
 		{T: externglib.Type(C.pango_font_metrics_get_type()), F: marshalFontMetrics},
 	})
@@ -537,11 +537,11 @@ func (face *FontFace) ListSizes() []int {
 	return _sizes
 }
 
-// yierOverrider contains methods that are overridable.
+// FontFamilierOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type yierOverrider interface {
+type FontFamilierOverrider interface {
 	// Face gets the `PangoFontFace` of @family with the given name.
 	Face(name string) *FontFace
 	// Name gets the name of the family.
@@ -574,8 +574,8 @@ type yierOverrider interface {
 	ListFaces() []*FontFace
 }
 
-// yier describes FontFamily's methods.
-type yier interface {
+// FontFamilier describes FontFamily's methods.
+type FontFamilier interface {
 	gextras.Objector
 
 	Face(name string) *FontFace
@@ -594,18 +594,18 @@ type FontFamily struct {
 	*externglib.Object
 }
 
-var _ yier = (*FontFamily)(nil)
+var _ FontFamilier = (*FontFamily)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapFontFamilier(obj *externglib.Object) FontFamilier {
 	return &FontFamily{
 		Object: obj,
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalFontFamilier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapFontFamilier(obj), nil
 }
 
 // Face gets the `PangoFontFace` of @family with the given name.

@@ -6,9 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,6 +70,7 @@ type Imager interface {
 
 	Clear()
 	Animation() *gdkpixbuf.PixbufAnimation
+	GIcon() (*gio.Icon, int)
 	IconName() (string, int)
 	IconSet() (*IconSet, int)
 	Pixbuf() *gdkpixbuf.Pixbuf
@@ -76,6 +79,7 @@ type Imager interface {
 	StorageType() ImageType
 	SetFromAnimation(animation gdkpixbuf.PixbufAnimationer)
 	SetFromFile(filename string)
+	SetFromGIcon(icon gio.Iconner, size int)
 	SetFromIconName(iconName string, size int)
 	SetFromIconSet(iconSet *IconSet, size int)
 	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer)
@@ -143,7 +147,9 @@ type Imager interface {
 // appear on image CSS nodes: .icon-dropshadow, .lowres-icon.
 type Image struct {
 	*externglib.Object
+
 	Misc
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -159,13 +165,22 @@ func wrapImager(obj *externglib.Object) Imager {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -238,6 +253,27 @@ func NewImageFromFile(filename string) *Image {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_file(_arg1)
+
+	var _image *Image // out
+
+	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
+
+	return _image
+}
+
+// NewImageFromGIcon creates a Image displaying an icon from the current icon
+// theme. If the icon name isn’t known, a “broken image” icon will be displayed
+// instead. If the current icon theme is changed, the icon will be updated
+// appropriately.
+func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
+	var _cret *C.GtkWidget  // in
+
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg2 = C.GtkIconSize(size)
+
+	_cret = C.gtk_image_new_from_gicon(_arg1, _arg2)
 
 	var _image *Image // out
 
@@ -420,6 +456,28 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 	return _pixbufAnimation
 }
 
+// GIcon gets the #GIcon and size being displayed by the Image. The storage type
+// of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
+// gtk_image_get_storage_type()). The caller of this function does not own a
+// reference to the returned #GIcon.
+func (image *Image) GIcon() (*gio.Icon, int) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.GIcon      // in
+	var _arg2 C.GtkIconSize // in
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+
+	C.gtk_image_get_gicon(_arg0, &_arg1, &_arg2)
+
+	var _gicon *gio.Icon // out
+	var _size int        // out
+
+	_gicon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*gio.Icon)
+	_size = int(_arg2)
+
+	return _gicon, _size
+}
+
 // IconName gets the icon name and size being displayed by the Image. The
 // storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME (see
 // gtk_image_get_storage_type()). The returned string is owned by the Image and
@@ -568,6 +626,19 @@ func (image *Image) SetFromFile(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_file(_arg0, _arg1)
+}
+
+// SetFromGIcon: see gtk_image_new_from_gicon() for details.
+func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg2 = C.GtkIconSize(size)
+
+	C.gtk_image_set_from_gicon(_arg0, _arg1, _arg2)
 }
 
 // SetFromIconName: see gtk_image_new_from_icon_name() for details.

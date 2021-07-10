@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_registry_get_type()), F: marshalyier},
+		{T: externglib.Type(C.atk_registry_get_type()), F: marshalRegistrier},
 	})
 }
 
@@ -40,8 +40,8 @@ func GetDefaultRegistry() *Registry {
 	return _registry
 }
 
-// yier describes Registry's methods.
-type yier interface {
+// Registrier describes Registry's methods.
+type Registrier interface {
 	gextras.Objector
 
 	Factory(typ externglib.Type) *ObjectFactory
@@ -58,18 +58,18 @@ type Registry struct {
 	*externglib.Object
 }
 
-var _ yier = (*Registry)(nil)
+var _ Registrier = (*Registry)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapRegistrier(obj *externglib.Object) Registrier {
 	return &Registry{
 		Object: obj,
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalRegistrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapRegistrier(obj), nil
 }
 
 // Factory gets an ObjectFactory appropriate for creating Objects appropriate

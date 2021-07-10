@@ -90,6 +90,7 @@ type SizeGrouper interface {
 // <widget name="radio1"/> <widget name="radio2"/> </widgets> </object> “`
 type SizeGroup struct {
 	*externglib.Object
+
 	Buildable
 }
 

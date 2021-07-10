@@ -307,6 +307,7 @@ type PrintOperationer interface {
 // print preview.
 type PrintOperation struct {
 	*externglib.Object
+
 	PrintOperationPreview
 }
 

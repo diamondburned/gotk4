@@ -32,20 +32,20 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_get_type()), F: marshalyier},
+		{T: externglib.Type(C.g_proxy_get_type()), F: marshalProxier},
 	})
 }
 
-// yierOverrider contains methods that are overridable.
+// ProxierOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type yierOverrider interface {
-	// Connectyier: given @connection to communicate with a proxy (eg, a
+type ProxierOverrider interface {
+	// ConnectProxier: given @connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
 	// necessary handshake to connect to @proxy_address, and if required, wraps
 	// the OStream to handle proxy payload.
-	Connectyier(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler) (*IOStream, error)
+	ConnectProxier(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler) (*IOStream, error)
 	// ConnectAsync asynchronous version of g_proxy_connect().
 	ConnectAsync(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler, callback AsyncReadyCallback)
 	// ConnectFinish: see g_proxy_connect().
@@ -60,11 +60,11 @@ type yierOverrider interface {
 	SupportsHostname() bool
 }
 
-// yier describes Proxy's methods.
-type yier interface {
+// Proxier describes Proxy's methods.
+type Proxier interface {
 	gextras.Objector
 
-	Connectyier(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler) (*IOStream, error)
+	ConnectProxier(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler) (*IOStream, error)
 	ConnectAsync(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler, callback AsyncReadyCallback)
 	ConnectFinish(result AsyncResulter) (*IOStream, error)
 	SupportsHostname() bool
@@ -79,25 +79,25 @@ type Proxy struct {
 	*externglib.Object
 }
 
-var _ yier = (*Proxy)(nil)
+var _ Proxier = (*Proxy)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapProxier(obj *externglib.Object) Proxier {
 	return &Proxy{
 		Object: obj,
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalProxier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapProxier(obj), nil
 }
 
-// Connectyier: given @connection to communicate with a proxy (eg, a Connection
-// that is connected to the proxy server), this does the necessary handshake to
-// connect to @proxy_address, and if required, wraps the OStream to handle proxy
-// payload.
-func (proxy *Proxy) Connectyier(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler) (*IOStream, error) {
+// ConnectProxier: given @connection to communicate with a proxy (eg, a
+// Connection that is connected to the proxy server), this does the necessary
+// handshake to connect to @proxy_address, and if required, wraps the OStream to
+// handle proxy payload.
+func (proxy *Proxy) ConnectProxier(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler) (*IOStream, error) {
 	var _arg0 *C.GProxy        // out
 	var _arg1 *C.GIOStream     // out
 	var _arg2 *C.GProxyAddress // out

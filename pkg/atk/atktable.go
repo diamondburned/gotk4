@@ -35,7 +35,7 @@ type TablerOverrider interface {
 	ColumnInserted(column int, numInserted int)
 	ColumnReordered()
 	// Caption gets the caption for the @table.
-	Caption() *Object
+	Caption() *ObjectClass
 	// ColumnAtIndex gets a #gint representing the column at the specified
 	// @index_.
 	//
@@ -49,7 +49,7 @@ type TablerOverrider interface {
 	ColumnExtentAt(row int, column int) int
 	// ColumnHeader gets the column header of a specified column in an
 	// accessible table.
-	ColumnHeader(column int) *Object
+	ColumnHeader(column int) *ObjectClass
 	// IndexAt gets a #gint representing the index at the specified @row and
 	// @column.
 	//
@@ -71,7 +71,7 @@ type TablerOverrider interface {
 	// a specified @row and @column in the @table.
 	RowExtentAt(row int, column int) int
 	// RowHeader gets the row header of a specified row in an accessible table.
-	RowHeader(row int) *Object
+	RowHeader(row int) *ObjectClass
 	// SelectedColumns gets the selected columns of the table by initializing
 	// **selected with the selected column numbers. This array should be freed
 	// by the caller.
@@ -81,7 +81,7 @@ type TablerOverrider interface {
 	// the caller.
 	SelectedRows(selected **int) int
 	// Summary gets the summary description of the table.
-	Summary() *Object
+	Summary() *ObjectClass
 	// IsColumnSelected gets a boolean value indicating whether the specified
 	// @column is selected
 	IsColumnSelected(column int) bool
@@ -94,7 +94,7 @@ type TablerOverrider interface {
 	ModelChanged()
 	// RefAt: get a reference to the table cell at @row, @column. This cell
 	// should implement the interface TableCell
-	RefAt(row int, column int) *Object
+	RefAt(row int, column int) *ObjectClass
 	// RemoveColumnSelection adds the specified @column to the selection.
 	RemoveColumnSelection(column int) bool
 	// RemoveRowSelection removes the specified @row from the selection.
@@ -103,19 +103,19 @@ type TablerOverrider interface {
 	RowInserted(row int, numInserted int)
 	RowReordered()
 	// SetCaption sets the caption for the table.
-	SetCaption(caption Objecter)
+	SetCaption(caption ObjectClasser)
 	// SetColumnDescription sets the description text for the specified @column
 	// of the @table.
 	SetColumnDescription(column int, description string)
 	// SetColumnHeader sets the specified column header to @header.
-	SetColumnHeader(column int, header Objecter)
+	SetColumnHeader(column int, header ObjectClasser)
 	// SetRowDescription sets the description text for the specified @row of
 	// @table.
 	SetRowDescription(row int, description string)
 	// SetRowHeader sets the specified row header to @header.
-	SetRowHeader(row int, header Objecter)
+	SetRowHeader(row int, header ObjectClasser)
 	// SetSummary sets the summary description of the table.
-	SetSummary(accessible Objecter)
+	SetSummary(accessible ObjectClasser)
 }
 
 // Tabler describes Table's methods.
@@ -124,33 +124,33 @@ type Tabler interface {
 
 	AddColumnSelection(column int) bool
 	AddRowSelection(row int) bool
-	Caption() *Object
+	Caption() *ObjectClass
 	ColumnAtIndex(index_ int) int
 	ColumnDescription(column int) string
 	ColumnExtentAt(row int, column int) int
-	ColumnHeader(column int) *Object
+	ColumnHeader(column int) *ObjectClass
 	IndexAt(row int, column int) int
 	NColumns() int
 	NRows() int
 	RowAtIndex(index_ int) int
 	RowDescription(row int) string
 	RowExtentAt(row int, column int) int
-	RowHeader(row int) *Object
+	RowHeader(row int) *ObjectClass
 	SelectedColumns(selected **int) int
 	SelectedRows(selected **int) int
-	Summary() *Object
+	Summary() *ObjectClass
 	IsColumnSelected(column int) bool
 	IsRowSelected(row int) bool
 	IsSelected(row int, column int) bool
-	RefAt(row int, column int) *Object
+	RefAt(row int, column int) *ObjectClass
 	RemoveColumnSelection(column int) bool
 	RemoveRowSelection(row int) bool
-	SetCaption(caption Objecter)
+	SetCaption(caption ObjectClasser)
 	SetColumnDescription(column int, description string)
-	SetColumnHeader(column int, header Objecter)
+	SetColumnHeader(column int, header ObjectClasser)
 	SetRowDescription(row int, description string)
-	SetRowHeader(row int, header Objecter)
-	SetSummary(accessible Objecter)
+	SetRowHeader(row int, header ObjectClasser)
+	SetSummary(accessible ObjectClasser)
 }
 
 // Table should be implemented by components which present elements ordered via
@@ -236,7 +236,7 @@ func (table *Table) AddRowSelection(row int) bool {
 }
 
 // Caption gets the caption for the @table.
-func (table *Table) Caption() *Object {
+func (table *Table) Caption() *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
 
@@ -244,9 +244,9 @@ func (table *Table) Caption() *Object {
 
 	_cret = C.atk_table_get_caption(_arg0)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -313,7 +313,7 @@ func (table *Table) ColumnExtentAt(row int, column int) int {
 
 // ColumnHeader gets the column header of a specified column in an accessible
 // table.
-func (table *Table) ColumnHeader(column int) *Object {
+func (table *Table) ColumnHeader(column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -323,9 +323,9 @@ func (table *Table) ColumnHeader(column int) *Object {
 
 	_cret = C.atk_table_get_column_header(_arg0, _arg1)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -446,7 +446,7 @@ func (table *Table) RowExtentAt(row int, column int) int {
 }
 
 // RowHeader gets the row header of a specified row in an accessible table.
-func (table *Table) RowHeader(row int) *Object {
+func (table *Table) RowHeader(row int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -456,9 +456,9 @@ func (table *Table) RowHeader(row int) *Object {
 
 	_cret = C.atk_table_get_row_header(_arg0, _arg1)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -503,7 +503,7 @@ func (table *Table) SelectedRows(selected **int) int {
 }
 
 // Summary gets the summary description of the table.
-func (table *Table) Summary() *Object {
+func (table *Table) Summary() *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
 
@@ -511,9 +511,9 @@ func (table *Table) Summary() *Object {
 
 	_cret = C.atk_table_get_summary(_arg0)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -585,7 +585,7 @@ func (table *Table) IsSelected(row int, column int) bool {
 
 // RefAt: get a reference to the table cell at @row, @column. This cell should
 // implement the interface TableCell
-func (table *Table) RefAt(row int, column int) *Object {
+func (table *Table) RefAt(row int, column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -597,9 +597,9 @@ func (table *Table) RefAt(row int, column int) *Object {
 
 	_cret = C.atk_table_ref_at(_arg0, _arg1, _arg2)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }
@@ -645,7 +645,7 @@ func (table *Table) RemoveRowSelection(row int) bool {
 }
 
 // SetCaption sets the caption for the table.
-func (table *Table) SetCaption(caption Objecter) {
+func (table *Table) SetCaption(caption ObjectClasser) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
 
@@ -671,7 +671,7 @@ func (table *Table) SetColumnDescription(column int, description string) {
 }
 
 // SetColumnHeader sets the specified column header to @header.
-func (table *Table) SetColumnHeader(column int, header Objecter) {
+func (table *Table) SetColumnHeader(column int, header ObjectClasser) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out
@@ -698,7 +698,7 @@ func (table *Table) SetRowDescription(row int, description string) {
 }
 
 // SetRowHeader sets the specified row header to @header.
-func (table *Table) SetRowHeader(row int, header Objecter) {
+func (table *Table) SetRowHeader(row int, header ObjectClasser) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out
@@ -711,7 +711,7 @@ func (table *Table) SetRowHeader(row int, header Objecter) {
 }
 
 // SetSummary sets the summary description of the table.
-func (table *Table) SetSummary(accessible Objecter) {
+func (table *Table) SetSummary(accessible ObjectClasser) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
 

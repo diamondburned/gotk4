@@ -132,6 +132,7 @@ type LevelBarrer interface {
 // `GtkLevelBar` uses the K_ACCESSIBLE_ROLE_METER role.
 type LevelBar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

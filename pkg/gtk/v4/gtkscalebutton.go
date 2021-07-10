@@ -57,6 +57,7 @@ type ScaleButtonner interface {
 // from a plain `GtkButton`, it gets the .scale style class.
 type ScaleButton struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

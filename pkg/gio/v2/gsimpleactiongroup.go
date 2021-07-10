@@ -47,7 +47,7 @@ type SimpleActionGrouper interface {
 // the Group and Map interfaces.
 type SimpleActionGroup struct {
 	*externglib.Object
-	*externglib.Object
+
 	ActionGroup
 	ActionMap
 }
@@ -56,7 +56,6 @@ var _ SimpleActionGrouper = (*SimpleActionGroup)(nil)
 
 func wrapSimpleActionGrouper(obj *externglib.Object) SimpleActionGrouper {
 	return &SimpleActionGroup{
-		Object: obj,
 		Object: obj,
 		ActionGroup: ActionGroup{
 			Object: obj,

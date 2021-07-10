@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
@@ -240,6 +241,7 @@ type Widgetter interface {
 	Hide()
 	InDestruction() bool
 	InitTemplate()
+	InsertActionGroup(name string, group gio.ActionGrouper)
 	InsertAfter(parent Widgetter, previousSibling Widgetter)
 	InsertBefore(parent Widgetter, nextSibling Widgetter)
 	IsAncestor(ancestor Widgetter) bool
@@ -249,6 +251,8 @@ type Widgetter interface {
 	IsVisible() bool
 	Map()
 	MnemonicActivate(groupCycling bool) bool
+	ObserveChildren() *gio.ListModel
+	ObserveControllers() *gio.ListModel
 	QueueAllocate()
 	QueueDraw()
 	QueueResize()
@@ -573,6 +577,7 @@ type Widgetter interface {
 // (GTK_WIDGET_CLASS (klass), hello_button_clicked); } “`
 type Widget struct {
 	*externglib.Object
+
 	externglib.InitiallyUnowned
 	Accessible
 	Buildable
@@ -2380,6 +2385,32 @@ func (widget *Widget) InitTemplate() {
 	C.gtk_widget_init_template(_arg0)
 }
 
+// InsertActionGroup inserts @group into @widget.
+//
+// Children of @widget that implement [iface@Gtk.Actionable] can then be
+// associated with actions in @group by setting their “action-name” to
+// @prefix.`action-name`.
+//
+// Note that inheritance is defined for individual actions. I.e. even if you
+// insert a group with prefix @prefix, actions with the same prefix will still
+// be inherited from the parent, unless the group contains an action with the
+// same name.
+//
+// If @group is nil, a previously inserted group for @name is removed from
+// @widget.
+func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 *C.char         // out
+	var _arg2 *C.GActionGroup // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+
+	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
+}
+
 // InsertAfter inserts @widget into the child widget list of @parent.
 //
 // It will be placed after @previous_sibling, or at the beginning if
@@ -2567,6 +2598,53 @@ func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 	}
 
 	return _ok
+}
+
+// ObserveChildren returns a `GListModel` to track the children of @widget.
+//
+// Calling this function will enable extra internal bookkeeping to track
+// children and emit signals on the returned listmodel. It may slow down
+// operations a lot.
+//
+// Applications should try hard to avoid calling this function because of the
+// slowdowns.
+func (widget *Widget) ObserveChildren() *gio.ListModel {
+	var _arg0 *C.GtkWidget  // out
+	var _cret *C.GListModel // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_observe_children(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
+}
+
+// ObserveControllers returns a `GListModel` to track the
+// [class@Gtk.EventController]s of @widget.
+//
+// Calling this function will enable extra internal bookkeeping to track
+// controllers and emit signals on the returned listmodel. It may slow down
+// operations a lot.
+//
+// Applications should try hard to avoid calling this function because of the
+// slowdowns.
+func (widget *Widget) ObserveControllers() *gio.ListModel {
+	var _arg0 *C.GtkWidget  // out
+	var _cret *C.GListModel // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_observe_controllers(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
 }
 
 // QueueAllocate flags the widget for a rerun of the

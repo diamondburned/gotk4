@@ -20,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_combo_get_type()), F: marshalCellRendererComboer},
+		{T: externglib.Type(C.gtk_cell_renderer_combo_get_type()), F: marshalCellRendererCombor},
 	})
 }
 
-// CellRendererComboer describes CellRendererCombo's methods.
-type CellRendererComboer interface {
+// CellRendererCombor describes CellRendererCombo's methods.
+type CellRendererCombor interface {
 	gextras.Objector
 
 	privateCellRendererCombo()
@@ -47,9 +47,9 @@ type CellRendererCombo struct {
 	CellRendererText
 }
 
-var _ CellRendererComboer = (*CellRendererCombo)(nil)
+var _ CellRendererCombor = (*CellRendererCombo)(nil)
 
-func wrapCellRendererComboer(obj *externglib.Object) CellRendererComboer {
+func wrapCellRendererCombor(obj *externglib.Object) CellRendererCombor {
 	return &CellRendererCombo{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
@@ -61,10 +61,10 @@ func wrapCellRendererComboer(obj *externglib.Object) CellRendererComboer {
 	}
 }
 
-func marshalCellRendererComboer(p uintptr) (interface{}, error) {
+func marshalCellRendererCombor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererComboer(obj), nil
+	return wrapCellRendererCombor(obj), nil
 }
 
 // NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is

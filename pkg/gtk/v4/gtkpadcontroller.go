@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -104,6 +106,37 @@ func marshalPadControllerrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPadControllerrer(obj), nil
+}
+
+// NewPadController creates a new `GtkPadController` that will associate events
+// from @pad to actions.
+//
+// A nil pad may be provided so the controller manages all pad devices
+// generically, it is discouraged to mix `GtkPadController` objects with nil and
+// non-nil @pad argument on the same toplevel window, as execution order is not
+// guaranteed.
+//
+// The `GtkPadController` is created with no mapped actions. In order to map pad
+// events to actions, use [method@Gtk.PadController.set_action_entries] or
+// [method@Gtk.PadController.set_action].
+//
+// Be aware that pad events will only be delivered to `GtkWindow`s, so adding a
+// pad controller to any other type of widget will not have an effect.
+func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
+	var _arg1 *C.GActionGroup     // out
+	var _arg2 *C.GdkDevice        // out
+	var _cret *C.GtkPadController // in
+
+	_arg1 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
+
+	_cret = C.gtk_pad_controller_new(_arg1, _arg2)
+
+	var _padController *PadController // out
+
+	_padController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PadController)
+
+	return _padController
 }
 
 // SetActionEntries: convenience function to add a group of action entries on

@@ -36,7 +36,9 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ GoDoc . 0 }}
 	type {{ .StructName }} struct {
-		{{ range .Tree.ImplTypes -}}
+		{{ index .Tree.ImplTypes 0 }}
+
+		{{ range (slice .Tree.ImplTypes 1) -}}
 		{{ . }}
 		{{ end }}
 	}

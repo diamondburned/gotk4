@@ -45,6 +45,7 @@ type ConverterInputStreamer interface {
 // As of GLib 2.34, InputStream implements InputStream.
 type ConverterInputStream struct {
 	*externglib.Object
+
 	FilterInputStream
 	PollableInputStream
 }

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -24,7 +25,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_entry_icon_position_get_type()), F: marshalEntryIconPosition},
-		{T: externglib.Type(C.gtk_entry_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_entry_get_type()), F: marshalEntrier},
 	})
 }
 
@@ -42,11 +43,11 @@ func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// yierOverrider contains methods that are overridable.
+// EntrierOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type yierOverrider interface {
+type EntrierOverrider interface {
 	Activate()
 	Backspace()
 	CopyClipboard()
@@ -60,8 +61,8 @@ type yierOverrider interface {
 	ToggleOverwrite()
 }
 
-// yier describes Entry's methods.
-type yier interface {
+// Entrier describes Entry's methods.
+type Entrier interface {
 	gextras.Objector
 
 	ActivatesDefault() bool
@@ -188,15 +189,17 @@ type yier interface {
 // .insertion-cursor.
 type Entry struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Buildable
 	CellEditable
 	Editable
 }
 
-var _ yier = (*Entry)(nil)
+var _ Entrier = (*Entry)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapEntrier(obj *externglib.Object) Entrier {
 	return &Entry{
 		Object: obj,
 		Widget: Widget{
@@ -204,9 +207,15 @@ func wrapyier(obj *externglib.Object) yier {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -216,6 +225,9 @@ func wrapyier(obj *externglib.Object) yier {
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
@@ -229,10 +241,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalEntrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapEntrier(obj), nil
 }
 
 // NewEntry creates a new entry.

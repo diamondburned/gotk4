@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,6 +44,8 @@ type BookmarkLister interface {
 // added: `recent::private` (boolean) and `recent:applications` (stringv).
 type BookmarkList struct {
 	*externglib.Object
+
+	gio.ListModel
 }
 
 var _ BookmarkLister = (*BookmarkList)(nil)
@@ -50,6 +53,9 @@ var _ BookmarkLister = (*BookmarkList)(nil)
 func wrapBookmarkLister(obj *externglib.Object) BookmarkLister {
 	return &BookmarkList{
 		Object: obj,
+		ListModel: gio.ListModel{
+			Object: obj,
+		},
 	}
 }
 

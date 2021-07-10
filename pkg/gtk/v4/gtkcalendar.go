@@ -80,6 +80,7 @@ type Calendarrer interface {
 // Marked day labels get the :selected state assigned.
 type Calendar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

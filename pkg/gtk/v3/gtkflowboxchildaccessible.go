@@ -34,6 +34,8 @@ type FlowBoxChildAccessibler interface {
 
 type FlowBoxChildAccessible struct {
 	ContainerAccessible
+
+	atk.Component
 }
 
 var _ FlowBoxChildAccessibler = (*FlowBoxChildAccessible)(nil)
@@ -43,11 +45,20 @@ func wrapFlowBoxChildAccessibler(obj *externglib.Object) FlowBoxChildAccessibler
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
 		},
 	}
 }

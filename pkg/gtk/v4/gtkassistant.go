@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -108,6 +109,7 @@ type Assistanter interface {
 	PageComplete(page Widgetter) bool
 	PageTitle(page Widgetter) string
 	PageType(page Widgetter) AssistantPageType
+	Pages() *gio.ListModel
 	InsertPage(page Widgetter, position int) int
 	NextPage()
 	PrependPage(page Widgetter) int
@@ -160,6 +162,7 @@ type Assistanter interface {
 // .assistant.
 type Assistant struct {
 	*externglib.Object
+
 	Window
 	Accessible
 	Buildable
@@ -514,6 +517,22 @@ func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 	_assistantPageType = (AssistantPageType)(_cret)
 
 	return _assistantPageType
+}
+
+// Pages gets a list model of the assistant pages.
+func (assistant *Assistant) Pages() *gio.ListModel {
+	var _arg0 *C.GtkAssistant // out
+	var _cret *C.GListModel   // in
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
+
+	_cret = C.gtk_assistant_get_pages(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
 }
 
 // InsertPage inserts a page in the @assistant at a given position.

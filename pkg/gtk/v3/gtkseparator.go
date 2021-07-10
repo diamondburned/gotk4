@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -43,7 +44,9 @@ type Separatorrer interface {
 // the .horizontal or .vertical style classes.
 type Separator struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Buildable
 	Orientable
 }
@@ -58,9 +61,15 @@ func wrapSeparatorrer(obj *externglib.Object) Separatorrer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

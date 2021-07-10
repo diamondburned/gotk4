@@ -33,24 +33,37 @@ type ExpanderAccessibler interface {
 }
 
 type ExpanderAccessible struct {
+	*externglib.Object
+
 	ContainerAccessible
 	atk.Action
+	atk.Component
 }
 
 var _ ExpanderAccessibler = (*ExpanderAccessible)(nil)
 
 func wrapExpanderAccessibler(obj *externglib.Object) ExpanderAccessibler {
 	return &ExpanderAccessible{
+		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
+			},
+			Component: atk.Component{
+				Object: obj,
 			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
 			Object: obj,
 		},
 	}

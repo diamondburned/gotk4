@@ -43,6 +43,7 @@ type DragIconner interface {
 // Keep in mind that drag icons do not allow user input.
 type DragIcon struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

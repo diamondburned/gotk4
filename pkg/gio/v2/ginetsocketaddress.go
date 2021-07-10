@@ -46,6 +46,7 @@ type InetSocketAddresser interface {
 // Address and a port number.
 type InetSocketAddress struct {
 	*externglib.Object
+
 	SocketAddress
 	SocketConnectable
 }

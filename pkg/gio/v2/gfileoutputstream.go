@@ -101,6 +101,7 @@ type FileOutputStreamer interface {
 // a file output stream, use g_seekable_truncate().
 type FileOutputStream struct {
 	*externglib.Object
+
 	OutputStream
 	Seekable
 }

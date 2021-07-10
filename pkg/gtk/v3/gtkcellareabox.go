@@ -51,6 +51,7 @@ type CellAreaBoxxer interface {
 // gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end().
 type CellAreaBox struct {
 	*externglib.Object
+
 	CellArea
 	Buildable
 	CellLayout

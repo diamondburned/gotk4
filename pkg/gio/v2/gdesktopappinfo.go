@@ -30,7 +30,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookupper},
-		{T: externglib.Type(C.g_desktop_app_info_get_type()), F: marshalDesktopAppInfoer},
+		{T: externglib.Type(C.g_desktop_app_info_get_type()), F: marshalDesktopAppInfor},
 	})
 }
 
@@ -108,8 +108,8 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) *AppIn
 	return _appInfo
 }
 
-// DesktopAppInfoer describes DesktopAppInfo's methods.
-type DesktopAppInfoer interface {
+// DesktopAppInfor describes DesktopAppInfo's methods.
+type DesktopAppInfor interface {
 	gextras.Objector
 
 	ActionName(actionName string) string
@@ -136,12 +136,13 @@ type DesktopAppInfoer interface {
 // using it.
 type DesktopAppInfo struct {
 	*externglib.Object
+
 	AppInfo
 }
 
-var _ DesktopAppInfoer = (*DesktopAppInfo)(nil)
+var _ DesktopAppInfor = (*DesktopAppInfo)(nil)
 
-func wrapDesktopAppInfoer(obj *externglib.Object) DesktopAppInfoer {
+func wrapDesktopAppInfor(obj *externglib.Object) DesktopAppInfor {
 	return &DesktopAppInfo{
 		Object: obj,
 		AppInfo: AppInfo{
@@ -150,10 +151,10 @@ func wrapDesktopAppInfoer(obj *externglib.Object) DesktopAppInfoer {
 	}
 }
 
-func marshalDesktopAppInfoer(p uintptr) (interface{}, error) {
+func marshalDesktopAppInfor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDesktopAppInfoer(obj), nil
+	return wrapDesktopAppInfor(obj), nil
 }
 
 // NewDesktopAppInfo creates a new AppInfo based on a desktop file id.

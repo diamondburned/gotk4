@@ -55,6 +55,7 @@ type EditableLabeller interface {
 // [class@Gtk.Text].
 type EditableLabel struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

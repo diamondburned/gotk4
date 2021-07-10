@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,6 +75,7 @@ type Actioner interface {
 	DisconnectAccelerator()
 	AccelPath() string
 	AlwaysShowImage() bool
+	GIcon() *gio.Icon
 	IconName() string
 	IsImportant() bool
 	Label() string
@@ -90,6 +92,7 @@ type Actioner interface {
 	SetAccelGroup(accelGroup AccelGrouper)
 	SetAccelPath(accelPath string)
 	SetAlwaysShowImage(alwaysShow bool)
+	SetGIcon(icon gio.Iconner)
 	SetIconName(iconName string)
 	SetIsImportant(isImportant bool)
 	SetLabel(label string)
@@ -148,6 +151,7 @@ type Actioner interface {
 // When the proxy is activated, it should activate its action.
 type Action struct {
 	*externglib.Object
+
 	Buildable
 }
 
@@ -380,6 +384,25 @@ func (action *Action) AlwaysShowImage() bool {
 	}
 
 	return _ok
+}
+
+// GIcon gets the gicon of @action.
+//
+// Deprecated: Use #GAction instead, and g_menu_item_get_attribute_value() to
+// get an icon from a Item associated with a #GAction.
+func (action *Action) GIcon() *gio.Icon {
+	var _arg0 *C.GtkAction // out
+	var _cret *C.GIcon     // in
+
+	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+
+	_cret = C.gtk_action_get_gicon(_arg0)
+
+	var _icon *gio.Icon // out
+
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Icon)
+
+	return _icon
 }
 
 // IconName gets the icon name of @action.
@@ -697,6 +720,21 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 	}
 
 	C.gtk_action_set_always_show_image(_arg0, _arg1)
+}
+
+// SetGIcon sets the icon of @action.
+//
+// Deprecated: Use #GAction instead, and g_menu_item_set_icon() to set an icon
+// on a Item associated with a #GAction, or gtk_container_add() to add a Image
+// to a Button.
+func (action *Action) SetGIcon(icon gio.Iconner) {
+	var _arg0 *C.GtkAction // out
+	var _arg1 *C.GIcon     // out
+
+	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gtk_action_set_gicon(_arg0, _arg1)
 }
 
 // SetIconName sets the icon name on @action

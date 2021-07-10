@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -54,7 +55,9 @@ type ToolItemGrouper interface {
 // GtkToolItemGroup has a single CSS node named toolitemgroup.
 type ToolItemGroup struct {
 	*externglib.Object
+
 	Container
+	atk.ImplementorIface
 	Buildable
 	ToolShell
 }
@@ -71,13 +74,22 @@ func wrapToolItemGrouper(obj *externglib.Object) ToolItemGrouper {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -87,6 +99,9 @@ func wrapToolItemGrouper(obj *externglib.Object) ToolItemGrouper {
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{

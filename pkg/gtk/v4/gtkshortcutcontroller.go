@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,7 +69,9 @@ type ShortcutControllerrer interface {
 // more about the syntax for triggers.
 type ShortcutController struct {
 	*externglib.Object
+
 	EventController
+	gio.ListModel
 	Buildable
 }
 
@@ -78,6 +81,9 @@ func wrapShortcutControllerrer(obj *externglib.Object) ShortcutControllerrer {
 	return &ShortcutController{
 		Object: obj,
 		EventController: EventController{
+			Object: obj,
+		},
+		ListModel: gio.ListModel{
 			Object: obj,
 		},
 		Buildable: Buildable{
@@ -97,6 +103,27 @@ func NewShortcutController() *ShortcutController {
 	var _cret *C.GtkEventController // in
 
 	_cret = C.gtk_shortcut_controller_new()
+
+	var _shortcutController *ShortcutController // out
+
+	_shortcutController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutController)
+
+	return _shortcutController
+}
+
+// NewShortcutControllerForModel creates a new shortcut controller that takes
+// its shortcuts from the given list model.
+//
+// A controller created by this function does not let you add or remove
+// individual shortcuts using the shortcut controller api, but you can change
+// the contents of the model.
+func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
+	var _arg1 *C.GListModel         // out
+	var _cret *C.GtkEventController // in
+
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+
+	_cret = C.gtk_shortcut_controller_new_for_model(_arg1)
 
 	var _shortcutController *ShortcutController // out
 

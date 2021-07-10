@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,13 +27,17 @@ func init() {
 type MultiSelectioner interface {
 	gextras.Objector
 
-	privateMultiSelection()
+	Model() *gio.ListModel
+	SetModel(model gio.ListModeller)
 }
 
 // MultiSelection: `GtkMultiSelection` is a `GtkSelectionModel` that allows
 // selecting multiple elements.
 type MultiSelection struct {
 	*externglib.Object
+
+	gio.ListModel
+	SelectionModel
 }
 
 var _ MultiSelectioner = (*MultiSelection)(nil)
@@ -40,6 +45,14 @@ var _ MultiSelectioner = (*MultiSelection)(nil)
 func wrapMultiSelectioner(obj *externglib.Object) MultiSelectioner {
 	return &MultiSelection{
 		Object: obj,
+		ListModel: gio.ListModel{
+			Object: obj,
+		},
+		SelectionModel: SelectionModel{
+			ListModel: gio.ListModel{
+				Object: obj,
+			},
+		},
 	}
 }
 
@@ -49,4 +62,47 @@ func marshalMultiSelectioner(p uintptr) (interface{}, error) {
 	return wrapMultiSelectioner(obj), nil
 }
 
-func (*MultiSelection) privateMultiSelection() {}
+// NewMultiSelection creates a new selection to handle @model.
+func NewMultiSelection(model gio.ListModeller) *MultiSelection {
+	var _arg1 *C.GListModel        // out
+	var _cret *C.GtkMultiSelection // in
+
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+
+	_cret = C.gtk_multi_selection_new(_arg1)
+
+	var _multiSelection *MultiSelection // out
+
+	_multiSelection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MultiSelection)
+
+	return _multiSelection
+}
+
+// Model returns the underlying model of @self.
+func (self *MultiSelection) Model() *gio.ListModel {
+	var _arg0 *C.GtkMultiSelection // out
+	var _cret *C.GListModel        // in
+
+	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_multi_selection_get_model(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
+}
+
+// SetModel sets the model that @self should wrap.
+//
+// If @model is nil, @self will be empty.
+func (self *MultiSelection) SetModel(model gio.ListModeller) {
+	var _arg0 *C.GtkMultiSelection // out
+	var _arg1 *C.GListModel        // out
+
+	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_multi_selection_set_model(_arg0, _arg1)
+}

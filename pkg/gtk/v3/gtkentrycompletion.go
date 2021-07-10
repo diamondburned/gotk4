@@ -142,7 +142,7 @@ type EntryCompletioner interface {
 // gtk_tree_model_filter_convert_iter_to_child_iter() to obtain a matching iter.
 type EntryCompletion struct {
 	*externglib.Object
-	*externglib.Object
+
 	Buildable
 	CellLayout
 }
@@ -151,7 +151,6 @@ var _ EntryCompletioner = (*EntryCompletion)(nil)
 
 func wrapEntryCompletioner(obj *externglib.Object) EntryCompletioner {
 	return &EntryCompletion{
-		Object: obj,
 		Object: obj,
 		Buildable: Buildable{
 			Object: obj,

@@ -33,30 +33,49 @@ type TextCellAccessibler interface {
 }
 
 type TextCellAccessible struct {
+	*externglib.Object
+
 	RendererCellAccessible
 	atk.Action
+	atk.Component
+	atk.Text
 }
 
 var _ TextCellAccessibler = (*TextCellAccessible)(nil)
 
 func wrapTextCellAccessibler(obj *externglib.Object) TextCellAccessibler {
 	return &TextCellAccessible{
+		Object: obj,
 		RendererCellAccessible: RendererCellAccessible{
+			Object: obj,
 			CellAccessible: CellAccessible{
+				Object: obj,
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
 				Action: atk.Action{
 					Object: obj,
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
 			Action: atk.Action{
 				Object: obj,
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Text: atk.Text{
 			Object: obj,
 		},
 	}

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -83,6 +84,7 @@ type AboutDialogger interface {
 	Documenters() []string
 	License() string
 	LicenseType() License
+	Logo() *gdk.Paintable
 	LogoIconName() string
 	ProgramName() string
 	SystemInformation() string
@@ -97,6 +99,7 @@ type AboutDialogger interface {
 	SetCopyright(copyright string)
 	SetDocumenters(documenters []string)
 	SetLicense(license string)
+	SetLogo(logo gdk.Paintabler)
 	SetLogoIconName(iconName string)
 	SetProgramName(name string)
 	SetSystemInformation(systemInformation string)
@@ -152,6 +155,7 @@ type AboutDialogger interface {
 // `.aboutdialog`.
 type AboutDialog struct {
 	*externglib.Object
+
 	Window
 	Accessible
 	Buildable
@@ -511,6 +515,22 @@ func (about *AboutDialog) LicenseType() License {
 	return _license
 }
 
+// Logo returns the paintable displayed as logo in the about dialog.
+func (about *AboutDialog) Logo() *gdk.Paintable {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.GdkPaintable   // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+
+	_cret = C.gtk_about_dialog_get_logo(_arg0)
+
+	var _paintable *gdk.Paintable // out
+
+	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Paintable)
+
+	return _paintable
+}
+
 // LogoIconName returns the icon name displayed as logo in the about dialog.
 func (about *AboutDialog) LogoIconName() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -745,6 +765,17 @@ func (about *AboutDialog) SetLicense(license string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_license(_arg0, _arg1)
+}
+
+// SetLogo sets the logo in the about dialog.
+func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.GdkPaintable   // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(logo.Native()))
+
+	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }
 
 // SetLogoIconName sets the icon name to be displayed as logo in the about

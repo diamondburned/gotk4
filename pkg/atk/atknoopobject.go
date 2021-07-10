@@ -18,12 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_no_op_object_get_type()), F: marshalNoOpObjecter},
+		{T: externglib.Type(C.atk_no_op_object_get_type()), F: marshalNoOpObjector},
 	})
 }
 
-// NoOpObjecter describes NoOpObject's methods.
-type NoOpObjecter interface {
+// NoOpObjector describes NoOpObject's methods.
+type NoOpObjector interface {
 	gextras.Objector
 
 	privateNoOpObject()
@@ -34,7 +34,8 @@ type NoOpObjecter interface {
 // requested for an object type for which no factory type is specified.
 type NoOpObject struct {
 	*externglib.Object
-	Object
+
+	ObjectClass
 	Action
 	Component
 	Document
@@ -49,12 +50,12 @@ type NoOpObject struct {
 	Window
 }
 
-var _ NoOpObjecter = (*NoOpObject)(nil)
+var _ NoOpObjector = (*NoOpObject)(nil)
 
-func wrapNoOpObjecter(obj *externglib.Object) NoOpObjecter {
+func wrapNoOpObjector(obj *externglib.Object) NoOpObjector {
 	return &NoOpObject{
 		Object: obj,
-		Object: Object{
+		ObjectClass: ObjectClass{
 			Object: obj,
 		},
 		Action: Action{
@@ -82,7 +83,7 @@ func wrapNoOpObjecter(obj *externglib.Object) NoOpObjecter {
 			Object: obj,
 		},
 		TableCell: TableCell{
-			Object: Object{
+			ObjectClass: ObjectClass{
 				Object: obj,
 			},
 		},
@@ -93,17 +94,17 @@ func wrapNoOpObjecter(obj *externglib.Object) NoOpObjecter {
 			Object: obj,
 		},
 		Window: Window{
-			Object: Object{
+			ObjectClass: ObjectClass{
 				Object: obj,
 			},
 		},
 	}
 }
 
-func marshalNoOpObjecter(p uintptr) (interface{}, error) {
+func marshalNoOpObjector(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoOpObjecter(obj), nil
+	return wrapNoOpObjector(obj), nil
 }
 
 // NewNoOpObject provides a default (non-functioning stub) Object. Application

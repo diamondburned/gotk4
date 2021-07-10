@@ -34,6 +34,8 @@ type StackAccessibler interface {
 
 type StackAccessible struct {
 	ContainerAccessible
+
+	atk.Component
 }
 
 var _ StackAccessibler = (*StackAccessible)(nil)
@@ -43,11 +45,20 @@ func wrapStackAccessibler(obj *externglib.Object) StackAccessibler {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
 		},
 	}
 }

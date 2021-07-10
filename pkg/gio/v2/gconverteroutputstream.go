@@ -45,6 +45,7 @@ type ConverterOutputStreamer interface {
 // As of GLib 2.34, OutputStream implements OutputStream.
 type ConverterOutputStream struct {
 	*externglib.Object
+
 	FilterOutputStream
 	PollableOutputStream
 }

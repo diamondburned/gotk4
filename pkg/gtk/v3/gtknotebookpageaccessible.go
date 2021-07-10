@@ -33,14 +33,21 @@ type NotebookPageAccessibler interface {
 }
 
 type NotebookPageAccessible struct {
-	atk.Object
+	*externglib.Object
+
+	atk.ObjectClass
+	atk.Component
 }
 
 var _ NotebookPageAccessibler = (*NotebookPageAccessible)(nil)
 
 func wrapNotebookPageAccessibler(obj *externglib.Object) NotebookPageAccessibler {
 	return &NotebookPageAccessible{
-		Object: atk.Object{
+		Object: obj,
+		ObjectClass: atk.ObjectClass{
+			Object: obj,
+		},
+		Component: atk.Component{
 			Object: obj,
 		},
 	}

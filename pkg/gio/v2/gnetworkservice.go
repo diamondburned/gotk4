@@ -52,6 +52,7 @@ type NetworkServicer interface {
 // example of using the connectable interface.
 type NetworkService struct {
 	*externglib.Object
+
 	SocketConnectable
 }
 

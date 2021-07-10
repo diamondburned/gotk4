@@ -120,6 +120,7 @@ type Texter interface {
 // accessibility.
 type Text struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

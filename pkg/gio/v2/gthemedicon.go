@@ -49,6 +49,7 @@ type ThemedIconner interface {
 // nicely with themes that inherit other themes.
 type ThemedIcon struct {
 	*externglib.Object
+
 	Icon
 }
 

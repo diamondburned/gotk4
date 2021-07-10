@@ -39,6 +39,7 @@ type ShortcutsGrouper interface {
 // This widget is only meant to be used with [class@Gtk.ShortcutsWindow].
 type ShortcutsGroup struct {
 	*externglib.Object
+
 	Box
 	Accessible
 	Buildable

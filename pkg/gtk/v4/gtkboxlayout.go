@@ -49,6 +49,7 @@ type BoxLayouter interface {
 // use the [property@Gtk.BoxLayout:spacing] property.
 type BoxLayout struct {
 	*externglib.Object
+
 	LayoutManager
 	Orientable
 }

@@ -18,12 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_no_op_object_factory_get_type()), F: marshalyier},
+		{T: externglib.Type(C.atk_no_op_object_factory_get_type()), F: marshalNoOpObjectFactorier},
 	})
 }
 
-// yier describes NoOpObjectFactory's methods.
-type yier interface {
+// NoOpObjectFactorier describes NoOpObjectFactory's methods.
+type NoOpObjectFactorier interface {
 	gextras.Objector
 
 	privateNoOpObjectFactory()
@@ -36,9 +36,9 @@ type NoOpObjectFactory struct {
 	ObjectFactory
 }
 
-var _ yier = (*NoOpObjectFactory)(nil)
+var _ NoOpObjectFactorier = (*NoOpObjectFactory)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapNoOpObjectFactorier(obj *externglib.Object) NoOpObjectFactorier {
 	return &NoOpObjectFactory{
 		ObjectFactory: ObjectFactory{
 			Object: obj,
@@ -46,10 +46,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalNoOpObjectFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapNoOpObjectFactorier(obj), nil
 }
 
 // NewNoOpObjectFactory creates an instance of an ObjectFactory which generates

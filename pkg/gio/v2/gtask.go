@@ -221,6 +221,7 @@ type Tasker interface {
 // passing 0 to g_input_stream_read_async()).
 type Task struct {
 	*externglib.Object
+
 	AsyncResult
 }
 

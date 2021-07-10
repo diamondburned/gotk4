@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,7 +29,7 @@ func init() {
 type SearchBarrer interface {
 	gextras.Objector
 
-	ConnectEntry(entry yier)
+	ConnectEntry(entry Entrier)
 	SearchMode() bool
 	ShowCloseButton() bool
 	SetSearchMode(searchMode bool)
@@ -61,7 +62,9 @@ type SearchBarrer interface {
 // (https://gitlab.gnome.org/GNOME/gtk/blob/gtk-3-24/examples/search-bar.c)
 type SearchBar struct {
 	*externglib.Object
+
 	Bin
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -79,17 +82,29 @@ func wrapSearchBarrer(obj *externglib.Object) SearchBarrer {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
+				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -121,7 +136,7 @@ func NewSearchBar() *SearchBar {
 // search bar. The entry should be a descendant of the search bar. This is only
 // required if the entry isn’t the direct child of the search bar (as in our
 // main example).
-func (bar *SearchBar) ConnectEntry(entry yier) {
+func (bar *SearchBar) ConnectEntry(entry Entrier) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEntry     // out
 

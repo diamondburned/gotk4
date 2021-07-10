@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -1447,6 +1448,24 @@ func (iter *TextIter) Offset() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// Paintable: if the element at @iter is a paintable, the paintable is returned.
+//
+// Otherwise, nil is returned.
+func (iter *TextIter) Paintable() *gdk.Paintable {
+	var _arg0 *C.GtkTextIter  // out
+	var _cret *C.GdkPaintable // in
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+
+	_cret = C.gtk_text_iter_get_paintable(_arg0)
+
+	var _paintable *gdk.Paintable // out
+
+	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Paintable)
+
+	return _paintable
 }
 
 // Slice returns the text in the given range.

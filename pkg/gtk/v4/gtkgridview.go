@@ -30,11 +30,13 @@ type GridViewer interface {
 	Factory() *ListItemFactory
 	MaxColumns() uint
 	MinColumns() uint
+	Model() *SelectionModel
 	SingleClickActivate() bool
 	SetEnableRubberband(enableRubberband bool)
-	SetFactory(factory yier)
+	SetFactory(factory ListItemFactorier)
 	SetMaxColumns(maxColumns uint)
 	SetMinColumns(minColumns uint)
+	SetModel(model SelectionModeller)
 	SetSingleClickActivate(singleClickActivate bool)
 }
 
@@ -68,6 +70,7 @@ type GridViewer interface {
 // GTK_ACCESSIBLE_ROLE_GRID_CELL role.
 type GridView struct {
 	*externglib.Object
+
 	ListBase
 	Accessible
 	Buildable
@@ -138,6 +141,29 @@ func marshalGridViewer(p uintptr) (interface{}, error) {
 	return wrapGridViewer(obj), nil
 }
 
+// NewGridView creates a new `GtkGridView` that uses the given @factory for
+// mapping items to widgets.
+//
+// The function takes ownership of the arguments, so you can write code like “`c
+// grid_view = gtk_grid_view_new (create_model (),
+// gtk_builder_list_item_factory_new_from_resource ("/resource.ui")); “`
+func NewGridView(model SelectionModeller, factory ListItemFactorier) *GridView {
+	var _arg1 *C.GtkSelectionModel  // out
+	var _arg2 *C.GtkListItemFactory // out
+	var _cret *C.GtkWidget          // in
+
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+
+	_cret = C.gtk_grid_view_new(_arg1, _arg2)
+
+	var _gridView *GridView // out
+
+	_gridView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*GridView)
+
+	return _gridView
+}
+
 // EnableRubberband returns whether rows can be selected by dragging with the
 // mouse.
 func (self *GridView) EnableRubberband() bool {
@@ -205,6 +231,22 @@ func (self *GridView) MinColumns() uint {
 	return _guint
 }
 
+// Model gets the model that's currently used to read the items displayed.
+func (self *GridView) Model() *SelectionModel {
+	var _arg0 *C.GtkGridView       // out
+	var _cret *C.GtkSelectionModel // in
+
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_grid_view_get_model(_arg0)
+
+	var _selectionModel *SelectionModel // out
+
+	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SelectionModel)
+
+	return _selectionModel
+}
+
 // SingleClickActivate returns whether items will be activated on single click
 // and selected on hover.
 func (self *GridView) SingleClickActivate() bool {
@@ -239,7 +281,7 @@ func (self *GridView) SetEnableRubberband(enableRubberband bool) {
 }
 
 // SetFactory sets the `GtkListItemFactory` to use for populating list items.
-func (self *GridView) SetFactory(factory yier) {
+func (self *GridView) SetFactory(factory ListItemFactorier) {
 	var _arg0 *C.GtkGridView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -279,6 +321,19 @@ func (self *GridView) SetMinColumns(minColumns uint) {
 	_arg1 = C.guint(minColumns)
 
 	C.gtk_grid_view_set_min_columns(_arg0, _arg1)
+}
+
+// SetModel sets the imodel to use.
+//
+// This must be a [iface@Gtk.SelectionModel].
+func (self *GridView) SetModel(model SelectionModeller) {
+	var _arg0 *C.GtkGridView       // out
+	var _arg1 *C.GtkSelectionModel // out
+
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_grid_view_set_model(_arg0, _arg1)
 }
 
 // SetSingleClickActivate sets whether items should be activated on single click

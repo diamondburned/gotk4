@@ -117,6 +117,7 @@ type Expanderrer interface {
 // `GtkExpander` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Expander struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

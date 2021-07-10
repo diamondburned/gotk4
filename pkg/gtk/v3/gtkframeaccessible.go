@@ -34,6 +34,8 @@ type FrameAccessibler interface {
 
 type FrameAccessible struct {
 	ContainerAccessible
+
+	atk.Component
 }
 
 var _ FrameAccessibler = (*FrameAccessible)(nil)
@@ -43,11 +45,20 @@ func wrapFrameAccessibler(obj *externglib.Object) FrameAccessibler {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
 		},
 	}
 }

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -139,7 +140,9 @@ type Calendarrer interface {
 // 1929. Display before these dates is likely to be historically incorrect.
 type Calendar struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -153,9 +156,15 @@ func wrapCalendarrer(obj *externglib.Object) Calendarrer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

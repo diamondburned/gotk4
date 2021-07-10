@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -360,6 +361,28 @@ func (r *RecentInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+// CreateAppInfo creates a `GAppInfo` for the specified `GtkRecentInfo`
+func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.char          // out
+	var _cret *C.GAppInfo      // in
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg1 = (*C.char)(C.CString(appName))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
+
+	var _appInfo *gio.AppInfo // out
+	var _goerr error          // out
+
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.AppInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _appInfo, _goerr
+}
+
 // Exists checks whether the resource pointed by @info still exists. At the
 // moment this check is done only on resources pointing to local files.
 func (info *RecentInfo) Exists() bool {
@@ -428,6 +451,22 @@ func (info *RecentInfo) DisplayName() string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// GIcon retrieves the icon associated to the resource MIME type.
+func (info *RecentInfo) GIcon() *gio.Icon {
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.GIcon         // in
+
+	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+
+	_cret = C.gtk_recent_info_get_gicon(_arg0)
+
+	var _icon *gio.Icon // out
+
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.Icon)
+
+	return _icon
 }
 
 // MIMEType gets the MIME type of the resource.

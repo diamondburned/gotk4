@@ -59,6 +59,7 @@ type CellViewer interface {
 // GtkCellView has a single CSS node with name cellview.
 type CellView struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

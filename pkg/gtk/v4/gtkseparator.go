@@ -48,6 +48,7 @@ type Separatorrer interface {
 // `GtkSeparator` uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
 type Separator struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

@@ -147,6 +147,7 @@ type GLAreaer interface {
 // use the [signal@Gtk.GLArea::create-context] signal.
 type GLArea struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

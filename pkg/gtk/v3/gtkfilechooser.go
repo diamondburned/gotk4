@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -105,13 +106,16 @@ type FileChooserrer interface {
 	Choice(id string) string
 	CreateFolders() bool
 	CurrentFolder() string
+	CurrentFolderFile() *gio.File
 	CurrentFolderURI() string
 	CurrentName() string
 	DoOverwriteConfirmation() bool
 	ExtraWidget() *Widget
+	File() *gio.File
 	Filename() string
 	Filter() *FileFilter
 	LocalOnly() bool
+	PreviewFile() *gio.File
 	PreviewFilename() string
 	PreviewURI() string
 	PreviewWidget() *Widget
@@ -125,15 +129,18 @@ type FileChooserrer interface {
 	RemoveShortcutFolder(folder string) error
 	RemoveShortcutFolderURI(uri string) error
 	SelectAll()
+	SelectFile(file gio.Filer) error
 	SelectFilename(filename string) bool
 	SelectURI(uri string) bool
 	SetChoice(id string, option string)
 	SetCreateFolders(createFolders bool)
 	SetCurrentFolder(filename string) bool
+	SetCurrentFolderFile(file gio.Filer) error
 	SetCurrentFolderURI(uri string) bool
 	SetCurrentName(name string)
 	SetDoOverwriteConfirmation(doOverwriteConfirmation bool)
 	SetExtraWidget(extraWidget Widgetter)
+	SetFile(file gio.Filer) error
 	SetFilename(filename string) bool
 	SetFilter(filter FileFilterrer)
 	SetLocalOnly(localOnly bool)
@@ -144,6 +151,7 @@ type FileChooserrer interface {
 	SetURI(uri string) bool
 	SetUsePreviewLabel(useLabel bool)
 	UnselectAll()
+	UnselectFile(file gio.Filer)
 	UnselectFilename(filename string)
 	UnselectURI(uri string)
 }
@@ -417,6 +425,23 @@ func (chooser *FileChooser) CurrentFolder() string {
 	return _filename
 }
 
+// CurrentFolderFile gets the current folder of @chooser as #GFile. See
+// gtk_file_chooser_get_current_folder_uri().
+func (chooser *FileChooser) CurrentFolderFile() *gio.File {
+	var _arg0 *C.GtkFileChooser // out
+	var _cret *C.GFile          // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_file_chooser_get_current_folder_file(_arg0)
+
+	var _file *gio.File // out
+
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.File)
+
+	return _file
+}
+
 // CurrentFolderURI gets the current folder of @chooser as an URI. See
 // gtk_file_chooser_set_current_folder_uri().
 //
@@ -503,6 +528,26 @@ func (chooser *FileChooser) ExtraWidget() *Widget {
 	return _widget
 }
 
+// File gets the #GFile for the currently selected file in the file selector. If
+// multiple files are selected, one of the files will be returned at random.
+//
+// If the file chooser is in folder mode, this function returns the selected
+// folder.
+func (chooser *FileChooser) File() *gio.File {
+	var _arg0 *C.GtkFileChooser // out
+	var _cret *C.GFile          // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_file_chooser_get_file(_arg0)
+
+	var _file *gio.File // out
+
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.File)
+
+	return _file
+}
+
 // Filename gets the filename for the currently selected file in the file
 // selector. The filename is returned as an absolute path. If multiple files are
 // selected, one of the filenames will be returned at random.
@@ -558,6 +603,23 @@ func (chooser *FileChooser) LocalOnly() bool {
 	}
 
 	return _ok
+}
+
+// PreviewFile gets the #GFile that should be previewed in a custom preview
+// Internal function, see gtk_file_chooser_get_preview_uri().
+func (chooser *FileChooser) PreviewFile() *gio.File {
+	var _arg0 *C.GtkFileChooser // out
+	var _cret *C.GFile          // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_file_chooser_get_preview_file(_arg0)
+
+	var _file *gio.File // out
+
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.File)
+
+	return _file
 }
 
 // PreviewFilename gets the filename that should be previewed in a custom
@@ -785,6 +847,25 @@ func (chooser *FileChooser) SelectAll() {
 	C.gtk_file_chooser_select_all(_arg0)
 }
 
+// SelectFile selects the file referred to by @file. An internal function. See
+// _gtk_file_chooser_select_uri().
+func (chooser *FileChooser) SelectFile(file gio.Filer) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
+	var _cerr *C.GError         // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_file_chooser_select_file(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // SelectFilename selects a filename. If the file name isn’t in the current
 // folder of @chooser, then the current folder of @chooser will be changed to
 // the folder containing @filename.
@@ -890,6 +971,25 @@ func (chooser *FileChooser) SetCurrentFolder(filename string) bool {
 	return _ok
 }
 
+// SetCurrentFolderFile sets the current folder for @chooser from a #GFile.
+// Internal function, see gtk_file_chooser_set_current_folder_uri().
+func (chooser *FileChooser) SetCurrentFolderFile(file gio.Filer) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
+	var _cerr *C.GError         // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_file_chooser_set_current_folder_file(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // SetCurrentFolderURI sets the current folder for @chooser from an URI. The
 // user will be shown the full contents of the current folder, plus user
 // interface elements for navigating to other folders.
@@ -971,6 +1071,54 @@ func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(extraWidget.Native()))
 
 	C.gtk_file_chooser_set_extra_widget(_arg0, _arg1)
+}
+
+// SetFile sets @file as the current filename for the file chooser, by changing
+// to the file’s parent folder and actually selecting the file in list. If the
+// @chooser is in GTK_FILE_CHOOSER_ACTION_SAVE mode, the file’s base name will
+// also appear in the dialog’s file name entry.
+//
+// If the file name isn’t in the current folder of @chooser, then the current
+// folder of @chooser will be changed to the folder containing @filename. This
+// is equivalent to a sequence of gtk_file_chooser_unselect_all() followed by
+// gtk_file_chooser_select_filename().
+//
+// Note that the file must exist, or nothing will be done except for the
+// directory change.
+//
+// If you are implementing a save dialog, you should use this function if you
+// already have a file name to which the user may save; for example, when the
+// user opens an existing file and then does Save As... If you don’t have a file
+// name already — for example, if the user just created a new file and is saving
+// it for the first time, do not call this function. Instead, use something
+// similar to this:
+//
+//    if (document_is_new)
+//      {
+//        // the user just created a new document
+//        gtk_file_chooser_set_current_folder_file (chooser, default_file_for_saving);
+//        gtk_file_chooser_set_current_name (chooser, "Untitled document");
+//      }
+//    else
+//      {
+//        // the user edited an existing document
+//        gtk_file_chooser_set_file (chooser, existing_file);
+//      }
+func (chooser *FileChooser) SetFile(file gio.Filer) error {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
+	var _cerr *C.GError         // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_file_chooser_set_file(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // SetFilename sets @filename as the current filename for the file chooser, by
@@ -1201,6 +1349,19 @@ func (chooser *FileChooser) UnselectAll() {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	C.gtk_file_chooser_unselect_all(_arg0)
+}
+
+// UnselectFile unselects the file referred to by @file. If the file is not in
+// the current directory, does not exist, or is otherwise not currently
+// selected, does nothing.
+func (chooser *FileChooser) UnselectFile(file gio.Filer) {
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_file_chooser_unselect_file(_arg0, _arg1)
 }
 
 // UnselectFilename unselects a currently selected filename. If the filename is

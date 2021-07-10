@@ -63,6 +63,7 @@ type CellEditabler interface {
 // temporary widgets should be configured for editing, get the new value, etc.
 type CellEditable struct {
 	*externglib.Object
+
 	Widget
 }
 

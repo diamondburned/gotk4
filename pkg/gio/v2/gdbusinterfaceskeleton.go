@@ -76,6 +76,7 @@ type DBusInterfaceSkeletonner interface {
 // service side.
 type DBusInterfaceSkeleton struct {
 	*externglib.Object
+
 	DBusInterface
 }
 

@@ -5,8 +5,10 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,6 +49,7 @@ type Texturer interface {
 // about it other than increasing the reference count via g_object_ref().
 type Texture struct {
 	*externglib.Object
+
 	Paintable
 }
 
@@ -82,6 +85,30 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Texture {
 	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Texture)
 
 	return _texture
+}
+
+// NewTextureFromFile creates a new texture by loading an image from a file.
+//
+// The file format is detected automatically. The supported formats are PNG and
+// JPEG, though more formats might be available.
+//
+// If nil is returned, then @error will be set.
+func NewTextureFromFile(file gio.Filer) (*Texture, error) {
+	var _arg1 *C.GFile      // out
+	var _cret *C.GdkTexture // in
+	var _cerr *C.GError     // in
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	_cret = C.gdk_texture_new_from_file(_arg1, &_cerr)
+
+	var _texture *Texture // out
+	var _goerr error      // out
+
+	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Texture)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _texture, _goerr
 }
 
 // NewTextureFromResource creates a new texture by loading an image from a

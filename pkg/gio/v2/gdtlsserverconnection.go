@@ -43,6 +43,7 @@ type DTLSServerConnectioner interface {
 // a server-side DTLS connection.
 type DTLSServerConnection struct {
 	DatagramBased
+
 	DTLSConnection
 }
 

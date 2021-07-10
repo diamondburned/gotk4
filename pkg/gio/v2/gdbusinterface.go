@@ -46,7 +46,7 @@ type DBusInterfacerOverrider interface {
 	// SetObject sets the BusObject for @interface_ to @object.
 	//
 	// Note that @interface_ will hold a weak reference to @object.
-	SetObject(object DBusObjecter)
+	SetObject(object DBusObjector)
 }
 
 // DBusInterfacer describes DBusInterface's methods.
@@ -55,7 +55,7 @@ type DBusInterfacer interface {
 
 	DupObject() *DBusObject
 	Info() *DBusInterfaceInfo
-	SetObject(object DBusObjecter)
+	SetObject(object DBusObjector)
 }
 
 // DBusInterface: the BusInterface type is the base type for D-Bus interfaces
@@ -119,7 +119,7 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 // SetObject sets the BusObject for @interface_ to @object.
 //
 // Note that @interface_ will hold a weak reference to @object.
-func (interface_ *DBusInterface) SetObject(object DBusObjecter) {
+func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out
 

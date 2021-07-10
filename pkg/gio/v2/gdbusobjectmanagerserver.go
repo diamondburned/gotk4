@@ -66,6 +66,7 @@ type DBusObjectManagerServerrer interface {
 // org.freedesktop.DBus.ObjectManager interface.
 type DBusObjectManagerServer struct {
 	*externglib.Object
+
 	DBusObjectManager
 }
 

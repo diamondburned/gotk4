@@ -211,6 +211,7 @@ type Dialogger interface {
 // `GtkDialog` uses the GTK_ACCESSIBLE_ROLE_DIALOG role.
 type Dialog struct {
 	*externglib.Object
+
 	Window
 	Accessible
 	Buildable

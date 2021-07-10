@@ -53,6 +53,7 @@ type ActionBarrer interface {
 // `GtkActionBar` has a single CSS node with name actionbar.
 type ActionBar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

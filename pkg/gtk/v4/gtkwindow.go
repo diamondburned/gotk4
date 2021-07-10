@@ -144,6 +144,7 @@ type Windowwer interface {
 // `GtkWindow` uses the GTK_ACCESSIBLE_ROLE_WINDOW role.
 type Window struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

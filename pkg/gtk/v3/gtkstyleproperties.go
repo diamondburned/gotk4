@@ -55,6 +55,7 @@ type StylePropertieser interface {
 // use it anymore and all users of this object have been deprecated.
 type StyleProperties struct {
 	*externglib.Object
+
 	StyleProvider
 }
 

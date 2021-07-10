@@ -39,6 +39,7 @@ type ShortcutLabeller interface {
 // [class@Gtk.ShortcutsWindow].
 type ShortcutLabel struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

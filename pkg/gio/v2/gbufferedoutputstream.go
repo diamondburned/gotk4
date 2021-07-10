@@ -58,6 +58,7 @@ type BufferedOutputStreamer interface {
 // the buffer.
 type BufferedOutputStream struct {
 	FilterOutputStream
+
 	Seekable
 }
 

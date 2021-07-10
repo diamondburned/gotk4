@@ -33,27 +33,59 @@ type SpinButtonAccessibler interface {
 }
 
 type SpinButtonAccessible struct {
+	*externglib.Object
+
 	EntryAccessible
 	atk.Action
+	atk.Component
+	atk.EditableText
+	atk.Text
+	atk.Value
 }
 
 var _ SpinButtonAccessibler = (*SpinButtonAccessible)(nil)
 
 func wrapSpinButtonAccessibler(obj *externglib.Object) SpinButtonAccessibler {
 	return &SpinButtonAccessible{
+		Object: obj,
 		EntryAccessible: EntryAccessible{
+			Object: obj,
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
+				},
+				Component: atk.Component{
+					Object: obj,
 				},
 			},
 			Action: atk.Action{
 				Object: obj,
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+			EditableText: atk.EditableText{
+				Object: obj,
+			},
+			Text: atk.Text{
+				Object: obj,
+			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		EditableText: atk.EditableText{
+			Object: obj,
+		},
+		Text: atk.Text{
+			Object: obj,
+		},
+		Value: atk.Value{
 			Object: obj,
 		},
 	}

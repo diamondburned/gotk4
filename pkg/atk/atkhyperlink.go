@@ -50,7 +50,7 @@ type HyperlinkerOverrider interface {
 	// hyperlink, Image if @link_ is an image hyperlink etc.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
-	GetObject(i int) *Object
+	GetObject(i int) *ObjectClass
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	StartIndex() int
@@ -77,7 +77,7 @@ type Hyperlinker interface {
 
 	EndIndex() int
 	NAnchors() int
-	GetObject(i int) *Object
+	GetObject(i int) *ObjectClass
 	StartIndex() int
 	URI(i int) string
 	IsInline() bool
@@ -92,6 +92,7 @@ type Hyperlinker interface {
 // offset within the host AtkHypertext object.
 type Hyperlink struct {
 	*externglib.Object
+
 	Action
 }
 
@@ -149,7 +150,7 @@ func (link_ *Hyperlink) NAnchors() int {
 // hyperlink, Image if @link_ is an image hyperlink etc.
 //
 // Multiple anchors are primarily used by client-side image maps.
-func (link_ *Hyperlink) GetObject(i int) *Object {
+func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -159,9 +160,9 @@ func (link_ *Hyperlink) GetObject(i int) *Object {
 
 	_cret = C.atk_hyperlink_get_object(_arg0, _arg1)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }

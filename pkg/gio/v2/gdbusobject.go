@@ -28,15 +28,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_get_type()), F: marshalDBusObjecter},
+		{T: externglib.Type(C.g_dbus_object_get_type()), F: marshalDBusObjector},
 	})
 }
 
-// DBusObjecterOverrider contains methods that are overridable.
+// DBusObjectorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusObjecterOverrider interface {
+type DBusObjectorOverrider interface {
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
 	Interface(interfaceName string) *DBusInterface
@@ -46,8 +46,8 @@ type DBusObjecterOverrider interface {
 	InterfaceRemoved(interface_ DBusInterfacer)
 }
 
-// DBusObjecter describes DBusObject's methods.
-type DBusObjecter interface {
+// DBusObjector describes DBusObject's methods.
+type DBusObjector interface {
 	gextras.Objector
 
 	Interface(interfaceName string) *DBusInterface
@@ -61,18 +61,18 @@ type DBusObject struct {
 	*externglib.Object
 }
 
-var _ DBusObjecter = (*DBusObject)(nil)
+var _ DBusObjector = (*DBusObject)(nil)
 
-func wrapDBusObjecter(obj *externglib.Object) DBusObjecter {
+func wrapDBusObjector(obj *externglib.Object) DBusObjector {
 	return &DBusObject{
 		Object: obj,
 	}
 }
 
-func marshalDBusObjecter(p uintptr) (interface{}, error) {
+func marshalDBusObjector(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjecter(obj), nil
+	return wrapDBusObjector(obj), nil
 }
 
 // Interface gets the D-Bus interface with name @interface_name associated with

@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -82,7 +83,9 @@ type ProgressBarrer interface {
 // in overlays like the one Epiphany has for page loading progress.
 type ProgressBar struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Buildable
 	Orientable
 }
@@ -97,9 +100,15 @@ func wrapProgressBarrer(obj *externglib.Object) ProgressBarrer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

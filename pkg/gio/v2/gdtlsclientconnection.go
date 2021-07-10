@@ -45,6 +45,7 @@ type DTLSClientConnectioner interface {
 // a client-side DTLS connection.
 type DTLSClientConnection struct {
 	DatagramBased
+
 	DTLSConnection
 }
 

@@ -33,7 +33,10 @@ type SpinnerAccessibler interface {
 }
 
 type SpinnerAccessible struct {
+	*externglib.Object
+
 	WidgetAccessible
+	atk.Component
 	atk.Image
 }
 
@@ -41,12 +44,19 @@ var _ SpinnerAccessibler = (*SpinnerAccessible)(nil)
 
 func wrapSpinnerAccessibler(obj *externglib.Object) SpinnerAccessibler {
 	return &SpinnerAccessible{
+		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				Object: atk.Object{
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
 		},
 		Image: atk.Image{
 			Object: obj,

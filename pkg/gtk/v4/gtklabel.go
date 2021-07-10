@@ -232,6 +232,7 @@ type Labeller interface {
 // [method@Gtk.Label.get_current_uri] function.
 type Label struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

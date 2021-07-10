@@ -48,6 +48,7 @@ type Rooter interface {
 // hierarchy, with [method@Gtk.Root.set_focus] and [method@Gtk.Root.get_focus].
 type Root struct {
 	*externglib.Object
+
 	Native
 	Widget
 }

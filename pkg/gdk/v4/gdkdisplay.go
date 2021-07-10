@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,6 +36,7 @@ type Displayyer interface {
 	Clipboard() *Clipboard
 	DefaultSeat() *Seat
 	MonitorAtSurface(surface Surfacer) *Monitor
+	Monitors() *gio.ListModel
 	Name() string
 	PrimaryClipboard() *Clipboard
 	Setting(name string, value *externglib.Value) bool
@@ -213,6 +215,28 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Monitor)
 
 	return _monitor
+}
+
+// Monitors gets the list of monitors associated with this display.
+//
+// Subsequent calls to this function will always return the same list for the
+// same display.
+//
+// You can listen to the GListModel::items-changed signal on this list to
+// monitor changes to the monitor of this display.
+func (self *Display) Monitors() *gio.ListModel {
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GListModel // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gdk_display_get_monitors(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
 }
 
 // Name gets the name of the display.

@@ -149,6 +149,7 @@ type TreeViewColumner interface {
 // they work together.
 type TreeViewColumn struct {
 	*externglib.Object
+
 	externglib.InitiallyUnowned
 	Buildable
 	CellLayout

@@ -46,6 +46,7 @@ type WindowHandler interface {
 // `GtkWindowHandle` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowHandle struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

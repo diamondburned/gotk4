@@ -42,6 +42,7 @@ type ZlibDecompressorrer interface {
 // ZlibDecompressor: zlib decompression
 type ZlibDecompressor struct {
 	*externglib.Object
+
 	Converter
 }
 

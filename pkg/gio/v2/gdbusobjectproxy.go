@@ -28,12 +28,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_proxy_get_type()), F: marshalyier},
+		{T: externglib.Type(C.g_dbus_object_proxy_get_type()), F: marshalDBusObjectProxier},
 	})
 }
 
-// yier describes DBusObjectProxy's methods.
-type yier interface {
+// DBusObjectProxier describes DBusObjectProxy's methods.
+type DBusObjectProxier interface {
 	gextras.Objector
 
 	Connection() *DBusConnection
@@ -44,12 +44,13 @@ type yier interface {
 // yourself - typically BusObjectManagerClient is used to obtain it.
 type DBusObjectProxy struct {
 	*externglib.Object
+
 	DBusObject
 }
 
-var _ yier = (*DBusObjectProxy)(nil)
+var _ DBusObjectProxier = (*DBusObjectProxy)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapDBusObjectProxier(obj *externglib.Object) DBusObjectProxier {
 	return &DBusObjectProxy{
 		Object: obj,
 		DBusObject: DBusObject{
@@ -58,10 +59,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalDBusObjectProxier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapDBusObjectProxier(obj), nil
 }
 
 // NewDBusObjectProxy creates a new BusObjectProxy for the given connection and

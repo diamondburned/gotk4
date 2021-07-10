@@ -67,6 +67,7 @@ type SocketAddresser interface {
 // SocketAddress for UNIX domain sockets.
 type SocketAddress struct {
 	*externglib.Object
+
 	SocketConnectable
 }
 

@@ -25,6 +25,22 @@ func init() {
 	})
 }
 
+// ContentSerializeFinish finishes a content serialization operation.
+func ContentSerializeFinish(result gio.AsyncResulter) error {
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	C.gdk_content_serialize_finish(_arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // ContentSerializerrer describes ContentSerializer's methods.
 type ContentSerializerrer interface {
 	gextras.Objector
@@ -55,6 +71,8 @@ type ContentSerializerrer interface {
 // Also see [class@Gdk.ContentDeserializer].
 type ContentSerializer struct {
 	*externglib.Object
+
+	gio.AsyncResult
 }
 
 var _ ContentSerializerrer = (*ContentSerializer)(nil)
@@ -62,6 +80,9 @@ var _ ContentSerializerrer = (*ContentSerializer)(nil)
 func wrapContentSerializerrer(obj *externglib.Object) ContentSerializerrer {
 	return &ContentSerializer{
 		Object: obj,
+		AsyncResult: gio.AsyncResult{
+			Object: obj,
+		},
 	}
 }
 

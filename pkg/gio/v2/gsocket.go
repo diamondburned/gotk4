@@ -137,7 +137,7 @@ type Socketter interface {
 // locking.
 type Socket struct {
 	*externglib.Object
-	*externglib.Object
+
 	DatagramBased
 	Initable
 }
@@ -146,7 +146,6 @@ var _ Socketter = (*Socket)(nil)
 
 func wrapSocketter(obj *externglib.Object) Socketter {
 	return &Socket{
-		Object: obj,
 		Object: obj,
 		DatagramBased: DatagramBased{
 			Object: obj,

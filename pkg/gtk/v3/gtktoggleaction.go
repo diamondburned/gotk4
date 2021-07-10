@@ -50,6 +50,7 @@ type ToggleActioner interface {
 // specifying whether the action has been checked or not.
 type ToggleAction struct {
 	*externglib.Object
+
 	Action
 	Buildable
 }

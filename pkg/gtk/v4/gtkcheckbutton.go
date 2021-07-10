@@ -99,6 +99,7 @@ type CheckButtonner interface {
 // `GtkCheckButton` uses the GTK_ACCESSIBLE_ROLE_CHECKBOX role.
 type CheckButton struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Actionable

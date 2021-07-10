@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
-	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -87,33 +86,22 @@ func (g *Generator) Header() *file.Header {
 	return &g.header
 }
 
-func (g *Generator) setCType(cType, glibType string) bool {
-	if cType != "" {
-		g.CType = cType
-		return true
-	}
-	if glibType != "" {
-		g.CType = glibType
-		return true
-	}
-	return false
-}
-
 func (g *Generator) init(typ interface{}) bool {
+	resolved := types.TypeFromResult(g.gen, typ)
+	if resolved == nil {
+		return false
+	}
+
+	g.CType = resolved.CType
+	g.StructName = resolved.ImplName()
+	g.InterfaceName = resolved.PublicName()
+
 	switch typ := typ.(type) {
 	case *gir.Class:
 		g.Name = typ.Name
 		g.GLibGetType = typ.GLibGetType
 		g.InfoAttrs = &typ.InfoAttrs
 		g.InfoElements = &typ.InfoElements
-
-		g.StructName = strcases.PascalToGo(typ.Name)
-		g.InterfaceName = strcases.Interfacify(g.StructName)
-
-		if !g.setCType(typ.CType, typ.GLibTypeName) {
-			g.Logln(logger.Debug, "missing GType or GLibTypeName")
-			return false
-		}
 
 		g.methods = typ.Methods
 		g.virtuals = typ.VirtualMethods
@@ -122,10 +110,8 @@ func (g *Generator) init(typ interface{}) bool {
 			return false
 		}
 
-		if !g.Tree.ResolveFromType(types.TypeFromResult(g.gen, typ)) {
-			g.Logln(logger.Debug,
-				"cannot type-resolve",
-				types.EnsureNamespace(g.gen.Namespace(), typ.Name))
+		if !g.Tree.ResolveFromType(resolved) {
+			g.Logln(logger.Debug, "class cannot be type-resolved")
 			return false
 		}
 
@@ -147,14 +133,6 @@ func (g *Generator) init(typ interface{}) bool {
 		g.InfoAttrs = &typ.InfoAttrs
 		g.InfoElements = &typ.InfoElements
 
-		g.StructName = strcases.PascalToGo(typ.Name)
-		g.InterfaceName = strcases.Interfacify(g.StructName)
-
-		if !g.setCType(typ.CType, typ.GLibTypeName) {
-			g.Logln(logger.Debug, "missing GType or GLibTypeName")
-			return false
-		}
-
 		g.methods = typ.Methods
 		g.virtuals = typ.VirtualMethods
 
@@ -162,7 +140,7 @@ func (g *Generator) init(typ interface{}) bool {
 			return false
 		}
 
-		if !g.Tree.Resolve(typ.Name) {
+		if !g.Tree.ResolveFromType(resolved) {
 			g.Logln(logger.Debug, "interface cannot be type-resolved")
 			return false
 		}

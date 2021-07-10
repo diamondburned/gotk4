@@ -138,6 +138,7 @@ type PopoverMenuer interface {
 // connected to.
 type PopoverMenu struct {
 	*externglib.Object
+
 	Popover
 	Accessible
 	Buildable

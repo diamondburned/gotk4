@@ -88,6 +88,7 @@ type ProgressBarrer interface {
 // `GtkProgressBar` uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
 type ProgressBar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

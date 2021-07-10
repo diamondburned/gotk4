@@ -45,7 +45,7 @@ type CharsetConverterrer interface {
 // CharsetConverter is an implementation of #GConverter based on GIConv.
 type CharsetConverter struct {
 	*externglib.Object
-	*externglib.Object
+
 	Converter
 	Initable
 }
@@ -54,7 +54,6 @@ var _ CharsetConverterrer = (*CharsetConverter)(nil)
 
 func wrapCharsetConverterrer(obj *externglib.Object) CharsetConverterrer {
 	return &CharsetConverter{
-		Object: obj,
 		Object: obj,
 		Converter: Converter{
 			Object: obj,

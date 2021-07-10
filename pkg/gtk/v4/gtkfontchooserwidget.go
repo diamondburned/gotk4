@@ -50,6 +50,7 @@ type FontChooserWidgetter interface {
 // `GtkFontChooserWidget` has a single CSS node with name fontchooser.
 type FontChooserWidget struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

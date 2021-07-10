@@ -134,6 +134,13 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 // hasAmbiguousSelector returns true if the GObject methods cannot be accessed
 // normally.
 func (tree *Tree) hasAmbiguousSelector() bool {
+	// If the fields already have a GObject field, then we're fine.
+	for _, req := range tree.Requires {
+		if req.IsExternGLib("Object") {
+			return false
+		}
+	}
+
 	depths := make(map[int]struct{}, 7) // arbitrarily 7 depth
 	return gobjectDepth(tree, depths, 0)
 }

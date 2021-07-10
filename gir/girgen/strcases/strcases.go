@@ -270,19 +270,46 @@ var vowels = [255]bool{
 }
 
 // Interfacify appends the -er suffix into the given word to idiomatically
-// adhere to Go's interface naming convention.
+// adhere to Go's interface naming convention. If the word already ends with an
+// -er suffix, then another suffix will be added.
 func Interfacify(word string) string {
 	// https://www.englishclub.com/spelling/rules-add-er-est.htm
+	// https://www.thefreedictionary.com/Commonly-Confused-Suffixes-er-or-ar.htm
 	switch {
-	case wordConsonantAndSuffix(word, 'y'):
-		return word[len(word)-1:] + "ier"
 	case wordConsonantAndSuffix(word, 'e'):
+		fallthrough
+	case wordConsonantAndSuffix(word, 'a'):
+		fallthrough
+	case wordConsonantAndSuffix(word, 'o'):
 		return word + "r"
+
+	case wordConsonantAndSuffix(word, 'y'):
+		return word[:len(word)-1] + "ier"
+
+	case strings.HasSuffix(word, "it") && !wordIsOrException(word):
+		fallthrough
+	case strings.HasSuffix(word, "ct"):
+		return word + "or"
+
 	case wordIsCVC(word):
 		return word + string(word[len(word)-1]) + "er"
+
+	case wordEndsInConsonant(word):
+		fallthrough
 	default:
 		return word + "er"
 	}
+}
+
+var orExceptions = []string{"delimit", "profit", "recruit"}
+
+func wordIsOrException(word string) bool {
+	for _, exc := range orExceptions {
+		if strings.EqualFold(exc, word) {
+			return true
+		}
+	}
+	return false
 }
 
 // wordConsonantAndSuffix returns true if the word ends with a consonant and the
@@ -294,6 +321,11 @@ func wordConsonantAndSuffix(word string, char byte) bool {
 
 	last2 := word[len(word)-2:]
 	return !vowels[last2[0]] && last2[1] == char
+}
+
+// wordEndsInConsonant returns true if the word ends with a consonant.
+func wordEndsInConsonant(word string) bool {
+	return len(word) > 1 && !vowels[word[len(word)-1]]
 }
 
 // wordIsCVC returns true if the given word follows the C+V+C form.

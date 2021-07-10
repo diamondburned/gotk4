@@ -175,6 +175,7 @@ type FileChooserNativer interface {
 // * Shortcut folders.
 type FileChooserNative struct {
 	*externglib.Object
+
 	NativeDialog
 	FileChooser
 }

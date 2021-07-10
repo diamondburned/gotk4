@@ -48,6 +48,7 @@ type ProxyAddresser interface {
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress struct {
 	*externglib.Object
+
 	InetSocketAddress
 	SocketConnectable
 }

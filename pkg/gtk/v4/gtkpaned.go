@@ -104,6 +104,7 @@ type Panedder interface {
 // gtk_widget_set_size_request (frame2, 50, -1); “`
 type Paned struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

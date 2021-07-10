@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,6 +27,7 @@ func init() {
 type AppChooserButtonner interface {
 	gextras.Objector
 
+	AppendCustomItem(name string, label string, icon gio.Iconner)
 	AppendSeparator()
 	Heading() string
 	Modal() bool
@@ -69,6 +71,7 @@ type AppChooserButtonner interface {
 // `GtkAppChooserButton` has a single CSS node with the name “appchooserbutton”.
 type AppChooserButton struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	AppChooser
@@ -148,6 +151,30 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	_appChooserButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserButton)
 
 	return _appChooserButton
+}
+
+// AppendCustomItem appends a custom item to the list of applications that is
+// shown in the popup.
+//
+// The item name must be unique per-widget. Clients can use the provided name as
+// a detail for the [signal@Gtk.AppChooserButton::custom-item-activated] signal,
+// to add a callback for the activation of a particular custom item in the list.
+//
+// See also [method@Gtk.AppChooserButton.append_separator].
+func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconner) {
+	var _arg0 *C.GtkAppChooserButton // out
+	var _arg1 *C.char                // out
+	var _arg2 *C.char                // out
+	var _arg3 *C.GIcon               // out
+
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
 }
 
 // AppendSeparator appends a separator to the list of applications that is shown

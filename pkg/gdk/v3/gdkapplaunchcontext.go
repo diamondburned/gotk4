@@ -29,6 +29,7 @@ type AppLaunchContexter interface {
 
 	SetDesktop(desktop int)
 	SetDisplay(display Displayyer)
+	SetIcon(icon gio.Iconner)
 	SetIconName(iconName string)
 	SetScreen(screen Screener)
 	SetTimestamp(timestamp uint32)
@@ -115,6 +116,22 @@ func (context *AppLaunchContext) SetDisplay(display Displayyer) {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_app_launch_context_set_display(_arg0, _arg1)
+}
+
+// SetIcon sets the icon for applications that are launched with this context.
+//
+// Window Managers can use this information when displaying startup
+// notification.
+//
+// See also gdk_app_launch_context_set_icon_name().
+func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
+	var _arg0 *C.GdkAppLaunchContext // out
+	var _arg1 *C.GIcon               // out
+
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
 }
 
 // SetIconName sets the icon for applications that are launched with this

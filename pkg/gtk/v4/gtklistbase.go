@@ -32,6 +32,7 @@ type ListBaser interface {
 // ListBase: `GtkListBase` is the abstract base class for GTK's list widgets.
 type ListBase struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

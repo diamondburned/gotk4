@@ -33,22 +33,32 @@ type SwitchAccessibler interface {
 }
 
 type SwitchAccessible struct {
+	*externglib.Object
+
 	WidgetAccessible
 	atk.Action
+	atk.Component
 }
 
 var _ SwitchAccessibler = (*SwitchAccessible)(nil)
 
 func wrapSwitchAccessibler(obj *externglib.Object) SwitchAccessibler {
 	return &SwitchAccessible{
+		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				Object: atk.Object{
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
 			Object: obj,
 		},
 	}

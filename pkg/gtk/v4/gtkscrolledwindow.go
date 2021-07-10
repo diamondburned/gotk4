@@ -190,6 +190,7 @@ type ScrolledWindowwer interface {
 // `GtkScrolledWindow` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type ScrolledWindow struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

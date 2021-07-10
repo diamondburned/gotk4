@@ -57,6 +57,7 @@ type Settingser interface {
 // convenient to use [method@Gtk.Widget.get_settings].
 type Settings struct {
 	*externglib.Object
+
 	StyleProvider
 }
 

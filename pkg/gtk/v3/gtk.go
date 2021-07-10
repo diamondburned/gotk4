@@ -146,8 +146,10 @@ type EntryIconAccessibler interface {
 
 type EntryIconAccessible struct {
 	*externglib.Object
-	atk.Object
+
+	atk.ObjectClass
 	atk.Action
+	atk.Component
 }
 
 var _ EntryIconAccessibler = (*EntryIconAccessible)(nil)
@@ -155,10 +157,13 @@ var _ EntryIconAccessibler = (*EntryIconAccessible)(nil)
 func wrapEntryIconAccessibler(obj *externglib.Object) EntryIconAccessibler {
 	return &EntryIconAccessible{
 		Object: obj,
-		Object: atk.Object{
+		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
 			Object: obj,
 		},
 	}

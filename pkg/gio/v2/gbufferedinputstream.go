@@ -107,6 +107,7 @@ type BufferedInputStreamer interface {
 // the buffer.
 type BufferedInputStream struct {
 	FilterInputStream
+
 	Seekable
 }
 

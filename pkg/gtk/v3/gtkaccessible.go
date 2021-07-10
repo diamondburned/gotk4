@@ -58,14 +58,14 @@ type Accessibler interface {
 // corresponding acccessible implementation, override the get_accessible vfunc
 // in WidgetClass.
 type Accessible struct {
-	atk.Object
+	atk.ObjectClass
 }
 
 var _ Accessibler = (*Accessible)(nil)
 
 func wrapAccessibler(obj *externglib.Object) Accessibler {
 	return &Accessible{
-		Object: atk.Object{
+		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
 	}

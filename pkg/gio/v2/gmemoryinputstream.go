@@ -45,6 +45,7 @@ type MemoryInputStreamer interface {
 // As of GLib 2.34, InputStream implements InputStream.
 type MemoryInputStream struct {
 	*externglib.Object
+
 	InputStream
 	PollableInputStream
 	Seekable

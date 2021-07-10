@@ -339,6 +339,7 @@ type CellAreaer interface {
 // gtk_cell_area_cell_get() or gtk_cell_area_cell_get_valist().
 type CellArea struct {
 	*externglib.Object
+
 	externglib.InitiallyUnowned
 	Buildable
 	CellLayout

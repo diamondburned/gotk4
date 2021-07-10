@@ -52,6 +52,7 @@ type Nativer interface {
 // [method@Gtk.Native.get_renderer].
 type Native struct {
 	*externglib.Object
+
 	Widget
 }
 

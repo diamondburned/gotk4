@@ -48,6 +48,7 @@ type StackSidebarrer interface {
 // style class to the widgets representing the stack pages.
 type StackSidebar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

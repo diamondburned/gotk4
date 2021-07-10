@@ -4,6 +4,9 @@ package gtk
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #cgo pkg-config: gtk4
@@ -25,4 +28,23 @@ func ShowURI(parent Windowwer, uri string, timestamp uint32) {
 	_arg3 = C.guint32(timestamp)
 
 	C.gtk_show_uri(_arg1, _arg2, _arg3)
+}
+
+// ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
+// the operation.
+func ShowURIFullFinish(parent Windowwer, result gio.AsyncResulter) error {
+	var _arg1 *C.GtkWindow    // out
+	var _arg2 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	C.gtk_show_uri_full_finish(_arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

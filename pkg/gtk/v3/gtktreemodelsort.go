@@ -97,7 +97,7 @@ type TreeModelSorter interface {
 //    }
 type TreeModelSort struct {
 	*externglib.Object
-	*externglib.Object
+
 	TreeDragSource
 	TreeModel
 	TreeSortable
@@ -107,7 +107,6 @@ var _ TreeModelSorter = (*TreeModelSort)(nil)
 
 func wrapTreeModelSorter(obj *externglib.Object) TreeModelSorter {
 	return &TreeModelSort{
-		Object: obj,
 		Object: obj,
 		TreeDragSource: TreeDragSource{
 			Object: obj,

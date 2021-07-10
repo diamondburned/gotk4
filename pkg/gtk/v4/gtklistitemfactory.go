@@ -18,12 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_item_factory_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_list_item_factory_get_type()), F: marshalListItemFactorier},
 	})
 }
 
-// yier describes ListItemFactory's methods.
-type yier interface {
+// ListItemFactorier describes ListItemFactory's methods.
+type ListItemFactorier interface {
 	gextras.Objector
 
 	privateListItemFactory()
@@ -82,18 +82,18 @@ type ListItemFactory struct {
 	*externglib.Object
 }
 
-var _ yier = (*ListItemFactory)(nil)
+var _ ListItemFactorier = (*ListItemFactory)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapListItemFactorier(obj *externglib.Object) ListItemFactorier {
 	return &ListItemFactory{
 		Object: obj,
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalListItemFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapListItemFactorier(obj), nil
 }
 
 func (*ListItemFactory) privateListItemFactory() {}

@@ -59,6 +59,7 @@ type PopoverMenuBarrer interface {
 // GTK_ACCESSIBLE_ROLE_MENU role.
 type PopoverMenuBar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

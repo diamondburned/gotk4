@@ -35,6 +35,7 @@ type VolumeButtonner interface {
 // !An example GtkVolumeButton (volumebutton.png)
 type VolumeButton struct {
 	*externglib.Object
+
 	ScaleButton
 	Accessible
 	Buildable

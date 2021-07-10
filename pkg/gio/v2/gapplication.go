@@ -223,7 +223,7 @@ type Applicationer interface {
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
 type Application struct {
 	*externglib.Object
-	*externglib.Object
+
 	ActionGroup
 	ActionMap
 }
@@ -232,7 +232,6 @@ var _ Applicationer = (*Application)(nil)
 
 func wrapApplicationer(obj *externglib.Object) Applicationer {
 	return &Application{
-		Object: obj,
 		Object: obj,
 		ActionGroup: ActionGroup{
 			Object: obj,

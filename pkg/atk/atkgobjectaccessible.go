@@ -26,7 +26,7 @@ func init() {
 type GObjectAccessibler interface {
 	gextras.Objector
 
-	GetObject() *externglib.Object
+	Object() *externglib.Object
 }
 
 // GObjectAccessible: this object class is derived from AtkObject. It can be
@@ -34,14 +34,14 @@ type GObjectAccessibler interface {
 // not derived from GtkWidget. One example of its use is in providing an
 // accessible object for GnomeCanvasItem in the GAIL library.
 type GObjectAccessible struct {
-	Object
+	ObjectClass
 }
 
 var _ GObjectAccessibler = (*GObjectAccessible)(nil)
 
 func wrapGObjectAccessibler(obj *externglib.Object) GObjectAccessibler {
 	return &GObjectAccessible{
-		Object: Object{
+		ObjectClass: ObjectClass{
 			Object: obj,
 		},
 	}
@@ -53,8 +53,8 @@ func marshalGObjectAccessibler(p uintptr) (interface{}, error) {
 	return wrapGObjectAccessibler(obj), nil
 }
 
-// GetObject gets the GObject for which @obj is the accessible object.
-func (obj *GObjectAccessible) GetObject() *externglib.Object {
+// Object gets the GObject for which @obj is the accessible object.
+func (obj *GObjectAccessible) Object() *externglib.Object {
 	var _arg0 *C.AtkGObjectAccessible // out
 	var _cret *C.GObject              // in
 

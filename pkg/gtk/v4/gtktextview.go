@@ -195,6 +195,7 @@ type TextViewer interface {
 // `GtkTextView` uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
 type TextView struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

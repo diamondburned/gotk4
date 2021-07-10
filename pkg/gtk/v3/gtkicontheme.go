@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,7 +28,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_icon_theme_error_get_type()), F: marshalIconThemeError},
 		{T: externglib.Type(C.gtk_icon_lookup_flags_get_type()), F: marshalIconLookupFlags},
-		{T: externglib.Type(C.gtk_icon_info_get_type()), F: marshalIconInfoer},
+		{T: externglib.Type(C.gtk_icon_info_get_type()), F: marshalIconInfor},
 		{T: externglib.Type(C.gtk_icon_theme_get_type()), F: marshalIconThemer},
 	})
 }
@@ -87,8 +88,8 @@ func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 	return IconLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// IconInfoer describes IconInfo's methods.
-type IconInfoer interface {
+// IconInfor describes IconInfo's methods.
+type IconInfor interface {
 	gextras.Objector
 
 	AttachPoints() ([]gdk.Point, bool)
@@ -100,9 +101,12 @@ type IconInfoer interface {
 	Filename() string
 	IsSymbolic() bool
 	LoadIcon() (*gdkpixbuf.Pixbuf, error)
+	LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixbuf, error)
 	LoadSurface(forWindow gdk.Windowwer) (*cairo.Surface, error)
 	LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA) (bool, *gdkpixbuf.Pixbuf, error)
+	LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkpixbuf.Pixbuf, error)
 	LoadSymbolicForContext(context StyleContexter) (bool, *gdkpixbuf.Pixbuf, error)
+	LoadSymbolicForContextFinish(res gio.AsyncResulter) (bool, *gdkpixbuf.Pixbuf, error)
 	SetRawCoordinates(rawCoordinates bool)
 }
 
@@ -111,18 +115,18 @@ type IconInfo struct {
 	*externglib.Object
 }
 
-var _ IconInfoer = (*IconInfo)(nil)
+var _ IconInfor = (*IconInfo)(nil)
 
-func wrapIconInfoer(obj *externglib.Object) IconInfoer {
+func wrapIconInfor(obj *externglib.Object) IconInfor {
 	return &IconInfo{
 		Object: obj,
 	}
 }
 
-func marshalIconInfoer(p uintptr) (interface{}, error) {
+func marshalIconInfor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconInfoer(obj), nil
+	return wrapIconInfor(obj), nil
 }
 
 // NewIconInfoForPixbuf creates a IconInfo for a Pixbuf.
@@ -340,6 +344,28 @@ func (iconInfo *IconInfo) LoadIcon() (*gdkpixbuf.Pixbuf, error) {
 	return _pixbuf, _goerr
 }
 
+// LoadIconFinish finishes an async icon load, see
+// gtk_icon_info_load_icon_async().
+func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixbuf, error) {
+	var _arg0 *C.GtkIconInfo  // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GdkPixbuf    // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	_cret = C.gtk_icon_info_load_icon_finish(_arg0, _arg1, &_cerr)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+	var _goerr error              // out
+
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _pixbuf, _goerr
+}
+
 // LoadSurface renders an icon previously looked up in an icon theme using
 // gtk_icon_theme_lookup_icon(); the size will be based on the size passed to
 // gtk_icon_theme_lookup_icon(). Note that the resulting surface may not be
@@ -421,6 +447,33 @@ func (iconInfo *IconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, war
 	return _wasSymbolic, _pixbuf, _goerr
 }
 
+// LoadSymbolicFinish finishes an async icon load, see
+// gtk_icon_info_load_symbolic_async().
+func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkpixbuf.Pixbuf, error) {
+	var _arg0 *C.GtkIconInfo  // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 C.gboolean      // in
+	var _cret *C.GdkPixbuf    // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	_cret = C.gtk_icon_info_load_symbolic_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	var _wasSymbolic bool         // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+	var _goerr error              // out
+
+	if _arg2 != 0 {
+		_wasSymbolic = true
+	}
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _wasSymbolic, _pixbuf, _goerr
+}
+
 // LoadSymbolicForContext loads an icon, modifying it to match the system colors
 // for the foreground, success, warning and error colors provided. If the icon
 // is not a symbolic one, the function will return the result from
@@ -442,6 +495,33 @@ func (iconInfo *IconInfo) LoadSymbolicForContext(context StyleContexter) (bool, 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_icon_info_load_symbolic_for_context(_arg0, _arg1, &_arg2, &_cerr)
+
+	var _wasSymbolic bool         // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+	var _goerr error              // out
+
+	if _arg2 != 0 {
+		_wasSymbolic = true
+	}
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _wasSymbolic, _pixbuf, _goerr
+}
+
+// LoadSymbolicForContextFinish finishes an async icon load, see
+// gtk_icon_info_load_symbolic_for_context_async().
+func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResulter) (bool, *gdkpixbuf.Pixbuf, error) {
+	var _arg0 *C.GtkIconInfo  // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 C.gboolean      // in
+	var _cret *C.GdkPixbuf    // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+
+	_cret = C.gtk_icon_info_load_symbolic_for_context_finish(_arg0, _arg1, &_arg2, &_cerr)
 
 	var _wasSymbolic bool         // out
 	var _pixbuf *gdkpixbuf.Pixbuf // out

@@ -85,6 +85,7 @@ type FileInputStreamer interface {
 // g_seekable_seek().
 type FileInputStream struct {
 	*externglib.Object
+
 	InputStream
 	Seekable
 }

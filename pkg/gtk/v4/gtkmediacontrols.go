@@ -37,6 +37,7 @@ type MediaControlser interface {
 // Usually, `GtkMediaControls` is used as part of [class@Gtk.Video].
 type MediaControls struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

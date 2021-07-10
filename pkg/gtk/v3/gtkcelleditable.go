@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -49,6 +50,7 @@ type CellEditabler interface {
 // value, etc.
 type CellEditable struct {
 	*externglib.Object
+
 	Widget
 }
 
@@ -60,6 +62,9 @@ func wrapCellEditabler(obj *externglib.Object) CellEditabler {
 		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			ImplementorIface: atk.ImplementorIface{
 				Object: obj,
 			},
 			Buildable: Buildable{

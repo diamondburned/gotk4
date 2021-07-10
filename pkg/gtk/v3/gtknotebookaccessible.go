@@ -33,21 +33,38 @@ type NotebookAccessibler interface {
 }
 
 type NotebookAccessible struct {
+	*externglib.Object
+
 	ContainerAccessible
+	atk.Component
+	atk.Selection
 }
 
 var _ NotebookAccessibler = (*NotebookAccessible)(nil)
 
 func wrapNotebookAccessibler(obj *externglib.Object) NotebookAccessibler {
 	return &NotebookAccessible{
+		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Selection: atk.Selection{
+			Object: obj,
 		},
 	}
 }

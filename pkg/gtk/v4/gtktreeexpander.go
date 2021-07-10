@@ -71,6 +71,7 @@ type TreeExpanderrer interface {
 // child, and toggling it will change the GTK_ACCESSIBLE_STATE_EXPANDED state.
 type TreeExpander struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

@@ -73,6 +73,15 @@ type TextBufferrerOverrider interface {
 	// alternative to this function. The buffer will add a reference to the
 	// anchor, so you can unref it after insertion.
 	InsertChildAnchor(iter *TextIter, anchor TextChildAnchorrer)
+	// InsertPaintable inserts an image into the text buffer at @iter.
+	//
+	// The image will be counted as one character in character counts, and when
+	// obtaining the buffer contents as a string, will be represented by the
+	// Unicode “object replacement character” 0xFFFC. Note that the “slice”
+	// variants for obtaining portions of the buffer as a string include this
+	// character for paintable, but the “text” variants do not. e.g. see
+	// [method@Gtk.TextBuffer.get_slice] and [method@Gtk.TextBuffer.get_text].
+	InsertPaintable(iter *TextIter, paintable gdk.Paintabler)
 	InsertText(pos *TextIter, newText string, newTextLength int)
 	MarkDeleted(mark TextMarker)
 	MarkSet(location *TextIter, mark TextMarker)
@@ -142,6 +151,7 @@ type TextBufferrer interface {
 	InsertInteractive(iter *TextIter, text string, len int, defaultEditable bool) bool
 	InsertInteractiveAtCursor(text string, len int, defaultEditable bool) bool
 	InsertMarkup(iter *TextIter, markup string, len int)
+	InsertPaintable(iter *TextIter, paintable gdk.Paintabler)
 	InsertRange(iter *TextIter, start *TextIter, end *TextIter)
 	InsertRangeInteractive(iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool
 	MoveMark(mark TextMarker, where *TextIter)
@@ -1311,6 +1321,26 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
 	_arg3 = C.int(len)
 
 	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
+}
+
+// InsertPaintable inserts an image into the text buffer at @iter.
+//
+// The image will be counted as one character in character counts, and when
+// obtaining the buffer contents as a string, will be represented by the Unicode
+// “object replacement character” 0xFFFC. Note that the “slice” variants for
+// obtaining portions of the buffer as a string include this character for
+// paintable, but the “text” variants do not. e.g. see
+// [method@Gtk.TextBuffer.get_slice] and [method@Gtk.TextBuffer.get_text].
+func (buffer *TextBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintabler) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 *C.GdkPaintable  // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+
+	C.gtk_text_buffer_insert_paintable(_arg0, _arg1, _arg2)
 }
 
 // InsertRange copies text, tags, and paintables between @start and @end and

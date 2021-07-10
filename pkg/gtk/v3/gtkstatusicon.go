@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,6 +46,7 @@ type StatusIconner interface {
 	gextras.Objector
 
 	Geometry() (*gdk.Screen, gdk.Rectangle, Orientation, bool)
+	GIcon() *gio.Icon
 	HasTooltip() bool
 	IconName() string
 	Pixbuf() *gdkpixbuf.Pixbuf
@@ -59,6 +61,7 @@ type StatusIconner interface {
 	X11WindowID() uint32
 	IsEmbedded() bool
 	SetFromFile(filename string)
+	SetFromGIcon(icon gio.Iconner)
 	SetFromIconName(iconName string)
 	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer)
 	SetFromStock(stockId string)
@@ -155,6 +158,26 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_file(_arg1)
+
+	var _statusIcon *StatusIcon // out
+
+	_statusIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StatusIcon)
+
+	return _statusIcon
+}
+
+// NewStatusIconFromGIcon creates a status icon displaying a #GIcon. If the icon
+// is a themed icon, it will be updated when the theme changes.
+//
+// Deprecated: Use #GNotification and Application to provide status
+// notifications.
+func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
+	var _arg1 *C.GIcon         // out
+	var _cret *C.GtkStatusIcon // in
+
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	_cret = C.gtk_status_icon_new_from_gicon(_arg1)
 
 	var _statusIcon *StatusIcon // out
 
@@ -269,6 +292,30 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 	}
 
 	return _screen, _area, _orientation, _ok
+}
+
+// GIcon retrieves the #GIcon being displayed by the StatusIcon. The storage
+// type of the status icon must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
+// gtk_status_icon_get_storage_type()). The caller of this function does not own
+// a reference to the returned #GIcon.
+//
+// If this function fails, @icon is left unchanged;
+//
+// Deprecated: Use #GNotification and Application to provide status
+// notifications; there is no direct replacement for this function.
+func (statusIcon *StatusIcon) GIcon() *gio.Icon {
+	var _arg0 *C.GtkStatusIcon // out
+	var _cret *C.GIcon         // in
+
+	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
+
+	_cret = C.gtk_status_icon_get_gicon(_arg0)
+
+	var _icon *gio.Icon // out
+
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Icon)
+
+	return _icon
 }
 
 // HasTooltip returns the current value of the has-tooltip property. See
@@ -574,6 +621,22 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_from_file(_arg0, _arg1)
+}
+
+// SetFromGIcon makes @status_icon display the #GIcon. See
+// gtk_status_icon_new_from_gicon() for details.
+//
+// Deprecated: Use #GNotification and Application to provide status
+// notifications; you can use g_notification_set_icon() to associate a #GIcon
+// with a notification.
+func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
+	var _arg0 *C.GtkStatusIcon // out
+	var _arg1 *C.GIcon         // out
+
+	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gtk_status_icon_set_from_gicon(_arg0, _arg1)
 }
 
 // SetFromIconName makes @status_icon display the icon named @icon_name from the

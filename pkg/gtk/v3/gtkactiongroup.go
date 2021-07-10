@@ -105,6 +105,7 @@ type ActionGrouper interface {
 //    </object>
 type ActionGroup struct {
 	*externglib.Object
+
 	Buildable
 }
 

@@ -159,8 +159,10 @@ type Applicationer interface {
 // (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
 type Application struct {
 	*externglib.Object
+
 	gio.Application
 	gio.ActionGroup
+	gio.ActionMap
 }
 
 var _ Applicationer = (*Application)(nil)
@@ -178,6 +180,9 @@ func wrapApplicationer(obj *externglib.Object) Applicationer {
 			},
 		},
 		ActionGroup: gio.ActionGroup{
+			Object: obj,
+		},
+		ActionMap: gio.ActionMap{
 			Object: obj,
 		},
 	}

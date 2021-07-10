@@ -107,6 +107,7 @@ type FileIOStreamer interface {
 // stream.
 type FileIOStream struct {
 	*externglib.Object
+
 	IOStream
 	Seekable
 }

@@ -33,21 +33,38 @@ type ListBoxAccessibler interface {
 }
 
 type ListBoxAccessible struct {
+	*externglib.Object
+
 	ContainerAccessible
+	atk.Component
+	atk.Selection
 }
 
 var _ ListBoxAccessibler = (*ListBoxAccessible)(nil)
 
 func wrapListBoxAccessibler(obj *externglib.Object) ListBoxAccessibler {
 	return &ListBoxAccessible{
+		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Selection: atk.Selection{
+			Object: obj,
 		},
 	}
 }

@@ -84,7 +84,7 @@ type ListStorer interface {
 //    </object>
 type ListStore struct {
 	*externglib.Object
-	*externglib.Object
+
 	Buildable
 	TreeDragDest
 	TreeDragSource
@@ -96,7 +96,6 @@ var _ ListStorer = (*ListStore)(nil)
 
 func wrapListStorer(obj *externglib.Object) ListStorer {
 	return &ListStore{
-		Object: obj,
 		Object: obj,
 		Buildable: Buildable{
 			Object: obj,

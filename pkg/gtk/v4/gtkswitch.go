@@ -57,6 +57,7 @@ type Switcher interface {
 // `GtkSwitch` uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
 type Switch struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Actionable

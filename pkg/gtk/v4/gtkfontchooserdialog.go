@@ -46,6 +46,7 @@ type FontChooserDialogger interface {
 // exposes the buttons with the names “select_button” and “cancel_button”.
 type FontChooserDialog struct {
 	*externglib.Object
+
 	Dialog
 	Accessible
 	Buildable

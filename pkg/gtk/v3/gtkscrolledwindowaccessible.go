@@ -34,6 +34,8 @@ type ScrolledWindowAccessibler interface {
 
 type ScrolledWindowAccessible struct {
 	ContainerAccessible
+
+	atk.Component
 }
 
 var _ ScrolledWindowAccessibler = (*ScrolledWindowAccessible)(nil)
@@ -43,11 +45,20 @@ func wrapScrolledWindowAccessibler(obj *externglib.Object) ScrolledWindowAccessi
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
 		},
 	}
 }

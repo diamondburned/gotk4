@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -96,6 +97,7 @@ type Actionabler interface {
 // gtk_widget_insert_action_group() will be consulted as well.
 type Actionable struct {
 	*externglib.Object
+
 	Widget
 }
 
@@ -107,6 +109,9 @@ func wrapActionabler(obj *externglib.Object) Actionabler {
 		Widget: Widget{
 			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			ImplementorIface: atk.ImplementorIface{
 				Object: obj,
 			},
 			Buildable: Buildable{

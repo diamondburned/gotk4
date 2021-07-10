@@ -51,6 +51,7 @@ type UnixOutputStreamer interface {
 // using it.
 type UnixOutputStream struct {
 	*externglib.Object
+
 	OutputStream
 	FileDescriptorBased
 	PollableOutputStream

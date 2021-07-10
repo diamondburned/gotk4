@@ -126,6 +126,7 @@ type MenuButtonner interface {
 // `GtkMenuButton` uses the K_ACCESSIBLE_ROLE_BUTTON role.
 type MenuButton struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

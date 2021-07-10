@@ -18,12 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_signal_list_item_factory_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_signal_list_item_factory_get_type()), F: marshalSignalListItemFactorier},
 	})
 }
 
-// yier describes SignalListItemFactory's methods.
-type yier interface {
+// SignalListItemFactorier describes SignalListItemFactory's methods.
+type SignalListItemFactorier interface {
 	gextras.Objector
 
 	privateSignalListItemFactory()
@@ -74,9 +74,9 @@ type SignalListItemFactory struct {
 	ListItemFactory
 }
 
-var _ yier = (*SignalListItemFactory)(nil)
+var _ SignalListItemFactorier = (*SignalListItemFactory)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapSignalListItemFactorier(obj *externglib.Object) SignalListItemFactorier {
 	return &SignalListItemFactory{
 		ListItemFactory: ListItemFactory{
 			Object: obj,
@@ -84,10 +84,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalSignalListItemFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapSignalListItemFactorier(obj), nil
 }
 
 // NewSignalListItemFactory creates a new `GtkSignalListItemFactory`.

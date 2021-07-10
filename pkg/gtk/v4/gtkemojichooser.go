@@ -52,6 +52,7 @@ type EmojiChooserrer interface {
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
 type EmojiChooser struct {
 	*externglib.Object
+
 	Popover
 	Accessible
 	Buildable

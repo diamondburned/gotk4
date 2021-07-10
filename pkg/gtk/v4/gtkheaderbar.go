@@ -94,6 +94,7 @@ type HeaderBarrer interface {
 // `GtkHeaderBar` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type HeaderBar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

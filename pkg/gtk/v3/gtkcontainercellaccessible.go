@@ -34,25 +34,36 @@ type ContainerCellAccessibler interface {
 }
 
 type ContainerCellAccessible struct {
+	*externglib.Object
+
 	CellAccessible
 	atk.Action
+	atk.Component
 }
 
 var _ ContainerCellAccessibler = (*ContainerCellAccessible)(nil)
 
 func wrapContainerCellAccessibler(obj *externglib.Object) ContainerCellAccessibler {
 	return &ContainerCellAccessible{
+		Object: obj,
 		CellAccessible: CellAccessible{
+			Object: obj,
 			Accessible: Accessible{
-				Object: atk.Object{
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
 			Action: atk.Action{
 				Object: obj,
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
 			Object: obj,
 		},
 	}

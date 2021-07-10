@@ -78,6 +78,7 @@ type ShortcutsShortcutter interface {
 // This widget is only meant to be used with `GtkShortcutsWindow`.
 type ShortcutsShortcut struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

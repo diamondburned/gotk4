@@ -31,20 +31,20 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_proxy_get_type()), F: marshalyier},
+		{T: externglib.Type(C.g_dbus_proxy_get_type()), F: marshalDBusProxier},
 	})
 }
 
-// yierOverrider contains methods that are overridable.
+// DBusProxierOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type yierOverrider interface {
+type DBusProxierOverrider interface {
 	GSignal(senderName string, signalName string, parameters *glib.Variant)
 }
 
-// yier describes DBusProxy's methods.
-type yier interface {
+// DBusProxier describes DBusProxy's methods.
+type DBusProxier interface {
 	gextras.Objector
 
 	CallFinish(res AsyncResulter) (*glib.Variant, error)
@@ -102,17 +102,16 @@ type yier interface {
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
 type DBusProxy struct {
 	*externglib.Object
-	*externglib.Object
+
 	AsyncInitable
 	DBusInterface
 	Initable
 }
 
-var _ yier = (*DBusProxy)(nil)
+var _ DBusProxier = (*DBusProxy)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapDBusProxier(obj *externglib.Object) DBusProxier {
 	return &DBusProxy{
-		Object: obj,
 		Object: obj,
 		AsyncInitable: AsyncInitable{
 			Object: obj,
@@ -126,10 +125,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalDBusProxier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapDBusProxier(obj), nil
 }
 
 // NewDBusProxyFinish finishes creating a BusProxy.

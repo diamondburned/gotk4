@@ -71,6 +71,7 @@ type Scrollbarrer interface {
 // `GtkScrollbar` uses the GTK_ACCESSIBLE_ROLE_SCROLLBAR role.
 type Scrollbar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

@@ -34,8 +34,11 @@ type LinkButtonAccessibler interface {
 
 type LinkButtonAccessible struct {
 	*externglib.Object
+
 	ButtonAccessible
 	atk.Action
+	atk.Component
+	atk.HyperlinkImpl
 	atk.Image
 }
 
@@ -49,13 +52,22 @@ func wrapLinkButtonAccessibler(obj *externglib.Object) LinkButtonAccessibler {
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
-						Object: atk.Object{
+						ObjectClass: atk.ObjectClass{
 							Object: obj,
 						},
 					},
+					Component: atk.Component{
+						Object: obj,
+					},
+				},
+				Component: atk.Component{
+					Object: obj,
 				},
 			},
 			Action: atk.Action{
+				Object: obj,
+			},
+			Component: atk.Component{
 				Object: obj,
 			},
 			Image: atk.Image{
@@ -63,6 +75,12 @@ func wrapLinkButtonAccessibler(obj *externglib.Object) LinkButtonAccessibler {
 			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		HyperlinkImpl: atk.HyperlinkImpl{
 			Object: obj,
 		},
 		Image: atk.Image{

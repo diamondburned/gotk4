@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,6 +53,7 @@ type Notebooker interface {
 	NPages() int
 	NthPage(pageNum int) *Widget
 	Page(child Widgetter) *NotebookPage
+	Pages() *gio.ListModel
 	Scrollable() bool
 	ShowBorder() bool
 	ShowTabs() bool
@@ -155,6 +157,7 @@ type Notebooker interface {
 //    - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page
 type Notebook struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -389,6 +392,26 @@ func (notebook *Notebook) Page(child Widgetter) *NotebookPage {
 	_notebookPage = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*NotebookPage)
 
 	return _notebookPage
+}
+
+// Pages returns a `GListModel` that contains the pages of the notebook.
+//
+// This can be used to keep an up-to-date view. The model also implements
+// [iface@Gtk.SelectionModel] and can be used to track and modify the visible
+// page.
+func (notebook *Notebook) Pages() *gio.ListModel {
+	var _arg0 *C.GtkNotebook // out
+	var _cret *C.GListModel  // in
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
+
+	_cret = C.gtk_notebook_get_pages(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
 }
 
 // Scrollable returns whether the tab label area has arrows for scrolling.

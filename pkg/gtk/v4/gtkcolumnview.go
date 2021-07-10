@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,7 +28,9 @@ type ColumnViewer interface {
 	gextras.Objector
 
 	AppendColumn(column ColumnViewColumner)
+	Columns() *gio.ListModel
 	EnableRubberband() bool
+	Model() *SelectionModel
 	Reorderable() bool
 	ShowColumnSeparators() bool
 	ShowRowSeparators() bool
@@ -36,6 +39,7 @@ type ColumnViewer interface {
 	InsertColumn(position uint, column ColumnViewColumner)
 	RemoveColumn(column ColumnViewColumner)
 	SetEnableRubberband(enableRubberband bool)
+	SetModel(model SelectionModeller)
 	SetReorderable(reorderable bool)
 	SetShowColumnSeparators(showColumnSeparators bool)
 	SetShowRowSeparators(showRowSeparators bool)
@@ -104,6 +108,7 @@ type ColumnViewer interface {
 // the GTK_ACCESSIBLE_ROLE_GRID_CELL role
 type ColumnView struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -152,6 +157,25 @@ func marshalColumnViewer(p uintptr) (interface{}, error) {
 	return wrapColumnViewer(obj), nil
 }
 
+// NewColumnView creates a new `GtkColumnView`.
+//
+// You most likely want to call [method@Gtk.ColumnView.append_column] to add
+// columns next.
+func NewColumnView(model SelectionModeller) *ColumnView {
+	var _arg1 *C.GtkSelectionModel // out
+	var _cret *C.GtkWidget         // in
+
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+
+	_cret = C.gtk_column_view_new(_arg1)
+
+	var _columnView *ColumnView // out
+
+	_columnView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColumnView)
+
+	return _columnView
+}
+
 // AppendColumn appends the @column to the end of the columns in @self.
 func (self *ColumnView) AppendColumn(column ColumnViewColumner) {
 	var _arg0 *C.GtkColumnView       // out
@@ -161,6 +185,25 @@ func (self *ColumnView) AppendColumn(column ColumnViewColumner) {
 	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
 
 	C.gtk_column_view_append_column(_arg0, _arg1)
+}
+
+// Columns gets the list of columns in this column view.
+//
+// This list is constant over the lifetime of @self and can be used to monitor
+// changes to the columns of @self by connecting to the ::items-changed signal.
+func (self *ColumnView) Columns() *gio.ListModel {
+	var _arg0 *C.GtkColumnView // out
+	var _cret *C.GListModel    // in
+
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_column_view_get_columns(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
 }
 
 // EnableRubberband returns whether rows can be selected by dragging with the
@@ -180,6 +223,22 @@ func (self *ColumnView) EnableRubberband() bool {
 	}
 
 	return _ok
+}
+
+// Model gets the model that's currently used to read the items displayed.
+func (self *ColumnView) Model() *SelectionModel {
+	var _arg0 *C.GtkColumnView     // out
+	var _cret *C.GtkSelectionModel // in
+
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_column_view_get_model(_arg0)
+
+	var _selectionModel *SelectionModel // out
+
+	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SelectionModel)
+
+	return _selectionModel
 }
 
 // Reorderable returns whether columns are reorderable.
@@ -325,6 +384,19 @@ func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 	}
 
 	C.gtk_column_view_set_enable_rubberband(_arg0, _arg1)
+}
+
+// SetModel sets the model to use.
+//
+// This must be a [iface@Gtk.SelectionModel].
+func (self *ColumnView) SetModel(model SelectionModeller) {
+	var _arg0 *C.GtkColumnView     // out
+	var _arg1 *C.GtkSelectionModel // out
+
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_column_view_set_model(_arg0, _arg1)
 }
 
 // SetReorderable sets whether columns should be reorderable by dragging.

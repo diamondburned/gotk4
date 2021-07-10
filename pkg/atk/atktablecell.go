@@ -42,7 +42,7 @@ type TableCellerOverrider interface {
 	// RowSpan returns the number of rows occupied by this cell accessible.
 	RowSpan() int
 	// Table returns a reference to the accessible of the containing table.
-	Table() *Object
+	Table() *ObjectClass
 }
 
 // TableCeller describes TableCell's methods.
@@ -53,7 +53,7 @@ type TableCeller interface {
 	Position() (row int, column int, ok bool)
 	RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
 	RowSpan() int
-	Table() *Object
+	Table() *ObjectClass
 }
 
 // TableCell: being Table a component which present elements ordered via rows
@@ -62,14 +62,14 @@ type TableCeller interface {
 //
 // See also Table.
 type TableCell struct {
-	Object
+	ObjectClass
 }
 
 var _ TableCeller = (*TableCell)(nil)
 
 func wrapTableCeller(obj *externglib.Object) TableCeller {
 	return &TableCell{
-		Object: Object{
+		ObjectClass: ObjectClass{
 			Object: obj,
 		},
 	}
@@ -173,7 +173,7 @@ func (cell *TableCell) RowSpan() int {
 }
 
 // Table returns a reference to the accessible of the containing table.
-func (cell *TableCell) Table() *Object {
+func (cell *TableCell) Table() *ObjectClass {
 	var _arg0 *C.AtkTableCell // out
 	var _cret *C.AtkObject    // in
 
@@ -181,9 +181,9 @@ func (cell *TableCell) Table() *Object {
 
 	_cret = C.atk_table_cell_get_table(_arg0)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }

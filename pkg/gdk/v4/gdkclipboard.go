@@ -6,7 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,8 +33,13 @@ type Clipboarder interface {
 	Display() *Display
 	Formats() *ContentFormats
 	IsLocal() bool
+	ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error)
+	ReadTextFinish(result gio.AsyncResulter) (string, error)
+	ReadTextureFinish(result gio.AsyncResulter) (*Texture, error)
+	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
 	SetContent(provider ContentProviderrer) bool
 	SetValue(value *externglib.Value)
+	StoreFinish(result gio.AsyncResulter) error
 }
 
 // Clipboard: the `GdkClipboard` object represents data shared between
@@ -150,6 +157,102 @@ func (clipboard *Clipboard) IsLocal() bool {
 	return _ok
 }
 
+// ReadFinish finishes an asynchronous clipboard read.
+//
+// See [method@Gdk.Clipboard.read_async].
+func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error) {
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.char         // in
+	var _cret *C.GInputStream // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	_cret = C.gdk_clipboard_read_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	var _outMimeType string           // out
+	var _inputStream *gio.InputStream // out
+	var _goerr error                  // out
+
+	_outMimeType = C.GoString(_arg2)
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.InputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _outMimeType, _inputStream, _goerr
+}
+
+// ReadTextFinish finishes an asynchronous clipboard read.
+//
+// See [method@Gdk.Clipboard.read_text_async].
+func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, error) {
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.char         // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	_cret = C.gdk_clipboard_read_text_finish(_arg0, _arg1, &_cerr)
+
+	var _utf8 string // out
+	var _goerr error // out
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8, _goerr
+}
+
+// ReadTextureFinish finishes an asynchronous clipboard read.
+//
+// See [method@Gdk.Clipboard.read_texture_async].
+func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (*Texture, error) {
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GdkTexture   // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	_cret = C.gdk_clipboard_read_texture_finish(_arg0, _arg1, &_cerr)
+
+	var _texture *Texture // out
+	var _goerr error      // out
+
+	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Texture)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _texture, _goerr
+}
+
+// ReadValueFinish finishes an asynchronous clipboard read.
+//
+// See [method@Gdk.Clipboard.read_value_async].
+func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error) {
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GValue       // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	_cret = C.gdk_clipboard_read_value_finish(_arg0, _arg1, &_cerr)
+
+	var _value *externglib.Value // out
+	var _goerr error             // out
+
+	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _value, _goerr
+}
+
 // SetContent sets a new content provider on @clipboard.
 //
 // The clipboard will claim the `GdkDisplay`'s resources and advertise these new
@@ -189,4 +292,24 @@ func (clipboard *Clipboard) SetValue(value *externglib.Value) {
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gdk_clipboard_set_value(_arg0, _arg1)
+}
+
+// StoreFinish finishes an asynchronous clipboard store.
+//
+// See [method@Gdk.Clipboard.store_async].
+func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	C.gdk_clipboard_store_finish(_arg0, _arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }

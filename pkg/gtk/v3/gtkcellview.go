@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -63,7 +64,9 @@ type CellViewer interface {
 // GtkCellView has a single CSS node with name cellview.
 type CellView struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Buildable
 	CellLayout
 	Orientable
@@ -79,9 +82,15 @@ func wrapCellViewer(obj *externglib.Object) CellViewer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

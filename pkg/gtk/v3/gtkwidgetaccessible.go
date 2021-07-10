@@ -34,6 +34,8 @@ type WidgetAccessibler interface {
 
 type WidgetAccessible struct {
 	Accessible
+
+	atk.Component
 }
 
 var _ WidgetAccessibler = (*WidgetAccessible)(nil)
@@ -41,9 +43,12 @@ var _ WidgetAccessibler = (*WidgetAccessible)(nil)
 func wrapWidgetAccessibler(obj *externglib.Object) WidgetAccessibler {
 	return &WidgetAccessible{
 		Accessible: Accessible{
-			Object: atk.Object{
+			ObjectClass: atk.ObjectClass{
 				Object: obj,
 			},
+		},
+		Component: atk.Component{
+			Object: obj,
 		},
 	}
 }

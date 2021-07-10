@@ -18,15 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_object_factory_get_type()), F: marshalyier},
+		{T: externglib.Type(C.atk_object_factory_get_type()), F: marshalObjectFactorier},
 	})
 }
 
-// yierOverrider contains methods that are overridable.
+// ObjectFactorierOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type yierOverrider interface {
+type ObjectFactorierOverrider interface {
 	// Invalidate: inform @factory that it is no longer being used to create
 	// accessibles. When called, @factory may need to inform Objects which it
 	// has created that they need to be re-instantiated. Note: primarily used
@@ -34,11 +34,11 @@ type yierOverrider interface {
 	Invalidate()
 }
 
-// yier describes ObjectFactory's methods.
-type yier interface {
+// ObjectFactorier describes ObjectFactory's methods.
+type ObjectFactorier interface {
 	gextras.Objector
 
-	CreateAccessible(obj gextras.Objector) *Object
+	CreateAccessible(obj gextras.Objector) *ObjectClass
 	AccessibleType() externglib.Type
 	Invalidate()
 }
@@ -51,23 +51,23 @@ type ObjectFactory struct {
 	*externglib.Object
 }
 
-var _ yier = (*ObjectFactory)(nil)
+var _ ObjectFactorier = (*ObjectFactory)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapObjectFactorier(obj *externglib.Object) ObjectFactorier {
 	return &ObjectFactory{
 		Object: obj,
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalObjectFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapObjectFactorier(obj), nil
 }
 
 // CreateAccessible provides an Object that implements an accessibility
 // interface on behalf of @obj
-func (factory *ObjectFactory) CreateAccessible(obj gextras.Objector) *Object {
+func (factory *ObjectFactory) CreateAccessible(obj gextras.Objector) *ObjectClass {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
 	var _cret *C.AtkObject        // in
@@ -77,9 +77,9 @@ func (factory *ObjectFactory) CreateAccessible(obj gextras.Objector) *Object {
 
 	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
 
-	var _object *Object // out
+	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Object)
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }

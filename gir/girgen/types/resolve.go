@@ -176,6 +176,9 @@ func TypeFromResult(gen FileGenerator, v interface{}) *Resolved {
 		Name:  res.Name(),
 		CType: res.CType(),
 	}
+	if typ.CType == "" {
+		return nil
+	}
 
 	return typeFromResult(gen, typ, &res)
 }
@@ -369,12 +372,57 @@ func (typ *Resolved) ptr(sub1 bool) string {
 
 // Name returns the type name without the namespace or pointer.
 func (typ *Resolved) Name() string {
+	return typ.ImplName()
+}
+
+// ImplName returns the implementation type name.
+func (typ *Resolved) ImplName() string {
 	if typ.Builtin != nil {
 		parts := strings.Split(*typ.Builtin, ".")
 		return strings.ReplaceAll(parts[len(parts)-1], "*", "")
 	}
 
-	return strcases.PascalToGo(typ.Extern.Name())
+	name := strcases.PascalToGo(typ.Extern.Name())
+	if name == "Object" {
+		// Avoid collision with externglib.Object, since that might be embedded
+		// into an implementation struct.
+		name = "ObjectClass"
+	}
+
+	return name
+}
+
+// PublicName returns the public type name.
+func (typ *Resolved) PublicName() string {
+	if typ.Builtin != nil {
+		switch {
+		case typ.IsExternGLib("InitiallyUnowned"), typ.IsExternGLib("Object"):
+			return "Objector"
+		}
+
+		parts := strings.Split(*typ.Builtin, ".")
+		return strings.ReplaceAll(parts[len(parts)-1], "*", "")
+	}
+
+	name := strcases.PascalToGo(typ.Extern.Name())
+
+	switch typ.Extern.Type.(type) {
+	case *gir.Class:
+		// Avoid collision with externglib.Object, since that might be embedded
+		// into an implementation struct.
+		if name == "Object" {
+			name = "ObjectClass"
+		}
+		name = strcases.Interfacify(name)
+
+	case *gir.Interface:
+		if name == "Object" {
+			name = "ObjectInterface"
+		}
+		name = strcases.Interfacify(name)
+	}
+
+	return name
 }
 
 // ImplType returns the implementation type. This is only different to
@@ -395,7 +443,6 @@ func (typ *Resolved) ImplType(needsNamespace bool) string {
 	if !needsNamespace {
 		return typ.ptr(false) + name
 	}
-
 	return typ.ptr(false) + typ.ImplImport.Package + "." + name
 }
 
@@ -420,25 +467,13 @@ func (typ *Resolved) PublicType(needsNamespace bool) string {
 		return typ.ptr(false) + *typ.Builtin
 	}
 
-	name := typ.Extern.Name()
-	name = strcases.PascalToGo(name)
-
-	var ptrStr string
-
-	switch typ.Extern.Type.(type) {
-	case *gir.Class, *gir.Interface:
-		name = strcases.Interfacify(name)
-		// Classes have a pointer in C, but we implement it as an interface in
-		// Go.
-		ptrStr = typ.ptr(true)
-	default:
-		ptrStr = typ.ptr(false)
-	}
+	name := typ.PublicName()
+	// Classes have a pointer in C, but we implement it as an interface in Go.
+	ptrStr := typ.ptr(typ.IsClass() || typ.IsInterface())
 
 	if !needsNamespace {
 		return ptrStr + name
 	}
-
 	return ptrStr + typ.PublImport.Package + "." + name
 }
 

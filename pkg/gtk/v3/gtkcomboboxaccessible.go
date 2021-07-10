@@ -33,24 +33,41 @@ type ComboBoxAccessibler interface {
 }
 
 type ComboBoxAccessible struct {
+	*externglib.Object
+
 	ContainerAccessible
 	atk.Action
+	atk.Component
+	atk.Selection
 }
 
 var _ ComboBoxAccessibler = (*ComboBoxAccessible)(nil)
 
 func wrapComboBoxAccessibler(obj *externglib.Object) ComboBoxAccessibler {
 	return &ComboBoxAccessible{
+		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
+			},
+			Component: atk.Component{
+				Object: obj,
 			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Selection: atk.Selection{
 			Object: obj,
 		},
 	}

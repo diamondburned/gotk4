@@ -44,10 +44,10 @@ type DBusObjectManagerrerOverrider interface {
 	GetObject(objectPath string) *DBusObject
 	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
-	InterfaceAdded(object DBusObjecter, interface_ DBusInterfacer)
-	InterfaceRemoved(object DBusObjecter, interface_ DBusInterfacer)
-	ObjectAdded(object DBusObjecter)
-	ObjectRemoved(object DBusObjecter)
+	InterfaceAdded(object DBusObjector, interface_ DBusInterfacer)
+	InterfaceRemoved(object DBusObjector, interface_ DBusInterfacer)
+	ObjectAdded(object DBusObjector)
+	ObjectRemoved(object DBusObjector)
 }
 
 // DBusObjectManagerrer describes DBusObjectManager's methods.

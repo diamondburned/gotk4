@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,12 +31,14 @@ type DropDowner interface {
 	Expression() *Expression
 	Factory() *ListItemFactory
 	ListFactory() *ListItemFactory
+	Model() *gio.ListModel
 	Selected() uint
 	SelectedItem() *externglib.Object
 	SetEnableSearch(enableSearch bool)
 	SetExpression(expression Expressioner)
-	SetFactory(factory yier)
-	SetListFactory(factory yier)
+	SetFactory(factory ListItemFactorier)
+	SetListFactory(factory ListItemFactorier)
+	SetModel(model gio.ListModeller)
 	SetSelected(position uint)
 }
 
@@ -70,6 +73,7 @@ type DropDowner interface {
 // `GtkDropDown` uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type DropDown struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -112,6 +116,27 @@ func marshalDropDowner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDropDowner(obj), nil
+}
+
+// NewDropDown creates a new `GtkDropDown`.
+//
+// You may want to call [method@Gtk.DropDown.set_factory] to set up a way to map
+// its items to widgets.
+func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
+	var _arg1 *C.GListModel    // out
+	var _arg2 *C.GtkExpression // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+
+	_cret = C.gtk_drop_down_new(_arg1, _arg2)
+
+	var _dropDown *DropDown // out
+
+	_dropDown = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DropDown)
+
+	return _dropDown
 }
 
 // NewDropDownFromStrings creates a new `GtkDropDown` that is populated with the
@@ -212,6 +237,22 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 	return _listItemFactory
 }
 
+// Model gets the model that provides the displayed items.
+func (self *DropDown) Model() *gio.ListModel {
+	var _arg0 *C.GtkDropDown // out
+	var _cret *C.GListModel  // in
+
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_drop_down_get_model(_arg0)
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
+}
+
 // Selected gets the position of the selected item.
 func (self *DropDown) Selected() uint {
 	var _arg0 *C.GtkDropDown // out
@@ -276,7 +317,7 @@ func (self *DropDown) SetExpression(expression Expressioner) {
 }
 
 // SetFactory sets the `GtkListItemFactory` to use for populating list items.
-func (self *DropDown) SetFactory(factory yier) {
+func (self *DropDown) SetFactory(factory ListItemFactorier) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -288,7 +329,7 @@ func (self *DropDown) SetFactory(factory yier) {
 
 // SetListFactory sets the `GtkListItemFactory` to use for populating list items
 // in the popup.
-func (self *DropDown) SetListFactory(factory yier) {
+func (self *DropDown) SetListFactory(factory ListItemFactorier) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
@@ -296,6 +337,17 @@ func (self *DropDown) SetListFactory(factory yier) {
 	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_drop_down_set_list_factory(_arg0, _arg1)
+}
+
+// SetModel sets the `GListModel` to use.
+func (self *DropDown) SetModel(model gio.ListModeller) {
+	var _arg0 *C.GtkDropDown // out
+	var _arg1 *C.GListModel  // out
+
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+
+	C.gtk_drop_down_set_model(_arg0, _arg1)
 }
 
 // SetSelected selects the item at the given position.

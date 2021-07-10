@@ -100,6 +100,7 @@ type SizeGrouper interface {
 //    </object>
 type SizeGroup struct {
 	*externglib.Object
+
 	Buildable
 }
 

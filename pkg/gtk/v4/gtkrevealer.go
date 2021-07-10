@@ -94,6 +94,7 @@ type Revealerrer interface {
 // tree, regardless of the state of the revealer widget.
 type Revealer struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

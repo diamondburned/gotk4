@@ -143,6 +143,7 @@ type RecentFilterrer interface {
 //    </object>
 type RecentFilter struct {
 	*externglib.Object
+
 	externglib.InitiallyUnowned
 	Buildable
 }

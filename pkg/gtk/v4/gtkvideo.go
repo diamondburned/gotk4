@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,9 +28,11 @@ type Videoer interface {
 	gextras.Objector
 
 	Autoplay() bool
+	File() *gio.File
 	Loop() bool
 	MediaStream() *MediaStream
 	SetAutoplay(autoplay bool)
+	SetFile(file gio.Filer)
 	SetFilename(filename string)
 	SetLoop(loop bool)
 	SetMediaStream(stream MediaStreamer)
@@ -52,6 +55,7 @@ type Videoer interface {
 // directly.
 type Video struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -101,6 +105,22 @@ func NewVideo() *Video {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_video_new()
+
+	var _video *Video // out
+
+	_video = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Video)
+
+	return _video
+}
+
+// NewVideoForFile creates a `GtkVideo` to play back the given @file.
+func NewVideoForFile(file gio.Filer) *Video {
+	var _arg1 *C.GFile     // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	_cret = C.gtk_video_new_for_file(_arg1)
 
 	var _video *Video // out
 
@@ -183,6 +203,22 @@ func (self *Video) Autoplay() bool {
 	return _ok
 }
 
+// File gets the file played by @self or nil if not playing back a file.
+func (self *Video) File() *gio.File {
+	var _arg0 *C.GtkVideo // out
+	var _cret *C.GFile    // in
+
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_video_get_file(_arg0)
+
+	var _file *gio.File // out
+
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.File)
+
+	return _file
+}
+
 // Loop returns true if videos have been set to loop.
 func (self *Video) Loop() bool {
 	var _arg0 *C.GtkVideo // out
@@ -229,6 +265,17 @@ func (self *Video) SetAutoplay(autoplay bool) {
 	}
 
 	C.gtk_video_set_autoplay(_arg0, _arg1)
+}
+
+// SetFile makes @self play the given @file.
+func (self *Video) SetFile(file gio.Filer) {
+	var _arg0 *C.GtkVideo // out
+	var _arg1 *C.GFile    // out
+
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+
+	C.gtk_video_set_file(_arg0, _arg1)
 }
 
 // SetFilename makes @self play the given @filename.

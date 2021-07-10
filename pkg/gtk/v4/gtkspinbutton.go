@@ -185,6 +185,7 @@ type SpinButtonner interface {
 // `GtkSpinButton` uses the GTK_ACCESSIBLE_ROLE_SPIN_BUTTON role.
 type SpinButton struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

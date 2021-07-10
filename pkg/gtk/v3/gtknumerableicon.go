@@ -29,10 +29,12 @@ func init() {
 type NumerableIconner interface {
 	gextras.Objector
 
+	BackgroundGIcon() *gio.Icon
 	BackgroundIconName() string
 	Count() int
 	Label() string
 	StyleContext() *StyleContext
+	SetBackgroundGIcon(icon gio.Iconner)
 	SetBackgroundIconName(iconName string)
 	SetCount(count int)
 	SetLabel(label string)
@@ -47,14 +49,21 @@ type NumerableIconner interface {
 //
 // Typical numerable icons: ! (numerableicon.png) ! (numerableicon2.png)
 type NumerableIcon struct {
+	*externglib.Object
+
 	gio.EmblemedIcon
+	gio.Icon
 }
 
 var _ NumerableIconner = (*NumerableIcon)(nil)
 
 func wrapNumerableIconner(obj *externglib.Object) NumerableIconner {
 	return &NumerableIcon{
+		Object: obj,
 		EmblemedIcon: gio.EmblemedIcon{
+			Object: obj,
+		},
+		Icon: gio.Icon{
 			Object: obj,
 		},
 	}
@@ -64,6 +73,26 @@ func marshalNumerableIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNumerableIconner(obj), nil
+}
+
+// BackgroundGIcon returns the #GIcon that was set as the base background image,
+// or nil if there’s none. The caller of this function does not own a reference
+// to the returned #GIcon.
+//
+// Deprecated: since version 3.14.
+func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
+	var _arg0 *C.GtkNumerableIcon // out
+	var _cret *C.GIcon            // in
+
+	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
+
+	var _icon *gio.Icon // out
+
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Icon)
+
+	return _icon
 }
 
 // BackgroundIconName returns the icon name used as the base background image,
@@ -138,6 +167,26 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 	_styleContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StyleContext)
 
 	return _styleContext
+}
+
+// SetBackgroundGIcon updates the icon to use @icon as the base background
+// image. If @icon is nil, @self will go back using style information or default
+// theming for its background image.
+//
+// If this method is called and an icon name was already set as background for
+// the icon, @icon will be used, i.e. the last method called between
+// gtk_numerable_icon_set_background_gicon() and
+// gtk_numerable_icon_set_background_icon_name() has always priority.
+//
+// Deprecated: since version 3.14.
+func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
+	var _arg0 *C.GtkNumerableIcon // out
+	var _arg1 *C.GIcon            // out
+
+	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gtk_numerable_icon_set_background_gicon(_arg0, _arg1)
 }
 
 // SetBackgroundIconName updates the icon to use the icon named @icon_name from

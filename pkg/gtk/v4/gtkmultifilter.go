@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +38,9 @@ type AnyFilterrer interface {
 // To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
 type AnyFilter struct {
 	*externglib.Object
+
 	MultiFilter
+	gio.ListModel
 	Buildable
 }
 
@@ -51,9 +54,15 @@ func wrapAnyFilterrer(obj *externglib.Object) AnyFilterrer {
 			Filter: Filter{
 				Object: obj,
 			},
+			ListModel: gio.ListModel{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ListModel: gio.ListModel{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -101,7 +110,9 @@ type EveryFilterrer interface {
 // To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
 type EveryFilter struct {
 	*externglib.Object
+
 	MultiFilter
+	gio.ListModel
 	Buildable
 }
 
@@ -115,9 +126,15 @@ func wrapEveryFilterrer(obj *externglib.Object) EveryFilterrer {
 			Filter: Filter{
 				Object: obj,
 			},
+			ListModel: gio.ListModel{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ListModel: gio.ListModel{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
@@ -164,7 +181,9 @@ type MultiFilterrer interface {
 // multiple filters.
 type MultiFilter struct {
 	*externglib.Object
+
 	Filter
+	gio.ListModel
 	Buildable
 }
 
@@ -174,6 +193,9 @@ func wrapMultiFilterrer(obj *externglib.Object) MultiFilterrer {
 	return &MultiFilter{
 		Object: obj,
 		Filter: Filter{
+			Object: obj,
+		},
+		ListModel: gio.ListModel{
 			Object: obj,
 		},
 		Buildable: Buildable{

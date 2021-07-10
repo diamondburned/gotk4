@@ -76,6 +76,7 @@ type WindowControlser interface {
 // `GtkWindowControls` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowControls struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

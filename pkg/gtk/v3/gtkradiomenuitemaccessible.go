@@ -33,34 +33,65 @@ type RadioMenuItemAccessibler interface {
 }
 
 type RadioMenuItemAccessible struct {
+	*externglib.Object
+
 	CheckMenuItemAccessible
 	atk.Action
+	atk.Component
+	atk.Selection
 }
 
 var _ RadioMenuItemAccessibler = (*RadioMenuItemAccessible)(nil)
 
 func wrapRadioMenuItemAccessibler(obj *externglib.Object) RadioMenuItemAccessibler {
 	return &RadioMenuItemAccessible{
+		Object: obj,
 		CheckMenuItemAccessible: CheckMenuItemAccessible{
+			Object: obj,
 			MenuItemAccessible: MenuItemAccessible{
+				Object: obj,
 				ContainerAccessible: ContainerAccessible{
 					WidgetAccessible: WidgetAccessible{
 						Accessible: Accessible{
-							Object: atk.Object{
+							ObjectClass: atk.ObjectClass{
 								Object: obj,
 							},
 						},
+						Component: atk.Component{
+							Object: obj,
+						},
+					},
+					Component: atk.Component{
+						Object: obj,
 					},
 				},
 				Action: atk.Action{
+					Object: obj,
+				},
+				Component: atk.Component{
+					Object: obj,
+				},
+				Selection: atk.Selection{
 					Object: obj,
 				},
 			},
 			Action: atk.Action{
 				Object: obj,
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+			Selection: atk.Selection{
+				Object: obj,
+			},
 		},
 		Action: atk.Action{
+			Object: obj,
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Selection: atk.Selection{
 			Object: obj,
 		},
 	}

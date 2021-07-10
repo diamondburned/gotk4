@@ -30,16 +30,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_info_get_type()), F: marshalFileInfoer},
+		{T: externglib.Type(C.g_file_info_get_type()), F: marshalFileInfor},
 	})
 }
 
-// FileInfoer describes FileInfo's methods.
-type FileInfoer interface {
+// FileInfor describes FileInfo's methods.
+type FileInfor interface {
 	gextras.Objector
 
 	ClearStatus()
-	CopyInto(destInfo FileInfoer)
+	CopyInto(destInfo FileInfor)
 	Dup() *FileInfo
 	AttributeAsString(attribute string) string
 	AttributeBoolean(attribute string) bool
@@ -125,18 +125,18 @@ type FileInfo struct {
 	*externglib.Object
 }
 
-var _ FileInfoer = (*FileInfo)(nil)
+var _ FileInfor = (*FileInfo)(nil)
 
-func wrapFileInfoer(obj *externglib.Object) FileInfoer {
+func wrapFileInfor(obj *externglib.Object) FileInfor {
 	return &FileInfo{
 		Object: obj,
 	}
 }
 
-func marshalFileInfoer(p uintptr) (interface{}, error) {
+func marshalFileInfor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileInfoer(obj), nil
+	return wrapFileInfor(obj), nil
 }
 
 // NewFileInfo creates a new file info structure.
@@ -164,7 +164,7 @@ func (info *FileInfo) ClearStatus() {
 // CopyInto: first clears all of the [GFileAttribute][gio-GFileAttribute] of
 // @dest_info, and then copies all of the file attributes from @src_info to
 // @dest_info.
-func (srcInfo *FileInfo) CopyInto(destInfo FileInfoer) {
+func (srcInfo *FileInfo) CopyInto(destInfo FileInfor) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GFileInfo // out
 

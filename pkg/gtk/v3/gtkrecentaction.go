@@ -41,6 +41,7 @@ type RecentActioner interface {
 // <toolitem> element.
 type RecentAction struct {
 	*externglib.Object
+
 	Action
 	Buildable
 	RecentChooser

@@ -100,6 +100,7 @@ type InfoBarrer interface {
 // .close style class applied.
 type InfoBar struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

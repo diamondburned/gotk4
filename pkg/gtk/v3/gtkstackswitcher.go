@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -55,7 +56,9 @@ type StackSwitcherrer interface {
 // style class to the widgets representing the stack pages.
 type StackSwitcher struct {
 	*externglib.Object
+
 	Box
+	atk.ImplementorIface
 	Buildable
 	Orientable
 }
@@ -74,13 +77,22 @@ func wrapStackSwitcherrer(obj *externglib.Object) StackSwitcherrer {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
@@ -88,6 +100,9 @@ func wrapStackSwitcherrer(obj *externglib.Object) StackSwitcherrer {
 			Orientable: Orientable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

@@ -117,6 +117,7 @@ type BuilderCScoper interface {
 // functionality will require that `GModule` be supported on the platform.
 type BuilderCScope struct {
 	*externglib.Object
+
 	BuilderScope
 }
 

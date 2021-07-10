@@ -151,6 +151,7 @@ type Scaler interface {
 // `GtkScale` uses the GTK_ACCESSIBLE_ROLE_SLIDER role.
 type Scale struct {
 	*externglib.Object
+
 	Range
 	Accessible
 	Buildable

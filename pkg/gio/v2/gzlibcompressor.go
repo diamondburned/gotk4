@@ -37,12 +37,13 @@ type ZlibCompressorrer interface {
 	gextras.Objector
 
 	FileInfo() *FileInfo
-	SetFileInfo(fileInfo FileInfoer)
+	SetFileInfo(fileInfo FileInfor)
 }
 
 // ZlibCompressor: zlib decompression
 type ZlibCompressor struct {
 	*externglib.Object
+
 	Converter
 }
 
@@ -87,7 +88,7 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 // Note: it is an error to call this function while a compression is in
 // progress; it may only be called immediately after creation of @compressor, or
 // after resetting it with g_converter_reset().
-func (compressor *ZlibCompressor) SetFileInfo(fileInfo FileInfoer) {
+func (compressor *ZlibCompressor) SetFileInfo(fileInfo FileInfor) {
 	var _arg0 *C.GZlibCompressor // out
 	var _arg1 *C.GFileInfo       // out
 

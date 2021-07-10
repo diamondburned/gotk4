@@ -101,6 +101,7 @@ type Stacker interface {
 	Hhomogeneous() bool
 	InterpolateSize() bool
 	Page(child Widgetter) *StackPage
+	Pages() *SelectionModel
 	TransitionDuration() uint
 	TransitionRunning() bool
 	TransitionType() StackTransitionType
@@ -158,6 +159,7 @@ type Stacker interface {
 // are the accessible parent objects of the child widgets.
 type Stack struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable
@@ -357,6 +359,26 @@ func (stack *Stack) Page(child Widgetter) *StackPage {
 	_stackPage = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackPage)
 
 	return _stackPage
+}
+
+// Pages returns a `GListModel` that contains the pages of the stack.
+//
+// This can be used to keep an up-to-date view. The model also implements
+// [iface@Gtk.SelectionModel] and can be used to track and modify the visible
+// page.
+func (stack *Stack) Pages() *SelectionModel {
+	var _arg0 *C.GtkStack          // out
+	var _cret *C.GtkSelectionModel // in
+
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+
+	_cret = C.gtk_stack_get_pages(_arg0)
+
+	var _selectionModel *SelectionModel // out
+
+	_selectionModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SelectionModel)
+
+	return _selectionModel
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
@@ -598,6 +620,7 @@ type StackPager interface {
 // StackPage: `GtkStackPage` is an auxiliary class used by `GtkStack`.
 type StackPage struct {
 	*externglib.Object
+
 	Accessible
 }
 

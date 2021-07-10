@@ -40,6 +40,7 @@ type FileChooserWidgetter interface {
 // `GtkFileChooserWidget` has a single CSS node with name filechooser.
 type FileChooserWidget struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

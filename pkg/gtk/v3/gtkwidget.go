@@ -229,7 +229,7 @@ type WidgetterOverrider interface {
 	// The documentation of the ATK (http://developer.gnome.org/atk/stable/)
 	// library contains more information about accessible objects and their
 	// uses.
-	Accessible() *atk.Object
+	Accessible() *atk.ObjectClass
 	// PreferredHeight retrieves a widget’s initial minimum and natural height.
 	//
 	// This call is specific to width-for-height requests.
@@ -412,6 +412,7 @@ type Widgetter interface {
 	DragSourceAddTextTargets()
 	DragSourceAddURITargets()
 	DragSourceGetTargetList() *TargetList
+	DragSourceSetIconGIcon(icon gio.Iconner)
 	DragSourceSetIconName(iconName string)
 	DragSourceSetIconPixbuf(pixbuf gdkpixbuf.Pixbuffer)
 	DragSourceSetIconStock(stockId string)
@@ -422,7 +423,7 @@ type Widgetter interface {
 	EnsureStyle()
 	ErrorBell()
 	FreezeChildNotify()
-	Accessible() *atk.Object
+	Accessible() *atk.ObjectClass
 	ActionGroup(prefix string) *gio.ActionGroup
 	AllocatedBaseline() int
 	AllocatedHeight() int
@@ -702,7 +703,9 @@ type Widgetter interface {
 //    }
 type Widget struct {
 	*externglib.Object
+
 	externglib.InitiallyUnowned
+	atk.ImplementorIface
 	Buildable
 }
 
@@ -712,6 +715,9 @@ func wrapWidgetter(obj *externglib.Object) Widgetter {
 	return &Widget{
 		Object: obj,
 		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
+		ImplementorIface: atk.ImplementorIface{
 			Object: obj,
 		},
 		Buildable: Buildable{
@@ -1160,6 +1166,18 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 	return _targetList
 }
 
+// DragSourceSetIconGIcon sets the icon that will be used for drags from a
+// particular source to @icon. See the docs for IconTheme for more details.
+func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GIcon     // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+
+	C.gtk_drag_source_set_icon_gicon(_arg0, _arg1)
+}
+
 // DragSourceSetIconName sets the icon that will be used for drags from a
 // particular source to a themed icon. See the docs for IconTheme for more
 // details.
@@ -1312,7 +1330,7 @@ func (widget *Widget) FreezeChildNotify() {
 //
 // The documentation of the ATK (http://developer.gnome.org/atk/stable/) library
 // contains more information about accessible objects and their uses.
-func (widget *Widget) Accessible() *atk.Object {
+func (widget *Widget) Accessible() *atk.ObjectClass {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.AtkObject // in
 
@@ -1320,9 +1338,9 @@ func (widget *Widget) Accessible() *atk.Object {
 
 	_cret = C.gtk_widget_get_accessible(_arg0)
 
-	var _object *atk.Object // out
+	var _object *atk.ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*atk.Object)
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*atk.ObjectClass)
 
 	return _object
 }

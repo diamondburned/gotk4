@@ -18,12 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_legacy_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_event_controller_legacy_get_type()), F: marshalEventControllerLegacier},
 	})
 }
 
-// yier describes EventControllerLegacy's methods.
-type yier interface {
+// EventControllerLegacier describes EventControllerLegacy's methods.
+type EventControllerLegacier interface {
 	gextras.Objector
 
 	privateEventControllerLegacy()
@@ -38,9 +38,9 @@ type EventControllerLegacy struct {
 	EventController
 }
 
-var _ yier = (*EventControllerLegacy)(nil)
+var _ EventControllerLegacier = (*EventControllerLegacy)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapEventControllerLegacier(obj *externglib.Object) EventControllerLegacier {
 	return &EventControllerLegacy{
 		EventController: EventController{
 			Object: obj,
@@ -48,10 +48,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalEventControllerLegacier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapEventControllerLegacier(obj), nil
 }
 
 // NewEventControllerLegacy creates a new legacy event controller.

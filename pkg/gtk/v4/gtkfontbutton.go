@@ -52,6 +52,7 @@ type FontButtonner interface {
 // button node with the .font style class.
 type FontButton struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	Buildable

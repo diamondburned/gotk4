@@ -139,14 +139,25 @@ type Applicationer interface {
 // HowDoI: Using GtkApplication (https://wiki.gnome.org/HowDoI/GtkApplication),
 // Getting Started with GTK: Basics (getting_started.html#basics)
 type Application struct {
+	*externglib.Object
+
 	gio.Application
+	gio.ActionGroup
+	gio.ActionMap
 }
 
 var _ Applicationer = (*Application)(nil)
 
 func wrapApplicationer(obj *externglib.Object) Applicationer {
 	return &Application{
+		Object: obj,
 		Application: gio.Application{
+			Object: obj,
+		},
+		ActionGroup: gio.ActionGroup{
+			Object: obj,
+		},
+		ActionMap: gio.ActionMap{
 			Object: obj,
 		},
 	}

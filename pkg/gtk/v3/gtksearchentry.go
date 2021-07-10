@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -20,23 +21,23 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalyier},
+		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalSearchEntrier},
 	})
 }
 
-// yierOverrider contains methods that are overridable.
+// SearchEntrierOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type yierOverrider interface {
+type SearchEntrierOverrider interface {
 	NextMatch()
 	PreviousMatch()
 	SearchChanged()
 	StopSearch()
 }
 
-// yier describes SearchEntry's methods.
-type yier interface {
+// SearchEntrier describes SearchEntry's methods.
+type SearchEntrier interface {
 	gextras.Objector
 
 	privateSearchEntry()
@@ -67,15 +68,17 @@ type yier interface {
 // gtk_search_entry_handle_event() to pass events.
 type SearchEntry struct {
 	*externglib.Object
+
 	Entry
+	atk.ImplementorIface
 	Buildable
 	CellEditable
 	Editable
 }
 
-var _ yier = (*SearchEntry)(nil)
+var _ SearchEntrier = (*SearchEntry)(nil)
 
-func wrapyier(obj *externglib.Object) yier {
+func wrapSearchEntrier(obj *externglib.Object) SearchEntrier {
 	return &SearchEntry{
 		Object: obj,
 		Entry: Entry{
@@ -85,9 +88,15 @@ func wrapyier(obj *externglib.Object) yier {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
 				Buildable: Buildable{
 					Object: obj,
 				},
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
@@ -99,6 +108,9 @@ func wrapyier(obj *externglib.Object) yier {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					ImplementorIface: atk.ImplementorIface{
+						Object: obj,
+					},
 					Buildable: Buildable{
 						Object: obj,
 					},
@@ -108,6 +120,9 @@ func wrapyier(obj *externglib.Object) yier {
 				Object: obj,
 			},
 		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
 		Buildable: Buildable{
 			Object: obj,
 		},
@@ -116,6 +131,9 @@ func wrapyier(obj *externglib.Object) yier {
 			Widget: Widget{
 				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
@@ -129,10 +147,10 @@ func wrapyier(obj *externglib.Object) yier {
 	}
 }
 
-func marshalyier(p uintptr) (interface{}, error) {
+func marshalSearchEntrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapyier(obj), nil
+	return wrapSearchEntrier(obj), nil
 }
 
 // NewSearchEntry creates a SearchEntry, with a find icon when the search field

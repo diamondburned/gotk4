@@ -43,6 +43,7 @@ type ColorChooserDialogger interface {
 // [method@Gtk.ColorChooser.get_rgba].
 type ColorChooserDialog struct {
 	*externglib.Object
+
 	Dialog
 	Accessible
 	Buildable

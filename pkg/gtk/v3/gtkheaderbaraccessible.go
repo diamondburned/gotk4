@@ -25,6 +25,8 @@ type HeaderBarAccessibler interface {
 
 type HeaderBarAccessible struct {
 	ContainerAccessible
+
+	atk.Component
 }
 
 var _ HeaderBarAccessibler = (*HeaderBarAccessible)(nil)
@@ -34,11 +36,20 @@ func wrapHeaderBarAccessibler(obj *externglib.Object) HeaderBarAccessibler {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
 		},
 	}
 }

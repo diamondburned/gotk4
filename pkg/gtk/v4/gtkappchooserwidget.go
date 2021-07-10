@@ -66,6 +66,7 @@ type AppChooserWidgetter interface {
 // `GtkAppChooserWidget` has a single CSS node with name appchooser.
 type AppChooserWidget struct {
 	*externglib.Object
+
 	Widget
 	Accessible
 	AppChooser

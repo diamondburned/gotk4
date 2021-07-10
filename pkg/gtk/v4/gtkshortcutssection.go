@@ -44,6 +44,7 @@ type ShortcutsSectioner interface {
 // This widget is only meant to be used with [class@Gtk.ShortcutsWindow].
 type ShortcutsSection struct {
 	*externglib.Object
+
 	Box
 	Accessible
 	Buildable

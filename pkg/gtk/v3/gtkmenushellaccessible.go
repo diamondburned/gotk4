@@ -33,21 +33,38 @@ type MenuShellAccessibler interface {
 }
 
 type MenuShellAccessible struct {
+	*externglib.Object
+
 	ContainerAccessible
+	atk.Component
+	atk.Selection
 }
 
 var _ MenuShellAccessibler = (*MenuShellAccessible)(nil)
 
 func wrapMenuShellAccessibler(obj *externglib.Object) MenuShellAccessibler {
 	return &MenuShellAccessible{
+		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					Object: atk.Object{
+					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
+				Component: atk.Component{
+					Object: obj,
+				},
 			},
+			Component: atk.Component{
+				Object: obj,
+			},
+		},
+		Component: atk.Component{
+			Object: obj,
+		},
+		Selection: atk.Selection{
+			Object: obj,
 		},
 	}
 }

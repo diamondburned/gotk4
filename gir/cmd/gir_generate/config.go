@@ -103,8 +103,12 @@ var filters = []FilterMatcher{
 	FileFilter("gskglrenderer.h"),
 	FileFilter("gsknglrenderer.h"),
 	FileFilter("gskvulkanrenderer.h"),
+	// These are not found in GTK4 for some reason, but we're ignoring it for
+	// GTK3 as well.
 	FileFilter("gtkpagesetupunixdialog.c"),
 	FileFilter("gtkpagesetupunixdialog.h"),
+	FileFilter("gtkprinter.c"),
+	FileFilter("gtkprinter.h"),
 
 	// These are missing on build for some reason.
 	AbsoluteFilter("C.g_array_get_type"),

@@ -94,6 +94,7 @@ type Actionabler interface {
 // [method@Gtk.Widget.insert_action_group] will be consulted as well.
 type Actionable struct {
 	*externglib.Object
+
 	Widget
 }
 

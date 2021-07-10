@@ -32,6 +32,7 @@ type GLTexturer interface {
 // GLTexture: gdkTexture representing a GL texture object.
 type GLTexture struct {
 	*externglib.Object
+
 	Texture
 	Paintable
 }

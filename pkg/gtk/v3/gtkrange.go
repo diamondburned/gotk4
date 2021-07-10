@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -76,7 +77,9 @@ type Ranger interface {
 // level” on range widgets. See gtk_range_set_fill_level().
 type Range struct {
 	*externglib.Object
+
 	Widget
+	atk.ImplementorIface
 	Buildable
 	Orientable
 }
@@ -91,9 +94,15 @@ func wrapRanger(obj *externglib.Object) Ranger {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
 			Buildable: Buildable{
 				Object: obj,
 			},
+		},
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,

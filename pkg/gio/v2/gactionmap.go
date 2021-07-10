@@ -49,7 +49,7 @@ type ActionMapOverrider interface {
 	// @action_map.
 	//
 	// If no such action exists, returns nil.
-	LookupAction(actionName string) *ActionInterface
+	LookupAction(actionName string) *ActionIface
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
@@ -113,22 +113,22 @@ type ActionMap interface {
 	// @action_map.
 	//
 	// If no such action exists, returns nil.
-	LookupAction(actionName string) *ActionInterface
+	LookupAction(actionName string) *ActionIface
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
 	RemoveAction(actionName string)
 }
 
-// ActionMapInterface implements the ActionMap interface.
-type ActionMapInterface struct {
+// ActionMapIface implements the ActionMap interface.
+type ActionMapIface struct {
 	*externglib.Object
 }
 
-var _ ActionMap = (*ActionMapInterface)(nil)
+var _ ActionMap = (*ActionMapIface)(nil)
 
 func wrapActionMap(obj *externglib.Object) ActionMap {
-	return &ActionMapInterface{
+	return &ActionMapIface{
 		Object: obj,
 	}
 }
@@ -145,11 +145,11 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 // then the old action is dropped from the action map.
 //
 // The action map takes its own reference on @action.
-func (a *ActionMapInterface) AddAction(action Action) {
+func (actionMap *ActionMapIface) AddAction(action Action) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_action_map_add_action(_arg0, _arg1)
@@ -190,13 +190,13 @@ func (a *ActionMapInterface) AddAction(action Action) {
 //
 //      return G_ACTION_GROUP (group);
 //    }
-func (a *ActionMapInterface) AddActionEntries(entries []ActionEntry, userData interface{}) {
+func (actionMap *ActionMapIface) AddActionEntries(entries []ActionEntry, userData interface{}) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GActionEntry
 	var _arg2 C.gint
 	var _arg3 C.gpointer // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg2 = C.gint(len(entries))
 	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
 	_arg3 = (C.gpointer)(box.Assign(userData))
@@ -207,20 +207,20 @@ func (a *ActionMapInterface) AddActionEntries(entries []ActionEntry, userData in
 // LookupAction looks up the action with the name @action_name in @action_map.
 //
 // If no such action exists, returns nil.
-func (a *ActionMapInterface) LookupAction(actionName string) *ActionInterface {
+func (actionMap *ActionMapIface) LookupAction(actionName string) *ActionIface {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
 
-	var _action *ActionInterface // out
+	var _action *ActionIface // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionInterface)
+	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionIface)
 
 	return _action
 }
@@ -228,11 +228,11 @@ func (a *ActionMapInterface) LookupAction(actionName string) *ActionInterface {
 // RemoveAction removes the named action from the action map.
 //
 // If no action of this name is in the map then nothing happens.
-func (a *ActionMapInterface) RemoveAction(actionName string) {
+func (actionMap *ActionMapIface) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -261,30 +261,4 @@ func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
 // Native returns the underlying C source pointer.
 func (a *ActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
-}
-
-// Name: the name of the action
-func (a *ActionEntry) Name() string {
-	var v string // out
-	v = C.GoString(a.native.name)
-	return v
-}
-
-// ParameterType: the type of the parameter that must be passed to the activate
-// function for this action, given as a single GVariant type string (or nil for
-// no parameter)
-func (a *ActionEntry) ParameterType() string {
-	var v string // out
-	v = C.GoString(a.native.parameter_type)
-	return v
-}
-
-// State: the initial state for this action, given in [GVariant text
-// format][gvariant-text]. The state is parsed with no extra type information,
-// so type tags must be added to the string if they are necessary. Stateless
-// actions should give nil here.
-func (a *ActionEntry) State() string {
-	var v string // out
-	v = C.GoString(a.native.state)
-	return v
 }

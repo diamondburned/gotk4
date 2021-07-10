@@ -45,8 +45,8 @@ type ShortcutLabel interface {
 type ShortcutLabelClass struct {
 	*externglib.Object
 	BoxClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ ShortcutLabel = (*ShortcutLabelClass)(nil)
@@ -59,26 +59,29 @@ func wrapShortcutLabel(obj *externglib.Object) ShortcutLabel {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -108,11 +111,11 @@ func NewShortcutLabel(accelerator string) *ShortcutLabelClass {
 }
 
 // Accelerator retrieves the current accelerator of @self.
-func (s *ShortcutLabelClass) Accelerator() string {
+func (self *ShortcutLabelClass) Accelerator() string {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _cret *C.gchar            // in
 
-	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_label_get_accelerator(_arg0)
 
@@ -124,11 +127,11 @@ func (s *ShortcutLabelClass) Accelerator() string {
 }
 
 // DisabledText retrieves the text that is displayed when no accelerator is set.
-func (s *ShortcutLabelClass) DisabledText() string {
+func (self *ShortcutLabelClass) DisabledText() string {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _cret *C.gchar            // in
 
-	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_label_get_disabled_text(_arg0)
 
@@ -140,11 +143,11 @@ func (s *ShortcutLabelClass) DisabledText() string {
 }
 
 // SetAccelerator sets the accelerator to be displayed by @self.
-func (s *ShortcutLabelClass) SetAccelerator(accelerator string) {
+func (self *ShortcutLabelClass) SetAccelerator(accelerator string) {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -153,11 +156,11 @@ func (s *ShortcutLabelClass) SetAccelerator(accelerator string) {
 
 // SetDisabledText sets the text to be displayed by @self when no accelerator is
 // set.
-func (s *ShortcutLabelClass) SetDisabledText(disabledText string) {
+func (self *ShortcutLabelClass) SetDisabledText(disabledText string) {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(C.CString(disabledText))
 	defer C.free(unsafe.Pointer(_arg1))
 

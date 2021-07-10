@@ -34,7 +34,9 @@ type DocumentOverrider interface {
 	// to the caller to check atk_document_get_type to determine how to cast
 	// this pointer.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12. @document is already a representation of the
+	// document. Use it directly, or one of its children, as an instance of the
+	// DOM.
 	Document() interface{}
 	// DocumentAttributeValue retrieves the value of the given @attribute_name
 	// inside @document.
@@ -44,11 +46,12 @@ type DocumentOverrider interface {
 	// substrings or images within this document may have a different locale,
 	// see atk_text_get_attributes and atk_image_get_image_locale.
 	//
-	// Deprecated: since version 2.7.90.
+	// Deprecated: Please use atk_object_get_object_locale() instead.
 	DocumentLocale() string
 	// DocumentType gets a string indicating the document type.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask
+	// for the document type if it applies.
 	DocumentType() string
 	// PageCount retrieves the total number of pages inside @document.
 	PageCount() int
@@ -75,18 +78,21 @@ type Document interface {
 	// to the caller to check atk_document_get_type to determine how to cast
 	// this pointer.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12. @document is already a representation of the
+	// document. Use it directly, or one of its children, as an instance of the
+	// DOM.
 	Document() interface{}
 	// DocumentType gets a string indicating the document type.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask
+	// for the document type if it applies.
 	DocumentType() string
 	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
 	// of the content of this document instance. Individual text substrings or
 	// images within this document may have a different locale, see
 	// atk_text_get_attributes and atk_image_get_image_locale.
 	//
-	// Deprecated: since version 2.7.90.
+	// Deprecated: Please use atk_object_get_object_locale() instead.
 	Locale() string
 	// PageCount retrieves the total number of pages inside @document.
 	PageCount() int
@@ -95,15 +101,15 @@ type Document interface {
 	SetAttributeValue(attributeName string, attributeValue string) bool
 }
 
-// DocumentInterface implements the Document interface.
-type DocumentInterface struct {
+// DocumentIface implements the Document interface.
+type DocumentIface struct {
 	*externglib.Object
 }
 
-var _ Document = (*DocumentInterface)(nil)
+var _ Document = (*DocumentIface)(nil)
 
 func wrapDocument(obj *externglib.Object) Document {
-	return &DocumentInterface{
+	return &DocumentIface{
 		Object: obj,
 	}
 }
@@ -116,12 +122,12 @@ func marshalDocument(p uintptr) (interface{}, error) {
 
 // AttributeValue retrieves the value of the given @attribute_name inside
 // @document.
-func (d *DocumentInterface) AttributeValue(attributeName string) string {
+func (document *DocumentIface) AttributeValue(attributeName string) string {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 	_arg1 = (*C.gchar)(C.CString(attributeName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -135,11 +141,11 @@ func (d *DocumentInterface) AttributeValue(attributeName string) string {
 }
 
 // CurrentPageNumber retrieves the current page number inside @document.
-func (d *DocumentInterface) CurrentPageNumber() int {
+func (document *DocumentIface) CurrentPageNumber() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 
 	_cret = C.atk_document_get_current_page_number(_arg0)
 
@@ -154,12 +160,13 @@ func (d *DocumentInterface) CurrentPageNumber() int {
 // the caller to check atk_document_get_type to determine how to cast this
 // pointer.
 //
-// Deprecated.
-func (d *DocumentInterface) Document() interface{} {
+// Deprecated: Since 2.12. @document is already a representation of the
+// document. Use it directly, or one of its children, as an instance of the DOM.
+func (document *DocumentIface) Document() interface{} {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gpointer     // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 
 	_cret = C.atk_document_get_document(_arg0)
 
@@ -172,12 +179,13 @@ func (d *DocumentInterface) Document() interface{} {
 
 // DocumentType gets a string indicating the document type.
 //
-// Deprecated.
-func (d *DocumentInterface) DocumentType() string {
+// Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask for
+// the document type if it applies.
+func (document *DocumentIface) DocumentType() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 
 	_cret = C.atk_document_get_document_type(_arg0)
 
@@ -193,12 +201,12 @@ func (d *DocumentInterface) DocumentType() string {
 // within this document may have a different locale, see atk_text_get_attributes
 // and atk_image_get_image_locale.
 //
-// Deprecated: since version 2.7.90.
-func (d *DocumentInterface) Locale() string {
+// Deprecated: Please use atk_object_get_object_locale() instead.
+func (document *DocumentIface) Locale() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 
 	_cret = C.atk_document_get_locale(_arg0)
 
@@ -210,11 +218,11 @@ func (d *DocumentInterface) Locale() string {
 }
 
 // PageCount retrieves the total number of pages inside @document.
-func (d *DocumentInterface) PageCount() int {
+func (document *DocumentIface) PageCount() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 
 	_cret = C.atk_document_get_page_count(_arg0)
 
@@ -227,13 +235,13 @@ func (d *DocumentInterface) PageCount() int {
 
 // SetAttributeValue sets the value for the given @attribute_name inside
 // @document.
-func (d *DocumentInterface) SetAttributeValue(attributeName string, attributeValue string) bool {
+func (document *DocumentIface) SetAttributeValue(attributeName string, attributeValue string) bool {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.gchar       // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 	_arg1 = (*C.gchar)(C.CString(attributeName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(attributeValue))

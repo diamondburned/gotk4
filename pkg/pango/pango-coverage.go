@@ -68,13 +68,13 @@ type Coverage interface {
 	// value of the current coverage for the index and the coverage for the
 	// corresponding index in @other.
 	//
-	// Deprecated: since version 1.44.
+	// Deprecated: This function does nothing.
 	Max(other Coverage)
 	// Ref: increase the reference count on the `PangoCoverage` by one.
 	ref() *CoverageClass
 	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
 	//
-	// Deprecated: since version 1.44.
+	// Deprecated: This returns nil.
 	ToBytes() []byte
 	// Unref: decrease the reference count on the `PangoCoverage` by one.
 	//
@@ -115,11 +115,11 @@ func NewCoverage() *CoverageClass {
 }
 
 // Copy an existing `PangoCoverage`.
-func (c *CoverageClass) Copy() *CoverageClass {
+func (coverage *CoverageClass) Copy() *CoverageClass {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 
 	_cret = C.pango_coverage_copy(_arg0)
 
@@ -131,12 +131,12 @@ func (c *CoverageClass) Copy() *CoverageClass {
 }
 
 // Get: determine whether a particular index is covered by @coverage.
-func (c *CoverageClass) Get(index_ int) CoverageLevel {
+func (coverage *CoverageClass) Get(index_ int) CoverageLevel {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
 	var _cret C.PangoCoverageLevel // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 	_arg1 = C.int(index_)
 
 	_cret = C.pango_coverage_get(_arg0, _arg1)
@@ -152,23 +152,23 @@ func (c *CoverageClass) Get(index_ int) CoverageLevel {
 // value of the current coverage for the index and the coverage for the
 // corresponding index in @other.
 //
-// Deprecated: since version 1.44.
-func (c *CoverageClass) Max(other Coverage) {
+// Deprecated: This function does nothing.
+func (coverage *CoverageClass) Max(other Coverage) {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.PangoCoverage // out
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 	_arg1 = (*C.PangoCoverage)(unsafe.Pointer(other.Native()))
 
 	C.pango_coverage_max(_arg0, _arg1)
 }
 
 // Ref: increase the reference count on the `PangoCoverage` by one.
-func (c *CoverageClass) ref() *CoverageClass {
+func (coverage *CoverageClass) ref() *CoverageClass {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 
 	_cret = C.pango_coverage_ref(_arg0)
 
@@ -181,13 +181,13 @@ func (c *CoverageClass) ref() *CoverageClass {
 
 // ToBytes: convert a `PangoCoverage` structure into a flat binary format.
 //
-// Deprecated: since version 1.44.
-func (c *CoverageClass) ToBytes() []byte {
+// Deprecated: This returns nil.
+func (coverage *CoverageClass) ToBytes() []byte {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.guchar
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 
 	C.pango_coverage_to_bytes(_arg0, &_arg1, &_arg2)
 
@@ -204,10 +204,10 @@ func (c *CoverageClass) ToBytes() []byte {
 // Unref: decrease the reference count on the `PangoCoverage` by one.
 //
 // If the result is zero, free the coverage and all associated memory.
-func (c *CoverageClass) unref() {
+func (coverage *CoverageClass) unref() {
 	var _arg0 *C.PangoCoverage // out
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 
 	C.pango_coverage_unref(_arg0)
 }

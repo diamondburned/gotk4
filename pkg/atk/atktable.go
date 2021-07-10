@@ -39,7 +39,7 @@ type TableOverrider interface {
 	// ColumnAtIndex gets a #gint representing the column at the specified
 	// @index_.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12.
 	ColumnAtIndex(index_ int) int
 	// ColumnDescription gets the description text of the specified @column in
 	// the table
@@ -53,7 +53,8 @@ type TableOverrider interface {
 	// IndexAt gets a #gint representing the index at the specified @row and
 	// @column.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the
+	// accessible that represents the cell at (@row, @column).
 	IndexAt(row int, column int) int
 	// NColumns gets the number of columns in the table.
 	NColumns() int
@@ -61,7 +62,7 @@ type TableOverrider interface {
 	NRows() int
 	// RowAtIndex gets a #gint representing the row at the specified @index_.
 	//
-	// Deprecated.
+	// Deprecated: since 2.12.
 	RowAtIndex(index_ int) int
 	// RowDescription gets the description text of the specified row in the
 	// table
@@ -153,7 +154,7 @@ type Table interface {
 	// ColumnAtIndex gets a #gint representing the column at the specified
 	// @index_.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12.
 	ColumnAtIndex(index_ int) int
 	// ColumnDescription gets the description text of the specified @column in
 	// the table
@@ -167,7 +168,8 @@ type Table interface {
 	// IndexAt gets a #gint representing the index at the specified @row and
 	// @column.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the
+	// accessible that represents the cell at (@row, @column).
 	IndexAt(row int, column int) int
 	// NColumns gets the number of columns in the table.
 	NColumns() int
@@ -175,7 +177,7 @@ type Table interface {
 	NRows() int
 	// RowAtIndex gets a #gint representing the row at the specified @index_.
 	//
-	// Deprecated.
+	// Deprecated: since 2.12.
 	RowAtIndex(index_ int) int
 	// RowDescription gets the description text of the specified row in the
 	// table
@@ -227,15 +229,15 @@ type Table interface {
 	SetSummary(accessible Object)
 }
 
-// TableInterface implements the Table interface.
-type TableInterface struct {
+// TableIface implements the Table interface.
+type TableIface struct {
 	*externglib.Object
 }
 
-var _ Table = (*TableInterface)(nil)
+var _ Table = (*TableIface)(nil)
 
 func wrapTable(obj *externglib.Object) Table {
-	return &TableInterface{
+	return &TableIface{
 		Object: obj,
 	}
 }
@@ -247,12 +249,12 @@ func marshalTable(p uintptr) (interface{}, error) {
 }
 
 // AddColumnSelection adds the specified @column to the selection.
-func (t *TableInterface) AddColumnSelection(column int) bool {
+func (table *TableIface) AddColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_add_column_selection(_arg0, _arg1)
@@ -267,12 +269,12 @@ func (t *TableInterface) AddColumnSelection(column int) bool {
 }
 
 // AddRowSelection adds the specified @row to the selection.
-func (t *TableInterface) AddRowSelection(row int) bool {
+func (table *TableIface) AddRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_add_row_selection(_arg0, _arg1)
@@ -287,11 +289,11 @@ func (t *TableInterface) AddRowSelection(row int) bool {
 }
 
 // Caption gets the caption for the @table.
-func (t *TableInterface) Caption() *ObjectClass {
+func (table *TableIface) Caption() *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_caption(_arg0)
 
@@ -304,13 +306,13 @@ func (t *TableInterface) Caption() *ObjectClass {
 
 // ColumnAtIndex gets a #gint representing the column at the specified @index_.
 //
-// Deprecated.
-func (t *TableInterface) ColumnAtIndex(index_ int) int {
+// Deprecated: Since 2.12.
+func (table *TableIface) ColumnAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(index_)
 
 	_cret = C.atk_table_get_column_at_index(_arg0, _arg1)
@@ -324,12 +326,12 @@ func (t *TableInterface) ColumnAtIndex(index_ int) int {
 
 // ColumnDescription gets the description text of the specified @column in the
 // table
-func (t *TableInterface) ColumnDescription(column int) string {
+func (table *TableIface) ColumnDescription(column int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_get_column_description(_arg0, _arg1)
@@ -343,13 +345,13 @@ func (t *TableInterface) ColumnDescription(column int) string {
 
 // ColumnExtentAt gets the number of columns occupied by the accessible object
 // at the specified @row and @column in the @table.
-func (t *TableInterface) ColumnExtentAt(row int, column int) int {
+func (table *TableIface) ColumnExtentAt(row int, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -364,12 +366,12 @@ func (t *TableInterface) ColumnExtentAt(row int, column int) int {
 
 // ColumnHeader gets the column header of a specified column in an accessible
 // table.
-func (t *TableInterface) ColumnHeader(column int) *ObjectClass {
+func (table *TableIface) ColumnHeader(column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_get_column_header(_arg0, _arg1)
@@ -384,14 +386,15 @@ func (t *TableInterface) ColumnHeader(column int) *ObjectClass {
 // IndexAt gets a #gint representing the index at the specified @row and
 // @column.
 //
-// Deprecated.
-func (t *TableInterface) IndexAt(row int, column int) int {
+// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the accessible
+// that represents the cell at (@row, @column).
+func (table *TableIface) IndexAt(row int, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -405,11 +408,11 @@ func (t *TableInterface) IndexAt(row int, column int) int {
 }
 
 // NColumns gets the number of columns in the table.
-func (t *TableInterface) NColumns() int {
+func (table *TableIface) NColumns() int {
 	var _arg0 *C.AtkTable // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_n_columns(_arg0)
 
@@ -421,11 +424,11 @@ func (t *TableInterface) NColumns() int {
 }
 
 // NRows gets the number of rows in the table.
-func (t *TableInterface) NRows() int {
+func (table *TableIface) NRows() int {
 	var _arg0 *C.AtkTable // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_n_rows(_arg0)
 
@@ -438,13 +441,13 @@ func (t *TableInterface) NRows() int {
 
 // RowAtIndex gets a #gint representing the row at the specified @index_.
 //
-// Deprecated.
-func (t *TableInterface) RowAtIndex(index_ int) int {
+// Deprecated: since 2.12.
+func (table *TableIface) RowAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(index_)
 
 	_cret = C.atk_table_get_row_at_index(_arg0, _arg1)
@@ -457,12 +460,12 @@ func (t *TableInterface) RowAtIndex(index_ int) int {
 }
 
 // RowDescription gets the description text of the specified row in the table
-func (t *TableInterface) RowDescription(row int) string {
+func (table *TableIface) RowDescription(row int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_get_row_description(_arg0, _arg1)
@@ -476,13 +479,13 @@ func (t *TableInterface) RowDescription(row int) string {
 
 // RowExtentAt gets the number of rows occupied by the accessible object at a
 // specified @row and @column in the @table.
-func (t *TableInterface) RowExtentAt(row int, column int) int {
+func (table *TableIface) RowExtentAt(row int, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -496,12 +499,12 @@ func (t *TableInterface) RowExtentAt(row int, column int) int {
 }
 
 // RowHeader gets the row header of a specified row in an accessible table.
-func (t *TableInterface) RowHeader(row int) *ObjectClass {
+func (table *TableIface) RowHeader(row int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_get_row_header(_arg0, _arg1)
@@ -516,12 +519,12 @@ func (t *TableInterface) RowHeader(row int) *ObjectClass {
 // SelectedColumns gets the selected columns of the table by initializing
 // **selected with the selected column numbers. This array should be freed by
 // the caller.
-func (t *TableInterface) SelectedColumns(selected **int) int {
+func (table *TableIface) SelectedColumns(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = (**C.gint)(unsafe.Pointer(selected))
 
 	_cret = C.atk_table_get_selected_columns(_arg0, _arg1)
@@ -535,12 +538,12 @@ func (t *TableInterface) SelectedColumns(selected **int) int {
 
 // SelectedRows gets the selected rows of the table by initializing **selected
 // with the selected row numbers. This array should be freed by the caller.
-func (t *TableInterface) SelectedRows(selected **int) int {
+func (table *TableIface) SelectedRows(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = (**C.gint)(unsafe.Pointer(selected))
 
 	_cret = C.atk_table_get_selected_rows(_arg0, _arg1)
@@ -553,11 +556,11 @@ func (t *TableInterface) SelectedRows(selected **int) int {
 }
 
 // Summary gets the summary description of the table.
-func (t *TableInterface) Summary() *ObjectClass {
+func (table *TableIface) Summary() *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_summary(_arg0)
 
@@ -570,12 +573,12 @@ func (t *TableInterface) Summary() *ObjectClass {
 
 // IsColumnSelected gets a boolean value indicating whether the specified
 // @column is selected
-func (t *TableInterface) IsColumnSelected(column int) bool {
+func (table *TableIface) IsColumnSelected(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_is_column_selected(_arg0, _arg1)
@@ -591,12 +594,12 @@ func (t *TableInterface) IsColumnSelected(column int) bool {
 
 // IsRowSelected gets a boolean value indicating whether the specified @row is
 // selected
-func (t *TableInterface) IsRowSelected(row int) bool {
+func (table *TableIface) IsRowSelected(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_is_row_selected(_arg0, _arg1)
@@ -612,13 +615,13 @@ func (t *TableInterface) IsRowSelected(row int) bool {
 
 // IsSelected gets a boolean value indicating whether the accessible object at
 // the specified @row and @column is selected
-func (t *TableInterface) IsSelected(row int, column int) bool {
+func (table *TableIface) IsSelected(row int, column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -635,13 +638,13 @@ func (t *TableInterface) IsSelected(row int, column int) bool {
 
 // RefAt: get a reference to the table cell at @row, @column. This cell should
 // implement the interface TableCell
-func (t *TableInterface) RefAt(row int, column int) *ObjectClass {
+func (table *TableIface) RefAt(row int, column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -655,12 +658,12 @@ func (t *TableInterface) RefAt(row int, column int) *ObjectClass {
 }
 
 // RemoveColumnSelection adds the specified @column to the selection.
-func (t *TableInterface) RemoveColumnSelection(column int) bool {
+func (table *TableIface) RemoveColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_remove_column_selection(_arg0, _arg1)
@@ -675,12 +678,12 @@ func (t *TableInterface) RemoveColumnSelection(column int) bool {
 }
 
 // RemoveRowSelection removes the specified @row from the selection.
-func (t *TableInterface) RemoveRowSelection(row int) bool {
+func (table *TableIface) RemoveRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_remove_row_selection(_arg0, _arg1)
@@ -695,11 +698,11 @@ func (t *TableInterface) RemoveRowSelection(row int) bool {
 }
 
 // SetCaption sets the caption for the table.
-func (t *TableInterface) SetCaption(caption Object) {
+func (table *TableIface) SetCaption(caption Object) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(caption.Native()))
 
 	C.atk_table_set_caption(_arg0, _arg1)
@@ -707,12 +710,12 @@ func (t *TableInterface) SetCaption(caption Object) {
 
 // SetColumnDescription sets the description text for the specified @column of
 // the @table.
-func (t *TableInterface) SetColumnDescription(column int, description string) {
+func (table *TableIface) SetColumnDescription(column int, description string) {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 *C.gchar    // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
 	_arg2 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -721,12 +724,12 @@ func (t *TableInterface) SetColumnDescription(column int, description string) {
 }
 
 // SetColumnHeader sets the specified column header to @header.
-func (t *TableInterface) SetColumnHeader(column int, header Object) {
+func (table *TableIface) SetColumnHeader(column int, header Object) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
 	_arg2 = (*C.AtkObject)(unsafe.Pointer(header.Native()))
 
@@ -734,12 +737,12 @@ func (t *TableInterface) SetColumnHeader(column int, header Object) {
 }
 
 // SetRowDescription sets the description text for the specified @row of @table.
-func (t *TableInterface) SetRowDescription(row int, description string) {
+func (table *TableIface) SetRowDescription(row int, description string) {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 *C.gchar    // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 	_arg2 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -748,12 +751,12 @@ func (t *TableInterface) SetRowDescription(row int, description string) {
 }
 
 // SetRowHeader sets the specified row header to @header.
-func (t *TableInterface) SetRowHeader(row int, header Object) {
+func (table *TableIface) SetRowHeader(row int, header Object) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 	_arg2 = (*C.AtkObject)(unsafe.Pointer(header.Native()))
 
@@ -761,11 +764,11 @@ func (t *TableInterface) SetRowHeader(row int, header Object) {
 }
 
 // SetSummary sets the summary description of the table.
-func (t *TableInterface) SetSummary(accessible Object) {
+func (table *TableIface) SetSummary(accessible Object) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	C.atk_table_set_summary(_arg0, _arg1)

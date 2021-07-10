@@ -94,7 +94,7 @@ type MessageDialog interface {
 
 	// Image gets the dialog’s image.
 	//
-	// Deprecated: since version 3.12.
+	// Deprecated: Use Dialog for dialogs with images.
 	Image() *WidgetClass
 	// MessageArea returns the message area of the dialog. This is the box where
 	// the dialog’s primary and secondary labels are packed. You can add your
@@ -104,7 +104,7 @@ type MessageDialog interface {
 	MessageArea() *WidgetClass
 	// SetImage sets the dialog’s image to @image.
 	//
-	// Deprecated: since version 3.12.
+	// Deprecated: Use Dialog to create dialogs with images.
 	SetImage(image Widget)
 	// SetMarkup sets the text of the message dialog to be @str, which is marked
 	// up with the [Pango text markup language][PangoMarkupFormat].
@@ -115,7 +115,7 @@ type MessageDialog interface {
 type MessageDialogClass struct {
 	*externglib.Object
 	DialogClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ MessageDialog = (*MessageDialogClass)(nil)
@@ -132,28 +132,31 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -167,12 +170,12 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 
 // Image gets the dialog’s image.
 //
-// Deprecated: since version 3.12.
-func (d *MessageDialogClass) Image() *WidgetClass {
+// Deprecated: Use Dialog for dialogs with images.
+func (dialog *MessageDialogClass) Image() *WidgetClass {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_message_dialog_get_image(_arg0)
 
@@ -188,11 +191,11 @@ func (d *MessageDialogClass) Image() *WidgetClass {
 // content to that box and it will appear below those labels. See
 // gtk_dialog_get_content_area() for the corresponding function in the parent
 // Dialog.
-func (m *MessageDialogClass) MessageArea() *WidgetClass {
+func (messageDialog *MessageDialogClass) MessageArea() *WidgetClass {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(messageDialog.Native()))
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 
@@ -205,12 +208,12 @@ func (m *MessageDialogClass) MessageArea() *WidgetClass {
 
 // SetImage sets the dialog’s image to @image.
 //
-// Deprecated: since version 3.12.
-func (d *MessageDialogClass) SetImage(image Widget) {
+// Deprecated: Use Dialog to create dialogs with images.
+func (dialog *MessageDialogClass) SetImage(image Widget) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
 
 	C.gtk_message_dialog_set_image(_arg0, _arg1)
@@ -218,11 +221,11 @@ func (d *MessageDialogClass) SetImage(image Widget) {
 
 // SetMarkup sets the text of the message dialog to be @str, which is marked up
 // with the [Pango text markup language][PangoMarkupFormat].
-func (m *MessageDialogClass) SetMarkup(str string) {
+func (messageDialog *MessageDialogClass) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(messageDialog.Native()))
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 

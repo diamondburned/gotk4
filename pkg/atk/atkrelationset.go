@@ -84,22 +84,22 @@ func NewRelationSet() *RelationSetClass {
 // This function ref's the AtkRelation so the caller of this function should
 // unref it to ensure that it will be destroyed when the AtkRelationSet is
 // destroyed.
-func (s *RelationSetClass) Add(relation Relation) {
+func (set *RelationSetClass) Add(relation Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
 	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 
 	C.atk_relation_set_add(_arg0, _arg1)
 }
 
 // NRelations determines the number of relations in a relation set.
-func (s *RelationSetClass) NRelations() int {
+func (set *RelationSetClass) NRelations() int {
 	var _arg0 *C.AtkRelationSet // out
 	var _cret C.gint            // in
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
 
 	_cret = C.atk_relation_set_get_n_relations(_arg0)
 
@@ -112,12 +112,12 @@ func (s *RelationSetClass) NRelations() int {
 
 // Relation determines the relation at the specified position in the relation
 // set.
-func (s *RelationSetClass) Relation(i int) *RelationClass {
+func (set *RelationSetClass) Relation(i int) *RelationClass {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.gint            // out
 	var _cret *C.AtkRelation    // in
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_relation_set_get_relation(_arg0, _arg1)
@@ -131,11 +131,11 @@ func (s *RelationSetClass) Relation(i int) *RelationClass {
 
 // Remove removes a relation from the relation set. This function unref's the
 // Relation so it will be deleted unless there is another reference to it.
-func (s *RelationSetClass) Remove(relation Relation) {
+func (set *RelationSetClass) Remove(relation Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
 	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 
 	C.atk_relation_set_remove(_arg0, _arg1)

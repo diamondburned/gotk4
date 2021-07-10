@@ -61,11 +61,11 @@ func (f *FrameTimings) Native() unsafe.Pointer {
 //
 // Once this function returns true for a frame, you can be certain that no
 // further values will become available and be stored in the `GdkFrameTimings`.
-func (t *FrameTimings) Complete() bool {
+func (timings *FrameTimings) Complete() bool {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
 
 	_cret = C.gdk_frame_timings_get_complete(_arg0)
 
@@ -80,11 +80,11 @@ func (t *FrameTimings) Complete() bool {
 
 // FrameCounter gets the frame counter value of the `GdkFrameClock` when this
 // frame was drawn.
-func (t *FrameTimings) FrameCounter() int64 {
+func (timings *FrameTimings) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
 
 	_cret = C.gdk_frame_timings_get_frame_counter(_arg0)
 
@@ -99,11 +99,11 @@ func (t *FrameTimings) FrameCounter() int64 {
 //
 // This is the time value that is typically used to time animations for the
 // frame. See [method@Gdk.FrameClock.get_frame_time].
-func (t *FrameTimings) FrameTime() int64 {
+func (timings *FrameTimings) FrameTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
 
 	_cret = C.gdk_frame_timings_get_frame_time(_arg0)
 
@@ -127,11 +127,11 @@ func (t *FrameTimings) FrameTime() int64 {
 // function is useful for applications that want exact control over latency. For
 // example, a movie player may want this information for Audio/Video
 // synchronization.
-func (t *FrameTimings) PredictedPresentationTime() int64 {
+func (timings *FrameTimings) PredictedPresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
 
 	_cret = C.gdk_frame_timings_get_predicted_presentation_time(_arg0)
 
@@ -145,11 +145,11 @@ func (t *FrameTimings) PredictedPresentationTime() int64 {
 // PresentationTime reurns the presentation time.
 //
 // This is the time at which the frame became visible to the user.
-func (t *FrameTimings) PresentationTime() int64 {
+func (timings *FrameTimings) PresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
 
 	_cret = C.gdk_frame_timings_get_presentation_time(_arg0)
 
@@ -164,11 +164,11 @@ func (t *FrameTimings) PresentationTime() int64 {
 // display that this frame was displayed on.
 //
 // Frame presentation usually happens during the “vertical blanking interval”.
-func (t *FrameTimings) RefreshInterval() int64 {
+func (timings *FrameTimings) RefreshInterval() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
 
 	_cret = C.gdk_frame_timings_get_refresh_interval(_arg0)
 
@@ -180,11 +180,11 @@ func (t *FrameTimings) RefreshInterval() int64 {
 }
 
 // Ref increases the reference count of @timings.
-func (t *FrameTimings) ref() *FrameTimings {
+func (timings *FrameTimings) ref() *FrameTimings {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret *C.GdkFrameTimings // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
 
 	_cret = C.gdk_frame_timings_ref(_arg0)
 
@@ -202,10 +202,10 @@ func (t *FrameTimings) ref() *FrameTimings {
 // Unref decreases the reference count of @timings.
 //
 // If @timings is no longer referenced, it will be freed.
-func (t *FrameTimings) unref() {
+func (timings *FrameTimings) unref() {
 	var _arg0 *C.GdkFrameTimings // out
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t))
+	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
 
 	C.gdk_frame_timings_unref(_arg0)
 }

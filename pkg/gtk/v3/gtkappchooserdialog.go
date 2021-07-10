@@ -49,8 +49,8 @@ type AppChooserDialog interface {
 type AppChooserDialogClass struct {
 	*externglib.Object
 	DialogClass
-	AppChooserInterface
-	BuildableInterface
+	AppChooserIface
+	BuildableIface
 }
 
 var _ AppChooserDialog = (*AppChooserDialogClass)(nil)
@@ -67,36 +67,43 @@ func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		AppChooserInterface: AppChooserInterface{
+		AppChooserIface: AppChooserIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -109,11 +116,11 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 }
 
 // Heading returns the text to display at the top of the dialog.
-func (s *AppChooserDialogClass) Heading() string {
+func (self *AppChooserDialogClass) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
 
@@ -125,11 +132,11 @@ func (s *AppChooserDialogClass) Heading() string {
 }
 
 // Widget returns the AppChooserWidget of this dialog.
-func (s *AppChooserDialogClass) Widget() *WidgetClass {
+func (self *AppChooserDialogClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.GtkWidget           // in
 
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
 
@@ -142,11 +149,11 @@ func (s *AppChooserDialogClass) Widget() *WidgetClass {
 
 // SetHeading sets the text to display at the top of the dialog. If the heading
 // is not set, the dialog displays a default text.
-func (s *AppChooserDialogClass) SetHeading(heading string) {
+func (self *AppChooserDialogClass) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(C.CString(heading))
 	defer C.free(unsafe.Pointer(_arg1))
 

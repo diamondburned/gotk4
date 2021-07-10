@@ -148,11 +148,11 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 
 // CreatePangoContext creates a new `PangoContext` that can be used with the
 // `GtkPrintContext`.
-func (c *PrintContextClass) CreatePangoContext() *pango.ContextClass {
+func (context *PrintContextClass) CreatePangoContext() *pango.ContextClass {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoContext    // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_create_pango_context(_arg0)
 
@@ -165,11 +165,11 @@ func (c *PrintContextClass) CreatePangoContext() *pango.ContextClass {
 
 // CreatePangoLayout creates a new `PangoLayout` that is suitable for use with
 // the `GtkPrintContext`.
-func (c *PrintContextClass) CreatePangoLayout() *pango.LayoutClass {
+func (context *PrintContextClass) CreatePangoLayout() *pango.LayoutClass {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoLayout     // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_create_pango_layout(_arg0)
 
@@ -182,11 +182,11 @@ func (c *PrintContextClass) CreatePangoLayout() *pango.LayoutClass {
 
 // CairoContext obtains the cairo context that is associated with the
 // `GtkPrintContext`.
-func (c *PrintContextClass) CairoContext() *cairo.Context {
+func (context *PrintContextClass) CairoContext() *cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.cairo_t         // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_cairo_context(_arg0)
 
@@ -199,11 +199,11 @@ func (c *PrintContextClass) CairoContext() *cairo.Context {
 
 // DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots per
 // inch.
-func (c *PrintContextClass) DPIX() float64 {
+func (context *PrintContextClass) DPIX() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_dpi_x(_arg0)
 
@@ -216,11 +216,11 @@ func (c *PrintContextClass) DPIX() float64 {
 
 // DPIY obtains the vertical resolution of the `GtkPrintContext`, in dots per
 // inch.
-func (c *PrintContextClass) DPIY() float64 {
+func (context *PrintContextClass) DPIY() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_dpi_y(_arg0)
 
@@ -233,7 +233,7 @@ func (c *PrintContextClass) DPIY() float64 {
 
 // HardMargins obtains the hardware printer margins of the `GtkPrintContext`, in
 // units.
-func (c *PrintContextClass) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
+func (context *PrintContextClass) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrintContext // out
 	var _arg1 C.double           // in
 	var _arg2 C.double           // in
@@ -241,7 +241,7 @@ func (c *PrintContextClass) HardMargins() (top float64, bottom float64, left flo
 	var _arg4 C.double           // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -263,11 +263,11 @@ func (c *PrintContextClass) HardMargins() (top float64, bottom float64, left flo
 }
 
 // Height obtains the height of the `GtkPrintContext`, in pixels.
-func (c *PrintContextClass) Height() float64 {
+func (context *PrintContextClass) Height() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_height(_arg0)
 
@@ -280,11 +280,11 @@ func (c *PrintContextClass) Height() float64 {
 
 // PageSetup obtains the `GtkPageSetup` that determines the page dimensions of
 // the `GtkPrintContext`.
-func (c *PrintContextClass) PageSetup() *PageSetupClass {
+func (context *PrintContextClass) PageSetup() *PageSetupClass {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.GtkPageSetup    // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_page_setup(_arg0)
 
@@ -297,11 +297,11 @@ func (c *PrintContextClass) PageSetup() *PageSetupClass {
 
 // PangoFontmap returns a `PangoFontMap` that is suitable for use with the
 // `GtkPrintContext`.
-func (c *PrintContextClass) PangoFontmap() *pango.FontMapClass {
+func (context *PrintContextClass) PangoFontmap() *pango.FontMapClass {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoFontMap    // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_pango_fontmap(_arg0)
 
@@ -313,11 +313,11 @@ func (c *PrintContextClass) PangoFontmap() *pango.FontMapClass {
 }
 
 // Width obtains the width of the `GtkPrintContext`, in pixels.
-func (c *PrintContextClass) Width() float64 {
+func (context *PrintContextClass) Width() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_width(_arg0)
 
@@ -333,13 +333,13 @@ func (c *PrintContextClass) Width() float64 {
 // This function is intended to be used when implementing an internal print
 // preview, it is not needed for printing, since GTK itself creates a suitable
 // cairo context in that case.
-func (c *PrintContextClass) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64) {
+func (context *PrintContextClass) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64) {
 	var _arg0 *C.GtkPrintContext // out
 	var _arg1 *C.cairo_t         // out
 	var _arg2 C.double           // out
 	var _arg3 C.double           // out
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg2 = C.double(dpiX)
 	_arg3 = C.double(dpiY)

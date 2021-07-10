@@ -75,11 +75,11 @@ func NewIMMulticontext() *IMMulticontextClass {
 }
 
 // ContextID gets the id of the currently active delegate of the @context.
-func (c *IMMulticontextClass) ContextID() string {
+func (context *IMMulticontextClass) ContextID() string {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
 
@@ -94,11 +94,11 @@ func (c *IMMulticontextClass) ContextID() string {
 //
 // This causes the currently active delegate of @context to be replaced by the
 // delegate corresponding to the new context id.
-func (c *IMMulticontextClass) SetContextID(contextId string) {
+func (context *IMMulticontextClass) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(C.CString(contextId))
 	defer C.free(unsafe.Pointer(_arg1))
 

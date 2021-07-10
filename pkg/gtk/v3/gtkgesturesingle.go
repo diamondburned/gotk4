@@ -95,11 +95,11 @@ func marshalGestureSingle(p uintptr) (interface{}, error) {
 
 // Button returns the button number @gesture listens for, or 0 if @gesture
 // reacts to any button press.
-func (g *GestureSingleClass) Button() uint {
+func (gesture *GestureSingleClass) Button() uint {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.guint             // in
 
-	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_button(_arg0)
 
@@ -112,11 +112,11 @@ func (g *GestureSingleClass) Button() uint {
 
 // CurrentButton returns the button number currently interacting with @gesture,
 // or 0 if there is none.
-func (g *GestureSingleClass) CurrentButton() uint {
+func (gesture *GestureSingleClass) CurrentButton() uint {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.guint             // in
 
-	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_current_button(_arg0)
 
@@ -129,11 +129,11 @@ func (g *GestureSingleClass) CurrentButton() uint {
 
 // CurrentSequence returns the event sequence currently interacting with
 // @gesture. This is only meaningful if gtk_gesture_is_active() returns true.
-func (g *GestureSingleClass) CurrentSequence() *gdk.EventSequence {
+func (gesture *GestureSingleClass) CurrentSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret *C.GdkEventSequence // in
 
-	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_current_sequence(_arg0)
 
@@ -149,11 +149,11 @@ func (g *GestureSingleClass) CurrentSequence() *gdk.EventSequence {
 
 // Exclusive gets whether a gesture is exclusive. For more information, see
 // gtk_gesture_single_set_exclusive().
-func (g *GestureSingleClass) Exclusive() bool {
+func (gesture *GestureSingleClass) Exclusive() bool {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_exclusive(_arg0)
 
@@ -167,11 +167,11 @@ func (g *GestureSingleClass) Exclusive() bool {
 }
 
 // TouchOnly returns true if the gesture is only triggered by touch events.
-func (g *GestureSingleClass) TouchOnly() bool {
+func (gesture *GestureSingleClass) TouchOnly() bool {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_touch_only(_arg0)
 
@@ -187,11 +187,11 @@ func (g *GestureSingleClass) TouchOnly() bool {
 // SetButton sets the button number @gesture listens to. If non-0, every button
 // press from a different button number will be ignored. Touch events implicitly
 // match with button 1.
-func (g *GestureSingleClass) SetButton(button uint) {
+func (gesture *GestureSingleClass) SetButton(button uint) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.guint             // out
 
-	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 	_arg1 = C.guint(button)
 
 	C.gtk_gesture_single_set_button(_arg0, _arg1)
@@ -200,11 +200,11 @@ func (g *GestureSingleClass) SetButton(button uint) {
 // SetExclusive sets whether @gesture is exclusive. An exclusive gesture will
 // only handle pointer and "pointer emulated" touch events, so at any given
 // time, there is only one sequence able to interact with those.
-func (g *GestureSingleClass) SetExclusive(exclusive bool) {
+func (gesture *GestureSingleClass) SetExclusive(exclusive bool) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 	if exclusive {
 		_arg1 = C.TRUE
 	}
@@ -215,11 +215,11 @@ func (g *GestureSingleClass) SetExclusive(exclusive bool) {
 // SetTouchOnly: if @touch_only is true, @gesture will only handle events of
 // type K_TOUCH_BEGIN, K_TOUCH_UPDATE or K_TOUCH_END. If false, mouse events
 // will be handled too.
-func (g *GestureSingleClass) SetTouchOnly(touchOnly bool) {
+func (gesture *GestureSingleClass) SetTouchOnly(touchOnly bool) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 	if touchOnly {
 		_arg1 = C.TRUE
 	}

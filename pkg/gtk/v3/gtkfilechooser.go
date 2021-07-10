@@ -482,15 +482,15 @@ type FileChooser interface {
 	UnselectURI(uri string)
 }
 
-// FileChooserInterface implements the FileChooser interface.
-type FileChooserInterface struct {
+// FileChooserIface implements the FileChooser interface.
+type FileChooserIface struct {
 	*externglib.Object
 }
 
-var _ FileChooser = (*FileChooserInterface)(nil)
+var _ FileChooser = (*FileChooserIface)(nil)
 
 func wrapFileChooser(obj *externglib.Object) FileChooser {
-	return &FileChooserInterface{
+	return &FileChooserIface{
 		Object: obj,
 	}
 }
@@ -508,14 +508,14 @@ func marshalFileChooser(p uintptr) (interface{}, error) {
 // gtk_file_chooser_get_choice().
 //
 // Compare gtk_file_chooser_set_extra_widget().
-func (c *FileChooserInterface) AddChoice(id string, label string, options []string, optionLabels []string) {
+func (chooser *FileChooserIface) AddChoice(id string, label string, options []string, optionLabels []string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out
 	var _arg3 **C.char
 	var _arg4 **C.char
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(label))
@@ -548,11 +548,11 @@ func (c *FileChooserInterface) AddChoice(id string, label string, options []stri
 //
 // Note that the @chooser takes ownership of the filter, so you have to ref and
 // sink it if you want to keep a reference.
-func (c *FileChooserInterface) AddFilter(filter FileFilter) {
+func (chooser *FileChooserIface) AddFilter(filter FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_add_filter(_arg0, _arg1)
@@ -562,12 +562,12 @@ func (c *FileChooserInterface) AddFilter(filter FileFilter) {
 // a file chooser. Note that shortcut folders do not get saved, as they are
 // provided by the application. For example, you can use this to add a
 // “/usr/share/mydrawprogram/Clipart” folder to the volume list.
-func (c *FileChooserInterface) AddShortcutFolder(folder string) error {
+func (chooser *FileChooserIface) AddShortcutFolder(folder string) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(folder))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -584,12 +584,12 @@ func (c *FileChooserInterface) AddShortcutFolder(folder string) error {
 // folders in a file chooser. Note that shortcut folders do not get saved, as
 // they are provided by the application. For example, you can use this to add a
 // “file:///usr/share/mydrawprogram/Clipart” folder to the volume list.
-func (c *FileChooserInterface) AddShortcutFolderURI(uri string) error {
+func (chooser *FileChooserIface) AddShortcutFolderURI(uri string) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -604,11 +604,11 @@ func (c *FileChooserInterface) AddShortcutFolderURI(uri string) error {
 
 // Action gets the type of operation that the file chooser is performing; see
 // gtk_file_chooser_set_action().
-func (c *FileChooserInterface) Action() FileChooserAction {
+func (chooser *FileChooserIface) Action() FileChooserAction {
 	var _arg0 *C.GtkFileChooser      // out
 	var _cret C.GtkFileChooserAction // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_action(_arg0)
 
@@ -620,12 +620,12 @@ func (c *FileChooserInterface) Action() FileChooserAction {
 }
 
 // Choice gets the currently selected option in the 'choice' with the given ID.
-func (c *FileChooserInterface) Choice(id string) string {
+func (chooser *FileChooserIface) Choice(id string) string {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -640,11 +640,11 @@ func (c *FileChooserInterface) Choice(id string) string {
 
 // CreateFolders gets whether file choser will offer to create new folders. See
 // gtk_file_chooser_set_create_folders().
-func (c *FileChooserInterface) CreateFolders() bool {
+func (chooser *FileChooserIface) CreateFolders() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_create_folders(_arg0)
 
@@ -667,11 +667,11 @@ func (c *FileChooserInterface) CreateFolders() bool {
 // "/home/username/Documents/selected-folder/". To get the currently-selected
 // folder in that mode, use gtk_file_chooser_get_uri() as the usual way to get
 // the selection.
-func (c *FileChooserInterface) CurrentFolder() string {
+func (chooser *FileChooserIface) CurrentFolder() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_current_folder(_arg0)
 
@@ -693,11 +693,11 @@ func (c *FileChooserInterface) CurrentFolder() string {
 // "file:///home/username/Documents/selected-folder/". To get the
 // currently-selected folder in that mode, use gtk_file_chooser_get_uri() as the
 // usual way to get the selection.
-func (c *FileChooserInterface) CurrentFolderURI() string {
+func (chooser *FileChooserIface) CurrentFolderURI() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_current_folder_uri(_arg0)
 
@@ -717,11 +717,11 @@ func (c *FileChooserInterface) CurrentFolderURI() string {
 // adds a custom extra widget to the file chooser for “file format” may want to
 // change the extension of the typed filename based on the chosen format, say,
 // from “.jpg” to “.png”.
-func (c *FileChooserInterface) CurrentName() string {
+func (chooser *FileChooserIface) CurrentName() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_current_name(_arg0)
 
@@ -735,11 +735,11 @@ func (c *FileChooserInterface) CurrentName() string {
 
 // DoOverwriteConfirmation queries whether a file chooser is set to confirm for
 // overwriting when the user types a file name that already exists.
-func (c *FileChooserInterface) DoOverwriteConfirmation() bool {
+func (chooser *FileChooserIface) DoOverwriteConfirmation() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_do_overwrite_confirmation(_arg0)
 
@@ -754,11 +754,11 @@ func (c *FileChooserInterface) DoOverwriteConfirmation() bool {
 
 // ExtraWidget gets the current extra widget; see
 // gtk_file_chooser_set_extra_widget().
-func (c *FileChooserInterface) ExtraWidget() *WidgetClass {
+func (chooser *FileChooserIface) ExtraWidget() *WidgetClass {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_extra_widget(_arg0)
 
@@ -775,11 +775,11 @@ func (c *FileChooserInterface) ExtraWidget() *WidgetClass {
 //
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
-func (c *FileChooserInterface) Filename() string {
+func (chooser *FileChooserIface) Filename() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_filename(_arg0)
 
@@ -792,11 +792,11 @@ func (c *FileChooserInterface) Filename() string {
 }
 
 // Filter gets the current filter; see gtk_file_chooser_set_filter().
-func (c *FileChooserInterface) Filter() *FileFilterClass {
+func (chooser *FileChooserIface) Filter() *FileFilterClass {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GtkFileFilter  // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_filter(_arg0)
 
@@ -809,11 +809,11 @@ func (c *FileChooserInterface) Filter() *FileFilterClass {
 
 // LocalOnly gets whether only local files can be selected in the file selector.
 // See gtk_file_chooser_set_local_only()
-func (c *FileChooserInterface) LocalOnly() bool {
+func (chooser *FileChooserIface) LocalOnly() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_local_only(_arg0)
 
@@ -828,11 +828,11 @@ func (c *FileChooserInterface) LocalOnly() bool {
 
 // PreviewFilename gets the filename that should be previewed in a custom
 // preview widget. See gtk_file_chooser_set_preview_widget().
-func (c *FileChooserInterface) PreviewFilename() string {
+func (chooser *FileChooserIface) PreviewFilename() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_preview_filename(_arg0)
 
@@ -846,11 +846,11 @@ func (c *FileChooserInterface) PreviewFilename() string {
 
 // PreviewURI gets the URI that should be previewed in a custom preview widget.
 // See gtk_file_chooser_set_preview_widget().
-func (c *FileChooserInterface) PreviewURI() string {
+func (chooser *FileChooserIface) PreviewURI() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_preview_uri(_arg0)
 
@@ -864,11 +864,11 @@ func (c *FileChooserInterface) PreviewURI() string {
 
 // PreviewWidget gets the current preview widget; see
 // gtk_file_chooser_set_preview_widget().
-func (c *FileChooserInterface) PreviewWidget() *WidgetClass {
+func (chooser *FileChooserIface) PreviewWidget() *WidgetClass {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_preview_widget(_arg0)
 
@@ -882,11 +882,11 @@ func (c *FileChooserInterface) PreviewWidget() *WidgetClass {
 // PreviewWidgetActive gets whether the preview widget set by
 // gtk_file_chooser_set_preview_widget() should be shown for the current
 // filename. See gtk_file_chooser_set_preview_widget_active().
-func (c *FileChooserInterface) PreviewWidgetActive() bool {
+func (chooser *FileChooserIface) PreviewWidgetActive() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_preview_widget_active(_arg0)
 
@@ -901,11 +901,11 @@ func (c *FileChooserInterface) PreviewWidgetActive() bool {
 
 // SelectMultiple gets whether multiple files can be selected in the file
 // selector. See gtk_file_chooser_set_select_multiple().
-func (c *FileChooserInterface) SelectMultiple() bool {
+func (chooser *FileChooserIface) SelectMultiple() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_select_multiple(_arg0)
 
@@ -920,11 +920,11 @@ func (c *FileChooserInterface) SelectMultiple() bool {
 
 // ShowHidden gets whether hidden files and folders are displayed in the file
 // selector. See gtk_file_chooser_set_show_hidden().
-func (c *FileChooserInterface) ShowHidden() bool {
+func (chooser *FileChooserIface) ShowHidden() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_show_hidden(_arg0)
 
@@ -942,11 +942,11 @@ func (c *FileChooserInterface) ShowHidden() bool {
 //
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
-func (c *FileChooserInterface) URI() string {
+func (chooser *FileChooserIface) URI() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_uri(_arg0)
 
@@ -960,11 +960,11 @@ func (c *FileChooserInterface) URI() string {
 
 // UsePreviewLabel gets whether a stock label should be drawn with the name of
 // the previewed file. See gtk_file_chooser_set_use_preview_label().
-func (c *FileChooserInterface) UsePreviewLabel() bool {
+func (chooser *FileChooserIface) UsePreviewLabel() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_use_preview_label(_arg0)
 
@@ -979,11 +979,11 @@ func (c *FileChooserInterface) UsePreviewLabel() bool {
 
 // RemoveChoice removes a 'choice' that has been added with
 // gtk_file_chooser_add_choice().
-func (c *FileChooserInterface) RemoveChoice(id string) {
+func (chooser *FileChooserIface) RemoveChoice(id string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -992,11 +992,11 @@ func (c *FileChooserInterface) RemoveChoice(id string) {
 
 // RemoveFilter removes @filter from the list of filters that the user can
 // select between.
-func (c *FileChooserInterface) RemoveFilter(filter FileFilter) {
+func (chooser *FileChooserIface) RemoveFilter(filter FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_remove_filter(_arg0, _arg1)
@@ -1004,12 +1004,12 @@ func (c *FileChooserInterface) RemoveFilter(filter FileFilter) {
 
 // RemoveShortcutFolder removes a folder from a file chooser’s list of shortcut
 // folders.
-func (c *FileChooserInterface) RemoveShortcutFolder(folder string) error {
+func (chooser *FileChooserIface) RemoveShortcutFolder(folder string) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(folder))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1024,12 +1024,12 @@ func (c *FileChooserInterface) RemoveShortcutFolder(folder string) error {
 
 // RemoveShortcutFolderURI removes a folder URI from a file chooser’s list of
 // shortcut folders.
-func (c *FileChooserInterface) RemoveShortcutFolderURI(uri string) error {
+func (chooser *FileChooserIface) RemoveShortcutFolderURI(uri string) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1043,10 +1043,10 @@ func (c *FileChooserInterface) RemoveShortcutFolderURI(uri string) error {
 }
 
 // SelectAll selects all the files in the current folder of a file chooser.
-func (c *FileChooserInterface) SelectAll() {
+func (chooser *FileChooserIface) SelectAll() {
 	var _arg0 *C.GtkFileChooser // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	C.gtk_file_chooser_select_all(_arg0)
 }
@@ -1054,12 +1054,12 @@ func (c *FileChooserInterface) SelectAll() {
 // SelectFilename selects a filename. If the file name isn’t in the current
 // folder of @chooser, then the current folder of @chooser will be changed to
 // the folder containing @filename.
-func (c *FileChooserInterface) SelectFilename(filename string) bool {
+func (chooser *FileChooserIface) SelectFilename(filename string) bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1077,12 +1077,12 @@ func (c *FileChooserInterface) SelectFilename(filename string) bool {
 // SelectURI selects the file to by @uri. If the URI doesn’t refer to a file in
 // the current folder of @chooser, then the current folder of @chooser will be
 // changed to the folder containing @filename.
-func (c *FileChooserInterface) SelectURI(uri string) bool {
+func (chooser *FileChooserIface) SelectURI(uri string) bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1100,12 +1100,12 @@ func (c *FileChooserInterface) SelectURI(uri string) bool {
 // SetChoice selects an option in a 'choice' that has been added with
 // gtk_file_chooser_add_choice(). For a boolean choice, the possible options are
 // "true" and "false".
-func (c *FileChooserInterface) SetChoice(id string, option string) {
+func (chooser *FileChooserIface) SetChoice(id string, option string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(option))
@@ -1117,11 +1117,11 @@ func (c *FileChooserInterface) SetChoice(id string, option string) {
 // SetCreateFolders sets whether file choser will offer to create new folders.
 // This is only relevant if the action is not set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN.
-func (c *FileChooserInterface) SetCreateFolders(createFolders bool) {
+func (chooser *FileChooserIface) SetCreateFolders(createFolders bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	if createFolders {
 		_arg1 = C.TRUE
 	}
@@ -1136,12 +1136,12 @@ func (c *FileChooserInterface) SetCreateFolders(createFolders bool) {
 // In general, you should not use this function. See the [section on setting up
 // a file chooser dialog][gtkfilechooserdialog-setting-up] for the rationale
 // behind this.
-func (c *FileChooserInterface) SetCurrentFolder(filename string) bool {
+func (chooser *FileChooserIface) SetCurrentFolder(filename string) bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.gchar          // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1163,12 +1163,12 @@ func (c *FileChooserInterface) SetCurrentFolder(filename string) bool {
 // In general, you should not use this function. See the [section on setting up
 // a file chooser dialog][gtkfilechooserdialog-setting-up] for the rationale
 // behind this.
-func (c *FileChooserInterface) SetCurrentFolderURI(uri string) bool {
+func (chooser *FileChooserIface) SetCurrentFolderURI(uri string) bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.gchar          // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1193,11 +1193,11 @@ func (c *FileChooserInterface) SetCurrentFolderURI(uri string) bool {
 // gtk_file_chooser_set_filename() or gtk_file_chooser_set_uri() instead. Please
 // see the documentation for those functions for an example of using
 // gtk_file_chooser_set_current_name() as well.
-func (c *FileChooserInterface) SetCurrentName(name string) {
+func (chooser *FileChooserIface) SetCurrentName(name string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1215,11 +1215,11 @@ func (c *FileChooserInterface) SetCurrentName(name string) {
 // You can override the way confirmation is done by actually handling the
 // FileChooser::confirm-overwrite signal; please refer to its documentation for
 // the details.
-func (c *FileChooserInterface) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
+func (chooser *FileChooserIface) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	if doOverwriteConfirmation {
 		_arg1 = C.TRUE
 	}
@@ -1229,11 +1229,11 @@ func (c *FileChooserInterface) SetDoOverwriteConfirmation(doOverwriteConfirmatio
 
 // SetExtraWidget sets an application-supplied widget to provide extra options
 // to the user.
-func (c *FileChooserInterface) SetExtraWidget(extraWidget Widget) {
+func (chooser *FileChooserIface) SetExtraWidget(extraWidget Widget) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(extraWidget.Native()))
 
 	C.gtk_file_chooser_set_extra_widget(_arg0, _arg1)
@@ -1269,12 +1269,12 @@ func (c *FileChooserInterface) SetExtraWidget(extraWidget Widget) {
 // In the first case, the file chooser will present the user with useful
 // suggestions as to where to save his new file. In the second case, the file’s
 // existing location is already known, so the file chooser will use it.
-func (c *FileChooserInterface) SetFilename(filename string) bool {
+func (chooser *FileChooserIface) SetFilename(filename string) bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1294,11 +1294,11 @@ func (c *FileChooserInterface) SetFilename(filename string) bool {
 // filter should be one of the filters in that list. Setting the current filter
 // when the list of filters is empty is useful if you want to restrict the
 // displayed set of files without letting the user change it.
-func (c *FileChooserInterface) SetFilter(filter FileFilter) {
+func (chooser *FileChooserIface) SetFilter(filter FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_set_filter(_arg0, _arg1)
@@ -1313,11 +1313,11 @@ func (c *FileChooserInterface) SetFilter(filter FileFilter) {
 //
 // On some systems non-native files may still be available using the native
 // filesystem via a userspace filesystem (FUSE).
-func (c *FileChooserInterface) SetLocalOnly(localOnly bool) {
+func (chooser *FileChooserIface) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	if localOnly {
 		_arg1 = C.TRUE
 	}
@@ -1337,11 +1337,11 @@ func (c *FileChooserInterface) SetLocalOnly(localOnly bool) {
 // When there is no application-supplied preview widget, or the
 // application-supplied preview widget is not active, the file chooser will
 // display no preview at all.
-func (c *FileChooserInterface) SetPreviewWidget(previewWidget Widget) {
+func (chooser *FileChooserIface) SetPreviewWidget(previewWidget Widget) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(previewWidget.Native()))
 
 	C.gtk_file_chooser_set_preview_widget(_arg0, _arg1)
@@ -1352,11 +1352,11 @@ func (c *FileChooserInterface) SetPreviewWidget(previewWidget Widget) {
 // filename. When @active is set to false, the file chooser may display an
 // internally generated preview of the current file or it may display no preview
 // at all. See gtk_file_chooser_set_preview_widget() for more details.
-func (c *FileChooserInterface) SetPreviewWidgetActive(active bool) {
+func (chooser *FileChooserIface) SetPreviewWidgetActive(active bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	if active {
 		_arg1 = C.TRUE
 	}
@@ -1367,11 +1367,11 @@ func (c *FileChooserInterface) SetPreviewWidgetActive(active bool) {
 // SetSelectMultiple sets whether multiple files can be selected in the file
 // selector. This is only relevant if the action is set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-func (c *FileChooserInterface) SetSelectMultiple(selectMultiple bool) {
+func (chooser *FileChooserIface) SetSelectMultiple(selectMultiple bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	if selectMultiple {
 		_arg1 = C.TRUE
 	}
@@ -1381,11 +1381,11 @@ func (c *FileChooserInterface) SetSelectMultiple(selectMultiple bool) {
 
 // SetShowHidden sets whether hidden files and folders are displayed in the file
 // selector.
-func (c *FileChooserInterface) SetShowHidden(showHidden bool) {
+func (chooser *FileChooserIface) SetShowHidden(showHidden bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	if showHidden {
 		_arg1 = C.TRUE
 	}
@@ -1422,12 +1422,12 @@ func (c *FileChooserInterface) SetShowHidden(showHidden bool) {
 // In the first case, the file chooser will present the user with useful
 // suggestions as to where to save his new file. In the second case, the file’s
 // existing location is already known, so the file chooser will use it.
-func (c *FileChooserInterface) SetURI(uri string) bool {
+func (chooser *FileChooserIface) SetURI(uri string) bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1448,11 +1448,11 @@ func (c *FileChooserInterface) SetURI(uri string) bool {
 // this to false and display the name themselves in their preview widget.
 //
 // See also: gtk_file_chooser_set_preview_widget()
-func (c *FileChooserInterface) SetUsePreviewLabel(useLabel bool) {
+func (chooser *FileChooserIface) SetUsePreviewLabel(useLabel bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	if useLabel {
 		_arg1 = C.TRUE
 	}
@@ -1461,10 +1461,10 @@ func (c *FileChooserInterface) SetUsePreviewLabel(useLabel bool) {
 }
 
 // UnselectAll unselects all the files in the current folder of a file chooser.
-func (c *FileChooserInterface) UnselectAll() {
+func (chooser *FileChooserIface) UnselectAll() {
 	var _arg0 *C.GtkFileChooser // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	C.gtk_file_chooser_unselect_all(_arg0)
 }
@@ -1472,11 +1472,11 @@ func (c *FileChooserInterface) UnselectAll() {
 // UnselectFilename unselects a currently selected filename. If the filename is
 // not in the current directory, does not exist, or is otherwise not currently
 // selected, does nothing.
-func (c *FileChooserInterface) UnselectFilename(filename string) {
+func (chooser *FileChooserIface) UnselectFilename(filename string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1486,11 +1486,11 @@ func (c *FileChooserInterface) UnselectFilename(filename string) {
 // UnselectURI unselects the file referred to by @uri. If the file is not in the
 // current directory, does not exist, or is otherwise not currently selected,
 // does nothing.
-func (c *FileChooserInterface) UnselectURI(uri string) {
+func (chooser *FileChooserIface) UnselectURI(uri string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 

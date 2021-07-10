@@ -41,8 +41,8 @@ type HScale interface {
 type HScaleClass struct {
 	*externglib.Object
 	ScaleClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ HScale = (*HScaleClass)(nil)
@@ -55,29 +55,32 @@ func wrapHScale(obj *externglib.Object) HScale {
 			RangeClass: RangeClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
-				OrientableInterface: OrientableInterface{
+				OrientableIface: OrientableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -91,7 +94,7 @@ func marshalHScale(p uintptr) (interface{}, error) {
 
 // NewHScale creates a new HScale.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_scale_new() with GTK_ORIENTATION_HORIZONTAL instead.
 func NewHScale(adjustment Adjustment) *HScaleClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -116,7 +119,8 @@ func NewHScale(adjustment Adjustment) *HScaleClass {
 // power of ten. If the resulting precision is not suitable for your needs, use
 // gtk_scale_set_digits() to correct it.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_scale_new_with_range() with GTK_ORIENTATION_HORIZONTAL
+// instead.
 func NewHScaleWithRange(min float64, max float64, step float64) *HScaleClass {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out

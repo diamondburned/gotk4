@@ -39,7 +39,7 @@ func init() {
 // yet, so the interface currently has no use.
 type DBusInterfaceOverrider interface {
 	// DupObject gets the BusObject that @interface_ belongs to, if any.
-	DupObject() *DBusObjectInterface
+	DupObject() *DBusObjectIface
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by @interface_.
 	Info() *DBusInterfaceInfo
@@ -56,7 +56,7 @@ type DBusInterface interface {
 	gextras.Objector
 
 	// DupObject gets the BusObject that @interface_ belongs to, if any.
-	DupObject() *DBusObjectInterface
+	DupObject() *DBusObjectIface
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by @interface_.
 	Info() *DBusInterfaceInfo
@@ -66,15 +66,15 @@ type DBusInterface interface {
 	SetObject(object DBusObject)
 }
 
-// DBusInterfaceInterface implements the DBusInterface interface.
-type DBusInterfaceInterface struct {
+// DBusInterfaceIface implements the DBusInterface interface.
+type DBusInterfaceIface struct {
 	*externglib.Object
 }
 
-var _ DBusInterface = (*DBusInterfaceInterface)(nil)
+var _ DBusInterface = (*DBusInterfaceIface)(nil)
 
 func wrapDBusInterface(obj *externglib.Object) DBusInterface {
-	return &DBusInterfaceInterface{
+	return &DBusInterfaceIface{
 		Object: obj,
 	}
 }
@@ -86,28 +86,28 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 }
 
 // DupObject gets the BusObject that @interface_ belongs to, if any.
-func (i *DBusInterfaceInterface) DupObject() *DBusObjectInterface {
+func (interface_ *DBusInterfaceIface) DupObject() *DBusObjectIface {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_dup_object(_arg0)
 
-	var _dBusObject *DBusObjectInterface // out
+	var _dBusObject *DBusObjectIface // out
 
-	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectInterface)
+	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectIface)
 
 	return _dBusObject
 }
 
 // Info gets D-Bus introspection information for the D-Bus interface implemented
 // by @interface_.
-func (i *DBusInterfaceInterface) Info() *DBusInterfaceInfo {
+func (interface_ *DBusInterfaceIface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_get_info(_arg0)
 
@@ -125,11 +125,11 @@ func (i *DBusInterfaceInterface) Info() *DBusInterfaceInfo {
 // SetObject sets the BusObject for @interface_ to @object.
 //
 // Note that @interface_ will hold a weak reference to @object.
-func (i *DBusInterfaceInterface) SetObject(object DBusObject) {
+func (interface_ *DBusInterfaceIface) SetObject(object DBusObject) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
 	_arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 
 	C.g_dbus_interface_set_object(_arg0, _arg1)

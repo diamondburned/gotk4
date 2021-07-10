@@ -64,10 +64,10 @@ type EditableLabel interface {
 type EditableLabelClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	EditableInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	EditableIface
 }
 
 var _ EditableLabel = (*EditableLabelClass)(nil)
@@ -76,36 +76,43 @@ func wrapEditableLabel(obj *externglib.Object) EditableLabel {
 	return &EditableLabelClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		EditableInterface: EditableInterface{
+		EditableIface: EditableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
@@ -137,11 +144,11 @@ func NewEditableLabel(str string) *EditableLabelClass {
 }
 
 // Editing returns whether the label is currently in “editing mode”.
-func (s *EditableLabelClass) Editing() bool {
+func (self *EditableLabelClass) Editing() bool {
 	var _arg0 *C.GtkEditableLabel // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_editable_label_get_editing(_arg0)
 
@@ -155,10 +162,10 @@ func (s *EditableLabelClass) Editing() bool {
 }
 
 // StartEditing switches the label into “editing mode”.
-func (s *EditableLabelClass) StartEditing() {
+func (self *EditableLabelClass) StartEditing() {
 	var _arg0 *C.GtkEditableLabel // out
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
 
 	C.gtk_editable_label_start_editing(_arg0)
 }
@@ -169,11 +176,11 @@ func (s *EditableLabelClass) StartEditing() {
 // [property@Gtk.Editable:text] property value, otherwise the resulting text is
 // discarded and the label will keep its previous [property@Gtk.Editable:text]
 // property value.
-func (s *EditableLabelClass) StopEditing(commit bool) {
+func (self *EditableLabelClass) StopEditing(commit bool) {
 	var _arg0 *C.GtkEditableLabel // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
 	if commit {
 		_arg1 = C.TRUE
 	}

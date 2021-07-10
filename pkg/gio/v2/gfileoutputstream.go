@@ -129,7 +129,7 @@ type FileOutputStream interface {
 type FileOutputStreamClass struct {
 	*externglib.Object
 	OutputStreamClass
-	SeekableInterface
+	SeekableIface
 }
 
 var _ FileOutputStream = (*FileOutputStreamClass)(nil)
@@ -140,7 +140,7 @@ func wrapFileOutputStream(obj *externglib.Object) FileOutputStream {
 		OutputStreamClass: OutputStreamClass{
 			Object: obj,
 		},
-		SeekableInterface: SeekableInterface{
+		SeekableIface: SeekableIface{
 			Object: obj,
 		},
 	}
@@ -155,11 +155,11 @@ func marshalFileOutputStream(p uintptr) (interface{}, error) {
 // Etag gets the entity tag for the file when it has been written. This must be
 // called after the stream has been written and closed, as the etag can change
 // while writing.
-func (s *FileOutputStreamClass) Etag() string {
+func (stream *FileOutputStreamClass) Etag() string {
 	var _arg0 *C.GFileOutputStream // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_file_output_stream_get_etag(_arg0)
 
@@ -186,14 +186,14 @@ func (s *FileOutputStreamClass) Etag() string {
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be set, and nil will be returned.
-func (s *FileOutputStreamClass) QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error) {
+func (stream *FileOutputStreamClass) QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.GCancellable      // out
 	var _cret *C.GFileInfo         // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -215,7 +215,7 @@ func (s *FileOutputStreamClass) QueryInfo(attributes string, cancellable Cancell
 //
 // For the synchronous version of this function, see
 // g_file_output_stream_query_info().
-func (s *FileOutputStreamClass) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *FileOutputStreamClass) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileOutputStream  // out
 	var _arg1 *C.char               // out
 	var _arg2 C.int                 // out
@@ -223,7 +223,7 @@ func (s *FileOutputStreamClass) QueryInfoAsync(attributes string, ioPriority int
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
@@ -236,13 +236,13 @@ func (s *FileOutputStreamClass) QueryInfoAsync(attributes string, ioPriority int
 
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_output_stream_query_info_async().
-func (s *FileOutputStreamClass) QueryInfoFinish(result AsyncResult) (*FileInfoClass, error) {
+func (stream *FileOutputStreamClass) QueryInfoFinish(result AsyncResult) (*FileInfoClass, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileInfo         // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_output_stream_query_info_finish(_arg0, _arg1, &_cerr)

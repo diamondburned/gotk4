@@ -68,9 +68,9 @@ type SearchEntry interface {
 type SearchEntryClass struct {
 	*externglib.Object
 	EntryClass
-	BuildableInterface
-	CellEditableInterface
-	EditableInterface
+	BuildableIface
+	CellEditableIface
+	EditableIface
 }
 
 var _ SearchEntry = (*SearchEntryClass)(nil)
@@ -81,38 +81,49 @@ func wrapSearchEntry(obj *externglib.Object) SearchEntry {
 		EntryClass: EntryClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			CellEditableInterface: CellEditableInterface{
+			CellEditableIface: CellEditableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			EditableInterface: EditableInterface{
+			EditableIface: EditableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		CellEditableInterface: CellEditableInterface{
+		CellEditableIface: CellEditableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		EditableInterface: EditableInterface{
+		EditableIface: EditableIface{
 			Object: obj,
 		},
 	}

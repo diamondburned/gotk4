@@ -107,11 +107,11 @@ func NewTextTag(name string) *TextTagClass {
 //
 // The signal is already emitted when setting a `GtkTextTag` property. This
 // function is useful for a `GtkTextTag` subclass.
-func (t *TextTagClass) Changed(sizeChanged bool) {
+func (tag *TextTagClass) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 	if sizeChanged {
 		_arg1 = C.TRUE
 	}
@@ -120,11 +120,11 @@ func (t *TextTagClass) Changed(sizeChanged bool) {
 }
 
 // Priority: get the tag priority.
-func (t *TextTagClass) Priority() int {
+func (tag *TextTagClass) Priority() int {
 	var _arg0 *C.GtkTextTag // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_tag_get_priority(_arg0)
 
@@ -148,11 +148,11 @@ func (t *TextTagClass) Priority() int {
 // which they were added to the table, or created with
 // [method@Gtk.TextBuffer.create_tag], which adds the tag to the buffer’s table
 // automatically.
-func (t *TextTagClass) SetPriority(priority int) {
+func (tag *TextTagClass) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.int         // out
 
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 	_arg1 = C.int(priority)
 
 	C.gtk_text_tag_set_priority(_arg0, _arg1)

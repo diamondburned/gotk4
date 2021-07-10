@@ -104,11 +104,11 @@ func (m *MappedFile) Native() unsafe.Pointer {
 // Free: this call existed before File had refcounting and is currently exactly
 // the same as g_mapped_file_unref().
 //
-// Deprecated: since version 2.22.
-func (f *MappedFile) free() {
+// Deprecated: Use g_mapped_file_unref() instead.
+func (file *MappedFile) free() {
 	var _arg0 *C.GMappedFile // out
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
 
 	C.g_mapped_file_free(_arg0)
 }
@@ -119,11 +119,11 @@ func (f *MappedFile) free() {
 // by a text file.
 //
 // If the file is empty then nil is returned.
-func (f *MappedFile) Contents() string {
+func (file *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
 
 	_cret = C.g_mapped_file_get_contents(_arg0)
 
@@ -136,11 +136,11 @@ func (f *MappedFile) Contents() string {
 }
 
 // Length returns the length of the contents of a File.
-func (f *MappedFile) Length() uint {
+func (file *MappedFile) Length() uint {
 	var _arg0 *C.GMappedFile // out
 	var _cret C.gsize        // in
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
 
 	_cret = C.g_mapped_file_get_length(_arg0)
 
@@ -153,11 +153,11 @@ func (f *MappedFile) Length() uint {
 
 // Ref increments the reference count of @file by one. It is safe to call this
 // function from any thread.
-func (f *MappedFile) ref() *MappedFile {
+func (file *MappedFile) ref() *MappedFile {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.GMappedFile // in
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
 
 	_cret = C.g_mapped_file_ref(_arg0)
 
@@ -178,10 +178,10 @@ func (f *MappedFile) ref() *MappedFile {
 // It is safe to call this function from any thread.
 //
 // Since 2.22
-func (f *MappedFile) unref() {
+func (file *MappedFile) unref() {
 	var _arg0 *C.GMappedFile // out
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f))
+	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
 
 	C.g_mapped_file_unref(_arg0)
 }

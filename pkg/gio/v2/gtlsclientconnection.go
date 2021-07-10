@@ -101,11 +101,11 @@ type TLSClientConnection interface {
 	// ticket to be copied without regard for privacy considerations.
 	CopySessionState(source TLSClientConnection)
 	// ServerIdentity gets @conn's expected server identity
-	ServerIdentity() *SocketConnectableInterface
+	ServerIdentity() *SocketConnectableIface
 	// UseSSL3: SSL 3.0 is no longer supported. See
 	// g_tls_client_connection_set_use_ssl3() for details.
 	//
-	// Deprecated: since version 2.56.
+	// Deprecated: SSL 3.0 is insecure.
 	UseSSL3() bool
 	// ValidationFlags gets @conn's validation flags
 	ValidationFlags() TLSCertificateFlags
@@ -124,19 +124,19 @@ type TLSClientConnection interface {
 	//
 	// Since GLib 2.64, this function does nothing.
 	//
-	// Deprecated: since version 2.56.
+	// Deprecated: SSL 3.0 is insecure.
 	SetUseSSL3(useSsl3 bool)
 }
 
-// TLSClientConnectionInterface implements the TLSClientConnection interface.
-type TLSClientConnectionInterface struct {
+// TLSClientConnectionIface implements the TLSClientConnection interface.
+type TLSClientConnectionIface struct {
 	TLSConnectionClass
 }
 
-var _ TLSClientConnection = (*TLSClientConnectionInterface)(nil)
+var _ TLSClientConnection = (*TLSClientConnectionIface)(nil)
 
 func wrapTLSClientConnection(obj *externglib.Object) TLSClientConnection {
-	return &TLSClientConnectionInterface{
+	return &TLSClientConnectionIface{
 		TLSConnectionClass: TLSConnectionClass{
 			IOStreamClass: IOStreamClass{
 				Object: obj,
@@ -178,28 +178,28 @@ func marshalTLSClientConnection(p uintptr) (interface{}, error) {
 // session resumption, since session ticket reuse would be a privacy weakness.
 // Using this function causes the ticket to be copied without regard for privacy
 // considerations.
-func (c *TLSClientConnectionInterface) CopySessionState(source TLSClientConnection) {
+func (conn *TLSClientConnectionIface) CopySessionState(source TLSClientConnection) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GTlsClientConnection // out
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 	_arg1 = (*C.GTlsClientConnection)(unsafe.Pointer(source.Native()))
 
 	C.g_tls_client_connection_copy_session_state(_arg0, _arg1)
 }
 
 // ServerIdentity gets @conn's expected server identity
-func (c *TLSClientConnectionInterface) ServerIdentity() *SocketConnectableInterface {
+func (conn *TLSClientConnectionIface) ServerIdentity() *SocketConnectableIface {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_client_connection_get_server_identity(_arg0)
 
-	var _socketConnectable *SocketConnectableInterface // out
+	var _socketConnectable *SocketConnectableIface // out
 
-	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketConnectableInterface)
+	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketConnectableIface)
 
 	return _socketConnectable
 }
@@ -207,12 +207,12 @@ func (c *TLSClientConnectionInterface) ServerIdentity() *SocketConnectableInterf
 // UseSSL3: SSL 3.0 is no longer supported. See
 // g_tls_client_connection_set_use_ssl3() for details.
 //
-// Deprecated: since version 2.56.
-func (c *TLSClientConnectionInterface) UseSSL3() bool {
+// Deprecated: SSL 3.0 is insecure.
+func (conn *TLSClientConnectionIface) UseSSL3() bool {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_client_connection_get_use_ssl3(_arg0)
 
@@ -226,11 +226,11 @@ func (c *TLSClientConnectionInterface) UseSSL3() bool {
 }
 
 // ValidationFlags gets @conn's validation flags
-func (c *TLSClientConnectionInterface) ValidationFlags() TLSCertificateFlags {
+func (conn *TLSClientConnectionIface) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.GTlsCertificateFlags  // in
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_client_connection_get_validation_flags(_arg0)
 
@@ -245,11 +245,11 @@ func (c *TLSClientConnectionInterface) ValidationFlags() TLSCertificateFlags {
 // to tell servers on virtual hosts which certificate to present, and also to
 // let @conn know what name to look for in the certificate when performing
 // G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
-func (c *TLSClientConnectionInterface) SetServerIdentity(identity SocketConnectable) {
+func (conn *TLSClientConnectionIface) SetServerIdentity(identity SocketConnectable) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GSocketConnectable   // out
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 
 	C.g_tls_client_connection_set_server_identity(_arg0, _arg1)
@@ -265,12 +265,12 @@ func (c *TLSClientConnectionInterface) SetServerIdentity(identity SocketConnecta
 //
 // Since GLib 2.64, this function does nothing.
 //
-// Deprecated: since version 2.56.
-func (c *TLSClientConnectionInterface) SetUseSSL3(useSsl3 bool) {
+// Deprecated: SSL 3.0 is insecure.
+func (conn *TLSClientConnectionIface) SetUseSSL3(useSsl3 bool) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 	if useSsl3 {
 		_arg1 = C.TRUE
 	}

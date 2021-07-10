@@ -51,7 +51,9 @@ func wrapCellRendererCombo(obj *externglib.Object) CellRendererCombo {
 	return &CellRendererComboClass{
 		CellRendererTextClass: CellRendererTextClass{
 			CellRendererClass: CellRendererClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
 			},
 		},
 	}

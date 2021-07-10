@@ -66,9 +66,9 @@ type AspectFrame interface {
 type AspectFrameClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ AspectFrame = (*AspectFrameClass)(nil)
@@ -77,24 +77,27 @@ func wrapAspectFrame(obj *externglib.Object) AspectFrame {
 	return &AspectFrameClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -131,11 +134,11 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 }
 
 // Child gets the child widget of @self.
-func (s *AspectFrameClass) Child() *WidgetClass {
+func (self *AspectFrameClass) Child() *WidgetClass {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_child(_arg0)
 
@@ -148,11 +151,11 @@ func (s *AspectFrameClass) Child() *WidgetClass {
 
 // ObeyChild returns whether the child's size request should override the set
 // aspect ratio of the `GtkAspectFrame`.
-func (s *AspectFrameClass) ObeyChild() bool {
+func (self *AspectFrameClass) ObeyChild() bool {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_obey_child(_arg0)
 
@@ -166,11 +169,11 @@ func (s *AspectFrameClass) ObeyChild() bool {
 }
 
 // Ratio returns the desired aspect ratio of the child.
-func (s *AspectFrameClass) Ratio() float32 {
+func (self *AspectFrameClass) Ratio() float32 {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.float           // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_ratio(_arg0)
 
@@ -183,11 +186,11 @@ func (s *AspectFrameClass) Ratio() float32 {
 
 // Xalign returns the horizontal alignment of the child within the allocation of
 // the `GtkAspectFrame`.
-func (s *AspectFrameClass) Xalign() float32 {
+func (self *AspectFrameClass) Xalign() float32 {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.float           // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_xalign(_arg0)
 
@@ -200,11 +203,11 @@ func (s *AspectFrameClass) Xalign() float32 {
 
 // Yalign returns the vertical alignment of the child within the allocation of
 // the `GtkAspectFrame`.
-func (s *AspectFrameClass) Yalign() float32 {
+func (self *AspectFrameClass) Yalign() float32 {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.float           // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_yalign(_arg0)
 
@@ -216,11 +219,11 @@ func (s *AspectFrameClass) Yalign() float32 {
 }
 
 // SetChild sets the child widget of @self.
-func (s *AspectFrameClass) SetChild(child Widget) {
+func (self *AspectFrameClass) SetChild(child Widget) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_aspect_frame_set_child(_arg0, _arg1)
@@ -228,11 +231,11 @@ func (s *AspectFrameClass) SetChild(child Widget) {
 
 // SetObeyChild sets whether the aspect ratio of the child's size request should
 // override the set aspect ratio of the `GtkAspectFrame`.
-func (s *AspectFrameClass) SetObeyChild(obeyChild bool) {
+func (self *AspectFrameClass) SetObeyChild(obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 	if obeyChild {
 		_arg1 = C.TRUE
 	}
@@ -241,11 +244,11 @@ func (s *AspectFrameClass) SetObeyChild(obeyChild bool) {
 }
 
 // SetRatio sets the desired aspect ratio of the child.
-func (s *AspectFrameClass) SetRatio(ratio float32) {
+func (self *AspectFrameClass) SetRatio(ratio float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 	_arg1 = C.float(ratio)
 
 	C.gtk_aspect_frame_set_ratio(_arg0, _arg1)
@@ -253,11 +256,11 @@ func (s *AspectFrameClass) SetRatio(ratio float32) {
 
 // SetXalign sets the horizontal alignment of the child within the allocation of
 // the `GtkAspectFrame`.
-func (s *AspectFrameClass) SetXalign(xalign float32) {
+func (self *AspectFrameClass) SetXalign(xalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 	_arg1 = C.float(xalign)
 
 	C.gtk_aspect_frame_set_xalign(_arg0, _arg1)
@@ -265,11 +268,11 @@ func (s *AspectFrameClass) SetXalign(xalign float32) {
 
 // SetYalign sets the vertical alignment of the child within the allocation of
 // the `GtkAspectFrame`.
-func (s *AspectFrameClass) SetYalign(yalign float32) {
+func (self *AspectFrameClass) SetYalign(yalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 	_arg1 = C.float(yalign)
 
 	C.gtk_aspect_frame_set_yalign(_arg0, _arg1)

@@ -225,12 +225,12 @@ func marshalPermission(p uintptr) (interface{}, error) {
 // This call is blocking, likely for a very long time (in the case that user
 // interaction is required). See g_permission_acquire_async() for the
 // non-blocking version.
-func (p *PermissionClass) Acquire(cancellable Cancellable) error {
+func (permission *PermissionClass) Acquire(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_permission_acquire(_arg0, _arg1, &_cerr)
@@ -245,13 +245,13 @@ func (p *PermissionClass) Acquire(cancellable Cancellable) error {
 // AcquireAsync attempts to acquire the permission represented by @permission.
 //
 // This is the first half of the asynchronous version of g_permission_acquire().
-func (p *PermissionClass) AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+func (permission *PermissionClass) AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
@@ -264,12 +264,12 @@ func (p *PermissionClass) AcquireAsync(cancellable Cancellable, callback AsyncRe
 //
 // This is the second half of the asynchronous version of
 // g_permission_acquire().
-func (p *PermissionClass) AcquireFinish(result AsyncResult) error {
+func (permission *PermissionClass) AcquireFinish(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
@@ -284,11 +284,11 @@ func (p *PermissionClass) AcquireFinish(result AsyncResult) error {
 // Allowed gets the value of the 'allowed' property. This property is true if
 // the caller currently has permission to perform the action that @permission
 // represents the permission to perform.
-func (p *PermissionClass) Allowed() bool {
+func (permission *PermissionClass) Allowed() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	_cret = C.g_permission_get_allowed(_arg0)
 
@@ -304,11 +304,11 @@ func (p *PermissionClass) Allowed() bool {
 // CanAcquire gets the value of the 'can-acquire' property. This property is
 // true if it is generally possible to acquire the permission by calling
 // g_permission_acquire().
-func (p *PermissionClass) CanAcquire() bool {
+func (permission *PermissionClass) CanAcquire() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	_cret = C.g_permission_get_can_acquire(_arg0)
 
@@ -324,11 +324,11 @@ func (p *PermissionClass) CanAcquire() bool {
 // CanRelease gets the value of the 'can-release' property. This property is
 // true if it is generally possible to release the permission by calling
 // g_permission_release().
-func (p *PermissionClass) CanRelease() bool {
+func (permission *PermissionClass) CanRelease() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	_cret = C.g_permission_get_can_release(_arg0)
 
@@ -346,13 +346,13 @@ func (p *PermissionClass) CanRelease() bool {
 // except from a #GPermission implementation.
 //
 // GObject notify signals are generated, as appropriate.
-func (p *PermissionClass) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
+func (permission *PermissionClass) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 	var _arg0 *C.GPermission // out
 	var _arg1 C.gboolean     // out
 	var _arg2 C.gboolean     // out
 	var _arg3 C.gboolean     // out
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	if allowed {
 		_arg1 = C.TRUE
 	}
@@ -381,12 +381,12 @@ func (p *PermissionClass) ImplUpdate(allowed bool, canAcquire bool, canRelease b
 // This call is blocking, likely for a very long time (in the case that user
 // interaction is required). See g_permission_release_async() for the
 // non-blocking version.
-func (p *PermissionClass) Release(cancellable Cancellable) error {
+func (permission *PermissionClass) Release(cancellable Cancellable) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_permission_release(_arg0, _arg1, &_cerr)
@@ -401,13 +401,13 @@ func (p *PermissionClass) Release(cancellable Cancellable) error {
 // ReleaseAsync attempts to release the permission represented by @permission.
 //
 // This is the first half of the asynchronous version of g_permission_release().
-func (p *PermissionClass) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+func (permission *PermissionClass) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
@@ -420,12 +420,12 @@ func (p *PermissionClass) ReleaseAsync(cancellable Cancellable, callback AsyncRe
 //
 // This is the second half of the asynchronous version of
 // g_permission_release().
-func (p *PermissionClass) ReleaseFinish(result AsyncResult) error {
+func (permission *PermissionClass) ReleaseFinish(result AsyncResult) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_permission_release_finish(_arg0, _arg1, &_cerr)

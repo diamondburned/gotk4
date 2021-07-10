@@ -94,11 +94,11 @@ func (c *CSSSection) Native() unsafe.Pointer {
 // GtkCssProvider::parsing-error signal. The end position and line may be
 // identical to the start position and line for sections which failed to parse
 // anything successfully.
-func (s *CSSSection) EndLine() uint {
+func (section *CSSSection) EndLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
 
 	_cret = C.gtk_css_section_get_end_line(_arg0)
 
@@ -115,11 +115,11 @@ func (s *CSSSection) EndLine() uint {
 // will for example happen in the GtkCssProvider::parsing-error signal. The end
 // position and line may be identical to the start position and line for
 // sections which failed to parse anything successfully.
-func (s *CSSSection) EndPosition() uint {
+func (section *CSSSection) EndPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
 
 	_cret = C.gtk_css_section_get_end_position(_arg0)
 
@@ -136,11 +136,11 @@ func (s *CSSSection) EndPosition() uint {
 // original CSS document that was loaded by gtk_css_provider_load_from_file() or
 // a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
 // from a different file.
-func (s *CSSSection) Parent() *CSSSection {
+func (section *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
 
 	_cret = C.gtk_css_section_get_parent(_arg0)
 
@@ -156,11 +156,11 @@ func (s *CSSSection) Parent() *CSSSection {
 }
 
 // SectionType gets the type of information that @section describes.
-func (s *CSSSection) SectionType() CSSSectionType {
+func (section *CSSSection) SectionType() CSSSectionType {
 	var _arg0 *C.GtkCssSection    // out
 	var _cret C.GtkCssSectionType // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
 
 	_cret = C.gtk_css_section_get_section_type(_arg0)
 
@@ -173,11 +173,11 @@ func (s *CSSSection) SectionType() CSSSectionType {
 
 // StartLine returns the line in the CSS document where this section starts. The
 // line number is 0-indexed, so the first line of the document will return 0.
-func (s *CSSSection) StartLine() uint {
+func (section *CSSSection) StartLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
 
 	_cret = C.gtk_css_section_get_start_line(_arg0)
 
@@ -190,11 +190,11 @@ func (s *CSSSection) StartLine() uint {
 
 // StartPosition returns the offset in bytes from the start of the current line
 // returned via gtk_css_section_get_start_line().
-func (s *CSSSection) StartPosition() uint {
+func (section *CSSSection) StartPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
 
 	_cret = C.gtk_css_section_get_start_position(_arg0)
 
@@ -206,11 +206,11 @@ func (s *CSSSection) StartPosition() uint {
 }
 
 // Ref increments the reference count on @section.
-func (s *CSSSection) ref() *CSSSection {
+func (section *CSSSection) ref() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
 
 	_cret = C.gtk_css_section_ref(_arg0)
 
@@ -227,10 +227,10 @@ func (s *CSSSection) ref() *CSSSection {
 
 // Unref decrements the reference count on @section, freeing the structure if
 // the reference count reaches 0.
-func (s *CSSSection) unref() {
+func (section *CSSSection) unref() {
 	var _arg0 *C.GtkCssSection // out
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
 
 	C.gtk_css_section_unref(_arg0)
 }

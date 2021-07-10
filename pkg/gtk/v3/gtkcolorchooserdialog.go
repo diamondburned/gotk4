@@ -36,8 +36,8 @@ type ColorChooserDialog interface {
 type ColorChooserDialogClass struct {
 	*externglib.Object
 	DialogClass
-	BuildableInterface
-	ColorChooserInterface
+	BuildableIface
+	ColorChooserIface
 }
 
 var _ ColorChooserDialog = (*ColorChooserDialogClass)(nil)
@@ -54,31 +54,34 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ColorChooserInterface: ColorChooserInterface{
+		ColorChooserIface: ColorChooserIface{
 			Object: obj,
 		},
 	}

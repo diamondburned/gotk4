@@ -82,11 +82,11 @@ func NewDropControllerMotion() *DropControllerMotionClass {
 
 // ContainsPointer returns if a Drag-and-Drop operation is within the widget
 // @self or one of its children.
-func (s *DropControllerMotionClass) ContainsPointer() bool {
+func (self *DropControllerMotionClass) ContainsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_controller_motion_contains_pointer(_arg0)
 
@@ -101,11 +101,11 @@ func (s *DropControllerMotionClass) ContainsPointer() bool {
 
 // Drop returns the `GdkDrop` of a current Drag-and-Drop operation over the
 // widget of @self.
-func (s *DropControllerMotionClass) Drop() *gdk.DropClass {
+func (self *DropControllerMotionClass) Drop() *gdk.DropClass {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret *C.GdkDrop                 // in
 
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_controller_motion_get_drop(_arg0)
 
@@ -118,11 +118,11 @@ func (s *DropControllerMotionClass) Drop() *gdk.DropClass {
 
 // IsPointer returns if a Drag-and-Drop operation is within the widget @self,
 // not one of its children.
-func (s *DropControllerMotionClass) IsPointer() bool {
+func (self *DropControllerMotionClass) IsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_controller_motion_is_pointer(_arg0)
 

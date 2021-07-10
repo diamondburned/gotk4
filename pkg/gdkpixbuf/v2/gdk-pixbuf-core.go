@@ -53,7 +53,8 @@ func marshalColorspace(p uintptr) (interface{}, error) {
 // will be possible to do full alpha compositing onto arbitrary drawables. For
 // now both cases fall back to a bilevel clipping mask.
 //
-// Deprecated: since version 2.42.
+// Deprecated: There is no user of GdkPixbufAlphaMode in GdkPixbuf, and the Xlib
+// utility functions have been split out to their own library, gdk-pixbuf-xlib.
 type PixbufAlphaMode int
 
 const (

@@ -60,7 +60,7 @@ type NetworkService interface {
 // NetworkServiceClass implements the NetworkService interface.
 type NetworkServiceClass struct {
 	*externglib.Object
-	SocketConnectableInterface
+	SocketConnectableIface
 }
 
 var _ NetworkService = (*NetworkServiceClass)(nil)
@@ -68,7 +68,7 @@ var _ NetworkService = (*NetworkServiceClass)(nil)
 func wrapNetworkService(obj *externglib.Object) NetworkService {
 	return &NetworkServiceClass{
 		Object: obj,
-		SocketConnectableInterface: SocketConnectableInterface{
+		SocketConnectableIface: SocketConnectableIface{
 			Object: obj,
 		},
 	}
@@ -107,11 +107,11 @@ func NewNetworkService(service string, protocol string, domain string) *NetworkS
 
 // Domain gets the domain that @srv serves. This might be either UTF-8 or
 // ASCII-encoded, depending on what @srv was created with.
-func (s *NetworkServiceClass) Domain() string {
+func (srv *NetworkServiceClass) Domain() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_domain(_arg0)
 
@@ -123,11 +123,11 @@ func (s *NetworkServiceClass) Domain() string {
 }
 
 // Protocol gets @srv's protocol name (eg, "tcp").
-func (s *NetworkServiceClass) Protocol() string {
+func (srv *NetworkServiceClass) Protocol() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_protocol(_arg0)
 
@@ -140,11 +140,11 @@ func (s *NetworkServiceClass) Protocol() string {
 
 // Scheme gets the URI scheme used to resolve proxies. By default, the service
 // name is used as scheme.
-func (s *NetworkServiceClass) Scheme() string {
+func (srv *NetworkServiceClass) Scheme() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_scheme(_arg0)
 
@@ -156,11 +156,11 @@ func (s *NetworkServiceClass) Scheme() string {
 }
 
 // Service gets @srv's service name (eg, "ldap").
-func (s *NetworkServiceClass) Service() string {
+func (srv *NetworkServiceClass) Service() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_service(_arg0)
 
@@ -173,11 +173,11 @@ func (s *NetworkServiceClass) Service() string {
 
 // SetScheme set's the URI scheme used to resolve proxies. By default, the
 // service name is used as scheme.
-func (s *NetworkServiceClass) SetScheme(scheme string) {
+func (srv *NetworkServiceClass) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 	_arg1 = (*C.gchar)(C.CString(scheme))
 	defer C.free(unsafe.Pointer(_arg1))
 

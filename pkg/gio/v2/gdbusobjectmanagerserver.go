@@ -89,7 +89,7 @@ type DBusObjectManagerServer interface {
 // DBusObjectManagerServerClass implements the DBusObjectManagerServer interface.
 type DBusObjectManagerServerClass struct {
 	*externglib.Object
-	DBusObjectManagerInterface
+	DBusObjectManagerIface
 }
 
 var _ DBusObjectManagerServer = (*DBusObjectManagerServerClass)(nil)
@@ -97,7 +97,7 @@ var _ DBusObjectManagerServer = (*DBusObjectManagerServerClass)(nil)
 func wrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServer {
 	return &DBusObjectManagerServerClass{
 		Object: obj,
-		DBusObjectManagerInterface: DBusObjectManagerInterface{
+		DBusObjectManagerIface: DBusObjectManagerIface{
 			Object: obj,
 		},
 	}
@@ -142,11 +142,11 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServerClass
 //
 // Note that @manager will take a reference on @object for as long as it is
 // exported.
-func (m *DBusObjectManagerServerClass) Export(object DBusObjectSkeleton) {
+func (manager *DBusObjectManagerServerClass) Export(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
-	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	C.g_dbus_object_manager_server_export(_arg0, _arg1)
@@ -156,22 +156,22 @@ func (m *DBusObjectManagerServerClass) Export(object DBusObjectSkeleton) {
 // string of the form _N (with N being a natural number) to @object's object
 // path if an object with the given path already exists. As such, the
 // BusObjectProxy:g-object-path property of @object may be modified.
-func (m *DBusObjectManagerServerClass) ExportUniquely(object DBusObjectSkeleton) {
+func (manager *DBusObjectManagerServerClass) ExportUniquely(object DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
-	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	C.g_dbus_object_manager_server_export_uniquely(_arg0, _arg1)
 }
 
 // Connection gets the BusConnection used by @manager.
-func (m *DBusObjectManagerServerClass) Connection() *DBusConnectionClass {
+func (manager *DBusObjectManagerServerClass) Connection() *DBusConnectionClass {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _cret *C.GDBusConnection          // in
 
-	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_server_get_connection(_arg0)
 
@@ -183,12 +183,12 @@ func (m *DBusObjectManagerServerClass) Connection() *DBusConnectionClass {
 }
 
 // IsExported returns whether @object is currently exported on @manager.
-func (m *DBusObjectManagerServerClass) IsExported(object DBusObjectSkeleton) bool {
+func (manager *DBusObjectManagerServerClass) IsExported(object DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 	var _cret C.gboolean                  // in
 
-	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	_cret = C.g_dbus_object_manager_server_is_exported(_arg0, _arg1)
@@ -204,11 +204,11 @@ func (m *DBusObjectManagerServerClass) IsExported(object DBusObjectSkeleton) boo
 
 // SetConnection exports all objects managed by @manager on @connection. If
 // @connection is nil, stops exporting objects.
-func (m *DBusObjectManagerServerClass) SetConnection(connection DBusConnection) {
+func (manager *DBusObjectManagerServerClass) SetConnection(connection DBusConnection) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusConnection          // out
 
-	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	C.g_dbus_object_manager_server_set_connection(_arg0, _arg1)
@@ -219,12 +219,12 @@ func (m *DBusObjectManagerServerClass) SetConnection(connection DBusConnection) 
 //
 // Note that @object_path must be in the hierarchy rooted by the object path for
 // @manager.
-func (m *DBusObjectManagerServerClass) Unexport(objectPath string) bool {
+func (manager *DBusObjectManagerServerClass) Unexport(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.gchar                    // out
 	var _cret C.gboolean                  // in
 
-	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
 

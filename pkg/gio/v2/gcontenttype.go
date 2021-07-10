@@ -129,7 +129,7 @@ func ContentTypeGetGenericIconName(typ string) string {
 }
 
 // ContentTypeGetIcon gets the icon for a content type.
-func ContentTypeGetIcon(typ string) *IconInterface {
+func ContentTypeGetIcon(typ string) *IconIface {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -138,9 +138,9 @@ func ContentTypeGetIcon(typ string) *IconInterface {
 
 	_cret = C.g_content_type_get_icon(_arg1)
 
-	var _icon *IconInterface // out
+	var _icon *IconIface // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
 
 	return _icon
 }
@@ -191,7 +191,7 @@ func ContentTypeGetMIMEType(typ string) string {
 }
 
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
-func ContentTypeGetSymbolicIcon(typ string) *IconInterface {
+func ContentTypeGetSymbolicIcon(typ string) *IconIface {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -200,9 +200,9 @@ func ContentTypeGetSymbolicIcon(typ string) *IconInterface {
 
 	_cret = C.g_content_type_get_symbolic_icon(_arg1)
 
-	var _icon *IconInterface // out
+	var _icon *IconIface // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
 
 	return _icon
 }

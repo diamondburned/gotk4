@@ -34,18 +34,18 @@ func init() {
 type StyleProvider interface {
 	gextras.Objector
 
-	privateStyleProviderInterface()
+	privateStyleProviderIface()
 }
 
-// StyleProviderInterface implements the StyleProvider interface.
-type StyleProviderInterface struct {
+// StyleProviderIface implements the StyleProvider interface.
+type StyleProviderIface struct {
 	*externglib.Object
 }
 
-var _ StyleProvider = (*StyleProviderInterface)(nil)
+var _ StyleProvider = (*StyleProviderIface)(nil)
 
 func wrapStyleProvider(obj *externglib.Object) StyleProvider {
-	return &StyleProviderInterface{
+	return &StyleProviderIface{
 		Object: obj,
 	}
 }
@@ -56,4 +56,4 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 	return wrapStyleProvider(obj), nil
 }
 
-func (*StyleProviderInterface) privateStyleProviderInterface() {}
+func (*StyleProviderIface) privateStyleProviderIface() {}

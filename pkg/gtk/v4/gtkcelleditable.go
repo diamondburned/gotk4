@@ -74,24 +74,29 @@ type CellEditable interface {
 	StartEditing(event gdk.Event)
 }
 
-// CellEditableInterface implements the CellEditable interface.
-type CellEditableInterface struct {
+// CellEditableIface implements the CellEditable interface.
+type CellEditableIface struct {
+	*externglib.Object
 	WidgetClass
 }
 
-var _ CellEditable = (*CellEditableInterface)(nil)
+var _ CellEditable = (*CellEditableIface)(nil)
 
 func wrapCellEditable(obj *externglib.Object) CellEditable {
-	return &CellEditableInterface{
+	return &CellEditableIface{
+		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
@@ -105,19 +110,19 @@ func marshalCellEditable(p uintptr) (interface{}, error) {
 }
 
 // EditingDone emits the CellEditable::editing-done signal.
-func (c *CellEditableInterface) EditingDone() {
+func (cellEditable *CellEditableIface) EditingDone() {
 	var _arg0 *C.GtkCellEditable // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
 
 	C.gtk_cell_editable_editing_done(_arg0)
 }
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
-func (c *CellEditableInterface) RemoveWidget() {
+func (cellEditable *CellEditableIface) RemoveWidget() {
 	var _arg0 *C.GtkCellEditable // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
 
 	C.gtk_cell_editable_remove_widget(_arg0)
 }
@@ -132,11 +137,11 @@ func (c *CellEditableInterface) RemoveWidget() {
 //
 // Note that the @cell_editable is created on-demand for the current edit; its
 // lifetime is temporary and does not persist across other edits and/or cells.
-func (c *CellEditableInterface) StartEditing(event gdk.Event) {
+func (cellEditable *CellEditableIface) StartEditing(event gdk.Event) {
 	var _arg0 *C.GtkCellEditable // out
 	var _arg1 *C.GdkEvent        // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gtk_cell_editable_start_editing(_arg0, _arg1)

@@ -190,10 +190,10 @@ type Scale interface {
 type ScaleClass struct {
 	*externglib.Object
 	RangeClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	OrientableInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	OrientableIface
 }
 
 var _ Scale = (*ScaleClass)(nil)
@@ -204,40 +204,43 @@ func wrapScale(obj *externglib.Object) Scale {
 		RangeClass: RangeClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
-			AccessibleInterface: AccessibleInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -250,20 +253,20 @@ func marshalScale(p uintptr) (interface{}, error) {
 }
 
 // ClearMarks removes any marks that have been added.
-func (s *ScaleClass) ClearMarks() {
+func (scale *ScaleClass) ClearMarks() {
 	var _arg0 *C.GtkScale // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	C.gtk_scale_clear_marks(_arg0)
 }
 
 // Digits gets the number of decimal places that are displayed in the value.
-func (s *ScaleClass) Digits() int {
+func (scale *ScaleClass) Digits() int {
 	var _arg0 *C.GtkScale // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_digits(_arg0)
 
@@ -276,11 +279,11 @@ func (s *ScaleClass) Digits() int {
 
 // DrawValue returns whether the current value is displayed as a string next to
 // the slider.
-func (s *ScaleClass) DrawValue() bool {
+func (scale *ScaleClass) DrawValue() bool {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_draw_value(_arg0)
 
@@ -294,11 +297,11 @@ func (s *ScaleClass) DrawValue() bool {
 }
 
 // HasOrigin returns whether the scale has an origin.
-func (s *ScaleClass) HasOrigin() bool {
+func (scale *ScaleClass) HasOrigin() bool {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_has_origin(_arg0)
 
@@ -315,11 +318,11 @@ func (s *ScaleClass) HasOrigin() bool {
 //
 // The returned object is owned by the scale so does not need to be freed by the
 // caller.
-func (s *ScaleClass) Layout() *pango.LayoutClass {
+func (scale *ScaleClass) Layout() *pango.LayoutClass {
 	var _arg0 *C.GtkScale    // out
 	var _cret *C.PangoLayout // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_layout(_arg0)
 
@@ -338,12 +341,12 @@ func (s *ScaleClass) Layout() *pango.LayoutClass {
 //
 // If the [property@GtkScale:draw-value] property is false, the return values
 // are undefined.
-func (s *ScaleClass) LayoutOffsets() (x int, y int) {
+func (scale *ScaleClass) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.int       // in
 	var _arg2 C.int       // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	C.gtk_scale_get_layout_offsets(_arg0, &_arg1, &_arg2)
 
@@ -357,11 +360,11 @@ func (s *ScaleClass) LayoutOffsets() (x int, y int) {
 }
 
 // ValuePos gets the position in which the current value is displayed.
-func (s *ScaleClass) ValuePos() PositionType {
+func (scale *ScaleClass) ValuePos() PositionType {
 	var _arg0 *C.GtkScale       // out
 	var _cret C.GtkPositionType // in
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_value_pos(_arg0)
 
@@ -384,11 +387,11 @@ func (s *ScaleClass) ValuePos() PositionType {
 // autoscrolling that is built into `GtkScale`. As an alternative, you can use
 // [method@Gtk.Scale.set_format_value_func] to format the displayed value
 // yourself.
-func (s *ScaleClass) SetDigits(digits int) {
+func (scale *ScaleClass) SetDigits(digits int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.int       // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 	_arg1 = C.int(digits)
 
 	C.gtk_scale_set_digits(_arg0, _arg1)
@@ -396,11 +399,11 @@ func (s *ScaleClass) SetDigits(digits int) {
 
 // SetDrawValue specifies whether the current value is displayed as a string
 // next to the slider.
-func (s *ScaleClass) SetDrawValue(drawValue bool) {
+func (scale *ScaleClass) SetDrawValue(drawValue bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 	if drawValue {
 		_arg1 = C.TRUE
 	}
@@ -413,11 +416,11 @@ func (s *ScaleClass) SetDrawValue(drawValue bool) {
 // If [property@GtkScale:has-origin] is set to true (the default), the scale
 // will highlight the part of the trough between the origin (bottom or left
 // side) and the current value.
-func (s *ScaleClass) SetHasOrigin(hasOrigin bool) {
+func (scale *ScaleClass) SetHasOrigin(hasOrigin bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 	if hasOrigin {
 		_arg1 = C.TRUE
 	}

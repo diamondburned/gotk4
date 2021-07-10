@@ -109,7 +109,7 @@ type PopoverMenu interface {
 type PopoverMenuClass struct {
 	*externglib.Object
 	PopoverClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ PopoverMenu = (*PopoverMenuClass)(nil)
@@ -124,24 +124,27 @@ func wrapPopoverMenu(obj *externglib.Object) PopoverMenu {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -173,11 +176,11 @@ func NewPopoverMenu() *PopoverMenuClass {
 // ModelButton will open submenus automatically when the ModelButton:menu-name
 // property is set, so this function is only needed when you are using other
 // kinds of widgets to initiate menu changes.
-func (p *PopoverMenuClass) OpenSubmenu(name string) {
+func (popover *PopoverMenuClass) OpenSubmenu(name string) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 

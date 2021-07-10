@@ -304,15 +304,15 @@ type Text interface {
 	SetSelection(selectionNum int, startOffset int, endOffset int) bool
 }
 
-// TextInterface implements the Text interface.
-type TextInterface struct {
+// TextIface implements the Text interface.
+type TextIface struct {
 	*externglib.Object
 }
 
-var _ Text = (*TextInterface)(nil)
+var _ Text = (*TextIface)(nil)
 
 func wrapText(obj *externglib.Object) Text {
-	return &TextInterface{
+	return &TextIface{
 		Object: obj,
 	}
 }
@@ -324,13 +324,13 @@ func marshalText(p uintptr) (interface{}, error) {
 }
 
 // AddSelection adds a selection bounded by the specified offsets.
-func (t *TextInterface) AddSelection(startOffset int, endOffset int) bool {
+func (text *TextIface) AddSelection(startOffset int, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
 
@@ -346,11 +346,11 @@ func (t *TextInterface) AddSelection(startOffset int, endOffset int) bool {
 }
 
 // CaretOffset gets the offset of the position of the caret (cursor).
-func (t *TextInterface) CaretOffset() int {
+func (text *TextIface) CaretOffset() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 
 	_cret = C.atk_text_get_caret_offset(_arg0)
 
@@ -362,12 +362,12 @@ func (t *TextInterface) CaretOffset() int {
 }
 
 // CharacterAtOffset gets the specified text.
-func (t *TextInterface) CharacterAtOffset(offset int) uint32 {
+func (text *TextIface) CharacterAtOffset(offset int) uint32 {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _cret C.gunichar // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(offset)
 
 	_cret = C.atk_text_get_character_at_offset(_arg0, _arg1)
@@ -380,11 +380,11 @@ func (t *TextInterface) CharacterAtOffset(offset int) uint32 {
 }
 
 // CharacterCount gets the character count.
-func (t *TextInterface) CharacterCount() int {
+func (text *TextIface) CharacterCount() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 
 	_cret = C.atk_text_get_character_count(_arg0)
 
@@ -396,11 +396,11 @@ func (t *TextInterface) CharacterCount() int {
 }
 
 // NSelections gets the number of selected regions.
-func (t *TextInterface) NSelections() int {
+func (text *TextIface) NSelections() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 
 	_cret = C.atk_text_get_n_selections(_arg0)
 
@@ -412,14 +412,14 @@ func (t *TextInterface) NSelections() int {
 }
 
 // Selection gets the text from the specified selection.
-func (t *TextInterface) Selection(selectionNum int) (startOffset int, endOffset int, utf8 string) {
+func (text *TextIface) Selection(selectionNum int) (startOffset int, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // in
 	var _arg3 C.gint     // in
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(selectionNum)
 
 	_cret = C.atk_text_get_selection(_arg0, _arg1, &_arg2, &_arg3)
@@ -437,13 +437,13 @@ func (t *TextInterface) Selection(selectionNum int) (startOffset int, endOffset 
 }
 
 // Text gets the specified text.
-func (t *TextInterface) Text(startOffset int, endOffset int) string {
+func (text *TextIface) Text(startOffset int, endOffset int) string {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
 
@@ -458,12 +458,12 @@ func (t *TextInterface) Text(startOffset int, endOffset int) string {
 }
 
 // RemoveSelection removes the specified selection.
-func (t *TextInterface) RemoveSelection(selectionNum int) bool {
+func (text *TextIface) RemoveSelection(selectionNum int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(selectionNum)
 
 	_cret = C.atk_text_remove_selection(_arg0, _arg1)
@@ -494,12 +494,12 @@ func (t *TextInterface) RemoveSelection(selectionNum int) bool {
 // method should not trigger one either. If the application does not have a
 // caret motion or focus navigation operation, this method should try to scroll
 // the new caret position into view while minimizing unnecessary scroll motion.
-func (t *TextInterface) SetCaretOffset(offset int) bool {
+func (text *TextIface) SetCaretOffset(offset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(offset)
 
 	_cret = C.atk_text_set_caret_offset(_arg0, _arg1)
@@ -514,14 +514,14 @@ func (t *TextInterface) SetCaretOffset(offset int) bool {
 }
 
 // SetSelection changes the start and end offset of the specified selection.
-func (t *TextInterface) SetSelection(selectionNum int, startOffset int, endOffset int) bool {
+func (text *TextIface) SetSelection(selectionNum int, startOffset int, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
 	var _arg3 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(selectionNum)
 	_arg2 = C.gint(startOffset)
 	_arg3 = C.gint(endOffset)
@@ -558,34 +558,6 @@ func (t *TextRange) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// Bounds: rectangle giving the bounds of the text range
-func (t *TextRange) Bounds() TextRectangle {
-	var v TextRectangle // out
-	v = *(*TextRectangle)(unsafe.Pointer((&t.native.bounds)))
-	return v
-}
-
-// StartOffset: the start offset of a AtkTextRange
-func (t *TextRange) StartOffset() int {
-	var v int // out
-	v = int(t.native.start_offset)
-	return v
-}
-
-// EndOffset: the end offset of a AtkTextRange
-func (t *TextRange) EndOffset() int {
-	var v int // out
-	v = int(t.native.end_offset)
-	return v
-}
-
-// Content: the text in the text range
-func (t *TextRange) Content() string {
-	var v string // out
-	v = C.GoString(t.native.content)
-	return v
-}
-
 // TextRectangle: structure used to store a rectangle used by AtkText.
 type TextRectangle struct {
 	native C.AtkTextRectangle
@@ -600,32 +572,4 @@ func WrapTextRectangle(ptr unsafe.Pointer) *TextRectangle {
 // Native returns the underlying C source pointer.
 func (t *TextRectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// X: the horizontal coordinate of a rectangle
-func (t *TextRectangle) X() int {
-	var v int // out
-	v = int(t.native.x)
-	return v
-}
-
-// Y: the vertical coordinate of a rectangle
-func (t *TextRectangle) Y() int {
-	var v int // out
-	v = int(t.native.y)
-	return v
-}
-
-// Width: the width of a rectangle
-func (t *TextRectangle) Width() int {
-	var v int // out
-	v = int(t.native.width)
-	return v
-}
-
-// Height: the height of a rectangle
-func (t *TextRectangle) Height() int {
-	var v int // out
-	v = int(t.native.height)
-	return v
 }

@@ -80,11 +80,11 @@ func NewBoolFilter(expression Expression) *BoolFilterClass {
 
 // Expression gets the expression that the filter uses to evaluate if an item
 // should be filtered.
-func (s *BoolFilterClass) Expression() *ExpressionClass {
+func (self *BoolFilterClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bool_filter_get_expression(_arg0)
 
@@ -96,11 +96,11 @@ func (s *BoolFilterClass) Expression() *ExpressionClass {
 }
 
 // Invert returns whether the filter inverts the expression.
-func (s *BoolFilterClass) Invert() bool {
+func (self *BoolFilterClass) Invert() bool {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bool_filter_get_invert(_arg0)
 
@@ -117,22 +117,22 @@ func (s *BoolFilterClass) Invert() bool {
 // should be filtered.
 //
 // The expression must have a value type of G_TYPE_BOOLEAN.
-func (s *BoolFilterClass) SetExpression(expression Expression) {
+func (self *BoolFilterClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 *C.GtkExpression // out
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_bool_filter_set_expression(_arg0, _arg1)
 }
 
 // SetInvert sets whether the filter should invert the expression.
-func (s *BoolFilterClass) SetInvert(invert bool) {
+func (self *BoolFilterClass) SetInvert(invert bool) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
 	if invert {
 		_arg1 = C.TRUE
 	}

@@ -49,9 +49,9 @@ type WindowHandle interface {
 type WindowHandleClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ WindowHandle = (*WindowHandleClass)(nil)
@@ -60,24 +60,27 @@ func wrapWindowHandle(obj *externglib.Object) WindowHandle {
 	return &WindowHandleClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -103,11 +106,11 @@ func NewWindowHandle() *WindowHandleClass {
 }
 
 // Child gets the child widget of @self.
-func (s *WindowHandleClass) Child() *WidgetClass {
+func (self *WindowHandleClass) Child() *WidgetClass {
 	var _arg0 *C.GtkWindowHandle // out
 	var _cret *C.GtkWidget       // in
 
-	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_handle_get_child(_arg0)
 
@@ -119,11 +122,11 @@ func (s *WindowHandleClass) Child() *WidgetClass {
 }
 
 // SetChild sets the child widget of @self.
-func (s *WindowHandleClass) SetChild(child Widget) {
+func (self *WindowHandleClass) SetChild(child Widget) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out
 
-	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_window_handle_set_child(_arg0, _arg1)

@@ -101,9 +101,9 @@ type ImageMenuItem interface {
 type ImageMenuItemClass struct {
 	*externglib.Object
 	MenuItemClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ ImageMenuItem = (*ImageMenuItemClass)(nil)
@@ -118,46 +118,57 @@ func wrapImageMenuItem(obj *externglib.Object) ImageMenuItem {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -171,7 +182,7 @@ func marshalImageMenuItem(p uintptr) (interface{}, error) {
 
 // NewImageMenuItem creates a new ImageMenuItem with an empty label.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_menu_item_new() instead.
 func NewImageMenuItem() *ImageMenuItemClass {
 	var _cret *C.GtkWidget // in
 
@@ -194,7 +205,7 @@ func NewImageMenuItem() *ImageMenuItemClass {
 // accelerator for the stock item, and if one is found, call
 // gtk_accel_map_add_entry() to register it.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_menu_item_new_with_mnemonic() instead.
 func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) *ImageMenuItemClass {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GtkAccelGroup // out
@@ -215,7 +226,7 @@ func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) *ImageMenu
 
 // NewImageMenuItemWithLabel creates a new ImageMenuItem containing a label.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_menu_item_new_with_label() instead.
 func NewImageMenuItemWithLabel(label string) *ImageMenuItemClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -236,7 +247,7 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItemClass {
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
 // in @label indicate the mnemonic for the menu item.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_menu_item_new_with_mnemonic() instead.
 func NewImageMenuItemWithMnemonic(label string) *ImageMenuItemClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -257,11 +268,11 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItemClass {
 // Settings:gtk-menu-images setting and always show the image, if available.
 //
 // Deprecated: since version 3.10.
-func (i *ImageMenuItemClass) AlwaysShowImage() bool {
+func (imageMenuItem *ImageMenuItemClass) AlwaysShowImage() bool {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 
 	_cret = C.gtk_image_menu_item_get_always_show_image(_arg0)
 
@@ -278,11 +289,11 @@ func (i *ImageMenuItemClass) AlwaysShowImage() bool {
 // See gtk_image_menu_item_set_image().
 //
 // Deprecated: since version 3.10.
-func (i *ImageMenuItemClass) Image() *WidgetClass {
+func (imageMenuItem *ImageMenuItemClass) Image() *WidgetClass {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 
 	_cret = C.gtk_image_menu_item_get_image(_arg0)
 
@@ -297,11 +308,11 @@ func (i *ImageMenuItemClass) Image() *WidgetClass {
 // to select the stock item for the item.
 //
 // Deprecated: since version 3.10.
-func (i *ImageMenuItemClass) UseStock() bool {
+func (imageMenuItem *ImageMenuItemClass) UseStock() bool {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 
 	_cret = C.gtk_image_menu_item_get_use_stock(_arg0)
 
@@ -323,11 +334,11 @@ func (i *ImageMenuItemClass) UseStock() bool {
 // need this (see gtk_image_menu_item_new_from_stock()).
 //
 // Deprecated: since version 3.10.
-func (i *ImageMenuItemClass) SetAccelGroup(accelGroup AccelGroup) {
+func (imageMenuItem *ImageMenuItemClass) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkAccelGroup    // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_image_menu_item_set_accel_group(_arg0, _arg1)
@@ -340,11 +351,11 @@ func (i *ImageMenuItemClass) SetAccelGroup(accelGroup AccelGroup) {
 // image.
 //
 // Deprecated: since version 3.10.
-func (i *ImageMenuItemClass) SetAlwaysShowImage(alwaysShow bool) {
+func (imageMenuItem *ImageMenuItemClass) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 	if alwaysShow {
 		_arg1 = C.TRUE
 	}
@@ -357,11 +368,11 @@ func (i *ImageMenuItemClass) SetAlwaysShowImage(alwaysShow bool) {
 // or not.
 //
 // Deprecated: since version 3.10.
-func (i *ImageMenuItemClass) SetImage(image Widget) {
+func (imageMenuItem *ImageMenuItemClass) SetImage(image Widget) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkWidget        // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
 
 	C.gtk_image_menu_item_set_image(_arg0, _arg1)
@@ -371,11 +382,11 @@ func (i *ImageMenuItemClass) SetImage(image Widget) {
 // select the stock item for the item.
 //
 // Deprecated: since version 3.10.
-func (i *ImageMenuItemClass) SetUseStock(useStock bool) {
+func (imageMenuItem *ImageMenuItemClass) SetUseStock(useStock bool) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 	if useStock {
 		_arg1 = C.TRUE
 	}

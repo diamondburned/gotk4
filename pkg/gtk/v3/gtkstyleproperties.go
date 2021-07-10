@@ -48,29 +48,29 @@ type StyleProperties interface {
 
 	// Clear clears all style information from @props.
 	//
-	// Deprecated: since version 3.16.
+	// Deprecated: StyleProperties are deprecated.
 	Clear()
 	// LookupColor returns the symbolic color that is mapped to @name.
 	//
-	// Deprecated: since version 3.8.
+	// Deprecated: SymbolicColor is deprecated.
 	LookupColor(name string) *SymbolicColor
 	// MapColor maps @color so it can be referenced by @name. See
 	// gtk_style_properties_lookup_color()
 	//
-	// Deprecated: since version 3.8.
+	// Deprecated: SymbolicColor is deprecated.
 	MapColor(name string, color *SymbolicColor)
 	// Merge merges into @props all the style information contained in
 	// @props_to_merge. If @replace is true, the values will be overwritten, if
 	// it is false, the older values will prevail.
 	//
-	// Deprecated: since version 3.16.
+	// Deprecated: StyleProperties are deprecated.
 	Merge(propsToMerge StyleProperties, replace bool)
 }
 
 // StylePropertiesClass implements the StyleProperties interface.
 type StylePropertiesClass struct {
 	*externglib.Object
-	StyleProviderInterface
+	StyleProviderIface
 }
 
 var _ StyleProperties = (*StylePropertiesClass)(nil)
@@ -78,7 +78,7 @@ var _ StyleProperties = (*StylePropertiesClass)(nil)
 func wrapStyleProperties(obj *externglib.Object) StyleProperties {
 	return &StylePropertiesClass{
 		Object: obj,
-		StyleProviderInterface: StyleProviderInterface{
+		StyleProviderIface: StyleProviderIface{
 			Object: obj,
 		},
 	}
@@ -92,7 +92,7 @@ func marshalStyleProperties(p uintptr) (interface{}, error) {
 
 // NewStyleProperties returns a newly created StyleProperties
 //
-// Deprecated: since version 3.16.
+// Deprecated: StyleProperties are deprecated.
 func NewStyleProperties() *StylePropertiesClass {
 	var _cret *C.GtkStyleProperties // in
 
@@ -107,24 +107,24 @@ func NewStyleProperties() *StylePropertiesClass {
 
 // Clear clears all style information from @props.
 //
-// Deprecated: since version 3.16.
-func (p *StylePropertiesClass) Clear() {
+// Deprecated: StyleProperties are deprecated.
+func (props *StylePropertiesClass) Clear() {
 	var _arg0 *C.GtkStyleProperties // out
 
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	C.gtk_style_properties_clear(_arg0)
 }
 
 // LookupColor returns the symbolic color that is mapped to @name.
 //
-// Deprecated: since version 3.8.
-func (p *StylePropertiesClass) LookupColor(name string) *SymbolicColor {
+// Deprecated: SymbolicColor is deprecated.
+func (props *StylePropertiesClass) LookupColor(name string) *SymbolicColor {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GtkSymbolicColor   // in
 
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -144,13 +144,13 @@ func (p *StylePropertiesClass) LookupColor(name string) *SymbolicColor {
 // MapColor maps @color so it can be referenced by @name. See
 // gtk_style_properties_lookup_color()
 //
-// Deprecated: since version 3.8.
-func (p *StylePropertiesClass) MapColor(name string, color *SymbolicColor) {
+// Deprecated: SymbolicColor is deprecated.
+func (props *StylePropertiesClass) MapColor(name string, color *SymbolicColor) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GtkSymbolicColor   // out
 
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
@@ -162,13 +162,13 @@ func (p *StylePropertiesClass) MapColor(name string, color *SymbolicColor) {
 // @props_to_merge. If @replace is true, the values will be overwritten, if it
 // is false, the older values will prevail.
 //
-// Deprecated: since version 3.16.
-func (p *StylePropertiesClass) Merge(propsToMerge StyleProperties, replace bool) {
+// Deprecated: StyleProperties are deprecated.
+func (props *StylePropertiesClass) Merge(propsToMerge StyleProperties, replace bool) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 C.gboolean            // out
 
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(propsToMerge.Native()))
 	if replace {
 		_arg2 = C.TRUE
@@ -269,13 +269,13 @@ func (g *Gradient) Native() unsafe.Pointer {
 
 // AddColorStop adds a stop color to @gradient.
 //
-// Deprecated: since version 3.8.
-func (g *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
+// Deprecated: Gradient is deprecated.
+func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	var _arg0 *C.GtkGradient      // out
 	var _arg1 C.gdouble           // out
 	var _arg2 *C.GtkSymbolicColor // out
 
-	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g))
+	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
 	_arg1 = C.gdouble(offset)
 	_arg2 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
 
@@ -284,12 +284,12 @@ func (g *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 
 // Ref increases the reference count of @gradient.
 //
-// Deprecated: since version 3.8.
-func (g *Gradient) ref() *Gradient {
+// Deprecated: Gradient is deprecated.
+func (gradient *Gradient) ref() *Gradient {
 	var _arg0 *C.GtkGradient // out
 	var _cret *C.GtkGradient // in
 
-	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g))
+	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
 
 	_cret = C.gtk_gradient_ref(_arg0)
 
@@ -309,14 +309,14 @@ func (g *Gradient) ref() *Gradient {
 // Generally, if @gradient can’t be resolved, it is due to it being defined on
 // top of a named color that doesn't exist in @props.
 //
-// Deprecated: since version 3.8.
-func (g *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
+// Deprecated: Gradient is deprecated.
+func (gradient *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
 	var _arg0 *C.GtkGradient        // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 *C.cairo_pattern_t    // in
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g))
+	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
 	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	_cret = C.gtk_gradient_resolve(_arg0, _arg1, &_arg2)
@@ -335,12 +335,12 @@ func (g *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
 	return _resolvedGradient, _ok
 }
 
-func (g *Gradient) ResolveForContext(context StyleContext) *cairo.Pattern {
+func (gradient *Gradient) ResolveForContext(context StyleContext) *cairo.Pattern {
 	var _arg0 *C.GtkGradient     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _cret *C.cairo_pattern_t // in
 
-	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g))
+	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_gradient_resolve_for_context(_arg0, _arg1)
@@ -358,12 +358,12 @@ func (g *Gradient) ResolveForContext(context StyleContext) *cairo.Pattern {
 // String creates a string representation for @gradient that is suitable for
 // using in GTK CSS files.
 //
-// Deprecated: since version 3.8.
-func (g *Gradient) String() string {
+// Deprecated: Gradient is deprecated.
+func (gradient *Gradient) String() string {
 	var _arg0 *C.GtkGradient // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g))
+	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
 
 	_cret = C.gtk_gradient_to_string(_arg0)
 
@@ -378,11 +378,11 @@ func (g *Gradient) String() string {
 // Unref decreases the reference count of @gradient, freeing its memory if the
 // reference count reaches 0.
 //
-// Deprecated: since version 3.8.
-func (g *Gradient) unref() {
+// Deprecated: Gradient is deprecated.
+func (gradient *Gradient) unref() {
 	var _arg0 *C.GtkGradient // out
 
-	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g))
+	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
 
 	C.gtk_gradient_unref(_arg0)
 }
@@ -553,12 +553,12 @@ func (s *SymbolicColor) Native() unsafe.Pointer {
 
 // Ref increases the reference count of @color
 //
-// Deprecated: since version 3.8.
-func (c *SymbolicColor) ref() *SymbolicColor {
+// Deprecated: SymbolicColor is deprecated.
+func (color *SymbolicColor) ref() *SymbolicColor {
 	var _arg0 *C.GtkSymbolicColor // out
 	var _cret *C.GtkSymbolicColor // in
 
-	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c))
+	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
 
 	_cret = C.gtk_symbolic_color_ref(_arg0)
 
@@ -581,14 +581,14 @@ func (c *SymbolicColor) ref() *SymbolicColor {
 // When @props is nil, resolving of named colors will fail, so if your @color is
 // or references such a color, this function will return false.
 //
-// Deprecated: since version 3.8.
-func (c *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
+// Deprecated: SymbolicColor is deprecated.
+func (color *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkSymbolicColor   // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 C.GdkRGBA             // in
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c))
+	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
 	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, &_arg2)
@@ -610,12 +610,12 @@ func (c *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
 // GTK css parser is able to read the string and create the same symbolic color
 // from it.
 //
-// Deprecated: since version 3.8.
-func (c *SymbolicColor) String() string {
+// Deprecated: SymbolicColor is deprecated.
+func (color *SymbolicColor) String() string {
 	var _arg0 *C.GtkSymbolicColor // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c))
+	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
 
 	_cret = C.gtk_symbolic_color_to_string(_arg0)
 
@@ -630,11 +630,11 @@ func (c *SymbolicColor) String() string {
 // Unref decreases the reference count of @color, freeing its memory if the
 // reference count reaches 0.
 //
-// Deprecated: since version 3.8.
-func (c *SymbolicColor) unref() {
+// Deprecated: SymbolicColor is deprecated.
+func (color *SymbolicColor) unref() {
 	var _arg0 *C.GtkSymbolicColor // out
 
-	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c))
+	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
 
 	C.gtk_symbolic_color_unref(_arg0)
 }

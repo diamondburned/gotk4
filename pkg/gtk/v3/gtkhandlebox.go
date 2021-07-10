@@ -61,22 +61,22 @@ type HandleBox interface {
 
 	// ChildDetached: whether the handlebox’s child is currently detached.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: HandleBox has been deprecated.
 	ChildDetached() bool
 	// HandlePosition gets the handle position of the handle box. See
 	// gtk_handle_box_set_handle_position().
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: HandleBox has been deprecated.
 	HandlePosition() PositionType
 	// ShadowType gets the type of shadow drawn around the handle box. See
 	// gtk_handle_box_set_shadow_type().
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: HandleBox has been deprecated.
 	ShadowType() ShadowType
 	// SnapEdge gets the edge used for determining reattachment of the handle
 	// box. See gtk_handle_box_set_snap_edge().
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: HandleBox has been deprecated.
 	SnapEdge() PositionType
 }
 
@@ -84,7 +84,7 @@ type HandleBox interface {
 type HandleBoxClass struct {
 	*externglib.Object
 	BinClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ HandleBox = (*HandleBoxClass)(nil)
@@ -97,20 +97,23 @@ func wrapHandleBox(obj *externglib.Object) HandleBox {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -124,7 +127,7 @@ func marshalHandleBox(p uintptr) (interface{}, error) {
 
 // NewHandleBox: create a new handle box.
 //
-// Deprecated: since version 3.4.
+// Deprecated: HandleBox has been deprecated.
 func NewHandleBox() *HandleBoxClass {
 	var _cret *C.GtkWidget // in
 
@@ -139,12 +142,12 @@ func NewHandleBox() *HandleBoxClass {
 
 // ChildDetached: whether the handlebox’s child is currently detached.
 //
-// Deprecated: since version 3.4.
-func (h *HandleBoxClass) ChildDetached() bool {
+// Deprecated: HandleBox has been deprecated.
+func (handleBox *HandleBoxClass) ChildDetached() bool {
 	var _arg0 *C.GtkHandleBox // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(handleBox.Native()))
 
 	_cret = C.gtk_handle_box_get_child_detached(_arg0)
 
@@ -160,12 +163,12 @@ func (h *HandleBoxClass) ChildDetached() bool {
 // HandlePosition gets the handle position of the handle box. See
 // gtk_handle_box_set_handle_position().
 //
-// Deprecated: since version 3.4.
-func (h *HandleBoxClass) HandlePosition() PositionType {
+// Deprecated: HandleBox has been deprecated.
+func (handleBox *HandleBoxClass) HandlePosition() PositionType {
 	var _arg0 *C.GtkHandleBox   // out
 	var _cret C.GtkPositionType // in
 
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(handleBox.Native()))
 
 	_cret = C.gtk_handle_box_get_handle_position(_arg0)
 
@@ -179,12 +182,12 @@ func (h *HandleBoxClass) HandlePosition() PositionType {
 // ShadowType gets the type of shadow drawn around the handle box. See
 // gtk_handle_box_set_shadow_type().
 //
-// Deprecated: since version 3.4.
-func (h *HandleBoxClass) ShadowType() ShadowType {
+// Deprecated: HandleBox has been deprecated.
+func (handleBox *HandleBoxClass) ShadowType() ShadowType {
 	var _arg0 *C.GtkHandleBox // out
 	var _cret C.GtkShadowType // in
 
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(handleBox.Native()))
 
 	_cret = C.gtk_handle_box_get_shadow_type(_arg0)
 
@@ -198,12 +201,12 @@ func (h *HandleBoxClass) ShadowType() ShadowType {
 // SnapEdge gets the edge used for determining reattachment of the handle box.
 // See gtk_handle_box_set_snap_edge().
 //
-// Deprecated: since version 3.4.
-func (h *HandleBoxClass) SnapEdge() PositionType {
+// Deprecated: HandleBox has been deprecated.
+func (handleBox *HandleBoxClass) SnapEdge() PositionType {
 	var _arg0 *C.GtkHandleBox   // out
 	var _cret C.GtkPositionType // in
 
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(handleBox.Native()))
 
 	_cret = C.gtk_handle_box_get_snap_edge(_arg0)
 

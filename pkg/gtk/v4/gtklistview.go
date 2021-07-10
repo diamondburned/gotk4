@@ -135,11 +135,11 @@ type ListView interface {
 type ListViewClass struct {
 	*externglib.Object
 	ListBaseClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	OrientableInterface
-	ScrollableInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	OrientableIface
+	ScrollableIface
 }
 
 var _ ListView = (*ListViewClass)(nil)
@@ -150,46 +150,49 @@ func wrapListView(obj *externglib.Object) ListView {
 		ListBaseClass: ListBaseClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
-			AccessibleInterface: AccessibleInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
-			ScrollableInterface: ScrollableInterface{
+			ScrollableIface: ScrollableIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
-		ScrollableInterface: ScrollableInterface{
+		ScrollableIface: ScrollableIface{
 			Object: obj,
 		},
 	}
@@ -203,11 +206,11 @@ func marshalListView(p uintptr) (interface{}, error) {
 
 // EnableRubberband returns whether rows can be selected by dragging with the
 // mouse.
-func (s *ListViewClass) EnableRubberband() bool {
+func (self *ListViewClass) EnableRubberband() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_enable_rubberband(_arg0)
 
@@ -221,11 +224,11 @@ func (s *ListViewClass) EnableRubberband() bool {
 }
 
 // Factory gets the factory that's currently used to populate list items.
-func (s *ListViewClass) Factory() *ListItemFactoryClass {
+func (self *ListViewClass) Factory() *ListItemFactoryClass {
 	var _arg0 *C.GtkListView        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_factory(_arg0)
 
@@ -238,11 +241,11 @@ func (s *ListViewClass) Factory() *ListItemFactoryClass {
 
 // ShowSeparators returns whether the list box should show separators between
 // rows.
-func (s *ListViewClass) ShowSeparators() bool {
+func (self *ListViewClass) ShowSeparators() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_show_separators(_arg0)
 
@@ -257,11 +260,11 @@ func (s *ListViewClass) ShowSeparators() bool {
 
 // SingleClickActivate returns whether rows will be activated on single click
 // and selected on hover.
-func (s *ListViewClass) SingleClickActivate() bool {
+func (self *ListViewClass) SingleClickActivate() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_single_click_activate(_arg0)
 
@@ -276,11 +279,11 @@ func (s *ListViewClass) SingleClickActivate() bool {
 
 // SetEnableRubberband sets whether selections can be changed by dragging with
 // the mouse.
-func (s *ListViewClass) SetEnableRubberband(enableRubberband bool) {
+func (self *ListViewClass) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 	if enableRubberband {
 		_arg1 = C.TRUE
 	}
@@ -289,11 +292,11 @@ func (s *ListViewClass) SetEnableRubberband(enableRubberband bool) {
 }
 
 // SetFactory sets the `GtkListItemFactory` to use for populating list items.
-func (s *ListViewClass) SetFactory(factory ListItemFactory) {
+func (self *ListViewClass) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkListView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_list_view_set_factory(_arg0, _arg1)
@@ -301,11 +304,11 @@ func (s *ListViewClass) SetFactory(factory ListItemFactory) {
 
 // SetShowSeparators sets whether the list box should show separators between
 // rows.
-func (s *ListViewClass) SetShowSeparators(showSeparators bool) {
+func (self *ListViewClass) SetShowSeparators(showSeparators bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 	if showSeparators {
 		_arg1 = C.TRUE
 	}
@@ -315,11 +318,11 @@ func (s *ListViewClass) SetShowSeparators(showSeparators bool) {
 
 // SetSingleClickActivate sets whether rows should be activated on single click
 // and selected on hover.
-func (s *ListViewClass) SetSingleClickActivate(singleClickActivate bool) {
+func (self *ListViewClass) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 	if singleClickActivate {
 		_arg1 = C.TRUE
 	}

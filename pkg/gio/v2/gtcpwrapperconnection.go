@@ -88,11 +88,11 @@ func NewTCPWrapperConnection(baseIoStream IOStream, socket Socket) *TCPWrapperCo
 }
 
 // BaseIOStream gets @conn's base OStream
-func (c *TCPWrapperConnectionClass) BaseIOStream() *IOStreamClass {
+func (conn *TCPWrapperConnectionClass) BaseIOStream() *IOStreamClass {
 	var _arg0 *C.GTcpWrapperConnection // out
 	var _cret *C.GIOStream             // in
 
-	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
 

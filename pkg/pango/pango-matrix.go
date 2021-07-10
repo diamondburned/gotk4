@@ -50,67 +50,25 @@ func (m *Matrix) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// XX: 1st component of the transformation matrix
-func (m *Matrix) XX() float64 {
-	var v float64 // out
-	v = float64(m.native.xx)
-	return v
-}
-
-// XY: 2nd component of the transformation matrix
-func (m *Matrix) XY() float64 {
-	var v float64 // out
-	v = float64(m.native.xy)
-	return v
-}
-
-// YX: 3rd component of the transformation matrix
-func (m *Matrix) YX() float64 {
-	var v float64 // out
-	v = float64(m.native.yx)
-	return v
-}
-
-// YY: 4th component of the transformation matrix
-func (m *Matrix) YY() float64 {
-	var v float64 // out
-	v = float64(m.native.yy)
-	return v
-}
-
-// X0: x translation
-func (m *Matrix) X0() float64 {
-	var v float64 // out
-	v = float64(m.native.x0)
-	return v
-}
-
-// Y0: y translation
-func (m *Matrix) Y0() float64 {
-	var v float64 // out
-	v = float64(m.native.y0)
-	return v
-}
-
 // Concat changes the transformation represented by @matrix to be the
 // transformation given by first applying transformation given by @new_matrix
 // then applying the original transformation.
-func (m *Matrix) Concat(newMatrix *Matrix) {
+func (matrix *Matrix) Concat(newMatrix *Matrix) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 *C.PangoMatrix // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(newMatrix))
 
 	C.pango_matrix_concat(_arg0, _arg1)
 }
 
 // Copy copies a `PangoMatrix`.
-func (m *Matrix) Copy() *Matrix {
+func (matrix *Matrix) Copy() *Matrix {
 	var _arg0 *C.PangoMatrix // out
 	var _cret *C.PangoMatrix // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 
 	_cret = C.pango_matrix_copy(_arg0)
 
@@ -125,10 +83,10 @@ func (m *Matrix) Copy() *Matrix {
 }
 
 // Free: free a `PangoMatrix`.
-func (m *Matrix) free() {
+func (matrix *Matrix) free() {
 	var _arg0 *C.PangoMatrix // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 
 	C.pango_matrix_free(_arg0)
 }
@@ -139,11 +97,11 @@ func (m *Matrix) free() {
 // That is, the scale factor in the direction perpendicular to the vector that
 // the X coordinate is mapped to. If the scale in the X coordinate is needed as
 // well, use [method@Pango.Matrix.get_font_scale_factors].
-func (m *Matrix) FontScaleFactor() float64 {
+func (matrix *Matrix) FontScaleFactor() float64 {
 	var _arg0 *C.PangoMatrix // out
 	var _cret C.double       // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 
 	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 
@@ -162,12 +120,12 @@ func (m *Matrix) FontScaleFactor() float64 {
 // that the X coordinate is mapped to.
 //
 // Note that output numbers will always be non-negative.
-func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
+func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // in
 	var _arg2 C.double       // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 
 	C.pango_matrix_get_font_scale_factors(_arg0, &_arg1, &_arg2)
 
@@ -183,11 +141,11 @@ func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 // Rotate changes the transformation represented by @matrix to be the
 // transformation given by first rotating by @degrees degrees counter-clockwise
 // then applying the original transformation.
-func (m *Matrix) Rotate(degrees float64) {
+func (matrix *Matrix) Rotate(degrees float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 	_arg1 = C.double(degrees)
 
 	C.pango_matrix_rotate(_arg0, _arg1)
@@ -196,12 +154,12 @@ func (m *Matrix) Rotate(degrees float64) {
 // Scale changes the transformation represented by @matrix to be the
 // transformation given by first scaling by @sx in the X direction and @sy in
 // the Y direction then applying the original transformation.
-func (m *Matrix) Scale(scaleX float64, scaleY float64) {
+func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 	_arg1 = C.double(scaleX)
 	_arg2 = C.double(scaleY)
 
@@ -211,12 +169,12 @@ func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 // Translate changes the transformation represented by @matrix to be the
 // transformation given by first translating by (@tx, @ty) then applying the
 // original transformation.
-func (m *Matrix) Translate(tx float64, ty float64) {
+func (matrix *Matrix) Translate(tx float64, ty float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m))
+	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 	_arg1 = C.double(tx)
 	_arg2 = C.double(ty)
 

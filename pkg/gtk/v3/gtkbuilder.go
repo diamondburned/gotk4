@@ -521,13 +521,13 @@ func NewBuilderFromString(_string string, length int) *BuilderClass {
 // program, and it’s possible that memory was leaked leading up to the reported
 // failure. The only reasonable thing to do when an error is detected is to call
 // g_error().
-func (b *BuilderClass) AddFromFile(filename string) (uint, error) {
+func (builder *BuilderClass) AddFromFile(filename string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _cret C.guint       // in
 	var _cerr *C.GError     // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -552,13 +552,13 @@ func (b *BuilderClass) AddFromFile(filename string) (uint, error) {
 //
 // It’s not really reasonable to attempt to handle failures of this call. The
 // only reasonable thing to do when an error is detected is to call g_error().
-func (b *BuilderClass) AddFromResource(resourcePath string) (uint, error) {
+func (builder *BuilderClass) AddFromResource(resourcePath string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _cret C.guint       // in
 	var _cerr *C.GError     // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -583,14 +583,14 @@ func (b *BuilderClass) AddFromResource(resourcePath string) (uint, error) {
 //
 // It’s not really reasonable to attempt to handle failures of this call. The
 // only reasonable thing to do when an error is detected is to call g_error().
-func (b *BuilderClass) AddFromString(buffer string, length uint) (uint, error) {
+func (builder *BuilderClass) AddFromString(buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gsize       // out
 	var _cret C.guint       // in
 	var _cerr *C.GError     // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(length)
@@ -616,14 +616,14 @@ func (b *BuilderClass) AddFromString(buffer string, length uint) (uint, error) {
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in @object_ids.
-func (b *BuilderClass) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
+func (builder *BuilderClass) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 **C.gchar
 	var _cret C.guint   // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -657,14 +657,14 @@ func (b *BuilderClass) AddObjectsFromFile(filename string, objectIds []string) (
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in @object_ids.
-func (b *BuilderClass) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
+func (builder *BuilderClass) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 **C.gchar
 	var _cret C.guint   // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -698,7 +698,7 @@ func (b *BuilderClass) AddObjectsFromResource(resourcePath string, objectIds []s
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in @object_ids.
-func (b *BuilderClass) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error) {
+func (builder *BuilderClass) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gsize       // out
@@ -706,7 +706,7 @@ func (b *BuilderClass) AddObjectsFromString(buffer string, length uint, objectId
 	var _cret C.guint   // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(length)
@@ -752,11 +752,11 @@ func (b *BuilderClass) AddObjectsFromString(buffer string, length uint, objectId
 // with MODULE_EXPORT, or they will not be put in the symbol table. On Linux and
 // Unices, this is not necessary; applications should instead be compiled with
 // the -Wl,--export-dynamic CFLAGS, and linked against gmodule-export-2.0.
-func (b *BuilderClass) ConnectSignals(userData interface{}) {
+func (builder *BuilderClass) ConnectSignals(userData interface{}) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 C.gpointer    // out
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (C.gpointer)(box.Assign(userData))
 
 	C.gtk_builder_connect_signals(_arg0, _arg1)
@@ -764,12 +764,12 @@ func (b *BuilderClass) ConnectSignals(userData interface{}) {
 
 // ExposeObject: add @object to the @builder object pool so it can be referenced
 // just like any other object built by builder.
-func (b *BuilderClass) ExposeObject(name string, object gextras.Objector) {
+func (builder *BuilderClass) ExposeObject(name string, object gextras.Objector) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GObject    // out
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
@@ -782,7 +782,7 @@ func (b *BuilderClass) ExposeObject(name string, object gextras.Objector) {
 //
 // This is exported purely to let gtk-builder-tool validate templates,
 // applications have no need to call this function.
-func (b *BuilderClass) ExtendWithTemplate(widget Widget, templateType externglib.Type, buffer string, length uint) (uint, error) {
+func (builder *BuilderClass) ExtendWithTemplate(widget Widget, templateType externglib.Type, buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.GType       // out
@@ -791,7 +791,7 @@ func (b *BuilderClass) ExtendWithTemplate(widget Widget, templateType externglib
 	var _cret C.guint       // in
 	var _cerr *C.GError     // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (C.GType)(templateType)
 	_arg3 = (*C.gchar)(C.CString(buffer))
@@ -817,11 +817,11 @@ func (b *BuilderClass) ExtendWithTemplate(widget Widget, templateType externglib
 // By default, the builder uses the default application: the one from
 // g_application_get_default(). If you want to use another application for
 // constructing proxies, use gtk_builder_set_application().
-func (b *BuilderClass) Application() *ApplicationClass {
+func (builder *BuilderClass) Application() *ApplicationClass {
 	var _arg0 *C.GtkBuilder     // out
 	var _cret *C.GtkApplication // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 
 	_cret = C.gtk_builder_get_application(_arg0)
 
@@ -834,12 +834,12 @@ func (b *BuilderClass) Application() *ApplicationClass {
 
 // GetObject gets the object named @name. Note that this function does not
 // increment the reference count of the returned object.
-func (b *BuilderClass) GetObject(name string) *externglib.Object {
+func (builder *BuilderClass) GetObject(name string) *externglib.Object {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GObject    // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -853,11 +853,11 @@ func (b *BuilderClass) GetObject(name string) *externglib.Object {
 }
 
 // TranslationDomain gets the translation domain of @builder.
-func (b *BuilderClass) TranslationDomain() string {
+func (builder *BuilderClass) TranslationDomain() string {
 	var _arg0 *C.GtkBuilder // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 
 	_cret = C.gtk_builder_get_translation_domain(_arg0)
 
@@ -871,12 +871,12 @@ func (b *BuilderClass) TranslationDomain() string {
 // TypeFromName looks up a type by name, using the virtual function that Builder
 // has for that purpose. This is mainly used when implementing the Buildable
 // interface on a type.
-func (b *BuilderClass) TypeFromName(typeName string) externglib.Type {
+func (builder *BuilderClass) TypeFromName(typeName string) externglib.Type {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.char       // out
 	var _cret C.GType       // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.char)(C.CString(typeName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -893,11 +893,11 @@ func (b *BuilderClass) TypeFromName(typeName string) externglib.Type {
 //
 // You only need this function if there is more than one #GApplication in your
 // process. @application cannot be nil.
-func (b *BuilderClass) SetApplication(application Application) {
+func (builder *BuilderClass) SetApplication(application Application) {
 	var _arg0 *C.GtkBuilder     // out
 	var _arg1 *C.GtkApplication // out
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	C.gtk_builder_set_application(_arg0, _arg1)
@@ -905,11 +905,11 @@ func (b *BuilderClass) SetApplication(application Application) {
 
 // SetTranslationDomain sets the translation domain of @builder. See
 // Builder:translation-domain.
-func (b *BuilderClass) SetTranslationDomain(domain string) {
+func (builder *BuilderClass) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -923,14 +923,14 @@ func (b *BuilderClass) SetTranslationDomain(domain string) {
 //
 // Upon errors false will be returned and @error will be assigned a #GError from
 // the K_BUILDER_ERROR domain.
-func (b *BuilderClass) ValueFromStringType(typ externglib.Type, _string string) (externglib.Value, error) {
+func (builder *BuilderClass) ValueFromStringType(typ externglib.Type, _string string) (externglib.Value, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 C.GType       // out
 	var _arg2 *C.gchar      // out
 	var _arg3 C.GValue      // in
 	var _cerr *C.GError     // in
 
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (C.GType)(typ)
 	_arg2 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg2))

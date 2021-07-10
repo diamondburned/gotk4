@@ -77,8 +77,8 @@ type MemoryOutputStream interface {
 type MemoryOutputStreamClass struct {
 	*externglib.Object
 	OutputStreamClass
-	PollableOutputStreamInterface
-	SeekableInterface
+	PollableOutputStreamIface
+	SeekableIface
 }
 
 var _ MemoryOutputStream = (*MemoryOutputStreamClass)(nil)
@@ -89,12 +89,12 @@ func wrapMemoryOutputStream(obj *externglib.Object) MemoryOutputStream {
 		OutputStreamClass: OutputStreamClass{
 			Object: obj,
 		},
-		PollableOutputStreamInterface: PollableOutputStreamInterface{
+		PollableOutputStreamIface: PollableOutputStreamIface{
 			OutputStreamClass: OutputStreamClass{
 				Object: obj,
 			},
 		},
-		SeekableInterface: SeekableInterface{
+		SeekableIface: SeekableIface{
 			Object: obj,
 		},
 	}
@@ -124,11 +124,11 @@ func NewMemoryOutputStreamResizable() *MemoryOutputStreamClass {
 //
 // Note that the returned pointer may become invalid on the next write or
 // truncate operation on the stream.
-func (o *MemoryOutputStreamClass) Data() interface{} {
+func (ostream *MemoryOutputStreamClass) Data() interface{} {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_get_data(_arg0)
 
@@ -141,11 +141,11 @@ func (o *MemoryOutputStreamClass) Data() interface{} {
 
 // DataSize returns the number of bytes from the start up to including the last
 // byte written in the stream that has not been truncated away.
-func (o *MemoryOutputStreamClass) DataSize() uint {
+func (ostream *MemoryOutputStreamClass) DataSize() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_get_data_size(_arg0)
 
@@ -170,11 +170,11 @@ func (o *MemoryOutputStreamClass) DataSize() uint {
 //
 // In any case, if you want the number of bytes currently written to the stream,
 // use g_memory_output_stream_get_data_size().
-func (o *MemoryOutputStreamClass) Size() uint {
+func (ostream *MemoryOutputStreamClass) Size() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_get_size(_arg0)
 
@@ -190,11 +190,11 @@ func (o *MemoryOutputStreamClass) Size() uint {
 // free function set in @ostream's OutputStream:destroy-function property.
 //
 // @ostream must be closed before calling this function.
-func (o *MemoryOutputStreamClass) StealData() interface{} {
+func (ostream *MemoryOutputStreamClass) StealData() interface{} {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_steal_data(_arg0)
 

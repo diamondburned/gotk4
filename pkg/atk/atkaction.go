@@ -146,15 +146,15 @@ type Action interface {
 	SetDescription(i int, desc string) bool
 }
 
-// ActionInterface implements the Action interface.
-type ActionInterface struct {
+// ActionIface implements the Action interface.
+type ActionIface struct {
 	*externglib.Object
 }
 
-var _ Action = (*ActionInterface)(nil)
+var _ Action = (*ActionIface)(nil)
 
 func wrapAction(obj *externglib.Object) Action {
-	return &ActionInterface{
+	return &ActionIface{
 		Object: obj,
 	}
 }
@@ -166,12 +166,12 @@ func marshalAction(p uintptr) (interface{}, error) {
 }
 
 // DoAction: perform the specified action on the object.
-func (a *ActionInterface) DoAction(i int) bool {
+func (action *ActionIface) DoAction(i int) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_do_action(_arg0, _arg1)
@@ -186,12 +186,12 @@ func (a *ActionInterface) DoAction(i int) bool {
 }
 
 // Description returns a description of the specified action of the object.
-func (a *ActionInterface) Description(i int) string {
+func (action *ActionIface) Description(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_description(_arg0, _arg1)
@@ -223,12 +223,12 @@ func (a *ActionInterface) Description(i int) string {
 // would be: "N;Alt+F:N;Ctrl+N" for the English locale and "N;Alt+D:N;Strg+N"
 // for the German locale. If, hypothetically, this menu item lacked a mnemonic,
 // it would be represented by ";;Ctrl+N" and ";;Strg+N" respectively.
-func (a *ActionInterface) Keybinding(i int) string {
+func (action *ActionIface) Keybinding(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_keybinding(_arg0, _arg1)
@@ -242,12 +242,12 @@ func (a *ActionInterface) Keybinding(i int) string {
 
 // LocalizedName returns the localized name of the specified action of the
 // object.
-func (a *ActionInterface) LocalizedName(i int) string {
+func (action *ActionIface) LocalizedName(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_localized_name(_arg0, _arg1)
@@ -262,11 +262,11 @@ func (a *ActionInterface) LocalizedName(i int) string {
 // NActions gets the number of accessible actions available on the object. If
 // there are more than one, the first one is considered the "default" action of
 // the object.
-func (a *ActionInterface) NActions() int {
+func (action *ActionIface) NActions() int {
 	var _arg0 *C.AtkAction // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.atk_action_get_n_actions(_arg0)
 
@@ -289,12 +289,12 @@ func (a *ActionInterface) NActions() int {
 // For technical reasons, some toolkits cannot guarantee that the reported
 // action is actually 'bound' to a nontrivial user event; i.e. the result of
 // some actions via atk_action_do_action() may be NIL.
-func (a *ActionInterface) Name(i int) string {
+func (action *ActionIface) Name(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_name(_arg0, _arg1)
@@ -307,13 +307,13 @@ func (a *ActionInterface) Name(i int) string {
 }
 
 // SetDescription sets a description of the specified action of the object.
-func (a *ActionInterface) SetDescription(i int, desc string) bool {
+func (action *ActionIface) SetDescription(i int, desc string) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.gchar     // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = C.gint(i)
 	_arg2 = (*C.gchar)(C.CString(desc))
 	defer C.free(unsafe.Pointer(_arg2))

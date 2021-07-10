@@ -40,7 +40,7 @@ func init() {
 // to g_simple_async_report_error_in_idle(), but takes a #GError rather than
 // building a new one.
 //
-// Deprecated: since version 2.46.
+// Deprecated: Use g_task_report_error().
 func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, err error) {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -223,7 +223,7 @@ type SimpleAsyncResult interface {
 	// Calling this function takes a reference to @simple for as long as is
 	// needed to complete the call.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use #GTask instead.
 	Complete()
 	// CompleteInIdle completes an asynchronous function in an idle handler in
 	// the [thread-default main context][g-main-context-push-thread-default] of
@@ -233,16 +233,16 @@ type SimpleAsyncResult interface {
 	// Calling this function takes a reference to @simple for as long as is
 	// needed to complete the call.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use #GTask instead.
 	CompleteInIdle()
 	// OpResGboolean gets the operation result boolean from within the
 	// asynchronous result.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use #GTask and g_task_propagate_boolean() instead.
 	OpResGboolean() bool
 	// OpResGssize gets a gssize from the asynchronous result.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use #GTask and g_task_propagate_int() instead.
 	OpResGssize() int
 	// PropagateError propagates an error from within the simple asynchronous
 	// result to a given destination.
@@ -251,7 +251,7 @@ type SimpleAsyncResult interface {
 	// g_simple_async_result_set_check_cancellable() is cancelled then this
 	// function will return true with @dest set appropriately.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use #GTask instead.
 	PropagateError() error
 	// SetCheckCancellable sets a #GCancellable to check before dispatching
 	// results.
@@ -270,11 +270,11 @@ type SimpleAsyncResult interface {
 	// The checking described above is done regardless of any call to the
 	// unrelated g_simple_async_result_set_handle_cancellation() function.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use #GTask instead.
 	SetCheckCancellable(checkCancellable Cancellable)
 	// SetFromError sets the result from a #GError.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use #GTask and g_task_return_error() instead.
 	SetFromError(err error)
 	// SetHandleCancellation sets whether to handle cancellation within the
 	// asynchronous operation.
@@ -288,19 +288,19 @@ type SimpleAsyncResult interface {
 	// SetOpResGboolean sets the operation result to a boolean within the
 	// asynchronous result.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use #GTask and g_task_return_boolean() instead.
 	SetOpResGboolean(opRes bool)
 	// SetOpResGssize sets the operation result within the asynchronous result
 	// to the given @op_res.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use #GTask and g_task_return_int() instead.
 	SetOpResGssize(opRes int)
 }
 
 // SimpleAsyncResultClass implements the SimpleAsyncResult interface.
 type SimpleAsyncResultClass struct {
 	*externglib.Object
-	AsyncResultInterface
+	AsyncResultIface
 }
 
 var _ SimpleAsyncResult = (*SimpleAsyncResultClass)(nil)
@@ -308,7 +308,7 @@ var _ SimpleAsyncResult = (*SimpleAsyncResultClass)(nil)
 func wrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResult {
 	return &SimpleAsyncResultClass{
 		Object: obj,
-		AsyncResultInterface: AsyncResultInterface{
+		AsyncResultIface: AsyncResultIface{
 			Object: obj,
 		},
 	}
@@ -331,7 +331,7 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 // g_simple_async_result_set_check_cancellable() immediately after this function
 // returns.
 //
-// Deprecated: since version 2.46.
+// Deprecated: Use g_task_new() instead.
 func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag interface{}) *SimpleAsyncResultClass {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -355,7 +355,7 @@ func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCall
 
 // NewSimpleAsyncResultFromError creates a AsyncResult from an error condition.
 //
-// Deprecated: since version 2.46.
+// Deprecated: Use g_task_new() and g_task_return_error() instead.
 func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback AsyncReadyCallback, err error) *SimpleAsyncResultClass {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -385,11 +385,11 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 // Calling this function takes a reference to @simple for as long as is needed
 // to complete the call.
 //
-// Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) Complete() {
+// Deprecated: Use #GTask instead.
+func (simple *SimpleAsyncResultClass) Complete() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 
 	C.g_simple_async_result_complete(_arg0)
 }
@@ -402,11 +402,11 @@ func (s *SimpleAsyncResultClass) Complete() {
 // Calling this function takes a reference to @simple for as long as is needed
 // to complete the call.
 //
-// Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) CompleteInIdle() {
+// Deprecated: Use #GTask instead.
+func (simple *SimpleAsyncResultClass) CompleteInIdle() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 
 	C.g_simple_async_result_complete_in_idle(_arg0)
 }
@@ -414,12 +414,12 @@ func (s *SimpleAsyncResultClass) CompleteInIdle() {
 // OpResGboolean gets the operation result boolean from within the asynchronous
 // result.
 //
-// Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) OpResGboolean() bool {
+// Deprecated: Use #GTask and g_task_propagate_boolean() instead.
+func (simple *SimpleAsyncResultClass) OpResGboolean() bool {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 
 	_cret = C.g_simple_async_result_get_op_res_gboolean(_arg0)
 
@@ -434,12 +434,12 @@ func (s *SimpleAsyncResultClass) OpResGboolean() bool {
 
 // OpResGssize gets a gssize from the asynchronous result.
 //
-// Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) OpResGssize() int {
+// Deprecated: Use #GTask and g_task_propagate_int() instead.
+func (simple *SimpleAsyncResultClass) OpResGssize() int {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gssize              // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 
 	_cret = C.g_simple_async_result_get_op_res_gssize(_arg0)
 
@@ -457,12 +457,12 @@ func (s *SimpleAsyncResultClass) OpResGssize() int {
 // g_simple_async_result_set_check_cancellable() is cancelled then this function
 // will return true with @dest set appropriately.
 //
-// Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) PropagateError() error {
+// Deprecated: Use #GTask instead.
+func (simple *SimpleAsyncResultClass) PropagateError() error {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 
 	C.g_simple_async_result_propagate_error(_arg0, &_cerr)
 
@@ -489,12 +489,12 @@ func (s *SimpleAsyncResultClass) PropagateError() error {
 // The checking described above is done regardless of any call to the unrelated
 // g_simple_async_result_set_handle_cancellation() function.
 //
-// Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) SetCheckCancellable(checkCancellable Cancellable) {
+// Deprecated: Use #GTask instead.
+func (simple *SimpleAsyncResultClass) SetCheckCancellable(checkCancellable Cancellable) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GCancellable       // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(checkCancellable.Native()))
 
 	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
@@ -502,12 +502,12 @@ func (s *SimpleAsyncResultClass) SetCheckCancellable(checkCancellable Cancellabl
 
 // SetFromError sets the result from a #GError.
 //
-// Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) SetFromError(err error) {
+// Deprecated: Use #GTask and g_task_return_error() instead.
+func (simple *SimpleAsyncResultClass) SetFromError(err error) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GError             // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.g_simple_async_result_set_from_error(_arg0, _arg1)
@@ -521,11 +521,11 @@ func (s *SimpleAsyncResultClass) SetFromError(err error) {
 // #GCancellable passed to g_simple_async_result_run_in_thread().
 //
 // Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) SetHandleCancellation(handleCancellation bool) {
+func (simple *SimpleAsyncResultClass) SetHandleCancellation(handleCancellation bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 	if handleCancellation {
 		_arg1 = C.TRUE
 	}
@@ -536,12 +536,12 @@ func (s *SimpleAsyncResultClass) SetHandleCancellation(handleCancellation bool) 
 // SetOpResGboolean sets the operation result to a boolean within the
 // asynchronous result.
 //
-// Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) SetOpResGboolean(opRes bool) {
+// Deprecated: Use #GTask and g_task_return_boolean() instead.
+func (simple *SimpleAsyncResultClass) SetOpResGboolean(opRes bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 	if opRes {
 		_arg1 = C.TRUE
 	}
@@ -552,12 +552,12 @@ func (s *SimpleAsyncResultClass) SetOpResGboolean(opRes bool) {
 // SetOpResGssize sets the operation result within the asynchronous result to
 // the given @op_res.
 //
-// Deprecated: since version 2.46.
-func (s *SimpleAsyncResultClass) SetOpResGssize(opRes int) {
+// Deprecated: Use #GTask and g_task_return_int() instead.
+func (simple *SimpleAsyncResultClass) SetOpResGssize(opRes int) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gssize              // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 	_arg1 = C.gssize(opRes)
 
 	C.g_simple_async_result_set_op_res_gssize(_arg0, _arg1)

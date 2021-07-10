@@ -119,11 +119,11 @@ func (p *PopupLayout) Native() unsafe.Pointer {
 }
 
 // Copy makes a copy of @layout.
-func (l *PopupLayout) Copy() *PopupLayout {
+func (layout *PopupLayout) Copy() *PopupLayout {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkPopupLayout // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 
 	_cret = C.gdk_popup_layout_copy(_arg0)
 
@@ -139,12 +139,12 @@ func (l *PopupLayout) Copy() *PopupLayout {
 }
 
 // Equal: check whether @layout and @other has identical layout properties.
-func (l *PopupLayout) Equal(other *PopupLayout) bool {
+func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 *C.GdkPopupLayout // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 	_arg1 = (*C.GdkPopupLayout)(unsafe.Pointer(other))
 
 	_cret = C.gdk_popup_layout_equal(_arg0, _arg1)
@@ -159,11 +159,11 @@ func (l *PopupLayout) Equal(other *PopupLayout) bool {
 }
 
 // AnchorHints: get the `GdkAnchorHints`.
-func (l *PopupLayout) AnchorHints() AnchorHints {
+func (layout *PopupLayout) AnchorHints() AnchorHints {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkAnchorHints  // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 
 	_cret = C.gdk_popup_layout_get_anchor_hints(_arg0)
 
@@ -175,11 +175,11 @@ func (l *PopupLayout) AnchorHints() AnchorHints {
 }
 
 // AnchorRect: get the anchor rectangle.
-func (l *PopupLayout) AnchorRect() *Rectangle {
+func (layout *PopupLayout) AnchorRect() *Rectangle {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkRectangle   // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 
 	_cret = C.gdk_popup_layout_get_anchor_rect(_arg0)
 
@@ -191,12 +191,12 @@ func (l *PopupLayout) AnchorRect() *Rectangle {
 }
 
 // Offset retrieves the offset for the anchor rectangle.
-func (l *PopupLayout) Offset() (dx int, dy int) {
+func (layout *PopupLayout) Offset() (dx int, dy int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // in
 	var _arg2 C.int             // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 
 	C.gdk_popup_layout_get_offset(_arg0, &_arg1, &_arg2)
 
@@ -210,11 +210,11 @@ func (l *PopupLayout) Offset() (dx int, dy int) {
 }
 
 // RectAnchor returns the anchor position on the anchor rectangle.
-func (l *PopupLayout) RectAnchor() Gravity {
+func (layout *PopupLayout) RectAnchor() Gravity {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkGravity      // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 
 	_cret = C.gdk_popup_layout_get_rect_anchor(_arg0)
 
@@ -226,14 +226,14 @@ func (l *PopupLayout) RectAnchor() Gravity {
 }
 
 // ShadowWidth obtains the shadow widths of this layout.
-func (l *PopupLayout) ShadowWidth() (left int, right int, top int, bottom int) {
+func (layout *PopupLayout) ShadowWidth() (left int, right int, top int, bottom int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // in
 	var _arg2 C.int             // in
 	var _arg3 C.int             // in
 	var _arg4 C.int             // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 
 	C.gdk_popup_layout_get_shadow_width(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -251,11 +251,11 @@ func (l *PopupLayout) ShadowWidth() (left int, right int, top int, bottom int) {
 }
 
 // SurfaceAnchor returns the anchor position on the popup surface.
-func (l *PopupLayout) SurfaceAnchor() Gravity {
+func (layout *PopupLayout) SurfaceAnchor() Gravity {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkGravity      // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 
 	_cret = C.gdk_popup_layout_get_surface_anchor(_arg0)
 
@@ -267,11 +267,11 @@ func (l *PopupLayout) SurfaceAnchor() Gravity {
 }
 
 // Ref increases the reference count of @value.
-func (l *PopupLayout) ref() *PopupLayout {
+func (layout *PopupLayout) ref() *PopupLayout {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkPopupLayout // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 
 	_cret = C.gdk_popup_layout_ref(_arg0)
 
@@ -287,23 +287,23 @@ func (l *PopupLayout) ref() *PopupLayout {
 }
 
 // SetAnchorRect: set the anchor rectangle.
-func (l *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
+func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 *C.GdkRectangle   // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(anchorRect))
 
 	C.gdk_popup_layout_set_anchor_rect(_arg0, _arg1)
 }
 
 // SetOffset: offset the position of the anchor rectangle with the given delta.
-func (l *PopupLayout) SetOffset(dx int, dy int) {
+func (layout *PopupLayout) SetOffset(dx int, dy int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 	_arg1 = C.int(dx)
 	_arg2 = C.int(dy)
 
@@ -315,14 +315,14 @@ func (l *PopupLayout) SetOffset(dx int, dy int) {
 // The shadow width corresponds to the part of the computed surface size that
 // would consist of the shadow margin surrounding the window, would there be
 // any.
-func (l *PopupLayout) SetShadowWidth(left int, right int, top int, bottom int) {
+func (layout *PopupLayout) SetShadowWidth(left int, right int, top int, bottom int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
 	var _arg3 C.int             // out
 	var _arg4 C.int             // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 	_arg1 = C.int(left)
 	_arg2 = C.int(right)
 	_arg3 = C.int(top)
@@ -332,10 +332,10 @@ func (l *PopupLayout) SetShadowWidth(left int, right int, top int, bottom int) {
 }
 
 // Unref decreases the reference count of @value.
-func (l *PopupLayout) unref() {
+func (layout *PopupLayout) unref() {
 	var _arg0 *C.GdkPopupLayout // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l))
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
 
 	C.gdk_popup_layout_unref(_arg0)
 }

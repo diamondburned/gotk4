@@ -69,18 +69,18 @@ type BuilderScopeOverrider interface {
 type BuilderScope interface {
 	gextras.Objector
 
-	privateBuilderScopeInterface()
+	privateBuilderScopeIface()
 }
 
-// BuilderScopeInterface implements the BuilderScope interface.
-type BuilderScopeInterface struct {
+// BuilderScopeIface implements the BuilderScope interface.
+type BuilderScopeIface struct {
 	*externglib.Object
 }
 
-var _ BuilderScope = (*BuilderScopeInterface)(nil)
+var _ BuilderScope = (*BuilderScopeIface)(nil)
 
 func wrapBuilderScope(obj *externglib.Object) BuilderScope {
-	return &BuilderScopeInterface{
+	return &BuilderScopeIface{
 		Object: obj,
 	}
 }
@@ -91,7 +91,7 @@ func marshalBuilderScope(p uintptr) (interface{}, error) {
 	return wrapBuilderScope(obj), nil
 }
 
-func (*BuilderScopeInterface) privateBuilderScopeInterface() {}
+func (*BuilderScopeIface) privateBuilderScopeIface() {}
 
 // BuilderCScope: `GtkBuilderScope` implementation for the C language.
 //
@@ -117,7 +117,7 @@ type BuilderCScope interface {
 // BuilderCScopeClass implements the BuilderCScope interface.
 type BuilderCScopeClass struct {
 	*externglib.Object
-	BuilderScopeInterface
+	BuilderScopeIface
 }
 
 var _ BuilderCScope = (*BuilderCScopeClass)(nil)
@@ -125,7 +125,7 @@ var _ BuilderCScope = (*BuilderCScopeClass)(nil)
 func wrapBuilderCScope(obj *externglib.Object) BuilderCScope {
 	return &BuilderCScopeClass{
 		Object: obj,
-		BuilderScopeInterface: BuilderScopeInterface{
+		BuilderScopeIface: BuilderScopeIface{
 			Object: obj,
 		},
 	}

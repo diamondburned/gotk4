@@ -39,9 +39,9 @@ func init() {
 type DBusObjectManagerOverrider interface {
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
-	Interface(objectPath string, interfaceName string) *DBusInterfaceInterface
+	Interface(objectPath string, interfaceName string) *DBusInterfaceIface
 	// GetObject gets the BusObjectProxy at @object_path, if any.
-	GetObject(objectPath string) *DBusObjectInterface
+	GetObject(objectPath string) *DBusObjectIface
 	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
 	InterfaceAdded(object DBusObject, interface_ DBusInterface)
@@ -63,22 +63,22 @@ type DBusObjectManager interface {
 
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
-	Interface(objectPath string, interfaceName string) *DBusInterfaceInterface
+	Interface(objectPath string, interfaceName string) *DBusInterfaceIface
 	// GetObject gets the BusObjectProxy at @object_path, if any.
-	GetObject(objectPath string) *DBusObjectInterface
+	GetObject(objectPath string) *DBusObjectIface
 	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
 }
 
-// DBusObjectManagerInterface implements the DBusObjectManager interface.
-type DBusObjectManagerInterface struct {
+// DBusObjectManagerIface implements the DBusObjectManager interface.
+type DBusObjectManagerIface struct {
 	*externglib.Object
 }
 
-var _ DBusObjectManager = (*DBusObjectManagerInterface)(nil)
+var _ DBusObjectManager = (*DBusObjectManagerIface)(nil)
 
 func wrapDBusObjectManager(obj *externglib.Object) DBusObjectManager {
-	return &DBusObjectManagerInterface{
+	return &DBusObjectManagerIface{
 		Object: obj,
 	}
 }
@@ -91,13 +91,13 @@ func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 
 // Interface gets the interface proxy for @interface_name at @object_path, if
 // any.
-func (m *DBusObjectManagerInterface) Interface(objectPath string, interfaceName string) *DBusInterfaceInterface {
+func (manager *DBusObjectManagerIface) Interface(objectPath string, interfaceName string) *DBusInterfaceIface {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
 	var _cret *C.GDBusInterface     // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(interfaceName))
@@ -105,38 +105,38 @@ func (m *DBusObjectManagerInterface) Interface(objectPath string, interfaceName 
 
 	_cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
 
-	var _dBusInterface *DBusInterfaceInterface // out
+	var _dBusInterface *DBusInterfaceIface // out
 
-	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterfaceInterface)
+	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterfaceIface)
 
 	return _dBusInterface
 }
 
 // GetObject gets the BusObjectProxy at @object_path, if any.
-func (m *DBusObjectManagerInterface) GetObject(objectPath string) *DBusObjectInterface {
+func (manager *DBusObjectManagerIface) GetObject(objectPath string) *DBusObjectIface {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusObject        // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
 
-	var _dBusObject *DBusObjectInterface // out
+	var _dBusObject *DBusObjectIface // out
 
-	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectInterface)
+	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectIface)
 
 	return _dBusObject
 }
 
 // ObjectPath gets the object path that @manager is for.
-func (m *DBusObjectManagerInterface) ObjectPath() string {
+func (manager *DBusObjectManagerIface) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_get_object_path(_arg0)
 

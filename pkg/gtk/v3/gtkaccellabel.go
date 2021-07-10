@@ -84,7 +84,7 @@ type AccelLabel interface {
 type AccelLabelClass struct {
 	*externglib.Object
 	LabelClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ AccelLabel = (*AccelLabelClass)(nil)
@@ -97,20 +97,23 @@ func wrapAccelLabel(obj *externglib.Object) AccelLabel {
 			MiscClass: MiscClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -140,12 +143,12 @@ func NewAccelLabel(_string string) *AccelLabelClass {
 }
 
 // Accel gets the keyval and modifier mask set with gtk_accel_label_set_accel().
-func (a *AccelLabelClass) Accel() (uint, gdk.ModifierType) {
+func (accelLabel *AccelLabelClass) Accel() (uint, gdk.ModifierType) {
 	var _arg0 *C.GtkAccelLabel  // out
 	var _arg1 C.guint           // in
 	var _arg2 C.GdkModifierType // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	C.gtk_accel_label_get_accel(_arg0, &_arg1, &_arg2)
 
@@ -160,11 +163,11 @@ func (a *AccelLabelClass) Accel() (uint, gdk.ModifierType) {
 
 // AccelWidget fetches the widget monitored by this accelerator label. See
 // gtk_accel_label_set_accel_widget().
-func (a *AccelLabelClass) AccelWidget() *WidgetClass {
+func (accelLabel *AccelLabelClass) AccelWidget() *WidgetClass {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	_cret = C.gtk_accel_label_get_accel_widget(_arg0)
 
@@ -178,11 +181,11 @@ func (a *AccelLabelClass) AccelWidget() *WidgetClass {
 // AccelWidth returns the width needed to display the accelerator key(s). This
 // is used by menus to align all of the MenuItem widgets, and shouldn't be
 // needed by applications.
-func (a *AccelLabelClass) AccelWidth() uint {
+func (accelLabel *AccelLabelClass) AccelWidth() uint {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	_cret = C.gtk_accel_label_get_accel_width(_arg0)
 
@@ -196,11 +199,11 @@ func (a *AccelLabelClass) AccelWidth() uint {
 // Refetch recreates the string representing the accelerator keys. This should
 // not be needed since the string is automatically updated whenever accelerators
 // are added or removed from the associated widget.
-func (a *AccelLabelClass) Refetch() bool {
+func (accelLabel *AccelLabelClass) Refetch() bool {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	_cret = C.gtk_accel_label_refetch(_arg0)
 
@@ -216,11 +219,11 @@ func (a *AccelLabelClass) Refetch() bool {
 // SetAccelWidget sets the widget to be monitored by this accelerator label.
 // Passing nil for @accel_widget will dissociate @accel_label from its current
 // widget, if any.
-func (a *AccelLabelClass) SetAccelWidget(accelWidget Widget) {
+func (accelLabel *AccelLabelClass) SetAccelWidget(accelWidget Widget) {
 	var _arg0 *C.GtkAccelLabel // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(accelWidget.Native()))
 
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)

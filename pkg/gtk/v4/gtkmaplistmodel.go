@@ -98,11 +98,11 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 }
 
 // HasMap checks if a map function is currently set on @self.
-func (s *MapListModelClass) HasMap() bool {
+func (self *MapListModelClass) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_map_list_model_has_map(_arg0)
 

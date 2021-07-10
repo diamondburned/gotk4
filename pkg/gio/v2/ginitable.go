@@ -145,15 +145,15 @@ type Initable interface {
 	Init(cancellable Cancellable) error
 }
 
-// InitableInterface implements the Initable interface.
-type InitableInterface struct {
+// InitableIface implements the Initable interface.
+type InitableIface struct {
 	*externglib.Object
 }
 
-var _ Initable = (*InitableInterface)(nil)
+var _ Initable = (*InitableIface)(nil)
 
 func wrapInitable(obj *externglib.Object) Initable {
-	return &InitableInterface{
+	return &InitableIface{
 		Object: obj,
 	}
 }
@@ -201,12 +201,12 @@ func marshalInitable(p uintptr) (interface{}, error) {
 // that sometimes returns an existing instance. In this pattern, a caller would
 // expect to be able to call g_initable_init() on the result of g_object_new(),
 // regardless of whether it is in fact a new instance.
-func (i *InitableInterface) Init(cancellable Cancellable) error {
+func (initable *InitableIface) Init(cancellable Cancellable) error {
 	var _arg0 *C.GInitable    // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInitable)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GInitable)(unsafe.Pointer(initable.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_initable_init(_arg0, _arg1, &_cerr)

@@ -3,6 +3,7 @@
 package gdkpixbuf
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
@@ -16,6 +17,12 @@ import (
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
 import "C"
+
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gdk_pixbuf_format_get_type()), F: marshalPixbufFormat},
+	})
+}
 
 // PixbufFormatFlags flags which allow a module to specify further details about
 // the supported operations.
@@ -121,4 +128,276 @@ func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, ar
 
 	fn := v.(PixbufModuleUpdatedFunc)
 	fn(pixbuf, x, y, width, height, userData)
+}
+
+// PixbufFormat: `GdkPixbufFormat` contains information about the image format
+// accepted by a module.
+//
+// Only modules should access the fields directly, applications should use the
+// `gdk_pixbuf_format_*` family of functions.
+type PixbufFormat struct {
+	native C.GdkPixbufFormat
+}
+
+// WrapPixbufFormat wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPixbufFormat(ptr unsafe.Pointer) *PixbufFormat {
+	return (*PixbufFormat)(ptr)
+}
+
+func marshalPixbufFormat(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return (*PixbufFormat)(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (p *PixbufFormat) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
+}
+
+// Copy creates a copy of `format`.
+func (format *PixbufFormat) Copy() *PixbufFormat {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _cret *C.GdkPixbufFormat // in
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	_cret = C.gdk_pixbuf_format_copy(_arg0)
+
+	var _pixbufFormat *PixbufFormat // out
+
+	_pixbufFormat = (*PixbufFormat)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_pixbufFormat, func(v *PixbufFormat) {
+		C.free(unsafe.Pointer(v))
+	})
+
+	return _pixbufFormat
+}
+
+// Free frees the resources allocated when copying a `GdkPixbufFormat` using
+// gdk_pixbuf_format_copy()
+func (format *PixbufFormat) free() {
+	var _arg0 *C.GdkPixbufFormat // out
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	C.gdk_pixbuf_format_free(_arg0)
+}
+
+// Description returns a description of the format.
+func (format *PixbufFormat) Description() string {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _cret *C.gchar           // in
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	_cret = C.gdk_pixbuf_format_get_description(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// Extensions returns the filename extensions typically used for files in the
+// given format.
+func (format *PixbufFormat) Extensions() []string {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _cret **C.gchar
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	_cret = C.gdk_pixbuf_format_get_extensions(_arg0)
+
+	var _utf8s []string
+
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
+}
+
+// License returns information about the license of the image loader for the
+// format.
+//
+// The returned string should be a shorthand for a well known license, e.g.
+// "LGPL", "GPL", "QPL", "GPL/QPL", or "other" to indicate some other license.
+func (format *PixbufFormat) License() string {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _cret *C.gchar           // in
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	_cret = C.gdk_pixbuf_format_get_license(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// MIMETypes returns the mime types supported by the format.
+func (format *PixbufFormat) MIMETypes() []string {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _cret **C.gchar
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	_cret = C.gdk_pixbuf_format_get_mime_types(_arg0)
+
+	var _utf8s []string
+
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString(src[i])
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
+}
+
+// Name returns the name of the format.
+func (format *PixbufFormat) Name() string {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _cret *C.gchar           // in
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	_cret = C.gdk_pixbuf_format_get_name(_arg0)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// IsDisabled returns whether this image format is disabled.
+//
+// See gdk_pixbuf_format_set_disabled().
+func (format *PixbufFormat) IsDisabled() bool {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	_cret = C.gdk_pixbuf_format_is_disabled(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsSaveOptionSupported returns `TRUE` if the save option specified by
+// @option_key is supported when saving a pixbuf using the module implementing
+// @format.
+//
+// See gdk_pixbuf_save() for more information about option keys.
+func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _arg1 *C.gchar           // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+	_arg1 = (*C.gchar)(C.CString(optionKey))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_pixbuf_format_is_save_option_supported(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsScalable returns whether this image format is scalable.
+//
+// If a file is in a scalable format, it is preferable to load it at the desired
+// size, rather than loading it at the default size and scaling the resulting
+// pixbuf to the desired size.
+func (format *PixbufFormat) IsScalable() bool {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	_cret = C.gdk_pixbuf_format_is_scalable(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsWritable returns whether pixbufs can be saved in the given format.
+func (format *PixbufFormat) IsWritable() bool {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+
+	_cret = C.gdk_pixbuf_format_is_writable(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetDisabled disables or enables an image format.
+//
+// If a format is disabled, GdkPixbuf won't use the image loader for this format
+// to load images.
+//
+// Applications can use this to avoid using image loaders with an inappropriate
+// license, see gdk_pixbuf_format_get_license().
+func (format *PixbufFormat) SetDisabled(disabled bool) {
+	var _arg0 *C.GdkPixbufFormat // out
+	var _arg1 C.gboolean         // out
+
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
+	if disabled {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_pixbuf_format_set_disabled(_arg0, _arg1)
 }

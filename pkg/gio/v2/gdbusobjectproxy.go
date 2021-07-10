@@ -45,7 +45,7 @@ type DBusObjectProxy interface {
 // DBusObjectProxyClass implements the DBusObjectProxy interface.
 type DBusObjectProxyClass struct {
 	*externglib.Object
-	DBusObjectInterface
+	DBusObjectIface
 }
 
 var _ DBusObjectProxy = (*DBusObjectProxyClass)(nil)
@@ -53,7 +53,7 @@ var _ DBusObjectProxy = (*DBusObjectProxyClass)(nil)
 func wrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxy {
 	return &DBusObjectProxyClass{
 		Object: obj,
-		DBusObjectInterface: DBusObjectInterface{
+		DBusObjectIface: DBusObjectIface{
 			Object: obj,
 		},
 	}
@@ -86,11 +86,11 @@ func NewDBusObjectProxy(connection DBusConnection, objectPath string) *DBusObjec
 }
 
 // Connection gets the connection that @proxy is for.
-func (p *DBusObjectProxyClass) Connection() *DBusConnectionClass {
+func (proxy *DBusObjectProxyClass) Connection() *DBusConnectionClass {
 	var _arg0 *C.GDBusObjectProxy // out
 	var _cret *C.GDBusConnection  // in
 
-	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_object_proxy_get_connection(_arg0)
 

@@ -36,10 +36,10 @@ type VolumeButton interface {
 type VolumeButtonClass struct {
 	*externglib.Object
 	ScaleButtonClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
-	OrientableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
+	OrientableIface
 }
 
 var _ VolumeButton = (*VolumeButtonClass)(nil)
@@ -56,67 +56,82 @@ func wrapVolumeButton(obj *externglib.Object) VolumeButton {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				ActionableInterface: ActionableInterface{
+				ActionableIface: ActionableIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
 				},
-				ActivatableInterface: ActivatableInterface{
+				ActivatableIface: ActivatableIface{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}

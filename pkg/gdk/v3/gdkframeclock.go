@@ -150,30 +150,30 @@ func marshalFrameClock(p uintptr) (interface{}, error) {
 // request a new frame with the GDK_FRAME_CLOCK_PHASE_UPDATE phase. This
 // function may be called multiple times and frames will be requested until
 // gdk_frame_clock_end_updating() is called the same number of times.
-func (f *FrameClockClass) BeginUpdating() {
+func (frameClock *FrameClockClass) BeginUpdating() {
 	var _arg0 *C.GdkFrameClock // out
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	C.gdk_frame_clock_begin_updating(_arg0)
 }
 
 // EndUpdating stops updates for an animation. See the documentation for
 // gdk_frame_clock_begin_updating().
-func (f *FrameClockClass) EndUpdating() {
+func (frameClock *FrameClockClass) EndUpdating() {
 	var _arg0 *C.GdkFrameClock // out
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	C.gdk_frame_clock_end_updating(_arg0)
 }
 
 // CurrentTimings gets the frame timings for the current frame.
-func (f *FrameClockClass) CurrentTimings() *FrameTimings {
+func (frameClock *FrameClockClass) CurrentTimings() *FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
 	var _cret *C.GdkFrameTimings // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_current_timings(_arg0)
 
@@ -189,11 +189,11 @@ func (f *FrameClockClass) CurrentTimings() *FrameTimings {
 }
 
 // FrameCounter maintains a 64-bit counter that increments for each frame drawn.
-func (f *FrameClockClass) FrameCounter() int64 {
+func (frameClock *FrameClockClass) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.gint64         // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_frame_counter(_arg0)
 
@@ -209,11 +209,11 @@ func (f *FrameClockClass) FrameCounter() int64 {
 // position of everything in a frame. Outside of a frame, it's the time of the
 // conceptual “previous frame,” which may be either the actual previous frame
 // time, or if that’s too old, an updated time.
-func (f *FrameClockClass) FrameTime() int64 {
+func (frameClock *FrameClockClass) FrameTime() int64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.gint64         // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_frame_time(_arg0)
 
@@ -229,11 +229,11 @@ func (f *FrameClockClass) FrameTime() int64 {
 // stored frames is the set from the counter values given by
 // gdk_frame_clock_get_history_start() and gdk_frame_clock_get_frame_counter(),
 // inclusive.
-func (f *FrameClockClass) HistoryStart() int64 {
+func (frameClock *FrameClockClass) HistoryStart() int64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.gint64         // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_history_start(_arg0)
 
@@ -249,13 +249,13 @@ func (f *FrameClockClass) HistoryStart() int64 {
 // presentation times are separated by the refresh interval, predicts a
 // presentation time that is a multiple of the refresh interval after the last
 // presentation time, and later than @base_time.
-func (f *FrameClockClass) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64) {
+func (frameClock *FrameClockClass) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64) {
 	var _arg0 *C.GdkFrameClock // out
 	var _arg1 C.gint64         // out
 	var _arg2 C.gint64         // in
 	var _arg3 C.gint64         // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 	_arg1 = C.gint64(baseTime)
 
 	C.gdk_frame_clock_get_refresh_info(_arg0, _arg1, &_arg2, &_arg3)
@@ -272,12 +272,12 @@ func (f *FrameClockClass) RefreshInfo(baseTime int64) (refreshIntervalReturn int
 // Timings retrieves a FrameTimings object holding timing information for the
 // current frame or a recent frame. The FrameTimings object may not yet be
 // complete: see gdk_frame_timings_get_complete().
-func (f *FrameClockClass) Timings(frameCounter int64) *FrameTimings {
+func (frameClock *FrameClockClass) Timings(frameCounter int64) *FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
 	var _arg1 C.gint64           // out
 	var _cret *C.GdkFrameTimings // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 	_arg1 = C.gint64(frameCounter)
 
 	_cret = C.gdk_frame_clock_get_timings(_arg0, _arg1)

@@ -88,11 +88,11 @@ func NewGestureLongPress() *GestureLongPressClass {
 }
 
 // DelayFactor returns the delay factor.
-func (g *GestureLongPressClass) DelayFactor() float64 {
+func (gesture *GestureLongPressClass) DelayFactor() float64 {
 	var _arg0 *C.GtkGestureLongPress // out
 	var _cret C.double               // in
 
-	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
 
@@ -107,11 +107,11 @@ func (g *GestureLongPressClass) DelayFactor() float64 {
 //
 // The default long press time will be multiplied by this value. Valid values
 // are in the range [0.5..2.0].
-func (g *GestureLongPressClass) SetDelayFactor(delayFactor float64) {
+func (gesture *GestureLongPressClass) SetDelayFactor(delayFactor float64) {
 	var _arg0 *C.GtkGestureLongPress // out
 	var _arg1 C.double               // out
 
-	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(gesture.Native()))
 	_arg1 = C.double(delayFactor)
 
 	C.gtk_gesture_long_press_set_delay_factor(_arg0, _arg1)

@@ -41,10 +41,10 @@ type FileChooserWidget interface {
 type FileChooserWidgetClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	FileChooserInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	FileChooserIface
 }
 
 var _ FileChooserWidget = (*FileChooserWidgetClass)(nil)
@@ -53,27 +53,30 @@ func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidget {
 	return &FileChooserWidgetClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		FileChooserInterface: FileChooserInterface{
+		FileChooserIface: FileChooserIface{
 			Object: obj,
 		},
 	}

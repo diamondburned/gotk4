@@ -77,15 +77,15 @@ type PrintOperationPreview interface {
 	RenderPage(pageNr int)
 }
 
-// PrintOperationPreviewInterface implements the PrintOperationPreview interface.
-type PrintOperationPreviewInterface struct {
+// PrintOperationPreviewIface implements the PrintOperationPreview interface.
+type PrintOperationPreviewIface struct {
 	*externglib.Object
 }
 
-var _ PrintOperationPreview = (*PrintOperationPreviewInterface)(nil)
+var _ PrintOperationPreview = (*PrintOperationPreviewIface)(nil)
 
 func wrapPrintOperationPreview(obj *externglib.Object) PrintOperationPreview {
-	return &PrintOperationPreviewInterface{
+	return &PrintOperationPreviewIface{
 		Object: obj,
 	}
 }
@@ -99,22 +99,22 @@ func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
 // EndPreview ends a preview.
 //
 // This function must be called to finish a custom print preview.
-func (p *PrintOperationPreviewInterface) EndPreview() {
+func (preview *PrintOperationPreviewIface) EndPreview() {
 	var _arg0 *C.GtkPrintOperationPreview // out
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(preview.Native()))
 
 	C.gtk_print_operation_preview_end_preview(_arg0)
 }
 
 // IsSelected returns whether the given page is included in the set of pages
 // that have been selected for printing.
-func (p *PrintOperationPreviewInterface) IsSelected(pageNr int) bool {
+func (preview *PrintOperationPreviewIface) IsSelected(pageNr int) bool {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
 	var _cret C.gboolean                  // in
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(preview.Native()))
 	_arg1 = C.int(pageNr)
 
 	_cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
@@ -138,11 +138,11 @@ func (p *PrintOperationPreviewInterface) IsSelected(pageNr int) bool {
 //
 // Note that this function requires a suitable cairo context to be associated
 // with the print context.
-func (p *PrintOperationPreviewInterface) RenderPage(pageNr int) {
+func (preview *PrintOperationPreviewIface) RenderPage(pageNr int) {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(preview.Native()))
 	_arg1 = C.int(pageNr)
 
 	C.gtk_print_operation_preview_render_page(_arg0, _arg1)

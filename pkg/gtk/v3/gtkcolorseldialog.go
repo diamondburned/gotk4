@@ -36,7 +36,7 @@ type ColorSelectionDialog interface {
 type ColorSelectionDialogClass struct {
 	*externglib.Object
 	DialogClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ ColorSelectionDialog = (*ColorSelectionDialogClass)(nil)
@@ -53,28 +53,31 @@ func wrapColorSelectionDialog(obj *externglib.Object) ColorSelectionDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -104,11 +107,11 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialogClass {
 }
 
 // ColorSelection retrieves the ColorSelection widget embedded in the dialog.
-func (c *ColorSelectionDialogClass) ColorSelection() *WidgetClass {
+func (colorsel *ColorSelectionDialogClass) ColorSelection() *WidgetClass {
 	var _arg0 *C.GtkColorSelectionDialog // out
 	var _cret *C.GtkWidget               // in
 
-	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(colorsel.Native()))
 
 	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
 

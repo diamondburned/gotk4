@@ -44,8 +44,8 @@ type Separator interface {
 type SeparatorClass struct {
 	*externglib.Object
 	WidgetClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ Separator = (*SeparatorClass)(nil)
@@ -54,15 +54,18 @@ func wrapSeparator(obj *externglib.Object) Separator {
 	return &SeparatorClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			BuildableInterface: BuildableInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}

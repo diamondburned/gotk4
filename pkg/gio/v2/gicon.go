@@ -107,15 +107,15 @@ type Icon interface {
 	String() string
 }
 
-// IconInterface implements the Icon interface.
-type IconInterface struct {
+// IconIface implements the Icon interface.
+type IconIface struct {
 	*externglib.Object
 }
 
-var _ Icon = (*IconInterface)(nil)
+var _ Icon = (*IconIface)(nil)
 
 func wrapIcon(obj *externglib.Object) Icon {
-	return &IconInterface{
+	return &IconIface{
 		Object: obj,
 	}
 }
@@ -127,12 +127,12 @@ func marshalIcon(p uintptr) (interface{}, error) {
 }
 
 // Equal checks if two icons are equal.
-func (i *IconInterface) Equal(icon2 Icon) bool {
+func (icon1 *IconIface) Equal(icon2 Icon) bool {
 	var _arg0 *C.GIcon   // out
 	var _arg1 *C.GIcon   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer(icon1.Native()))
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
 
 	_cret = C.g_icon_equal(_arg0, _arg1)
@@ -151,11 +151,11 @@ func (i *IconInterface) Equal(icon2 Icon) bool {
 // serialization will avoid using raw icon data when possible, it only makes
 // sense to transfer the #GVariant between processes on the same machine, (as
 // opposed to over the network), and within the same file system namespace.
-func (i *IconInterface) Serialize() *glib.Variant {
+func (icon *IconIface) Serialize() *glib.Variant {
 	var _arg0 *C.GIcon    // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_icon_serialize(_arg0)
 
@@ -185,11 +185,11 @@ func (i *IconInterface) Serialize() *glib.Variant {
 //
 // - If @icon is a Icon with exactly one name and no fallbacks, the encoding is
 // simply the name (such as `network-server`).
-func (i *IconInterface) String() string {
+func (icon *IconIface) String() string {
 	var _arg0 *C.GIcon // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_icon_to_string(_arg0)
 

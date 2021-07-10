@@ -92,10 +92,10 @@ type AppChooserButton interface {
 type AppChooserButtonClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	AppChooserInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	AppChooserIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ AppChooserButton = (*AppChooserButtonClass)(nil)
@@ -104,38 +104,45 @@ func wrapAppChooserButton(obj *externglib.Object) AppChooserButton {
 	return &AppChooserButtonClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		AppChooserInterface: AppChooserInterface{
+		AppChooserIface: AppChooserIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -167,20 +174,20 @@ func NewAppChooserButton(contentType string) *AppChooserButtonClass {
 
 // AppendSeparator appends a separator to the list of applications that is shown
 // in the popup.
-func (s *AppChooserButtonClass) AppendSeparator() {
+func (self *AppChooserButtonClass) AppendSeparator() {
 	var _arg0 *C.GtkAppChooserButton // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	C.gtk_app_chooser_button_append_separator(_arg0)
 }
 
 // Heading returns the text to display at the top of the dialog.
-func (s *AppChooserButtonClass) Heading() string {
+func (self *AppChooserButtonClass) Heading() string {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret *C.char                // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_heading(_arg0)
 
@@ -192,11 +199,11 @@ func (s *AppChooserButtonClass) Heading() string {
 }
 
 // Modal gets whether the dialog is modal.
-func (s *AppChooserButtonClass) Modal() bool {
+func (self *AppChooserButtonClass) Modal() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_modal(_arg0)
 
@@ -211,11 +218,11 @@ func (s *AppChooserButtonClass) Modal() bool {
 
 // ShowDefaultItem returns whether the dropdown menu should show the default
 // application at the top.
-func (s *AppChooserButtonClass) ShowDefaultItem() bool {
+func (self *AppChooserButtonClass) ShowDefaultItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
 
@@ -230,11 +237,11 @@ func (s *AppChooserButtonClass) ShowDefaultItem() bool {
 
 // ShowDialogItem returns whether the dropdown menu shows an item for a
 // `GtkAppChooserDialog`.
-func (s *AppChooserButtonClass) ShowDialogItem() bool {
+func (self *AppChooserButtonClass) ShowDialogItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
 
@@ -253,11 +260,11 @@ func (s *AppChooserButtonClass) ShowDialogItem() bool {
 //
 // Use [method@Gtk.AppChooser.refresh] to bring the selection to its initial
 // state.
-func (s *AppChooserButtonClass) SetActiveCustomItem(name string) {
+func (self *AppChooserButtonClass) SetActiveCustomItem(name string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -267,11 +274,11 @@ func (s *AppChooserButtonClass) SetActiveCustomItem(name string) {
 // SetHeading sets the text to display at the top of the dialog.
 //
 // If the heading is not set, the dialog displays a default text.
-func (s *AppChooserButtonClass) SetHeading(heading string) {
+func (self *AppChooserButtonClass) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(heading))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -279,11 +286,11 @@ func (s *AppChooserButtonClass) SetHeading(heading string) {
 }
 
 // SetModal sets whether the dialog should be modal.
-func (s *AppChooserButtonClass) SetModal(modal bool) {
+func (self *AppChooserButtonClass) SetModal(modal bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -293,11 +300,11 @@ func (s *AppChooserButtonClass) SetModal(modal bool) {
 
 // SetShowDefaultItem sets whether the dropdown menu of this button should show
 // the default application for the given content type at top.
-func (s *AppChooserButtonClass) SetShowDefaultItem(setting bool) {
+func (self *AppChooserButtonClass) SetShowDefaultItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -307,11 +314,11 @@ func (s *AppChooserButtonClass) SetShowDefaultItem(setting bool) {
 
 // SetShowDialogItem sets whether the dropdown menu of this button should show
 // an entry to trigger a `GtkAppChooserDialog`.
-func (s *AppChooserButtonClass) SetShowDialogItem(setting bool) {
+func (self *AppChooserButtonClass) SetShowDialogItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

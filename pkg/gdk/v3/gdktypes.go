@@ -481,20 +481,6 @@ func (p *Point) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// X: the x coordinate of the point.
-func (p *Point) X() int {
-	var v int // out
-	v = int(p.native.x)
-	return v
-}
-
-// Y: the y coordinate of the point.
-func (p *Point) Y() int {
-	var v int // out
-	v = int(p.native.y)
-	return v
-}
-
 // Rectangle defines the position and size of a rectangle. It is identical to
 // #cairo_rectangle_int_t.
 type Rectangle struct {
@@ -517,37 +503,13 @@ func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-func (r *Rectangle) X() int {
-	var v int // out
-	v = int(r.native.x)
-	return v
-}
-
-func (r *Rectangle) Y() int {
-	var v int // out
-	v = int(r.native.y)
-	return v
-}
-
-func (r *Rectangle) Width() int {
-	var v int // out
-	v = int(r.native.width)
-	return v
-}
-
-func (r *Rectangle) Height() int {
-	var v int // out
-	v = int(r.native.height)
-	return v
-}
-
 // Equal checks if the two given rectangles are equal.
-func (r *Rectangle) Equal(rect2 *Rectangle) bool {
+func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(rect1))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2))
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
@@ -566,13 +528,13 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 // intersect, @dest’s width and height is set to 0 and its x and y values are
 // undefined. If you are only interested in whether the rectangles intersect,
 // but not in the intersecting area itself, pass nil for @dest.
-func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
+func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _arg2 C.GdkRectangle  // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(src1))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
 
 	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
@@ -594,12 +556,12 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
-func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
+func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _arg2 C.GdkRectangle  // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s))
+	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(src1))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
 
 	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)

@@ -69,10 +69,10 @@ func NewNotebookPageAccessible(notebook NotebookAccessible, child Widget) *Noteb
 	return _notebookPageAccessible
 }
 
-func (p *NotebookPageAccessibleClass) Invalidate() {
+func (page *NotebookPageAccessibleClass) Invalidate() {
 	var _arg0 *C.GtkNotebookPageAccessible // out
 
-	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer(page.Native()))
 
 	C.gtk_notebook_page_accessible_invalidate(_arg0)
 }

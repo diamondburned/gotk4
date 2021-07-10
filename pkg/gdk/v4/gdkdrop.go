@@ -102,11 +102,11 @@ func marshalDrop(p uintptr) (interface{}, error) {
 // response to source side actions as well as to calls to
 // [method@Gdk.Drop.status] or [method@Gdk.Drop.finish]. The source side will
 // not change this value anymore once a drop has started.
-func (s *DropClass) Actions() DragAction {
+func (self *DropClass) Actions() DragAction {
 	var _arg0 *C.GdkDrop      // out
 	var _cret C.GdkDragAction // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_actions(_arg0)
 
@@ -118,11 +118,11 @@ func (s *DropClass) Actions() DragAction {
 }
 
 // Device returns the `GdkDevice` performing the drop.
-func (s *DropClass) Device() *DeviceClass {
+func (self *DropClass) Device() *DeviceClass {
 	var _arg0 *C.GdkDrop   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_device(_arg0)
 
@@ -134,11 +134,11 @@ func (s *DropClass) Device() *DeviceClass {
 }
 
 // Display gets the `GdkDisplay` that @self was created for.
-func (s *DropClass) Display() *DisplayClass {
+func (self *DropClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_display(_arg0)
 
@@ -153,11 +153,11 @@ func (s *DropClass) Display() *DisplayClass {
 // that corresponds to this drop.
 //
 // If it is not, nil is returned.
-func (s *DropClass) Drag() *DragClass {
+func (self *DropClass) Drag() *DragClass {
 	var _arg0 *C.GdkDrop // out
 	var _cret *C.GdkDrag // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_drag(_arg0)
 
@@ -170,11 +170,11 @@ func (s *DropClass) Drag() *DragClass {
 
 // Formats returns the `GdkContentFormats` that the drop offers the data to be
 // read in.
-func (s *DropClass) Formats() *ContentFormats {
+func (self *DropClass) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrop           // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_formats(_arg0)
 
@@ -190,11 +190,11 @@ func (s *DropClass) Formats() *ContentFormats {
 }
 
 // Surface returns the `GdkSurface` performing the drop.
-func (s *DropClass) Surface() *SurfaceClass {
+func (self *DropClass) Surface() *SurfaceClass {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_surface(_arg0)
 

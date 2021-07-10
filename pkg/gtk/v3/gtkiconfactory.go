@@ -106,7 +106,7 @@ type IconFactory interface {
 	// default icons. If an icon already existed in @factory for @stock_id, it
 	// is unreferenced and replaced with the new @icon_set.
 	//
-	// Deprecated: since version 3.10.
+	// Deprecated: Use IconTheme instead.
 	Add(stockId string, iconSet *IconSet)
 	// AddDefault adds an icon factory to the list of icon factories searched by
 	// gtk_style_lookup_icon_set(). This means that, for example,
@@ -115,7 +115,7 @@ type IconFactory interface {
 	// that comes with icons. The default icon factories can be overridden by
 	// themes.
 	//
-	// Deprecated: since version 3.10.
+	// Deprecated: Use IconTheme instead.
 	AddDefault()
 	// Lookup looks up @stock_id in the icon factory, returning an icon set if
 	// found, otherwise nil. For display to the user, you should use
@@ -123,20 +123,20 @@ type IconFactory interface {
 	// the icon, instead of using this function directly, so that themes are
 	// taken into account.
 	//
-	// Deprecated: since version 3.10.
+	// Deprecated: Use IconTheme instead.
 	Lookup(stockId string) *IconSet
 	// RemoveDefault removes an icon factory from the list of default icon
 	// factories. Not normally used; you might use it for a library that can be
 	// unloaded or shut down.
 	//
-	// Deprecated: since version 3.10.
+	// Deprecated: Use IconTheme instead.
 	RemoveDefault()
 }
 
 // IconFactoryClass implements the IconFactory interface.
 type IconFactoryClass struct {
 	*externglib.Object
-	BuildableInterface
+	BuildableIface
 }
 
 var _ IconFactory = (*IconFactoryClass)(nil)
@@ -144,7 +144,7 @@ var _ IconFactory = (*IconFactoryClass)(nil)
 func wrapIconFactory(obj *externglib.Object) IconFactory {
 	return &IconFactoryClass{
 		Object: obj,
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -168,7 +168,7 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 // Applications with icons should add a default icon factory with their icons,
 // which will allow themes to override the icons for the application.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use IconTheme instead.
 func NewIconFactory() *IconFactoryClass {
 	var _cret *C.GtkIconFactory // in
 
@@ -191,13 +191,13 @@ func NewIconFactory() *IconFactoryClass {
 // @factory for @stock_id, it is unreferenced and replaced with the new
 // @icon_set.
 //
-// Deprecated: since version 3.10.
-func (f *IconFactoryClass) Add(stockId string, iconSet *IconSet) {
+// Deprecated: Use IconTheme instead.
+func (factory *IconFactoryClass) Add(stockId string, iconSet *IconSet) {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GtkIconSet     // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
@@ -211,11 +211,11 @@ func (f *IconFactoryClass) Add(stockId string, iconSet *IconSet) {
 // normally be an icon factory added for each library or application that comes
 // with icons. The default icon factories can be overridden by themes.
 //
-// Deprecated: since version 3.10.
-func (f *IconFactoryClass) AddDefault() {
+// Deprecated: Use IconTheme instead.
+func (factory *IconFactoryClass) AddDefault() {
 	var _arg0 *C.GtkIconFactory // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_icon_factory_add_default(_arg0)
 }
@@ -226,13 +226,13 @@ func (f *IconFactoryClass) AddDefault() {
 // icon, instead of using this function directly, so that themes are taken into
 // account.
 //
-// Deprecated: since version 3.10.
-func (f *IconFactoryClass) Lookup(stockId string) *IconSet {
+// Deprecated: Use IconTheme instead.
+func (factory *IconFactoryClass) Lookup(stockId string) *IconSet {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkIconSet     // in
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -253,11 +253,11 @@ func (f *IconFactoryClass) Lookup(stockId string) *IconSet {
 // factories. Not normally used; you might use it for a library that can be
 // unloaded or shut down.
 //
-// Deprecated: since version 3.10.
-func (f *IconFactoryClass) RemoveDefault() {
+// Deprecated: Use IconTheme instead.
+func (factory *IconFactoryClass) RemoveDefault() {
 	var _arg0 *C.GtkIconFactory // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_icon_factory_remove_default(_arg0)
 }

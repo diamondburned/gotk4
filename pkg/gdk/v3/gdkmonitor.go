@@ -130,11 +130,11 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 }
 
 // Display gets the display that this monitor belongs to.
-func (m *MonitorClass) Display() *DisplayClass {
+func (monitor *MonitorClass) Display() *DisplayClass {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_display(_arg0)
 
@@ -148,11 +148,11 @@ func (m *MonitorClass) Display() *DisplayClass {
 // Geometry retrieves the size and position of an individual monitor within the
 // display coordinate space. The returned geometry is in ”application pixels”,
 // not in ”device pixels” (see gdk_monitor_get_scale_factor()).
-func (m *MonitorClass) Geometry() Rectangle {
+func (monitor *MonitorClass) Geometry() Rectangle {
 	var _arg0 *C.GdkMonitor  // out
 	var _arg1 C.GdkRectangle // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gdk_monitor_get_geometry(_arg0, &_arg1)
 
@@ -164,11 +164,11 @@ func (m *MonitorClass) Geometry() Rectangle {
 }
 
 // HeightMm gets the height in millimeters of the monitor.
-func (m *MonitorClass) HeightMm() int {
+func (monitor *MonitorClass) HeightMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_height_mm(_arg0)
 
@@ -185,11 +185,11 @@ func (m *MonitorClass) HeightMm() int {
 // Note that this value might also vary depending on actual display backend.
 //
 // PNP ID registry is located at https://uefi.org/pnp_id_list
-func (m *MonitorClass) Manufacturer() string {
+func (monitor *MonitorClass) Manufacturer() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_manufacturer(_arg0)
 
@@ -201,11 +201,11 @@ func (m *MonitorClass) Manufacturer() string {
 }
 
 // Model gets the a string identifying the monitor model, if available.
-func (m *MonitorClass) Model() string {
+func (monitor *MonitorClass) Model() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_model(_arg0)
 
@@ -219,11 +219,11 @@ func (m *MonitorClass) Model() string {
 // RefreshRate gets the refresh rate of the monitor, if available.
 //
 // The value is in milli-Hertz, so a refresh rate of 60Hz is returned as 60000.
-func (m *MonitorClass) RefreshRate() int {
+func (monitor *MonitorClass) RefreshRate() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_refresh_rate(_arg0)
 
@@ -241,11 +241,11 @@ func (m *MonitorClass) RefreshRate() int {
 // This can be used if you want to create pixel based data for a particular
 // monitor, but most of the time you’re drawing to a window where it is better
 // to use gdk_window_get_scale_factor() instead.
-func (m *MonitorClass) ScaleFactor() int {
+func (monitor *MonitorClass) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_scale_factor(_arg0)
 
@@ -258,11 +258,11 @@ func (m *MonitorClass) ScaleFactor() int {
 
 // SubpixelLayout gets information about the layout of red, green and blue
 // primaries for each pixel in this monitor, if available.
-func (m *MonitorClass) SubpixelLayout() SubpixelLayout {
+func (monitor *MonitorClass) SubpixelLayout() SubpixelLayout {
 	var _arg0 *C.GdkMonitor       // out
 	var _cret C.GdkSubpixelLayout // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_subpixel_layout(_arg0)
 
@@ -274,11 +274,11 @@ func (m *MonitorClass) SubpixelLayout() SubpixelLayout {
 }
 
 // WidthMm gets the width in millimeters of the monitor.
-func (m *MonitorClass) WidthMm() int {
+func (monitor *MonitorClass) WidthMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_width_mm(_arg0)
 
@@ -299,11 +299,11 @@ func (m *MonitorClass) WidthMm() int {
 // Note that not all backends may have a concept of workarea. This function will
 // return the monitor geometry if a workarea is not available, or does not
 // apply.
-func (m *MonitorClass) Workarea() Rectangle {
+func (monitor *MonitorClass) Workarea() Rectangle {
 	var _arg0 *C.GdkMonitor  // out
 	var _arg1 C.GdkRectangle // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gdk_monitor_get_workarea(_arg0, &_arg1)
 
@@ -316,11 +316,11 @@ func (m *MonitorClass) Workarea() Rectangle {
 
 // IsPrimary gets whether this monitor should be considered primary (see
 // gdk_display_get_primary_monitor()).
-func (m *MonitorClass) IsPrimary() bool {
+func (monitor *MonitorClass) IsPrimary() bool {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_is_primary(_arg0)
 

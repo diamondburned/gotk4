@@ -62,7 +62,9 @@ var _ CellRendererText = (*CellRendererTextClass)(nil)
 func wrapCellRendererText(obj *externglib.Object) CellRendererText {
 	return &CellRendererTextClass{
 		CellRendererClass: CellRendererClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
 		},
 	}
 }
@@ -98,11 +100,11 @@ func NewCellRendererText() *CellRendererTextClass {
 // should really only be used if calculating the size of a cell is too slow (ie,
 // a massive number of cells displayed). If @number_of_rows is -1, then the
 // fixed height is unset, and the height is determined by the properties again.
-func (r *CellRendererTextClass) SetFixedHeightFromFont(numberOfRows int) {
+func (renderer *CellRendererTextClass) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg0 *C.GtkCellRendererText // out
 	var _arg1 C.gint                 // out
 
-	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(renderer.Native()))
 	_arg1 = C.gint(numberOfRows)
 
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)

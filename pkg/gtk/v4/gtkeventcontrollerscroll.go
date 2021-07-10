@@ -112,11 +112,11 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 }
 
 // Flags gets the flags conditioning the scroll controller behavior.
-func (s *EventControllerScrollClass) Flags() EventControllerScrollFlags {
+func (scroll *EventControllerScrollClass) Flags() EventControllerScrollFlags {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _cret C.GtkEventControllerScrollFlags // in
 
-	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(scroll.Native()))
 
 	_cret = C.gtk_event_controller_scroll_get_flags(_arg0)
 

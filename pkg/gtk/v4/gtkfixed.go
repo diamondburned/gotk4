@@ -90,9 +90,9 @@ type Fixed interface {
 type FixedClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ Fixed = (*FixedClass)(nil)
@@ -101,24 +101,27 @@ func wrapFixed(obj *externglib.Object) Fixed {
 	return &FixedClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -147,13 +150,13 @@ func NewFixed() *FixedClass {
 // `GtkWidget` in the `GtkFixed`.
 //
 // See also: [method@Gtk.Fixed.get_child_transform].
-func (f *FixedClass) ChildPosition(widget Widget) (x float64, y float64) {
+func (fixed *FixedClass) ChildPosition(widget Widget) (x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // in
 	var _arg3 C.double     // in
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_fixed_get_child_position(_arg0, _arg1, &_arg2, &_arg3)
@@ -169,12 +172,12 @@ func (f *FixedClass) ChildPosition(widget Widget) (x float64, y float64) {
 
 // ChildTransform retrieves the transformation for @widget set using
 // gtk_fixed_set_child_transform().
-func (f *FixedClass) ChildTransform(widget Widget) *gsk.Transform {
+func (fixed *FixedClass) ChildTransform(widget Widget) *gsk.Transform {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GskTransform // in
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_fixed_get_child_transform(_arg0, _arg1)
@@ -192,13 +195,13 @@ func (f *FixedClass) ChildTransform(widget Widget) *gsk.Transform {
 
 // Move sets a translation transformation to the given @x and @y coordinates to
 // the child @widget of the `GtkFixed`.
-func (f *FixedClass) Move(widget Widget, x float64, y float64) {
+func (fixed *FixedClass) Move(widget Widget, x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
 	var _arg3 C.double     // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.double(x)
 	_arg3 = C.double(y)
@@ -207,13 +210,13 @@ func (f *FixedClass) Move(widget Widget, x float64, y float64) {
 }
 
 // Put adds a widget to a `GtkFixed` at the given position.
-func (f *FixedClass) Put(widget Widget, x float64, y float64) {
+func (fixed *FixedClass) Put(widget Widget, x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
 	var _arg3 C.double     // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.double(x)
 	_arg3 = C.double(y)
@@ -222,11 +225,11 @@ func (f *FixedClass) Put(widget Widget, x float64, y float64) {
 }
 
 // Remove removes a child from @fixed.
-func (f *FixedClass) Remove(widget Widget) {
+func (fixed *FixedClass) Remove(widget Widget) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_fixed_remove(_arg0, _arg1)
@@ -237,12 +240,12 @@ func (f *FixedClass) Remove(widget Widget) {
 // This is a convenience function that retrieves the
 // [class@Gtk.FixedLayoutChild] instance associated to @widget and calls
 // [method@Gtk.FixedLayoutChild.set_transform].
-func (f *FixedClass) SetChildTransform(widget Widget, transform *gsk.Transform) {
+func (fixed *FixedClass) SetChildTransform(widget Widget, transform *gsk.Transform) {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GskTransform // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.GskTransform)(unsafe.Pointer(transform))
 

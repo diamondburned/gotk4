@@ -45,7 +45,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
 
 	func wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
-		return {{ .Tree.Wrap "obj" }}
+		return {{ .Wrap "obj" }}
 	}
 
 	{{ if .GLibGetType }}
@@ -107,6 +107,6 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 		writer.Header().AddMarshaler(igen.GLibGetType, igen.InterfaceName)
 	}
 
-	file.ApplyHeader(writer, igen)
 	writer.Pen().WriteTmpl(classInterfaceTmpl, igen)
+	file.ApplyHeader(writer, igen)
 }

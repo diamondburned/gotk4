@@ -893,7 +893,8 @@ func marshalSortType(p uintptr) (interface{}, error) {
 // identify different colors in a Style for drawing, so states can be used for
 // subparts of a widget as well as entire widgets.
 //
-// Deprecated: since version 3.14.
+// Deprecated: All APIs that are using this enumeration have been deprecated in
+// favor of alternatives using StateFlags.
 type StateType int
 
 const (

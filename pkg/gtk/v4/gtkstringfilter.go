@@ -118,11 +118,11 @@ func NewStringFilter(expression Expression) *StringFilterClass {
 
 // Expression gets the expression that the string filter uses to obtain strings
 // from items.
-func (s *StringFilterClass) Expression() *ExpressionClass {
+func (self *StringFilterClass) Expression() *ExpressionClass {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.GtkExpression   // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_expression(_arg0)
 
@@ -134,11 +134,11 @@ func (s *StringFilterClass) Expression() *ExpressionClass {
 }
 
 // IgnoreCase returns whether the filter ignores case differences.
-func (s *StringFilterClass) IgnoreCase() bool {
+func (self *StringFilterClass) IgnoreCase() bool {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_ignore_case(_arg0)
 
@@ -152,11 +152,11 @@ func (s *StringFilterClass) IgnoreCase() bool {
 }
 
 // MatchMode returns the match mode that the filter is using.
-func (s *StringFilterClass) MatchMode() StringFilterMatchMode {
+func (self *StringFilterClass) MatchMode() StringFilterMatchMode {
 	var _arg0 *C.GtkStringFilter         // out
 	var _cret C.GtkStringFilterMatchMode // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_match_mode(_arg0)
 
@@ -168,11 +168,11 @@ func (s *StringFilterClass) MatchMode() StringFilterMatchMode {
 }
 
 // Search gets the search term.
-func (s *StringFilterClass) Search() string {
+func (self *StringFilterClass) Search() string {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_search(_arg0)
 
@@ -187,22 +187,22 @@ func (s *StringFilterClass) Search() string {
 // strings from items.
 //
 // The expression must have a value type of G_TYPE_STRING.
-func (s *StringFilterClass) SetExpression(expression Expression) {
+func (self *StringFilterClass) SetExpression(expression Expression) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.GtkExpression   // out
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_string_filter_set_expression(_arg0, _arg1)
 }
 
 // SetIgnoreCase sets whether the filter ignores case differences.
-func (s *StringFilterClass) SetIgnoreCase(ignoreCase bool) {
+func (self *StringFilterClass) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 	if ignoreCase {
 		_arg1 = C.TRUE
 	}
@@ -211,11 +211,11 @@ func (s *StringFilterClass) SetIgnoreCase(ignoreCase bool) {
 }
 
 // SetSearch sets the string to search for.
-func (s *StringFilterClass) SetSearch(search string) {
+func (self *StringFilterClass) SetSearch(search string) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(search))
 	defer C.free(unsafe.Pointer(_arg1))
 

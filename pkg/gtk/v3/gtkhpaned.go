@@ -39,8 +39,8 @@ type HPaned interface {
 type HPanedClass struct {
 	*externglib.Object
 	PanedClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ HPaned = (*HPanedClass)(nil)
@@ -53,26 +53,29 @@ func wrapHPaned(obj *externglib.Object) HPaned {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -86,7 +89,7 @@ func marshalHPaned(p uintptr) (interface{}, error) {
 
 // NewHPaned: create a new HPaned
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_paned_new() with GTK_ORIENTATION_HORIZONTAL instead.
 func NewHPaned() *HPanedClass {
 	var _cret *C.GtkWidget // in
 

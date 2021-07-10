@@ -216,7 +216,7 @@ type SocketClient interface {
 	// ProxyResolver gets the Resolver being used by @client. Normally, this
 	// will be the resolver returned by g_proxy_resolver_get_default(), but you
 	// can override it with g_socket_client_set_proxy_resolver().
-	ProxyResolver() *ProxyResolverInterface
+	ProxyResolver() *ProxyResolverIface
 	// SocketType gets the socket type of the socket client.
 	//
 	// See g_socket_client_set_socket_type() for details.
@@ -328,11 +328,11 @@ func NewSocketClient() *SocketClientClass {
 // When the proxy is detected as being an application proxy, TLS handshake will
 // be skipped. This is required to let the application do the proxy specific
 // handshake.
-func (c *SocketClientClass) AddApplicationProxy(protocol string) {
+func (client *SocketClientClass) AddApplicationProxy(protocol string) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(C.CString(protocol))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -358,14 +358,14 @@ func (c *SocketClientClass) AddApplicationProxy(protocol string) {
 //
 // If a local address is specified with g_socket_client_set_local_address() the
 // socket will be bound to this address before connecting.
-func (c *SocketClientClass) ConnectSocketClient(connectable SocketConnectable, cancellable Cancellable) (*SocketConnectionClass, error) {
+func (client *SocketClientClass) ConnectSocketClient(connectable SocketConnectable, cancellable Cancellable) (*SocketConnectionClass, error) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
 	var _cret *C.GSocketConnection  // in
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
@@ -392,14 +392,14 @@ func (c *SocketClientClass) ConnectSocketClient(connectable SocketConnectable, c
 //
 // When the operation is finished @callback will be called. You can then call
 // g_socket_client_connect_finish() to get the result of the operation.
-func (c *SocketClientClass) ConnectAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
+func (client *SocketClientClass) ConnectAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -410,13 +410,13 @@ func (c *SocketClientClass) ConnectAsync(connectable SocketConnectable, cancella
 
 // ConnectFinish finishes an async connect operation. See
 // g_socket_client_connect_async()
-func (c *SocketClientClass) ConnectFinish(result AsyncResult) (*SocketConnectionClass, error) {
+func (client *SocketClientClass) ConnectFinish(result AsyncResult) (*SocketConnectionClass, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_finish(_arg0, _arg1, &_cerr)
@@ -459,7 +459,7 @@ func (c *SocketClientClass) ConnectFinish(result AsyncResult) (*SocketConnection
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) nil is returned and @error (if non-nil) is set accordingly.
-func (c *SocketClientClass) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) (*SocketConnectionClass, error) {
+func (client *SocketClientClass) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) (*SocketConnectionClass, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.guint16            // out
@@ -467,7 +467,7 @@ func (c *SocketClientClass) ConnectToHost(hostAndPort string, defaultPort uint16
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(C.CString(hostAndPort))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
@@ -489,7 +489,7 @@ func (c *SocketClientClass) ConnectToHost(hostAndPort string, defaultPort uint16
 //
 // When the operation is finished @callback will be called. You can then call
 // g_socket_client_connect_to_host_finish() to get the result of the operation.
-func (c *SocketClientClass) ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback) {
+func (client *SocketClientClass) ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -497,7 +497,7 @@ func (c *SocketClientClass) ConnectToHostAsync(hostAndPort string, defaultPort u
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(C.CString(hostAndPort))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
@@ -510,13 +510,13 @@ func (c *SocketClientClass) ConnectToHostAsync(hostAndPort string, defaultPort u
 
 // ConnectToHostFinish finishes an async connect operation. See
 // g_socket_client_connect_to_host_async()
-func (c *SocketClientClass) ConnectToHostFinish(result AsyncResult) (*SocketConnectionClass, error) {
+func (client *SocketClientClass) ConnectToHostFinish(result AsyncResult) (*SocketConnectionClass, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_to_host_finish(_arg0, _arg1, &_cerr)
@@ -543,7 +543,7 @@ func (c *SocketClientClass) ConnectToHostFinish(result AsyncResult) (*SocketConn
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) nil is returned and @error (if non-nil) is set accordingly.
-func (c *SocketClientClass) ConnectToService(domain string, service string, cancellable Cancellable) (*SocketConnectionClass, error) {
+func (client *SocketClientClass) ConnectToService(domain string, service string, cancellable Cancellable) (*SocketConnectionClass, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
@@ -551,7 +551,7 @@ func (c *SocketClientClass) ConnectToService(domain string, service string, canc
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(service))
@@ -571,7 +571,7 @@ func (c *SocketClientClass) ConnectToService(domain string, service string, canc
 
 // ConnectToServiceAsync: this is the asynchronous version of
 // g_socket_client_connect_to_service().
-func (c *SocketClientClass) ConnectToServiceAsync(domain string, service string, cancellable Cancellable, callback AsyncReadyCallback) {
+func (client *SocketClientClass) ConnectToServiceAsync(domain string, service string, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -579,7 +579,7 @@ func (c *SocketClientClass) ConnectToServiceAsync(domain string, service string,
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(service))
@@ -593,13 +593,13 @@ func (c *SocketClientClass) ConnectToServiceAsync(domain string, service string,
 
 // ConnectToServiceFinish finishes an async connect operation. See
 // g_socket_client_connect_to_service_async()
-func (c *SocketClientClass) ConnectToServiceFinish(result AsyncResult) (*SocketConnectionClass, error) {
+func (client *SocketClientClass) ConnectToServiceFinish(result AsyncResult) (*SocketConnectionClass, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_to_service_finish(_arg0, _arg1, &_cerr)
@@ -632,7 +632,7 @@ func (c *SocketClientClass) ConnectToServiceFinish(result AsyncResult) (*SocketC
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) nil is returned and @error (if non-nil) is set accordingly.
-func (c *SocketClientClass) ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) (*SocketConnectionClass, error) {
+func (client *SocketClientClass) ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) (*SocketConnectionClass, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.guint16            // out
@@ -640,7 +640,7 @@ func (c *SocketClientClass) ConnectToURI(uri string, defaultPort uint16, cancell
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
@@ -662,7 +662,7 @@ func (c *SocketClientClass) ConnectToURI(uri string, defaultPort uint16, cancell
 //
 // When the operation is finished @callback will be called. You can then call
 // g_socket_client_connect_to_uri_finish() to get the result of the operation.
-func (c *SocketClientClass) ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback) {
+func (client *SocketClientClass) ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -670,7 +670,7 @@ func (c *SocketClientClass) ConnectToURIAsync(uri string, defaultPort uint16, ca
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
@@ -683,13 +683,13 @@ func (c *SocketClientClass) ConnectToURIAsync(uri string, defaultPort uint16, ca
 
 // ConnectToURIFinish finishes an async connect operation. See
 // g_socket_client_connect_to_uri_async()
-func (c *SocketClientClass) ConnectToURIFinish(result AsyncResult) (*SocketConnectionClass, error) {
+func (client *SocketClientClass) ConnectToURIFinish(result AsyncResult) (*SocketConnectionClass, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_to_uri_finish(_arg0, _arg1, &_cerr)
@@ -705,11 +705,11 @@ func (c *SocketClientClass) ConnectToURIFinish(result AsyncResult) (*SocketConne
 
 // EnableProxy gets the proxy enable state; see
 // g_socket_client_set_enable_proxy()
-func (c *SocketClientClass) EnableProxy() bool {
+func (client *SocketClientClass) EnableProxy() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_enable_proxy(_arg0)
 
@@ -725,11 +725,11 @@ func (c *SocketClientClass) EnableProxy() bool {
 // Family gets the socket family of the socket client.
 //
 // See g_socket_client_set_family() for details.
-func (c *SocketClientClass) Family() SocketFamily {
+func (client *SocketClientClass) Family() SocketFamily {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.GSocketFamily  // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_family(_arg0)
 
@@ -743,11 +743,11 @@ func (c *SocketClientClass) Family() SocketFamily {
 // LocalAddress gets the local address of the socket client.
 //
 // See g_socket_client_set_local_address() for details.
-func (c *SocketClientClass) LocalAddress() *SocketAddressClass {
+func (client *SocketClientClass) LocalAddress() *SocketAddressClass {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GSocketAddress // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_local_address(_arg0)
 
@@ -761,11 +761,11 @@ func (c *SocketClientClass) LocalAddress() *SocketAddressClass {
 // Protocol gets the protocol name type of the socket client.
 //
 // See g_socket_client_set_protocol() for details.
-func (c *SocketClientClass) Protocol() SocketProtocol {
+func (client *SocketClientClass) Protocol() SocketProtocol {
 	var _arg0 *C.GSocketClient  // out
 	var _cret C.GSocketProtocol // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_protocol(_arg0)
 
@@ -779,17 +779,17 @@ func (c *SocketClientClass) Protocol() SocketProtocol {
 // ProxyResolver gets the Resolver being used by @client. Normally, this will be
 // the resolver returned by g_proxy_resolver_get_default(), but you can override
 // it with g_socket_client_set_proxy_resolver().
-func (c *SocketClientClass) ProxyResolver() *ProxyResolverInterface {
+func (client *SocketClientClass) ProxyResolver() *ProxyResolverIface {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GProxyResolver // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
 
-	var _proxyResolver *ProxyResolverInterface // out
+	var _proxyResolver *ProxyResolverIface // out
 
-	_proxyResolver = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ProxyResolverInterface)
+	_proxyResolver = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ProxyResolverIface)
 
 	return _proxyResolver
 }
@@ -797,11 +797,11 @@ func (c *SocketClientClass) ProxyResolver() *ProxyResolverInterface {
 // SocketType gets the socket type of the socket client.
 //
 // See g_socket_client_set_socket_type() for details.
-func (c *SocketClientClass) SocketType() SocketType {
+func (client *SocketClientClass) SocketType() SocketType {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.GSocketType    // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_socket_type(_arg0)
 
@@ -815,11 +815,11 @@ func (c *SocketClientClass) SocketType() SocketType {
 // Timeout gets the I/O timeout time for sockets created by @client.
 //
 // See g_socket_client_set_timeout() for details.
-func (c *SocketClientClass) Timeout() uint {
+func (client *SocketClientClass) Timeout() uint {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_timeout(_arg0)
 
@@ -832,11 +832,11 @@ func (c *SocketClientClass) Timeout() uint {
 
 // TLS gets whether @client creates TLS connections. See
 // g_socket_client_set_tls() for details.
-func (c *SocketClientClass) TLS() bool {
+func (client *SocketClientClass) TLS() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_tls(_arg0)
 
@@ -851,11 +851,11 @@ func (c *SocketClientClass) TLS() bool {
 
 // TLSValidationFlags gets the TLS validation flags used creating TLS
 // connections via @client.
-func (c *SocketClientClass) TLSValidationFlags() TLSCertificateFlags {
+func (client *SocketClientClass) TLSValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GSocketClient       // out
 	var _cret C.GTlsCertificateFlags // in
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_tls_validation_flags(_arg0)
 
@@ -872,11 +872,11 @@ func (c *SocketClientClass) TLSValidationFlags() TLSCertificateFlags {
 // the necessary proxy negotiation.
 //
 // See also g_socket_client_set_proxy_resolver().
-func (c *SocketClientClass) SetEnableProxy(enable bool) {
+func (client *SocketClientClass) SetEnableProxy(enable bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	if enable {
 		_arg1 = C.TRUE
 	}
@@ -890,11 +890,11 @@ func (c *SocketClientClass) SetEnableProxy(enable bool) {
 //
 // This is useful if you want to ensure that the local side of the connection is
 // on a specific port, or on a specific interface.
-func (c *SocketClientClass) SetLocalAddress(address SocketAddress) {
+func (client *SocketClientClass) SetLocalAddress(address SocketAddress) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GSocketAddress // out
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 
 	C.g_socket_client_set_local_address(_arg0, _arg1)
@@ -907,11 +907,11 @@ func (c *SocketClientClass) SetLocalAddress(address SocketAddress) {
 // Note that whether or not the proxy resolver is actually used depends on the
 // setting of Client:enable-proxy, which is not changed by this function (but
 // which is true by default)
-func (c *SocketClientClass) SetProxyResolver(proxyResolver ProxyResolver) {
+func (client *SocketClientClass) SetProxyResolver(proxyResolver ProxyResolver) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GProxyResolver)(unsafe.Pointer(proxyResolver.Native()))
 
 	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
@@ -923,11 +923,11 @@ func (c *SocketClientClass) SetProxyResolver(proxyResolver ProxyResolver) {
 // The timeout value affects the initial connection attempt as well, so setting
 // this may cause calls to g_socket_client_connect(), etc, to fail with
 // G_IO_ERROR_TIMED_OUT.
-func (c *SocketClientClass) SetTimeout(timeout uint) {
+func (client *SocketClientClass) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.guint          // out
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = C.guint(timeout)
 
 	C.g_socket_client_set_timeout(_arg0, _arg1)
@@ -949,11 +949,11 @@ func (c *SocketClientClass) SetTimeout(timeout uint) {
 // Client::event signal and wait for it to be emitted with
 // G_SOCKET_CLIENT_TLS_HANDSHAKING, which will give you a chance to see the
 // ClientConnection before the handshake starts.
-func (c *SocketClientClass) SetTLS(tls bool) {
+func (client *SocketClientClass) SetTLS(tls bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	if tls {
 		_arg1 = C.TRUE
 	}

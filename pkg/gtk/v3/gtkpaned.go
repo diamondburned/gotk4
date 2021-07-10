@@ -111,8 +111,8 @@ type Paned interface {
 type PanedClass struct {
 	*externglib.Object
 	ContainerClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ Paned = (*PanedClass)(nil)
@@ -123,19 +123,22 @@ func wrapPaned(obj *externglib.Object) Paned {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -149,11 +152,11 @@ func marshalPaned(p uintptr) (interface{}, error) {
 
 // Add1 adds a child to the top or left pane with default parameters. This is
 // equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
-func (p *PanedClass) Add1(child Widget) {
+func (paned *PanedClass) Add1(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_add1(_arg0, _arg1)
@@ -161,22 +164,22 @@ func (p *PanedClass) Add1(child Widget) {
 
 // Add2 adds a child to the bottom or right pane with default parameters. This
 // is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
-func (p *PanedClass) Add2(child Widget) {
+func (paned *PanedClass) Add2(child Widget) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_add2(_arg0, _arg1)
 }
 
 // Child1 obtains the first child of the paned widget.
-func (p *PanedClass) Child1() *WidgetClass {
+func (paned *PanedClass) Child1() *WidgetClass {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_child1(_arg0)
 
@@ -188,11 +191,11 @@ func (p *PanedClass) Child1() *WidgetClass {
 }
 
 // Child2 obtains the second child of the paned widget.
-func (p *PanedClass) Child2() *WidgetClass {
+func (paned *PanedClass) Child2() *WidgetClass {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_child2(_arg0)
 
@@ -206,11 +209,11 @@ func (p *PanedClass) Child2() *WidgetClass {
 // HandleWindow returns the Window of the handle. This function is useful when
 // handling button or motion events because it enables the callback to
 // distinguish between the window of the paned, a child and the handle.
-func (p *PanedClass) HandleWindow() *gdk.WindowClass {
+func (paned *PanedClass) HandleWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_handle_window(_arg0)
 
@@ -222,11 +225,11 @@ func (p *PanedClass) HandleWindow() *gdk.WindowClass {
 }
 
 // Position obtains the position of the divider between the two panes.
-func (p *PanedClass) Position() int {
+func (paned *PanedClass) Position() int {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_position(_arg0)
 
@@ -238,11 +241,11 @@ func (p *PanedClass) Position() int {
 }
 
 // WideHandle gets the Paned:wide-handle property.
-func (p *PanedClass) WideHandle() bool {
+func (paned *PanedClass) WideHandle() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
 
@@ -256,13 +259,13 @@ func (p *PanedClass) WideHandle() bool {
 }
 
 // Pack1 adds a child to the top or left pane.
-func (p *PanedClass) Pack1(child Widget, resize bool, shrink bool) {
+func (paned *PanedClass) Pack1(child Widget, resize bool, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
 	var _arg3 C.gboolean   // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if resize {
 		_arg2 = C.TRUE
@@ -275,13 +278,13 @@ func (p *PanedClass) Pack1(child Widget, resize bool, shrink bool) {
 }
 
 // Pack2 adds a child to the bottom or right pane.
-func (p *PanedClass) Pack2(child Widget, resize bool, shrink bool) {
+func (paned *PanedClass) Pack2(child Widget, resize bool, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
 	var _arg3 C.gboolean   // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if resize {
 		_arg2 = C.TRUE
@@ -294,22 +297,22 @@ func (p *PanedClass) Pack2(child Widget, resize bool, shrink bool) {
 }
 
 // SetPosition sets the position of the divider between the two panes.
-func (p *PanedClass) SetPosition(position int) {
+func (paned *PanedClass) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gint      // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 	_arg1 = C.gint(position)
 
 	C.gtk_paned_set_position(_arg0, _arg1)
 }
 
 // SetWideHandle sets the Paned:wide-handle property.
-func (p *PanedClass) SetWideHandle(wide bool) {
+func (paned *PanedClass) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 	if wide {
 		_arg1 = C.TRUE
 	}

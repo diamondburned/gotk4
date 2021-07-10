@@ -225,12 +225,12 @@ type Cursor interface {
 	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
 	// Ref adds a reference to @cursor.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use g_object_ref() instead.
 	ref() *CursorClass
 	// Unref removes a reference from @cursor, deallocating the cursor if no
 	// references remain.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use g_object_unref() instead.
 	unref()
 }
 
@@ -362,11 +362,11 @@ func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y 
 }
 
 // CursorType returns the cursor type for this cursor.
-func (c *CursorClass) CursorType() CursorType {
+func (cursor *CursorClass) CursorType() CursorType {
 	var _arg0 *C.GdkCursor    // out
 	var _cret C.GdkCursorType // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	_cret = C.gdk_cursor_get_cursor_type(_arg0)
 
@@ -378,11 +378,11 @@ func (c *CursorClass) CursorType() CursorType {
 }
 
 // Display returns the display on which the Cursor is defined.
-func (c *CursorClass) Display() *DisplayClass {
+func (cursor *CursorClass) Display() *DisplayClass {
 	var _arg0 *C.GdkCursor  // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	_cret = C.gdk_cursor_get_display(_arg0)
 
@@ -398,11 +398,11 @@ func (c *CursorClass) Display() *DisplayClass {
 // Note that depending on the capabilities of the windowing system and on the
 // cursor, GDK may not be able to obtain the image data. In this case, nil is
 // returned.
-func (c *CursorClass) Image() *gdkpixbuf.PixbufClass {
+func (cursor *CursorClass) Image() *gdkpixbuf.PixbufClass {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	_cret = C.gdk_cursor_get_image(_arg0)
 
@@ -419,13 +419,13 @@ func (c *CursorClass) Image() *gdkpixbuf.PixbufClass {
 // Note that depending on the capabilities of the windowing system and on the
 // cursor, GDK may not be able to obtain the image data. In this case, nil is
 // returned.
-func (c *CursorClass) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
+func (cursor *CursorClass) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
 	var _arg0 *C.GdkCursor       // out
 	var _arg1 C.gdouble          // in
 	var _arg2 C.gdouble          // in
 	var _cret *C.cairo_surface_t // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	_cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
 
@@ -445,12 +445,12 @@ func (c *CursorClass) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 
 // Ref adds a reference to @cursor.
 //
-// Deprecated: since version 3.0.
-func (c *CursorClass) ref() *CursorClass {
+// Deprecated: Use g_object_ref() instead.
+func (cursor *CursorClass) ref() *CursorClass {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	_cret = C.gdk_cursor_ref(_arg0)
 
@@ -464,11 +464,11 @@ func (c *CursorClass) ref() *CursorClass {
 // Unref removes a reference from @cursor, deallocating the cursor if no
 // references remain.
 //
-// Deprecated: since version 3.0.
-func (c *CursorClass) unref() {
+// Deprecated: Use g_object_unref() instead.
+func (cursor *CursorClass) unref() {
 	var _arg0 *C.GdkCursor // out
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	C.gdk_cursor_unref(_arg0)
 }

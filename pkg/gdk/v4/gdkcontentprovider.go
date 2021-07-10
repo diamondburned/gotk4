@@ -162,10 +162,10 @@ func NewContentProviderUnion(providers []*ContentProviderClass) *ContentProvider
 }
 
 // ContentChanged emits the ::content-changed signal.
-func (p *ContentProviderClass) ContentChanged() {
+func (provider *ContentProviderClass) ContentChanged() {
 	var _arg0 *C.GdkContentProvider // out
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gdk_content_provider_content_changed(_arg0)
 }
@@ -177,12 +177,12 @@ func (p *ContentProviderClass) ContentChanged() {
 // returned by [method@Gdk.ContentProvider.ref_formats]. However, if the given
 // `GType` is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED
 // will be reported.
-func (p *ContentProviderClass) Value(value *externglib.Value) error {
+func (provider *ContentProviderClass) Value(value *externglib.Value) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GValue             // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
@@ -196,11 +196,11 @@ func (p *ContentProviderClass) Value(value *externglib.Value) error {
 
 // RefFormats gets the formats that the provider can provide its current
 // contents in.
-func (p *ContentProviderClass) RefFormats() *ContentFormats {
+func (provider *ContentProviderClass) RefFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gdk_content_provider_ref_formats(_arg0)
 
@@ -222,11 +222,11 @@ func (p *ContentProviderClass) RefFormats() *ContentFormats {
 //
 // This can be assumed to be a subset of
 // [method@Gdk.ContentProvider.ref_formats].
-func (p *ContentProviderClass) RefStorableFormats() *ContentFormats {
+func (provider *ContentProviderClass) RefStorableFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gdk_content_provider_ref_storable_formats(_arg0)
 

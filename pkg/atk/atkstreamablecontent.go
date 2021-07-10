@@ -83,15 +83,15 @@ type StreamableContent interface {
 	URI(mimeType string) string
 }
 
-// StreamableContentInterface implements the StreamableContent interface.
-type StreamableContentInterface struct {
+// StreamableContentIface implements the StreamableContent interface.
+type StreamableContentIface struct {
 	*externglib.Object
 }
 
-var _ StreamableContent = (*StreamableContentInterface)(nil)
+var _ StreamableContent = (*StreamableContentIface)(nil)
 
 func wrapStreamableContent(obj *externglib.Object) StreamableContent {
-	return &StreamableContentInterface{
+	return &StreamableContentIface{
 		Object: obj,
 	}
 }
@@ -104,12 +104,12 @@ func marshalStreamableContent(p uintptr) (interface{}, error) {
 
 // MIMEType gets the character string of the specified mime type. The first mime
 // type is at position 0, the second at position 1, and so on.
-func (s *StreamableContentInterface) MIMEType(i int) string {
+func (streamable *StreamableContentIface) MIMEType(i int) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 C.gint                  // out
 	var _cret *C.gchar                // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_streamable_content_get_mime_type(_arg0, _arg1)
@@ -122,11 +122,11 @@ func (s *StreamableContentInterface) MIMEType(i int) string {
 }
 
 // NMIMETypes gets the number of mime types supported by this object.
-func (s *StreamableContentInterface) NMIMETypes() int {
+func (streamable *StreamableContentIface) NMIMETypes() int {
 	var _arg0 *C.AtkStreamableContent // out
 	var _cret C.gint                  // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
 
 	_cret = C.atk_streamable_content_get_n_mime_types(_arg0)
 
@@ -138,12 +138,12 @@ func (s *StreamableContentInterface) NMIMETypes() int {
 }
 
 // Stream gets the content in the specified mime type.
-func (s *StreamableContentInterface) Stream(mimeType string) *glib.IOChannel {
+func (streamable *StreamableContentIface) Stream(mimeType string) *glib.IOChannel {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
 	var _cret *C.GIOChannel           // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
 	_arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -167,12 +167,12 @@ func (s *StreamableContentInterface) Stream(mimeType string) *glib.IOChannel {
 //
 // Note that it is possible for get_uri to return NULL but for get_stream to
 // work nonetheless, since not all GIOChannels connect to URIs.
-func (s *StreamableContentInterface) URI(mimeType string) string {
+func (streamable *StreamableContentIface) URI(mimeType string) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
 	var _cret *C.gchar                // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
 	_arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 

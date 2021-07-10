@@ -23,7 +23,7 @@ import "C"
 // running gtk_main()-loop when destroyed, and it will automatically be
 // destroyed upon test function teardown.
 //
-// Deprecated: since version 3.20.
+// Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestCreateSimpleWindow(windowTitle string, dialogText string) *WidgetClass {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -130,7 +130,7 @@ func TestRegisterAllTypes() {
 // anything between the lower and upper bounds of the adjustment belonging to
 // @widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
 //
-// Deprecated: since version 3.20.
+// Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestSliderGetValue(widget Widget) float64 {
 	var _arg1 *C.GtkWidget // out
 	var _cret C.double     // in
@@ -151,7 +151,7 @@ func TestSliderGetValue(widget Widget) float64 {
 // buttons. The adjustment value of these widgets is set to a value between the
 // lower and upper limits, according to the @percentage argument.
 //
-// Deprecated: since version 3.20.
+// Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestSliderSetPerc(widget Widget, percentage float64) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
@@ -166,7 +166,7 @@ func TestSliderSetPerc(widget Widget, percentage float64) {
 // upwards or downwards spin button arrow areas, usually leading to an increase
 // or decrease of spin button’s value.
 //
-// Deprecated: since version 3.20.
+// Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
 	var _arg2 C.guint          // out
@@ -193,7 +193,7 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 // TestTextGet: retrive the text string of @widget if it is a GtkLabel,
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
-// Deprecated: since version 3.20.
+// Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestTextGet(widget Widget) string {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.gchar     // in
@@ -213,7 +213,7 @@ func TestTextGet(widget Widget) string {
 // TestTextSet: set the text string of @widget to @string if it is a GtkLabel,
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
-// Deprecated: since version 3.20.
+// Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestTextSet(widget Widget, _string string) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out

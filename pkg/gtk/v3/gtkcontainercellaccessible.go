@@ -34,28 +34,25 @@ type ContainerCellAccessible interface {
 
 // ContainerCellAccessibleClass implements the ContainerCellAccessible interface.
 type ContainerCellAccessibleClass struct {
-	*externglib.Object
 	CellAccessibleClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ ContainerCellAccessible = (*ContainerCellAccessibleClass)(nil)
 
 func wrapContainerCellAccessible(obj *externglib.Object) ContainerCellAccessible {
 	return &ContainerCellAccessibleClass{
-		Object: obj,
 		CellAccessibleClass: CellAccessibleClass{
-			Object: obj,
 			AccessibleClass: AccessibleClass{
 				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}
@@ -79,21 +76,21 @@ func NewContainerCellAccessible() *ContainerCellAccessibleClass {
 	return _containerCellAccessible
 }
 
-func (c *ContainerCellAccessibleClass) AddChild(child CellAccessible) {
+func (container *ContainerCellAccessibleClass) AddChild(child CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
 }
 
-func (c *ContainerCellAccessibleClass) RemoveChild(child CellAccessible) {
+func (container *ContainerCellAccessibleClass) RemoveChild(child CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)

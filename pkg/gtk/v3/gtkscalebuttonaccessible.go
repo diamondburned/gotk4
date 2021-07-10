@@ -35,8 +35,8 @@ type ScaleButtonAccessible interface {
 type ScaleButtonAccessibleClass struct {
 	*externglib.Object
 	ButtonAccessibleClass
-	atk.ActionInterface
-	atk.ImageInterface
+	atk.ActionIface
+	atk.ImageIface
 }
 
 var _ ScaleButtonAccessible = (*ScaleButtonAccessibleClass)(nil)
@@ -55,17 +55,17 @@ func wrapScaleButtonAccessible(obj *externglib.Object) ScaleButtonAccessible {
 					},
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
-			ImageInterface: atk.ImageInterface{
+			ImageIface: atk.ImageIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
-		ImageInterface: atk.ImageInterface{
+		ImageIface: atk.ImageIface{
 			Object: obj,
 		},
 	}

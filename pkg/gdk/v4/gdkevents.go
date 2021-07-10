@@ -370,11 +370,11 @@ func marshalButtonEvent(p uintptr) (interface{}, error) {
 }
 
 // Button: extract the button number from a button event.
-func (e *ButtonEventClass) Button() uint {
+func (event *ButtonEventClass) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_button_event_get_button(_arg0)
 
@@ -419,11 +419,11 @@ func marshalCrossingEvent(p uintptr) (interface{}, error) {
 }
 
 // Detail extracts the notify detail from a crossing event.
-func (e *CrossingEventClass) Detail() NotifyType {
+func (event *CrossingEventClass) Detail() NotifyType {
 	var _arg0 *C.GdkEvent     // out
 	var _cret C.GdkNotifyType // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_crossing_event_get_detail(_arg0)
 
@@ -435,11 +435,11 @@ func (e *CrossingEventClass) Detail() NotifyType {
 }
 
 // Focus checks if the @event surface is the focus surface.
-func (e *CrossingEventClass) Focus() bool {
+func (event *CrossingEventClass) Focus() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_crossing_event_get_focus(_arg0)
 
@@ -453,11 +453,11 @@ func (e *CrossingEventClass) Focus() bool {
 }
 
 // Mode extracts the crossing mode from a crossing event.
-func (e *CrossingEventClass) Mode() CrossingMode {
+func (event *CrossingEventClass) Mode() CrossingMode {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkCrossingMode // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_crossing_event_get_mode(_arg0)
 
@@ -498,11 +498,11 @@ func marshalDNDEvent(p uintptr) (interface{}, error) {
 }
 
 // Drop gets the `GdkDrop` object from a DND event.
-func (e *DNDEventClass) Drop() *DropClass {
+func (event *DNDEventClass) Drop() *DropClass {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkDrop  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_dnd_event_get_drop(_arg0)
 
@@ -630,13 +630,13 @@ func marshalEvent(p uintptr) (interface{}, error) {
 }
 
 // Axes extracts all axis values from an event.
-func (e *EventClass) Axes() ([]float64, bool) {
+func (event *EventClass) Axes() ([]float64, bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 *C.double
 	var _arg2 C.guint    // in
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_axes(_arg0, &_arg1, &_arg2)
 
@@ -653,11 +653,11 @@ func (e *EventClass) Axes() ([]float64, bool) {
 }
 
 // Device returns the device of an event.
-func (e *EventClass) Device() *DeviceClass {
+func (event *EventClass) Device() *DeviceClass {
 	var _arg0 *C.GdkEvent  // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_device(_arg0)
 
@@ -677,11 +677,11 @@ func (e *EventClass) Device() *DeviceClass {
 // Note: the `GdkDeviceTool` will be constant during the application lifetime,
 // if settings must be stored persistently across runs, see
 // [method@Gdk.DeviceTool.get_serial].
-func (e *EventClass) DeviceTool() *DeviceToolClass {
+func (event *EventClass) DeviceTool() *DeviceToolClass {
 	var _arg0 *C.GdkEvent      // out
 	var _cret *C.GdkDeviceTool // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_device_tool(_arg0)
 
@@ -693,11 +693,11 @@ func (e *EventClass) DeviceTool() *DeviceToolClass {
 }
 
 // Display retrieves the display associated to the @event.
-func (e *EventClass) Display() *DisplayClass {
+func (event *EventClass) Display() *DisplayClass {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_display(_arg0)
 
@@ -712,11 +712,11 @@ func (e *EventClass) Display() *DisplayClass {
 //
 // Related touch events are connected in a sequence. Other events typically
 // don't have event sequence information.
-func (e *EventClass) EventSequence() *EventSequence {
+func (event *EventClass) EventSequence() *EventSequence {
 	var _arg0 *C.GdkEvent         // out
 	var _cret *C.GdkEventSequence // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_event_sequence(_arg0)
 
@@ -728,11 +728,11 @@ func (e *EventClass) EventSequence() *EventSequence {
 }
 
 // EventType retrieves the type of the event.
-func (e *EventClass) EventType() EventType {
+func (event *EventClass) EventType() EventType {
 	var _arg0 *C.GdkEvent    // out
 	var _cret C.GdkEventType // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_event_type(_arg0)
 
@@ -744,11 +744,11 @@ func (e *EventClass) EventType() EventType {
 }
 
 // ModifierState returns the modifier state field of an event.
-func (e *EventClass) ModifierState() ModifierType {
+func (event *EventClass) ModifierState() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_modifier_state(_arg0)
 
@@ -762,11 +762,11 @@ func (e *EventClass) ModifierState() ModifierType {
 // PointerEmulated returns whether this event is an 'emulated' pointer event.
 //
 // Emulated pointer events typically originate from a touch events.
-func (e *EventClass) PointerEmulated() bool {
+func (event *EventClass) PointerEmulated() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_pointer_emulated(_arg0)
 
@@ -780,13 +780,13 @@ func (e *EventClass) PointerEmulated() bool {
 }
 
 // Position: extract the event surface relative x/y coordinates from an event.
-func (e *EventClass) Position() (x float64, y float64, ok bool) {
+func (event *EventClass) Position() (x float64, y float64, ok bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_position(_arg0, &_arg1, &_arg2)
 
@@ -804,11 +804,11 @@ func (e *EventClass) Position() (x float64, y float64, ok bool) {
 }
 
 // Seat returns the seat that originated the event.
-func (e *EventClass) Seat() *SeatClass {
+func (event *EventClass) Seat() *SeatClass {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkSeat  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_seat(_arg0)
 
@@ -820,11 +820,11 @@ func (e *EventClass) Seat() *SeatClass {
 }
 
 // Surface extracts the surface associated with an event.
-func (e *EventClass) Surface() *SurfaceClass {
+func (event *EventClass) Surface() *SurfaceClass {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_surface(_arg0)
 
@@ -839,11 +839,11 @@ func (e *EventClass) Surface() *SurfaceClass {
 //
 // Not all events have timestamps. In that case, this function returns
 // GDK_CURRENT_TIME.
-func (e *EventClass) Time() uint32 {
+func (event *EventClass) Time() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint32   // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_time(_arg0)
 
@@ -855,11 +855,11 @@ func (e *EventClass) Time() uint32 {
 }
 
 // Ref: increase the ref count of @event.
-func (e *EventClass) ref() *EventClass {
+func (event *EventClass) ref() *EventClass {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkEvent // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_ref(_arg0)
 
@@ -877,11 +877,11 @@ func (e *EventClass) ref() *EventClass {
 //
 // This function should always be used instead of simply checking for
 // event->button == GDK_BUTTON_SECONDARY.
-func (e *EventClass) TriggersContextMenu() bool {
+func (event *EventClass) TriggersContextMenu() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_triggers_context_menu(_arg0)
 
@@ -897,10 +897,10 @@ func (e *EventClass) TriggersContextMenu() bool {
 // Unref: decrease the ref count of @event.
 //
 // If the last reference is dropped, the structure is freed.
-func (e *EventClass) unref() {
+func (event *EventClass) unref() {
 	var _arg0 *C.GdkEvent // out
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gdk_event_unref(_arg0)
 }
@@ -937,11 +937,11 @@ func marshalFocusEvent(p uintptr) (interface{}, error) {
 
 // In extracts whether this event is about focus entering or leaving the
 // surface.
-func (e *FocusEventClass) In() bool {
+func (event *FocusEventClass) In() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_focus_event_get_in(_arg0)
 
@@ -986,11 +986,11 @@ func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
 }
 
 // GrabSurface extracts the grab surface from a grab broken event.
-func (e *GrabBrokenEventClass) GrabSurface() *SurfaceClass {
+func (event *GrabBrokenEventClass) GrabSurface() *SurfaceClass {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_grab_broken_event_get_grab_surface(_arg0)
 
@@ -1002,11 +1002,11 @@ func (e *GrabBrokenEventClass) GrabSurface() *SurfaceClass {
 }
 
 // Implicit checks whether the grab broken event is for an implicit grab.
-func (e *GrabBrokenEventClass) Implicit() bool {
+func (event *GrabBrokenEventClass) Implicit() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_grab_broken_event_get_implicit(_arg0)
 
@@ -1063,11 +1063,11 @@ func marshalKeyEvent(p uintptr) (interface{}, error) {
 }
 
 // ConsumedModifiers extracts the consumed modifiers from a key event.
-func (e *KeyEventClass) ConsumedModifiers() ModifierType {
+func (event *KeyEventClass) ConsumedModifiers() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_key_event_get_consumed_modifiers(_arg0)
 
@@ -1079,11 +1079,11 @@ func (e *KeyEventClass) ConsumedModifiers() ModifierType {
 }
 
 // Keycode extracts the keycode from a key event.
-func (e *KeyEventClass) Keycode() uint {
+func (event *KeyEventClass) Keycode() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_key_event_get_keycode(_arg0)
 
@@ -1095,11 +1095,11 @@ func (e *KeyEventClass) Keycode() uint {
 }
 
 // Keyval extracts the keyval from a key event.
-func (e *KeyEventClass) Keyval() uint {
+func (event *KeyEventClass) Keyval() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_key_event_get_keyval(_arg0)
 
@@ -1111,11 +1111,11 @@ func (e *KeyEventClass) Keyval() uint {
 }
 
 // Layout extracts the layout from a key event.
-func (e *KeyEventClass) Layout() uint {
+func (event *KeyEventClass) Layout() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_key_event_get_layout(_arg0)
 
@@ -1127,11 +1127,11 @@ func (e *KeyEventClass) Layout() uint {
 }
 
 // Level extracts the shift level from a key event.
-func (e *KeyEventClass) Level() uint {
+func (event *KeyEventClass) Level() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_key_event_get_level(_arg0)
 
@@ -1145,13 +1145,13 @@ func (e *KeyEventClass) Level() uint {
 // Match gets a keyval and modifier combination that will match the event.
 //
 // See [method@Gdk.KeyEvent.matches].
-func (e *KeyEventClass) Match() (uint, ModifierType, bool) {
+func (event *KeyEventClass) Match() (uint, ModifierType, bool) {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // in
 	var _arg2 C.GdkModifierType // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_key_event_get_match(_arg0, &_arg1, &_arg2)
 
@@ -1169,11 +1169,11 @@ func (e *KeyEventClass) Match() (uint, ModifierType, bool) {
 }
 
 // IsModifier extracts whether the key event is for a modifier key.
-func (e *KeyEventClass) IsModifier() bool {
+func (event *KeyEventClass) IsModifier() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_key_event_is_modifier(_arg0)
 
@@ -1250,12 +1250,12 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 }
 
 // AxisValue extracts the information from a pad strip or ring event.
-func (e *PadEventClass) AxisValue() (uint, float64) {
+func (event *PadEventClass) AxisValue() (uint, float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gdk_pad_event_get_axis_value(_arg0, &_arg1, &_arg2)
 
@@ -1269,11 +1269,11 @@ func (e *PadEventClass) AxisValue() (uint, float64) {
 }
 
 // Button extracts information about the pressed button from a pad event.
-func (e *PadEventClass) Button() uint {
+func (event *PadEventClass) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_pad_event_get_button(_arg0)
 
@@ -1285,12 +1285,12 @@ func (e *PadEventClass) Button() uint {
 }
 
 // GroupMode extracts group and mode information from a pad event.
-func (e *PadEventClass) GroupMode() (group uint, mode uint) {
+func (event *PadEventClass) GroupMode() (group uint, mode uint) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gdk_pad_event_get_group_mode(_arg0, &_arg1, &_arg2)
 
@@ -1378,12 +1378,12 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 // Deltas extracts the scroll deltas of a scroll event.
 //
 // The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
-func (e *ScrollEventClass) Deltas() (deltaX float64, deltaY float64) {
+func (event *ScrollEventClass) Deltas() (deltaX float64, deltaY float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gdk_scroll_event_get_deltas(_arg0, &_arg1, &_arg2)
 
@@ -1397,11 +1397,11 @@ func (e *ScrollEventClass) Deltas() (deltaX float64, deltaY float64) {
 }
 
 // Direction extracts the direction of a scroll event.
-func (e *ScrollEventClass) Direction() ScrollDirection {
+func (event *ScrollEventClass) Direction() ScrollDirection {
 	var _arg0 *C.GdkEvent          // out
 	var _cret C.GdkScrollDirection // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_scroll_event_get_direction(_arg0)
 
@@ -1420,11 +1420,11 @@ func (e *ScrollEventClass) Direction() ScrollDirection {
 // kinetic scrolling based on the current velocity.
 //
 // Stop scroll events always have a delta of 0/0.
-func (e *ScrollEventClass) IsStop() bool {
+func (event *ScrollEventClass) IsStop() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_scroll_event_is_stop(_arg0)
 
@@ -1468,11 +1468,11 @@ func marshalTouchEvent(p uintptr) (interface{}, error) {
 }
 
 // EmulatingPointer extracts whether a touch event is emulating a pointer event.
-func (e *TouchEventClass) EmulatingPointer() bool {
+func (event *TouchEventClass) EmulatingPointer() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_touch_event_get_emulating_pointer(_arg0)
 
@@ -1528,12 +1528,12 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 }
 
 // Deltas extracts delta information from a touchpad event.
-func (e *TouchpadEventClass) Deltas() (dx float64, dy float64) {
+func (event *TouchpadEventClass) Deltas() (dx float64, dy float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gdk_touchpad_event_get_deltas(_arg0, &_arg1, &_arg2)
 
@@ -1547,11 +1547,11 @@ func (e *TouchpadEventClass) Deltas() (dx float64, dy float64) {
 }
 
 // GesturePhase extracts the touchpad gesture phase from a touchpad event.
-func (e *TouchpadEventClass) GesturePhase() TouchpadGesturePhase {
+func (event *TouchpadEventClass) GesturePhase() TouchpadGesturePhase {
 	var _arg0 *C.GdkEvent               // out
 	var _cret C.GdkTouchpadGesturePhase // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_touchpad_event_get_gesture_phase(_arg0)
 
@@ -1563,11 +1563,11 @@ func (e *TouchpadEventClass) GesturePhase() TouchpadGesturePhase {
 }
 
 // NFingers extracts the number of fingers from a touchpad event.
-func (e *TouchpadEventClass) NFingers() uint {
+func (event *TouchpadEventClass) NFingers() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_touchpad_event_get_n_fingers(_arg0)
 
@@ -1579,11 +1579,11 @@ func (e *TouchpadEventClass) NFingers() uint {
 }
 
 // PinchAngleDelta extracts the angle delta from a touchpad pinch event.
-func (e *TouchpadEventClass) PinchAngleDelta() float64 {
+func (event *TouchpadEventClass) PinchAngleDelta() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_touchpad_event_get_pinch_angle_delta(_arg0)
 
@@ -1595,11 +1595,11 @@ func (e *TouchpadEventClass) PinchAngleDelta() float64 {
 }
 
 // PinchScale extracts the scale from a touchpad pinch event.
-func (e *TouchpadEventClass) PinchScale() float64 {
+func (event *TouchpadEventClass) PinchScale() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_touchpad_event_get_pinch_scale(_arg0)
 

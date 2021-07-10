@@ -30,18 +30,18 @@ func init() {
 type ConstraintTarget interface {
 	gextras.Objector
 
-	privateConstraintTargetInterface()
+	privateConstraintTargetIface()
 }
 
-// ConstraintTargetInterface implements the ConstraintTarget interface.
-type ConstraintTargetInterface struct {
+// ConstraintTargetIface implements the ConstraintTarget interface.
+type ConstraintTargetIface struct {
 	*externglib.Object
 }
 
-var _ ConstraintTarget = (*ConstraintTargetInterface)(nil)
+var _ ConstraintTarget = (*ConstraintTargetIface)(nil)
 
 func wrapConstraintTarget(obj *externglib.Object) ConstraintTarget {
-	return &ConstraintTargetInterface{
+	return &ConstraintTargetIface{
 		Object: obj,
 	}
 }
@@ -52,7 +52,7 @@ func marshalConstraintTarget(p uintptr) (interface{}, error) {
 	return wrapConstraintTarget(obj), nil
 }
 
-func (*ConstraintTargetInterface) privateConstraintTargetInterface() {}
+func (*ConstraintTargetIface) privateConstraintTargetIface() {}
 
 // Constraint: `GtkConstraint` describes a constraint between attributes of two
 // widgets, expressed as a linear equation.
@@ -83,7 +83,7 @@ type Constraint interface {
 	//
 	// If the source is set to `NULL` at creation, the constraint will use the
 	// widget using the [class@Gtk.ConstraintLayout] as the source.
-	Source() *ConstraintTargetInterface
+	Source() *ConstraintTargetIface
 	// SourceAttribute retrieves the attribute of the source to be read by the
 	// constraint.
 	SourceAttribute() ConstraintAttribute
@@ -94,7 +94,7 @@ type Constraint interface {
 	//
 	// If the targe is set to `NULL` at creation, the constraint will use the
 	// widget using the [class@Gtk.ConstraintLayout] as the target.
-	Target() *ConstraintTargetInterface
+	Target() *ConstraintTargetIface
 	// TargetAttribute retrieves the attribute of the target to be set by the
 	// constraint.
 	TargetAttribute() ConstraintAttribute
@@ -129,11 +129,11 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 }
 
 // Constant retrieves the constant factor added to the source attributes' value.
-func (c *ConstraintClass) Constant() float64 {
+func (constraint *ConstraintClass) Constant() float64 {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.double         // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_constant(_arg0)
 
@@ -146,11 +146,11 @@ func (c *ConstraintClass) Constant() float64 {
 
 // Multiplier retrieves the multiplication factor applied to the source
 // attribute's value.
-func (c *ConstraintClass) Multiplier() float64 {
+func (constraint *ConstraintClass) Multiplier() float64 {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.double         // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_multiplier(_arg0)
 
@@ -162,11 +162,11 @@ func (c *ConstraintClass) Multiplier() float64 {
 }
 
 // Relation: the order relation between the terms of the constraint.
-func (c *ConstraintClass) Relation() ConstraintRelation {
+func (constraint *ConstraintClass) Relation() ConstraintRelation {
 	var _arg0 *C.GtkConstraint        // out
 	var _cret C.GtkConstraintRelation // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_relation(_arg0)
 
@@ -182,28 +182,28 @@ func (c *ConstraintClass) Relation() ConstraintRelation {
 //
 // If the source is set to `NULL` at creation, the constraint will use the
 // widget using the [class@Gtk.ConstraintLayout] as the source.
-func (c *ConstraintClass) Source() *ConstraintTargetInterface {
+func (constraint *ConstraintClass) Source() *ConstraintTargetIface {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_source(_arg0)
 
-	var _constraintTarget *ConstraintTargetInterface // out
+	var _constraintTarget *ConstraintTargetIface // out
 
-	_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ConstraintTargetInterface)
+	_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ConstraintTargetIface)
 
 	return _constraintTarget
 }
 
 // SourceAttribute retrieves the attribute of the source to be read by the
 // constraint.
-func (c *ConstraintClass) SourceAttribute() ConstraintAttribute {
+func (constraint *ConstraintClass) SourceAttribute() ConstraintAttribute {
 	var _arg0 *C.GtkConstraint         // out
 	var _cret C.GtkConstraintAttribute // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_source_attribute(_arg0)
 
@@ -215,11 +215,11 @@ func (c *ConstraintClass) SourceAttribute() ConstraintAttribute {
 }
 
 // Strength retrieves the strength of the constraint.
-func (c *ConstraintClass) Strength() int {
+func (constraint *ConstraintClass) Strength() int {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.int            // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_strength(_arg0)
 
@@ -235,28 +235,28 @@ func (c *ConstraintClass) Strength() int {
 //
 // If the targe is set to `NULL` at creation, the constraint will use the widget
 // using the [class@Gtk.ConstraintLayout] as the target.
-func (c *ConstraintClass) Target() *ConstraintTargetInterface {
+func (constraint *ConstraintClass) Target() *ConstraintTargetIface {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_target(_arg0)
 
-	var _constraintTarget *ConstraintTargetInterface // out
+	var _constraintTarget *ConstraintTargetIface // out
 
-	_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ConstraintTargetInterface)
+	_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ConstraintTargetIface)
 
 	return _constraintTarget
 }
 
 // TargetAttribute retrieves the attribute of the target to be set by the
 // constraint.
-func (c *ConstraintClass) TargetAttribute() ConstraintAttribute {
+func (constraint *ConstraintClass) TargetAttribute() ConstraintAttribute {
 	var _arg0 *C.GtkConstraint         // out
 	var _cret C.GtkConstraintAttribute // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_target_attribute(_arg0)
 
@@ -269,11 +269,11 @@ func (c *ConstraintClass) TargetAttribute() ConstraintAttribute {
 
 // IsAttached checks whether the constraint is attached to a
 // [class@Gtk.ConstraintLayout], and it is contributing to the layout.
-func (c *ConstraintClass) IsAttached() bool {
+func (constraint *ConstraintClass) IsAttached() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_is_attached(_arg0)
 
@@ -288,11 +288,11 @@ func (c *ConstraintClass) IsAttached() bool {
 
 // IsConstant checks whether the constraint describes a relation between an
 // attribute on the [property@Gtk.Constraint:target] and a constant value.
-func (c *ConstraintClass) IsConstant() bool {
+func (constraint *ConstraintClass) IsConstant() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_is_constant(_arg0)
 
@@ -307,11 +307,11 @@ func (c *ConstraintClass) IsConstant() bool {
 
 // IsRequired checks whether the constraint is a required relation for solving
 // the constraint layout.
-func (c *ConstraintClass) IsRequired() bool {
+func (constraint *ConstraintClass) IsRequired() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_is_required(_arg0)
 

@@ -41,7 +41,7 @@ type Emblem interface {
 	gextras.Objector
 
 	// Icon gives back the icon from @emblem.
-	Icon() *IconInterface
+	Icon() *IconIface
 	// Origin gets the origin of the emblem.
 	Origin() EmblemOrigin
 }
@@ -49,7 +49,7 @@ type Emblem interface {
 // EmblemClass implements the Emblem interface.
 type EmblemClass struct {
 	*externglib.Object
-	IconInterface
+	IconIface
 }
 
 var _ Emblem = (*EmblemClass)(nil)
@@ -57,7 +57,7 @@ var _ Emblem = (*EmblemClass)(nil)
 func wrapEmblem(obj *externglib.Object) Emblem {
 	return &EmblemClass{
 		Object: obj,
-		IconInterface: IconInterface{
+		IconIface: IconIface{
 			Object: obj,
 		},
 	}
@@ -86,27 +86,27 @@ func NewEmblem(icon Icon) *EmblemClass {
 }
 
 // Icon gives back the icon from @emblem.
-func (e *EmblemClass) Icon() *IconInterface {
+func (emblem *EmblemClass) Icon() *IconIface {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
-	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	_cret = C.g_emblem_get_icon(_arg0)
 
-	var _icon *IconInterface // out
+	var _icon *IconIface // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconIface)
 
 	return _icon
 }
 
 // Origin gets the origin of the emblem.
-func (e *EmblemClass) Origin() EmblemOrigin {
+func (emblem *EmblemClass) Origin() EmblemOrigin {
 	var _arg0 *C.GEmblem      // out
 	var _cret C.GEmblemOrigin // in
 
-	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	_cret = C.g_emblem_get_origin(_arg0)
 

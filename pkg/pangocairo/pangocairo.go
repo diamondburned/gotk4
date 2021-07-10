@@ -211,6 +211,21 @@ func GlyphStringPath(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphStri
 	C.pango_cairo_glyph_string_path(_arg1, _arg2, _arg3)
 }
 
+// LayoutLinePath adds the text in `PangoLayoutLine` to the current path in the
+// specified cairo context.
+//
+// The origin of the glyphs (the left edge of the line) will be at the current
+// point of the cairo context.
+func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
+	var _arg1 *C.cairo_t         // out
+	var _arg2 *C.PangoLayoutLine // out
+
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line))
+
+	C.pango_cairo_layout_line_path(_arg1, _arg2)
+}
+
 // LayoutPath adds the text in a `PangoLayout` to the current path in the
 // specified cairo context.
 //
@@ -302,6 +317,20 @@ func ShowLayout(cr *cairo.Context, layout pango.Layout) {
 	C.pango_cairo_show_layout(_arg1, _arg2)
 }
 
+// ShowLayoutLine draws a `PangoLayoutLine` in the specified cairo context.
+//
+// The origin of the glyphs (the left edge of the line) will be drawn at the
+// current point of the cairo context.
+func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
+	var _arg1 *C.cairo_t         // out
+	var _arg2 *C.PangoLayoutLine // out
+
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line))
+
+	C.pango_cairo_show_layout_line(_arg1, _arg2)
+}
+
 // UpdateContext updates a `PangoContext` previously created for use with Cairo
 // to match the current transformation and target surface of a Cairo context.
 //
@@ -342,15 +371,15 @@ type Font interface {
 	ScaledFont() *cairo.ScaledFont
 }
 
-// FontInterface implements the Font interface.
-type FontInterface struct {
+// FontIface implements the Font interface.
+type FontIface struct {
 	pango.FontClass
 }
 
-var _ Font = (*FontInterface)(nil)
+var _ Font = (*FontIface)(nil)
 
 func wrapFont(obj *externglib.Object) Font {
-	return &FontInterface{
+	return &FontIface{
 		FontClass: pango.FontClass{
 			Object: obj,
 		},
@@ -365,11 +394,11 @@ func marshalFont(p uintptr) (interface{}, error) {
 
 // ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font can
 // be referenced and kept using cairo_scaled_font_reference().
-func (f *FontInterface) ScaledFont() *cairo.ScaledFont {
+func (font *FontIface) ScaledFont() *cairo.ScaledFont {
 	var _arg0 *C.PangoCairoFont      // out
 	var _cret *C.cairo_scaled_font_t // in
 
-	_arg0 = (*C.PangoCairoFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFont)(unsafe.Pointer(font.Native()))
 
 	_cret = C.pango_cairo_font_get_scaled_font(_arg0)
 
@@ -417,15 +446,15 @@ type FontMap interface {
 	SetResolution(dpi float64)
 }
 
-// FontMapInterface implements the FontMap interface.
-type FontMapInterface struct {
+// FontMapIface implements the FontMap interface.
+type FontMapIface struct {
 	pango.FontMapClass
 }
 
-var _ FontMap = (*FontMapInterface)(nil)
+var _ FontMap = (*FontMapIface)(nil)
 
 func wrapFontMap(obj *externglib.Object) FontMap {
-	return &FontMapInterface{
+	return &FontMapIface{
 		FontMapClass: pango.FontMapClass{
 			Object: obj,
 		},
@@ -439,11 +468,11 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 }
 
 // FontType gets the type of Cairo font backend that @fontmap uses.
-func (f *FontMapInterface) FontType() cairo.FontType {
+func (fontmap *FontMapIface) FontType() cairo.FontType {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.cairo_font_type_t  // in
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(fontmap.Native()))
 
 	_cret = C.pango_cairo_font_map_get_font_type(_arg0)
 
@@ -457,11 +486,11 @@ func (f *FontMapInterface) FontType() cairo.FontType {
 // Resolution gets the resolution for the fontmap.
 //
 // See [method@PangoCairo.FontMap.set_resolution].
-func (f *FontMapInterface) Resolution() float64 {
+func (fontmap *FontMapIface) Resolution() float64 {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.double             // in
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(fontmap.Native()))
 
 	_cret = C.pango_cairo_font_map_get_resolution(_arg0)
 
@@ -486,10 +515,10 @@ func (f *FontMapInterface) Resolution() float64 {
 // A value of nil for @fontmap will cause the current default font map to be
 // released and a new default font map to be created on demand, using
 // [type_func@PangoCairo.FontMap.new].
-func (f *FontMapInterface) SetDefault() {
+func (fontmap *FontMapIface) SetDefault() {
 	var _arg0 *C.PangoCairoFontMap // out
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(fontmap.Native()))
 
 	C.pango_cairo_font_map_set_default(_arg0)
 }
@@ -499,11 +528,11 @@ func (f *FontMapInterface) SetDefault() {
 // This is a scale factor between points specified in a `PangoFontDescription`
 // and Cairo units. The default value is 96, meaning that a 10 point font will
 // be 13 units high. (10 * 96. / 72. = 13.3).
-func (f *FontMapInterface) SetResolution(dpi float64) {
+func (fontmap *FontMapIface) SetResolution(dpi float64) {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _arg1 C.double             // out
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(fontmap.Native()))
 	_arg1 = C.double(dpi)
 
 	C.pango_cairo_font_map_set_resolution(_arg0, _arg1)

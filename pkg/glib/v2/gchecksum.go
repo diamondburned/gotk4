@@ -68,11 +68,11 @@ func (c *Checksum) Native() unsafe.Pointer {
 // Copy copies a #GChecksum. If @checksum has been closed, by calling
 // g_checksum_get_string() or g_checksum_get_digest(), the copied checksum will
 // be closed as well.
-func (c *Checksum) Copy() *Checksum {
+func (checksum *Checksum) Copy() *Checksum {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.GChecksum // in
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
 
 	_cret = C.g_checksum_copy(_arg0)
 
@@ -87,10 +87,10 @@ func (c *Checksum) Copy() *Checksum {
 }
 
 // Free frees the memory allocated for @checksum.
-func (c *Checksum) free() {
+func (checksum *Checksum) free() {
 	var _arg0 *C.GChecksum // out
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
 
 	C.g_checksum_free(_arg0)
 }
@@ -101,11 +101,11 @@ func (c *Checksum) free() {
 // with g_checksum_update().
 //
 // The hexadecimal characters will be lower case.
-func (c *Checksum) String() string {
+func (checksum *Checksum) String() string {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
 
 	_cret = C.g_checksum_get_string(_arg0)
 
@@ -117,10 +117,10 @@ func (c *Checksum) String() string {
 }
 
 // Reset resets the state of the @checksum back to its initial state.
-func (c *Checksum) Reset() {
+func (checksum *Checksum) Reset() {
 	var _arg0 *C.GChecksum // out
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
 
 	C.g_checksum_reset(_arg0)
 }
@@ -128,12 +128,12 @@ func (c *Checksum) Reset() {
 // Update feeds @data into an existing #GChecksum. The checksum must still be
 // open, that is g_checksum_get_string() or g_checksum_get_digest() must not
 // have been called on @checksum.
-func (c *Checksum) Update(data []byte) {
+func (checksum *Checksum) Update(data []byte) {
 	var _arg0 *C.GChecksum // out
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(c))
+	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
 	_arg2 = C.gssize(len(data))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
 

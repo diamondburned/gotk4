@@ -62,11 +62,11 @@ func (l *Language) Native() unsafe.Pointer {
 // is, compare to:
 //
 // “` pango_language_get_sample_string (pango_language_from_string ("xx")) “`
-func (l *Language) SampleString() string {
+func (language *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
 	_cret = C.pango_language_get_sample_string(_arg0)
 
@@ -83,12 +83,12 @@ func (l *Language) SampleString() string {
 // A language tag is considered to match a range in the list if the range is
 // '*', the range is exactly the tag, or the range is a prefix of the tag, and
 // the character after it in the tag is '-'.
-func (l *Language) Matches(rangeList string) bool {
+func (language *Language) Matches(rangeList string) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 *C.char          // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(language))
 	_arg1 = (*C.char)(C.CString(rangeList))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -104,11 +104,11 @@ func (l *Language) Matches(rangeList string) bool {
 }
 
 // String gets the RFC-3066 format string representing the given language tag.
-func (l *Language) String() string {
+func (language *Language) String() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
 	_cret = C.pango_language_to_string(_arg0)
 

@@ -118,12 +118,12 @@ type PrintUnixDialog interface {
 type PrintUnixDialogClass struct {
 	*externglib.Object
 	DialogClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	NativeInterface
-	RootInterface
-	ShortcutManagerInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	NativeIface
+	RootIface
+	ShortcutManagerIface
 }
 
 var _ PrintUnixDialog = (*PrintUnixDialogClass)(nil)
@@ -136,182 +136,218 @@ func wrapPrintUnixDialog(obj *externglib.Object) PrintUnixDialog {
 			WindowClass: WindowClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
-				AccessibleInterface: AccessibleInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
-				NativeInterface: NativeInterface{
+				NativeIface: NativeIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						AccessibleInterface: AccessibleInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableInterface: BuildableInterface{
+						AccessibleIface: AccessibleIface{
 							Object: obj,
 						},
-						ConstraintTargetInterface: ConstraintTargetInterface{
+						BuildableIface: BuildableIface{
+							Object: obj,
+						},
+						ConstraintTargetIface: ConstraintTargetIface{
 							Object: obj,
 						},
 					},
 				},
-				RootInterface: RootInterface{
+				RootIface: RootIface{
 					Object: obj,
-					NativeInterface: NativeInterface{
+					NativeIface: NativeIface{
+						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							AccessibleInterface: AccessibleInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableInterface: BuildableInterface{
+							AccessibleIface: AccessibleIface{
 								Object: obj,
 							},
-							ConstraintTargetInterface: ConstraintTargetInterface{
+							BuildableIface: BuildableIface{
+								Object: obj,
+							},
+							ConstraintTargetIface: ConstraintTargetIface{
 								Object: obj,
 							},
 						},
 					},
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						AccessibleInterface: AccessibleInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableInterface: BuildableInterface{
+						AccessibleIface: AccessibleIface{
 							Object: obj,
 						},
-						ConstraintTargetInterface: ConstraintTargetInterface{
+						BuildableIface: BuildableIface{
+							Object: obj,
+						},
+						ConstraintTargetIface: ConstraintTargetIface{
 							Object: obj,
 						},
 					},
 				},
-				ShortcutManagerInterface: ShortcutManagerInterface{
+				ShortcutManagerIface: ShortcutManagerIface{
 					Object: obj,
 				},
 			},
-			AccessibleInterface: AccessibleInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
-			NativeInterface: NativeInterface{
+			NativeIface: NativeIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			RootInterface: RootInterface{
+			RootIface: RootIface{
 				Object: obj,
-				NativeInterface: NativeInterface{
+				NativeIface: NativeIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						AccessibleInterface: AccessibleInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableInterface: BuildableInterface{
+						AccessibleIface: AccessibleIface{
 							Object: obj,
 						},
-						ConstraintTargetInterface: ConstraintTargetInterface{
+						BuildableIface: BuildableIface{
+							Object: obj,
+						},
+						ConstraintTargetIface: ConstraintTargetIface{
 							Object: obj,
 						},
 					},
 				},
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			ShortcutManagerInterface: ShortcutManagerInterface{
+			ShortcutManagerIface: ShortcutManagerIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		NativeInterface: NativeInterface{
+		NativeIface: NativeIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		RootInterface: RootInterface{
+		RootIface: RootIface{
 			Object: obj,
-			NativeInterface: NativeInterface{
+			NativeIface: NativeIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		ShortcutManagerInterface: ShortcutManagerInterface{
+		ShortcutManagerIface: ShortcutManagerIface{
 			Object: obj,
 		},
 	}
@@ -343,12 +379,12 @@ func NewPrintUnixDialog(title string, parent Window) *PrintUnixDialogClass {
 }
 
 // AddCustomTab adds a custom tab to the print dialog.
-func (d *PrintUnixDialogClass) AddCustomTab(child Widget, tabLabel Widget) {
+func (dialog *PrintUnixDialogClass) AddCustomTab(child Widget, tabLabel Widget) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkWidget          // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 
@@ -356,11 +392,11 @@ func (d *PrintUnixDialogClass) AddCustomTab(child Widget, tabLabel Widget) {
 }
 
 // CurrentPage gets the current page of the `GtkPrintUnixDialog`.
-func (d *PrintUnixDialogClass) CurrentPage() int {
+func (dialog *PrintUnixDialogClass) CurrentPage() int {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_current_page(_arg0)
 
@@ -372,11 +408,11 @@ func (d *PrintUnixDialogClass) CurrentPage() int {
 }
 
 // EmbedPageSetup gets whether to embed the page setup.
-func (d *PrintUnixDialogClass) EmbedPageSetup() bool {
+func (dialog *PrintUnixDialogClass) EmbedPageSetup() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_embed_page_setup(_arg0)
 
@@ -390,11 +426,11 @@ func (d *PrintUnixDialogClass) EmbedPageSetup() bool {
 }
 
 // HasSelection gets whether there is a selection.
-func (d *PrintUnixDialogClass) HasSelection() bool {
+func (dialog *PrintUnixDialogClass) HasSelection() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_has_selection(_arg0)
 
@@ -409,11 +445,11 @@ func (d *PrintUnixDialogClass) HasSelection() bool {
 
 // ManualCapabilities gets the capabilities that have been set on this
 // `GtkPrintUnixDialog`.
-func (d *PrintUnixDialogClass) ManualCapabilities() PrintCapabilities {
+func (dialog *PrintUnixDialogClass) ManualCapabilities() PrintCapabilities {
 	var _arg0 *C.GtkPrintUnixDialog  // out
 	var _cret C.GtkPrintCapabilities // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_manual_capabilities(_arg0)
 
@@ -425,11 +461,11 @@ func (d *PrintUnixDialogClass) ManualCapabilities() PrintCapabilities {
 }
 
 // PageSetup gets the page setup that is used by the `GtkPrintUnixDialog`.
-func (d *PrintUnixDialogClass) PageSetup() *PageSetupClass {
+func (dialog *PrintUnixDialogClass) PageSetup() *PageSetupClass {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret *C.GtkPageSetup       // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_page_setup(_arg0)
 
@@ -441,11 +477,11 @@ func (d *PrintUnixDialogClass) PageSetup() *PageSetupClass {
 }
 
 // PageSetupSet gets whether a page setup was set by the user.
-func (d *PrintUnixDialogClass) PageSetupSet() bool {
+func (dialog *PrintUnixDialogClass) PageSetupSet() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_page_setup_set(_arg0)
 
@@ -459,11 +495,11 @@ func (d *PrintUnixDialogClass) PageSetupSet() bool {
 }
 
 // SelectedPrinter gets the currently selected printer.
-func (d *PrintUnixDialogClass) SelectedPrinter() *PrinterClass {
+func (dialog *PrintUnixDialogClass) SelectedPrinter() *PrinterClass {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret *C.GtkPrinter         // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_selected_printer(_arg0)
 
@@ -479,11 +515,11 @@ func (d *PrintUnixDialogClass) SelectedPrinter() *PrinterClass {
 //
 // Note that this creates a new object, and you need to unref it if don’t want
 // to keep it.
-func (d *PrintUnixDialogClass) Settings() *PrintSettingsClass {
+func (dialog *PrintUnixDialogClass) Settings() *PrintSettingsClass {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret *C.GtkPrintSettings   // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_settings(_arg0)
 
@@ -496,11 +532,11 @@ func (d *PrintUnixDialogClass) Settings() *PrintSettingsClass {
 
 // SupportSelection gets whether the print dialog allows user to print a
 // selection.
-func (d *PrintUnixDialogClass) SupportSelection() bool {
+func (dialog *PrintUnixDialogClass) SupportSelection() bool {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_print_unix_dialog_get_support_selection(_arg0)
 
@@ -517,11 +553,11 @@ func (d *PrintUnixDialogClass) SupportSelection() bool {
 //
 // If @current_page is not -1, this enables the current page choice for the
 // range of pages to print.
-func (d *PrintUnixDialogClass) SetCurrentPage(currentPage int) {
+func (dialog *PrintUnixDialogClass) SetCurrentPage(currentPage int) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = C.int(currentPage)
 
 	C.gtk_print_unix_dialog_set_current_page(_arg0, _arg1)
@@ -529,11 +565,11 @@ func (d *PrintUnixDialogClass) SetCurrentPage(currentPage int) {
 
 // SetEmbedPageSetup: embed page size combo box and orientation combo box into
 // page setup page.
-func (d *PrintUnixDialogClass) SetEmbedPageSetup(embed bool) {
+func (dialog *PrintUnixDialogClass) SetEmbedPageSetup(embed bool) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 	if embed {
 		_arg1 = C.TRUE
 	}
@@ -542,11 +578,11 @@ func (d *PrintUnixDialogClass) SetEmbedPageSetup(embed bool) {
 }
 
 // SetHasSelection sets whether a selection exists.
-func (d *PrintUnixDialogClass) SetHasSelection(hasSelection bool) {
+func (dialog *PrintUnixDialogClass) SetHasSelection(hasSelection bool) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 	if hasSelection {
 		_arg1 = C.TRUE
 	}
@@ -555,11 +591,11 @@ func (d *PrintUnixDialogClass) SetHasSelection(hasSelection bool) {
 }
 
 // SetPageSetup sets the page setup of the `GtkPrintUnixDialog`.
-func (d *PrintUnixDialogClass) SetPageSetup(pageSetup PageSetup) {
+func (dialog *PrintUnixDialogClass) SetPageSetup(pageSetup PageSetup) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 *C.GtkPageSetup       // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
 
 	C.gtk_print_unix_dialog_set_page_setup(_arg0, _arg1)
@@ -569,11 +605,11 @@ func (d *PrintUnixDialogClass) SetPageSetup(pageSetup PageSetup) {
 //
 // Typically, this is used to restore saved print settings from a previous print
 // operation before the print dialog is shown.
-func (d *PrintUnixDialogClass) SetSettings(settings PrintSettings) {
+func (dialog *PrintUnixDialogClass) SetSettings(settings PrintSettings) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 *C.GtkPrintSettings   // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 
 	C.gtk_print_unix_dialog_set_settings(_arg0, _arg1)
@@ -581,11 +617,11 @@ func (d *PrintUnixDialogClass) SetSettings(settings PrintSettings) {
 
 // SetSupportSelection sets whether the print dialog allows user to print a
 // selection.
-func (d *PrintUnixDialogClass) SetSupportSelection(supportSelection bool) {
+func (dialog *PrintUnixDialogClass) SetSupportSelection(supportSelection bool) {
 	var _arg0 *C.GtkPrintUnixDialog // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(dialog.Native()))
 	if supportSelection {
 		_arg1 = C.TRUE
 	}

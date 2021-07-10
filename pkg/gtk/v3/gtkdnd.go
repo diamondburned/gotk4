@@ -120,7 +120,7 @@ func DragSetIconPixbuf(context gdk.DragContext, pixbuf gdkpixbuf.Pixbuf, hotX in
 
 // DragSetIconStock sets the icon for a given drag from a stock ID.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_drag_set_icon_name() instead.
 func DragSetIconStock(context gdk.DragContext, stockId string, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.gchar          // out

@@ -1271,7 +1271,7 @@ func UnicharXDigitValue(c uint32) int {
 // UnicodeCanonicalDecomposition computes the canonical decomposition of a
 // Unicode character.
 //
-// Deprecated: since version 2.30.
+// Deprecated: Use the more flexible g_unichar_fully_decompose() instead.
 func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gsize    // out

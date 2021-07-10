@@ -59,9 +59,9 @@ type CheckButton interface {
 type CheckButtonClass struct {
 	*externglib.Object
 	ToggleButtonClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ CheckButton = (*CheckButtonClass)(nil)
@@ -78,61 +78,76 @@ func wrapCheckButton(obj *externglib.Object) CheckButton {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				ActionableInterface: ActionableInterface{
+				ActionableIface: ActionableIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
 				},
-				ActivatableInterface: ActivatableInterface{
+				ActivatableIface: ActivatableIface{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}

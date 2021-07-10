@@ -140,7 +140,7 @@ func (g *Generator) UseFromNamespace(cattrs *gir.CallableAttrs, n *gir.Namespace
 // for methods.
 func (g *Generator) Recv() string {
 	if g.Parameters != nil && g.Parameters.InstanceParameter != nil {
-		return strcases.FirstLetter(g.Parameters.InstanceParameter.Name)
+		return strcases.SnakeToGo(false, g.Parameters.InstanceParameter.Name)
 	}
 
 	return "v"
@@ -168,7 +168,7 @@ func (g *Generator) renderBlock() bool {
 			instanceParam = true
 
 			callableValues = append(callableValues, typeconv.NewReceiverValue(
-				strcases.FirstLetter(g.Parameters.InstanceParameter.Name),
+				strcases.SnakeToGo(false, g.Parameters.InstanceParameter.Name),
 				"_arg0",
 				typeconv.ConvertGoToC,
 				g.Parameters.InstanceParameter,

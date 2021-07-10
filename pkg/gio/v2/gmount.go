@@ -50,7 +50,7 @@ type MountOverrider interface {
 	// operation, @error will be set to contain the errors and false will be
 	// returned.
 	//
-	// Deprecated: since version 2.22.
+	// Deprecated: Use g_mount_eject_with_operation_finish() instead.
 	EjectFinish(result AsyncResult) error
 	// EjectWithOperationFinish finishes ejecting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
@@ -59,28 +59,28 @@ type MountOverrider interface {
 	// DefaultLocation gets the default location of @mount. The default location
 	// of the given @mount is a path that reflects the main entry point for the
 	// user (e.g. the home directory, or the root of the volume).
-	DefaultLocation() *FileInterface
+	DefaultLocation() *FileIface
 	// Drive gets the drive for the @mount.
 	//
 	// This is a convenience method for getting the #GVolume and then using that
 	// object to get the #GDrive.
-	Drive() *DriveInterface
+	Drive() *DriveIface
 	// Icon gets the icon for @mount.
-	Icon() *IconInterface
+	Icon() *IconIface
 	// Name gets the name of @mount.
 	Name() string
 	// Root gets the root directory on @mount.
-	Root() *FileInterface
+	Root() *FileIface
 	// SortKey gets the sort key for @mount, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for @mount.
-	SymbolicIcon() *IconInterface
+	SymbolicIcon() *IconIface
 	// UUID gets the UUID for the @mount. The reference is typically based on
 	// the file system UUID for the mount in question and should be considered
 	// an opaque string. Returns nil if there is no UUID available.
 	UUID() string
 	// Volume gets the volume for the @mount.
-	Volume() *VolumeInterface
+	Volume() *VolumeIface
 	// GuessContentType tries to guess the type of content stored on @mount.
 	// Returns one or more textual identifiers of well-known content types
 	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
@@ -117,7 +117,7 @@ type MountOverrider interface {
 	// the operation, @error will be set to contain the errors and false will be
 	// returned.
 	//
-	// Deprecated: since version 2.22.
+	// Deprecated: Use g_mount_unmount_with_operation_finish() instead.
 	UnmountFinish(result AsyncResult) error
 	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
@@ -155,7 +155,7 @@ type Mount interface {
 	// operation, @error will be set to contain the errors and false will be
 	// returned.
 	//
-	// Deprecated: since version 2.22.
+	// Deprecated: Use g_mount_eject_with_operation_finish() instead.
 	EjectFinish(result AsyncResult) error
 	// EjectWithOperationFinish finishes ejecting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
@@ -164,28 +164,28 @@ type Mount interface {
 	// DefaultLocation gets the default location of @mount. The default location
 	// of the given @mount is a path that reflects the main entry point for the
 	// user (e.g. the home directory, or the root of the volume).
-	DefaultLocation() *FileInterface
+	DefaultLocation() *FileIface
 	// Drive gets the drive for the @mount.
 	//
 	// This is a convenience method for getting the #GVolume and then using that
 	// object to get the #GDrive.
-	Drive() *DriveInterface
+	Drive() *DriveIface
 	// Icon gets the icon for @mount.
-	Icon() *IconInterface
+	Icon() *IconIface
 	// Name gets the name of @mount.
 	Name() string
 	// Root gets the root directory on @mount.
-	Root() *FileInterface
+	Root() *FileIface
 	// SortKey gets the sort key for @mount, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for @mount.
-	SymbolicIcon() *IconInterface
+	SymbolicIcon() *IconIface
 	// UUID gets the UUID for the @mount. The reference is typically based on
 	// the file system UUID for the mount in question and should be considered
 	// an opaque string. Returns nil if there is no UUID available.
 	UUID() string
 	// Volume gets the volume for the @mount.
-	Volume() *VolumeInterface
+	Volume() *VolumeIface
 	// GuessContentType tries to guess the type of content stored on @mount.
 	// Returns one or more textual identifiers of well-known content types
 	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
@@ -248,7 +248,7 @@ type Mount interface {
 	// the operation, @error will be set to contain the errors and false will be
 	// returned.
 	//
-	// Deprecated: since version 2.22.
+	// Deprecated: Use g_mount_unmount_with_operation_finish() instead.
 	UnmountFinish(result AsyncResult) error
 	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
@@ -261,15 +261,15 @@ type Mount interface {
 	Unshadow()
 }
 
-// MountInterface implements the Mount interface.
-type MountInterface struct {
+// MountIface implements the Mount interface.
+type MountIface struct {
 	*externglib.Object
 }
 
-var _ Mount = (*MountInterface)(nil)
+var _ Mount = (*MountIface)(nil)
 
 func wrapMount(obj *externglib.Object) Mount {
-	return &MountInterface{
+	return &MountIface{
 		Object: obj,
 	}
 }
@@ -281,11 +281,11 @@ func marshalMount(p uintptr) (interface{}, error) {
 }
 
 // CanEject checks if @mount can be ejected.
-func (m *MountInterface) CanEject() bool {
+func (mount *MountIface) CanEject() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_can_eject(_arg0)
 
@@ -299,11 +299,11 @@ func (m *MountInterface) CanEject() bool {
 }
 
 // CanUnmount checks if @mount can be unmounted.
-func (m *MountInterface) CanUnmount() bool {
+func (mount *MountIface) CanUnmount() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_can_unmount(_arg0)
 
@@ -320,13 +320,13 @@ func (m *MountInterface) CanUnmount() bool {
 // operation, @error will be set to contain the errors and false will be
 // returned.
 //
-// Deprecated: since version 2.22.
-func (m *MountInterface) EjectFinish(result AsyncResult) error {
+// Deprecated: Use g_mount_eject_with_operation_finish() instead.
+func (mount *MountIface) EjectFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_eject_finish(_arg0, _arg1, &_cerr)
@@ -341,12 +341,12 @@ func (m *MountInterface) EjectFinish(result AsyncResult) error {
 // EjectWithOperationFinish finishes ejecting a mount. If any errors occurred
 // during the operation, @error will be set to contain the errors and false will
 // be returned.
-func (m *MountInterface) EjectWithOperationFinish(result AsyncResult) error {
+func (mount *MountIface) EjectWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_eject_with_operation_finish(_arg0, _arg1, &_cerr)
@@ -361,17 +361,17 @@ func (m *MountInterface) EjectWithOperationFinish(result AsyncResult) error {
 // DefaultLocation gets the default location of @mount. The default location of
 // the given @mount is a path that reflects the main entry point for the user
 // (e.g. the home directory, or the root of the volume).
-func (m *MountInterface) DefaultLocation() *FileInterface {
+func (mount *MountIface) DefaultLocation() *FileIface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_default_location(_arg0)
 
-	var _file *FileInterface // out
+	var _file *FileIface // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 
 	return _file
 }
@@ -380,43 +380,43 @@ func (m *MountInterface) DefaultLocation() *FileInterface {
 //
 // This is a convenience method for getting the #GVolume and then using that
 // object to get the #GDrive.
-func (m *MountInterface) Drive() *DriveInterface {
+func (mount *MountIface) Drive() *DriveIface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GDrive // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_drive(_arg0)
 
-	var _drive *DriveInterface // out
+	var _drive *DriveIface // out
 
-	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DriveInterface)
+	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DriveIface)
 
 	return _drive
 }
 
 // Icon gets the icon for @mount.
-func (m *MountInterface) Icon() *IconInterface {
+func (mount *MountIface) Icon() *IconIface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_icon(_arg0)
 
-	var _icon *IconInterface // out
+	var _icon *IconIface // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
 
 	return _icon
 }
 
 // Name gets the name of @mount.
-func (m *MountInterface) Name() string {
+func (mount *MountIface) Name() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_name(_arg0)
 
@@ -429,27 +429,27 @@ func (m *MountInterface) Name() string {
 }
 
 // Root gets the root directory on @mount.
-func (m *MountInterface) Root() *FileInterface {
+func (mount *MountIface) Root() *FileIface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_root(_arg0)
 
-	var _file *FileInterface // out
+	var _file *FileIface // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 
 	return _file
 }
 
 // SortKey gets the sort key for @mount, if any.
-func (m *MountInterface) SortKey() string {
+func (mount *MountIface) SortKey() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.gchar  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_sort_key(_arg0)
 
@@ -461,17 +461,17 @@ func (m *MountInterface) SortKey() string {
 }
 
 // SymbolicIcon gets the symbolic icon for @mount.
-func (m *MountInterface) SymbolicIcon() *IconInterface {
+func (mount *MountIface) SymbolicIcon() *IconIface {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
 
-	var _icon *IconInterface // out
+	var _icon *IconIface // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconIface)
 
 	return _icon
 }
@@ -479,11 +479,11 @@ func (m *MountInterface) SymbolicIcon() *IconInterface {
 // UUID gets the UUID for the @mount. The reference is typically based on the
 // file system UUID for the mount in question and should be considered an opaque
 // string. Returns nil if there is no UUID available.
-func (m *MountInterface) UUID() string {
+func (mount *MountIface) UUID() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_uuid(_arg0)
 
@@ -496,17 +496,17 @@ func (m *MountInterface) UUID() string {
 }
 
 // Volume gets the volume for the @mount.
-func (m *MountInterface) Volume() *VolumeInterface {
+func (mount *MountIface) Volume() *VolumeIface {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_volume(_arg0)
 
-	var _volume *VolumeInterface // out
+	var _volume *VolumeIface // out
 
-	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*VolumeInterface)
+	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*VolumeIface)
 
 	return _volume
 }
@@ -522,14 +522,14 @@ func (m *MountInterface) Volume() *VolumeInterface {
 // the synchronous version), and is finished by calling
 // g_mount_guess_content_type_finish() with the @mount and Result data returned
 // in the @callback.
-func (m *MountInterface) GuessContentType(forceRescan bool, cancellable Cancellable, callback AsyncReadyCallback) {
+func (mount *MountIface) GuessContentType(forceRescan bool, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg1 C.gboolean            // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
@@ -544,13 +544,13 @@ func (m *MountInterface) GuessContentType(forceRescan bool, cancellable Cancella
 // errors occurred during the operation, @error will be set to contain the
 // errors and false will be returned. In particular, you may get an
 // G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
-func (m *MountInterface) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
+func (mount *MountIface) GuessContentTypeFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
@@ -586,14 +586,14 @@ func (m *MountInterface) GuessContentTypeFinish(result AsyncResult) ([]string, e
 //
 // This is a synchronous operation and as such may block doing IO; see
 // g_mount_guess_content_type() for the asynchronous version.
-func (m *MountInterface) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) ([]string, error) {
+func (mount *MountIface) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 C.gboolean      // out
 	var _arg2 *C.GCancellable // out
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
@@ -643,11 +643,11 @@ func (m *MountInterface) GuessContentTypeSync(forceRescan bool, cancellable Canc
 // The proxy monitor in GVfs 2.26 and later, automatically creates and manage
 // shadow mounts (and shadows the underlying mount) if the activation root on a
 // #GVolume is set.
-func (m *MountInterface) IsShadowed() bool {
+func (mount *MountIface) IsShadowed() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_is_shadowed(_arg0)
 
@@ -663,12 +663,12 @@ func (m *MountInterface) IsShadowed() bool {
 // RemountFinish finishes remounting a mount. If any errors occurred during the
 // operation, @error will be set to contain the errors and false will be
 // returned.
-func (m *MountInterface) RemountFinish(result AsyncResult) error {
+func (mount *MountIface) RemountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_remount_finish(_arg0, _arg1, &_cerr)
@@ -684,10 +684,10 @@ func (m *MountInterface) RemountFinish(result AsyncResult) error {
 // implementations when creating a shadow mount for @mount, see
 // g_mount_is_shadowed() for more information. The caller will need to emit the
 // #GMount::changed signal on @mount manually.
-func (m *MountInterface) Shadow() {
+func (mount *MountIface) Shadow() {
 	var _arg0 *C.GMount // out
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	C.g_mount_shadow(_arg0)
 }
@@ -696,13 +696,13 @@ func (m *MountInterface) Shadow() {
 // operation, @error will be set to contain the errors and false will be
 // returned.
 //
-// Deprecated: since version 2.22.
-func (m *MountInterface) UnmountFinish(result AsyncResult) error {
+// Deprecated: Use g_mount_unmount_with_operation_finish() instead.
+func (mount *MountIface) UnmountFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_unmount_finish(_arg0, _arg1, &_cerr)
@@ -717,12 +717,12 @@ func (m *MountInterface) UnmountFinish(result AsyncResult) error {
 // UnmountWithOperationFinish finishes unmounting a mount. If any errors
 // occurred during the operation, @error will be set to contain the errors and
 // false will be returned.
-func (m *MountInterface) UnmountWithOperationFinish(result AsyncResult) error {
+func (mount *MountIface) UnmountWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_unmount_with_operation_finish(_arg0, _arg1, &_cerr)
@@ -738,10 +738,10 @@ func (m *MountInterface) UnmountWithOperationFinish(result AsyncResult) error {
 // implementations when destroying a shadow mount for @mount, see
 // g_mount_is_shadowed() for more information. The caller will need to emit the
 // #GMount::changed signal on @mount manually.
-func (m *MountInterface) Unshadow() {
+func (mount *MountIface) Unshadow() {
 	var _arg0 *C.GMount // out
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	C.g_mount_unshadow(_arg0)
 }

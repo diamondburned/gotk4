@@ -61,18 +61,20 @@ type Settings interface {
 	// application-specific value for a setting. After this call, the setting
 	// will again follow the session-wide value for this setting.
 	ResetProperty(name string)
-	// SetDoubleProperty: deprecated: since version 3.16.
+	// SetDoubleProperty: deprecated: Use g_object_set() instead.
 	SetDoubleProperty(name string, vDouble float64, origin string)
-	// SetLongProperty: deprecated: since version 3.16.
+	// SetLongProperty: deprecated: Use g_object_set() instead.
 	SetLongProperty(name string, vLong int32, origin string)
-	// SetStringProperty: deprecated: since version 3.16.
+	// SetPropertyValue: deprecated: Use g_object_set() instead.
+	SetPropertyValue(name string, svalue *SettingsValue)
+	// SetStringProperty: deprecated: Use g_object_set() instead.
 	SetStringProperty(name string, vString string, origin string)
 }
 
 // SettingsClass implements the Settings interface.
 type SettingsClass struct {
 	*externglib.Object
-	StyleProviderInterface
+	StyleProviderIface
 }
 
 var _ Settings = (*SettingsClass)(nil)
@@ -80,7 +82,7 @@ var _ Settings = (*SettingsClass)(nil)
 func wrapSettings(obj *externglib.Object) Settings {
 	return &SettingsClass{
 		Object: obj,
-		StyleProviderInterface: StyleProviderInterface{
+		StyleProviderIface: StyleProviderIface{
 			Object: obj,
 		},
 	}
@@ -95,25 +97,25 @@ func marshalSettings(p uintptr) (interface{}, error) {
 // ResetProperty undoes the effect of calling g_object_set() to install an
 // application-specific value for a setting. After this call, the setting will
 // again follow the session-wide value for this setting.
-func (s *SettingsClass) ResetProperty(name string) {
+func (settings *SettingsClass) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_settings_reset_property(_arg0, _arg1)
 }
 
-// SetDoubleProperty: deprecated: since version 3.16.
-func (s *SettingsClass) SetDoubleProperty(name string, vDouble float64, origin string) {
+// SetDoubleProperty: deprecated: Use g_object_set() instead.
+func (settings *SettingsClass) SetDoubleProperty(name string, vDouble float64, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 C.gdouble      // out
 	var _arg3 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(vDouble)
@@ -123,14 +125,14 @@ func (s *SettingsClass) SetDoubleProperty(name string, vDouble float64, origin s
 	C.gtk_settings_set_double_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetLongProperty: deprecated: since version 3.16.
-func (s *SettingsClass) SetLongProperty(name string, vLong int32, origin string) {
+// SetLongProperty: deprecated: Use g_object_set() instead.
+func (settings *SettingsClass) SetLongProperty(name string, vLong int32, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 C.glong        // out
 	var _arg3 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(vLong)
@@ -140,14 +142,28 @@ func (s *SettingsClass) SetLongProperty(name string, vLong int32, origin string)
 	C.gtk_settings_set_long_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetStringProperty: deprecated: since version 3.16.
-func (s *SettingsClass) SetStringProperty(name string, vString string, origin string) {
+// SetPropertyValue: deprecated: Use g_object_set() instead.
+func (settings *SettingsClass) SetPropertyValue(name string, svalue *SettingsValue) {
+	var _arg0 *C.GtkSettings      // out
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.GtkSettingsValue // out
+
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkSettingsValue)(unsafe.Pointer(svalue))
+
+	C.gtk_settings_set_property_value(_arg0, _arg1, _arg2)
+}
+
+// SetStringProperty: deprecated: Use g_object_set() instead.
+func (settings *SettingsClass) SetStringProperty(name string, vString string, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.gchar       // out
 	var _arg3 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(vString))
@@ -156,4 +172,19 @@ func (s *SettingsClass) SetStringProperty(name string, vString string, origin st
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
+}
+
+type SettingsValue struct {
+	native C.GtkSettingsValue
+}
+
+// WrapSettingsValue wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsValue(ptr unsafe.Pointer) *SettingsValue {
+	return (*SettingsValue)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (s *SettingsValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

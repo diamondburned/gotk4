@@ -134,11 +134,11 @@ func marshalDrawContext(p uintptr) (interface{}, error) {
 // gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the use
 // of [class@Gsk.Renderer]s, so application code does not need to call these
 // functions explicitly.
-func (c *DrawContextClass) BeginFrame(region *cairo.Region) {
+func (context *DrawContextClass) BeginFrame(region *cairo.Region) {
 	var _arg0 *C.GdkDrawContext // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 
 	C.gdk_draw_context_begin_frame(_arg0, _arg1)
@@ -153,20 +153,20 @@ func (c *DrawContextClass) BeginFrame(region *cairo.Region) {
 // When using a [class@Gdk.GLContext], this function may call `glFlush()`
 // implicitly before returning; it is not recommended to call `glFlush()`
 // explicitly before calling this function.
-func (c *DrawContextClass) EndFrame() {
+func (context *DrawContextClass) EndFrame() {
 	var _arg0 *C.GdkDrawContext // out
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
 
 	C.gdk_draw_context_end_frame(_arg0)
 }
 
 // Display retrieves the `GdkDisplay` the @context is created for
-func (c *DrawContextClass) Display() *DisplayClass {
+func (context *DrawContextClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkDisplay     // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_draw_context_get_display(_arg0)
 
@@ -185,11 +185,11 @@ func (c *DrawContextClass) Display() *DisplayClass {
 //
 // If @context is not in between calls to [method@Gdk.DrawContext.begin_frame]
 // and [method@Gdk.DrawContext.end_frame], nil will be returned.
-func (c *DrawContextClass) FrameRegion() *cairo.Region {
+func (context *DrawContextClass) FrameRegion() *cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.cairo_region_t // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_draw_context_get_frame_region(_arg0)
 
@@ -201,11 +201,11 @@ func (c *DrawContextClass) FrameRegion() *cairo.Region {
 }
 
 // Surface retrieves the surface that @context is bound to.
-func (c *DrawContextClass) Surface() *SurfaceClass {
+func (context *DrawContextClass) Surface() *SurfaceClass {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkSurface     // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_draw_context_get_surface(_arg0)
 
@@ -222,11 +222,11 @@ func (c *DrawContextClass) Surface() *SurfaceClass {
 // This is the case between calls to [method@Gdk.DrawContext.begin_frame] and
 // [method@Gdk.DrawContext.end_frame]. In this situation, drawing commands may
 // be effecting the contents of the @context's surface.
-func (c *DrawContextClass) IsInFrame() bool {
+func (context *DrawContextClass) IsInFrame() bool {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_draw_context_is_in_frame(_arg0)
 

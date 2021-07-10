@@ -44,43 +44,14 @@ func (r *RGBA) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Red: the intensity of the red channel from 0.0 to 1.0 inclusive
-func (r *RGBA) Red() float64 {
-	var v float64 // out
-	v = float64(r.native.red)
-	return v
-}
-
-// Green: the intensity of the green channel from 0.0 to 1.0 inclusive
-func (r *RGBA) Green() float64 {
-	var v float64 // out
-	v = float64(r.native.green)
-	return v
-}
-
-// Blue: the intensity of the blue channel from 0.0 to 1.0 inclusive
-func (r *RGBA) Blue() float64 {
-	var v float64 // out
-	v = float64(r.native.blue)
-	return v
-}
-
-// Alpha: the opacity of the color from 0.0 for completely translucent to 1.0
-// for opaque
-func (r *RGBA) Alpha() float64 {
-	var v float64 // out
-	v = float64(r.native.alpha)
-	return v
-}
-
 // Copy makes a copy of a RGBA.
 //
 // The result must be freed through gdk_rgba_free().
-func (r *RGBA) Copy() *RGBA {
+func (rgba *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	_cret = C.gdk_rgba_copy(_arg0)
 
@@ -95,12 +66,12 @@ func (r *RGBA) Copy() *RGBA {
 }
 
 // Equal compares two RGBA colors.
-func (p *RGBA) Equal(p2 *RGBA) bool {
+func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(p))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(p1))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(p2))
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
@@ -115,10 +86,10 @@ func (p *RGBA) Equal(p2 *RGBA) bool {
 }
 
 // Free frees a RGBA created with gdk_rgba_copy()
-func (r *RGBA) free() {
+func (rgba *RGBA) free() {
 	var _arg0 *C.GdkRGBA // out
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	C.gdk_rgba_free(_arg0)
 }
@@ -152,12 +123,12 @@ func (p *RGBA) Hash() uint {
 // color values. In the last two cases, “r”, “g”, and “b” are either integers in
 // the range 0 to 255 or percentage values in the range 0% to 100%, and a is a
 // floating point value in the range 0 to 1.
-func (r *RGBA) Parse(spec string) bool {
+func (rgba *RGBA) Parse(spec string) bool {
 	var _arg0 *C.GdkRGBA // out
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 	_arg1 = (*C.gchar)(C.CString(spec))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -184,11 +155,11 @@ func (r *RGBA) Parse(spec string) bool {
 // Note that this string representation may lose some precision, since “r”, “g”
 // and “b” are represented as 8-bit integers. If this is a concern, you should
 // use a different representation.
-func (r *RGBA) String() string {
+func (rgba *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	_cret = C.gdk_rgba_to_string(_arg0)
 

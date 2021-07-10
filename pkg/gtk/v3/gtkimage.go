@@ -137,7 +137,7 @@ type Image interface {
 	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_SET
 	// (see gtk_image_get_storage_type()).
 	//
-	// Deprecated: since version 3.10.
+	// Deprecated: Use gtk_image_get_icon_name() instead.
 	IconSet() (*IconSet, int)
 	// Pixbuf gets the Pixbuf being displayed by the Image. The storage type of
 	// the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PIXBUF (see
@@ -151,7 +151,7 @@ type Image interface {
 	// gtk_image_get_storage_type()). The returned string is owned by the Image
 	// and should not be freed.
 	//
-	// Deprecated: since version 3.10.
+	// Deprecated: Use gtk_image_get_icon_name() instead.
 	Stock() (string, int)
 	// StorageType gets the type of representation being used by the Image to
 	// store image data. If the Image has no image data, the return value will
@@ -166,7 +166,7 @@ type Image interface {
 	SetFromIconName(iconName string, size int)
 	// SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 	//
-	// Deprecated: since version 3.10.
+	// Deprecated: Use gtk_image_set_from_icon_name() instead.
 	SetFromIconSet(iconSet *IconSet, size int)
 	// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
 	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
@@ -174,7 +174,7 @@ type Image interface {
 	SetFromResource(resourcePath string)
 	// SetFromStock: see gtk_image_new_from_stock() for details.
 	//
-	// Deprecated: since version 3.10.
+	// Deprecated: Use gtk_image_set_from_icon_name() instead.
 	SetFromStock(stockId string, size int)
 	// SetFromSurface: see gtk_image_new_from_surface() for details.
 	SetFromSurface(surface *cairo.Surface)
@@ -188,7 +188,7 @@ type Image interface {
 type ImageClass struct {
 	*externglib.Object
 	MiscClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ Image = (*ImageClass)(nil)
@@ -199,16 +199,19 @@ func wrapImage(obj *externglib.Object) Image {
 		MiscClass: MiscClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -320,7 +323,7 @@ func NewImageFromIconName(iconName string, size int) *ImageClass {
 // unref it if you own references. Image will add its own reference rather than
 // adopting yours.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_image_new_from_icon_name() instead.
 func NewImageFromIconSet(iconSet *IconSet, size int) *ImageClass {
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
@@ -396,7 +399,7 @@ func NewImageFromResource(resourcePath string) *ImageClass {
 // known, the image will be empty. You can register your own stock icon names,
 // see gtk_icon_factory_add_default() and gtk_icon_factory_add().
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_image_new_from_icon_name() instead.
 func NewImageFromStock(stockId string, size int) *ImageClass {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -434,10 +437,10 @@ func NewImageFromSurface(surface *cairo.Surface) *ImageClass {
 }
 
 // Clear resets the image to be empty.
-func (i *ImageClass) Clear() {
+func (image *ImageClass) Clear() {
 	var _arg0 *C.GtkImage // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	C.gtk_image_clear(_arg0)
 }
@@ -446,11 +449,11 @@ func (i *ImageClass) Clear() {
 // type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ANIMATION (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
 // reference to the returned animation.
-func (i *ImageClass) Animation() *gdkpixbuf.PixbufAnimationClass {
+func (image *ImageClass) Animation() *gdkpixbuf.PixbufAnimationClass {
 	var _arg0 *C.GtkImage           // out
 	var _cret *C.GdkPixbufAnimation // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_animation(_arg0)
 
@@ -465,12 +468,12 @@ func (i *ImageClass) Animation() *gdkpixbuf.PixbufAnimationClass {
 // storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME (see
 // gtk_image_get_storage_type()). The returned string is owned by the Image and
 // should not be freed.
-func (i *ImageClass) IconName() (string, int) {
+func (image *ImageClass) IconName() (string, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // in
 	var _arg2 C.GtkIconSize // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	C.gtk_image_get_icon_name(_arg0, &_arg1, &_arg2)
 
@@ -487,13 +490,13 @@ func (i *ImageClass) IconName() (string, int) {
 // type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_SET (see
 // gtk_image_get_storage_type()).
 //
-// Deprecated: since version 3.10.
-func (i *ImageClass) IconSet() (*IconSet, int) {
+// Deprecated: Use gtk_image_get_icon_name() instead.
+func (image *ImageClass) IconSet() (*IconSet, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GtkIconSet // in
 	var _arg2 C.GtkIconSize // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	C.gtk_image_get_icon_set(_arg0, &_arg1, &_arg2)
 
@@ -514,11 +517,11 @@ func (i *ImageClass) IconSet() (*IconSet, int) {
 // image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PIXBUF (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
 // reference to the returned pixbuf.
-func (i *ImageClass) Pixbuf() *gdkpixbuf.PixbufClass {
+func (image *ImageClass) Pixbuf() *gdkpixbuf.PixbufClass {
 	var _arg0 *C.GtkImage  // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_pixbuf(_arg0)
 
@@ -530,11 +533,11 @@ func (i *ImageClass) Pixbuf() *gdkpixbuf.PixbufClass {
 }
 
 // PixelSize gets the pixel size used for named icons.
-func (i *ImageClass) PixelSize() int {
+func (image *ImageClass) PixelSize() int {
 	var _arg0 *C.GtkImage // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_pixel_size(_arg0)
 
@@ -550,13 +553,13 @@ func (i *ImageClass) PixelSize() int {
 // gtk_image_get_storage_type()). The returned string is owned by the Image and
 // should not be freed.
 //
-// Deprecated: since version 3.10.
-func (i *ImageClass) Stock() (string, int) {
+// Deprecated: Use gtk_image_get_icon_name() instead.
+func (image *ImageClass) Stock() (string, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // in
 	var _arg2 C.GtkIconSize // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	C.gtk_image_get_stock(_arg0, &_arg1, &_arg2)
 
@@ -572,11 +575,11 @@ func (i *ImageClass) Stock() (string, int) {
 // StorageType gets the type of representation being used by the Image to store
 // image data. If the Image has no image data, the return value will be
 // GTK_IMAGE_EMPTY.
-func (i *ImageClass) StorageType() ImageType {
+func (image *ImageClass) StorageType() ImageType {
 	var _arg0 *C.GtkImage    // out
 	var _cret C.GtkImageType // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_storage_type(_arg0)
 
@@ -589,22 +592,22 @@ func (i *ImageClass) StorageType() ImageType {
 
 // SetFromAnimation causes the Image to display the given animation (or display
 // nothing, if you set the animation to nil).
-func (i *ImageClass) SetFromAnimation(animation gdkpixbuf.PixbufAnimation) {
+func (image *ImageClass) SetFromAnimation(animation gdkpixbuf.PixbufAnimation) {
 	var _arg0 *C.GtkImage           // out
 	var _arg1 *C.GdkPixbufAnimation // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
 
 	C.gtk_image_set_from_animation(_arg0, _arg1)
 }
 
 // SetFromFile: see gtk_image_new_from_file() for details.
-func (i *ImageClass) SetFromFile(filename string) {
+func (image *ImageClass) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.gchar    // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -612,12 +615,12 @@ func (i *ImageClass) SetFromFile(filename string) {
 }
 
 // SetFromIconName: see gtk_image_new_from_icon_name() for details.
-func (i *ImageClass) SetFromIconName(iconName string, size int) {
+func (image *ImageClass) SetFromIconName(iconName string, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
@@ -627,13 +630,13 @@ func (i *ImageClass) SetFromIconName(iconName string, size int) {
 
 // SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 //
-// Deprecated: since version 3.10.
-func (i *ImageClass) SetFromIconSet(iconSet *IconSet, size int) {
+// Deprecated: Use gtk_image_set_from_icon_name() instead.
+func (image *ImageClass) SetFromIconSet(iconSet *IconSet, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
 	_arg2 = C.GtkIconSize(size)
 
@@ -641,22 +644,22 @@ func (i *ImageClass) SetFromIconSet(iconSet *IconSet, size int) {
 }
 
 // SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
-func (i *ImageClass) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
+func (image *ImageClass) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }
 
 // SetFromResource: see gtk_image_new_from_resource() for details.
-func (i *ImageClass) SetFromResource(resourcePath string) {
+func (image *ImageClass) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.gchar    // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -665,13 +668,13 @@ func (i *ImageClass) SetFromResource(resourcePath string) {
 
 // SetFromStock: see gtk_image_new_from_stock() for details.
 //
-// Deprecated: since version 3.10.
-func (i *ImageClass) SetFromStock(stockId string, size int) {
+// Deprecated: Use gtk_image_set_from_icon_name() instead.
+func (image *ImageClass) SetFromStock(stockId string, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
@@ -680,11 +683,11 @@ func (i *ImageClass) SetFromStock(stockId string, size int) {
 }
 
 // SetFromSurface: see gtk_image_new_from_surface() for details.
-func (i *ImageClass) SetFromSurface(surface *cairo.Surface) {
+func (image *ImageClass) SetFromSurface(surface *cairo.Surface) {
 	var _arg0 *C.GtkImage        // out
 	var _arg1 *C.cairo_surface_t // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
 
 	C.gtk_image_set_from_surface(_arg0, _arg1)
@@ -693,11 +696,11 @@ func (i *ImageClass) SetFromSurface(surface *cairo.Surface) {
 // SetPixelSize sets the pixel size to use for named icons. If the pixel size is
 // set to a value != -1, it is used instead of the icon size set by
 // gtk_image_set_from_icon_name().
-func (i *ImageClass) SetPixelSize(pixelSize int) {
+func (image *ImageClass) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.gint      // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = C.gint(pixelSize)
 
 	C.gtk_image_set_pixel_size(_arg0, _arg1)

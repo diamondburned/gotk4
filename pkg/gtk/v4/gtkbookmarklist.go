@@ -96,11 +96,11 @@ func NewBookmarkList(filename string, attributes string) *BookmarkListClass {
 }
 
 // Attributes gets the attributes queried on the children.
-func (s *BookmarkListClass) Attributes() string {
+func (self *BookmarkListClass) Attributes() string {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bookmark_list_get_attributes(_arg0)
 
@@ -112,11 +112,11 @@ func (s *BookmarkListClass) Attributes() string {
 }
 
 // Filename returns the filename of the bookmark file that this list is loading.
-func (s *BookmarkListClass) Filename() string {
+func (self *BookmarkListClass) Filename() string {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bookmark_list_get_filename(_arg0)
 
@@ -128,11 +128,11 @@ func (s *BookmarkListClass) Filename() string {
 }
 
 // IOPriority gets the IO priority to use while loading file.
-func (s *BookmarkListClass) IOPriority() int {
+func (self *BookmarkListClass) IOPriority() int {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret C.int              // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bookmark_list_get_io_priority(_arg0)
 
@@ -147,11 +147,11 @@ func (s *BookmarkListClass) IOPriority() int {
 //
 // Files will be added to @self from time to time while loading is going on. The
 // order in which are added is undefined and may change in between runs.
-func (s *BookmarkListClass) IsLoading() bool {
+func (self *BookmarkListClass) IsLoading() bool {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bookmark_list_is_loading(_arg0)
 
@@ -169,11 +169,11 @@ func (s *BookmarkListClass) IsLoading() bool {
 //
 // If @attributes is nil, no attributes will be queried, but a list of Infos
 // will still be created.
-func (s *BookmarkListClass) SetAttributes(attributes string) {
+func (self *BookmarkListClass) SetAttributes(attributes string) {
 	var _arg0 *C.GtkBookmarkList // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -183,11 +183,11 @@ func (s *BookmarkListClass) SetAttributes(attributes string) {
 // SetIOPriority sets the IO priority to use while loading files.
 //
 // The default IO priority is G_PRIORITY_DEFAULT.
-func (s *BookmarkListClass) SetIOPriority(ioPriority int) {
+func (self *BookmarkListClass) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkBookmarkList // out
 	var _arg1 C.int              // out
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 	_arg1 = C.int(ioPriority)
 
 	C.gtk_bookmark_list_set_io_priority(_arg0, _arg1)

@@ -361,7 +361,7 @@ type Task interface {
 // TaskClass implements the Task interface.
 type TaskClass struct {
 	*externglib.Object
-	AsyncResultInterface
+	AsyncResultIface
 }
 
 var _ Task = (*TaskClass)(nil)
@@ -369,7 +369,7 @@ var _ Task = (*TaskClass)(nil)
 func wrapTask(obj *externglib.Object) Task {
 	return &TaskClass{
 		Object: obj,
-		AsyncResultInterface: AsyncResultInterface{
+		AsyncResultIface: AsyncResultIface{
 			Object: obj,
 		},
 	}
@@ -418,11 +418,11 @@ func NewTask(sourceObject gextras.Objector, cancellable Cancellable, callback As
 }
 
 // Cancellable gets @task's #GCancellable
-func (t *TaskClass) Cancellable() *CancellableClass {
+func (task *TaskClass) Cancellable() *CancellableClass {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GCancellable // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_cancellable(_arg0)
 
@@ -435,11 +435,11 @@ func (t *TaskClass) Cancellable() *CancellableClass {
 
 // CheckCancellable gets @task's check-cancellable flag. See
 // g_task_set_check_cancellable() for more details.
-func (t *TaskClass) CheckCancellable() bool {
+func (task *TaskClass) CheckCancellable() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_check_cancellable(_arg0)
 
@@ -455,11 +455,11 @@ func (t *TaskClass) CheckCancellable() bool {
 // Completed gets the value of #GTask:completed. This changes from false to true
 // after the task’s callback is invoked, and will return false if called from
 // inside the callback.
-func (t *TaskClass) Completed() bool {
+func (task *TaskClass) Completed() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_completed(_arg0)
 
@@ -479,11 +479,11 @@ func (t *TaskClass) Completed() bool {
 //
 // This will always return a non-nil value, even if the task's context is the
 // default Context.
-func (t *TaskClass) Context() *glib.MainContext {
+func (task *TaskClass) Context() *glib.MainContext {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GMainContext // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_context(_arg0)
 
@@ -499,11 +499,11 @@ func (t *TaskClass) Context() *glib.MainContext {
 }
 
 // Name gets @task’s name. See g_task_set_name().
-func (t *TaskClass) Name() string {
+func (task *TaskClass) Name() string {
 	var _arg0 *C.GTask // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_name(_arg0)
 
@@ -515,11 +515,11 @@ func (t *TaskClass) Name() string {
 }
 
 // Priority gets @task's priority
-func (t *TaskClass) Priority() int {
+func (task *TaskClass) Priority() int {
 	var _arg0 *C.GTask // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_priority(_arg0)
 
@@ -532,11 +532,11 @@ func (t *TaskClass) Priority() int {
 
 // ReturnOnCancel gets @task's return-on-cancel flag. See
 // g_task_set_return_on_cancel() for more details.
-func (t *TaskClass) ReturnOnCancel() bool {
+func (task *TaskClass) ReturnOnCancel() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_return_on_cancel(_arg0)
 
@@ -551,11 +551,11 @@ func (t *TaskClass) ReturnOnCancel() bool {
 
 // SourceObject gets the source object from @task. Like
 // g_async_result_get_source_object(), but does not ref the object.
-func (t *TaskClass) SourceObject() *externglib.Object {
+func (task *TaskClass) SourceObject() *externglib.Object {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_source_object(_arg0)
 
@@ -567,11 +567,11 @@ func (t *TaskClass) SourceObject() *externglib.Object {
 }
 
 // SourceTag gets @task's source tag. See g_task_set_source_tag().
-func (t *TaskClass) SourceTag() interface{} {
+func (task *TaskClass) SourceTag() interface{} {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_source_tag(_arg0)
 
@@ -583,11 +583,11 @@ func (t *TaskClass) SourceTag() interface{} {
 }
 
 // TaskData gets @task's `task_data`.
-func (t *TaskClass) TaskData() interface{} {
+func (task *TaskClass) TaskData() interface{} {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_task_data(_arg0)
 
@@ -599,11 +599,11 @@ func (t *TaskClass) TaskData() interface{} {
 }
 
 // HadError tests if @task resulted in an error.
-func (t *TaskClass) HadError() bool {
+func (task *TaskClass) HadError() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_had_error(_arg0)
 
@@ -623,11 +623,11 @@ func (t *TaskClass) HadError() bool {
 //
 // Since this method transfers ownership of the return value (or error) to the
 // caller, you may only call it once.
-func (t *TaskClass) PropagateBoolean() error {
+func (task *TaskClass) PropagateBoolean() error {
 	var _arg0 *C.GTask  // out
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	C.g_task_propagate_boolean(_arg0, &_cerr)
 
@@ -645,12 +645,12 @@ func (t *TaskClass) PropagateBoolean() error {
 //
 // Since this method transfers ownership of the return value (or error) to the
 // caller, you may only call it once.
-func (t *TaskClass) PropagateInt() (int, error) {
+func (task *TaskClass) PropagateInt() (int, error) {
 	var _arg0 *C.GTask  // out
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_propagate_int(_arg0, &_cerr)
 
@@ -671,12 +671,12 @@ func (t *TaskClass) PropagateInt() (int, error) {
 //
 // Since this method transfers ownership of the return value (or error) to the
 // caller, you may only call it once.
-func (t *TaskClass) PropagatePointer() (interface{}, error) {
+func (task *TaskClass) PropagatePointer() (interface{}, error) {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_propagate_pointer(_arg0, &_cerr)
 
@@ -699,12 +699,12 @@ func (t *TaskClass) PropagatePointer() (interface{}, error) {
 //
 // Since this method transfers ownership of the return value (or error) to the
 // caller, you may only call it once.
-func (t *TaskClass) PropagateValue() (externglib.Value, error) {
+func (task *TaskClass) PropagateValue() (externglib.Value, error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 C.GValue  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	C.g_task_propagate_value(_arg0, &_arg1, &_cerr)
 
@@ -719,11 +719,11 @@ func (t *TaskClass) PropagateValue() (externglib.Value, error) {
 
 // ReturnBoolean sets @task's result to @result and completes the task (see
 // g_task_return_pointer() for more discussion of exactly what this means).
-func (t *TaskClass) ReturnBoolean(result bool) {
+func (task *TaskClass) ReturnBoolean(result bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	if result {
 		_arg1 = C.TRUE
 	}
@@ -741,11 +741,11 @@ func (t *TaskClass) ReturnBoolean(result bool) {
 // you need to keep a local copy as well.
 //
 // See also g_task_return_new_error().
-func (t *TaskClass) ReturnError(err error) {
+func (task *TaskClass) ReturnError(err error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GError // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.g_task_return_error(_arg0, _arg1)
@@ -754,11 +754,11 @@ func (t *TaskClass) ReturnError(err error) {
 // ReturnErrorIfCancelled checks if @task's #GCancellable has been cancelled,
 // and if so, sets @task's error accordingly and completes the task (see
 // g_task_return_pointer() for more discussion of exactly what this means).
-func (t *TaskClass) ReturnErrorIfCancelled() bool {
+func (task *TaskClass) ReturnErrorIfCancelled() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_return_error_if_cancelled(_arg0)
 
@@ -773,11 +773,11 @@ func (t *TaskClass) ReturnErrorIfCancelled() bool {
 
 // ReturnInt sets @task's result to @result and completes the task (see
 // g_task_return_pointer() for more discussion of exactly what this means).
-func (t *TaskClass) ReturnInt(result int) {
+func (task *TaskClass) ReturnInt(result int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gssize // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	_arg1 = C.gssize(result)
 
 	C.g_task_return_int(_arg0, _arg1)
@@ -792,11 +792,11 @@ func (t *TaskClass) ReturnInt(result int) {
 // This is a very generic low-level method intended primarily for use by
 // language bindings; for C code, g_task_return_pointer() and the like will
 // normally be much easier to use.
-func (t *TaskClass) ReturnValue(result *externglib.Value) {
+func (task *TaskClass) ReturnValue(result *externglib.Value) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GValue // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	_arg1 = (*C.GValue)(unsafe.Pointer(&result.GValue))
 
 	C.g_task_return_value(_arg0, _arg1)
@@ -815,11 +815,11 @@ func (t *TaskClass) ReturnValue(result *externglib.Value) {
 //
 // If you are using g_task_set_return_on_cancel() as well, then you must leave
 // check-cancellable set true.
-func (t *TaskClass) SetCheckCancellable(checkCancellable bool) {
+func (task *TaskClass) SetCheckCancellable(checkCancellable bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	if checkCancellable {
 		_arg1 = C.TRUE
 	}
@@ -836,11 +836,11 @@ func (t *TaskClass) SetCheckCancellable(checkCancellable bool) {
 //
 // This function may only be called before the @task is first used in a thread
 // other than the one it was constructed in.
-func (t *TaskClass) SetName(name string) {
+func (task *TaskClass) SetName(name string) {
 	var _arg0 *C.GTask // out
 	var _arg1 *C.gchar // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -853,11 +853,11 @@ func (t *TaskClass) SetName(name string) {
 // This will affect the priority of #GSources created with
 // g_task_attach_source() and the scheduling of tasks run in threads, and can
 // also be explicitly retrieved later via g_task_get_priority().
-func (t *TaskClass) SetPriority(priority int) {
+func (task *TaskClass) SetPriority(priority int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gint   // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	_arg1 = C.gint(priority)
 
 	C.g_task_set_priority(_arg0, _arg1)
@@ -888,12 +888,12 @@ func (t *TaskClass) SetPriority(priority int) {
 // g_task_run_in_thread()/g_task_run_in_thread_sync(), then the ThreadFunc will
 // still be run (for consistency), but the task will also be completed right
 // away.
-func (t *TaskClass) SetReturnOnCancel(returnOnCancel bool) bool {
+func (task *TaskClass) SetReturnOnCancel(returnOnCancel bool) bool {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	if returnOnCancel {
 		_arg1 = C.TRUE
 	}
@@ -914,11 +914,11 @@ func (t *TaskClass) SetReturnOnCancel(returnOnCancel bool) bool {
 // tagging) and then later check it using g_task_get_source_tag() (or
 // g_async_result_is_tagged()) in the task's "finish" function, to figure out if
 // the response came from a particular place.
-func (t *TaskClass) SetSourceTag(sourceTag interface{}) {
+func (task *TaskClass) SetSourceTag(sourceTag interface{}) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gpointer // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	_arg1 = (C.gpointer)(box.Assign(sourceTag))
 
 	C.g_task_set_source_tag(_arg0, _arg1)

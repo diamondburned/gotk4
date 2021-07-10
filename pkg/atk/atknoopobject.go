@@ -35,18 +35,18 @@ type NoOpObject interface {
 type NoOpObjectClass struct {
 	*externglib.Object
 	ObjectClass
-	ActionInterface
-	ComponentInterface
-	DocumentInterface
-	EditableTextInterface
-	HypertextInterface
-	ImageInterface
-	SelectionInterface
-	TableInterface
-	TableCellInterface
-	TextInterface
-	ValueInterface
-	WindowInterface
+	ActionIface
+	ComponentIface
+	DocumentIface
+	EditableTextIface
+	HypertextIface
+	ImageIface
+	SelectionIface
+	TableIface
+	TableCellIface
+	TextIface
+	ValueIface
+	WindowIface
 }
 
 var _ NoOpObject = (*NoOpObjectClass)(nil)
@@ -57,42 +57,42 @@ func wrapNoOpObject(obj *externglib.Object) NoOpObject {
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
-		ActionInterface: ActionInterface{
+		ActionIface: ActionIface{
 			Object: obj,
 		},
-		ComponentInterface: ComponentInterface{
+		ComponentIface: ComponentIface{
 			Object: obj,
 		},
-		DocumentInterface: DocumentInterface{
+		DocumentIface: DocumentIface{
 			Object: obj,
 		},
-		EditableTextInterface: EditableTextInterface{
+		EditableTextIface: EditableTextIface{
 			Object: obj,
 		},
-		HypertextInterface: HypertextInterface{
+		HypertextIface: HypertextIface{
 			Object: obj,
 		},
-		ImageInterface: ImageInterface{
+		ImageIface: ImageIface{
 			Object: obj,
 		},
-		SelectionInterface: SelectionInterface{
+		SelectionIface: SelectionIface{
 			Object: obj,
 		},
-		TableInterface: TableInterface{
+		TableIface: TableIface{
 			Object: obj,
 		},
-		TableCellInterface: TableCellInterface{
+		TableCellIface: TableCellIface{
 			ObjectClass: ObjectClass{
 				Object: obj,
 			},
 		},
-		TextInterface: TextInterface{
+		TextIface: TextIface{
 			Object: obj,
 		},
-		ValueInterface: ValueInterface{
+		ValueIface: ValueIface{
 			Object: obj,
 		},
-		WindowInterface: WindowInterface{
+		WindowIface: WindowIface{
 			ObjectClass: ObjectClass{
 				Object: obj,
 			},

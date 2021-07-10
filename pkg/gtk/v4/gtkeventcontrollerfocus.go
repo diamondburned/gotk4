@@ -78,11 +78,11 @@ func NewEventControllerFocus() *EventControllerFocusClass {
 }
 
 // ContainsFocus returns true if focus is within @self or one of its children.
-func (s *EventControllerFocusClass) ContainsFocus() bool {
+func (self *EventControllerFocusClass) ContainsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
 
@@ -96,11 +96,11 @@ func (s *EventControllerFocusClass) ContainsFocus() bool {
 }
 
 // IsFocus returns true if focus is within @self, but not one of its children.
-func (s *EventControllerFocusClass) IsFocus() bool {
+func (self *EventControllerFocusClass) IsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
 

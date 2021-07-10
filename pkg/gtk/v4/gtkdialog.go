@@ -248,12 +248,12 @@ type Dialog interface {
 type DialogClass struct {
 	*externglib.Object
 	WindowClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	NativeInterface
-	RootInterface
-	ShortcutManagerInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	NativeIface
+	RootIface
+	ShortcutManagerIface
 }
 
 var _ Dialog = (*DialogClass)(nil)
@@ -264,126 +264,151 @@ func wrapDialog(obj *externglib.Object) Dialog {
 		WindowClass: WindowClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
-			AccessibleInterface: AccessibleInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
-			NativeInterface: NativeInterface{
+			NativeIface: NativeIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			RootInterface: RootInterface{
+			RootIface: RootIface{
 				Object: obj,
-				NativeInterface: NativeInterface{
+				NativeIface: NativeIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						AccessibleInterface: AccessibleInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableInterface: BuildableInterface{
+						AccessibleIface: AccessibleIface{
 							Object: obj,
 						},
-						ConstraintTargetInterface: ConstraintTargetInterface{
+						BuildableIface: BuildableIface{
+							Object: obj,
+						},
+						ConstraintTargetIface: ConstraintTargetIface{
 							Object: obj,
 						},
 					},
 				},
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			ShortcutManagerInterface: ShortcutManagerInterface{
+			ShortcutManagerIface: ShortcutManagerIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		NativeInterface: NativeInterface{
+		NativeIface: NativeIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		RootInterface: RootInterface{
+		RootIface: RootIface{
 			Object: obj,
-			NativeInterface: NativeInterface{
+			NativeIface: NativeIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		ShortcutManagerInterface: ShortcutManagerInterface{
+		ShortcutManagerIface: ShortcutManagerIface{
 			Object: obj,
 		},
 	}
@@ -420,12 +445,12 @@ func NewDialog() *DialogClass {
 //
 // If you want to add a non-activatable widget, simply pack it into the
 // @action_area field of the `GtkDialog` struct.
-func (d *DialogClass) AddActionWidget(child Widget, responseId int) {
+func (dialog *DialogClass) AddActionWidget(child Widget, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(responseId)
 
@@ -438,13 +463,13 @@ func (d *DialogClass) AddActionWidget(child Widget, responseId int) {
 // [signal@Gtk.Dialog::response] signal with the given @response_id. The button
 // is appended to the end of the dialog’s action area. The button widget is
 // returned, but usually you don’t need it.
-func (d *DialogClass) AddButton(buttonText string, responseId int) *WidgetClass {
+func (dialog *DialogClass) AddButton(buttonText string, responseId int) *WidgetClass {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (*C.char)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(responseId)
@@ -459,11 +484,11 @@ func (d *DialogClass) AddButton(buttonText string, responseId int) *WidgetClass 
 }
 
 // ContentArea returns the content area of @dialog.
-func (d *DialogClass) ContentArea() *BoxClass {
+func (dialog *DialogClass) ContentArea() *BoxClass {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_content_area(_arg0)
 
@@ -478,11 +503,11 @@ func (d *DialogClass) ContentArea() *BoxClass {
 //
 // Note that the headerbar is only used by the dialog if the
 // [property@Gtk.Dialog:use-header-bar] property is true.
-func (d *DialogClass) HeaderBar() *HeaderBarClass {
+func (dialog *DialogClass) HeaderBar() *HeaderBarClass {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_header_bar(_arg0)
 
@@ -495,12 +520,12 @@ func (d *DialogClass) HeaderBar() *HeaderBarClass {
 
 // ResponseForWidget gets the response id of a widget in the action area of a
 // dialog.
-func (d *DialogClass) ResponseForWidget(widget Widget) int {
+func (dialog *DialogClass) ResponseForWidget(widget Widget) int {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
@@ -514,12 +539,12 @@ func (d *DialogClass) ResponseForWidget(widget Widget) int {
 
 // WidgetForResponse gets the widget button that uses the given response ID in
 // the action area of a dialog.
-func (d *DialogClass) WidgetForResponse(responseId int) *WidgetClass {
+func (dialog *DialogClass) WidgetForResponse(responseId int) *WidgetClass {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = C.int(responseId)
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
@@ -534,11 +559,11 @@ func (d *DialogClass) WidgetForResponse(responseId int) *WidgetClass {
 // Response emits the ::response signal with the given response ID.
 //
 // Used to indicate that the user has responded to the dialog in some way.
-func (d *DialogClass) Response(responseId int) {
+func (dialog *DialogClass) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = C.int(responseId)
 
 	C.gtk_dialog_response(_arg0, _arg1)
@@ -548,11 +573,11 @@ func (d *DialogClass) Response(responseId int) {
 // response ID.
 //
 // Pressing “Enter” normally activates the default widget.
-func (d *DialogClass) SetDefaultResponse(responseId int) {
+func (dialog *DialogClass) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = C.int(responseId)
 
 	C.gtk_dialog_set_default_response(_arg0, _arg1)
@@ -562,12 +587,12 @@ func (d *DialogClass) SetDefaultResponse(responseId int) {
 //
 // Calls `gtk_widget_set_sensitive (widget, @setting)` for each widget in the
 // dialog’s action area with the given @response_id.
-func (d *DialogClass) SetResponseSensitive(responseId int, setting bool) {
+func (dialog *DialogClass) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 	var _arg2 C.gboolean   // out
 
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = C.int(responseId)
 	if setting {
 		_arg2 = C.TRUE

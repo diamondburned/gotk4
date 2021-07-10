@@ -32,7 +32,7 @@ type ATContext interface {
 	gextras.Objector
 
 	// Accessible retrieves the `GtkAccessible` using this context.
-	Accessible() *AccessibleInterface
+	Accessible() *AccessibleIface
 	// AccessibleRole retrieves the accessible role of this context.
 	AccessibleRole() AccessibleRole
 }
@@ -57,27 +57,27 @@ func marshalATContext(p uintptr) (interface{}, error) {
 }
 
 // Accessible retrieves the `GtkAccessible` using this context.
-func (s *ATContextClass) Accessible() *AccessibleInterface {
+func (self *ATContextClass) Accessible() *AccessibleIface {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
 
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_at_context_get_accessible(_arg0)
 
-	var _accessible *AccessibleInterface // out
+	var _accessible *AccessibleIface // out
 
-	_accessible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccessibleInterface)
+	_accessible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccessibleIface)
 
 	return _accessible
 }
 
 // AccessibleRole retrieves the accessible role of this context.
-func (s *ATContextClass) AccessibleRole() AccessibleRole {
+func (self *ATContextClass) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkATContext     // out
 	var _cret C.GtkAccessibleRole // in
 
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_at_context_get_accessible_role(_arg0)
 

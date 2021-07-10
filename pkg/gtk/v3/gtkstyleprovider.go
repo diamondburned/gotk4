@@ -32,12 +32,13 @@ type StyleProviderOverrider interface {
 	// IconFactory returns the IconFactory defined to be in use for @path, or
 	// nil if none is defined.
 	//
-	// Deprecated: since version 3.8.
+	// Deprecated: Will always return nil for all GTK-provided style providers.
 	IconFactory(path *WidgetPath) *IconFactoryClass
 	// Style returns the style settings affecting a widget defined by @path, or
 	// nil if @provider doesn’t contemplate styling @path.
 	//
-	// Deprecated: since version 3.8.
+	// Deprecated: Will always return nil for all GTK-provided style providers
+	// as the interface cannot correctly work the way CSS is specified.
 	Style(path *WidgetPath) *StylePropertiesClass
 }
 
@@ -50,24 +51,25 @@ type StyleProvider interface {
 	// IconFactory returns the IconFactory defined to be in use for @path, or
 	// nil if none is defined.
 	//
-	// Deprecated: since version 3.8.
+	// Deprecated: Will always return nil for all GTK-provided style providers.
 	IconFactory(path *WidgetPath) *IconFactoryClass
 	// Style returns the style settings affecting a widget defined by @path, or
 	// nil if @provider doesn’t contemplate styling @path.
 	//
-	// Deprecated: since version 3.8.
+	// Deprecated: Will always return nil for all GTK-provided style providers
+	// as the interface cannot correctly work the way CSS is specified.
 	Style(path *WidgetPath) *StylePropertiesClass
 }
 
-// StyleProviderInterface implements the StyleProvider interface.
-type StyleProviderInterface struct {
+// StyleProviderIface implements the StyleProvider interface.
+type StyleProviderIface struct {
 	*externglib.Object
 }
 
-var _ StyleProvider = (*StyleProviderInterface)(nil)
+var _ StyleProvider = (*StyleProviderIface)(nil)
 
 func wrapStyleProvider(obj *externglib.Object) StyleProvider {
-	return &StyleProviderInterface{
+	return &StyleProviderIface{
 		Object: obj,
 	}
 }
@@ -81,13 +83,13 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 // IconFactory returns the IconFactory defined to be in use for @path, or nil if
 // none is defined.
 //
-// Deprecated: since version 3.8.
-func (p *StyleProviderInterface) IconFactory(path *WidgetPath) *IconFactoryClass {
+// Deprecated: Will always return nil for all GTK-provided style providers.
+func (provider *StyleProviderIface) IconFactory(path *WidgetPath) *IconFactoryClass {
 	var _arg0 *C.GtkStyleProvider // out
 	var _arg1 *C.GtkWidgetPath    // out
 	var _cret *C.GtkIconFactory   // in
 
-	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_style_provider_get_icon_factory(_arg0, _arg1)
@@ -102,13 +104,14 @@ func (p *StyleProviderInterface) IconFactory(path *WidgetPath) *IconFactoryClass
 // Style returns the style settings affecting a widget defined by @path, or nil
 // if @provider doesn’t contemplate styling @path.
 //
-// Deprecated: since version 3.8.
-func (p *StyleProviderInterface) Style(path *WidgetPath) *StylePropertiesClass {
+// Deprecated: Will always return nil for all GTK-provided style providers as
+// the interface cannot correctly work the way CSS is specified.
+func (provider *StyleProviderIface) Style(path *WidgetPath) *StylePropertiesClass {
 	var _arg0 *C.GtkStyleProvider   // out
 	var _arg1 *C.GtkWidgetPath      // out
 	var _cret *C.GtkStyleProperties // in
 
-	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_style_provider_get_style(_arg0, _arg1)

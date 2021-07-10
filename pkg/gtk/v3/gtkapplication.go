@@ -155,7 +155,7 @@ type Application interface {
 	// gtk_application_set_menubar(), which is usually more convenient than
 	// calling this function for each accelerator.
 	//
-	// Deprecated: since version 3.14.
+	// Deprecated: Use gtk_application_set_accels_for_action() instead.
 	AddAccelerator(accelerator string, actionName string, parameter *glib.Variant)
 	// AddWindow adds a window to @application.
 	//
@@ -201,9 +201,6 @@ type Application interface {
 	// AppMenu returns the menu model that has been set with
 	// gtk_application_set_app_menu().
 	AppMenu() *gio.MenuModelClass
-	// MenuByID gets a menu from automatically loaded resources. See [Automatic
-	// resources][automatic-resources] for more information.
-	MenuByID(id string) *gio.MenuClass
 	// Menubar returns the menu model that has been set with
 	// gtk_application_set_menubar().
 	Menubar() *gio.MenuModelClass
@@ -251,7 +248,7 @@ type Application interface {
 	// RemoveAccelerator removes an accelerator that has been previously added
 	// with gtk_application_add_accelerator().
 	//
-	// Deprecated: since version 3.14.
+	// Deprecated: Use gtk_application_set_accels_for_action() instead.
 	RemoveAccelerator(actionName string, parameter *glib.Variant)
 	// RemoveWindow: remove a window from @application.
 	//
@@ -316,7 +313,7 @@ type Application interface {
 type ApplicationClass struct {
 	*externglib.Object
 	gio.ApplicationClass
-	gio.ActionGroupInterface
+	gio.ActionGroupIface
 }
 
 var _ Application = (*ApplicationClass)(nil)
@@ -328,12 +325,12 @@ func wrapApplication(obj *externglib.Object) Application {
 			Object: obj,
 			ActionGroupClass: ActionGroupClass{
 				Object: obj,
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActionGroupInterface: gio.ActionGroupInterface{
+		ActionGroupIface: gio.ActionGroupIface{
 			Object: obj,
 		},
 	}
@@ -360,14 +357,14 @@ func marshalApplication(p uintptr) (interface{}, error) {
 // gtk_application_set_menubar(), which is usually more convenient than calling
 // this function for each accelerator.
 //
-// Deprecated: since version 3.14.
-func (a *ApplicationClass) AddAccelerator(accelerator string, actionName string, parameter *glib.Variant) {
+// Deprecated: Use gtk_application_set_accels_for_action() instead.
+func (application *ApplicationClass) AddAccelerator(accelerator string, actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
 	var _arg3 *C.GVariant       // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(actionName))
@@ -391,11 +388,11 @@ func (a *ApplicationClass) AddAccelerator(accelerator string, actionName string,
 // gtk_application_remove_window().
 //
 // GTK+ will keep the @application running as long as it has any windows.
-func (a *ApplicationClass) AddWindow(window Window) {
+func (application *ApplicationClass) AddWindow(window Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_application_add_window(_arg0, _arg1)
@@ -403,12 +400,12 @@ func (a *ApplicationClass) AddWindow(window Window) {
 
 // AccelsForAction gets the accelerators that are currently associated with the
 // given action.
-func (a *ApplicationClass) AccelsForAction(detailedActionName string) []string {
+func (application *ApplicationClass) AccelsForAction(detailedActionName string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -448,12 +445,12 @@ func (a *ApplicationClass) AccelsForAction(detailedActionName string) []string {
 //
 // It is a programmer error to pass an invalid accelerator string. If you are
 // unsure, check it with gtk_accelerator_parse() first.
-func (a *ApplicationClass) ActionsForAccel(accel string) []string {
+func (application *ApplicationClass) ActionsForAccel(accel string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(C.CString(accel))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -485,11 +482,11 @@ func (a *ApplicationClass) ActionsForAccel(accel string) []string {
 // application). This window may not have the focus at the moment if another
 // application has it — this is just the most recently-focused window within
 // this application.
-func (a *ApplicationClass) ActiveWindow() *WindowClass {
+func (application *ApplicationClass) ActiveWindow() *WindowClass {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GtkWindow      // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_get_active_window(_arg0)
 
@@ -502,11 +499,11 @@ func (a *ApplicationClass) ActiveWindow() *WindowClass {
 
 // AppMenu returns the menu model that has been set with
 // gtk_application_set_app_menu().
-func (a *ApplicationClass) AppMenu() *gio.MenuModelClass {
+func (application *ApplicationClass) AppMenu() *gio.MenuModelClass {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_get_app_menu(_arg0)
 
@@ -517,33 +514,13 @@ func (a *ApplicationClass) AppMenu() *gio.MenuModelClass {
 	return _menuModel
 }
 
-// MenuByID gets a menu from automatically loaded resources. See [Automatic
-// resources][automatic-resources] for more information.
-func (a *ApplicationClass) MenuByID(id string) *gio.MenuClass {
-	var _arg0 *C.GtkApplication // out
-	var _arg1 *C.gchar          // out
-	var _cret *C.GMenu          // in
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.gchar)(C.CString(id))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_application_get_menu_by_id(_arg0, _arg1)
-
-	var _menu *gio.MenuClass // out
-
-	_menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuClass)
-
-	return _menu
-}
-
 // Menubar returns the menu model that has been set with
 // gtk_application_set_menubar().
-func (a *ApplicationClass) Menubar() *gio.MenuModelClass {
+func (application *ApplicationClass) Menubar() *gio.MenuModelClass {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_get_menubar(_arg0)
 
@@ -558,12 +535,12 @@ func (a *ApplicationClass) Menubar() *gio.MenuModelClass {
 //
 // The ID of a ApplicationWindow can be retrieved with
 // gtk_application_window_get_id().
-func (a *ApplicationClass) WindowByID(id uint) *WindowClass {
+func (application *ApplicationClass) WindowByID(id uint) *WindowClass {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 	var _cret *C.GtkWindow      // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = C.guint(id)
 
 	_cret = C.gtk_application_get_window_by_id(_arg0, _arg1)
@@ -577,11 +554,11 @@ func (a *ApplicationClass) WindowByID(id uint) *WindowClass {
 
 // ListActionDescriptions lists the detailed action names which have associated
 // accelerators. See gtk_application_set_accels_for_action().
-func (a *ApplicationClass) ListActionDescriptions() []string {
+func (application *ApplicationClass) ListActionDescriptions() []string {
 	var _arg0 *C.GtkApplication // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_list_action_descriptions(_arg0)
 
@@ -635,11 +612,11 @@ func (a *ApplicationClass) ListActionDescriptions() []string {
 // created automatically with the "usual" contents of that menu typical to most
 // Mac OS applications. If you call gtk_application_set_app_menu() anyway, then
 // this menu will be replaced with your own.
-func (a *ApplicationClass) PrefersAppMenu() bool {
+func (application *ApplicationClass) PrefersAppMenu() bool {
 	var _arg0 *C.GtkApplication // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_prefers_app_menu(_arg0)
 
@@ -655,13 +632,13 @@ func (a *ApplicationClass) PrefersAppMenu() bool {
 // RemoveAccelerator removes an accelerator that has been previously added with
 // gtk_application_add_accelerator().
 //
-// Deprecated: since version 3.14.
-func (a *ApplicationClass) RemoveAccelerator(actionName string, parameter *glib.Variant) {
+// Deprecated: Use gtk_application_set_accels_for_action() instead.
+func (application *ApplicationClass) RemoveAccelerator(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GVariant       // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
@@ -675,11 +652,11 @@ func (a *ApplicationClass) RemoveAccelerator(actionName string, parameter *glib.
 // the Window:application property of @window to nil.
 //
 // The application may stop running as a result of a call to this function.
-func (a *ApplicationClass) RemoveWindow(window Window) {
+func (application *ApplicationClass) RemoveWindow(window Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_application_remove_window(_arg0, _arg1)
@@ -694,12 +671,12 @@ func (a *ApplicationClass) RemoveWindow(window Window) {
 //
 // For the @detailed_action_name, see g_action_parse_detailed_name() and
 // g_action_print_detailed_name().
-func (a *ApplicationClass) SetAccelsForAction(detailedActionName string, accels []string) {
+func (application *ApplicationClass) SetAccelsForAction(detailedActionName string, accels []string) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 **C.gchar
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(accels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -730,11 +707,11 @@ func (a *ApplicationClass) SetAccelsForAction(detailedActionName string, accels 
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
-func (a *ApplicationClass) SetAppMenu(appMenu gio.MenuModel) {
+func (application *ApplicationClass) SetAppMenu(appMenu gio.MenuModel) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(appMenu.Native()))
 
 	C.gtk_application_set_app_menu(_arg0, _arg1)
@@ -757,11 +734,11 @@ func (a *ApplicationClass) SetAppMenu(appMenu gio.MenuModel) {
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
-func (a *ApplicationClass) SetMenubar(menubar gio.MenuModel) {
+func (application *ApplicationClass) SetMenubar(menubar gio.MenuModel) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
 
 	C.gtk_application_set_menubar(_arg0, _arg1)
@@ -770,11 +747,11 @@ func (a *ApplicationClass) SetMenubar(menubar gio.MenuModel) {
 // Uninhibit removes an inhibitor that has been established with
 // gtk_application_inhibit(). Inhibitors are also cleared when the application
 // exits.
-func (a *ApplicationClass) Uninhibit(cookie uint) {
+func (application *ApplicationClass) Uninhibit(cookie uint) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = C.guint(cookie)
 
 	C.gtk_application_uninhibit(_arg0, _arg1)

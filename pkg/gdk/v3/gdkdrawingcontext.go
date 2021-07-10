@@ -77,11 +77,11 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 // The returned context is guaranteed to be valid as long as the DrawingContext
 // is valid, that is between a call to gdk_window_begin_draw_frame() and
 // gdk_window_end_draw_frame().
-func (c *DrawingContextClass) CairoContext() *cairo.Context {
+func (context *DrawingContextClass) CairoContext() *cairo.Context {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_t           // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drawing_context_get_cairo_context(_arg0)
 
@@ -93,11 +93,11 @@ func (c *DrawingContextClass) CairoContext() *cairo.Context {
 }
 
 // Clip retrieves a copy of the clip region used when creating the @context.
-func (c *DrawingContextClass) Clip() *cairo.Region {
+func (context *DrawingContextClass) Clip() *cairo.Region {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_region_t    // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drawing_context_get_clip(_arg0)
 
@@ -112,11 +112,11 @@ func (c *DrawingContextClass) Clip() *cairo.Region {
 }
 
 // Window retrieves the window that created the drawing @context.
-func (c *DrawingContextClass) Window() *WindowClass {
+func (context *DrawingContextClass) Window() *WindowClass {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.GdkWindow         // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drawing_context_get_window(_arg0)
 
@@ -128,11 +128,11 @@ func (c *DrawingContextClass) Window() *WindowClass {
 }
 
 // IsValid checks whether the given DrawingContext is valid.
-func (c *DrawingContextClass) IsValid() bool {
+func (context *DrawingContextClass) IsValid() bool {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drawing_context_is_valid(_arg0)
 

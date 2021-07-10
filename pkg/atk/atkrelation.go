@@ -59,22 +59,22 @@ func marshalRelation(p uintptr) (interface{}, error) {
 
 // AddTarget adds the specified AtkObject to the target for the relation, if it
 // is not already present. See also atk_object_add_relationship().
-func (r *RelationClass) AddTarget(target Object) {
+func (relation *RelationClass) AddTarget(target Object) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	C.atk_relation_add_target(_arg0, _arg1)
 }
 
 // RelationType gets the type of @relation
-func (r *RelationClass) RelationType() RelationType {
+func (relation *RelationClass) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
 	var _cret C.AtkRelationType // in
 
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 
 	_cret = C.atk_relation_get_relation_type(_arg0)
 
@@ -87,12 +87,12 @@ func (r *RelationClass) RelationType() RelationType {
 
 // RemoveTarget: remove the specified AtkObject from the target for the
 // relation.
-func (r *RelationClass) RemoveTarget(target Object) bool {
+func (relation *RelationClass) RemoveTarget(target Object) bool {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_relation_remove_target(_arg0, _arg1)

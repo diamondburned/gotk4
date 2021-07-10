@@ -75,9 +75,9 @@ type LinkButton interface {
 type LinkButtonClass struct {
 	*externglib.Object
 	ButtonClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ LinkButton = (*LinkButtonClass)(nil)
@@ -92,46 +92,57 @@ func wrapLinkButton(obj *externglib.Object) LinkButton {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -181,11 +192,11 @@ func NewLinkButtonWithLabel(uri string, label string) *LinkButtonClass {
 }
 
 // URI retrieves the URI set using gtk_link_button_set_uri().
-func (l *LinkButtonClass) URI() string {
+func (linkButton *LinkButtonClass) URI() string {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
 
 	_cret = C.gtk_link_button_get_uri(_arg0)
 
@@ -201,11 +212,11 @@ func (l *LinkButtonClass) URI() string {
 // button, the “visited” state is unset again.
 //
 // The state may also be changed using gtk_link_button_set_visited().
-func (l *LinkButtonClass) Visited() bool {
+func (linkButton *LinkButtonClass) Visited() bool {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
 
 	_cret = C.gtk_link_button_get_visited(_arg0)
 
@@ -220,11 +231,11 @@ func (l *LinkButtonClass) Visited() bool {
 
 // SetURI sets @uri as the URI where the LinkButton points. As a side-effect
 // this unsets the “visited” state of the button.
-func (l *LinkButtonClass) SetURI(uri string) {
+func (linkButton *LinkButtonClass) SetURI(uri string) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -233,11 +244,11 @@ func (l *LinkButtonClass) SetURI(uri string) {
 
 // SetVisited sets the “visited” state of the URI where the LinkButton points.
 // See gtk_link_button_get_visited() for more details.
-func (l *LinkButtonClass) SetVisited(visited bool) {
+func (linkButton *LinkButtonClass) SetVisited(visited bool) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
 	if visited {
 		_arg1 = C.TRUE
 	}

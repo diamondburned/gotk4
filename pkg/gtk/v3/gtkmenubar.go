@@ -47,7 +47,7 @@ type MenuBar interface {
 type MenuBarClass struct {
 	*externglib.Object
 	MenuShellClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ MenuBar = (*MenuBarClass)(nil)
@@ -60,20 +60,23 @@ func wrapMenuBar(obj *externglib.Object) MenuBar {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -121,11 +124,11 @@ func NewMenuBarFromModel(model gio.MenuModel) *MenuBarClass {
 
 // ChildPackDirection retrieves the current child pack direction of the menubar.
 // See gtk_menu_bar_set_child_pack_direction().
-func (m *MenuBarClass) ChildPackDirection() PackDirection {
+func (menubar *MenuBarClass) ChildPackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
 
 	_cret = C.gtk_menu_bar_get_child_pack_direction(_arg0)
 
@@ -138,11 +141,11 @@ func (m *MenuBarClass) ChildPackDirection() PackDirection {
 
 // PackDirection retrieves the current pack direction of the menubar. See
 // gtk_menu_bar_set_pack_direction().
-func (m *MenuBarClass) PackDirection() PackDirection {
+func (menubar *MenuBarClass) PackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
 
 	_cret = C.gtk_menu_bar_get_pack_direction(_arg0)
 

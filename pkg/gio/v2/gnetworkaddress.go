@@ -55,7 +55,7 @@ type NetworkAddress interface {
 // NetworkAddressClass implements the NetworkAddress interface.
 type NetworkAddressClass struct {
 	*externglib.Object
-	SocketConnectableInterface
+	SocketConnectableIface
 }
 
 var _ NetworkAddress = (*NetworkAddressClass)(nil)
@@ -63,7 +63,7 @@ var _ NetworkAddress = (*NetworkAddressClass)(nil)
 func wrapNetworkAddress(obj *externglib.Object) NetworkAddress {
 	return &NetworkAddressClass{
 		Object: obj,
-		SocketConnectableInterface: SocketConnectableInterface{
+		SocketConnectableIface: SocketConnectableIface{
 			Object: obj,
 		},
 	}
@@ -128,11 +128,11 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddressClass {
 
 // Hostname gets @addr's hostname. This might be either UTF-8 or ASCII-encoded,
 // depending on what @addr was created with.
-func (a *NetworkAddressClass) Hostname() string {
+func (addr *NetworkAddressClass) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(addr.Native()))
 
 	_cret = C.g_network_address_get_hostname(_arg0)
 
@@ -144,11 +144,11 @@ func (a *NetworkAddressClass) Hostname() string {
 }
 
 // Port gets @addr's port number
-func (a *NetworkAddressClass) Port() uint16 {
+func (addr *NetworkAddressClass) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret C.guint16          // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(addr.Native()))
 
 	_cret = C.g_network_address_get_port(_arg0)
 
@@ -160,11 +160,11 @@ func (a *NetworkAddressClass) Port() uint16 {
 }
 
 // Scheme gets @addr's scheme
-func (a *NetworkAddressClass) Scheme() string {
+func (addr *NetworkAddressClass) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(addr.Native()))
 
 	_cret = C.g_network_address_get_scheme(_arg0)
 

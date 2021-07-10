@@ -44,8 +44,8 @@ type HSeparator interface {
 type HSeparatorClass struct {
 	*externglib.Object
 	SeparatorClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ HSeparator = (*HSeparatorClass)(nil)
@@ -56,22 +56,25 @@ func wrapHSeparator(obj *externglib.Object) HSeparator {
 		SeparatorClass: SeparatorClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -85,7 +88,7 @@ func marshalHSeparator(p uintptr) (interface{}, error) {
 
 // NewHSeparator creates a new HSeparator.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_separator_new() with GTK_ORIENTATION_HORIZONTAL instead.
 func NewHSeparator() *HSeparatorClass {
 	var _cret *C.GtkWidget // in
 

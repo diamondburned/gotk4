@@ -124,15 +124,15 @@ type PollableInputStream interface {
 	ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error)
 }
 
-// PollableInputStreamInterface implements the PollableInputStream interface.
-type PollableInputStreamInterface struct {
+// PollableInputStreamIface implements the PollableInputStream interface.
+type PollableInputStreamIface struct {
 	InputStreamClass
 }
 
-var _ PollableInputStream = (*PollableInputStreamInterface)(nil)
+var _ PollableInputStream = (*PollableInputStreamIface)(nil)
 
 func wrapPollableInputStream(obj *externglib.Object) PollableInputStream {
-	return &PollableInputStreamInterface{
+	return &PollableInputStreamIface{
 		InputStreamClass: InputStreamClass{
 			Object: obj,
 		},
@@ -152,11 +152,11 @@ func marshalPollableInputStream(p uintptr) (interface{}, error) {
 //
 // For any given stream, the value returned by this method is constant; a stream
 // cannot switch from pollable to non-pollable or vice versa.
-func (s *PollableInputStreamInterface) CanPoll() bool {
+func (stream *PollableInputStreamIface) CanPoll() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_pollable_input_stream_can_poll(_arg0)
 
@@ -177,12 +177,12 @@ func (s *PollableInputStreamInterface) CanPoll() bool {
 // may not actually be readable even after the source triggers, so you should
 // use g_pollable_input_stream_read_nonblocking() rather than
 // g_input_stream_read() from the callback.
-func (s *PollableInputStreamInterface) CreateSource(cancellable Cancellable) *glib.Source {
+func (stream *PollableInputStreamIface) CreateSource(cancellable Cancellable) *glib.Source {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret *C.GSource              // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_input_stream_create_source(_arg0, _arg1)
@@ -205,11 +205,11 @@ func (s *PollableInputStreamInterface) CreateSource(cancellable Cancellable) *gl
 // true would still block. To guarantee non-blocking behavior, you should always
 // use g_pollable_input_stream_read_nonblocking(), which will return a
 // G_IO_ERROR_WOULD_BLOCK error rather than blocking.
-func (s *PollableInputStreamInterface) IsReadable() bool {
+func (stream *PollableInputStreamIface) IsReadable() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_pollable_input_stream_is_readable(_arg0)
 
@@ -232,7 +232,7 @@ func (s *PollableInputStreamInterface) IsReadable() bool {
 // @cancellable to cancel it. However, it will return an error if @cancellable
 // has already been cancelled when you call, which may happen if you call this
 // method after a source triggers due to having been cancelled.
-func (s *PollableInputStreamInterface) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
+func (stream *PollableInputStreamIface) ReadNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
@@ -240,7 +240,7 @@ func (s *PollableInputStreamInterface) ReadNonblocking(buffer []byte, cancellabl
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))

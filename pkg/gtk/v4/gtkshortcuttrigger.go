@@ -93,11 +93,11 @@ func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) *Alter
 // First gets the first of the two alternative triggers that may trigger @self.
 //
 // [method@Gtk.AlternativeTrigger.get_second] will return the other one.
-func (s *AlternativeTriggerClass) First() *ShortcutTriggerClass {
+func (self *AlternativeTriggerClass) First() *ShortcutTriggerClass {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
 
-	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_alternative_trigger_get_first(_arg0)
 
@@ -112,11 +112,11 @@ func (s *AlternativeTriggerClass) First() *ShortcutTriggerClass {
 // @self.
 //
 // [method@Gtk.AlternativeTrigger.get_first] will return the other one.
-func (s *AlternativeTriggerClass) Second() *ShortcutTriggerClass {
+func (self *AlternativeTriggerClass) Second() *ShortcutTriggerClass {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
 
-	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_alternative_trigger_get_second(_arg0)
 
@@ -161,11 +161,11 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 }
 
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
-func (s *KeyvalTriggerClass) Keyval() uint {
+func (self *KeyvalTriggerClass) Keyval() uint {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.guint             // in
 
-	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_keyval_trigger_get_keyval(_arg0)
 
@@ -178,11 +178,11 @@ func (s *KeyvalTriggerClass) Keyval() uint {
 
 // Modifiers gets the modifiers that must be present to succeed triggering
 // @self.
-func (s *KeyvalTriggerClass) Modifiers() gdk.ModifierType {
+func (self *KeyvalTriggerClass) Modifiers() gdk.ModifierType {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.GdkModifierType   // in
 
-	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_keyval_trigger_get_modifiers(_arg0)
 
@@ -247,11 +247,11 @@ func NewMnemonicTrigger(keyval uint) *MnemonicTriggerClass {
 }
 
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
-func (s *MnemonicTriggerClass) Keyval() uint {
+func (self *MnemonicTriggerClass) Keyval() uint {
 	var _arg0 *C.GtkMnemonicTrigger // out
 	var _cret C.guint               // in
 
-	_arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_mnemonic_trigger_get_keyval(_arg0)
 
@@ -404,12 +404,12 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTriggerClass {
 // allow use of this function as a Func.
 //
 // They must each be a `GtkShortcutTrigger`.
-func (t *ShortcutTriggerClass) Compare(trigger2 ShortcutTrigger) int {
+func (trigger1 *ShortcutTriggerClass) Compare(trigger2 ShortcutTrigger) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.int           // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(trigger1.Native()))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(trigger2.Native()))
 
 	_cret = C.gtk_shortcut_trigger_compare(_arg0, _arg1)
@@ -425,12 +425,12 @@ func (t *ShortcutTriggerClass) Compare(trigger2 ShortcutTrigger) int {
 //
 // The types of @one and @two are #gconstpointer only to allow use of this
 // function with Table. They must each be a `GtkShortcutTrigger`.
-func (t *ShortcutTriggerClass) Equal(trigger2 ShortcutTrigger) bool {
+func (trigger1 *ShortcutTriggerClass) Equal(trigger2 ShortcutTrigger) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(trigger1.Native()))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(trigger2.Native()))
 
 	_cret = C.gtk_shortcut_trigger_equal(_arg0, _arg1)
@@ -453,11 +453,11 @@ func (t *ShortcutTriggerClass) Equal(trigger2 ShortcutTrigger) bool {
 //
 // The types of @trigger is #gconstpointer only to allow use of this function
 // with Table. They must each be a `GtkShortcutTrigger`.
-func (t *ShortcutTriggerClass) Hash() uint {
+func (trigger *ShortcutTriggerClass) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(t.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(trigger.Native()))
 
 	_cret = C.gtk_shortcut_trigger_hash(_arg0)
 
@@ -478,12 +478,12 @@ func (t *ShortcutTriggerClass) Hash() uint {
 //
 // The form of the representation may change at any time and is not guaranteed
 // to stay identical.
-func (s *ShortcutTriggerClass) ToLabel(display gdk.Display) string {
+func (self *ShortcutTriggerClass) ToLabel(display gdk.Display) string {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _arg1 *C.GdkDisplay         // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_shortcut_trigger_to_label(_arg0, _arg1)
@@ -500,11 +500,11 @@ func (s *ShortcutTriggerClass) ToLabel(display gdk.Display) string {
 //
 // This is a small wrapper around [method@Gtk.ShortcutTrigger.print] to help
 // when debugging.
-func (s *ShortcutTriggerClass) String() string {
+func (self *ShortcutTriggerClass) String() string {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_trigger_to_string(_arg0)
 
@@ -517,13 +517,13 @@ func (s *ShortcutTriggerClass) String() string {
 }
 
 // Trigger checks if the given @event triggers @self.
-func (s *ShortcutTriggerClass) Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch {
+func (self *ShortcutTriggerClass) Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _arg1 *C.GdkEvent           // out
 	var _arg2 C.gboolean            // out
 	var _cret C.GdkKeyMatch         // in
 
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 	if enableMnemonics {
 		_arg2 = C.TRUE

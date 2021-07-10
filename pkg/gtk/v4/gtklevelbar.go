@@ -164,10 +164,10 @@ type LevelBar interface {
 type LevelBarClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	OrientableInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	OrientableIface
 }
 
 var _ LevelBar = (*LevelBarClass)(nil)
@@ -176,27 +176,30 @@ func wrapLevelBar(obj *externglib.Object) LevelBar {
 	return &LevelBarClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -250,12 +253,12 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) *LevelBarClass {
 //
 // If another offset marker named @name exists, its value will be replaced by
 // @value.
-func (s *LevelBarClass) AddOffsetValue(name string, value float64) {
+func (self *LevelBarClass) AddOffsetValue(name string, value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.char        // out
 	var _arg2 C.double       // out
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.double(value)
@@ -264,11 +267,11 @@ func (s *LevelBarClass) AddOffsetValue(name string, value float64) {
 }
 
 // Inverted returns whether the levelbar is inverted.
-func (s *LevelBarClass) Inverted() bool {
+func (self *LevelBarClass) Inverted() bool {
 	var _arg0 *C.GtkLevelBar // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_inverted(_arg0)
 
@@ -282,11 +285,11 @@ func (s *LevelBarClass) Inverted() bool {
 }
 
 // MaxValue returns the `max-value` of the `GtkLevelBar`.
-func (s *LevelBarClass) MaxValue() float64 {
+func (self *LevelBarClass) MaxValue() float64 {
 	var _arg0 *C.GtkLevelBar // out
 	var _cret C.double       // in
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_max_value(_arg0)
 
@@ -298,11 +301,11 @@ func (s *LevelBarClass) MaxValue() float64 {
 }
 
 // MinValue returns the `min-value of the `GtkLevelBar`.
-func (s *LevelBarClass) MinValue() float64 {
+func (self *LevelBarClass) MinValue() float64 {
 	var _arg0 *C.GtkLevelBar // out
 	var _cret C.double       // in
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_min_value(_arg0)
 
@@ -314,11 +317,11 @@ func (s *LevelBarClass) MinValue() float64 {
 }
 
 // Mode returns the `mode` of the `GtkLevelBar`.
-func (s *LevelBarClass) Mode() LevelBarMode {
+func (self *LevelBarClass) Mode() LevelBarMode {
 	var _arg0 *C.GtkLevelBar    // out
 	var _cret C.GtkLevelBarMode // in
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_mode(_arg0)
 
@@ -330,13 +333,13 @@ func (s *LevelBarClass) Mode() LevelBarMode {
 }
 
 // OffsetValue fetches the value specified for the offset marker @name in @self.
-func (s *LevelBarClass) OffsetValue(name string) (float64, bool) {
+func (self *LevelBarClass) OffsetValue(name string) (float64, bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.char        // out
 	var _arg2 C.double       // in
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -354,11 +357,11 @@ func (s *LevelBarClass) OffsetValue(name string) (float64, bool) {
 }
 
 // Value returns the `value` of the `GtkLevelBar`.
-func (s *LevelBarClass) Value() float64 {
+func (self *LevelBarClass) Value() float64 {
 	var _arg0 *C.GtkLevelBar // out
 	var _cret C.double       // in
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_value(_arg0)
 
@@ -373,11 +376,11 @@ func (s *LevelBarClass) Value() float64 {
 //
 // The marker must have been previously added with
 // [method@Gtk.LevelBar.add_offset_value].
-func (s *LevelBarClass) RemoveOffsetValue(name string) {
+func (self *LevelBarClass) RemoveOffsetValue(name string) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -385,11 +388,11 @@ func (s *LevelBarClass) RemoveOffsetValue(name string) {
 }
 
 // SetInverted sets whether the `GtkLevelBar` is inverted.
-func (s *LevelBarClass) SetInverted(inverted bool) {
+func (self *LevelBarClass) SetInverted(inverted bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	if inverted {
 		_arg1 = C.TRUE
 	}
@@ -401,11 +404,11 @@ func (s *LevelBarClass) SetInverted(inverted bool) {
 //
 // You probably want to update preexisting level offsets after calling this
 // function.
-func (s *LevelBarClass) SetMaxValue(value float64) {
+func (self *LevelBarClass) SetMaxValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.double       // out
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = C.double(value)
 
 	C.gtk_level_bar_set_max_value(_arg0, _arg1)
@@ -415,22 +418,22 @@ func (s *LevelBarClass) SetMaxValue(value float64) {
 //
 // You probably want to update preexisting level offsets after calling this
 // function.
-func (s *LevelBarClass) SetMinValue(value float64) {
+func (self *LevelBarClass) SetMinValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.double       // out
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = C.double(value)
 
 	C.gtk_level_bar_set_min_value(_arg0, _arg1)
 }
 
 // SetValue sets the value of the `GtkLevelBar`.
-func (s *LevelBarClass) SetValue(value float64) {
+func (self *LevelBarClass) SetValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.double       // out
 
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = C.double(value)
 
 	C.gtk_level_bar_set_value(_arg0, _arg1)

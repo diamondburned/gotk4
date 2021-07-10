@@ -6,8 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,27 +37,6 @@ func WrapTextAppearance(ptr unsafe.Pointer) *TextAppearance {
 // Native returns the underlying C source pointer.
 func (t *TextAppearance) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// BgColor: background Color.
-func (t *TextAppearance) BgColor() gdk.Color {
-	var v gdk.Color // out
-	v = *(*gdk.Color)(unsafe.Pointer((&t.native.bg_color)))
-	return v
-}
-
-// FgColor: foreground Color.
-func (t *TextAppearance) FgColor() gdk.Color {
-	var v gdk.Color // out
-	v = *(*gdk.Color)(unsafe.Pointer((&t.native.fg_color)))
-	return v
-}
-
-// Rise: super/subscript rise, can be negative.
-func (t *TextAppearance) Rise() int {
-	var v int // out
-	v = int(t.native.rise)
-	return v
 }
 
 // TextAttributes: using TextAttributes directly should rarely be necessary.
@@ -103,117 +80,12 @@ func (t *TextAttributes) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// Appearance for text.
-func (t *TextAttributes) Appearance() TextAppearance {
-	var v TextAppearance // out
-	v = *(*TextAppearance)(unsafe.Pointer((&t.native.appearance)))
-	return v
-}
-
-// Justification for text.
-func (t *TextAttributes) Justification() Justification {
-	var v Justification // out
-	v = (Justification)(t.native.justification)
-	return v
-}
-
-// Direction for text.
-func (t *TextAttributes) Direction() TextDirection {
-	var v TextDirection // out
-	v = (TextDirection)(t.native.direction)
-	return v
-}
-
-// Font for text.
-func (t *TextAttributes) Font() *pango.FontDescription {
-	var v *pango.FontDescription // out
-	v = (*pango.FontDescription)(unsafe.Pointer(t.native.font))
-	return v
-}
-
-// FontScale: font scale factor.
-func (t *TextAttributes) FontScale() float64 {
-	var v float64 // out
-	v = float64(t.native.font_scale)
-	return v
-}
-
-// LeftMargin: width of the left margin in pixels.
-func (t *TextAttributes) LeftMargin() int {
-	var v int // out
-	v = int(t.native.left_margin)
-	return v
-}
-
-// RightMargin: width of the right margin in pixels.
-func (t *TextAttributes) RightMargin() int {
-	var v int // out
-	v = int(t.native.right_margin)
-	return v
-}
-
-// Indent: amount to indent the paragraph, in pixels.
-func (t *TextAttributes) Indent() int {
-	var v int // out
-	v = int(t.native.indent)
-	return v
-}
-
-// PixelsAboveLines pixels of blank space above paragraphs.
-func (t *TextAttributes) PixelsAboveLines() int {
-	var v int // out
-	v = int(t.native.pixels_above_lines)
-	return v
-}
-
-// PixelsBelowLines pixels of blank space below paragraphs.
-func (t *TextAttributes) PixelsBelowLines() int {
-	var v int // out
-	v = int(t.native.pixels_below_lines)
-	return v
-}
-
-// PixelsInsideWrap pixels of blank space between wrapped lines in a paragraph.
-func (t *TextAttributes) PixelsInsideWrap() int {
-	var v int // out
-	v = int(t.native.pixels_inside_wrap)
-	return v
-}
-
-// Tabs: custom TabArray for this text.
-func (t *TextAttributes) Tabs() *pango.TabArray {
-	var v *pango.TabArray // out
-	v = (*pango.TabArray)(unsafe.Pointer(t.native.tabs))
-	return v
-}
-
-// WrapMode for text.
-func (t *TextAttributes) WrapMode() WrapMode {
-	var v WrapMode // out
-	v = (WrapMode)(t.native.wrap_mode)
-	return v
-}
-
-// Language for text.
-func (t *TextAttributes) Language() *pango.Language {
-	var v *pango.Language // out
-	v = (*pango.Language)(unsafe.Pointer(t.native.language))
-	return v
-}
-
-// LetterSpacing: extra space to insert between graphemes, in Pango units
-func (t *TextAttributes) LetterSpacing() int {
-	var v int // out
-	v = int(t.native.letter_spacing)
-	return v
-}
-
 // Copy copies @src and returns a new TextAttributes.
-func (s *TextAttributes) Copy() *TextAttributes {
+func (src *TextAttributes) Copy() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(src))
 
 	_cret = C.gtk_text_attributes_copy(_arg0)
 
@@ -230,22 +102,22 @@ func (s *TextAttributes) Copy() *TextAttributes {
 
 // CopyValues copies the values from @src to @dest so that @dest has the same
 // values as @src. Frees existing values in @dest.
-func (s *TextAttributes) CopyValues(dest *TextAttributes) {
+func (src *TextAttributes) CopyValues(dest *TextAttributes) {
 	var _arg0 *C.GtkTextAttributes // out
 	var _arg1 *C.GtkTextAttributes // out
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(src))
 	_arg1 = (*C.GtkTextAttributes)(unsafe.Pointer(dest))
 
 	C.gtk_text_attributes_copy_values(_arg0, _arg1)
 }
 
 // Ref increments the reference count on @values.
-func (v *TextAttributes) ref() *TextAttributes {
+func (values *TextAttributes) ref() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(values))
 
 	_cret = C.gtk_text_attributes_ref(_arg0)
 
@@ -262,10 +134,10 @@ func (v *TextAttributes) ref() *TextAttributes {
 
 // Unref decrements the reference count on @values, freeing the structure if the
 // reference count reaches 0.
-func (v *TextAttributes) unref() {
+func (values *TextAttributes) unref() {
 	var _arg0 *C.GtkTextAttributes // out
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v))
+	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(values))
 
 	C.gtk_text_attributes_unref(_arg0)
 }

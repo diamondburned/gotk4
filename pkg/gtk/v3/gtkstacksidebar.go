@@ -55,7 +55,7 @@ type StackSidebar interface {
 type StackSidebarClass struct {
 	*externglib.Object
 	BinClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ StackSidebar = (*StackSidebarClass)(nil)
@@ -68,20 +68,23 @@ func wrapStackSidebar(obj *externglib.Object) StackSidebar {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -107,11 +110,11 @@ func NewStackSidebar() *StackSidebarClass {
 }
 
 // Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
-func (s *StackSidebarClass) Stack() *StackClass {
+func (sidebar *StackSidebarClass) Stack() *StackClass {
 	var _arg0 *C.GtkStackSidebar // out
 	var _cret *C.GtkStack        // in
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
 
@@ -126,11 +129,11 @@ func (s *StackSidebarClass) Stack() *StackClass {
 //
 // The sidebar widget will automatically update according to the order (packing)
 // and items within the given Stack.
-func (s *StackSidebarClass) SetStack(stack Stack) {
+func (sidebar *StackSidebarClass) SetStack(stack Stack) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(sidebar.Native()))
 	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)

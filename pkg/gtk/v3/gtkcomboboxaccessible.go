@@ -33,16 +33,14 @@ type ComboBoxAccessible interface {
 
 // ComboBoxAccessibleClass implements the ComboBoxAccessible interface.
 type ComboBoxAccessibleClass struct {
-	*externglib.Object
 	ContainerAccessibleClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ ComboBoxAccessible = (*ComboBoxAccessibleClass)(nil)
 
 func wrapComboBoxAccessible(obj *externglib.Object) ComboBoxAccessible {
 	return &ComboBoxAccessibleClass{
-		Object: obj,
 		ContainerAccessibleClass: ContainerAccessibleClass{
 			WidgetAccessibleClass: WidgetAccessibleClass{
 				AccessibleClass: AccessibleClass{
@@ -52,7 +50,7 @@ func wrapComboBoxAccessible(obj *externglib.Object) ComboBoxAccessible {
 				},
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}

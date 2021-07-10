@@ -108,9 +108,9 @@ type SearchBar interface {
 type SearchBarClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ SearchBar = (*SearchBarClass)(nil)
@@ -119,24 +119,27 @@ func wrapSearchBar(obj *externglib.Object) SearchBar {
 	return &SearchBarClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -170,22 +173,22 @@ func NewSearchBar() *SearchBarClass {
 // The entry should be a descendant of the search bar. Calling this function
 // manually is only required if the entry isn’t the direct child of the search
 // bar (as in our main example).
-func (b *SearchBarClass) ConnectEntry(entry Editable) {
+func (bar *SearchBarClass) ConnectEntry(entry Editable) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEditable  // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.GtkEditable)(unsafe.Pointer(entry.Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 }
 
 // Child gets the child widget of @bar.
-func (b *SearchBarClass) Child() *WidgetClass {
+func (bar *SearchBarClass) Child() *WidgetClass {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_search_bar_get_child(_arg0)
 
@@ -197,11 +200,11 @@ func (b *SearchBarClass) Child() *WidgetClass {
 }
 
 // KeyCaptureWidget gets the widget that @bar is capturing key events from.
-func (b *SearchBarClass) KeyCaptureWidget() *WidgetClass {
+func (bar *SearchBarClass) KeyCaptureWidget() *WidgetClass {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_search_bar_get_key_capture_widget(_arg0)
 
@@ -213,11 +216,11 @@ func (b *SearchBarClass) KeyCaptureWidget() *WidgetClass {
 }
 
 // SearchMode returns whether the search mode is on or off.
-func (b *SearchBarClass) SearchMode() bool {
+func (bar *SearchBarClass) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_search_bar_get_search_mode(_arg0)
 
@@ -231,11 +234,11 @@ func (b *SearchBarClass) SearchMode() bool {
 }
 
 // ShowCloseButton returns whether the close button is shown.
-func (b *SearchBarClass) ShowCloseButton() bool {
+func (bar *SearchBarClass) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
 
@@ -249,11 +252,11 @@ func (b *SearchBarClass) ShowCloseButton() bool {
 }
 
 // SetChild sets the child widget of @bar.
-func (b *SearchBarClass) SetChild(child Widget) {
+func (bar *SearchBarClass) SetChild(child Widget) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_search_bar_set_child(_arg0, _arg1)
@@ -270,22 +273,22 @@ func (b *SearchBarClass) SetChild(child Widget) {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // [method@Gtk.EventControllerKey.forward].
-func (b *SearchBarClass) SetKeyCaptureWidget(widget Widget) {
+func (bar *SearchBarClass) SetKeyCaptureWidget(widget Widget) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_search_bar_set_key_capture_widget(_arg0, _arg1)
 }
 
 // SetSearchMode switches the search mode on or off.
-func (b *SearchBarClass) SetSearchMode(searchMode bool) {
+func (bar *SearchBarClass) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 	if searchMode {
 		_arg1 = C.TRUE
 	}
@@ -298,11 +301,11 @@ func (b *SearchBarClass) SetSearchMode(searchMode bool) {
 // Applications that already have a “search” toggle button should not show a
 // close button in their search bar, as it duplicates the role of the toggle
 // button.
-func (b *SearchBarClass) SetShowCloseButton(visible bool) {
+func (bar *SearchBarClass) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}

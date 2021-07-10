@@ -68,9 +68,9 @@ type PopoverMenuBar interface {
 type PopoverMenuBarClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ PopoverMenuBar = (*PopoverMenuBarClass)(nil)
@@ -79,24 +79,27 @@ func wrapPopoverMenuBar(obj *externglib.Object) PopoverMenuBar {
 	return &PopoverMenuBarClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -128,13 +131,13 @@ func NewPopoverMenuBarFromModel(model gio.MenuModel) *PopoverMenuBarClass {
 //
 // For this to work, the menu model of @bar must have an item with a `custom`
 // attribute that matches @id.
-func (b *PopoverMenuBarClass) AddChild(child Widget, id string) bool {
+func (bar *PopoverMenuBarClass) AddChild(child Widget, id string) bool {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GtkWidget         // out
 	var _arg2 *C.char              // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -151,11 +154,11 @@ func (b *PopoverMenuBarClass) AddChild(child Widget, id string) bool {
 }
 
 // MenuModel returns the model from which the contents of @bar are taken.
-func (b *PopoverMenuBarClass) MenuModel() *gio.MenuModelClass {
+func (bar *PopoverMenuBarClass) MenuModel() *gio.MenuModelClass {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _cret *C.GMenuModel        // in
 
-	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_popover_menu_bar_get_menu_model(_arg0)
 
@@ -168,12 +171,12 @@ func (b *PopoverMenuBarClass) MenuModel() *gio.MenuModelClass {
 
 // RemoveChild removes a widget that has previously been added with
 // gtk_popover_menu_bar_add_child().
-func (b *PopoverMenuBarClass) RemoveChild(child Widget) bool {
+func (bar *PopoverMenuBarClass) RemoveChild(child Widget) bool {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GtkWidget         // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_popover_menu_bar_remove_child(_arg0, _arg1)
@@ -188,11 +191,11 @@ func (b *PopoverMenuBarClass) RemoveChild(child Widget) bool {
 }
 
 // SetMenuModel sets a menu model from which @bar should take its contents.
-func (b *PopoverMenuBarClass) SetMenuModel(model gio.MenuModel) {
+func (bar *PopoverMenuBarClass) SetMenuModel(model gio.MenuModel) {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GMenuModel        // out
 
-	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_popover_menu_bar_set_menu_model(_arg0, _arg1)

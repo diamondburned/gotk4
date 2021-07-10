@@ -205,11 +205,11 @@ func NewAccelGroup() *AccelGroupClass {
 
 // IsLocked locks are added and removed using gtk_accel_group_lock() and
 // gtk_accel_group_unlock().
-func (a *AccelGroupClass) IsLocked() bool {
+func (accelGroup *AccelGroupClass) IsLocked() bool {
 	var _arg0 *C.GtkAccelGroup // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	_cret = C.gtk_accel_group_get_is_locked(_arg0)
 
@@ -224,11 +224,11 @@ func (a *AccelGroupClass) IsLocked() bool {
 
 // ModifierMask gets a ModifierType representing the mask for this @accel_group.
 // For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
-func (a *AccelGroupClass) ModifierMask() gdk.ModifierType {
+func (accelGroup *AccelGroupClass) ModifierMask() gdk.ModifierType {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _cret C.GdkModifierType // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	_cret = C.gtk_accel_group_get_modifier_mask(_arg0)
 
@@ -247,21 +247,36 @@ func (a *AccelGroupClass) ModifierMask() gdk.ModifierType {
 //
 // If called more than once, @accel_group remains locked until
 // gtk_accel_group_unlock() has been called an equivalent number of times.
-func (a *AccelGroupClass) Lock() {
+func (accelGroup *AccelGroupClass) Lock() {
 	var _arg0 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_accel_group_lock(_arg0)
 }
 
 // Unlock undoes the last call to gtk_accel_group_lock() on this @accel_group.
-func (a *AccelGroupClass) Unlock() {
+func (accelGroup *AccelGroupClass) Unlock() {
 	var _arg0 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_accel_group_unlock(_arg0)
+}
+
+type AccelGroupEntry struct {
+	native C.GtkAccelGroupEntry
+}
+
+// WrapAccelGroupEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapAccelGroupEntry(ptr unsafe.Pointer) *AccelGroupEntry {
+	return (*AccelGroupEntry)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (a *AccelGroupEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
 }
 
 type AccelKey struct {
@@ -277,18 +292,4 @@ func WrapAccelKey(ptr unsafe.Pointer) *AccelKey {
 // Native returns the underlying C source pointer.
 func (a *AccelKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
-}
-
-// AccelKey: the accelerator keyval
-func (a *AccelKey) AccelKey() uint {
-	var v uint // out
-	v = uint(a.native.accel_key)
-	return v
-}
-
-// AccelMods: the accelerator modifiers
-func (a *AccelKey) AccelMods() gdk.ModifierType {
-	var v gdk.ModifierType // out
-	v = (gdk.ModifierType)(a.native.accel_mods)
-	return v
 }

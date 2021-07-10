@@ -71,11 +71,11 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 }
 
 // BaseStream gets the base stream for the filter stream.
-func (s *FilterOutputStreamClass) BaseStream() *OutputStreamClass {
+func (stream *FilterOutputStreamClass) BaseStream() *OutputStreamClass {
 	var _arg0 *C.GFilterOutputStream // out
 	var _cret *C.GOutputStream       // in
 
-	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_filter_output_stream_get_base_stream(_arg0)
 
@@ -88,11 +88,11 @@ func (s *FilterOutputStreamClass) BaseStream() *OutputStreamClass {
 
 // CloseBaseStream returns whether the base stream will be closed when @stream
 // is closed.
-func (s *FilterOutputStreamClass) CloseBaseStream() bool {
+func (stream *FilterOutputStreamClass) CloseBaseStream() bool {
 	var _arg0 *C.GFilterOutputStream // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_filter_output_stream_get_close_base_stream(_arg0)
 
@@ -107,11 +107,11 @@ func (s *FilterOutputStreamClass) CloseBaseStream() bool {
 
 // SetCloseBaseStream sets whether the base stream will be closed when @stream
 // is closed.
-func (s *FilterOutputStreamClass) SetCloseBaseStream(closeBase bool) {
+func (stream *FilterOutputStreamClass) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterOutputStream // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(stream.Native()))
 	if closeBase {
 		_arg1 = C.TRUE
 	}

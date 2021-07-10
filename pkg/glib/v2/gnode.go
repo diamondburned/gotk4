@@ -78,52 +78,14 @@ func (n *Node) Native() unsafe.Pointer {
 	return unsafe.Pointer(&n.native)
 }
 
-// Data contains the actual data of the node.
-func (n *Node) Data() interface{} {
-	var v interface{} // out
-	v = box.Get(uintptr(n.native.data))
-	return v
-}
-
-// Next points to the node's next sibling (a sibling is another #GNode with the
-// same parent).
-func (n *Node) Next() *Node {
-	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.native.next))
-	return v
-}
-
-// Prev points to the node's previous sibling.
-func (n *Node) Prev() *Node {
-	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.native.prev))
-	return v
-}
-
-// Parent points to the parent of the #GNode, or is nil if the #GNode is the
-// root of the tree.
-func (n *Node) Parent() *Node {
-	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.native.parent))
-	return v
-}
-
-// Children points to the first child of the #GNode. The other children are
-// accessed by using the @next pointer of each child.
-func (n *Node) Children() *Node {
-	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.native.children))
-	return v
-}
-
 // ChildIndex gets the position of the first child of a #GNode which contains
 // the given data.
-func (n *Node) ChildIndex(data interface{}) int {
+func (node *Node) ChildIndex(data interface{}) int {
 	var _arg0 *C.GNode   // out
 	var _arg1 C.gpointer // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(n))
+	_arg0 = (*C.GNode)(unsafe.Pointer(node))
 	_arg1 = (C.gpointer)(box.Assign(data))
 
 	_cret = C.g_node_child_index(_arg0, _arg1)
@@ -138,12 +100,12 @@ func (n *Node) ChildIndex(data interface{}) int {
 // ChildPosition gets the position of a #GNode with respect to its siblings.
 // @child must be a child of @node. The first child is numbered 0, the second 1,
 // and so on.
-func (n *Node) ChildPosition(child *Node) int {
+func (node *Node) ChildPosition(child *Node) int {
 	var _arg0 *C.GNode // out
 	var _arg1 *C.GNode // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(n))
+	_arg0 = (*C.GNode)(unsafe.Pointer(node))
 	_arg1 = (*C.GNode)(unsafe.Pointer(child))
 
 	_cret = C.g_node_child_position(_arg0, _arg1)
@@ -159,11 +121,11 @@ func (n *Node) ChildPosition(child *Node) int {
 //
 // If @node is nil the depth is 0. The root node has a depth of 1. For the
 // children of the root node the depth is 2. And so on.
-func (n *Node) Depth() uint {
+func (node *Node) Depth() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(n))
+	_arg0 = (*C.GNode)(unsafe.Pointer(node))
 
 	_cret = C.g_node_depth(_arg0)
 
@@ -176,10 +138,10 @@ func (n *Node) Depth() uint {
 
 // Destroy removes @root and its children from the tree, freeing any memory
 // allocated.
-func (r *Node) Destroy() {
+func (root *Node) Destroy() {
 	var _arg0 *C.GNode // out
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(r))
+	_arg0 = (*C.GNode)(unsafe.Pointer(root))
 
 	C.g_node_destroy(_arg0)
 }
@@ -187,12 +149,12 @@ func (r *Node) Destroy() {
 // IsAncestor returns true if @node is an ancestor of @descendant. This is true
 // if node is the parent of @descendant, or if node is the grandparent of
 // @descendant etc.
-func (n *Node) IsAncestor(descendant *Node) bool {
+func (node *Node) IsAncestor(descendant *Node) bool {
 	var _arg0 *C.GNode   // out
 	var _arg1 *C.GNode   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(n))
+	_arg0 = (*C.GNode)(unsafe.Pointer(node))
 	_arg1 = (*C.GNode)(unsafe.Pointer(descendant))
 
 	_cret = C.g_node_is_ancestor(_arg0, _arg1)
@@ -211,11 +173,11 @@ func (n *Node) IsAncestor(descendant *Node) bool {
 //
 // If @root is nil, 0 is returned. If @root has no children, 1 is returned. If
 // @root has children, 2 is returned. And so on.
-func (r *Node) MaxHeight() uint {
+func (root *Node) MaxHeight() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(r))
+	_arg0 = (*C.GNode)(unsafe.Pointer(root))
 
 	_cret = C.g_node_max_height(_arg0)
 
@@ -227,11 +189,11 @@ func (r *Node) MaxHeight() uint {
 }
 
 // NChildren gets the number of children of a #GNode.
-func (n *Node) NChildren() uint {
+func (node *Node) NChildren() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(n))
+	_arg0 = (*C.GNode)(unsafe.Pointer(node))
 
 	_cret = C.g_node_n_children(_arg0)
 
@@ -244,19 +206,19 @@ func (n *Node) NChildren() uint {
 
 // ReverseChildren reverses the order of the children of a #GNode. (It doesn't
 // change the order of the grandchildren.)
-func (n *Node) ReverseChildren() {
+func (node *Node) ReverseChildren() {
 	var _arg0 *C.GNode // out
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(n))
+	_arg0 = (*C.GNode)(unsafe.Pointer(node))
 
 	C.g_node_reverse_children(_arg0)
 }
 
 // Unlink unlinks a #GNode from a tree, resulting in two separate trees.
-func (n *Node) Unlink() {
+func (node *Node) Unlink() {
 	var _arg0 *C.GNode // out
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(n))
+	_arg0 = (*C.GNode)(unsafe.Pointer(node))
 
 	C.g_node_unlink(_arg0)
 }

@@ -186,13 +186,13 @@ type FileChooserDialog interface {
 type FileChooserDialogClass struct {
 	*externglib.Object
 	DialogClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	FileChooserInterface
-	NativeInterface
-	RootInterface
-	ShortcutManagerInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	FileChooserIface
+	NativeIface
+	RootIface
+	ShortcutManagerIface
 }
 
 var _ FileChooserDialog = (*FileChooserDialogClass)(nil)
@@ -205,185 +205,221 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 			WindowClass: WindowClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
-				AccessibleInterface: AccessibleInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
-				NativeInterface: NativeInterface{
+				NativeIface: NativeIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						AccessibleInterface: AccessibleInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableInterface: BuildableInterface{
+						AccessibleIface: AccessibleIface{
 							Object: obj,
 						},
-						ConstraintTargetInterface: ConstraintTargetInterface{
+						BuildableIface: BuildableIface{
+							Object: obj,
+						},
+						ConstraintTargetIface: ConstraintTargetIface{
 							Object: obj,
 						},
 					},
 				},
-				RootInterface: RootInterface{
+				RootIface: RootIface{
 					Object: obj,
-					NativeInterface: NativeInterface{
+					NativeIface: NativeIface{
+						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							AccessibleInterface: AccessibleInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
-							BuildableInterface: BuildableInterface{
+							AccessibleIface: AccessibleIface{
 								Object: obj,
 							},
-							ConstraintTargetInterface: ConstraintTargetInterface{
+							BuildableIface: BuildableIface{
+								Object: obj,
+							},
+							ConstraintTargetIface: ConstraintTargetIface{
 								Object: obj,
 							},
 						},
 					},
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						AccessibleInterface: AccessibleInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableInterface: BuildableInterface{
+						AccessibleIface: AccessibleIface{
 							Object: obj,
 						},
-						ConstraintTargetInterface: ConstraintTargetInterface{
+						BuildableIface: BuildableIface{
+							Object: obj,
+						},
+						ConstraintTargetIface: ConstraintTargetIface{
 							Object: obj,
 						},
 					},
 				},
-				ShortcutManagerInterface: ShortcutManagerInterface{
+				ShortcutManagerIface: ShortcutManagerIface{
 					Object: obj,
 				},
 			},
-			AccessibleInterface: AccessibleInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
-			NativeInterface: NativeInterface{
+			NativeIface: NativeIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			RootInterface: RootInterface{
+			RootIface: RootIface{
 				Object: obj,
-				NativeInterface: NativeInterface{
+				NativeIface: NativeIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						AccessibleInterface: AccessibleInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableInterface: BuildableInterface{
+						AccessibleIface: AccessibleIface{
 							Object: obj,
 						},
-						ConstraintTargetInterface: ConstraintTargetInterface{
+						BuildableIface: BuildableIface{
+							Object: obj,
+						},
+						ConstraintTargetIface: ConstraintTargetIface{
 							Object: obj,
 						},
 					},
 				},
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			ShortcutManagerInterface: ShortcutManagerInterface{
+			ShortcutManagerIface: ShortcutManagerIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		FileChooserInterface: FileChooserInterface{
+		FileChooserIface: FileChooserIface{
 			Object: obj,
 		},
-		NativeInterface: NativeInterface{
+		NativeIface: NativeIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		RootInterface: RootInterface{
+		RootIface: RootIface{
 			Object: obj,
-			NativeInterface: NativeInterface{
+			NativeIface: NativeIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		ShortcutManagerInterface: ShortcutManagerInterface{
+		ShortcutManagerIface: ShortcutManagerIface{
 			Object: obj,
 		},
 	}

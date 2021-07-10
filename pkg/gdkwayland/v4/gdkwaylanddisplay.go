@@ -78,11 +78,11 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 
 // StartupNotificationID gets the startup notification ID for a Wayland display,
 // or nil if no ID has been defined.
-func (d *WaylandDisplayClass) StartupNotificationID() string {
+func (display *WaylandDisplayClass) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_wayland_display_get_startup_notification_id(_arg0)
 
@@ -95,12 +95,12 @@ func (d *WaylandDisplayClass) StartupNotificationID() string {
 
 // QueryRegistry returns true if the the interface was found in the display
 // `wl_registry.global` handler.
-func (d *WaylandDisplayClass) QueryRegistry(global string) bool {
+func (display *WaylandDisplayClass) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(C.CString(global))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -116,12 +116,12 @@ func (d *WaylandDisplayClass) QueryRegistry(global string) bool {
 }
 
 // SetCursorTheme sets the cursor theme for the given @display.
-func (d *WaylandDisplayClass) SetCursorTheme(name string, size int) {
+func (display *WaylandDisplayClass) SetCursorTheme(name string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(size)
@@ -138,11 +138,11 @@ func (d *WaylandDisplayClass) SetCursorTheme(name string, size int) {
 // The startup ID is also what is used to signal that the startup is complete
 // (for example, when opening a window or when calling
 // [method@Gdk.Display.notify_startup_complete]).
-func (d *WaylandDisplayClass) SetStartupNotificationID(startupId string) {
+func (display *WaylandDisplayClass) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(_arg1))
 

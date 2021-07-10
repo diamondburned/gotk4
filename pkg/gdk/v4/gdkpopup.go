@@ -68,15 +68,15 @@ type Popup interface {
 	Present(width int, height int, layout *PopupLayout) bool
 }
 
-// PopupInterface implements the Popup interface.
-type PopupInterface struct {
+// PopupIface implements the Popup interface.
+type PopupIface struct {
 	SurfaceClass
 }
 
-var _ Popup = (*PopupInterface)(nil)
+var _ Popup = (*PopupIface)(nil)
 
 func wrapPopup(obj *externglib.Object) Popup {
-	return &PopupInterface{
+	return &PopupIface{
 		SurfaceClass: SurfaceClass{
 			Object: obj,
 		},
@@ -90,11 +90,11 @@ func marshalPopup(p uintptr) (interface{}, error) {
 }
 
 // Autohide returns whether this popup is set to hide on outside clicks.
-func (p *PopupInterface) Autohide() bool {
+func (popup *PopupIface) Autohide() bool {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 
 	_cret = C.gdk_popup_get_autohide(_arg0)
 
@@ -108,11 +108,11 @@ func (p *PopupInterface) Autohide() bool {
 }
 
 // Parent returns the parent surface of a popup.
-func (p *PopupInterface) Parent() *SurfaceClass {
+func (popup *PopupIface) Parent() *SurfaceClass {
 	var _arg0 *C.GdkPopup   // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 
 	_cret = C.gdk_popup_get_parent(_arg0)
 
@@ -124,11 +124,11 @@ func (p *PopupInterface) Parent() *SurfaceClass {
 }
 
 // PositionX obtains the position of the popup relative to its parent.
-func (p *PopupInterface) PositionX() int {
+func (popup *PopupIface) PositionX() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 
 	_cret = C.gdk_popup_get_position_x(_arg0)
 
@@ -140,11 +140,11 @@ func (p *PopupInterface) PositionX() int {
 }
 
 // PositionY obtains the position of the popup relative to its parent.
-func (p *PopupInterface) PositionY() int {
+func (popup *PopupIface) PositionY() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 
 	_cret = C.gdk_popup_get_position_y(_arg0)
 
@@ -159,11 +159,11 @@ func (p *PopupInterface) PositionY() int {
 //
 // The value returned may change after calling [method@Gdk.Popup.present], or
 // after the [signal@Gdk.Surface::layout] signal is emitted.
-func (p *PopupInterface) RectAnchor() Gravity {
+func (popup *PopupIface) RectAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
 	var _cret C.GdkGravity // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 
 	_cret = C.gdk_popup_get_rect_anchor(_arg0)
 
@@ -178,11 +178,11 @@ func (p *PopupInterface) RectAnchor() Gravity {
 //
 // The value returned may change after calling [method@Gdk.Popup.present], or
 // after the [signal@Gdk.Surface::layout] signal is emitted.
-func (p *PopupInterface) SurfaceAnchor() Gravity {
+func (popup *PopupIface) SurfaceAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
 	var _cret C.GdkGravity // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 
 	_cret = C.gdk_popup_get_surface_anchor(_arg0)
 
@@ -208,14 +208,14 @@ func (p *PopupInterface) SurfaceAnchor() Gravity {
 // Presenting may fail, for example if the @popup is set to autohide and is
 // immediately hidden upon being presented. If presenting failed, the
 // [signal@Gdk.Surface::layout] signal will not me emitted.
-func (p *PopupInterface) Present(width int, height int, layout *PopupLayout) bool {
+func (popup *PopupIface) Present(width int, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup       // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
 	var _arg3 *C.GdkPopupLayout // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 	_arg3 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))

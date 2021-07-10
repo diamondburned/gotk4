@@ -57,8 +57,8 @@ type UnixInputStream interface {
 type UnixInputStreamClass struct {
 	*externglib.Object
 	InputStreamClass
-	FileDescriptorBasedInterface
-	PollableInputStreamInterface
+	FileDescriptorBasedIface
+	PollableInputStreamIface
 }
 
 var _ UnixInputStream = (*UnixInputStreamClass)(nil)
@@ -69,10 +69,10 @@ func wrapUnixInputStream(obj *externglib.Object) UnixInputStream {
 		InputStreamClass: InputStreamClass{
 			Object: obj,
 		},
-		FileDescriptorBasedInterface: FileDescriptorBasedInterface{
+		FileDescriptorBasedIface: FileDescriptorBasedIface{
 			Object: obj,
 		},
-		PollableInputStreamInterface: PollableInputStreamInterface{
+		PollableInputStreamIface: PollableInputStreamIface{
 			InputStreamClass: InputStreamClass{
 				Object: obj,
 			},
@@ -111,11 +111,11 @@ func NewUnixInputStream(fd int, closeFd bool) *UnixInputStreamClass {
 
 // CloseFd returns whether the file descriptor of @stream will be closed when
 // the stream is closed.
-func (s *UnixInputStreamClass) CloseFd() bool {
+func (stream *UnixInputStreamClass) CloseFd() bool {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_unix_input_stream_get_close_fd(_arg0)
 
@@ -129,11 +129,11 @@ func (s *UnixInputStreamClass) CloseFd() bool {
 }
 
 // Fd: return the UNIX file descriptor that the stream reads from.
-func (s *UnixInputStreamClass) Fd() int {
+func (stream *UnixInputStreamClass) Fd() int {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gint              // in
 
-	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_unix_input_stream_get_fd(_arg0)
 
@@ -146,11 +146,11 @@ func (s *UnixInputStreamClass) Fd() int {
 
 // SetCloseFd sets whether the file descriptor of @stream shall be closed when
 // the stream is closed.
-func (s *UnixInputStreamClass) SetCloseFd(closeFd bool) {
+func (stream *UnixInputStreamClass) SetCloseFd(closeFd bool) {
 	var _arg0 *C.GUnixInputStream // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(stream.Native()))
 	if closeFd {
 		_arg1 = C.TRUE
 	}

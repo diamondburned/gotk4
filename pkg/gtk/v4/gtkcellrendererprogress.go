@@ -34,20 +34,20 @@ type CellRendererProgress interface {
 
 // CellRendererProgressClass implements the CellRendererProgress interface.
 type CellRendererProgressClass struct {
-	*externglib.Object
 	CellRendererClass
-	OrientableInterface
+	OrientableIface
 }
 
 var _ CellRendererProgress = (*CellRendererProgressClass)(nil)
 
 func wrapCellRendererProgress(obj *externglib.Object) CellRendererProgress {
 	return &CellRendererProgressClass{
-		Object: obj,
 		CellRendererClass: CellRendererClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}

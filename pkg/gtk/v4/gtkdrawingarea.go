@@ -164,9 +164,9 @@ type DrawingArea interface {
 type DrawingAreaClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ DrawingArea = (*DrawingAreaClass)(nil)
@@ -175,24 +175,27 @@ func wrapDrawingArea(obj *externglib.Object) DrawingArea {
 	return &DrawingAreaClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -218,11 +221,11 @@ func NewDrawingArea() *DrawingAreaClass {
 }
 
 // ContentHeight retrieves the content height of the `GtkDrawingArea`.
-func (s *DrawingAreaClass) ContentHeight() int {
+func (self *DrawingAreaClass) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 
@@ -234,11 +237,11 @@ func (s *DrawingAreaClass) ContentHeight() int {
 }
 
 // ContentWidth retrieves the content width of the `GtkDrawingArea`.
-func (s *DrawingAreaClass) ContentWidth() int {
+func (self *DrawingAreaClass) ContentWidth() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drawing_area_get_content_width(_arg0)
 
@@ -257,11 +260,11 @@ func (s *DrawingAreaClass) ContentWidth() int {
 // that.
 //
 // If the height is set to 0 (the default), the drawing area may disappear.
-func (s *DrawingAreaClass) SetContentHeight(height int) {
+func (self *DrawingAreaClass) SetContentHeight(height int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
 	_arg1 = C.int(height)
 
 	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
@@ -275,11 +278,11 @@ func (s *DrawingAreaClass) SetContentHeight(height int) {
 // that.
 //
 // If the width is set to 0 (the default), the drawing area may disappear.
-func (s *DrawingAreaClass) SetContentWidth(width int) {
+func (self *DrawingAreaClass) SetContentWidth(width int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
 	_arg1 = C.int(width)
 
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)

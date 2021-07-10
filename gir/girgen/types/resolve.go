@@ -2,7 +2,6 @@ package types
 
 import (
 	"path"
-	"strconv"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -167,7 +166,12 @@ func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult)
 
 // TypeFromResult is meant to be used by an external package to generate a
 // Resolved from existing type information.
-func TypeFromResult(gen FileGenerator, res gir.TypeFindResult) *Resolved {
+func TypeFromResult(gen FileGenerator, v interface{}) *Resolved {
+	res := gir.TypeFindResult{
+		NamespaceFindResult: gen.Namespace(),
+		Type:                v,
+	}
+
 	typ := gir.Type{
 		Name:  res.Name(),
 		CType: res.CType(),
@@ -363,6 +367,11 @@ func (typ *Resolved) ptr(sub1 bool) string {
 	return strings.Repeat("*", int(ptr))
 }
 
+const (
+	ImplClassSuffix     = "Class"
+	ImplInterfaceSuffix = "Iface"
+)
+
 // Name returns the type name without the namespace or pointer.
 func (typ *Resolved) Name() string {
 	if typ.Builtin != nil {
@@ -373,9 +382,9 @@ func (typ *Resolved) Name() string {
 	name := strcases.PascalToGo(typ.Extern.Name())
 	switch typ.Extern.Type.(type) {
 	case *gir.Class:
-		name += "Class"
+		name += ImplClassSuffix
 	case *gir.Interface:
-		name += "Interface"
+		name += ImplInterfaceSuffix
 	}
 
 	return name
@@ -472,7 +481,18 @@ var UnsupportedCTypes = []string{
 // ResolveName resolves the given GIR type name. The resolved type will
 // always have no pointer.
 func ResolveName(gen FileGenerator, girType string) *Resolved {
-	return Resolve(gen, gir.Type{Name: girType})
+	typ := gir.Type{
+		Name: girType,
+	}
+
+	if result := Find(gen, girType); result != nil {
+		typ.CType = result.CType()
+
+		typ.Introspectable = new(bool)
+		*typ.Introspectable = result.IsIntrospectable()
+	}
+
+	return Resolve(gen, typ)
 }
 
 // BuiltinHandledTypes contains types manually handled by Resolve and
@@ -502,12 +522,6 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		return nil
 	}
 
-	for _, unsupported := range UnsupportedCTypes {
-		if unsupported == typ.CType {
-			return nil
-		}
-	}
-
 	var result *gir.TypeFindResult
 
 	// Try and dig out the CType if we have none.
@@ -518,6 +532,14 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		// Last resort.
 		if typ.CType == "" {
 			typ.CType = CTypeFallback("", typ.Name)
+		}
+	}
+
+	if typ.CType != "" {
+		for _, unsupported := range UnsupportedCTypes {
+			if unsupported == typ.CType {
+				return nil
+			}
 		}
 	}
 
@@ -565,7 +587,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	}
 
 	if result == nil {
-		gen.Logln(logger.Debug, "unknown type resolved", strconv.Quote(typ.Name))
+		gen.Logln(logger.Debug, "unknown type resolved", typ.Name)
 		return nil
 	}
 
@@ -577,6 +599,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	resolved := typeFromResult(gen, typ, result)
 
 	if !gen.CanGenerate(resolved) {
+		gen.Logln(logger.Debug, "cannot generate type", typ.Name, resolved.PublicType(true))
 		return nil
 	}
 

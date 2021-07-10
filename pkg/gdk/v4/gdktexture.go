@@ -55,7 +55,7 @@ type Texture interface {
 // TextureClass implements the Texture interface.
 type TextureClass struct {
 	*externglib.Object
-	PaintableInterface
+	PaintableIface
 }
 
 var _ Texture = (*TextureClass)(nil)
@@ -63,7 +63,7 @@ var _ Texture = (*TextureClass)(nil)
 func wrapTexture(obj *externglib.Object) Texture {
 	return &TextureClass{
 		Object: obj,
-		PaintableInterface: PaintableInterface{
+		PaintableIface: PaintableIface{
 			Object: obj,
 		},
 	}
@@ -118,11 +118,11 @@ func NewTextureFromResource(resourcePath string) *TextureClass {
 }
 
 // Height returns the height of the @texture, in pixels.
-func (t *TextureClass) Height() int {
+func (texture *TextureClass) Height() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	_cret = C.gdk_texture_get_height(_arg0)
 
@@ -134,11 +134,11 @@ func (t *TextureClass) Height() int {
 }
 
 // Width returns the width of @texture, in pixels.
-func (t *TextureClass) Width() int {
+func (texture *TextureClass) Width() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	_cret = C.gdk_texture_get_width(_arg0)
 
@@ -155,12 +155,12 @@ func (t *TextureClass) Width() int {
 // more control over formats, proper error handling or want to store to a
 // `GFile` or other location, you might want to look into using the gdk-pixbuf
 // library.
-func (t *TextureClass) SaveToPng(filename string) bool {
+func (texture *TextureClass) SaveToPng(filename string) bool {
 	var _arg0 *C.GdkTexture // out
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 

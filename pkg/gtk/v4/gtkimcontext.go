@@ -88,7 +88,8 @@ type IMContextOverrider interface {
 	// `::retrieve-surrounding` signal, so input methods must be prepared to
 	// function without context.
 	//
-	// Deprecated: since version 4.2.
+	// Deprecated: Use [method@Gtk.IMContext.get_surrounding_with_selection]
+	// instead.
 	Surrounding() (string, int, bool)
 	// SurroundingWithSelection retrieves context around the insertion point.
 	//
@@ -133,7 +134,8 @@ type IMContextOverrider interface {
 	// [signal@Gtk.IMContext::retrieve-surrounding] signal, and will likely have
 	// no effect if called at other times.
 	//
-	// Deprecated: since version 4.2.
+	// Deprecated: Use [method@Gtk.IMContext.set_surrounding_with_selection]
+	// instead.
 	SetSurrounding(text string, len int, cursorIndex int)
 	// SetSurroundingWithSelection sets surrounding context around the insertion
 	// point and preedit string. This function is expected to be called in
@@ -245,7 +247,8 @@ type IMContext interface {
 	// `::retrieve-surrounding` signal, so input methods must be prepared to
 	// function without context.
 	//
-	// Deprecated: since version 4.2.
+	// Deprecated: Use [method@Gtk.IMContext.get_surrounding_with_selection]
+	// instead.
 	Surrounding() (string, int, bool)
 	// SurroundingWithSelection retrieves context around the insertion point.
 	//
@@ -286,7 +289,8 @@ type IMContext interface {
 	// [signal@Gtk.IMContext::retrieve-surrounding] signal, and will likely have
 	// no effect if called at other times.
 	//
-	// Deprecated: since version 4.2.
+	// Deprecated: Use [method@Gtk.IMContext.set_surrounding_with_selection]
+	// instead.
 	SetSurrounding(text string, len int, cursorIndex int)
 	// SetSurroundingWithSelection sets surrounding context around the insertion
 	// point and preedit string. This function is expected to be called in
@@ -338,13 +342,13 @@ func marshalIMContext(p uintptr) (interface{}, error) {
 // This function is used by an input method that wants to make subsitutions in
 // the existing text in response to new input. It is not useful for
 // applications.
-func (c *IMContextClass) DeleteSurrounding(offset int, nChars int) bool {
+func (context *IMContextClass) DeleteSurrounding(offset int, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	_arg1 = C.int(offset)
 	_arg2 = C.int(nChars)
 
@@ -364,12 +368,12 @@ func (c *IMContextClass) DeleteSurrounding(offset int, nChars int) bool {
 //
 // If this function returns true, then no further processing should be done for
 // this key event.
-func (c *IMContextClass) FilterKeypress(event gdk.Event) bool {
+func (context *IMContextClass) FilterKeypress(event gdk.Event) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkEvent     // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
@@ -388,10 +392,10 @@ func (c *IMContextClass) FilterKeypress(event gdk.Event) bool {
 //
 // The input method may, for example, change the displayed feedback to reflect
 // this change.
-func (c *IMContextClass) FocusIn() {
+func (context *IMContextClass) FocusIn() {
 	var _arg0 *C.GtkIMContext // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_im_context_focus_in(_arg0)
 }
@@ -401,10 +405,10 @@ func (c *IMContextClass) FocusIn() {
 //
 // The input method may, for example, change the displayed feedback or reset the
 // contexts state to reflect this change.
-func (c *IMContextClass) FocusOut() {
+func (context *IMContextClass) FocusOut() {
 	var _arg0 *C.GtkIMContext // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_im_context_focus_out(_arg0)
 }
@@ -413,13 +417,13 @@ func (c *IMContextClass) FocusOut() {
 // a list of attributes to apply to the string.
 //
 // This string should be displayed inserted at the insertion point.
-func (c *IMContextClass) PreeditString() (string, *pango.AttrList, int) {
+func (context *IMContextClass) PreeditString() (string, *pango.AttrList, int) {
 	var _arg0 *C.GtkIMContext  // out
 	var _arg1 *C.char          // in
 	var _arg2 *C.PangoAttrList // in
 	var _arg3 C.int            // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -455,14 +459,15 @@ func (c *IMContextClass) PreeditString() (string, *pango.AttrList, int) {
 // `::retrieve-surrounding` signal, so input methods must be prepared to
 // function without context.
 //
-// Deprecated: since version 4.2.
-func (c *IMContextClass) Surrounding() (string, int, bool) {
+// Deprecated: Use [method@Gtk.IMContext.get_surrounding_with_selection]
+// instead.
+func (context *IMContextClass) Surrounding() (string, int, bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // in
 	var _arg2 C.int           // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
 
@@ -495,14 +500,14 @@ func (c *IMContextClass) Surrounding() (string, int, bool) {
 // Note that there is no obligation for a widget to respond to the
 // `::retrieve-surrounding` signal, so input methods must be prepared to
 // function without context.
-func (c *IMContextClass) SurroundingWithSelection() (text string, cursorIndex int, anchorIndex int, ok bool) {
+func (context *IMContextClass) SurroundingWithSelection() (text string, cursorIndex int, anchorIndex int, ok bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // in
 	var _arg2 C.int           // in
 	var _arg3 C.int           // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_im_context_get_surrounding_with_selection(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -526,10 +531,10 @@ func (c *IMContextClass) SurroundingWithSelection() (text string, cursorIndex in
 // position has been made.
 //
 // This will typically cause the input method to clear the preedit state.
-func (c *IMContextClass) Reset() {
+func (context *IMContextClass) Reset() {
 	var _arg0 *C.GtkIMContext // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_im_context_reset(_arg0)
 }
@@ -539,11 +544,11 @@ func (c *IMContextClass) Reset() {
 // This is the `GtkWidget` holding the input focus. This widget is used in order
 // to correctly position status windows, and may also be used for purposes
 // internal to the input method.
-func (c *IMContextClass) SetClientWidget(widget Widget) {
+func (context *IMContextClass) SetClientWidget(widget Widget) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_im_context_set_client_widget(_arg0, _arg1)
@@ -553,11 +558,11 @@ func (c *IMContextClass) SetClientWidget(widget Widget) {
 // has been made.
 //
 // The location is relative to the client window.
-func (c *IMContextClass) SetCursorLocation(area *gdk.Rectangle) {
+func (context *IMContextClass) SetCursorLocation(area *gdk.Rectangle) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkRectangle // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(area))
 
 	C.gtk_im_context_set_cursor_location(_arg0, _arg1)
@@ -570,14 +575,15 @@ func (c *IMContextClass) SetCursorLocation(area *gdk.Rectangle) {
 // [signal@Gtk.IMContext::retrieve-surrounding] signal, and will likely have no
 // effect if called at other times.
 //
-// Deprecated: since version 4.2.
-func (c *IMContextClass) SetSurrounding(text string, len int, cursorIndex int) {
+// Deprecated: Use [method@Gtk.IMContext.set_surrounding_with_selection]
+// instead.
+func (context *IMContextClass) SetSurrounding(text string, len int, cursorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // out
 	var _arg2 C.int           // out
 	var _arg3 C.int           // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(len)
@@ -590,14 +596,14 @@ func (c *IMContextClass) SetSurrounding(text string, len int, cursorIndex int) {
 // point and preedit string. This function is expected to be called in response
 // to the GtkIMContext::retrieve_surrounding signal, and will likely have no
 // effect if called at other times.
-func (c *IMContextClass) SetSurroundingWithSelection(text string, len int, cursorIndex int, anchorIndex int) {
+func (context *IMContextClass) SetSurroundingWithSelection(text string, len int, cursorIndex int, anchorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // out
 	var _arg2 C.int           // out
 	var _arg3 C.int           // out
 	var _arg4 C.int           // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(len)
@@ -613,11 +619,11 @@ func (c *IMContextClass) SetSurroundingWithSelection(text string, len int, curso
 // If @use_preedit is false (default is true), then the IM context may use some
 // other method to display feedback, such as displaying it in a child of the
 // root window.
-func (c *IMContextClass) SetUsePreedit(usePreedit bool) {
+func (context *IMContextClass) SetUsePreedit(usePreedit bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	if usePreedit {
 		_arg1 = C.TRUE
 	}

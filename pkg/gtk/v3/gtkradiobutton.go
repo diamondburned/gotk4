@@ -120,9 +120,9 @@ type RadioButton interface {
 type RadioButtonClass struct {
 	*externglib.Object
 	CheckButtonClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ RadioButton = (*RadioButtonClass)(nil)
@@ -141,76 +141,95 @@ func wrapRadioButton(obj *externglib.Object) RadioButton {
 						ContainerClass: ContainerClass{
 							Object: obj,
 							WidgetClass: WidgetClass{
-								InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-								BuildableInterface: BuildableInterface{
+								Object: obj,
+								InitiallyUnowned: externglib.InitiallyUnowned{
+									Object: obj,
+								},
+								BuildableIface: BuildableIface{
 									Object: obj,
 								},
 							},
-							BuildableInterface: BuildableInterface{
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					ActionableInterface: ActionableInterface{
+					ActionableIface: ActionableIface{
+						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
 					},
-					ActivatableInterface: ActivatableInterface{
+					ActivatableIface: ActivatableIface{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				ActionableInterface: ActionableInterface{
+				ActionableIface: ActionableIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
 				},
-				ActivatableInterface: ActivatableInterface{
+				ActivatableIface: ActivatableIface{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -299,11 +318,11 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label st
 //           gtk_radio_button_join_group (radio_button, last_button);
 //           last_button = radio_button;
 //        }
-func (r *RadioButtonClass) JoinGroup(groupSource RadioButton) {
+func (radioButton *RadioButtonClass) JoinGroup(groupSource RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
 	var _arg1 *C.GtkRadioButton // out
 
-	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(radioButton.Native()))
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(groupSource.Native()))
 
 	C.gtk_radio_button_join_group(_arg0, _arg1)

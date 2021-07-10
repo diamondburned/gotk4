@@ -86,11 +86,11 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 // than gdk_device_tool_get_tool_type(), as a tablet may support multiple
 // devices with the same DeviceToolType, but having different hardware
 // identificators.
-func (t *DeviceToolClass) HardwareID() uint64 {
+func (tool *DeviceToolClass) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
 
@@ -103,11 +103,11 @@ func (t *DeviceToolClass) HardwareID() uint64 {
 
 // Serial gets the serial of this tool, this value can be used to identify a
 // physical tool (eg. a tablet pen) across program executions.
-func (t *DeviceToolClass) Serial() uint64 {
+func (tool *DeviceToolClass) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_serial(_arg0)
 
@@ -119,11 +119,11 @@ func (t *DeviceToolClass) Serial() uint64 {
 }
 
 // ToolType gets the DeviceToolType of the tool.
-func (t *DeviceToolClass) ToolType() DeviceToolType {
+func (tool *DeviceToolClass) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
 	var _cret C.GdkDeviceToolType // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_tool_type(_arg0)
 
@@ -188,11 +188,11 @@ func marshalDragContext(p uintptr) (interface{}, error) {
 
 // Actions determines the bitmask of actions proposed by the source if
 // gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
-func (c *DragContextClass) Actions() DragAction {
+func (context *DragContextClass) Actions() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_actions(_arg0)
 
@@ -204,11 +204,11 @@ func (c *DragContextClass) Actions() DragAction {
 }
 
 // DestWindow returns the destination window for the DND operation.
-func (c *DragContextClass) DestWindow() *WindowClass {
+func (context *DragContextClass) DestWindow() *WindowClass {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_dest_window(_arg0)
 
@@ -220,11 +220,11 @@ func (c *DragContextClass) DestWindow() *WindowClass {
 }
 
 // Device returns the Device associated to the drag context.
-func (c *DragContextClass) Device() *DeviceClass {
+func (context *DragContextClass) Device() *DeviceClass {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkDevice      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_device(_arg0)
 
@@ -240,11 +240,11 @@ func (c *DragContextClass) Device() *DeviceClass {
 // the drag operation has begun. GDK will move the window in accordance with the
 // ongoing drag operation. The window is owned by @context and will be destroyed
 // when the drag operation is over.
-func (c *DragContextClass) DragWindow() *WindowClass {
+func (context *DragContextClass) DragWindow() *WindowClass {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_drag_window(_arg0)
 
@@ -256,11 +256,11 @@ func (c *DragContextClass) DragWindow() *WindowClass {
 }
 
 // Protocol returns the drag protocol that is used by this context.
-func (c *DragContextClass) Protocol() DragProtocol {
+func (context *DragContextClass) Protocol() DragProtocol {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragProtocol // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_protocol(_arg0)
 
@@ -272,11 +272,11 @@ func (c *DragContextClass) Protocol() DragProtocol {
 }
 
 // SelectedAction determines the action chosen by the drag destination.
-func (c *DragContextClass) SelectedAction() DragAction {
+func (context *DragContextClass) SelectedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_selected_action(_arg0)
 
@@ -288,11 +288,11 @@ func (c *DragContextClass) SelectedAction() DragAction {
 }
 
 // SourceWindow returns the Window where the DND operation started.
-func (c *DragContextClass) SourceWindow() *WindowClass {
+func (context *DragContextClass) SourceWindow() *WindowClass {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_source_window(_arg0)
 
@@ -304,11 +304,11 @@ func (c *DragContextClass) SourceWindow() *WindowClass {
 }
 
 // SuggestedAction determines the suggested drag action of the context.
-func (c *DragContextClass) SuggestedAction() DragAction {
+func (context *DragContextClass) SuggestedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_suggested_action(_arg0)
 
@@ -321,11 +321,11 @@ func (c *DragContextClass) SuggestedAction() DragAction {
 
 // SetDevice associates a Device to @context, so all Drag and Drop events for
 // @context are emitted as if they came from this device.
-func (c *DragContextClass) SetDevice(device Device) {
+func (context *DragContextClass) SetDevice(device Device) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkDevice      // out
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	C.gdk_drag_context_set_device(_arg0, _arg1)
@@ -334,12 +334,12 @@ func (c *DragContextClass) SetDevice(device Device) {
 // SetHotspot sets the position of the drag window that will be kept under the
 // cursor hotspot. Initially, the hotspot is at the top left corner of the drag
 // window.
-func (c *DragContextClass) SetHotspot(hotX int, hotY int) {
+func (context *DragContextClass) SetHotspot(hotX int, hotY int) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg1 = C.gint(hotX)
 	_arg2 = C.gint(hotY)
 

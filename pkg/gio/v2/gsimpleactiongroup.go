@@ -41,7 +41,7 @@ type SimpleActionGroup interface {
 	// AddEntries: convenience function for creating multiple Action instances
 	// and adding them to the action group.
 	//
-	// Deprecated: since version 2.38.
+	// Deprecated: Use g_action_map_add_action_entries().
 	AddEntries(entries []ActionEntry, userData interface{})
 	// Insert adds an action to the action group.
 	//
@@ -50,27 +50,28 @@ type SimpleActionGroup interface {
 	//
 	// The action group takes its own reference on @action.
 	//
-	// Deprecated: since version 2.38.
+	// Deprecated: Use g_action_map_add_action().
 	Insert(action Action)
 	// Lookup looks up the action with the name @action_name in the group.
 	//
 	// If no such action exists, returns nil.
 	//
-	// Deprecated: since version 2.38.
-	Lookup(actionName string) *ActionInterface
+	// Deprecated: Use g_action_map_lookup_action().
+	Lookup(actionName string) *ActionIface
 	// Remove removes the named action from the action group.
 	//
 	// If no action of this name is in the group then nothing happens.
 	//
-	// Deprecated: since version 2.38.
+	// Deprecated: Use g_action_map_remove_action().
 	Remove(actionName string)
 }
 
 // SimpleActionGroupClass implements the SimpleActionGroup interface.
 type SimpleActionGroupClass struct {
 	*externglib.Object
-	ActionGroupInterface
-	ActionMapInterface
+	*externglib.Object
+	ActionGroupIface
+	ActionMapIface
 }
 
 var _ SimpleActionGroup = (*SimpleActionGroupClass)(nil)
@@ -78,10 +79,11 @@ var _ SimpleActionGroup = (*SimpleActionGroupClass)(nil)
 func wrapSimpleActionGroup(obj *externglib.Object) SimpleActionGroup {
 	return &SimpleActionGroupClass{
 		Object: obj,
-		ActionGroupInterface: ActionGroupInterface{
+		Object: obj,
+		ActionGroupIface: ActionGroupIface{
 			Object: obj,
 		},
-		ActionMapInterface: ActionMapInterface{
+		ActionMapIface: ActionMapIface{
 			Object: obj,
 		},
 	}
@@ -109,14 +111,14 @@ func NewSimpleActionGroup() *SimpleActionGroupClass {
 // AddEntries: convenience function for creating multiple Action instances and
 // adding them to the action group.
 //
-// Deprecated: since version 2.38.
-func (s *SimpleActionGroupClass) AddEntries(entries []ActionEntry, userData interface{}) {
+// Deprecated: Use g_action_map_add_action_entries().
+func (simple *SimpleActionGroupClass) AddEntries(entries []ActionEntry, userData interface{}) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GActionEntry
 	var _arg2 C.gint
 	var _arg3 C.gpointer // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg2 = C.gint(len(entries))
 	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
 	_arg3 = (C.gpointer)(box.Assign(userData))
@@ -131,12 +133,12 @@ func (s *SimpleActionGroupClass) AddEntries(entries []ActionEntry, userData inte
 //
 // The action group takes its own reference on @action.
 //
-// Deprecated: since version 2.38.
-func (s *SimpleActionGroupClass) Insert(action Action) {
+// Deprecated: Use g_action_map_add_action().
+func (simple *SimpleActionGroupClass) Insert(action Action) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_simple_action_group_insert(_arg0, _arg1)
@@ -146,21 +148,21 @@ func (s *SimpleActionGroupClass) Insert(action Action) {
 //
 // If no such action exists, returns nil.
 //
-// Deprecated: since version 2.38.
-func (s *SimpleActionGroupClass) Lookup(actionName string) *ActionInterface {
+// Deprecated: Use g_action_map_lookup_action().
+func (simple *SimpleActionGroupClass) Lookup(actionName string) *ActionIface {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GAction            // in
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_simple_action_group_lookup(_arg0, _arg1)
 
-	var _action *ActionInterface // out
+	var _action *ActionIface // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionInterface)
+	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionIface)
 
 	return _action
 }
@@ -169,12 +171,12 @@ func (s *SimpleActionGroupClass) Lookup(actionName string) *ActionInterface {
 //
 // If no action of this name is in the group then nothing happens.
 //
-// Deprecated: since version 2.38.
-func (s *SimpleActionGroupClass) Remove(actionName string) {
+// Deprecated: Use g_action_map_remove_action().
+func (simple *SimpleActionGroupClass) Remove(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 

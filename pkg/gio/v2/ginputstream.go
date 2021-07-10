@@ -262,10 +262,10 @@ func marshalInputStream(p uintptr) (interface{}, error) {
 }
 
 // ClearPending clears the pending flag on @stream.
-func (s *InputStreamClass) ClearPending() {
+func (stream *InputStreamClass) ClearPending() {
 	var _arg0 *C.GInputStream // out
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	C.g_input_stream_clear_pending(_arg0)
 }
@@ -293,12 +293,12 @@ func (s *InputStreamClass) ClearPending() {
 // the error G_IO_ERROR_CANCELLED will be returned. Cancelling a close will
 // still leave the stream closed, but some streams can use a faster close that
 // doesn't block to e.g. check errors.
-func (s *InputStreamClass) Close(cancellable Cancellable) error {
+func (stream *InputStreamClass) Close(cancellable Cancellable) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_input_stream_close(_arg0, _arg1, &_cerr)
@@ -320,14 +320,14 @@ func (s *InputStreamClass) Close(cancellable Cancellable) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (s *InputStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *InputStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -338,12 +338,12 @@ func (s *InputStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, c
 
 // CloseFinish finishes closing a stream asynchronously, started from
 // g_input_stream_close_async().
-func (s *InputStreamClass) CloseFinish(result AsyncResult) error {
+func (stream *InputStreamClass) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_input_stream_close_finish(_arg0, _arg1, &_cerr)
@@ -356,11 +356,11 @@ func (s *InputStreamClass) CloseFinish(result AsyncResult) error {
 }
 
 // HasPending checks if an input stream has pending actions.
-func (s *InputStreamClass) HasPending() bool {
+func (stream *InputStreamClass) HasPending() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_input_stream_has_pending(_arg0)
 
@@ -374,11 +374,11 @@ func (s *InputStreamClass) HasPending() bool {
 }
 
 // IsClosed checks if an input stream is closed.
-func (s *InputStreamClass) IsClosed() bool {
+func (stream *InputStreamClass) IsClosed() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_input_stream_is_closed(_arg0)
 
@@ -400,13 +400,13 @@ func (s *InputStreamClass) IsClosed() bool {
 // error was encountered. This functionality is only available from C. If you
 // need it from another language then you must write your own loop around
 // g_input_stream_read_async().
-func (s *InputStreamClass) ReadAllFinish(result AsyncResult) (uint, error) {
+func (stream *InputStreamClass) ReadAllFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 C.gsize         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_input_stream_read_all_finish(_arg0, _arg1, &_arg2, &_cerr)
@@ -439,7 +439,7 @@ func (s *InputStreamClass) ReadAllFinish(result AsyncResult) (uint, error) {
 // Any outstanding I/O request with higher priority (lower numerical value) will
 // be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
-func (s *InputStreamClass) ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *InputStreamClass) ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg1 C.gsize               // out
 	var _arg2 C.int                 // out
@@ -447,7 +447,7 @@ func (s *InputStreamClass) ReadBytesAsync(count uint, ioPriority int, cancellabl
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.gsize(count)
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -458,13 +458,13 @@ func (s *InputStreamClass) ReadBytesAsync(count uint, ioPriority int, cancellabl
 }
 
 // ReadFinish finishes an asynchronous stream read operation.
-func (s *InputStreamClass) ReadFinish(result AsyncResult) (int, error) {
+func (stream *InputStreamClass) ReadFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_input_stream_read_finish(_arg0, _arg1, &_cerr)
@@ -480,11 +480,11 @@ func (s *InputStreamClass) ReadFinish(result AsyncResult) (int, error) {
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
-func (s *InputStreamClass) SetPending() error {
+func (stream *InputStreamClass) SetPending() error {
 	var _arg0 *C.GInputStream // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	C.g_input_stream_set_pending(_arg0, &_cerr)
 
@@ -510,14 +510,14 @@ func (s *InputStreamClass) SetPending() error {
 // the error G_IO_ERROR_CANCELLED will be returned. If an operation was
 // partially finished when the operation was cancelled the partial result will
 // be returned, without an error.
-func (s *InputStreamClass) Skip(count uint, cancellable Cancellable) (int, error) {
+func (stream *InputStreamClass) Skip(count uint, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 C.gsize         // out
 	var _arg2 *C.GCancellable // out
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.gsize(count)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
@@ -555,7 +555,7 @@ func (s *InputStreamClass) Skip(count uint, cancellable Cancellable) (int, error
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one, you must override all.
-func (s *InputStreamClass) SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *InputStreamClass) SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg1 C.gsize               // out
 	var _arg2 C.int                 // out
@@ -563,7 +563,7 @@ func (s *InputStreamClass) SkipAsync(count uint, ioPriority int, cancellable Can
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.gsize(count)
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -574,13 +574,13 @@ func (s *InputStreamClass) SkipAsync(count uint, ioPriority int, cancellable Can
 }
 
 // SkipFinish finishes a stream skip operation.
-func (s *InputStreamClass) SkipFinish(result AsyncResult) (int, error) {
+func (stream *InputStreamClass) SkipFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_input_stream_skip_finish(_arg0, _arg1, &_cerr)

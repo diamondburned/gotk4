@@ -112,13 +112,6 @@ func CanGenerateRecord(gen FileGenerator, rec *gir.Record) bool {
 		if ignoreField(&field) {
 			continue
 		}
-
-		// Check the type against the ignored list, since ignores are usually
-		// important, and CGo might still try to resolve an ignored type.
-		if mustIgnoreAny(gen, field.AnyType) {
-			log("ignored because field", field.Name)
-			return false
-		}
 	}
 
 	if types.Filter(gen, rec.Name, rec.CType) {
@@ -265,20 +258,27 @@ func (rg *RecordGenerator) getters() []recordGetter {
 	recv := strcases.FirstLetter(rg.GoName)
 	fields := make([]typeconv.ConversionValue, 0, len(rg.Fields))
 
+fieldLoop:
 	for _, field := range rg.Fields {
-		// For "Bits > 0", we can't safely do this in Go (and probably not CGo
-		// either?) so we're not doing it.
-		if ignoreField(&field) {
+		if ignoreField(&field) || mustIgnoreAny(rg.gen, field.AnyType) {
 			continue
 		}
 
-		// Check if we have a method with the existing name.
-		if _, collides := methodNames[strcases.SnakeToGo(true, field.Name)]; collides {
-			// Skip generating the getter if we have a colliding method.
-			continue
+		value := typeconv.NewFieldValue(recv, "v", field)
+
+		// Double-heck if we have a method with the existing name.
+		for i := 0; i < 2; i++ {
+			_, collides := methodNames[strcases.SnakeToGo(true, value.Name)]
+			if collides {
+				value.Name = "get_" + value.Name
+			}
+			// After the first prepend, just skip the whole field.
+			if i == 1 {
+				continue fieldLoop
+			}
 		}
 
-		fields = append(fields, typeconv.NewFieldValue(recv, "v", field))
+		fields = append(fields, value)
 	}
 
 	converter := typeconv.NewConverter(rg.gen, fields)
@@ -314,7 +314,7 @@ func (rg *RecordGenerator) getters() []recordGetter {
 func ignoreField(field *gir.Field) bool {
 	// For "Bits > 0", we can't safely do this in Go (and probably not CGo
 	// either?) so we're not doing it.
-	return field.Private || field.Bits > 0 || !field.IsReadable() || !field.Writable
+	return field.Private || field.Bits > 0 || !field.IsReadable()
 }
 
 func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {

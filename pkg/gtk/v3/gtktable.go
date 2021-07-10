@@ -75,68 +75,75 @@ type Table interface {
 	// expansion options. The values used for the AttachOptions are `GTK_EXPAND
 	// | GTK_FILL`, and the padding is set to 0.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_grid_attach() with Grid. Note that the attach
+	// arguments differ between those two functions.
 	AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
 	// ColSpacing gets the amount of space between column @col, and column @col
 	// + 1. See gtk_table_set_col_spacing().
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Grid does not offer a replacement for this functionality.
 	ColSpacing(column uint) uint
 	// DefaultColSpacing gets the default column spacing for the table. This is
 	// the spacing that will be used for newly added columns. (See
 	// gtk_table_set_col_spacings())
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_grid_get_column_spacing() with Grid.
 	DefaultColSpacing() uint
 	// DefaultRowSpacing gets the default row spacing for the table. This is the
 	// spacing that will be used for newly added rows. (See
 	// gtk_table_set_row_spacings())
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_grid_get_row_spacing() with Grid.
 	DefaultRowSpacing() uint
 	// Homogeneous returns whether the table cells are all constrained to the
 	// same width and height. (See gtk_table_set_homogeneous ())
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_grid_get_row_homogeneous() and
+	// gtk_grid_get_column_homogeneous() with Grid.
 	Homogeneous() bool
 	// RowSpacing gets the amount of space between row @row, and row @row + 1.
 	// See gtk_table_set_row_spacing().
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Grid does not offer a replacement for this functionality.
 	RowSpacing(row uint) uint
 	// Size gets the number of rows and columns in the table.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Grid does not expose the number of columns and rows.
 	Size() (rows uint, columns uint)
 	// Resize: if you need to change a table’s size after it has been created,
 	// this function allows you to do so.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Grid resizes automatically.
 	Resize(rows uint, columns uint)
 	// SetColSpacing alters the amount of space between a given table column and
 	// the following column.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_widget_set_margin_start() and
+	// gtk_widget_set_margin_end() on the widgets contained in the row if you
+	// need this functionality. Grid does not support per-row spacing.
 	SetColSpacing(column uint, spacing uint)
 	// SetColSpacings sets the space between every column in @table equal to
 	// @spacing.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_grid_set_column_spacing() with Grid.
 	SetColSpacings(spacing uint)
 	// SetHomogeneous changes the homogenous property of table cells, ie.
 	// whether all cells are an equal size or not.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_grid_set_row_homogeneous() and
+	// gtk_grid_set_column_homogeneous() with Grid.
 	SetHomogeneous(homogeneous bool)
 	// SetRowSpacing changes the space between a given table row and the
 	// subsequent row.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_widget_set_margin_top() and
+	// gtk_widget_set_margin_bottom() on the widgets contained in the row if you
+	// need this functionality. Grid does not support per-row spacing.
 	SetRowSpacing(row uint, spacing uint)
 	// SetRowSpacings sets the space between every row in @table equal to
 	// @spacing.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_grid_set_row_spacing() with Grid.
 	SetRowSpacings(spacing uint)
 }
 
@@ -144,7 +151,7 @@ type Table interface {
 type TableClass struct {
 	*externglib.Object
 	ContainerClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ Table = (*TableClass)(nil)
@@ -155,16 +162,19 @@ func wrapTable(obj *externglib.Object) Table {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -182,7 +192,7 @@ func marshalTable(p uintptr) (interface{}, error) {
 // the range 1 .. 65535. For historical reasons, 0 is accepted as well and is
 // silently interpreted as 1.
 //
-// Deprecated: since version 3.4.
+// Deprecated: Use gtk_grid_new().
 func NewTable(rows uint, columns uint, homogeneous bool) *TableClass {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -210,8 +220,9 @@ func NewTable(rows uint, columns uint, homogeneous bool) *TableClass {
 // used for the AttachOptions are `GTK_EXPAND | GTK_FILL`, and the padding is
 // set to 0.
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+// Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
+// differ between those two functions.
+func (table *TableClass) AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var _arg0 *C.GtkTable  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -219,7 +230,7 @@ func (t *TableClass) AttachDefaults(widget Widget, leftAttach uint, rightAttach 
 	var _arg4 C.guint      // out
 	var _arg5 C.guint      // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.guint(leftAttach)
 	_arg3 = C.guint(rightAttach)
@@ -232,13 +243,13 @@ func (t *TableClass) AttachDefaults(widget Widget, leftAttach uint, rightAttach 
 // ColSpacing gets the amount of space between column @col, and column @col + 1.
 // See gtk_table_set_col_spacing().
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) ColSpacing(column uint) uint {
+// Deprecated: Grid does not offer a replacement for this functionality.
+func (table *TableClass) ColSpacing(column uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.guint(column)
 
 	_cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
@@ -254,12 +265,12 @@ func (t *TableClass) ColSpacing(column uint) uint {
 // spacing that will be used for newly added columns. (See
 // gtk_table_set_col_spacings())
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) DefaultColSpacing() uint {
+// Deprecated: Use gtk_grid_get_column_spacing() with Grid.
+func (table *TableClass) DefaultColSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.gtk_table_get_default_col_spacing(_arg0)
 
@@ -274,12 +285,12 @@ func (t *TableClass) DefaultColSpacing() uint {
 // spacing that will be used for newly added rows. (See
 // gtk_table_set_row_spacings())
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) DefaultRowSpacing() uint {
+// Deprecated: Use gtk_grid_get_row_spacing() with Grid.
+func (table *TableClass) DefaultRowSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.gtk_table_get_default_row_spacing(_arg0)
 
@@ -293,12 +304,13 @@ func (t *TableClass) DefaultRowSpacing() uint {
 // Homogeneous returns whether the table cells are all constrained to the same
 // width and height. (See gtk_table_set_homogeneous ())
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) Homogeneous() bool {
+// Deprecated: Use gtk_grid_get_row_homogeneous() and
+// gtk_grid_get_column_homogeneous() with Grid.
+func (table *TableClass) Homogeneous() bool {
 	var _arg0 *C.GtkTable // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.gtk_table_get_homogeneous(_arg0)
 
@@ -314,13 +326,13 @@ func (t *TableClass) Homogeneous() bool {
 // RowSpacing gets the amount of space between row @row, and row @row + 1. See
 // gtk_table_set_row_spacing().
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) RowSpacing(row uint) uint {
+// Deprecated: Grid does not offer a replacement for this functionality.
+func (table *TableClass) RowSpacing(row uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.guint(row)
 
 	_cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
@@ -334,13 +346,13 @@ func (t *TableClass) RowSpacing(row uint) uint {
 
 // Size gets the number of rows and columns in the table.
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) Size() (rows uint, columns uint) {
+// Deprecated: Grid does not expose the number of columns and rows.
+func (table *TableClass) Size() (rows uint, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 
 	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
 
@@ -356,13 +368,13 @@ func (t *TableClass) Size() (rows uint, columns uint) {
 // Resize: if you need to change a table’s size after it has been created, this
 // function allows you to do so.
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) Resize(rows uint, columns uint) {
+// Deprecated: Grid resizes automatically.
+func (table *TableClass) Resize(rows uint, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.guint(rows)
 	_arg2 = C.guint(columns)
 
@@ -372,13 +384,15 @@ func (t *TableClass) Resize(rows uint, columns uint) {
 // SetColSpacing alters the amount of space between a given table column and the
 // following column.
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) SetColSpacing(column uint, spacing uint) {
+// Deprecated: Use gtk_widget_set_margin_start() and gtk_widget_set_margin_end()
+// on the widgets contained in the row if you need this functionality. Grid does
+// not support per-row spacing.
+func (table *TableClass) SetColSpacing(column uint, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.guint(column)
 	_arg2 = C.guint(spacing)
 
@@ -388,12 +402,12 @@ func (t *TableClass) SetColSpacing(column uint, spacing uint) {
 // SetColSpacings sets the space between every column in @table equal to
 // @spacing.
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) SetColSpacings(spacing uint) {
+// Deprecated: Use gtk_grid_set_column_spacing() with Grid.
+func (table *TableClass) SetColSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_table_set_col_spacings(_arg0, _arg1)
@@ -402,12 +416,13 @@ func (t *TableClass) SetColSpacings(spacing uint) {
 // SetHomogeneous changes the homogenous property of table cells, ie. whether
 // all cells are an equal size or not.
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) SetHomogeneous(homogeneous bool) {
+// Deprecated: Use gtk_grid_set_row_homogeneous() and
+// gtk_grid_set_column_homogeneous() with Grid.
+func (table *TableClass) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -418,13 +433,15 @@ func (t *TableClass) SetHomogeneous(homogeneous bool) {
 // SetRowSpacing changes the space between a given table row and the subsequent
 // row.
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) SetRowSpacing(row uint, spacing uint) {
+// Deprecated: Use gtk_widget_set_margin_top() and
+// gtk_widget_set_margin_bottom() on the widgets contained in the row if you
+// need this functionality. Grid does not support per-row spacing.
+func (table *TableClass) SetRowSpacing(row uint, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.guint(row)
 	_arg2 = C.guint(spacing)
 
@@ -433,12 +450,12 @@ func (t *TableClass) SetRowSpacing(row uint, spacing uint) {
 
 // SetRowSpacings sets the space between every row in @table equal to @spacing.
 //
-// Deprecated: since version 3.4.
-func (t *TableClass) SetRowSpacings(spacing uint) {
+// Deprecated: Use gtk_grid_set_row_spacing() with Grid.
+func (table *TableClass) SetRowSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
-	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_table_set_row_spacings(_arg0, _arg1)
@@ -459,48 +476,6 @@ func (t *TableChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-func (t *TableChild) Widget() *WidgetClass {
-	var v *WidgetClass // out
-	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(t.native.widget)))).(*WidgetClass)
-	return v
-}
-
-func (t *TableChild) LeftAttach() uint16 {
-	var v uint16 // out
-	v = uint16(t.native.left_attach)
-	return v
-}
-
-func (t *TableChild) RightAttach() uint16 {
-	var v uint16 // out
-	v = uint16(t.native.right_attach)
-	return v
-}
-
-func (t *TableChild) TopAttach() uint16 {
-	var v uint16 // out
-	v = uint16(t.native.top_attach)
-	return v
-}
-
-func (t *TableChild) BottomAttach() uint16 {
-	var v uint16 // out
-	v = uint16(t.native.bottom_attach)
-	return v
-}
-
-func (t *TableChild) Xpadding() uint16 {
-	var v uint16 // out
-	v = uint16(t.native.xpadding)
-	return v
-}
-
-func (t *TableChild) Ypadding() uint16 {
-	var v uint16 // out
-	v = uint16(t.native.ypadding)
-	return v
-}
-
 type TableRowCol struct {
 	native C.GtkTableRowCol
 }
@@ -514,22 +489,4 @@ func WrapTableRowCol(ptr unsafe.Pointer) *TableRowCol {
 // Native returns the underlying C source pointer.
 func (t *TableRowCol) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-func (t *TableRowCol) Requisition() uint16 {
-	var v uint16 // out
-	v = uint16(t.native.requisition)
-	return v
-}
-
-func (t *TableRowCol) Allocation() uint16 {
-	var v uint16 // out
-	v = uint16(t.native.allocation)
-	return v
-}
-
-func (t *TableRowCol) Spacing() uint16 {
-	var v uint16 // out
-	v = uint16(t.native.spacing)
-	return v
 }

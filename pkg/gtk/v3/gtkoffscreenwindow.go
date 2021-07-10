@@ -58,7 +58,7 @@ type OffscreenWindow interface {
 type OffscreenWindowClass struct {
 	*externglib.Object
 	WindowClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ OffscreenWindow = (*OffscreenWindowClass)(nil)
@@ -73,24 +73,27 @@ func wrapOffscreenWindow(obj *externglib.Object) OffscreenWindow {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -119,11 +122,11 @@ func NewOffscreenWindow() *OffscreenWindowClass {
 // Pixbuf retrieves a snapshot of the contained widget in the form of a Pixbuf.
 // This is a new pixbuf with a reference count of 1, and the application should
 // unreference it once it is no longer needed.
-func (o *OffscreenWindowClass) Pixbuf() *gdkpixbuf.PixbufClass {
+func (offscreen *OffscreenWindowClass) Pixbuf() *gdkpixbuf.PixbufClass {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.GdkPixbuf          // in
 
-	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(offscreen.Native()))
 
 	_cret = C.gtk_offscreen_window_get_pixbuf(_arg0)
 
@@ -137,11 +140,11 @@ func (o *OffscreenWindowClass) Pixbuf() *gdkpixbuf.PixbufClass {
 // Surface retrieves a snapshot of the contained widget in the form of a
 // #cairo_surface_t. If you need to keep this around over window resizes then
 // you should add a reference to it.
-func (o *OffscreenWindowClass) Surface() *cairo.Surface {
+func (offscreen *OffscreenWindowClass) Surface() *cairo.Surface {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.cairo_surface_t    // in
 
-	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(offscreen.Native()))
 
 	_cret = C.gtk_offscreen_window_get_surface(_arg0)
 

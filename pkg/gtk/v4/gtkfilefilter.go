@@ -93,7 +93,7 @@ type FileFilter interface {
 type FileFilterClass struct {
 	*externglib.Object
 	FilterClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ FileFilter = (*FileFilterClass)(nil)
@@ -104,7 +104,7 @@ func wrapFileFilter(obj *externglib.Object) FileFilter {
 		FilterClass: FilterClass{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -157,11 +157,11 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilterClass {
 }
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.
-func (f *FileFilterClass) AddMIMEType(mimeType string) {
+func (filter *FileFilterClass) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.char)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -169,11 +169,11 @@ func (f *FileFilterClass) AddMIMEType(mimeType string) {
 }
 
 // AddPattern adds a rule allowing a shell style glob to a filter.
-func (f *FileFilterClass) AddPattern(pattern string) {
+func (filter *FileFilterClass) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.char)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -185,10 +185,10 @@ func (f *FileFilterClass) AddPattern(pattern string) {
 //
 // This is equivalent to calling [method@Gtk.FileFilter.add_mime_type] for all
 // the supported mime types.
-func (f *FileFilterClass) AddPixbufFormats() {
+func (filter *FileFilterClass) AddPixbufFormats() {
 	var _arg0 *C.GtkFileFilter // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
@@ -198,11 +198,11 @@ func (f *FileFilterClass) AddPixbufFormats() {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of `GtkFileChooser`.
-func (f *FileFilterClass) Attributes() []string {
+func (filter *FileFilterClass) Attributes() []string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_attributes(_arg0)
 
@@ -228,11 +228,11 @@ func (f *FileFilterClass) Attributes() []string {
 // Name gets the human-readable name for the filter.
 //
 // See [method@Gtk.FileFilter.set_name].
-func (f *FileFilterClass) Name() string {
+func (filter *FileFilterClass) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
 
@@ -247,11 +247,11 @@ func (f *FileFilterClass) Name() string {
 //
 // This is the string that will be displayed in the file chooser if there is a
 // selectable list of filters.
-func (f *FileFilterClass) SetName(name string) {
+func (filter *FileFilterClass) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -259,11 +259,11 @@ func (f *FileFilterClass) SetName(name string) {
 }
 
 // ToGVariant: serialize a file filter to an `a{sv}` variant.
-func (f *FileFilterClass) ToGVariant() *glib.Variant {
+func (filter *FileFilterClass) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 

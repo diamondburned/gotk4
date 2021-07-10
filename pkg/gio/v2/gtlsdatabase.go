@@ -143,12 +143,12 @@ func marshalTLSDatabase(p uintptr) (interface{}, error) {
 // This handle should be stable across various instances of the application, and
 // between applications. If a certificate is modified in the database, then it
 // is not guaranteed that this handle will continue to point to it.
-func (s *TLSDatabaseClass) CreateCertificateHandle(certificate TLSCertificate) string {
+func (self *TLSDatabaseClass) CreateCertificateHandle(certificate TLSCertificate) string {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GTlsCertificate // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	_cret = C.g_tls_database_create_certificate_handle(_arg0, _arg1)
@@ -167,13 +167,13 @@ func (s *TLSDatabaseClass) CreateCertificateHandle(certificate TLSCertificate) s
 //
 // If the handle is no longer valid, or does not point to a certificate in this
 // database, then nil will be returned.
-func (s *TLSDatabaseClass) LookupCertificateForHandleFinish(result AsyncResult) (*TLSCertificateClass, error) {
+func (self *TLSDatabaseClass) LookupCertificateForHandleFinish(result AsyncResult) (*TLSCertificateClass, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle_finish(_arg0, _arg1, &_cerr)
@@ -190,13 +190,13 @@ func (s *TLSDatabaseClass) LookupCertificateForHandleFinish(result AsyncResult) 
 // LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 // operation. See g_tls_database_lookup_certificate_issuer() for more
 // information.
-func (s *TLSDatabaseClass) LookupCertificateIssuerFinish(result AsyncResult) (*TLSCertificateClass, error) {
+func (self *TLSDatabaseClass) LookupCertificateIssuerFinish(result AsyncResult) (*TLSCertificateClass, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_issuer_finish(_arg0, _arg1, &_cerr)
@@ -220,13 +220,13 @@ func (s *TLSDatabaseClass) LookupCertificateIssuerFinish(result AsyncResult) (*T
 // will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set accordingly.
 // @error is not set when @chain is successfully analyzed but found to be
 // invalid.
-func (s *TLSDatabaseClass) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error) {
+func (self *TLSDatabaseClass) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase        // out
 	var _arg1 *C.GAsyncResult        // out
 	var _cret C.GTlsCertificateFlags // in
 	var _cerr *C.GError              // in
 
-	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_verify_chain_finish(_arg0, _arg1, &_cerr)

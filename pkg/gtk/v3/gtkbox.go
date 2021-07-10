@@ -118,8 +118,8 @@ type Box interface {
 type BoxClass struct {
 	*externglib.Object
 	ContainerClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ Box = (*BoxClass)(nil)
@@ -130,19 +130,22 @@ func wrapBox(obj *externglib.Object) Box {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -155,11 +158,11 @@ func marshalBox(p uintptr) (interface{}, error) {
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
-func (b *BoxClass) BaselinePosition() BaselinePosition {
+func (box *BoxClass) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBox             // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_baseline_position(_arg0)
 
@@ -171,11 +174,11 @@ func (b *BoxClass) BaselinePosition() BaselinePosition {
 }
 
 // CenterWidget retrieves the center widget of the box.
-func (b *BoxClass) CenterWidget() *WidgetClass {
+func (box *BoxClass) CenterWidget() *WidgetClass {
 	var _arg0 *C.GtkBox    // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_center_widget(_arg0)
 
@@ -188,11 +191,11 @@ func (b *BoxClass) CenterWidget() *WidgetClass {
 
 // Homogeneous returns whether the box is homogeneous (all children are the same
 // size). See gtk_box_set_homogeneous().
-func (b *BoxClass) Homogeneous() bool {
+func (box *BoxClass) Homogeneous() bool {
 	var _arg0 *C.GtkBox  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_homogeneous(_arg0)
 
@@ -206,11 +209,11 @@ func (b *BoxClass) Homogeneous() bool {
 }
 
 // Spacing gets the value set by gtk_box_set_spacing().
-func (b *BoxClass) Spacing() int {
+func (box *BoxClass) Spacing() int {
 	var _arg0 *C.GtkBox // out
 	var _cret C.gint    // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_spacing(_arg0)
 
@@ -224,14 +227,14 @@ func (b *BoxClass) Spacing() int {
 // PackEnd adds @child to @box, packed with reference to the end of @box. The
 // @child is packed after (away from end of) any other child packed with
 // reference to the end of @box.
-func (b *BoxClass) PackEnd(child Widget, expand bool, fill bool, padding uint) {
+func (box *BoxClass) PackEnd(child Widget, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
 	var _arg3 C.gboolean   // out
 	var _arg4 C.guint      // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if expand {
 		_arg2 = C.TRUE
@@ -247,14 +250,14 @@ func (b *BoxClass) PackEnd(child Widget, expand bool, fill bool, padding uint) {
 // PackStart adds @child to @box, packed with reference to the start of @box.
 // The @child is packed after any other child packed with reference to the start
 // of @box.
-func (b *BoxClass) PackStart(child Widget, expand bool, fill bool, padding uint) {
+func (box *BoxClass) PackStart(child Widget, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
 	var _arg3 C.gboolean   // out
 	var _arg4 C.guint      // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if expand {
 		_arg2 = C.TRUE
@@ -268,7 +271,7 @@ func (b *BoxClass) PackStart(child Widget, expand bool, fill bool, padding uint)
 }
 
 // QueryChildPacking obtains information about how @child is packed into @box.
-func (b *BoxClass) QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType PackType) {
+func (box *BoxClass) QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // in
@@ -276,7 +279,7 @@ func (b *BoxClass) QueryChildPacking(child Widget) (expand bool, fill bool, padd
 	var _arg4 C.guint       // in
 	var _arg5 C.GtkPackType // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_query_child_packing(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
@@ -306,12 +309,12 @@ func (b *BoxClass) QueryChildPacking(child Widget) (expand bool, fill bool, padd
 // packed into @box. A child widget at some position in the list will be packed
 // just after all other widgets of the same packing type that appear earlier in
 // the list.
-func (b *BoxClass) ReorderChild(child Widget, position int) {
+func (box *BoxClass) ReorderChild(child Widget, position int) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.gint(position)
 
@@ -321,11 +324,11 @@ func (b *BoxClass) ReorderChild(child Widget, position int) {
 // SetCenterWidget sets a center widget; that is a child widget that will be
 // centered with respect to the full width of the box, even if the children at
 // either side take up different amounts of space.
-func (b *BoxClass) SetCenterWidget(widget Widget) {
+func (box *BoxClass) SetCenterWidget(widget Widget) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_box_set_center_widget(_arg0, _arg1)
@@ -333,11 +336,11 @@ func (b *BoxClass) SetCenterWidget(widget Widget) {
 
 // SetHomogeneous sets the Box:homogeneous property of @box, controlling whether
 // or not all children of @box are given equal space in the box.
-func (b *BoxClass) SetHomogeneous(homogeneous bool) {
+func (box *BoxClass) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBox  // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -347,11 +350,11 @@ func (b *BoxClass) SetHomogeneous(homogeneous bool) {
 
 // SetSpacing sets the Box:spacing property of @box, which is the number of
 // pixels to place between children of @box.
-func (b *BoxClass) SetSpacing(spacing int) {
+func (box *BoxClass) SetSpacing(spacing int) {
 	var _arg0 *C.GtkBox // out
 	var _arg1 C.gint    // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 	_arg1 = C.gint(spacing)
 
 	C.gtk_box_set_spacing(_arg0, _arg1)

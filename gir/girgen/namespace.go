@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/generators"
+	"github.com/diamondburned/gotk4/gir/girgen/generators/iface"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 	"github.com/pkg/errors"
@@ -78,8 +79,7 @@ func (n *NamespaceGenerator) CanGenerate(r *types.Resolved) bool {
 
 	// Mark the type as resolveable to prevent infinite recursions when the
 	// generator functions call CanGenerate on its own.
-	canResolve = true
-	n.canResolve[publType] = canResolve
+	n.canResolve[publType] = true
 
 	switch v := r.Extern.Type.(type) {
 	// Fast checks.
@@ -91,13 +91,13 @@ func (n *NamespaceGenerator) CanGenerate(r *types.Resolved) bool {
 		canResolve = generators.CanGenerateEnum(n, v)
 	case *gir.Record:
 		canResolve = generators.CanGenerateRecord(n, v)
+	case *gir.Class, *gir.Interface:
+		canResolve = iface.CanGenerate(n, v)
 	// Slow checks.
 	case *gir.Callback:
 		canResolve = generators.GenerateCallback(generators.StubFileGeneratorWriter(n), v)
 	case *gir.Function:
 		canResolve = generators.GenerateFunction(generators.StubFileGeneratorWriter(n), v)
-	case *gir.Interface:
-		canResolve = generators.GenerateInterface(generators.StubFileGeneratorWriter(n), v)
 	}
 
 	// Actually store the correct value once we're done.

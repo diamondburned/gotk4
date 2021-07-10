@@ -40,14 +40,14 @@ type ConverterOutputStream interface {
 	gextras.Objector
 
 	// Converter gets the #GConverter that is used by @converter_stream.
-	Converter() *ConverterInterface
+	Converter() *ConverterIface
 }
 
 // ConverterOutputStreamClass implements the ConverterOutputStream interface.
 type ConverterOutputStreamClass struct {
 	*externglib.Object
 	FilterOutputStreamClass
-	PollableOutputStreamInterface
+	PollableOutputStreamIface
 }
 
 var _ ConverterOutputStream = (*ConverterOutputStreamClass)(nil)
@@ -60,7 +60,7 @@ func wrapConverterOutputStream(obj *externglib.Object) ConverterOutputStream {
 				Object: obj,
 			},
 		},
-		PollableOutputStreamInterface: PollableOutputStreamInterface{
+		PollableOutputStreamIface: PollableOutputStreamIface{
 			OutputStreamClass: OutputStreamClass{
 				Object: obj,
 			},
@@ -94,17 +94,17 @@ func NewConverterOutputStream(baseStream OutputStream, converter Converter) *Con
 }
 
 // Converter gets the #GConverter that is used by @converter_stream.
-func (c *ConverterOutputStreamClass) Converter() *ConverterInterface {
+func (converterStream *ConverterOutputStreamClass) Converter() *ConverterIface {
 	var _arg0 *C.GConverterOutputStream // out
 	var _cret *C.GConverter             // in
 
-	_arg0 = (*C.GConverterOutputStream)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GConverterOutputStream)(unsafe.Pointer(converterStream.Native()))
 
 	_cret = C.g_converter_output_stream_get_converter(_arg0)
 
-	var _converter *ConverterInterface // out
+	var _converter *ConverterIface // out
 
-	_converter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ConverterInterface)
+	_converter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ConverterIface)
 
 	return _converter
 }

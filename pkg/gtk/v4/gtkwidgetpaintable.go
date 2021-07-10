@@ -87,11 +87,11 @@ func NewWidgetPaintable(widget Widget) *WidgetPaintableClass {
 }
 
 // Widget returns the widget that is observed or nil if none.
-func (s *WidgetPaintableClass) Widget() *WidgetClass {
+func (self *WidgetPaintableClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_widget_paintable_get_widget(_arg0)
 
@@ -103,11 +103,11 @@ func (s *WidgetPaintableClass) Widget() *WidgetClass {
 }
 
 // SetWidget sets the widget that should be observed.
-func (s *WidgetPaintableClass) SetWidget(widget Widget) {
+func (self *WidgetPaintableClass) SetWidget(widget Widget) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)

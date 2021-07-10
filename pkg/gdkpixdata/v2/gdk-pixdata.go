@@ -93,7 +93,7 @@ const (
 // If `copy_pixels` is `TRUE` or if the pixel data is run-length-encoded, the
 // pixel data is copied into newly-allocated memory; otherwise it is reused.
 //
-// Deprecated: since version 2.32.
+// Deprecated: Use `GResource` instead.
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.PixbufClass, error) {
 	var _arg1 *C.GdkPixdata // out
 	var _arg2 C.gboolean    // out
@@ -126,7 +126,8 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.PixbufClas
 // C sources. To convert the `GdkPixdata` structures back into a `GdkPixbuf`,
 // use `gdk_pixbuf_from_pixdata()`.
 //
-// Deprecated: since version 2.32.
+// Deprecated: `GdkPixdata` should not be used any more. `GResource` should be
+// used to save the original compressed images inside the program's binary.
 type Pixdata struct {
 	native C.GdkPixdata
 }
@@ -142,51 +143,6 @@ func (p *Pixdata) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Magic: magic number. A valid `GdkPixdata` structure must have
-// `GDK_PIXBUF_MAGIC_NUMBER` here
-func (p *Pixdata) Magic() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.magic)
-	return v
-}
-
-// Length less than 1 to disable length checks, otherwise
-// `GDK_PIXDATA_HEADER_LENGTH` plus the length of `pixel_data`
-func (p *Pixdata) Length() int32 {
-	var v int32 // out
-	v = int32(p.native.length)
-	return v
-}
-
-// PixdataType: information about colorspace, sample width and encoding, in a
-// `GdkPixdataType`
-func (p *Pixdata) PixdataType() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.pixdata_type)
-	return v
-}
-
-// Rowstride: distance in bytes between rows
-func (p *Pixdata) Rowstride() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.rowstride)
-	return v
-}
-
-// Width of the image in pixels
-func (p *Pixdata) Width() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.width)
-	return v
-}
-
-// Height of the image in pixels
-func (p *Pixdata) Height() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.height)
-	return v
-}
-
 // Deserialize deserializes (reconstruct) a Pixdata structure from a byte
 // stream.
 //
@@ -200,14 +156,14 @@ func (p *Pixdata) Height() uint32 {
 // This function may fail with `GDK_PIXBUF_ERROR_CORRUPT_IMAGE` or
 // `GDK_PIXBUF_ERROR_UNKNOWN_TYPE`.
 //
-// Deprecated: since version 2.32.
-func (p *Pixdata) Deserialize(stream []byte) error {
+// Deprecated: Use `GResource` instead.
+func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _arg0 *C.GdkPixdata // out
 	var _arg2 *C.guint8
 	var _arg1 C.guint
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p))
+	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(pixdata))
 	_arg1 = C.guint(len(stream))
 	_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
 

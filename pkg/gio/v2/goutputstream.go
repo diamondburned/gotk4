@@ -516,10 +516,10 @@ func marshalOutputStream(p uintptr) (interface{}, error) {
 }
 
 // ClearPending clears the pending flag on @stream.
-func (s *OutputStreamClass) ClearPending() {
+func (stream *OutputStreamClass) ClearPending() {
 	var _arg0 *C.GOutputStream // out
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	C.g_output_stream_clear_pending(_arg0)
 }
@@ -552,12 +552,12 @@ func (s *OutputStreamClass) ClearPending() {
 // still leave the stream closed, but there some streams can use a faster close
 // that doesn't block to e.g. check errors. On cancellation (as with any error)
 // there is no guarantee that all written data will reach the target.
-func (s *OutputStreamClass) Close(cancellable Cancellable) error {
+func (stream *OutputStreamClass) Close(cancellable Cancellable) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_output_stream_close(_arg0, _arg1, &_cerr)
@@ -579,14 +579,14 @@ func (s *OutputStreamClass) Close(cancellable Cancellable) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (s *OutputStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -596,12 +596,12 @@ func (s *OutputStreamClass) CloseAsync(ioPriority int, cancellable Cancellable, 
 }
 
 // CloseFinish closes an output stream.
-func (s *OutputStreamClass) CloseFinish(result AsyncResult) error {
+func (stream *OutputStreamClass) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_close_finish(_arg0, _arg1, &_cerr)
@@ -622,12 +622,12 @@ func (s *OutputStreamClass) CloseFinish(result AsyncResult) error {
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (s *OutputStreamClass) Flush(cancellable Cancellable) error {
+func (stream *OutputStreamClass) Flush(cancellable Cancellable) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_output_stream_flush(_arg0, _arg1, &_cerr)
@@ -644,14 +644,14 @@ func (s *OutputStreamClass) Flush(cancellable Cancellable) error {
 //
 // When the operation is finished @callback will be called. You can then call
 // g_output_stream_flush_finish() to get the result of the operation.
-func (s *OutputStreamClass) FlushAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStreamClass) FlushAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -661,12 +661,12 @@ func (s *OutputStreamClass) FlushAsync(ioPriority int, cancellable Cancellable, 
 }
 
 // FlushFinish finishes flushing an output stream.
-func (s *OutputStreamClass) FlushFinish(result AsyncResult) error {
+func (stream *OutputStreamClass) FlushFinish(result AsyncResult) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_flush_finish(_arg0, _arg1, &_cerr)
@@ -679,11 +679,11 @@ func (s *OutputStreamClass) FlushFinish(result AsyncResult) error {
 }
 
 // HasPending checks if an output stream has pending actions.
-func (s *OutputStreamClass) HasPending() bool {
+func (stream *OutputStreamClass) HasPending() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_output_stream_has_pending(_arg0)
 
@@ -697,11 +697,11 @@ func (s *OutputStreamClass) HasPending() bool {
 }
 
 // IsClosed checks if an output stream has already been closed.
-func (s *OutputStreamClass) IsClosed() bool {
+func (stream *OutputStreamClass) IsClosed() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_output_stream_is_closed(_arg0)
 
@@ -717,11 +717,11 @@ func (s *OutputStreamClass) IsClosed() bool {
 // IsClosing checks if an output stream is being closed. This can be used inside
 // e.g. a flush implementation to see if the flush (or other i/o operation) is
 // called from within the closing operation.
-func (s *OutputStreamClass) IsClosing() bool {
+func (stream *OutputStreamClass) IsClosing() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_output_stream_is_closing(_arg0)
 
@@ -736,11 +736,11 @@ func (s *OutputStreamClass) IsClosing() bool {
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
-func (s *OutputStreamClass) SetPending() error {
+func (stream *OutputStreamClass) SetPending() error {
 	var _arg0 *C.GOutputStream // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	C.g_output_stream_set_pending(_arg0, &_cerr)
 
@@ -752,13 +752,13 @@ func (s *OutputStreamClass) SetPending() error {
 }
 
 // SpliceFinish finishes an asynchronous stream splice operation.
-func (s *OutputStreamClass) SpliceFinish(result AsyncResult) (int, error) {
+func (stream *OutputStreamClass) SpliceFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_splice_finish(_arg0, _arg1, &_cerr)
@@ -791,7 +791,7 @@ func (s *OutputStreamClass) SpliceFinish(result AsyncResult) (int, error) {
 // be returned, without an error.
 //
 // On error -1 is returned and @error is set accordingly.
-func (s *OutputStreamClass) Write(buffer []byte, cancellable Cancellable) (int, error) {
+func (stream *OutputStreamClass) Write(buffer []byte, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
@@ -799,7 +799,7 @@ func (s *OutputStreamClass) Write(buffer []byte, cancellable Cancellable) (int, 
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -833,7 +833,7 @@ func (s *OutputStreamClass) Write(buffer []byte, cancellable Cancellable) (int, 
 // error was encountered. This functionality is only available from C. If you
 // need it from another language then you must write your own loop around
 // g_output_stream_write().
-func (s *OutputStreamClass) WriteAll(buffer []byte, cancellable Cancellable) (uint, error) {
+func (stream *OutputStreamClass) WriteAll(buffer []byte, cancellable Cancellable) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
@@ -841,7 +841,7 @@ func (s *OutputStreamClass) WriteAll(buffer []byte, cancellable Cancellable) (ui
 	var _arg4 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -872,7 +872,7 @@ func (s *OutputStreamClass) WriteAll(buffer []byte, cancellable Cancellable) (ui
 //
 // Note that no copy of @buffer will be made, so it must stay valid until
 // @callback is called.
-func (s *OutputStreamClass) WriteAllAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStreamClass) WriteAllAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
@@ -881,7 +881,7 @@ func (s *OutputStreamClass) WriteAllAsync(buffer []byte, ioPriority int, cancell
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = C.int(ioPriority)
@@ -901,13 +901,13 @@ func (s *OutputStreamClass) WriteAllAsync(buffer []byte, ioPriority int, cancell
 // error was encountered. This functionality is only available from C. If you
 // need it from another language then you must write your own loop around
 // g_output_stream_write_async().
-func (s *OutputStreamClass) WriteAllFinish(result AsyncResult) (uint, error) {
+func (stream *OutputStreamClass) WriteAllFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 C.gsize          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_write_all_finish(_arg0, _arg1, &_arg2, &_cerr)
@@ -955,7 +955,7 @@ func (s *OutputStreamClass) WriteAllFinish(result AsyncResult) (uint, error) {
 // @callback is called. See g_output_stream_write_bytes_async() for a #GBytes
 // version that will automatically hold a reference to the contents (without
 // copying) for the duration of the call.
-func (s *OutputStreamClass) WriteAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStreamClass) WriteAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
@@ -964,7 +964,7 @@ func (s *OutputStreamClass) WriteAsync(buffer []byte, ioPriority int, cancellabl
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = C.int(ioPriority)
@@ -976,13 +976,13 @@ func (s *OutputStreamClass) WriteAsync(buffer []byte, ioPriority int, cancellabl
 }
 
 // WriteBytesFinish finishes a stream write-from-#GBytes operation.
-func (s *OutputStreamClass) WriteBytesFinish(result AsyncResult) (int, error) {
+func (stream *OutputStreamClass) WriteBytesFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_bytes_finish(_arg0, _arg1, &_cerr)
@@ -997,13 +997,13 @@ func (s *OutputStreamClass) WriteBytesFinish(result AsyncResult) (int, error) {
 }
 
 // WriteFinish finishes a stream write operation.
-func (s *OutputStreamClass) WriteFinish(result AsyncResult) (int, error) {
+func (stream *OutputStreamClass) WriteFinish(result AsyncResult) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_finish(_arg0, _arg1, &_cerr)
@@ -1040,7 +1040,7 @@ func (s *OutputStreamClass) WriteFinish(result AsyncResult) (int, error) {
 // aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if these
 // are exceeded. For example, when writing to a local file on UNIX platforms,
 // the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-func (s *OutputStreamClass) Writev(vectors []OutputVector, cancellable Cancellable) (uint, error) {
+func (stream *OutputStreamClass) Writev(vectors []OutputVector, cancellable Cancellable) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
@@ -1048,7 +1048,7 @@ func (s *OutputStreamClass) Writev(vectors []OutputVector, cancellable Cancellab
 	var _arg4 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
 	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -1085,7 +1085,7 @@ func (s *OutputStreamClass) Writev(vectors []OutputVector, cancellable Cancellab
 //
 // The content of the individual elements of @vectors might be changed by this
 // function.
-func (s *OutputStreamClass) WritevAll(vectors []OutputVector, cancellable Cancellable) (uint, error) {
+func (stream *OutputStreamClass) WritevAll(vectors []OutputVector, cancellable Cancellable) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
@@ -1093,7 +1093,7 @@ func (s *OutputStreamClass) WritevAll(vectors []OutputVector, cancellable Cancel
 	var _arg4 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
 	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -1125,7 +1125,7 @@ func (s *OutputStreamClass) WritevAll(vectors []OutputVector, cancellable Cancel
 // Note that no copy of @vectors will be made, so it must stay valid until
 // @callback is called. The content of the individual elements of @vectors might
 // be changed by this function.
-func (s *OutputStreamClass) WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStreamClass) WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
@@ -1134,7 +1134,7 @@ func (s *OutputStreamClass) WritevAllAsync(vectors []OutputVector, ioPriority in
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
 	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	_arg3 = C.int(ioPriority)
@@ -1154,13 +1154,13 @@ func (s *OutputStreamClass) WritevAllAsync(vectors []OutputVector, ioPriority in
 // error was encountered. This functionality is only available from C. If you
 // need it from another language then you must write your own loop around
 // g_output_stream_writev_async().
-func (s *OutputStreamClass) WritevAllFinish(result AsyncResult) (uint, error) {
+func (stream *OutputStreamClass) WritevAllFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 C.gsize          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_writev_all_finish(_arg0, _arg1, &_arg2, &_cerr)
@@ -1204,7 +1204,7 @@ func (s *OutputStreamClass) WritevAllFinish(result AsyncResult) (uint, error) {
 //
 // Note that no copy of @vectors will be made, so it must stay valid until
 // @callback is called.
-func (s *OutputStreamClass) WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStreamClass) WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
@@ -1213,7 +1213,7 @@ func (s *OutputStreamClass) WritevAsync(vectors []OutputVector, ioPriority int, 
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
 	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	_arg3 = C.int(ioPriority)
@@ -1225,13 +1225,13 @@ func (s *OutputStreamClass) WritevAsync(vectors []OutputVector, ioPriority int, 
 }
 
 // WritevFinish finishes a stream writev operation.
-func (s *OutputStreamClass) WritevFinish(result AsyncResult) (uint, error) {
+func (stream *OutputStreamClass) WritevFinish(result AsyncResult) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 C.gsize          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_writev_finish(_arg0, _arg1, &_arg2, &_cerr)

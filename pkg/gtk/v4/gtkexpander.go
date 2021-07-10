@@ -151,9 +151,9 @@ type Expander interface {
 type ExpanderClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ Expander = (*ExpanderClass)(nil)
@@ -162,24 +162,27 @@ func wrapExpander(obj *externglib.Object) Expander {
 	return &ExpanderClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -234,11 +237,11 @@ func NewExpanderWithMnemonic(label string) *ExpanderClass {
 }
 
 // Child gets the child widget of @expander.
-func (e *ExpanderClass) Child() *WidgetClass {
+func (expander *ExpanderClass) Child() *WidgetClass {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_child(_arg0)
 
@@ -252,11 +255,11 @@ func (e *ExpanderClass) Child() *WidgetClass {
 // Expanded queries a Expander and returns its current state.
 //
 // Returns true if the child widget is revealed.
-func (e *ExpanderClass) Expanded() bool {
+func (expander *ExpanderClass) Expanded() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_expanded(_arg0)
 
@@ -275,11 +278,11 @@ func (e *ExpanderClass) Expanded() bool {
 // markup, as set by [method@Gtk.Expander.set_label]. If the label text has not
 // been set the return value will be nil. This will be the case if you create an
 // empty button with gtk_button_new() to use as a container.
-func (e *ExpanderClass) Label() string {
+func (expander *ExpanderClass) Label() string {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_label(_arg0)
 
@@ -291,11 +294,11 @@ func (e *ExpanderClass) Label() string {
 }
 
 // LabelWidget retrieves the label widget for the frame.
-func (e *ExpanderClass) LabelWidget() *WidgetClass {
+func (expander *ExpanderClass) LabelWidget() *WidgetClass {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_label_widget(_arg0)
 
@@ -308,11 +311,11 @@ func (e *ExpanderClass) LabelWidget() *WidgetClass {
 
 // ResizeToplevel returns whether the expander will resize the toplevel widget
 // containing the expander upon resizing and collpasing.
-func (e *ExpanderClass) ResizeToplevel() bool {
+func (expander *ExpanderClass) ResizeToplevel() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_resize_toplevel(_arg0)
 
@@ -326,11 +329,11 @@ func (e *ExpanderClass) ResizeToplevel() bool {
 }
 
 // UseMarkup returns whether the label’s text is interpreted as Pango markup.
-func (e *ExpanderClass) UseMarkup() bool {
+func (expander *ExpanderClass) UseMarkup() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_use_markup(_arg0)
 
@@ -344,11 +347,11 @@ func (e *ExpanderClass) UseMarkup() bool {
 }
 
 // UseUnderline returns whether an underline in the text indicates a mnemonic.
-func (e *ExpanderClass) UseUnderline() bool {
+func (expander *ExpanderClass) UseUnderline() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_use_underline(_arg0)
 
@@ -362,11 +365,11 @@ func (e *ExpanderClass) UseUnderline() bool {
 }
 
 // SetChild sets the child widget of @expander.
-func (e *ExpanderClass) SetChild(child Widget) {
+func (expander *ExpanderClass) SetChild(child Widget) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_expander_set_child(_arg0, _arg1)
@@ -376,11 +379,11 @@ func (e *ExpanderClass) SetChild(child Widget) {
 //
 // Set to true, if you want the child widget to be revealed, and false if you
 // want the child widget to be hidden.
-func (e *ExpanderClass) SetExpanded(expanded bool) {
+func (expander *ExpanderClass) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 	if expanded {
 		_arg1 = C.TRUE
 	}
@@ -391,11 +394,11 @@ func (e *ExpanderClass) SetExpanded(expanded bool) {
 // SetLabel sets the text of the label of the expander to @label.
 //
 // This will also clear any previously set labels.
-func (e *ExpanderClass) SetLabel(label string) {
+func (expander *ExpanderClass) SetLabel(label string) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -405,11 +408,11 @@ func (e *ExpanderClass) SetLabel(label string) {
 // SetLabelWidget: set the label widget for the expander.
 //
 // This is the widget that will appear embedded alongside the expander arrow.
-func (e *ExpanderClass) SetLabelWidget(labelWidget Widget) {
+func (expander *ExpanderClass) SetLabelWidget(labelWidget Widget) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
 	C.gtk_expander_set_label_widget(_arg0, _arg1)
@@ -417,11 +420,11 @@ func (e *ExpanderClass) SetLabelWidget(labelWidget Widget) {
 
 // SetResizeToplevel sets whether the expander will resize the toplevel widget
 // containing the expander upon resizing and collpasing.
-func (e *ExpanderClass) SetResizeToplevel(resizeToplevel bool) {
+func (expander *ExpanderClass) SetResizeToplevel(resizeToplevel bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 	if resizeToplevel {
 		_arg1 = C.TRUE
 	}
@@ -430,11 +433,11 @@ func (e *ExpanderClass) SetResizeToplevel(resizeToplevel bool) {
 }
 
 // SetUseMarkup sets whether the text of the label contains Pango markup.
-func (e *ExpanderClass) SetUseMarkup(useMarkup bool) {
+func (expander *ExpanderClass) SetUseMarkup(useMarkup bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 	if useMarkup {
 		_arg1 = C.TRUE
 	}
@@ -443,11 +446,11 @@ func (e *ExpanderClass) SetUseMarkup(useMarkup bool) {
 }
 
 // SetUseUnderline: if true, an underline in the text indicates a mnemonic.
-func (e *ExpanderClass) SetUseUnderline(useUnderline bool) {
+func (expander *ExpanderClass) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

@@ -126,11 +126,11 @@ func NewTextMark(name string, leftGravity bool) *TextMarkClass {
 
 // Buffer gets the buffer this mark is located inside, or nil if the mark is
 // deleted.
-func (m *TextMarkClass) Buffer() *TextBufferClass {
+func (mark *TextMarkClass) Buffer() *TextBufferClass {
 	var _arg0 *C.GtkTextMark   // out
 	var _cret *C.GtkTextBuffer // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_buffer(_arg0)
 
@@ -144,11 +144,11 @@ func (m *TextMarkClass) Buffer() *TextBufferClass {
 // Deleted returns true if the mark has been removed from its buffer with
 // gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way to
 // add it to a buffer again.
-func (m *TextMarkClass) Deleted() bool {
+func (mark *TextMarkClass) Deleted() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_deleted(_arg0)
 
@@ -162,11 +162,11 @@ func (m *TextMarkClass) Deleted() bool {
 }
 
 // LeftGravity determines whether the mark has left gravity.
-func (m *TextMarkClass) LeftGravity() bool {
+func (mark *TextMarkClass) LeftGravity() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_left_gravity(_arg0)
 
@@ -180,11 +180,11 @@ func (m *TextMarkClass) LeftGravity() bool {
 }
 
 // Name returns the mark name; returns NULL for anonymous marks.
-func (m *TextMarkClass) Name() string {
+func (mark *TextMarkClass) Name() string {
 	var _arg0 *C.GtkTextMark // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_name(_arg0)
 
@@ -197,11 +197,11 @@ func (m *TextMarkClass) Name() string {
 
 // Visible returns true if the mark is visible (i.e. a cursor is displayed for
 // it).
-func (m *TextMarkClass) Visible() bool {
+func (mark *TextMarkClass) Visible() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_visible(_arg0)
 
@@ -218,11 +218,11 @@ func (m *TextMarkClass) Visible() bool {
 // visible, i.e. you can see it as a vertical bar. Also, the text widget uses a
 // visible mark to indicate where a drop will occur when dragging-and-dropping
 // text. Most other marks are not visible. Marks are not visible by default.
-func (m *TextMarkClass) SetVisible(setting bool) {
+func (mark *TextMarkClass) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

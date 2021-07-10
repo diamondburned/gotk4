@@ -58,10 +58,10 @@ type ColorChooserWidget interface {
 type ColorChooserWidgetClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ColorChooserInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ColorChooserIface
+	ConstraintTargetIface
 }
 
 var _ ColorChooserWidget = (*ColorChooserWidgetClass)(nil)
@@ -70,27 +70,30 @@ func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
 	return &ColorChooserWidgetClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ColorChooserInterface: ColorChooserInterface{
+		ColorChooserIface: ColorChooserIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}

@@ -134,15 +134,15 @@ type SocketConnectable interface {
 	String() string
 }
 
-// SocketConnectableInterface implements the SocketConnectable interface.
-type SocketConnectableInterface struct {
+// SocketConnectableIface implements the SocketConnectable interface.
+type SocketConnectableIface struct {
 	*externglib.Object
 }
 
-var _ SocketConnectable = (*SocketConnectableInterface)(nil)
+var _ SocketConnectable = (*SocketConnectableIface)(nil)
 
 func wrapSocketConnectable(obj *externglib.Object) SocketConnectable {
-	return &SocketConnectableInterface{
+	return &SocketConnectableIface{
 		Object: obj,
 	}
 }
@@ -154,11 +154,11 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 }
 
 // Enumerate creates a AddressEnumerator for @connectable.
-func (c *SocketConnectableInterface) Enumerate() *SocketAddressEnumeratorClass {
+func (connectable *SocketConnectableIface) Enumerate() *SocketAddressEnumeratorClass {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 
 	_cret = C.g_socket_connectable_enumerate(_arg0)
 
@@ -174,11 +174,11 @@ func (c *SocketConnectableInterface) Enumerate() *SocketAddressEnumeratorClass {
 //
 // If @connectable does not implement g_socket_connectable_proxy_enumerate(),
 // this will fall back to calling g_socket_connectable_enumerate().
-func (c *SocketConnectableInterface) ProxyEnumerate() *SocketAddressEnumeratorClass {
+func (connectable *SocketConnectableIface) ProxyEnumerate() *SocketAddressEnumeratorClass {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 
 	_cret = C.g_socket_connectable_proxy_enumerate(_arg0)
 
@@ -196,11 +196,11 @@ func (c *SocketConnectableInterface) ProxyEnumerate() *SocketAddressEnumeratorCl
 //
 // If the Connectable implementation does not support string formatting, the
 // implementation’s type name will be returned as a fallback.
-func (c *SocketConnectableInterface) String() string {
+func (connectable *SocketConnectableIface) String() string {
 	var _arg0 *C.GSocketConnectable // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 
 	_cret = C.g_socket_connectable_to_string(_arg0)
 

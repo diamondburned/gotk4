@@ -122,12 +122,12 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) *UnixFDMessageClass {
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
 // descriptor limit.
-func (m *UnixFDMessageClass) AppendFd(fd int) error {
+func (message *UnixFDMessageClass) AppendFd(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(message.Native()))
 	_arg1 = C.gint(fd)
 
 	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
@@ -142,11 +142,11 @@ func (m *UnixFDMessageClass) AppendFd(fd int) error {
 // FdList gets the FDList contained in @message. This function does not return a
 // reference to the caller, but the returned list is valid for the lifetime of
 // @message.
-func (m *UnixFDMessageClass) FdList() *UnixFDListClass {
+func (message *UnixFDMessageClass) FdList() *UnixFDListClass {
 	var _arg0 *C.GUnixFDMessage // out
 	var _cret *C.GUnixFDList    // in
 
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_unix_fd_message_get_fd_list(_arg0)
 

@@ -39,8 +39,8 @@ type VSeparator interface {
 type VSeparatorClass struct {
 	*externglib.Object
 	SeparatorClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ VSeparator = (*VSeparatorClass)(nil)
@@ -51,22 +51,25 @@ func wrapVSeparator(obj *externglib.Object) VSeparator {
 		SeparatorClass: SeparatorClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -80,7 +83,7 @@ func marshalVSeparator(p uintptr) (interface{}, error) {
 
 // NewVSeparator creates a new VSeparator.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_separator_new() with GTK_ORIENTATION_VERTICAL instead.
 func NewVSeparator() *VSeparatorClass {
 	var _cret *C.GtkWidget // in
 

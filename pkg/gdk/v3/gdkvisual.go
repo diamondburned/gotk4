@@ -59,7 +59,8 @@ func marshalVisualType(p uintptr) (interface{}, error) {
 //
 // The array returned by this function should not be freed.
 //
-// Deprecated: since version 3.22.
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
 func QueryDepths() []int {
 	var _arg1 *C.gint
 	var _arg2 C.gint // in
@@ -80,7 +81,8 @@ func QueryDepths() []int {
 //
 // The array returned by this function should not be freed.
 //
-// Deprecated: since version 3.22.
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
 func QueryVisualTypes() []VisualType {
 	var _arg1 *C.GdkVisualType
 	var _arg2 C.gint // in
@@ -109,7 +111,8 @@ type Visual interface {
 	//
 	// Not all GDK backend provide a meaningful value for this function.
 	//
-	// Deprecated: since version 3.22.
+	// Deprecated: Use gdk_visual_get_red_pixel_details() and its variants to
+	// learn about the pixel layout of TrueColor and DirectColor visuals.
 	BitsPerRGB() int
 	// BluePixelDetails obtains values that are needed to calculate blue pixel
 	// values in TrueColor and DirectColor. The “mask” is the significant bits
@@ -124,13 +127,14 @@ type Visual interface {
 	// with XImages, and not all backends return meaningful information for
 	// this.
 	//
-	// Deprecated: since version 3.22.
+	// Deprecated: This information is not useful.
 	ByteOrder() ByteOrder
 	// ColormapSize returns the size of a colormap for this visual.
 	//
 	// You have to use platform-specific APIs to manipulate colormaps.
 	//
-	// Deprecated: since version 3.22.
+	// Deprecated: This information is not useful, since GDK does not provide
+	// APIs to operate on colormaps.
 	ColormapSize() int
 	// Depth returns the bit depth of this visual.
 	Depth() int
@@ -179,12 +183,13 @@ func marshalVisual(p uintptr) (interface{}, error) {
 //
 // Not all GDK backend provide a meaningful value for this function.
 //
-// Deprecated: since version 3.22.
-func (v *VisualClass) BitsPerRGB() int {
+// Deprecated: Use gdk_visual_get_red_pixel_details() and its variants to learn
+// about the pixel layout of TrueColor and DirectColor visuals.
+func (visual *VisualClass) BitsPerRGB() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_bits_per_rgb(_arg0)
 
@@ -201,13 +206,13 @@ func (v *VisualClass) BitsPerRGB() int {
 // primary for it to be in position (according to the "mask"). Finally,
 // "precision" refers to how much precision the pixel value contains for a
 // particular primary.
-func (v *VisualClass) BluePixelDetails() (mask uint32, shift int, precision int) {
+func (visual *VisualClass) BluePixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	C.gdk_visual_get_blue_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -227,12 +232,12 @@ func (v *VisualClass) BluePixelDetails() (mask uint32, shift int, precision int)
 // The information returned by this function is only relevant when working with
 // XImages, and not all backends return meaningful information for this.
 //
-// Deprecated: since version 3.22.
-func (v *VisualClass) ByteOrder() ByteOrder {
+// Deprecated: This information is not useful.
+func (visual *VisualClass) ByteOrder() ByteOrder {
 	var _arg0 *C.GdkVisual   // out
 	var _cret C.GdkByteOrder // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_byte_order(_arg0)
 
@@ -247,12 +252,13 @@ func (v *VisualClass) ByteOrder() ByteOrder {
 //
 // You have to use platform-specific APIs to manipulate colormaps.
 //
-// Deprecated: since version 3.22.
-func (v *VisualClass) ColormapSize() int {
+// Deprecated: This information is not useful, since GDK does not provide APIs
+// to operate on colormaps.
+func (visual *VisualClass) ColormapSize() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_colormap_size(_arg0)
 
@@ -264,11 +270,11 @@ func (v *VisualClass) ColormapSize() int {
 }
 
 // Depth returns the bit depth of this visual.
-func (v *VisualClass) Depth() int {
+func (visual *VisualClass) Depth() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_depth(_arg0)
 
@@ -285,13 +291,13 @@ func (v *VisualClass) Depth() int {
 // primary for it to be in position (according to the "mask"). Finally,
 // "precision" refers to how much precision the pixel value contains for a
 // particular primary.
-func (v *VisualClass) GreenPixelDetails() (mask uint32, shift int, precision int) {
+func (visual *VisualClass) GreenPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	C.gdk_visual_get_green_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -311,13 +317,13 @@ func (v *VisualClass) GreenPixelDetails() (mask uint32, shift int, precision int
 // pixel. The “shift” is the number of bits left we must shift a primary for it
 // to be in position (according to the "mask"). Finally, "precision" refers to
 // how much precision the pixel value contains for a particular primary.
-func (v *VisualClass) RedPixelDetails() (mask uint32, shift int, precision int) {
+func (visual *VisualClass) RedPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	C.gdk_visual_get_red_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
@@ -333,11 +339,11 @@ func (v *VisualClass) RedPixelDetails() (mask uint32, shift int, precision int) 
 }
 
 // Screen gets the screen to which this visual belongs
-func (v *VisualClass) Screen() *ScreenClass {
+func (visual *VisualClass) Screen() *ScreenClass {
 	var _arg0 *C.GdkVisual // out
 	var _cret *C.GdkScreen // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_screen(_arg0)
 
@@ -349,11 +355,11 @@ func (v *VisualClass) Screen() *ScreenClass {
 }
 
 // VisualType returns the type of visual this is (PseudoColor, TrueColor, etc).
-func (v *VisualClass) VisualType() VisualType {
+func (visual *VisualClass) VisualType() VisualType {
 	var _arg0 *C.GdkVisual    // out
 	var _cret C.GdkVisualType // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_visual_type(_arg0)
 

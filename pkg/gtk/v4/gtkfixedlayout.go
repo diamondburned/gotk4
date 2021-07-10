@@ -129,11 +129,11 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 }
 
 // Transform retrieves the transformation of the child.
-func (c *FixedLayoutChildClass) Transform() *gsk.Transform {
+func (child *FixedLayoutChildClass) Transform() *gsk.Transform {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _cret *C.GskTransform        // in
 
-	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_fixed_layout_child_get_transform(_arg0)
 
@@ -149,11 +149,11 @@ func (c *FixedLayoutChildClass) Transform() *gsk.Transform {
 }
 
 // SetTransform sets the transformation of the child of a `GtkFixedLayout`.
-func (c *FixedLayoutChildClass) SetTransform(transform *gsk.Transform) {
+func (child *FixedLayoutChildClass) SetTransform(transform *gsk.Transform) {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _arg1 *C.GskTransform        // out
 
-	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(child.Native()))
 	_arg1 = (*C.GskTransform)(unsafe.Pointer(transform))
 
 	C.gtk_fixed_layout_child_set_transform(_arg0, _arg1)

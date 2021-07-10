@@ -94,9 +94,9 @@ type WindowControls interface {
 type WindowControlsClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ WindowControls = (*WindowControlsClass)(nil)
@@ -105,24 +105,27 @@ func wrapWindowControls(obj *externglib.Object) WindowControls {
 	return &WindowControlsClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -135,11 +138,11 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 }
 
 // DecorationLayout gets the decoration layout of this `GtkWindowControls`.
-func (s *WindowControlsClass) DecorationLayout() string {
+func (self *WindowControlsClass) DecorationLayout() string {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_controls_get_decoration_layout(_arg0)
 
@@ -151,11 +154,11 @@ func (s *WindowControlsClass) DecorationLayout() string {
 }
 
 // Empty gets whether the widget has any window buttons.
-func (s *WindowControlsClass) Empty() bool {
+func (self *WindowControlsClass) Empty() bool {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_controls_get_empty(_arg0)
 
@@ -169,11 +172,11 @@ func (s *WindowControlsClass) Empty() bool {
 }
 
 // Side gets the side to which this `GtkWindowControls` instance belongs.
-func (s *WindowControlsClass) Side() PackType {
+func (self *WindowControlsClass) Side() PackType {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret C.GtkPackType        // in
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_controls_get_side(_arg0)
 
@@ -198,11 +201,11 @@ func (s *WindowControlsClass) Side() PackType {
 //
 // If [property@Gtk.WindowControls:side] value is @GTK_PACK_START, @self will
 // display the part before the colon, otherwise after that.
-func (s *WindowControlsClass) SetDecorationLayout(layout string) {
+func (self *WindowControlsClass) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkWindowControls // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(layout))
 	defer C.free(unsafe.Pointer(_arg1))
 

@@ -62,15 +62,15 @@ type HyperlinkImpl interface {
 	Hyperlink() *HyperlinkClass
 }
 
-// HyperlinkImplInterface implements the HyperlinkImpl interface.
-type HyperlinkImplInterface struct {
+// HyperlinkImplIface implements the HyperlinkImpl interface.
+type HyperlinkImplIface struct {
 	*externglib.Object
 }
 
-var _ HyperlinkImpl = (*HyperlinkImplInterface)(nil)
+var _ HyperlinkImpl = (*HyperlinkImplIface)(nil)
 
 func wrapHyperlinkImpl(obj *externglib.Object) HyperlinkImpl {
-	return &HyperlinkImplInterface{
+	return &HyperlinkImplIface{
 		Object: obj,
 	}
 }
@@ -82,11 +82,11 @@ func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 }
 
 // Hyperlink gets the hyperlink associated with this object.
-func (i *HyperlinkImplInterface) Hyperlink() *HyperlinkClass {
+func (impl *HyperlinkImplIface) Hyperlink() *HyperlinkClass {
 	var _arg0 *C.AtkHyperlinkImpl // out
 	var _cret *C.AtkHyperlink     // in
 
-	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(impl.Native()))
 
 	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
 

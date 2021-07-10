@@ -208,12 +208,12 @@ func NewGLShaderFromResource(resourcePath string) *GLShaderClass {
 // current GL context) and requires the renderer to be set up. This means that
 // the widget has to be realized. Commonly you want to call this from the
 // realize signal of a widget, or during widget snapshot.
-func (s *GLShaderClass) Compile(renderer Renderer) error {
+func (shader *GLShaderClass) Compile(renderer Renderer) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	_arg1 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 
 	C.gsk_gl_shader_compile(_arg0, _arg1, &_cerr)
@@ -227,12 +227,12 @@ func (s *GLShaderClass) Compile(renderer Renderer) error {
 
 // FindUniformByName looks for a uniform by the name @name, and returns the
 // index of the uniform, or -1 if it was not found.
-func (s *GLShaderClass) FindUniformByName(name string) int {
+func (shader *GLShaderClass) FindUniformByName(name string) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -247,11 +247,11 @@ func (s *GLShaderClass) FindUniformByName(name string) int {
 
 // ArgsSize: get the size of the data block used to specify arguments for this
 // shader.
-func (s *GLShaderClass) ArgsSize() uint {
+func (shader *GLShaderClass) ArgsSize() uint {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.gsize        // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 
 	_cret = C.gsk_gl_shader_get_args_size(_arg0)
 
@@ -267,11 +267,11 @@ func (s *GLShaderClass) ArgsSize() uint {
 // This can be used to check that the a passed shader works in your usecase. It
 // is determined by looking at the highest u_textureN value that the shader
 // defines.
-func (s *GLShaderClass) NTextures() int {
+func (shader *GLShaderClass) NTextures() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 
 	_cret = C.gsk_gl_shader_get_n_textures(_arg0)
 
@@ -283,11 +283,11 @@ func (s *GLShaderClass) NTextures() int {
 }
 
 // NUniforms: get the number of declared uniforms for this shader.
-func (s *GLShaderClass) NUniforms() int {
+func (shader *GLShaderClass) NUniforms() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 
 	_cret = C.gsk_gl_shader_get_n_uniforms(_arg0)
 
@@ -300,11 +300,11 @@ func (s *GLShaderClass) NUniforms() int {
 
 // Resource gets the resource path for the GLSL sourcecode being used to render
 // this shader.
-func (s *GLShaderClass) Resource() string {
+func (shader *GLShaderClass) Resource() string {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 
 	_cret = C.gsk_gl_shader_get_resource(_arg0)
 
@@ -317,12 +317,12 @@ func (s *GLShaderClass) Resource() string {
 
 // UniformName: get the name of the declared uniform for this shader at index
 // @idx.
-func (s *GLShaderClass) UniformName(idx int) string {
+func (shader *GLShaderClass) UniformName(idx int) string {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	_arg1 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_uniform_name(_arg0, _arg1)
@@ -336,12 +336,12 @@ func (s *GLShaderClass) UniformName(idx int) string {
 
 // UniformOffset: get the offset into the data block where data for this
 // uniforms is stored.
-func (s *GLShaderClass) UniformOffset(idx int) int {
+func (shader *GLShaderClass) UniformOffset(idx int) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	_arg1 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_uniform_offset(_arg0, _arg1)
@@ -355,12 +355,12 @@ func (s *GLShaderClass) UniformOffset(idx int) int {
 
 // UniformType: get the type of the declared uniform for this shader at index
 // @idx.
-func (s *GLShaderClass) UniformType(idx int) GLUniformType {
+func (shader *GLShaderClass) UniformType(idx int) GLUniformType {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 C.int              // out
 	var _cret C.GskGLUniformType // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	_arg1 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_uniform_type(_arg0, _arg1)
@@ -394,11 +394,11 @@ func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
 }
 
 // Ref increases the reference count of a `GskShaderArgsBuilder` by one.
-func (b *ShaderArgsBuilder) ref() *ShaderArgsBuilder {
+func (builder *ShaderArgsBuilder) ref() *ShaderArgsBuilder {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _cret *C.GskShaderArgsBuilder // in
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
 
 	_cret = C.gsk_shader_args_builder_ref(_arg0)
 
@@ -416,12 +416,12 @@ func (b *ShaderArgsBuilder) ref() *ShaderArgsBuilder {
 // SetBool sets the value of the uniform @idx.
 //
 // The uniform must be of bool type.
-func (b *ShaderArgsBuilder) SetBool(idx int, value bool) {
+func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 C.gboolean              // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
 	_arg1 = C.int(idx)
 	if value {
 		_arg2 = C.TRUE
@@ -433,12 +433,12 @@ func (b *ShaderArgsBuilder) SetBool(idx int, value bool) {
 // SetFloat sets the value of the uniform @idx.
 //
 // The uniform must be of float type.
-func (b *ShaderArgsBuilder) SetFloat(idx int, value float32) {
+func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 C.float                 // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
 	_arg1 = C.int(idx)
 	_arg2 = C.float(value)
 
@@ -448,12 +448,12 @@ func (b *ShaderArgsBuilder) SetFloat(idx int, value float32) {
 // SetInt sets the value of the uniform @idx.
 //
 // The uniform must be of int type.
-func (b *ShaderArgsBuilder) SetInt(idx int, value int32) {
+func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 C.gint32                // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
 	_arg1 = C.int(idx)
 	_arg2 = C.gint32(value)
 
@@ -463,12 +463,12 @@ func (b *ShaderArgsBuilder) SetInt(idx int, value int32) {
 // SetUint sets the value of the uniform @idx.
 //
 // The uniform must be of uint type.
-func (b *ShaderArgsBuilder) SetUint(idx int, value uint32) {
+func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 C.guint32               // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
 	_arg1 = C.int(idx)
 	_arg2 = C.guint32(value)
 
@@ -478,12 +478,12 @@ func (b *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 // SetVec2 sets the value of the uniform @idx.
 //
 // The uniform must be of vec2 type.
-func (b *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
+func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec2_t      // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
 	_arg1 = C.int(idx)
 	_arg2 = (*C.graphene_vec2_t)(unsafe.Pointer(value))
 
@@ -493,12 +493,12 @@ func (b *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 // SetVec3 sets the value of the uniform @idx.
 //
 // The uniform must be of vec3 type.
-func (b *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
+func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec3_t      // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
 	_arg1 = C.int(idx)
 	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(value))
 
@@ -508,12 +508,12 @@ func (b *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 // SetVec4 sets the value of the uniform @idx.
 //
 // The uniform must be of vec4 type.
-func (b *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
+func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec4_t      // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
 	_arg1 = C.int(idx)
 	_arg2 = (*C.graphene_vec4_t)(unsafe.Pointer(value))
 
@@ -523,10 +523,10 @@ func (b *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 // Unref decreases the reference count of a `GskShaderArgBuilder` by one.
 //
 // If the resulting reference count is zero, frees the builder.
-func (b *ShaderArgsBuilder) unref() {
+func (builder *ShaderArgsBuilder) unref() {
 	var _arg0 *C.GskShaderArgsBuilder // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
 
 	C.gsk_shader_args_builder_unref(_arg0)
 }

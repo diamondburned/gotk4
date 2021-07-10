@@ -1341,13 +1341,13 @@ func (m *Matrix) Transpose() Matrix {
 
 // UnprojectPoint3D unprojects the given @point using the @projection matrix and
 // a @modelview matrix.
-func (p *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Point3D {
+func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Point3D {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_matrix_t  // out
 	var _arg2 *C.graphene_point3d_t // out
 	var _arg3 C.graphene_point3d_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(projection))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(modelview))
 	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
 

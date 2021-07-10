@@ -54,15 +54,15 @@ type FileDescriptorBased interface {
 	Fd() int
 }
 
-// FileDescriptorBasedInterface implements the FileDescriptorBased interface.
-type FileDescriptorBasedInterface struct {
+// FileDescriptorBasedIface implements the FileDescriptorBased interface.
+type FileDescriptorBasedIface struct {
 	*externglib.Object
 }
 
-var _ FileDescriptorBased = (*FileDescriptorBasedInterface)(nil)
+var _ FileDescriptorBased = (*FileDescriptorBasedIface)(nil)
 
 func wrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBased {
-	return &FileDescriptorBasedInterface{
+	return &FileDescriptorBasedIface{
 		Object: obj,
 	}
 }
@@ -74,11 +74,11 @@ func marshalFileDescriptorBased(p uintptr) (interface{}, error) {
 }
 
 // Fd gets the underlying file descriptor.
-func (f *FileDescriptorBasedInterface) Fd() int {
+func (fdBased *FileDescriptorBasedIface) Fd() int {
 	var _arg0 *C.GFileDescriptorBased // out
 	var _cret C.int                   // in
 
-	_arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer(fdBased.Native()))
 
 	_cret = C.g_file_descriptor_based_get_fd(_arg0)
 

@@ -34,8 +34,8 @@ type VButtonBox interface {
 type VButtonBoxClass struct {
 	*externglib.Object
 	ButtonBoxClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ VButtonBox = (*VButtonBoxClass)(nil)
@@ -50,33 +50,36 @@ func wrapVButtonBox(obj *externglib.Object) VButtonBox {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
-				OrientableInterface: OrientableInterface{
+				OrientableIface: OrientableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -90,7 +93,7 @@ func marshalVButtonBox(p uintptr) (interface{}, error) {
 
 // NewVButtonBox creates a new vertical button box.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_button_box_new() with GTK_ORIENTATION_VERTICAL instead.
 func NewVButtonBox() *VButtonBoxClass {
 	var _cret *C.GtkWidget // in
 

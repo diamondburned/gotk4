@@ -9,7 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -127,11 +126,11 @@ func marshalRenderNode(p uintptr) (interface{}, error) {
 //
 // For advanced nodes that cannot be supported using Cairo, in particular for
 // nodes doing 3D operations, this function may fail.
-func (n *RenderNodeClass) Draw(cr *cairo.Context) {
+func (node *RenderNodeClass) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
 
 	C.gsk_render_node_draw(_arg0, _arg1)
@@ -140,11 +139,11 @@ func (n *RenderNodeClass) Draw(cr *cairo.Context) {
 // Bounds retrieves the boundaries of the @node.
 //
 // The node will not draw outside of its boundaries.
-func (n *RenderNodeClass) Bounds() graphene.Rect {
+func (node *RenderNodeClass) Bounds() graphene.Rect {
 	var _arg0 *C.GskRenderNode  // out
 	var _arg1 C.graphene_rect_t // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	C.gsk_render_node_get_bounds(_arg0, &_arg1)
 
@@ -156,11 +155,11 @@ func (n *RenderNodeClass) Bounds() graphene.Rect {
 }
 
 // NodeType returns the type of the @node.
-func (n *RenderNodeClass) NodeType() RenderNodeType {
+func (node *RenderNodeClass) NodeType() RenderNodeType {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret C.GskRenderNodeType // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_render_node_get_node_type(_arg0)
 
@@ -172,11 +171,11 @@ func (n *RenderNodeClass) NodeType() RenderNodeType {
 }
 
 // Ref acquires a reference on the given `GskRenderNode`.
-func (n *RenderNodeClass) ref() *RenderNodeClass {
+func (node *RenderNodeClass) ref() *RenderNodeClass {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_render_node_ref(_arg0)
 
@@ -191,10 +190,10 @@ func (n *RenderNodeClass) ref() *RenderNodeClass {
 //
 // If the reference was the last, the resources associated to the @node are
 // freed.
-func (n *RenderNodeClass) unref() {
+func (node *RenderNodeClass) unref() {
 	var _arg0 *C.GskRenderNode // out
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	C.gsk_render_node_unref(_arg0)
 }
@@ -206,12 +205,12 @@ func (n *RenderNodeClass) unref() {
 //
 // It is mostly intended for use inside a debugger to quickly dump a render node
 // to a file for later inspection.
-func (n *RenderNodeClass) WriteToFile(filename string) error {
+func (node *RenderNodeClass) WriteToFile(filename string) error {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.char          // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(n.Native()))
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -240,20 +239,6 @@ func (c *ColorStop) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// Offset: the offset of the color stop
-func (c *ColorStop) Offset() float32 {
-	var v float32 // out
-	v = float32(c.native.offset)
-	return v
-}
-
-// Color: the color at the given offset
-func (c *ColorStop) Color() gdk.RGBA {
-	var v gdk.RGBA // out
-	v = *(*gdk.RGBA)(unsafe.Pointer((&c.native.color)))
-	return v
-}
-
 // ParseLocation: location in a parse buffer.
 type ParseLocation struct {
 	native C.GskParseLocation
@@ -270,41 +255,6 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Bytes: the offset of the location in the parse buffer, as bytes
-func (p *ParseLocation) Bytes() uint {
-	var v uint // out
-	v = uint(p.native.bytes)
-	return v
-}
-
-// Chars: the offset of the location in the parse buffer, as characters
-func (p *ParseLocation) Chars() uint {
-	var v uint // out
-	v = uint(p.native.chars)
-	return v
-}
-
-// Lines: the line of the location in the parse buffer
-func (p *ParseLocation) Lines() uint {
-	var v uint // out
-	v = uint(p.native.lines)
-	return v
-}
-
-// LineBytes: the position in the line, as bytes
-func (p *ParseLocation) LineBytes() uint {
-	var v uint // out
-	v = uint(p.native.line_bytes)
-	return v
-}
-
-// LineChars: the position in the line, as characters
-func (p *ParseLocation) LineChars() uint {
-	var v uint // out
-	v = uint(p.native.line_chars)
-	return v
-}
-
 // Shadow: the shadow parameters in a shadow node.
 type Shadow struct {
 	native C.GskShadow
@@ -319,32 +269,4 @@ func WrapShadow(ptr unsafe.Pointer) *Shadow {
 // Native returns the underlying C source pointer.
 func (s *Shadow) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
-}
-
-// Color: the color of the shadow
-func (s *Shadow) Color() gdk.RGBA {
-	var v gdk.RGBA // out
-	v = *(*gdk.RGBA)(unsafe.Pointer((&s.native.color)))
-	return v
-}
-
-// Dx: the horizontal offset of the shadow
-func (s *Shadow) Dx() float32 {
-	var v float32 // out
-	v = float32(s.native.dx)
-	return v
-}
-
-// Dy: the vertical offset of the shadow
-func (s *Shadow) Dy() float32 {
-	var v float32 // out
-	v = float32(s.native.dy)
-	return v
-}
-
-// Radius: the radius of the shadow
-func (s *Shadow) Radius() float32 {
-	var v float32 // out
-	v = float32(s.native.radius)
-	return v
 }

@@ -22,6 +22,23 @@ func init() {
 	})
 }
 
+// Analysis: the `PangoAnalysis` structure stores information about the
+// properties of a segment of text.
+type Analysis struct {
+	native C.PangoAnalysis
+}
+
+// WrapAnalysis wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapAnalysis(ptr unsafe.Pointer) *Analysis {
+	return (*Analysis)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (a *Analysis) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
+}
+
 // Item: the `PangoItem` structure stores information about a segment of text.
 //
 // You typically obtain `PangoItems` by itemizing a piece of text with
@@ -62,27 +79,6 @@ func (i *Item) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// Offset: byte offset of the start of this item in text.
-func (i *Item) Offset() int {
-	var v int // out
-	v = int(i.native.offset)
-	return v
-}
-
-// Length: length of this item in bytes.
-func (i *Item) Length() int {
-	var v int // out
-	v = int(i.native.length)
-	return v
-}
-
-// NumChars: number of Unicode characters in the item.
-func (i *Item) NumChars() int {
-	var v int // out
-	v = int(i.native.num_chars)
-	return v
-}
-
 // ApplyAttrs: add attributes to a `PangoItem`.
 //
 // The idea is that you have attributes that don't affect itemization, such as
@@ -93,22 +89,22 @@ func (i *Item) NumChars() int {
 // The @iter should be positioned before the range of the item, and will be
 // advanced past it. This function is meant to be called in a loop over the
 // items resulting from itemization, while passing the iter to each call.
-func (i *Item) ApplyAttrs(iter *AttrIterator) {
+func (item *Item) ApplyAttrs(iter *AttrIterator) {
 	var _arg0 *C.PangoItem         // out
 	var _arg1 *C.PangoAttrIterator // out
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(item))
 	_arg1 = (*C.PangoAttrIterator)(unsafe.Pointer(iter))
 
 	C.pango_item_apply_attrs(_arg0, _arg1)
 }
 
 // Copy an existing `PangoItem` structure.
-func (i *Item) Copy() *Item {
+func (item *Item) Copy() *Item {
 	var _arg0 *C.PangoItem // out
 	var _cret *C.PangoItem // in
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(item))
 
 	_cret = C.pango_item_copy(_arg0)
 
@@ -123,10 +119,10 @@ func (i *Item) Copy() *Item {
 }
 
 // Free: free a `PangoItem` and all associated memory.
-func (i *Item) free() {
+func (item *Item) free() {
 	var _arg0 *C.PangoItem // out
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(item))
 
 	C.pango_item_free(_arg0)
 }
@@ -141,13 +137,13 @@ func (i *Item) free() {
 // the first item in chars, and must be provided because the text used to
 // generate the item isn't available, so `pango_item_split()` can't count the
 // char length of the split items itself.
-func (o *Item) Split(splitIndex int, splitOffset int) *Item {
+func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
 	var _cret *C.PangoItem // in
 
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(o))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(orig))
 	_arg1 = C.int(splitIndex)
 	_arg2 = C.int(splitOffset)
 

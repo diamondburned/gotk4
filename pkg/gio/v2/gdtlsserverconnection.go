@@ -37,26 +37,24 @@ func init() {
 type DTLSServerConnection interface {
 	gextras.Objector
 
-	privateDTLSServerConnectionInterface()
+	privateDTLSServerConnectionIface()
 }
 
-// DTLSServerConnectionInterface implements the DTLSServerConnection interface.
-type DTLSServerConnectionInterface struct {
-	*externglib.Object
-	DatagramBasedInterface
-	DTLSConnectionInterface
+// DTLSServerConnectionIface implements the DTLSServerConnection interface.
+type DTLSServerConnectionIface struct {
+	DatagramBasedIface
+	DTLSConnectionIface
 }
 
-var _ DTLSServerConnection = (*DTLSServerConnectionInterface)(nil)
+var _ DTLSServerConnection = (*DTLSServerConnectionIface)(nil)
 
 func wrapDTLSServerConnection(obj *externglib.Object) DTLSServerConnection {
-	return &DTLSServerConnectionInterface{
-		Object: obj,
-		DatagramBasedInterface: DatagramBasedInterface{
+	return &DTLSServerConnectionIface{
+		DatagramBasedIface: DatagramBasedIface{
 			Object: obj,
 		},
-		DTLSConnectionInterface: DTLSConnectionInterface{
-			DatagramBasedInterface: DatagramBasedInterface{
+		DTLSConnectionIface: DTLSConnectionIface{
+			DatagramBasedIface: DatagramBasedIface{
 				Object: obj,
 			},
 		},
@@ -69,4 +67,4 @@ func marshalDTLSServerConnection(p uintptr) (interface{}, error) {
 	return wrapDTLSServerConnection(obj), nil
 }
 
-func (*DTLSServerConnectionInterface) privateDTLSServerConnectionInterface() {}
+func (*DTLSServerConnectionIface) privateDTLSServerConnectionIface() {}

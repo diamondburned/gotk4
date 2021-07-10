@@ -93,9 +93,9 @@ type Overlay interface {
 type OverlayClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ Overlay = (*OverlayClass)(nil)
@@ -104,24 +104,27 @@ func wrapOverlay(obj *externglib.Object) Overlay {
 	return &OverlayClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -153,22 +156,22 @@ func NewOverlay() *OverlayClass {
 //
 // The position at which @widget is placed is determined from its
 // [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
-func (o *OverlayClass) AddOverlay(widget Widget) {
+func (overlay *OverlayClass) AddOverlay(widget Widget) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
 }
 
 // Child gets the child widget of @overlay.
-func (o *OverlayClass) Child() *WidgetClass {
+func (overlay *OverlayClass) Child() *WidgetClass {
 	var _arg0 *C.GtkOverlay // out
 	var _cret *C.GtkWidget  // in
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 
 	_cret = C.gtk_overlay_get_child(_arg0)
 
@@ -180,12 +183,12 @@ func (o *OverlayClass) Child() *WidgetClass {
 }
 
 // ClipOverlay gets whether @widget should be clipped within the parent.
-func (o *OverlayClass) ClipOverlay(widget Widget) bool {
+func (overlay *OverlayClass) ClipOverlay(widget Widget) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_clip_overlay(_arg0, _arg1)
@@ -201,12 +204,12 @@ func (o *OverlayClass) ClipOverlay(widget Widget) bool {
 
 // MeasureOverlay gets whether @widget's size is included in the measurement of
 // @overlay.
-func (o *OverlayClass) MeasureOverlay(widget Widget) bool {
+func (overlay *OverlayClass) MeasureOverlay(widget Widget) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_measure_overlay(_arg0, _arg1)
@@ -222,34 +225,34 @@ func (o *OverlayClass) MeasureOverlay(widget Widget) bool {
 
 // RemoveOverlay removes an overlay that was added with
 // gtk_overlay_add_overlay().
-func (o *OverlayClass) RemoveOverlay(widget Widget) {
+func (overlay *OverlayClass) RemoveOverlay(widget Widget) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_remove_overlay(_arg0, _arg1)
 }
 
 // SetChild sets the child widget of @overlay.
-func (o *OverlayClass) SetChild(child Widget) {
+func (overlay *OverlayClass) SetChild(child Widget) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_overlay_set_child(_arg0, _arg1)
 }
 
 // SetClipOverlay sets whether @widget should be clipped within the parent.
-func (o *OverlayClass) SetClipOverlay(widget Widget, clipOverlay bool) {
+func (overlay *OverlayClass) SetClipOverlay(widget Widget, clipOverlay bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	if clipOverlay {
 		_arg2 = C.TRUE
@@ -264,12 +267,12 @@ func (o *OverlayClass) SetClipOverlay(widget Widget, clipOverlay bool) {
 // The overlay will request the size of the largest child that has this property
 // set to true. Children who are not included may be drawn outside of @overlay's
 // allocation if they are too large.
-func (o *OverlayClass) SetMeasureOverlay(widget Widget, measure bool) {
+func (overlay *OverlayClass) SetMeasureOverlay(widget Widget, measure bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	if measure {
 		_arg2 = C.TRUE

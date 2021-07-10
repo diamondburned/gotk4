@@ -149,15 +149,15 @@ type AsyncResult interface {
 	LegacyPropagateError() error
 }
 
-// AsyncResultInterface implements the AsyncResult interface.
-type AsyncResultInterface struct {
+// AsyncResultIface implements the AsyncResult interface.
+type AsyncResultIface struct {
 	*externglib.Object
 }
 
-var _ AsyncResult = (*AsyncResultInterface)(nil)
+var _ AsyncResult = (*AsyncResultIface)(nil)
 
 func wrapAsyncResult(obj *externglib.Object) AsyncResult {
-	return &AsyncResultInterface{
+	return &AsyncResultIface{
 		Object: obj,
 	}
 }
@@ -169,11 +169,11 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 }
 
 // SourceObject gets the source object from a Result.
-func (r *AsyncResultInterface) SourceObject() *externglib.Object {
+func (res *AsyncResultIface) SourceObject() *externglib.Object {
 	var _arg0 *C.GAsyncResult // out
 	var _cret *C.GObject      // in
 
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_async_result_get_source_object(_arg0)
 
@@ -185,11 +185,11 @@ func (r *AsyncResultInterface) SourceObject() *externglib.Object {
 }
 
 // UserData gets the user data from a Result.
-func (r *AsyncResultInterface) UserData() interface{} {
+func (res *AsyncResultIface) UserData() interface{} {
 	var _arg0 *C.GAsyncResult // out
 	var _cret C.gpointer      // in
 
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_async_result_get_user_data(_arg0)
 
@@ -202,12 +202,12 @@ func (r *AsyncResultInterface) UserData() interface{} {
 
 // IsTagged checks if @res has the given @source_tag (generally a function
 // pointer indicating the function @res was created by).
-func (r *AsyncResultInterface) IsTagged(sourceTag interface{}) bool {
+func (res *AsyncResultIface) IsTagged(sourceTag interface{}) bool {
 	var _arg0 *C.GAsyncResult // out
 	var _arg1 C.gpointer      // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 	_arg1 = (C.gpointer)(box.Assign(sourceTag))
 
 	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
@@ -229,11 +229,11 @@ func (r *AsyncResultInterface) IsTagged(sourceTag interface{}) bool {
 // rather than calling into the virtual method. This should not be used in new
 // code; Result errors that are set by virtual methods should also be extracted
 // by virtual methods, to enable subclasses to chain up correctly.
-func (r *AsyncResultInterface) LegacyPropagateError() error {
+func (res *AsyncResultIface) LegacyPropagateError() error {
 	var _arg0 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_async_result_legacy_propagate_error(_arg0, &_cerr)
 

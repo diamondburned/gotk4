@@ -142,15 +142,15 @@ type ListModel interface {
 	ItemsChanged(position uint, removed uint, added uint)
 }
 
-// ListModelInterface implements the ListModel interface.
-type ListModelInterface struct {
+// ListModelIface implements the ListModel interface.
+type ListModelIface struct {
 	*externglib.Object
 }
 
-var _ ListModel = (*ListModelInterface)(nil)
+var _ ListModel = (*ListModelIface)(nil)
 
 func wrapListModel(obj *externglib.Object) ListModel {
-	return &ListModelInterface{
+	return &ListModelIface{
 		Object: obj,
 	}
 }
@@ -166,11 +166,11 @@ func marshalListModel(p uintptr) (interface{}, error) {
 // implementation of that interface.
 //
 // The item type of a Model can not change during the life of the model.
-func (l *ListModelInterface) ItemType() externglib.Type {
+func (list *ListModelIface) ItemType() externglib.Type {
 	var _arg0 *C.GListModel // out
 	var _cret C.GType       // in
 
-	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GListModel)(unsafe.Pointer(list.Native()))
 
 	_cret = C.g_list_model_get_item_type(_arg0)
 
@@ -186,11 +186,11 @@ func (l *ListModelInterface) ItemType() externglib.Type {
 // Depending on the model implementation, calling this function may be less
 // efficient than iterating the list with increasing values for @position until
 // g_list_model_get_item() returns nil.
-func (l *ListModelInterface) NItems() uint {
+func (list *ListModelIface) NItems() uint {
 	var _arg0 *C.GListModel // out
 	var _cret C.guint       // in
 
-	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GListModel)(unsafe.Pointer(list.Native()))
 
 	_cret = C.g_list_model_get_n_items(_arg0)
 
@@ -206,12 +206,12 @@ func (l *ListModelInterface) NItems() uint {
 //
 // nil is never returned for an index that is smaller than the length of the
 // list. See g_list_model_get_n_items().
-func (l *ListModelInterface) GetObject(position uint) *externglib.Object {
+func (list *ListModelIface) GetObject(position uint) *externglib.Object {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _cret *C.GObject    // in
 
-	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GListModel)(unsafe.Pointer(list.Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.g_list_model_get_object(_arg0, _arg1)
@@ -242,13 +242,13 @@ func (l *ListModelInterface) GetObject(position uint) *externglib.Object {
 // accesses to the model via the API, without returning to the mainloop, and
 // without calling other code, will continue to view the same contents of the
 // model.
-func (l *ListModelInterface) ItemsChanged(position uint, removed uint, added uint) {
+func (list *ListModelIface) ItemsChanged(position uint, removed uint, added uint) {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out
 	var _arg3 C.guint       // out
 
-	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GListModel)(unsafe.Pointer(list.Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(removed)
 	_arg3 = C.guint(added)

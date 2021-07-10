@@ -46,18 +46,18 @@ type ShortcutManagerOverrider interface {
 type ShortcutManager interface {
 	gextras.Objector
 
-	privateShortcutManagerInterface()
+	privateShortcutManagerIface()
 }
 
-// ShortcutManagerInterface implements the ShortcutManager interface.
-type ShortcutManagerInterface struct {
+// ShortcutManagerIface implements the ShortcutManager interface.
+type ShortcutManagerIface struct {
 	*externglib.Object
 }
 
-var _ ShortcutManager = (*ShortcutManagerInterface)(nil)
+var _ ShortcutManager = (*ShortcutManagerIface)(nil)
 
 func wrapShortcutManager(obj *externglib.Object) ShortcutManager {
-	return &ShortcutManagerInterface{
+	return &ShortcutManagerIface{
 		Object: obj,
 	}
 }
@@ -68,4 +68,4 @@ func marshalShortcutManager(p uintptr) (interface{}, error) {
 	return wrapShortcutManager(obj), nil
 }
 
-func (*ShortcutManagerInterface) privateShortcutManagerInterface() {}
+func (*ShortcutManagerIface) privateShortcutManagerIface() {}

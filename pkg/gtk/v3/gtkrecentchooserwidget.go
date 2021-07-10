@@ -43,9 +43,9 @@ type RecentChooserWidget interface {
 type RecentChooserWidgetClass struct {
 	*externglib.Object
 	BoxClass
-	BuildableInterface
-	OrientableInterface
-	RecentChooserInterface
+	BuildableIface
+	OrientableIface
+	RecentChooserIface
 }
 
 var _ RecentChooserWidget = (*RecentChooserWidgetClass)(nil)
@@ -58,29 +58,32 @@ func wrapRecentChooserWidget(obj *externglib.Object) RecentChooserWidget {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
-		RecentChooserInterface: RecentChooserInterface{
+		RecentChooserIface: RecentChooserIface{
 			Object: obj,
 		},
 	}

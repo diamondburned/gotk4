@@ -32,7 +32,8 @@ import "C"
 // gdk_drawing_context_get_cairo_context() instead. GTK will automatically do
 // this for you when drawing a widget.
 //
-// Deprecated: since version 3.22.
+// Deprecated: Use gdk_window_begin_draw_frame() and
+// gdk_drawing_context_get_cairo_context() instead.
 func CairoCreate(window Window) *cairo.Context {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.cairo_t   // in
@@ -178,7 +179,7 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 
 // CairoSetSourceColor sets the specified Color as the source color of @cr.
 //
-// Deprecated: since version 3.4.
+// Deprecated: Use gdk_cairo_set_source_rgba() instead.
 func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 	var _arg1 *C.cairo_t  // out
 	var _arg2 *C.GdkColor // out

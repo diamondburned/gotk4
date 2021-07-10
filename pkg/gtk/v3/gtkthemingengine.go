@@ -61,7 +61,8 @@ type ThemingEngine interface {
 
 	// Direction returns the widget direction used for rendering.
 	//
-	// Deprecated: since version 3.8.
+	// Deprecated: Use gtk_theming_engine_get_state() and check for
+	// K_STATE_FLAG_DIR_LTR and K_STATE_FLAG_DIR_RTL instead.
 	Direction() TextDirection
 	// JunctionSides returns the widget direction used for rendering.
 	//
@@ -122,12 +123,13 @@ func marshalThemingEngine(p uintptr) (interface{}, error) {
 
 // Direction returns the widget direction used for rendering.
 //
-// Deprecated: since version 3.8.
-func (e *ThemingEngineClass) Direction() TextDirection {
+// Deprecated: Use gtk_theming_engine_get_state() and check for
+// K_STATE_FLAG_DIR_LTR and K_STATE_FLAG_DIR_RTL instead.
+func (engine *ThemingEngineClass) Direction() TextDirection {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkTextDirection  // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_direction(_arg0)
 
@@ -141,11 +143,11 @@ func (e *ThemingEngineClass) Direction() TextDirection {
 // JunctionSides returns the widget direction used for rendering.
 //
 // Deprecated: since version 3.14.
-func (e *ThemingEngineClass) JunctionSides() JunctionSides {
+func (engine *ThemingEngineClass) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkJunctionSides  // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_junction_sides(_arg0)
 
@@ -159,11 +161,11 @@ func (e *ThemingEngineClass) JunctionSides() JunctionSides {
 // Path returns the widget path used for style matching.
 //
 // Deprecated: since version 3.14.
-func (e *ThemingEngineClass) Path() *WidgetPath {
+func (engine *ThemingEngineClass) Path() *WidgetPath {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GtkWidgetPath    // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_path(_arg0)
 
@@ -181,11 +183,11 @@ func (e *ThemingEngineClass) Path() *WidgetPath {
 // Screen returns the Screen to which @engine currently rendering to.
 //
 // Deprecated: since version 3.14.
-func (e *ThemingEngineClass) Screen() *gdk.ScreenClass {
+func (engine *ThemingEngineClass) Screen() *gdk.ScreenClass {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GdkScreen        // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_screen(_arg0)
 
@@ -199,11 +201,11 @@ func (e *ThemingEngineClass) Screen() *gdk.ScreenClass {
 // State returns the state used when rendering.
 //
 // Deprecated: since version 3.14.
-func (e *ThemingEngineClass) State() StateFlags {
+func (engine *ThemingEngineClass) State() StateFlags {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkStateFlags     // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_state(_arg0)
 
@@ -217,12 +219,12 @@ func (e *ThemingEngineClass) State() StateFlags {
 // StyleProperty gets the value for a widget style property.
 //
 // Deprecated: since version 3.14.
-func (e *ThemingEngineClass) StyleProperty(propertyName string) externglib.Value {
+func (engine *ThemingEngineClass) StyleProperty(propertyName string) externglib.Value {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GValue            // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -239,12 +241,12 @@ func (e *ThemingEngineClass) StyleProperty(propertyName string) externglib.Value
 // given class name.
 //
 // Deprecated: since version 3.14.
-func (e *ThemingEngineClass) HasClass(styleClass string) bool {
+func (engine *ThemingEngineClass) HasClass(styleClass string) bool {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = (*C.gchar)(C.CString(styleClass))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -264,13 +266,13 @@ func (e *ThemingEngineClass) HasClass(styleClass string) bool {
 // region.
 //
 // Deprecated: since version 3.14.
-func (e *ThemingEngineClass) HasRegion(styleRegion string) (RegionFlags, bool) {
+func (engine *ThemingEngineClass) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GtkRegionFlags    // in
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = (*C.gchar)(C.CString(styleRegion))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -291,13 +293,13 @@ func (e *ThemingEngineClass) HasRegion(styleRegion string) (RegionFlags, bool) {
 // map.
 //
 // Deprecated: since version 3.14.
-func (e *ThemingEngineClass) LookupColor(colorName string) (gdk.RGBA, bool) {
+func (engine *ThemingEngineClass) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GdkRGBA           // in
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = (*C.gchar)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
 

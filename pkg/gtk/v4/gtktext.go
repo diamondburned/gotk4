@@ -221,10 +221,10 @@ type Text interface {
 type TextClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	EditableInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	EditableIface
 }
 
 var _ Text = (*TextClass)(nil)
@@ -233,36 +233,43 @@ func wrapText(obj *externglib.Object) Text {
 	return &TextClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		EditableInterface: EditableInterface{
+		EditableIface: EditableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
@@ -306,11 +313,11 @@ func NewTextWithBuffer(buffer EntryBuffer) *TextClass {
 }
 
 // ActivatesDefault retrieves the value set by gtk_text_set_activates_default().
-func (s *TextClass) ActivatesDefault() bool {
+func (self *TextClass) ActivatesDefault() bool {
 	var _arg0 *C.GtkText // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_activates_default(_arg0)
 
@@ -325,11 +332,11 @@ func (s *TextClass) ActivatesDefault() bool {
 
 // Attributes gets the attribute list that was set on the `GtkText` using
 // gtk_text_set_attributes().
-func (s *TextClass) Attributes() *pango.AttrList {
+func (self *TextClass) Attributes() *pango.AttrList {
 	var _arg0 *C.GtkText       // out
 	var _cret *C.PangoAttrList // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_attributes(_arg0)
 
@@ -345,11 +352,11 @@ func (s *TextClass) Attributes() *pango.AttrList {
 }
 
 // Buffer: get the `GtkEntryBuffer` object which holds the text for this self.
-func (s *TextClass) Buffer() *EntryBufferClass {
+func (self *TextClass) Buffer() *EntryBufferClass {
 	var _arg0 *C.GtkText        // out
 	var _cret *C.GtkEntryBuffer // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_buffer(_arg0)
 
@@ -362,11 +369,11 @@ func (s *TextClass) Buffer() *EntryBufferClass {
 
 // EnableEmojiCompletion returns whether Emoji completion is enabled for this
 // `GtkText` widget.
-func (s *TextClass) EnableEmojiCompletion() bool {
+func (self *TextClass) EnableEmojiCompletion() bool {
 	var _arg0 *C.GtkText // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_enable_emoji_completion(_arg0)
 
@@ -380,11 +387,11 @@ func (s *TextClass) EnableEmojiCompletion() bool {
 }
 
 // ExtraMenu gets the menu model set with gtk_text_set_extra_menu().
-func (s *TextClass) ExtraMenu() *gio.MenuModelClass {
+func (self *TextClass) ExtraMenu() *gio.MenuModelClass {
 	var _arg0 *C.GtkText    // out
 	var _cret *C.GMenuModel // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_extra_menu(_arg0)
 
@@ -396,11 +403,11 @@ func (s *TextClass) ExtraMenu() *gio.MenuModelClass {
 }
 
 // InputHints gets the input hints of the `GtkText`.
-func (s *TextClass) InputHints() InputHints {
+func (self *TextClass) InputHints() InputHints {
 	var _arg0 *C.GtkText      // out
 	var _cret C.GtkInputHints // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_input_hints(_arg0)
 
@@ -412,11 +419,11 @@ func (s *TextClass) InputHints() InputHints {
 }
 
 // InputPurpose gets the input purpose of the `GtkText`.
-func (s *TextClass) InputPurpose() InputPurpose {
+func (self *TextClass) InputPurpose() InputPurpose {
 	var _arg0 *C.GtkText        // out
 	var _cret C.GtkInputPurpose // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_input_purpose(_arg0)
 
@@ -433,11 +440,11 @@ func (s *TextClass) InputPurpose() InputPurpose {
 // Note that GTK does not compute this value unless it needs it, so the value
 // returned by this function is not very useful unless it has been explicitly
 // set with [method@Gtk.Text.set_invisible_char].
-func (s *TextClass) InvisibleChar() uint32 {
+func (self *TextClass) InvisibleChar() uint32 {
 	var _arg0 *C.GtkText // out
 	var _cret C.gunichar // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_invisible_char(_arg0)
 
@@ -454,11 +461,11 @@ func (s *TextClass) InvisibleChar() uint32 {
 //
 // This is equivalent to getting @self's `GtkEntryBuffer` and calling
 // [method@Gtk.EntryBuffer.get_max_length] on it.
-func (s *TextClass) MaxLength() int {
+func (self *TextClass) MaxLength() int {
 	var _arg0 *C.GtkText // out
 	var _cret C.int      // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_max_length(_arg0)
 
@@ -470,11 +477,11 @@ func (s *TextClass) MaxLength() int {
 }
 
 // OverwriteMode gets the value set by gtk_text_set_overwrite_mode().
-func (s *TextClass) OverwriteMode() bool {
+func (self *TextClass) OverwriteMode() bool {
 	var _arg0 *C.GtkText // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_overwrite_mode(_arg0)
 
@@ -489,11 +496,11 @@ func (s *TextClass) OverwriteMode() bool {
 
 // PlaceholderText retrieves the text that will be displayed when @self is empty
 // and unfocused
-func (s *TextClass) PlaceholderText() string {
+func (self *TextClass) PlaceholderText() string {
 	var _arg0 *C.GtkText // out
 	var _cret *C.char    // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_placeholder_text(_arg0)
 
@@ -506,11 +513,11 @@ func (s *TextClass) PlaceholderText() string {
 
 // PropagateTextWidth returns whether the `GtkText` will grow and shrink with
 // the content.
-func (s *TextClass) PropagateTextWidth() bool {
+func (self *TextClass) PropagateTextWidth() bool {
 	var _arg0 *C.GtkText // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_propagate_text_width(_arg0)
 
@@ -525,11 +532,11 @@ func (s *TextClass) PropagateTextWidth() bool {
 
 // Tabs gets the tabstops that were set on the `GtkText` using
 // gtk_text_set_tabs().
-func (s *TextClass) Tabs() *pango.TabArray {
+func (self *TextClass) Tabs() *pango.TabArray {
 	var _arg0 *C.GtkText       // out
 	var _cret *C.PangoTabArray // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_tabs(_arg0)
 
@@ -544,11 +551,11 @@ func (s *TextClass) Tabs() *pango.TabArray {
 //
 // This is equivalent to getting @self's `GtkEntryBuffer` and calling
 // [method@Gtk.EntryBuffer.get_length] on it.
-func (s *TextClass) TextLength() uint16 {
+func (self *TextClass) TextLength() uint16 {
 	var _arg0 *C.GtkText // out
 	var _cret C.guint16  // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_text_length(_arg0)
 
@@ -561,11 +568,11 @@ func (s *TextClass) TextLength() uint16 {
 
 // TruncateMultiline returns whether the `GtkText` will truncate multi-line text
 // that is pasted into the widget
-func (s *TextClass) TruncateMultiline() bool {
+func (self *TextClass) TruncateMultiline() bool {
 	var _arg0 *C.GtkText // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_truncate_multiline(_arg0)
 
@@ -579,11 +586,11 @@ func (s *TextClass) TruncateMultiline() bool {
 }
 
 // Visibility retrieves whether the text in @self is visible.
-func (s *TextClass) Visibility() bool {
+func (self *TextClass) Visibility() bool {
 	var _arg0 *C.GtkText // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_visibility(_arg0)
 
@@ -602,11 +609,11 @@ func (s *TextClass) Visibility() bool {
 // the contents of @self. You only want to call this on some special entries
 // which the user usually doesn't want to replace all text in, such as
 // search-as-you-type entries.
-func (s *TextClass) GrabFocusWithoutSelecting() bool {
+func (self *TextClass) GrabFocusWithoutSelecting() bool {
 	var _arg0 *C.GtkText // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_grab_focus_without_selecting(_arg0)
 
@@ -624,11 +631,11 @@ func (s *TextClass) GrabFocusWithoutSelecting() bool {
 //
 // This usually means that the dialog containing the `GtkText` will be closed,
 // since the default widget is usually one of the dialog buttons.
-func (s *TextClass) SetActivatesDefault(activates bool) {
+func (self *TextClass) SetActivatesDefault(activates bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	if activates {
 		_arg1 = C.TRUE
 	}
@@ -637,11 +644,11 @@ func (s *TextClass) SetActivatesDefault(activates bool) {
 }
 
 // SetAttributes sets attributes that are applied to the text.
-func (s *TextClass) SetAttributes(attrs *pango.AttrList) {
+func (self *TextClass) SetAttributes(attrs *pango.AttrList) {
 	var _arg0 *C.GtkText       // out
 	var _arg1 *C.PangoAttrList // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs))
 
 	C.gtk_text_set_attributes(_arg0, _arg1)
@@ -649,11 +656,11 @@ func (s *TextClass) SetAttributes(attrs *pango.AttrList) {
 
 // SetBuffer: set the `GtkEntryBuffer` object which holds the text for this
 // widget.
-func (s *TextClass) SetBuffer(buffer EntryBuffer) {
+func (self *TextClass) SetBuffer(buffer EntryBuffer) {
 	var _arg0 *C.GtkText        // out
 	var _arg1 *C.GtkEntryBuffer // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_text_set_buffer(_arg0, _arg1)
@@ -663,11 +670,11 @@ func (s *TextClass) SetBuffer(buffer EntryBuffer) {
 //
 // If it is, typing ':', followed by a recognized keyword, will pop up a window
 // with suggested Emojis matching the keyword.
-func (s *TextClass) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
+func (self *TextClass) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	if enableEmojiCompletion {
 		_arg1 = C.TRUE
 	}
@@ -677,11 +684,11 @@ func (s *TextClass) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // @self.
-func (s *TextClass) SetExtraMenu(model gio.MenuModel) {
+func (self *TextClass) SetExtraMenu(model gio.MenuModel) {
 	var _arg0 *C.GtkText    // out
 	var _arg1 *C.GMenuModel // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_text_set_extra_menu(_arg0, _arg1)
@@ -693,11 +700,11 @@ func (s *TextClass) SetExtraMenu(model gio.MenuModel) {
 // By default, GTK picks the best invisible char available in the current font.
 // If you set the invisible char to 0, then the user will get no feedback at
 // all; there will be no text on the screen as they type.
-func (s *TextClass) SetInvisibleChar(ch uint32) {
+func (self *TextClass) SetInvisibleChar(ch uint32) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gunichar // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	_arg1 = C.gunichar(ch)
 
 	C.gtk_text_set_invisible_char(_arg0, _arg1)
@@ -710,11 +717,11 @@ func (s *TextClass) SetInvisibleChar(ch uint32) {
 //
 // This is equivalent to getting @self's `GtkEntryBuffer` and calling
 // [method@Gtk.EntryBuffer.set_max_length] on it.
-func (s *TextClass) SetMaxLength(length int) {
+func (self *TextClass) SetMaxLength(length int) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.int      // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	_arg1 = C.int(length)
 
 	C.gtk_text_set_max_length(_arg0, _arg1)
@@ -722,11 +729,11 @@ func (s *TextClass) SetMaxLength(length int) {
 
 // SetOverwriteMode sets whether the text is overwritten when typing in the
 // `GtkText`.
-func (s *TextClass) SetOverwriteMode(overwrite bool) {
+func (self *TextClass) SetOverwriteMode(overwrite bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	if overwrite {
 		_arg1 = C.TRUE
 	}
@@ -738,11 +745,11 @@ func (s *TextClass) SetOverwriteMode(overwrite bool) {
 //
 // This can be used to give a visual hint of the expected contents of the
 // `GtkText`.
-func (s *TextClass) SetPlaceholderText(text string) {
+func (self *TextClass) SetPlaceholderText(text string) {
 	var _arg0 *C.GtkText // out
 	var _arg1 *C.char    // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -751,11 +758,11 @@ func (s *TextClass) SetPlaceholderText(text string) {
 
 // SetPropagateTextWidth sets whether the `GtkText` should grow and shrink with
 // the content.
-func (s *TextClass) SetPropagateTextWidth(propagateTextWidth bool) {
+func (self *TextClass) SetPropagateTextWidth(propagateTextWidth bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	if propagateTextWidth {
 		_arg1 = C.TRUE
 	}
@@ -764,11 +771,11 @@ func (s *TextClass) SetPropagateTextWidth(propagateTextWidth bool) {
 }
 
 // SetTabs sets tabstops that are applied to the text.
-func (s *TextClass) SetTabs(tabs *pango.TabArray) {
+func (self *TextClass) SetTabs(tabs *pango.TabArray) {
 	var _arg0 *C.GtkText       // out
 	var _arg1 *C.PangoTabArray // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs))
 
 	C.gtk_text_set_tabs(_arg0, _arg1)
@@ -776,11 +783,11 @@ func (s *TextClass) SetTabs(tabs *pango.TabArray) {
 
 // SetTruncateMultiline sets whether the `GtkText` should truncate multi-line
 // text that is pasted into the widget.
-func (s *TextClass) SetTruncateMultiline(truncateMultiline bool) {
+func (self *TextClass) SetTruncateMultiline(truncateMultiline bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	if truncateMultiline {
 		_arg1 = C.TRUE
 	}
@@ -800,11 +807,11 @@ func (s *TextClass) SetTruncateMultiline(truncateMultiline bool) {
 // Note that you probably want to set [property@Gtk.Text:input-purpose] to
 // GTK_INPUT_PURPOSE_PASSWORD or GTK_INPUT_PURPOSE_PIN to inform input methods
 // about the purpose of this self, in addition to setting visibility to false.
-func (s *TextClass) SetVisibility(visible bool) {
+func (self *TextClass) SetVisibility(visible bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
@@ -815,10 +822,10 @@ func (s *TextClass) SetVisibility(visible bool) {
 // UnsetInvisibleChar unsets the invisible char.
 //
 // After calling this, the default invisible char is used again.
-func (s *TextClass) UnsetInvisibleChar() {
+func (self *TextClass) UnsetInvisibleChar() {
 	var _arg0 *C.GtkText // out
 
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	C.gtk_text_unset_invisible_char(_arg0)
 }

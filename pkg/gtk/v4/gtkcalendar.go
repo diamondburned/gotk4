@@ -102,9 +102,9 @@ type Calendar interface {
 type CalendarClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ Calendar = (*CalendarClass)(nil)
@@ -113,24 +113,27 @@ func wrapCalendar(obj *externglib.Object) Calendar {
 	return &CalendarClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -156,21 +159,21 @@ func NewCalendar() *CalendarClass {
 }
 
 // ClearMarks: remove all visual markers.
-func (c *CalendarClass) ClearMarks() {
+func (calendar *CalendarClass) ClearMarks() {
 	var _arg0 *C.GtkCalendar // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 
 	C.gtk_calendar_clear_marks(_arg0)
 }
 
 // DayIsMarked returns if the @day of the @calendar is already marked.
-func (c *CalendarClass) DayIsMarked(day uint) bool {
+func (calendar *CalendarClass) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 	_arg1 = C.guint(day)
 
 	_cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
@@ -188,11 +191,11 @@ func (c *CalendarClass) DayIsMarked(day uint) bool {
 // days.
 //
 // This is the value of the [property@Gtk.Calendar:show-day-names] property.
-func (s *CalendarClass) ShowDayNames() bool {
+func (self *CalendarClass) ShowDayNames() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_calendar_get_show_day_names(_arg0)
 
@@ -208,11 +211,11 @@ func (s *CalendarClass) ShowDayNames() bool {
 // ShowHeading returns whether @self is currently showing the heading.
 //
 // This is the value of the [property@Gtk.Calendar:show-heading] property.
-func (s *CalendarClass) ShowHeading() bool {
+func (self *CalendarClass) ShowHeading() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_calendar_get_show_heading(_arg0)
 
@@ -228,11 +231,11 @@ func (s *CalendarClass) ShowHeading() bool {
 // ShowWeekNumbers returns whether @self is showing week numbers right now.
 //
 // This is the value of the [property@Gtk.Calendar:show-week-numbers] property.
-func (s *CalendarClass) ShowWeekNumbers() bool {
+func (self *CalendarClass) ShowWeekNumbers() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_calendar_get_show_week_numbers(_arg0)
 
@@ -246,22 +249,22 @@ func (s *CalendarClass) ShowWeekNumbers() bool {
 }
 
 // MarkDay places a visual marker on a particular day.
-func (c *CalendarClass) MarkDay(day uint) {
+func (calendar *CalendarClass) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_mark_day(_arg0, _arg1)
 }
 
 // SetShowDayNames sets whether the calendar shows day names.
-func (s *CalendarClass) SetShowDayNames(value bool) {
+func (self *CalendarClass) SetShowDayNames(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 	if value {
 		_arg1 = C.TRUE
 	}
@@ -273,11 +276,11 @@ func (s *CalendarClass) SetShowDayNames(value bool) {
 //
 // The heading contains the current year and month as well as buttons for
 // changing both.
-func (s *CalendarClass) SetShowHeading(value bool) {
+func (self *CalendarClass) SetShowHeading(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 	if value {
 		_arg1 = C.TRUE
 	}
@@ -286,11 +289,11 @@ func (s *CalendarClass) SetShowHeading(value bool) {
 }
 
 // SetShowWeekNumbers sets whether week numbers are shown in the calendar.
-func (s *CalendarClass) SetShowWeekNumbers(value bool) {
+func (self *CalendarClass) SetShowWeekNumbers(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 	if value {
 		_arg1 = C.TRUE
 	}
@@ -299,11 +302,11 @@ func (s *CalendarClass) SetShowWeekNumbers(value bool) {
 }
 
 // UnmarkDay removes the visual marker from a particular day.
-func (c *CalendarClass) UnmarkDay(day uint) {
+func (calendar *CalendarClass) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_unmark_day(_arg0, _arg1)

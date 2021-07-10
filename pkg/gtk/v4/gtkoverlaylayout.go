@@ -109,11 +109,11 @@ func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 }
 
 // ClipOverlay retrieves whether the child is clipped.
-func (c *OverlayLayoutChildClass) ClipOverlay() bool {
+func (child *OverlayLayoutChildClass) ClipOverlay() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_overlay_layout_child_get_clip_overlay(_arg0)
 
@@ -127,11 +127,11 @@ func (c *OverlayLayoutChildClass) ClipOverlay() bool {
 }
 
 // Measure retrieves whether the child is measured.
-func (c *OverlayLayoutChildClass) Measure() bool {
+func (child *OverlayLayoutChildClass) Measure() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_overlay_layout_child_get_measure(_arg0)
 
@@ -145,11 +145,11 @@ func (c *OverlayLayoutChildClass) Measure() bool {
 }
 
 // SetClipOverlay sets whether to clip this child.
-func (c *OverlayLayoutChildClass) SetClipOverlay(clipOverlay bool) {
+func (child *OverlayLayoutChildClass) SetClipOverlay(clipOverlay bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
 	if clipOverlay {
 		_arg1 = C.TRUE
 	}
@@ -158,11 +158,11 @@ func (c *OverlayLayoutChildClass) SetClipOverlay(clipOverlay bool) {
 }
 
 // SetMeasure sets whether to measure this child.
-func (c *OverlayLayoutChildClass) SetMeasure(measure bool) {
+func (child *OverlayLayoutChildClass) SetMeasure(measure bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
 	if measure {
 		_arg1 = C.TRUE
 	}

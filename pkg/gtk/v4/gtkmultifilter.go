@@ -38,7 +38,7 @@ type AnyFilter interface {
 type AnyFilterClass struct {
 	*externglib.Object
 	MultiFilterClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ AnyFilter = (*AnyFilterClass)(nil)
@@ -51,11 +51,11 @@ func wrapAnyFilter(obj *externglib.Object) AnyFilter {
 			FilterClass: FilterClass{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -102,7 +102,7 @@ type EveryFilter interface {
 type EveryFilterClass struct {
 	*externglib.Object
 	MultiFilterClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ EveryFilter = (*EveryFilterClass)(nil)
@@ -115,11 +115,11 @@ func wrapEveryFilter(obj *externglib.Object) EveryFilter {
 			FilterClass: FilterClass{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -171,7 +171,7 @@ type MultiFilter interface {
 type MultiFilterClass struct {
 	*externglib.Object
 	FilterClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ MultiFilter = (*MultiFilterClass)(nil)
@@ -182,7 +182,7 @@ func wrapMultiFilter(obj *externglib.Object) MultiFilter {
 		FilterClass: FilterClass{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -195,11 +195,11 @@ func marshalMultiFilter(p uintptr) (interface{}, error) {
 }
 
 // Append adds a @filter to @self to use for matching.
-func (s *MultiFilterClass) Append(filter Filter) {
+func (self *MultiFilterClass) Append(filter Filter) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_multi_filter_append(_arg0, _arg1)
@@ -210,11 +210,11 @@ func (s *MultiFilterClass) Append(filter Filter) {
 //
 // If @position is larger than the number of filters, nothing happens and the
 // function returns.
-func (s *MultiFilterClass) Remove(position uint) {
+func (self *MultiFilterClass) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(self.Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)

@@ -30,15 +30,15 @@ type DragSurface interface {
 	Present(width int, height int) bool
 }
 
-// DragSurfaceInterface implements the DragSurface interface.
-type DragSurfaceInterface struct {
+// DragSurfaceIface implements the DragSurface interface.
+type DragSurfaceIface struct {
 	SurfaceClass
 }
 
-var _ DragSurface = (*DragSurfaceInterface)(nil)
+var _ DragSurface = (*DragSurfaceIface)(nil)
 
 func wrapDragSurface(obj *externglib.Object) DragSurface {
-	return &DragSurfaceInterface{
+	return &DragSurfaceIface{
 		SurfaceClass: SurfaceClass{
 			Object: obj,
 		},
@@ -52,13 +52,13 @@ func marshalDragSurface(p uintptr) (interface{}, error) {
 }
 
 // Present @drag_surface.
-func (d *DragSurfaceInterface) Present(width int, height int) bool {
+func (dragSurface *DragSurfaceIface) Present(width int, height int) bool {
 	var _arg0 *C.GdkDragSurface // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkDragSurface)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDragSurface)(unsafe.Pointer(dragSurface.Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 

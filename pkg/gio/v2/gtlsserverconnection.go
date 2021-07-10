@@ -37,18 +37,18 @@ func init() {
 type TLSServerConnection interface {
 	gextras.Objector
 
-	privateTLSServerConnectionInterface()
+	privateTLSServerConnectionIface()
 }
 
-// TLSServerConnectionInterface implements the TLSServerConnection interface.
-type TLSServerConnectionInterface struct {
+// TLSServerConnectionIface implements the TLSServerConnection interface.
+type TLSServerConnectionIface struct {
 	TLSConnectionClass
 }
 
-var _ TLSServerConnection = (*TLSServerConnectionInterface)(nil)
+var _ TLSServerConnection = (*TLSServerConnectionIface)(nil)
 
 func wrapTLSServerConnection(obj *externglib.Object) TLSServerConnection {
-	return &TLSServerConnectionInterface{
+	return &TLSServerConnectionIface{
 		TLSConnectionClass: TLSConnectionClass{
 			IOStreamClass: IOStreamClass{
 				Object: obj,
@@ -63,4 +63,4 @@ func marshalTLSServerConnection(p uintptr) (interface{}, error) {
 	return wrapTLSServerConnection(obj), nil
 }
 
-func (*TLSServerConnectionInterface) privateTLSServerConnectionInterface() {}
+func (*TLSServerConnectionIface) privateTLSServerConnectionIface() {}

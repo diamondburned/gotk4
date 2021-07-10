@@ -77,7 +77,7 @@ type ComponentOverrider interface {
 	// If the size can not be obtained (e.g. a non-embedded plug or missing
 	// support), width and height are set to -1.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
 	Size() (width int, height int)
 	// GrabFocus grabs focus for this @component.
 	GrabFocus() bool
@@ -85,7 +85,8 @@ type ComponentOverrider interface {
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
 	//
-	// Deprecated: since version 2.9.4.
+	// Deprecated: If you need to track when an object gains or lose the focus,
+	// use the Object::state-change "focused" notification instead.
 	RemoveFocusHandler(handlerId uint)
 	// SetSize: set the size of the @component in terms of width and height.
 	SetSize(width int, height int) bool
@@ -118,7 +119,7 @@ type Component interface {
 	// If the size can not be obtained (e.g. a non-embedded plug or missing
 	// support), width and height are set to -1.
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
 	Size() (width int, height int)
 	// GrabFocus grabs focus for this @component.
 	GrabFocus() bool
@@ -126,21 +127,22 @@ type Component interface {
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
 	//
-	// Deprecated: since version 2.9.4.
+	// Deprecated: If you need to track when an object gains or lose the focus,
+	// use the Object::state-change "focused" notification instead.
 	RemoveFocusHandler(handlerId uint)
 	// SetSize: set the size of the @component in terms of width and height.
 	SetSize(width int, height int) bool
 }
 
-// ComponentInterface implements the Component interface.
-type ComponentInterface struct {
+// ComponentIface implements the Component interface.
+type ComponentIface struct {
 	*externglib.Object
 }
 
-var _ Component = (*ComponentInterface)(nil)
+var _ Component = (*ComponentIface)(nil)
 
 func wrapComponent(obj *externglib.Object) Component {
-	return &ComponentInterface{
+	return &ComponentIface{
 		Object: obj,
 	}
 }
@@ -153,11 +155,11 @@ func marshalComponent(p uintptr) (interface{}, error) {
 
 // Alpha returns the alpha value (i.e. the opacity) for this @component, on a
 // scale from 0 (fully transparent) to 1.0 (fully opaque).
-func (c *ComponentInterface) Alpha() float64 {
+func (component *ComponentIface) Alpha() float64 {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gdouble       // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_get_alpha(_arg0)
 
@@ -169,11 +171,11 @@ func (c *ComponentInterface) Alpha() float64 {
 }
 
 // Layer gets the layer of the component.
-func (c *ComponentInterface) Layer() Layer {
+func (component *ComponentIface) Layer() Layer {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.AtkLayer      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_get_layer(_arg0)
 
@@ -187,11 +189,11 @@ func (c *ComponentInterface) Layer() Layer {
 // MDIZOrder gets the zorder of the component. The value G_MININT will be
 // returned if the layer of the component is not ATK_LAYER_MDI or
 // ATK_LAYER_WINDOW.
-func (c *ComponentInterface) MDIZOrder() int {
+func (component *ComponentIface) MDIZOrder() int {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_get_mdi_zorder(_arg0)
 
@@ -207,13 +209,13 @@ func (c *ComponentInterface) MDIZOrder() int {
 // If the size can not be obtained (e.g. a non-embedded plug or missing
 // support), width and height are set to -1.
 //
-// Deprecated.
-func (c *ComponentInterface) Size() (width int, height int) {
+// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+func (component *ComponentIface) Size() (width int, height int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	C.atk_component_get_size(_arg0, &_arg1, &_arg2)
 
@@ -227,11 +229,11 @@ func (c *ComponentInterface) Size() (width int, height int) {
 }
 
 // GrabFocus grabs focus for this @component.
-func (c *ComponentInterface) GrabFocus() bool {
+func (component *ComponentIface) GrabFocus() bool {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_grab_focus(_arg0)
 
@@ -248,25 +250,26 @@ func (c *ComponentInterface) GrabFocus() bool {
 // of functions to be executed when this object receives focus events (in or
 // out).
 //
-// Deprecated: since version 2.9.4.
-func (c *ComponentInterface) RemoveFocusHandler(handlerId uint) {
+// Deprecated: If you need to track when an object gains or lose the focus, use
+// the Object::state-change "focused" notification instead.
+func (component *ComponentIface) RemoveFocusHandler(handlerId uint) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 	_arg1 = C.guint(handlerId)
 
 	C.atk_component_remove_focus_handler(_arg0, _arg1)
 }
 
 // SetSize: set the size of the @component in terms of width and height.
-func (c *ComponentInterface) SetSize(width int, height int) bool {
+func (component *ComponentIface) SetSize(width int, height int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 
@@ -301,32 +304,4 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// X coordinate of the left side of the rectangle.
-func (r *Rectangle) X() int {
-	var v int // out
-	v = int(r.native.x)
-	return v
-}
-
-// Y coordinate of the top side of the rectangle.
-func (r *Rectangle) Y() int {
-	var v int // out
-	v = int(r.native.y)
-	return v
-}
-
-// Width: width of the rectangle.
-func (r *Rectangle) Width() int {
-	var v int // out
-	v = int(r.native.width)
-	return v
-}
-
-// Height: height of the rectangle.
-func (r *Rectangle) Height() int {
-	var v int // out
-	v = int(r.native.height)
-	return v
 }

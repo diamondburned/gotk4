@@ -58,7 +58,7 @@ type ThemedIcon interface {
 // ThemedIconClass implements the ThemedIcon interface.
 type ThemedIconClass struct {
 	*externglib.Object
-	IconInterface
+	IconIface
 }
 
 var _ ThemedIcon = (*ThemedIconClass)(nil)
@@ -66,7 +66,7 @@ var _ ThemedIcon = (*ThemedIconClass)(nil)
 func wrapThemedIcon(obj *externglib.Object) ThemedIcon {
 	return &ThemedIconClass{
 		Object: obj,
-		IconInterface: IconInterface{
+		IconIface: IconIface{
 			Object: obj,
 		},
 	}
@@ -156,11 +156,11 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIconClass {
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
-func (i *ThemedIconClass) AppendName(iconname string) {
+func (icon *ThemedIconClass) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
 	_arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -168,11 +168,11 @@ func (i *ThemedIconClass) AppendName(iconname string) {
 }
 
 // Names gets the names of icons from within @icon.
-func (i *ThemedIconClass) Names() []string {
+func (icon *ThemedIconClass) Names() []string {
 	var _arg0 *C.GThemedIcon // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_themed_icon_get_names(_arg0)
 
@@ -199,11 +199,11 @@ func (i *ThemedIconClass) Names() []string {
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
-func (i *ThemedIconClass) PrependName(iconname string) {
+func (icon *ThemedIconClass) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
 	_arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(_arg1))
 

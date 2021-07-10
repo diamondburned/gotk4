@@ -62,7 +62,7 @@ type SimpleProxyResolver interface {
 // SimpleProxyResolverClass implements the SimpleProxyResolver interface.
 type SimpleProxyResolverClass struct {
 	*externglib.Object
-	ProxyResolverInterface
+	ProxyResolverIface
 }
 
 var _ SimpleProxyResolver = (*SimpleProxyResolverClass)(nil)
@@ -70,7 +70,7 @@ var _ SimpleProxyResolver = (*SimpleProxyResolverClass)(nil)
 func wrapSimpleProxyResolver(obj *externglib.Object) SimpleProxyResolver {
 	return &SimpleProxyResolverClass{
 		Object: obj,
-		ProxyResolverInterface: ProxyResolverInterface{
+		ProxyResolverIface: ProxyResolverIface{
 			Object: obj,
 		},
 	}
@@ -88,11 +88,11 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 //
 // If @default_proxy starts with "socks://", ProxyResolver will treat it as
 // referring to all three of the socks5, socks4a, and socks4 proxy types.
-func (r *SimpleProxyResolverClass) SetDefaultProxy(defaultProxy string) {
+func (resolver *SimpleProxyResolverClass) SetDefaultProxy(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 
-	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(C.CString(defaultProxy))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -106,12 +106,12 @@ func (r *SimpleProxyResolverClass) SetDefaultProxy(defaultProxy string) {
 // As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
 // ProxyResolver will treat it as referring to all three of the socks5, socks4a,
 // and socks4 proxy types.
-func (r *SimpleProxyResolverClass) SetURIProxy(uriScheme string, proxy string) {
+func (resolver *SimpleProxyResolverClass) SetURIProxy(uriScheme string, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.gchar                // out
 
-	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(C.CString(uriScheme))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(proxy))

@@ -329,15 +329,15 @@ type Activatable interface {
 	SyncActionProperties(action Action)
 }
 
-// ActivatableInterface implements the Activatable interface.
-type ActivatableInterface struct {
+// ActivatableIface implements the Activatable interface.
+type ActivatableIface struct {
 	*externglib.Object
 }
 
-var _ Activatable = (*ActivatableInterface)(nil)
+var _ Activatable = (*ActivatableIface)(nil)
 
 func wrapActivatable(obj *externglib.Object) Activatable {
-	return &ActivatableInterface{
+	return &ActivatableIface{
 		Object: obj,
 	}
 }
@@ -363,11 +363,11 @@ func marshalActivatable(p uintptr) (interface{}, error) {
 // retrieve the > previous action.
 //
 // Deprecated: since version 3.10.
-func (a *ActivatableInterface) DoSetRelatedAction(action Action) {
+func (activatable *ActivatableIface) DoSetRelatedAction(action Action) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_activatable_do_set_related_action(_arg0, _arg1)
@@ -376,11 +376,11 @@ func (a *ActivatableInterface) DoSetRelatedAction(action Action) {
 // RelatedAction gets the related Action for @activatable.
 //
 // Deprecated: since version 3.10.
-func (a *ActivatableInterface) RelatedAction() *ActionClass {
+func (activatable *ActivatableIface) RelatedAction() *ActionClass {
 	var _arg0 *C.GtkActivatable // out
 	var _cret *C.GtkAction      // in
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 
 	_cret = C.gtk_activatable_get_related_action(_arg0)
 
@@ -396,11 +396,11 @@ func (a *ActivatableInterface) RelatedAction() *ActionClass {
 // appearance.
 //
 // Deprecated: since version 3.10.
-func (a *ActivatableInterface) UseActionAppearance() bool {
+func (activatable *ActivatableIface) UseActionAppearance() bool {
 	var _arg0 *C.GtkActivatable // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 
 	_cret = C.gtk_activatable_get_use_action_appearance(_arg0)
 
@@ -419,11 +419,11 @@ func (a *ActivatableInterface) UseActionAppearance() bool {
 // property and call gtk_activatable_do_set_related_action() when it changes.
 //
 // Deprecated: since version 3.10.
-func (a *ActivatableInterface) SetRelatedAction(action Action) {
+func (activatable *ActivatableIface) SetRelatedAction(action Action) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_activatable_set_related_action(_arg0, _arg1)
@@ -438,11 +438,11 @@ func (a *ActivatableInterface) SetRelatedAction(action Action) {
 // gtk_activatable_sync_action_properties() to update @activatable > if needed.
 //
 // Deprecated: since version 3.10.
-func (a *ActivatableInterface) SetUseActionAppearance(useAppearance bool) {
+func (activatable *ActivatableIface) SetUseActionAppearance(useAppearance bool) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 	if useAppearance {
 		_arg1 = C.TRUE
 	}
@@ -456,11 +456,11 @@ func (a *ActivatableInterface) SetUseActionAppearance(useAppearance bool) {
 // changes.
 //
 // Deprecated: since version 3.10.
-func (a *ActivatableInterface) SyncActionProperties(action Action) {
+func (activatable *ActivatableIface) SyncActionProperties(action Action) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_activatable_sync_action_properties(_arg0, _arg1)

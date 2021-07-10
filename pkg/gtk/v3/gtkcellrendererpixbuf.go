@@ -51,7 +51,9 @@ var _ CellRendererPixbuf = (*CellRendererPixbufClass)(nil)
 func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuf {
 	return &CellRendererPixbufClass{
 		CellRendererClass: CellRendererClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
 		},
 	}
 }

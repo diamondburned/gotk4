@@ -62,40 +62,12 @@ func (b *Border) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// Left: the width of the left border
-func (b *Border) Left() int16 {
-	var v int16 // out
-	v = int16(b.native.left)
-	return v
-}
-
-// Right: the width of the right border
-func (b *Border) Right() int16 {
-	var v int16 // out
-	v = int16(b.native.right)
-	return v
-}
-
-// Top: the width of the top border
-func (b *Border) Top() int16 {
-	var v int16 // out
-	v = int16(b.native.top)
-	return v
-}
-
-// Bottom: the width of the bottom border
-func (b *Border) Bottom() int16 {
-	var v int16 // out
-	v = int16(b.native.bottom)
-	return v
-}
-
 // Copy copies a Border-struct.
-func (b *Border) Copy() *Border {
+func (border_ *Border) Copy() *Border {
 	var _arg0 *C.GtkBorder // out
 	var _cret *C.GtkBorder // in
 
-	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b))
+	_arg0 = (*C.GtkBorder)(unsafe.Pointer(border_))
 
 	_cret = C.gtk_border_copy(_arg0)
 
@@ -110,10 +82,10 @@ func (b *Border) Copy() *Border {
 }
 
 // Free frees a Border-struct.
-func (b *Border) free() {
+func (border_ *Border) free() {
 	var _arg0 *C.GtkBorder // out
 
-	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b))
+	_arg0 = (*C.GtkBorder)(unsafe.Pointer(border_))
 
 	C.gtk_border_free(_arg0)
 }

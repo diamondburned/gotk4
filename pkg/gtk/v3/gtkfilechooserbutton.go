@@ -69,7 +69,7 @@ type FileChooserButton interface {
 	// FocusOnClick returns whether the button grabs focus when it is clicked
 	// with the mouse. See gtk_file_chooser_button_set_focus_on_click().
 	//
-	// Deprecated: since version 3.20.
+	// Deprecated: Use gtk_widget_get_focus_on_click() instead.
 	FocusOnClick() bool
 	// Title retrieves the title of the browse dialog used by @button. The
 	// returned value should not be modified or freed.
@@ -82,7 +82,7 @@ type FileChooserButton interface {
 	// places like toolbars where you don’t want the keyboard focus removed from
 	// the main area of the application.
 	//
-	// Deprecated: since version 3.20.
+	// Deprecated: Use gtk_widget_set_focus_on_click() instead.
 	SetFocusOnClick(focusOnClick bool)
 	// SetTitle modifies the @title of the browse dialog used by @button.
 	SetTitle(title string)
@@ -95,9 +95,9 @@ type FileChooserButton interface {
 type FileChooserButtonClass struct {
 	*externglib.Object
 	BoxClass
-	BuildableInterface
-	FileChooserInterface
-	OrientableInterface
+	BuildableIface
+	FileChooserIface
+	OrientableIface
 }
 
 var _ FileChooserButton = (*FileChooserButtonClass)(nil)
@@ -110,29 +110,32 @@ func wrapFileChooserButton(obj *externglib.Object) FileChooserButton {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		FileChooserInterface: FileChooserInterface{
+		FileChooserIface: FileChooserIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -171,12 +174,12 @@ func NewFileChooserButtonWithDialog(dialog Dialog) *FileChooserButtonClass {
 // FocusOnClick returns whether the button grabs focus when it is clicked with
 // the mouse. See gtk_file_chooser_button_set_focus_on_click().
 //
-// Deprecated: since version 3.20.
-func (b *FileChooserButtonClass) FocusOnClick() bool {
+// Deprecated: Use gtk_widget_get_focus_on_click() instead.
+func (button *FileChooserButtonClass) FocusOnClick() bool {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_file_chooser_button_get_focus_on_click(_arg0)
 
@@ -191,11 +194,11 @@ func (b *FileChooserButtonClass) FocusOnClick() bool {
 
 // Title retrieves the title of the browse dialog used by @button. The returned
 // value should not be modified or freed.
-func (b *FileChooserButtonClass) Title() string {
+func (button *FileChooserButtonClass) Title() string {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _cret *C.gchar                // in
 
-	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_file_chooser_button_get_title(_arg0)
 
@@ -208,11 +211,11 @@ func (b *FileChooserButtonClass) Title() string {
 
 // WidthChars retrieves the width in characters of the @button widget’s entry
 // and/or label.
-func (b *FileChooserButtonClass) WidthChars() int {
+func (button *FileChooserButtonClass) WidthChars() int {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _cret C.gint                  // in
 
-	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_file_chooser_button_get_width_chars(_arg0)
 
@@ -228,12 +231,12 @@ func (b *FileChooserButtonClass) WidthChars() int {
 // toolbars where you don’t want the keyboard focus removed from the main area
 // of the application.
 //
-// Deprecated: since version 3.20.
-func (b *FileChooserButtonClass) SetFocusOnClick(focusOnClick bool) {
+// Deprecated: Use gtk_widget_set_focus_on_click() instead.
+func (button *FileChooserButtonClass) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 	if focusOnClick {
 		_arg1 = C.TRUE
 	}
@@ -242,11 +245,11 @@ func (b *FileChooserButtonClass) SetFocusOnClick(focusOnClick bool) {
 }
 
 // SetTitle modifies the @title of the browse dialog used by @button.
-func (b *FileChooserButtonClass) SetTitle(title string) {
+func (button *FileChooserButtonClass) SetTitle(title string) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 *C.gchar                // out
 
-	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -255,11 +258,11 @@ func (b *FileChooserButtonClass) SetTitle(title string) {
 
 // SetWidthChars sets the width (in characters) that @button will use to
 // @n_chars.
-func (b *FileChooserButtonClass) SetWidthChars(nChars int) {
+func (button *FileChooserButtonClass) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 C.gint                  // out
 
-	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 	_arg1 = C.gint(nChars)
 
 	C.gtk_file_chooser_button_set_width_chars(_arg0, _arg1)

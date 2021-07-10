@@ -56,9 +56,9 @@ type ToggleToolButton interface {
 type ToggleToolButtonClass struct {
 	*externglib.Object
 	ToolButtonClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ ToggleToolButton = (*ToggleToolButtonClass)(nil)
@@ -75,53 +75,64 @@ func wrapToggleToolButton(obj *externglib.Object) ToggleToolButton {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				ActivatableInterface: ActivatableInterface{
+				ActivatableIface: ActivatableIface{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -152,7 +163,7 @@ func NewToggleToolButton() *ToggleToolButtonClass {
 //
 // It is an error if @stock_id is not a name of a stock item.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_toggle_tool_button_new() instead.
 func NewToggleToolButtonFromStock(stockId string) *ToggleToolButtonClass {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -171,11 +182,11 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButtonClass {
 
 // Active queries a ToggleToolButton and returns its current state. Returns true
 // if the toggle button is pressed in and false if it is raised.
-func (b *ToggleToolButtonClass) Active() bool {
+func (button *ToggleToolButtonClass) Active() bool {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_toggle_tool_button_get_active(_arg0)
 
@@ -191,11 +202,11 @@ func (b *ToggleToolButtonClass) Active() bool {
 // SetActive sets the status of the toggle tool button. Set to true if you want
 // the GtkToggleButton to be “pressed in”, and false to raise it. This action
 // causes the toggled signal to be emitted.
-func (b *ToggleToolButtonClass) SetActive(isActive bool) {
+func (button *ToggleToolButtonClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(button.Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}

@@ -494,7 +494,7 @@ type Settings interface {
 	// For boolean-valued keys, action activations take no parameter and result
 	// in the toggling of the value. For all other types, activations take the
 	// new value for the key (which must have the correct type).
-	CreateAction(key string) *ActionInterface
+	CreateAction(key string) *ActionIface
 	// Delay changes the #GSettings object into 'delay-apply' mode. In this
 	// mode, changes to @settings are not immediately propagated to the backend,
 	// but kept locally until g_settings_apply() is called.
@@ -611,7 +611,7 @@ type Settings interface {
 	Mapped(key string, mapping SettingsGetMapping) interface{}
 	// Range queries the range of a key.
 	//
-	// Deprecated: since version 2.40.
+	// Deprecated: Use g_settings_schema_key_get_range() instead.
 	Range(key string) *glib.Variant
 	// String gets the value that is stored at @key in @settings.
 	//
@@ -685,12 +685,12 @@ type Settings interface {
 	// You should free the return value with g_strfreev() when you are done with
 	// it.
 	//
-	// Deprecated: since version 2.46.
+	// Deprecated: Use g_settings_schema_list_keys() instead.
 	ListKeys() []string
 	// RangeCheck checks if the given @value is of the correct type and within
 	// the permitted range for @key.
 	//
-	// Deprecated: since version 2.40.
+	// Deprecated: Use g_settings_schema_key_range_check() instead.
 	RangeCheck(key string, value *glib.Variant) bool
 	// Reset resets @key to its default value.
 	//
@@ -877,10 +877,10 @@ func NewSettingsWithPath(schemaId string, path string) *SettingsClass {
 // does nothing unless @settings is in 'delay-apply' mode; see
 // g_settings_delay(). In the normal case settings are always applied
 // immediately.
-func (s *SettingsClass) Apply() {
+func (settings *SettingsClass) Apply() {
 	var _arg0 *C.GSettings // out
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	C.g_settings_apply(_arg0)
 }
@@ -900,14 +900,14 @@ func (s *SettingsClass) Apply() {
 // Note that the lifecycle of the binding is tied to @object, and that you can
 // have only one binding per object property. If you bind the same property
 // twice on the same object, the second binding overrides the first one.
-func (s *SettingsClass) BindWritable(key string, object gextras.Objector, property string, inverted bool) {
+func (settings *SettingsClass) BindWritable(key string, object gextras.Objector, property string, inverted bool) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gpointer   // out
 	var _arg3 *C.gchar     // out
 	var _arg4 C.gboolean   // out
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
@@ -932,20 +932,20 @@ func (s *SettingsClass) BindWritable(key string, object gextras.Objector, proper
 // For boolean-valued keys, action activations take no parameter and result in
 // the toggling of the value. For all other types, activations take the new
 // value for the key (which must have the correct type).
-func (s *SettingsClass) CreateAction(key string) *ActionInterface {
+func (settings *SettingsClass) CreateAction(key string) *ActionIface {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GAction   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_create_action(_arg0, _arg1)
 
-	var _action *ActionInterface // out
+	var _action *ActionIface // out
 
-	_action = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ActionInterface)
+	_action = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ActionIface)
 
 	return _action
 }
@@ -953,10 +953,10 @@ func (s *SettingsClass) CreateAction(key string) *ActionInterface {
 // Delay changes the #GSettings object into 'delay-apply' mode. In this mode,
 // changes to @settings are not immediately propagated to the backend, but kept
 // locally until g_settings_apply() is called.
-func (s *SettingsClass) Delay() {
+func (settings *SettingsClass) Delay() {
 	var _arg0 *C.GSettings // out
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	C.g_settings_delay(_arg0)
 }
@@ -967,12 +967,12 @@ func (s *SettingsClass) Delay() {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // boolean type in the schema for @settings.
-func (s *SettingsClass) Boolean(key string) bool {
+func (settings *SettingsClass) Boolean(key string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -992,12 +992,12 @@ func (s *SettingsClass) Boolean(key string) bool {
 //
 // The schema for the child settings object must have been declared in the
 // schema of @settings using a <child> element.
-func (s *SettingsClass) Child(name string) *SettingsClass {
+func (settings *SettingsClass) Child(name string) *SettingsClass {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GSettings // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1030,12 +1030,12 @@ func (s *SettingsClass) Child(name string) *SettingsClass {
 //
 // It is a programmer error to give a @key that isn't contained in the schema
 // for @settings.
-func (s *SettingsClass) DefaultValue(key string) *glib.Variant {
+func (settings *SettingsClass) DefaultValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GVariant  // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1058,12 +1058,12 @@ func (s *SettingsClass) DefaultValue(key string) *glib.Variant {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // 'double' type in the schema for @settings.
-func (s *SettingsClass) Double(key string) float64 {
+func (settings *SettingsClass) Double(key string) float64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gdouble    // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1087,12 +1087,12 @@ func (s *SettingsClass) Double(key string) float64 {
 //
 // If the value stored in the configuration database is not a valid value for
 // the enumerated type then this function will return the default value.
-func (s *SettingsClass) Enum(key string) int {
+func (settings *SettingsClass) Enum(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1116,12 +1116,12 @@ func (s *SettingsClass) Enum(key string) int {
 //
 // If the value stored in the configuration database is not a valid value for
 // the flags type then this function will return the default value.
-func (s *SettingsClass) Flags(key string) uint {
+func (settings *SettingsClass) Flags(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.guint      // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1136,11 +1136,11 @@ func (s *SettingsClass) Flags(key string) uint {
 
 // HasUnapplied returns whether the #GSettings object has any unapplied changes.
 // This can only be the case if it is in 'delayed-apply' mode.
-func (s *SettingsClass) HasUnapplied() bool {
+func (settings *SettingsClass) HasUnapplied() bool {
 	var _arg0 *C.GSettings // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	_cret = C.g_settings_get_has_unapplied(_arg0)
 
@@ -1159,12 +1159,12 @@ func (s *SettingsClass) HasUnapplied() bool {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // int32 type in the schema for @settings.
-func (s *SettingsClass) Int(key string) int {
+func (settings *SettingsClass) Int(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1183,12 +1183,12 @@ func (s *SettingsClass) Int(key string) int {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // int64 type in the schema for @settings.
-func (s *SettingsClass) Int64(key string) int64 {
+func (settings *SettingsClass) Int64(key string) int64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gint64     // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1227,14 +1227,14 @@ func (s *SettingsClass) Int64(key string) int64 {
 // which is initially set to nil. The same pointer is given to each invocation
 // of @mapping. The final value of that #gpointer is what is returned by this
 // function. nil is valid; it is returned just as any other value would be.
-func (s *SettingsClass) Mapped(key string, mapping SettingsGetMapping) interface{} {
+func (settings *SettingsClass) Mapped(key string, mapping SettingsGetMapping) interface{} {
 	var _arg0 *C.GSettings          // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GSettingsGetMapping // out
 	var _arg3 C.gpointer
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*[0]byte)(C.gotk4_SettingsGetMapping)
@@ -1251,13 +1251,13 @@ func (s *SettingsClass) Mapped(key string, mapping SettingsGetMapping) interface
 
 // Range queries the range of a key.
 //
-// Deprecated: since version 2.40.
-func (s *SettingsClass) Range(key string) *glib.Variant {
+// Deprecated: Use g_settings_schema_key_get_range() instead.
+func (settings *SettingsClass) Range(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GVariant  // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1280,12 +1280,12 @@ func (s *SettingsClass) Range(key string) *glib.Variant {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // string type in the schema for @settings.
-func (s *SettingsClass) String(key string) string {
+func (settings *SettingsClass) String(key string) string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1303,12 +1303,12 @@ func (s *SettingsClass) String(key string) string {
 //
 // It is a programmer error to give a @key that isn't specified as having an
 // array of strings type in the schema for @settings.
-func (s *SettingsClass) Strv(key string) []string {
+func (settings *SettingsClass) Strv(key string) []string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1340,12 +1340,12 @@ func (s *SettingsClass) Strv(key string) []string {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // uint32 type in the schema for @settings.
-func (s *SettingsClass) Uint(key string) uint {
+func (settings *SettingsClass) Uint(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.guint      // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1364,12 +1364,12 @@ func (s *SettingsClass) Uint(key string) uint {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // uint64 type in the schema for @settings.
-func (s *SettingsClass) Uint64(key string) uint64 {
+func (settings *SettingsClass) Uint64(key string) uint64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.guint64    // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1399,12 +1399,12 @@ func (s *SettingsClass) Uint64(key string) uint64 {
 //
 // It is a programmer error to give a @key that isn't contained in the schema
 // for @settings.
-func (s *SettingsClass) UserValue(key string) *glib.Variant {
+func (settings *SettingsClass) UserValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GVariant  // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1425,12 +1425,12 @@ func (s *SettingsClass) UserValue(key string) *glib.Variant {
 //
 // It is a programmer error to give a @key that isn't contained in the schema
 // for @settings.
-func (s *SettingsClass) Value(key string) *glib.Variant {
+func (settings *SettingsClass) Value(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GVariant  // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1448,12 +1448,12 @@ func (s *SettingsClass) Value(key string) *glib.Variant {
 }
 
 // IsWritable finds out if a key can be written or not
-func (s *SettingsClass) IsWritable(name string) bool {
+func (settings *SettingsClass) IsWritable(name string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1478,11 +1478,11 @@ func (s *SettingsClass) IsWritable(name string) bool {
 // be useful there for introspection reasons, however.
 //
 // You should free the return value with g_strfreev() when you are done with it.
-func (s *SettingsClass) ListChildren() []string {
+func (settings *SettingsClass) ListChildren() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	_cret = C.g_settings_list_children(_arg0)
 
@@ -1514,12 +1514,12 @@ func (s *SettingsClass) ListChildren() []string {
 //
 // You should free the return value with g_strfreev() when you are done with it.
 //
-// Deprecated: since version 2.46.
-func (s *SettingsClass) ListKeys() []string {
+// Deprecated: Use g_settings_schema_list_keys() instead.
+func (settings *SettingsClass) ListKeys() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	_cret = C.g_settings_list_keys(_arg0)
 
@@ -1546,14 +1546,14 @@ func (s *SettingsClass) ListKeys() []string {
 // RangeCheck checks if the given @value is of the correct type and within the
 // permitted range for @key.
 //
-// Deprecated: since version 2.40.
-func (s *SettingsClass) RangeCheck(key string, value *glib.Variant) bool {
+// Deprecated: Use g_settings_schema_key_range_check() instead.
+func (settings *SettingsClass) RangeCheck(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
@@ -1574,11 +1574,11 @@ func (s *SettingsClass) RangeCheck(key string, value *glib.Variant) bool {
 // This call resets the key, as much as possible, to its default value. That
 // might be the value specified in the schema or the one set by the
 // administrator.
-func (s *SettingsClass) Reset(key string) {
+func (settings *SettingsClass) Reset(key string) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1590,10 +1590,10 @@ func (s *SettingsClass) Reset(key string) {
 // the normal case settings are always applied immediately.
 //
 // Change notifications will be emitted for affected keys.
-func (s *SettingsClass) Revert() {
+func (settings *SettingsClass) Revert() {
 	var _arg0 *C.GSettings // out
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	C.g_settings_revert(_arg0)
 }
@@ -1604,13 +1604,13 @@ func (s *SettingsClass) Revert() {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // boolean type in the schema for @settings.
-func (s *SettingsClass) SetBoolean(key string, value bool) bool {
+func (settings *SettingsClass) SetBoolean(key string, value bool) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gboolean   // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	if value {
@@ -1634,13 +1634,13 @@ func (s *SettingsClass) SetBoolean(key string, value bool) bool {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // 'double' type in the schema for @settings.
-func (s *SettingsClass) SetDouble(key string, value float64) bool {
+func (settings *SettingsClass) SetDouble(key string, value float64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gdouble    // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(value)
@@ -1665,13 +1665,13 @@ func (s *SettingsClass) SetDouble(key string, value float64) bool {
 //
 // After performing the write, accessing @key directly with
 // g_settings_get_string() will return the 'nick' associated with @value.
-func (s *SettingsClass) SetEnum(key string, value int) bool {
+func (settings *SettingsClass) SetEnum(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(value)
@@ -1697,13 +1697,13 @@ func (s *SettingsClass) SetEnum(key string, value int) bool {
 // After performing the write, accessing @key directly with
 // g_settings_get_strv() will return an array of 'nicks'; one for each bit in
 // @value.
-func (s *SettingsClass) SetFlags(key string, value uint) bool {
+func (settings *SettingsClass) SetFlags(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint      // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(value)
@@ -1725,13 +1725,13 @@ func (s *SettingsClass) SetFlags(key string, value uint) bool {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // int32 type in the schema for @settings.
-func (s *SettingsClass) SetInt(key string, value int) bool {
+func (settings *SettingsClass) SetInt(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(value)
@@ -1753,13 +1753,13 @@ func (s *SettingsClass) SetInt(key string, value int) bool {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // int64 type in the schema for @settings.
-func (s *SettingsClass) SetInt64(key string, value int64) bool {
+func (settings *SettingsClass) SetInt64(key string, value int64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint64     // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint64(value)
@@ -1781,13 +1781,13 @@ func (s *SettingsClass) SetInt64(key string, value int64) bool {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // string type in the schema for @settings.
-func (s *SettingsClass) SetString(key string, value string) bool {
+func (settings *SettingsClass) SetString(key string, value string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(value))
@@ -1811,13 +1811,13 @@ func (s *SettingsClass) SetString(key string, value string) bool {
 //
 // It is a programmer error to give a @key that isn't specified as having an
 // array of strings type in the schema for @settings.
-func (s *SettingsClass) SetStrv(key string, value []string) bool {
+func (settings *SettingsClass) SetStrv(key string, value []string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 **C.gchar
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(value)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -1847,13 +1847,13 @@ func (s *SettingsClass) SetStrv(key string, value []string) bool {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // uint32 type in the schema for @settings.
-func (s *SettingsClass) SetUint(key string, value uint) bool {
+func (settings *SettingsClass) SetUint(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint      // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(value)
@@ -1875,13 +1875,13 @@ func (s *SettingsClass) SetUint(key string, value uint) bool {
 //
 // It is a programmer error to give a @key that isn't specified as having a
 // uint64 type in the schema for @settings.
-func (s *SettingsClass) SetUint64(key string, value uint64) bool {
+func (settings *SettingsClass) SetUint64(key string, value uint64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint64    // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint64(value)
@@ -1903,13 +1903,13 @@ func (s *SettingsClass) SetUint64(key string, value uint64) bool {
 // for @settings or for @value to have the incorrect type, per the schema.
 //
 // If @value is floating then this function consumes the reference.
-func (s *SettingsClass) SetValue(key string, value *glib.Variant) bool {
+func (settings *SettingsClass) SetValue(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value))

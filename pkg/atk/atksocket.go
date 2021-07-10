@@ -78,7 +78,7 @@ type Socket interface {
 type SocketClass struct {
 	*externglib.Object
 	ObjectClass
-	ComponentInterface
+	ComponentIface
 }
 
 var _ Socket = (*SocketClass)(nil)
@@ -89,7 +89,7 @@ func wrapSocket(obj *externglib.Object) Socket {
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
-		ComponentInterface: ComponentInterface{
+		ComponentIface: ComponentIface{
 			Object: obj,
 		},
 	}
@@ -122,11 +122,11 @@ func NewSocket() *SocketClass {
 // function and pass the id for the plug as returned by atk_plug_get_id(). It is
 // the responsibility of the application to pass the plug id on to the process
 // implementing the Socket as needed.
-func (o *SocketClass) Embed(plugId string) {
+func (obj *SocketClass) Embed(plugId string) {
 	var _arg0 *C.AtkSocket // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.AtkSocket)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer(obj.Native()))
 	_arg1 = (*C.gchar)(C.CString(plugId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -134,11 +134,11 @@ func (o *SocketClass) Embed(plugId string) {
 }
 
 // IsOccupied determines whether or not the socket has an embedded plug.
-func (o *SocketClass) IsOccupied() bool {
+func (obj *SocketClass) IsOccupied() bool {
 	var _arg0 *C.AtkSocket // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AtkSocket)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_socket_is_occupied(_arg0)
 

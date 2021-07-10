@@ -59,9 +59,9 @@ type RecentChooserMenu interface {
 type RecentChooserMenuClass struct {
 	*externglib.Object
 	MenuClass
-	ActivatableInterface
-	BuildableInterface
-	RecentChooserInterface
+	ActivatableIface
+	BuildableIface
+	RecentChooserIface
 }
 
 var _ RecentChooserMenu = (*RecentChooserMenuClass)(nil)
@@ -76,30 +76,33 @@ func wrapRecentChooserMenu(obj *externglib.Object) RecentChooserMenu {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		RecentChooserInterface: RecentChooserInterface{
+		RecentChooserIface: RecentChooserIface{
 			Object: obj,
 		},
 	}
@@ -157,11 +160,11 @@ func NewRecentChooserMenuForManager(manager RecentManager) *RecentChooserMenuCla
 
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
-func (m *RecentChooserMenuClass) ShowNumbers() bool {
+func (menu *RecentChooserMenuClass) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
 
@@ -178,11 +181,11 @@ func (m *RecentChooserMenuClass) ShowNumbers() bool {
 // The numbers are shown to provide a unique character for a mnemonic to be used
 // inside ten menu item’s label. Only the first the items get a number to avoid
 // clashes.
-func (m *RecentChooserMenuClass) SetShowNumbers(showNumbers bool) {
+func (menu *RecentChooserMenuClass) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(menu.Native()))
 	if showNumbers {
 		_arg1 = C.TRUE
 	}

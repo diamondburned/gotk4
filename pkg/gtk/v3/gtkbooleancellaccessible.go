@@ -33,34 +33,30 @@ type BooleanCellAccessible interface {
 
 // BooleanCellAccessibleClass implements the BooleanCellAccessible interface.
 type BooleanCellAccessibleClass struct {
-	*externglib.Object
 	RendererCellAccessibleClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ BooleanCellAccessible = (*BooleanCellAccessibleClass)(nil)
 
 func wrapBooleanCellAccessible(obj *externglib.Object) BooleanCellAccessible {
 	return &BooleanCellAccessibleClass{
-		Object: obj,
 		RendererCellAccessibleClass: RendererCellAccessibleClass{
-			Object: obj,
 			CellAccessibleClass: CellAccessibleClass{
-				Object: obj,
 				AccessibleClass: AccessibleClass{
 					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
-				ActionInterface: atk.ActionInterface{
+				ActionIface: atk.ActionIface{
 					Object: obj,
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}

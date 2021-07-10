@@ -109,6 +109,9 @@ type PixbufLoader interface {
 	// If the loader doesn't have enough bytes yet, and hasn't emitted the
 	// `area-prepared` signal, this function will return `NULL`.
 	Animation() *PixbufAnimationClass
+	// Format obtains the available information about the format of the
+	// currently loading image file.
+	Format() *PixbufFormat
 	// Pixbuf queries the Pixbuf that a pixbuf loader is currently creating.
 	//
 	// In general it only makes sense to call this function after the
@@ -249,11 +252,11 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoaderClass, error) {
 //
 // Remember that this function does not release a reference on the loader, so
 // you will need to explicitly release any reference you hold.
-func (l *PixbufLoaderClass) Close() error {
+func (loader *PixbufLoaderClass) Close() error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 
 	C.gdk_pixbuf_loader_close(_arg0, &_cerr)
 
@@ -273,11 +276,11 @@ func (l *PixbufLoaderClass) Close() error {
 //
 // If the loader doesn't have enough bytes yet, and hasn't emitted the
 // `area-prepared` signal, this function will return `NULL`.
-func (l *PixbufLoaderClass) Animation() *PixbufAnimationClass {
+func (loader *PixbufLoaderClass) Animation() *PixbufAnimationClass {
 	var _arg0 *C.GdkPixbufLoader    // out
 	var _cret *C.GdkPixbufAnimation // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_animation(_arg0)
 
@@ -286,6 +289,23 @@ func (l *PixbufLoaderClass) Animation() *PixbufAnimationClass {
 	_pixbufAnimation = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PixbufAnimationClass)
 
 	return _pixbufAnimation
+}
+
+// Format obtains the available information about the format of the currently
+// loading image file.
+func (loader *PixbufLoaderClass) Format() *PixbufFormat {
+	var _arg0 *C.GdkPixbufLoader // out
+	var _cret *C.GdkPixbufFormat // in
+
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
+
+	_cret = C.gdk_pixbuf_loader_get_format(_arg0)
+
+	var _pixbufFormat *PixbufFormat // out
+
+	_pixbufFormat = (*PixbufFormat)(unsafe.Pointer(_cret))
+
+	return _pixbufFormat
 }
 
 // Pixbuf queries the Pixbuf that a pixbuf loader is currently creating.
@@ -303,11 +323,11 @@ func (l *PixbufLoaderClass) Animation() *PixbufAnimationClass {
 //
 // Additionally, if the loader is an animation, it will return the "static
 // image" of the animation (see gdk_pixbuf_animation_get_static_image()).
-func (l *PixbufLoaderClass) Pixbuf() *PixbufClass {
+func (loader *PixbufLoaderClass) Pixbuf() *PixbufClass {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbuf       // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_pixbuf(_arg0)
 
@@ -326,12 +346,12 @@ func (l *PixbufLoaderClass) Pixbuf() *PixbufClass {
 //
 // Attempts to set the desired image size are ignored after the emission of the
 // ::size-prepared signal.
-func (l *PixbufLoaderClass) SetSize(width int, height int) {
+func (loader *PixbufLoaderClass) SetSize(width int, height int) {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 
@@ -339,13 +359,13 @@ func (l *PixbufLoaderClass) SetSize(width int, height int) {
 }
 
 // Write parses the next `count` bytes in the given image buffer.
-func (l *PixbufLoaderClass) Write(buf []byte) error {
+func (loader *PixbufLoaderClass) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar
 	var _arg2 C.gsize
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 	_arg2 = C.gsize(len(buf))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&buf[0]))
 

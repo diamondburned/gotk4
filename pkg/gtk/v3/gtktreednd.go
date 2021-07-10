@@ -34,7 +34,7 @@ func init() {
 // get memory corruption. In the TreeDragDest drag_data_received handler, you
 // can assume that selection data of type GTK_TREE_MODEL_ROW is in from the
 // current process. The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(selectionData *SelectionData) (*TreeModelInterface, *TreePath, bool) {
+func TreeGetRowDragData(selectionData *SelectionData) (*TreeModelIface, *TreePath, bool) {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // in
 	var _arg3 *C.GtkTreePath      // in
@@ -44,11 +44,11 @@ func TreeGetRowDragData(selectionData *SelectionData) (*TreeModelInterface, *Tre
 
 	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
 
-	var _treeModel *TreeModelInterface // out
-	var _path *TreePath                // out
-	var _ok bool                       // out
+	var _treeModel *TreeModelIface // out
+	var _path *TreePath            // out
+	var _ok bool                   // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*TreeModelInterface)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*TreeModelIface)
 	_path = (*TreePath)(unsafe.Pointer(_arg3))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
 		C.free(unsafe.Pointer(v))
@@ -121,15 +121,15 @@ type TreeDragDest interface {
 	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
-// TreeDragDestInterface implements the TreeDragDest interface.
-type TreeDragDestInterface struct {
+// TreeDragDestIface implements the TreeDragDest interface.
+type TreeDragDestIface struct {
 	*externglib.Object
 }
 
-var _ TreeDragDest = (*TreeDragDestInterface)(nil)
+var _ TreeDragDest = (*TreeDragDestIface)(nil)
 
 func wrapTreeDragDest(obj *externglib.Object) TreeDragDest {
-	return &TreeDragDestInterface{
+	return &TreeDragDestIface{
 		Object: obj,
 	}
 }
@@ -146,13 +146,13 @@ func marshalTreeDragDest(p uintptr) (interface{}, error) {
 // Also, false may be returned if the new row is not created for some
 // model-specific reason. Should robustly handle a @dest no longer found in the
 // model!
-func (d *TreeDragDestInterface) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
+func (dragDest *TreeDragDestIface) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkSelectionData // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(dragDest.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(dest))
 	_arg2 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
 
@@ -172,13 +172,13 @@ func (d *TreeDragDestInterface) DragDataReceived(dest *TreePath, selectionData *
 // @selection_data at that location. @dest_path does not have to exist; the
 // return value will almost certainly be false if the parent of @dest_path
 // doesn’t exist, though.
-func (d *TreeDragDestInterface) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
+func (dragDest *TreeDragDestIface) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkSelectionData // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(dragDest.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(destPath))
 	_arg2 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
 
@@ -235,15 +235,15 @@ type TreeDragSource interface {
 	RowDraggable(path *TreePath) bool
 }
 
-// TreeDragSourceInterface implements the TreeDragSource interface.
-type TreeDragSourceInterface struct {
+// TreeDragSourceIface implements the TreeDragSource interface.
+type TreeDragSourceIface struct {
 	*externglib.Object
 }
 
-var _ TreeDragSource = (*TreeDragSourceInterface)(nil)
+var _ TreeDragSource = (*TreeDragSourceIface)(nil)
 
 func wrapTreeDragSource(obj *externglib.Object) TreeDragSource {
-	return &TreeDragSourceInterface{
+	return &TreeDragSourceIface{
 		Object: obj,
 	}
 }
@@ -258,12 +258,12 @@ func marshalTreeDragSource(p uintptr) (interface{}, error) {
 // was moved somewhere else via drag-and-drop. Returns false if the deletion
 // fails because @path no longer exists, or for some model-specific reason.
 // Should robustly handle a @path no longer found in the model!
-func (d *TreeDragSourceInterface) DragDataDelete(path *TreePath) bool {
+func (dragSource *TreeDragSourceIface) DragDataDelete(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(dragSource.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_drag_source_drag_data_delete(_arg0, _arg1)
@@ -281,13 +281,13 @@ func (d *TreeDragSourceInterface) DragDataDelete(path *TreePath) bool {
 // representation of the row at @path. @selection_data->target gives the
 // required type of the data. Should robustly handle a @path no longer found in
 // the model!
-func (d *TreeDragSourceInterface) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
+func (dragSource *TreeDragSourceIface) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _arg2 *C.GtkSelectionData  // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(dragSource.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 	_arg2 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
 
@@ -305,12 +305,12 @@ func (d *TreeDragSourceInterface) DragDataGet(path *TreePath, selectionData *Sel
 // RowDraggable asks the TreeDragSource whether a particular row can be used as
 // the source of a DND operation. If the source doesn’t implement this
 // interface, the row is assumed draggable.
-func (d *TreeDragSourceInterface) RowDraggable(path *TreePath) bool {
+func (dragSource *TreeDragSourceIface) RowDraggable(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(dragSource.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)

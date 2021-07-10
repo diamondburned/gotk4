@@ -52,8 +52,8 @@ type RecentAction interface {
 type RecentActionClass struct {
 	*externglib.Object
 	ActionClass
-	BuildableInterface
-	RecentChooserInterface
+	BuildableIface
+	RecentChooserIface
 }
 
 var _ RecentAction = (*RecentActionClass)(nil)
@@ -63,14 +63,14 @@ func wrapRecentAction(obj *externglib.Object) RecentAction {
 		Object: obj,
 		ActionClass: ActionClass{
 			Object: obj,
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		RecentChooserInterface: RecentChooserInterface{
+		RecentChooserIface: RecentChooserIface{
 			Object: obj,
 		},
 	}
@@ -148,11 +148,11 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 // gtk_recent_chooser_menu_set_show_numbers().
 //
 // Deprecated: since version 3.10.
-func (a *RecentActionClass) ShowNumbers() bool {
+func (action *RecentActionClass) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentAction // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_recent_action_get_show_numbers(_arg0)
 
@@ -171,11 +171,11 @@ func (a *RecentActionClass) ShowNumbers() bool {
 // first ten items get a number to avoid clashes.
 //
 // Deprecated: since version 3.10.
-func (a *RecentActionClass) SetShowNumbers(showNumbers bool) {
+func (action *RecentActionClass) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentAction // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(action.Native()))
 	if showNumbers {
 		_arg1 = C.TRUE
 	}

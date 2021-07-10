@@ -82,11 +82,11 @@ func NewTextChildAnchor() *TextChildAnchorClass {
 // buffer, so you need to hold your own reference (with g_object_ref()) if you
 // plan to use this function — otherwise all deleted child anchors will also be
 // finalized.
-func (a *TextChildAnchorClass) Deleted() bool {
+func (anchor *TextChildAnchorClass) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 

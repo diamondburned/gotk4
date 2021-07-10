@@ -139,12 +139,12 @@ func NewCredentials() *CredentialsClass {
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX process
 // ID (for example this is the case for G_CREDENTIALS_TYPE_APPLE_XUCRED).
-func (c *CredentialsClass) UnixPid() (int, error) {
+func (credentials *CredentialsClass) UnixPid() (int, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.pid_t         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_credentials_get_unix_pid(_arg0, &_cerr)
 
@@ -162,12 +162,12 @@ func (c *CredentialsClass) UnixPid() (int, error) {
 //
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX user.
-func (c *CredentialsClass) UnixUser() (uint, error) {
+func (credentials *CredentialsClass) UnixUser() (uint, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.uid_t         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_credentials_get_unix_user(_arg0, &_cerr)
 
@@ -183,12 +183,12 @@ func (c *CredentialsClass) UnixUser() (uint, error) {
 // IsSameUser checks if @credentials and @other_credentials is the same user.
 //
 // This operation can fail if #GCredentials is not supported on the the OS.
-func (c *CredentialsClass) IsSameUser(otherCredentials Credentials) error {
+func (credentials *CredentialsClass) IsSameUser(otherCredentials Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 	_arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
 
 	C.g_credentials_is_same_user(_arg0, _arg1, &_cerr)
@@ -206,12 +206,12 @@ func (c *CredentialsClass) IsSameUser(otherCredentials Credentials) error {
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX user. It
 // can also fail if the OS does not allow the use of "spoofed" credentials.
-func (c *CredentialsClass) SetUnixUser(uid uint) error {
+func (credentials *CredentialsClass) SetUnixUser(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 	_arg1 = C.uid_t(uid)
 
 	C.g_credentials_set_unix_user(_arg0, _arg1, &_cerr)
@@ -226,11 +226,11 @@ func (c *CredentialsClass) SetUnixUser(uid uint) error {
 // String creates a human-readable textual representation of @credentials that
 // can be used in logging and debug messages. The format of the returned string
 // may change in future GLib release.
-func (c *CredentialsClass) String() string {
+func (credentials *CredentialsClass) String() string {
 	var _arg0 *C.GCredentials // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_credentials_to_string(_arg0)
 

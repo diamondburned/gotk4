@@ -35,8 +35,8 @@ type ButtonAccessible interface {
 type ButtonAccessibleClass struct {
 	*externglib.Object
 	ContainerAccessibleClass
-	atk.ActionInterface
-	atk.ImageInterface
+	atk.ActionIface
+	atk.ImageIface
 }
 
 var _ ButtonAccessible = (*ButtonAccessibleClass)(nil)
@@ -53,10 +53,10 @@ func wrapButtonAccessible(obj *externglib.Object) ButtonAccessible {
 				},
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
-		ImageInterface: atk.ImageInterface{
+		ImageIface: atk.ImageIface{
 			Object: obj,
 		},
 	}

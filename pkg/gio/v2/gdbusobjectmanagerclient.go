@@ -125,9 +125,10 @@ type DBusObjectManagerClient interface {
 // DBusObjectManagerClientClass implements the DBusObjectManagerClient interface.
 type DBusObjectManagerClientClass struct {
 	*externglib.Object
-	AsyncInitableInterface
-	DBusObjectManagerInterface
-	InitableInterface
+	*externglib.Object
+	AsyncInitableIface
+	DBusObjectManagerIface
+	InitableIface
 }
 
 var _ DBusObjectManagerClient = (*DBusObjectManagerClientClass)(nil)
@@ -135,13 +136,14 @@ var _ DBusObjectManagerClient = (*DBusObjectManagerClientClass)(nil)
 func wrapDBusObjectManagerClient(obj *externglib.Object) DBusObjectManagerClient {
 	return &DBusObjectManagerClientClass{
 		Object: obj,
-		AsyncInitableInterface: AsyncInitableInterface{
+		Object: obj,
+		AsyncInitableIface: AsyncInitableIface{
 			Object: obj,
 		},
-		DBusObjectManagerInterface: DBusObjectManagerInterface{
+		DBusObjectManagerIface: DBusObjectManagerIface{
 			Object: obj,
 		},
-		InitableInterface: InitableInterface{
+		InitableIface: InitableIface{
 			Object: obj,
 		},
 	}
@@ -194,11 +196,11 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (*DBusObjectManager
 }
 
 // Connection gets the BusConnection used by @manager.
-func (m *DBusObjectManagerClientClass) Connection() *DBusConnectionClass {
+func (manager *DBusObjectManagerClientClass) Connection() *DBusConnectionClass {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.GDBusConnection          // in
 
-	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_client_get_connection(_arg0)
 
@@ -210,11 +212,11 @@ func (m *DBusObjectManagerClientClass) Connection() *DBusConnectionClass {
 }
 
 // Flags gets the flags that @manager was constructed with.
-func (m *DBusObjectManagerClientClass) Flags() DBusObjectManagerClientFlags {
+func (manager *DBusObjectManagerClientClass) Flags() DBusObjectManagerClientFlags {
 	var _arg0 *C.GDBusObjectManagerClient     // out
 	var _cret C.GDBusObjectManagerClientFlags // in
 
-	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_client_get_flags(_arg0)
 
@@ -227,11 +229,11 @@ func (m *DBusObjectManagerClientClass) Flags() DBusObjectManagerClientFlags {
 
 // Name gets the name that @manager is for, or nil if not a message bus
 // connection.
-func (m *DBusObjectManagerClientClass) Name() string {
+func (manager *DBusObjectManagerClientClass) Name() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
 
-	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_client_get_name(_arg0)
 
@@ -245,11 +247,11 @@ func (m *DBusObjectManagerClientClass) Name() string {
 // NameOwner: the unique name that owns the name that @manager is for or nil if
 // no-one currently owns that name. You can connect to the #GObject::notify
 // signal to track changes to the BusObjectManagerClient:name-owner property.
-func (m *DBusObjectManagerClientClass) NameOwner() string {
+func (manager *DBusObjectManagerClientClass) NameOwner() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
 
-	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_client_get_name_owner(_arg0)
 

@@ -39,8 +39,8 @@ type VPaned interface {
 type VPanedClass struct {
 	*externglib.Object
 	PanedClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ VPaned = (*VPanedClass)(nil)
@@ -53,26 +53,29 @@ func wrapVPaned(obj *externglib.Object) VPaned {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -86,7 +89,7 @@ func marshalVPaned(p uintptr) (interface{}, error) {
 
 // NewVPaned: create a new VPaned
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_paned_new() with GTK_ORIENTATION_VERTICAL instead.
 func NewVPaned() *VPanedClass {
 	var _cret *C.GtkWidget // in
 

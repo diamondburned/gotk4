@@ -87,11 +87,11 @@ func marshalEventController(p uintptr) (interface{}, error) {
 
 // CurrentEvent returns the event that is currently being handled by the
 // controller, and nil at other times.
-func (c *EventControllerClass) CurrentEvent() *gdk.EventClass {
+func (controller *EventControllerClass) CurrentEvent() *gdk.EventClass {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkEvent           // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_current_event(_arg0)
 
@@ -104,11 +104,11 @@ func (c *EventControllerClass) CurrentEvent() *gdk.EventClass {
 
 // CurrentEventDevice returns the device of the event that is currently being
 // handled by the controller, and nil otherwise.
-func (c *EventControllerClass) CurrentEventDevice() *gdk.DeviceClass {
+func (controller *EventControllerClass) CurrentEventDevice() *gdk.DeviceClass {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkDevice          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_device(_arg0)
 
@@ -121,11 +121,11 @@ func (c *EventControllerClass) CurrentEventDevice() *gdk.DeviceClass {
 
 // CurrentEventState returns the modifier state of the event that is currently
 // being handled by the controller, and 0 otherwise.
-func (c *EventControllerClass) CurrentEventState() gdk.ModifierType {
+func (controller *EventControllerClass) CurrentEventState() gdk.ModifierType {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GdkModifierType     // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_state(_arg0)
 
@@ -138,11 +138,11 @@ func (c *EventControllerClass) CurrentEventState() gdk.ModifierType {
 
 // CurrentEventTime returns the timestamp of the event that is currently being
 // handled by the controller, and 0 otherwise.
-func (c *EventControllerClass) CurrentEventTime() uint32 {
+func (controller *EventControllerClass) CurrentEventTime() uint32 {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.guint32             // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_time(_arg0)
 
@@ -154,11 +154,11 @@ func (c *EventControllerClass) CurrentEventTime() uint32 {
 }
 
 // Name gets the name of @controller.
-func (c *EventControllerClass) Name() string {
+func (controller *EventControllerClass) Name() string {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_name(_arg0)
 
@@ -170,11 +170,11 @@ func (c *EventControllerClass) Name() string {
 }
 
 // PropagationLimit gets the propagation limit of the event controller.
-func (c *EventControllerClass) PropagationLimit() PropagationLimit {
+func (controller *EventControllerClass) PropagationLimit() PropagationLimit {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationLimit // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_limit(_arg0)
 
@@ -187,11 +187,11 @@ func (c *EventControllerClass) PropagationLimit() PropagationLimit {
 
 // PropagationPhase gets the propagation phase at which @controller handles
 // events.
-func (c *EventControllerClass) PropagationPhase() PropagationPhase {
+func (controller *EventControllerClass) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 
@@ -203,11 +203,11 @@ func (c *EventControllerClass) PropagationPhase() PropagationPhase {
 }
 
 // Widget returns the Widget this controller relates to.
-func (c *EventControllerClass) Widget() *WidgetClass {
+func (controller *EventControllerClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
@@ -219,20 +219,20 @@ func (c *EventControllerClass) Widget() *WidgetClass {
 }
 
 // Reset resets the @controller to a clean state.
-func (c *EventControllerClass) Reset() {
+func (controller *EventControllerClass) Reset() {
 	var _arg0 *C.GtkEventController // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	C.gtk_event_controller_reset(_arg0)
 }
 
 // SetName sets a name on the controller that can be used for debugging.
-func (c *EventControllerClass) SetName(name string) {
+func (controller *EventControllerClass) SetName(name string) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 

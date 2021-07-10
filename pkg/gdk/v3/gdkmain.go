@@ -17,7 +17,7 @@ import "C"
 // AddOptionEntriesLibgtkOnly appends gdk option entries to the passed in option
 // group. This is not public API and must not be used by applications.
 //
-// Deprecated: since version 3.16.
+// Deprecated: This symbol was never meant to be used outside of GTK+.
 func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
 	var _arg1 *C.GOptionGroup // out
 
@@ -109,7 +109,7 @@ func Flush() {
 // GetDisplay gets the name of the display, which usually comes from the
 // `DISPLAY` environment variable or the `--display` command line option.
 //
-// Deprecated: since version 3.8.
+// Deprecated: Call gdk_display_get_name (gdk_display_get_default ())) instead.
 func GetDisplay() string {
 	var _cret *C.gchar // in
 
@@ -161,7 +161,7 @@ func GetProgramClass() string {
 // up when the grab ends, you should handle the EventGrabBroken events that are
 // emitted when the grab ends unvoluntarily.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use gdk_device_grab() instead.
 func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
 	var _arg2 C.gboolean      // out
@@ -186,7 +186,7 @@ func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
 // KeyboardUngrab ungrabs the keyboard on the default display, if it is grabbed
 // by this application.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab() instead.
 func KeyboardUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
 
@@ -227,7 +227,7 @@ func NotifyStartupCompleteWithID(startupId string) {
 // Note that this does not take the inmplicit pointer grab on button presses
 // into account.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use gdk_display_device_is_grabbed() instead.
 func PointerIsGrabbed() bool {
 	var _cret C.gboolean // in
 
@@ -245,7 +245,7 @@ func PointerIsGrabbed() bool {
 // PointerUngrab ungrabs the pointer on the default display, if it is grabbed by
 // this application.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab() instead.
 func PointerUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
 
@@ -257,7 +257,7 @@ func PointerUngrab(time_ uint32) {
 // PreParseLibgtkOnly: prepare for parsing command line arguments for GDK. This
 // is not public API and should not be used in application code.
 //
-// Deprecated: since version 3.16.
+// Deprecated: This symbol was never meant to be used outside of GTK+.
 func PreParseLibgtkOnly() {
 	C.gdk_pre_parse_libgtk_only()
 }

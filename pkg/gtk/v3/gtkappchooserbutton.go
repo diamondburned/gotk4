@@ -88,10 +88,10 @@ type AppChooserButton interface {
 type AppChooserButtonClass struct {
 	*externglib.Object
 	ComboBoxClass
-	AppChooserInterface
-	BuildableInterface
-	CellEditableInterface
-	CellLayoutInterface
+	AppChooserIface
+	BuildableIface
+	CellEditableIface
+	CellLayoutIface
 }
 
 var _ AppChooserButton = (*AppChooserButtonClass)(nil)
@@ -106,54 +106,69 @@ func wrapAppChooserButton(obj *externglib.Object) AppChooserButton {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			CellEditableInterface: CellEditableInterface{
+			CellEditableIface: CellEditableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			CellLayoutInterface: CellLayoutInterface{
+			CellLayoutIface: CellLayoutIface{
 				Object: obj,
 			},
 		},
-		AppChooserInterface: AppChooserInterface{
+		AppChooserIface: AppChooserIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		CellEditableInterface: CellEditableInterface{
+		CellEditableIface: CellEditableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		CellLayoutInterface: CellLayoutInterface{
+		CellLayoutIface: CellLayoutIface{
 			Object: obj,
 		},
 	}
@@ -185,20 +200,20 @@ func NewAppChooserButton(contentType string) *AppChooserButtonClass {
 
 // AppendSeparator appends a separator to the list of applications that is shown
 // in the popup.
-func (s *AppChooserButtonClass) AppendSeparator() {
+func (self *AppChooserButtonClass) AppendSeparator() {
 	var _arg0 *C.GtkAppChooserButton // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	C.gtk_app_chooser_button_append_separator(_arg0)
 }
 
 // Heading returns the text to display at the top of the dialog.
-func (s *AppChooserButtonClass) Heading() string {
+func (self *AppChooserButtonClass) Heading() string {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_heading(_arg0)
 
@@ -211,11 +226,11 @@ func (s *AppChooserButtonClass) Heading() string {
 
 // ShowDefaultItem returns the current value of the
 // AppChooserButton:show-default-item property.
-func (s *AppChooserButtonClass) ShowDefaultItem() bool {
+func (self *AppChooserButtonClass) ShowDefaultItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
 
@@ -230,11 +245,11 @@ func (s *AppChooserButtonClass) ShowDefaultItem() bool {
 
 // ShowDialogItem returns the current value of the
 // AppChooserButton:show-dialog-item property.
-func (s *AppChooserButtonClass) ShowDialogItem() bool {
+func (self *AppChooserButtonClass) ShowDialogItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
 
@@ -251,11 +266,11 @@ func (s *AppChooserButtonClass) ShowDialogItem() bool {
 // gtk_app_chooser_button_append_custom_item().
 //
 // Use gtk_app_chooser_refresh() to bring the selection to its initial state.
-func (s *AppChooserButtonClass) SetActiveCustomItem(name string) {
+func (self *AppChooserButtonClass) SetActiveCustomItem(name string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -264,11 +279,11 @@ func (s *AppChooserButtonClass) SetActiveCustomItem(name string) {
 
 // SetHeading sets the text to display at the top of the dialog. If the heading
 // is not set, the dialog displays a default text.
-func (s *AppChooserButtonClass) SetHeading(heading string) {
+func (self *AppChooserButtonClass) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(C.CString(heading))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -277,11 +292,11 @@ func (s *AppChooserButtonClass) SetHeading(heading string) {
 
 // SetShowDefaultItem sets whether the dropdown menu of this button should show
 // the default application for the given content type at top.
-func (s *AppChooserButtonClass) SetShowDefaultItem(setting bool) {
+func (self *AppChooserButtonClass) SetShowDefaultItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -291,11 +306,11 @@ func (s *AppChooserButtonClass) SetShowDefaultItem(setting bool) {
 
 // SetShowDialogItem sets whether the dropdown menu of this button should show
 // an entry to trigger a AppChooserDialog.
-func (s *AppChooserButtonClass) SetShowDialogItem(setting bool) {
+func (self *AppChooserButtonClass) SetShowDialogItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

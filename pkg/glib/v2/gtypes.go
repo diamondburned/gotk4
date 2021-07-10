@@ -96,7 +96,7 @@ func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 // version of GLib. A consequence of using `glong` for `tv_sec` is that on
 // 32-bit systems `GTimeVal` is subject to the year 2038 problem.
 //
-// Deprecated: since version 2.62.
+// Deprecated: Use Time or #guint64 instead.
 type TimeVal struct {
 	native C.GTimeVal
 }
@@ -112,29 +112,16 @@ func (t *TimeVal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// TvSec: seconds
-func (t *TimeVal) TvSec() int32 {
-	var v int32 // out
-	v = int32(t.native.tv_sec)
-	return v
-}
-
-// TvUsec: microseconds
-func (t *TimeVal) TvUsec() int32 {
-	var v int32 // out
-	v = int32(t.native.tv_usec)
-	return v
-}
-
 // Add adds the given number of microseconds to @time_. @microseconds can also
 // be negative to decrease the value of @time_.
 //
-// Deprecated: since version 2.62.
-func (t *TimeVal) Add(microseconds int32) {
+// Deprecated: Val is not year-2038-safe. Use `guint64` for representing
+// microseconds since the epoch, or use Time.
+func (time_ *TimeVal) Add(microseconds int32) {
 	var _arg0 *C.GTimeVal // out
 	var _arg1 C.glong     // out
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(time_))
 	_arg1 = C.glong(microseconds)
 
 	C.g_time_val_add(_arg0, _arg1)
@@ -172,12 +159,13 @@ func (t *TimeVal) Add(microseconds int32) {
 // The return value of g_time_val_to_iso8601() has been nullable since GLib
 // 2.54; before then, GLib would crash under the same conditions.
 //
-// Deprecated: since version 2.62.
-func (t *TimeVal) ToISO8601() string {
+// Deprecated: Val is not year-2038-safe. Use g_date_time_format_iso8601(dt)
+// instead.
+func (time_ *TimeVal) ToISO8601() string {
 	var _arg0 *C.GTimeVal // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t))
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(time_))
 
 	_cret = C.g_time_val_to_iso8601(_arg0)
 

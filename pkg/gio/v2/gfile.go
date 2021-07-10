@@ -92,11 +92,11 @@ type FileOverrider interface {
 	// increment the existing object’s reference count.
 	//
 	// This call does no blocking I/O.
-	Dup() *FileInterface
+	Dup() *FileIface
 	// EjectMountableFinish finishes an asynchronous eject operation started by
 	// g_file_eject_mountable().
 	//
-	// Deprecated: since version 2.22.
+	// Deprecated: Use g_file_eject_mountable_with_operation_finish() instead.
 	EjectMountableFinish(result AsyncResult) error
 	// EjectMountableWithOperationFinish finishes an asynchronous eject
 	// operation started by g_file_eject_mountable_with_operation().
@@ -120,7 +120,7 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	FindEnclosingMount(cancellable Cancellable) (*MountInterface, error)
+	FindEnclosingMount(cancellable Cancellable) (*MountIface, error)
 	// FindEnclosingMountAsync: asynchronously gets the mount for the file.
 	//
 	// For more details, see g_file_find_enclosing_mount() which is the
@@ -132,7 +132,7 @@ type FileOverrider interface {
 	FindEnclosingMountAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// FindEnclosingMountFinish finishes an asynchronous find mount request. See
 	// g_file_find_enclosing_mount_async().
-	FindEnclosingMountFinish(res AsyncResult) (*MountInterface, error)
+	FindEnclosingMountFinish(res AsyncResult) (*MountIface, error)
 	// Basename gets the base name (the last component of the path) for a given
 	// #GFile.
 	//
@@ -156,12 +156,12 @@ type FileOverrider interface {
 	// in the file selector.
 	//
 	// This call does no blocking I/O.
-	ChildForDisplayName(displayName string) (*FileInterface, error)
+	ChildForDisplayName(displayName string) (*FileIface, error)
 	// Parent gets the parent directory for the @file. If the @file represents
 	// the root directory of the file system, then nil will be returned.
 	//
 	// This call does no blocking I/O.
-	Parent() *FileInterface
+	Parent() *FileIface
 	// ParseName gets the parse name of the @file. A parse name is a UTF-8
 	// string that describes the file such that one can get the #GFile back
 	// using g_file_parse_name().
@@ -261,7 +261,7 @@ type FileOverrider interface {
 	//
 	// Finish an asynchronous mount operation that was started with
 	// g_file_mount_mountable().
-	MountMountableFinish(result AsyncResult) (*FileInterface, error)
+	MountMountableFinish(result AsyncResult) (*FileIface, error)
 	// OpenReadwrite opens an existing file for reading and writing. The result
 	// is a IOStream that can be used to read and write the contents of the
 	// file.
@@ -413,7 +413,7 @@ type FileOverrider interface {
 	// path.
 	//
 	// This call does no blocking I/O.
-	ResolveRelativePath(relativePath string) *FileInterface
+	ResolveRelativePath(relativePath string) *FileIface
 	// SetAttributesFinish finishes setting an attribute started in
 	// g_file_set_attributes_async().
 	SetAttributesFinish(result AsyncResult) (*FileInfoClass, error)
@@ -432,7 +432,7 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetDisplayName(displayName string, cancellable Cancellable) (*FileInterface, error)
+	SetDisplayName(displayName string, cancellable Cancellable) (*FileIface, error)
 	// SetDisplayNameAsync: asynchronously sets the display name for a given
 	// #GFile.
 	//
@@ -444,7 +444,7 @@ type FileOverrider interface {
 	SetDisplayNameAsync(displayName string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// SetDisplayNameFinish finishes setting a display name started with
 	// g_file_set_display_name_async().
-	SetDisplayNameFinish(res AsyncResult) (*FileInterface, error)
+	SetDisplayNameFinish(res AsyncResult) (*FileIface, error)
 	// StartMountableFinish finishes a start operation. See
 	// g_file_start_mountable() for details.
 	//
@@ -481,7 +481,7 @@ type FileOverrider interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable().
 	//
-	// Deprecated: since version 2.22.
+	// Deprecated: Use g_file_unmount_mountable_with_operation_finish() instead.
 	UnmountMountableFinish(result AsyncResult) error
 	// UnmountMountableWithOperationFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
@@ -620,11 +620,11 @@ type File interface {
 	// increment the existing object’s reference count.
 	//
 	// This call does no blocking I/O.
-	Dup() *FileInterface
+	Dup() *FileIface
 	// EjectMountableFinish finishes an asynchronous eject operation started by
 	// g_file_eject_mountable().
 	//
-	// Deprecated: since version 2.22.
+	// Deprecated: Use g_file_eject_mountable_with_operation_finish() instead.
 	EjectMountableFinish(result AsyncResult) error
 	// EjectMountableWithOperationFinish finishes an asynchronous eject
 	// operation started by g_file_eject_mountable_with_operation().
@@ -648,7 +648,7 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	FindEnclosingMount(cancellable Cancellable) (*MountInterface, error)
+	FindEnclosingMount(cancellable Cancellable) (*MountIface, error)
 	// FindEnclosingMountAsync: asynchronously gets the mount for the file.
 	//
 	// For more details, see g_file_find_enclosing_mount() which is the
@@ -660,7 +660,7 @@ type File interface {
 	FindEnclosingMountAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// FindEnclosingMountFinish finishes an asynchronous find mount request. See
 	// g_file_find_enclosing_mount_async().
-	FindEnclosingMountFinish(res AsyncResult) (*MountInterface, error)
+	FindEnclosingMountFinish(res AsyncResult) (*MountIface, error)
 	// Basename gets the base name (the last component of the path) for a given
 	// #GFile.
 	//
@@ -683,7 +683,7 @@ type File interface {
 	// create that file.
 	//
 	// This call does no blocking I/O.
-	Child(name string) *FileInterface
+	Child(name string) *FileIface
 	// ChildForDisplayName gets the child of @file for a given @display_name
 	// (i.e. a UTF-8 version of the name). If this function fails, it returns
 	// nil and @error will be set. This is very useful when constructing a
@@ -692,12 +692,12 @@ type File interface {
 	// in the file selector.
 	//
 	// This call does no blocking I/O.
-	ChildForDisplayName(displayName string) (*FileInterface, error)
+	ChildForDisplayName(displayName string) (*FileIface, error)
 	// Parent gets the parent directory for the @file. If the @file represents
 	// the root directory of the file system, then nil will be returned.
 	//
 	// This call does no blocking I/O.
-	Parent() *FileInterface
+	Parent() *FileIface
 	// ParseName gets the parse name of the @file. A parse name is a UTF-8
 	// string that describes the file such that one can get the #GFile back
 	// using g_file_parse_name().
@@ -876,7 +876,7 @@ type File interface {
 	//
 	// Finish an asynchronous mount operation that was started with
 	// g_file_mount_mountable().
-	MountMountableFinish(result AsyncResult) (*FileInterface, error)
+	MountMountableFinish(result AsyncResult) (*FileIface, error)
 	// OpenReadwrite opens an existing file for reading and writing. The result
 	// is a IOStream that can be used to read and write the contents of the
 	// file.
@@ -932,13 +932,13 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	QueryDefaultHandler(cancellable Cancellable) (*AppInfoInterface, error)
+	QueryDefaultHandler(cancellable Cancellable) (*AppInfoIface, error)
 	// QueryDefaultHandlerAsync: async version of
 	// g_file_query_default_handler().
 	QueryDefaultHandlerAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
 	// operation.
-	QueryDefaultHandlerFinish(result AsyncResult) (*AppInfoInterface, error)
+	QueryDefaultHandlerFinish(result AsyncResult) (*AppInfoIface, error)
 	// QueryExists: utility function to check if a particular file exists. This
 	// is implemented using g_file_query_info() and as such does blocking I/O.
 	//
@@ -1062,7 +1062,7 @@ type File interface {
 	// path.
 	//
 	// This call does no blocking I/O.
-	ResolveRelativePath(relativePath string) *FileInterface
+	ResolveRelativePath(relativePath string) *FileIface
 	// SetAttributesFinish finishes setting an attribute started in
 	// g_file_set_attributes_async().
 	SetAttributesFinish(result AsyncResult) (*FileInfoClass, error)
@@ -1081,7 +1081,7 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetDisplayName(displayName string, cancellable Cancellable) (*FileInterface, error)
+	SetDisplayName(displayName string, cancellable Cancellable) (*FileIface, error)
 	// SetDisplayNameAsync: asynchronously sets the display name for a given
 	// #GFile.
 	//
@@ -1093,7 +1093,7 @@ type File interface {
 	SetDisplayNameAsync(displayName string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// SetDisplayNameFinish finishes setting a display name started with
 	// g_file_set_display_name_async().
-	SetDisplayNameFinish(res AsyncResult) (*FileInterface, error)
+	SetDisplayNameFinish(res AsyncResult) (*FileIface, error)
 	// StartMountableFinish finishes a start operation. See
 	// g_file_start_mountable() for details.
 	//
@@ -1135,7 +1135,7 @@ type File interface {
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable().
 	//
-	// Deprecated: since version 2.22.
+	// Deprecated: Use g_file_unmount_mountable_with_operation_finish() instead.
 	UnmountMountableFinish(result AsyncResult) error
 	// UnmountMountableWithOperationFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
@@ -1145,15 +1145,15 @@ type File interface {
 	UnmountMountableWithOperationFinish(result AsyncResult) error
 }
 
-// FileInterface implements the File interface.
-type FileInterface struct {
+// FileIface implements the File interface.
+type FileIface struct {
 	*externglib.Object
 }
 
-var _ File = (*FileInterface)(nil)
+var _ File = (*FileIface)(nil)
 
 func wrapFile(obj *externglib.Object) File {
-	return &FileInterface{
+	return &FileIface{
 		Object: obj,
 	}
 }
@@ -1166,13 +1166,13 @@ func marshalFile(p uintptr) (interface{}, error) {
 
 // AppendToFinish finishes an asynchronous file append operation started with
 // g_file_append_to_async().
-func (f *FileInterface) AppendToFinish(res AsyncResult) (*FileOutputStreamClass, error) {
+func (file *FileIface) AppendToFinish(res AsyncResult) (*FileOutputStreamClass, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileOutputStream // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_append_to_finish(_arg0, _arg1, &_cerr)
@@ -1187,12 +1187,12 @@ func (f *FileInterface) AppendToFinish(res AsyncResult) (*FileOutputStreamClass,
 }
 
 // CopyFinish finishes copying the file started with g_file_copy_async().
-func (f *FileInterface) CopyFinish(res AsyncResult) error {
+func (file *FileIface) CopyFinish(res AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_copy_finish(_arg0, _arg1, &_cerr)
@@ -1206,13 +1206,13 @@ func (f *FileInterface) CopyFinish(res AsyncResult) error {
 
 // CreateFinish finishes an asynchronous file create operation started with
 // g_file_create_async().
-func (f *FileInterface) CreateFinish(res AsyncResult) (*FileOutputStreamClass, error) {
+func (file *FileIface) CreateFinish(res AsyncResult) (*FileOutputStreamClass, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileOutputStream // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_create_finish(_arg0, _arg1, &_cerr)
@@ -1228,13 +1228,13 @@ func (f *FileInterface) CreateFinish(res AsyncResult) (*FileOutputStreamClass, e
 
 // CreateReadwriteFinish finishes an asynchronous file create operation started
 // with g_file_create_readwrite_async().
-func (f *FileInterface) CreateReadwriteFinish(res AsyncResult) (*FileIOStreamClass, error) {
+func (file *FileIface) CreateReadwriteFinish(res AsyncResult) (*FileIOStreamClass, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret *C.GFileIOStream // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_create_readwrite_finish(_arg0, _arg1, &_cerr)
@@ -1268,12 +1268,12 @@ func (f *FileInterface) CreateReadwriteFinish(res AsyncResult) (*FileIOStreamCla
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) Delete(cancellable Cancellable) error {
+func (file *FileIface) Delete(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_delete(_arg0, _arg1, &_cerr)
@@ -1288,14 +1288,14 @@ func (f *FileInterface) Delete(cancellable Cancellable) error {
 // DeleteAsync: asynchronously delete a file. If the @file is a directory, it
 // will only be deleted if it is empty. This has the same semantics as
 // g_unlink().
-func (f *FileInterface) DeleteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) DeleteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -1305,12 +1305,12 @@ func (f *FileInterface) DeleteAsync(ioPriority int, cancellable Cancellable, cal
 }
 
 // DeleteFinish finishes deleting a file started with g_file_delete_async().
-func (f *FileInterface) DeleteFinish(result AsyncResult) error {
+func (file *FileIface) DeleteFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_delete_finish(_arg0, _arg1, &_cerr)
@@ -1332,17 +1332,17 @@ func (f *FileInterface) DeleteFinish(result AsyncResult) error {
 // reference count.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) Dup() *FileInterface {
+func (file *FileIface) Dup() *FileIface {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_dup(_arg0)
 
-	var _ret *FileInterface // out
+	var _ret *FileIface // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 
 	return _ret
 }
@@ -1350,13 +1350,13 @@ func (f *FileInterface) Dup() *FileInterface {
 // EjectMountableFinish finishes an asynchronous eject operation started by
 // g_file_eject_mountable().
 //
-// Deprecated: since version 2.22.
-func (f *FileInterface) EjectMountableFinish(result AsyncResult) error {
+// Deprecated: Use g_file_eject_mountable_with_operation_finish() instead.
+func (file *FileIface) EjectMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_eject_mountable_finish(_arg0, _arg1, &_cerr)
@@ -1370,12 +1370,12 @@ func (f *FileInterface) EjectMountableFinish(result AsyncResult) error {
 
 // EjectMountableWithOperationFinish finishes an asynchronous eject operation
 // started by g_file_eject_mountable_with_operation().
-func (f *FileInterface) EjectMountableWithOperationFinish(result AsyncResult) error {
+func (file *FileIface) EjectMountableWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_eject_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
@@ -1389,13 +1389,13 @@ func (f *FileInterface) EjectMountableWithOperationFinish(result AsyncResult) er
 
 // EnumerateChildrenFinish finishes an async enumerate children operation. See
 // g_file_enumerate_children_async().
-func (f *FileInterface) EnumerateChildrenFinish(res AsyncResult) (*FileEnumeratorClass, error) {
+func (file *FileIface) EnumerateChildrenFinish(res AsyncResult) (*FileEnumeratorClass, error) {
 	var _arg0 *C.GFile           // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GFileEnumerator // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_enumerate_children_finish(_arg0, _arg1, &_cerr)
@@ -1415,12 +1415,12 @@ func (f *FileInterface) EnumerateChildrenFinish(res AsyncResult) (*FileEnumerato
 // filesystem due to various forms of filename aliasing.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) Equal(file2 File) bool {
+func (file1 *FileIface) Equal(file2 File) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file1.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file2.Native()))
 
 	_cret = C.g_file_equal(_arg0, _arg1)
@@ -1443,21 +1443,21 @@ func (f *FileInterface) Equal(file2 File) bool {
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) FindEnclosingMount(cancellable Cancellable) (*MountInterface, error) {
+func (file *FileIface) FindEnclosingMount(cancellable Cancellable) (*MountIface, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cret *C.GMount       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_find_enclosing_mount(_arg0, _arg1, &_cerr)
 
-	var _mount *MountInterface // out
-	var _goerr error           // out
+	var _mount *MountIface // out
+	var _goerr error       // out
 
-	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountInterface)
+	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountIface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mount, _goerr
@@ -1470,14 +1470,14 @@ func (f *FileInterface) FindEnclosingMount(cancellable Cancellable) (*MountInter
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_file_find_enclosing_mount_finish() to get the result of the operation.
-func (f *FileInterface) FindEnclosingMountAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) FindEnclosingMountAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -1488,21 +1488,21 @@ func (f *FileInterface) FindEnclosingMountAsync(ioPriority int, cancellable Canc
 
 // FindEnclosingMountFinish finishes an asynchronous find mount request. See
 // g_file_find_enclosing_mount_async().
-func (f *FileInterface) FindEnclosingMountFinish(res AsyncResult) (*MountInterface, error) {
+func (file *FileIface) FindEnclosingMountFinish(res AsyncResult) (*MountIface, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GMount       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_find_enclosing_mount_finish(_arg0, _arg1, &_cerr)
 
-	var _mount *MountInterface // out
-	var _goerr error           // out
+	var _mount *MountIface // out
+	var _goerr error       // out
 
-	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountInterface)
+	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountIface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mount, _goerr
@@ -1522,11 +1522,11 @@ func (f *FileInterface) FindEnclosingMountFinish(res AsyncResult) (*MountInterfa
 // g_file_query_info().
 //
 // This call does no blocking I/O.
-func (f *FileInterface) Basename() string {
+func (file *FileIface) Basename() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_basename(_arg0)
 
@@ -1545,20 +1545,20 @@ func (f *FileInterface) Basename() string {
 // file.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) Child(name string) *FileInterface {
+func (file *FileIface) Child(name string) *FileIface {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child(_arg0, _arg1)
 
-	var _ret *FileInterface // out
+	var _ret *FileIface // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 
 	return _ret
 }
@@ -1570,22 +1570,22 @@ func (f *FileInterface) Child(name string) *FileInterface {
 // you select a directory and type a filename in the file selector.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) ChildForDisplayName(displayName string) (*FileInterface, error) {
+func (file *FileIface) ChildForDisplayName(displayName string) (*FileIface, error) {
 	var _arg0 *C.GFile  // out
 	var _arg1 *C.char   // out
 	var _cret *C.GFile  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child_for_display_name(_arg0, _arg1, &_cerr)
 
-	var _ret *FileInterface // out
-	var _goerr error        // out
+	var _ret *FileIface // out
+	var _goerr error    // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -1595,17 +1595,17 @@ func (f *FileInterface) ChildForDisplayName(displayName string) (*FileInterface,
 // root directory of the file system, then nil will be returned.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) Parent() *FileInterface {
+func (file *FileIface) Parent() *FileIface {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_parent(_arg0)
 
-	var _ret *FileInterface // out
+	var _ret *FileIface // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 
 	return _ret
 }
@@ -1622,11 +1622,11 @@ func (f *FileInterface) Parent() *FileInterface {
 // characters unescaped).
 //
 // This call does no blocking I/O.
-func (f *FileInterface) ParseName() string {
+func (file *FileIface) ParseName() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_parse_name(_arg0)
 
@@ -1642,11 +1642,11 @@ func (f *FileInterface) ParseName() string {
 // guaranteed to be an absolute, canonical path. It might contain symlinks.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) Path() string {
+func (file *FileIface) Path() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_path(_arg0)
 
@@ -1661,12 +1661,12 @@ func (f *FileInterface) Path() string {
 // RelativePath gets the path for @descendant relative to @parent.
 //
 // This call does no blocking I/O.
-func (p *FileInterface) RelativePath(descendant File) string {
+func (parent *FileIface) RelativePath(descendant File) string {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(parent.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(descendant.Native()))
 
 	_cret = C.g_file_get_relative_path(_arg0, _arg1)
@@ -1682,11 +1682,11 @@ func (p *FileInterface) RelativePath(descendant File) string {
 // URI gets the URI for the @file.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) URI() string {
+func (file *FileIface) URI() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_uri(_arg0)
 
@@ -1709,11 +1709,11 @@ func (f *FileInterface) URI() string {
 // #GFile.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) URIScheme() string {
+func (file *FileIface) URIScheme() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_uri_scheme(_arg0)
 
@@ -1730,12 +1730,12 @@ func (f *FileInterface) URIScheme() string {
 // If @parent is nil then this function returns true if @file has any parent at
 // all. If @parent is non-nil then true is only returned if @file is an
 // immediate child of @parent.
-func (f *FileInterface) HasParent(parent File) bool {
+func (file *FileIface) HasParent(parent File) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.g_file_has_parent(_arg0, _arg1)
@@ -1761,12 +1761,12 @@ func (f *FileInterface) HasParent(parent File) bool {
 // This call does no I/O, as it works purely on names. As such it can sometimes
 // return false even if @file is inside a @prefix (from a filesystem point of
 // view), because the prefix of @file is an alias of @prefix.
-func (f *FileInterface) HasPrefix(prefix File) bool {
+func (file *FileIface) HasPrefix(prefix File) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(prefix.Native()))
 
 	_cret = C.g_file_has_prefix(_arg0, _arg1)
@@ -1783,12 +1783,12 @@ func (f *FileInterface) HasPrefix(prefix File) bool {
 // HasURIScheme checks to see if a #GFile has a given URI scheme.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) HasURIScheme(uriScheme string) bool {
+func (file *FileIface) HasURIScheme(uriScheme string) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(C.CString(uriScheme))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1806,11 +1806,11 @@ func (f *FileInterface) HasURIScheme(uriScheme string) bool {
 // Hash creates a hash value for a #GFile.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) Hash() uint {
+func (file *FileIface) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(f.Native()))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_hash(_arg0)
 
@@ -1832,11 +1832,11 @@ func (f *FileInterface) Hash() uint {
 // false, but g_file_get_path() will still return a native path.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) IsNative() bool {
+func (file *FileIface) IsNative() bool {
 	var _arg0 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_is_native(_arg0)
 
@@ -1859,13 +1859,13 @@ func (f *FileInterface) IsNative() bool {
 // asynchronous operation.
 //
 // See g_file_load_bytes() for more information.
-func (f *FileInterface) LoadBytesAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) LoadBytesAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
@@ -1880,7 +1880,7 @@ func (f *FileInterface) LoadBytesAsync(cancellable Cancellable, callback AsyncRe
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) LoadContents(cancellable Cancellable) ([]byte, string, error) {
+func (file *FileIface) LoadContents(cancellable Cancellable) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _arg2 *C.char
@@ -1888,7 +1888,7 @@ func (f *FileInterface) LoadContents(cancellable Cancellable) ([]byte, string, e
 	var _arg4 *C.char   // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_load_contents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
@@ -1920,13 +1920,13 @@ func (f *FileInterface) LoadContents(cancellable Cancellable) ([]byte, string, e
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) LoadContentsAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) LoadContentsAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
@@ -1939,7 +1939,7 @@ func (f *FileInterface) LoadContentsAsync(cancellable Cancellable, callback Asyn
 // @contents string. The @contents should be freed with g_free() when no longer
 // needed. If @etag_out is present, it will be set to the new entity tag for the
 // @file.
-func (f *FileInterface) LoadContentsFinish(res AsyncResult) ([]byte, string, error) {
+func (file *FileIface) LoadContentsFinish(res AsyncResult) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char
@@ -1947,7 +1947,7 @@ func (f *FileInterface) LoadContentsFinish(res AsyncResult) ([]byte, string, err
 	var _arg4 *C.char   // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_load_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
@@ -1971,7 +1971,7 @@ func (f *FileInterface) LoadContentsFinish(res AsyncResult) ([]byte, string, err
 // that was started with g_file_load_partial_contents_async(). The data is
 // always zero-terminated, but this is not included in the resultant @length.
 // The returned @contents should be freed with g_free() when no longer needed.
-func (f *FileInterface) LoadPartialContentsFinish(res AsyncResult) ([]byte, string, error) {
+func (file *FileIface) LoadPartialContentsFinish(res AsyncResult) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char
@@ -1979,7 +1979,7 @@ func (f *FileInterface) LoadPartialContentsFinish(res AsyncResult) ([]byte, stri
 	var _arg4 *C.char   // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_load_partial_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
@@ -2013,12 +2013,12 @@ func (f *FileInterface) LoadPartialContentsFinish(res AsyncResult) ([]byte, stri
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) MakeDirectory(cancellable Cancellable) error {
+func (file *FileIface) MakeDirectory(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_make_directory(_arg0, _arg1, &_cerr)
@@ -2031,14 +2031,14 @@ func (f *FileInterface) MakeDirectory(cancellable Cancellable) error {
 }
 
 // MakeDirectoryAsync: asynchronously creates a directory.
-func (f *FileInterface) MakeDirectoryAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) MakeDirectoryAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -2049,12 +2049,12 @@ func (f *FileInterface) MakeDirectoryAsync(ioPriority int, cancellable Cancellab
 
 // MakeDirectoryFinish finishes an asynchronous directory creation, started with
 // g_file_make_directory_async().
-func (f *FileInterface) MakeDirectoryFinish(result AsyncResult) error {
+func (file *FileIface) MakeDirectoryFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_make_directory_finish(_arg0, _arg1, &_cerr)
@@ -2079,12 +2079,12 @@ func (f *FileInterface) MakeDirectoryFinish(result AsyncResult) error {
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) MakeDirectoryWithParents(cancellable Cancellable) error {
+func (file *FileIface) MakeDirectoryWithParents(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_make_directory_with_parents(_arg0, _arg1, &_cerr)
@@ -2102,13 +2102,13 @@ func (f *FileInterface) MakeDirectoryWithParents(cancellable Cancellable) error 
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) error {
+func (file *FileIface) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.char         // out
 	var _arg2 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(C.CString(symlinkValue))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -2125,7 +2125,7 @@ func (f *FileInterface) MakeSymbolicLink(symlinkValue string, cancellable Cancel
 // MeasureDiskUsageFinish collects the results from an earlier call to
 // g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for more
 // information.
-func (f *FileInterface) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error) {
+func (file *FileIface) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 C.guint64       // in
@@ -2133,7 +2133,7 @@ func (f *FileInterface) MeasureDiskUsageFinish(result AsyncResult) (diskUsage ui
 	var _arg4 C.guint64       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_measure_disk_usage_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
@@ -2153,12 +2153,12 @@ func (f *FileInterface) MeasureDiskUsageFinish(result AsyncResult) (diskUsage ui
 
 // MountEnclosingVolumeFinish finishes a mount operation started by
 // g_file_mount_enclosing_volume().
-func (l *FileInterface) MountEnclosingVolumeFinish(result AsyncResult) error {
+func (location *FileIface) MountEnclosingVolumeFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(location.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_mount_enclosing_volume_finish(_arg0, _arg1, &_cerr)
@@ -2175,21 +2175,21 @@ func (l *FileInterface) MountEnclosingVolumeFinish(result AsyncResult) error {
 //
 // Finish an asynchronous mount operation that was started with
 // g_file_mount_mountable().
-func (f *FileInterface) MountMountableFinish(result AsyncResult) (*FileInterface, error) {
+func (file *FileIface) MountMountableFinish(result AsyncResult) (*FileIface, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFile        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_mount_mountable_finish(_arg0, _arg1, &_cerr)
 
-	var _ret *FileInterface // out
-	var _goerr error        // out
+	var _ret *FileIface // out
+	var _goerr error    // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -2208,13 +2208,13 @@ func (f *FileInterface) MountMountableFinish(result AsyncResult) (*FileInterface
 // filesystem the file is on. Note that in many non-local file cases read and
 // write streams are not supported, so make sure you really need to do read and
 // write streaming, rather than just opening for reading or writing.
-func (f *FileInterface) OpenReadwrite(cancellable Cancellable) (*FileIOStreamClass, error) {
+func (file *FileIface) OpenReadwrite(cancellable Cancellable) (*FileIOStreamClass, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GCancellable  // out
 	var _cret *C.GFileIOStream // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_open_readwrite(_arg0, _arg1, &_cerr)
@@ -2235,14 +2235,14 @@ func (f *FileInterface) OpenReadwrite(cancellable Cancellable) (*FileIOStreamCla
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_file_open_readwrite_finish() to get the result of the operation.
-func (f *FileInterface) OpenReadwriteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) OpenReadwriteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -2253,13 +2253,13 @@ func (f *FileInterface) OpenReadwriteAsync(ioPriority int, cancellable Cancellab
 
 // OpenReadwriteFinish finishes an asynchronous file read operation started with
 // g_file_open_readwrite_async().
-func (f *FileInterface) OpenReadwriteFinish(res AsyncResult) (*FileIOStreamClass, error) {
+func (file *FileIface) OpenReadwriteFinish(res AsyncResult) (*FileIOStreamClass, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret *C.GFileIOStream // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_open_readwrite_finish(_arg0, _arg1, &_cerr)
@@ -2279,11 +2279,11 @@ func (f *FileInterface) OpenReadwriteFinish(res AsyncResult) (*FileIOStreamClass
 // string when possible, so will be generally more efficient.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) PeekPath() string {
+func (file *FileIface) PeekPath() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_peek_path(_arg0)
 
@@ -2302,13 +2302,13 @@ func (f *FileInterface) PeekPath() string {
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_file_mount_mountable_finish() to get the result of the operation.
-func (f *FileInterface) PollMountable(cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) PollMountable(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
@@ -2321,12 +2321,12 @@ func (f *FileInterface) PollMountable(cancellable Cancellable, callback AsyncRea
 //
 // Finish an asynchronous poll operation that was polled with
 // g_file_poll_mountable().
-func (f *FileInterface) PollMountableFinish(result AsyncResult) error {
+func (file *FileIface) PollMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_poll_mountable_finish(_arg0, _arg1, &_cerr)
@@ -2344,35 +2344,35 @@ func (f *FileInterface) PollMountableFinish(result AsyncResult) error {
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) QueryDefaultHandler(cancellable Cancellable) (*AppInfoInterface, error) {
+func (file *FileIface) QueryDefaultHandler(cancellable Cancellable) (*AppInfoIface, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cret *C.GAppInfo     // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_query_default_handler(_arg0, _arg1, &_cerr)
 
-	var _appInfo *AppInfoInterface // out
-	var _goerr error               // out
+	var _appInfo *AppInfoIface // out
+	var _goerr error           // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoInterface)
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoIface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
 }
 
 // QueryDefaultHandlerAsync: async version of g_file_query_default_handler().
-func (f *FileInterface) QueryDefaultHandlerAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) QueryDefaultHandlerAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -2383,21 +2383,21 @@ func (f *FileInterface) QueryDefaultHandlerAsync(ioPriority int, cancellable Can
 
 // QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
 // operation.
-func (f *FileInterface) QueryDefaultHandlerFinish(result AsyncResult) (*AppInfoInterface, error) {
+func (file *FileIface) QueryDefaultHandlerFinish(result AsyncResult) (*AppInfoIface, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GAppInfo     // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_query_default_handler_finish(_arg0, _arg1, &_cerr)
 
-	var _appInfo *AppInfoInterface // out
-	var _goerr error               // out
+	var _appInfo *AppInfoIface // out
+	var _goerr error           // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoInterface)
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoIface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
@@ -2426,12 +2426,12 @@ func (f *FileInterface) QueryDefaultHandlerFinish(result AsyncResult) (*AppInfoI
 // fool users that something is possible and then just show an error dialog. If
 // you do this, you should make sure to also handle the errors that can happen
 // due to races when you execute the operation.
-func (f *FileInterface) QueryExists(cancellable Cancellable) bool {
+func (file *FileIface) QueryExists(cancellable Cancellable) bool {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_query_exists(_arg0, _arg1)
@@ -2467,14 +2467,14 @@ func (f *FileInterface) QueryExists(cancellable Cancellable) bool {
 // If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
 // Other errors are possible too, and depend on what kind of filesystem the file
 // is on.
-func (f *FileInterface) QueryFilesystemInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error) {
+func (file *FileIface) QueryFilesystemInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.char         // out
 	var _arg2 *C.GCancellable // out
 	var _cret *C.GFileInfo    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -2499,7 +2499,7 @@ func (f *FileInterface) QueryFilesystemInfo(attributes string, cancellable Cance
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_file_query_info_finish() to get the result of the operation.
-func (f *FileInterface) QueryFilesystemInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) QueryFilesystemInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
 	var _arg2 C.int                 // out
@@ -2507,7 +2507,7 @@ func (f *FileInterface) QueryFilesystemInfoAsync(attributes string, ioPriority i
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
@@ -2520,13 +2520,13 @@ func (f *FileInterface) QueryFilesystemInfoAsync(attributes string, ioPriority i
 
 // QueryFilesystemInfoFinish finishes an asynchronous filesystem info query. See
 // g_file_query_filesystem_info_async().
-func (f *FileInterface) QueryFilesystemInfoFinish(res AsyncResult) (*FileInfoClass, error) {
+func (file *FileIface) QueryFilesystemInfoFinish(res AsyncResult) (*FileInfoClass, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFileInfo    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_query_filesystem_info_finish(_arg0, _arg1, &_cerr)
@@ -2542,13 +2542,13 @@ func (f *FileInterface) QueryFilesystemInfoFinish(res AsyncResult) (*FileInfoCla
 
 // QueryInfoFinish finishes an asynchronous file info query. See
 // g_file_query_info_async().
-func (f *FileInterface) QueryInfoFinish(res AsyncResult) (*FileInfoClass, error) {
+func (file *FileIface) QueryInfoFinish(res AsyncResult) (*FileInfoClass, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFileInfo    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_query_info_finish(_arg0, _arg1, &_cerr)
@@ -2572,13 +2572,13 @@ func (f *FileInterface) QueryInfoFinish(res AsyncResult) (*FileInfoClass, error)
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) QuerySettableAttributes(cancellable Cancellable) (*FileAttributeInfoList, error) {
+func (file *FileIface) QuerySettableAttributes(cancellable Cancellable) (*FileAttributeInfoList, error) {
 	var _arg0 *C.GFile                  // out
 	var _arg1 *C.GCancellable           // out
 	var _cret *C.GFileAttributeInfoList // in
 	var _cerr *C.GError                 // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_query_settable_attributes(_arg0, _arg1, &_cerr)
@@ -2603,13 +2603,13 @@ func (f *FileInterface) QuerySettableAttributes(cancellable Cancellable) (*FileA
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeInfoList, error) {
+func (file *FileIface) QueryWritableNamespaces(cancellable Cancellable) (*FileAttributeInfoList, error) {
 	var _arg0 *C.GFile                  // out
 	var _arg1 *C.GCancellable           // out
 	var _cret *C.GFileAttributeInfoList // in
 	var _cerr *C.GError                 // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_query_writable_namespaces(_arg0, _arg1, &_cerr)
@@ -2638,13 +2638,13 @@ func (f *FileInterface) QueryWritableNamespaces(cancellable Cancellable) (*FileA
 // If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error will be
 // returned. Other errors are possible too, and depend on what kind of
 // filesystem the file is on.
-func (f *FileInterface) Read(cancellable Cancellable) (*FileInputStreamClass, error) {
+func (file *FileIface) Read(cancellable Cancellable) (*FileInputStreamClass, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GCancellable     // out
 	var _cret *C.GFileInputStream // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_read(_arg0, _arg1, &_cerr)
@@ -2665,14 +2665,14 @@ func (f *FileInterface) Read(cancellable Cancellable) (*FileInputStreamClass, er
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_file_read_finish() to get the result of the operation.
-func (f *FileInterface) ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -2683,13 +2683,13 @@ func (f *FileInterface) ReadAsync(ioPriority int, cancellable Cancellable, callb
 
 // ReadFinish finishes an asynchronous file read operation started with
 // g_file_read_async().
-func (f *FileInterface) ReadFinish(res AsyncResult) (*FileInputStreamClass, error) {
+func (file *FileIface) ReadFinish(res AsyncResult) (*FileInputStreamClass, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GAsyncResult     // out
 	var _cret *C.GFileInputStream // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_read_finish(_arg0, _arg1, &_cerr)
@@ -2706,13 +2706,13 @@ func (f *FileInterface) ReadFinish(res AsyncResult) (*FileInputStreamClass, erro
 // ReplaceContentsFinish finishes an asynchronous replace of the given @file.
 // See g_file_replace_contents_async(). Sets @new_etag to the new entity tag for
 // the document, if present.
-func (f *FileInterface) ReplaceContentsFinish(res AsyncResult) (string, error) {
+func (file *FileIface) ReplaceContentsFinish(res AsyncResult) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_replace_contents_finish(_arg0, _arg1, &_arg2, &_cerr)
@@ -2729,13 +2729,13 @@ func (f *FileInterface) ReplaceContentsFinish(res AsyncResult) (string, error) {
 
 // ReplaceFinish finishes an asynchronous file replace operation started with
 // g_file_replace_async().
-func (f *FileInterface) ReplaceFinish(res AsyncResult) (*FileOutputStreamClass, error) {
+func (file *FileIface) ReplaceFinish(res AsyncResult) (*FileOutputStreamClass, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileOutputStream // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_replace_finish(_arg0, _arg1, &_cerr)
@@ -2751,13 +2751,13 @@ func (f *FileInterface) ReplaceFinish(res AsyncResult) (*FileOutputStreamClass, 
 
 // ReplaceReadwriteFinish finishes an asynchronous file replace operation
 // started with g_file_replace_readwrite_async().
-func (f *FileInterface) ReplaceReadwriteFinish(res AsyncResult) (*FileIOStreamClass, error) {
+func (file *FileIface) ReplaceReadwriteFinish(res AsyncResult) (*FileIOStreamClass, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret *C.GFileIOStream // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_replace_readwrite_finish(_arg0, _arg1, &_cerr)
@@ -2774,33 +2774,33 @@ func (f *FileInterface) ReplaceReadwriteFinish(res AsyncResult) (*FileIOStreamCl
 // ResolveRelativePath resolves a relative path for @file to an absolute path.
 //
 // This call does no blocking I/O.
-func (f *FileInterface) ResolveRelativePath(relativePath string) *FileInterface {
+func (file *FileIface) ResolveRelativePath(relativePath string) *FileIface {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(C.CString(relativePath))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_resolve_relative_path(_arg0, _arg1)
 
-	var _ret *FileInterface // out
+	var _ret *FileIface // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 
 	return _ret
 }
 
 // SetAttributesFinish finishes setting an attribute started in
 // g_file_set_attributes_async().
-func (f *FileInterface) SetAttributesFinish(result AsyncResult) (*FileInfoClass, error) {
+func (file *FileIface) SetAttributesFinish(result AsyncResult) (*FileInfoClass, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.GFileInfo    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_set_attributes_finish(_arg0, _arg1, &_arg2, &_cerr)
@@ -2829,24 +2829,24 @@ func (f *FileInterface) SetAttributesFinish(result AsyncResult) (*FileInfoClass,
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) SetDisplayName(displayName string, cancellable Cancellable) (*FileInterface, error) {
+func (file *FileIface) SetDisplayName(displayName string, cancellable Cancellable) (*FileIface, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.char         // out
 	var _arg2 *C.GCancellable // out
 	var _cret *C.GFile        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_set_display_name(_arg0, _arg1, _arg2, &_cerr)
 
-	var _ret *FileInterface // out
-	var _goerr error        // out
+	var _ret *FileIface // out
+	var _goerr error    // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -2859,7 +2859,7 @@ func (f *FileInterface) SetDisplayName(displayName string, cancellable Cancellab
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_file_set_display_name_finish() to get the result of the operation.
-func (f *FileInterface) SetDisplayNameAsync(displayName string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) SetDisplayNameAsync(displayName string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.char               // out
 	var _arg2 C.int                 // out
@@ -2867,7 +2867,7 @@ func (f *FileInterface) SetDisplayNameAsync(displayName string, ioPriority int, 
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
@@ -2880,21 +2880,21 @@ func (f *FileInterface) SetDisplayNameAsync(displayName string, ioPriority int, 
 
 // SetDisplayNameFinish finishes setting a display name started with
 // g_file_set_display_name_async().
-func (f *FileInterface) SetDisplayNameFinish(res AsyncResult) (*FileInterface, error) {
+func (file *FileIface) SetDisplayNameFinish(res AsyncResult) (*FileIface, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFile        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_set_display_name_finish(_arg0, _arg1, &_cerr)
 
-	var _ret *FileInterface // out
-	var _goerr error        // out
+	var _ret *FileIface // out
+	var _goerr error    // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -2905,12 +2905,12 @@ func (f *FileInterface) SetDisplayNameFinish(res AsyncResult) (*FileInterface, e
 //
 // Finish an asynchronous start operation that was started with
 // g_file_start_mountable().
-func (f *FileInterface) StartMountableFinish(result AsyncResult) error {
+func (file *FileIface) StartMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_start_mountable_finish(_arg0, _arg1, &_cerr)
@@ -2927,12 +2927,12 @@ func (f *FileInterface) StartMountableFinish(result AsyncResult) error {
 //
 // Finish an asynchronous stop operation that was started with
 // g_file_stop_mountable().
-func (f *FileInterface) StopMountableFinish(result AsyncResult) error {
+func (file *FileIface) StopMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_stop_mountable_finish(_arg0, _arg1, &_cerr)
@@ -2948,11 +2948,11 @@ func (f *FileInterface) StopMountableFinish(result AsyncResult) error {
 // contexts][g-main-context-push-thread-default-context]. If this returns false,
 // you cannot perform asynchronous operations on @file in a thread that has a
 // thread-default context.
-func (f *FileInterface) SupportsThreadContexts() bool {
+func (file *FileIface) SupportsThreadContexts() bool {
 	var _arg0 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_supports_thread_contexts(_arg0)
 
@@ -2975,12 +2975,12 @@ func (f *FileInterface) SupportsThreadContexts() bool {
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (f *FileInterface) Trash(cancellable Cancellable) error {
+func (file *FileIface) Trash(cancellable Cancellable) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_trash(_arg0, _arg1, &_cerr)
@@ -2993,14 +2993,14 @@ func (f *FileInterface) Trash(cancellable Cancellable) error {
 }
 
 // TrashAsync: asynchronously sends @file to the Trash location, if possible.
-func (f *FileInterface) TrashAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (file *FileIface) TrashAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -3011,12 +3011,12 @@ func (f *FileInterface) TrashAsync(ioPriority int, cancellable Cancellable, call
 
 // TrashFinish finishes an asynchronous file trashing operation, started with
 // g_file_trash_async().
-func (f *FileInterface) TrashFinish(result AsyncResult) error {
+func (file *FileIface) TrashFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_trash_finish(_arg0, _arg1, &_cerr)
@@ -3034,13 +3034,13 @@ func (f *FileInterface) TrashFinish(result AsyncResult) error {
 // Finish an asynchronous unmount operation that was started with
 // g_file_unmount_mountable().
 //
-// Deprecated: since version 2.22.
-func (f *FileInterface) UnmountMountableFinish(result AsyncResult) error {
+// Deprecated: Use g_file_unmount_mountable_with_operation_finish() instead.
+func (file *FileIface) UnmountMountableFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_unmount_mountable_finish(_arg0, _arg1, &_cerr)
@@ -3057,12 +3057,12 @@ func (f *FileInterface) UnmountMountableFinish(result AsyncResult) error {
 //
 // Finish an asynchronous unmount operation that was started with
 // g_file_unmount_mountable_with_operation().
-func (f *FileInterface) UnmountMountableWithOperationFinish(result AsyncResult) error {
+func (file *FileIface) UnmountMountableWithOperationFinish(result AsyncResult) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_unmount_mountable_with_operation_finish(_arg0, _arg1, &_cerr)

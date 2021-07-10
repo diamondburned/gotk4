@@ -76,7 +76,7 @@ type Display interface {
 	DefaultSeat() *SeatClass
 	// DeviceManager returns the DeviceManager associated to @display.
 	//
-	// Deprecated: since version 3.20.
+	// Deprecated: Use gdk_display_get_default_seat() and Seat operations.
 	DeviceManager() *DeviceManagerClass
 	// MaximalCursorSize gets the maximal size to use for cursors on @display.
 	MaximalCursorSize() (width uint, height uint)
@@ -95,14 +95,14 @@ type Display interface {
 	NMonitors() int
 	// NScreens gets the number of screen managed by the @display.
 	//
-	// Deprecated: since version 3.10.
+	// Deprecated: The number of screens is always 1.
 	NScreens() int
 	// Name gets the name of the display.
 	Name() string
 	// Pointer gets the current location of the pointer and the current modifier
 	// mask for a given display.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gdk_device_get_position() instead.
 	Pointer() (screen *ScreenClass, x int, y int, mask ModifierType)
 	// PrimaryMonitor gets the primary monitor for the display.
 	//
@@ -113,14 +113,15 @@ type Display interface {
 	PrimaryMonitor() *MonitorClass
 	// Screen returns a screen object for one of the screens of the display.
 	//
-	// Deprecated: since version 3.20.
+	// Deprecated: There is only one screen; use
+	// gdk_display_get_default_screen() to get it.
 	Screen(screenNum int) *ScreenClass
 	// WindowAtPointer obtains the window underneath the mouse pointer,
 	// returning the location of the pointer in that window in @win_x, @win_y
 	// for @screen. Returns nil if the window under the mouse pointer is not
 	// known to GDK (for example, belongs to another application).
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gdk_device_get_window_at_position() instead.
 	WindowAtPointer() (winX int, winY int, window *WindowClass)
 	// HasPending returns whether the display has events that are waiting to be
 	// processed.
@@ -129,7 +130,8 @@ type Display interface {
 	IsClosed() bool
 	// KeyboardUngrab: release any keyboard grab
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab()
+	// instead.
 	KeyboardUngrab(time_ uint32)
 	// NotifyStartupComplete indicates to the GUI environment that the
 	// application has finished loading, using a given identifier.
@@ -141,11 +143,12 @@ type Display interface {
 	NotifyStartupComplete(startupId string)
 	// PointerIsGrabbed: test if the pointer is grabbed.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gdk_display_device_is_grabbed() instead.
 	PointerIsGrabbed() bool
 	// PointerUngrab: release any pointer grab.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab()
+	// instead.
 	PointerUngrab(time_ uint32)
 	// SetDoubleClickDistance sets the double click distance (two clicks within
 	// this distance count as a double click and result in a K_2BUTTON_PRESS
@@ -168,7 +171,8 @@ type Display interface {
 	// Currently this only works on X11 with XComposite and XDamage extensions
 	// available.
 	//
-	// Deprecated: since version 3.16.
+	// Deprecated: Compositing is an outdated technology that only ever worked
+	// on X11.
 	SupportsComposite() bool
 	// SupportsCursorAlpha returns true if cursors can use an 8bit alpha channel
 	// on @display. Otherwise, cursors are restricted to bilevel alpha (i.e. a
@@ -207,7 +211,7 @@ type Display interface {
 	// This function was added to cover some rare use cases like keyboard
 	// navigation support for the color picker in the ColorSelectionDialog.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gdk_device_warp() instead.
 	WarpPointer(screen Screen, x int, y int)
 }
 
@@ -231,32 +235,32 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 }
 
 // Beep emits a short beep on @display
-func (d *DisplayClass) Beep() {
+func (display *DisplayClass) Beep() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_display_beep(_arg0)
 }
 
 // Close closes the connection to the windowing system for the given display,
 // and cleans up associated resources.
-func (d *DisplayClass) Close() {
+func (display *DisplayClass) Close() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_display_close(_arg0)
 }
 
 // DeviceIsGrabbed returns true if there is an ongoing grab on @device for
 // @display.
-func (d *DisplayClass) DeviceIsGrabbed(device Device) bool {
+func (display *DisplayClass) DeviceIsGrabbed(device Device) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkDevice  // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
@@ -279,21 +283,21 @@ func (d *DisplayClass) DeviceIsGrabbed(device Device) bool {
 //
 // This is most useful for X11. On windowing systems where requests are handled
 // synchronously, this function will do nothing.
-func (d *DisplayClass) Flush() {
+func (display *DisplayClass) Flush() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_display_flush(_arg0)
 }
 
 // AppLaunchContext returns a AppLaunchContext suitable for launching
 // applications on the given display.
-func (d *DisplayClass) AppLaunchContext() *AppLaunchContextClass {
+func (display *DisplayClass) AppLaunchContext() *AppLaunchContextClass {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_app_launch_context(_arg0)
 
@@ -305,11 +309,11 @@ func (d *DisplayClass) AppLaunchContext() *AppLaunchContextClass {
 }
 
 // DefaultCursorSize returns the default size to use for cursors on @display.
-func (d *DisplayClass) DefaultCursorSize() uint {
+func (display *DisplayClass) DefaultCursorSize() uint {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_default_cursor_size(_arg0)
 
@@ -323,11 +327,11 @@ func (d *DisplayClass) DefaultCursorSize() uint {
 // DefaultGroup returns the default group leader window for all toplevel windows
 // on @display. This window is implicitly created by GDK. See
 // gdk_window_set_group().
-func (d *DisplayClass) DefaultGroup() *WindowClass {
+func (display *DisplayClass) DefaultGroup() *WindowClass {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkWindow  // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_default_group(_arg0)
 
@@ -339,11 +343,11 @@ func (d *DisplayClass) DefaultGroup() *WindowClass {
 }
 
 // DefaultScreen: get the default Screen for @display.
-func (d *DisplayClass) DefaultScreen() *ScreenClass {
+func (display *DisplayClass) DefaultScreen() *ScreenClass {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkScreen  // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_default_screen(_arg0)
 
@@ -355,11 +359,11 @@ func (d *DisplayClass) DefaultScreen() *ScreenClass {
 }
 
 // DefaultSeat returns the default Seat for this display.
-func (d *DisplayClass) DefaultSeat() *SeatClass {
+func (display *DisplayClass) DefaultSeat() *SeatClass {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_default_seat(_arg0)
 
@@ -372,12 +376,12 @@ func (d *DisplayClass) DefaultSeat() *SeatClass {
 
 // DeviceManager returns the DeviceManager associated to @display.
 //
-// Deprecated: since version 3.20.
-func (d *DisplayClass) DeviceManager() *DeviceManagerClass {
+// Deprecated: Use gdk_display_get_default_seat() and Seat operations.
+func (display *DisplayClass) DeviceManager() *DeviceManagerClass {
 	var _arg0 *C.GdkDisplay       // out
 	var _cret *C.GdkDeviceManager // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_device_manager(_arg0)
 
@@ -389,12 +393,12 @@ func (d *DisplayClass) DeviceManager() *DeviceManagerClass {
 }
 
 // MaximalCursorSize gets the maximal size to use for cursors on @display.
-func (d *DisplayClass) MaximalCursorSize() (width uint, height uint) {
+func (display *DisplayClass) MaximalCursorSize() (width uint, height uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // in
 	var _arg2 C.guint       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_display_get_maximal_cursor_size(_arg0, &_arg1, &_arg2)
 
@@ -408,12 +412,12 @@ func (d *DisplayClass) MaximalCursorSize() (width uint, height uint) {
 }
 
 // Monitor gets a monitor associated with this display.
-func (d *DisplayClass) Monitor(monitorNum int) *MonitorClass {
+func (display *DisplayClass) Monitor(monitorNum int) *MonitorClass {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = C.int(monitorNum)
 
 	_cret = C.gdk_display_get_monitor(_arg0, _arg1)
@@ -427,13 +431,13 @@ func (d *DisplayClass) Monitor(monitorNum int) *MonitorClass {
 
 // MonitorAtPoint gets the monitor in which the point (@x, @y) is located, or a
 // nearby monitor if the point is not in any monitor.
-func (d *DisplayClass) MonitorAtPoint(x int, y int) *MonitorClass {
+func (display *DisplayClass) MonitorAtPoint(x int, y int) *MonitorClass {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
 	var _arg2 C.int         // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
@@ -448,12 +452,12 @@ func (d *DisplayClass) MonitorAtPoint(x int, y int) *MonitorClass {
 
 // MonitorAtWindow gets the monitor in which the largest area of @window
 // resides, or a monitor close to @window if it is outside of all monitors.
-func (d *DisplayClass) MonitorAtWindow(window Window) *MonitorClass {
+func (display *DisplayClass) MonitorAtWindow(window Window) *MonitorClass {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkWindow  // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_display_get_monitor_at_window(_arg0, _arg1)
@@ -469,11 +473,11 @@ func (d *DisplayClass) MonitorAtWindow(window Window) *MonitorClass {
 //
 // The returned number is valid until the next emission of the
 // Display::monitor-added or Display::monitor-removed signal.
-func (d *DisplayClass) NMonitors() int {
+func (display *DisplayClass) NMonitors() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_n_monitors(_arg0)
 
@@ -486,12 +490,12 @@ func (d *DisplayClass) NMonitors() int {
 
 // NScreens gets the number of screen managed by the @display.
 //
-// Deprecated: since version 3.10.
-func (d *DisplayClass) NScreens() int {
+// Deprecated: The number of screens is always 1.
+func (display *DisplayClass) NScreens() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_n_screens(_arg0)
 
@@ -503,11 +507,11 @@ func (d *DisplayClass) NScreens() int {
 }
 
 // Name gets the name of the display.
-func (d *DisplayClass) Name() string {
+func (display *DisplayClass) Name() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_name(_arg0)
 
@@ -521,15 +525,15 @@ func (d *DisplayClass) Name() string {
 // Pointer gets the current location of the pointer and the current modifier
 // mask for a given display.
 //
-// Deprecated: since version 3.0.
-func (d *DisplayClass) Pointer() (screen *ScreenClass, x int, y int, mask ModifierType) {
+// Deprecated: Use gdk_device_get_position() instead.
+func (display *DisplayClass) Pointer() (screen *ScreenClass, x int, y int, mask ModifierType) {
 	var _arg0 *C.GdkDisplay     // out
 	var _arg1 *C.GdkScreen      // in
 	var _arg2 C.gint            // in
 	var _arg3 C.gint            // in
 	var _arg4 C.GdkModifierType // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_display_get_pointer(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -552,11 +556,11 @@ func (d *DisplayClass) Pointer() (screen *ScreenClass, x int, y int, mask Modifi
 // While normal application windows typically allow the window manager to place
 // the windows, specialized desktop applications such as panels should place
 // themselves on the primary monitor.
-func (d *DisplayClass) PrimaryMonitor() *MonitorClass {
+func (display *DisplayClass) PrimaryMonitor() *MonitorClass {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_primary_monitor(_arg0)
 
@@ -569,13 +573,14 @@ func (d *DisplayClass) PrimaryMonitor() *MonitorClass {
 
 // Screen returns a screen object for one of the screens of the display.
 //
-// Deprecated: since version 3.20.
-func (d *DisplayClass) Screen(screenNum int) *ScreenClass {
+// Deprecated: There is only one screen; use gdk_display_get_default_screen() to
+// get it.
+func (display *DisplayClass) Screen(screenNum int) *ScreenClass {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
 	var _cret *C.GdkScreen  // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = C.gint(screenNum)
 
 	_cret = C.gdk_display_get_screen(_arg0, _arg1)
@@ -592,14 +597,14 @@ func (d *DisplayClass) Screen(screenNum int) *ScreenClass {
 // Returns nil if the window under the mouse pointer is not known to GDK (for
 // example, belongs to another application).
 //
-// Deprecated: since version 3.0.
-func (d *DisplayClass) WindowAtPointer() (winX int, winY int, window *WindowClass) {
+// Deprecated: Use gdk_device_get_window_at_position() instead.
+func (display *DisplayClass) WindowAtPointer() (winX int, winY int, window *WindowClass) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // in
 	var _arg2 C.gint        // in
 	var _cret *C.GdkWindow  // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_window_at_pointer(_arg0, &_arg1, &_arg2)
 
@@ -616,11 +621,11 @@ func (d *DisplayClass) WindowAtPointer() (winX int, winY int, window *WindowClas
 
 // HasPending returns whether the display has events that are waiting to be
 // processed.
-func (d *DisplayClass) HasPending() bool {
+func (display *DisplayClass) HasPending() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_has_pending(_arg0)
 
@@ -634,11 +639,11 @@ func (d *DisplayClass) HasPending() bool {
 }
 
 // IsClosed finds out if the display has been closed.
-func (d *DisplayClass) IsClosed() bool {
+func (display *DisplayClass) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_is_closed(_arg0)
 
@@ -653,12 +658,12 @@ func (d *DisplayClass) IsClosed() bool {
 
 // KeyboardUngrab: release any keyboard grab
 //
-// Deprecated: since version 3.0.
-func (d *DisplayClass) KeyboardUngrab(time_ uint32) {
+// Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab() instead.
+func (display *DisplayClass) KeyboardUngrab(time_ uint32) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint32     // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = C.guint32(time_)
 
 	C.gdk_display_keyboard_ungrab(_arg0, _arg1)
@@ -670,11 +675,11 @@ func (d *DisplayClass) KeyboardUngrab(time_ uint32) {
 // GTK+ will call this function automatically for Window with custom
 // startup-notification identifier unless
 // gtk_window_set_auto_startup_notification() is called to disable that feature.
-func (d *DisplayClass) NotifyStartupComplete(startupId string) {
+func (display *DisplayClass) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.gchar)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -683,12 +688,12 @@ func (d *DisplayClass) NotifyStartupComplete(startupId string) {
 
 // PointerIsGrabbed: test if the pointer is grabbed.
 //
-// Deprecated: since version 3.0.
-func (d *DisplayClass) PointerIsGrabbed() bool {
+// Deprecated: Use gdk_display_device_is_grabbed() instead.
+func (display *DisplayClass) PointerIsGrabbed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_pointer_is_grabbed(_arg0)
 
@@ -703,12 +708,12 @@ func (d *DisplayClass) PointerIsGrabbed() bool {
 
 // PointerUngrab: release any pointer grab.
 //
-// Deprecated: since version 3.0.
-func (d *DisplayClass) PointerUngrab(time_ uint32) {
+// Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab() instead.
+func (display *DisplayClass) PointerUngrab(time_ uint32) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint32     // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = C.guint32(time_)
 
 	C.gdk_display_pointer_ungrab(_arg0, _arg1)
@@ -718,11 +723,11 @@ func (d *DisplayClass) PointerUngrab(time_ uint32) {
 // distance count as a double click and result in a K_2BUTTON_PRESS event). See
 // also gdk_display_set_double_click_time(). Applications should not set this,
 // it is a global user-configured setting.
-func (d *DisplayClass) SetDoubleClickDistance(distance uint) {
+func (display *DisplayClass) SetDoubleClickDistance(distance uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = C.guint(distance)
 
 	C.gdk_display_set_double_click_distance(_arg0, _arg1)
@@ -731,11 +736,11 @@ func (d *DisplayClass) SetDoubleClickDistance(distance uint) {
 // SetDoubleClickTime sets the double click time (two clicks within this time
 // interval count as a double click and result in a K_2BUTTON_PRESS event).
 // Applications should not set this, it is a global user-configured setting.
-func (d *DisplayClass) SetDoubleClickTime(msec uint) {
+func (display *DisplayClass) SetDoubleClickTime(msec uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = C.guint(msec)
 
 	C.gdk_display_set_double_click_time(_arg0, _arg1)
@@ -745,11 +750,11 @@ func (d *DisplayClass) SetDoubleClickTime(msec uint) {
 // clipboard persistance; i.e. if it’s possible to store the clipboard data
 // after an application has quit. On X11 this checks if a clipboard daemon is
 // running.
-func (d *DisplayClass) SupportsClipboardPersistence() bool {
+func (display *DisplayClass) SupportsClipboardPersistence() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_supports_clipboard_persistence(_arg0)
 
@@ -768,12 +773,13 @@ func (d *DisplayClass) SupportsClipboardPersistence() bool {
 // Currently this only works on X11 with XComposite and XDamage extensions
 // available.
 //
-// Deprecated: since version 3.16.
-func (d *DisplayClass) SupportsComposite() bool {
+// Deprecated: Compositing is an outdated technology that only ever worked on
+// X11.
+func (display *DisplayClass) SupportsComposite() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_supports_composite(_arg0)
 
@@ -788,11 +794,11 @@ func (d *DisplayClass) SupportsComposite() bool {
 
 // SupportsCursorAlpha returns true if cursors can use an 8bit alpha channel on
 // @display. Otherwise, cursors are restricted to bilevel alpha (i.e. a mask).
-func (d *DisplayClass) SupportsCursorAlpha() bool {
+func (display *DisplayClass) SupportsCursorAlpha() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_supports_cursor_alpha(_arg0)
 
@@ -807,11 +813,11 @@ func (d *DisplayClass) SupportsCursorAlpha() bool {
 
 // SupportsCursorColor returns true if multicolored cursors are supported on
 // @display. Otherwise, cursors have only a forground and a background color.
-func (d *DisplayClass) SupportsCursorColor() bool {
+func (display *DisplayClass) SupportsCursorColor() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_supports_cursor_color(_arg0)
 
@@ -826,11 +832,11 @@ func (d *DisplayClass) SupportsCursorColor() bool {
 
 // SupportsInputShapes returns true if gdk_window_input_shape_combine_mask() can
 // be used to modify the input shape of windows on @display.
-func (d *DisplayClass) SupportsInputShapes() bool {
+func (display *DisplayClass) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_supports_input_shapes(_arg0)
 
@@ -845,11 +851,11 @@ func (d *DisplayClass) SupportsInputShapes() bool {
 
 // SupportsSelectionNotification returns whether EventOwnerChange events will be
 // sent when the owner of a selection changes.
-func (d *DisplayClass) SupportsSelectionNotification() bool {
+func (display *DisplayClass) SupportsSelectionNotification() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_supports_selection_notification(_arg0)
 
@@ -864,11 +870,11 @@ func (d *DisplayClass) SupportsSelectionNotification() bool {
 
 // SupportsShapes returns true if gdk_window_shape_combine_mask() can be used to
 // create shaped windows on @display.
-func (d *DisplayClass) SupportsShapes() bool {
+func (display *DisplayClass) SupportsShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_supports_shapes(_arg0)
 
@@ -889,10 +895,10 @@ func (d *DisplayClass) SupportsShapes() bool {
 //
 // This is most useful for X11. On windowing systems where requests are handled
 // synchronously, this function will do nothing.
-func (d *DisplayClass) Sync() {
+func (display *DisplayClass) Sync() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_display_sync(_arg0)
 }
@@ -906,14 +912,14 @@ func (d *DisplayClass) Sync() {
 // function was added to cover some rare use cases like keyboard navigation
 // support for the color picker in the ColorSelectionDialog.
 //
-// Deprecated: since version 3.0.
-func (d *DisplayClass) WarpPointer(screen Screen, x int, y int) {
+// Deprecated: Use gdk_device_warp() instead.
+func (display *DisplayClass) WarpPointer(screen Screen, x int, y int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkScreen  // out
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)

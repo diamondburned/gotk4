@@ -86,13 +86,13 @@ func NewGestureDrag(widget Widget) *GestureDragClass {
 // Offset: if the @gesture is active, this function returns true and fills in @x
 // and @y with the coordinates of the current point, as an offset to the
 // starting drag point.
-func (g *GestureDragClass) Offset() (x float64, y float64, ok bool) {
+func (gesture *GestureDragClass) Offset() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
 	var _arg1 C.gdouble         // in
 	var _arg2 C.gdouble         // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
 
@@ -111,13 +111,13 @@ func (g *GestureDragClass) Offset() (x float64, y float64, ok bool) {
 
 // StartPoint: if the @gesture is active, this function returns true and fills
 // in @x and @y with the drag start coordinates, in window-relative coordinates.
-func (g *GestureDragClass) StartPoint() (x float64, y float64, ok bool) {
+func (gesture *GestureDragClass) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
 	var _arg1 C.gdouble         // in
 	var _arg2 C.gdouble         // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
 

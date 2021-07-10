@@ -138,11 +138,12 @@ type ListStore interface {
 // ListStoreClass implements the ListStore interface.
 type ListStoreClass struct {
 	*externglib.Object
-	BuildableInterface
-	TreeDragDestInterface
-	TreeDragSourceInterface
-	TreeModelInterface
-	TreeSortableInterface
+	*externglib.Object
+	BuildableIface
+	TreeDragDestIface
+	TreeDragSourceIface
+	TreeModelIface
+	TreeSortableIface
 }
 
 var _ ListStore = (*ListStoreClass)(nil)
@@ -150,20 +151,21 @@ var _ ListStore = (*ListStoreClass)(nil)
 func wrapListStore(obj *externglib.Object) ListStore {
 	return &ListStoreClass{
 		Object: obj,
-		BuildableInterface: BuildableInterface{
+		Object: obj,
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		TreeDragDestInterface: TreeDragDestInterface{
+		TreeDragDestIface: TreeDragDestIface{
 			Object: obj,
 		},
-		TreeDragSourceInterface: TreeDragSourceInterface{
+		TreeDragSourceIface: TreeDragSourceIface{
 			Object: obj,
 		},
-		TreeModelInterface: TreeModelInterface{
+		TreeModelIface: TreeModelIface{
 			Object: obj,
 		},
-		TreeSortableInterface: TreeSortableInterface{
-			TreeModelInterface: TreeModelInterface{
+		TreeSortableIface: TreeSortableIface{
+			TreeModelIface: TreeModelIface{
 				Object: obj,
 			},
 		},
@@ -205,11 +207,11 @@ func NewListStoreV(types []externglib.Type) *ListStoreClass {
 // Append appends a new row to @list_store. @iter will be changed to point to
 // this new row. The row will be empty after this function is called. To fill in
 // values, you need to call gtk_list_store_set() or gtk_list_store_set_value().
-func (l *ListStoreClass) Append() TreeIter {
+func (listStore *ListStoreClass) Append() TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 
 	C.gtk_list_store_append(_arg0, &_arg1)
 
@@ -221,10 +223,10 @@ func (l *ListStoreClass) Append() TreeIter {
 }
 
 // Clear removes all rows from the list store.
-func (l *ListStoreClass) Clear() {
+func (listStore *ListStoreClass) Clear() {
 	var _arg0 *C.GtkListStore // out
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 
 	C.gtk_list_store_clear(_arg0)
 }
@@ -234,12 +236,12 @@ func (l *ListStoreClass) Clear() {
 // then the new row will be appended to the list. The row will be empty after
 // this function is called. To fill in values, you need to call
 // gtk_list_store_set() or gtk_list_store_set_value().
-func (l *ListStoreClass) Insert(position int) TreeIter {
+func (listStore *ListStoreClass) Insert(position int) TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 C.gint          // out
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_list_store_insert(_arg0, &_arg1, _arg2)
@@ -256,12 +258,12 @@ func (l *ListStoreClass) Insert(position int) TreeIter {
 // point to this new row. The row will be empty after this function is called.
 // To fill in values, you need to call gtk_list_store_set() or
 // gtk_list_store_set_value().
-func (l *ListStoreClass) InsertAfter(sibling *TreeIter) TreeIter {
+func (listStore *ListStoreClass) InsertAfter(sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling))
 
 	C.gtk_list_store_insert_after(_arg0, &_arg1, _arg2)
@@ -278,12 +280,12 @@ func (l *ListStoreClass) InsertAfter(sibling *TreeIter) TreeIter {
 // to this new row. The row will be empty after this function is called. To fill
 // in values, you need to call gtk_list_store_set() or
 // gtk_list_store_set_value().
-func (l *ListStoreClass) InsertBefore(sibling *TreeIter) TreeIter {
+func (listStore *ListStoreClass) InsertBefore(sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling))
 
 	C.gtk_list_store_insert_before(_arg0, &_arg1, _arg2)
@@ -298,7 +300,7 @@ func (l *ListStoreClass) InsertBefore(sibling *TreeIter) TreeIter {
 // InsertWithValuesv: variant of gtk_list_store_insert_with_values() which takes
 // the columns and values as two arrays, instead of varargs. This function is
 // mainly intended for language-bindings.
-func (l *ListStoreClass) InsertWithValuesv(position int, columns []int, values []externglib.Value) TreeIter {
+func (listStore *ListStoreClass) InsertWithValuesv(position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 C.gint          // out
@@ -306,7 +308,7 @@ func (l *ListStoreClass) InsertWithValuesv(position int, columns []int, values [
 	var _arg5 C.gint
 	var _arg4 *C.GValue
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = C.gint(position)
 	_arg5 = C.gint(len(columns))
 	_arg3 = (*C.gint)(unsafe.Pointer(&columns[0]))
@@ -333,12 +335,12 @@ func (l *ListStoreClass) InsertWithValuesv(position int, columns []int, values [
 // testing > purposes.
 //
 // Checks if the given iter is a valid iter for this ListStore.
-func (l *ListStoreClass) IterIsValid(iter *TreeIter) bool {
+func (listStore *ListStoreClass) IterIsValid(iter *TreeIter) bool {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	_cret = C.gtk_list_store_iter_is_valid(_arg0, _arg1)
@@ -355,12 +357,12 @@ func (l *ListStoreClass) IterIsValid(iter *TreeIter) bool {
 // MoveAfter moves @iter in @store to the position after @position. Note that
 // this function only works with unsorted stores. If @position is nil, @iter
 // will be moved to the start of the list.
-func (s *ListStoreClass) MoveAfter(iter *TreeIter, position *TreeIter) {
+func (store *ListStoreClass) MoveAfter(iter *TreeIter, position *TreeIter) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(store.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position))
 
@@ -370,12 +372,12 @@ func (s *ListStoreClass) MoveAfter(iter *TreeIter, position *TreeIter) {
 // MoveBefore moves @iter in @store to the position before @position. Note that
 // this function only works with unsorted stores. If @position is nil, @iter
 // will be moved to the end of the list.
-func (s *ListStoreClass) MoveBefore(iter *TreeIter, position *TreeIter) {
+func (store *ListStoreClass) MoveBefore(iter *TreeIter, position *TreeIter) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(store.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position))
 
@@ -385,11 +387,11 @@ func (s *ListStoreClass) MoveBefore(iter *TreeIter, position *TreeIter) {
 // Prepend prepends a new row to @list_store. @iter will be changed to point to
 // this new row. The row will be empty after this function is called. To fill in
 // values, you need to call gtk_list_store_set() or gtk_list_store_set_value().
-func (l *ListStoreClass) Prepend() TreeIter {
+func (listStore *ListStoreClass) Prepend() TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 
 	C.gtk_list_store_prepend(_arg0, &_arg1)
 
@@ -403,12 +405,12 @@ func (l *ListStoreClass) Prepend() TreeIter {
 // Remove removes the given row from the list store. After being removed, @iter
 // is set to be the next valid row, or invalidated if it pointed to the last row
 // in @list_store.
-func (l *ListStoreClass) Remove(iter *TreeIter) bool {
+func (listStore *ListStoreClass) Remove(iter *TreeIter) bool {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 
 	_cret = C.gtk_list_store_remove(_arg0, _arg1)
@@ -424,11 +426,11 @@ func (l *ListStoreClass) Remove(iter *TreeIter) bool {
 
 // Reorder reorders @store to follow the order indicated by @new_order. Note
 // that this function only works with unsorted stores.
-func (s *ListStoreClass) Reorder(newOrder []int) {
+func (store *ListStoreClass) Reorder(newOrder []int) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.gint
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(store.Native()))
 	{
 		var zero int
 		newOrder = append(newOrder, zero)
@@ -442,12 +444,12 @@ func (s *ListStoreClass) Reorder(newOrder []int) {
 // from ListStore, and should only be used when constructing a new ListStore. It
 // will not function after a row has been added, or a method on the TreeModel
 // interface is called.
-func (l *ListStoreClass) SetColumnTypes(types []externglib.Type) {
+func (listStore *ListStoreClass) SetColumnTypes(types []externglib.Type) {
 	var _arg0 *C.GtkListStore // out
 	var _arg2 *C.GType
 	var _arg1 C.gint
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg1 = C.gint(len(types))
 	_arg2 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -463,13 +465,13 @@ func (l *ListStoreClass) SetColumnTypes(types []externglib.Type) {
 
 // SetValue sets the data in the cell specified by @iter and @column. The type
 // of @value must be convertible to the type of the column.
-func (l *ListStoreClass) SetValue(iter *TreeIter, column int, value *externglib.Value) {
+func (listStore *ListStoreClass) SetValue(iter *TreeIter, column int, value *externglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.gint          // out
 	var _arg3 *C.GValue       // out
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 	_arg2 = C.gint(column)
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
@@ -481,14 +483,14 @@ func (l *ListStoreClass) SetValue(iter *TreeIter, column int, value *externglib.
 // and values as two arrays, instead of varargs. This function is mainly
 // intended for language-bindings and in case the number of columns to change is
 // not known until run-time.
-func (l *ListStoreClass) SetValuesv(iter *TreeIter, columns []int, values []externglib.Value) {
+func (listStore *ListStoreClass) SetValuesv(iter *TreeIter, columns []int, values []externglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.gint
 	var _arg4 C.gint
 	var _arg3 *C.GValue
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 	_arg4 = C.gint(len(columns))
 	_arg2 = (*C.gint)(unsafe.Pointer(&columns[0]))
@@ -507,12 +509,12 @@ func (l *ListStoreClass) SetValuesv(iter *TreeIter, columns []int, values []exte
 
 // Swap swaps @a and @b in @store. Note that this function only works with
 // unsorted stores.
-func (s *ListStoreClass) Swap(a *TreeIter, b *TreeIter) {
+func (store *ListStoreClass) Swap(a *TreeIter, b *TreeIter) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListStore)(unsafe.Pointer(store.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(a))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(b))
 

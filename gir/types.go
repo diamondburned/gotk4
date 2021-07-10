@@ -121,8 +121,14 @@ type Doc struct {
 	Line     int      `xml:"line,attr"`
 }
 
+type DocDeprecated struct {
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 doc-deprecated"`
+	String  string   `xml:",innerxml"`
+}
+
 type DocElements struct {
 	Doc            *Doc
+	DocDeprecated  *DocDeprecated
 	SourcePosition *SourcePosition
 }
 

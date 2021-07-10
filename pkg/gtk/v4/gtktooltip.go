@@ -104,11 +104,11 @@ func marshalTooltip(p uintptr) (interface{}, error) {
 // @custom_widget does not get destroyed when the tooltip goes away. By default
 // a box with a Image and Label is embedded in the tooltip, which can be
 // configured using gtk_tooltip_set_markup() and gtk_tooltip_set_icon().
-func (t *TooltipClass) SetCustom(customWidget Widget) {
+func (tooltip *TooltipClass) SetCustom(customWidget Widget) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(customWidget.Native()))
 
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
@@ -117,11 +117,11 @@ func (t *TooltipClass) SetCustom(customWidget Widget) {
 // SetIconFromIconName sets the icon of the tooltip (which is in front of the
 // text) to be the icon indicated by @icon_name with the size indicated by
 // @size. If @icon_name is nil, the image will be hidden.
-func (t *TooltipClass) SetIconFromIconName(iconName string) {
+func (tooltip *TooltipClass) SetIconFromIconName(iconName string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -132,11 +132,11 @@ func (t *TooltipClass) SetIconFromIconName(iconName string) {
 //
 // The string must be marked up with Pango markup. If @markup is nil, the label
 // will be hidden.
-func (t *TooltipClass) SetMarkup(markup string) {
+func (tooltip *TooltipClass) SetMarkup(markup string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg1 = (*C.char)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -147,11 +147,11 @@ func (t *TooltipClass) SetMarkup(markup string) {
 //
 // If @text is nil, the label will be hidden. See also
 // [method@Gtk.Tooltip.set_markup].
-func (t *TooltipClass) SetText(text string) {
+func (tooltip *TooltipClass) SetText(text string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -165,11 +165,11 @@ func (t *TooltipClass) SetText(text string) {
 // For setting tooltips on TreeView, please refer to the convenience functions
 // for this: gtk_tree_view_set_tooltip_row() and
 // gtk_tree_view_set_tooltip_cell().
-func (t *TooltipClass) SetTipArea(rect *gdk.Rectangle) {
+func (tooltip *TooltipClass) SetTipArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkTooltip   // out
 	var _arg1 *C.GdkRectangle // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
 
 	C.gtk_tooltip_set_tip_area(_arg0, _arg1)

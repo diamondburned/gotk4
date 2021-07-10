@@ -67,11 +67,11 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 }
 
 // Offset gets the offset set via gtk_slice_list_model_set_offset().
-func (s *SliceListModelClass) Offset() uint {
+func (self *SliceListModelClass) Offset() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_slice_list_model_get_offset(_arg0)
 
@@ -83,11 +83,11 @@ func (s *SliceListModelClass) Offset() uint {
 }
 
 // Size gets the size set via gtk_slice_list_model_set_size().
-func (s *SliceListModelClass) Size() uint {
+func (self *SliceListModelClass) Size() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_slice_list_model_get_size(_arg0)
 
@@ -101,11 +101,11 @@ func (s *SliceListModelClass) Size() uint {
 // SetOffset sets the offset into the original model for this slice.
 //
 // If the offset is too large for the sliced model, @self will end up empty.
-func (s *SliceListModelClass) SetOffset(offset uint) {
+func (self *SliceListModelClass) SetOffset(offset uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
 	_arg1 = C.guint(offset)
 
 	C.gtk_slice_list_model_set_offset(_arg0, _arg1)
@@ -115,11 +115,11 @@ func (s *SliceListModelClass) SetOffset(offset uint) {
 //
 // It can however have fewer items if the offset is too large or the model
 // sliced from doesn't have enough items.
-func (s *SliceListModelClass) SetSize(size uint) {
+func (self *SliceListModelClass) SetSize(size uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
 	_arg1 = C.guint(size)
 
 	C.gtk_slice_list_model_set_size(_arg0, _arg1)

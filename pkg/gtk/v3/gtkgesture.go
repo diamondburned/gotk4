@@ -208,12 +208,12 @@ func marshalGesture(p uintptr) (interface{}, error) {
 // there is no correlation between physical and pixel distances, these will look
 // as if constrained in an infinitely small area, @rect width and height will
 // thus be 0 regardless of the number of touchpoints.
-func (g *GestureClass) BoundingBox() (gdk.Rectangle, bool) {
+func (gesture *GestureClass) BoundingBox() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGesture  // out
 	var _arg1 C.GdkRectangle // in
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_get_bounding_box(_arg0, &_arg1)
 
@@ -232,13 +232,13 @@ func (g *GestureClass) BoundingBox() (gdk.Rectangle, bool) {
 // @gesture, this function returns true and fills in @x and @y with the center
 // of the bounding box containing all active touches. Otherwise, false will be
 // returned.
-func (g *GestureClass) BoundingBoxCenter() (x float64, y float64, ok bool) {
+func (gesture *GestureClass) BoundingBoxCenter() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 C.gdouble     // in
 	var _arg2 C.gdouble     // in
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_get_bounding_box_center(_arg0, &_arg1, &_arg2)
 
@@ -257,11 +257,11 @@ func (g *GestureClass) BoundingBoxCenter() (x float64, y float64, ok bool) {
 
 // Device returns the master Device that is currently operating on @gesture, or
 // nil if the gesture is not being interacted.
-func (g *GestureClass) Device() *gdk.DeviceClass {
+func (gesture *GestureClass) Device() *gdk.DeviceClass {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GdkDevice  // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_get_device(_arg0)
 
@@ -274,11 +274,11 @@ func (g *GestureClass) Device() *gdk.DeviceClass {
 
 // LastUpdatedSequence returns the EventSequence that was last updated on
 // @gesture.
-func (g *GestureClass) LastUpdatedSequence() *gdk.EventSequence {
+func (gesture *GestureClass) LastUpdatedSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGesture       // out
 	var _cret *C.GdkEventSequence // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_get_last_updated_sequence(_arg0)
 
@@ -292,14 +292,14 @@ func (g *GestureClass) LastUpdatedSequence() *gdk.EventSequence {
 // Point: if @sequence is currently being interpreted by @gesture, this function
 // returns true and fills in @x and @y with the last coordinates stored for that
 // event sequence. The coordinates are always relative to the widget allocation.
-func (g *GestureClass) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool) {
+func (gesture *GestureClass) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _arg2 C.gdouble           // in
 	var _arg3 C.gdouble           // in
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
 
 	_cret = C.gtk_gesture_get_point(_arg0, _arg1, &_arg2, &_arg3)
@@ -318,12 +318,12 @@ func (g *GestureClass) Point(sequence *gdk.EventSequence) (x float64, y float64,
 }
 
 // SequenceState returns the @sequence state, as seen by @gesture.
-func (g *GestureClass) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
+func (gesture *GestureClass) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 *C.GdkEventSequence     // out
 	var _cret C.GtkEventSequenceState // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
 
 	_cret = C.gtk_gesture_get_sequence_state(_arg0, _arg1)
@@ -337,11 +337,11 @@ func (g *GestureClass) SequenceState(sequence *gdk.EventSequence) EventSequenceS
 
 // Window returns the user-defined window that receives the events handled by
 // @gesture. See gtk_gesture_set_window() for more information.
-func (g *GestureClass) Window() *gdk.WindowClass {
+func (gesture *GestureClass) Window() *gdk.WindowClass {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GdkWindow  // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_get_window(_arg0)
 
@@ -363,11 +363,11 @@ func (g *GestureClass) Window() *gdk.WindowClass {
 // state is set to K_EVENT_SEQUENCE_CLAIMED on one group, every other gesture
 // group attached to the same Widget will switch the state for that sequence to
 // K_EVENT_SEQUENCE_DENIED.
-func (g *GestureClass) Group(gesture Gesture) {
+func (groupGesture *GestureClass) Group(gesture Gesture) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GtkGesture // out
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(groupGesture.Native()))
 	_arg1 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	C.gtk_gesture_group(_arg0, _arg1)
@@ -375,12 +375,12 @@ func (g *GestureClass) Group(gesture Gesture) {
 
 // HandlesSequence returns true if @gesture is currently handling events
 // corresponding to @sequence.
-func (g *GestureClass) HandlesSequence(sequence *gdk.EventSequence) bool {
+func (gesture *GestureClass) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
 
 	_cret = C.gtk_gesture_handles_sequence(_arg0, _arg1)
@@ -396,11 +396,11 @@ func (g *GestureClass) HandlesSequence(sequence *gdk.EventSequence) bool {
 
 // IsActive returns true if the gesture is currently active. A gesture is active
 // meanwhile there are touch sequences interacting with it.
-func (g *GestureClass) IsActive() bool {
+func (gesture *GestureClass) IsActive() bool {
 	var _arg0 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_is_active(_arg0)
 
@@ -414,12 +414,12 @@ func (g *GestureClass) IsActive() bool {
 }
 
 // IsGroupedWith returns true if both gestures pertain to the same group.
-func (g *GestureClass) IsGroupedWith(other Gesture) bool {
+func (gesture *GestureClass) IsGroupedWith(other Gesture) bool {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 	_arg1 = (*C.GtkGesture)(unsafe.Pointer(other.Native()))
 
 	_cret = C.gtk_gesture_is_grouped_with(_arg0, _arg1)
@@ -437,11 +437,11 @@ func (g *GestureClass) IsGroupedWith(other Gesture) bool {
 // is recognized if there are as many interacting touch sequences as required by
 // @gesture, and Gesture::check returned true for the sequences being currently
 // interpreted.
-func (g *GestureClass) IsRecognized() bool {
+func (gesture *GestureClass) IsRecognized() bool {
 	var _arg0 *C.GtkGesture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_is_recognized(_arg0)
 
@@ -457,21 +457,21 @@ func (g *GestureClass) IsRecognized() bool {
 // SetWindow sets a specific window to receive events about, so @gesture will
 // effectively handle only events targeting @window, or a child of it. @window
 // must pertain to gtk_event_controller_get_widget().
-func (g *GestureClass) SetWindow(window gdk.Window) {
+func (gesture *GestureClass) SetWindow(window gdk.Window) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GdkWindow  // out
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_gesture_set_window(_arg0, _arg1)
 }
 
 // Ungroup separates @gesture into an isolated group.
-func (g *GestureClass) Ungroup() {
+func (gesture *GestureClass) Ungroup() {
 	var _arg0 *C.GtkGesture // out
 
-	_arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	C.gtk_gesture_ungroup(_arg0)
 }

@@ -136,9 +136,9 @@ type Toolbar interface {
 type ToolbarClass struct {
 	*externglib.Object
 	ContainerClass
-	BuildableInterface
-	OrientableInterface
-	ToolShellInterface
+	BuildableIface
+	OrientableIface
+	ToolShellIface
 }
 
 var _ Toolbar = (*ToolbarClass)(nil)
@@ -149,25 +149,32 @@ func wrapToolbar(obj *externglib.Object) Toolbar {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
-		ToolShellInterface: ToolShellInterface{
+		ToolShellIface: ToolShellIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
@@ -199,13 +206,13 @@ func NewToolbar() *ToolbarClass {
 // returns the position a new item should be inserted.
 //
 // @x and @y are in @toolbar coordinates.
-func (t *ToolbarClass) DropIndex(x int, y int) int {
+func (toolbar *ToolbarClass) DropIndex(x int, y int) int {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
@@ -220,11 +227,11 @@ func (t *ToolbarClass) DropIndex(x int, y int) int {
 
 // IconSize retrieves the icon size for the toolbar. See
 // gtk_toolbar_set_icon_size().
-func (t *ToolbarClass) IconSize() IconSize {
+func (toolbar *ToolbarClass) IconSize() IconSize {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.GtkIconSize // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_icon_size(_arg0)
 
@@ -237,12 +244,12 @@ func (t *ToolbarClass) IconSize() IconSize {
 
 // ItemIndex returns the position of @item on the toolbar, starting from 0. It
 // is an error if @item is not a child of the toolbar.
-func (t *ToolbarClass) ItemIndex(item ToolItem) int {
+func (toolbar *ToolbarClass) ItemIndex(item ToolItem) int {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_toolbar_get_item_index(_arg0, _arg1)
@@ -255,11 +262,11 @@ func (t *ToolbarClass) ItemIndex(item ToolItem) int {
 }
 
 // NItems returns the number of items on the toolbar.
-func (t *ToolbarClass) NItems() int {
+func (toolbar *ToolbarClass) NItems() int {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_n_items(_arg0)
 
@@ -272,12 +279,12 @@ func (t *ToolbarClass) NItems() int {
 
 // NthItem returns the @n'th item on @toolbar, or nil if the toolbar does not
 // contain an @n'th item.
-func (t *ToolbarClass) NthItem(n int) *ToolItemClass {
+func (toolbar *ToolbarClass) NthItem(n int) *ToolItemClass {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 C.gint         // out
 	var _cret *C.GtkToolItem // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 	_arg1 = C.gint(n)
 
 	_cret = C.gtk_toolbar_get_nth_item(_arg0, _arg1)
@@ -291,11 +298,11 @@ func (t *ToolbarClass) NthItem(n int) *ToolItemClass {
 
 // ReliefStyle returns the relief style of buttons on @toolbar. See
 // gtk_button_set_relief().
-func (t *ToolbarClass) ReliefStyle() ReliefStyle {
+func (toolbar *ToolbarClass) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolbar    // out
 	var _cret C.GtkReliefStyle // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_relief_style(_arg0)
 
@@ -308,11 +315,11 @@ func (t *ToolbarClass) ReliefStyle() ReliefStyle {
 
 // ShowArrow returns whether the toolbar has an overflow menu. See
 // gtk_toolbar_set_show_arrow().
-func (t *ToolbarClass) ShowArrow() bool {
+func (toolbar *ToolbarClass) ShowArrow() bool {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_show_arrow(_arg0)
 
@@ -327,11 +334,11 @@ func (t *ToolbarClass) ShowArrow() bool {
 
 // Style retrieves whether the toolbar has text, icons, or both . See
 // gtk_toolbar_set_style().
-func (t *ToolbarClass) Style() ToolbarStyle {
+func (toolbar *ToolbarClass) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolbar     // out
 	var _cret C.GtkToolbarStyle // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_style(_arg0)
 
@@ -345,12 +352,12 @@ func (t *ToolbarClass) Style() ToolbarStyle {
 // Insert a ToolItem into the toolbar at position @pos. If @pos is 0 the item is
 // prepended to the start of the toolbar. If @pos is negative, the item is
 // appended to the end of the toolbar.
-func (t *ToolbarClass) Insert(item ToolItem, pos int) {
+func (toolbar *ToolbarClass) Insert(item ToolItem, pos int) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 	_arg2 = C.gint(pos)
 
@@ -365,12 +372,12 @@ func (t *ToolbarClass) Insert(item ToolItem, pos int) {
 // The @tool_item passed to this function must not be part of any widget
 // hierarchy. When an item is set as drop highlight item it can not added to any
 // widget hierarchy or used as highlight item for another toolbar.
-func (t *ToolbarClass) SetDropHighlightItem(toolItem ToolItem, index_ int) {
+func (toolbar *ToolbarClass) SetDropHighlightItem(toolItem ToolItem, index_ int) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 	_arg2 = C.gint(index_)
 
@@ -384,11 +391,11 @@ func (t *ToolbarClass) SetDropHighlightItem(toolItem ToolItem, index_ int) {
 // available in an overflow menu, which can be opened by an added arrow button.
 // If false, @toolbar will request enough size to fit all of its child items
 // without any overflow.
-func (t *ToolbarClass) SetShowArrow(showArrow bool) {
+func (toolbar *ToolbarClass) SetShowArrow(showArrow bool) {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 	if showArrow {
 		_arg1 = C.TRUE
 	}
@@ -398,20 +405,20 @@ func (t *ToolbarClass) SetShowArrow(showArrow bool) {
 
 // UnsetIconSize unsets toolbar icon size set with gtk_toolbar_set_icon_size(),
 // so that user preferences will be used to determine the icon size.
-func (t *ToolbarClass) UnsetIconSize() {
+func (toolbar *ToolbarClass) UnsetIconSize() {
 	var _arg0 *C.GtkToolbar // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	C.gtk_toolbar_unset_icon_size(_arg0)
 }
 
 // UnsetStyle unsets a toolbar style set with gtk_toolbar_set_style(), so that
 // user preferences will be used to determine the toolbar style.
-func (t *ToolbarClass) UnsetStyle() {
+func (toolbar *ToolbarClass) UnsetStyle() {
 	var _arg0 *C.GtkToolbar // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	C.gtk_toolbar_unset_style(_arg0)
 }

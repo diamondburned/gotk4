@@ -19,7 +19,7 @@ import "C"
 // inherit background from parent window. Useful for imitating transparency when
 // compositing is not available. Otherwise behaves like a transparent pattern.
 //
-// Deprecated: since version 3.24.
+// Deprecated: Don't use this function.
 func X11GetParentRelativePattern() *cairo.Pattern {
 	var _cret *C.cairo_pattern_t // in
 

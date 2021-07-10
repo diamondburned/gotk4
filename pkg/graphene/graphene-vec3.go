@@ -138,12 +138,12 @@ func (a *Vec3) Dot(b *Vec3) float32 {
 }
 
 // Equal checks whether the two given #graphene_vec3_t are equal.
-func (v *Vec3) Equal(v2 *Vec3) bool {
+func (v1 *Vec3) Equal(v2 *Vec3) bool {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _cret C._Bool            // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v1))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v2))
 
 	_cret = C.graphene_vec3_equal(_arg0, _arg1)
@@ -363,13 +363,13 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 }
 
 // Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
-func (v *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
+func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.double           // out
 	var _arg3 C.graphene_vec3_t  // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v1))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v2))
 	_arg2 = C.double(factor)
 
@@ -456,13 +456,13 @@ func (a *Vec3) Multiply(b *Vec3) Vec3 {
 
 // Near compares the two given #graphene_vec3_t vectors and checks whether their
 // values are within the given @epsilon.
-func (v *Vec3) Near(v2 *Vec3, epsilon float32) bool {
+func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.float            // out
 	var _cret C._Bool            // in
 
-	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg0 = (*C.graphene_vec3_t)(unsafe.Pointer(v1))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v2))
 	_arg2 = C.float(epsilon)
 

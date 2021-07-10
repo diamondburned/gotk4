@@ -35,19 +35,19 @@ type ButtonOverrider interface {
 	Clicked()
 	// Enter emits a Button::enter signal to the given Button.
 	//
-	// Deprecated: since version 2.20.
+	// Deprecated: Use the Widget::enter-notify-event signal.
 	Enter()
 	// Leave emits a Button::leave signal to the given Button.
 	//
-	// Deprecated: since version 2.20.
+	// Deprecated: Use the Widget::leave-notify-event signal.
 	Leave()
 	// Pressed emits a Button::pressed signal to the given Button.
 	//
-	// Deprecated: since version 2.20.
+	// Deprecated: Use the Widget::button-press-event signal.
 	Pressed()
 	// Released emits a Button::released signal to the given Button.
 	//
-	// Deprecated: since version 2.20.
+	// Deprecated: Use the Widget::button-release-event signal.
 	Released()
 }
 
@@ -80,11 +80,12 @@ type Button interface {
 	Clicked()
 	// Enter emits a Button::enter signal to the given Button.
 	//
-	// Deprecated: since version 2.20.
+	// Deprecated: Use the Widget::enter-notify-event signal.
 	Enter()
 	// Alignment gets the alignment of the child in the button.
 	//
-	// Deprecated: since version 3.14.
+	// Deprecated: Access the child widget directly if you need to control its
+	// alignment.
 	Alignment() (xalign float32, yalign float32)
 	// AlwaysShowImage returns whether the button will ignore the
 	// Settings:gtk-button-images setting and always show the image, if
@@ -96,7 +97,7 @@ type Button interface {
 	// FocusOnClick returns whether the button grabs focus when it is clicked
 	// with the mouse. See gtk_button_set_focus_on_click().
 	//
-	// Deprecated: since version 3.20.
+	// Deprecated: Use gtk_widget_get_focus_on_click() instead.
 	FocusOnClick() bool
 	// Image gets the widget that is currenty set as the image of @button. This
 	// may have been explicitly set by gtk_button_set_image() or constructed by
@@ -121,20 +122,21 @@ type Button interface {
 	UseUnderline() bool
 	// Leave emits a Button::leave signal to the given Button.
 	//
-	// Deprecated: since version 2.20.
+	// Deprecated: Use the Widget::leave-notify-event signal.
 	Leave()
 	// Pressed emits a Button::pressed signal to the given Button.
 	//
-	// Deprecated: since version 2.20.
+	// Deprecated: Use the Widget::button-press-event signal.
 	Pressed()
 	// Released emits a Button::released signal to the given Button.
 	//
-	// Deprecated: since version 2.20.
+	// Deprecated: Use the Widget::button-release-event signal.
 	Released()
 	// SetAlignment sets the alignment of the child. This property has no effect
 	// unless the child is a Misc or a Alignment.
 	//
-	// Deprecated: since version 3.14.
+	// Deprecated: Access the child widget directly if you need to control its
+	// alignment.
 	SetAlignment(xalign float32, yalign float32)
 	// SetAlwaysShowImage: if true, the button will ignore the
 	// Settings:gtk-button-images setting and always show the image, if
@@ -148,7 +150,7 @@ type Button interface {
 	// places like toolbars where you don’t want the keyboard focus removed from
 	// the main area of the application.
 	//
-	// Deprecated: since version 3.20.
+	// Deprecated: Use gtk_widget_set_focus_on_click() instead.
 	SetFocusOnClick(focusOnClick bool)
 	// SetImage: set the image of @button to the given widget. The image will be
 	// displayed if the label text is nil or if Button:always-show-image is
@@ -174,9 +176,9 @@ type Button interface {
 type ButtonClass struct {
 	*externglib.Object
 	BinClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ Button = (*ButtonClass)(nil)
@@ -189,31 +191,38 @@ func wrapButton(obj *externglib.Object) Button {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -273,7 +282,8 @@ func NewButtonFromIconName(iconName string, size int) *ButtonClass {
 // If @stock_id is unknown, then it will be treated as a mnemonic label (as for
 // gtk_button_new_with_mnemonic()).
 //
-// Deprecated: since version 3.10.
+// Deprecated: Stock items are deprecated. Use gtk_button_new_with_label()
+// instead.
 func NewButtonFromStock(stockId string) *ButtonClass {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -330,34 +340,35 @@ func NewButtonWithMnemonic(label string) *ButtonClass {
 }
 
 // Clicked emits a Button::clicked signal to the given Button.
-func (b *ButtonClass) Clicked() {
+func (button *ButtonClass) Clicked() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_clicked(_arg0)
 }
 
 // Enter emits a Button::enter signal to the given Button.
 //
-// Deprecated: since version 2.20.
-func (b *ButtonClass) Enter() {
+// Deprecated: Use the Widget::enter-notify-event signal.
+func (button *ButtonClass) Enter() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_enter(_arg0)
 }
 
 // Alignment gets the alignment of the child in the button.
 //
-// Deprecated: since version 3.14.
-func (b *ButtonClass) Alignment() (xalign float32, yalign float32) {
+// Deprecated: Access the child widget directly if you need to control its
+// alignment.
+func (button *ButtonClass) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gfloat     // in
 	var _arg2 C.gfloat     // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_get_alignment(_arg0, &_arg1, &_arg2)
 
@@ -372,11 +383,11 @@ func (b *ButtonClass) Alignment() (xalign float32, yalign float32) {
 
 // AlwaysShowImage returns whether the button will ignore the
 // Settings:gtk-button-images setting and always show the image, if available.
-func (b *ButtonClass) AlwaysShowImage() bool {
+func (button *ButtonClass) AlwaysShowImage() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_always_show_image(_arg0)
 
@@ -391,11 +402,11 @@ func (b *ButtonClass) AlwaysShowImage() bool {
 
 // EventWindow returns the button’s event window if it is realized, nil
 // otherwise. This function should be rarely needed.
-func (b *ButtonClass) EventWindow() *gdk.WindowClass {
+func (button *ButtonClass) EventWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_event_window(_arg0)
 
@@ -409,12 +420,12 @@ func (b *ButtonClass) EventWindow() *gdk.WindowClass {
 // FocusOnClick returns whether the button grabs focus when it is clicked with
 // the mouse. See gtk_button_set_focus_on_click().
 //
-// Deprecated: since version 3.20.
-func (b *ButtonClass) FocusOnClick() bool {
+// Deprecated: Use gtk_widget_get_focus_on_click() instead.
+func (button *ButtonClass) FocusOnClick() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_focus_on_click(_arg0)
 
@@ -430,11 +441,11 @@ func (b *ButtonClass) FocusOnClick() bool {
 // Image gets the widget that is currenty set as the image of @button. This may
 // have been explicitly set by gtk_button_set_image() or constructed by
 // gtk_button_new_from_stock().
-func (b *ButtonClass) Image() *WidgetClass {
+func (button *ButtonClass) Image() *WidgetClass {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_image(_arg0)
 
@@ -447,11 +458,11 @@ func (b *ButtonClass) Image() *WidgetClass {
 
 // ImagePosition gets the position of the image relative to the text inside the
 // button.
-func (b *ButtonClass) ImagePosition() PositionType {
+func (button *ButtonClass) ImagePosition() PositionType {
 	var _arg0 *C.GtkButton      // out
 	var _cret C.GtkPositionType // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_image_position(_arg0)
 
@@ -466,11 +477,11 @@ func (b *ButtonClass) ImagePosition() PositionType {
 // gtk_button_set_label(). If the label text has not been set the return value
 // will be nil. This will be the case if you create an empty button with
 // gtk_button_new() to use as a container.
-func (b *ButtonClass) Label() string {
+func (button *ButtonClass) Label() string {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_label(_arg0)
 
@@ -482,11 +493,11 @@ func (b *ButtonClass) Label() string {
 }
 
 // Relief returns the current relief style of the given Button.
-func (b *ButtonClass) Relief() ReliefStyle {
+func (button *ButtonClass) Relief() ReliefStyle {
 	var _arg0 *C.GtkButton     // out
 	var _cret C.GtkReliefStyle // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_relief(_arg0)
 
@@ -500,11 +511,11 @@ func (b *ButtonClass) Relief() ReliefStyle {
 // UseStock returns whether the button label is a stock item.
 //
 // Deprecated: since version 3.10.
-func (b *ButtonClass) UseStock() bool {
+func (button *ButtonClass) UseStock() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_use_stock(_arg0)
 
@@ -519,11 +530,11 @@ func (b *ButtonClass) UseStock() bool {
 
 // UseUnderline returns whether an embedded underline in the button label
 // indicates a mnemonic. See gtk_button_set_use_underline ().
-func (b *ButtonClass) UseUnderline() bool {
+func (button *ButtonClass) UseUnderline() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_use_underline(_arg0)
 
@@ -538,33 +549,33 @@ func (b *ButtonClass) UseUnderline() bool {
 
 // Leave emits a Button::leave signal to the given Button.
 //
-// Deprecated: since version 2.20.
-func (b *ButtonClass) Leave() {
+// Deprecated: Use the Widget::leave-notify-event signal.
+func (button *ButtonClass) Leave() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_leave(_arg0)
 }
 
 // Pressed emits a Button::pressed signal to the given Button.
 //
-// Deprecated: since version 2.20.
-func (b *ButtonClass) Pressed() {
+// Deprecated: Use the Widget::button-press-event signal.
+func (button *ButtonClass) Pressed() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_pressed(_arg0)
 }
 
 // Released emits a Button::released signal to the given Button.
 //
-// Deprecated: since version 2.20.
-func (b *ButtonClass) Released() {
+// Deprecated: Use the Widget::button-release-event signal.
+func (button *ButtonClass) Released() {
 	var _arg0 *C.GtkButton // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_released(_arg0)
 }
@@ -572,13 +583,14 @@ func (b *ButtonClass) Released() {
 // SetAlignment sets the alignment of the child. This property has no effect
 // unless the child is a Misc or a Alignment.
 //
-// Deprecated: since version 3.14.
-func (b *ButtonClass) SetAlignment(xalign float32, yalign float32) {
+// Deprecated: Access the child widget directly if you need to control its
+// alignment.
+func (button *ButtonClass) SetAlignment(xalign float32, yalign float32) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gfloat     // out
 	var _arg2 C.gfloat     // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 
@@ -590,11 +602,11 @@ func (b *ButtonClass) SetAlignment(xalign float32, yalign float32) {
 //
 // Use this property if the button would be useless or hard to use without the
 // image.
-func (b *ButtonClass) SetAlwaysShowImage(alwaysShow bool) {
+func (button *ButtonClass) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	if alwaysShow {
 		_arg1 = C.TRUE
 	}
@@ -607,12 +619,12 @@ func (b *ButtonClass) SetAlwaysShowImage(alwaysShow bool) {
 // toolbars where you don’t want the keyboard focus removed from the main area
 // of the application.
 //
-// Deprecated: since version 3.20.
-func (b *ButtonClass) SetFocusOnClick(focusOnClick bool) {
+// Deprecated: Use gtk_widget_set_focus_on_click() instead.
+func (button *ButtonClass) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	if focusOnClick {
 		_arg1 = C.TRUE
 	}
@@ -623,11 +635,11 @@ func (b *ButtonClass) SetFocusOnClick(focusOnClick bool) {
 // SetImage: set the image of @button to the given widget. The image will be
 // displayed if the label text is nil or if Button:always-show-image is true.
 // You don’t have to call gtk_widget_show() on @image yourself.
-func (b *ButtonClass) SetImage(image Widget) {
+func (button *ButtonClass) SetImage(image Widget) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
 
 	C.gtk_button_set_image(_arg0, _arg1)
@@ -637,11 +649,11 @@ func (b *ButtonClass) SetImage(image Widget) {
 // used to select the stock item if gtk_button_set_use_stock() is used.
 //
 // This will also clear any previously set labels.
-func (b *ButtonClass) SetLabel(label string) {
+func (button *ButtonClass) SetLabel(label string) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -652,11 +664,11 @@ func (b *ButtonClass) SetLabel(label string) {
 // select the stock item for the button.
 //
 // Deprecated: since version 3.10.
-func (b *ButtonClass) SetUseStock(useStock bool) {
+func (button *ButtonClass) SetUseStock(useStock bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	if useStock {
 		_arg1 = C.TRUE
 	}
@@ -666,11 +678,11 @@ func (b *ButtonClass) SetUseStock(useStock bool) {
 
 // SetUseUnderline: if true, an underline in the text of the button label
 // indicates the next character should be used for the mnemonic accelerator key.
-func (b *ButtonClass) SetUseUnderline(useUnderline bool) {
+func (button *ButtonClass) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

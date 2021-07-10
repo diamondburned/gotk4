@@ -157,9 +157,9 @@ type FileEnumerator interface {
 	//    gchar *name = g_file_info_get_name (info);
 	//    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
 	//                                     name);
-	Child(info FileInfo) *FileInterface
+	Child(info FileInfo) *FileIface
 	// Container: get the #GFile container which is being enumerated.
-	Container() *FileInterface
+	Container() *FileIface
 	// HasPending checks if the file enumerator has pending operations.
 	HasPending() bool
 	// IsClosed checks if the file enumerator has been closed.
@@ -198,7 +198,7 @@ type FileEnumerator interface {
 	//
 	//    out:
 	//      g_object_unref (direnum); // Note: frees the last @info
-	Iterate(cancellable Cancellable) (*FileInfoClass, *FileInterface, error)
+	Iterate(cancellable Cancellable) (*FileInfoClass, *FileIface, error)
 	// NextFile returns information for the next file in the enumerated object.
 	// Will block until the information is available. The Info returned from
 	// this function will contain attributes that match the attribute string
@@ -259,12 +259,12 @@ func marshalFileEnumerator(p uintptr) (interface{}, error) {
 // This will be automatically called when the last reference is dropped, but you
 // might want to call this function to make sure resources are released as early
 // as possible.
-func (e *FileEnumeratorClass) Close(cancellable Cancellable) error {
+func (enumerator *FileEnumeratorClass) Close(cancellable Cancellable) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_enumerator_close(_arg0, _arg1, &_cerr)
@@ -282,14 +282,14 @@ func (e *FileEnumeratorClass) Close(cancellable Cancellable) error {
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned in
 // g_file_enumerator_close_finish().
-func (e *FileEnumeratorClass) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (enumerator *FileEnumeratorClass) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -309,12 +309,12 @@ func (e *FileEnumeratorClass) CloseAsync(ioPriority int, cancellable Cancellable
 // nil, then the operation may have been cancelled by triggering the cancellable
 // object from another thread. If the operation was cancelled, the error
 // G_IO_ERROR_CANCELLED will be set, and false will be returned.
-func (e *FileEnumeratorClass) CloseFinish(result AsyncResult) error {
+func (enumerator *FileEnumeratorClass) CloseFinish(result AsyncResult) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_enumerator_close_finish(_arg0, _arg1, &_cerr)
@@ -335,45 +335,45 @@ func (e *FileEnumeratorClass) CloseFinish(result AsyncResult) error {
 //    gchar *name = g_file_info_get_name (info);
 //    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
 //                                     name);
-func (e *FileEnumeratorClass) Child(info FileInfo) *FileInterface {
+func (enumerator *FileEnumeratorClass) Child(info FileInfo) *FileIface {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // out
 	var _cret *C.GFile           // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_enumerator_get_child(_arg0, _arg1)
 
-	var _file *FileInterface // out
+	var _file *FileIface // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInterface)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIface)
 
 	return _file
 }
 
 // Container: get the #GFile container which is being enumerated.
-func (e *FileEnumeratorClass) Container() *FileInterface {
+func (enumerator *FileEnumeratorClass) Container() *FileIface {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret *C.GFile           // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 
 	_cret = C.g_file_enumerator_get_container(_arg0)
 
-	var _file *FileInterface // out
+	var _file *FileIface // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileInterface)
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileIface)
 
 	return _file
 }
 
 // HasPending checks if the file enumerator has pending operations.
-func (e *FileEnumeratorClass) HasPending() bool {
+func (enumerator *FileEnumeratorClass) HasPending() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 
 	_cret = C.g_file_enumerator_has_pending(_arg0)
 
@@ -387,11 +387,11 @@ func (e *FileEnumeratorClass) HasPending() bool {
 }
 
 // IsClosed checks if the file enumerator has been closed.
-func (e *FileEnumeratorClass) IsClosed() bool {
+func (enumerator *FileEnumeratorClass) IsClosed() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 
 	_cret = C.g_file_enumerator_is_closed(_arg0)
 
@@ -437,24 +437,24 @@ func (e *FileEnumeratorClass) IsClosed() bool {
 //
 //    out:
 //      g_object_unref (direnum); // Note: frees the last @info
-func (d *FileEnumeratorClass) Iterate(cancellable Cancellable) (*FileInfoClass, *FileInterface, error) {
+func (direnum *FileEnumeratorClass) Iterate(cancellable Cancellable) (*FileInfoClass, *FileIface, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // in
 	var _arg2 *C.GFile           // in
 	var _arg3 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(direnum.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_enumerator_iterate(_arg0, &_arg1, &_arg2, _arg3, &_cerr)
 
-	var _outInfo *FileInfoClass  // out
-	var _outChild *FileInterface // out
-	var _goerr error             // out
+	var _outInfo *FileInfoClass // out
+	var _outChild *FileIface    // out
+	var _goerr error            // out
 
 	_outInfo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*FileInfoClass)
-	_outChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*FileInterface)
+	_outChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*FileIface)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outInfo, _outChild, _goerr
@@ -470,13 +470,13 @@ func (d *FileEnumeratorClass) Iterate(cancellable Cancellable) (*FileInfoClass, 
 //
 // On error, returns nil and sets @error to the error. If the enumerator is at
 // the end, nil will be returned and @error will be unset.
-func (e *FileEnumeratorClass) NextFile(cancellable Cancellable) (*FileInfoClass, error) {
+func (enumerator *FileEnumeratorClass) NextFile(cancellable Cancellable) (*FileInfoClass, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
 	var _cret *C.GFileInfo       // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_enumerator_next_file(_arg0, _arg1, &_cerr)
@@ -509,7 +509,7 @@ func (e *FileEnumeratorClass) NextFile(cancellable Cancellable) (*FileInfoClass,
 // Any outstanding i/o request with higher priority (lower numerical value) will
 // be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
-func (e *FileEnumeratorClass) NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (enumerator *FileEnumeratorClass) NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -517,7 +517,7 @@ func (e *FileEnumeratorClass) NextFilesAsync(numFiles int, ioPriority int, cance
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = C.int(numFiles)
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -528,11 +528,11 @@ func (e *FileEnumeratorClass) NextFilesAsync(numFiles int, ioPriority int, cance
 }
 
 // SetPending sets the file enumerator as having pending operations.
-func (e *FileEnumeratorClass) SetPending(pending bool) {
+func (enumerator *FileEnumeratorClass) SetPending(pending bool) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	if pending {
 		_arg1 = C.TRUE
 	}

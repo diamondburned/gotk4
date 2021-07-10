@@ -42,8 +42,8 @@ type FontChooserDialog interface {
 type FontChooserDialogClass struct {
 	*externglib.Object
 	DialogClass
-	BuildableInterface
-	FontChooserInterface
+	BuildableIface
+	FontChooserIface
 }
 
 var _ FontChooserDialog = (*FontChooserDialogClass)(nil)
@@ -60,31 +60,34 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		FontChooserInterface: FontChooserInterface{
+		FontChooserIface: FontChooserIface{
 			Object: obj,
 		},
 	}

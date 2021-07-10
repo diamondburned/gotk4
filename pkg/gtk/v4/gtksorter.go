@@ -164,13 +164,13 @@ func marshalSorter(p uintptr) (interface{}, error) {
 //
 // The sorter may signal it conforms to additional constraints via the return
 // value of [method@Gtk.Sorter.get_order].
-func (s *SorterClass) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
+func (self *SorterClass) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
 	var _arg0 *C.GtkSorter  // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.gpointer    // out
 	var _cret C.GtkOrdering // in
 
-	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(self.Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(item1.Native()))
 	_arg2 = (C.gpointer)(unsafe.Pointer(item2.Native()))
 
@@ -188,11 +188,11 @@ func (s *SorterClass) Compare(item1 gextras.Objector, item2 gextras.Objector) Or
 // See [enum@Gtk.SorterOrder] for details of the possible return values.
 //
 // This function is intended to allow optimizations.
-func (s *SorterClass) Order() SorterOrder {
+func (self *SorterClass) Order() SorterOrder {
 	var _arg0 *C.GtkSorter     // out
 	var _cret C.GtkSorterOrder // in
 
-	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sorter_get_order(_arg0)
 

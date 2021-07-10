@@ -84,11 +84,11 @@ func (t *TabArray) Native() unsafe.Pointer {
 }
 
 // Copy copies a `PangoTabArray`.
-func (s *TabArray) Copy() *TabArray {
+func (src *TabArray) Copy() *TabArray {
 	var _arg0 *C.PangoTabArray // out
 	var _cret *C.PangoTabArray // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(s))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(src))
 
 	_cret = C.pango_tab_array_copy(_arg0)
 
@@ -103,21 +103,21 @@ func (s *TabArray) Copy() *TabArray {
 }
 
 // Free frees a tab array and associated resources.
-func (t *TabArray) free() {
+func (tabArray *TabArray) free() {
 	var _arg0 *C.PangoTabArray // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
 
 	C.pango_tab_array_free(_arg0)
 }
 
 // PositionsInPixels returns true if the tab positions are in pixels, false if
 // they are in Pango units.
-func (t *TabArray) PositionsInPixels() bool {
+func (tabArray *TabArray) PositionsInPixels() bool {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
 
 	_cret = C.pango_tab_array_get_positions_in_pixels(_arg0)
 
@@ -131,11 +131,11 @@ func (t *TabArray) PositionsInPixels() bool {
 }
 
 // Size gets the number of tab stops in @tab_array.
-func (t *TabArray) Size() int {
+func (tabArray *TabArray) Size() int {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gint           // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
 
 	_cret = C.pango_tab_array_get_size(_arg0)
 
@@ -147,13 +147,13 @@ func (t *TabArray) Size() int {
 }
 
 // Tab gets the alignment and position of a tab stop.
-func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
+func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
 	var _arg2 C.PangoTabAlign  // in
 	var _arg3 C.gint           // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
 	_arg1 = C.gint(tabIndex)
 
 	C.pango_tab_array_get_tab(_arg0, _arg1, &_arg2, &_arg3)
@@ -171,11 +171,11 @@ func (t *TabArray) Tab(tabIndex int) (TabAlign, int) {
 //
 // You must subsequently initialize any tabs that were added as a result of
 // growing the array.
-func (t *TabArray) Resize(newSize int) {
+func (tabArray *TabArray) Resize(newSize int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t))
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
 	_arg1 = C.gint(newSize)
 
 	C.pango_tab_array_resize(_arg0, _arg1)

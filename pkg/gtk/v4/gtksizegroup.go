@@ -102,7 +102,7 @@ type SizeGroup interface {
 // SizeGroupClass implements the SizeGroup interface.
 type SizeGroupClass struct {
 	*externglib.Object
-	BuildableInterface
+	BuildableIface
 }
 
 var _ SizeGroup = (*SizeGroupClass)(nil)
@@ -110,7 +110,7 @@ var _ SizeGroup = (*SizeGroupClass)(nil)
 func wrapSizeGroup(obj *externglib.Object) SizeGroup {
 	return &SizeGroupClass{
 		Object: obj,
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -132,22 +132,22 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
-func (s *SizeGroupClass) AddWidget(widget Widget) {
+func (sizeGroup *SizeGroupClass) AddWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_add_widget(_arg0, _arg1)
 }
 
 // Mode gets the current mode of the size group.
-func (s *SizeGroupClass) Mode() SizeGroupMode {
+func (sizeGroup *SizeGroupClass) Mode() SizeGroupMode {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _cret C.GtkSizeGroupMode // in
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 
 	_cret = C.gtk_size_group_get_mode(_arg0)
 
@@ -159,11 +159,11 @@ func (s *SizeGroupClass) Mode() SizeGroupMode {
 }
 
 // RemoveWidget removes a widget from a `GtkSizeGroup`.
-func (s *SizeGroupClass) RemoveWidget(widget Widget) {
+func (sizeGroup *SizeGroupClass) RemoveWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_remove_widget(_arg0, _arg1)

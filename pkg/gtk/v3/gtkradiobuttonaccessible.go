@@ -35,8 +35,8 @@ type RadioButtonAccessible interface {
 type RadioButtonAccessibleClass struct {
 	*externglib.Object
 	ToggleButtonAccessibleClass
-	atk.ActionInterface
-	atk.ImageInterface
+	atk.ActionIface
+	atk.ImageIface
 }
 
 var _ RadioButtonAccessible = (*RadioButtonAccessibleClass)(nil)
@@ -57,24 +57,24 @@ func wrapRadioButtonAccessible(obj *externglib.Object) RadioButtonAccessible {
 						},
 					},
 				},
-				ActionInterface: atk.ActionInterface{
+				ActionIface: atk.ActionIface{
 					Object: obj,
 				},
-				ImageInterface: atk.ImageInterface{
+				ImageIface: atk.ImageIface{
 					Object: obj,
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
-			ImageInterface: atk.ImageInterface{
+			ImageIface: atk.ImageIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
-		ImageInterface: atk.ImageInterface{
+		ImageIface: atk.ImageIface{
 			Object: obj,
 		},
 	}

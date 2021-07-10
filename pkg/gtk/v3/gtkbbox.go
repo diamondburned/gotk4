@@ -87,8 +87,8 @@ type ButtonBox interface {
 type ButtonBoxClass struct {
 	*externglib.Object
 	BoxClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ ButtonBox = (*ButtonBoxClass)(nil)
@@ -101,26 +101,29 @@ func wrapButtonBox(obj *externglib.Object) ButtonBox {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -134,12 +137,12 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 
 // ChildNonHomogeneous returns whether the child is exempted from homogenous
 // sizing.
-func (w *ButtonBoxClass) ChildNonHomogeneous(child Widget) bool {
+func (widget *ButtonBoxClass) ChildNonHomogeneous(child Widget) bool {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
@@ -155,12 +158,12 @@ func (w *ButtonBoxClass) ChildNonHomogeneous(child Widget) bool {
 
 // ChildSecondary returns whether @child should appear in a secondary group of
 // children.
-func (w *ButtonBoxClass) ChildSecondary(child Widget) bool {
+func (widget *ButtonBoxClass) ChildSecondary(child Widget) bool {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
@@ -176,11 +179,11 @@ func (w *ButtonBoxClass) ChildSecondary(child Widget) bool {
 
 // Layout retrieves the method being used to arrange the buttons in a button
 // box.
-func (w *ButtonBoxClass) Layout() ButtonBoxStyle {
+func (widget *ButtonBoxClass) Layout() ButtonBoxStyle {
 	var _arg0 *C.GtkButtonBox     // out
 	var _cret C.GtkButtonBoxStyle // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_button_box_get_layout(_arg0)
 
@@ -193,12 +196,12 @@ func (w *ButtonBoxClass) Layout() ButtonBoxStyle {
 
 // SetChildNonHomogeneous sets whether the child is exempted from homogeous
 // sizing.
-func (w *ButtonBoxClass) SetChildNonHomogeneous(child Widget, nonHomogeneous bool) {
+func (widget *ButtonBoxClass) SetChildNonHomogeneous(child Widget, nonHomogeneous bool) {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if nonHomogeneous {
 		_arg2 = C.TRUE
@@ -218,12 +221,12 @@ func (w *ButtonBoxClass) SetChildNonHomogeneous(child Widget, nonHomogeneous boo
 // GTK_BUTTONBOX_END, then the secondary children are aligned at the other end
 // of the button box from the main children. For the other styles, they appear
 // immediately next to the main children.
-func (w *ButtonBoxClass) SetChildSecondary(child Widget, isSecondary bool) {
+func (widget *ButtonBoxClass) SetChildSecondary(child Widget, isSecondary bool) {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if isSecondary {
 		_arg2 = C.TRUE

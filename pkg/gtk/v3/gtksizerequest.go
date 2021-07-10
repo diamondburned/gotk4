@@ -4,8 +4,6 @@ package gtk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/box"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -57,25 +55,4 @@ func WrapRequestedSize(ptr unsafe.Pointer) *RequestedSize {
 // Native returns the underlying C source pointer.
 func (r *RequestedSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// Data: client pointer
-func (r *RequestedSize) Data() interface{} {
-	var v interface{} // out
-	v = box.Get(uintptr(r.native.data))
-	return v
-}
-
-// MinimumSize: the minimum size needed for allocation in a given orientation
-func (r *RequestedSize) MinimumSize() int {
-	var v int // out
-	v = int(r.native.minimum_size)
-	return v
-}
-
-// NaturalSize: the natural size for allocation in a given orientation
-func (r *RequestedSize) NaturalSize() int {
-	var v int // out
-	v = int(r.native.natural_size)
-	return v
 }

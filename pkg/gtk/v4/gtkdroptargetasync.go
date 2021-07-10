@@ -97,11 +97,11 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 }
 
 // Actions gets the actions that this drop target supports.
-func (s *DropTargetAsyncClass) Actions() gdk.DragAction {
+func (self *DropTargetAsyncClass) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _cret C.GdkDragAction       // in
 
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_async_get_actions(_arg0)
 
@@ -115,11 +115,11 @@ func (s *DropTargetAsyncClass) Actions() gdk.DragAction {
 // Formats gets the data formats that this drop target accepts.
 //
 // If the result is nil, all formats are expected to be supported.
-func (s *DropTargetAsyncClass) Formats() *gdk.ContentFormats {
+func (self *DropTargetAsyncClass) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _cret *C.GdkContentFormats  // in
 
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_async_get_formats(_arg0)
 
@@ -138,22 +138,22 @@ func (s *DropTargetAsyncClass) Formats() *gdk.ContentFormats {
 //
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
-func (s *DropTargetAsyncClass) RejectDrop(drop gdk.Drop) {
+func (self *DropTargetAsyncClass) RejectDrop(drop gdk.Drop) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkDrop            // out
 
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GdkDrop)(unsafe.Pointer(drop.Native()))
 
 	C.gtk_drop_target_async_reject_drop(_arg0, _arg1)
 }
 
 // SetFormats sets the data formats that this drop target will accept.
-func (s *DropTargetAsyncClass) SetFormats(formats *gdk.ContentFormats) {
+func (self *DropTargetAsyncClass) SetFormats(formats *gdk.ContentFormats) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkContentFormats  // out
 
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
 
 	C.gtk_drop_target_async_set_formats(_arg0, _arg1)

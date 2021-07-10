@@ -138,9 +138,9 @@ type ToggleButton interface {
 type ToggleButtonClass struct {
 	*externglib.Object
 	ButtonClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ ToggleButton = (*ToggleButtonClass)(nil)
@@ -155,46 +155,57 @@ func wrapToggleButton(obj *externglib.Object) ToggleButton {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -258,11 +269,11 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButtonClass {
 
 // Active queries a ToggleButton and returns its current state. Returns true if
 // the toggle button is pressed in and false if it is raised.
-func (t *ToggleButtonClass) Active() bool {
+func (toggleButton *ToggleButtonClass) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
 
@@ -276,11 +287,11 @@ func (t *ToggleButtonClass) Active() bool {
 }
 
 // Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
-func (t *ToggleButtonClass) Inconsistent() bool {
+func (toggleButton *ToggleButtonClass) Inconsistent() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	_cret = C.gtk_toggle_button_get_inconsistent(_arg0)
 
@@ -295,11 +306,11 @@ func (t *ToggleButtonClass) Inconsistent() bool {
 
 // Mode retrieves whether the button is displayed as a separate indicator and
 // label. See gtk_toggle_button_set_mode().
-func (t *ToggleButtonClass) Mode() bool {
+func (toggleButton *ToggleButtonClass) Mode() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	_cret = C.gtk_toggle_button_get_mode(_arg0)
 
@@ -316,11 +327,11 @@ func (t *ToggleButtonClass) Mode() bool {
 // GtkToggleButton to be “pressed in”, and false to raise it. This action causes
 // the ToggleButton::toggled signal and the Button::clicked signal to be
 // emitted.
-func (t *ToggleButtonClass) SetActive(isActive bool) {
+func (toggleButton *ToggleButtonClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -336,11 +347,11 @@ func (t *ToggleButtonClass) SetActive(isActive bool) {
 // the toggle button. This has to be done manually,
 // gtk_toggle_button_set_inconsistent() only affects visual appearance, it
 // doesn’t affect the semantics of the button.
-func (t *ToggleButtonClass) SetInconsistent(setting bool) {
+func (toggleButton *ToggleButtonClass) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -358,11 +369,11 @@ func (t *ToggleButtonClass) SetInconsistent(setting bool) {
 // This function only affects instances of classes like CheckButton and
 // RadioButton that derive from ToggleButton, not instances of ToggleButton
 // itself.
-func (t *ToggleButtonClass) SetMode(drawIndicator bool) {
+func (toggleButton *ToggleButtonClass) SetMode(drawIndicator bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 	if drawIndicator {
 		_arg1 = C.TRUE
 	}
@@ -372,10 +383,10 @@ func (t *ToggleButtonClass) SetMode(drawIndicator bool) {
 
 // Toggled emits the ToggleButton::toggled signal on the ToggleButton. There is
 // no good reason for an application ever to call this function.
-func (t *ToggleButtonClass) Toggled() {
+func (toggleButton *ToggleButtonClass) Toggled() {
 	var _arg0 *C.GtkToggleButton // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	C.gtk_toggle_button_toggled(_arg0)
 }

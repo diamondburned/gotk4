@@ -80,11 +80,11 @@ func marshalX11Screen(p uintptr) (interface{}, error) {
 // window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
-func (s *X11ScreenClass) CurrentDesktop() uint32 {
+func (screen *X11ScreenClass) CurrentDesktop() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_x11_screen_get_current_desktop(_arg0)
 
@@ -99,11 +99,11 @@ func (s *X11ScreenClass) CurrentDesktop() uint32 {
 // under a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
-func (s *X11ScreenClass) NumberOfDesktops() uint32 {
+func (screen *X11ScreenClass) NumberOfDesktops() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_x11_screen_get_number_of_desktops(_arg0)
 
@@ -115,11 +115,11 @@ func (s *X11ScreenClass) NumberOfDesktops() uint32 {
 }
 
 // ScreenNumber returns the index of a Screen.
-func (s *X11ScreenClass) ScreenNumber() int {
+func (screen *X11ScreenClass) ScreenNumber() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
 
@@ -131,11 +131,11 @@ func (s *X11ScreenClass) ScreenNumber() int {
 }
 
 // WindowManagerName returns the name of the window manager for @screen.
-func (s *X11ScreenClass) WindowManagerName() string {
+func (screen *X11ScreenClass) WindowManagerName() string {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_x11_screen_get_window_manager_name(_arg0)
 

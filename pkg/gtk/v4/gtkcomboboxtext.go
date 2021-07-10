@@ -126,11 +126,11 @@ type ComboBoxText interface {
 type ComboBoxTextClass struct {
 	*externglib.Object
 	ComboBoxClass
-	AccessibleInterface
-	BuildableInterface
-	CellEditableInterface
-	CellLayoutInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	CellEditableIface
+	CellLayoutIface
+	ConstraintTargetIface
 }
 
 var _ ComboBoxText = (*ComboBoxTextClass)(nil)
@@ -141,68 +141,79 @@ func wrapComboBoxText(obj *externglib.Object) ComboBoxText {
 		ComboBoxClass: ComboBoxClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
-			AccessibleInterface: AccessibleInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			CellEditableInterface: CellEditableInterface{
+			CellEditableIface: CellEditableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			CellLayoutInterface: CellLayoutInterface{
+			CellLayoutIface: CellLayoutIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		CellEditableInterface: CellEditableInterface{
+		CellEditableIface: CellEditableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		CellLayoutInterface: CellLayoutInterface{
+		CellLayoutIface: CellLayoutIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -246,12 +257,12 @@ func NewComboBoxTextWithEntry() *ComboBoxTextClass {
 //
 // This is the same as calling [method@Gtk.ComboBoxText.insert] with a position
 // of -1.
-func (c *ComboBoxTextClass) Append(id string, text string) {
+func (comboBox *ComboBoxTextClass) Append(id string, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(text))
@@ -264,11 +275,11 @@ func (c *ComboBoxTextClass) Append(id string, text string) {
 //
 // This is the same as calling [method@Gtk.ComboBoxText.insert_text] with a
 // position of -1.
-func (c *ComboBoxTextClass) AppendText(text string) {
+func (comboBox *ComboBoxTextClass) AppendText(text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -280,11 +291,11 @@ func (c *ComboBoxTextClass) AppendText(text string) {
 // If no row is currently selected, nil is returned. If @combo_box contains an
 // entry, this function will return its contents (which will not necessarily be
 // an item from the list).
-func (c *ComboBoxTextClass) ActiveText() string {
+func (comboBox *ComboBoxTextClass) ActiveText() string {
 	var _arg0 *C.GtkComboBoxText // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_text_get_active_text(_arg0)
 
@@ -303,13 +314,13 @@ func (c *ComboBoxTextClass) ActiveText() string {
 // [property@Gtk.ComboBox:id-column].
 //
 // If @position is negative then @text is appended.
-func (c *ComboBoxTextClass) Insert(position int, id string, text string) {
+func (comboBox *ComboBoxTextClass) Insert(position int, id string, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.int              // out
 	var _arg2 *C.char            // out
 	var _arg3 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = C.int(position)
 	_arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -326,12 +337,12 @@ func (c *ComboBoxTextClass) Insert(position int, id string, text string) {
 //
 // This is the same as calling [method@Gtk.ComboBoxText.insert] with a nil ID
 // string.
-func (c *ComboBoxTextClass) InsertText(position int, text string) {
+func (comboBox *ComboBoxTextClass) InsertText(position int, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.int              // out
 	var _arg2 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = C.int(position)
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -345,12 +356,12 @@ func (c *ComboBoxTextClass) InsertText(position int, text string) {
 //
 // This is the same as calling [method@Gtk.ComboBoxText.insert] with a position
 // of 0.
-func (c *ComboBoxTextClass) Prepend(id string, text string) {
+func (comboBox *ComboBoxTextClass) Prepend(id string, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(text))
@@ -363,11 +374,11 @@ func (c *ComboBoxTextClass) Prepend(id string, text string) {
 //
 // This is the same as calling [method@Gtk.ComboBoxText.insert_text] with a
 // position of 0.
-func (c *ComboBoxTextClass) PrependText(text string) {
+func (comboBox *ComboBoxTextClass) PrependText(text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -375,21 +386,21 @@ func (c *ComboBoxTextClass) PrependText(text string) {
 }
 
 // Remove removes the string at @position from @combo_box.
-func (c *ComboBoxTextClass) Remove(position int) {
+func (comboBox *ComboBoxTextClass) Remove(position int) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.int              // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = C.int(position)
 
 	C.gtk_combo_box_text_remove(_arg0, _arg1)
 }
 
 // RemoveAll removes all the text entries from the combo box.
-func (c *ComboBoxTextClass) RemoveAll() {
+func (comboBox *ComboBoxTextClass) RemoveAll() {
 	var _arg0 *C.GtkComboBoxText // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 
 	C.gtk_combo_box_text_remove_all(_arg0)
 }

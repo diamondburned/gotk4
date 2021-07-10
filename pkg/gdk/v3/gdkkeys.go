@@ -250,11 +250,11 @@ func marshalKeymap(p uintptr) (interface{}, error) {
 }
 
 // CapsLockState returns whether the Caps Lock modifer is locked.
-func (k *KeymapClass) CapsLockState() bool {
+func (keymap *KeymapClass) CapsLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_caps_lock_state(_arg0)
 
@@ -268,11 +268,11 @@ func (k *KeymapClass) CapsLockState() bool {
 }
 
 // Direction returns the direction of effective layout of the keymap.
-func (k *KeymapClass) Direction() pango.Direction {
+func (keymap *KeymapClass) Direction() pango.Direction {
 	var _arg0 *C.GdkKeymap     // out
 	var _cret C.PangoDirection // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_direction(_arg0)
 
@@ -288,7 +288,7 @@ func (k *KeymapClass) Direction() pango.Direction {
 // arrays with g_free(). When a keycode is pressed by the user, the keyval from
 // this list of entries is selected by considering the effective keyboard group
 // and level. See gdk_keymap_translate_keyboard_state().
-func (k *KeymapClass) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
+func (keymap *KeymapClass) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GdkKeymapKey
@@ -296,7 +296,7 @@ func (k *KeymapClass) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 	var _arg3 *C.guint
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 	_arg1 = C.guint(hardwareKeycode)
 
 	_cret = C.gdk_keymap_get_entries_for_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
@@ -329,14 +329,14 @@ func (k *KeymapClass) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 // modes, for example. EventKey contains a group field that indicates the active
 // keyboard group. The level is computed from the modifier mask. The returned
 // array should be freed with g_free().
-func (k *KeymapClass) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
+func (keymap *KeymapClass) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GdkKeymapKey
 	var _arg3 C.gint     // in
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keymap_get_entries_for_keyval(_arg0, _arg1, &_arg2, &_arg3)
@@ -356,11 +356,11 @@ func (k *KeymapClass) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 }
 
 // ModifierState returns the current modifier state.
-func (k *KeymapClass) ModifierState() uint {
+func (keymap *KeymapClass) ModifierState() uint {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.guint      // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_modifier_state(_arg0)
 
@@ -372,11 +372,11 @@ func (k *KeymapClass) ModifierState() uint {
 }
 
 // NumLockState returns whether the Num Lock modifer is locked.
-func (k *KeymapClass) NumLockState() bool {
+func (keymap *KeymapClass) NumLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_num_lock_state(_arg0)
 
@@ -390,11 +390,11 @@ func (k *KeymapClass) NumLockState() bool {
 }
 
 // ScrollLockState returns whether the Scroll Lock modifer is locked.
-func (k *KeymapClass) ScrollLockState() bool {
+func (keymap *KeymapClass) ScrollLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_scroll_lock_state(_arg0)
 
@@ -409,11 +409,11 @@ func (k *KeymapClass) ScrollLockState() bool {
 
 // HaveBidiLayouts determines if keyboard layouts for both right-to-left and
 // left-to-right languages are in use.
-func (k *KeymapClass) HaveBidiLayouts() bool {
+func (keymap *KeymapClass) HaveBidiLayouts() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_have_bidi_layouts(_arg0)
 
@@ -430,12 +430,12 @@ func (k *KeymapClass) HaveBidiLayouts() bool {
 // keyval is bound to @key, returns 0. For normal user input, you want to use
 // gdk_keymap_translate_keyboard_state() instead of this function, since the
 // effective group/level may not be the same as the current keyboard state.
-func (k *KeymapClass) LookupKey(key *KeymapKey) uint {
+func (keymap *KeymapClass) LookupKey(key *KeymapKey) uint {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 *C.GdkKeymapKey // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 	_arg1 = (*C.GdkKeymapKey)(unsafe.Pointer(key))
 
 	_cret = C.gdk_keymap_lookup_key(_arg0, _arg1)
@@ -461,34 +461,4 @@ func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
 // Native returns the underlying C source pointer.
 func (k *KeymapKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&k.native)
-}
-
-// Keycode: the hardware keycode. This is an identifying number for a physical
-// key.
-func (k *KeymapKey) Keycode() uint {
-	var v uint // out
-	v = uint(k.native.keycode)
-	return v
-}
-
-// Group indicates movement in a horizontal direction. Usually groups are used
-// for two different languages. In group 0, a key might have two English
-// characters, and in group 1 it might have two Hebrew characters. The Hebrew
-// characters will be printed on the key next to the English characters.
-func (k *KeymapKey) Group() int {
-	var v int // out
-	v = int(k.native.group)
-	return v
-}
-
-// Level indicates which symbol on the key will be used, in a vertical
-// direction. So on a standard US keyboard, the key with the number “1” on it
-// also has the exclamation point ("!") character on it. The level indicates
-// whether to use the “1” or the “!” symbol. The letter keys are considered to
-// have a lowercase letter at level 0, and an uppercase letter at level 1,
-// though only the uppercase letter is printed.
-func (k *KeymapKey) Level() int {
-	var v int // out
-	v = int(k.native.level)
-	return v
 }

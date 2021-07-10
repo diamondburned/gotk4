@@ -328,19 +328,13 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		return true
 	}
 
-	// Copy Type for mutation.
-	typ := *value.AnyType.Type
-
 	// Proritize hard-coded types over ignored types.
-	value.Resolved = types.Resolve(types.OverrideNamespace(conv.fgen, conv.sourceNamespace), typ)
+	resolveNamespace := types.OverrideNamespace(conv.fgen, conv.sourceNamespace)
+	value.Resolved = types.Resolve(resolveNamespace, *value.AnyType.Type)
 	if value.Resolved == nil {
-		conv.Logln(logger.Debug, "can't resolve", types.AnyTypeCGo(value.AnyType), typ.Name)
+		conv.Logln(logger.Debug, "can't resolve", types.AnyTypeCGo(value.AnyType))
 		return false
 	}
-
-	// Set the type back for use. We're setting the AnyType struct, which is a
-	// copy, so it's fine.
-	value.AnyType.Type = &typ
 
 	if value.Resolved.IsCallback() {
 		value.header.AddCallback(value.Resolved.Extern.Type.(*gir.Callback))
@@ -419,7 +413,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 		}
 
 		if tree := types.NewTree(conv.fgen); tree.ResolveFromType(value.Resolved) {
-			wrap := tree.Wrap("obj")
+			wrap := tree.Wrap("obj", &value.header)
 			if value.OutPtr(1) == "*" {
 				// Dereference the wrapped struct value by removing the &.
 				wrap = strings.TrimPrefix(wrap, "&")

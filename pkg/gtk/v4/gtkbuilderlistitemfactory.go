@@ -40,7 +40,7 @@ type BuilderListItemFactory interface {
 	// resource.
 	Resource() string
 	// Scope gets the scope used when constructing listitems.
-	Scope() *BuilderScopeInterface
+	Scope() *BuilderScopeIface
 }
 
 // BuilderListItemFactoryClass implements the BuilderListItemFactory interface.
@@ -86,11 +86,11 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath stri
 }
 
 // Resource: if the data references a resource, gets the path of that resource.
-func (s *BuilderListItemFactoryClass) Resource() string {
+func (self *BuilderListItemFactoryClass) Resource() string {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.char                      // in
 
-	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_builder_list_item_factory_get_resource(_arg0)
 
@@ -102,17 +102,17 @@ func (s *BuilderListItemFactoryClass) Resource() string {
 }
 
 // Scope gets the scope used when constructing listitems.
-func (s *BuilderListItemFactoryClass) Scope() *BuilderScopeInterface {
+func (self *BuilderListItemFactoryClass) Scope() *BuilderScopeIface {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GtkBuilderScope           // in
 
-	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
 
-	var _builderScope *BuilderScopeInterface // out
+	var _builderScope *BuilderScopeIface // out
 
-	_builderScope = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*BuilderScopeInterface)
+	_builderScope = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*BuilderScopeIface)
 
 	return _builderScope
 }

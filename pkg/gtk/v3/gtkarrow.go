@@ -52,7 +52,7 @@ type Arrow interface {
 type ArrowClass struct {
 	*externglib.Object
 	MiscClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ Arrow = (*ArrowClass)(nil)
@@ -63,16 +63,19 @@ func wrapArrow(obj *externglib.Object) Arrow {
 		MiscClass: MiscClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}

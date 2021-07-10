@@ -144,8 +144,8 @@ type ApplicationWindow interface {
 type ApplicationWindowClass struct {
 	*externglib.Object
 	WindowClass
-	gio.ActionGroupInterface
-	BuildableInterface
+	gio.ActionGroupIface
+	BuildableIface
 }
 
 var _ ApplicationWindow = (*ApplicationWindowClass)(nil)
@@ -160,27 +160,30 @@ func wrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionGroupInterface: gio.ActionGroupInterface{
+		ActionGroupIface: gio.ActionGroupIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -210,11 +213,11 @@ func NewApplicationWindow(application Application) *ApplicationWindowClass {
 
 // HelpOverlay gets the ShortcutsWindow that has been set up with a prior call
 // to gtk_application_window_set_help_overlay().
-func (w *ApplicationWindowClass) HelpOverlay() *ShortcutsWindowClass {
+func (window *ApplicationWindowClass) HelpOverlay() *ShortcutsWindowClass {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret *C.GtkShortcutsWindow   // in
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_application_window_get_help_overlay(_arg0)
 
@@ -227,11 +230,11 @@ func (w *ApplicationWindowClass) HelpOverlay() *ShortcutsWindowClass {
 
 // ID returns the unique ID of the window. If the window has not yet been added
 // to a Application, returns `0`.
-func (w *ApplicationWindowClass) ID() uint {
+func (window *ApplicationWindowClass) ID() uint {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.guint                 // in
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_application_window_get_id(_arg0)
 
@@ -244,11 +247,11 @@ func (w *ApplicationWindowClass) ID() uint {
 
 // ShowMenubar returns whether the window will display a menubar for the app
 // menu and menubar as needed.
-func (w *ApplicationWindowClass) ShowMenubar() bool {
+func (window *ApplicationWindowClass) ShowMenubar() bool {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_application_window_get_show_menubar(_arg0)
 
@@ -265,11 +268,11 @@ func (w *ApplicationWindowClass) ShowMenubar() bool {
 // sets up an action with the name win.show-help-overlay to present it.
 //
 // @window takes resposibility for destroying @help_overlay.
-func (w *ApplicationWindowClass) SetHelpOverlay(helpOverlay ShortcutsWindow) {
+func (window *ApplicationWindowClass) SetHelpOverlay(helpOverlay ShortcutsWindow) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 *C.GtkShortcutsWindow   // out
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(helpOverlay.Native()))
 
 	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
@@ -277,11 +280,11 @@ func (w *ApplicationWindowClass) SetHelpOverlay(helpOverlay ShortcutsWindow) {
 
 // SetShowMenubar sets whether the window will display a menubar for the app
 // menu and menubar as needed.
-func (w *ApplicationWindowClass) SetShowMenubar(showMenubar bool) {
+func (window *ApplicationWindowClass) SetShowMenubar(showMenubar bool) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 C.gboolean              // out
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
 	if showMenubar {
 		_arg1 = C.TRUE
 	}

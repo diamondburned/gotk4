@@ -282,15 +282,15 @@ type DatagramBased interface {
 	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error)
 }
 
-// DatagramBasedInterface implements the DatagramBased interface.
-type DatagramBasedInterface struct {
+// DatagramBasedIface implements the DatagramBased interface.
+type DatagramBasedIface struct {
 	*externglib.Object
 }
 
-var _ DatagramBased = (*DatagramBasedInterface)(nil)
+var _ DatagramBased = (*DatagramBasedIface)(nil)
 
 func wrapDatagramBased(obj *externglib.Object) DatagramBased {
-	return &DatagramBasedInterface{
+	return &DatagramBasedIface{
 		Object: obj,
 	}
 }
@@ -348,7 +348,7 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 // returned if zero messages could be received; otherwise the number of messages
 // successfully received before the error will be returned. If @cancellable is
 // cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
-func (d *DatagramBasedInterface) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+func (datagramBased *DatagramBasedIface) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 *C.GInputMessage
 	var _arg2 C.guint
@@ -358,7 +358,7 @@ func (d *DatagramBasedInterface) ReceiveMessages(messages []InputMessage, flags 
 	var _cret C.gint          // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
 	_arg3 = C.gint(flags)
@@ -415,7 +415,7 @@ func (d *DatagramBasedInterface) ReceiveMessages(messages []InputMessage, flags 
 // returned if zero messages could be sent; otherwise the number of messages
 // successfully sent before the error will be returned. If @cancellable is
 // cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
-func (d *DatagramBasedInterface) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
+func (datagramBased *DatagramBasedIface) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 *C.GOutputMessage
 	var _arg2 C.guint
@@ -425,7 +425,7 @@ func (d *DatagramBasedInterface) SendMessages(messages []OutputMessage, flags in
 	var _cret C.gint          // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
 	_arg3 = C.gint(flags)

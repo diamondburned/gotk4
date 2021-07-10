@@ -75,28 +75,3 @@ func marshalPollFD(p uintptr) (interface{}, error) {
 func (p *PollFD) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
-
-// Fd: the file descriptor to poll (or a HANDLE on Win32)
-func (p *PollFD) Fd() int {
-	var v int // out
-	v = int(p.native.fd)
-	return v
-}
-
-// Events: bitwise combination from OCondition, specifying which events should
-// be polled for. Typically for reading from a file descriptor you would use
-// G_IO_IN | G_IO_HUP | G_IO_ERR, and for writing you would use G_IO_OUT |
-// G_IO_ERR.
-func (p *PollFD) Events() uint16 {
-	var v uint16 // out
-	v = uint16(p.native.events)
-	return v
-}
-
-// Revents: bitwise combination of flags from OCondition, returned from the
-// poll() function to indicate which events occurred.
-func (p *PollFD) Revents() uint16 {
-	var v uint16 // out
-	v = uint16(p.native.revents)
-	return v
-}

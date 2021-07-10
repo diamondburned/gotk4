@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -133,6 +134,8 @@ type Renderer interface {
 	DrawGlyphs(font Font, glyphs *GlyphString, x int, y int)
 	// DrawLayout draws @layout with the specified `PangoRenderer`.
 	DrawLayout(layout Layout, x int, y int)
+	// DrawLayoutLine draws @line with the specified `PangoRenderer`.
+	DrawLayoutLine(line *LayoutLine, x int, y int)
 	// Layout gets the layout currently being rendered using @renderer.
 	//
 	// Calling this function only makes sense from inside a subclass's methods,
@@ -140,6 +143,14 @@ type Renderer interface {
 	//
 	// The returned layout should not be modified while still being rendered.
 	Layout() *LayoutClass
+	// LayoutLine gets the layout line currently being rendered using @renderer.
+	//
+	// Calling this function only makes sense from inside a subclass's methods,
+	// like in its draw_shape vfunc, for example.
+	//
+	// The returned layout line should not be modified while still being
+	// rendered.
+	LayoutLine() *LayoutLine
 	// Matrix gets the transformation matrix that will be applied when
 	// rendering.
 	//
@@ -176,10 +187,10 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 // before drawing on it. Calls to `pango_renderer_activate()` and
 // `pango_renderer_deactivate()` can be nested and the renderer will only be
 // initialized and deinitialized once.
-func (r *RendererClass) Activate() {
+func (renderer *RendererClass) Activate() {
 	var _arg0 *C.PangoRenderer // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	C.pango_renderer_activate(_arg0)
 }
@@ -187,10 +198,10 @@ func (r *RendererClass) Activate() {
 // Deactivate cleans up after rendering operations on @renderer.
 //
 // See docs for [method@Pango.Renderer.activate].
-func (r *RendererClass) Deactivate() {
+func (renderer *RendererClass) Deactivate() {
 	var _arg0 *C.PangoRenderer // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	C.pango_renderer_deactivate(_arg0)
 }
@@ -203,14 +214,14 @@ func (r *RendererClass) Deactivate() {
 //
 // This should be called while @renderer is already active. Use
 // [method@Pango.Renderer.activate] to activate a renderer.
-func (r *RendererClass) DrawErrorUnderline(x int, y int, width int, height int) {
+func (renderer *RendererClass) DrawErrorUnderline(x int, y int, width int, height int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 C.int            // out
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out
 	var _arg4 C.int            // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 	_arg3 = C.int(width)
@@ -232,14 +243,14 @@ func (r *RendererClass) DrawErrorUnderline(x int, y int, width int, height int) 
 //
 // The default implementation of this method simply falls back to
 // [method@Pango.Renderer.draw_glyphs].
-func (r *RendererClass) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int) {
+func (renderer *RendererClass) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.PangoGlyphItem // out
 	var _arg3 C.int             // out
 	var _arg4 C.int             // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
@@ -250,14 +261,14 @@ func (r *RendererClass) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, 
 }
 
 // DrawGlyphs draws the glyphs in @glyphs with the specified `PangoRenderer`.
-func (r *RendererClass) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int) {
+func (renderer *RendererClass) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int) {
 	var _arg0 *C.PangoRenderer    // out
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
 	var _arg3 C.int               // out
 	var _arg4 C.int               // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg2 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg3 = C.int(x)
@@ -267,18 +278,33 @@ func (r *RendererClass) DrawGlyphs(font Font, glyphs *GlyphString, x int, y int)
 }
 
 // DrawLayout draws @layout with the specified `PangoRenderer`.
-func (r *RendererClass) DrawLayout(layout Layout, x int, y int) {
+func (renderer *RendererClass) DrawLayout(layout Layout, x int, y int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoLayout   // out
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
 
 	C.pango_renderer_draw_layout(_arg0, _arg1, _arg2, _arg3)
+}
+
+// DrawLayoutLine draws @line with the specified `PangoRenderer`.
+func (renderer *RendererClass) DrawLayoutLine(line *LayoutLine, x int, y int) {
+	var _arg0 *C.PangoRenderer   // out
+	var _arg1 *C.PangoLayoutLine // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = (*C.PangoLayoutLine)(unsafe.Pointer(line))
+	_arg2 = C.int(x)
+	_arg3 = C.int(y)
+
+	C.pango_renderer_draw_layout_line(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Layout gets the layout currently being rendered using @renderer.
@@ -287,11 +313,11 @@ func (r *RendererClass) DrawLayout(layout Layout, x int, y int) {
 // in its draw_shape vfunc, for example.
 //
 // The returned layout should not be modified while still being rendered.
-func (r *RendererClass) Layout() *LayoutClass {
+func (renderer *RendererClass) Layout() *LayoutClass {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoLayout   // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.pango_renderer_get_layout(_arg0)
 
@@ -302,14 +328,39 @@ func (r *RendererClass) Layout() *LayoutClass {
 	return _layout
 }
 
+// LayoutLine gets the layout line currently being rendered using @renderer.
+//
+// Calling this function only makes sense from inside a subclass's methods, like
+// in its draw_shape vfunc, for example.
+//
+// The returned layout line should not be modified while still being rendered.
+func (renderer *RendererClass) LayoutLine() *LayoutLine {
+	var _arg0 *C.PangoRenderer   // out
+	var _cret *C.PangoLayoutLine // in
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+
+	_cret = C.pango_renderer_get_layout_line(_arg0)
+
+	var _layoutLine *LayoutLine // out
+
+	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
+	C.pango_layout_line_ref(_cret)
+	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
+		C.pango_layout_line_unref((*C.PangoLayoutLine)(unsafe.Pointer(v)))
+	})
+
+	return _layoutLine
+}
+
 // Matrix gets the transformation matrix that will be applied when rendering.
 //
 // See [method@Pango.Renderer.set_matrix].
-func (r *RendererClass) Matrix() *Matrix {
+func (renderer *RendererClass) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.pango_renderer_get_matrix(_arg0)
 
@@ -321,11 +372,11 @@ func (r *RendererClass) Matrix() *Matrix {
 }
 
 // SetMatrix sets the transformation matrix that will be applied when rendering.
-func (r *RendererClass) SetMatrix(matrix *Matrix) {
+func (renderer *RendererClass) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 
 	C.pango_renderer_set_matrix(_arg0, _arg1)

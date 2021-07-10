@@ -83,11 +83,11 @@ func NewIMContextSimple() *IMContextSimpleClass {
 }
 
 // AddComposeFile adds an additional table from the X11 compose file.
-func (c *IMContextSimpleClass) AddComposeFile(composeFile string) {
+func (contextSimple *IMContextSimpleClass) AddComposeFile(composeFile string) {
 	var _arg0 *C.GtkIMContextSimple // out
 	var _arg1 *C.gchar              // out
 
-	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(contextSimple.Native()))
 	_arg1 = (*C.gchar)(C.CString(composeFile))
 	defer C.free(unsafe.Pointer(_arg1))
 

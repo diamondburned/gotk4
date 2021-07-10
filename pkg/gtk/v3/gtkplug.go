@@ -62,7 +62,7 @@ type Plug interface {
 type PlugClass struct {
 	*externglib.Object
 	WindowClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ Plug = (*PlugClass)(nil)
@@ -77,24 +77,27 @@ func wrapPlug(obj *externglib.Object) Plug {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -107,11 +110,11 @@ func marshalPlug(p uintptr) (interface{}, error) {
 }
 
 // Embedded determines whether the plug is embedded in a socket.
-func (p *PlugClass) Embedded() bool {
+func (plug *PlugClass) Embedded() bool {
 	var _arg0 *C.GtkPlug // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(plug.Native()))
 
 	_cret = C.gtk_plug_get_embedded(_arg0)
 
@@ -125,11 +128,11 @@ func (p *PlugClass) Embedded() bool {
 }
 
 // SocketWindow retrieves the socket the plug is embedded in.
-func (p *PlugClass) SocketWindow() *gdk.WindowClass {
+func (plug *PlugClass) SocketWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkPlug   // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(plug.Native()))
 
 	_cret = C.gtk_plug_get_socket_window(_arg0)
 

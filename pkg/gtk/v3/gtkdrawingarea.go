@@ -110,7 +110,7 @@ type DrawingArea interface {
 type DrawingAreaClass struct {
 	*externglib.Object
 	WidgetClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ DrawingArea = (*DrawingAreaClass)(nil)
@@ -119,12 +119,15 @@ func wrapDrawingArea(obj *externglib.Object) DrawingArea {
 	return &DrawingAreaClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			BuildableInterface: BuildableInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}

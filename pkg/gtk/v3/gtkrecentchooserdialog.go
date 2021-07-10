@@ -74,8 +74,8 @@ type RecentChooserDialog interface {
 type RecentChooserDialogClass struct {
 	*externglib.Object
 	DialogClass
-	BuildableInterface
-	RecentChooserInterface
+	BuildableIface
+	RecentChooserIface
 }
 
 var _ RecentChooserDialog = (*RecentChooserDialogClass)(nil)
@@ -92,31 +92,34 @@ func wrapRecentChooserDialog(obj *externglib.Object) RecentChooserDialog {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		RecentChooserInterface: RecentChooserInterface{
+		RecentChooserIface: RecentChooserIface{
 			Object: obj,
 		},
 	}

@@ -48,14 +48,14 @@ type DesktopAppInfoLookupOverrider interface {
 	// is no reason for applications to use it directly. Applications should use
 	// g_app_info_get_default_for_uri_scheme().
 	//
-	// Deprecated: since version 2.28.
-	DefaultForURIScheme(uriScheme string) *AppInfoInterface
+	// Deprecated: The AppInfoLookup interface is deprecated and unused by GIO.
+	DefaultForURIScheme(uriScheme string) *AppInfoIface
 }
 
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
 // using the following functions.
 //
-// Deprecated: since version 2.28.
+// Deprecated: The AppInfoLookup interface is deprecated and unused by GIO.
 type DesktopAppInfoLookup interface {
 	gextras.Objector
 
@@ -68,19 +68,19 @@ type DesktopAppInfoLookup interface {
 	// is no reason for applications to use it directly. Applications should use
 	// g_app_info_get_default_for_uri_scheme().
 	//
-	// Deprecated: since version 2.28.
-	DefaultForURIScheme(uriScheme string) *AppInfoInterface
+	// Deprecated: The AppInfoLookup interface is deprecated and unused by GIO.
+	DefaultForURIScheme(uriScheme string) *AppInfoIface
 }
 
-// DesktopAppInfoLookupInterface implements the DesktopAppInfoLookup interface.
-type DesktopAppInfoLookupInterface struct {
+// DesktopAppInfoLookupIface implements the DesktopAppInfoLookup interface.
+type DesktopAppInfoLookupIface struct {
 	*externglib.Object
 }
 
-var _ DesktopAppInfoLookup = (*DesktopAppInfoLookupInterface)(nil)
+var _ DesktopAppInfoLookup = (*DesktopAppInfoLookupIface)(nil)
 
 func wrapDesktopAppInfoLookup(obj *externglib.Object) DesktopAppInfoLookup {
-	return &DesktopAppInfoLookupInterface{
+	return &DesktopAppInfoLookupIface{
 		Object: obj,
 	}
 }
@@ -99,21 +99,21 @@ func marshalDesktopAppInfoLookup(p uintptr) (interface{}, error) {
 // reason for applications to use it directly. Applications should use
 // g_app_info_get_default_for_uri_scheme().
 //
-// Deprecated: since version 2.28.
-func (l *DesktopAppInfoLookupInterface) DefaultForURIScheme(uriScheme string) *AppInfoInterface {
+// Deprecated: The AppInfoLookup interface is deprecated and unused by GIO.
+func (lookup *DesktopAppInfoLookupIface) DefaultForURIScheme(uriScheme string) *AppInfoIface {
 	var _arg0 *C.GDesktopAppInfoLookup // out
 	var _arg1 *C.char                  // out
 	var _cret *C.GAppInfo              // in
 
-	_arg0 = (*C.GDesktopAppInfoLookup)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GDesktopAppInfoLookup)(unsafe.Pointer(lookup.Native()))
 	_arg1 = (*C.char)(C.CString(uriScheme))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_lookup_get_default_for_uri_scheme(_arg0, _arg1)
 
-	var _appInfo *AppInfoInterface // out
+	var _appInfo *AppInfoIface // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoInterface)
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoIface)
 
 	return _appInfo
 }
@@ -207,7 +207,7 @@ type DesktopAppInfo interface {
 // DesktopAppInfoClass implements the DesktopAppInfo interface.
 type DesktopAppInfoClass struct {
 	*externglib.Object
-	AppInfoInterface
+	AppInfoIface
 }
 
 var _ DesktopAppInfo = (*DesktopAppInfoClass)(nil)
@@ -215,7 +215,7 @@ var _ DesktopAppInfo = (*DesktopAppInfoClass)(nil)
 func wrapDesktopAppInfo(obj *externglib.Object) DesktopAppInfo {
 	return &DesktopAppInfoClass{
 		Object: obj,
-		AppInfoInterface: AppInfoInterface{
+		AppInfoIface: AppInfoIface{
 			Object: obj,
 		},
 	}
@@ -290,12 +290,12 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) *DesktopAppInfoClass {
 // action" specified by @action_name.
 //
 // This corresponds to the "Name" key within the keyfile group for the action.
-func (i *DesktopAppInfoClass) ActionName(actionName string) string {
+func (info *DesktopAppInfoClass) ActionName(actionName string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.gchar           // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -312,12 +312,12 @@ func (i *DesktopAppInfoClass) ActionName(actionName string) string {
 // Boolean looks up a boolean value in the keyfile backing @info.
 //
 // The @key is looked up in the "Desktop Entry" group.
-func (i *DesktopAppInfoClass) Boolean(key string) bool {
+func (info *DesktopAppInfoClass) Boolean(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -333,11 +333,11 @@ func (i *DesktopAppInfoClass) Boolean(key string) bool {
 }
 
 // Categories gets the categories from the desktop file.
-func (i *DesktopAppInfoClass) Categories() string {
+func (info *DesktopAppInfoClass) Categories() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_categories(_arg0)
 
@@ -351,11 +351,11 @@ func (i *DesktopAppInfoClass) Categories() string {
 // Filename: when @info was created from a known filename, return it. In some
 // situations such as the AppInfo returned from
 // g_desktop_app_info_new_from_keyfile(), this function will return nil.
-func (i *DesktopAppInfoClass) Filename() string {
+func (info *DesktopAppInfoClass) Filename() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_filename(_arg0)
 
@@ -367,11 +367,11 @@ func (i *DesktopAppInfoClass) Filename() string {
 }
 
 // GenericName gets the generic name from the desktop file.
-func (i *DesktopAppInfoClass) GenericName() string {
+func (info *DesktopAppInfoClass) GenericName() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_generic_name(_arg0)
 
@@ -383,11 +383,11 @@ func (i *DesktopAppInfoClass) GenericName() string {
 }
 
 // IsHidden: desktop file is hidden if the Hidden key in it is set to True.
-func (i *DesktopAppInfoClass) IsHidden() bool {
+func (info *DesktopAppInfoClass) IsHidden() bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_is_hidden(_arg0)
 
@@ -401,11 +401,11 @@ func (i *DesktopAppInfoClass) IsHidden() bool {
 }
 
 // Keywords gets the keywords from the desktop file.
-func (i *DesktopAppInfoClass) Keywords() []string {
+func (info *DesktopAppInfoClass) Keywords() []string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret **C.char
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_keywords(_arg0)
 
@@ -432,12 +432,12 @@ func (i *DesktopAppInfoClass) Keywords() []string {
 // translated to the current locale.
 //
 // The @key is looked up in the "Desktop Entry" group.
-func (i *DesktopAppInfoClass) LocaleString(key string) string {
+func (info *DesktopAppInfoClass) LocaleString(key string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -454,11 +454,11 @@ func (i *DesktopAppInfoClass) LocaleString(key string) string {
 // Nodisplay gets the value of the NoDisplay key, which helps determine if the
 // application info should be shown in menus. See
 // KEY_FILE_DESKTOP_KEY_NO_DISPLAY and g_app_info_should_show().
-func (i *DesktopAppInfoClass) Nodisplay() bool {
+func (info *DesktopAppInfoClass) Nodisplay() bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_nodisplay(_arg0)
 
@@ -482,12 +482,12 @@ func (i *DesktopAppInfoClass) Nodisplay() bool {
 //
 // Note that g_app_info_should_show() for @info will include this check (with
 // nil for @desktop_env) as well as additional checks.
-func (i *DesktopAppInfoClass) ShowIn(desktopEnv string) bool {
+func (info *DesktopAppInfoClass) ShowIn(desktopEnv string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.gchar           // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.gchar)(C.CString(desktopEnv))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -505,11 +505,11 @@ func (i *DesktopAppInfoClass) ShowIn(desktopEnv string) bool {
 // StartupWmClass retrieves the StartupWMClass field from @info. This represents
 // the WM_CLASS property of the main window of the application, if launched
 // through @info.
-func (i *DesktopAppInfoClass) StartupWmClass() string {
+func (info *DesktopAppInfoClass) StartupWmClass() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_startup_wm_class(_arg0)
 
@@ -523,12 +523,12 @@ func (i *DesktopAppInfoClass) StartupWmClass() string {
 // String looks up a string value in the keyfile backing @info.
 //
 // The @key is looked up in the "Desktop Entry" group.
-func (i *DesktopAppInfoClass) String(key string) string {
+func (info *DesktopAppInfoClass) String(key string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -544,12 +544,12 @@ func (i *DesktopAppInfoClass) String(key string) string {
 
 // HasKey returns whether @key exists in the "Desktop Entry" group of the
 // keyfile backing @info.
-func (i *DesktopAppInfoClass) HasKey(key string) bool {
+func (info *DesktopAppInfoClass) HasKey(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -579,12 +579,12 @@ func (i *DesktopAppInfoClass) HasKey(key string) bool {
 //
 // As with g_app_info_launch() there is no way to detect failures that occur
 // while using this function.
-func (i *DesktopAppInfoClass) LaunchAction(actionName string, launchContext AppLaunchContext) {
+func (info *DesktopAppInfoClass) LaunchAction(actionName string, launchContext AppLaunchContext) {
 	var _arg0 *C.GDesktopAppInfo   // out
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.GAppLaunchContext // out
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
@@ -597,11 +597,11 @@ func (i *DesktopAppInfoClass) LaunchAction(actionName string, launchContext AppL
 //
 // As per the specification, this is the list of actions that are explicitly
 // listed in the "Actions" key of the [Desktop Entry] group.
-func (i *DesktopAppInfoClass) ListActions() []string {
+func (info *DesktopAppInfoClass) ListActions() []string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_list_actions(_arg0)
 

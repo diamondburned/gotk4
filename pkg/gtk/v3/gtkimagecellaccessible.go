@@ -35,8 +35,8 @@ type ImageCellAccessible interface {
 type ImageCellAccessibleClass struct {
 	*externglib.Object
 	RendererCellAccessibleClass
-	atk.ActionInterface
-	atk.ImageInterface
+	atk.ActionIface
+	atk.ImageIface
 }
 
 var _ ImageCellAccessible = (*ImageCellAccessibleClass)(nil)
@@ -45,26 +45,24 @@ func wrapImageCellAccessible(obj *externglib.Object) ImageCellAccessible {
 	return &ImageCellAccessibleClass{
 		Object: obj,
 		RendererCellAccessibleClass: RendererCellAccessibleClass{
-			Object: obj,
 			CellAccessibleClass: CellAccessibleClass{
-				Object: obj,
 				AccessibleClass: AccessibleClass{
 					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
 				},
-				ActionInterface: atk.ActionInterface{
+				ActionIface: atk.ActionIface{
 					Object: obj,
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
-		ImageInterface: atk.ImageInterface{
+		ImageIface: atk.ImageIface{
 			Object: obj,
 		},
 	}

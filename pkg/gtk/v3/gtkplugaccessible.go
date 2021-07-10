@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -59,11 +60,11 @@ func marshalPlugAccessible(p uintptr) (interface{}, error) {
 	return wrapPlugAccessible(obj), nil
 }
 
-func (p *PlugAccessibleClass) ID() string {
+func (plug *PlugAccessibleClass) ID() string {
 	var _arg0 *C.GtkPlugAccessible // out
 	var _cret *C.gchar             // in
 
-	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(plug.Native()))
 
 	_cret = C.gtk_plug_accessible_get_id(_arg0)
 

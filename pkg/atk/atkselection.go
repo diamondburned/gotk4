@@ -104,15 +104,15 @@ type Selection interface {
 	SelectAllSelection() bool
 }
 
-// SelectionInterface implements the Selection interface.
-type SelectionInterface struct {
+// SelectionIface implements the Selection interface.
+type SelectionIface struct {
 	*externglib.Object
 }
 
-var _ Selection = (*SelectionInterface)(nil)
+var _ Selection = (*SelectionIface)(nil)
 
 func wrapSelection(obj *externglib.Object) Selection {
-	return &SelectionInterface{
+	return &SelectionIface{
 		Object: obj,
 	}
 }
@@ -125,12 +125,12 @@ func marshalSelection(p uintptr) (interface{}, error) {
 
 // AddSelection adds the specified accessible child of the object to the
 // object's selection.
-func (s *SelectionInterface) AddSelection(i int) bool {
+func (selection *SelectionIface) AddSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_add_selection(_arg0, _arg1)
@@ -146,11 +146,11 @@ func (s *SelectionInterface) AddSelection(i int) bool {
 
 // ClearSelection clears the selection in the object so that no children in the
 // object are selected.
-func (s *SelectionInterface) ClearSelection() bool {
+func (selection *SelectionIface) ClearSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.atk_selection_clear_selection(_arg0)
 
@@ -168,11 +168,11 @@ func (s *SelectionInterface) ClearSelection() bool {
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
-func (s *SelectionInterface) SelectionCount() int {
+func (selection *SelectionIface) SelectionCount() int {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.atk_selection_get_selection_count(_arg0)
 
@@ -188,12 +188,12 @@ func (s *SelectionInterface) SelectionCount() int {
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
-func (s *SelectionInterface) IsChildSelected(i int) bool {
+func (selection *SelectionIface) IsChildSelected(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_is_child_selected(_arg0, _arg1)
@@ -212,12 +212,12 @@ func (s *SelectionInterface) IsChildSelected(i int) bool {
 // or on a zero value for indication of whether AtkSelectionIface is
 // implemented, they should use type checking/interface checking macros or the
 // atk_get_accessible_value() convenience method.
-func (s *SelectionInterface) RefSelection(i int) *ObjectClass {
+func (selection *SelectionIface) RefSelection(i int) *ObjectClass {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_ref_selection(_arg0, _arg1)
@@ -231,12 +231,12 @@ func (s *SelectionInterface) RefSelection(i int) *ObjectClass {
 
 // RemoveSelection removes the specified child of the object from the object's
 // selection.
-func (s *SelectionInterface) RemoveSelection(i int) bool {
+func (selection *SelectionIface) RemoveSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_remove_selection(_arg0, _arg1)
@@ -252,11 +252,11 @@ func (s *SelectionInterface) RemoveSelection(i int) bool {
 
 // SelectAllSelection causes every child of the object to be selected if the
 // object supports multiple selections.
-func (s *SelectionInterface) SelectAllSelection() bool {
+func (selection *SelectionIface) SelectAllSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.atk_selection_select_all_selection(_arg0)
 

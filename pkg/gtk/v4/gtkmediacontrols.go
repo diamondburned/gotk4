@@ -40,9 +40,9 @@ type MediaControls interface {
 type MediaControlsClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ MediaControls = (*MediaControlsClass)(nil)
@@ -51,24 +51,27 @@ func wrapMediaControls(obj *externglib.Object) MediaControls {
 	return &MediaControlsClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -98,11 +101,11 @@ func NewMediaControls(stream MediaStream) *MediaControlsClass {
 }
 
 // MediaStream gets the media stream managed by @controls or nil if none.
-func (c *MediaControlsClass) MediaStream() *MediaStreamClass {
+func (controls *MediaControlsClass) MediaStream() *MediaStreamClass {
 	var _arg0 *C.GtkMediaControls // out
 	var _cret *C.GtkMediaStream   // in
 
-	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(controls.Native()))
 
 	_cret = C.gtk_media_controls_get_media_stream(_arg0)
 
@@ -114,11 +117,11 @@ func (c *MediaControlsClass) MediaStream() *MediaStreamClass {
 }
 
 // SetMediaStream sets the stream that is controlled by @controls.
-func (c *MediaControlsClass) SetMediaStream(stream MediaStream) {
+func (controls *MediaControlsClass) SetMediaStream(stream MediaStream) {
 	var _arg0 *C.GtkMediaControls // out
 	var _arg1 *C.GtkMediaStream   // out
 
-	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(controls.Native()))
 	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
 	C.gtk_media_controls_set_media_stream(_arg0, _arg1)

@@ -228,15 +228,15 @@ type AsyncInitable interface {
 	NewFinish(res AsyncResult) (*externglib.Object, error)
 }
 
-// AsyncInitableInterface implements the AsyncInitable interface.
-type AsyncInitableInterface struct {
+// AsyncInitableIface implements the AsyncInitable interface.
+type AsyncInitableIface struct {
 	*externglib.Object
 }
 
-var _ AsyncInitable = (*AsyncInitableInterface)(nil)
+var _ AsyncInitable = (*AsyncInitableIface)(nil)
 
 func wrapAsyncInitable(obj *externglib.Object) AsyncInitable {
-	return &AsyncInitableInterface{
+	return &AsyncInitableIface{
 		Object: obj,
 	}
 }
@@ -282,14 +282,14 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 // thread, so if you want to support asynchronous initialization via threads,
 // just implement the Initable interface without overriding any interface
 // methods.
-func (i *AsyncInitableInterface) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (initable *AsyncInitableIface) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GAsyncInitable     // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -300,12 +300,12 @@ func (i *AsyncInitableInterface) InitAsync(ioPriority int, cancellable Cancellab
 
 // InitFinish finishes asynchronous initialization and returns the result. See
 // g_async_initable_init_async().
-func (i *AsyncInitableInterface) InitFinish(res AsyncResult) error {
+func (initable *AsyncInitableIface) InitFinish(res AsyncResult) error {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
@@ -319,13 +319,13 @@ func (i *AsyncInitableInterface) InitFinish(res AsyncResult) error {
 
 // NewFinish finishes the async construction for the various
 // g_async_initable_new calls, returning the created object or nil on error.
-func (i *AsyncInitableInterface) NewFinish(res AsyncResult) (*externglib.Object, error) {
+func (initable *AsyncInitableIface) NewFinish(res AsyncResult) (*externglib.Object, error) {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret *C.GObject        // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)

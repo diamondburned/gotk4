@@ -490,7 +490,7 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (*PixbufCla
 // For non-const inline data, you could get out of memory. For untrusted inline
 // data located at runtime, you could have corrupt inline data in addition.
 //
-// Deprecated: since version 2.32.
+// Deprecated: Use `GResource` instead.
 func NewPixbufFromInline(data []byte, copyPixels bool) (*PixbufClass, error) {
 	var _arg2 *C.guint8
 	var _arg1 C.gint
@@ -703,7 +703,7 @@ func NewPixbufFromXpmData(data []string) *PixbufClass {
 //
 // If `substitute_color` is `FALSE`, then the (`r`, `g`, `b`) arguments will be
 // ignored.
-func (p *PixbufClass) AddAlpha(substituteColor bool, r byte, g byte, b byte) *PixbufClass {
+func (pixbuf *PixbufClass) AddAlpha(substituteColor bool, r byte, g byte, b byte) *PixbufClass {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
 	var _arg2 C.guchar     // out
@@ -711,7 +711,7 @@ func (p *PixbufClass) AddAlpha(substituteColor bool, r byte, g byte, b byte) *Pi
 	var _arg4 C.guchar     // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	if substituteColor {
 		_arg1 = C.TRUE
 	}
@@ -737,11 +737,11 @@ func (p *PixbufClass) AddAlpha(substituteColor bool, r byte, g byte, b byte) *Pi
 //
 // If an orientation option/tag is present, the appropriate transform will be
 // performed so that the pixbuf is oriented correctly.
-func (s *PixbufClass) ApplyEmbeddedOrientation() *PixbufClass {
+func (src *PixbufClass) ApplyEmbeddedOrientation() *PixbufClass {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
 
 	_cret = C.gdk_pixbuf_apply_embedded_orientation(_arg0)
 
@@ -757,11 +757,11 @@ func (s *PixbufClass) ApplyEmbeddedOrientation() *PixbufClass {
 //
 // Note that this does not copy the options set on the original `GdkPixbuf`, use
 // gdk_pixbuf_copy_options() for this.
-func (p *PixbufClass) Copy() *PixbufClass {
+func (pixbuf *PixbufClass) Copy() *PixbufClass {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_copy(_arg0)
 
@@ -779,7 +779,7 @@ func (p *PixbufClass) Copy() *PixbufClass {
 // If the source rectangle overlaps the destination rectangle on the same
 // pixbuf, it will be overwritten during the copy operation. Therefore, you can
 // not use this function to scroll a pixbuf.
-func (s *PixbufClass) CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int) {
+func (srcPixbuf *PixbufClass) CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -789,7 +789,7 @@ func (s *PixbufClass) CopyArea(srcX int, srcY int, width int, height int, destPi
 	var _arg6 C.int        // out
 	var _arg7 C.int        // out
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(srcPixbuf.Native()))
 	_arg1 = C.int(srcX)
 	_arg2 = C.int(srcY)
 	_arg3 = C.int(width)
@@ -807,12 +807,12 @@ func (s *PixbufClass) CopyArea(srcX int, srcY int, width int, height int, destPi
 // This is useful to keep original metadata after having manipulated a file.
 // However be careful to remove metadata which you've already applied, such as
 // the "orientation" option after rotating the image.
-func (s *PixbufClass) CopyOptions(destPixbuf Pixbuf) bool {
+func (srcPixbuf *PixbufClass) CopyOptions(destPixbuf Pixbuf) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(srcPixbuf.Native()))
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(destPixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_copy_options(_arg0, _arg1)
@@ -831,11 +831,11 @@ func (s *PixbufClass) CopyOptions(destPixbuf Pixbuf) bool {
 //
 // The alpha component will be ignored if the pixbuf doesn't have an alpha
 // channel.
-func (p *PixbufClass) Fill(pixel uint32) {
+func (pixbuf *PixbufClass) Fill(pixel uint32) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.guint32    // out
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = C.guint32(pixel)
 
 	C.gdk_pixbuf_fill(_arg0, _arg1)
@@ -843,12 +843,12 @@ func (p *PixbufClass) Fill(pixel uint32) {
 
 // Flip flips a pixbuf horizontally or vertically and returns the result in a
 // new pixbuf.
-func (s *PixbufClass) Flip(horizontal bool) *PixbufClass {
+func (src *PixbufClass) Flip(horizontal bool) *PixbufClass {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
 	if horizontal {
 		_arg1 = C.TRUE
 	}
@@ -863,11 +863,11 @@ func (s *PixbufClass) Flip(horizontal bool) *PixbufClass {
 }
 
 // BitsPerSample queries the number of bits per color sample in a pixbuf.
-func (p *PixbufClass) BitsPerSample() int {
+func (pixbuf *PixbufClass) BitsPerSample() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_bits_per_sample(_arg0)
 
@@ -879,11 +879,11 @@ func (p *PixbufClass) BitsPerSample() int {
 }
 
 // ByteLength returns the length of the pixel data, in bytes.
-func (p *PixbufClass) ByteLength() uint {
+func (pixbuf *PixbufClass) ByteLength() uint {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.gsize      // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_byte_length(_arg0)
 
@@ -895,11 +895,11 @@ func (p *PixbufClass) ByteLength() uint {
 }
 
 // Colorspace queries the color space of a pixbuf.
-func (p *PixbufClass) Colorspace() Colorspace {
+func (pixbuf *PixbufClass) Colorspace() Colorspace {
 	var _arg0 *C.GdkPixbuf    // out
 	var _cret C.GdkColorspace // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_colorspace(_arg0)
 
@@ -911,11 +911,11 @@ func (p *PixbufClass) Colorspace() Colorspace {
 }
 
 // HasAlpha queries whether a pixbuf has an alpha channel (opacity information).
-func (p *PixbufClass) HasAlpha() bool {
+func (pixbuf *PixbufClass) HasAlpha() bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_has_alpha(_arg0)
 
@@ -929,11 +929,11 @@ func (p *PixbufClass) HasAlpha() bool {
 }
 
 // Height queries the height of a pixbuf.
-func (p *PixbufClass) Height() int {
+func (pixbuf *PixbufClass) Height() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_height(_arg0)
 
@@ -945,11 +945,11 @@ func (p *PixbufClass) Height() int {
 }
 
 // NChannels queries the number of channels of a pixbuf.
-func (p *PixbufClass) NChannels() int {
+func (pixbuf *PixbufClass) NChannels() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_n_channels(_arg0)
 
@@ -974,12 +974,12 @@ func (p *PixbufClass) NChannels() int {
 // set "x-dpi" and "y-dpi" if the file contains image density information in
 // dots per inch. Since 2.36.6, the JPEG loader sets the "comment" option with
 // the comment EXIF tag.
-func (p *PixbufClass) Option(key string) string {
+func (pixbuf *PixbufClass) Option(key string) string {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -995,11 +995,11 @@ func (p *PixbufClass) Option(key string) string {
 // Options returns a `GHashTable` with a list of all the options that may have
 // been attached to the `pixbuf` when it was loaded, or that may have been
 // attached by another function using [method@GdkPixbuf.Pixbuf.set_option].
-func (p *PixbufClass) Options() *glib.HashTable {
+func (pixbuf *PixbufClass) Options() *glib.HashTable {
 	var _arg0 *C.GdkPixbuf  // out
 	var _cret *C.GHashTable // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_options(_arg0)
 
@@ -1015,11 +1015,11 @@ func (p *PixbufClass) Options() *glib.HashTable {
 
 // Rowstride queries the rowstride of a pixbuf, which is the number of bytes
 // between the start of a row and the start of the next row.
-func (p *PixbufClass) Rowstride() int {
+func (pixbuf *PixbufClass) Rowstride() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_rowstride(_arg0)
 
@@ -1031,11 +1031,11 @@ func (p *PixbufClass) Rowstride() int {
 }
 
 // Width queries the width of a pixbuf.
-func (p *PixbufClass) Width() int {
+func (pixbuf *PixbufClass) Width() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_width(_arg0)
 
@@ -1055,7 +1055,7 @@ func (p *PixbufClass) Width() int {
 //
 // Note that if `src_pixbuf` is read-only, this function will force it to be
 // mutable.
-func (s *PixbufClass) NewSubpixbuf(srcX int, srcY int, width int, height int) *PixbufClass {
+func (srcPixbuf *PixbufClass) NewSubpixbuf(srcX int, srcY int, width int, height int) *PixbufClass {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -1063,7 +1063,7 @@ func (s *PixbufClass) NewSubpixbuf(srcX int, srcY int, width int, height int) *P
 	var _arg4 C.int        // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(srcPixbuf.Native()))
 	_arg1 = C.int(srcX)
 	_arg2 = C.int(srcY)
 	_arg3 = C.int(width)
@@ -1082,11 +1082,11 @@ func (s *PixbufClass) NewSubpixbuf(srcX int, srcY int, width int, height int) *P
 //
 // This function allows skipping the implicit copy that must be made if
 // gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
-func (p *PixbufClass) ReadPixels() *byte {
+func (pixbuf *PixbufClass) ReadPixels() *byte {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.guint8    // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_read_pixels(_arg0)
 
@@ -1098,12 +1098,12 @@ func (p *PixbufClass) ReadPixels() *byte {
 }
 
 // RemoveOption removes the key/value pair option attached to a `GdkPixbuf`.
-func (p *PixbufClass) RemoveOption(key string) bool {
+func (pixbuf *PixbufClass) RemoveOption(key string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1132,13 +1132,13 @@ func (p *PixbufClass) RemoveOption(key string) bool {
 //
 // If `pixelate` is `TRUE`, then pixels are faded in a checkerboard pattern to
 // create a pixelated image.
-func (s *PixbufClass) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool) {
+func (src *PixbufClass) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
 	var _arg2 C.gfloat     // out
 	var _arg3 C.gboolean   // out
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(dest.Native()))
 	_arg2 = C.gfloat(saturation)
 	if pixelate {
@@ -1154,7 +1154,7 @@ func (s *PixbufClass) SaturateAndPixelate(dest Pixbuf, saturation float32, pixel
 // "tiff", "png", "ico" or "bmp".
 //
 // See [method@GdkPixbuf.Pixbuf.save_to_buffer] for more details.
-func (p *PixbufClass) SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error) {
+func (pixbuf *PixbufClass) SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar
 	var _arg2 C.gsize // in
@@ -1163,7 +1163,7 @@ func (p *PixbufClass) SaveToBufferv(typ string, optionKeys []string, optionValue
 	var _arg5 **C.char
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg3 = (*C.char)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (**C.char)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -1207,7 +1207,7 @@ func (p *PixbufClass) SaveToBufferv(typ string, optionKeys []string, optionValue
 // If @error is set, `FALSE` will be returned.
 //
 // See [method@GdkPixbuf.Pixbuf.save_to_callback] for more details.
-func (p *PixbufClass) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error {
+func (pixbuf *PixbufClass) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf        // out
 	var _arg1 C.GdkPixbufSaveFunc // out
 	var _arg2 C.gpointer
@@ -1216,7 +1216,7 @@ func (p *PixbufClass) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 	var _arg5 **C.char
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_PixbufSaveFunc)
 	_arg2 = C.gpointer(box.Assign(saveFunc))
 	_arg3 = (*C.char)(C.CString(typ))
@@ -1254,7 +1254,7 @@ func (p *PixbufClass) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 // Supported file formats are currently "jpeg", "tiff", "png", "ico" or "bmp".
 //
 // See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details.
-func (p *PixbufClass) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error {
+func (pixbuf *PixbufClass) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.char          // out
@@ -1263,7 +1263,7 @@ func (p *PixbufClass) SaveToStreamv(stream gio.OutputStream, typ string, optionK
 	var _arg5 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.char)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -1304,7 +1304,7 @@ func (p *PixbufClass) SaveToStreamv(stream gio.OutputStream, typ string, optionK
 // If @error is set, `FALSE` will be returned.
 //
 // See [method@GdkPixbuf.Pixbuf.save] for more details.
-func (p *PixbufClass) Savev(filename string, typ string, optionKeys []string, optionValues []string) error {
+func (pixbuf *PixbufClass) Savev(filename string, typ string, optionKeys []string, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
@@ -1312,7 +1312,7 @@ func (p *PixbufClass) Savev(filename string, typ string, optionKeys []string, op
 	var _arg4 **C.char
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(typ))
@@ -1349,13 +1349,13 @@ func (p *PixbufClass) Savev(filename string, typ string, optionKeys []string, op
 //
 // If `key` already exists in the list of options attached to the `pixbuf`, the
 // new value is ignored and `FALSE` is returned.
-func (p *PixbufClass) SetOption(key string, value string) bool {
+func (pixbuf *PixbufClass) SetOption(key string, value string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(value))

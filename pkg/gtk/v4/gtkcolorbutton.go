@@ -55,10 +55,10 @@ type ColorButton interface {
 type ColorButtonClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ColorChooserInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ColorChooserIface
+	ConstraintTargetIface
 }
 
 var _ ColorButton = (*ColorButtonClass)(nil)
@@ -67,27 +67,30 @@ func wrapColorButton(obj *externglib.Object) ColorButton {
 	return &ColorButtonClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ColorChooserInterface: ColorChooserInterface{
+		ColorChooserIface: ColorChooserIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -134,11 +137,11 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButtonClass {
 }
 
 // Modal gets whether the dialog is modal.
-func (b *ColorButtonClass) Modal() bool {
+func (button *ColorButtonClass) Modal() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_modal(_arg0)
 
@@ -152,11 +155,11 @@ func (b *ColorButtonClass) Modal() bool {
 }
 
 // Title gets the title of the color chooser dialog.
-func (b *ColorButtonClass) Title() string {
+func (button *ColorButtonClass) Title() string {
 	var _arg0 *C.GtkColorButton // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_title(_arg0)
 
@@ -168,11 +171,11 @@ func (b *ColorButtonClass) Title() string {
 }
 
 // SetModal sets whether the dialog should be modal.
-func (b *ColorButtonClass) SetModal(modal bool) {
+func (button *ColorButtonClass) SetModal(modal bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -181,11 +184,11 @@ func (b *ColorButtonClass) SetModal(modal bool) {
 }
 
 // SetTitle sets the title for the color chooser dialog.
-func (b *ColorButtonClass) SetTitle(title string) {
+func (button *ColorButtonClass) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 

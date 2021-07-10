@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,7 +28,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type GLAreaOverrider interface {
-	Render(context gdk.GLContext) bool
 	Resize(width int, height int)
 }
 
@@ -141,8 +139,6 @@ type GLArea interface {
 	AttachBuffers()
 	// AutoRender returns whether the area is in auto render mode or not.
 	AutoRender() bool
-	// Context retrieves the `GdkGLContext` used by @area.
-	Context() *gdk.GLContextClass
 	// Error gets the current error set on the @area.
 	Error() error
 	// HasDepthBuffer returns whether the area has a depth buffer.
@@ -220,9 +216,9 @@ type GLArea interface {
 type GLAreaClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ GLArea = (*GLAreaClass)(nil)
@@ -231,24 +227,27 @@ func wrapGLArea(obj *externglib.Object) GLArea {
 	return &GLAreaClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -282,20 +281,20 @@ func NewGLArea() *GLAreaClass {
 // This function is automatically called before emitting the
 // [signal@Gtk.GLArea::render] signal, and doesn't normally need to be called by
 // application code.
-func (a *GLAreaClass) AttachBuffers() {
+func (area *GLAreaClass) AttachBuffers() {
 	var _arg0 *C.GtkGLArea // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	C.gtk_gl_area_attach_buffers(_arg0)
 }
 
 // AutoRender returns whether the area is in auto render mode or not.
-func (a *GLAreaClass) AutoRender() bool {
+func (area *GLAreaClass) AutoRender() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_auto_render(_arg0)
 
@@ -308,28 +307,12 @@ func (a *GLAreaClass) AutoRender() bool {
 	return _ok
 }
 
-// Context retrieves the `GdkGLContext` used by @area.
-func (a *GLAreaClass) Context() *gdk.GLContextClass {
-	var _arg0 *C.GtkGLArea    // out
-	var _cret *C.GdkGLContext // in
-
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-
-	_cret = C.gtk_gl_area_get_context(_arg0)
-
-	var _glContext *gdk.GLContextClass // out
-
-	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.GLContextClass)
-
-	return _glContext
-}
-
 // Error gets the current error set on the @area.
-func (a *GLAreaClass) Error() error {
+func (area *GLAreaClass) Error() error {
 	var _arg0 *C.GtkGLArea // out
 	var _cret *C.GError    // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_error(_arg0)
 
@@ -341,11 +324,11 @@ func (a *GLAreaClass) Error() error {
 }
 
 // HasDepthBuffer returns whether the area has a depth buffer.
-func (a *GLAreaClass) HasDepthBuffer() bool {
+func (area *GLAreaClass) HasDepthBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_has_depth_buffer(_arg0)
 
@@ -359,11 +342,11 @@ func (a *GLAreaClass) HasDepthBuffer() bool {
 }
 
 // HasStencilBuffer returns whether the area has a stencil buffer.
-func (a *GLAreaClass) HasStencilBuffer() bool {
+func (area *GLAreaClass) HasStencilBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_has_stencil_buffer(_arg0)
 
@@ -379,12 +362,12 @@ func (a *GLAreaClass) HasStencilBuffer() bool {
 // RequiredVersion retrieves the required version of OpenGL.
 //
 // See [method@Gtk.GLArea.set_required_version].
-func (a *GLAreaClass) RequiredVersion() (major int, minor int) {
+func (area *GLAreaClass) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.int        // in
 	var _arg2 C.int        // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	C.gtk_gl_area_get_required_version(_arg0, &_arg1, &_arg2)
 
@@ -400,11 +383,11 @@ func (a *GLAreaClass) RequiredVersion() (major int, minor int) {
 // UseES returns whether the `GtkGLArea` should use OpenGL ES.
 //
 // See [method@Gtk.GLArea.set_use_es].
-func (a *GLAreaClass) UseES() bool {
+func (area *GLAreaClass) UseES() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_use_es(_arg0)
 
@@ -423,10 +406,10 @@ func (a *GLAreaClass) UseES() bool {
 // This function is automatically called before emitting the
 // [signal@Gtk.GLArea::render] signal, and doesn't normally need to be called by
 // application code.
-func (a *GLAreaClass) MakeCurrent() {
+func (area *GLAreaClass) MakeCurrent() {
 	var _arg0 *C.GtkGLArea // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	C.gtk_gl_area_make_current(_arg0)
 }
@@ -440,10 +423,10 @@ func (a *GLAreaClass) MakeCurrent() {
 // This is only needed when [method@Gtk.GLArea.set_auto_render] has been called
 // with a false value. The default behaviour is to emit
 // [signal@Gtk.GLArea::render] on each draw.
-func (a *GLAreaClass) QueueRender() {
+func (area *GLAreaClass) QueueRender() {
 	var _arg0 *C.GtkGLArea // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	C.gtk_gl_area_queue_render(_arg0)
 }
@@ -459,11 +442,11 @@ func (a *GLAreaClass) QueueRender() {
 // resized. In order to force a rendering [method@Gtk.GLArea.queue_render] must
 // be called. This mode is useful when the scene changes seldom, but takes a
 // long time to redraw.
-func (a *GLAreaClass) SetAutoRender(autoRender bool) {
+func (area *GLAreaClass) SetAutoRender(autoRender bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 	if autoRender {
 		_arg1 = C.TRUE
 	}
@@ -476,11 +459,11 @@ func (a *GLAreaClass) SetAutoRender(autoRender bool) {
 //
 // This is useful in the [signal@Gtk.GLArea::create-context] signal if GL
 // context creation fails.
-func (a *GLAreaClass) SetError(err error) {
+func (area *GLAreaClass) SetError(err error) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 *C.GError    // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.gtk_gl_area_set_error(_arg0, _arg1)
@@ -490,11 +473,11 @@ func (a *GLAreaClass) SetError(err error) {
 //
 // If @has_depth_buffer is true the widget will allocate and enable a depth
 // buffer for the target framebuffer. Otherwise there will be none.
-func (a *GLAreaClass) SetHasDepthBuffer(hasDepthBuffer bool) {
+func (area *GLAreaClass) SetHasDepthBuffer(hasDepthBuffer bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 	if hasDepthBuffer {
 		_arg1 = C.TRUE
 	}
@@ -506,11 +489,11 @@ func (a *GLAreaClass) SetHasDepthBuffer(hasDepthBuffer bool) {
 //
 // If @has_stencil_buffer is true the widget will allocate and enable a stencil
 // buffer for the target framebuffer. Otherwise there will be none.
-func (a *GLAreaClass) SetHasStencilBuffer(hasStencilBuffer bool) {
+func (area *GLAreaClass) SetHasStencilBuffer(hasStencilBuffer bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 	if hasStencilBuffer {
 		_arg1 = C.TRUE
 	}
@@ -522,12 +505,12 @@ func (a *GLAreaClass) SetHasStencilBuffer(hasStencilBuffer bool) {
 // creating the context for the widget.
 //
 // This function must be called before the area has been realized.
-func (a *GLAreaClass) SetRequiredVersion(major int, minor int) {
+func (area *GLAreaClass) SetRequiredVersion(major int, minor int) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 	_arg1 = C.int(major)
 	_arg2 = C.int(minor)
 
@@ -539,11 +522,11 @@ func (a *GLAreaClass) SetRequiredVersion(major int, minor int) {
 //
 // You should check the capabilities of the GLContext before drawing with either
 // API.
-func (a *GLAreaClass) SetUseES(useEs bool) {
+func (area *GLAreaClass) SetUseES(useEs bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 	if useEs {
 		_arg1 = C.TRUE
 	}

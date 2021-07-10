@@ -90,11 +90,11 @@ func marshalSingleSelection(p uintptr) (interface{}, error) {
 
 // Autoselect checks if autoselect has been enabled or disabled via
 // gtk_single_selection_set_autoselect().
-func (s *SingleSelectionClass) Autoselect() bool {
+func (self *SingleSelectionClass) Autoselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_single_selection_get_autoselect(_arg0)
 
@@ -109,11 +109,11 @@ func (s *SingleSelectionClass) Autoselect() bool {
 
 // CanUnselect: if true, gtk_selection_model_unselect_item() is supported and
 // allows unselecting the selected item.
-func (s *SingleSelectionClass) CanUnselect() bool {
+func (self *SingleSelectionClass) CanUnselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_single_selection_get_can_unselect(_arg0)
 
@@ -129,11 +129,11 @@ func (s *SingleSelectionClass) CanUnselect() bool {
 // Selected gets the position of the selected item.
 //
 // If no item is selected, GTK_INVALID_LIST_POSITION is returned.
-func (s *SingleSelectionClass) Selected() uint {
+func (self *SingleSelectionClass) Selected() uint {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.guint               // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_single_selection_get_selected(_arg0)
 
@@ -147,11 +147,11 @@ func (s *SingleSelectionClass) Selected() uint {
 // SelectedItem gets the selected item.
 //
 // If no item is selected, nil is returned.
-func (s *SingleSelectionClass) SelectedItem() *externglib.Object {
+func (self *SingleSelectionClass) SelectedItem() *externglib.Object {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gpointer            // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_single_selection_get_selected_item(_arg0)
 
@@ -167,11 +167,11 @@ func (s *SingleSelectionClass) SelectedItem() *externglib.Object {
 // If @autoselect is true, @self will enforce that an item is always selected.
 // It will select a new item when the currently selected item is deleted and it
 // will disallow unselecting the current item.
-func (s *SingleSelectionClass) SetAutoselect(autoselect bool) {
+func (self *SingleSelectionClass) SetAutoselect(autoselect bool) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 	if autoselect {
 		_arg1 = C.TRUE
 	}
@@ -185,11 +185,11 @@ func (s *SingleSelectionClass) SetAutoselect(autoselect bool) {
 // Note that setting [property@Gtk.SingleSelection:autoselect] will cause
 // unselecting to not work, so it practically makes no sense to set both at the
 // same time the same time.
-func (s *SingleSelectionClass) SetCanUnselect(canUnselect bool) {
+func (self *SingleSelectionClass) SetCanUnselect(canUnselect bool) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 	if canUnselect {
 		_arg1 = C.TRUE
 	}
@@ -204,11 +204,11 @@ func (s *SingleSelectionClass) SetCanUnselect(canUnselect bool) {
 // [property@Gtk.SingleSelection:autoselect] property: If it is set, no change
 // will occur and the old item will stay selected. If it is unset, the selection
 // will be unset and no item will be selected.
-func (s *SingleSelectionClass) SetSelected(position uint) {
+func (self *SingleSelectionClass) SetSelected(position uint) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.guint               // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_single_selection_set_selected(_arg0, _arg1)

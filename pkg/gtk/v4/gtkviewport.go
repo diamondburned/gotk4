@@ -59,10 +59,10 @@ type Viewport interface {
 type ViewportClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	ScrollableInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	ScrollableIface
 }
 
 var _ Viewport = (*ViewportClass)(nil)
@@ -71,27 +71,30 @@ func wrapViewport(obj *externglib.Object) Viewport {
 	return &ViewportClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		ScrollableInterface: ScrollableInterface{
+		ScrollableIface: ScrollableIface{
 			Object: obj,
 		},
 	}
@@ -125,11 +128,11 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) *ViewportClass 
 }
 
 // Child gets the child widget of @viewport.
-func (v *ViewportClass) Child() *WidgetClass {
+func (viewport *ViewportClass) Child() *WidgetClass {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_child(_arg0)
 
@@ -142,11 +145,11 @@ func (v *ViewportClass) Child() *WidgetClass {
 
 // ScrollToFocus gets whether the viewport is scrolling to keep the focused
 // child in view.
-func (v *ViewportClass) ScrollToFocus() bool {
+func (viewport *ViewportClass) ScrollToFocus() bool {
 	var _arg0 *C.GtkViewport // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
 
@@ -160,11 +163,11 @@ func (v *ViewportClass) ScrollToFocus() bool {
 }
 
 // SetChild sets the child widget of @viewport.
-func (v *ViewportClass) SetChild(child Widget) {
+func (viewport *ViewportClass) SetChild(child Widget) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_viewport_set_child(_arg0, _arg1)
@@ -172,11 +175,11 @@ func (v *ViewportClass) SetChild(child Widget) {
 
 // SetScrollToFocus sets whether the viewport should automatically scroll to
 // keep the focused child in view.
-func (v *ViewportClass) SetScrollToFocus(scrollToFocus bool) {
+func (viewport *ViewportClass) SetScrollToFocus(scrollToFocus bool) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 	if scrollToFocus {
 		_arg1 = C.TRUE
 	}

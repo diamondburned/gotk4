@@ -39,7 +39,7 @@ func init() {
 type DBusObjectOverrider interface {
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
-	Interface(interfaceName string) *DBusInterfaceInterface
+	Interface(interfaceName string) *DBusInterfaceIface
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string
 	InterfaceAdded(interface_ DBusInterface)
@@ -54,20 +54,20 @@ type DBusObject interface {
 
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
-	Interface(interfaceName string) *DBusInterfaceInterface
+	Interface(interfaceName string) *DBusInterfaceIface
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string
 }
 
-// DBusObjectInterface implements the DBusObject interface.
-type DBusObjectInterface struct {
+// DBusObjectIface implements the DBusObject interface.
+type DBusObjectIface struct {
 	*externglib.Object
 }
 
-var _ DBusObject = (*DBusObjectInterface)(nil)
+var _ DBusObject = (*DBusObjectIface)(nil)
 
 func wrapDBusObject(obj *externglib.Object) DBusObject {
-	return &DBusObjectInterface{
+	return &DBusObjectIface{
 		Object: obj,
 	}
 }
@@ -80,30 +80,30 @@ func marshalDBusObject(p uintptr) (interface{}, error) {
 
 // Interface gets the D-Bus interface with name @interface_name associated with
 // @object, if any.
-func (o *DBusObjectInterface) Interface(interfaceName string) *DBusInterfaceInterface {
+func (object *DBusObjectIface) Interface(interfaceName string) *DBusInterfaceIface {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GDBusInterface // in
 
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 	_arg1 = (*C.gchar)(C.CString(interfaceName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_get_interface(_arg0, _arg1)
 
-	var _dBusInterface *DBusInterfaceInterface // out
+	var _dBusInterface *DBusInterfaceIface // out
 
-	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterfaceInterface)
+	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterfaceIface)
 
 	return _dBusInterface
 }
 
 // ObjectPath gets the object path for @object.
-func (o *DBusObjectInterface) ObjectPath() string {
+func (object *DBusObjectIface) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 
 	_cret = C.g_dbus_object_get_object_path(_arg0)
 

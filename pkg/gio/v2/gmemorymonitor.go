@@ -77,19 +77,19 @@ func init() {
 type MemoryMonitor interface {
 	gextras.Objector
 
-	privateMemoryMonitorInterface()
+	privateMemoryMonitorIface()
 }
 
-// MemoryMonitorInterface implements the MemoryMonitor interface.
-type MemoryMonitorInterface struct {
-	InitableInterface
+// MemoryMonitorIface implements the MemoryMonitor interface.
+type MemoryMonitorIface struct {
+	InitableIface
 }
 
-var _ MemoryMonitor = (*MemoryMonitorInterface)(nil)
+var _ MemoryMonitor = (*MemoryMonitorIface)(nil)
 
 func wrapMemoryMonitor(obj *externglib.Object) MemoryMonitor {
-	return &MemoryMonitorInterface{
-		InitableInterface: InitableInterface{
+	return &MemoryMonitorIface{
+		InitableIface: InitableIface{
 			Object: obj,
 		},
 	}
@@ -101,4 +101,4 @@ func marshalMemoryMonitor(p uintptr) (interface{}, error) {
 	return wrapMemoryMonitor(obj), nil
 }
 
-func (*MemoryMonitorInterface) privateMemoryMonitorInterface() {}
+func (*MemoryMonitorIface) privateMemoryMonitorIface() {}

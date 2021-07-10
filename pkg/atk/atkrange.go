@@ -71,11 +71,11 @@ func (r *Range) Native() unsafe.Pointer {
 }
 
 // Copy returns a new Range that is a exact copy of @src
-func (s *Range) Copy() *Range {
+func (src *Range) Copy() *Range {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.AtkRange // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(s))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(src))
 
 	_cret = C.atk_range_copy(_arg0)
 
@@ -90,20 +90,20 @@ func (s *Range) Copy() *Range {
 }
 
 // Free: free @range
-func (r *Range) free() {
+func (_range *Range) free() {
 	var _arg0 *C.AtkRange // out
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(_range))
 
 	C.atk_range_free(_arg0)
 }
 
 // Description returns the human readable description of @range
-func (r *Range) Description() string {
+func (_range *Range) Description() string {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(_range))
 
 	_cret = C.atk_range_get_description(_arg0)
 
@@ -115,11 +115,11 @@ func (r *Range) Description() string {
 }
 
 // LowerLimit returns the lower limit of @range
-func (r *Range) LowerLimit() float64 {
+func (_range *Range) LowerLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(_range))
 
 	_cret = C.atk_range_get_lower_limit(_arg0)
 
@@ -131,11 +131,11 @@ func (r *Range) LowerLimit() float64 {
 }
 
 // UpperLimit returns the upper limit of @range
-func (r *Range) UpperLimit() float64 {
+func (_range *Range) UpperLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(r))
+	_arg0 = (*C.AtkRange)(unsafe.Pointer(_range))
 
 	_cret = C.atk_range_get_upper_limit(_arg0)
 

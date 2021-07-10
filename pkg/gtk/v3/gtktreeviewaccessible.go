@@ -35,8 +35,8 @@ type TreeViewAccessible interface {
 type TreeViewAccessibleClass struct {
 	*externglib.Object
 	ContainerAccessibleClass
-	atk.TableInterface
-	CellAccessibleParentInterface
+	atk.TableIface
+	CellAccessibleParentIface
 }
 
 var _ TreeViewAccessible = (*TreeViewAccessibleClass)(nil)
@@ -53,10 +53,10 @@ func wrapTreeViewAccessible(obj *externglib.Object) TreeViewAccessible {
 				},
 			},
 		},
-		TableInterface: atk.TableInterface{
+		TableIface: atk.TableIface{
 			Object: obj,
 		},
-		CellAccessibleParentInterface: CellAccessibleParentInterface{
+		CellAccessibleParentIface: CellAccessibleParentIface{
 			Object: obj,
 		},
 	}

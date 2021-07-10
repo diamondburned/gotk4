@@ -43,7 +43,7 @@ func init() {
 // the [thread-default main context][g-main-context-push-thread-default] where
 // the #GTask was created. All other users of ReadyCallback must likewise call
 // it asynchronously in a later iteration of the main context.
-type AsyncReadyCallback func(sourceObject *externglib.Object, res *AsyncResultInterface, userData interface{})
+type AsyncReadyCallback func(sourceObject *externglib.Object, res *AsyncResultIface, userData interface{})
 
 //export gotk4_AsyncReadyCallback
 func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
@@ -53,11 +53,11 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 	}
 
 	var sourceObject *externglib.Object // out
-	var res *AsyncResultInterface       // out
+	var res *AsyncResultIface           // out
 	var userData interface{}            // out
 
 	sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*AsyncResultInterface)
+	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*AsyncResultIface)
 	userData = box.Get(uintptr(arg2))
 
 	fn := v.(AsyncReadyCallback)
@@ -126,7 +126,7 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 
 // DatagramBasedSourceFunc: this is the function type of the callback used for
 // the #GSource returned by g_datagram_based_create_source().
-type DatagramBasedSourceFunc func(datagramBased *DatagramBasedInterface, condition glib.IOCondition, userData interface{}) (ok bool)
+type DatagramBasedSourceFunc func(datagramBased *DatagramBasedIface, condition glib.IOCondition, userData interface{}) (ok bool)
 
 //export gotk4_DatagramBasedSourceFunc
 func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
@@ -135,11 +135,11 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 		panic(`callback not found`)
 	}
 
-	var datagramBased *DatagramBasedInterface // out
-	var condition glib.IOCondition            // out
-	var userData interface{}                  // out
+	var datagramBased *DatagramBasedIface // out
+	var condition glib.IOCondition        // out
+	var userData interface{}              // out
 
-	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DatagramBasedInterface)
+	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DatagramBasedIface)
 	condition = (glib.IOCondition)(arg1)
 	userData = box.Get(uintptr(arg2))
 
@@ -368,12 +368,12 @@ func (f *FileAttributeMatcher) Native() unsafe.Pointer {
 // if matcher was created using "*" and namespace is anything.)
 //
 // TODO: this is awkwardly worded.
-func (m *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
+func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 	_arg1 = (*C.char)(C.CString(ns))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -389,11 +389,11 @@ func (m *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 }
 
 // EnumerateNext gets the next matched attribute from a AttributeMatcher.
-func (m *FileAttributeMatcher) EnumerateNext() string {
+func (matcher *FileAttributeMatcher) EnumerateNext() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 
 	_cret = C.g_file_attribute_matcher_enumerate_next(_arg0)
 
@@ -407,12 +407,12 @@ func (m *FileAttributeMatcher) EnumerateNext() string {
 // Matches checks if an attribute will be matched by an attribute matcher. If
 // the matcher was created with the "*" matching string, this function will
 // always return true.
-func (m *FileAttributeMatcher) Matches(attribute string) bool {
+func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -429,12 +429,12 @@ func (m *FileAttributeMatcher) Matches(attribute string) bool {
 
 // MatchesOnly checks if a attribute matcher only matches a given attribute.
 // Always returns false if "*" was used when creating the matcher.
-func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
+func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -450,11 +450,11 @@ func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 }
 
 // Ref references a file attribute matcher.
-func (m *FileAttributeMatcher) ref() *FileAttributeMatcher {
+func (matcher *FileAttributeMatcher) ref() *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 
 	_cret = C.g_file_attribute_matcher_ref(_arg0)
 
@@ -476,12 +476,12 @@ func (m *FileAttributeMatcher) ref() *FileAttributeMatcher {
 // @matcher matches the whole namespace - or remove a namespace or attribute
 // when the matcher matches everything. This is a limitation of the current
 // implementation, but may be fixed in the future.
-func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
+func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 	_arg1 = (*C.GFileAttributeMatcher)(unsafe.Pointer(subtract))
 
 	_cret = C.g_file_attribute_matcher_subtract(_arg0, _arg1)
@@ -501,11 +501,11 @@ func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAtt
 // to the format passed to g_file_attribute_matcher_new(). The output however,
 // might not be identical, as the matcher may decide to use a different order or
 // omit needless parts.
-func (m *FileAttributeMatcher) String() string {
+func (matcher *FileAttributeMatcher) String() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 
 	_cret = C.g_file_attribute_matcher_to_string(_arg0)
 
@@ -519,10 +519,10 @@ func (m *FileAttributeMatcher) String() string {
 
 // Unref unreferences @matcher. If the reference count falls below 1, the
 // @matcher is automatically freed.
-func (m *FileAttributeMatcher) unref() {
+func (matcher *FileAttributeMatcher) unref() {
 	var _arg0 *C.GFileAttributeMatcher // out
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 
 	C.g_file_attribute_matcher_unref(_arg0)
 }
@@ -561,35 +561,6 @@ func (i *InputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// NumVectors: the number of input vectors pointed to by @vectors
-func (i *InputMessage) NumVectors() uint {
-	var v uint // out
-	v = uint(i.native.num_vectors)
-	return v
-}
-
-// BytesReceived: will be set to the number of bytes that have been received
-func (i *InputMessage) BytesReceived() uint {
-	var v uint // out
-	v = uint(i.native.bytes_received)
-	return v
-}
-
-// Flags: collection of MsgFlags for the received message, outputted by the call
-func (i *InputMessage) Flags() int {
-	var v int // out
-	v = int(i.native.flags)
-	return v
-}
-
-// NumControlMessages: return location for the number of elements in
-// @control_messages
-func (i *InputMessage) NumControlMessages() *uint {
-	var v *uint // out
-	v = (*uint)(unsafe.Pointer(i.native.num_control_messages))
-	return v
-}
-
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
@@ -606,20 +577,6 @@ func WrapInputVector(ptr unsafe.Pointer) *InputVector {
 // Native returns the underlying C source pointer.
 func (i *InputVector) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
-}
-
-// Buffer: pointer to a buffer where data will be written.
-func (i *InputVector) Buffer() interface{} {
-	var v interface{} // out
-	v = box.Get(uintptr(i.native.buffer))
-	return v
-}
-
-// Size: the available size in @buffer.
-func (i *InputVector) Size() uint {
-	var v uint // out
-	v = uint(i.native.size)
-	return v
 }
 
 // OutputMessage: structure used for scatter/gather data output when sending
@@ -644,42 +601,6 @@ func (o *OutputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
-// Address or nil
-func (o *OutputMessage) Address() *SocketAddressClass {
-	var v *SocketAddressClass // out
-	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.address)))).(*SocketAddressClass)
-	return v
-}
-
-// Vectors: pointer to an array of output vectors
-func (o *OutputMessage) Vectors() *OutputVector {
-	var v *OutputVector // out
-	v = (*OutputVector)(unsafe.Pointer(o.native.vectors))
-	return v
-}
-
-// NumVectors: the number of output vectors pointed to by @vectors.
-func (o *OutputMessage) NumVectors() uint {
-	var v uint // out
-	v = uint(o.native.num_vectors)
-	return v
-}
-
-// BytesSent: initialize to 0. Will be set to the number of bytes that have been
-// sent
-func (o *OutputMessage) BytesSent() uint {
-	var v uint // out
-	v = uint(o.native.bytes_sent)
-	return v
-}
-
-// NumControlMessages: number of elements in @control_messages.
-func (o *OutputMessage) NumControlMessages() uint {
-	var v uint // out
-	v = uint(o.native.num_control_messages)
-	return v
-}
-
 // OutputVector: structure used for scatter/gather data output. You generally
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
@@ -696,20 +617,6 @@ func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
 // Native returns the underlying C source pointer.
 func (o *OutputVector) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
-}
-
-// Buffer: pointer to a buffer of data to read.
-func (o *OutputVector) Buffer() interface{} {
-	var v interface{} // out
-	v = box.Get(uintptr(o.native.buffer))
-	return v
-}
-
-// Size: the size of @buffer.
-func (o *OutputVector) Size() uint {
-	var v uint // out
-	v = uint(o.native.size)
-	return v
 }
 
 // Resource applications and libraries often contain binary or textual data that
@@ -882,11 +789,11 @@ func (r *Resource) Native() unsafe.Pointer {
 
 // Ref: atomically increments the reference count of @resource by one. This
 // function is MT-safe and may be called from any thread.
-func (r *Resource) ref() *Resource {
+func (resource *Resource) ref() *Resource {
 	var _arg0 *C.GResource // out
 	var _cret *C.GResource // in
 
-	_arg0 = (*C.GResource)(unsafe.Pointer(r))
+	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
 
 	_cret = C.g_resource_ref(_arg0)
 
@@ -904,10 +811,10 @@ func (r *Resource) ref() *Resource {
 // Unref: atomically decrements the reference count of @resource by one. If the
 // reference count drops to 0, all memory allocated by the resource is released.
 // This function is MT-safe and may be called from any thread.
-func (r *Resource) unref() {
+func (resource *Resource) unref() {
 	var _arg0 *C.GResource // out
 
-	_arg0 = (*C.GResource)(unsafe.Pointer(r))
+	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
 
 	C.g_resource_unref(_arg0)
 }
@@ -971,11 +878,11 @@ func (s *SrvTarget) Native() unsafe.Pointer {
 }
 
 // Copy copies @target
-func (t *SrvTarget) Copy() *SrvTarget {
+func (target *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.GSrvTarget // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
 
 	_cret = C.g_srv_target_copy(_arg0)
 
@@ -990,10 +897,10 @@ func (t *SrvTarget) Copy() *SrvTarget {
 }
 
 // Free frees @target
-func (t *SrvTarget) free() {
+func (target *SrvTarget) free() {
 	var _arg0 *C.GSrvTarget // out
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
 
 	C.g_srv_target_free(_arg0)
 }
@@ -1002,11 +909,11 @@ func (t *SrvTarget) free() {
 // this to the user, you should use g_hostname_is_ascii_encoded() to check if it
 // contains encoded Unicode segments, and use g_hostname_to_unicode() to convert
 // it if it does.)
-func (t *SrvTarget) Hostname() string {
+func (target *SrvTarget) Hostname() string {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
 
 	_cret = C.g_srv_target_get_hostname(_arg0)
 
@@ -1018,11 +925,11 @@ func (t *SrvTarget) Hostname() string {
 }
 
 // Port gets @target's port
-func (t *SrvTarget) Port() uint16 {
+func (target *SrvTarget) Port() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
 
 	_cret = C.g_srv_target_get_port(_arg0)
 
@@ -1035,11 +942,11 @@ func (t *SrvTarget) Port() uint16 {
 
 // Priority gets @target's priority. You should not need to look at this;
 // #GResolver already sorts the targets according to the algorithm in RFC 2782.
-func (t *SrvTarget) Priority() uint16 {
+func (target *SrvTarget) Priority() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
 
 	_cret = C.g_srv_target_get_priority(_arg0)
 
@@ -1052,11 +959,11 @@ func (t *SrvTarget) Priority() uint16 {
 
 // Weight gets @target's weight. You should not need to look at this; #GResolver
 // already sorts the targets according to the algorithm in RFC 2782.
-func (t *SrvTarget) Weight() uint16 {
+func (target *SrvTarget) Weight() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
 
 	_cret = C.g_srv_target_get_weight(_arg0)
 

@@ -49,8 +49,9 @@ type CharsetConverter interface {
 // CharsetConverterClass implements the CharsetConverter interface.
 type CharsetConverterClass struct {
 	*externglib.Object
-	ConverterInterface
-	InitableInterface
+	*externglib.Object
+	ConverterIface
+	InitableIface
 }
 
 var _ CharsetConverter = (*CharsetConverterClass)(nil)
@@ -58,10 +59,11 @@ var _ CharsetConverter = (*CharsetConverterClass)(nil)
 func wrapCharsetConverter(obj *externglib.Object) CharsetConverter {
 	return &CharsetConverterClass{
 		Object: obj,
-		ConverterInterface: ConverterInterface{
+		Object: obj,
+		ConverterIface: ConverterIface{
 			Object: obj,
 		},
-		InitableInterface: InitableInterface{
+		InitableIface: InitableIface{
 			Object: obj,
 		},
 	}
@@ -97,11 +99,11 @@ func NewCharsetConverter(toCharset string, fromCharset string) (*CharsetConverte
 }
 
 // NumFallbacks gets the number of fallbacks that @converter has applied so far.
-func (c *CharsetConverterClass) NumFallbacks() uint {
+func (converter *CharsetConverterClass) NumFallbacks() uint {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.guint              // in
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(converter.Native()))
 
 	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
 
@@ -113,11 +115,11 @@ func (c *CharsetConverterClass) NumFallbacks() uint {
 }
 
 // UseFallback gets the Converter:use-fallback property.
-func (c *CharsetConverterClass) UseFallback() bool {
+func (converter *CharsetConverterClass) UseFallback() bool {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(converter.Native()))
 
 	_cret = C.g_charset_converter_get_use_fallback(_arg0)
 
@@ -131,11 +133,11 @@ func (c *CharsetConverterClass) UseFallback() bool {
 }
 
 // SetUseFallback sets the Converter:use-fallback property.
-func (c *CharsetConverterClass) SetUseFallback(useFallback bool) {
+func (converter *CharsetConverterClass) SetUseFallback(useFallback bool) {
 	var _arg0 *C.GCharsetConverter // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(converter.Native()))
 	if useFallback {
 		_arg1 = C.TRUE
 	}

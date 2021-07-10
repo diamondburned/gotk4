@@ -254,11 +254,11 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 }
 
 // Issuer gets the Certificate representing @cert's issuer, if known
-func (c *TLSCertificateClass) Issuer() *TLSCertificateClass {
+func (cert *TLSCertificateClass) Issuer() *TLSCertificateClass {
 	var _arg0 *C.GTlsCertificate // out
 	var _cret *C.GTlsCertificate // in
 
-	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(cert.Native()))
 
 	_cret = C.g_tls_certificate_get_issuer(_arg0)
 
@@ -274,12 +274,12 @@ func (c *TLSCertificateClass) Issuer() *TLSCertificateClass {
 // the effect that two certificates may compare equal even if their
 // Certificate:issuer, Certificate:private-key, or Certificate:private-key-pem
 // properties differ.
-func (c *TLSCertificateClass) IsSame(certTwo TLSCertificate) bool {
+func (certOne *TLSCertificateClass) IsSame(certTwo TLSCertificate) bool {
 	var _arg0 *C.GTlsCertificate // out
 	var _arg1 *C.GTlsCertificate // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(certOne.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certTwo.Native()))
 
 	_cret = C.g_tls_certificate_is_same(_arg0, _arg1)
@@ -309,13 +309,13 @@ func (c *TLSCertificateClass) IsSame(certTwo TLSCertificate) bool {
 //
 // (All other CertificateFlags values will always be set or unset as
 // appropriate.)
-func (c *TLSCertificateClass) Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
+func (cert *TLSCertificateClass) Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
 	var _arg1 *C.GSocketConnectable  // out
 	var _arg2 *C.GTlsCertificate     // out
 	var _cret C.GTlsCertificateFlags // in
 
-	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(cert.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(trustedCa.Native()))
 

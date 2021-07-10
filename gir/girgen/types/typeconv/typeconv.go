@@ -210,18 +210,20 @@ func (conv *Converter) Convert(i int) *ValueConverted {
 func (conv *Converter) convert(result *ValueConverted) bool {
 	if result.isDone() {
 		// result is already finalized, skip.
-		return true
+		return !result.fail
 	}
 
 	switch result.Direction {
 	case ConvertCToGo:
 		if !conv.cgoConvert(result) || result.fail {
 			conv.Logln(logger.Debug, "C->Go cannot convert type", types.AnyTypeC(result.AnyType))
+			result.fail = true
 			return false
 		}
 	case ConvertGoToC:
 		if !conv.gocConvert(result) || result.fail {
 			conv.Logln(logger.Debug, "Go->C cannot convert type", types.AnyTypeC(result.AnyType))
+			result.fail = true
 			return false
 		}
 	default:

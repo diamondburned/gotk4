@@ -95,11 +95,11 @@ func NewMountOperation(parent Window) *MountOperationClass {
 
 // Display gets the display on which windows of the `GtkMountOperation` will be
 // shown.
-func (o *MountOperationClass) Display() *gdk.DisplayClass {
+func (op *MountOperationClass) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GdkDisplay        // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_mount_operation_get_display(_arg0)
 
@@ -111,11 +111,11 @@ func (o *MountOperationClass) Display() *gdk.DisplayClass {
 }
 
 // Parent gets the transient parent used by the `GtkMountOperation`.
-func (o *MountOperationClass) Parent() *WindowClass {
+func (op *MountOperationClass) Parent() *WindowClass {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GtkWindow         // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_mount_operation_get_parent(_arg0)
 
@@ -128,11 +128,11 @@ func (o *MountOperationClass) Parent() *WindowClass {
 
 // IsShowing returns whether the `GtkMountOperation` is currently displaying a
 // window.
-func (o *MountOperationClass) IsShowing() bool {
+func (op *MountOperationClass) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_mount_operation_is_showing(_arg0)
 
@@ -146,11 +146,11 @@ func (o *MountOperationClass) IsShowing() bool {
 }
 
 // SetDisplay sets the display to show windows of the `GtkMountOperation` on.
-func (o *MountOperationClass) SetDisplay(display gdk.Display) {
+func (op *MountOperationClass) SetDisplay(display gdk.Display) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkDisplay        // out
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gtk_mount_operation_set_display(_arg0, _arg1)
@@ -158,11 +158,11 @@ func (o *MountOperationClass) SetDisplay(display gdk.Display) {
 
 // SetParent sets the transient parent for windows shown by the
 // `GtkMountOperation`.
-func (o *MountOperationClass) SetParent(parent Window) {
+func (op *MountOperationClass) SetParent(parent Window) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)

@@ -168,7 +168,7 @@ type ActionGroup interface {
 // ActionGroupClass implements the ActionGroup interface.
 type ActionGroupClass struct {
 	*externglib.Object
-	BuildableInterface
+	BuildableIface
 }
 
 var _ ActionGroup = (*ActionGroupClass)(nil)
@@ -176,7 +176,7 @@ var _ ActionGroup = (*ActionGroupClass)(nil)
 func wrapActionGroup(obj *externglib.Object) ActionGroup {
 	return &ActionGroupClass{
 		Object: obj,
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -216,11 +216,11 @@ func NewActionGroup(name string) *ActionGroupClass {
 // (..., NULL)`.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) AddAction(action Action) {
+func (actionGroup *ActionGroupClass) AddAction(action Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_group_add_action(_arg0, _arg1)
@@ -235,12 +235,12 @@ func (a *ActionGroupClass) AddAction(action Action) {
 // Accel paths are set to `<Actions>/group-name/action-name`.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) AddActionWithAccel(action Action, accelerator string) {
+func (actionGroup *ActionGroupClass) AddActionWithAccel(action Action, accelerator string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 	var _arg2 *C.gchar          // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg2 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -251,11 +251,11 @@ func (a *ActionGroupClass) AddActionWithAccel(action Action, accelerator string)
 // AccelGroup gets the accelerator group.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) AccelGroup() *AccelGroupClass {
+func (actionGroup *ActionGroupClass) AccelGroup() *AccelGroupClass {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GtkAccelGroup  // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_accel_group(_arg0)
 
@@ -269,12 +269,12 @@ func (a *ActionGroupClass) AccelGroup() *AccelGroupClass {
 // Action looks up an action in the action group by name.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) Action(actionName string) *ActionClass {
+func (actionGroup *ActionGroupClass) Action(actionName string) *ActionClass {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkAction      // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -290,11 +290,11 @@ func (a *ActionGroupClass) Action(actionName string) *ActionClass {
 // Name gets the name of the action group.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) Name() string {
+func (actionGroup *ActionGroupClass) Name() string {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_name(_arg0)
 
@@ -310,11 +310,11 @@ func (a *ActionGroupClass) Name() string {
 // sensitive (see gtk_action_get_sensitive()) and their group is sensitive.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) Sensitive() bool {
+func (actionGroup *ActionGroupClass) Sensitive() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_sensitive(_arg0)
 
@@ -332,11 +332,11 @@ func (a *ActionGroupClass) Sensitive() bool {
 // (see gtk_action_get_visible()) and their group is visible.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) Visible() bool {
+func (actionGroup *ActionGroupClass) Visible() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_visible(_arg0)
 
@@ -352,11 +352,11 @@ func (a *ActionGroupClass) Visible() bool {
 // RemoveAction removes an action object from the action group.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) RemoveAction(action Action) {
+func (actionGroup *ActionGroupClass) RemoveAction(action Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_group_remove_action(_arg0, _arg1)
@@ -366,11 +366,11 @@ func (a *ActionGroupClass) RemoveAction(action Action) {
 // group.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) SetAccelGroup(accelGroup AccelGroup) {
+func (actionGroup *ActionGroupClass) SetAccelGroup(accelGroup AccelGroup) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAccelGroup  // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_action_group_set_accel_group(_arg0, _arg1)
@@ -379,11 +379,11 @@ func (a *ActionGroupClass) SetAccelGroup(accelGroup AccelGroup) {
 // SetSensitive changes the sensitivity of @action_group
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) SetSensitive(sensitive bool) {
+func (actionGroup *ActionGroupClass) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	if sensitive {
 		_arg1 = C.TRUE
 	}
@@ -399,11 +399,11 @@ func (a *ActionGroupClass) SetSensitive(sensitive bool) {
 // gtk_action_group_set_translate_func().
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) SetTranslationDomain(domain string) {
+func (actionGroup *ActionGroupClass) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -413,11 +413,11 @@ func (a *ActionGroupClass) SetTranslationDomain(domain string) {
 // SetVisible changes the visible of @action_group.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) SetVisible(visible bool) {
+func (actionGroup *ActionGroupClass) SetVisible(visible bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
@@ -430,12 +430,12 @@ func (a *ActionGroupClass) SetVisible(visible bool) {
 // bindings.
 //
 // Deprecated: since version 3.10.
-func (a *ActionGroupClass) TranslateString(_string string) string {
+func (actionGroup *ActionGroupClass) TranslateString(_string string) string {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -446,6 +446,25 @@ func (a *ActionGroupClass) TranslateString(_string string) string {
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
+}
+
+// ActionEntry structs are used with gtk_action_group_add_actions() to construct
+// actions.
+//
+// Deprecated: since version 3.10.
+type ActionEntry struct {
+	native C.GtkActionEntry
+}
+
+// WrapActionEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
+	return (*ActionEntry)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (a *ActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
 }
 
 // RadioActionEntry structs are used with gtk_action_group_add_radio_actions()
@@ -467,49 +486,21 @@ func (r *RadioActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Name: the name of the action.
-func (r *RadioActionEntry) Name() string {
-	var v string // out
-	v = C.GoString(r.native.name)
-	return v
+// ToggleActionEntry structs are used with gtk_action_group_add_toggle_actions()
+// to construct toggle actions.
+//
+// Deprecated: since version 3.10.
+type ToggleActionEntry struct {
+	native C.GtkToggleActionEntry
 }
 
-// StockID: the stock id for the action, or the name of an icon from the icon
-// theme.
-func (r *RadioActionEntry) StockID() string {
-	var v string // out
-	v = C.GoString(r.native.stock_id)
-	return v
+// WrapToggleActionEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapToggleActionEntry(ptr unsafe.Pointer) *ToggleActionEntry {
+	return (*ToggleActionEntry)(ptr)
 }
 
-// Label: the label for the action. This field should typically be marked for
-// translation, see gtk_action_group_set_translation_domain().
-func (r *RadioActionEntry) Label() string {
-	var v string // out
-	v = C.GoString(r.native.label)
-	return v
-}
-
-// Accelerator: the accelerator for the action, in the format understood by
-// gtk_accelerator_parse().
-func (r *RadioActionEntry) Accelerator() string {
-	var v string // out
-	v = C.GoString(r.native.accelerator)
-	return v
-}
-
-// Tooltip: the tooltip for the action. This field should typically be marked
-// for translation, see gtk_action_group_set_translation_domain().
-func (r *RadioActionEntry) Tooltip() string {
-	var v string // out
-	v = C.GoString(r.native.tooltip)
-	return v
-}
-
-// Value: the value to set on the radio action. See
-// gtk_radio_action_get_current_value().
-func (r *RadioActionEntry) Value() int {
-	var v int // out
-	v = int(r.native.value)
-	return v
+// Native returns the underlying C source pointer.
+func (t *ToggleActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

@@ -52,7 +52,7 @@ type UnixSocketAddress interface {
 	AddressType() UnixSocketAddressType
 	// IsAbstract tests if @address is abstract.
 	//
-	// Deprecated.
+	// Deprecated: Use g_unix_socket_address_get_address_type().
 	IsAbstract() bool
 	// Path gets @address's path, or for abstract sockets the "name".
 	//
@@ -71,7 +71,7 @@ type UnixSocketAddress interface {
 type UnixSocketAddressClass struct {
 	*externglib.Object
 	SocketAddressClass
-	SocketConnectableInterface
+	SocketConnectableIface
 }
 
 var _ UnixSocketAddress = (*UnixSocketAddressClass)(nil)
@@ -81,11 +81,11 @@ func wrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
 		Object: obj,
 		SocketAddressClass: SocketAddressClass{
 			Object: obj,
-			SocketConnectableInterface: SocketConnectableInterface{
+			SocketConnectableIface: SocketConnectableIface{
 				Object: obj,
 			},
 		},
-		SocketConnectableInterface: SocketConnectableInterface{
+		SocketConnectableIface: SocketConnectableIface{
 			Object: obj,
 		},
 	}
@@ -120,7 +120,7 @@ func NewUnixSocketAddress(path string) *UnixSocketAddressClass {
 // NewUnixSocketAddressAbstract creates a new
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED SocketAddress for @path.
 //
-// Deprecated.
+// Deprecated: Use g_unix_socket_address_new_with_type().
 func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddressClass {
 	var _arg1 *C.gchar
 	var _arg2 C.gint
@@ -139,11 +139,11 @@ func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddressClass {
 }
 
 // AddressType gets @address's type.
-func (a *UnixSocketAddressClass) AddressType() UnixSocketAddressType {
+func (address *UnixSocketAddressClass) AddressType() UnixSocketAddressType {
 	var _arg0 *C.GUnixSocketAddress    // out
 	var _cret C.GUnixSocketAddressType // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_unix_socket_address_get_address_type(_arg0)
 
@@ -156,12 +156,12 @@ func (a *UnixSocketAddressClass) AddressType() UnixSocketAddressType {
 
 // IsAbstract tests if @address is abstract.
 //
-// Deprecated.
-func (a *UnixSocketAddressClass) IsAbstract() bool {
+// Deprecated: Use g_unix_socket_address_get_address_type().
+func (address *UnixSocketAddressClass) IsAbstract() bool {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_unix_socket_address_get_is_abstract(_arg0)
 
@@ -179,11 +179,11 @@ func (a *UnixSocketAddressClass) IsAbstract() bool {
 // Guaranteed to be zero-terminated, but an abstract socket may contain embedded
 // zeros, and thus you should use g_unix_socket_address_get_path_len() to get
 // the true length of this string.
-func (a *UnixSocketAddressClass) Path() string {
+func (address *UnixSocketAddressClass) Path() string {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_unix_socket_address_get_path(_arg0)
 
@@ -197,11 +197,11 @@ func (a *UnixSocketAddressClass) Path() string {
 // PathLen gets the length of @address's path.
 //
 // For details, see g_unix_socket_address_get_path().
-func (a *UnixSocketAddressClass) PathLen() uint {
+func (address *UnixSocketAddressClass) PathLen() uint {
 	var _arg0 *C.GUnixSocketAddress // out
 	var _cret C.gsize               // in
 
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_unix_socket_address_get_path_len(_arg0)
 

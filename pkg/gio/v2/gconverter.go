@@ -57,15 +57,15 @@ type Converter interface {
 	Reset()
 }
 
-// ConverterInterface implements the Converter interface.
-type ConverterInterface struct {
+// ConverterIface implements the Converter interface.
+type ConverterIface struct {
 	*externglib.Object
 }
 
-var _ Converter = (*ConverterInterface)(nil)
+var _ Converter = (*ConverterIface)(nil)
 
 func wrapConverter(obj *externglib.Object) Converter {
-	return &ConverterInterface{
+	return &ConverterIface{
 		Object: obj,
 	}
 }
@@ -79,10 +79,10 @@ func marshalConverter(p uintptr) (interface{}, error) {
 // Reset resets all internal state in the converter, making it behave as if it
 // was just created. If the converter has any internal state that would produce
 // output then that output is lost.
-func (c *ConverterInterface) Reset() {
+func (converter *ConverterIface) Reset() {
 	var _arg0 *C.GConverter // out
 
-	_arg0 = (*C.GConverter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
 
 	C.g_converter_reset(_arg0)
 }

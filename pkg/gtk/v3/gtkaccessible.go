@@ -33,7 +33,7 @@ type AccessibleOverrider interface {
 	// ConnectWidgetDestroyed: this function specifies the callback function to
 	// be called when the widget corresponding to a GtkAccessible is destroyed.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
 	ConnectWidgetDestroyed()
 	WidgetSet()
 	WidgetUnset()
@@ -54,7 +54,7 @@ type Accessible interface {
 	// ConnectWidgetDestroyed: this function specifies the callback function to
 	// be called when the widget corresponding to a GtkAccessible is destroyed.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
 	ConnectWidgetDestroyed()
 	// Widget gets the Widget corresponding to the Accessible. The returned
 	// widget does not have a reference added, so you do not need to unref it.
@@ -91,22 +91,22 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 // ConnectWidgetDestroyed: this function specifies the callback function to be
 // called when the widget corresponding to a GtkAccessible is destroyed.
 //
-// Deprecated: since version 3.4.
-func (a *AccessibleClass) ConnectWidgetDestroyed() {
+// Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
+func (accessible *AccessibleClass) ConnectWidgetDestroyed() {
 	var _arg0 *C.GtkAccessible // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 
 	C.gtk_accessible_connect_widget_destroyed(_arg0)
 }
 
 // Widget gets the Widget corresponding to the Accessible. The returned widget
 // does not have a reference added, so you do not need to unref it.
-func (a *AccessibleClass) Widget() *WidgetClass {
+func (accessible *AccessibleClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkAccessible // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.gtk_accessible_get_widget(_arg0)
 
@@ -122,11 +122,11 @@ func (a *AccessibleClass) Widget() *WidgetClass {
 // @accessible will not hold a reference to @widget. It is the caller’s
 // responsibility to ensure that when @widget is destroyed, the widget is unset
 // by calling this function again with @widget set to nil.
-func (a *AccessibleClass) SetWidget(widget Widget) {
+func (accessible *AccessibleClass) SetWidget(widget Widget) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_accessible_set_widget(_arg0, _arg1)

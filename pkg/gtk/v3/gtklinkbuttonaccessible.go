@@ -35,8 +35,8 @@ type LinkButtonAccessible interface {
 type LinkButtonAccessibleClass struct {
 	*externglib.Object
 	ButtonAccessibleClass
-	atk.ActionInterface
-	atk.ImageInterface
+	atk.ActionIface
+	atk.ImageIface
 }
 
 var _ LinkButtonAccessible = (*LinkButtonAccessibleClass)(nil)
@@ -55,17 +55,17 @@ func wrapLinkButtonAccessible(obj *externglib.Object) LinkButtonAccessible {
 					},
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
-			ImageInterface: atk.ImageInterface{
+			ImageIface: atk.ImageIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
-		ImageInterface: atk.ImageInterface{
+		ImageIface: atk.ImageIface{
 			Object: obj,
 		},
 	}

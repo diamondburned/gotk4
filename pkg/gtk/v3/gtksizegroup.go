@@ -102,7 +102,12 @@ type SizeGroup interface {
 	// IgnoreHidden returns if invisible widgets are ignored when calculating
 	// the size.
 	//
-	// Deprecated: since version 3.22.
+	// Deprecated: Measuring the size of hidden widgets has not worked reliably
+	// for a long time. In most cases, they will report a size of 0 nowadays,
+	// and thus, their size will not affect the other size group members. In
+	// effect, size groups will always operate as if this property was true. Use
+	// a Stack instead to hide widgets while still having their size taken into
+	// account.
 	IgnoreHidden() bool
 	// Mode gets the current mode of the size group. See
 	// gtk_size_group_set_mode().
@@ -112,14 +117,19 @@ type SizeGroup interface {
 	// SetIgnoreHidden sets whether unmapped widgets should be ignored when
 	// calculating the size.
 	//
-	// Deprecated: since version 3.22.
+	// Deprecated: Measuring the size of hidden widgets has not worked reliably
+	// for a long time. In most cases, they will report a size of 0 nowadays,
+	// and thus, their size will not affect the other size group members. In
+	// effect, size groups will always operate as if this property was true. Use
+	// a Stack instead to hide widgets while still having their size taken into
+	// account.
 	SetIgnoreHidden(ignoreHidden bool)
 }
 
 // SizeGroupClass implements the SizeGroup interface.
 type SizeGroupClass struct {
 	*externglib.Object
-	BuildableInterface
+	BuildableIface
 }
 
 var _ SizeGroup = (*SizeGroupClass)(nil)
@@ -127,7 +137,7 @@ var _ SizeGroup = (*SizeGroupClass)(nil)
 func wrapSizeGroup(obj *externglib.Object) SizeGroup {
 	return &SizeGroupClass{
 		Object: obj,
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -147,11 +157,11 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
-func (s *SizeGroupClass) AddWidget(widget Widget) {
+func (sizeGroup *SizeGroupClass) AddWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_add_widget(_arg0, _arg1)
@@ -160,12 +170,16 @@ func (s *SizeGroupClass) AddWidget(widget Widget) {
 // IgnoreHidden returns if invisible widgets are ignored when calculating the
 // size.
 //
-// Deprecated: since version 3.22.
-func (s *SizeGroupClass) IgnoreHidden() bool {
+// Deprecated: Measuring the size of hidden widgets has not worked reliably for
+// a long time. In most cases, they will report a size of 0 nowadays, and thus,
+// their size will not affect the other size group members. In effect, size
+// groups will always operate as if this property was true. Use a Stack instead
+// to hide widgets while still having their size taken into account.
+func (sizeGroup *SizeGroupClass) IgnoreHidden() bool {
 	var _arg0 *C.GtkSizeGroup // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 
 	_cret = C.gtk_size_group_get_ignore_hidden(_arg0)
 
@@ -179,11 +193,11 @@ func (s *SizeGroupClass) IgnoreHidden() bool {
 }
 
 // Mode gets the current mode of the size group. See gtk_size_group_set_mode().
-func (s *SizeGroupClass) Mode() SizeGroupMode {
+func (sizeGroup *SizeGroupClass) Mode() SizeGroupMode {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _cret C.GtkSizeGroupMode // in
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 
 	_cret = C.gtk_size_group_get_mode(_arg0)
 
@@ -195,11 +209,11 @@ func (s *SizeGroupClass) Mode() SizeGroupMode {
 }
 
 // RemoveWidget removes a widget from a SizeGroup.
-func (s *SizeGroupClass) RemoveWidget(widget Widget) {
+func (sizeGroup *SizeGroupClass) RemoveWidget(widget Widget) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
@@ -208,12 +222,16 @@ func (s *SizeGroupClass) RemoveWidget(widget Widget) {
 // SetIgnoreHidden sets whether unmapped widgets should be ignored when
 // calculating the size.
 //
-// Deprecated: since version 3.22.
-func (s *SizeGroupClass) SetIgnoreHidden(ignoreHidden bool) {
+// Deprecated: Measuring the size of hidden widgets has not worked reliably for
+// a long time. In most cases, they will report a size of 0 nowadays, and thus,
+// their size will not affect the other size group members. In effect, size
+// groups will always operate as if this property was true. Use a Stack instead
+// to hide widgets while still having their size taken into account.
+func (sizeGroup *SizeGroupClass) SetIgnoreHidden(ignoreHidden bool) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 	if ignoreHidden {
 		_arg1 = C.TRUE
 	}

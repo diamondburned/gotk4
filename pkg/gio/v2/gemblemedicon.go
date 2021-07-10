@@ -46,13 +46,13 @@ type EmblemedIcon interface {
 	// ClearEmblems removes all the emblems from @icon.
 	ClearEmblems()
 	// Icon gets the main icon for @emblemed.
-	Icon() *IconInterface
+	Icon() *IconIface
 }
 
 // EmblemedIconClass implements the EmblemedIcon interface.
 type EmblemedIconClass struct {
 	*externglib.Object
-	IconInterface
+	IconIface
 }
 
 var _ EmblemedIcon = (*EmblemedIconClass)(nil)
@@ -60,7 +60,7 @@ var _ EmblemedIcon = (*EmblemedIconClass)(nil)
 func wrapEmblemedIcon(obj *externglib.Object) EmblemedIcon {
 	return &EmblemedIconClass{
 		Object: obj,
-		IconInterface: IconInterface{
+		IconIface: IconIface{
 			Object: obj,
 		},
 	}
@@ -92,37 +92,37 @@ func NewEmblemedIcon(icon Icon, emblem Emblem) *EmblemedIconClass {
 }
 
 // AddEmblem adds @emblem to the #GList of #GEmblems.
-func (e *EmblemedIconClass) AddEmblem(emblem Emblem) {
+func (emblemed *EmblemedIconClass) AddEmblem(emblem Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
 	_arg1 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
 }
 
 // ClearEmblems removes all the emblems from @icon.
-func (e *EmblemedIconClass) ClearEmblems() {
+func (emblemed *EmblemedIconClass) ClearEmblems() {
 	var _arg0 *C.GEmblemedIcon // out
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
 
 	C.g_emblemed_icon_clear_emblems(_arg0)
 }
 
 // Icon gets the main icon for @emblemed.
-func (e *EmblemedIconClass) Icon() *IconInterface {
+func (emblemed *EmblemedIconClass) Icon() *IconIface {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
 
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
 
-	var _icon *IconInterface // out
+	var _icon *IconIface // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconInterface)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconIface)
 
 	return _icon
 }

@@ -57,7 +57,7 @@ type BoxLayout interface {
 type BoxLayoutClass struct {
 	*externglib.Object
 	LayoutManagerClass
-	OrientableInterface
+	OrientableIface
 }
 
 var _ BoxLayout = (*BoxLayoutClass)(nil)
@@ -68,7 +68,7 @@ func wrapBoxLayout(obj *externglib.Object) BoxLayout {
 		LayoutManagerClass: LayoutManagerClass{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -82,11 +82,11 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 
 // BaselinePosition gets the value set by
 // gtk_box_layout_set_baseline_position().
-func (b *BoxLayoutClass) BaselinePosition() BaselinePosition {
+func (boxLayout *BoxLayoutClass) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 
 	_cret = C.gtk_box_layout_get_baseline_position(_arg0)
 
@@ -98,11 +98,11 @@ func (b *BoxLayoutClass) BaselinePosition() BaselinePosition {
 }
 
 // Homogeneous returns whether the layout is set to be homogeneous.
-func (b *BoxLayoutClass) Homogeneous() bool {
+func (boxLayout *BoxLayoutClass) Homogeneous() bool {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 
 	_cret = C.gtk_box_layout_get_homogeneous(_arg0)
 
@@ -116,11 +116,11 @@ func (b *BoxLayoutClass) Homogeneous() bool {
 }
 
 // Spacing returns the space that @box_layout puts between children.
-func (b *BoxLayoutClass) Spacing() uint {
+func (boxLayout *BoxLayoutClass) Spacing() uint {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 
 	_cret = C.gtk_box_layout_get_spacing(_arg0)
 
@@ -133,11 +133,11 @@ func (b *BoxLayoutClass) Spacing() uint {
 
 // SetHomogeneous sets whether the box layout will allocate the same size to all
 // children.
-func (b *BoxLayoutClass) SetHomogeneous(homogeneous bool) {
+func (boxLayout *BoxLayoutClass) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -146,11 +146,11 @@ func (b *BoxLayoutClass) SetHomogeneous(homogeneous bool) {
 }
 
 // SetSpacing sets how much spacing to put between children.
-func (b *BoxLayoutClass) SetSpacing(spacing uint) {
+func (boxLayout *BoxLayoutClass) SetSpacing(spacing uint) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_box_layout_set_spacing(_arg0, _arg1)

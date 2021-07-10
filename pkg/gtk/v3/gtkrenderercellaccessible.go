@@ -33,28 +33,25 @@ type RendererCellAccessible interface {
 
 // RendererCellAccessibleClass implements the RendererCellAccessible interface.
 type RendererCellAccessibleClass struct {
-	*externglib.Object
 	CellAccessibleClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ RendererCellAccessible = (*RendererCellAccessibleClass)(nil)
 
 func wrapRendererCellAccessible(obj *externglib.Object) RendererCellAccessible {
 	return &RendererCellAccessibleClass{
-		Object: obj,
 		CellAccessibleClass: CellAccessibleClass{
-			Object: obj,
 			AccessibleClass: AccessibleClass{
 				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}

@@ -60,7 +60,8 @@ type HyperlinkOverrider interface {
 	URI(i int) string
 	// IsSelectedLink determines whether this AtkHyperlink is selected
 	//
-	// Deprecated: since version 1.8.
+	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
+	// ATK_STATE_FOCUSED for focused links.
 	IsSelectedLink() bool
 	// IsValid: since the document that a link is associated with may have
 	// changed this method returns true if the link is still valid (with respect
@@ -102,7 +103,8 @@ type Hyperlink interface {
 	IsInline() bool
 	// IsSelectedLink determines whether this AtkHyperlink is selected
 	//
-	// Deprecated: since version 1.8.
+	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
+	// ATK_STATE_FOCUSED for focused links.
 	IsSelectedLink() bool
 	// IsValid: since the document that a link is associated with may have
 	// changed this method returns true if the link is still valid (with respect
@@ -113,7 +115,7 @@ type Hyperlink interface {
 // HyperlinkClass implements the Hyperlink interface.
 type HyperlinkClass struct {
 	*externglib.Object
-	ActionInterface
+	ActionIface
 }
 
 var _ Hyperlink = (*HyperlinkClass)(nil)
@@ -121,7 +123,7 @@ var _ Hyperlink = (*HyperlinkClass)(nil)
 func wrapHyperlink(obj *externglib.Object) Hyperlink {
 	return &HyperlinkClass{
 		Object: obj,
-		ActionInterface: ActionInterface{
+		ActionIface: ActionIface{
 			Object: obj,
 		},
 	}
@@ -134,11 +136,11 @@ func marshalHyperlink(p uintptr) (interface{}, error) {
 }
 
 // EndIndex gets the index with the hypertext document at which this link ends.
-func (l *HyperlinkClass) EndIndex() int {
+func (link_ *HyperlinkClass) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_get_end_index(_arg0)
 
@@ -150,11 +152,11 @@ func (l *HyperlinkClass) EndIndex() int {
 }
 
 // NAnchors gets the number of anchors associated with this hyperlink.
-func (l *HyperlinkClass) NAnchors() int {
+func (link_ *HyperlinkClass) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_get_n_anchors(_arg0)
 
@@ -170,12 +172,12 @@ func (l *HyperlinkClass) NAnchors() int {
 // hyperlink, Image if @link_ is an image hyperlink etc.
 //
 // Multiple anchors are primarily used by client-side image maps.
-func (l *HyperlinkClass) GetObject(i int) *ObjectClass {
+func (link_ *HyperlinkClass) GetObject(i int) *ObjectClass {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_hyperlink_get_object(_arg0, _arg1)
@@ -189,11 +191,11 @@ func (l *HyperlinkClass) GetObject(i int) *ObjectClass {
 
 // StartIndex gets the index with the hypertext document at which this link
 // begins.
-func (l *HyperlinkClass) StartIndex() int {
+func (link_ *HyperlinkClass) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_get_start_index(_arg0)
 
@@ -207,12 +209,12 @@ func (l *HyperlinkClass) StartIndex() int {
 // URI: get a the URI associated with the anchor specified by @i of @link_.
 //
 // Multiple anchors are primarily used by client-side image maps.
-func (l *HyperlinkClass) URI(i int) string {
+func (link_ *HyperlinkClass) URI(i int) string {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_hyperlink_get_uri(_arg0, _arg1)
@@ -228,11 +230,11 @@ func (l *HyperlinkClass) URI(i int) string {
 // IsInline indicates whether the link currently displays some or all of its
 // content inline. Ordinary HTML links will usually return false, but an inline
 // &lt;src&gt; HTML element will return true.
-func (l *HyperlinkClass) IsInline() bool {
+func (link_ *HyperlinkClass) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_is_inline(_arg0)
 
@@ -247,12 +249,13 @@ func (l *HyperlinkClass) IsInline() bool {
 
 // IsSelectedLink determines whether this AtkHyperlink is selected
 //
-// Deprecated: since version 1.8.
-func (l *HyperlinkClass) IsSelectedLink() bool {
+// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
+// ATK_STATE_FOCUSED for focused links.
+func (link_ *HyperlinkClass) IsSelectedLink() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_is_selected_link(_arg0)
 
@@ -268,11 +271,11 @@ func (l *HyperlinkClass) IsSelectedLink() bool {
 // IsValid: since the document that a link is associated with may have changed
 // this method returns true if the link is still valid (with respect to the
 // document it references) and false otherwise.
-func (l *HyperlinkClass) IsValid() bool {
+func (link_ *HyperlinkClass) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_is_valid(_arg0)
 

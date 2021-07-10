@@ -49,26 +49,12 @@ func (g *GlyphItem) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// Item: corresponding `PangoItem`
-func (g *GlyphItem) Item() *Item {
-	var v *Item // out
-	v = (*Item)(unsafe.Pointer(g.native.item))
-	return v
-}
-
-// Glyphs: corresponding `PangoGlyphString`
-func (g *GlyphItem) Glyphs() *GlyphString {
-	var v *GlyphString // out
-	v = (*GlyphString)(unsafe.Pointer(g.native.glyphs))
-	return v
-}
-
 // Copy: make a deep copy of an existing `PangoGlyphItem` structure.
-func (o *GlyphItem) Copy() *GlyphItem {
+func (orig *GlyphItem) Copy() *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _cret *C.PangoGlyphItem // in
 
-	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o))
+	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(orig))
 
 	_cret = C.pango_glyph_item_copy(_arg0)
 
@@ -83,10 +69,10 @@ func (o *GlyphItem) Copy() *GlyphItem {
 }
 
 // Free frees a `PangoGlyphItem` and resources to which it points.
-func (g *GlyphItem) free() {
+func (glyphItem *GlyphItem) free() {
 	var _arg0 *C.PangoGlyphItem // out
 
-	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(g))
+	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 
 	C.pango_glyph_item_free(_arg0)
 }
@@ -101,13 +87,13 @@ func (g *GlyphItem) free() {
 //
 // This function is similar in function to pango_item_split() (and uses it
 // internally.)
-func (o *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
+func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
 	var _arg2 C.int             // out
 	var _cret *C.PangoGlyphItem // in
 
-	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o))
+	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(orig))
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(splitIndex)
@@ -176,60 +162,12 @@ func (g *GlyphItemIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-func (g *GlyphItemIter) GlyphItem() *GlyphItem {
-	var v *GlyphItem // out
-	v = (*GlyphItem)(unsafe.Pointer(g.native.glyph_item))
-	return v
-}
-
-func (g *GlyphItemIter) Text() string {
-	var v string // out
-	v = C.GoString(g.native.text)
-	return v
-}
-
-func (g *GlyphItemIter) StartGlyph() int {
-	var v int // out
-	v = int(g.native.start_glyph)
-	return v
-}
-
-func (g *GlyphItemIter) StartIndex() int {
-	var v int // out
-	v = int(g.native.start_index)
-	return v
-}
-
-func (g *GlyphItemIter) StartChar() int {
-	var v int // out
-	v = int(g.native.start_char)
-	return v
-}
-
-func (g *GlyphItemIter) EndGlyph() int {
-	var v int // out
-	v = int(g.native.end_glyph)
-	return v
-}
-
-func (g *GlyphItemIter) EndIndex() int {
-	var v int // out
-	v = int(g.native.end_index)
-	return v
-}
-
-func (g *GlyphItemIter) EndChar() int {
-	var v int // out
-	v = int(g.native.end_char)
-	return v
-}
-
 // Copy: make a shallow copy of an existing `PangoGlyphItemIter` structure.
-func (o *GlyphItemIter) Copy() *GlyphItemIter {
+func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret *C.PangoGlyphItemIter // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(o))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(orig))
 
 	_cret = C.pango_glyph_item_iter_copy(_arg0)
 
@@ -244,10 +182,10 @@ func (o *GlyphItemIter) Copy() *GlyphItemIter {
 }
 
 // Free frees a `PangoGlyphItem`Iter.
-func (i *GlyphItemIter) free() {
+func (iter *GlyphItemIter) free() {
 	var _arg0 *C.PangoGlyphItemIter // out
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(iter))
 
 	C.pango_glyph_item_iter_free(_arg0)
 }
@@ -256,13 +194,13 @@ func (i *GlyphItemIter) free() {
 // cluster in a glyph item.
 //
 // See `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
+func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _arg1 *C.PangoGlyphItem     // out
 	var _arg2 *C.char               // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(iter))
 	_arg1 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -282,13 +220,13 @@ func (i *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 // cluster in a glyph item.
 //
 // See `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
+func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _arg1 *C.PangoGlyphItem     // out
 	var _arg2 *C.char               // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(iter))
 	_arg1 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 	_arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -307,11 +245,11 @@ func (i *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 // NextCluster advances the iterator to the next cluster in the glyph item.
 //
 // See `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) NextCluster() bool {
+func (iter *GlyphItemIter) NextCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(iter))
 
 	_cret = C.pango_glyph_item_iter_next_cluster(_arg0)
 
@@ -326,11 +264,11 @@ func (i *GlyphItemIter) NextCluster() bool {
 
 // PrevCluster moves the iterator to the preceding cluster in the glyph item.
 // See `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) PrevCluster() bool {
+func (iter *GlyphItemIter) PrevCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i))
+	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(iter))
 
 	_cret = C.pango_glyph_item_iter_prev_cluster(_arg0)
 

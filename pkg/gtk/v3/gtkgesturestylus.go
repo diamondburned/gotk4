@@ -82,11 +82,11 @@ func NewGestureStylus(widget Widget) *GestureStylusClass {
 // gesture. This function must be called from either the GestureStylus::down,
 // GestureStylus::motion, GestureStylus::up or GestureStylus::proximity signal
 // handlers.
-func (g *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
+func (gesture *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
 	var _arg0 *C.GtkGestureStylus // out
 	var _cret *C.GdkDeviceTool    // in
 
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
 

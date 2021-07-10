@@ -79,11 +79,11 @@ func NewGestureZoom(widget Widget) *GestureZoomClass {
 // ScaleDelta: if @gesture is active, this function returns the zooming
 // difference since the gesture was recognized (hence the starting point is
 // considered 1:1). If @gesture is not active, 1 is returned.
-func (g *GestureZoomClass) ScaleDelta() float64 {
+func (gesture *GestureZoomClass) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out
 	var _cret C.gdouble         // in
 
-	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_zoom_get_scale_delta(_arg0)
 

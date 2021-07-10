@@ -59,41 +59,48 @@ type Root interface {
 	SetFocus(focus Widget)
 }
 
-// RootInterface implements the Root interface.
-type RootInterface struct {
+// RootIface implements the Root interface.
+type RootIface struct {
 	*externglib.Object
-	NativeInterface
+	NativeIface
 	WidgetClass
 }
 
-var _ Root = (*RootInterface)(nil)
+var _ Root = (*RootIface)(nil)
 
 func wrapRoot(obj *externglib.Object) Root {
-	return &RootInterface{
+	return &RootIface{
 		Object: obj,
-		NativeInterface: NativeInterface{
+		NativeIface: NativeIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
@@ -107,11 +114,11 @@ func marshalRoot(p uintptr) (interface{}, error) {
 }
 
 // Display returns the display that this `GtkRoot` is on.
-func (s *RootInterface) Display() *gdk.DisplayClass {
+func (self *RootIface) Display() *gdk.DisplayClass {
 	var _arg0 *C.GtkRoot    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_root_get_display(_arg0)
 
@@ -127,11 +134,11 @@ func (s *RootInterface) Display() *gdk.DisplayClass {
 // Note that this is the widget that would have the focus if the root is active;
 // if the root is not focused then `gtk_widget_has_focus (widget)` will be false
 // for the widget.
-func (s *RootInterface) Focus() *WidgetClass {
+func (self *RootIface) Focus() *WidgetClass {
 	var _arg0 *C.GtkRoot   // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_root_get_focus(_arg0)
 
@@ -149,11 +156,11 @@ func (s *RootInterface) Focus() *WidgetClass {
 //
 // To set the focus to a particular widget in the root, it is usually more
 // convenient to use [method@Gtk.Widget.grab_focus] instead of this function.
-func (s *RootInterface) SetFocus(focus Widget) {
+func (self *RootIface) SetFocus(focus Widget) {
 	var _arg0 *C.GtkRoot   // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
 
 	C.gtk_root_set_focus(_arg0, _arg1)

@@ -33,20 +33,16 @@ type RadioMenuItemAccessible interface {
 
 // RadioMenuItemAccessibleClass implements the RadioMenuItemAccessible interface.
 type RadioMenuItemAccessibleClass struct {
-	*externglib.Object
 	CheckMenuItemAccessibleClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ RadioMenuItemAccessible = (*RadioMenuItemAccessibleClass)(nil)
 
 func wrapRadioMenuItemAccessible(obj *externglib.Object) RadioMenuItemAccessible {
 	return &RadioMenuItemAccessibleClass{
-		Object: obj,
 		CheckMenuItemAccessibleClass: CheckMenuItemAccessibleClass{
-			Object: obj,
 			MenuItemAccessibleClass: MenuItemAccessibleClass{
-				Object: obj,
 				ContainerAccessibleClass: ContainerAccessibleClass{
 					WidgetAccessibleClass: WidgetAccessibleClass{
 						AccessibleClass: AccessibleClass{
@@ -56,15 +52,15 @@ func wrapRadioMenuItemAccessible(obj *externglib.Object) RadioMenuItemAccessible
 						},
 					},
 				},
-				ActionInterface: atk.ActionInterface{
+				ActionIface: atk.ActionIface{
 					Object: obj,
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}

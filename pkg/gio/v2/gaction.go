@@ -222,15 +222,15 @@ type Action interface {
 	StateType() *glib.VariantType
 }
 
-// ActionInterface implements the Action interface.
-type ActionInterface struct {
+// ActionIface implements the Action interface.
+type ActionIface struct {
 	*externglib.Object
 }
 
-var _ Action = (*ActionInterface)(nil)
+var _ Action = (*ActionIface)(nil)
 
 func wrapAction(obj *externglib.Object) Action {
-	return &ActionInterface{
+	return &ActionIface{
 		Object: obj,
 	}
 }
@@ -248,11 +248,11 @@ func marshalAction(p uintptr) (interface{}, error) {
 // then @parameter must also be nil.
 //
 // If the @parameter GVariant is floating, it is consumed.
-func (a *ActionInterface) Activate(parameter *glib.Variant) {
+func (action *ActionIface) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.GVariant)(unsafe.Pointer(parameter))
 
 	C.g_action_activate(_arg0, _arg1)
@@ -268,11 +268,11 @@ func (a *ActionInterface) Activate(parameter *glib.Variant) {
 // g_action_get_state_hint().
 //
 // If the @value GVariant is floating, it is consumed.
-func (a *ActionInterface) ChangeState(value *glib.Variant) {
+func (action *ActionIface) ChangeState(value *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
 
 	C.g_action_change_state(_arg0, _arg1)
@@ -282,11 +282,11 @@ func (a *ActionInterface) ChangeState(value *glib.Variant) {
 //
 // An action must be enabled in order to be activated or in order to have its
 // state changed from outside callers.
-func (a *ActionInterface) Enabled() bool {
+func (action *ActionIface) Enabled() bool {
 	var _arg0 *C.GAction // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_enabled(_arg0)
 
@@ -300,11 +300,11 @@ func (a *ActionInterface) Enabled() bool {
 }
 
 // Name queries the name of @action.
-func (a *ActionInterface) Name() string {
+func (action *ActionIface) Name() string {
 	var _arg0 *C.GAction // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_name(_arg0)
 
@@ -323,11 +323,11 @@ func (a *ActionInterface) Name() string {
 //
 // In the case that this function returns nil, you must not give any #GVariant,
 // but nil instead.
-func (a *ActionInterface) ParameterType() *glib.VariantType {
+func (action *ActionIface) ParameterType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_parameter_type(_arg0)
 
@@ -346,11 +346,11 @@ func (a *ActionInterface) ParameterType() *glib.VariantType {
 //
 // The return value (if non-nil) should be freed with g_variant_unref() when it
 // is no longer required.
-func (a *ActionInterface) State() *glib.Variant {
+func (action *ActionIface) State() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_state(_arg0)
 
@@ -382,11 +382,11 @@ func (a *ActionInterface) State() *glib.Variant {
 //
 // The return value (if non-nil) should be freed with g_variant_unref() when it
 // is no longer required.
-func (a *ActionInterface) StateHint() *glib.Variant {
+func (action *ActionIface) StateHint() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_state_hint(_arg0)
 
@@ -412,11 +412,11 @@ func (a *ActionInterface) StateHint() *glib.Variant {
 // If the action is not stateful (e.g. created with g_simple_action_new()) then
 // this function will return nil. In that case, g_action_get_state() will return
 // nil and you must not call g_action_change_state().
-func (a *ActionInterface) StateType() *glib.VariantType {
+func (action *ActionIface) StateType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_state_type(_arg0)
 

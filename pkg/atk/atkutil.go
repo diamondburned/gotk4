@@ -90,7 +90,10 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 // FocusTrackerNotify: cause the focus tracker functions which have been
 // specified to be executed for the object.
 //
-// Deprecated: since version 2.9.4.
+// Deprecated: Focus tracking has been dropped as a feature to be implemented by
+// ATK itself. As Object::focus-event was deprecated in favor of a
+// Object::state-change signal, in order to notify a focus change on your
+// implementation, you can use atk_object_notify_state_change() instead.
 func FocusTrackerNotify(object Object) {
 	var _arg1 *C.AtkObject // out
 
@@ -169,7 +172,9 @@ func GetVersion() string {
 // RemoveFocusTracker removes the specified focus tracker from the list of
 // functions to be called when any object receives focus.
 //
-// Deprecated: since version 2.9.4.
+// Deprecated: Focus tracking has been dropped as a feature to be implemented by
+// ATK itself. If you need focus tracking on your implementation, subscribe to
+// the Object::state-change "focused" signal.
 func RemoveFocusTracker(trackerId uint) {
 	var _arg1 C.guint // out
 
@@ -254,66 +259,4 @@ func WrapKeyEventStruct(ptr unsafe.Pointer) *KeyEventStruct {
 // Native returns the underlying C source pointer.
 func (k *KeyEventStruct) Native() unsafe.Pointer {
 	return unsafe.Pointer(&k.native)
-}
-
-// Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
-// ATK_KEY_EVENT_RELEASE
-func (k *KeyEventStruct) Type() int {
-	var v int // out
-	v = int(k.native._type)
-	return v
-}
-
-// State: bitmask representing the state of the modifier keys immediately after
-// the event takes place. The meaning of the bits is currently defined to match
-// the bitmask used by GDK in GdkEventType.state, see
-// http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey
-func (k *KeyEventStruct) State() uint {
-	var v uint // out
-	v = uint(k.native.state)
-	return v
-}
-
-// Keyval: guint representing a keysym value corresponding to those used by GDK
-// and X11: see /usr/X11/include/keysymdef.h.
-func (k *KeyEventStruct) Keyval() uint {
-	var v uint // out
-	v = uint(k.native.keyval)
-	return v
-}
-
-// Length: the length of member #string.
-func (k *KeyEventStruct) Length() int {
-	var v int // out
-	v = int(k.native.length)
-	return v
-}
-
-// String: string containing one of the following: either a string approximating
-// the text that would result from this keypress, if the key is a control or
-// graphic character, or a symbolic name for this keypress. Alphanumeric and
-// printable keys will have the symbolic key name in this string member, for
-// instance "A". "0", "semicolon", "aacute". Keypad keys have the prefix "KP".
-func (k *KeyEventStruct) String() string {
-	var v string // out
-	v = C.GoString(k.native.string)
-	return v
-}
-
-// Keycode: the raw hardware code that generated the key event. This field is
-// raraly useful.
-func (k *KeyEventStruct) Keycode() uint16 {
-	var v uint16 // out
-	v = uint16(k.native.keycode)
-	return v
-}
-
-// Timestamp: timestamp in milliseconds indicating when the event occurred.
-// These timestamps are relative to a starting point which should be considered
-// arbitrary, and only used to compare the dispatch times of events to one
-// another.
-func (k *KeyEventStruct) Timestamp() uint32 {
-	var v uint32 // out
-	v = uint32(k.native.timestamp)
-	return v
 }

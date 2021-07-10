@@ -190,10 +190,10 @@ func NewContext() *ContextClass {
 // This function is only useful when implementing a new backend for Pango,
 // something applications won't do. Backends should call this function if they
 // have attached extra data to the context and such data is changed.
-func (c *ContextClass) Changed() {
+func (context *ContextClass) Changed() {
 	var _arg0 *C.PangoContext // out
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	C.pango_context_changed(_arg0)
 }
@@ -201,11 +201,11 @@ func (c *ContextClass) Changed() {
 // BaseDir retrieves the base direction for the context.
 //
 // See [method@Pango.Context.set_base_dir].
-func (c *ContextClass) BaseDir() Direction {
+func (context *ContextClass) BaseDir() Direction {
 	var _arg0 *C.PangoContext  // out
 	var _cret C.PangoDirection // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_base_dir(_arg0)
 
@@ -219,11 +219,11 @@ func (c *ContextClass) BaseDir() Direction {
 // BaseGravity retrieves the base gravity for the context.
 //
 // See [method@Pango.Context.set_base_gravity].
-func (c *ContextClass) BaseGravity() Gravity {
+func (context *ContextClass) BaseGravity() Gravity {
 	var _arg0 *C.PangoContext // out
 	var _cret C.PangoGravity  // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_base_gravity(_arg0)
 
@@ -235,11 +235,11 @@ func (c *ContextClass) BaseGravity() Gravity {
 }
 
 // FontDescription: retrieve the default font description for the context.
-func (c *ContextClass) FontDescription() *FontDescription {
+func (context *ContextClass) FontDescription() *FontDescription {
 	var _arg0 *C.PangoContext         // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_font_description(_arg0)
 
@@ -251,11 +251,11 @@ func (c *ContextClass) FontDescription() *FontDescription {
 }
 
 // FontMap gets the `PangoFontMap` used to look up fonts for this context.
-func (c *ContextClass) FontMap() *FontMapClass {
+func (context *ContextClass) FontMap() *FontMapClass {
 	var _arg0 *C.PangoContext // out
 	var _cret *C.PangoFontMap // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_font_map(_arg0)
 
@@ -272,11 +272,11 @@ func (c *ContextClass) FontMap() *FontMapClass {
 // the base gravity is PANGO_GRAVITY_AUTO for which
 // [type_func@Pango.Gravity.get_for_matrix] is used to return the gravity from
 // the current context matrix.
-func (c *ContextClass) Gravity() Gravity {
+func (context *ContextClass) Gravity() Gravity {
 	var _arg0 *C.PangoContext // out
 	var _cret C.PangoGravity  // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_gravity(_arg0)
 
@@ -290,11 +290,11 @@ func (c *ContextClass) Gravity() Gravity {
 // GravityHint retrieves the gravity hint for the context.
 //
 // See [method@Pango.Context.set_gravity_hint] for details.
-func (c *ContextClass) GravityHint() GravityHint {
+func (context *ContextClass) GravityHint() GravityHint {
 	var _arg0 *C.PangoContext    // out
 	var _cret C.PangoGravityHint // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_gravity_hint(_arg0)
 
@@ -306,11 +306,11 @@ func (c *ContextClass) GravityHint() GravityHint {
 }
 
 // Language retrieves the global language tag for the context.
-func (c *ContextClass) Language() *Language {
+func (context *ContextClass) Language() *Language {
 	var _arg0 *C.PangoContext  // out
 	var _cret *C.PangoLanguage // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_language(_arg0)
 
@@ -328,11 +328,11 @@ func (c *ContextClass) Language() *Language {
 // with this context.
 //
 // See [method@Pango.Context.set_matrix].
-func (c *ContextClass) Matrix() *Matrix {
+func (context *ContextClass) Matrix() *Matrix {
 	var _arg0 *C.PangoContext // out
 	var _cret *C.PangoMatrix  // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_matrix(_arg0)
 
@@ -354,13 +354,13 @@ func (c *ContextClass) Matrix() *Matrix {
 // If characters from multiple of these families would be used to render the
 // string, then the returned fonts would be a composite of the metrics for the
 // fonts loaded for the individual families.
-func (c *ContextClass) Metrics(desc *FontDescription, language *Language) *FontMetrics {
+func (context *ContextClass) Metrics(desc *FontDescription, language *Language) *FontMetrics {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 	var _arg2 *C.PangoLanguage        // out
 	var _cret *C.PangoFontMetrics     // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
@@ -379,11 +379,11 @@ func (c *ContextClass) Metrics(desc *FontDescription, language *Language) *FontM
 
 // RoundGlyphPositions returns whether font rendering with this context should
 // round glyph positions and widths.
-func (c *ContextClass) RoundGlyphPositions() bool {
+func (context *ContextClass) RoundGlyphPositions() bool {
 	var _arg0 *C.PangoContext // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_round_glyph_positions(_arg0)
 
@@ -407,11 +407,11 @@ func (c *ContextClass) RoundGlyphPositions() bool {
 // This can be used to automatically detect changes to a `PangoContext`, and is
 // only useful when implementing objects that need update when their
 // `PangoContext` changes, like `PangoLayout`.
-func (c *ContextClass) Serial() uint {
+func (context *ContextClass) Serial() uint {
 	var _arg0 *C.PangoContext // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_serial(_arg0)
 
@@ -423,12 +423,12 @@ func (c *ContextClass) Serial() uint {
 }
 
 // ListFamilies: list all families for a context.
-func (c *ContextClass) ListFamilies() []*FontFamilyClass {
+func (context *ContextClass) ListFamilies() []*FontFamilyClass {
 	var _arg0 *C.PangoContext // out
 	var _arg1 **C.PangoFontFamily
 	var _arg2 C.int // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	C.pango_context_list_families(_arg0, &_arg1, &_arg2)
 
@@ -448,12 +448,12 @@ func (c *ContextClass) ListFamilies() []*FontFamilyClass {
 
 // LoadFont loads the font in one of the fontmaps in the context that is the
 // closest match for @desc.
-func (c *ContextClass) LoadFont(desc *FontDescription) *FontClass {
+func (context *ContextClass) LoadFont(desc *FontDescription) *FontClass {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 	var _cret *C.PangoFont            // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 
 	_cret = C.pango_context_load_font(_arg0, _arg1)
@@ -467,13 +467,13 @@ func (c *ContextClass) LoadFont(desc *FontDescription) *FontClass {
 
 // LoadFontset: load a set of fonts in the context that can be used to render a
 // font matching @desc.
-func (c *ContextClass) LoadFontset(desc *FontDescription, language *Language) *FontsetClass {
+func (context *ContextClass) LoadFontset(desc *FontDescription, language *Language) *FontsetClass {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 	var _arg2 *C.PangoLanguage        // out
 	var _cret *C.PangoFontset         // in
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
@@ -487,11 +487,11 @@ func (c *ContextClass) LoadFontset(desc *FontDescription, language *Language) *F
 }
 
 // SetFontDescription: set the default font description for the context
-func (c *ContextClass) SetFontDescription(desc *FontDescription) {
+func (context *ContextClass) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 
 	C.pango_context_set_font_description(_arg0, _arg1)
@@ -502,11 +502,11 @@ func (c *ContextClass) SetFontDescription(desc *FontDescription) {
 //
 // This is only for internal use by Pango backends, a `PangoContext` obtained
 // via one of the recommended methods should already have a suitable font map.
-func (c *ContextClass) SetFontMap(fontMap FontMap) {
+func (context *ContextClass) SetFontMap(fontMap FontMap) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoFontMap // out
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
 
 	C.pango_context_set_font_map(_arg0, _arg1)
@@ -516,11 +516,11 @@ func (c *ContextClass) SetFontMap(fontMap FontMap) {
 //
 // The default language for the locale of the running process can be found using
 // [type_func@Pango.Language.get_default].
-func (c *ContextClass) SetLanguage(language *Language) {
+func (context *ContextClass) SetLanguage(language *Language) {
 	var _arg0 *C.PangoContext  // out
 	var _arg1 *C.PangoLanguage // out
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language))
 
 	C.pango_context_set_language(_arg0, _arg1)
@@ -534,11 +534,11 @@ func (c *ContextClass) SetLanguage(language *Language) {
 // of the matrix. So, they don't scale with the matrix, though they may change
 // slightly for different matrices, depending on how the text is fit to the
 // pixel grid.
-func (c *ContextClass) SetMatrix(matrix *Matrix) {
+func (context *ContextClass) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoMatrix  // out
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
 
 	C.pango_context_set_matrix(_arg0, _arg1)
@@ -551,11 +551,11 @@ func (c *ContextClass) SetMatrix(matrix *Matrix) {
 //
 // The default value is to round glyph positions, to remain compatible with
 // previous Pango behavior.
-func (c *ContextClass) SetRoundGlyphPositions(roundPositions bool) {
+func (context *ContextClass) SetRoundGlyphPositions(roundPositions bool) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	if roundPositions {
 		_arg1 = C.TRUE
 	}

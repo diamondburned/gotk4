@@ -50,43 +50,14 @@ func (r *RGBA) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Red: the intensity of the red channel from 0.0 to 1.0 inclusive
-func (r *RGBA) Red() float32 {
-	var v float32 // out
-	v = float32(r.native.red)
-	return v
-}
-
-// Green: the intensity of the green channel from 0.0 to 1.0 inclusive
-func (r *RGBA) Green() float32 {
-	var v float32 // out
-	v = float32(r.native.green)
-	return v
-}
-
-// Blue: the intensity of the blue channel from 0.0 to 1.0 inclusive
-func (r *RGBA) Blue() float32 {
-	var v float32 // out
-	v = float32(r.native.blue)
-	return v
-}
-
-// Alpha: the opacity of the color from 0.0 for completely translucent to 1.0
-// for opaque
-func (r *RGBA) Alpha() float32 {
-	var v float32 // out
-	v = float32(r.native.alpha)
-	return v
-}
-
 // Copy makes a copy of a `GdkRGBA`.
 //
 // The result must be freed through [method@Gdk.RGBA.free].
-func (r *RGBA) Copy() *RGBA {
+func (rgba *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	_cret = C.gdk_rgba_copy(_arg0)
 
@@ -101,12 +72,12 @@ func (r *RGBA) Copy() *RGBA {
 }
 
 // Equal compares two `GdkRGBA` colors.
-func (p *RGBA) Equal(p2 *RGBA) bool {
+func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(p))
+	_arg0 = (C.gconstpointer)(unsafe.Pointer(p1))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(p2))
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
@@ -121,10 +92,10 @@ func (p *RGBA) Equal(p2 *RGBA) bool {
 }
 
 // Free frees a `GdkRGBA`.
-func (r *RGBA) free() {
+func (rgba *RGBA) free() {
 	var _arg0 *C.GdkRGBA // out
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	C.gdk_rgba_free(_arg0)
 }
@@ -149,11 +120,11 @@ func (p *RGBA) Hash() uint {
 // IsClear checks if an @rgba value is transparent.
 //
 // That is, drawing with the value would not produce any change.
-func (r *RGBA) IsClear() bool {
+func (rgba *RGBA) IsClear() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	_cret = C.gdk_rgba_is_clear(_arg0)
 
@@ -170,11 +141,11 @@ func (r *RGBA) IsClear() bool {
 //
 // That is, drawing with the value will not retain any results from previous
 // contents.
-func (r *RGBA) IsOpaque() bool {
+func (rgba *RGBA) IsOpaque() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	_cret = C.gdk_rgba_is_opaque(_arg0)
 
@@ -201,12 +172,12 @@ func (r *RGBA) IsOpaque() bool {
 // color values. In the last two cases, “r”, “g”, and “b” are either integers in
 // the range 0 to 255 or percentage values in the range 0% to 100%, and a is a
 // floating point value in the range 0 to 1.
-func (r *RGBA) Parse(spec string) bool {
+func (rgba *RGBA) Parse(spec string) bool {
 	var _arg0 *C.GdkRGBA // out
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 	_arg1 = (*C.char)(C.CString(spec))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -233,11 +204,11 @@ func (r *RGBA) Parse(spec string) bool {
 // Note that this string representation may lose some precision, since “r”, “g”
 // and “b” are represented as 8-bit integers. If this is a concern, you should
 // use a different representation.
-func (r *RGBA) String() string {
+func (rgba *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.char    // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	_cret = C.gdk_rgba_to_string(_arg0)
 

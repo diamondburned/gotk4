@@ -51,8 +51,8 @@ type HBox interface {
 type HBoxClass struct {
 	*externglib.Object
 	BoxClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ HBox = (*HBoxClass)(nil)
@@ -65,26 +65,29 @@ func wrapHBox(obj *externglib.Object) HBox {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -98,7 +101,10 @@ func marshalHBox(p uintptr) (interface{}, error) {
 
 // NewHBox creates a new HBox.
 //
-// Deprecated: since version 3.2.
+// Deprecated: You can use gtk_box_new() with GTK_ORIENTATION_HORIZONTAL
+// instead, which is a quick and easy change. But the recommendation is to
+// switch to Grid, since Box is going to go away eventually. See [Migrating from
+// other containers to GtkGrid][gtk-migrating-GtkGrid].
 func NewHBox(homogeneous bool, spacing int) *HBoxClass {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out

@@ -96,11 +96,11 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 }
 
 // Filter gets the `GtkFilter` currently set on @self.
-func (s *FilterListModelClass) Filter() *FilterClass {
+func (self *FilterListModelClass) Filter() *FilterClass {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret *C.GtkFilter          // in
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_list_model_get_filter(_arg0)
 
@@ -114,11 +114,11 @@ func (s *FilterListModelClass) Filter() *FilterClass {
 // Incremental returns whether incremental filtering is enabled.
 //
 // See [method@Gtk.FilterListModel.set_incremental].
-func (s *FilterListModelClass) Incremental() bool {
+func (self *FilterListModelClass) Incremental() bool {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_list_model_get_incremental(_arg0)
 
@@ -145,11 +145,11 @@ func (s *FilterListModelClass) Incremental() bool {
 // If no filter operation is ongoing - in particular when
 // [property@Gtk.FilterListModel:incremental] is false - this function returns
 // 0.
-func (s *FilterListModelClass) Pending() uint {
+func (self *FilterListModelClass) Pending() uint {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret C.guint               // in
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_list_model_get_pending(_arg0)
 
@@ -161,11 +161,11 @@ func (s *FilterListModelClass) Pending() uint {
 }
 
 // SetFilter sets the filter used to filter items.
-func (s *FilterListModelClass) SetFilter(filter Filter) {
+func (self *FilterListModelClass) SetFilter(filter Filter) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GtkFilter          // out
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_filter_list_model_set_filter(_arg0, _arg1)
@@ -187,11 +187,11 @@ func (s *FilterListModelClass) SetFilter(filter Filter) {
 //
 // See [method@Gtk.FilterListModel.get_pending] for progress information about
 // an ongoing incremental filtering operation.
-func (s *FilterListModelClass) SetIncremental(incremental bool) {
+func (self *FilterListModelClass) SetIncremental(incremental bool) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 	if incremental {
 		_arg1 = C.TRUE
 	}

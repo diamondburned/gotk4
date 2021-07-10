@@ -41,8 +41,8 @@ type VScale interface {
 type VScaleClass struct {
 	*externglib.Object
 	ScaleClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ VScale = (*VScaleClass)(nil)
@@ -55,29 +55,32 @@ func wrapVScale(obj *externglib.Object) VScale {
 			RangeClass: RangeClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
-				OrientableInterface: OrientableInterface{
+				OrientableIface: OrientableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -91,7 +94,7 @@ func marshalVScale(p uintptr) (interface{}, error) {
 
 // NewVScale creates a new VScale.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_scale_new() with GTK_ORIENTATION_VERTICAL instead.
 func NewVScale(adjustment Adjustment) *VScaleClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -116,7 +119,8 @@ func NewVScale(adjustment Adjustment) *VScaleClass {
 // power of ten. If the resulting precision is not suitable for your needs, use
 // gtk_scale_set_digits() to correct it.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_scale_new_with_range() with GTK_ORIENTATION_VERTICAL
+// instead.
 func NewVScaleWithRange(min float64, max float64, step float64) *VScaleClass {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out

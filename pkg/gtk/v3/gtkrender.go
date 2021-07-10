@@ -267,7 +267,7 @@ func RenderIcon(context StyleContext, cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf
 // RenderIconPixbuf renders the icon specified by @source at the given @size,
 // returning the result in a pixbuf.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_icon_theme_load_icon() instead.
 func RenderIconPixbuf(context StyleContext, source *IconSource, size int) *gdkpixbuf.PixbufClass {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.GtkIconSource   // out

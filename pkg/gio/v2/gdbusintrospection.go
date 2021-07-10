@@ -60,58 +60,13 @@ func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount: the reference count or -1 if statically allocated.
-func (d *DBusAnnotationInfo) RefCount() int {
-	var v int // out
-	v = int(d.native.ref_count)
-	return v
-}
-
-// Key: the name of the annotation, e.g. "org.freedesktop.DBus.Deprecated".
-func (d *DBusAnnotationInfo) Key() string {
-	var v string // out
-	v = C.GoString(d.native.key)
-	return v
-}
-
-// Value: the value of the annotation.
-func (d *DBusAnnotationInfo) Value() string {
-	var v string // out
-	v = C.GoString(d.native.value)
-	return v
-}
-
-// Annotations: pointer to a nil-terminated array of pointers to
-// BusAnnotationInfo structures or nil if there are no annotations.
-func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
-				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusAnnotationInfo) ref() *DBusAnnotationInfo {
+func (info *DBusAnnotationInfo) ref() *DBusAnnotationInfo {
 	var _arg0 *C.GDBusAnnotationInfo // out
 	var _cret *C.GDBusAnnotationInfo // in
 
-	_arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(info))
 
 	_cret = C.g_dbus_annotation_info_ref(_arg0)
 
@@ -129,10 +84,10 @@ func (i *DBusAnnotationInfo) ref() *DBusAnnotationInfo {
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusAnnotationInfo) unref() {
+func (info *DBusAnnotationInfo) unref() {
 	var _arg0 *C.GDBusAnnotationInfo // out
 
-	_arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_annotation_info_unref(_arg0)
 }
@@ -158,58 +113,13 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount: the reference count or -1 if statically allocated.
-func (d *DBusArgInfo) RefCount() int {
-	var v int // out
-	v = int(d.native.ref_count)
-	return v
-}
-
-// Name of the argument, e.g. @unix_user_id.
-func (d *DBusArgInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// Signature d-Bus signature of the argument (a single complete type).
-func (d *DBusArgInfo) Signature() string {
-	var v string // out
-	v = C.GoString(d.native.signature)
-	return v
-}
-
-// Annotations: pointer to a nil-terminated array of pointers to
-// BusAnnotationInfo structures or nil if there are no annotations.
-func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
-				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusArgInfo) ref() *DBusArgInfo {
+func (info *DBusArgInfo) ref() *DBusArgInfo {
 	var _arg0 *C.GDBusArgInfo // out
 	var _cret *C.GDBusArgInfo // in
 
-	_arg0 = (*C.GDBusArgInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusArgInfo)(unsafe.Pointer(info))
 
 	_cret = C.g_dbus_arg_info_ref(_arg0)
 
@@ -227,10 +137,10 @@ func (i *DBusArgInfo) ref() *DBusArgInfo {
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusArgInfo) unref() {
+func (info *DBusArgInfo) unref() {
 	var _arg0 *C.GDBusArgInfo // out
 
-	_arg0 = (*C.GDBusArgInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusArgInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_arg_info_unref(_arg0)
 }
@@ -256,117 +166,6 @@ func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount: the reference count or -1 if statically allocated.
-func (d *DBusInterfaceInfo) RefCount() int {
-	var v int // out
-	v = int(d.native.ref_count)
-	return v
-}
-
-// Name: the name of the D-Bus interface, e.g.
-// "org.freedesktop.DBus.Properties".
-func (d *DBusInterfaceInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// Methods: pointer to a nil-terminated array of pointers to BusMethodInfo
-// structures or nil if there are no methods.
-func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
-	var v []*DBusMethodInfo
-	{
-		var i int
-		var z *C.GDBusMethodInfo
-		for p := d.native.methods; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.methods, i)
-		v = make([]*DBusMethodInfo, i)
-		for i := range src {
-			v[i] = (*DBusMethodInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_method_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusMethodInfo) {
-				C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
-// Signals: pointer to a nil-terminated array of pointers to BusSignalInfo
-// structures or nil if there are no signals.
-func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
-	var v []*DBusSignalInfo
-	{
-		var i int
-		var z *C.GDBusSignalInfo
-		for p := d.native.signals; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.signals, i)
-		v = make([]*DBusSignalInfo, i)
-		for i := range src {
-			v[i] = (*DBusSignalInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_signal_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusSignalInfo) {
-				C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
-// Properties: pointer to a nil-terminated array of pointers to BusPropertyInfo
-// structures or nil if there are no properties.
-func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
-	var v []*DBusPropertyInfo
-	{
-		var i int
-		var z *C.GDBusPropertyInfo
-		for p := d.native.properties; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.properties, i)
-		v = make([]*DBusPropertyInfo, i)
-		for i := range src {
-			v[i] = (*DBusPropertyInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_property_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusPropertyInfo) {
-				C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
-// Annotations: pointer to a nil-terminated array of pointers to
-// BusAnnotationInfo structures or nil if there are no annotations.
-func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
-				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
 // CacheBuild builds a lookup-cache to speed up
 // g_dbus_interface_info_lookup_method(), g_dbus_interface_info_lookup_signal()
 // and g_dbus_interface_info_lookup_property().
@@ -376,10 +175,10 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 //
 // Note that @info cannot be modified until
 // g_dbus_interface_info_cache_release() is called.
-func (i *DBusInterfaceInfo) CacheBuild() {
+func (info *DBusInterfaceInfo) CacheBuild() {
 	var _arg0 *C.GDBusInterfaceInfo // out
 
-	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_interface_info_cache_build(_arg0)
 }
@@ -387,10 +186,10 @@ func (i *DBusInterfaceInfo) CacheBuild() {
 // CacheRelease decrements the usage count for the cache for @info built by
 // g_dbus_interface_info_cache_build() (if any) and frees the resources used by
 // the cache if the usage count drops to zero.
-func (i *DBusInterfaceInfo) CacheRelease() {
+func (info *DBusInterfaceInfo) CacheRelease() {
 	var _arg0 *C.GDBusInterfaceInfo // out
 
-	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_interface_info_cache_release(_arg0)
 }
@@ -399,12 +198,12 @@ func (i *DBusInterfaceInfo) CacheRelease() {
 //
 // The cost of this function is O(n) in number of methods unless
 // g_dbus_interface_info_cache_build() has been used on @info.
-func (i *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
+func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusMethodInfo    // in
 
-	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -425,12 +224,12 @@ func (i *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 //
 // The cost of this function is O(n) in number of properties unless
 // g_dbus_interface_info_cache_build() has been used on @info.
-func (i *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
+func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusPropertyInfo  // in
 
-	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -451,12 +250,12 @@ func (i *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 //
 // The cost of this function is O(n) in number of signals unless
 // g_dbus_interface_info_cache_build() has been used on @info.
-func (i *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
+func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusSignalInfo    // in
 
-	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -475,11 +274,11 @@ func (i *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusInterfaceInfo) ref() *DBusInterfaceInfo {
+func (info *DBusInterfaceInfo) ref() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _cret *C.GDBusInterfaceInfo // in
 
-	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 
 	_cret = C.g_dbus_interface_info_ref(_arg0)
 
@@ -497,10 +296,10 @@ func (i *DBusInterfaceInfo) ref() *DBusInterfaceInfo {
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusInterfaceInfo) unref() {
+func (info *DBusInterfaceInfo) unref() {
 	var _arg0 *C.GDBusInterfaceInfo // out
 
-	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_interface_info_unref(_arg0)
 }
@@ -526,99 +325,13 @@ func (d *DBusMethodInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount: the reference count or -1 if statically allocated.
-func (d *DBusMethodInfo) RefCount() int {
-	var v int // out
-	v = int(d.native.ref_count)
-	return v
-}
-
-// Name: the name of the D-Bus method, e.g. @RequestName.
-func (d *DBusMethodInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// InArgs: pointer to a nil-terminated array of pointers to BusArgInfo
-// structures or nil if there are no in arguments.
-func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
-	var v []*DBusArgInfo
-	{
-		var i int
-		var z *C.GDBusArgInfo
-		for p := d.native.in_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.in_args, i)
-		v = make([]*DBusArgInfo, i)
-		for i := range src {
-			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_arg_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
-				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
-// OutArgs: pointer to a nil-terminated array of pointers to BusArgInfo
-// structures or nil if there are no out arguments.
-func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
-	var v []*DBusArgInfo
-	{
-		var i int
-		var z *C.GDBusArgInfo
-		for p := d.native.out_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.out_args, i)
-		v = make([]*DBusArgInfo, i)
-		for i := range src {
-			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_arg_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
-				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
-// Annotations: pointer to a nil-terminated array of pointers to
-// BusAnnotationInfo structures or nil if there are no annotations.
-func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
-				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusMethodInfo) ref() *DBusMethodInfo {
+func (info *DBusMethodInfo) ref() *DBusMethodInfo {
 	var _arg0 *C.GDBusMethodInfo // out
 	var _cret *C.GDBusMethodInfo // in
 
-	_arg0 = (*C.GDBusMethodInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusMethodInfo)(unsafe.Pointer(info))
 
 	_cret = C.g_dbus_method_info_ref(_arg0)
 
@@ -636,10 +349,10 @@ func (i *DBusMethodInfo) ref() *DBusMethodInfo {
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusMethodInfo) unref() {
+func (info *DBusMethodInfo) unref() {
 	var _arg0 *C.GDBusMethodInfo // out
 
-	_arg0 = (*C.GDBusMethodInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusMethodInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_method_info_unref(_arg0)
 }
@@ -689,102 +402,15 @@ func (d *DBusNodeInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount: the reference count or -1 if statically allocated.
-func (d *DBusNodeInfo) RefCount() int {
-	var v int // out
-	v = int(d.native.ref_count)
-	return v
-}
-
-// Path: the path of the node or nil if omitted. Note that this may be a
-// relative path. See the D-Bus specification for more details.
-func (d *DBusNodeInfo) Path() string {
-	var v string // out
-	v = C.GoString(d.native.path)
-	return v
-}
-
-// Interfaces: pointer to a nil-terminated array of pointers to BusInterfaceInfo
-// structures or nil if there are no interfaces.
-func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
-	var v []*DBusInterfaceInfo
-	{
-		var i int
-		var z *C.GDBusInterfaceInfo
-		for p := d.native.interfaces; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.interfaces, i)
-		v = make([]*DBusInterfaceInfo, i)
-		for i := range src {
-			v[i] = (*DBusInterfaceInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_interface_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusInterfaceInfo) {
-				C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
-// Nodes: pointer to a nil-terminated array of pointers to BusNodeInfo
-// structures or nil if there are no nodes.
-func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
-	var v []*DBusNodeInfo
-	{
-		var i int
-		var z *C.GDBusNodeInfo
-		for p := d.native.nodes; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.nodes, i)
-		v = make([]*DBusNodeInfo, i)
-		for i := range src {
-			v[i] = (*DBusNodeInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_node_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusNodeInfo) {
-				C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
-// Annotations: pointer to a nil-terminated array of pointers to
-// BusAnnotationInfo structures or nil if there are no annotations.
-func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
-				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
 // LookupInterface looks up information about an interface.
 //
 // The cost of this function is O(n) in number of interfaces.
-func (i *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
+func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var _arg0 *C.GDBusNodeInfo      // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusInterfaceInfo // in
 
-	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(info))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -803,11 +429,11 @@ func (i *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusNodeInfo) ref() *DBusNodeInfo {
+func (info *DBusNodeInfo) ref() *DBusNodeInfo {
 	var _arg0 *C.GDBusNodeInfo // out
 	var _cret *C.GDBusNodeInfo // in
 
-	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(info))
 
 	_cret = C.g_dbus_node_info_ref(_arg0)
 
@@ -825,10 +451,10 @@ func (i *DBusNodeInfo) ref() *DBusNodeInfo {
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusNodeInfo) unref() {
+func (info *DBusNodeInfo) unref() {
 	var _arg0 *C.GDBusNodeInfo // out
 
-	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_node_info_unref(_arg0)
 }
@@ -854,65 +480,13 @@ func (d *DBusPropertyInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount: the reference count or -1 if statically allocated.
-func (d *DBusPropertyInfo) RefCount() int {
-	var v int // out
-	v = int(d.native.ref_count)
-	return v
-}
-
-// Name: the name of the D-Bus property, e.g. "SupportedFilesystems".
-func (d *DBusPropertyInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// Signature: the D-Bus signature of the property (a single complete type).
-func (d *DBusPropertyInfo) Signature() string {
-	var v string // out
-	v = C.GoString(d.native.signature)
-	return v
-}
-
-// Flags access control flags for the property.
-func (d *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
-	var v DBusPropertyInfoFlags // out
-	v = (DBusPropertyInfoFlags)(d.native.flags)
-	return v
-}
-
-// Annotations: pointer to a nil-terminated array of pointers to
-// BusAnnotationInfo structures or nil if there are no annotations.
-func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
-				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusPropertyInfo) ref() *DBusPropertyInfo {
+func (info *DBusPropertyInfo) ref() *DBusPropertyInfo {
 	var _arg0 *C.GDBusPropertyInfo // out
 	var _cret *C.GDBusPropertyInfo // in
 
-	_arg0 = (*C.GDBusPropertyInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusPropertyInfo)(unsafe.Pointer(info))
 
 	_cret = C.g_dbus_property_info_ref(_arg0)
 
@@ -930,10 +504,10 @@ func (i *DBusPropertyInfo) ref() *DBusPropertyInfo {
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusPropertyInfo) unref() {
+func (info *DBusPropertyInfo) unref() {
 	var _arg0 *C.GDBusPropertyInfo // out
 
-	_arg0 = (*C.GDBusPropertyInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusPropertyInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_property_info_unref(_arg0)
 }
@@ -959,75 +533,13 @@ func (d *DBusSignalInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// RefCount: the reference count or -1 if statically allocated.
-func (d *DBusSignalInfo) RefCount() int {
-	var v int // out
-	v = int(d.native.ref_count)
-	return v
-}
-
-// Name: the name of the D-Bus signal, e.g. "NameOwnerChanged".
-func (d *DBusSignalInfo) Name() string {
-	var v string // out
-	v = C.GoString(d.native.name)
-	return v
-}
-
-// Args: pointer to a nil-terminated array of pointers to BusArgInfo structures
-// or nil if there are no arguments.
-func (d *DBusSignalInfo) Args() []*DBusArgInfo {
-	var v []*DBusArgInfo
-	{
-		var i int
-		var z *C.GDBusArgInfo
-		for p := d.native.args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.args, i)
-		v = make([]*DBusArgInfo, i)
-		for i := range src {
-			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_arg_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
-				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
-// Annotations: pointer to a nil-terminated array of pointers to
-// BusAnnotationInfo structures or nil if there are no annotations.
-func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
-	{
-		var i int
-		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
-			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
-				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
-			})
-		}
-	}
-	return v
-}
-
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusSignalInfo) ref() *DBusSignalInfo {
+func (info *DBusSignalInfo) ref() *DBusSignalInfo {
 	var _arg0 *C.GDBusSignalInfo // out
 	var _cret *C.GDBusSignalInfo // in
 
-	_arg0 = (*C.GDBusSignalInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusSignalInfo)(unsafe.Pointer(info))
 
 	_cret = C.g_dbus_signal_info_ref(_arg0)
 
@@ -1045,10 +557,10 @@ func (i *DBusSignalInfo) ref() *DBusSignalInfo {
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusSignalInfo) unref() {
+func (info *DBusSignalInfo) unref() {
 	var _arg0 *C.GDBusSignalInfo // out
 
-	_arg0 = (*C.GDBusSignalInfo)(unsafe.Pointer(i))
+	_arg0 = (*C.GDBusSignalInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_signal_info_unref(_arg0)
 }

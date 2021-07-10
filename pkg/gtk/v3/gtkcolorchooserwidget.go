@@ -54,9 +54,9 @@ type ColorChooserWidget interface {
 type ColorChooserWidgetClass struct {
 	*externglib.Object
 	BoxClass
-	BuildableInterface
-	ColorChooserInterface
-	OrientableInterface
+	BuildableIface
+	ColorChooserIface
+	OrientableIface
 }
 
 var _ ColorChooserWidget = (*ColorChooserWidgetClass)(nil)
@@ -69,29 +69,32 @@ func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ColorChooserInterface: ColorChooserInterface{
+		ColorChooserIface: ColorChooserIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}

@@ -35,8 +35,8 @@ type ToggleButtonAccessible interface {
 type ToggleButtonAccessibleClass struct {
 	*externglib.Object
 	ButtonAccessibleClass
-	atk.ActionInterface
-	atk.ImageInterface
+	atk.ActionIface
+	atk.ImageIface
 }
 
 var _ ToggleButtonAccessible = (*ToggleButtonAccessibleClass)(nil)
@@ -55,17 +55,17 @@ func wrapToggleButtonAccessible(obj *externglib.Object) ToggleButtonAccessible {
 					},
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
-			ImageInterface: atk.ImageInterface{
+			ImageIface: atk.ImageIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
-		ImageInterface: atk.ImageInterface{
+		ImageIface: atk.ImageIface{
 			Object: obj,
 		},
 	}

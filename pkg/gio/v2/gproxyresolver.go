@@ -103,15 +103,15 @@ type ProxyResolver interface {
 	LookupFinish(result AsyncResult) ([]string, error)
 }
 
-// ProxyResolverInterface implements the ProxyResolver interface.
-type ProxyResolverInterface struct {
+// ProxyResolverIface implements the ProxyResolver interface.
+type ProxyResolverIface struct {
 	*externglib.Object
 }
 
-var _ ProxyResolver = (*ProxyResolverInterface)(nil)
+var _ ProxyResolver = (*ProxyResolverIface)(nil)
 
 func wrapProxyResolver(obj *externglib.Object) ProxyResolver {
-	return &ProxyResolverInterface{
+	return &ProxyResolverIface{
 		Object: obj,
 	}
 }
@@ -125,11 +125,11 @@ func marshalProxyResolver(p uintptr) (interface{}, error) {
 // IsSupported checks if @resolver can be used on this system. (This is used
 // internally; g_proxy_resolver_get_default() will only return a proxy resolver
 // that returns true for this method.)
-func (r *ProxyResolverInterface) IsSupported() bool {
+func (resolver *ProxyResolverIface) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 
 	_cret = C.g_proxy_resolver_is_supported(_arg0)
 
@@ -154,14 +154,14 @@ func (r *ProxyResolverInterface) IsSupported() bool {
 //
 // `direct://` is used when no proxy is needed. Direct connection should not be
 // attempted unless it is part of the returned array of proxies.
-func (r *ProxyResolverInterface) Lookup(uri string, cancellable Cancellable) ([]string, error) {
+func (resolver *ProxyResolverIface) Lookup(uri string, cancellable Cancellable) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GCancellable   // out
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -192,14 +192,14 @@ func (r *ProxyResolverInterface) Lookup(uri string, cancellable Cancellable) ([]
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup() for
 // more details.
-func (r *ProxyResolverInterface) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
+func (resolver *ProxyResolverIface) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxyResolver     // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -212,13 +212,13 @@ func (r *ProxyResolverInterface) LookupAsync(uri string, cancellable Cancellable
 // LookupFinish: call this function to obtain the array of proxy URIs when
 // g_proxy_resolver_lookup_async() is complete. See g_proxy_resolver_lookup()
 // for more details.
-func (r *ProxyResolverInterface) LookupFinish(result AsyncResult) ([]string, error) {
+func (resolver *ProxyResolverIface) LookupFinish(result AsyncResult) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)

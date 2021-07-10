@@ -74,9 +74,9 @@ type MenuToolButton interface {
 type MenuToolButtonClass struct {
 	*externglib.Object
 	ToolButtonClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ MenuToolButton = (*MenuToolButtonClass)(nil)
@@ -93,53 +93,64 @@ func wrapMenuToolButton(obj *externglib.Object) MenuToolButton {
 					ContainerClass: ContainerClass{
 						Object: obj,
 						WidgetClass: WidgetClass{
-							InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-							BuildableInterface: BuildableInterface{
+							Object: obj,
+							InitiallyUnowned: externglib.InitiallyUnowned{
+								Object: obj,
+							},
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				ActivatableInterface: ActivatableInterface{
+				ActivatableIface: ActivatableIface{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -175,7 +186,7 @@ func NewMenuToolButton(iconWidget Widget, label string) *MenuToolButtonClass {
 // MenuToolButton will contain an icon and label from the stock item indicated
 // by @stock_id.
 //
-// Deprecated: since version 3.10.
+// Deprecated: Use gtk_menu_tool_button_new() instead.
 func NewMenuToolButtonFromStock(stockId string) *MenuToolButtonClass {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -193,11 +204,11 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButtonClass {
 }
 
 // Menu gets the Menu associated with MenuToolButton.
-func (b *MenuToolButtonClass) Menu() *WidgetClass {
+func (button *MenuToolButtonClass) Menu() *WidgetClass {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _cret *C.GtkWidget         // in
 
-	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_menu_tool_button_get_menu(_arg0)
 
@@ -211,11 +222,11 @@ func (b *MenuToolButtonClass) Menu() *WidgetClass {
 // SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip for
 // the arrow button which pops up the menu. See gtk_tool_item_set_tooltip_text()
 // for setting a tooltip on the whole MenuToolButton.
-func (b *MenuToolButtonClass) SetArrowTooltipMarkup(markup string) {
+func (button *MenuToolButtonClass) SetArrowTooltipMarkup(markup string) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.gchar             // out
 
-	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(C.CString(markup))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -225,11 +236,11 @@ func (b *MenuToolButtonClass) SetArrowTooltipMarkup(markup string) {
 // SetArrowTooltipText sets the tooltip text to be used as tooltip for the arrow
 // button which pops up the menu. See gtk_tool_item_set_tooltip_text() for
 // setting a tooltip on the whole MenuToolButton.
-func (b *MenuToolButtonClass) SetArrowTooltipText(text string) {
+func (button *MenuToolButtonClass) SetArrowTooltipText(text string) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.gchar             // out
 
-	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -238,11 +249,11 @@ func (b *MenuToolButtonClass) SetArrowTooltipText(text string) {
 
 // SetMenu sets the Menu that is popped up when the user clicks on the arrow. If
 // @menu is NULL, the arrow button becomes insensitive.
-func (b *MenuToolButtonClass) SetMenu(menu Widget) {
+func (button *MenuToolButtonClass) SetMenu(menu Widget) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.GtkWidget         // out
 
-	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)

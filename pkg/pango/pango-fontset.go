@@ -119,12 +119,12 @@ func marshalFontset(p uintptr) (interface{}, error) {
 // one.
 //
 // If @func returns true, that stops the iteration.
-func (f *FontsetClass) Foreach(fn FontsetForeachFunc) {
+func (fontset *FontsetClass) Foreach(fn FontsetForeachFunc) {
 	var _arg0 *C.PangoFontset           // out
 	var _arg1 C.PangoFontsetForeachFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(fontset.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
 	_arg2 = C.gpointer(box.Assign(fn))
 
@@ -133,12 +133,12 @@ func (f *FontsetClass) Foreach(fn FontsetForeachFunc) {
 
 // Font returns the font in the fontset that contains the best glyph for a
 // Unicode character.
-func (f *FontsetClass) Font(wc uint) *FontClass {
+func (fontset *FontsetClass) Font(wc uint) *FontClass {
 	var _arg0 *C.PangoFontset // out
 	var _arg1 C.guint         // out
 	var _cret *C.PangoFont    // in
 
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(fontset.Native()))
 	_arg1 = C.guint(wc)
 
 	_cret = C.pango_fontset_get_font(_arg0, _arg1)
@@ -151,11 +151,11 @@ func (f *FontsetClass) Font(wc uint) *FontClass {
 }
 
 // Metrics: get overall metric information for the fonts in the fontset.
-func (f *FontsetClass) Metrics() *FontMetrics {
+func (fontset *FontsetClass) Metrics() *FontMetrics {
 	var _arg0 *C.PangoFontset     // out
 	var _cret *C.PangoFontMetrics // in
 
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(fontset.Native()))
 
 	_cret = C.pango_fontset_get_metrics(_arg0)
 
@@ -222,22 +222,22 @@ func NewFontsetSimple(language *Language) *FontsetSimpleClass {
 }
 
 // Append adds a font to the fontset.
-func (f *FontsetSimpleClass) Append(font Font) {
+func (fontset *FontsetSimpleClass) Append(font Font) {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _arg1 *C.PangoFont          // out
 
-	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(fontset.Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_fontset_simple_append(_arg0, _arg1)
 }
 
 // Size returns the number of fonts in the fontset.
-func (f *FontsetSimpleClass) Size() int {
+func (fontset *FontsetSimpleClass) Size() int {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(fontset.Native()))
 
 	_cret = C.pango_fontset_simple_size(_arg0)
 

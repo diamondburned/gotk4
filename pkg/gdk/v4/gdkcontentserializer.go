@@ -96,11 +96,11 @@ func marshalContentSerializer(p uintptr) (interface{}, error) {
 // Cancellable gets the cancellable for the current operation.
 //
 // This is the `GCancellable` that was passed to [content_serialize_async].
-func (s *ContentSerializerClass) Cancellable() *gio.CancellableClass {
+func (serializer *ContentSerializerClass) Cancellable() *gio.CancellableClass {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GCancellable         // in
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_cancellable(_arg0)
 
@@ -112,11 +112,11 @@ func (s *ContentSerializerClass) Cancellable() *gio.CancellableClass {
 }
 
 // GType gets the `GType` to of the object to serialize.
-func (s *ContentSerializerClass) GType() externglib.Type {
+func (serializer *ContentSerializerClass) GType() externglib.Type {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.GType                 // in
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_gtype(_arg0)
 
@@ -128,11 +128,11 @@ func (s *ContentSerializerClass) GType() externglib.Type {
 }
 
 // MIMEType gets the mime type to serialize to.
-func (s *ContentSerializerClass) MIMEType() string {
+func (serializer *ContentSerializerClass) MIMEType() string {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_mime_type(_arg0)
 
@@ -146,11 +146,11 @@ func (s *ContentSerializerClass) MIMEType() string {
 // OutputStream gets the output stream for the current operation.
 //
 // This is the stream that was passed to [func@content_serialize_async].
-func (s *ContentSerializerClass) OutputStream() *gio.OutputStreamClass {
+func (serializer *ContentSerializerClass) OutputStream() *gio.OutputStreamClass {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GOutputStream        // in
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_output_stream(_arg0)
 
@@ -164,11 +164,11 @@ func (s *ContentSerializerClass) OutputStream() *gio.OutputStreamClass {
 // Priority gets the I/O priority for the current operation.
 //
 // This is the priority that was passed to [func@content_serialize_async].
-func (s *ContentSerializerClass) Priority() int {
+func (serializer *ContentSerializerClass) Priority() int {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.int                   // in
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_priority(_arg0)
 
@@ -182,11 +182,11 @@ func (s *ContentSerializerClass) Priority() int {
 // TaskData gets the data that was associated with the current operation.
 //
 // See [method@Gdk.ContentSerializer.set_task_data].
-func (s *ContentSerializerClass) TaskData() interface{} {
+func (serializer *ContentSerializerClass) TaskData() interface{} {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.gpointer              // in
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_task_data(_arg0)
 
@@ -199,11 +199,11 @@ func (s *ContentSerializerClass) TaskData() interface{} {
 
 // UserData gets the user data that was passed when the serializer was
 // registered.
-func (s *ContentSerializerClass) UserData() interface{} {
+func (serializer *ContentSerializerClass) UserData() interface{} {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.gpointer              // in
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_user_data(_arg0)
 
@@ -215,11 +215,11 @@ func (s *ContentSerializerClass) UserData() interface{} {
 }
 
 // Value gets the `GValue` to read the object to serialize from.
-func (s *ContentSerializerClass) Value() *externglib.Value {
+func (serializer *ContentSerializerClass) Value() *externglib.Value {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GValue               // in
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_value(_arg0)
 
@@ -233,11 +233,11 @@ func (s *ContentSerializerClass) Value() *externglib.Value {
 // ReturnError: indicate that the serialization has ended with an error.
 //
 // This function consumes @error.
-func (s *ContentSerializerClass) ReturnError(err error) {
+func (serializer *ContentSerializerClass) ReturnError(err error) {
 	var _arg0 *C.GdkContentSerializer // out
 	var _arg1 *C.GError               // out
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.gdk_content_serializer_return_error(_arg0, _arg1)
@@ -245,10 +245,10 @@ func (s *ContentSerializerClass) ReturnError(err error) {
 
 // ReturnSuccess: indicate that the serialization has been successfully
 // completed.
-func (s *ContentSerializerClass) ReturnSuccess() {
+func (serializer *ContentSerializerClass) ReturnSuccess() {
 	var _arg0 *C.GdkContentSerializer // out
 
-	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	C.gdk_content_serializer_return_success(_arg0)
 }

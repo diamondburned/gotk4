@@ -87,15 +87,15 @@ type Proxy interface {
 	SupportsHostname() bool
 }
 
-// ProxyInterface implements the Proxy interface.
-type ProxyInterface struct {
+// ProxyIface implements the Proxy interface.
+type ProxyIface struct {
 	*externglib.Object
 }
 
-var _ Proxy = (*ProxyInterface)(nil)
+var _ Proxy = (*ProxyIface)(nil)
 
 func wrapProxy(obj *externglib.Object) Proxy {
-	return &ProxyInterface{
+	return &ProxyIface{
 		Object: obj,
 	}
 }
@@ -110,7 +110,7 @@ func marshalProxy(p uintptr) (interface{}, error) {
 // that is connected to the proxy server), this does the necessary handshake to
 // connect to @proxy_address, and if required, wraps the OStream to handle proxy
 // payload.
-func (p *ProxyInterface) ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (*IOStreamClass, error) {
+func (proxy *ProxyIface) ConnectProxy(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (*IOStreamClass, error) {
 	var _arg0 *C.GProxy        // out
 	var _arg1 *C.GIOStream     // out
 	var _arg2 *C.GProxyAddress // out
@@ -118,7 +118,7 @@ func (p *ProxyInterface) ConnectProxy(connection IOStream, proxyAddress ProxyAdd
 	var _cret *C.GIOStream     // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -135,7 +135,7 @@ func (p *ProxyInterface) ConnectProxy(connection IOStream, proxyAddress ProxyAdd
 }
 
 // ConnectAsync asynchronous version of g_proxy_connect().
-func (p *ProxyInterface) ConnectAsync(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable, callback AsyncReadyCallback) {
+func (proxy *ProxyIface) ConnectAsync(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxy             // out
 	var _arg1 *C.GIOStream          // out
 	var _arg2 *C.GProxyAddress      // out
@@ -143,7 +143,7 @@ func (p *ProxyInterface) ConnectAsync(connection IOStream, proxyAddress ProxyAdd
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -154,13 +154,13 @@ func (p *ProxyInterface) ConnectAsync(connection IOStream, proxyAddress ProxyAdd
 }
 
 // ConnectFinish: see g_proxy_connect().
-func (p *ProxyInterface) ConnectFinish(result AsyncResult) (*IOStreamClass, error) {
+func (proxy *ProxyIface) ConnectFinish(result AsyncResult) (*IOStreamClass, error) {
 	var _arg0 *C.GProxy       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GIOStream    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_proxy_connect_finish(_arg0, _arg1, &_cerr)
@@ -180,11 +180,11 @@ func (p *ProxyInterface) ConnectFinish(result AsyncResult) (*IOStreamClass, erro
 // protocol. When false is returned, the caller should resolve the destination
 // hostname first, and then pass a Address containing the stringified IP address
 // to g_proxy_connect() or g_proxy_connect_async().
-func (p *ProxyInterface) SupportsHostname() bool {
+func (proxy *ProxyIface) SupportsHostname() bool {
 	var _arg0 *C.GProxy  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_proxy_supports_hostname(_arg0)
 

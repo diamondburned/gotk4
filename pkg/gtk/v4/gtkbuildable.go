@@ -71,15 +71,15 @@ type Buildable interface {
 	BuildableID() string
 }
 
-// BuildableInterface implements the Buildable interface.
-type BuildableInterface struct {
+// BuildableIface implements the Buildable interface.
+type BuildableIface struct {
 	*externglib.Object
 }
 
-var _ Buildable = (*BuildableInterface)(nil)
+var _ Buildable = (*BuildableIface)(nil)
 
 func wrapBuildable(obj *externglib.Object) Buildable {
-	return &BuildableInterface{
+	return &BuildableIface{
 		Object: obj,
 	}
 }
@@ -94,11 +94,11 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 //
 // `GtkBuilder` sets the name based on the ID attribute of the <object> tag used
 // to construct the @buildable.
-func (b *BuildableInterface) BuildableID() string {
+func (buildable *BuildableIface) BuildableID() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 
 	_cret = C.gtk_buildable_get_buildable_id(_arg0)
 

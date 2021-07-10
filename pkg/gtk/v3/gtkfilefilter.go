@@ -148,16 +148,20 @@ type FileFilter interface {
 
 // FileFilterClass implements the FileFilter interface.
 type FileFilterClass struct {
+	*externglib.Object
 	externglib.InitiallyUnowned
-	BuildableInterface
+	BuildableIface
 }
 
 var _ FileFilter = (*FileFilterClass)(nil)
 
 func wrapFileFilter(obj *externglib.Object) FileFilter {
 	return &FileFilterClass{
-		InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-		BuildableInterface: BuildableInterface{
+		Object: obj,
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -206,11 +210,11 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilterClass {
 }
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.
-func (f *FileFilterClass) AddMIMEType(mimeType string) {
+func (filter *FileFilterClass) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -218,11 +222,11 @@ func (f *FileFilterClass) AddMIMEType(mimeType string) {
 }
 
 // AddPattern adds a rule allowing a shell style glob to a filter.
-func (f *FileFilterClass) AddPattern(pattern string) {
+func (filter *FileFilterClass) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -231,10 +235,10 @@ func (f *FileFilterClass) AddPattern(pattern string) {
 
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
 // GdkPixbuf.
-func (f *FileFilterClass) AddPixbufFormats() {
+func (filter *FileFilterClass) AddPixbufFormats() {
 	var _arg0 *C.GtkFileFilter // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
@@ -245,12 +249,12 @@ func (f *FileFilterClass) AddPixbufFormats() {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of FileChooser.
-func (f *FileFilterClass) Filter(filterInfo *FileFilterInfo) bool {
+func (filter *FileFilterClass) Filter(filterInfo *FileFilterInfo) bool {
 	var _arg0 *C.GtkFileFilter     // out
 	var _arg1 *C.GtkFileFilterInfo // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.GtkFileFilterInfo)(unsafe.Pointer(filterInfo))
 
 	_cret = C.gtk_file_filter_filter(_arg0, _arg1)
@@ -266,11 +270,11 @@ func (f *FileFilterClass) Filter(filterInfo *FileFilterInfo) bool {
 
 // Name gets the human-readable name for the filter. See
 // gtk_file_filter_set_name().
-func (f *FileFilterClass) Name() string {
+func (filter *FileFilterClass) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
 
@@ -286,11 +290,11 @@ func (f *FileFilterClass) Name() string {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of FileChooser.
-func (f *FileFilterClass) Needed() FileFilterFlags {
+func (filter *FileFilterClass) Needed() FileFilterFlags {
 	var _arg0 *C.GtkFileFilter     // out
 	var _cret C.GtkFileFilterFlags // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_needed(_arg0)
 
@@ -304,11 +308,11 @@ func (f *FileFilterClass) Needed() FileFilterFlags {
 // SetName sets the human-readable name of the filter; this is the string that
 // will be displayed in the file selector user interface if there is a
 // selectable list of filters.
-func (f *FileFilterClass) SetName(name string) {
+func (filter *FileFilterClass) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -316,11 +320,11 @@ func (f *FileFilterClass) SetName(name string) {
 }
 
 // ToGVariant: serialize a file filter to an a{sv} variant.
-func (f *FileFilterClass) ToGVariant() *glib.Variant {
+func (filter *FileFilterClass) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 
@@ -350,40 +354,4 @@ func WrapFileFilterInfo(ptr unsafe.Pointer) *FileFilterInfo {
 // Native returns the underlying C source pointer.
 func (f *FileFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
-}
-
-// Contains flags indicating which of the following fields need are filled
-func (f *FileFilterInfo) Contains() FileFilterFlags {
-	var v FileFilterFlags // out
-	v = (FileFilterFlags)(f.native.contains)
-	return v
-}
-
-// Filename: the filename of the file being tested
-func (f *FileFilterInfo) Filename() string {
-	var v string // out
-	v = C.GoString(f.native.filename)
-	return v
-}
-
-// URI: the URI for the file being tested
-func (f *FileFilterInfo) URI() string {
-	var v string // out
-	v = C.GoString(f.native.uri)
-	return v
-}
-
-// DisplayName: the string that will be used to display the file in the file
-// chooser
-func (f *FileFilterInfo) DisplayName() string {
-	var v string // out
-	v = C.GoString(f.native.display_name)
-	return v
-}
-
-// MIMEType: the mime type of the file
-func (f *FileFilterInfo) MIMEType() string {
-	var v string // out
-	v = C.GoString(f.native.mime_type)
-	return v
 }

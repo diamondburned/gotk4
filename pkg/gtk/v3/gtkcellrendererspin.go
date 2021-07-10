@@ -54,7 +54,9 @@ func wrapCellRendererSpin(obj *externglib.Object) CellRendererSpin {
 	return &CellRendererSpinClass{
 		CellRendererTextClass: CellRendererTextClass{
 			CellRendererClass: CellRendererClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
 			},
 		},
 	}

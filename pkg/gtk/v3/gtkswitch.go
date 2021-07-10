@@ -69,9 +69,9 @@ type Switch interface {
 type SwitchClass struct {
 	*externglib.Object
 	WidgetClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ Switch = (*SwitchClass)(nil)
@@ -80,23 +80,30 @@ func wrapSwitch(obj *externglib.Object) Switch {
 	return &SwitchClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			BuildableInterface: BuildableInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -122,11 +129,11 @@ func NewSwitch() *SwitchClass {
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.
-func (s *SwitchClass) Active() bool {
+func (sw *SwitchClass) Active() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
 
 	_cret = C.gtk_switch_get_active(_arg0)
 
@@ -140,11 +147,11 @@ func (s *SwitchClass) Active() bool {
 }
 
 // State gets the underlying state of the Switch.
-func (s *SwitchClass) State() bool {
+func (sw *SwitchClass) State() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
 
 	_cret = C.gtk_switch_get_state(_arg0)
 
@@ -158,11 +165,11 @@ func (s *SwitchClass) State() bool {
 }
 
 // SetActive changes the state of @sw to the desired one.
-func (s *SwitchClass) SetActive(isActive bool) {
+func (sw *SwitchClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -177,11 +184,11 @@ func (s *SwitchClass) SetActive(isActive bool) {
 // Switch::state-set signal handler.
 //
 // See Switch::state-set for details.
-func (s *SwitchClass) SetState(state bool) {
+func (sw *SwitchClass) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
 	if state {
 		_arg1 = C.TRUE
 	}

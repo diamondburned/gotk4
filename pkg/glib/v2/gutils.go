@@ -191,7 +191,8 @@ func FormatSize(size uint64) string {
 //
 // This string should be freed with g_free() when not needed any longer.
 //
-// Deprecated: since version 2.30.
+// Deprecated: This function is broken due to its use of SI suffixes to denote
+// IEC units. Use g_format_size() instead.
 func FormatSizeForDisplay(size int64) string {
 	var _arg1 C.goffset // out
 	var _cret *C.gchar  // in
@@ -684,18 +685,4 @@ func WrapDebugKey(ptr unsafe.Pointer) *DebugKey {
 // Native returns the underlying C source pointer.
 func (d *DebugKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
-}
-
-// Key: the string
-func (d *DebugKey) Key() string {
-	var v string // out
-	v = C.GoString(d.native.key)
-	return v
-}
-
-// Value: the flag
-func (d *DebugKey) Value() uint {
-	var v uint // out
-	v = uint(d.native.value)
-	return v
 }

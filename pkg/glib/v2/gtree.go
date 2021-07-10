@@ -51,10 +51,10 @@ func (t *Tree) Native() unsafe.Pointer {
 // should either free them first or create the #GTree using g_tree_new_full().
 // In the latter case the destroy functions you supplied will be called on all
 // keys and values before destroying the #GTree.
-func (t *Tree) Destroy() {
+func (tree *Tree) Destroy() {
 	var _arg0 *C.GTree // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 
 	C.g_tree_destroy(_arg0)
 }
@@ -64,11 +64,11 @@ func (t *Tree) Destroy() {
 // If the #GTree contains no nodes, the height is 0. If the #GTree contains only
 // one root node the height is 1. If the root node has children the height is 2,
 // etc.
-func (t *Tree) Height() int {
+func (tree *Tree) Height() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 
 	_cret = C.g_tree_height(_arg0)
 
@@ -83,12 +83,12 @@ func (t *Tree) Height() int {
 //
 // Inserts a new key and value into a #GTree as g_tree_insert_node() does, only
 // this function does not return the inserted or set node.
-func (t *Tree) Insert(key interface{}, value interface{}) {
+func (tree *Tree) Insert(key interface{}, value interface{}) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 	_arg1 = (C.gpointer)(box.Assign(key))
 	_arg2 = (C.gpointer)(box.Assign(value))
 
@@ -98,12 +98,12 @@ func (t *Tree) Insert(key interface{}, value interface{}) {
 // Lookup gets the value corresponding to the given key. Since a #GTree is
 // automatically balanced as key/value pairs are added, key lookup is O(log n)
 // (where n is the number of key/value pairs in the tree).
-func (t *Tree) Lookup(key interface{}) interface{} {
+func (tree *Tree) Lookup(key interface{}) interface{} {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gpointer      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 	_arg1 = (C.gconstpointer)(box.Assign(key))
 
 	_cret = C.g_tree_lookup(_arg0, _arg1)
@@ -118,14 +118,14 @@ func (t *Tree) Lookup(key interface{}) interface{} {
 // LookupExtended looks up a key in the #GTree, returning the original key and
 // the associated value. This is useful if you need to free the memory allocated
 // for the original key, for example before calling g_tree_remove().
-func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value interface{}, ok bool) {
+func (tree *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value interface{}, ok bool) {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gpointer      // in
 	var _arg3 C.gpointer      // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 	_arg1 = (C.gconstpointer)(box.Assign(lookupKey))
 
 	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
@@ -144,11 +144,11 @@ func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value
 }
 
 // Nnodes gets the number of nodes in a #GTree.
-func (t *Tree) Nnodes() int {
+func (tree *Tree) Nnodes() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 
 	_cret = C.g_tree_nnodes(_arg0)
 
@@ -162,11 +162,11 @@ func (t *Tree) Nnodes() int {
 // Ref increments the reference count of @tree by one.
 //
 // It is safe to call this function from any thread.
-func (t *Tree) ref() *Tree {
+func (tree *Tree) ref() *Tree {
 	var _arg0 *C.GTree // out
 	var _cret *C.GTree // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 
 	_cret = C.g_tree_ref(_arg0)
 
@@ -190,12 +190,12 @@ func (t *Tree) ref() *Tree {
 //
 // The cost of maintaining a balanced tree while removing a key/value result in
 // a O(n log(n)) operation where most of the other operations are O(log(n)).
-func (t *Tree) Remove(key interface{}) bool {
+func (tree *Tree) Remove(key interface{}) bool {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 	_arg1 = (C.gconstpointer)(box.Assign(key))
 
 	_cret = C.g_tree_remove(_arg0, _arg1)
@@ -211,12 +211,12 @@ func (t *Tree) Remove(key interface{}) bool {
 
 // Replace inserts a new key and value into a #GTree as g_tree_replace_node()
 // does, only this function does not return the inserted or set node.
-func (t *Tree) Replace(key interface{}, value interface{}) {
+func (tree *Tree) Replace(key interface{}, value interface{}) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 	_arg1 = (C.gpointer)(box.Assign(key))
 	_arg2 = (C.gpointer)(box.Assign(value))
 
@@ -227,12 +227,12 @@ func (t *Tree) Replace(key interface{}, value interface{}) {
 // the key and value destroy functions.
 //
 // If the key does not exist in the #GTree, the function does nothing.
-func (t *Tree) Steal(key interface{}) bool {
+func (tree *Tree) Steal(key interface{}) bool {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 	_arg1 = (C.gconstpointer)(box.Assign(key))
 
 	_cret = C.g_tree_steal(_arg0, _arg1)
@@ -251,10 +251,10 @@ func (t *Tree) Steal(key interface{}) bool {
 // specified) and all memory allocated by @tree will be released.
 //
 // It is safe to call this function from any thread.
-func (t *Tree) unref() {
+func (tree *Tree) unref() {
 	var _arg0 *C.GTree // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(t))
+	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
 
 	C.g_tree_unref(_arg0)
 }

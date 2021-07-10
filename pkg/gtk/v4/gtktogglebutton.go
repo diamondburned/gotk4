@@ -134,10 +134,10 @@ type ToggleButton interface {
 type ToggleButtonClass struct {
 	*externglib.Object
 	ButtonClass
-	AccessibleInterface
-	ActionableInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	ActionableIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ ToggleButton = (*ToggleButtonClass)(nil)
@@ -148,62 +148,73 @@ func wrapToggleButton(obj *externglib.Object) ToggleButton {
 		ButtonClass: ButtonClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
-			AccessibleInterface: AccessibleInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -271,11 +282,11 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButtonClass {
 // Active queries a `GtkToggleButton` and returns its current state.
 //
 // Returns true if the toggle button is pressed in and false if it is raised.
-func (t *ToggleButtonClass) Active() bool {
+func (toggleButton *ToggleButtonClass) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
 
@@ -295,11 +306,11 @@ func (t *ToggleButtonClass) Active() bool {
 //
 // If the status of the button changes, this action causes the
 // [signal@GtkToggleButton::toggled] signal to be emitted.
-func (t *ToggleButtonClass) SetActive(isActive bool) {
+func (toggleButton *ToggleButtonClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -317,11 +328,11 @@ func (t *ToggleButtonClass) SetActive(isActive bool) {
 // Note that the same effect can be achieved via the [interface@Gtk.Actionable]
 // API, by using the same action with parameter type and state type 's' for all
 // buttons in the group, and giving each button its own target value.
-func (t *ToggleButtonClass) SetGroup(group ToggleButton) {
+func (toggleButton *ToggleButtonClass) SetGroup(group ToggleButton) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 *C.GtkToggleButton // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 	_arg1 = (*C.GtkToggleButton)(unsafe.Pointer(group.Native()))
 
 	C.gtk_toggle_button_set_group(_arg0, _arg1)
@@ -330,10 +341,10 @@ func (t *ToggleButtonClass) SetGroup(group ToggleButton) {
 // Toggled emits the ::toggled signal on the `GtkToggleButton`.
 //
 // There is no good reason for an application ever to call this function.
-func (t *ToggleButtonClass) Toggled() {
+func (toggleButton *ToggleButtonClass) Toggled() {
 	var _arg0 *C.GtkToggleButton // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	C.gtk_toggle_button_toggled(_arg0)
 }

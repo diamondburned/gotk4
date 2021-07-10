@@ -214,10 +214,10 @@ func NewCancellable() *CancellableClass {
 // it to complete asynchronously. That is, if you cancel the operation from the
 // same thread in which it is running, then the operation's ReadyCallback will
 // not be invoked until the application returns to the main loop.
-func (c *CancellableClass) Cancel() {
+func (cancellable *CancellableClass) Cancel() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_cancellable_cancel(_arg0)
 }
@@ -233,11 +233,11 @@ func (c *CancellableClass) Cancel() {
 // #GCancellable::cancelled for details on how to use this.
 //
 // If @cancellable is nil or @handler_id is `0` this function does nothing.
-func (c *CancellableClass) Disconnect(handlerId uint32) {
+func (cancellable *CancellableClass) Disconnect(handlerId uint32) {
 	var _arg0 *C.GCancellable // out
 	var _arg1 C.gulong        // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg1 = C.gulong(handlerId)
 
 	C.g_cancellable_disconnect(_arg0, _arg1)
@@ -256,11 +256,11 @@ func (c *CancellableClass) Disconnect(handlerId uint32) {
 // file descriptor.
 //
 // See also g_cancellable_make_pollfd().
-func (c *CancellableClass) Fd() int {
+func (cancellable *CancellableClass) Fd() int {
 	var _arg0 *C.GCancellable // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_cancellable_get_fd(_arg0)
 
@@ -272,11 +272,11 @@ func (c *CancellableClass) Fd() int {
 }
 
 // IsCancelled checks if a cancellable job has been cancelled.
-func (c *CancellableClass) IsCancelled() bool {
+func (cancellable *CancellableClass) IsCancelled() bool {
 	var _arg0 *C.GCancellable // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_cancellable_is_cancelled(_arg0)
 
@@ -306,12 +306,12 @@ func (c *CancellableClass) IsCancelled() bool {
 // You are not supposed to read from the fd yourself, just check for readable
 // status. Reading to unset the readable status is done with
 // g_cancellable_reset().
-func (c *CancellableClass) MakePollfd(pollfd *glib.PollFD) bool {
+func (cancellable *CancellableClass) MakePollfd(pollfd *glib.PollFD) bool {
 	var _arg0 *C.GCancellable // out
 	var _arg1 *C.GPollFD      // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd))
 
 	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
@@ -327,10 +327,10 @@ func (c *CancellableClass) MakePollfd(pollfd *glib.PollFD) bool {
 
 // PopCurrent pops @cancellable off the cancellable stack (verifying that
 // @cancellable is on the top of the stack).
-func (c *CancellableClass) PopCurrent() {
+func (cancellable *CancellableClass) PopCurrent() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_cancellable_pop_current(_arg0)
 }
@@ -343,10 +343,10 @@ func (c *CancellableClass) PopCurrent() {
 //
 // This is typically called automatically by e.g. #GFile operations, so you
 // rarely have to call this yourself.
-func (c *CancellableClass) PushCurrent() {
+func (cancellable *CancellableClass) PushCurrent() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_cancellable_push_current(_arg0)
 }
@@ -360,10 +360,10 @@ func (c *CancellableClass) PushCurrent() {
 // descriptors until it is finalized if this function is not called. This can
 // cause the application to run out of file descriptors when many #GCancellables
 // are used at the same time.
-func (c *CancellableClass) ReleaseFd() {
+func (cancellable *CancellableClass) ReleaseFd() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_cancellable_release_fd(_arg0)
 }
@@ -379,21 +379,21 @@ func (c *CancellableClass) ReleaseFd() {
 // cancellable after cancelling it, and let it die with the outstanding async
 // operations. You should create a fresh cancellable for further async
 // operations.
-func (c *CancellableClass) Reset() {
+func (cancellable *CancellableClass) Reset() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_cancellable_reset(_arg0)
 }
 
 // SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
 // notify that the operation was cancelled.
-func (c *CancellableClass) SetErrorIfCancelled() error {
+func (cancellable *CancellableClass) SetErrorIfCancelled() error {
 	var _arg0 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_cancellable_set_error_if_cancelled(_arg0, &_cerr)
 
@@ -413,11 +413,11 @@ func (c *CancellableClass) SetErrorIfCancelled() error {
 // the source will never trigger.
 //
 // The new #GSource will hold a reference to the #GCancellable.
-func (c *CancellableClass) NewSource() *glib.Source {
+func (cancellable *CancellableClass) NewSource() *glib.Source {
 	var _arg0 *C.GCancellable // out
 	var _cret *C.GSource      // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_cancellable_source_new(_arg0)
 

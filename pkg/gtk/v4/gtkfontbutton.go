@@ -63,10 +63,10 @@ type FontButton interface {
 type FontButtonClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	FontChooserInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	FontChooserIface
 }
 
 var _ FontButton = (*FontButtonClass)(nil)
@@ -75,27 +75,30 @@ func wrapFontButton(obj *externglib.Object) FontButton {
 	return &FontButtonClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		FontChooserInterface: FontChooserInterface{
+		FontChooserIface: FontChooserIface{
 			Object: obj,
 		},
 	}
@@ -139,11 +142,11 @@ func NewFontButtonWithFont(fontname string) *FontButtonClass {
 }
 
 // Modal gets whether the dialog is modal.
-func (f *FontButtonClass) Modal() bool {
+func (fontButton *FontButtonClass) Modal() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_modal(_arg0)
 
@@ -157,11 +160,11 @@ func (f *FontButtonClass) Modal() bool {
 }
 
 // Title retrieves the title of the font chooser dialog.
-func (f *FontButtonClass) Title() string {
+func (fontButton *FontButtonClass) Title() string {
 	var _arg0 *C.GtkFontButton // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_title(_arg0)
 
@@ -173,11 +176,11 @@ func (f *FontButtonClass) Title() string {
 }
 
 // UseFont returns whether the selected font is used in the label.
-func (f *FontButtonClass) UseFont() bool {
+func (fontButton *FontButtonClass) UseFont() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_use_font(_arg0)
 
@@ -191,11 +194,11 @@ func (f *FontButtonClass) UseFont() bool {
 }
 
 // UseSize returns whether the selected size is used in the label.
-func (f *FontButtonClass) UseSize() bool {
+func (fontButton *FontButtonClass) UseSize() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_use_size(_arg0)
 
@@ -209,11 +212,11 @@ func (f *FontButtonClass) UseSize() bool {
 }
 
 // SetModal sets whether the dialog should be modal.
-func (f *FontButtonClass) SetModal(modal bool) {
+func (fontButton *FontButtonClass) SetModal(modal bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -222,11 +225,11 @@ func (f *FontButtonClass) SetModal(modal bool) {
 }
 
 // SetTitle sets the title for the font chooser dialog.
-func (f *FontButtonClass) SetTitle(title string) {
+func (fontButton *FontButtonClass) SetTitle(title string) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -235,11 +238,11 @@ func (f *FontButtonClass) SetTitle(title string) {
 
 // SetUseFont: if @use_font is true, the font name will be written using the
 // selected font.
-func (f *FontButtonClass) SetUseFont(useFont bool) {
+func (fontButton *FontButtonClass) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 	if useFont {
 		_arg1 = C.TRUE
 	}
@@ -249,11 +252,11 @@ func (f *FontButtonClass) SetUseFont(useFont bool) {
 
 // SetUseSize: if @use_size is true, the font name will be written using the
 // selected size.
-func (f *FontButtonClass) SetUseSize(useSize bool) {
+func (fontButton *FontButtonClass) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 	if useSize {
 		_arg1 = C.TRUE
 	}

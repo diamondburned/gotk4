@@ -76,10 +76,10 @@ type PasswordEntry interface {
 type PasswordEntryClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	EditableInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	EditableIface
 }
 
 var _ PasswordEntry = (*PasswordEntryClass)(nil)
@@ -88,36 +88,43 @@ func wrapPasswordEntry(obj *externglib.Object) PasswordEntry {
 	return &PasswordEntryClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		EditableInterface: EditableInterface{
+		EditableIface: EditableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
@@ -145,11 +152,11 @@ func NewPasswordEntry() *PasswordEntryClass {
 }
 
 // ExtraMenu gets the menu model set with gtk_password_entry_set_extra_menu().
-func (e *PasswordEntryClass) ExtraMenu() *gio.MenuModelClass {
+func (entry *PasswordEntryClass) ExtraMenu() *gio.MenuModelClass {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret *C.GMenuModel       // in
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
 
 	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
 
@@ -162,11 +169,11 @@ func (e *PasswordEntryClass) ExtraMenu() *gio.MenuModelClass {
 
 // ShowPeekIcon returns whether the entry is showing an icon to reveal the
 // contents.
-func (e *PasswordEntryClass) ShowPeekIcon() bool {
+func (entry *PasswordEntryClass) ShowPeekIcon() bool {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
 
 	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
 
@@ -181,11 +188,11 @@ func (e *PasswordEntryClass) ShowPeekIcon() bool {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // @entry.
-func (e *PasswordEntryClass) SetExtraMenu(model gio.MenuModel) {
+func (entry *PasswordEntryClass) SetExtraMenu(model gio.MenuModel) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
@@ -195,11 +202,11 @@ func (e *PasswordEntryClass) SetExtraMenu(model gio.MenuModel) {
 // the contents.
 //
 // Setting this to false also hides the text again.
-func (e *PasswordEntryClass) SetShowPeekIcon(showPeekIcon bool) {
+func (entry *PasswordEntryClass) SetShowPeekIcon(showPeekIcon bool) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
 	if showPeekIcon {
 		_arg1 = C.TRUE
 	}

@@ -112,11 +112,11 @@ func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 
 // Level returns the "level" (i.e. the originating protocol) of the control
 // message. This is often SOL_SOCKET.
-func (m *SocketControlMessageClass) Level() int {
+func (message *SocketControlMessageClass) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_socket_control_message_get_level(_arg0)
 
@@ -129,11 +129,11 @@ func (m *SocketControlMessageClass) Level() int {
 
 // MsgType returns the protocol specific type of the control message. For
 // instance, for UNIX fd passing this would be SCM_RIGHTS.
-func (m *SocketControlMessageClass) MsgType() int {
+func (message *SocketControlMessageClass) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_socket_control_message_get_msg_type(_arg0)
 
@@ -146,11 +146,11 @@ func (m *SocketControlMessageClass) MsgType() int {
 
 // Size returns the space required for the control message, not including
 // headers or alignment.
-func (m *SocketControlMessageClass) Size() uint {
+func (message *SocketControlMessageClass) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.gsize                  // in
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_socket_control_message_get_size(_arg0)
 
@@ -165,11 +165,11 @@ func (m *SocketControlMessageClass) Size() uint {
 //
 // @data is guaranteed to have enough space to fit the size returned by
 // g_socket_control_message_get_size() on this object.
-func (m *SocketControlMessageClass) Serialize(data interface{}) {
+func (message *SocketControlMessageClass) Serialize(data interface{}) {
 	var _arg0 *C.GSocketControlMessage // out
 	var _arg1 C.gpointer               // out
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
 	_arg1 = (C.gpointer)(box.Assign(data))
 
 	C.g_socket_control_message_serialize(_arg0, _arg1)

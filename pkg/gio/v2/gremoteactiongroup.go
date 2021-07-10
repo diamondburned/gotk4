@@ -102,16 +102,16 @@ type RemoteActionGroup interface {
 	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
 }
 
-// RemoteActionGroupInterface implements the RemoteActionGroup interface.
-type RemoteActionGroupInterface struct {
-	ActionGroupInterface
+// RemoteActionGroupIface implements the RemoteActionGroup interface.
+type RemoteActionGroupIface struct {
+	ActionGroupIface
 }
 
-var _ RemoteActionGroup = (*RemoteActionGroupInterface)(nil)
+var _ RemoteActionGroup = (*RemoteActionGroupIface)(nil)
 
 func wrapRemoteActionGroup(obj *externglib.Object) RemoteActionGroup {
-	return &RemoteActionGroupInterface{
-		ActionGroupInterface: ActionGroupInterface{
+	return &RemoteActionGroupIface{
+		ActionGroupIface: ActionGroupIface{
 			Object: obj,
 		},
 	}
@@ -132,13 +132,13 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 //
 // @platform_data must be non-nil and must have the type G_VARIANT_TYPE_VARDICT.
 // If it is floating, it will be consumed.
-func (r *RemoteActionGroupInterface) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
+func (remote *RemoteActionGroupIface) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GVariant           // out
 	var _arg3 *C.GVariant           // out
 
-	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(remote.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
@@ -156,13 +156,13 @@ func (r *RemoteActionGroupInterface) ActivateActionFull(actionName string, param
 //
 // @platform_data must be non-nil and must have the type G_VARIANT_TYPE_VARDICT.
 // If it is floating, it will be consumed.
-func (r *RemoteActionGroupInterface) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
+func (remote *RemoteActionGroupIface) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GVariant           // out
 	var _arg3 *C.GVariant           // out
 
-	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(remote.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value))

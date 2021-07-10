@@ -14,6 +14,12 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
+// CanGenerate checks if the given class or interface can be generated.
+func CanGenerate(gen types.FileGenerator, v interface{}) bool {
+	ifaceGen := NewGenerator(gen)
+	return ifaceGen.init(v)
+}
+
 type Generator struct {
 	Name         string
 	CType        string
@@ -29,6 +35,9 @@ type Generator struct {
 	Constructors Methods
 
 	Tree types.Tree
+
+	methods  []gir.Method
+	virtuals []gir.VirtualMethod
 
 	source *gir.NamespaceFindResult
 	header file.Header
@@ -48,7 +57,7 @@ func NewGenerator(gen types.FileGenerator) Generator {
 }
 
 func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
-	p := fmt.Sprintf("interface %s (C.%s):", g.InterfaceName, g.CType)
+	p := fmt.Sprintf("interface/class %s (C.%s):", g.InterfaceName, g.CType)
 	g.gen.Logln(lvl, logger.Prefix(v, p)...)
 }
 
@@ -60,7 +69,17 @@ func (g *Generator) Reset() {
 	g.Tree.Reset()
 	g.Methods.reset(0)
 	g.Virtuals.reset(0)
-	// g.Implements = g.Implements[:0]
+
+	*g = Generator{
+		Tree:     g.Tree,
+		Methods:  g.Methods,
+		Virtuals: g.Virtuals,
+
+		source: g.source,
+		header: g.header,
+		cgen:   g.cgen,
+		gen:    g.gen,
+	}
 }
 
 // Header returns the callback generator's current header.
@@ -68,34 +87,45 @@ func (g *Generator) Header() *file.Header {
 	return &g.header
 }
 
-// Use accepts either a *gir.Class or a *gir.Interface; any other type will make
-// it panic.
-func (g *Generator) Use(typ interface{}) bool {
-	g.Reset()
+func (g *Generator) setCType(cType, glibType string) bool {
+	if cType != "" {
+		g.CType = cType
+		return true
+	}
+	if glibType != "" {
+		g.CType = glibType
+		return true
+	}
+	return false
+}
 
-	var methods []gir.Method
-	var virtuals []gir.VirtualMethod
-
+func (g *Generator) init(typ interface{}) bool {
 	switch typ := typ.(type) {
 	case *gir.Class:
 		g.Name = typ.Name
-		g.CType = typ.CType
 		g.GLibGetType = typ.GLibGetType
 		g.InfoAttrs = &typ.InfoAttrs
 		g.InfoElements = &typ.InfoElements
 
 		g.InterfaceName = strcases.PascalToGo(typ.Name)
-		g.StructName = g.InterfaceName + "Class"
+		g.StructName = g.InterfaceName + types.ImplClassSuffix
 
-		methods = typ.Methods
-		virtuals = typ.VirtualMethods
+		if !g.setCType(typ.CType, typ.GLibTypeName) {
+			g.Logln(logger.Debug, "missing GType or GLibTypeName")
+			return false
+		}
+
+		g.methods = typ.Methods
+		g.virtuals = typ.VirtualMethods
 
 		if !typ.IsIntrospectable() || types.Filter(g.gen, typ.Name, typ.CType) {
 			return false
 		}
 
-		if !g.Tree.Resolve(typ.Name) {
-			g.Logln(logger.Debug, "class cannot be type-resolved")
+		if !g.Tree.ResolveFromType(types.TypeFromResult(g.gen, typ)) {
+			g.Logln(logger.Debug,
+				"cannot type-resolve",
+				types.EnsureNamespace(g.gen.Namespace(), typ.Name))
 			return false
 		}
 
@@ -113,16 +143,20 @@ func (g *Generator) Use(typ interface{}) bool {
 
 	case *gir.Interface:
 		g.Name = typ.Name
-		g.CType = typ.CType
 		g.GLibGetType = typ.GLibGetType
 		g.InfoAttrs = &typ.InfoAttrs
 		g.InfoElements = &typ.InfoElements
 
 		g.InterfaceName = strcases.PascalToGo(typ.Name)
-		g.StructName = g.InterfaceName + "Interface"
+		g.StructName = g.InterfaceName + types.ImplInterfaceSuffix
 
-		methods = typ.Methods
-		virtuals = typ.VirtualMethods
+		if !g.setCType(typ.CType, typ.GLibTypeName) {
+			g.Logln(logger.Debug, "missing GType or GLibTypeName")
+			return false
+		}
+
+		g.methods = typ.Methods
+		g.virtuals = typ.VirtualMethods
 
 		if !typ.IsIntrospectable() || types.Filter(g.gen, typ.Name, typ.CType) {
 			return false
@@ -132,18 +166,38 @@ func (g *Generator) Use(typ interface{}) bool {
 			g.Logln(logger.Debug, "interface cannot be type-resolved")
 			return false
 		}
+
+	default:
+		return false
+	}
+
+	return true
+}
+
+// Use accepts either a *gir.Class or a *gir.Interface; any other type will make
+// it panic.
+func (g *Generator) Use(typ interface{}) bool {
+	g.Reset()
+
+	if !g.init(typ) {
+		return false
 	}
 
 	g.source = g.gen.Namespace()
 	g.header.NeedsExternGLib()
 
-	g.Methods.setMethods(g, methods)
-	g.Virtuals.setVirtuals(g, virtuals)
+	g.Methods.setMethods(g, g.methods)
+	g.Virtuals.setVirtuals(g, g.virtuals)
 
 	g.renameGetters(g.Methods)
 	g.renameGetters(g.Virtuals)
 
 	return true
+}
+
+// Wrap creates a wrapper around the given object variable.
+func (g *Generator) Wrap(obj string) string {
+	return g.Tree.Wrap(obj, &g.header)
 }
 
 func (g *Generator) renameGetters(methods Methods) {

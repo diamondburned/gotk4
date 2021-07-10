@@ -49,7 +49,9 @@ var _ CellRendererSpinner = (*CellRendererSpinnerClass)(nil)
 func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
 	return &CellRendererSpinnerClass{
 		CellRendererClass: CellRendererClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
 		},
 	}
 }

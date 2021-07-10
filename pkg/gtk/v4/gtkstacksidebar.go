@@ -54,9 +54,9 @@ type StackSidebar interface {
 type StackSidebarClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ StackSidebar = (*StackSidebarClass)(nil)
@@ -65,24 +65,27 @@ func wrapStackSidebar(obj *externglib.Object) StackSidebar {
 	return &StackSidebarClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -108,11 +111,11 @@ func NewStackSidebar() *StackSidebarClass {
 }
 
 // Stack retrieves the stack.
-func (s *StackSidebarClass) Stack() *StackClass {
+func (self *StackSidebarClass) Stack() *StackClass {
 	var _arg0 *C.GtkStackSidebar // out
 	var _cret *C.GtkStack        // in
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
 
@@ -127,11 +130,11 @@ func (s *StackSidebarClass) Stack() *StackClass {
 //
 // The sidebar widget will automatically update according to the order and items
 // within the given `GtkStack`.
-func (s *StackSidebarClass) SetStack(stack Stack) {
+func (self *StackSidebarClass) SetStack(stack Stack) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)

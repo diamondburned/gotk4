@@ -33,16 +33,14 @@ type ExpanderAccessible interface {
 
 // ExpanderAccessibleClass implements the ExpanderAccessible interface.
 type ExpanderAccessibleClass struct {
-	*externglib.Object
 	ContainerAccessibleClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ ExpanderAccessible = (*ExpanderAccessibleClass)(nil)
 
 func wrapExpanderAccessible(obj *externglib.Object) ExpanderAccessible {
 	return &ExpanderAccessibleClass{
-		Object: obj,
 		ContainerAccessibleClass: ContainerAccessibleClass{
 			WidgetAccessibleClass: WidgetAccessibleClass{
 				AccessibleClass: AccessibleClass{
@@ -52,7 +50,7 @@ func wrapExpanderAccessible(obj *externglib.Object) ExpanderAccessible {
 				},
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}

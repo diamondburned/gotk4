@@ -74,7 +74,7 @@ type Fixed interface {
 type FixedClass struct {
 	*externglib.Object
 	ContainerClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ Fixed = (*FixedClass)(nil)
@@ -85,16 +85,19 @@ func wrapFixed(obj *externglib.Object) Fixed {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -120,13 +123,13 @@ func NewFixed() *FixedClass {
 }
 
 // Move moves a child of a Fixed container to the given position.
-func (f *FixedClass) Move(widget Widget, x int, y int) {
+func (fixed *FixedClass) Move(widget Widget, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
@@ -135,13 +138,13 @@ func (f *FixedClass) Move(widget Widget, x int, y int) {
 }
 
 // Put adds a widget to a Fixed container at the given position.
-func (f *FixedClass) Put(widget Widget, x int, y int) {
+func (fixed *FixedClass) Put(widget Widget, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
@@ -162,22 +165,4 @@ func WrapFixedChild(ptr unsafe.Pointer) *FixedChild {
 // Native returns the underlying C source pointer.
 func (f *FixedChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
-}
-
-func (f *FixedChild) Widget() *WidgetClass {
-	var v *WidgetClass // out
-	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget)))).(*WidgetClass)
-	return v
-}
-
-func (f *FixedChild) X() int {
-	var v int // out
-	v = int(f.native.x)
-	return v
-}
-
-func (f *FixedChild) Y() int {
-	var v int // out
-	v = int(f.native.y)
-	return v
 }

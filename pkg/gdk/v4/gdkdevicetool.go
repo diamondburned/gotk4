@@ -97,11 +97,11 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 }
 
 // Axes gets the axes of the tool.
-func (t *DeviceToolClass) Axes() AxisFlags {
+func (tool *DeviceToolClass) Axes() AxisFlags {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.GdkAxisFlags   // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_axes(_arg0)
 
@@ -122,11 +122,11 @@ func (t *DeviceToolClass) Axes() AxisFlags {
 // `GdkDeviceTool` than [method@Gdk.DeviceTool.get_tool_type], as a tablet may
 // support multiple devices with the same `GdkDeviceToolType`, but different
 // hardware identificators.
-func (t *DeviceToolClass) HardwareID() uint64 {
+func (tool *DeviceToolClass) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
 
@@ -141,11 +141,11 @@ func (t *DeviceToolClass) HardwareID() uint64 {
 //
 // This value can be used to identify a physical tool (eg. a tablet pen) across
 // program executions.
-func (t *DeviceToolClass) Serial() uint64 {
+func (tool *DeviceToolClass) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_serial(_arg0)
 
@@ -157,11 +157,11 @@ func (t *DeviceToolClass) Serial() uint64 {
 }
 
 // ToolType gets the `GdkDeviceToolType` of the tool.
-func (t *DeviceToolClass) ToolType() DeviceToolType {
+func (tool *DeviceToolClass) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
 	var _cret C.GdkDeviceToolType // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_tool_type(_arg0)
 

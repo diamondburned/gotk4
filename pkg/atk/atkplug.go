@@ -59,7 +59,7 @@ type Plug interface {
 type PlugClass struct {
 	*externglib.Object
 	ObjectClass
-	ComponentInterface
+	ComponentIface
 }
 
 var _ Plug = (*PlugClass)(nil)
@@ -70,7 +70,7 @@ func wrapPlug(obj *externglib.Object) Plug {
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
-		ComponentInterface: ComponentInterface{
+		ComponentIface: ComponentIface{
 			Object: obj,
 		},
 	}
@@ -102,11 +102,11 @@ func NewPlug() *PlugClass {
 // layer (usually at-spi2-atk). The implementor of an Plug object should call
 // this function (after atk-bridge is loaded) and pass the value to the process
 // implementing the Socket, so it could embed the plug.
-func (p *PlugClass) ID() string {
+func (plug *PlugClass) ID() string {
 	var _arg0 *C.AtkPlug // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer(plug.Native()))
 
 	_cret = C.atk_plug_get_id(_arg0)
 
@@ -127,11 +127,11 @@ func (p *PlugClass) ID() string {
 // AtkPlug. In such a case, one can create, in addition to the standard
 // accessible object for the toplevel widget, an AtkPlug object, and make the
 // former the child of the latter by calling atk_plug_set_child().
-func (p *PlugClass) SetChild(child Object) {
+func (plug *PlugClass) SetChild(child Object) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer(plug.Native()))
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(child.Native()))
 
 	C.atk_plug_set_child(_arg0, _arg1)

@@ -70,15 +70,15 @@ type EditableText interface {
 	SetTextContents(_string string)
 }
 
-// EditableTextInterface implements the EditableText interface.
-type EditableTextInterface struct {
+// EditableTextIface implements the EditableText interface.
+type EditableTextIface struct {
 	*externglib.Object
 }
 
-var _ EditableText = (*EditableTextInterface)(nil)
+var _ EditableText = (*EditableTextIface)(nil)
 
 func wrapEditableText(obj *externglib.Object) EditableText {
-	return &EditableTextInterface{
+	return &EditableTextIface{
 		Object: obj,
 	}
 }
@@ -91,12 +91,12 @@ func marshalEditableText(p uintptr) (interface{}, error) {
 
 // CopyText: copy text from @start_pos up to, but not including @end_pos to the
 // clipboard.
-func (t *EditableTextInterface) CopyText(startPos int, endPos int) {
+func (text *EditableTextIface) CopyText(startPos int, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 
@@ -105,12 +105,12 @@ func (t *EditableTextInterface) CopyText(startPos int, endPos int) {
 
 // CutText: copy text from @start_pos up to, but not including @end_pos to the
 // clipboard and then delete from the widget.
-func (t *EditableTextInterface) CutText(startPos int, endPos int) {
+func (text *EditableTextIface) CutText(startPos int, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 
@@ -118,12 +118,12 @@ func (t *EditableTextInterface) CutText(startPos int, endPos int) {
 }
 
 // DeleteText: delete text @start_pos up to, but not including @end_pos.
-func (t *EditableTextInterface) DeleteText(startPos int, endPos int) {
+func (text *EditableTextIface) DeleteText(startPos int, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 
@@ -131,13 +131,13 @@ func (t *EditableTextInterface) DeleteText(startPos int, endPos int) {
 }
 
 // InsertText: insert text at a given position.
-func (t *EditableTextInterface) InsertText(_string string, length int, position *int) {
+func (text *EditableTextIface) InsertText(_string string, length int, position *int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // out
 	var _arg3 *C.gint            // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
 	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
@@ -147,22 +147,22 @@ func (t *EditableTextInterface) InsertText(_string string, length int, position 
 }
 
 // PasteText: paste text from clipboard to specified @position.
-func (t *EditableTextInterface) PasteText(position int) {
+func (text *EditableTextIface) PasteText(position int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(position)
 
 	C.atk_editable_text_paste_text(_arg0, _arg1)
 }
 
 // SetTextContents: set text contents of @text.
-func (t *EditableTextInterface) SetTextContents(_string string) {
+func (text *EditableTextIface) SetTextContents(_string string) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
 	_arg1 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg1))
 

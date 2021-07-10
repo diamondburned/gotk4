@@ -62,7 +62,7 @@ type Settings interface {
 // SettingsClass implements the Settings interface.
 type SettingsClass struct {
 	*externglib.Object
-	StyleProviderInterface
+	StyleProviderIface
 }
 
 var _ Settings = (*SettingsClass)(nil)
@@ -70,7 +70,7 @@ var _ Settings = (*SettingsClass)(nil)
 func wrapSettings(obj *externglib.Object) Settings {
 	return &SettingsClass{
 		Object: obj,
-		StyleProviderInterface: StyleProviderInterface{
+		StyleProviderIface: StyleProviderIface{
 			Object: obj,
 		},
 	}
@@ -87,11 +87,11 @@ func marshalSettings(p uintptr) (interface{}, error) {
 //
 // After this call, the setting will again follow the session-wide value for
 // this setting.
-func (s *SettingsClass) ResetProperty(name string) {
+func (settings *SettingsClass) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 

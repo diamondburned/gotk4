@@ -55,11 +55,11 @@ func marshalGObjectAccessible(p uintptr) (interface{}, error) {
 }
 
 // Object gets the GObject for which @obj is the accessible object.
-func (o *GObjectAccessibleClass) Object() *externglib.Object {
+func (obj *GObjectAccessibleClass) Object() *externglib.Object {
 	var _arg0 *C.AtkGObjectAccessible // out
 	var _cret *C.GObject              // in
 
-	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_gobject_accessible_get_object(_arg0)
 

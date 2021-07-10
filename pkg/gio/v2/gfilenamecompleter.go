@@ -88,12 +88,12 @@ func NewFilenameCompleter() *FilenameCompleterClass {
 }
 
 // CompletionSuffix obtains a completion for @initial_text from @completer.
-func (c *FilenameCompleterClass) CompletionSuffix(initialText string) string {
+func (completer *FilenameCompleterClass) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(completer.Native()))
 	_arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -108,12 +108,12 @@ func (c *FilenameCompleterClass) CompletionSuffix(initialText string) string {
 }
 
 // Completions gets an array of completion strings for a given initial text.
-func (c *FilenameCompleterClass) Completions(initialText string) []string {
+func (completer *FilenameCompleterClass) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
 	var _cret **C.char
 
-	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(completer.Native()))
 	_arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -141,11 +141,11 @@ func (c *FilenameCompleterClass) Completions(initialText string) []string {
 
 // SetDirsOnly: if @dirs_only is true, @completer will only complete directory
 // names, and not file names.
-func (c *FilenameCompleterClass) SetDirsOnly(dirsOnly bool) {
+func (completer *FilenameCompleterClass) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(completer.Native()))
 	if dirsOnly {
 		_arg1 = C.TRUE
 	}

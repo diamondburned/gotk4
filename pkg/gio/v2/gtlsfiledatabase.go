@@ -38,18 +38,18 @@ func init() {
 type TLSFileDatabase interface {
 	gextras.Objector
 
-	privateTLSFileDatabaseInterface()
+	privateTLSFileDatabaseIface()
 }
 
-// TLSFileDatabaseInterface implements the TLSFileDatabase interface.
-type TLSFileDatabaseInterface struct {
+// TLSFileDatabaseIface implements the TLSFileDatabase interface.
+type TLSFileDatabaseIface struct {
 	TLSDatabaseClass
 }
 
-var _ TLSFileDatabase = (*TLSFileDatabaseInterface)(nil)
+var _ TLSFileDatabase = (*TLSFileDatabaseIface)(nil)
 
 func wrapTLSFileDatabase(obj *externglib.Object) TLSFileDatabase {
-	return &TLSFileDatabaseInterface{
+	return &TLSFileDatabaseIface{
 		TLSDatabaseClass: TLSDatabaseClass{
 			Object: obj,
 		},
@@ -62,4 +62,4 @@ func marshalTLSFileDatabase(p uintptr) (interface{}, error) {
 	return wrapTLSFileDatabase(obj), nil
 }
 
-func (*TLSFileDatabaseInterface) privateTLSFileDatabaseInterface() {}
+func (*TLSFileDatabaseIface) privateTLSFileDatabaseIface() {}

@@ -75,12 +75,12 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 
 // CreateAccessible provides an Object that implements an accessibility
 // interface on behalf of @obj
-func (f *ObjectFactoryClass) CreateAccessible(obj gextras.Objector) *ObjectClass {
+func (factory *ObjectFactoryClass) CreateAccessible(obj gextras.Objector) *ObjectClass {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
 	var _cret *C.AtkObject        // in
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))
 	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
@@ -94,11 +94,11 @@ func (f *ObjectFactoryClass) CreateAccessible(obj gextras.Objector) *ObjectClass
 
 // AccessibleType gets the GType of the accessible which is created by the
 // factory.
-func (f *ObjectFactoryClass) AccessibleType() externglib.Type {
+func (factory *ObjectFactoryClass) AccessibleType() externglib.Type {
 	var _arg0 *C.AtkObjectFactory // out
 	var _cret C.GType             // in
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))
 
 	_cret = C.atk_object_factory_get_accessible_type(_arg0)
 
@@ -113,10 +113,10 @@ func (f *ObjectFactoryClass) AccessibleType() externglib.Type {
 // accessibles. When called, @factory may need to inform Objects which it has
 // created that they need to be re-instantiated. Note: primarily used for
 // runtime replacement of ObjectFactorys in object registries.
-func (f *ObjectFactoryClass) Invalidate() {
+func (factory *ObjectFactoryClass) Invalidate() {
 	var _arg0 *C.AtkObjectFactory // out
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))
 
 	C.atk_object_factory_invalidate(_arg0)
 }

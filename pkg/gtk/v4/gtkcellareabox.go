@@ -63,9 +63,9 @@ type CellAreaBox interface {
 type CellAreaBoxClass struct {
 	*externglib.Object
 	CellAreaClass
-	BuildableInterface
-	CellLayoutInterface
-	OrientableInterface
+	BuildableIface
+	CellLayoutIface
+	OrientableIface
 }
 
 var _ CellAreaBox = (*CellAreaBoxClass)(nil)
@@ -74,21 +74,24 @@ func wrapCellAreaBox(obj *externglib.Object) CellAreaBox {
 	return &CellAreaBoxClass{
 		Object: obj,
 		CellAreaClass: CellAreaClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			BuildableInterface: BuildableInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			CellLayoutInterface: CellLayoutInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			CellLayoutIface: CellLayoutIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		CellLayoutInterface: CellLayoutInterface{
+		CellLayoutIface: CellLayoutIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -114,11 +117,11 @@ func NewCellAreaBox() *CellAreaBoxClass {
 }
 
 // Spacing gets the spacing added between cell renderers.
-func (b *CellAreaBoxClass) Spacing() int {
+func (box *CellAreaBoxClass) Spacing() int {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
 
@@ -133,14 +136,14 @@ func (b *CellAreaBoxClass) Spacing() int {
 //
 // The @renderer is packed after (away from end of) any other CellRenderer
 // packed with reference to the end of @box.
-func (b *CellAreaBoxClass) PackEnd(renderer CellRenderer, expand bool, align bool, fixed bool) {
+func (box *CellAreaBoxClass) PackEnd(renderer CellRenderer, expand bool, align bool, fixed bool) {
 	var _arg0 *C.GtkCellAreaBox  // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gboolean         // out
 	var _arg3 C.gboolean         // out
 	var _arg4 C.gboolean         // out
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	if expand {
 		_arg2 = C.TRUE
@@ -159,14 +162,14 @@ func (b *CellAreaBoxClass) PackEnd(renderer CellRenderer, expand bool, align boo
 //
 // The @renderer is packed after any other CellRenderer packed with reference to
 // the start of @box.
-func (b *CellAreaBoxClass) PackStart(renderer CellRenderer, expand bool, align bool, fixed bool) {
+func (box *CellAreaBoxClass) PackStart(renderer CellRenderer, expand bool, align bool, fixed bool) {
 	var _arg0 *C.GtkCellAreaBox  // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gboolean         // out
 	var _arg3 C.gboolean         // out
 	var _arg4 C.gboolean         // out
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	if expand {
 		_arg2 = C.TRUE
@@ -182,11 +185,11 @@ func (b *CellAreaBoxClass) PackStart(renderer CellRenderer, expand bool, align b
 }
 
 // SetSpacing sets the spacing to add between cell renderers in @box.
-func (b *CellAreaBoxClass) SetSpacing(spacing int) {
+func (box *CellAreaBoxClass) SetSpacing(spacing int) {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
 	_arg1 = C.int(spacing)
 
 	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)

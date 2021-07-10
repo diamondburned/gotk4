@@ -41,22 +41,20 @@ type CellAccessible interface {
 
 // CellAccessibleClass implements the CellAccessible interface.
 type CellAccessibleClass struct {
-	*externglib.Object
 	AccessibleClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ CellAccessible = (*CellAccessibleClass)(nil)
 
 func wrapCellAccessible(obj *externglib.Object) CellAccessible {
 	return &CellAccessibleClass{
-		Object: obj,
 		AccessibleClass: AccessibleClass{
 			ObjectClass: atk.ObjectClass{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}

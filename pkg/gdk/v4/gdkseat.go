@@ -84,11 +84,11 @@ func marshalSeat(p uintptr) (interface{}, error) {
 }
 
 // Capabilities returns the capabilities this `GdkSeat` currently has.
-func (s *SeatClass) Capabilities() SeatCapabilities {
+func (seat *SeatClass) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_capabilities(_arg0)
 
@@ -100,11 +100,11 @@ func (s *SeatClass) Capabilities() SeatCapabilities {
 }
 
 // Display returns the `GdkDisplay` this seat belongs to.
-func (s *SeatClass) Display() *DisplayClass {
+func (seat *SeatClass) Display() *DisplayClass {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_display(_arg0)
 
@@ -116,11 +116,11 @@ func (s *SeatClass) Display() *DisplayClass {
 }
 
 // Keyboard returns the device that routes keyboard events.
-func (s *SeatClass) Keyboard() *DeviceClass {
+func (seat *SeatClass) Keyboard() *DeviceClass {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
 
@@ -132,11 +132,11 @@ func (s *SeatClass) Keyboard() *DeviceClass {
 }
 
 // Pointer returns the device that routes pointer events.
-func (s *SeatClass) Pointer() *DeviceClass {
+func (seat *SeatClass) Pointer() *DeviceClass {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
 

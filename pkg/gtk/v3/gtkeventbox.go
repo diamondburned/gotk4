@@ -82,7 +82,7 @@ type EventBox interface {
 type EventBoxClass struct {
 	*externglib.Object
 	BinClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ EventBox = (*EventBoxClass)(nil)
@@ -95,20 +95,23 @@ func wrapEventBox(obj *externglib.Object) EventBox {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -135,11 +138,11 @@ func NewEventBox() *EventBoxClass {
 
 // AboveChild returns whether the event box window is above or below the windows
 // of its child. See gtk_event_box_set_above_child() for details.
-func (e *EventBoxClass) AboveChild() bool {
+func (eventBox *EventBoxClass) AboveChild() bool {
 	var _arg0 *C.GtkEventBox // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(eventBox.Native()))
 
 	_cret = C.gtk_event_box_get_above_child(_arg0)
 
@@ -154,11 +157,11 @@ func (e *EventBoxClass) AboveChild() bool {
 
 // VisibleWindow returns whether the event box has a visible window. See
 // gtk_event_box_set_visible_window() for details.
-func (e *EventBoxClass) VisibleWindow() bool {
+func (eventBox *EventBoxClass) VisibleWindow() bool {
 	var _arg0 *C.GtkEventBox // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(eventBox.Native()))
 
 	_cret = C.gtk_event_box_get_visible_window(_arg0)
 
@@ -178,11 +181,11 @@ func (e *EventBoxClass) VisibleWindow() bool {
 // its parents.
 //
 // The default is to keep the window below the child.
-func (e *EventBoxClass) SetAboveChild(aboveChild bool) {
+func (eventBox *EventBoxClass) SetAboveChild(aboveChild bool) {
 	var _arg0 *C.GtkEventBox // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(eventBox.Native()))
 	if aboveChild {
 		_arg1 = C.TRUE
 	}
@@ -218,11 +221,11 @@ func (e *EventBoxClass) SetAboveChild(aboveChild bool) {
 // This problem doesn’t occur for visible event boxes, because in that case, the
 // event box window is actually the ancestor of the descendant windows, not just
 // at the same place on the screen.
-func (e *EventBoxClass) SetVisibleWindow(visibleWindow bool) {
+func (eventBox *EventBoxClass) SetVisibleWindow(visibleWindow bool) {
 	var _arg0 *C.GtkEventBox // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(eventBox.Native()))
 	if visibleWindow {
 		_arg1 = C.TRUE
 	}

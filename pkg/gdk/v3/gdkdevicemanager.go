@@ -138,7 +138,7 @@ type DeviceManager interface {
 	// by a Event and there aren’t other means to get a meaningful Device to
 	// operate on.
 	//
-	// Deprecated: since version 3.20.
+	// Deprecated: Use gdk_seat_get_pointer() instead.
 	ClientPointer() *DeviceClass
 	// Display gets the Display associated to @device_manager.
 	Display() *DisplayClass
@@ -171,12 +171,12 @@ func marshalDeviceManager(p uintptr) (interface{}, error) {
 // You should use this function seldomly, only in code that isn’t triggered by a
 // Event and there aren’t other means to get a meaningful Device to operate on.
 //
-// Deprecated: since version 3.20.
-func (d *DeviceManagerClass) ClientPointer() *DeviceClass {
+// Deprecated: Use gdk_seat_get_pointer() instead.
+func (deviceManager *DeviceManagerClass) ClientPointer() *DeviceClass {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDevice        // in
 
-	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(deviceManager.Native()))
 
 	_cret = C.gdk_device_manager_get_client_pointer(_arg0)
 
@@ -188,11 +188,11 @@ func (d *DeviceManagerClass) ClientPointer() *DeviceClass {
 }
 
 // Display gets the Display associated to @device_manager.
-func (d *DeviceManagerClass) Display() *DisplayClass {
+func (deviceManager *DeviceManagerClass) Display() *DisplayClass {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDisplay       // in
 
-	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(deviceManager.Native()))
 
 	_cret = C.gdk_device_manager_get_display(_arg0)
 

@@ -54,9 +54,9 @@ type Spinner interface {
 type SpinnerClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ Spinner = (*SpinnerClass)(nil)
@@ -65,24 +65,27 @@ func wrapSpinner(obj *externglib.Object) Spinner {
 	return &SpinnerClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -108,11 +111,11 @@ func NewSpinner() *SpinnerClass {
 }
 
 // Spinning returns whether the spinner is spinning.
-func (s *SpinnerClass) Spinning() bool {
+func (spinner *SpinnerClass) Spinning() bool {
 	var _arg0 *C.GtkSpinner // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	_cret = C.gtk_spinner_get_spinning(_arg0)
 
@@ -126,11 +129,11 @@ func (s *SpinnerClass) Spinning() bool {
 }
 
 // SetSpinning sets the activity of the spinner.
-func (s *SpinnerClass) SetSpinning(spinning bool) {
+func (spinner *SpinnerClass) SetSpinning(spinning bool) {
 	var _arg0 *C.GtkSpinner // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 	if spinning {
 		_arg1 = C.TRUE
 	}
@@ -139,19 +142,19 @@ func (s *SpinnerClass) SetSpinning(spinning bool) {
 }
 
 // Start starts the animation of the spinner.
-func (s *SpinnerClass) Start() {
+func (spinner *SpinnerClass) Start() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	C.gtk_spinner_start(_arg0)
 }
 
 // Stop stops the animation of the spinner.
-func (s *SpinnerClass) Stop() {
+func (spinner *SpinnerClass) Stop() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	C.gtk_spinner_stop(_arg0)
 }

@@ -31,7 +31,7 @@ type MiscOverrider interface {
 	// (This method is implemented by the toolkit ATK implementation layer; for
 	// instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12.
 	ThreadsEnter()
 	// ThreadsLeave: release the thread mutex for the GUI toolkit, if one
 	// exists. This method, and atk_misc_threads_enter, are needed in some
@@ -43,7 +43,7 @@ type MiscOverrider interface {
 	// implemented by the toolkit ATK implementation layer; for instance, for
 	// GTK+, GAIL implements this via GDK_THREADS_LEAVE).
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12.
 	ThreadsLeave()
 }
 
@@ -56,7 +56,7 @@ type Misc interface {
 	// (This method is implemented by the toolkit ATK implementation layer; for
 	// instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12.
 	ThreadsEnter()
 	// ThreadsLeave: release the thread mutex for the GUI toolkit, if one
 	// exists. This method, and atk_misc_threads_enter, are needed in some
@@ -68,7 +68,7 @@ type Misc interface {
 	// implemented by the toolkit ATK implementation layer; for instance, for
 	// GTK+, GAIL implements this via GDK_THREADS_LEAVE).
 	//
-	// Deprecated.
+	// Deprecated: Since 2.12.
 	ThreadsLeave()
 }
 
@@ -95,11 +95,11 @@ func marshalMisc(p uintptr) (interface{}, error) {
 // method is implemented by the toolkit ATK implementation layer; for instance,
 // for GTK+, GAIL implements this via GDK_THREADS_ENTER).
 //
-// Deprecated.
-func (m *MiscClass) ThreadsEnter() {
+// Deprecated: Since 2.12.
+func (misc *MiscClass) ThreadsEnter() {
 	var _arg0 *C.AtkMisc // out
 
-	_arg0 = (*C.AtkMisc)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(misc.Native()))
 
 	C.atk_misc_threads_enter(_arg0)
 }
@@ -113,11 +113,11 @@ func (m *MiscClass) ThreadsEnter() {
 // method is implemented by the toolkit ATK implementation layer; for instance,
 // for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
 //
-// Deprecated.
-func (m *MiscClass) ThreadsLeave() {
+// Deprecated: Since 2.12.
+func (misc *MiscClass) ThreadsLeave() {
 	var _arg0 *C.AtkMisc // out
 
-	_arg0 = (*C.AtkMisc)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(misc.Native()))
 
 	C.atk_misc_threads_leave(_arg0)
 }

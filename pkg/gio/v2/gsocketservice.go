@@ -137,11 +137,11 @@ func NewSocketService() *SocketServiceClass {
 // IsActive: check whether the service is active or not. An active service will
 // accept new clients that connect, while a non-active service will let
 // connecting clients queue up until the service is started.
-func (s *SocketServiceClass) IsActive() bool {
+func (service *SocketServiceClass) IsActive() bool {
 	var _arg0 *C.GSocketService // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer(service.Native()))
 
 	_cret = C.g_socket_service_is_active(_arg0)
 
@@ -160,10 +160,10 @@ func (s *SocketServiceClass) IsActive() bool {
 //
 // This call is thread-safe, so it may be called from a thread handling an
 // incoming client request.
-func (s *SocketServiceClass) Start() {
+func (service *SocketServiceClass) Start() {
 	var _arg0 *C.GSocketService // out
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer(service.Native()))
 
 	C.g_socket_service_start(_arg0)
 }
@@ -183,10 +183,10 @@ func (s *SocketServiceClass) Start() {
 // This must be called before calling g_socket_listener_close() as the socket
 // service will start accepting connections immediately when a new socket is
 // added.
-func (s *SocketServiceClass) Stop() {
+func (service *SocketServiceClass) Stop() {
 	var _arg0 *C.GSocketService // out
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer(service.Native()))
 
 	C.g_socket_service_stop(_arg0)
 }

@@ -12,6 +12,52 @@ import (
 // #include <pango/pango.h>
 import "C"
 
+// Break determines possible line, word, and character breaks for a string of
+// Unicode text with a single analysis.
+//
+// For most purposes you may want to use pango_get_log_attrs().
+//
+// Deprecated: Use pango_default_break() and pango_tailor_break().
+func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
+	var _arg1 *C.gchar         // out
+	var _arg2 C.int            // out
+	var _arg3 *C.PangoAnalysis // out
+	var _arg4 *C.PangoLogAttr
+	var _arg5 C.int
+
+	_arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg5 = C.int(len(attrs))
+	_arg4 = (*C.PangoLogAttr)(unsafe.Pointer(&attrs[0]))
+
+	C.pango_break(_arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// DefaultBreak: this is the default break algorithm.
+//
+// It applies Unicode rules without language-specific tailoring, therefore the
+// @analyis argument is unused and can be nil.
+//
+// See pango_tailor_break() for language-specific breaks.
+func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int) {
+	var _arg1 *C.gchar         // out
+	var _arg2 C.int            // out
+	var _arg3 *C.PangoAnalysis // out
+	var _arg4 *C.PangoLogAttr  // out
+	var _arg5 C.int            // out
+
+	_arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg4 = (*C.PangoLogAttr)(unsafe.Pointer(attrs))
+	_arg5 = C.int(attrsLen)
+
+	C.pango_default_break(_arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 // FindParagraphBoundary locates a paragraph boundary in @text.
 //
 // A boundary is caused by delimiter characters, such as a newline, carriage
@@ -68,6 +114,31 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 	_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
 
 	C.pango_get_log_attrs(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+}
+
+// TailorBreak: apply language-specific tailoring to the breaks in @log_attrs.
+//
+// The line breaks are assumed to have been produced by [func@default_break].
+//
+// If @offset is not -1, it is used to apply attributes from @analysis that are
+// relevant to line breaking.
+func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
+	var _arg1 *C.char          // out
+	var _arg2 C.int            // out
+	var _arg3 *C.PangoAnalysis // out
+	var _arg4 C.int            // out
+	var _arg5 *C.PangoLogAttr
+	var _arg6 C.int
+
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg4 = C.int(offset)
+	_arg6 = C.int(len(logAttrs))
+	_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
+
+	C.pango_tailor_break(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes

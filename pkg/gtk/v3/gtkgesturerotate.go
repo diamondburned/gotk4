@@ -79,11 +79,11 @@ func NewGestureRotate(widget Widget) *GestureRotateClass {
 // AngleDelta: if @gesture is active, this function returns the angle difference
 // in radians since the gesture was first recognized. If @gesture is not active,
 // 0 is returned.
-func (g *GestureRotateClass) AngleDelta() float64 {
+func (gesture *GestureRotateClass) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out
 	var _cret C.gdouble           // in
 
-	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
 

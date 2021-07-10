@@ -159,10 +159,10 @@ type Grid interface {
 type GridClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	OrientableInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	OrientableIface
 }
 
 var _ Grid = (*GridClass)(nil)
@@ -171,27 +171,30 @@ func wrapGrid(obj *externglib.Object) Grid {
 	return &GridClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -220,7 +223,7 @@ func NewGrid() *GridClass {
 //
 // The position of @child is determined by @column and @row. The number of
 // “cells” that @child will occupy is determined by @width and @height.
-func (g *GridClass) Attach(child Widget, column int, row int, width int, height int) {
+func (grid *GridClass) Attach(child Widget, column int, row int, width int, height int) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // out
@@ -228,7 +231,7 @@ func (g *GridClass) Attach(child Widget, column int, row int, width int, height 
 	var _arg4 C.int        // out
 	var _arg5 C.int        // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(column)
 	_arg3 = C.int(row)
@@ -239,11 +242,11 @@ func (g *GridClass) Attach(child Widget, column int, row int, width int, height 
 }
 
 // BaselineRow returns which row defines the global baseline of @grid.
-func (g *GridClass) BaselineRow() int {
+func (grid *GridClass) BaselineRow() int {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.int      // in
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_get_baseline_row(_arg0)
 
@@ -256,13 +259,13 @@ func (g *GridClass) BaselineRow() int {
 
 // ChildAt gets the child of @grid whose area covers the grid cell at @column,
 // @row.
-func (g *GridClass) ChildAt(column int, row int) *WidgetClass {
+func (grid *GridClass) ChildAt(column int, row int) *WidgetClass {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = C.int(column)
 	_arg2 = C.int(row)
 
@@ -276,11 +279,11 @@ func (g *GridClass) ChildAt(column int, row int) *WidgetClass {
 }
 
 // ColumnHomogeneous returns whether all columns of @grid have the same width.
-func (g *GridClass) ColumnHomogeneous() bool {
+func (grid *GridClass) ColumnHomogeneous() bool {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_get_column_homogeneous(_arg0)
 
@@ -294,11 +297,11 @@ func (g *GridClass) ColumnHomogeneous() bool {
 }
 
 // ColumnSpacing returns the amount of space between the columns of @grid.
-func (g *GridClass) ColumnSpacing() uint {
+func (grid *GridClass) ColumnSpacing() uint {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.guint    // in
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_get_column_spacing(_arg0)
 
@@ -312,12 +315,12 @@ func (g *GridClass) ColumnSpacing() uint {
 // RowBaselinePosition returns the baseline position of @row.
 //
 // See [method@Gtk.Grid.set_row_baseline_position].
-func (g *GridClass) RowBaselinePosition(row int) BaselinePosition {
+func (grid *GridClass) RowBaselinePosition(row int) BaselinePosition {
 	var _arg0 *C.GtkGrid            // out
 	var _arg1 C.int                 // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = C.int(row)
 
 	_cret = C.gtk_grid_get_row_baseline_position(_arg0, _arg1)
@@ -330,11 +333,11 @@ func (g *GridClass) RowBaselinePosition(row int) BaselinePosition {
 }
 
 // RowHomogeneous returns whether all rows of @grid have the same height.
-func (g *GridClass) RowHomogeneous() bool {
+func (grid *GridClass) RowHomogeneous() bool {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_get_row_homogeneous(_arg0)
 
@@ -348,11 +351,11 @@ func (g *GridClass) RowHomogeneous() bool {
 }
 
 // RowSpacing returns the amount of space between the rows of @grid.
-func (g *GridClass) RowSpacing() uint {
+func (grid *GridClass) RowSpacing() uint {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.guint    // in
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_get_row_spacing(_arg0)
 
@@ -368,11 +371,11 @@ func (g *GridClass) RowSpacing() uint {
 // Children which are attached at or to the right of this position are moved one
 // column to the right. Children which span across this position are grown to
 // span the new column.
-func (g *GridClass) InsertColumn(position int) {
+func (grid *GridClass) InsertColumn(position int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.int      // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = C.int(position)
 
 	C.gtk_grid_insert_column(_arg0, _arg1)
@@ -382,11 +385,11 @@ func (g *GridClass) InsertColumn(position int) {
 //
 // Children which are attached at or below this position are moved one row down.
 // Children which span across this position are grown to span the new row.
-func (g *GridClass) InsertRow(position int) {
+func (grid *GridClass) InsertRow(position int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.int      // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = C.int(position)
 
 	C.gtk_grid_insert_row(_arg0, _arg1)
@@ -394,7 +397,7 @@ func (g *GridClass) InsertRow(position int) {
 
 // QueryChild queries the attach points and spans of @child inside the given
 // `GtkGrid`.
-func (g *GridClass) QueryChild(child Widget) (column int, row int, width int, height int) {
+func (grid *GridClass) QueryChild(child Widget) (column int, row int, width int, height int) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // in
@@ -402,7 +405,7 @@ func (g *GridClass) QueryChild(child Widget) (column int, row int, width int, he
 	var _arg4 C.int        // in
 	var _arg5 C.int        // in
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_grid_query_child(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
@@ -424,11 +427,11 @@ func (g *GridClass) QueryChild(child Widget) (column int, row int, width int, he
 //
 // The child must have been added with [method@Gtk.Grid.attach] or
 // [method@Gtk.Grid.attach_next_to].
-func (g *GridClass) Remove(child Widget) {
+func (grid *GridClass) Remove(child Widget) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_grid_remove(_arg0, _arg1)
@@ -439,11 +442,11 @@ func (g *GridClass) Remove(child Widget) {
 // Children that are placed in this column are removed, spanning children that
 // overlap this column have their width reduced by one, and children after the
 // column are moved to the left.
-func (g *GridClass) RemoveColumn(position int) {
+func (grid *GridClass) RemoveColumn(position int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.int      // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = C.int(position)
 
 	C.gtk_grid_remove_column(_arg0, _arg1)
@@ -454,11 +457,11 @@ func (g *GridClass) RemoveColumn(position int) {
 // Children that are placed in this row are removed, spanning children that
 // overlap this row have their height reduced by one, and children below the row
 // are moved up.
-func (g *GridClass) RemoveRow(position int) {
+func (grid *GridClass) RemoveRow(position int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.int      // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = C.int(position)
 
 	C.gtk_grid_remove_row(_arg0, _arg1)
@@ -469,11 +472,11 @@ func (g *GridClass) RemoveRow(position int) {
 //
 // Each row in the grid can have its own local baseline, but only one of those
 // is global, meaning it will be the baseline in the parent of the @grid.
-func (g *GridClass) SetBaselineRow(row int) {
+func (grid *GridClass) SetBaselineRow(row int) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.int      // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = C.int(row)
 
 	C.gtk_grid_set_baseline_row(_arg0, _arg1)
@@ -481,11 +484,11 @@ func (g *GridClass) SetBaselineRow(row int) {
 
 // SetColumnHomogeneous sets whether all columns of @grid will have the same
 // width.
-func (g *GridClass) SetColumnHomogeneous(homogeneous bool) {
+func (grid *GridClass) SetColumnHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -494,22 +497,22 @@ func (g *GridClass) SetColumnHomogeneous(homogeneous bool) {
 }
 
 // SetColumnSpacing sets the amount of space between columns of @grid.
-func (g *GridClass) SetColumnSpacing(spacing uint) {
+func (grid *GridClass) SetColumnSpacing(spacing uint) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.guint    // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_set_column_spacing(_arg0, _arg1)
 }
 
 // SetRowHomogeneous sets whether all rows of @grid will have the same height.
-func (g *GridClass) SetRowHomogeneous(homogeneous bool) {
+func (grid *GridClass) SetRowHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -518,11 +521,11 @@ func (g *GridClass) SetRowHomogeneous(homogeneous bool) {
 }
 
 // SetRowSpacing sets the amount of space between rows of @grid.
-func (g *GridClass) SetRowSpacing(spacing uint) {
+func (grid *GridClass) SetRowSpacing(spacing uint) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.guint    // out
 
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_set_row_spacing(_arg0, _arg1)

@@ -82,12 +82,12 @@ func marshalRegistry(p uintptr) (interface{}, error) {
 
 // Factory gets an ObjectFactory appropriate for creating Objects appropriate
 // for @type.
-func (r *RegistryClass) Factory(typ externglib.Type) *ObjectFactoryClass {
+func (registry *RegistryClass) Factory(typ externglib.Type) *ObjectFactoryClass {
 	var _arg0 *C.AtkRegistry      // out
 	var _arg1 C.GType             // out
 	var _cret *C.AtkObjectFactory // in
 
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(registry.Native()))
 	_arg1 = (C.GType)(typ)
 
 	_cret = C.atk_registry_get_factory(_arg0, _arg1)
@@ -101,12 +101,12 @@ func (r *RegistryClass) Factory(typ externglib.Type) *ObjectFactoryClass {
 
 // FactoryType provides a #GType indicating the ObjectFactory subclass
 // associated with @type.
-func (r *RegistryClass) FactoryType(typ externglib.Type) externglib.Type {
+func (registry *RegistryClass) FactoryType(typ externglib.Type) externglib.Type {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
 	var _cret C.GType        // in
 
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(registry.Native()))
 	_arg1 = (C.GType)(typ)
 
 	_cret = C.atk_registry_get_factory_type(_arg0, _arg1)
@@ -121,12 +121,12 @@ func (r *RegistryClass) FactoryType(typ externglib.Type) externglib.Type {
 // SetFactoryType: associate an ObjectFactory subclass with a #GType. Note: The
 // associated @factory_type will thereafter be responsible for the creation of
 // new Object implementations for instances appropriate for @type.
-func (r *RegistryClass) SetFactoryType(typ externglib.Type, factoryType externglib.Type) {
+func (registry *RegistryClass) SetFactoryType(typ externglib.Type, factoryType externglib.Type) {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
 	var _arg2 C.GType        // out
 
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(registry.Native()))
 	_arg1 = (C.GType)(typ)
 	_arg2 = (C.GType)(factoryType)
 

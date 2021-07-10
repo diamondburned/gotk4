@@ -87,13 +87,13 @@ func NewGestureSwipe(widget Widget) *GestureSwipeClass {
 // Velocity: if the gesture is recognized, this function returns true and fill
 // in @velocity_x and @velocity_y with the recorded velocity, as per the last
 // event(s) processed.
-func (g *GestureSwipeClass) Velocity() (velocityX float64, velocityY float64, ok bool) {
+func (gesture *GestureSwipeClass) Velocity() (velocityX float64, velocityY float64, ok bool) {
 	var _arg0 *C.GtkGestureSwipe // out
 	var _arg1 C.gdouble          // in
 	var _arg2 C.gdouble          // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
 

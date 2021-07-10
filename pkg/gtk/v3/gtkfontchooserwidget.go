@@ -51,9 +51,9 @@ type FontChooserWidget interface {
 type FontChooserWidgetClass struct {
 	*externglib.Object
 	BoxClass
-	BuildableInterface
-	FontChooserInterface
-	OrientableInterface
+	BuildableIface
+	FontChooserIface
+	OrientableIface
 }
 
 var _ FontChooserWidget = (*FontChooserWidgetClass)(nil)
@@ -66,29 +66,32 @@ func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		FontChooserInterface: FontChooserInterface{
+		FontChooserIface: FontChooserIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}

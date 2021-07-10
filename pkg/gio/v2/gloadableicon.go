@@ -70,16 +70,16 @@ type LoadableIcon interface {
 	LoadFinish(res AsyncResult) (string, *InputStreamClass, error)
 }
 
-// LoadableIconInterface implements the LoadableIcon interface.
-type LoadableIconInterface struct {
-	IconInterface
+// LoadableIconIface implements the LoadableIcon interface.
+type LoadableIconIface struct {
+	IconIface
 }
 
-var _ LoadableIcon = (*LoadableIconInterface)(nil)
+var _ LoadableIcon = (*LoadableIconIface)(nil)
 
 func wrapLoadableIcon(obj *externglib.Object) LoadableIcon {
-	return &LoadableIconInterface{
-		IconInterface: IconInterface{
+	return &LoadableIconIface{
+		IconIface: IconIface{
 			Object: obj,
 		},
 	}
@@ -93,7 +93,7 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 
 // Load loads a loadable icon. For the asynchronous version of this function,
 // see g_loadable_icon_load_async().
-func (i *LoadableIconInterface) Load(size int, cancellable Cancellable) (string, *InputStreamClass, error) {
+func (icon *LoadableIconIface) Load(size int, cancellable Cancellable) (string, *InputStreamClass, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 C.int            // out
 	var _arg2 *C.char          // in
@@ -101,7 +101,7 @@ func (i *LoadableIconInterface) Load(size int, cancellable Cancellable) (string,
 	var _cret *C.GInputStream  // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
 	_arg1 = C.int(size)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
@@ -122,14 +122,14 @@ func (i *LoadableIconInterface) Load(size int, cancellable Cancellable) (string,
 // LoadAsync loads an icon asynchronously. To finish this function, see
 // g_loadable_icon_load_finish(). For the synchronous, blocking version of this
 // function, see g_loadable_icon_load().
-func (i *LoadableIconInterface) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (icon *LoadableIconIface) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GLoadableIcon      // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
 	_arg1 = C.int(size)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -140,14 +140,14 @@ func (i *LoadableIconInterface) LoadAsync(size int, cancellable Cancellable, cal
 
 // LoadFinish finishes an asynchronous icon load started in
 // g_loadable_icon_load_async().
-func (i *LoadableIconInterface) LoadFinish(res AsyncResult) (string, *InputStreamClass, error) {
+func (icon *LoadableIconIface) LoadFinish(res AsyncResult) (string, *InputStreamClass, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 *C.char          // in
 	var _cret *C.GInputStream  // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)

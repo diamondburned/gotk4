@@ -138,11 +138,11 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 }
 
 // Actions gets the actions that this drop target supports.
-func (s *DropTargetClass) Actions() gdk.DragAction {
+func (self *DropTargetClass) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.GdkDragAction  // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_actions(_arg0)
 
@@ -156,11 +156,11 @@ func (s *DropTargetClass) Actions() gdk.DragAction {
 // Drop gets the currently handled drop operation.
 //
 // If no drop operation is going on, nil is returned.
-func (s *DropTargetClass) Drop() *gdk.DropClass {
+func (self *DropTargetClass) Drop() *gdk.DropClass {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GdkDrop       // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_drop(_arg0)
 
@@ -174,11 +174,11 @@ func (s *DropTargetClass) Drop() *gdk.DropClass {
 // Formats gets the data formats that this drop target accepts.
 //
 // If the result is nil, all formats are expected to be supported.
-func (s *DropTargetClass) Formats() *gdk.ContentFormats {
+func (self *DropTargetClass) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTarget     // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_formats(_arg0)
 
@@ -194,11 +194,11 @@ func (s *DropTargetClass) Formats() *gdk.ContentFormats {
 }
 
 // Preload gets whether data should be preloaded on hover.
-func (s *DropTargetClass) Preload() bool {
+func (self *DropTargetClass) Preload() bool {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_preload(_arg0)
 
@@ -212,11 +212,11 @@ func (s *DropTargetClass) Preload() bool {
 }
 
 // Value gets the current drop data, as a `GValue`.
-func (s *DropTargetClass) Value() *externglib.Value {
+func (self *DropTargetClass) Value() *externglib.Value {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GValue        // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_value(_arg0)
 
@@ -234,21 +234,21 @@ func (s *DropTargetClass) Value() *externglib.Value {
 //
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
-func (s *DropTargetClass) Reject() {
+func (self *DropTargetClass) Reject() {
 	var _arg0 *C.GtkDropTarget // out
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	C.gtk_drop_target_reject(_arg0)
 }
 
 // SetGTypes sets the supported `GTypes` for this drop target.
-func (s *DropTargetClass) SetGTypes(types []externglib.Type) {
+func (self *DropTargetClass) SetGTypes(types []externglib.Type) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 *C.GType
 	var _arg2 C.gsize
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 	_arg2 = C.gsize(len(types))
 	_arg1 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -263,11 +263,11 @@ func (s *DropTargetClass) SetGTypes(types []externglib.Type) {
 }
 
 // SetPreload sets whether data should be preloaded on hover.
-func (s *DropTargetClass) SetPreload(preload bool) {
+func (self *DropTargetClass) SetPreload(preload bool) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 	if preload {
 		_arg1 = C.TRUE
 	}

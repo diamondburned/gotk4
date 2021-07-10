@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -124,75 +123,6 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
-// LongName: the long name of an option can be used to specify it in a
-// commandline as `--long_name`. Every option must have a long name. To resolve
-// conflicts if multiple option groups contain the same long name, it is also
-// possible to specify the option as `--groupname-long_name`.
-func (o *OptionEntry) LongName() string {
-	var v string // out
-	v = C.GoString(o.native.long_name)
-	return v
-}
-
-// ShortName: if an option has a short name, it can be specified `-short_name`
-// in a commandline. @short_name must be a printable ASCII character different
-// from '-', or zero if the option has no short name.
-func (o *OptionEntry) ShortName() byte {
-	var v byte // out
-	v = byte(o.native.short_name)
-	return v
-}
-
-// Flags from Flags
-func (o *OptionEntry) Flags() int {
-	var v int // out
-	v = int(o.native.flags)
-	return v
-}
-
-// Arg: the type of the option, as a Arg
-func (o *OptionEntry) Arg() OptionArg {
-	var v OptionArg // out
-	v = (OptionArg)(o.native.arg)
-	return v
-}
-
-// ArgData: if the @arg type is G_OPTION_ARG_CALLBACK, then @arg_data must point
-// to a ArgFunc callback function, which will be called to handle the extra
-// argument. Otherwise, @arg_data is a pointer to a location to store the value,
-// the required type of the location depends on the @arg type: -
-// G_OPTION_ARG_NONE: gboolean - G_OPTION_ARG_STRING: gchar* - G_OPTION_ARG_INT:
-// gint - G_OPTION_ARG_FILENAME: gchar* - G_OPTION_ARG_STRING_ARRAY: gchar** -
-// G_OPTION_ARG_FILENAME_ARRAY: gchar** - G_OPTION_ARG_DOUBLE: gdouble If @arg
-// type is G_OPTION_ARG_STRING or G_OPTION_ARG_FILENAME, the location will
-// contain a newly allocated string if the option was given. That string needs
-// to be freed by the callee using g_free(). Likewise if @arg type is
-// G_OPTION_ARG_STRING_ARRAY or G_OPTION_ARG_FILENAME_ARRAY, the data should be
-// freed using g_strfreev().
-func (o *OptionEntry) ArgData() interface{} {
-	var v interface{} // out
-	v = box.Get(uintptr(o.native.arg_data))
-	return v
-}
-
-// Description: the description for the option in `--help` output. The
-// @description is translated using the @translate_func of the group, see
-// g_option_group_set_translation_domain().
-func (o *OptionEntry) Description() string {
-	var v string // out
-	v = C.GoString(o.native.description)
-	return v
-}
-
-// ArgDescription: the placeholder to use for the extra argument parsed by the
-// option in `--help` output. The @arg_description is translated using the
-// @translate_func of the group, see g_option_group_set_translation_domain().
-func (o *OptionEntry) ArgDescription() string {
-	var v string // out
-	v = C.GoString(o.native.arg_description)
-	return v
-}
-
 // OptionGroup: `GOptionGroup` struct defines the options in a single group. The
 // struct has only private fields and should not be directly accessed.
 //
@@ -221,11 +151,11 @@ func (o *OptionGroup) Native() unsafe.Pointer {
 }
 
 // AddEntries adds the options specified in @entries to @group.
-func (g *OptionGroup) AddEntries(entries []OptionEntry) {
+func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.GOptionEntry
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
 	{
 		var zero OptionEntry
 		entries = append(entries, zero)
@@ -238,21 +168,21 @@ func (g *OptionGroup) AddEntries(entries []OptionEntry) {
 // Free frees a Group. Note that you must not free groups which have been added
 // to a Context.
 //
-// Deprecated: since version 2.44.
-func (g *OptionGroup) free() {
+// Deprecated: Use g_option_group_unref() instead.
+func (group *OptionGroup) free() {
 	var _arg0 *C.GOptionGroup // out
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
 
 	C.g_option_group_free(_arg0)
 }
 
 // Ref increments the reference count of @group by one.
-func (g *OptionGroup) ref() *OptionGroup {
+func (group *OptionGroup) ref() *OptionGroup {
 	var _arg0 *C.GOptionGroup // out
 	var _cret *C.GOptionGroup // in
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
 
 	_cret = C.g_option_group_ref(_arg0)
 
@@ -269,11 +199,11 @@ func (g *OptionGroup) ref() *OptionGroup {
 
 // SetTranslationDomain: convenience function to use gettext() for translating
 // user-visible strings.
-func (g *OptionGroup) SetTranslationDomain(domain string) {
+func (group *OptionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
 	_arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -283,10 +213,10 @@ func (g *OptionGroup) SetTranslationDomain(domain string) {
 // Unref decrements the reference count of @group by one. If the reference count
 // drops to 0, the @group will be freed. and all memory allocated by the @group
 // is released.
-func (g *OptionGroup) unref() {
+func (group *OptionGroup) unref() {
 	var _arg0 *C.GOptionGroup // out
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g))
+	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
 
 	C.g_option_group_unref(_arg0)
 }

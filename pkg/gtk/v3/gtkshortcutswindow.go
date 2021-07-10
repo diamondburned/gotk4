@@ -86,7 +86,7 @@ type ShortcutsWindow interface {
 type ShortcutsWindowClass struct {
 	*externglib.Object
 	WindowClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ ShortcutsWindow = (*ShortcutsWindowClass)(nil)
@@ -101,24 +101,27 @@ func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}

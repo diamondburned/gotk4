@@ -137,18 +137,23 @@ type Actionable interface {
 	SetDetailedActionName(detailedActionName string)
 }
 
-// ActionableInterface implements the Actionable interface.
-type ActionableInterface struct {
+// ActionableIface implements the Actionable interface.
+type ActionableIface struct {
+	*externglib.Object
 	WidgetClass
 }
 
-var _ Actionable = (*ActionableInterface)(nil)
+var _ Actionable = (*ActionableIface)(nil)
 
 func wrapActionable(obj *externglib.Object) Actionable {
-	return &ActionableInterface{
+	return &ActionableIface{
+		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			BuildableInterface: BuildableInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
@@ -164,11 +169,11 @@ func marshalActionable(p uintptr) (interface{}, error) {
 // ActionName gets the action name for @actionable.
 //
 // See gtk_actionable_set_action_name() for more information.
-func (a *ActionableInterface) ActionName() string {
+func (actionable *ActionableIface) ActionName() string {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 
 	_cret = C.gtk_actionable_get_action_name(_arg0)
 
@@ -182,11 +187,11 @@ func (a *ActionableInterface) ActionName() string {
 // ActionTargetValue gets the current target value of @actionable.
 //
 // See gtk_actionable_set_action_target_value() for more information.
-func (a *ActionableInterface) ActionTargetValue() *glib.Variant {
+func (actionable *ActionableIface) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.GVariant      // in
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 
 	_cret = C.gtk_actionable_get_action_target_value(_arg0)
 
@@ -211,11 +216,11 @@ func (a *ActionableInterface) ActionTargetValue() *glib.Variant {
 // Names are of the form “win.save” or “app.quit” for actions on the containing
 // ApplicationWindow or its associated Application, respectively. This is the
 // same form used for actions in the #GMenu associated with the window.
-func (a *ActionableInterface) SetActionName(actionName string) {
+func (actionable *ActionableIface) SetActionName(actionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -239,11 +244,11 @@ func (a *ActionableInterface) SetActionName(actionName string) {
 // change to that value. Since the action’s state is now equal to the target
 // value of the button, the button will now be rendered as active (and the other
 // buttons, with different targets, rendered inactive).
-func (a *ActionableInterface) SetActionTargetValue(targetValue *glib.Variant) {
+func (actionable *ActionableIface) SetActionTargetValue(targetValue *glib.Variant) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.GVariant      // out
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 	_arg1 = (*C.GVariant)(unsafe.Pointer(targetValue))
 
 	C.gtk_actionable_set_action_target_value(_arg0, _arg1)
@@ -259,11 +264,11 @@ func (a *ActionableInterface) SetActionTargetValue(targetValue *glib.Variant) {
 // with a simple "s" target, and @detailed_action_name must be of the form
 // `"action::target"` where `action` is the action name and `target` is the
 // string to use as the target.)
-func (a *ActionableInterface) SetDetailedActionName(detailedActionName string) {
+func (actionable *ActionableIface) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 	_arg1 = (*C.gchar)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(_arg1))
 

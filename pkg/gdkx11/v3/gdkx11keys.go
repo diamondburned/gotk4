@@ -62,12 +62,12 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 // GroupForState extracts the group from the state field sent in an X Key event.
 // This is only needed for code processing raw X events, since EventKey directly
 // includes an is_modifier field.
-func (k *X11KeymapClass) GroupForState(state uint) int {
+func (keymap *X11KeymapClass) GroupForState(state uint) int {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 	_arg1 = C.guint(state)
 
 	_cret = C.gdk_x11_keymap_get_group_for_state(_arg0, _arg1)
@@ -84,12 +84,12 @@ func (k *X11KeymapClass) GroupForState(state uint) int {
 // state and the behavior of other keys rather than producing a direct effect
 // itself. This is only needed for code processing raw X events, since EventKey
 // directly includes an is_modifier field.
-func (k *X11KeymapClass) KeyIsModifier(keycode uint) bool {
+func (keymap *X11KeymapClass) KeyIsModifier(keycode uint) bool {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 	_arg1 = C.guint(keycode)
 
 	_cret = C.gdk_x11_keymap_key_is_modifier(_arg0, _arg1)

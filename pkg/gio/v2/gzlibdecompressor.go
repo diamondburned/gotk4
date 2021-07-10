@@ -47,7 +47,7 @@ type ZlibDecompressor interface {
 // ZlibDecompressorClass implements the ZlibDecompressor interface.
 type ZlibDecompressorClass struct {
 	*externglib.Object
-	ConverterInterface
+	ConverterIface
 }
 
 var _ ZlibDecompressor = (*ZlibDecompressorClass)(nil)
@@ -55,7 +55,7 @@ var _ ZlibDecompressor = (*ZlibDecompressorClass)(nil)
 func wrapZlibDecompressor(obj *externglib.Object) ZlibDecompressor {
 	return &ZlibDecompressorClass{
 		Object: obj,
-		ConverterInterface: ConverterInterface{
+		ConverterIface: ConverterIface{
 			Object: obj,
 		},
 	}
@@ -72,11 +72,11 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 // Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
 // header data was not fully processed yet, or it not present in the data stream
 // at all.
-func (d *ZlibDecompressorClass) FileInfo() *FileInfoClass {
+func (decompressor *ZlibDecompressorClass) FileInfo() *FileInfoClass {
 	var _arg0 *C.GZlibDecompressor // out
 	var _cret *C.GFileInfo         // in
 
-	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(decompressor.Native()))
 
 	_cret = C.g_zlib_decompressor_get_file_info(_arg0)
 

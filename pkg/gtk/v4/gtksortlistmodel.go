@@ -100,11 +100,11 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 // Incremental returns whether incremental sorting is enabled.
 //
 // See [method@Gtk.SortListModel.set_incremental].
-func (s *SortListModelClass) Incremental() bool {
+func (self *SortListModelClass) Incremental() bool {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sort_list_model_get_incremental(_arg0)
 
@@ -130,11 +130,11 @@ func (s *SortListModelClass) Incremental() bool {
 //
 // If no sort operation is ongoing - in particular when
 // [property@Gtk.SortListModel:incremental] is false - this function returns 0.
-func (s *SortListModelClass) Pending() uint {
+func (self *SortListModelClass) Pending() uint {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret C.guint             // in
 
-	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sort_list_model_get_pending(_arg0)
 
@@ -146,11 +146,11 @@ func (s *SortListModelClass) Pending() uint {
 }
 
 // Sorter gets the sorter that is used to sort @self.
-func (s *SortListModelClass) Sorter() *SorterClass {
+func (self *SortListModelClass) Sorter() *SorterClass {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret *C.GtkSorter        // in
 
-	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sort_list_model_get_sorter(_arg0)
 
@@ -177,11 +177,11 @@ func (s *SortListModelClass) Sorter() *SorterClass {
 //
 // See [method@Gtk.SortListModel.get_pending] for progress information about an
 // ongoing incremental sorting operation.
-func (s *SortListModelClass) SetIncremental(incremental bool) {
+func (self *SortListModelClass) SetIncremental(incremental bool) {
 	var _arg0 *C.GtkSortListModel // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 	if incremental {
 		_arg1 = C.TRUE
 	}
@@ -190,11 +190,11 @@ func (s *SortListModelClass) SetIncremental(incremental bool) {
 }
 
 // SetSorter sets a new sorter on @self.
-func (s *SortListModelClass) SetSorter(sorter Sorter) {
+func (self *SortListModelClass) SetSorter(sorter Sorter) {
 	var _arg0 *C.GtkSortListModel // out
 	var _arg1 *C.GtkSorter        // out
 
-	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	C.gtk_sort_list_model_set_sorter(_arg0, _arg1)

@@ -79,7 +79,7 @@ type MemoryTexture interface {
 type MemoryTextureClass struct {
 	*externglib.Object
 	TextureClass
-	PaintableInterface
+	PaintableIface
 }
 
 var _ MemoryTexture = (*MemoryTextureClass)(nil)
@@ -89,11 +89,11 @@ func wrapMemoryTexture(obj *externglib.Object) MemoryTexture {
 		Object: obj,
 		TextureClass: TextureClass{
 			Object: obj,
-			PaintableInterface: PaintableInterface{
+			PaintableIface: PaintableIface{
 				Object: obj,
 			},
 		},
-		PaintableInterface: PaintableInterface{
+		PaintableIface: PaintableIface{
 			Object: obj,
 		},
 	}

@@ -76,7 +76,7 @@ type SocketAddress interface {
 // SocketAddressClass implements the SocketAddress interface.
 type SocketAddressClass struct {
 	*externglib.Object
-	SocketConnectableInterface
+	SocketConnectableIface
 }
 
 var _ SocketAddress = (*SocketAddressClass)(nil)
@@ -84,7 +84,7 @@ var _ SocketAddress = (*SocketAddressClass)(nil)
 func wrapSocketAddress(obj *externglib.Object) SocketAddress {
 	return &SocketAddressClass{
 		Object: obj,
-		SocketConnectableInterface: SocketConnectableInterface{
+		SocketConnectableIface: SocketConnectableIface{
 			Object: obj,
 		},
 	}
@@ -116,11 +116,11 @@ func NewSocketAddressFromNative(native interface{}, len uint) *SocketAddressClas
 }
 
 // Family gets the socket family type of @address.
-func (a *SocketAddressClass) Family() SocketFamily {
+func (address *SocketAddressClass) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_socket_address_get_family(_arg0)
 
@@ -133,11 +133,11 @@ func (a *SocketAddressClass) Family() SocketFamily {
 
 // NativeSize gets the size of @address's native struct sockaddr. You can use
 // this to allocate memory to pass to g_socket_address_to_native().
-func (a *SocketAddressClass) NativeSize() int {
+func (address *SocketAddressClass) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.gssize          // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_socket_address_get_native_size(_arg0)
 
@@ -154,13 +154,13 @@ func (a *SocketAddressClass) NativeSize() int {
 // If not enough space is available, a G_IO_ERROR_NO_SPACE error is returned. If
 // the address type is not known on the system then a G_IO_ERROR_NOT_SUPPORTED
 // error is returned.
-func (a *SocketAddressClass) ToNative(dest interface{}, destlen uint) error {
+func (address *SocketAddressClass) ToNative(dest interface{}, destlen uint) error {
 	var _arg0 *C.GSocketAddress // out
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	_arg1 = (C.gpointer)(box.Assign(dest))
 	_arg2 = C.gsize(destlen)
 

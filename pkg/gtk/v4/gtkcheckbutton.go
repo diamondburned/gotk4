@@ -135,10 +135,10 @@ type CheckButton interface {
 type CheckButtonClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	ActionableInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	ActionableIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ CheckButton = (*CheckButtonClass)(nil)
@@ -147,38 +147,45 @@ func wrapCheckButton(obj *externglib.Object) CheckButton {
 	return &CheckButtonClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -239,11 +246,11 @@ func NewCheckButtonWithMnemonic(label string) *CheckButtonClass {
 }
 
 // Active returns whether the check button is active.
-func (s *CheckButtonClass) Active() bool {
+func (self *CheckButtonClass) Active() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_check_button_get_active(_arg0)
 
@@ -257,11 +264,11 @@ func (s *CheckButtonClass) Active() bool {
 }
 
 // Inconsistent returns whether the check button is in an inconsistent state.
-func (c *CheckButtonClass) Inconsistent() bool {
+func (checkButton *CheckButtonClass) Inconsistent() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(checkButton.Native()))
 
 	_cret = C.gtk_check_button_get_inconsistent(_arg0)
 
@@ -275,11 +282,11 @@ func (c *CheckButtonClass) Inconsistent() bool {
 }
 
 // Label returns the label of the check button.
-func (s *CheckButtonClass) Label() string {
+func (self *CheckButtonClass) Label() string {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_check_button_get_label(_arg0)
 
@@ -291,11 +298,11 @@ func (s *CheckButtonClass) Label() string {
 }
 
 // UseUnderline returns whether underlines in the label indicate mnemonics.
-func (s *CheckButtonClass) UseUnderline() bool {
+func (self *CheckButtonClass) UseUnderline() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_check_button_get_use_underline(_arg0)
 
@@ -309,11 +316,11 @@ func (s *CheckButtonClass) UseUnderline() bool {
 }
 
 // SetActive changes the check buttons active state.
-func (s *CheckButtonClass) SetActive(setting bool) {
+func (self *CheckButtonClass) SetActive(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -335,11 +342,11 @@ func (s *CheckButtonClass) SetActive(setting bool) {
 // Note that the same effect can be achieved via the [interface@Gtk.Actionable]
 // API, by using the same action with parameter type and state type 's' for all
 // buttons in the group, and giving each button its own target value.
-func (s *CheckButtonClass) SetGroup(group CheckButton) {
+func (self *CheckButtonClass) SetGroup(group CheckButton) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.GtkCheckButton // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer(group.Native()))
 
 	C.gtk_check_button_set_group(_arg0, _arg1)
@@ -349,11 +356,11 @@ func (s *CheckButtonClass) SetGroup(group CheckButton) {
 //
 // You shoud turn off the inconsistent state again if the user checks the check
 // button. This has to be done manually.
-func (c *CheckButtonClass) SetInconsistent(inconsistent bool) {
+func (checkButton *CheckButtonClass) SetInconsistent(inconsistent bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(checkButton.Native()))
 	if inconsistent {
 		_arg1 = C.TRUE
 	}
@@ -366,11 +373,11 @@ func (c *CheckButtonClass) SetInconsistent(inconsistent bool) {
 // If [property@Gtk.CheckButton:use-underline] is true, an underscore in @label
 // is interpreted as mnemonic indicator, see
 // [method@Gtk.CheckButton.set_use_underline] for details on this behavior.
-func (s *CheckButtonClass) SetLabel(label string) {
+func (self *CheckButtonClass) SetLabel(label string) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -382,11 +389,11 @@ func (s *CheckButtonClass) SetLabel(label string) {
 // If @setting is true, an underscore character in @self's label indicates a
 // mnemonic accelerator key. This behavior is similar to
 // [property@Gtk.Label:use-underline].
-func (s *CheckButtonClass) SetUseUnderline(setting bool) {
+func (self *CheckButtonClass) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

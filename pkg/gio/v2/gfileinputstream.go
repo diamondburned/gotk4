@@ -104,7 +104,7 @@ type FileInputStream interface {
 type FileInputStreamClass struct {
 	*externglib.Object
 	InputStreamClass
-	SeekableInterface
+	SeekableIface
 }
 
 var _ FileInputStream = (*FileInputStreamClass)(nil)
@@ -115,7 +115,7 @@ func wrapFileInputStream(obj *externglib.Object) FileInputStream {
 		InputStreamClass: InputStreamClass{
 			Object: obj,
 		},
-		SeekableInterface: SeekableInterface{
+		SeekableIface: SeekableIface{
 			Object: obj,
 		},
 	}
@@ -132,14 +132,14 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 // of this function, see g_file_input_stream_query_info_async(). While the
 // stream is blocked, the stream will set the pending flag internally, and any
 // other operations on the stream will fail with G_IO_ERROR_PENDING.
-func (s *FileInputStreamClass) QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error) {
+func (stream *FileInputStreamClass) QueryInfo(attributes string, cancellable Cancellable) (*FileInfoClass, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.GCancellable     // out
 	var _cret *C.GFileInfo        // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -165,7 +165,7 @@ func (s *FileInputStreamClass) QueryInfo(attributes string, cancellable Cancella
 // If @cancellable is not nil, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be set
-func (s *FileInputStreamClass) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (stream *FileInputStreamClass) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileInputStream   // out
 	var _arg1 *C.char               // out
 	var _arg2 C.int                 // out
@@ -173,7 +173,7 @@ func (s *FileInputStreamClass) QueryInfoAsync(attributes string, ioPriority int,
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
@@ -185,13 +185,13 @@ func (s *FileInputStreamClass) QueryInfoAsync(attributes string, ioPriority int,
 }
 
 // QueryInfoFinish finishes an asynchronous info query operation.
-func (s *FileInputStreamClass) QueryInfoFinish(result AsyncResult) (*FileInfoClass, error) {
+func (stream *FileInputStreamClass) QueryInfoFinish(result AsyncResult) (*FileInfoClass, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _cret *C.GFileInfo        // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_input_stream_query_info_finish(_arg0, _arg1, &_cerr)

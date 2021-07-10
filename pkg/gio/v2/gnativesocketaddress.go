@@ -44,7 +44,7 @@ type NativeSocketAddress interface {
 type NativeSocketAddressClass struct {
 	*externglib.Object
 	SocketAddressClass
-	SocketConnectableInterface
+	SocketConnectableIface
 }
 
 var _ NativeSocketAddress = (*NativeSocketAddressClass)(nil)
@@ -54,11 +54,11 @@ func wrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
 		Object: obj,
 		SocketAddressClass: SocketAddressClass{
 			Object: obj,
-			SocketConnectableInterface: SocketConnectableInterface{
+			SocketConnectableIface: SocketConnectableIface{
 				Object: obj,
 			},
 		},
-		SocketConnectableInterface: SocketConnectableInterface{
+		SocketConnectableIface: SocketConnectableIface{
 			Object: obj,
 		},
 	}

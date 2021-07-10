@@ -48,18 +48,23 @@ type CellEditable interface {
 	RemoveWidget()
 }
 
-// CellEditableInterface implements the CellEditable interface.
-type CellEditableInterface struct {
+// CellEditableIface implements the CellEditable interface.
+type CellEditableIface struct {
+	*externglib.Object
 	WidgetClass
 }
 
-var _ CellEditable = (*CellEditableInterface)(nil)
+var _ CellEditable = (*CellEditableIface)(nil)
 
 func wrapCellEditable(obj *externglib.Object) CellEditable {
-	return &CellEditableInterface{
+	return &CellEditableIface{
+		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			BuildableInterface: BuildableInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
@@ -73,19 +78,19 @@ func marshalCellEditable(p uintptr) (interface{}, error) {
 }
 
 // EditingDone emits the CellEditable::editing-done signal.
-func (c *CellEditableInterface) EditingDone() {
+func (cellEditable *CellEditableIface) EditingDone() {
 	var _arg0 *C.GtkCellEditable // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
 
 	C.gtk_cell_editable_editing_done(_arg0)
 }
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
-func (c *CellEditableInterface) RemoveWidget() {
+func (cellEditable *CellEditableIface) RemoveWidget() {
 	var _arg0 *C.GtkCellEditable // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
 
 	C.gtk_cell_editable_remove_widget(_arg0)
 }

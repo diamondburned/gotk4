@@ -143,13 +143,13 @@ func NewUnixFDListFromArray(fds []int) *UnixFDListClass {
 // The index of the file descriptor in the list is returned. If you use this
 // index with g_unix_fd_list_get() then you will receive back a duplicated copy
 // of the same file descriptor.
-func (l *UnixFDListClass) Append(fd int) (int, error) {
+func (list *UnixFDListClass) Append(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(list.Native()))
 	_arg1 = C.gint(fd)
 
 	_cret = C.g_unix_fd_list_append(_arg0, _arg1, &_cerr)
@@ -173,13 +173,13 @@ func (l *UnixFDListClass) Append(fd int) (int, error) {
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
 // descriptor limit.
-func (l *UnixFDListClass) Get(index_ int) (int, error) {
+func (list *UnixFDListClass) Get(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(list.Native()))
 	_arg1 = C.gint(index_)
 
 	_cret = C.g_unix_fd_list_get(_arg0, _arg1, &_cerr)
@@ -195,11 +195,11 @@ func (l *UnixFDListClass) Get(index_ int) (int, error) {
 
 // Length gets the length of @list (ie: the number of file descriptors contained
 // within).
-func (l *UnixFDListClass) Length() int {
+func (list *UnixFDListClass) Length() int {
 	var _arg0 *C.GUnixFDList // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(list.Native()))
 
 	_cret = C.g_unix_fd_list_get_length(_arg0)
 

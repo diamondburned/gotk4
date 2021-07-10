@@ -41,8 +41,8 @@ type HScrollbar interface {
 type HScrollbarClass struct {
 	*externglib.Object
 	ScrollbarClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ HScrollbar = (*HScrollbarClass)(nil)
@@ -55,29 +55,32 @@ func wrapHScrollbar(obj *externglib.Object) HScrollbar {
 			RangeClass: RangeClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
-				OrientableInterface: OrientableInterface{
+				OrientableIface: OrientableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -91,7 +94,7 @@ func marshalHScrollbar(p uintptr) (interface{}, error) {
 
 // NewHScrollbar creates a new horizontal scrollbar.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_scrollbar_new() with GTK_ORIENTATION_HORIZONTAL instead.
 func NewHScrollbar(adjustment Adjustment) *HScrollbarClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in

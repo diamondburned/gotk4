@@ -26,7 +26,7 @@ func init() {
 // url="http://www.unicode.org/reports/tr9/">Unicode bidirectional
 // algorithm</ulink>.
 //
-// Deprecated: since version 1.44.
+// Deprecated: Use fribidi for this information.
 type BidiType int
 
 const (

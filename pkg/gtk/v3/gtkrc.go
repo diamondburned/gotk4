@@ -77,7 +77,7 @@ func marshalPathType(p uintptr) (interface{}, error) {
 // file. It is exposed so that theme engines can reuse these tokens when parsing
 // the theme-engine specific portions of a RC file.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 type RCTokenType int
 
 const (
@@ -188,7 +188,7 @@ func marshalRCFlags(p uintptr) (interface{}, error) {
 // RCAddDefaultFile adds a file to the list of files to be parsed at the end of
 // gtk_init().
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use StyleContext with a custom StyleProvider instead.
 func RCAddDefaultFile(filename string) {
 	var _arg1 *C.gchar // out
 
@@ -201,7 +201,7 @@ func RCAddDefaultFile(filename string) {
 // RCFindModuleInPath searches for a theme engine in the GTK+ search path. This
 // function is not useful for applications and should not be used.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCFindModuleInPath(moduleFile string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -223,7 +223,7 @@ func RCFindModuleInPath(moduleFile string) string {
 // If the file is not found, it outputs a warning message using g_warning() and
 // returns nil.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) string {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.GScanner    // out
@@ -248,7 +248,7 @@ func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile str
 // RCGetDefaultFiles retrieves the current list of RC files that will be parsed
 // at the end of gtk_init().
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use StyleContext instead.
 func RCGetDefaultFiles() []string {
 	var _cret **C.gchar
 
@@ -277,7 +277,7 @@ func RCGetDefaultFiles() []string {
 // documentation of the `GTK_IM_MODULE_FILE` environment variable for more
 // details.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCGetImModuleFile() string {
 	var _cret *C.gchar // in
 
@@ -296,7 +296,7 @@ func RCGetImModuleFile() string {
 // looking up modules. This function is useful solely for utilities supplied
 // with GTK+ and should not be used by applications under normal circumstances.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCGetImModulePath() string {
 	var _cret *C.gchar // in
 
@@ -314,7 +314,7 @@ func RCGetImModulePath() string {
 // full information about the search for theme engines, see the docs for
 // `GTK_PATH` in [Running GTK+ Applications][gtk-running].
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCGetModuleDir() string {
 	var _cret *C.gchar // in
 
@@ -333,7 +333,7 @@ func RCGetModuleDir() string {
 // (GTK+ actually keeps a cache of previously created styles, so a new style may
 // not be created.)
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use StyleContext instead.
 func RCGetStyle(widget Widget) *StyleClass {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
@@ -363,7 +363,7 @@ func RCGetStyle(widget Widget) *StyleClass {
 //                               path, class_path,
 //                               G_OBJECT_TYPE (widget));
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use StyleContext instead.
 func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, typ externglib.Type) *StyleClass {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.char        // out
@@ -390,7 +390,7 @@ func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, t
 // RCGetThemeDir returns the standard directory in which themes should be
 // installed. (GTK+ does not actually use this directory itself.)
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCGetThemeDir() string {
 	var _cret *C.gchar // in
 
@@ -406,7 +406,7 @@ func RCGetThemeDir() string {
 
 // RCParse parses a given resource file.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCParse(filename string) {
 	var _arg1 *C.gchar // out
 
@@ -421,7 +421,7 @@ func RCParse(filename string) {
 // Note that theme engines should use gtk_rc_parse_color_full() in order to
 // support symbolic colors.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
 	var _arg2 C.GdkColor  // in
@@ -444,7 +444,7 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 // @style is not nil, it will be consulted to resolve references to symbolic
 // colors.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
@@ -468,7 +468,7 @@ func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
 // RCParseState parses a StateType variable from the format expected in a RC
 // file.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 	var _arg1 *C.GScanner    // out
 	var _arg2 C.GtkStateType // in
@@ -489,7 +489,7 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 
 // RCParseString parses resource information directly from a string.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCParseString(rcString string) {
 	var _arg1 *C.gchar // out
 
@@ -503,7 +503,7 @@ func RCParseString(rcString string) {
 // default Settings has changed, discard all style information and then reread
 // all previously read RC files.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCReparseAll() bool {
 	var _cret C.gboolean // in
 
@@ -522,7 +522,7 @@ func RCReparseAll() bool {
 // for the given Settings has changed, discard all style information and then
 // reread all previously read RC files.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 C.gboolean     // out
@@ -553,7 +553,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 // set by the operating system changes. Note that this function doesn’t affect
 // widgets that have a style set explicitly on them with gtk_widget_set_style().
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func RCResetStyles(settings Settings) {
 	var _arg1 *C.GtkSettings // out
 
@@ -565,7 +565,7 @@ func RCResetStyles(settings Settings) {
 // RCSetDefaultFiles sets the list of files that GTK+ will read at the end of
 // gtk_init().
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use StyleContext with a custom StyleProvider instead.
 func RCSetDefaultFiles(filenames []string) {
 	var _arg1 **C.gchar
 
@@ -600,7 +600,7 @@ type RCStyle interface {
 	// Copy makes a copy of the specified RcStyle. This function will correctly
 	// copy an RC style that is a member of a class derived from RcStyle.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use CssProvider instead.
 	Copy() *RCStyleClass
 }
 
@@ -626,7 +626,7 @@ func marshalRCStyle(p uintptr) (interface{}, error) {
 // NewRCStyle creates a new RcStyle with no fields set and a reference count of
 // 1.
 //
-// Deprecated: since version 3.0.
+// Deprecated: Use CssProvider instead.
 func NewRCStyle() *RCStyleClass {
 	var _cret *C.GtkRcStyle // in
 
@@ -642,12 +642,12 @@ func NewRCStyle() *RCStyleClass {
 // Copy makes a copy of the specified RcStyle. This function will correctly copy
 // an RC style that is a member of a class derived from RcStyle.
 //
-// Deprecated: since version 3.0.
-func (o *RCStyleClass) Copy() *RCStyleClass {
+// Deprecated: Use CssProvider instead.
+func (orig *RCStyleClass) Copy() *RCStyleClass {
 	var _arg0 *C.GtkRcStyle // out
 	var _cret *C.GtkRcStyle // in
 
-	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer(orig.Native()))
 
 	_cret = C.gtk_rc_style_copy(_arg0)
 
@@ -656,4 +656,20 @@ func (o *RCStyleClass) Copy() *RCStyleClass {
 	_rcStyle = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RCStyleClass)
 
 	return _rcStyle
+}
+
+// RCProperty: deprecated
+type RCProperty struct {
+	native C.GtkRcProperty
+}
+
+// WrapRCProperty wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRCProperty(ptr unsafe.Pointer) *RCProperty {
+	return (*RCProperty)(ptr)
+}
+
+// Native returns the underlying C source pointer.
+func (r *RCProperty) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
 }

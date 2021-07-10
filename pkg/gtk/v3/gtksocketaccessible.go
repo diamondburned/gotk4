@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -57,11 +58,11 @@ func marshalSocketAccessible(p uintptr) (interface{}, error) {
 	return wrapSocketAccessible(obj), nil
 }
 
-func (s *SocketAccessibleClass) Embed(path string) {
+func (socket *SocketAccessibleClass) Embed(path string) {
 	var _arg0 *C.GtkSocketAccessible // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer(socket.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 

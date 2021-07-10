@@ -172,16 +172,20 @@ type RecentFilter interface {
 
 // RecentFilterClass implements the RecentFilter interface.
 type RecentFilterClass struct {
+	*externglib.Object
 	externglib.InitiallyUnowned
-	BuildableInterface
+	BuildableIface
 }
 
 var _ RecentFilter = (*RecentFilterClass)(nil)
 
 func wrapRecentFilter(obj *externglib.Object) RecentFilter {
 	return &RecentFilterClass{
-		InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-		BuildableInterface: BuildableInterface{
+		Object: obj,
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -216,11 +220,11 @@ func NewRecentFilter() *RecentFilterClass {
 
 // AddAge adds a rule that allows resources based on their age - that is, the
 // number of days elapsed since they were last modified.
-func (f *RecentFilterClass) AddAge(days int) {
+func (filter *RecentFilterClass) AddAge(days int) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 C.gint             // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = C.gint(days)
 
 	C.gtk_recent_filter_add_age(_arg0, _arg1)
@@ -228,11 +232,11 @@ func (f *RecentFilterClass) AddAge(days int) {
 
 // AddApplication adds a rule that allows resources based on the name of the
 // application that has registered them.
-func (f *RecentFilterClass) AddApplication(application string) {
+func (filter *RecentFilterClass) AddApplication(application string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(C.CString(application))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -241,11 +245,11 @@ func (f *RecentFilterClass) AddApplication(application string) {
 
 // AddGroup adds a rule that allows resources based on the name of the group to
 // which they belong
-func (f *RecentFilterClass) AddGroup(group string) {
+func (filter *RecentFilterClass) AddGroup(group string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(C.CString(group))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -254,11 +258,11 @@ func (f *RecentFilterClass) AddGroup(group string) {
 
 // AddMIMEType adds a rule that allows resources based on their registered MIME
 // type.
-func (f *RecentFilterClass) AddMIMEType(mimeType string) {
+func (filter *RecentFilterClass) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -267,11 +271,11 @@ func (f *RecentFilterClass) AddMIMEType(mimeType string) {
 
 // AddPattern adds a rule that allows resources based on a pattern matching
 // their display name.
-func (f *RecentFilterClass) AddPattern(pattern string) {
+func (filter *RecentFilterClass) AddPattern(pattern string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -280,10 +284,10 @@ func (f *RecentFilterClass) AddPattern(pattern string) {
 
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
 // GdkPixbuf.
-func (f *RecentFilterClass) AddPixbufFormats() {
+func (filter *RecentFilterClass) AddPixbufFormats() {
 	var _arg0 *C.GtkRecentFilter // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_recent_filter_add_pixbuf_formats(_arg0)
 }
@@ -295,12 +299,12 @@ func (f *RecentFilterClass) AddPixbufFormats() {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
-func (f *RecentFilterClass) Filter(filterInfo *RecentFilterInfo) bool {
+func (filter *RecentFilterClass) Filter(filterInfo *RecentFilterInfo) bool {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _arg1 *C.GtkRecentFilterInfo // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.GtkRecentFilterInfo)(unsafe.Pointer(filterInfo))
 
 	_cret = C.gtk_recent_filter_filter(_arg0, _arg1)
@@ -316,11 +320,11 @@ func (f *RecentFilterClass) Filter(filterInfo *RecentFilterInfo) bool {
 
 // Name gets the human-readable name for the filter. See
 // gtk_recent_filter_set_name().
-func (f *RecentFilterClass) Name() string {
+func (filter *RecentFilterClass) Name() string {
 	var _arg0 *C.GtkRecentFilter // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_recent_filter_get_name(_arg0)
 
@@ -336,11 +340,11 @@ func (f *RecentFilterClass) Name() string {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
-func (f *RecentFilterClass) Needed() RecentFilterFlags {
+func (filter *RecentFilterClass) Needed() RecentFilterFlags {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _cret C.GtkRecentFilterFlags // in
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_recent_filter_get_needed(_arg0)
 
@@ -354,11 +358,11 @@ func (f *RecentFilterClass) Needed() RecentFilterFlags {
 // SetName sets the human-readable name of the filter; this is the string that
 // will be displayed in the recently used resources selector user interface if
 // there is a selectable list of filters.
-func (f *RecentFilterClass) SetName(name string) {
+func (filter *RecentFilterClass) SetName(name string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -380,78 +384,4 @@ func WrapRecentFilterInfo(ptr unsafe.Pointer) *RecentFilterInfo {
 // Native returns the underlying C source pointer.
 func (r *RecentFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// Contains to indicate which fields are set.
-func (r *RecentFilterInfo) Contains() RecentFilterFlags {
-	var v RecentFilterFlags // out
-	v = (RecentFilterFlags)(r.native.contains)
-	return v
-}
-
-// URI: the URI of the file being tested.
-func (r *RecentFilterInfo) URI() string {
-	var v string // out
-	v = C.GoString(r.native.uri)
-	return v
-}
-
-// DisplayName: the string that will be used to display the file in the recent
-// chooser.
-func (r *RecentFilterInfo) DisplayName() string {
-	var v string // out
-	v = C.GoString(r.native.display_name)
-	return v
-}
-
-// MIMEType: MIME type of the file.
-func (r *RecentFilterInfo) MIMEType() string {
-	var v string // out
-	v = C.GoString(r.native.mime_type)
-	return v
-}
-
-// Applications: the list of applications that have registered the file.
-func (r *RecentFilterInfo) Applications() []string {
-	var v []string
-	{
-		var i int
-		var z *C.gchar
-		for p := r.native.applications; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(r.native.applications, i)
-		v = make([]string, i)
-		for i := range src {
-			v[i] = C.GoString(src[i])
-		}
-	}
-	return v
-}
-
-// Groups: the groups to which the file belongs to.
-func (r *RecentFilterInfo) Groups() []string {
-	var v []string
-	{
-		var i int
-		var z *C.gchar
-		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
-
-		src := unsafe.Slice(r.native.groups, i)
-		v = make([]string, i)
-		for i := range src {
-			v[i] = C.GoString(src[i])
-		}
-	}
-	return v
-}
-
-// Age: the number of days elapsed since the file has been registered.
-func (r *RecentFilterInfo) Age() int {
-	var v int // out
-	v = int(r.native.age)
-	return v
 }

@@ -33,16 +33,14 @@ type MenuItemAccessible interface {
 
 // MenuItemAccessibleClass implements the MenuItemAccessible interface.
 type MenuItemAccessibleClass struct {
-	*externglib.Object
 	ContainerAccessibleClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ MenuItemAccessible = (*MenuItemAccessibleClass)(nil)
 
 func wrapMenuItemAccessible(obj *externglib.Object) MenuItemAccessible {
 	return &MenuItemAccessibleClass{
-		Object: obj,
 		ContainerAccessibleClass: ContainerAccessibleClass{
 			WidgetAccessibleClass: WidgetAccessibleClass{
 				AccessibleClass: AccessibleClass{
@@ -52,7 +50,7 @@ func wrapMenuItemAccessible(obj *externglib.Object) MenuItemAccessible {
 				},
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}

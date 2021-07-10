@@ -30,7 +30,7 @@ func init() {
 //
 // Since this function is called for each data access, it’s not a particularly
 // efficient operation.
-type TreeModelFilterModifyFunc func(model *TreeModelInterface, iter *TreeIter, column int, data interface{}) (value externglib.Value)
+type TreeModelFilterModifyFunc func(model *TreeModelIface, iter *TreeIter, column int, data interface{}) (value externglib.Value)
 
 //export gotk4_TreeModelFilterModifyFunc
 func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.int, arg4 C.gpointer) {
@@ -39,12 +39,12 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 		panic(`callback not found`)
 	}
 
-	var model *TreeModelInterface // out
-	var iter *TreeIter            // out
-	var column int                // out
-	var data interface{}          // out
+	var model *TreeModelIface // out
+	var iter *TreeIter        // out
+	var column int            // out
+	var data interface{}      // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModelInterface)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModelIface)
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
 	column = int(arg3)
 	data = box.Get(uintptr(arg4))
@@ -57,7 +57,7 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 
 // TreeModelFilterVisibleFunc: function which decides whether the row indicated
 // by @iter is visible.
-type TreeModelFilterVisibleFunc func(model *TreeModelInterface, iter *TreeIter, data interface{}) (ok bool)
+type TreeModelFilterVisibleFunc func(model *TreeModelIface, iter *TreeIter, data interface{}) (ok bool)
 
 //export gotk4_TreeModelFilterVisibleFunc
 func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
@@ -66,11 +66,11 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 		panic(`callback not found`)
 	}
 
-	var model *TreeModelInterface // out
-	var iter *TreeIter            // out
-	var data interface{}          // out
+	var model *TreeModelIface // out
+	var iter *TreeIter        // out
+	var data interface{}      // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModelInterface)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModelIface)
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
 	data = box.Get(uintptr(arg2))
 
@@ -186,7 +186,7 @@ type TreeModelFilter interface {
 	// model, nil is returned.
 	ConvertPathToChildPath(filterPath *TreePath) *TreePath
 	// Model returns a pointer to the child model of @filter.
-	Model() *TreeModelInterface
+	Model() *TreeModelIface
 	// Refilter emits ::row_changed for each row in the child model, which
 	// causes the filter to re-evaluate whether a row is visible or not.
 	Refilter()
@@ -204,8 +204,9 @@ type TreeModelFilter interface {
 // TreeModelFilterClass implements the TreeModelFilter interface.
 type TreeModelFilterClass struct {
 	*externglib.Object
-	TreeDragSourceInterface
-	TreeModelInterface
+	*externglib.Object
+	TreeDragSourceIface
+	TreeModelIface
 }
 
 var _ TreeModelFilter = (*TreeModelFilterClass)(nil)
@@ -213,10 +214,11 @@ var _ TreeModelFilter = (*TreeModelFilterClass)(nil)
 func wrapTreeModelFilter(obj *externglib.Object) TreeModelFilter {
 	return &TreeModelFilterClass{
 		Object: obj,
-		TreeDragSourceInterface: TreeDragSourceInterface{
+		Object: obj,
+		TreeDragSourceIface: TreeDragSourceIface{
 			Object: obj,
 		},
-		TreeModelInterface: TreeModelInterface{
+		TreeModelIface: TreeModelIface{
 			Object: obj,
 		},
 	}
@@ -234,10 +236,10 @@ func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 // filtered is static (and doesn’t change often) and there has been a lot of
 // unreffed access to nodes. As a side effect of this function, all unreffed
 // iters will be invalid.
-func (f *TreeModelFilterClass) ClearCache() {
+func (filter *TreeModelFilterClass) ClearCache() {
 	var _arg0 *C.GtkTreeModelFilter // out
 
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_tree_model_filter_clear_cache(_arg0)
 }
@@ -245,13 +247,13 @@ func (f *TreeModelFilterClass) ClearCache() {
 // ConvertChildIterToIter sets @filter_iter to point to the row in @filter that
 // corresponds to the row pointed at by @child_iter. If @filter_iter was not
 // set, false is returned.
-func (f *TreeModelFilterClass) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
+func (filter *TreeModelFilterClass) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
 	var _arg2 *C.GtkTreeIter        // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter))
 
 	_cret = C.gtk_tree_model_filter_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
@@ -272,12 +274,12 @@ func (f *TreeModelFilterClass) ConvertChildIterToIter(childIter *TreeIter) (Tree
 // will point to the same row in the filtered model. If @child_path isn’t a
 // valid path on the child model or points to a row which is not visible in
 // @filter, then nil is returned.
-func (f *TreeModelFilterClass) ConvertChildPathToPath(childPath *TreePath) *TreePath {
+func (filter *TreeModelFilterClass) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 *C.GtkTreePath        // out
 	var _cret *C.GtkTreePath        // in
 
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(childPath))
 
 	_cret = C.gtk_tree_model_filter_convert_child_path_to_path(_arg0, _arg1)
@@ -294,12 +296,12 @@ func (f *TreeModelFilterClass) ConvertChildPathToPath(childPath *TreePath) *Tree
 
 // ConvertIterToChildIter sets @child_iter to point to the row pointed to by
 // @filter_iter.
-func (f *TreeModelFilterClass) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
+func (filter *TreeModelFilterClass) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
 	var _arg2 *C.GtkTreeIter        // out
 
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(filterIter))
 
 	C.gtk_tree_model_filter_convert_iter_to_child_iter(_arg0, &_arg1, _arg2)
@@ -316,12 +318,12 @@ func (f *TreeModelFilterClass) ConvertIterToChildIter(filterIter *TreeIter) Tree
 // path will point to the same location in the model not being filtered. If
 // @filter_path does not point to a location in the child model, nil is
 // returned.
-func (f *TreeModelFilterClass) ConvertPathToChildPath(filterPath *TreePath) *TreePath {
+func (filter *TreeModelFilterClass) ConvertPathToChildPath(filterPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 *C.GtkTreePath        // out
 	var _cret *C.GtkTreePath        // in
 
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(filterPath))
 
 	_cret = C.gtk_tree_model_filter_convert_path_to_child_path(_arg0, _arg1)
@@ -337,27 +339,27 @@ func (f *TreeModelFilterClass) ConvertPathToChildPath(filterPath *TreePath) *Tre
 }
 
 // Model returns a pointer to the child model of @filter.
-func (f *TreeModelFilterClass) Model() *TreeModelInterface {
+func (filter *TreeModelFilterClass) Model() *TreeModelIface {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _cret *C.GtkTreeModel       // in
 
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_tree_model_filter_get_model(_arg0)
 
-	var _treeModel *TreeModelInterface // out
+	var _treeModel *TreeModelIface // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModelInterface)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModelIface)
 
 	return _treeModel
 }
 
 // Refilter emits ::row_changed for each row in the child model, which causes
 // the filter to re-evaluate whether a row is visible or not.
-func (f *TreeModelFilterClass) Refilter() {
+func (filter *TreeModelFilterClass) Refilter() {
 	var _arg0 *C.GtkTreeModelFilter // out
 
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_tree_model_filter_refilter(_arg0)
 }
@@ -370,11 +372,11 @@ func (f *TreeModelFilterClass) Refilter() {
 // Note that gtk_tree_model_filter_set_visible_func() or
 // gtk_tree_model_filter_set_visible_column() can only be called once for a
 // given filter model.
-func (f *TreeModelFilterClass) SetVisibleColumn(column int) {
+func (filter *TreeModelFilterClass) SetVisibleColumn(column int) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = C.int(column)
 
 	C.gtk_tree_model_filter_set_visible_column(_arg0, _arg1)

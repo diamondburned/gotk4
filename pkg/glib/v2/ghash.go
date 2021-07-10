@@ -345,11 +345,11 @@ func (h *HashTableIter) Native() unsafe.Pointer {
 //      {
 //        // do something with key and value
 //      }
-func (i *HashTableIter) Init(hashTable *HashTable) {
+func (iter *HashTableIter) Init(hashTable *HashTable) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 *C.GHashTable     // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
 	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
 
 	C.g_hash_table_iter_init(_arg0, _arg1)
@@ -358,13 +358,13 @@ func (i *HashTableIter) Init(hashTable *HashTable) {
 // Next advances @iter and retrieves the key and/or value that are now pointed
 // to as a result of this advancement. If false is returned, @key and @value are
 // not set, and the iterator becomes invalid.
-func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
+func (iter *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 C.gpointer        // in
 	var _arg2 C.gpointer        // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
 
 	_cret = C.g_hash_table_iter_next(_arg0, &_arg1, &_arg2)
 
@@ -397,10 +397,10 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 //        if (condition)
 //          g_hash_table_iter_remove (&iter);
 //      }
-func (i *HashTableIter) Remove() {
+func (iter *HashTableIter) Remove() {
 	var _arg0 *C.GHashTableIter // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
 
 	C.g_hash_table_iter_remove(_arg0)
 }
@@ -411,11 +411,11 @@ func (i *HashTableIter) Remove() {
 //
 // If you supplied a @value_destroy_func when creating the Table, the old value
 // is freed using that function.
-func (i *HashTableIter) Replace(value interface{}) {
+func (iter *HashTableIter) Replace(value interface{}) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 C.gpointer        // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
 	_arg1 = (C.gpointer)(box.Assign(value))
 
 	C.g_hash_table_iter_replace(_arg0, _arg1)
@@ -425,10 +425,10 @@ func (i *HashTableIter) Replace(value interface{}) {
 // its associated Table, without calling the key and value destroy functions.
 // Can only be called after g_hash_table_iter_next() returned true, and cannot
 // be called more than once for the same key/value pair.
-func (i *HashTableIter) Steal() {
+func (iter *HashTableIter) Steal() {
 	var _arg0 *C.GHashTableIter // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
 
 	C.g_hash_table_iter_steal(_arg0)
 }

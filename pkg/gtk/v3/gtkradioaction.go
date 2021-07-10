@@ -74,7 +74,7 @@ type RadioAction interface {
 type RadioActionClass struct {
 	*externglib.Object
 	ToggleActionClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ RadioAction = (*RadioActionClass)(nil)
@@ -86,15 +86,15 @@ func wrapRadioAction(obj *externglib.Object) RadioAction {
 			Object: obj,
 			ActionClass: ActionClass{
 				Object: obj,
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -142,11 +142,11 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 // group to which @action belongs.
 //
 // Deprecated: since version 3.10.
-func (a *RadioActionClass) CurrentValue() int {
+func (action *RadioActionClass) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret C.gint            // in
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_radio_action_get_current_value(_arg0)
 
@@ -177,11 +177,11 @@ func (a *RadioActionClass) CurrentValue() int {
 //       }
 //
 // Deprecated: since version 3.10.
-func (a *RadioActionClass) JoinGroup(groupSource RadioAction) {
+func (action *RadioActionClass) JoinGroup(groupSource RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GtkRadioAction // out
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(groupSource.Native()))
 
 	C.gtk_radio_action_join_group(_arg0, _arg1)
@@ -191,11 +191,11 @@ func (a *RadioActionClass) JoinGroup(groupSource RadioAction) {
 // value property @current_value.
 //
 // Deprecated: since version 3.10.
-func (a *RadioActionClass) SetCurrentValue(currentValue int) {
+func (action *RadioActionClass) SetCurrentValue(currentValue int) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 C.gint            // out
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
 	_arg1 = C.gint(currentValue)
 
 	C.gtk_radio_action_set_current_value(_arg0, _arg1)

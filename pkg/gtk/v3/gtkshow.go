@@ -25,7 +25,7 @@ import "C"
 // information for helpers to parent their dialog properly, when run from
 // sandboxed applications for example.
 //
-// Deprecated: since version 3.22.
+// Deprecated: Use gtk_show_uri_on_window() instead.
 func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
 	var _arg1 *C.GdkScreen // out
 	var _arg2 *C.gchar     // out

@@ -62,11 +62,11 @@ func marshalEventController(p uintptr) (interface{}, error) {
 
 // PropagationPhase gets the propagation phase at which @controller handles
 // events.
-func (c *EventControllerClass) PropagationPhase() PropagationPhase {
+func (controller *EventControllerClass) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 
@@ -78,11 +78,11 @@ func (c *EventControllerClass) PropagationPhase() PropagationPhase {
 }
 
 // Widget returns the Widget this controller relates to.
-func (c *EventControllerClass) Widget() *WidgetClass {
+func (controller *EventControllerClass) Widget() *WidgetClass {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
@@ -96,10 +96,10 @@ func (c *EventControllerClass) Widget() *WidgetClass {
 // Reset resets the @controller to a clean state. Every interaction the
 // controller did through EventController::handle-event will be dropped at this
 // point.
-func (c *EventControllerClass) Reset() {
+func (controller *EventControllerClass) Reset() {
 	var _arg0 *C.GtkEventController // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	C.gtk_event_controller_reset(_arg0)
 }

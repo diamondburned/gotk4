@@ -72,7 +72,9 @@ func wrapCellRendererAccel(obj *externglib.Object) CellRendererAccel {
 	return &CellRendererAccelClass{
 		CellRendererTextClass: CellRendererTextClass{
 			CellRendererClass: CellRendererClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
 			},
 		},
 	}

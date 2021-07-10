@@ -51,6 +51,70 @@ func marshalShapeFlags(p uintptr) (interface{}, error) {
 	return ShapeFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Shape: convert the characters in @text into glyphs.
+//
+// Given a segment of text and the corresponding `PangoAnalysis` structure
+// returned from [func@itemize], convert the characters into glyphs. You may
+// also pass in only a substring of the item from [func@itemize].
+//
+// It is recommended that you use [func@shape_full] instead, since that API
+// allows for shaping interaction happening across text item boundaries.
+//
+// Note that the extra attributes in the @analyis that is returned from
+// [func@itemize] have indices that are relative to the entire paragraph, so you
+// need to subtract the item offset from their indices before calling
+// [func@shape].
+func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoAnalysis    // out
+	var _arg4 *C.PangoGlyphString // out
+
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg4 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
+
+	C.pango_shape(_arg1, _arg2, _arg3, _arg4)
+}
+
+// ShapeFull: convert the characters in @text into glyphs.
+//
+// Given a segment of text and the corresponding `PangoAnalysis` structure
+// returned from [func@itemize], convert the characters into glyphs. You may
+// also pass in only a substring of the item from [func@itemize].
+//
+// This is similar to [func@shape], except it also can optionally take the full
+// paragraph text as input, which will then be used to perform certain
+// cross-item shaping interactions. If you have access to the broader text of
+// which @item_text is part of, provide the broader text as @paragraph_text. If
+// @paragraph_text is nil, item text is used instead.
+//
+// Note that the extra attributes in the @analyis that is returned from
+// [func@itemize] have indices that are relative to the entire paragraph, so you
+// do not pass the full paragraph text as @paragraph_text, you need to subtract
+// the item offset from their indices before calling [func@shape_full].
+func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString) {
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.char             // out
+	var _arg4 C.int               // out
+	var _arg5 *C.PangoAnalysis    // out
+	var _arg6 *C.PangoGlyphString // out
+
+	_arg1 = (*C.char)(C.CString(itemText))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(itemLength)
+	_arg3 = (*C.char)(C.CString(paragraphText))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.int(paragraphLength)
+	_arg5 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg6 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
+
+	C.pango_shape_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+}
+
 // GlyphGeometry: the `PangoGlyphGeometry` structure contains width and
 // positioning information for a single glyph.
 type GlyphGeometry struct {
@@ -83,20 +147,6 @@ func WrapGlyphInfo(ptr unsafe.Pointer) *GlyphInfo {
 // Native returns the underlying C source pointer.
 func (g *GlyphInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
-}
-
-// Geometry: the positional information about the glyph.
-func (g *GlyphInfo) Geometry() GlyphGeometry {
-	var v GlyphGeometry // out
-	v = *(*GlyphGeometry)(unsafe.Pointer((&g.native.geometry)))
-	return v
-}
-
-// Attr: the visual attributes of the glyph.
-func (g *GlyphInfo) Attr() GlyphVisAttr {
-	var v GlyphVisAttr // out
-	v = *(*GlyphVisAttr)(unsafe.Pointer((&g.native.attr)))
-	return v
 }
 
 // GlyphString: `PangoGlyphString` is used to store strings of glyphs with
@@ -140,27 +190,12 @@ func (g *GlyphString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// NumGlyphs: number of the glyphs in this glyph string.
-func (g *GlyphString) NumGlyphs() int {
-	var v int // out
-	v = int(g.native.num_glyphs)
-	return v
-}
-
-// LogClusters: logical cluster info, indexed by the byte index within the text
-// corresponding to the glyph string.
-func (g *GlyphString) LogClusters() *int {
-	var v *int // out
-	v = (*int)(unsafe.Pointer(g.native.log_clusters))
-	return v
-}
-
 // Copy a glyph string and associated storage.
-func (s *GlyphString) Copy() *GlyphString {
+func (_string *GlyphString) Copy() *GlyphString {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret *C.PangoGlyphString // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(_string))
 
 	_cret = C.pango_glyph_string_copy(_arg0)
 
@@ -182,13 +217,13 @@ func (s *GlyphString) Copy() *GlyphString {
 // Examples of logical (red) and ink (green) rects:
 //
 // ! (rects1.png) ! (rects2.png)
-func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectangle) {
+func (glyphs *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out
 	var _arg2 C.PangoRectangle    // in
 	var _arg3 C.PangoRectangle    // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_glyph_string_extents(_arg0, _arg1, &_arg2, &_arg3)
@@ -207,7 +242,7 @@ func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectang
 // The extents are relative to the start of the glyph string range (the origin
 // of their coordinate system is at the start of the range, not at the start of
 // the entire glyph string).
-func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Rectangle, logicalRect Rectangle) {
+func (glyphs *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out
@@ -215,7 +250,7 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 	var _arg4 C.PangoRectangle    // in
 	var _arg5 C.PangoRectangle    // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg1 = C.int(start)
 	_arg2 = C.int(end)
 	_arg3 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
@@ -232,10 +267,10 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 }
 
 // Free: free a glyph string and associated storage.
-func (s *GlyphString) free() {
+func (_string *GlyphString) free() {
 	var _arg0 *C.PangoGlyphString // out
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(_string))
 
 	C.pango_glyph_string_free(_arg0)
 }
@@ -246,11 +281,11 @@ func (s *GlyphString) free() {
 // since this only computes the width, it's much faster. This is in fact only a
 // convenience function that computes the sum of @geometry.width for each glyph
 // in the @glyphs.
-func (g *GlyphString) Width() int {
+func (glyphs *GlyphString) Width() int {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 
 	_cret = C.pango_glyph_string_get_width(_arg0)
 
@@ -261,15 +296,81 @@ func (g *GlyphString) Width() int {
 	return _gint
 }
 
+// IndexToX converts from character position to x position.
+//
+// The X position is measured from the left edge of the run. Character positions
+// are computed by dividing up each cluster into equal portions.
+func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis, index_ int, trailing bool) int {
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoAnalysis    // out
+	var _arg4 C.int               // out
+	var _arg5 C.gboolean          // out
+	var _arg6 C.int               // in
+
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg4 = C.int(index_)
+	if trailing {
+		_arg5 = C.TRUE
+	}
+
+	C.pango_glyph_string_index_to_x(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
+
+	var _xPos int // out
+
+	_xPos = int(_arg6)
+
+	return _xPos
+}
+
 // SetSize: resize a glyph string to the given length.
-func (s *GlyphString) SetSize(newLen int) {
+func (_string *GlyphString) SetSize(newLen int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.gint              // out
 
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s))
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(_string))
 	_arg1 = C.gint(newLen)
 
 	C.pango_glyph_string_set_size(_arg0, _arg1)
+}
+
+// XToIndex: convert from x offset to character position.
+//
+// Character positions are computed by dividing up each cluster into equal
+// portions. In scripts where positioning within a cluster is not allowed (such
+// as Thai), the returned value may not be a valid cursor position; the caller
+// must combine the result with the logical attributes for the text to compute
+// the valid cursor position.
+func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis, xPos int) (index_ int, trailing int) {
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoAnalysis    // out
+	var _arg4 C.int               // out
+	var _arg5 C.int               // in
+	var _arg6 C.int               // in
+
+	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg4 = C.int(xPos)
+
+	C.pango_glyph_string_x_to_index(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
+
+	var _index_ int   // out
+	var _trailing int // out
+
+	_index_ = int(_arg5)
+	_trailing = int(_arg6)
+
+	return _index_, _trailing
 }
 
 // GlyphVisAttr: `PangoGlyphVisAttr` structure communicates information between

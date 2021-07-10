@@ -73,10 +73,10 @@ type LockButton interface {
 type LockButtonClass struct {
 	*externglib.Object
 	ButtonClass
-	AccessibleInterface
-	ActionableInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	ActionableIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ LockButton = (*LockButtonClass)(nil)
@@ -87,62 +87,73 @@ func wrapLockButton(obj *externglib.Object) LockButton {
 		ButtonClass: ButtonClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
-			AccessibleInterface: AccessibleInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -171,11 +182,11 @@ func NewLockButton(permission gio.Permission) *LockButtonClass {
 }
 
 // Permission obtains the `GPermission` object that controls @button.
-func (b *LockButtonClass) Permission() *gio.PermissionClass {
+func (button *LockButtonClass) Permission() *gio.PermissionClass {
 	var _arg0 *C.GtkLockButton // out
 	var _cret *C.GPermission   // in
 
-	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_lock_button_get_permission(_arg0)
 
@@ -187,11 +198,11 @@ func (b *LockButtonClass) Permission() *gio.PermissionClass {
 }
 
 // SetPermission sets the `GPermission` object that controls @button.
-func (b *LockButtonClass) SetPermission(permission gio.Permission) {
+func (button *LockButtonClass) SetPermission(permission gio.Permission) {
 	var _arg0 *C.GtkLockButton // out
 	var _arg1 *C.GPermission   // out
 
-	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	C.gtk_lock_button_set_permission(_arg0, _arg1)

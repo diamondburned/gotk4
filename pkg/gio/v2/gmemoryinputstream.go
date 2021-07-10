@@ -46,8 +46,8 @@ type MemoryInputStream interface {
 type MemoryInputStreamClass struct {
 	*externglib.Object
 	InputStreamClass
-	PollableInputStreamInterface
-	SeekableInterface
+	PollableInputStreamIface
+	SeekableIface
 }
 
 var _ MemoryInputStream = (*MemoryInputStreamClass)(nil)
@@ -58,12 +58,12 @@ func wrapMemoryInputStream(obj *externglib.Object) MemoryInputStream {
 		InputStreamClass: InputStreamClass{
 			Object: obj,
 		},
-		PollableInputStreamInterface: PollableInputStreamInterface{
+		PollableInputStreamIface: PollableInputStreamIface{
 			InputStreamClass: InputStreamClass{
 				Object: obj,
 			},
 		},
-		SeekableInterface: SeekableInterface{
+		SeekableIface: SeekableIface{
 			Object: obj,
 		},
 	}

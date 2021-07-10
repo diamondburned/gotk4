@@ -50,18 +50,23 @@ type AppChooser interface {
 	Refresh()
 }
 
-// AppChooserInterface implements the AppChooser interface.
-type AppChooserInterface struct {
+// AppChooserIface implements the AppChooser interface.
+type AppChooserIface struct {
+	*externglib.Object
 	WidgetClass
 }
 
-var _ AppChooser = (*AppChooserInterface)(nil)
+var _ AppChooser = (*AppChooserIface)(nil)
 
 func wrapAppChooser(obj *externglib.Object) AppChooser {
-	return &AppChooserInterface{
+	return &AppChooserIface{
+		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			BuildableInterface: BuildableInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
@@ -76,11 +81,11 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 
 // ContentType returns the current value of the AppChooser:content-type
 // property.
-func (s *AppChooserInterface) ContentType() string {
+func (self *AppChooserIface) ContentType() string {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_get_content_type(_arg0)
 
@@ -93,10 +98,10 @@ func (s *AppChooserInterface) ContentType() string {
 }
 
 // Refresh reloads the list of applications.
-func (s *AppChooserInterface) Refresh() {
+func (self *AppChooserIface) Refresh() {
 	var _arg0 *C.GtkAppChooser // out
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))
 
 	C.gtk_app_chooser_refresh(_arg0)
 }

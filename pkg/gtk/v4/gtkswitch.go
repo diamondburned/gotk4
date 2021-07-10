@@ -68,10 +68,10 @@ type Switch interface {
 type SwitchClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	ActionableInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	ActionableIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ Switch = (*SwitchClass)(nil)
@@ -80,38 +80,45 @@ func wrapSwitch(obj *externglib.Object) Switch {
 	return &SwitchClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -137,11 +144,11 @@ func NewSwitch() *SwitchClass {
 }
 
 // Active gets whether the `GtkSwitch` is in its “on” or “off” state.
-func (s *SwitchClass) Active() bool {
+func (self *SwitchClass) Active() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_switch_get_active(_arg0)
 
@@ -155,11 +162,11 @@ func (s *SwitchClass) Active() bool {
 }
 
 // State gets the underlying state of the `GtkSwitch`.
-func (s *SwitchClass) State() bool {
+func (self *SwitchClass) State() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_switch_get_state(_arg0)
 
@@ -173,11 +180,11 @@ func (s *SwitchClass) State() bool {
 }
 
 // SetActive changes the state of @self to the desired one.
-func (s *SwitchClass) SetActive(isActive bool) {
+func (self *SwitchClass) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(self.Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -192,11 +199,11 @@ func (s *SwitchClass) SetActive(isActive bool) {
 // [signal@Gtk.Switch`::state-set] signal handler.
 //
 // See [signal@Gtk.Switch::state-set] for details.
-func (s *SwitchClass) SetState(state bool) {
+func (self *SwitchClass) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(self.Native()))
 	if state {
 		_arg1 = C.TRUE
 	}

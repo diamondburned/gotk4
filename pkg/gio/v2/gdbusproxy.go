@@ -168,9 +168,10 @@ type DBusProxy interface {
 // DBusProxyClass implements the DBusProxy interface.
 type DBusProxyClass struct {
 	*externglib.Object
-	AsyncInitableInterface
-	DBusInterfaceInterface
-	InitableInterface
+	*externglib.Object
+	AsyncInitableIface
+	DBusInterfaceIface
+	InitableIface
 }
 
 var _ DBusProxy = (*DBusProxyClass)(nil)
@@ -178,13 +179,14 @@ var _ DBusProxy = (*DBusProxyClass)(nil)
 func wrapDBusProxy(obj *externglib.Object) DBusProxy {
 	return &DBusProxyClass{
 		Object: obj,
-		AsyncInitableInterface: AsyncInitableInterface{
+		Object: obj,
+		AsyncInitableIface: AsyncInitableIface{
 			Object: obj,
 		},
-		DBusInterfaceInterface: DBusInterfaceInterface{
+		DBusInterfaceIface: DBusInterfaceIface{
 			Object: obj,
 		},
-		InitableInterface: InitableInterface{
+		InitableIface: InitableIface{
 			Object: obj,
 		},
 	}
@@ -235,13 +237,13 @@ func NewDBusProxyForBusFinish(res AsyncResult) (*DBusProxyClass, error) {
 }
 
 // CallFinish finishes an operation started with g_dbus_proxy_call().
-func (p *DBusProxyClass) CallFinish(res AsyncResult) (*glib.Variant, error) {
+func (proxy *DBusProxyClass) CallFinish(res AsyncResult) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GVariant     // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_call_finish(_arg0, _arg1, &_cerr)
@@ -261,14 +263,14 @@ func (p *DBusProxyClass) CallFinish(res AsyncResult) (*glib.Variant, error) {
 
 // CallWithUnixFdListFinish finishes an operation started with
 // g_dbus_proxy_call_with_unix_fd_list().
-func (p *DBusProxyClass) CallWithUnixFdListFinish(res AsyncResult) (*UnixFDListClass, *glib.Variant, error) {
+func (proxy *DBusProxyClass) CallWithUnixFdListFinish(res AsyncResult) (*UnixFDListClass, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GUnixFDList  // in
 	var _arg2 *C.GAsyncResult // out
 	var _cret *C.GVariant     // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_call_with_unix_fd_list_finish(_arg0, &_arg1, _arg2, &_cerr)
@@ -294,12 +296,12 @@ func (p *DBusProxyClass) CallWithUnixFdListFinish(res AsyncResult) (*UnixFDListC
 // If @proxy has an expected interface (see BusProxy:g-interface-info) and
 // @property_name is referenced by it, then @value is checked against the type
 // of the property.
-func (p *DBusProxyClass) CachedProperty(propertyName string) *glib.Variant {
+func (proxy *DBusProxyClass) CachedProperty(propertyName string) *glib.Variant {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GVariant   // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -317,11 +319,11 @@ func (p *DBusProxyClass) CachedProperty(propertyName string) *glib.Variant {
 }
 
 // CachedPropertyNames gets the names of all cached properties on @proxy.
-func (p *DBusProxyClass) CachedPropertyNames() []string {
+func (proxy *DBusProxyClass) CachedPropertyNames() []string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_cached_property_names(_arg0)
 
@@ -346,11 +348,11 @@ func (p *DBusProxyClass) CachedPropertyNames() []string {
 }
 
 // Connection gets the connection @proxy is for.
-func (p *DBusProxyClass) Connection() *DBusConnectionClass {
+func (proxy *DBusProxyClass) Connection() *DBusConnectionClass {
 	var _arg0 *C.GDBusProxy      // out
 	var _cret *C.GDBusConnection // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_connection(_arg0)
 
@@ -366,11 +368,11 @@ func (p *DBusProxyClass) Connection() *DBusConnectionClass {
 // g_dbus_proxy_call_sync() functions.
 //
 // See the BusProxy:g-default-timeout property for more details.
-func (p *DBusProxyClass) DefaultTimeout() int {
+func (proxy *DBusProxyClass) DefaultTimeout() int {
 	var _arg0 *C.GDBusProxy // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_default_timeout(_arg0)
 
@@ -382,11 +384,11 @@ func (p *DBusProxyClass) DefaultTimeout() int {
 }
 
 // Flags gets the flags that @proxy was constructed with.
-func (p *DBusProxyClass) Flags() DBusProxyFlags {
+func (proxy *DBusProxyClass) Flags() DBusProxyFlags {
 	var _arg0 *C.GDBusProxy     // out
 	var _cret C.GDBusProxyFlags // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_flags(_arg0)
 
@@ -400,11 +402,11 @@ func (p *DBusProxyClass) Flags() DBusProxyFlags {
 // InterfaceInfo returns the BusInterfaceInfo, if any, specifying the interface
 // that @proxy conforms to. See the BusProxy:g-interface-info property for more
 // details.
-func (p *DBusProxyClass) InterfaceInfo() *DBusInterfaceInfo {
+func (proxy *DBusProxyClass) InterfaceInfo() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusProxy         // out
 	var _cret *C.GDBusInterfaceInfo // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_interface_info(_arg0)
 
@@ -420,11 +422,11 @@ func (p *DBusProxyClass) InterfaceInfo() *DBusInterfaceInfo {
 }
 
 // InterfaceName gets the D-Bus interface name @proxy is for.
-func (p *DBusProxyClass) InterfaceName() string {
+func (proxy *DBusProxyClass) InterfaceName() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_interface_name(_arg0)
 
@@ -436,11 +438,11 @@ func (p *DBusProxyClass) InterfaceName() string {
 }
 
 // Name gets the name that @proxy was constructed for.
-func (p *DBusProxyClass) Name() string {
+func (proxy *DBusProxyClass) Name() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_name(_arg0)
 
@@ -454,11 +456,11 @@ func (p *DBusProxyClass) Name() string {
 // NameOwner: the unique name that owns the name that @proxy is for or nil if
 // no-one currently owns that name. You may connect to the #GObject::notify
 // signal to track changes to the BusProxy:g-name-owner property.
-func (p *DBusProxyClass) NameOwner() string {
+func (proxy *DBusProxyClass) NameOwner() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_name_owner(_arg0)
 
@@ -471,11 +473,11 @@ func (p *DBusProxyClass) NameOwner() string {
 }
 
 // ObjectPath gets the object path @proxy is for.
-func (p *DBusProxyClass) ObjectPath() string {
+func (proxy *DBusProxyClass) ObjectPath() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_object_path(_arg0)
 
@@ -516,12 +518,12 @@ func (p *DBusProxyClass) ObjectPath() string {
 // to only transmit the delta using e.g. signals
 // `ChatroomParticipantJoined(String name)` and
 // `ChatroomParticipantParted(String name)`.
-func (p *DBusProxyClass) SetCachedProperty(propertyName string, value *glib.Variant) {
+func (proxy *DBusProxyClass) SetCachedProperty(propertyName string, value *glib.Variant) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GVariant   // out
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
@@ -534,11 +536,11 @@ func (p *DBusProxyClass) SetCachedProperty(propertyName string, value *glib.Vari
 // g_dbus_proxy_call_sync() functions.
 //
 // See the BusProxy:g-default-timeout property for more details.
-func (p *DBusProxyClass) SetDefaultTimeout(timeoutMsec int) {
+func (proxy *DBusProxyClass) SetDefaultTimeout(timeoutMsec int) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 C.gint        // out
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = C.gint(timeoutMsec)
 
 	C.g_dbus_proxy_set_default_timeout(_arg0, _arg1)
@@ -546,11 +548,11 @@ func (p *DBusProxyClass) SetDefaultTimeout(timeoutMsec int) {
 
 // SetInterfaceInfo: ensure that interactions with @proxy conform to the given
 // interface. See the BusProxy:g-interface-info property for more details.
-func (p *DBusProxyClass) SetInterfaceInfo(info *DBusInterfaceInfo) {
+func (proxy *DBusProxyClass) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg1 *C.GDBusInterfaceInfo // out
 
-	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_proxy_set_interface_info(_arg0, _arg1)

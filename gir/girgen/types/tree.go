@@ -120,27 +120,45 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 		}
 	}
 
-	var hasGObject bool
-
-	// Ensure that the Object field is present if we have more than 1
-	// embedded classes/interfaces to avoid ambiguous selectors.
-	for _, req := range tree.Requires {
-		if req.IsExternGLib("Object") || req.IsExternGLib("InitiallyUnowned") {
-			hasGObject = true
-			break
-		}
-	}
-
-	if !hasGObject && len(tree.Requires) > 1 {
-		if tree.resolveName("GObject.Object") {
-			// Move the GObject to the first.
-			gobject := tree.Requires[len(tree.Requires)-1]
-			copy(tree.Requires[1:], tree.Requires)
-			tree.Requires[0] = gobject
-		}
+	// In case of ambiguous selector, just prepend a GObject field.
+	if tree.hasAmbiguousSelector() && tree.resolveName("GObject.Object") {
+		// Move the GObject to the first.
+		gobject := tree.Requires[len(tree.Requires)-1]
+		copy(tree.Requires[1:], tree.Requires)
+		tree.Requires[0] = gobject
 	}
 
 	return true
+}
+
+// hasAmbiguousSelector returns true if the GObject methods cannot be accessed
+// normally.
+func (tree *Tree) hasAmbiguousSelector() bool {
+	depths := make(map[int]struct{}, 7) // arbitrarily 7 depth
+	return gobjectDepth(tree, depths, 0)
+}
+
+func gobjectDepth(tree *Tree, depths map[int]struct{}, current int) bool {
+	field := current + 1
+
+	for _, req := range tree.Requires {
+		if req.IsExternGLib("Object") {
+			_, ok := depths[field]
+			if ok {
+				return true
+			}
+
+			depths[field] = struct{}{}
+			continue
+		}
+
+		if gobjectDepth(&req, depths, field) {
+			return true
+		}
+	}
+
+	// No GObject found.
+	return false
 }
 
 func (tree *Tree) parentLevel() int {
@@ -237,13 +255,21 @@ func (tree *Tree) walk(f func(*Tree, bool) (traversed []Tree), isRoot bool) {
 	}
 }
 
-// Wrap generates the wrapper for the implementation struct.
-func (tree *Tree) Wrap(obj string) string {
-	return "&" + tree.wrap(obj)
+// ImplImporter is an interface that describes file.Header.
+type ImplImporter interface {
+	ImportImpl(*Resolved)
 }
 
-func (tree *Tree) wrap(obj string) string {
+// Wrap generates the wrapper for the implementation struct.
+func (tree *Tree) Wrap(obj string, h ImplImporter) string {
+	return "&" + tree.wrap(obj, h)
+}
+
+func (tree *Tree) wrap(obj string, h ImplImporter) string {
 	needsNamespace := tree.Resolved.NeedsNamespace(tree.gen.Namespace())
+	if needsNamespace {
+		h.ImportImpl(tree.Resolved)
+	}
 
 	p := pen.NewPiece()
 	p.Write(tree.Resolved.ImplType(needsNamespace)).Char('{')
@@ -252,13 +278,13 @@ func (tree *Tree) wrap(obj string) string {
 	for _, typ := range tree.Requires {
 		if typ.Resolved.Extern != nil {
 			// Recursively resolve the wrapper.
-			p.Linef("%s: %s,", typ.Resolved.Name(), typ.wrap(obj))
+			p.Linef("%s: %s,", typ.Resolved.Name(), typ.wrap(obj, h))
 			continue
 		}
 
 		switch {
 		case typ.Resolved.IsExternGLib("InitiallyUnowned"):
-			p.Linef("InitiallyUnowned: externglib.InitiallyUnowned{Object: %s},", obj)
+			p.Linef("InitiallyUnowned: externglib.InitiallyUnowned{\nObject: %s,\n},", obj)
 		case typ.Resolved.IsExternGLib("Object"):
 			p.Linef("Object: %s,", obj)
 		default:

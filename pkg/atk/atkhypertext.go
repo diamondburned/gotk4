@@ -56,15 +56,15 @@ type Hypertext interface {
 	NLinks() int
 }
 
-// HypertextInterface implements the Hypertext interface.
-type HypertextInterface struct {
+// HypertextIface implements the Hypertext interface.
+type HypertextIface struct {
 	*externglib.Object
 }
 
-var _ Hypertext = (*HypertextInterface)(nil)
+var _ Hypertext = (*HypertextIface)(nil)
 
 func wrapHypertext(obj *externglib.Object) Hypertext {
-	return &HypertextInterface{
+	return &HypertextIface{
 		Object: obj,
 	}
 }
@@ -76,12 +76,12 @@ func marshalHypertext(p uintptr) (interface{}, error) {
 }
 
 // Link gets the link in this hypertext document at index @link_index
-func (h *HypertextInterface) Link(linkIndex int) *HyperlinkClass {
+func (hypertext *HypertextIface) Link(linkIndex int) *HyperlinkClass {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkHyperlink // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(hypertext.Native()))
 	_arg1 = C.gint(linkIndex)
 
 	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
@@ -95,12 +95,12 @@ func (h *HypertextInterface) Link(linkIndex int) *HyperlinkClass {
 
 // LinkIndex gets the index into the array of hyperlinks that is associated with
 // the character specified by @char_index.
-func (h *HypertextInterface) LinkIndex(charIndex int) int {
+func (hypertext *HypertextIface) LinkIndex(charIndex int) int {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(hypertext.Native()))
 	_arg1 = C.gint(charIndex)
 
 	_cret = C.atk_hypertext_get_link_index(_arg0, _arg1)
@@ -113,11 +113,11 @@ func (h *HypertextInterface) LinkIndex(charIndex int) int {
 }
 
 // NLinks gets the number of links within this hypertext document.
-func (h *HypertextInterface) NLinks() int {
+func (hypertext *HypertextIface) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(hypertext.Native()))
 
 	_cret = C.atk_hypertext_get_n_links(_arg0)
 

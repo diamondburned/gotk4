@@ -268,11 +268,11 @@ func (u *URI) Native() unsafe.Pointer {
 //
 // Depending on the URI scheme, g_uri_parse_params() may be useful for further
 // parsing this information.
-func (u *URI) AuthParams() string {
+func (uri *URI) AuthParams() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_auth_params(_arg0)
 
@@ -284,11 +284,11 @@ func (u *URI) AuthParams() string {
 }
 
 // Flags gets @uri's flags set upon construction.
-func (u *URI) Flags() URIFlags {
+func (uri *URI) Flags() URIFlags {
 	var _arg0 *C.GUri     // out
 	var _cret C.GUriFlags // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_flags(_arg0)
 
@@ -301,11 +301,11 @@ func (u *URI) Flags() URIFlags {
 
 // Fragment gets @uri's fragment, which may contain `%`-encoding, depending on
 // the flags with which @uri was created.
-func (u *URI) Fragment() string {
+func (uri *URI) Fragment() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_fragment(_arg0)
 
@@ -325,11 +325,11 @@ func (u *URI) Fragment() string {
 // of the URI. Note that in this case there may also be a scope ID attached to
 // the address. Eg, `fe80::1234%“em1` (or `fe80::1234%“25em1` if the string is
 // still encoded).
-func (u *URI) Host() string {
+func (uri *URI) Host() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_host(_arg0)
 
@@ -343,11 +343,11 @@ func (u *URI) Host() string {
 // Password gets @uri's password, which may contain `%`-encoding, depending on
 // the flags with which @uri was created. (If @uri was not created with
 // G_URI_FLAGS_HAS_PASSWORD then this will be nil.)
-func (u *URI) Password() string {
+func (uri *URI) Password() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_password(_arg0)
 
@@ -360,11 +360,11 @@ func (u *URI) Password() string {
 
 // Path gets @uri's path, which may contain `%`-encoding, depending on the flags
 // with which @uri was created.
-func (u *URI) Path() string {
+func (uri *URI) Path() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_path(_arg0)
 
@@ -376,11 +376,11 @@ func (u *URI) Path() string {
 }
 
 // Port gets @uri's port.
-func (u *URI) Port() int {
+func (uri *URI) Port() int {
 	var _arg0 *C.GUri // out
 	var _cret C.gint  // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_port(_arg0)
 
@@ -396,11 +396,11 @@ func (u *URI) Port() int {
 //
 // For queries consisting of a series of `name=value` parameters, ParamsIter or
 // g_uri_parse_params() may be useful.
-func (u *URI) Query() string {
+func (uri *URI) Query() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_query(_arg0)
 
@@ -413,11 +413,11 @@ func (u *URI) Query() string {
 
 // Scheme gets @uri's scheme. Note that this will always be all-lowercase,
 // regardless of the string or strings that @uri was created from.
-func (u *URI) Scheme() string {
+func (uri *URI) Scheme() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_scheme(_arg0)
 
@@ -432,11 +432,11 @@ func (u *URI) Scheme() string {
 // `%`-encoding, depending on the flags with which @uri was created. If @uri was
 // not created with G_URI_FLAGS_HAS_PASSWORD or G_URI_FLAGS_HAS_AUTH_PARAMS,
 // this is the same as g_uri_get_userinfo().
-func (u *URI) User() string {
+func (uri *URI) User() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_user(_arg0)
 
@@ -449,11 +449,11 @@ func (u *URI) User() string {
 
 // Userinfo gets @uri's userinfo, which may contain `%`-encoding, depending on
 // the flags with which @uri was created.
-func (u *URI) Userinfo() string {
+func (uri *URI) Userinfo() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_get_userinfo(_arg0)
 
@@ -475,11 +475,11 @@ func (u *URI) Userinfo() string {
 // If @uri might contain sensitive details, such as authentication parameters,
 // or private data in its query string, and the returned string is going to be
 // logged, then consider using g_uri_to_string_partial() to redact parts.
-func (u *URI) String() string {
+func (uri *URI) String() string {
 	var _arg0 *C.GUri // out
 	var _cret *C.char // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(u))
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
 
 	_cret = C.g_uri_to_string(_arg0)
 
@@ -524,13 +524,13 @@ func (u *URIParamsIter) Native() unsafe.Pointer {
 //
 // Note that the same @attribute may be returned multiple times, since URIs
 // allow repeated attributes.
-func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
+func (iter *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var _arg0 *C.GUriParamsIter // out
 	var _arg1 *C.gchar          // in
 	var _arg2 *C.gchar          // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i))
+	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(iter))
 
 	C.g_uri_params_iter_next(_arg0, &_arg1, &_arg2, &_cerr)
 

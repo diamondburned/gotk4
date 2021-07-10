@@ -49,7 +49,7 @@ type Spinner interface {
 type SpinnerClass struct {
 	*externglib.Object
 	WidgetClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ Spinner = (*SpinnerClass)(nil)
@@ -58,12 +58,15 @@ func wrapSpinner(obj *externglib.Object) Spinner {
 	return &SpinnerClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			BuildableInterface: BuildableInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -89,19 +92,19 @@ func NewSpinner() *SpinnerClass {
 }
 
 // Start starts the animation of the spinner.
-func (s *SpinnerClass) Start() {
+func (spinner *SpinnerClass) Start() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	C.gtk_spinner_start(_arg0)
 }
 
 // Stop stops the animation of the spinner.
-func (s *SpinnerClass) Stop() {
+func (spinner *SpinnerClass) Stop() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	C.gtk_spinner_stop(_arg0)
 }

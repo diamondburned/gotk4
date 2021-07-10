@@ -396,7 +396,8 @@ func GrabGetCurrent() *WidgetClass {
 
 // KeySnooperRemove removes the key snooper function with the given id.
 //
-// Deprecated: since version 3.4.
+// Deprecated: Key snooping should not be done. Events should be handled by
+// widgets.
 func KeySnooperRemove(snooperHandlerId uint) {
 	var _arg1 C.guint // out
 

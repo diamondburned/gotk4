@@ -223,12 +223,12 @@ type AboutDialog interface {
 type AboutDialogClass struct {
 	*externglib.Object
 	WindowClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	NativeInterface
-	RootInterface
-	ShortcutManagerInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	NativeIface
+	RootIface
+	ShortcutManagerIface
 }
 
 var _ AboutDialog = (*AboutDialogClass)(nil)
@@ -239,126 +239,151 @@ func wrapAboutDialog(obj *externglib.Object) AboutDialog {
 		WindowClass: WindowClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
-			AccessibleInterface: AccessibleInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
-			NativeInterface: NativeInterface{
+			NativeIface: NativeIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			RootInterface: RootInterface{
+			RootIface: RootIface{
 				Object: obj,
-				NativeInterface: NativeInterface{
+				NativeIface: NativeIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						AccessibleInterface: AccessibleInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
-						BuildableInterface: BuildableInterface{
+						AccessibleIface: AccessibleIface{
 							Object: obj,
 						},
-						ConstraintTargetInterface: ConstraintTargetInterface{
+						BuildableIface: BuildableIface{
+							Object: obj,
+						},
+						ConstraintTargetIface: ConstraintTargetIface{
 							Object: obj,
 						},
 					},
 				},
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
-			ShortcutManagerInterface: ShortcutManagerInterface{
+			ShortcutManagerIface: ShortcutManagerIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		NativeInterface: NativeInterface{
+		NativeIface: NativeIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		RootInterface: RootInterface{
+		RootIface: RootIface{
 			Object: obj,
-			NativeInterface: NativeInterface{
+			NativeIface: NativeIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					AccessibleInterface: AccessibleInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					AccessibleIface: AccessibleIface{
 						Object: obj,
 					},
-					ConstraintTargetInterface: ConstraintTargetInterface{
+					BuildableIface: BuildableIface{
+						Object: obj,
+					},
+					ConstraintTargetIface: ConstraintTargetIface{
 						Object: obj,
 					},
 				},
 			},
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		ShortcutManagerInterface: ShortcutManagerInterface{
+		ShortcutManagerIface: ShortcutManagerIface{
 			Object: obj,
 		},
 	}
@@ -384,12 +409,12 @@ func NewAboutDialog() *AboutDialogClass {
 }
 
 // AddCreditSection creates a new section in the "Credits" page.
-func (a *AboutDialogClass) AddCreditSection(sectionName string, people []string) {
+func (about *AboutDialogClass) AddCreditSection(sectionName string, people []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 	var _arg2 **C.char
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(sectionName))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.char)(C.malloc(C.ulong(len(people)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -407,11 +432,11 @@ func (a *AboutDialogClass) AddCreditSection(sectionName string, people []string)
 
 // Artists returns the string which are displayed in the "Artists" tab of the
 // secondary credits dialog.
-func (a *AboutDialogClass) Artists() []string {
+func (about *AboutDialogClass) Artists() []string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_artists(_arg0)
 
@@ -436,11 +461,11 @@ func (a *AboutDialogClass) Artists() []string {
 
 // Authors returns the string which are displayed in the authors tab of the
 // secondary credits dialog.
-func (a *AboutDialogClass) Authors() []string {
+func (about *AboutDialogClass) Authors() []string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_authors(_arg0)
 
@@ -464,11 +489,11 @@ func (a *AboutDialogClass) Authors() []string {
 }
 
 // Comments returns the comments string.
-func (a *AboutDialogClass) Comments() string {
+func (about *AboutDialogClass) Comments() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_comments(_arg0)
 
@@ -480,11 +505,11 @@ func (a *AboutDialogClass) Comments() string {
 }
 
 // Copyright returns the copyright string.
-func (a *AboutDialogClass) Copyright() string {
+func (about *AboutDialogClass) Copyright() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_copyright(_arg0)
 
@@ -497,11 +522,11 @@ func (a *AboutDialogClass) Copyright() string {
 
 // Documenters returns the string which are displayed in the "Documenters" tab
 // of the secondary credits dialog.
-func (a *AboutDialogClass) Documenters() []string {
+func (about *AboutDialogClass) Documenters() []string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret **C.char
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_documenters(_arg0)
 
@@ -525,11 +550,11 @@ func (a *AboutDialogClass) Documenters() []string {
 }
 
 // License returns the license information.
-func (a *AboutDialogClass) License() string {
+func (about *AboutDialogClass) License() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_license(_arg0)
 
@@ -541,11 +566,11 @@ func (a *AboutDialogClass) License() string {
 }
 
 // LicenseType retrieves the license type.
-func (a *AboutDialogClass) LicenseType() License {
+func (about *AboutDialogClass) LicenseType() License {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret C.GtkLicense      // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_license_type(_arg0)
 
@@ -557,11 +582,11 @@ func (a *AboutDialogClass) LicenseType() License {
 }
 
 // LogoIconName returns the icon name displayed as logo in the about dialog.
-func (a *AboutDialogClass) LogoIconName() string {
+func (about *AboutDialogClass) LogoIconName() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
 
@@ -573,11 +598,11 @@ func (a *AboutDialogClass) LogoIconName() string {
 }
 
 // ProgramName returns the program name displayed in the about dialog.
-func (a *AboutDialogClass) ProgramName() string {
+func (about *AboutDialogClass) ProgramName() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_program_name(_arg0)
 
@@ -590,11 +615,11 @@ func (a *AboutDialogClass) ProgramName() string {
 
 // SystemInformation returns the system information that is shown in the about
 // dialog.
-func (a *AboutDialogClass) SystemInformation() string {
+func (about *AboutDialogClass) SystemInformation() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_system_information(_arg0)
 
@@ -607,11 +632,11 @@ func (a *AboutDialogClass) SystemInformation() string {
 
 // TranslatorCredits returns the translator credits string which is displayed in
 // the translators tab of the secondary credits dialog.
-func (a *AboutDialogClass) TranslatorCredits() string {
+func (about *AboutDialogClass) TranslatorCredits() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_translator_credits(_arg0)
 
@@ -623,11 +648,11 @@ func (a *AboutDialogClass) TranslatorCredits() string {
 }
 
 // Version returns the version string.
-func (a *AboutDialogClass) Version() string {
+func (about *AboutDialogClass) Version() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_version(_arg0)
 
@@ -639,11 +664,11 @@ func (a *AboutDialogClass) Version() string {
 }
 
 // Website returns the website URL.
-func (a *AboutDialogClass) Website() string {
+func (about *AboutDialogClass) Website() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_website(_arg0)
 
@@ -655,11 +680,11 @@ func (a *AboutDialogClass) Website() string {
 }
 
 // WebsiteLabel returns the label used for the website link.
-func (a *AboutDialogClass) WebsiteLabel() string {
+func (about *AboutDialogClass) WebsiteLabel() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_website_label(_arg0)
 
@@ -672,11 +697,11 @@ func (a *AboutDialogClass) WebsiteLabel() string {
 
 // WrapLicense returns whether the license text in the about dialog is
 // automatically wrapped.
-func (a *AboutDialogClass) WrapLicense() bool {
+func (about *AboutDialogClass) WrapLicense() bool {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_wrap_license(_arg0)
 
@@ -691,11 +716,11 @@ func (a *AboutDialogClass) WrapLicense() bool {
 
 // SetArtists sets the strings which are displayed in the "Artists" tab of the
 // secondary credits dialog.
-func (a *AboutDialogClass) SetArtists(artists []string) {
+func (about *AboutDialogClass) SetArtists(artists []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(artists)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
@@ -711,11 +736,11 @@ func (a *AboutDialogClass) SetArtists(artists []string) {
 
 // SetAuthors sets the strings which are displayed in the "Authors" tab of the
 // secondary credits dialog.
-func (a *AboutDialogClass) SetAuthors(authors []string) {
+func (about *AboutDialogClass) SetAuthors(authors []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(authors)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
@@ -732,11 +757,11 @@ func (a *AboutDialogClass) SetAuthors(authors []string) {
 // SetComments sets the comments string to display in the about dialog.
 //
 // This should be a short string of one or two lines.
-func (a *AboutDialogClass) SetComments(comments string) {
+func (about *AboutDialogClass) SetComments(comments string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(comments))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -746,11 +771,11 @@ func (a *AboutDialogClass) SetComments(comments string) {
 // SetCopyright sets the copyright string to display in the about dialog.
 //
 // This should be a short string of one or two lines.
-func (a *AboutDialogClass) SetCopyright(copyright string) {
+func (about *AboutDialogClass) SetCopyright(copyright string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(copyright))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -759,11 +784,11 @@ func (a *AboutDialogClass) SetCopyright(copyright string) {
 
 // SetDocumenters sets the strings which are displayed in the "Documenters" tab
 // of the credits dialog.
-func (a *AboutDialogClass) SetDocumenters(documenters []string) {
+func (about *AboutDialogClass) SetDocumenters(documenters []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(documenters)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
@@ -781,11 +806,11 @@ func (a *AboutDialogClass) SetDocumenters(documenters []string) {
 // license dialog.
 //
 // If `license` is `NULL`, the license button is hidden.
-func (a *AboutDialogClass) SetLicense(license string) {
+func (about *AboutDialogClass) SetLicense(license string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(license))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -794,11 +819,11 @@ func (a *AboutDialogClass) SetLicense(license string) {
 
 // SetLogoIconName sets the icon name to be displayed as logo in the about
 // dialog.
-func (a *AboutDialogClass) SetLogoIconName(iconName string) {
+func (about *AboutDialogClass) SetLogoIconName(iconName string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -808,11 +833,11 @@ func (a *AboutDialogClass) SetLogoIconName(iconName string) {
 // SetProgramName sets the name to display in the about dialog.
 //
 // If `name` is not set, it defaults to `g_get_application_name()`.
-func (a *AboutDialogClass) SetProgramName(name string) {
+func (about *AboutDialogClass) SetProgramName(name string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -825,11 +850,11 @@ func (a *AboutDialogClass) SetProgramName(name string) {
 // If `system_information` is `NULL`, the system information tab is hidden.
 //
 // See [property@Gtk.AboutDialog:system-information].
-func (a *AboutDialogClass) SetSystemInformation(systemInformation string) {
+func (about *AboutDialogClass) SetSystemInformation(systemInformation string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(systemInformation))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -851,11 +876,11 @@ func (a *AboutDialogClass) SetSystemInformation(systemInformation string) {
 // purpose, since translators will already know the purpose of that `msgid`, and
 // since `GtkAboutDialog` will detect if “translator-credits” is untranslated
 // and hide the tab.
-func (a *AboutDialogClass) SetTranslatorCredits(translatorCredits string) {
+func (about *AboutDialogClass) SetTranslatorCredits(translatorCredits string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(translatorCredits))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -863,11 +888,11 @@ func (a *AboutDialogClass) SetTranslatorCredits(translatorCredits string) {
 }
 
 // SetVersion sets the version string to display in the about dialog.
-func (a *AboutDialogClass) SetVersion(version string) {
+func (about *AboutDialogClass) SetVersion(version string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(version))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -875,11 +900,11 @@ func (a *AboutDialogClass) SetVersion(version string) {
 }
 
 // SetWebsite sets the URL to use for the website link.
-func (a *AboutDialogClass) SetWebsite(website string) {
+func (about *AboutDialogClass) SetWebsite(website string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(website))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -887,11 +912,11 @@ func (a *AboutDialogClass) SetWebsite(website string) {
 }
 
 // SetWebsiteLabel sets the label to be used for the website link.
-func (a *AboutDialogClass) SetWebsiteLabel(websiteLabel string) {
+func (about *AboutDialogClass) SetWebsiteLabel(websiteLabel string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(C.CString(websiteLabel))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -900,11 +925,11 @@ func (a *AboutDialogClass) SetWebsiteLabel(websiteLabel string) {
 
 // SetWrapLicense sets whether the license text in the about dialog should be
 // automatically wrapped.
-func (a *AboutDialogClass) SetWrapLicense(wrapLicense bool) {
+func (about *AboutDialogClass) SetWrapLicense(wrapLicense bool) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	if wrapLicense {
 		_arg1 = C.TRUE
 	}

@@ -58,8 +58,8 @@ type StackSwitcher interface {
 type StackSwitcherClass struct {
 	*externglib.Object
 	BoxClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ StackSwitcher = (*StackSwitcherClass)(nil)
@@ -72,26 +72,29 @@ func wrapStackSwitcher(obj *externglib.Object) StackSwitcher {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -117,11 +120,11 @@ func NewStackSwitcher() *StackSwitcherClass {
 }
 
 // Stack retrieves the stack. See gtk_stack_switcher_set_stack().
-func (s *StackSwitcherClass) Stack() *StackClass {
+func (switcher *StackSwitcherClass) Stack() *StackClass {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _cret *C.GtkStack         // in
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(switcher.Native()))
 
 	_cret = C.gtk_stack_switcher_get_stack(_arg0)
 
@@ -133,11 +136,11 @@ func (s *StackSwitcherClass) Stack() *StackClass {
 }
 
 // SetStack sets the stack to control.
-func (s *StackSwitcherClass) SetStack(stack Stack) {
+func (switcher *StackSwitcherClass) SetStack(stack Stack) {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _arg1 *C.GtkStack         // out
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(switcher.Native()))
 	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)

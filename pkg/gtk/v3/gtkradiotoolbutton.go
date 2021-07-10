@@ -46,9 +46,9 @@ type RadioToolButton interface {
 type RadioToolButtonClass struct {
 	*externglib.Object
 	ToggleToolButtonClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
 }
 
 var _ RadioToolButton = (*RadioToolButtonClass)(nil)
@@ -67,68 +67,83 @@ func wrapRadioToolButton(obj *externglib.Object) RadioToolButton {
 						ContainerClass: ContainerClass{
 							Object: obj,
 							WidgetClass: WidgetClass{
-								InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-								BuildableInterface: BuildableInterface{
+								Object: obj,
+								InitiallyUnowned: externglib.InitiallyUnowned{
+									Object: obj,
+								},
+								BuildableIface: BuildableIface{
 									Object: obj,
 								},
 							},
-							BuildableInterface: BuildableInterface{
+							BuildableIface: BuildableIface{
 								Object: obj,
 							},
 						},
-						BuildableInterface: BuildableInterface{
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					ActivatableInterface: ActivatableInterface{
+					ActivatableIface: ActivatableIface{
 						Object: obj,
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				ActionableInterface: ActionableInterface{
+				ActionableIface: ActionableIface{
+					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
 				},
-				ActivatableInterface: ActivatableInterface{
+				ActivatableIface: ActivatableIface{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -161,7 +176,7 @@ func NewRadioToolButtonFromWidget(group RadioToolButton) *RadioToolButtonClass {
 // to the same group as @group. The new RadioToolButton will contain an icon and
 // label from the stock item indicated by @stock_id.
 //
-// Deprecated: since version 3.10.
+// Deprecated: gtk_radio_tool_button_new_from_widget.
 func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string) *RadioToolButtonClass {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _arg2 *C.gchar              // out

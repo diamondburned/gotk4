@@ -292,11 +292,19 @@ func (res *TypeFindResult) SetCType(ctype string) {
 
 func (res *TypeFindResult) cTypePtr() *string {
 	switch v := res.Type.(type) {
-	case *Alias:
-		return &v.CType
 	case *Class:
-		return &v.CType
+		if v.CType != "" {
+			return &v.CType
+		}
+		return &v.GLibTypeName
+
 	case *Interface:
+		if v.CType != "" {
+			return &v.CType
+		}
+		return &v.GLibTypeName
+
+	case *Alias:
 		return &v.CType
 	case *Record:
 		return &v.CType

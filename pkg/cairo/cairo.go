@@ -634,30 +634,6 @@ func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-func (r *Rectangle) X() float64 {
-	var v float64 // out
-	v = float64(r.native.x)
-	return v
-}
-
-func (r *Rectangle) Y() float64 {
-	var v float64 // out
-	v = float64(r.native.y)
-	return v
-}
-
-func (r *Rectangle) Width() float64 {
-	var v float64 // out
-	v = float64(r.native.width)
-	return v
-}
-
-func (r *Rectangle) Height() float64 {
-	var v float64 // out
-	v = float64(r.native.height)
-	return v
-}
-
 type RectangleInt struct {
 	native C.cairo_rectangle_int_t
 }
@@ -676,28 +652,4 @@ func marshalRectangleInt(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *RectangleInt) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-func (r *RectangleInt) X() int {
-	var v int // out
-	v = int(r.native.x)
-	return v
-}
-
-func (r *RectangleInt) Y() int {
-	var v int // out
-	v = int(r.native.y)
-	return v
-}
-
-func (r *RectangleInt) Width() int {
-	var v int // out
-	v = int(r.native.width)
-	return v
-}
-
-func (r *RectangleInt) Height() int {
-	var v int // out
-	v = int(r.native.height)
-	return v
 }

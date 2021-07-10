@@ -105,13 +105,13 @@ func NewGestureStylus() *GestureStylusClass {
 // state in motion history.
 //
 // The @backlog is provided in chronological order.
-func (g *GestureStylusClass) Backlog() ([]gdk.TimeCoord, bool) {
+func (gesture *GestureStylusClass) Backlog() ([]gdk.TimeCoord, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 *C.GdkTimeCoord
 	var _arg2 C.guint    // in
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_stylus_get_backlog(_arg0, &_arg1, &_arg2)
 
@@ -136,11 +136,11 @@ func (g *GestureStylusClass) Backlog() ([]gdk.TimeCoord, bool) {
 // [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
 // [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
 // signals.
-func (g *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
+func (gesture *GestureStylusClass) DeviceTool() *gdk.DeviceToolClass {
 	var _arg0 *C.GtkGestureStylus // out
 	var _cret *C.GdkDeviceTool    // in
 
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
 

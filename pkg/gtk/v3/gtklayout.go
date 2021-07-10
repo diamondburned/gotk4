@@ -50,7 +50,7 @@ type Layout interface {
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gtk_scrollable_get_hadjustment().
 	HAdjustment() *AdjustmentClass
 	// Size gets the size that has been set on the layout, and that determines
 	// the total extents of the layout’s scrollbar area. See gtk_layout_set_size
@@ -63,7 +63,7 @@ type Layout interface {
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gtk_scrollable_get_vadjustment().
 	VAdjustment() *AdjustmentClass
 	// Move moves a current child of @layout to a new position.
 	Move(childWidget Widget, x int, y int)
@@ -74,7 +74,7 @@ type Layout interface {
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gtk_scrollable_set_hadjustment().
 	SetHAdjustment(adjustment Adjustment)
 	// SetSize sets the size of the scrollable area of the layout.
 	SetSize(width uint, height uint)
@@ -82,7 +82,7 @@ type Layout interface {
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
 	//
-	// Deprecated: since version 3.0.
+	// Deprecated: Use gtk_scrollable_set_vadjustment().
 	SetVAdjustment(adjustment Adjustment)
 }
 
@@ -90,8 +90,8 @@ type Layout interface {
 type LayoutClass struct {
 	*externglib.Object
 	ContainerClass
-	BuildableInterface
-	ScrollableInterface
+	BuildableIface
+	ScrollableIface
 }
 
 var _ Layout = (*LayoutClass)(nil)
@@ -102,19 +102,22 @@ func wrapLayout(obj *externglib.Object) Layout {
 		ContainerClass: ContainerClass{
 			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ScrollableInterface: ScrollableInterface{
+		ScrollableIface: ScrollableIface{
 			Object: obj,
 		},
 	}
@@ -147,11 +150,11 @@ func NewLayout(hadjustment Adjustment, vadjustment Adjustment) *LayoutClass {
 }
 
 // BinWindow: retrieve the bin window of the layout used for drawing operations.
-func (l *LayoutClass) BinWindow() *gdk.WindowClass {
+func (layout *LayoutClass) BinWindow() *gdk.WindowClass {
 	var _arg0 *C.GtkLayout // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.gtk_layout_get_bin_window(_arg0)
 
@@ -169,12 +172,12 @@ func (l *LayoutClass) BinWindow() *gdk.WindowClass {
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
-// Deprecated: since version 3.0.
-func (l *LayoutClass) HAdjustment() *AdjustmentClass {
+// Deprecated: Use gtk_scrollable_get_hadjustment().
+func (layout *LayoutClass) HAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.gtk_layout_get_hadjustment(_arg0)
 
@@ -187,12 +190,12 @@ func (l *LayoutClass) HAdjustment() *AdjustmentClass {
 
 // Size gets the size that has been set on the layout, and that determines the
 // total extents of the layout’s scrollbar area. See gtk_layout_set_size ().
-func (l *LayoutClass) Size() (width uint, height uint) {
+func (layout *LayoutClass) Size() (width uint, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // in
 	var _arg2 C.guint      // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 
 	C.gtk_layout_get_size(_arg0, &_arg1, &_arg2)
 
@@ -212,12 +215,12 @@ func (l *LayoutClass) Size() (width uint, height uint) {
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
-// Deprecated: since version 3.0.
-func (l *LayoutClass) VAdjustment() *AdjustmentClass {
+// Deprecated: Use gtk_scrollable_get_vadjustment().
+func (layout *LayoutClass) VAdjustment() *AdjustmentClass {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.gtk_layout_get_vadjustment(_arg0)
 
@@ -229,13 +232,13 @@ func (l *LayoutClass) VAdjustment() *AdjustmentClass {
 }
 
 // Move moves a current child of @layout to a new position.
-func (l *LayoutClass) Move(childWidget Widget, x int, y int) {
+func (layout *LayoutClass) Move(childWidget Widget, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
@@ -245,13 +248,13 @@ func (l *LayoutClass) Move(childWidget Widget, x int, y int) {
 
 // Put adds @child_widget to @layout, at position (@x,@y). @layout becomes the
 // new parent container of @child_widget.
-func (l *LayoutClass) Put(childWidget Widget, x int, y int) {
+func (layout *LayoutClass) Put(childWidget Widget, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
@@ -263,24 +266,24 @@ func (l *LayoutClass) Put(childWidget Widget, x int, y int) {
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
-// Deprecated: since version 3.0.
-func (l *LayoutClass) SetHAdjustment(adjustment Adjustment) {
+// Deprecated: Use gtk_scrollable_set_hadjustment().
+func (layout *LayoutClass) SetHAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_layout_set_hadjustment(_arg0, _arg1)
 }
 
 // SetSize sets the size of the scrollable area of the layout.
-func (l *LayoutClass) SetSize(width uint, height uint) {
+func (layout *LayoutClass) SetSize(width uint, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = C.guint(width)
 	_arg2 = C.guint(height)
 
@@ -291,12 +294,12 @@ func (l *LayoutClass) SetSize(width uint, height uint) {
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
-// Deprecated: since version 3.0.
-func (l *LayoutClass) SetVAdjustment(adjustment Adjustment) {
+// Deprecated: Use gtk_scrollable_set_vadjustment().
+func (layout *LayoutClass) SetVAdjustment(adjustment Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)

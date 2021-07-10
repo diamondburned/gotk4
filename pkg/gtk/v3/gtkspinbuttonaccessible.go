@@ -33,18 +33,15 @@ type SpinButtonAccessible interface {
 
 // SpinButtonAccessibleClass implements the SpinButtonAccessible interface.
 type SpinButtonAccessibleClass struct {
-	*externglib.Object
 	EntryAccessibleClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ SpinButtonAccessible = (*SpinButtonAccessibleClass)(nil)
 
 func wrapSpinButtonAccessible(obj *externglib.Object) SpinButtonAccessible {
 	return &SpinButtonAccessibleClass{
-		Object: obj,
 		EntryAccessibleClass: EntryAccessibleClass{
-			Object: obj,
 			WidgetAccessibleClass: WidgetAccessibleClass{
 				AccessibleClass: AccessibleClass{
 					ObjectClass: atk.ObjectClass{
@@ -52,11 +49,11 @@ func wrapSpinButtonAccessible(obj *externglib.Object) SpinButtonAccessible {
 					},
 				},
 			},
-			ActionInterface: atk.ActionInterface{
+			ActionIface: atk.ActionIface{
 				Object: obj,
 			},
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}

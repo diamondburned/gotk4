@@ -112,10 +112,10 @@ type Button interface {
 type ButtonClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	ActionableInterface
-	BuildableInterface
-	ConstraintTargetInterface
+	AccessibleIface
+	ActionableIface
+	BuildableIface
+	ConstraintTargetIface
 }
 
 var _ Button = (*ButtonClass)(nil)
@@ -124,38 +124,45 @@ func wrapButton(obj *externglib.Object) Button {
 	return &ButtonClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
 	}
@@ -245,11 +252,11 @@ func NewButtonWithMnemonic(label string) *ButtonClass {
 }
 
 // Child gets the child widget of @button.
-func (b *ButtonClass) Child() *WidgetClass {
+func (button *ButtonClass) Child() *WidgetClass {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_child(_arg0)
 
@@ -261,11 +268,11 @@ func (b *ButtonClass) Child() *WidgetClass {
 }
 
 // HasFrame returns whether the button has a frame.
-func (b *ButtonClass) HasFrame() bool {
+func (button *ButtonClass) HasFrame() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_has_frame(_arg0)
 
@@ -283,11 +290,11 @@ func (b *ButtonClass) HasFrame() bool {
 // If the icon name has not been set with [method@Gtk.Button.set_icon_name] the
 // return value will be nil. This will be the case if you create an empty button
 // with [ctor@Gtk.Button.new] to use as a container.
-func (b *ButtonClass) IconName() string {
+func (button *ButtonClass) IconName() string {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_icon_name(_arg0)
 
@@ -303,11 +310,11 @@ func (b *ButtonClass) IconName() string {
 // If the label text has not been set with [method@Gtk.Button.set_label] the
 // return value will be nil. This will be the case if you create an empty button
 // with [ctor@Gtk.Button.new] to use as a container.
-func (b *ButtonClass) Label() string {
+func (button *ButtonClass) Label() string {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_label(_arg0)
 
@@ -321,11 +328,11 @@ func (b *ButtonClass) Label() string {
 // UseUnderline gets whether underlines are interpreted as mnemonics.
 //
 // See [method@Gtk.Button.set_use_underline].
-func (b *ButtonClass) UseUnderline() bool {
+func (button *ButtonClass) UseUnderline() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_use_underline(_arg0)
 
@@ -339,11 +346,11 @@ func (b *ButtonClass) UseUnderline() bool {
 }
 
 // SetChild sets the child widget of @button.
-func (b *ButtonClass) SetChild(child Widget) {
+func (button *ButtonClass) SetChild(child Widget) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_button_set_child(_arg0, _arg1)
@@ -352,11 +359,11 @@ func (b *ButtonClass) SetChild(child Widget) {
 // SetHasFrame sets the style of the button.
 //
 // Buttons can has a flat appearance or have a frame drawn around them.
-func (b *ButtonClass) SetHasFrame(hasFrame bool) {
+func (button *ButtonClass) SetHasFrame(hasFrame bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	if hasFrame {
 		_arg1 = C.TRUE
 	}
@@ -368,11 +375,11 @@ func (b *ButtonClass) SetHasFrame(hasFrame bool) {
 //
 // If @button already contains a child widget, that child widget will be removed
 // and replaced with the image.
-func (b *ButtonClass) SetIconName(iconName string) {
+func (button *ButtonClass) SetIconName(iconName string) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.char      // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -382,11 +389,11 @@ func (b *ButtonClass) SetIconName(iconName string) {
 // SetLabel sets the text of the label of the button to @label.
 //
 // This will also clear any previously set labels.
-func (b *ButtonClass) SetLabel(label string) {
+func (button *ButtonClass) SetLabel(label string) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.char      // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -397,11 +404,11 @@ func (b *ButtonClass) SetLabel(label string) {
 //
 // If true, an underline in the text of the button label indicates the next
 // character should be used for the mnemonic accelerator key.
-func (b *ButtonClass) SetUseUnderline(useUnderline bool) {
+func (button *ButtonClass) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

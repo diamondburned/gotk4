@@ -157,11 +157,12 @@ type Assistant interface {
 	PageHasPadding(page Widget) bool
 	// PageHeaderImage gets the header image for @page.
 	//
-	// Deprecated: since version 3.2.
+	// Deprecated: Since GTK+ 3.2, a header is no longer shown; add your header
+	// decoration to the page content instead.
 	PageHeaderImage(page Widget) *gdkpixbuf.PixbufClass
 	// PageSideImage gets the side image for @page.
 	//
-	// Deprecated: since version 3.2.
+	// Deprecated: Since GTK+ 3.2, sidebar images are not shown anymore.
 	PageSideImage(page Widget) *gdkpixbuf.PixbufClass
 	// PageTitle gets the title for @page.
 	PageTitle(page Widget) string
@@ -206,14 +207,15 @@ type Assistant interface {
 	SetPageHasPadding(page Widget, hasPadding bool)
 	// SetPageHeaderImage sets a header image for @page.
 	//
-	// Deprecated: since version 3.2.
+	// Deprecated: Since GTK+ 3.2, a header is no longer shown; add your header
+	// decoration to the page content instead.
 	SetPageHeaderImage(page Widget, pixbuf gdkpixbuf.Pixbuf)
 	// SetPageSideImage sets a side image for @page.
 	//
 	// This image used to be displayed in the side area of the assistant when
 	// @page is the current page.
 	//
-	// Deprecated: since version 3.2.
+	// Deprecated: Since GTK+ 3.2, sidebar images are not shown anymore.
 	SetPageSideImage(page Widget, pixbuf gdkpixbuf.Pixbuf)
 	// SetPageTitle sets a title for @page.
 	//
@@ -236,7 +238,7 @@ type Assistant interface {
 type AssistantClass struct {
 	*externglib.Object
 	WindowClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ Assistant = (*AssistantClass)(nil)
@@ -251,24 +253,27 @@ func wrapAssistant(obj *externglib.Object) Assistant {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -294,23 +299,23 @@ func NewAssistant() *AssistantClass {
 }
 
 // AddActionWidget adds a widget to the action area of a Assistant.
-func (a *AssistantClass) AddActionWidget(child Widget) {
+func (assistant *AssistantClass) AddActionWidget(child Widget) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_assistant_add_action_widget(_arg0, _arg1)
 }
 
 // AppendPage appends a page to the @assistant.
-func (a *AssistantClass) AppendPage(page Widget) int {
+func (assistant *AssistantClass) AppendPage(page Widget) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_append_page(_arg0, _arg1)
@@ -329,20 +334,20 @@ func (a *AssistantClass) AppendPage(page Widget) int {
 // deemed permanent and cannot be modified or undone. For example, showing a
 // progress page to track a long-running, unreversible operation after the user
 // has clicked apply on a confirmation page.
-func (a *AssistantClass) Commit() {
+func (assistant *AssistantClass) Commit() {
 	var _arg0 *C.GtkAssistant // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_commit(_arg0)
 }
 
 // CurrentPage returns the page number of the current page.
-func (a *AssistantClass) CurrentPage() int {
+func (assistant *AssistantClass) CurrentPage() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	_cret = C.gtk_assistant_get_current_page(_arg0)
 
@@ -354,11 +359,11 @@ func (a *AssistantClass) CurrentPage() int {
 }
 
 // NPages returns the number of pages in the @assistant
-func (a *AssistantClass) NPages() int {
+func (assistant *AssistantClass) NPages() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	_cret = C.gtk_assistant_get_n_pages(_arg0)
 
@@ -370,12 +375,12 @@ func (a *AssistantClass) NPages() int {
 }
 
 // NthPage returns the child widget contained in page number @page_num.
-func (a *AssistantClass) NthPage(pageNum int) *WidgetClass {
+func (assistant *AssistantClass) NthPage(pageNum int) *WidgetClass {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.gint          // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = C.gint(pageNum)
 
 	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
@@ -388,12 +393,12 @@ func (a *AssistantClass) NthPage(pageNum int) *WidgetClass {
 }
 
 // PageComplete gets whether @page is complete.
-func (a *AssistantClass) PageComplete(page Widget) bool {
+func (assistant *AssistantClass) PageComplete(page Widget) bool {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
@@ -408,12 +413,12 @@ func (a *AssistantClass) PageComplete(page Widget) bool {
 }
 
 // PageHasPadding gets whether page has padding.
-func (a *AssistantClass) PageHasPadding(page Widget) bool {
+func (assistant *AssistantClass) PageHasPadding(page Widget) bool {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_has_padding(_arg0, _arg1)
@@ -429,13 +434,14 @@ func (a *AssistantClass) PageHasPadding(page Widget) bool {
 
 // PageHeaderImage gets the header image for @page.
 //
-// Deprecated: since version 3.2.
-func (a *AssistantClass) PageHeaderImage(page Widget) *gdkpixbuf.PixbufClass {
+// Deprecated: Since GTK+ 3.2, a header is no longer shown; add your header
+// decoration to the page content instead.
+func (assistant *AssistantClass) PageHeaderImage(page Widget) *gdkpixbuf.PixbufClass {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPixbuf    // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_header_image(_arg0, _arg1)
@@ -449,13 +455,13 @@ func (a *AssistantClass) PageHeaderImage(page Widget) *gdkpixbuf.PixbufClass {
 
 // PageSideImage gets the side image for @page.
 //
-// Deprecated: since version 3.2.
-func (a *AssistantClass) PageSideImage(page Widget) *gdkpixbuf.PixbufClass {
+// Deprecated: Since GTK+ 3.2, sidebar images are not shown anymore.
+func (assistant *AssistantClass) PageSideImage(page Widget) *gdkpixbuf.PixbufClass {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPixbuf    // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_side_image(_arg0, _arg1)
@@ -468,12 +474,12 @@ func (a *AssistantClass) PageSideImage(page Widget) *gdkpixbuf.PixbufClass {
 }
 
 // PageTitle gets the title for @page.
-func (a *AssistantClass) PageTitle(page Widget) string {
+func (assistant *AssistantClass) PageTitle(page Widget) string {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
@@ -486,12 +492,12 @@ func (a *AssistantClass) PageTitle(page Widget) string {
 }
 
 // PageType gets the page type of @page.
-func (a *AssistantClass) PageType(page Widget) AssistantPageType {
+func (assistant *AssistantClass) PageType(page Widget) AssistantPageType {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out
 	var _cret C.GtkAssistantPageType // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_type(_arg0, _arg1)
@@ -504,13 +510,13 @@ func (a *AssistantClass) PageType(page Widget) AssistantPageType {
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
-func (a *AssistantClass) InsertPage(page Widget, position int) int {
+func (assistant *AssistantClass) InsertPage(page Widget, position int) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gint          // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	_arg2 = C.gint(position)
 
@@ -529,21 +535,21 @@ func (a *AssistantClass) InsertPage(page Widget, position int) int {
 //
 // This function is for use when creating pages of the K_ASSISTANT_PAGE_CUSTOM
 // type.
-func (a *AssistantClass) NextPage() {
+func (assistant *AssistantClass) NextPage() {
 	var _arg0 *C.GtkAssistant // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_next_page(_arg0)
 }
 
 // PrependPage prepends a page to the @assistant.
-func (a *AssistantClass) PrependPage(page Widget) int {
+func (assistant *AssistantClass) PrependPage(page Widget) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
@@ -562,31 +568,31 @@ func (a *AssistantClass) PrependPage(page Widget) int {
 //
 // This function is for use when creating pages of the K_ASSISTANT_PAGE_CUSTOM
 // type.
-func (a *AssistantClass) PreviousPage() {
+func (assistant *AssistantClass) PreviousPage() {
 	var _arg0 *C.GtkAssistant // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_previous_page(_arg0)
 }
 
 // RemoveActionWidget removes a widget from the action area of a Assistant.
-func (a *AssistantClass) RemoveActionWidget(child Widget) {
+func (assistant *AssistantClass) RemoveActionWidget(child Widget) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_assistant_remove_action_widget(_arg0, _arg1)
 }
 
 // RemovePage removes the @page_num’s page from @assistant.
-func (a *AssistantClass) RemovePage(pageNum int) {
+func (assistant *AssistantClass) RemovePage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.gint          // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = C.gint(pageNum)
 
 	C.gtk_assistant_remove_page(_arg0, _arg1)
@@ -596,11 +602,11 @@ func (a *AssistantClass) RemovePage(pageNum int) {
 //
 // Note that this will only be necessary in custom buttons, as the @assistant
 // flow can be set with gtk_assistant_set_forward_page_func().
-func (a *AssistantClass) SetCurrentPage(pageNum int) {
+func (assistant *AssistantClass) SetCurrentPage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.gint          // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = C.gint(pageNum)
 
 	C.gtk_assistant_set_current_page(_arg0, _arg1)
@@ -610,12 +616,12 @@ func (a *AssistantClass) SetCurrentPage(pageNum int) {
 //
 // This will make @assistant update the buttons state to be able to continue the
 // task.
-func (a *AssistantClass) SetPageComplete(page Widget, complete bool) {
+func (assistant *AssistantClass) SetPageComplete(page Widget, complete bool) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	if complete {
 		_arg2 = C.TRUE
@@ -626,12 +632,12 @@ func (a *AssistantClass) SetPageComplete(page Widget, complete bool) {
 
 // SetPageHasPadding sets whether the assistant is adding padding around the
 // page.
-func (a *AssistantClass) SetPageHasPadding(page Widget, hasPadding bool) {
+func (assistant *AssistantClass) SetPageHasPadding(page Widget, hasPadding bool) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	if hasPadding {
 		_arg2 = C.TRUE
@@ -642,13 +648,14 @@ func (a *AssistantClass) SetPageHasPadding(page Widget, hasPadding bool) {
 
 // SetPageHeaderImage sets a header image for @page.
 //
-// Deprecated: since version 3.2.
-func (a *AssistantClass) SetPageHeaderImage(page Widget, pixbuf gdkpixbuf.Pixbuf) {
+// Deprecated: Since GTK+ 3.2, a header is no longer shown; add your header
+// decoration to the page content instead.
+func (assistant *AssistantClass) SetPageHeaderImage(page Widget, pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GdkPixbuf    // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
@@ -660,13 +667,13 @@ func (a *AssistantClass) SetPageHeaderImage(page Widget, pixbuf gdkpixbuf.Pixbuf
 // This image used to be displayed in the side area of the assistant when @page
 // is the current page.
 //
-// Deprecated: since version 3.2.
-func (a *AssistantClass) SetPageSideImage(page Widget, pixbuf gdkpixbuf.Pixbuf) {
+// Deprecated: Since GTK+ 3.2, sidebar images are not shown anymore.
+func (assistant *AssistantClass) SetPageSideImage(page Widget, pixbuf gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GdkPixbuf    // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
@@ -677,12 +684,12 @@ func (a *AssistantClass) SetPageSideImage(page Widget, pixbuf gdkpixbuf.Pixbuf) 
 //
 // The title is displayed in the header area of the assistant when @page is the
 // current page.
-func (a *AssistantClass) SetPageTitle(page Widget, title string) {
+func (assistant *AssistantClass) SetPageTitle(page Widget, title string) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.gchar        // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 	_arg2 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -699,10 +706,10 @@ func (a *AssistantClass) SetPageTitle(page Widget, title string) {
 // One situation where it can be necessary to call this function is when
 // changing a value on the current page affects the future page flow of the
 // assistant.
-func (a *AssistantClass) UpdateButtonsState() {
+func (assistant *AssistantClass) UpdateButtonsState() {
 	var _arg0 *C.GtkAssistant // out
 
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_update_buttons_state(_arg0)
 }

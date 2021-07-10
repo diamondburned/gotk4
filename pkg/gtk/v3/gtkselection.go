@@ -118,35 +118,12 @@ func (t *TargetEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// Target: string representation of the target type
-func (t *TargetEntry) Target() string {
-	var v string // out
-	v = C.GoString(t.native.target)
-	return v
-}
-
-// Flags for DND
-func (t *TargetEntry) Flags() uint {
-	var v uint // out
-	v = uint(t.native.flags)
-	return v
-}
-
-// Info: application-assigned integer ID which will get passed as a parameter to
-// e.g the Widget::selection-get signal. It allows the application to identify
-// the target type without extensive string compares.
-func (t *TargetEntry) Info() uint {
-	var v uint // out
-	v = uint(t.native.info)
-	return v
-}
-
 // Copy makes a copy of a TargetEntry and its data.
-func (d *TargetEntry) Copy() *TargetEntry {
+func (data *TargetEntry) Copy() *TargetEntry {
 	var _arg0 *C.GtkTargetEntry // out
 	var _cret *C.GtkTargetEntry // in
 
-	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(d))
+	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(data))
 
 	_cret = C.gtk_target_entry_copy(_arg0)
 
@@ -162,10 +139,10 @@ func (d *TargetEntry) Copy() *TargetEntry {
 
 // Free frees a TargetEntry returned from gtk_target_entry_new() or
 // gtk_target_entry_copy().
-func (d *TargetEntry) free() {
+func (data *TargetEntry) free() {
 	var _arg0 *C.GtkTargetEntry // out
 
-	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(d))
+	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(data))
 
 	C.gtk_target_entry_free(_arg0)
 }
@@ -216,12 +193,12 @@ func (t *TargetList) Native() unsafe.Pointer {
 
 // AddImageTargets appends the image targets supported by SelectionData to the
 // target list. All targets are added with the same @info.
-func (l *TargetList) AddImageTargets(info uint, writable bool) {
+func (list *TargetList) AddImageTargets(info uint, writable bool) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
 	_arg1 = C.guint(info)
 	if writable {
 		_arg2 = C.TRUE
@@ -234,13 +211,13 @@ func (l *TargetList) AddImageTargets(info uint, writable bool) {
 // gtk_text_buffer_register_serialize_format() or
 // gtk_text_buffer_register_deserialize_format() to the target list. All targets
 // are added with the same @info.
-func (l *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer TextBuffer) {
+func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer TextBuffer) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
 	var _arg3 *C.GtkTextBuffer // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
 	_arg1 = C.guint(info)
 	if deserializable {
 		_arg2 = C.TRUE
@@ -251,12 +228,12 @@ func (l *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer T
 }
 
 // AddTable prepends a table of TargetEntry to a target list.
-func (l *TargetList) AddTable(targets []TargetEntry) {
+func (list *TargetList) AddTable(targets []TargetEntry) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 *C.GtkTargetEntry
 	var _arg2 C.guint
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
 	_arg2 = C.guint(len(targets))
 	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
 
@@ -265,11 +242,11 @@ func (l *TargetList) AddTable(targets []TargetEntry) {
 
 // AddTextTargets appends the text targets supported by SelectionData to the
 // target list. All targets are added with the same @info.
-func (l *TargetList) AddTextTargets(info uint) {
+func (list *TargetList) AddTextTargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
 	_arg1 = C.guint(info)
 
 	C.gtk_target_list_add_text_targets(_arg0, _arg1)
@@ -277,22 +254,22 @@ func (l *TargetList) AddTextTargets(info uint) {
 
 // AddURITargets appends the URI targets supported by SelectionData to the
 // target list. All targets are added with the same @info.
-func (l *TargetList) AddURITargets(info uint) {
+func (list *TargetList) AddURITargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
 	_arg1 = C.guint(info)
 
 	C.gtk_target_list_add_uri_targets(_arg0, _arg1)
 }
 
 // Ref increases the reference count of a TargetList by one.
-func (l *TargetList) ref() *TargetList {
+func (list *TargetList) ref() *TargetList {
 	var _arg0 *C.GtkTargetList // out
 	var _cret *C.GtkTargetList // in
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
 
 	_cret = C.gtk_target_list_ref(_arg0)
 
@@ -309,10 +286,10 @@ func (l *TargetList) ref() *TargetList {
 
 // Unref decreases the reference count of a TargetList by one. If the resulting
 // reference count is zero, frees the list.
-func (l *TargetList) unref() {
+func (list *TargetList) unref() {
 	var _arg0 *C.GtkTargetList // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
 
 	C.gtk_target_list_unref(_arg0)
 }
@@ -332,20 +309,4 @@ func WrapTargetPair(ptr unsafe.Pointer) *TargetPair {
 // Native returns the underlying C source pointer.
 func (t *TargetPair) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// Flags for DND
-func (t *TargetPair) Flags() uint {
-	var v uint // out
-	v = uint(t.native.flags)
-	return v
-}
-
-// Info: application-assigned integer ID which will get passed as a parameter to
-// e.g the Widget::selection-get signal. It allows the application to identify
-// the target type without extensive string compares.
-func (t *TargetPair) Info() uint {
-	var v uint // out
-	v = uint(t.native.info)
-	return v
 }

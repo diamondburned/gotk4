@@ -47,32 +47,32 @@ type ColorButton interface {
 
 	// Alpha returns the current alpha value.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_color_chooser_get_rgba() instead.
 	Alpha() uint16
 	// Color sets @color to be the current color in the ColorButton widget.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_color_chooser_get_rgba() instead.
 	Color() gdk.Color
 	// Title gets the title of the color selection dialog.
 	Title() string
 	// UseAlpha does the color selection dialog use the alpha channel ?
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_color_chooser_get_use_alpha() instead.
 	UseAlpha() bool
 	// SetAlpha sets the current opacity to be @alpha.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_color_chooser_set_rgba() instead.
 	SetAlpha(alpha uint16)
 	// SetColor sets the current color to be @color.
 	//
-	// Deprecated.
+	// Deprecated: Use gtk_color_chooser_set_rgba() instead.
 	SetColor(color *gdk.Color)
 	// SetTitle sets the title for the color selection dialog.
 	SetTitle(title string)
 	// SetUseAlpha sets whether or not the color button should use the alpha
 	// channel.
 	//
-	// Deprecated: since version 3.4.
+	// Deprecated: Use gtk_color_chooser_set_use_alpha() instead.
 	SetUseAlpha(useAlpha bool)
 }
 
@@ -80,10 +80,10 @@ type ColorButton interface {
 type ColorButtonClass struct {
 	*externglib.Object
 	ButtonClass
-	ActionableInterface
-	ActivatableInterface
-	BuildableInterface
-	ColorChooserInterface
+	ActionableIface
+	ActivatableIface
+	BuildableIface
+	ColorChooserIface
 }
 
 var _ ColorButton = (*ColorButtonClass)(nil)
@@ -98,49 +98,60 @@ func wrapColorButton(obj *externglib.Object) ColorButton {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			ActionableInterface: ActionableInterface{
+			ActionableIface: ActionableIface{
+				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
 			},
-			ActivatableInterface: ActivatableInterface{
+			ActivatableIface: ActivatableIface{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		ActionableInterface: ActionableInterface{
+		ActionableIface: ActionableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				BuildableInterface: BuildableInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
 		},
-		ActivatableInterface: ActivatableInterface{
+		ActivatableIface: ActivatableIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ColorChooserInterface: ColorChooserInterface{
+		ColorChooserIface: ColorChooserIface{
 			Object: obj,
 		},
 	}
@@ -172,7 +183,7 @@ func NewColorButton() *ColorButtonClass {
 
 // NewColorButtonWithColor creates a new color button.
 //
-// Deprecated: since version 3.4.
+// Deprecated: Use gtk_color_button_new_with_rgba() instead.
 func NewColorButtonWithColor(color *gdk.Color) *ColorButtonClass {
 	var _arg1 *C.GdkColor  // out
 	var _cret *C.GtkWidget // in
@@ -206,12 +217,12 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButtonClass {
 
 // Alpha returns the current alpha value.
 //
-// Deprecated: since version 3.4.
-func (b *ColorButtonClass) Alpha() uint16 {
+// Deprecated: Use gtk_color_chooser_get_rgba() instead.
+func (button *ColorButtonClass) Alpha() uint16 {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.guint16         // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_alpha(_arg0)
 
@@ -224,12 +235,12 @@ func (b *ColorButtonClass) Alpha() uint16 {
 
 // Color sets @color to be the current color in the ColorButton widget.
 //
-// Deprecated: since version 3.4.
-func (b *ColorButtonClass) Color() gdk.Color {
+// Deprecated: Use gtk_color_chooser_get_rgba() instead.
+func (button *ColorButtonClass) Color() gdk.Color {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.GdkColor        // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_color_button_get_color(_arg0, &_arg1)
 
@@ -241,11 +252,11 @@ func (b *ColorButtonClass) Color() gdk.Color {
 }
 
 // Title gets the title of the color selection dialog.
-func (b *ColorButtonClass) Title() string {
+func (button *ColorButtonClass) Title() string {
 	var _arg0 *C.GtkColorButton // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_title(_arg0)
 
@@ -258,12 +269,12 @@ func (b *ColorButtonClass) Title() string {
 
 // UseAlpha does the color selection dialog use the alpha channel ?
 //
-// Deprecated: since version 3.4.
-func (b *ColorButtonClass) UseAlpha() bool {
+// Deprecated: Use gtk_color_chooser_get_use_alpha() instead.
+func (button *ColorButtonClass) UseAlpha() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_use_alpha(_arg0)
 
@@ -278,12 +289,12 @@ func (b *ColorButtonClass) UseAlpha() bool {
 
 // SetAlpha sets the current opacity to be @alpha.
 //
-// Deprecated: since version 3.4.
-func (b *ColorButtonClass) SetAlpha(alpha uint16) {
+// Deprecated: Use gtk_color_chooser_set_rgba() instead.
+func (button *ColorButtonClass) SetAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.guint16         // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 	_arg1 = C.guint16(alpha)
 
 	C.gtk_color_button_set_alpha(_arg0, _arg1)
@@ -291,23 +302,23 @@ func (b *ColorButtonClass) SetAlpha(alpha uint16) {
 
 // SetColor sets the current color to be @color.
 //
-// Deprecated.
-func (b *ColorButtonClass) SetColor(color *gdk.Color) {
+// Deprecated: Use gtk_color_chooser_set_rgba() instead.
+func (button *ColorButtonClass) SetColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.GdkColor       // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
 
 	C.gtk_color_button_set_color(_arg0, _arg1)
 }
 
 // SetTitle sets the title for the color selection dialog.
-func (b *ColorButtonClass) SetTitle(title string) {
+func (button *ColorButtonClass) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -317,12 +328,12 @@ func (b *ColorButtonClass) SetTitle(title string) {
 // SetUseAlpha sets whether or not the color button should use the alpha
 // channel.
 //
-// Deprecated: since version 3.4.
-func (b *ColorButtonClass) SetUseAlpha(useAlpha bool) {
+// Deprecated: Use gtk_color_chooser_set_use_alpha() instead.
+func (button *ColorButtonClass) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 	if useAlpha {
 		_arg1 = C.TRUE
 	}

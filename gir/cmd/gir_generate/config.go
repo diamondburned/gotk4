@@ -62,11 +62,9 @@ var filters = []FilterMatcher{
 	// Not an array type but expects an array.
 	AbsoluteFilter("Gio.SimpleProxyResolver.set_ignore_hosts"),
 	// These are not found.
+	AbsoluteFilter("C.GdkPixbufModule"),
 	AbsoluteFilter("GdkPixbuf.PixbufNonAnim"),
 	AbsoluteFilter("GdkPixbuf.PixbufModulePattern"),
-	AbsoluteFilter("C.gdk_pixbuf_non_anim_get_type"),
-	AbsoluteFilter("C.GdkPixbufModule"),
-	AbsoluteFilter("C.gdk_window_destroy_notify"),
 
 	FileFilter("garray.h"),
 	FileFilter("gasyncqueue.h"),
@@ -101,9 +99,20 @@ var filters = []FilterMatcher{
 	FileFilter("gthreadpool.h"),
 	FileFilter("gtrashstack.h"),
 
+	// Header-specific.
+	FileFilter("gskglrenderer.h"),
+	FileFilter("gsknglrenderer.h"),
+	FileFilter("gskvulkanrenderer.h"),
+	FileFilter("gtkpagesetupunixdialog.c"),
+	FileFilter("gtkpagesetupunixdialog.h"),
+
 	// These are missing on build for some reason.
 	AbsoluteFilter("C.g_array_get_type"),
 	AbsoluteFilter("C.g_byte_array_get_type"),
 	AbsoluteFilter("C.g_bytes_get_type"),
 	AbsoluteFilter("C.g_ptr_array_get_type"),
+	AbsoluteFilter("C.gtk_header_bar_accessible_get_type"),
+	AbsoluteFilter("C.gdk_pixbuf_non_anim_get_type"),
+	AbsoluteFilter("C.gdk_window_destroy_notify"),
+	AbsoluteFilter("C.gtk_print_capabilities_get_type"),
 }

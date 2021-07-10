@@ -224,11 +224,11 @@ func NewNamedAction(name string) *NamedActionClass {
 }
 
 // ActionName returns the name of the action that will be activated.
-func (s *NamedActionClass) ActionName() string {
+func (self *NamedActionClass) ActionName() string {
 	var _arg0 *C.GtkNamedAction // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_named_action_get_action_name(_arg0)
 
@@ -356,11 +356,11 @@ func NewShortcutActionParseString(_string string) *ShortcutActionClass {
 //
 // This is a small wrapper around [method@Gtk.ShortcutAction.print] to help when
 // debugging.
-func (s *ShortcutActionClass) String() string {
+func (self *ShortcutActionClass) String() string {
 	var _arg0 *C.GtkShortcutAction // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_action_to_string(_arg0)
 
@@ -425,11 +425,11 @@ func NewSignalAction(signalName string) *SignalActionClass {
 }
 
 // SignalName returns the name of the signal that will be emitted.
-func (s *SignalActionClass) SignalName() string {
+func (self *SignalActionClass) SignalName() string {
 	var _arg0 *C.GtkSignalAction // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_signal_action_get_signal_name(_arg0)
 

@@ -41,8 +41,8 @@ type VScrollbar interface {
 type VScrollbarClass struct {
 	*externglib.Object
 	ScrollbarClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ VScrollbar = (*VScrollbarClass)(nil)
@@ -55,29 +55,32 @@ func wrapVScrollbar(obj *externglib.Object) VScrollbar {
 			RangeClass: RangeClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
-				OrientableInterface: OrientableInterface{
+				OrientableIface: OrientableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -91,7 +94,7 @@ func marshalVScrollbar(p uintptr) (interface{}, error) {
 
 // NewVScrollbar creates a new vertical scrollbar.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_scrollbar_new() with GTK_ORIENTATION_VERTICAL instead.
 func NewVScrollbar(adjustment Adjustment) *VScrollbarClass {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in

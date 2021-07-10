@@ -38,15 +38,15 @@ type Orientable interface {
 	Orientation() Orientation
 }
 
-// OrientableInterface implements the Orientable interface.
-type OrientableInterface struct {
+// OrientableIface implements the Orientable interface.
+type OrientableIface struct {
 	*externglib.Object
 }
 
-var _ Orientable = (*OrientableInterface)(nil)
+var _ Orientable = (*OrientableIface)(nil)
 
 func wrapOrientable(obj *externglib.Object) Orientable {
-	return &OrientableInterface{
+	return &OrientableIface{
 		Object: obj,
 	}
 }
@@ -58,11 +58,11 @@ func marshalOrientable(p uintptr) (interface{}, error) {
 }
 
 // Orientation retrieves the orientation of the @orientable.
-func (o *OrientableInterface) Orientation() Orientation {
+func (orientable *OrientableIface) Orientation() Orientation {
 	var _arg0 *C.GtkOrientable // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(orientable.Native()))
 
 	_cret = C.gtk_orientable_get_orientation(_arg0)
 

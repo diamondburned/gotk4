@@ -115,12 +115,12 @@ func marshalPadController(p uintptr) (interface{}, error) {
 // @controller.
 //
 // See [struct@Gtk.PadActionEntry] and [method@Gtk.PadController.set_action].
-func (c *PadControllerClass) SetActionEntries(entries []PadActionEntry) {
+func (controller *PadControllerClass) SetActionEntries(entries []PadActionEntry) {
 	var _arg0 *C.GtkPadController // out
 	var _arg1 *C.GtkPadActionEntry
 	var _arg2 C.int
 
-	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))
 	_arg2 = C.int(len(entries))
 	_arg1 = (*C.GtkPadActionEntry)(unsafe.Pointer(&entries[0]))
 
@@ -141,41 +141,4 @@ func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
 // Native returns the underlying C source pointer.
 func (p *PadActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
-}
-
-// Type: the type of pad feature that will trigger this action entry.
-func (p *PadActionEntry) Type() PadActionType {
-	var v PadActionType // out
-	v = (PadActionType)(p.native._type)
-	return v
-}
-
-// Index: the 0-indexed button/ring/strip number that will trigger this action
-// entry.
-func (p *PadActionEntry) Index() int {
-	var v int // out
-	v = int(p.native.index)
-	return v
-}
-
-// Mode: the mode that will trigger this action entry, or -1 for all modes.
-func (p *PadActionEntry) Mode() int {
-	var v int // out
-	v = int(p.native.mode)
-	return v
-}
-
-// Label: human readable description of this action entry, this string should be
-// deemed user-visible.
-func (p *PadActionEntry) Label() string {
-	var v string // out
-	v = C.GoString(p.native.label)
-	return v
-}
-
-// ActionName: action name that will be activated in the Group.
-func (p *PadActionEntry) ActionName() string {
-	var v string // out
-	v = C.GoString(p.native.action_name)
-	return v
 }

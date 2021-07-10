@@ -93,10 +93,10 @@ type SearchEntry interface {
 type SearchEntryClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	ConstraintTargetInterface
-	EditableInterface
+	AccessibleIface
+	BuildableIface
+	ConstraintTargetIface
+	EditableIface
 }
 
 var _ SearchEntry = (*SearchEntryClass)(nil)
@@ -105,36 +105,43 @@ func wrapSearchEntry(obj *externglib.Object) SearchEntry {
 	return &SearchEntryClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		EditableInterface: EditableInterface{
+		EditableIface: EditableIface{
+			Object: obj,
 			WidgetClass: WidgetClass{
-				InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-				AccessibleInterface: AccessibleInterface{
+				Object: obj,
+				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
-				BuildableInterface: BuildableInterface{
+				AccessibleIface: AccessibleIface{
 					Object: obj,
 				},
-				ConstraintTargetInterface: ConstraintTargetInterface{
+				BuildableIface: BuildableIface{
+					Object: obj,
+				},
+				ConstraintTargetIface: ConstraintTargetIface{
 					Object: obj,
 				},
 			},
@@ -162,11 +169,11 @@ func NewSearchEntry() *SearchEntryClass {
 }
 
 // KeyCaptureWidget gets the widget that @entry is capturing key events from.
-func (e *SearchEntryClass) KeyCaptureWidget() *WidgetClass {
+func (entry *SearchEntryClass) KeyCaptureWidget() *WidgetClass {
 	var _arg0 *C.GtkSearchEntry // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
 
 	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
 
@@ -191,11 +198,11 @@ func (e *SearchEntryClass) KeyCaptureWidget() *WidgetClass {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // [method@Gtk.EventControllerKey.forward].
-func (e *SearchEntryClass) SetKeyCaptureWidget(widget Widget) {
+func (entry *SearchEntryClass) SetKeyCaptureWidget(widget Widget) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)

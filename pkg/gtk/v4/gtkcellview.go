@@ -57,7 +57,7 @@ type CellView interface {
 	FitModel() bool
 	// Model returns the model for @cell_view. If no model is used nil is
 	// returned.
-	Model() *TreeModelInterface
+	Model() *TreeModelIface
 	// SetDisplayedRow sets the row of the model that is currently displayed by
 	// the CellView. If the path is unset, then the contents of the cellview
 	// “stick” at their last value; this is not normally a desired result, but
@@ -86,11 +86,11 @@ type CellView interface {
 type CellViewClass struct {
 	*externglib.Object
 	WidgetClass
-	AccessibleInterface
-	BuildableInterface
-	CellLayoutInterface
-	ConstraintTargetInterface
-	OrientableInterface
+	AccessibleIface
+	BuildableIface
+	CellLayoutIface
+	ConstraintTargetIface
+	OrientableIface
 }
 
 var _ CellView = (*CellViewClass)(nil)
@@ -99,30 +99,33 @@ func wrapCellView(obj *externglib.Object) CellView {
 	return &CellViewClass{
 		Object: obj,
 		WidgetClass: WidgetClass{
-			InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-			AccessibleInterface: AccessibleInterface{
+			Object: obj,
+			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
-			BuildableInterface: BuildableInterface{
+			AccessibleIface: AccessibleIface{
 				Object: obj,
 			},
-			ConstraintTargetInterface: ConstraintTargetInterface{
+			BuildableIface: BuildableIface{
+				Object: obj,
+			},
+			ConstraintTargetIface: ConstraintTargetIface{
 				Object: obj,
 			},
 		},
-		AccessibleInterface: AccessibleInterface{
+		AccessibleIface: AccessibleIface{
 			Object: obj,
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		CellLayoutInterface: CellLayoutInterface{
+		CellLayoutIface: CellLayoutIface{
 			Object: obj,
 		},
-		ConstraintTargetInterface: ConstraintTargetInterface{
+		ConstraintTargetIface: ConstraintTargetIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -226,11 +229,11 @@ func NewCellViewWithTexture(texture gdk.Texture) *CellViewClass {
 
 // DisplayedRow returns a TreePath referring to the currently displayed row. If
 // no row is currently displayed, nil is returned.
-func (c *CellViewClass) DisplayedRow() *TreePath {
+func (cellView *CellViewClass) DisplayedRow() *TreePath {
 	var _arg0 *C.GtkCellView // out
 	var _cret *C.GtkTreePath // in
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_displayed_row(_arg0)
 
@@ -246,11 +249,11 @@ func (c *CellViewClass) DisplayedRow() *TreePath {
 
 // DrawSensitive gets whether @cell_view is configured to draw all of its cells
 // in a sensitive state.
-func (c *CellViewClass) DrawSensitive() bool {
+func (cellView *CellViewClass) DrawSensitive() bool {
 	var _arg0 *C.GtkCellView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
 
@@ -265,11 +268,11 @@ func (c *CellViewClass) DrawSensitive() bool {
 
 // FitModel gets whether @cell_view is configured to request space to fit the
 // entire TreeModel.
-func (c *CellViewClass) FitModel() bool {
+func (cellView *CellViewClass) FitModel() bool {
 	var _arg0 *C.GtkCellView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_fit_model(_arg0)
 
@@ -283,17 +286,17 @@ func (c *CellViewClass) FitModel() bool {
 }
 
 // Model returns the model for @cell_view. If no model is used nil is returned.
-func (c *CellViewClass) Model() *TreeModelInterface {
+func (cellView *CellViewClass) Model() *TreeModelIface {
 	var _arg0 *C.GtkCellView  // out
 	var _cret *C.GtkTreeModel // in
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_model(_arg0)
 
-	var _treeModel *TreeModelInterface // out
+	var _treeModel *TreeModelIface // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModelInterface)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModelIface)
 
 	return _treeModel
 }
@@ -303,11 +306,11 @@ func (c *CellViewClass) Model() *TreeModelInterface {
 // their last value; this is not normally a desired result, but may be a needed
 // intermediate state if say, the model for the CellView becomes temporarily
 // empty.
-func (c *CellViewClass) SetDisplayedRow(path *TreePath) {
+func (cellView *CellViewClass) SetDisplayedRow(path *TreePath) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GtkTreePath // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	C.gtk_cell_view_set_displayed_row(_arg0, _arg1)
@@ -317,11 +320,11 @@ func (c *CellViewClass) SetDisplayedRow(path *TreePath) {
 // sensitive state, this is used by ComboBox menus to ensure that rows with
 // insensitive cells that contain children appear sensitive in the parent menu
 // item.
-func (c *CellViewClass) SetDrawSensitive(drawSensitive bool) {
+func (cellView *CellViewClass) SetDrawSensitive(drawSensitive bool) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 	if drawSensitive {
 		_arg1 = C.TRUE
 	}
@@ -335,11 +338,11 @@ func (c *CellViewClass) SetDrawSensitive(drawSensitive bool) {
 // This is used by ComboBox to ensure that the cell view displayed on the combo
 // box’s button always gets enough space and does not resize when selection
 // changes.
-func (c *CellViewClass) SetFitModel(fitModel bool) {
+func (cellView *CellViewClass) SetFitModel(fitModel bool) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 	if fitModel {
 		_arg1 = C.TRUE
 	}
@@ -350,11 +353,11 @@ func (c *CellViewClass) SetFitModel(fitModel bool) {
 // SetModel sets the model for @cell_view. If @cell_view already has a model
 // set, it will remove it before setting the new model. If @model is nil, then
 // it will unset the old model.
-func (c *CellViewClass) SetModel(model TreeModel) {
+func (cellView *CellViewClass) SetModel(model TreeModel) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_cell_view_set_model(_arg0, _arg1)

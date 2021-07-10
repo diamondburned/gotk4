@@ -64,22 +64,20 @@ type BufferedOutputStream interface {
 
 // BufferedOutputStreamClass implements the BufferedOutputStream interface.
 type BufferedOutputStreamClass struct {
-	*externglib.Object
 	FilterOutputStreamClass
-	SeekableInterface
+	SeekableIface
 }
 
 var _ BufferedOutputStream = (*BufferedOutputStreamClass)(nil)
 
 func wrapBufferedOutputStream(obj *externglib.Object) BufferedOutputStream {
 	return &BufferedOutputStreamClass{
-		Object: obj,
 		FilterOutputStreamClass: FilterOutputStreamClass{
 			OutputStreamClass: OutputStreamClass{
 				Object: obj,
 			},
 		},
-		SeekableInterface: SeekableInterface{
+		SeekableIface: SeekableIface{
 			Object: obj,
 		},
 	}
@@ -128,11 +126,11 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) *BufferedO
 }
 
 // AutoGrow checks if the buffer automatically grows as data is added.
-func (s *BufferedOutputStreamClass) AutoGrow() bool {
+func (stream *BufferedOutputStreamClass) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_buffered_output_stream_get_auto_grow(_arg0)
 
@@ -146,11 +144,11 @@ func (s *BufferedOutputStreamClass) AutoGrow() bool {
 }
 
 // BufferSize gets the size of the buffer in the @stream.
-func (s *BufferedOutputStreamClass) BufferSize() uint {
+func (stream *BufferedOutputStreamClass) BufferSize() uint {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gsize                  // in
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_buffered_output_stream_get_buffer_size(_arg0)
 
@@ -165,11 +163,11 @@ func (s *BufferedOutputStreamClass) BufferSize() uint {
 // grow. If @auto_grow is true, then each write will just make the buffer
 // larger, and you must manually flush the buffer to actually write out the data
 // to the underlying stream.
-func (s *BufferedOutputStreamClass) SetAutoGrow(autoGrow bool) {
+func (stream *BufferedOutputStreamClass) SetAutoGrow(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
 	if autoGrow {
 		_arg1 = C.TRUE
 	}
@@ -178,11 +176,11 @@ func (s *BufferedOutputStreamClass) SetAutoGrow(autoGrow bool) {
 }
 
 // SetBufferSize sets the size of the internal buffer to @size.
-func (s *BufferedOutputStreamClass) SetBufferSize(size uint) {
+func (stream *BufferedOutputStreamClass) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gsize                  // out
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.gsize(size)
 
 	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)

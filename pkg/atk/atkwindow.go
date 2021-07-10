@@ -27,18 +27,18 @@ func init() {
 type Window interface {
 	gextras.Objector
 
-	privateWindowInterface()
+	privateWindowIface()
 }
 
-// WindowInterface implements the Window interface.
-type WindowInterface struct {
+// WindowIface implements the Window interface.
+type WindowIface struct {
 	ObjectClass
 }
 
-var _ Window = (*WindowInterface)(nil)
+var _ Window = (*WindowIface)(nil)
 
 func wrapWindow(obj *externglib.Object) Window {
-	return &WindowInterface{
+	return &WindowIface{
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
@@ -51,4 +51,4 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	return wrapWindow(obj), nil
 }
 
-func (*WindowInterface) privateWindowInterface() {}
+func (*WindowIface) privateWindowIface() {}

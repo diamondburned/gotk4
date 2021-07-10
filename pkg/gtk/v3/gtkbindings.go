@@ -7,13 +7,11 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 //
-// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -57,13 +55,6 @@ func (b *BindingArg) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// ArgType: implementation detail
-func (b *BindingArg) ArgType() externglib.Type {
-	var v externglib.Type // out
-	v = externglib.Type(b.native.arg_type)
-	return v
-}
-
 // BindingEntry: each key binding element of a binding sets binding list is
 // represented by a GtkBindingEntry.
 type BindingEntry struct {
@@ -81,39 +72,24 @@ func (b *BindingEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// Keyval: key value to match
-func (b *BindingEntry) Keyval() uint {
-	var v uint // out
-	v = uint(b.native.keyval)
-	return v
+// BindingSet: binding set maintains a list of activatable key bindings. A
+// single binding set can match multiple types of widgets. Similar to style
+// contexts, can be matched by any information contained in a widgets
+// WidgetPath. When a binding within a set is matched upon activation, an action
+// signal is emitted on the target widget to carry out the actual activation.
+type BindingSet struct {
+	native C.GtkBindingSet
 }
 
-// Modifiers: key modifiers to match
-func (b *BindingEntry) Modifiers() gdk.ModifierType {
-	var v gdk.ModifierType // out
-	v = (gdk.ModifierType)(b.native.modifiers)
-	return v
+// WrapBindingSet wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBindingSet(ptr unsafe.Pointer) *BindingSet {
+	return (*BindingSet)(ptr)
 }
 
-// SetNext: linked list of entries maintained by binding set
-func (b *BindingEntry) SetNext() *BindingEntry {
-	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.native.set_next))
-	return v
-}
-
-// HashNext: implementation detail
-func (b *BindingEntry) HashNext() *BindingEntry {
-	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.native.hash_next))
-	return v
-}
-
-// Signals: action signals of this entry
-func (b *BindingEntry) Signals() *BindingSignal {
-	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(b.native.signals))
-	return v
+// Native returns the underlying C source pointer.
+func (b *BindingSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(&b.native)
 }
 
 // BindingSignal stores the necessary information to activate a widget in
@@ -131,25 +107,4 @@ func WrapBindingSignal(ptr unsafe.Pointer) *BindingSignal {
 // Native returns the underlying C source pointer.
 func (b *BindingSignal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
-}
-
-// Next: implementation detail
-func (b *BindingSignal) Next() *BindingSignal {
-	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(b.native.next))
-	return v
-}
-
-// SignalName: the action signal to be emitted
-func (b *BindingSignal) SignalName() string {
-	var v string // out
-	v = C.GoString(b.native.signal_name)
-	return v
-}
-
-// NArgs: number of arguments specified for the signal
-func (b *BindingSignal) NArgs() uint {
-	var v uint // out
-	v = uint(b.native.n_args)
-	return v
 }

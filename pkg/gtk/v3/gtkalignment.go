@@ -47,18 +47,18 @@ type Alignment interface {
 	// Padding gets the padding on the different sides of the widget. See
 	// gtk_alignment_set_padding ().
 	//
-	// Deprecated: since version 3.14.
+	// Deprecated: Use Widget alignment and margin properties.
 	Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
 	// Set sets the Alignment values.
 	//
-	// Deprecated: since version 3.14.
+	// Deprecated: Use Widget alignment and margin properties.
 	Set(xalign float32, yalign float32, xscale float32, yscale float32)
 	// SetPadding sets the padding on the different sides of the widget. The
 	// padding adds blank space to the sides of the widget. For instance, this
 	// can be used to indent the child widget towards the right by adding
 	// padding on the left.
 	//
-	// Deprecated: since version 3.14.
+	// Deprecated: Use Widget alignment and margin properties.
 	SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
 }
 
@@ -66,7 +66,7 @@ type Alignment interface {
 type AlignmentClass struct {
 	*externglib.Object
 	BinClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ Alignment = (*AlignmentClass)(nil)
@@ -79,20 +79,23 @@ func wrapAlignment(obj *externglib.Object) Alignment {
 			ContainerClass: ContainerClass{
 				Object: obj,
 				WidgetClass: WidgetClass{
-					InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-					BuildableInterface: BuildableInterface{
+					Object: obj,
+					InitiallyUnowned: externglib.InitiallyUnowned{
+						Object: obj,
+					},
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -106,7 +109,7 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 
 // NewAlignment creates a new Alignment.
 //
-// Deprecated: since version 3.14.
+// Deprecated: Use Widget alignment and margin properties.
 func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32) *AlignmentClass {
 	var _arg1 C.gfloat     // out
 	var _arg2 C.gfloat     // out
@@ -131,15 +134,15 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 // Padding gets the padding on the different sides of the widget. See
 // gtk_alignment_set_padding ().
 //
-// Deprecated: since version 3.14.
-func (a *AlignmentClass) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
+// Deprecated: Use Widget alignment and margin properties.
+func (alignment *AlignmentClass) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.guint         // in
 	var _arg2 C.guint         // in
 	var _arg3 C.guint         // in
 	var _arg4 C.guint         // in
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(alignment.Native()))
 
 	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -158,15 +161,15 @@ func (a *AlignmentClass) Padding() (paddingTop uint, paddingBottom uint, padding
 
 // Set sets the Alignment values.
 //
-// Deprecated: since version 3.14.
-func (a *AlignmentClass) Set(xalign float32, yalign float32, xscale float32, yscale float32) {
+// Deprecated: Use Widget alignment and margin properties.
+func (alignment *AlignmentClass) Set(xalign float32, yalign float32, xscale float32, yscale float32) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.gfloat        // out
 	var _arg2 C.gfloat        // out
 	var _arg3 C.gfloat        // out
 	var _arg4 C.gfloat        // out
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(alignment.Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 	_arg3 = C.gfloat(xscale)
@@ -179,15 +182,15 @@ func (a *AlignmentClass) Set(xalign float32, yalign float32, xscale float32, ysc
 // adds blank space to the sides of the widget. For instance, this can be used
 // to indent the child widget towards the right by adding padding on the left.
 //
-// Deprecated: since version 3.14.
-func (a *AlignmentClass) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
+// Deprecated: Use Widget alignment and margin properties.
+func (alignment *AlignmentClass) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out
 	var _arg3 C.guint         // out
 	var _arg4 C.guint         // out
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(alignment.Native()))
 	_arg1 = C.guint(paddingTop)
 	_arg2 = C.guint(paddingBottom)
 	_arg3 = C.guint(paddingLeft)

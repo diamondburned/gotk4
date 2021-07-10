@@ -34,8 +34,8 @@ type HButtonBox interface {
 type HButtonBoxClass struct {
 	*externglib.Object
 	ButtonBoxClass
-	BuildableInterface
-	OrientableInterface
+	BuildableIface
+	OrientableIface
 }
 
 var _ HButtonBox = (*HButtonBoxClass)(nil)
@@ -50,33 +50,36 @@ func wrapHButtonBox(obj *externglib.Object) HButtonBox {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
-				OrientableInterface: OrientableInterface{
+				OrientableIface: OrientableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
-			OrientableInterface: OrientableInterface{
+			OrientableIface: OrientableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
-		OrientableInterface: OrientableInterface{
+		OrientableIface: OrientableIface{
 			Object: obj,
 		},
 	}
@@ -90,7 +93,7 @@ func marshalHButtonBox(p uintptr) (interface{}, error) {
 
 // NewHButtonBox creates a new horizontal button box.
 //
-// Deprecated: since version 3.2.
+// Deprecated: Use gtk_button_box_new() with GTK_ORIENTATION_HORIZONTAL instead.
 func NewHButtonBox() *HButtonBoxClass {
 	var _cret *C.GtkWidget // in
 

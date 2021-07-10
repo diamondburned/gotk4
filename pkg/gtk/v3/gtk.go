@@ -147,7 +147,7 @@ type EntryIconAccessible interface {
 type EntryIconAccessibleClass struct {
 	*externglib.Object
 	atk.ObjectClass
-	atk.ActionInterface
+	atk.ActionIface
 }
 
 var _ EntryIconAccessible = (*EntryIconAccessibleClass)(nil)
@@ -158,7 +158,7 @@ func wrapEntryIconAccessible(obj *externglib.Object) EntryIconAccessible {
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
-		ActionInterface: atk.ActionInterface{
+		ActionIface: atk.ActionIface{
 			Object: obj,
 		},
 	}

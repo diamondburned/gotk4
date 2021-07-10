@@ -53,20 +53,6 @@ func (r *Rect) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Origin: the coordinates of the origin of the rectangle
-func (r *Rect) Origin() Point {
-	var v Point // out
-	v = *(*Point)(unsafe.Pointer((&r.native.origin)))
-	return v
-}
-
-// Size: the size of the rectangle
-func (r *Rect) Size() Size {
-	var v Size // out
-	v = *(*Size)(unsafe.Pointer((&r.native.size)))
-	return v
-}
-
 // ContainsPoint checks whether a #graphene_rect_t contains the given
 // coordinates.
 func (r *Rect) ContainsPoint(p *Point) bool {
@@ -590,7 +576,7 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 // This function is the equivalent of calling `floor` on the coordinates of the
 // origin, and `ceil` on the size.
 //
-// Deprecated: since version 1.10.
+// Deprecated: Use graphene_rect_round_extents() instead.
 func (r *Rect) Round() Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.graphene_rect_t  // in
@@ -642,7 +628,7 @@ func (r *Rect) RoundExtents() Rect {
 // nearest integer values; the rounding is guaranteed to be large enough to
 // contain the original rectangle.
 //
-// Deprecated: since version 1.4.
+// Deprecated: Use graphene_rect_round() instead.
 func (r *Rect) RoundToPixel() *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret *C.graphene_rect_t // in

@@ -93,15 +93,15 @@ type Seekable interface {
 	Truncate(offset int64, cancellable Cancellable) error
 }
 
-// SeekableInterface implements the Seekable interface.
-type SeekableInterface struct {
+// SeekableIface implements the Seekable interface.
+type SeekableIface struct {
 	*externglib.Object
 }
 
-var _ Seekable = (*SeekableInterface)(nil)
+var _ Seekable = (*SeekableIface)(nil)
 
 func wrapSeekable(obj *externglib.Object) Seekable {
-	return &SeekableInterface{
+	return &SeekableIface{
 		Object: obj,
 	}
 }
@@ -113,11 +113,11 @@ func marshalSeekable(p uintptr) (interface{}, error) {
 }
 
 // CanSeek tests if the stream supports the Iface.
-func (s *SeekableInterface) CanSeek() bool {
+func (seekable *SeekableIface) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 
 	_cret = C.g_seekable_can_seek(_arg0)
 
@@ -132,11 +132,11 @@ func (s *SeekableInterface) CanSeek() bool {
 
 // CanTruncate tests if the length of the stream can be adjusted with
 // g_seekable_truncate().
-func (s *SeekableInterface) CanTruncate() bool {
+func (seekable *SeekableIface) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 
 	_cret = C.g_seekable_can_truncate(_arg0)
 
@@ -150,11 +150,11 @@ func (s *SeekableInterface) CanTruncate() bool {
 }
 
 // Tell tells the current position within the stream.
-func (s *SeekableInterface) Tell() int64 {
+func (seekable *SeekableIface) Tell() int64 {
 	var _arg0 *C.GSeekable // out
 	var _cret C.goffset    // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 
 	_cret = C.g_seekable_tell(_arg0)
 
@@ -174,13 +174,13 @@ func (s *SeekableInterface) Tell() int64 {
 // the error G_IO_ERROR_CANCELLED will be returned. If an operation was
 // partially finished when the operation was cancelled the partial result will
 // be returned, without an error.
-func (s *SeekableInterface) Truncate(offset int64, cancellable Cancellable) error {
+func (seekable *SeekableIface) Truncate(offset int64, cancellable Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
 	var _arg2 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 	_arg1 = C.goffset(offset)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 

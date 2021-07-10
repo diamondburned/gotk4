@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/box"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -118,50 +117,15 @@ func (s *StockItem) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// StockID: identifier.
-func (s *StockItem) StockID() string {
-	var v string // out
-	v = C.GoString(s.native.stock_id)
-	return v
-}
-
-// Label: user visible label.
-func (s *StockItem) Label() string {
-	var v string // out
-	v = C.GoString(s.native.label)
-	return v
-}
-
-// Modifier type for keyboard accelerator
-func (s *StockItem) Modifier() gdk.ModifierType {
-	var v gdk.ModifierType // out
-	v = (gdk.ModifierType)(s.native.modifier)
-	return v
-}
-
-// Keyval: keyboard accelerator
-func (s *StockItem) Keyval() uint {
-	var v uint // out
-	v = uint(s.native.keyval)
-	return v
-}
-
-// TranslationDomain: translation domain of the menu or toolbar item
-func (s *StockItem) TranslationDomain() string {
-	var v string // out
-	v = C.GoString(s.native.translation_domain)
-	return v
-}
-
 // Free frees a stock item allocated on the heap, such as one returned by
 // gtk_stock_item_copy(). Also frees the fields inside the stock item, if they
 // are not nil.
 //
 // Deprecated: since version 3.10.
-func (i *StockItem) free() {
+func (item *StockItem) free() {
 	var _arg0 *C.GtkStockItem // out
 
-	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(i))
+	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(item))
 
 	C.gtk_stock_item_free(_arg0)
 }

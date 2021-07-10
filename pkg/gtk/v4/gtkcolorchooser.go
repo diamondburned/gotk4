@@ -58,15 +58,15 @@ type ColorChooser interface {
 	SetUseAlpha(useAlpha bool)
 }
 
-// ColorChooserInterface implements the ColorChooser interface.
-type ColorChooserInterface struct {
+// ColorChooserIface implements the ColorChooser interface.
+type ColorChooserIface struct {
 	*externglib.Object
 }
 
-var _ ColorChooser = (*ColorChooserInterface)(nil)
+var _ ColorChooser = (*ColorChooserIface)(nil)
 
 func wrapColorChooser(obj *externglib.Object) ColorChooser {
-	return &ColorChooserInterface{
+	return &ColorChooserIface{
 		Object: obj,
 	}
 }
@@ -78,11 +78,11 @@ func marshalColorChooser(p uintptr) (interface{}, error) {
 }
 
 // RGBA gets the currently-selected color.
-func (c *ColorChooserInterface) RGBA() gdk.RGBA {
+func (chooser *ColorChooserIface) RGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GdkRGBA          // in
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
 
 	C.gtk_color_chooser_get_rgba(_arg0, &_arg1)
 
@@ -94,11 +94,11 @@ func (c *ColorChooserInterface) RGBA() gdk.RGBA {
 }
 
 // UseAlpha returns whether the color chooser shows the alpha channel.
-func (c *ColorChooserInterface) UseAlpha() bool {
+func (chooser *ColorChooserIface) UseAlpha() bool {
 	var _arg0 *C.GtkColorChooser // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_color_chooser_get_use_alpha(_arg0)
 
@@ -112,11 +112,11 @@ func (c *ColorChooserInterface) UseAlpha() bool {
 }
 
 // SetRGBA sets the color.
-func (c *ColorChooserInterface) SetRGBA(color *gdk.RGBA) {
+func (chooser *ColorChooserIface) SetRGBA(color *gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 *C.GdkRGBA         // out
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color))
 
 	C.gtk_color_chooser_set_rgba(_arg0, _arg1)
@@ -124,11 +124,11 @@ func (c *ColorChooserInterface) SetRGBA(color *gdk.RGBA) {
 
 // SetUseAlpha sets whether or not the color chooser should use the alpha
 // channel.
-func (c *ColorChooserInterface) SetUseAlpha(useAlpha bool) {
+func (chooser *ColorChooserIface) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
 	if useAlpha {
 		_arg1 = C.TRUE
 	}

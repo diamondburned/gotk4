@@ -111,7 +111,8 @@ type PlacesSidebar interface {
 	// ShowConnectToServer returns the value previously set with
 	// gtk_places_sidebar_set_show_connect_to_server()
 	//
-	// Deprecated: since version 3.18.
+	// Deprecated: It is recommended to group this functionality with the drives
+	// and network location under the new 'Other Location' item.
 	ShowConnectToServer() bool
 	// ShowDesktop returns the value previously set with
 	// gtk_places_sidebar_set_show_desktop()
@@ -152,7 +153,8 @@ type PlacesSidebar interface {
 	// If you enable this, you should connect to the
 	// PlacesSidebar::show-connect-to-server signal.
 	//
-	// Deprecated: since version 3.18.
+	// Deprecated: It is recommended to group this functionality with the drives
+	// and network location under the new 'Other Location' item.
 	SetShowConnectToServer(showConnectToServer bool)
 	// SetShowDesktop sets whether the @sidebar should show an item for the
 	// Desktop folder. The default value for this option is determined by the
@@ -193,7 +195,7 @@ type PlacesSidebar interface {
 type PlacesSidebarClass struct {
 	*externglib.Object
 	ScrolledWindowClass
-	BuildableInterface
+	BuildableIface
 }
 
 var _ PlacesSidebar = (*PlacesSidebarClass)(nil)
@@ -208,24 +210,27 @@ func wrapPlacesSidebar(obj *externglib.Object) PlacesSidebar {
 				ContainerClass: ContainerClass{
 					Object: obj,
 					WidgetClass: WidgetClass{
-						InitiallyUnowned: externglib.InitiallyUnowned{Object: obj},
-						BuildableInterface: BuildableInterface{
+						Object: obj,
+						InitiallyUnowned: externglib.InitiallyUnowned{
+							Object: obj,
+						},
+						BuildableIface: BuildableIface{
 							Object: obj,
 						},
 					},
-					BuildableInterface: BuildableInterface{
+					BuildableIface: BuildableIface{
 						Object: obj,
 					},
 				},
-				BuildableInterface: BuildableInterface{
+				BuildableIface: BuildableIface{
 					Object: obj,
 				},
 			},
-			BuildableInterface: BuildableInterface{
+			BuildableIface: BuildableIface{
 				Object: obj,
 			},
 		},
-		BuildableInterface: BuildableInterface{
+		BuildableIface: BuildableIface{
 			Object: obj,
 		},
 	}
@@ -255,11 +260,11 @@ func NewPlacesSidebar() *PlacesSidebarClass {
 
 // LocalOnly returns the value previously set with
 // gtk_places_sidebar_set_local_only().
-func (s *PlacesSidebarClass) LocalOnly() bool {
+func (sidebar *PlacesSidebarClass) LocalOnly() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_local_only(_arg0)
 
@@ -273,11 +278,11 @@ func (s *PlacesSidebarClass) LocalOnly() bool {
 }
 
 // OpenFlags gets the open flags.
-func (s *PlacesSidebarClass) OpenFlags() PlacesOpenFlags {
+func (sidebar *PlacesSidebarClass) OpenFlags() PlacesOpenFlags {
 	var _arg0 *C.GtkPlacesSidebar  // out
 	var _cret C.GtkPlacesOpenFlags // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_open_flags(_arg0)
 
@@ -291,12 +296,13 @@ func (s *PlacesSidebarClass) OpenFlags() PlacesOpenFlags {
 // ShowConnectToServer returns the value previously set with
 // gtk_places_sidebar_set_show_connect_to_server()
 //
-// Deprecated: since version 3.18.
-func (s *PlacesSidebarClass) ShowConnectToServer() bool {
+// Deprecated: It is recommended to group this functionality with the drives and
+// network location under the new 'Other Location' item.
+func (sidebar *PlacesSidebarClass) ShowConnectToServer() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_connect_to_server(_arg0)
 
@@ -311,11 +317,11 @@ func (s *PlacesSidebarClass) ShowConnectToServer() bool {
 
 // ShowDesktop returns the value previously set with
 // gtk_places_sidebar_set_show_desktop()
-func (s *PlacesSidebarClass) ShowDesktop() bool {
+func (sidebar *PlacesSidebarClass) ShowDesktop() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_desktop(_arg0)
 
@@ -330,11 +336,11 @@ func (s *PlacesSidebarClass) ShowDesktop() bool {
 
 // ShowEnterLocation returns the value previously set with
 // gtk_places_sidebar_set_show_enter_location()
-func (s *PlacesSidebarClass) ShowEnterLocation() bool {
+func (sidebar *PlacesSidebarClass) ShowEnterLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_enter_location(_arg0)
 
@@ -349,11 +355,11 @@ func (s *PlacesSidebarClass) ShowEnterLocation() bool {
 
 // ShowOtherLocations returns the value previously set with
 // gtk_places_sidebar_set_show_other_locations()
-func (s *PlacesSidebarClass) ShowOtherLocations() bool {
+func (sidebar *PlacesSidebarClass) ShowOtherLocations() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_other_locations(_arg0)
 
@@ -368,11 +374,11 @@ func (s *PlacesSidebarClass) ShowOtherLocations() bool {
 
 // ShowRecent returns the value previously set with
 // gtk_places_sidebar_set_show_recent()
-func (s *PlacesSidebarClass) ShowRecent() bool {
+func (sidebar *PlacesSidebarClass) ShowRecent() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_recent(_arg0)
 
@@ -387,11 +393,11 @@ func (s *PlacesSidebarClass) ShowRecent() bool {
 
 // ShowStarredLocation returns the value previously set with
 // gtk_places_sidebar_set_show_starred_location()
-func (s *PlacesSidebarClass) ShowStarredLocation() bool {
+func (sidebar *PlacesSidebarClass) ShowStarredLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_starred_location(_arg0)
 
@@ -406,11 +412,11 @@ func (s *PlacesSidebarClass) ShowStarredLocation() bool {
 
 // ShowTrash returns the value previously set with
 // gtk_places_sidebar_set_show_trash()
-func (s *PlacesSidebarClass) ShowTrash() bool {
+func (sidebar *PlacesSidebarClass) ShowTrash() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_trash(_arg0)
 
@@ -432,12 +438,12 @@ func (s *PlacesSidebarClass) ShowTrash() bool {
 // might target the sidebar. The drop-targets-visible state will be unset
 // automatically if the drag finishes in the GtkPlacesSidebar. You only need to
 // unset the state when the drag ends on some other widget on your application.
-func (s *PlacesSidebarClass) SetDropTargetsVisible(visible bool, context gdk.DragContext) {
+func (sidebar *PlacesSidebarClass) SetDropTargetsVisible(visible bool, context gdk.DragContext) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 	var _arg2 *C.GdkDragContext   // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
@@ -447,11 +453,11 @@ func (s *PlacesSidebarClass) SetDropTargetsVisible(visible bool, context gdk.Dra
 }
 
 // SetLocalOnly sets whether the @sidebar should only show local files.
-func (s *PlacesSidebarClass) SetLocalOnly(localOnly bool) {
+func (sidebar *PlacesSidebarClass) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 	if localOnly {
 		_arg1 = C.TRUE
 	}
@@ -467,12 +473,13 @@ func (s *PlacesSidebarClass) SetLocalOnly(localOnly bool) {
 // If you enable this, you should connect to the
 // PlacesSidebar::show-connect-to-server signal.
 //
-// Deprecated: since version 3.18.
-func (s *PlacesSidebarClass) SetShowConnectToServer(showConnectToServer bool) {
+// Deprecated: It is recommended to group this functionality with the drives and
+// network location under the new 'Other Location' item.
+func (sidebar *PlacesSidebarClass) SetShowConnectToServer(showConnectToServer bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 	if showConnectToServer {
 		_arg1 = C.TRUE
 	}
@@ -484,11 +491,11 @@ func (s *PlacesSidebarClass) SetShowConnectToServer(showConnectToServer bool) {
 // folder. The default value for this option is determined by the desktop
 // environment and the user’s configuration, but this function can be used to
 // override it on a per-application basis.
-func (s *PlacesSidebarClass) SetShowDesktop(showDesktop bool) {
+func (sidebar *PlacesSidebarClass) SetShowDesktop(showDesktop bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 	if showDesktop {
 		_arg1 = C.TRUE
 	}
@@ -502,11 +509,11 @@ func (s *PlacesSidebarClass) SetShowDesktop(showDesktop bool) {
 //
 // If you enable this, you should connect to the
 // PlacesSidebar::show-enter-location signal.
-func (s *PlacesSidebarClass) SetShowEnterLocation(showEnterLocation bool) {
+func (sidebar *PlacesSidebarClass) SetShowEnterLocation(showEnterLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 	if showEnterLocation {
 		_arg1 = C.TRUE
 	}
@@ -523,11 +530,11 @@ func (s *PlacesSidebarClass) SetShowEnterLocation(showEnterLocation bool) {
 //
 // If you enable this, you should connect to the
 // PlacesSidebar::show-other-locations signal.
-func (s *PlacesSidebarClass) SetShowOtherLocations(showOtherLocations bool) {
+func (sidebar *PlacesSidebarClass) SetShowOtherLocations(showOtherLocations bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 	if showOtherLocations {
 		_arg1 = C.TRUE
 	}
@@ -538,11 +545,11 @@ func (s *PlacesSidebarClass) SetShowOtherLocations(showOtherLocations bool) {
 // SetShowRecent sets whether the @sidebar should show an item for recent files.
 // The default value for this option is determined by the desktop environment,
 // but this function can be used to override it on a per-application basis.
-func (s *PlacesSidebarClass) SetShowRecent(showRecent bool) {
+func (sidebar *PlacesSidebarClass) SetShowRecent(showRecent bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 	if showRecent {
 		_arg1 = C.TRUE
 	}
@@ -552,11 +559,11 @@ func (s *PlacesSidebarClass) SetShowRecent(showRecent bool) {
 
 // SetShowStarredLocation: if you enable this, you should connect to the
 // PlacesSidebar::show-starred-location signal.
-func (s *PlacesSidebarClass) SetShowStarredLocation(showStarredLocation bool) {
+func (sidebar *PlacesSidebarClass) SetShowStarredLocation(showStarredLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 	if showStarredLocation {
 		_arg1 = C.TRUE
 	}
@@ -566,11 +573,11 @@ func (s *PlacesSidebarClass) SetShowStarredLocation(showStarredLocation bool) {
 
 // SetShowTrash sets whether the @sidebar should show an item for the Trash
 // location.
-func (s *PlacesSidebarClass) SetShowTrash(showTrash bool) {
+func (sidebar *PlacesSidebarClass) SetShowTrash(showTrash bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 	if showTrash {
 		_arg1 = C.TRUE
 	}

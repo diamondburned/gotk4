@@ -41,12 +41,12 @@ func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer
 
 	scale = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Scale)
 	value = float64(arg1)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ScaleFormatValueFunc)
 	utf8 := fn(scale, value, userData)
 
-	cret = (*C.char)(C.CString(utf8))
+	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }

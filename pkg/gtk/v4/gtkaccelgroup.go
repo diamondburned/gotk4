@@ -50,7 +50,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 	var _arg3 C.GdkModifierType // in
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.char)(C.CString(accelerator))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_accelerator_parse(_arg1, &_arg2, &_arg3)
@@ -90,7 +90,7 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Displayyer) (ui
 	var _arg5 C.GdkModifierType // in
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.char)(C.CString(accelerator))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
 

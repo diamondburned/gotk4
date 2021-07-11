@@ -111,7 +111,7 @@ func (streamable *StreamableContent) MIMEType(i int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -139,7 +139,7 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _cret *C.GIOChannel           // in
 
 	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
-	_arg1 = (*C.gchar)(C.CString(mimeType))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_streamable_content_get_stream(_arg0, _arg1)
@@ -168,14 +168,14 @@ func (streamable *StreamableContent) URI(mimeType string) string {
 	var _cret *C.gchar                // in
 
 	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
-	_arg1 = (*C.gchar)(C.CString(mimeType))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_streamable_content_get_uri(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

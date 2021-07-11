@@ -209,7 +209,7 @@ func (window *X11Window) SetThemeVariant(variant string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.char)(C.CString(variant))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variant)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_window_set_theme_variant(_arg0, _arg1)
@@ -244,9 +244,9 @@ func (window *X11Window) SetUTF8Property(name string, value string) {
 	var _arg2 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(value))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gdk_x11_window_set_utf8_property(_arg0, _arg1, _arg2)

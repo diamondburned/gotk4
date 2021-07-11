@@ -219,7 +219,7 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) externglib.Value
 	var _arg2 C.GValue            // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
-	_arg1 = (*C.gchar)(C.CString(propertyName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_theming_engine_get_style_property(_arg0, _arg1, &_arg2)
@@ -241,7 +241,7 @@ func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
-	_arg1 = (*C.gchar)(C.CString(styleClass))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(styleClass)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_has_class(_arg0, _arg1)
@@ -267,7 +267,7 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
-	_arg1 = (*C.gchar)(C.CString(styleRegion))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(styleRegion)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_has_region(_arg0, _arg1, &_arg2)
@@ -294,7 +294,7 @@ func (engine *ThemingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
-	_arg1 = (*C.gchar)(C.CString(colorName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))

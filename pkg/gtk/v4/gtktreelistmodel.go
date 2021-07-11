@@ -46,7 +46,7 @@ func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret 
 	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TreeListModelCreateModelFunc)
 	listModel := fn(item, userData)

@@ -81,7 +81,7 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -94,7 +94,7 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(C.CString(global))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(global)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
@@ -115,7 +115,7 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(size)
 
@@ -136,7 +136,7 @@ func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
 	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(C.CString(startupId))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_wayland_display_set_startup_notification_id(_arg0, _arg1)

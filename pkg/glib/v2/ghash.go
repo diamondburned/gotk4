@@ -41,9 +41,9 @@ func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cret C.gbo
 	var value cgo.Handle    // out
 	var userData cgo.Handle // out
 
-	key = (cgo.Handle)(arg0)
-	value = (cgo.Handle)(arg1)
-	userData = (cgo.Handle)(arg2)
+	key = (cgo.Handle)(unsafe.Pointer(arg0))
+	value = (cgo.Handle)(unsafe.Pointer(arg1))
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(HRFunc)
 	ok := fn(key, value, userData)
@@ -67,8 +67,8 @@ func DirectEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (C.gconstpointer)(v1)
-	_arg2 = (C.gconstpointer)(v2)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v1))
+	_arg2 = (C.gconstpointer)(unsafe.Pointer(v2))
 
 	_cret = C.g_direct_equal(_arg1, _arg2)
 
@@ -91,7 +91,7 @@ func DirectHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = (C.gconstpointer)(v)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
 
 	_cret = C.g_direct_hash(_arg1)
 
@@ -111,8 +111,8 @@ func DoubleEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (C.gconstpointer)(v1)
-	_arg2 = (C.gconstpointer)(v2)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v1))
+	_arg2 = (C.gconstpointer)(unsafe.Pointer(v2))
 
 	_cret = C.g_double_equal(_arg1, _arg2)
 
@@ -133,7 +133,7 @@ func DoubleHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = (C.gconstpointer)(v)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
 
 	_cret = C.g_double_hash(_arg1)
 
@@ -153,8 +153,8 @@ func Int64Equal(v1 cgo.Handle, v2 cgo.Handle) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (C.gconstpointer)(v1)
-	_arg2 = (C.gconstpointer)(v2)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v1))
+	_arg2 = (C.gconstpointer)(unsafe.Pointer(v2))
 
 	_cret = C.g_int64_equal(_arg1, _arg2)
 
@@ -175,7 +175,7 @@ func Int64Hash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = (C.gconstpointer)(v)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
 
 	_cret = C.g_int64_hash(_arg1)
 
@@ -198,8 +198,8 @@ func IntEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (C.gconstpointer)(v1)
-	_arg2 = (C.gconstpointer)(v2)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v1))
+	_arg2 = (C.gconstpointer)(unsafe.Pointer(v2))
 
 	_cret = C.g_int_equal(_arg1, _arg2)
 
@@ -223,7 +223,7 @@ func IntHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = (C.gconstpointer)(v)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
 
 	_cret = C.g_int_hash(_arg1)
 
@@ -246,8 +246,8 @@ func StrEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (C.gconstpointer)(v1)
-	_arg2 = (C.gconstpointer)(v2)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v1))
+	_arg2 = (C.gconstpointer)(unsafe.Pointer(v2))
 
 	_cret = C.g_str_equal(_arg1, _arg2)
 
@@ -276,7 +276,7 @@ func StrHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg1 = (C.gconstpointer)(v)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
 
 	_cret = C.g_str_hash(_arg1)
 
@@ -361,8 +361,8 @@ func (iter *HashTableIter) Next() (key cgo.Handle, value cgo.Handle, ok bool) {
 	var _value cgo.Handle // out
 	var _ok bool          // out
 
-	_key = (cgo.Handle)(_arg1)
-	_value = (cgo.Handle)(_arg2)
+	_key = (cgo.Handle)(unsafe.Pointer(_arg1))
+	_value = (cgo.Handle)(unsafe.Pointer(_arg2))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -405,7 +405,7 @@ func (iter *HashTableIter) Replace(value cgo.Handle) {
 	var _arg1 C.gpointer        // out
 
 	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
-	_arg1 = (C.gpointer)(value)
+	_arg1 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_hash_table_iter_replace(_arg0, _arg1)
 }

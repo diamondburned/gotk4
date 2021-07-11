@@ -129,7 +129,7 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection DBusConnectioner, obj
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(objectPath))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_dbus_interface_skeleton_export(_arg0, _arg1, _arg2, &_cerr)
@@ -221,7 +221,7 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

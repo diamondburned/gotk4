@@ -54,7 +54,7 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 
 	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
 	frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*gdk.FrameClock)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock, userData)
@@ -832,7 +832,7 @@ func (widget *Widget) ActionSetEnabled(actionName string, enabled bool) {
 	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(actionName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if enabled {
 		_arg2 = C.TRUE
@@ -888,7 +888,7 @@ func (widget *Widget) ActivateActionVariant(name string, args *glib.Variant) boo
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(args))
 
@@ -937,7 +937,7 @@ func (widget *Widget) AddCSSClass(cssClass string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(cssClass))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(cssClass)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_add_css_class(_arg0, _arg1)
@@ -1123,7 +1123,7 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	var _cret *C.PangoLayout // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(text))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
@@ -1363,7 +1363,7 @@ func (widget *Widget) CSSClasses() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -1382,7 +1382,7 @@ func (self *Widget) CSSName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1843,7 +1843,7 @@ func (widget *Widget) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -2260,7 +2260,7 @@ func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *ex
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GType(widgetType)
-	_arg2 = (*C.char)(C.CString(name))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
@@ -2286,7 +2286,7 @@ func (widget *Widget) TooltipMarkup() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -2306,7 +2306,7 @@ func (widget *Widget) TooltipText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -2448,7 +2448,7 @@ func (widget *Widget) HasCSSClass(cssClass string) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(cssClass))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(cssClass)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_has_css_class(_arg0, _arg1)
@@ -2606,7 +2606,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 	var _arg2 *C.GActionGroup // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 
@@ -2945,7 +2945,7 @@ func (widget *Widget) RemoveCSSClass(cssClass string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(cssClass))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(cssClass)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_remove_css_class(_arg0, _arg1)
@@ -3054,7 +3054,7 @@ func (widget *Widget) SetCSSClasses(classes []string) {
 	{
 		out := unsafe.Slice(_arg1, len(classes))
 		for i := range classes {
-			out[i] = (*C.char)(C.CString(classes[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(classes[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -3091,7 +3091,7 @@ func (widget *Widget) SetCursorFromName(name string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_cursor_from_name(_arg0, _arg1)
@@ -3332,7 +3332,7 @@ func (widget *Widget) SetName(name string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_name(_arg0, _arg1)
@@ -3470,7 +3470,7 @@ func (widget *Widget) SetTooltipMarkup(markup string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(markup))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_markup(_arg0, _arg1)
@@ -3490,7 +3490,7 @@ func (widget *Widget) SetTooltipText(text string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(C.CString(text))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_text(_arg0, _arg1)

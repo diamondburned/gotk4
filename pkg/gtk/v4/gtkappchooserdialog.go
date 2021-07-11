@@ -138,7 +138,7 @@ func (self *AppChooserDialog) Heading() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -167,7 +167,7 @@ func (self *AppChooserDialog) SetHeading(heading string) {
 	var _arg1 *C.char                // out
 
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(heading))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(heading)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)

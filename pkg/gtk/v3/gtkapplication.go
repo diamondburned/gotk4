@@ -236,9 +236,9 @@ func (application *Application) AddAccelerator(accelerator string, actionName st
 	var _arg3 *C.GVariant       // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(accelerator))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(actionName))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GVariant)(unsafe.Pointer(parameter))
 
@@ -277,7 +277,7 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 	var _cret **C.gchar
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(detailedActionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedActionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
@@ -294,7 +294,7 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -322,7 +322,7 @@ func (application *Application) ActionsForAccel(accel string) []string {
 	var _cret **C.gchar
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(accel))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accel)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
@@ -339,7 +339,7 @@ func (application *Application) ActionsForAccel(accel string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -445,7 +445,7 @@ func (application *Application) ListActionDescriptions() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -510,7 +510,7 @@ func (application *Application) RemoveAccelerator(actionName string, parameter *
 	var _arg2 *C.GVariant       // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
 
@@ -548,14 +548,14 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 	var _arg2 **C.gchar
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(detailedActionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedActionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(accels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice(_arg2, len(accels))
 		for i := range accels {
-			out[i] = (*C.gchar)(C.CString(accels[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(accels[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}

@@ -301,7 +301,7 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) *Widget {
 	var _cret *C.GtkWidget   // in
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
-	_arg1 = (*C.gchar)(C.CString(menuItemId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_tool_item_get_proxy_menu_item(_arg0, _arg1)
@@ -559,7 +559,7 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 	var _arg2 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
-	_arg1 = (*C.gchar)(C.CString(menuItemId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((menuItem).(gextras.Nativer).Native()))
 
@@ -573,7 +573,7 @@ func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
-	_arg1 = (*C.gchar)(C.CString(markup))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_item_set_tooltip_markup(_arg0, _arg1)
@@ -586,7 +586,7 @@ func (toolItem *ToolItem) SetTooltipText(text string) {
 	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_item_set_tooltip_text(_arg0, _arg1)

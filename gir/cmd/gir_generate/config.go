@@ -41,6 +41,7 @@ var preprocessors = []Preprocessor{
 	// CellRendererSpinner (generated interface) collides with an actual
 	// CellRendererSpinner class.
 	TypeRenamer("Gtk-3.CellRendererSpin", "CellRendererSpinButton"),
+	TypeRenamer("Gtk-4.CellRendererSpin", "CellRendererSpinButton"),
 	// This collides with Native().
 	TypeRenamer("Gtk-4.Native", "NativeSurface"),
 

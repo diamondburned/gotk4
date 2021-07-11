@@ -45,7 +45,7 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 
 	fontset = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Fontset)
 	font = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*Font)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FontsetForeachFunc)
 	ok := fn(fontset, font, userData)

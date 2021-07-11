@@ -480,7 +480,7 @@ func SettingGet(name string, value *externglib.Value) bool {
 	var _arg2 *C.GValue  // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 

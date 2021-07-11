@@ -123,7 +123,7 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 
 	buf = make([]byte, arg1)
 	copy(buf, unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1))
-	data = (cgo.Handle)(arg3)
+	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(PixbufSaveFunc)
 	err, ok := fn(buf, data)

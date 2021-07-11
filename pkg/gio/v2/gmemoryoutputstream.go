@@ -120,7 +120,7 @@ func (ostream *MemoryOutputStream) Data() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -186,7 +186,7 @@ func (ostream *MemoryOutputStream) StealData() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }

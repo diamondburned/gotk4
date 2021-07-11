@@ -143,9 +143,9 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	var _cret *C.GIOChannel // in
 	var _cerr *C.GError     // in
 
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(mode))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(mode)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_io_channel_new_file(_arg1, _arg2, &_cerr)
@@ -306,7 +306,7 @@ func (channel *IOChannel) Encoding() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -348,7 +348,7 @@ func (channel *IOChannel) LineTerm(length *int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -377,7 +377,7 @@ func (channel *IOChannel) Read(buf string, count uint, bytesRead *uint) IOError 
 	var _cret C.GIOError    // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
-	_arg1 = (*C.gchar)(C.CString(buf))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buf)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(count)
 	_arg3 = (*C.gsize)(unsafe.Pointer(bytesRead))
@@ -412,7 +412,7 @@ func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorP
 	var _ioStatus IOStatus  // out
 	var _goerr error        // out
 
-	_strReturn = C.GoString((*C.gchar)(_arg1))
+	_strReturn = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_length = uint(_arg2)
 	_terminatorPos = uint(_arg3)
@@ -587,7 +587,7 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
-	_arg1 = (*C.gchar)(C.CString(encoding))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(encoding)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_io_channel_set_encoding(_arg0, _arg1, &_cerr)
@@ -609,7 +609,7 @@ func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
-	_arg1 = (*C.gchar)(C.CString(lineTerm))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(lineTerm)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 
@@ -680,7 +680,7 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 	var _cret C.GIOError    // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
-	_arg1 = (*C.gchar)(C.CString(buf))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buf)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(count)
 	_arg3 = (*C.gsize)(unsafe.Pointer(bytesWritten))

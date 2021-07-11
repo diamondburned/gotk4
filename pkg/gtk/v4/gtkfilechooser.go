@@ -209,16 +209,16 @@ func (chooser *FileChooser) AddChoice(id string, label string, options []string,
 	var _arg4 **C.char
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.char)(C.CString(id))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(label))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (**C.char)(C.malloc(C.ulong(len(options)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice(_arg3, len(options))
 		for i := range options {
-			out[i] = (*C.char)(C.CString(options[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(options[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -227,7 +227,7 @@ func (chooser *FileChooser) AddChoice(id string, label string, options []string,
 	{
 		out := unsafe.Slice(_arg4, len(optionLabels))
 		for i := range optionLabels {
-			out[i] = (*C.char)(C.CString(optionLabels[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(optionLabels[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -295,14 +295,14 @@ func (chooser *FileChooser) Choice(id string) string {
 	var _cret *C.char           // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.char)(C.CString(id))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_get_choice(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -356,7 +356,7 @@ func (chooser *FileChooser) CurrentName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -483,7 +483,7 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.char)(C.CString(id))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_remove_choice(_arg0, _arg1)
@@ -530,9 +530,9 @@ func (chooser *FileChooser) SetChoice(id string, option string) {
 	var _arg2 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.char)(C.CString(id))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(option))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(option)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_file_chooser_set_choice(_arg0, _arg1, _arg2)
@@ -590,7 +590,7 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_set_current_name(_arg0, _arg1)

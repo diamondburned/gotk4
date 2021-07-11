@@ -93,7 +93,7 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	var _arg1 *C.gchar               // out
 	var _cret *C.GDBusObjectSkeleton // in
 
-	_arg1 = (*C.gchar)(C.CString(objectPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_skeleton_new(_arg1)
@@ -153,7 +153,7 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.gchar)(C.CString(interfaceName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_object_skeleton_remove_interface_by_name(_arg0, _arg1)
@@ -165,7 +165,7 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.gchar)(C.CString(objectPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_object_skeleton_set_object_path(_arg0, _arg1)

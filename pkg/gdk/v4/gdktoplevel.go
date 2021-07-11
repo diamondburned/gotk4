@@ -400,7 +400,7 @@ func (toplevel *Toplevel) SetStartupID(startupId string) {
 	var _arg1 *C.char        // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.char)(C.CString(startupId))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_toplevel_set_startup_id(_arg0, _arg1)
@@ -414,7 +414,7 @@ func (toplevel *Toplevel) SetTitle(title string) {
 	var _arg1 *C.char        // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.char)(C.CString(title))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_toplevel_set_title(_arg0, _arg1)

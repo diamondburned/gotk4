@@ -46,7 +46,7 @@ func gotk4_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 
 	var userData cgo.Handle // out
 
-	userData = (cgo.Handle)(arg0)
+	userData = (cgo.Handle)(unsafe.Pointer(arg0))
 
 	fn := v.(SourceFunc)
 	ok := fn(userData)
@@ -117,7 +117,7 @@ func IdleRemoveByData(data cgo.Handle) bool {
 	var _arg1 C.gpointer // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gpointer)(data)
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_idle_remove_by_data(_arg1)
 
@@ -420,7 +420,7 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
 	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(funcs))
-	_arg2 = (C.gpointer)(userData)
+	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_main_context_find_source_by_funcs_user_data(_arg0, _arg1, _arg2)
 
@@ -476,7 +476,7 @@ func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 	var _cret *C.GSource      // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
-	_arg1 = (C.gpointer)(userData)
+	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_main_context_find_source_by_user_data(_arg0, _arg1)
 
@@ -1064,7 +1064,7 @@ func (source *Source) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1186,7 +1186,7 @@ func (source *Source) QueryUnixFd(tag cgo.Handle) IOCondition {
 	var _cret C.GIOCondition // in
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (C.gpointer)(tag)
+	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
 
 	_cret = C.g_source_query_unix_fd(_arg0, _arg1)
 
@@ -1262,7 +1262,7 @@ func (source *Source) RemoveUnixFd(tag cgo.Handle) {
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (C.gpointer)(tag)
+	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
 
 	C.g_source_remove_unix_fd(_arg0, _arg1)
 }
@@ -1282,7 +1282,7 @@ func (source *Source) SetCallbackIndirect(callbackData cgo.Handle, callbackFuncs
 	var _arg2 *C.GSourceCallbackFuncs // out
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (C.gpointer)(callbackData)
+	_arg1 = (C.gpointer)(unsafe.Pointer(callbackData))
 	_arg2 = (*C.GSourceCallbackFuncs)(unsafe.Pointer(callbackFuncs))
 
 	C.g_source_set_callback_indirect(_arg0, _arg1, _arg2)
@@ -1336,7 +1336,7 @@ func (source *Source) SetName(name string) {
 	var _arg1 *C.char    // out
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_source_set_name(_arg0, _arg1)

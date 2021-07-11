@@ -364,7 +364,7 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -396,14 +396,14 @@ func (drive *Drive) Identifier(kind string) string {
 	var _cret *C.char   // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.char)(C.CString(kind))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(kind)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_drive_get_identifier(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -420,7 +420,7 @@ func (drive *Drive) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -437,7 +437,7 @@ func (drive *Drive) SortKey() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

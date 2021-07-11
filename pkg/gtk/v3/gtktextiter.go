@@ -69,7 +69,7 @@ func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gboolean)
 	var userData cgo.Handle // out
 
 	ch = uint32(arg0)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TextCharPredicate)
 	ok := fn(ch, userData)
@@ -1453,7 +1453,7 @@ func (start *TextIter) Slice(end *TextIter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1475,7 +1475,7 @@ func (start *TextIter) Text(end *TextIter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1532,7 +1532,7 @@ func (start *TextIter) VisibleSlice(end *TextIter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1553,7 +1553,7 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

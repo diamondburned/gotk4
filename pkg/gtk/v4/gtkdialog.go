@@ -329,7 +329,7 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) *Widget {
 	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.char)(C.CString(buttonText))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(buttonText)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(responseId)
 

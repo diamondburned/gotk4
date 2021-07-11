@@ -149,7 +149,7 @@ func NewExpander(label string) *Expander {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(label))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_expander_new(_arg1)
@@ -171,7 +171,7 @@ func NewExpanderWithMnemonic(label string) *Expander {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(label))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_expander_new_with_mnemonic(_arg1)
@@ -224,7 +224,7 @@ func (expander *Expander) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -364,7 +364,7 @@ func (expander *Expander) SetLabel(label string) {
 	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
-	_arg1 = (*C.gchar)(C.CString(label))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_expander_set_label(_arg0, _arg1)

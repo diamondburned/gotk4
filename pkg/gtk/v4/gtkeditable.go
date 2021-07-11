@@ -338,7 +338,7 @@ func (editable *Editable) Chars(startPos int, endPos int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -478,7 +478,7 @@ func (editable *Editable) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -616,7 +616,7 @@ func (editable *Editable) SetText(text string) {
 	var _arg1 *C.char        // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
-	_arg1 = (*C.char)(C.CString(text))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_editable_set_text(_arg0, _arg1)

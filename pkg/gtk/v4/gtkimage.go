@@ -190,7 +190,7 @@ func NewImageFromFile(filename string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_file(_arg1)
@@ -233,7 +233,7 @@ func NewImageFromIconName(iconName string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.char)(C.CString(iconName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_icon_name(_arg1)
@@ -313,7 +313,7 @@ func NewImageFromResource(resourcePath string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.char)(C.CString(resourcePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_resource(_arg1)
@@ -369,7 +369,7 @@ func (image *Image) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -454,7 +454,7 @@ func (image *Image) SetFromFile(filename string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_file(_arg0, _arg1)
@@ -481,7 +481,7 @@ func (image *Image) SetFromIconName(iconName string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.char)(C.CString(iconName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_icon_name(_arg0, _arg1)
@@ -524,7 +524,7 @@ func (image *Image) SetFromResource(resourcePath string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.char)(C.CString(resourcePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_resource(_arg0, _arg1)

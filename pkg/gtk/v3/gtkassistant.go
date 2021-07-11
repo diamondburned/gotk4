@@ -84,7 +84,7 @@ func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) (cret C.gint) {
 	var data cgo.Handle // out
 
 	currentPage = int(arg0)
-	data = (cgo.Handle)(arg1)
+	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(AssistantPageFunc)
 	gint := fn(currentPage, data)
@@ -430,7 +430,7 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -635,7 +635,7 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((page).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(title))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)

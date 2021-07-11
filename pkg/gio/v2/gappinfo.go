@@ -251,7 +251,7 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	_arg1 = (*C.char)(C.CString(contentType))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_add_supports_type(_arg0, _arg1, &_cerr)
@@ -374,7 +374,7 @@ func (appinfo *AppInfo) Commandline() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -390,7 +390,7 @@ func (appinfo *AppInfo) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -407,7 +407,7 @@ func (appinfo *AppInfo) DisplayName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -423,7 +423,7 @@ func (appinfo *AppInfo) Executable() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -460,7 +460,7 @@ func (appinfo *AppInfo) ID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -476,7 +476,7 @@ func (appinfo *AppInfo) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -506,7 +506,7 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -538,7 +538,7 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	_arg1 = (*C.char)(C.CString(contentType))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_remove_supports_type(_arg0, _arg1, &_cerr)
@@ -558,7 +558,7 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	_arg1 = (*C.char)(C.CString(extension))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(extension)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_default_for_extension(_arg0, _arg1, &_cerr)
@@ -578,7 +578,7 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	_arg1 = (*C.char)(C.CString(contentType))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_default_for_type(_arg0, _arg1, &_cerr)
@@ -600,7 +600,7 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	_arg1 = (*C.char)(C.CString(contentType))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_last_used_for_type(_arg0, _arg1, &_cerr)
@@ -760,7 +760,7 @@ func (context *AppLaunchContext) Environment() []string {
 		src := unsafe.Slice(_cret, i)
 		_filenames = make([]string, i)
 		for i := range src {
-			_filenames[i] = C.GoString((*C.gchar)(src[i]))
+			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -776,7 +776,7 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.char)(C.CString(startupNotifyId))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupNotifyId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_launch_context_launch_failed(_arg0, _arg1)
@@ -790,9 +790,9 @@ func (context *AppLaunchContext) Setenv(variable string, value string) {
 	var _arg2 *C.char              // out
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.char)(C.CString(variable))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(value))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_app_launch_context_setenv(_arg0, _arg1, _arg2)
@@ -805,7 +805,7 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.char)(C.CString(variable))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_launch_context_unsetenv(_arg0, _arg1)

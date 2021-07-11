@@ -363,7 +363,7 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 	var _arg1 *C.char               // out
 	var _cret *C.GtkShortcutTrigger // in
 
-	_arg1 = (*C.char)(C.CString(_string))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_trigger_parse_string(_arg1)
@@ -465,7 +465,7 @@ func (self *ShortcutTrigger) ToLabel(display gdk.Displayyer) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -485,7 +485,7 @@ func (self *ShortcutTrigger) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

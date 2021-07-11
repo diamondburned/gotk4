@@ -593,7 +593,7 @@ func UCS4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, ut
 
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -1384,7 +1384,7 @@ func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, u
 
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -1406,7 +1406,7 @@ func UTF8Casefold(str string, len int) string {
 	var _arg2 C.gssize // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
@@ -1414,7 +1414,7 @@ func UTF8Casefold(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1430,9 +1430,9 @@ func UTF8Collate(str1 string, str2 string) int {
 	var _arg2 *C.gchar // out
 	var _cret C.gint   // in
 
-	_arg1 = (*C.gchar)(C.CString(str1))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str1)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(str2))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(str2)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_utf8_collate(_arg1, _arg2)
@@ -1456,7 +1456,7 @@ func UTF8CollateKey(str string, len int) string {
 	var _arg2 C.gssize // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
@@ -1464,7 +1464,7 @@ func UTF8CollateKey(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1487,7 +1487,7 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 	var _arg2 C.gssize // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
@@ -1495,7 +1495,7 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1516,16 +1516,16 @@ func UTF8FindNextChar(p string, end string) string {
 	var _arg2 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(p))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(p)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(end))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(end)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_utf8_find_next_char(_arg1, _arg2)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1542,16 +1542,16 @@ func UTF8FindPrevChar(str string, p string) string {
 	var _arg2 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(p))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(p)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_utf8_find_prev_char(_arg1, _arg2)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1566,7 +1566,7 @@ func UTF8GetChar(p string) uint32 {
 	var _arg1 *C.gchar   // out
 	var _cret C.gunichar // in
 
-	_arg1 = (*C.gchar)(C.CString(p))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(p)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_utf8_get_char(_arg1)
@@ -1590,7 +1590,7 @@ func UTF8GetCharValidated(p string, maxLen int) uint32 {
 	var _arg2 C.gssize   // out
 	var _cret C.gunichar // in
 
-	_arg1 = (*C.gchar)(C.CString(p))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(p)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(maxLen)
 
@@ -1617,7 +1617,7 @@ func UTF8MakeValid(str string, len int) string {
 	var _arg2 C.gssize // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
@@ -1625,7 +1625,7 @@ func UTF8MakeValid(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1649,7 +1649,7 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 	var _arg2 C.glong  // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(offset)
 
@@ -1657,7 +1657,7 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1672,9 +1672,9 @@ func UTF8PointerToOffset(str string, pos string) int32 {
 	var _arg2 *C.gchar // out
 	var _cret C.glong  // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(pos))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(pos)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_utf8_pointer_to_offset(_arg1, _arg2)
@@ -1696,14 +1696,14 @@ func UTF8PrevChar(p string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(p))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(p)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_utf8_prev_char(_arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1717,7 +1717,7 @@ func UTF8Strchr(p string, len int, c uint32) string {
 	var _arg3 C.gunichar // out
 	var _cret *C.gchar   // in
 
-	_arg1 = (*C.gchar)(C.CString(p))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(p)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 	_arg3 = C.gunichar(c)
@@ -1726,7 +1726,7 @@ func UTF8Strchr(p string, len int, c uint32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1739,7 +1739,7 @@ func UTF8Strdown(str string, len int) string {
 	var _arg2 C.gssize // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
@@ -1747,7 +1747,7 @@ func UTF8Strdown(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1761,7 +1761,7 @@ func UTF8Strlen(p string, max int) int32 {
 	var _arg2 C.gssize // out
 	var _cret C.glong  // in
 
-	_arg1 = (*C.gchar)(C.CString(p))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(p)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(max)
 
@@ -1787,9 +1787,9 @@ func UTF8Strncpy(dest string, src string, n uint) string {
 	var _arg3 C.gsize  // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(dest))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(dest)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(src))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(src)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gsize(n)
 
@@ -1797,7 +1797,7 @@ func UTF8Strncpy(dest string, src string, n uint) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1811,7 +1811,7 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 	var _arg3 C.gunichar // out
 	var _cret *C.gchar   // in
 
-	_arg1 = (*C.gchar)(C.CString(p))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(p)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 	_arg3 = C.gunichar(c)
@@ -1820,7 +1820,7 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1841,7 +1841,7 @@ func UTF8Strreverse(str string, len int) string {
 	var _arg2 C.gssize // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
@@ -1849,7 +1849,7 @@ func UTF8Strreverse(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1864,7 +1864,7 @@ func UTF8Strup(str string, len int) string {
 	var _arg2 C.gssize // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
@@ -1872,7 +1872,7 @@ func UTF8Strup(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1886,7 +1886,7 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 	var _arg3 C.glong  // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(startPos)
 	_arg3 = C.glong(endPos)
@@ -1895,7 +1895,7 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1912,7 +1912,7 @@ func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 	var _cret *C.gunichar // in
 	var _cerr *C.GError   // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(len)
 
@@ -1941,7 +1941,7 @@ func UTF8ToUCS4Fast(str string, len int32) (int32, *uint32) {
 	var _arg3 C.glong     // in
 	var _cret *C.gunichar // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(len)
 
@@ -1966,7 +1966,7 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 	var _cret *C.gunichar2 // in
 	var _cerr *C.GError    // in
 
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(len)
 
@@ -2012,7 +2012,7 @@ func UTF8Validate(str []byte) (string, bool) {
 	var _end string // out
 	var _ok bool    // out
 
-	_end = C.GoString((*C.gchar)(_arg3))
+	_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2038,7 +2038,7 @@ func UTF8ValidateLen(str []byte) (string, bool) {
 	var _end string // out
 	var _ok bool    // out
 
-	_end = C.GoString((*C.gchar)(_arg3))
+	_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
 	if _cret != 0 {
 		_ok = true
 	}

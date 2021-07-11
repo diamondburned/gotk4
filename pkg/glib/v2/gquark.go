@@ -28,14 +28,14 @@ func InternStaticString(_string string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(_string))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_intern_static_string(_arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -51,14 +51,14 @@ func InternString(_string string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(_string))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_intern_string(_arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

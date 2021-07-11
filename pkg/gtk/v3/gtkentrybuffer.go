@@ -123,7 +123,7 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 	var _arg2 C.gint            // out
 	var _cret *C.GtkEntryBuffer // in
 
-	_arg1 = (*C.gchar)(C.CString(initialChars))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(initialChars)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(nInitialChars)
 
@@ -185,7 +185,7 @@ func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars 
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = C.guint(position)
-	_arg2 = (*C.gchar)(C.CString(chars))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint(nChars)
 
@@ -256,7 +256,7 @@ func (buffer *EntryBuffer) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -278,7 +278,7 @@ func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) u
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = C.guint(position)
-	_arg2 = (*C.gchar)(C.CString(chars))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(nChars)
 
@@ -316,7 +316,7 @@ func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 	var _arg2 C.gint            // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.gchar)(C.CString(chars))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(nChars)
 

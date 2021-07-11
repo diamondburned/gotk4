@@ -190,7 +190,7 @@ func (res *AsyncResult) UserData() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -203,7 +203,7 @@ func (res *AsyncResult) IsTagged(sourceTag cgo.Handle) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-	_arg1 = (C.gpointer)(sourceTag)
+	_arg1 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
 

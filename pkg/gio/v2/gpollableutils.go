@@ -36,7 +36,7 @@ func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 	var _arg1 *C.GObject // out
 	var _cret *C.GSource // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&pollableStream).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(pollableStream.Native()))
 
 	_cret = C.g_pollable_source_new(_arg1)
 
@@ -61,7 +61,7 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 	var _arg3 *C.GCancellable // out
 	var _cret *C.GSource      // in
 
-	_arg1 = C.gpointer(unsafe.Pointer((&pollableStream).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(pollableStream.Native()))
 	_arg2 = (*C.GSource)(unsafe.Pointer(childSource))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 

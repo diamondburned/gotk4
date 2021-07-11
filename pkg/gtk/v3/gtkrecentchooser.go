@@ -89,7 +89,7 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 	runtime.SetFinalizer(b, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(RecentSortFunc)
 	gint := fn(a, b, userData)
@@ -278,7 +278,7 @@ func (chooser *RecentChooser) CurrentURI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -475,7 +475,7 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_select_uri(_arg0, _arg1, &_cerr)
@@ -494,7 +494,7 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_set_current_uri(_arg0, _arg1, &_cerr)
@@ -630,7 +630,7 @@ func (chooser *RecentChooser) UnselectURI(uri string) {
 	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_unselect_uri(_arg0, _arg1)

@@ -177,7 +177,7 @@ func (self *StringFilter) Search() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -215,7 +215,7 @@ func (self *StringFilter) SetSearch(search string) {
 	var _arg1 *C.char            // out
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(search))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(search)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_string_filter_set_search(_arg0, _arg1)

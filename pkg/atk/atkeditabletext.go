@@ -139,7 +139,7 @@ func (text *EditableText) InsertText(_string string, length int, position *int) 
 	var _arg3 *C.gint            // out
 
 	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
-	_arg1 = (*C.gchar)(C.CString(_string))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 	_arg3 = (*C.gint)(unsafe.Pointer(position))
@@ -164,7 +164,7 @@ func (text *EditableText) SetTextContents(_string string) {
 	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
-	_arg1 = (*C.gchar)(C.CString(_string))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_editable_text_set_text_contents(_arg0, _arg1)

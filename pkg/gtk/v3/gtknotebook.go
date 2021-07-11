@@ -359,7 +359,7 @@ func (notebook *Notebook) GroupName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -396,7 +396,7 @@ func (notebook *Notebook) MenuLabelText(child Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -565,7 +565,7 @@ func (notebook *Notebook) TabLabelText(child Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -825,7 +825,7 @@ func (notebook *Notebook) SetGroupName(groupName string) {
 	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
-	_arg1 = (*C.gchar)(C.CString(groupName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_notebook_set_group_name(_arg0, _arg1)
@@ -852,7 +852,7 @@ func (notebook *Notebook) SetMenuLabelText(child Widgetter, menuText string) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(menuText))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(menuText)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_notebook_set_menu_label_text(_arg0, _arg1, _arg2)
@@ -978,7 +978,7 @@ func (notebook *Notebook) SetTabLabelText(child Widgetter, tabText string) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(tabText))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tabText)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_notebook_set_tab_label_text(_arg0, _arg1, _arg2)

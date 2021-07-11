@@ -41,7 +41,7 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _cret *C.GMappedFile // in
 	var _cerr *C.GError      // in
 
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if writable {
 		_arg2 = C.TRUE
@@ -122,7 +122,7 @@ func (file *MappedFile) Contents() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

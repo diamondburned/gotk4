@@ -156,7 +156,7 @@ func (self *NativeDialog) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -234,7 +234,7 @@ func (self *NativeDialog) SetTitle(title string) {
 	var _arg1 *C.char            // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(title))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_native_dialog_set_title(_arg0, _arg1)

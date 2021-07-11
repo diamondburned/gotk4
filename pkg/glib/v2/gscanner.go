@@ -225,7 +225,7 @@ func (scanner *Scanner) InputText(text string, textLen uint) {
 	var _arg2 C.guint     // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(textLen)
 
@@ -240,14 +240,14 @@ func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 	var _cret C.gpointer  // in
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
-	_arg1 = (*C.gchar)(C.CString(symbol))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -287,9 +287,9 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Ha
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg1 = C.guint(scopeId)
-	_arg2 = (*C.gchar)(C.CString(symbol))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gpointer)(value)
+	_arg3 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_scanner_scope_add_symbol(_arg0, _arg1, _arg2, _arg3)
 }
@@ -304,14 +304,14 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handl
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg1 = C.guint(scopeId)
-	_arg2 = (*C.gchar)(C.CString(symbol))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_scanner_scope_lookup_symbol(_arg0, _arg1, _arg2)
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -324,7 +324,7 @@ func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg1 = C.guint(scopeId)
-	_arg2 = (*C.gchar)(C.CString(symbol))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_scanner_scope_remove_symbol(_arg0, _arg1, _arg2)

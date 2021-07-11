@@ -307,7 +307,7 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 
 	var _cursorPos int // out
 
-	_str = C.GoString((*C.gchar)(_arg1))
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cursorPos = int(_arg3)
@@ -340,7 +340,7 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 	var _cursorIndex int // out
 	var _ok bool         // out
 
-	_text = C.GoString((*C.gchar)(_arg1))
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_cursorIndex = int(_arg2)
 	if _cret != 0 {
@@ -398,7 +398,7 @@ func (context *IMContext) SetSurrounding(text string, len int, cursorIndex int) 
 	var _arg3 C.gint          // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 	_arg3 = C.gint(cursorIndex)

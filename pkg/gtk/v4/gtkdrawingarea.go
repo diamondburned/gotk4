@@ -49,7 +49,7 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	cr = (*cairo.Context)(unsafe.Pointer(arg1))
 	width = int(arg2)
 	height = int(arg3)
-	userData = (cgo.Handle)(arg4)
+	userData = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(DrawingAreaDrawFunc)
 	fn(drawingArea, cr, width, height, userData)

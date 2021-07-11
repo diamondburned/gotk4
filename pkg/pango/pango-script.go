@@ -296,7 +296,7 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	var _arg2 C.int              // out
 	var _cret *C.PangoScriptIter // in
 
-	_arg1 = (*C.char)(C.CString(text))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 
@@ -347,9 +347,9 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 	var _end string    // out
 	var _script Script // out
 
-	_start = C.GoString((*C.gchar)(_arg1))
+	_start = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_end = C.GoString((*C.gchar)(_arg2))
+	_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_script = Script(_arg3)
 

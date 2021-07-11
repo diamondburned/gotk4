@@ -77,12 +77,12 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 	year = uint(arg1)
 	month = uint(arg2)
 	day = uint(arg3)
-	userData = (cgo.Handle)(arg4)
+	userData = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(CalendarDetailFunc)
 	utf8 := fn(calendar, year, month, day, userData)
 
-	cret = (*C.gchar)(C.CString(utf8))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }

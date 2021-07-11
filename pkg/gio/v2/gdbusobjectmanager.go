@@ -102,9 +102,9 @@ func (manager *DBusObjectManager) Interface(objectPath string, interfaceName str
 	var _cret *C.GDBusInterface     // in
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.gchar)(C.CString(objectPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(interfaceName))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
@@ -123,7 +123,7 @@ func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 	var _cret *C.GDBusObject        // in
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.gchar)(C.CString(objectPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
@@ -146,7 +146,7 @@ func (manager *DBusObjectManager) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

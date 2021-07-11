@@ -47,7 +47,7 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*CellRenderer)
 	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(*TreeModel)
 	iter = (*TreeIter)(unsafe.Pointer(arg3))
-	data = (cgo.Handle)(arg4)
+	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(CellLayoutDataFunc)
 	fn(cellLayout, cell, treeModel, iter, data)
@@ -237,7 +237,7 @@ func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(attribute))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(column)
 

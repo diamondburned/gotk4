@@ -192,7 +192,7 @@ func (group *OptionGroup) SetTranslationDomain(domain string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
-	_arg1 = (*C.gchar)(C.CString(domain))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_option_group_set_translation_domain(_arg0, _arg1)

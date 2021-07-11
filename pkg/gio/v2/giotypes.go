@@ -59,7 +59,7 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 
 	sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
 	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*AsyncResult)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(AsyncReadyCallback)
 	fn(sourceObject, res, userData)
@@ -80,7 +80,7 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.
 	var userData cgo.Handle      // out
 
 	cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Cancellable)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(CancellableSourceFunc)
 	ok := fn(cancellable, userData)
@@ -113,9 +113,9 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	var userData cgo.Handle              // out
 
 	manager = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusObjectManagerClient)
-	objectPath = C.GoString((*C.gchar)(arg1))
-	interfaceName = C.GoString((*C.gchar)(arg2))
-	userData = (cgo.Handle)(arg3)
+	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(DBusProxyTypeFunc)
 	gType := fn(manager, objectPath, interfaceName, userData)
@@ -142,7 +142,7 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 
 	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DatagramBased)
 	condition = glib.IOCondition(arg1)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(DatagramBasedSourceFunc)
 	ok := fn(datagramBased, condition, userData)
@@ -202,7 +202,7 @@ func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.g
 	currentSize = uint64(arg1)
 	numDirs = uint64(arg2)
 	numFiles = uint64(arg3)
-	userData = (cgo.Handle)(arg4)
+	userData = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(FileMeasureProgressCallback)
 	fn(reporting, currentSize, numDirs, numFiles, userData)
@@ -226,7 +226,7 @@ func gotk4_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer)
 
 	currentNumBytes = int64(arg0)
 	totalNumBytes = int64(arg1)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FileProgressCallback)
 	fn(currentNumBytes, totalNumBytes, userData)
@@ -250,9 +250,9 @@ func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) (
 	var fileSize int64          // out
 	var callbackData cgo.Handle // out
 
-	fileContents = C.GoString((*C.gchar)(arg0))
+	fileContents = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
 	fileSize = int64(arg1)
-	callbackData = (cgo.Handle)(arg2)
+	callbackData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FileReadMoreCallback)
 	ok := fn(fileContents, fileSize, callbackData)
@@ -280,7 +280,7 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gboolean
 	var userData cgo.Handle               // out
 
 	pollableStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(PollableSourceFunc)
 	ok := fn(pollableStream, userData)
@@ -309,7 +309,7 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 
 	socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Socket)
 	condition = glib.IOCondition(arg1)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(SocketSourceFunc)
 	ok := fn(socket, condition, userData)
@@ -336,7 +336,7 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var _arg1 *C.char                  // out
 	var _cret *C.GFileAttributeMatcher // in
 
-	_arg1 = (*C.char)(C.CString(attributes))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_new(_arg1)
@@ -369,7 +369,7 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
-	_arg1 = (*C.char)(C.CString(ns))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(ns)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_enumerate_namespace(_arg0, _arg1)
@@ -394,7 +394,7 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -408,7 +408,7 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
-	_arg1 = (*C.char)(C.CString(attribute))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_matches(_arg0, _arg1)
@@ -430,7 +430,7 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
-	_arg1 = (*C.char)(C.CString(attribute))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_matches_only(_arg0, _arg1)
@@ -506,7 +506,7 @@ func (matcher *FileAttributeMatcher) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -813,7 +813,7 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	var _arg4 C.guint16     // out
 	var _cret *C.GSrvTarget // in
 
-	_arg1 = (*C.gchar)(C.CString(hostname))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(port)
 	_arg3 = C.guint16(priority)
@@ -878,7 +878,7 @@ func (target *SrvTarget) Hostname() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

@@ -35,7 +35,7 @@ import "C"
 func IOModulesScanAllInDirectory(dirname string) {
 	var _arg1 *C.char // out
 
-	_arg1 = (*C.char)(C.CString(dirname))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(dirname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_io_modules_scan_all_in_directory(_arg1)

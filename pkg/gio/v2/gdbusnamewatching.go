@@ -44,9 +44,9 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	name = C.GoString((*C.gchar)(arg1))
-	nameOwner = C.GoString((*C.gchar)(arg2))
-	userData = (cgo.Handle)(arg3)
+	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	nameOwner = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(BusNameAppearedCallback)
 	fn(connection, name, nameOwner, userData)
@@ -71,8 +71,8 @@ func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	name = C.GoString((*C.gchar)(arg1))
-	userData = (cgo.Handle)(arg2)
+	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(BusNameVanishedCallback)
 	fn(connection, name, userData)

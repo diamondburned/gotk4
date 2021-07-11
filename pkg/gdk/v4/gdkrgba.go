@@ -172,7 +172,7 @@ func (rgba *RGBA) Parse(spec string) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
-	_arg1 = (*C.char)(C.CString(spec))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(spec)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_rgba_parse(_arg0, _arg1)
@@ -208,7 +208,7 @@ func (rgba *RGBA) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

@@ -157,7 +157,7 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg2 = C.gint(len(entries))
 	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = (C.gpointer)(userData)
+	_arg3 = (C.gpointer)(unsafe.Pointer(userData))
 
 	C.g_action_map_add_action_entries(_arg0, _arg1, _arg2, _arg3)
 }
@@ -171,7 +171,7 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	var _cret *C.GAction    // in
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
@@ -191,7 +191,7 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 	var _arg1 *C.gchar      // out
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_action_map_remove_action(_arg0, _arg1)

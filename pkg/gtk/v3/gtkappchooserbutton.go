@@ -159,7 +159,7 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(contentType))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_app_chooser_button_new(_arg1)
@@ -189,9 +189,9 @@ func (self *AppChooserButton) AppendCustomItem(name string, label string, icon g
 	var _arg3 *C.GIcon               // out
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(label))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
@@ -219,7 +219,7 @@ func (self *AppChooserButton) Heading() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -271,7 +271,7 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_button_set_active_custom_item(_arg0, _arg1)
@@ -284,7 +284,7 @@ func (self *AppChooserButton) SetHeading(heading string) {
 	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.gchar)(C.CString(heading))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(heading)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_button_set_heading(_arg0, _arg1)

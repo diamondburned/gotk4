@@ -85,10 +85,10 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 	var message string         // out
 	var userData cgo.Handle    // out
 
-	logDomain = C.GoString((*C.gchar)(arg0))
+	logDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
 	logLevel = LogLevelFlags(arg1)
-	message = C.GoString((*C.gchar)(arg2))
-	userData = (cgo.Handle)(arg3)
+	message = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(LogFunc)
 	fn(logDomain, logLevel, message, userData)
@@ -102,14 +102,14 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 	var _arg4 *C.char // out
 	var _arg5 *C.char // out
 
-	_arg1 = (*C.char)(C.CString(logDomain))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(logDomain)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(file))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(file)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(line)
-	_arg4 = (*C.char)(C.CString(prettyFunction))
+	_arg4 = (*C.char)(unsafe.Pointer(C.CString(prettyFunction)))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*C.char)(C.CString(expression))
+	_arg5 = (*C.char)(unsafe.Pointer(C.CString(expression)))
 	defer C.free(unsafe.Pointer(_arg5))
 
 	C.g_assert_warning(_arg1, _arg2, _arg3, _arg4, _arg5)
@@ -123,7 +123,7 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.guint  // out
 
-	_arg1 = (*C.gchar)(C.CString(logDomain))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(handlerId)
 

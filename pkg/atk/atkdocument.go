@@ -116,14 +116,14 @@ func (document *Document) AttributeValue(attributeName string) string {
 	var _cret *C.gchar       // in
 
 	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
-	_arg1 = (*C.gchar)(C.CString(attributeName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_document_get_attribute_value(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -160,7 +160,7 @@ func (document *Document) Document() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -179,7 +179,7 @@ func (document *Document) DocumentType() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -200,7 +200,7 @@ func (document *Document) Locale() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -230,9 +230,9 @@ func (document *Document) SetAttributeValue(attributeName string, attributeValue
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
-	_arg1 = (*C.gchar)(C.CString(attributeName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(attributeValue))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.atk_document_set_attribute_value(_arg0, _arg1, _arg2)

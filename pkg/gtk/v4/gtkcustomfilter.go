@@ -42,7 +42,7 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) 
 	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(CustomFilterFunc)
 	ok := fn(item, userData)

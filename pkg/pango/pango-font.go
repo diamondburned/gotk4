@@ -491,7 +491,7 @@ func (face *FontFace) FaceName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -643,7 +643,7 @@ func (family *FontFamily) Face(name string) *FontFace {
 	var _cret *C.PangoFontFace   // in
 
 	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_family_get_face(_arg0, _arg1)
@@ -669,7 +669,7 @@ func (family *FontFamily) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -909,7 +909,7 @@ func (desc *FontDescription) Family() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1055,7 +1055,7 @@ func (desc *FontDescription) Variations() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1165,7 +1165,7 @@ func (desc *FontDescription) SetFamily(family string) {
 	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
-	_arg1 = (*C.char)(C.CString(family))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_family(_arg0, _arg1)
@@ -1184,7 +1184,7 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
-	_arg1 = (*C.char)(C.CString(family))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_family_static(_arg0, _arg1)
@@ -1224,7 +1224,7 @@ func (desc *FontDescription) SetVariations(variations string) {
 	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
-	_arg1 = (*C.char)(C.CString(variations))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variations)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_variations(_arg0, _arg1)
@@ -1242,7 +1242,7 @@ func (desc *FontDescription) SetVariationsStatic(variations string) {
 	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
-	_arg1 = (*C.char)(C.CString(variations))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variations)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_variations_static(_arg0, _arg1)
@@ -1263,7 +1263,7 @@ func (desc *FontDescription) ToFilename() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1285,7 +1285,7 @@ func (desc *FontDescription) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

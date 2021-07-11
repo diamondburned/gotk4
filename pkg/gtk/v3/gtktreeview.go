@@ -69,7 +69,7 @@ func gotk4_TreeDestroyCountFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C
 	treeView = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeView)
 	path = (*TreePath)(unsafe.Pointer(arg1))
 	children = int(arg2)
-	userData = (cgo.Handle)(arg3)
+	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeDestroyCountFunc)
 	fn(treeView, path, children, userData)
@@ -102,7 +102,7 @@ func gotk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn
 	column = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*TreeViewColumn)
 	prevColumn = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(*TreeViewColumn)
 	nextColumn = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg3)))).(*TreeViewColumn)
-	data = (cgo.Handle)(arg4)
+	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeViewColumnDropFunc)
 	ok := fn(treeView, column, prevColumn, nextColumn, data)
@@ -130,7 +130,7 @@ func gotk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.
 
 	treeView = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeView)
 	path = (*TreePath)(unsafe.Pointer(arg1))
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeViewMappingFunc)
 	fn(treeView, path, userData)
@@ -155,7 +155,7 @@ func gotk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, a
 
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
-	data = (cgo.Handle)(arg2)
+	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeViewRowSeparatorFunc)
 	ok := fn(model, iter, data)
@@ -188,9 +188,9 @@ func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2 *C.gc
 
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	column = int(arg1)
-	key = C.GoString((*C.gchar)(arg2))
+	key = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	iter = (*TreeIter)(unsafe.Pointer(arg3))
-	searchData = (cgo.Handle)(arg4)
+	searchData = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeViewSearchEqualFunc)
 	ok := fn(model, column, key, iter, searchData)
@@ -218,7 +218,7 @@ func gotk4_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidget, ar
 
 	treeView = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeView)
 	searchDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*Widget)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeViewSearchPositionFunc)
 	fn(treeView, searchDialog, userData)

@@ -279,7 +279,7 @@ func (iconInfo *IconInfo) DisplayName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -319,7 +319,7 @@ func (iconInfo *IconInfo) Filename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -749,7 +749,7 @@ func (iconTheme *IconTheme) AddResourcePath(path string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.gchar)(C.CString(path))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_add_resource_path(_arg0, _arg1)
@@ -762,7 +762,7 @@ func (iconTheme *IconTheme) AppendSearchPath(path string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.gchar)(C.CString(path))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_append_search_path(_arg0, _arg1)
@@ -781,7 +781,7 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -796,7 +796,7 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 	var _cret *C.gint
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
@@ -838,7 +838,7 @@ func (iconTheme *IconTheme) SearchPath() []string {
 		src := unsafe.Slice(_arg1, _arg2)
 		_path = make([]string, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_path[i] = C.GoString((*C.gchar)(src[i]))
+			_path[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -853,7 +853,7 @@ func (iconTheme *IconTheme) HasIcon(iconName string) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
@@ -874,7 +874,7 @@ func (iconTheme *IconTheme) PrependSearchPath(path string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.gchar)(C.CString(path))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_prepend_search_path(_arg0, _arg1)
@@ -909,7 +909,7 @@ func (iconTheme *IconTheme) SetCustomTheme(themeName string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.gchar)(C.CString(themeName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(themeName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_set_custom_theme(_arg0, _arg1)
@@ -952,7 +952,7 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 	{
 		out := unsafe.Slice(_arg1, len(path))
 		for i := range path {
-			out[i] = (*C.gchar)(C.CString(path[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(path[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}

@@ -48,7 +48,7 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 	var _arg3 C.gpointer
 	var _arg4 *C.GError // out
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.Assign(callback))
 	_arg4 = (*C.GError)(gerror.New(err))
@@ -291,10 +291,10 @@ func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCall
 	var _arg4 C.gpointer            // out
 	var _cret *C.GSimpleAsyncResult // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.Assign(callback))
-	_arg4 = (C.gpointer)(sourceTag)
+	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	_cret = C.g_simple_async_result_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -315,7 +315,7 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 	var _arg4 *C.GError             // out
 	var _cret *C.GSimpleAsyncResult // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.Assign(callback))
 	_arg4 = (*C.GError)(gerror.New(err))

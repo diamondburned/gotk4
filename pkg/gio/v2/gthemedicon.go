@@ -79,7 +79,7 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
 
-	_arg1 = (*C.char)(C.CString(iconname))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_themed_icon_new(_arg1)
@@ -103,7 +103,7 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	{
 		out := unsafe.Slice(_arg1, len(iconnames))
 		for i := range iconnames {
-			out[i] = (*C.char)(C.CString(iconnames[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(iconnames[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -136,7 +136,7 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
 
-	_arg1 = (*C.char)(C.CString(iconname))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_themed_icon_new_with_default_fallbacks(_arg1)
@@ -157,7 +157,7 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 	var _arg1 *C.char        // out
 
 	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
-	_arg1 = (*C.char)(C.CString(iconname))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_themed_icon_append_name(_arg0, _arg1)
@@ -184,7 +184,7 @@ func (icon *ThemedIcon) Names() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -200,7 +200,7 @@ func (icon *ThemedIcon) PrependName(iconname string) {
 	var _arg1 *C.char        // out
 
 	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
-	_arg1 = (*C.char)(C.CString(iconname))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_themed_icon_prepend_name(_arg0, _arg1)

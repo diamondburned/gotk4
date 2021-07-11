@@ -43,7 +43,7 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.Gt
 	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(ListBoxCreateWidgetFunc)
 	widget := fn(item, userData)
@@ -68,7 +68,7 @@ func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret C.gbo
 	var userData cgo.Handle // out
 
 	row = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBoxRow)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(ListBoxFilterFunc)
 	ok := fn(row, userData)
@@ -98,7 +98,7 @@ func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.
 
 	box = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBox)
 	row = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*ListBoxRow)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ListBoxForeachFunc)
 	fn(box, row, userData)
@@ -120,7 +120,7 @@ func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.
 
 	row1 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBoxRow)
 	row2 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*ListBoxRow)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ListBoxSortFunc)
 	gint := fn(row1, row2, userData)
@@ -150,7 +150,7 @@ func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow,
 
 	row = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBoxRow)
 	before = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*ListBoxRow)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ListBoxUpdateHeaderFunc)
 	fn(row, before, userData)

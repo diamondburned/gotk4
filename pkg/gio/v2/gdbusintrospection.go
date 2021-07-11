@@ -186,7 +186,7 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _cret *C.GDBusMethodInfo    // in
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_method(_arg0, _arg1)
@@ -212,7 +212,7 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _cret *C.GDBusPropertyInfo  // in
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_property(_arg0, _arg1)
@@ -238,7 +238,7 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _cret *C.GDBusSignalInfo    // in
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_signal(_arg0, _arg1)
@@ -349,7 +349,7 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	var _cret *C.GDBusNodeInfo // in
 	var _cerr *C.GError        // in
 
-	_arg1 = (*C.gchar)(C.CString(xmlData))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(xmlData)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_node_info_new_for_xml(_arg1, &_cerr)
@@ -381,7 +381,7 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var _cret *C.GDBusInterfaceInfo // in
 
 	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(info))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_node_info_lookup_interface(_arg0, _arg1)

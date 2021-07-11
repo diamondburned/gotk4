@@ -190,7 +190,7 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 	var _cret *C.GFile                   // in
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
-	_arg1 = (*C.gchar)(C.CString(arg))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
@@ -220,7 +220,7 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -260,7 +260,7 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 		src := unsafe.Slice(_cret, i)
 		_filenames = make([]string, i)
 		for i := range src {
-			_filenames[i] = C.GoString((*C.gchar)(src[i]))
+			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -399,14 +399,14 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 	var _cret *C.gchar                   // in
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_command_line_getenv(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

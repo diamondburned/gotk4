@@ -102,14 +102,14 @@ func NewProxyAddress(inetaddr InetAddresser, port uint16, protocol string, destH
 
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer((inetaddr).(gextras.Nativer).Native()))
 	_arg2 = C.guint16(port)
-	_arg3 = (*C.gchar)(C.CString(protocol))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(C.CString(destHostname))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(destHostname)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.guint16(destPort)
-	_arg6 = (*C.gchar)(C.CString(username))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(username)))
 	defer C.free(unsafe.Pointer(_arg6))
-	_arg7 = (*C.gchar)(C.CString(password))
+	_arg7 = (*C.gchar)(unsafe.Pointer(C.CString(password)))
 	defer C.free(unsafe.Pointer(_arg7))
 
 	_cret = C.g_proxy_address_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
@@ -134,7 +134,7 @@ func (proxy *ProxyAddress) DestinationHostname() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -169,7 +169,7 @@ func (proxy *ProxyAddress) DestinationProtocol() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -185,7 +185,7 @@ func (proxy *ProxyAddress) Password() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -201,7 +201,7 @@ func (proxy *ProxyAddress) Protocol() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -217,7 +217,7 @@ func (proxy *ProxyAddress) URI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -233,7 +233,7 @@ func (proxy *ProxyAddress) Username() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

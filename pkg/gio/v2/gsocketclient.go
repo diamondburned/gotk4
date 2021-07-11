@@ -171,7 +171,7 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.gchar)(C.CString(protocol))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_socket_client_add_application_proxy(_arg0, _arg1)
@@ -306,7 +306,7 @@ func (client *SocketClient) ConnectToHost(hostAndPort string, defaultPort uint16
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.gchar)(C.CString(hostAndPort))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -336,7 +336,7 @@ func (client *SocketClient) ConnectToHostAsync(hostAndPort string, defaultPort u
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.gchar)(C.CString(hostAndPort))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -390,9 +390,9 @@ func (client *SocketClient) ConnectToService(domain string, service string, canc
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.gchar)(C.CString(domain))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(service))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -418,9 +418,9 @@ func (client *SocketClient) ConnectToServiceAsync(domain string, service string,
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.gchar)(C.CString(domain))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(service))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -479,7 +479,7 @@ func (client *SocketClient) ConnectToURI(uri string, defaultPort uint16, cancell
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -509,7 +509,7 @@ func (client *SocketClient) ConnectToURIAsync(uri string, defaultPort uint16, ca
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))

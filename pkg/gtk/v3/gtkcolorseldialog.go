@@ -77,7 +77,7 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(title))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_color_selection_dialog_new(_arg1)

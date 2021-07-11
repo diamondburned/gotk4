@@ -89,7 +89,7 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	var _cret *C.GDBusInterface // in
 
 	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.gchar)(C.CString(interfaceName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_get_interface(_arg0, _arg1)
@@ -112,7 +112,7 @@ func (object *DBusObject) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

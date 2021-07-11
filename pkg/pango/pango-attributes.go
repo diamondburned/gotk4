@@ -204,12 +204,12 @@ func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
 
 	var userData cgo.Handle // out
 
-	userData = (cgo.Handle)(arg0)
+	userData = (cgo.Handle)(unsafe.Pointer(arg0))
 
 	fn := v.(AttrDataCopyFunc)
 	gpointer := fn(userData)
 
-	cret = (C.gpointer)(gpointer)
+	cret = (C.gpointer)(unsafe.Pointer(gpointer))
 
 	return cret
 }
@@ -228,7 +228,7 @@ func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret C.gbool
 	var userData cgo.Handle  // out
 
 	attribute = (*Attribute)(unsafe.Pointer(arg0))
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(AttrFilterFunc)
 	ok := fn(attribute, userData)
@@ -336,7 +336,7 @@ func NewAttrFamily(family string) *Attribute {
 	var _arg1 *C.char           // out
 	var _cret *C.PangoAttribute // in
 
-	_arg1 = (*C.char)(C.CString(family))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_attr_family_new(_arg1)
@@ -597,7 +597,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 	var _accelChar uint32 // out
 	var _goerr error      // out
 
-	_text = C.GoString((*C.gchar)(_arg3))
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
 	defer C.free(unsafe.Pointer(_arg3))
 	_accelChar = uint32(_arg4)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -673,7 +673,7 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	var _arg6 C.gunichar // in
 	var _cerr *C.GError  // in
 
-	_arg1 = (*C.char)(C.CString(markupText))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markupText)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = C.gunichar(accelMarker)
@@ -684,7 +684,7 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	var _accelChar uint32 // out
 	var _goerr error      // out
 
-	_text = C.GoString((*C.gchar)(_arg5))
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
 	defer C.free(unsafe.Pointer(_arg5))
 	_accelChar = uint32(_arg6)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -1272,7 +1272,7 @@ func (color *Color) Parse(spec string) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.PangoColor)(unsafe.Pointer(color))
-	_arg1 = (*C.char)(C.CString(spec))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(spec)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_color_parse(_arg0, _arg1)
@@ -1306,7 +1306,7 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.PangoColor)(unsafe.Pointer(color))
-	_arg2 = (*C.char)(C.CString(spec))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(spec)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.pango_color_parse_with_alpha(_arg0, &_arg1, _arg2)
@@ -1336,7 +1336,7 @@ func (color *Color) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

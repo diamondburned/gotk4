@@ -288,7 +288,10 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	switch {
 	case value.Resolved.IsBuiltin("cgo.Handle"):
 		value.header.Import("runtime/cgo")
-		value.p.Linef("%s = (%s)(%s)", value.Out.Set, value.Out.Type, value.InName)
+		value.header.Import("unsafe")
+		// unsafe.Pointer is needed for pointer to pointers, so we're playing it
+		// safe.
+		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.Out.Set, value.Out.Type, value.InName)
 		return true
 
 	case value.Resolved.IsBuiltin("string"):
@@ -296,11 +299,16 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		value.p.Linef("%s = (%s)(C.CString(%s))", value.Out.Set, value.Out.Type, value.InName)
+		// Cast using an unsafe.Pointer in case the output type is uchar and Go
+		// refuses to compile it.
+		value.header.Import("unsafe")
+		value.p.Linef(
+			"%s = (%s)(unsafe.Pointer(C.CString(%s)))",
+			value.Out.Set, value.Out.Type, value.InName,
+		)
 		// If we're not giving ownership this mallocated string, then we
 		// can free it once done.
 		if !value.isTransferring() {
-			value.header.Import("unsafe")
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 		}
 

@@ -735,7 +735,7 @@ func (entry *Entry) PlaceholderText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -806,7 +806,7 @@ func (entry *Entry) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1163,7 +1163,7 @@ func (entry *Entry) SetPlaceholderText(text string) {
 	var _arg1 *C.gchar    // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_entry_set_placeholder_text(_arg0, _arg1)
@@ -1215,7 +1215,7 @@ func (entry *Entry) SetText(text string) {
 	var _arg1 *C.gchar    // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_entry_set_text(_arg0, _arg1)

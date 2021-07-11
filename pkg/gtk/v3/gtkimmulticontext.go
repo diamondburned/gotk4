@@ -101,7 +101,7 @@ func (context *IMMulticontext) ContextID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -115,7 +115,7 @@ func (context *IMMulticontext) SetContextID(contextId string) {
 	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.char)(C.CString(contextId))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contextId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_im_multicontext_set_context_id(_arg0, _arg1)

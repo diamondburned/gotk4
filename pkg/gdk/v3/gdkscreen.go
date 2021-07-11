@@ -336,7 +336,7 @@ func (screen *Screen) MonitorPlugName(monitorNum int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -551,7 +551,7 @@ func (screen *Screen) Setting(name string, value *externglib.Value) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
@@ -661,7 +661,7 @@ func (screen *Screen) MakeDisplayName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

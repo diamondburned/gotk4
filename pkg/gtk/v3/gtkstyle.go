@@ -171,7 +171,7 @@ func (style *Style) StyleProperty(widgetType externglib.Type, propertyName strin
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg1 = C.GType(widgetType)
-	_arg2 = (*C.gchar)(C.CString(propertyName))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_style_get_style_property(_arg0, _arg1, _arg2, &_arg3)
@@ -214,7 +214,7 @@ func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
-	_arg1 = (*C.gchar)(C.CString(colorName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_lookup_color(_arg0, _arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
@@ -238,7 +238,7 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 	var _cret *C.GtkIconSet // in
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
-	_arg1 = (*C.gchar)(C.CString(stockId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_lookup_icon_set(_arg0, _arg1)

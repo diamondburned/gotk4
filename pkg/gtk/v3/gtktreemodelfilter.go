@@ -50,7 +50,7 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
 	column = int(arg3)
-	data = (cgo.Handle)(arg4)
+	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeModelFilterModifyFunc)
 	value := fn(model, iter, column, data)
@@ -75,7 +75,7 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
-	data = (cgo.Handle)(arg2)
+	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeModelFilterVisibleFunc)
 	ok := fn(model, iter, data)

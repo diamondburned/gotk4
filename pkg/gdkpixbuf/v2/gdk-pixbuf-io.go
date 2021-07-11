@@ -59,7 +59,7 @@ func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimatio
 
 	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Pixbuf)
 	anim = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*PixbufAnimation)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(PixbufModulePreparedFunc)
 	fn(pixbuf, anim, userData)
@@ -93,7 +93,7 @@ func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 
 	width = (*int)(unsafe.Pointer(arg0))
 	height = (*int)(unsafe.Pointer(arg1))
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(PixbufModuleSizeFunc)
 	fn(width, height, userData)
@@ -125,7 +125,7 @@ func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, ar
 	y = int(arg2)
 	width = int(arg3)
 	height = int(arg4)
-	userData = (cgo.Handle)(arg5)
+	userData = (cgo.Handle)(unsafe.Pointer(arg5))
 
 	fn := v.(PixbufModuleUpdatedFunc)
 	fn(pixbuf, x, y, width, height, userData)
@@ -190,7 +190,7 @@ func (format *PixbufFormat) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -218,7 +218,7 @@ func (format *PixbufFormat) Extensions() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -241,7 +241,7 @@ func (format *PixbufFormat) License() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -268,7 +268,7 @@ func (format *PixbufFormat) MIMETypes() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -287,7 +287,7 @@ func (format *PixbufFormat) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -324,7 +324,7 @@ func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
-	_arg1 = (*C.gchar)(C.CString(optionKey))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(optionKey)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_format_is_save_option_supported(_arg0, _arg1)

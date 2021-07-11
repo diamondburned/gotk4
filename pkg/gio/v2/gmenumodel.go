@@ -110,7 +110,7 @@ func (iter *MenuAttributeIter) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -143,7 +143,7 @@ func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 
 	var _ok bool // out
 
-	_outName = C.GoString((*C.gchar)(_arg1))
+	_outName = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 
 	if _cret != 0 {
 		_ok = true
@@ -268,7 +268,7 @@ func (iter *MenuLinkIter) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -300,7 +300,7 @@ func (iter *MenuLinkIter) GetNext() (string, *MenuModel, bool) {
 	var _value *MenuModel // out
 	var _ok bool          // out
 
-	_outLink = C.GoString((*C.gchar)(_arg1))
+	_outLink = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	_value = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(*MenuModel)
 	if _cret != 0 {
 		_ok = true
@@ -571,7 +571,7 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg1 = C.gint(itemIndex)
-	_arg2 = (*C.gchar)(C.CString(attribute))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GVariantType)(unsafe.Pointer(expectedType))
 
@@ -601,7 +601,7 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) *MenuModel {
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg1 = C.gint(itemIndex)
-	_arg2 = (*C.gchar)(C.CString(link))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(link)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_menu_model_get_item_link(_arg0, _arg1, _arg2)

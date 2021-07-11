@@ -498,7 +498,7 @@ func gotk4_Function(arg0 C.gpointer) (cret C.gboolean) {
 
 	var userData cgo.Handle // out
 
-	userData = (cgo.Handle)(arg0)
+	userData = (cgo.Handle)(unsafe.Pointer(arg0))
 
 	fn := v.(Function)
 	ok := fn(userData)
@@ -718,7 +718,7 @@ func (accessible *ObjectClass) AccessibleID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -734,7 +734,7 @@ func (accessible *ObjectClass) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -820,7 +820,7 @@ func (accessible *ObjectClass) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -837,7 +837,7 @@ func (accessible *ObjectClass) ObjectLocale() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -890,7 +890,7 @@ func (accessible *ObjectClass) Initialize(data cgo.Handle) {
 	var _arg1 C.gpointer   // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (C.gpointer)(data)
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.atk_object_initialize(_arg0, _arg1)
 }
@@ -993,7 +993,7 @@ func (accessible *ObjectClass) SetAccessibleID(name string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_accessible_id(_arg0, _arg1)
@@ -1008,7 +1008,7 @@ func (accessible *ObjectClass) SetDescription(description string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (*C.gchar)(C.CString(description))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_description(_arg0, _arg1)
@@ -1023,7 +1023,7 @@ func (accessible *ObjectClass) SetName(name string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_name(_arg0, _arg1)

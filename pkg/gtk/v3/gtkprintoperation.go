@@ -146,7 +146,7 @@ func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
 	var data cgo.Handle      // out
 
 	pageSetup = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*PageSetup)
-	data = (cgo.Handle)(arg1)
+	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(PageSetupDoneFunc)
 	fn(pageSetup, data)
@@ -574,7 +574,7 @@ func (op *PrintOperation) StatusString() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -658,7 +658,7 @@ func (op *PrintOperation) SetCustomTabLabel(label string) {
 	var _arg1 *C.gchar             // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.gchar)(C.CString(label))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_custom_tab_label(_arg0, _arg1)
@@ -719,7 +719,7 @@ func (op *PrintOperation) SetExportFilename(filename string) {
 	var _arg1 *C.gchar             // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_export_filename(_arg0, _arg1)
@@ -752,7 +752,7 @@ func (op *PrintOperation) SetJobName(jobName string) {
 	var _arg1 *C.gchar             // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.gchar)(C.CString(jobName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(jobName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_job_name(_arg0, _arg1)

@@ -118,7 +118,7 @@ func (store *ListStore) Append(item gextras.Objector) {
 	var _arg1 C.gpointer    // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
-	_arg1 = C.gpointer(unsafe.Pointer((&item).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	C.g_list_store_append(_arg0, _arg1)
 }
@@ -136,7 +136,7 @@ func (store *ListStore) Find(item gextras.Objector) (uint, bool) {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
-	_arg1 = C.gpointer(unsafe.Pointer((&item).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	_cret = C.g_list_store_find(_arg0, _arg1, &_arg2)
 
@@ -166,7 +166,7 @@ func (store *ListStore) Insert(position uint, item gextras.Objector) {
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
 	_arg1 = C.guint(position)
-	_arg2 = C.gpointer(unsafe.Pointer((&item).Native()))
+	_arg2 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	C.g_list_store_insert(_arg0, _arg1, _arg2)
 }
@@ -187,7 +187,7 @@ func (store *ListStore) InsertSorted(item gextras.Objector, compareFunc glib.Com
 	var _cret C.guint // in
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
-	_arg1 = C.gpointer(unsafe.Pointer((&item).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_CompareDataFunc)
 	_arg3 = C.gpointer(gbox.Assign(compareFunc))
 

@@ -1051,7 +1051,7 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 	var _cret *C.GskRenderNode // in
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(message))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(message)))
 
 	_cret = C.gsk_debug_node_new(_arg1, _arg2)
 
@@ -1089,7 +1089,7 @@ func (node *DebugNode) Message() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

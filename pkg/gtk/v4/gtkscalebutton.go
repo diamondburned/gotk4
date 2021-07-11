@@ -122,7 +122,7 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) *Sca
 	{
 		out := unsafe.Slice(_arg4, len(icons))
 		for i := range icons {
-			out[i] = (*C.char)(C.CString(icons[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(icons[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -250,7 +250,7 @@ func (button *ScaleButton) SetIcons(icons []string) {
 	{
 		out := unsafe.Slice(_arg1, len(icons))
 		for i := range icons {
-			out[i] = (*C.char)(C.CString(icons[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(icons[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}

@@ -167,7 +167,7 @@ func (action *Action) Description(i int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -204,7 +204,7 @@ func (action *Action) Keybinding(i int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -223,7 +223,7 @@ func (action *Action) LocalizedName(i int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -270,7 +270,7 @@ func (action *Action) Name(i int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -284,7 +284,7 @@ func (action *Action) SetDescription(i int, desc string) bool {
 
 	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = C.gint(i)
-	_arg2 = (*C.gchar)(C.CString(desc))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(desc)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.atk_action_set_description(_arg0, _arg1, _arg2)

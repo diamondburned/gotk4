@@ -169,7 +169,7 @@ func NewVariantType(typeString string) *VariantType {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GVariantType // in
 
-	_arg1 = (*C.gchar)(C.CString(typeString))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typeString)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_new(_arg1)
@@ -302,7 +302,7 @@ func (typ *VariantType) DupString() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

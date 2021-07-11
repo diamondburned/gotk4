@@ -157,7 +157,7 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(contentType))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_app_chooser_widget_new(_arg1)
@@ -187,7 +187,7 @@ func (self *AppChooserWidget) DefaultText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -293,7 +293,7 @@ func (self *AppChooserWidget) SetDefaultText(text string) {
 	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_widget_set_default_text(_arg0, _arg1)

@@ -416,7 +416,7 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_add_ui_from_file(_arg0, _arg1, &_cerr)
@@ -441,7 +441,7 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.gchar)(C.CString(resourcePath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_add_ui_from_resource(_arg0, _arg1, &_cerr)
@@ -468,7 +468,7 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, erro
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.gchar)(C.CString(buffer))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buffer)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
@@ -535,7 +535,7 @@ func (manager *UIManager) Action(path string) *Action {
 	var _cret *C.GtkAction    // in
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.gchar)(C.CString(path))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_get_action(_arg0, _arg1)
@@ -582,7 +582,7 @@ func (manager *UIManager) Ui() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -609,7 +609,7 @@ func (manager *UIManager) Widget(path string) *Widget {
 	var _cret *C.GtkWidget    // in
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.gchar)(C.CString(path))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_get_widget(_arg0, _arg1)

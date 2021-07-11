@@ -246,7 +246,7 @@ func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(actionNamespace))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_popover_bind_model(_arg0, _arg1, _arg2)

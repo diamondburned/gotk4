@@ -263,7 +263,7 @@ func (typ *Resolved) IsClass() bool {
 // PublicIsInterface returns true if the type is a class or interface.
 func (typ *Resolved) PublicIsInterface() bool {
 	if typ.Builtin != nil {
-		return *typ.Builtin == "gextras.Objector"
+		return typ.IsExternGLib("Object") || typ.IsExternGLib("InitiallyUnowned")
 	}
 	return typ.IsClass() || typ.IsInterface()
 }

@@ -912,7 +912,7 @@ func (window *Window) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1093,7 +1093,7 @@ func (window *Window) Role() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1220,7 +1220,7 @@ func (window *Window) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1553,7 +1553,7 @@ func (window *Window) ParseGeometry(geometry string) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(geometry))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(geometry)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_window_parse_geometry(_arg0, _arg1)
@@ -2082,7 +2082,7 @@ func (window *Window) SetIconFromFile(filename string) error {
 	var _cerr *C.GError    // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_icon_from_file(_arg0, _arg1, &_cerr)
@@ -2105,7 +2105,7 @@ func (window *Window) SetIconName(name string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_icon_name(_arg0, _arg1)
@@ -2246,7 +2246,7 @@ func (window *Window) SetRole(role string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(role))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(role)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_role(_arg0, _arg1)
@@ -2309,7 +2309,7 @@ func (window *Window) SetStartupID(startupId string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(startupId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_startup_id(_arg0, _arg1)
@@ -2327,7 +2327,7 @@ func (window *Window) SetTitle(title string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(title))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_title(_arg0, _arg1)
@@ -2408,9 +2408,9 @@ func (window *Window) SetWmclass(wmclassName string, wmclassClass string) {
 	var _arg2 *C.gchar     // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(wmclassName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(wmclassName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(wmclassClass))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(wmclassClass)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_window_set_wmclass(_arg0, _arg1, _arg2)

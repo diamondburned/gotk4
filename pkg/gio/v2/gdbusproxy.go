@@ -261,7 +261,7 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	var _cret *C.GVariant   // in
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.gchar)(C.CString(propertyName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_proxy_get_cached_property(_arg0, _arg1)
@@ -298,7 +298,7 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -391,7 +391,7 @@ func (proxy *DBusProxy) InterfaceName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -407,7 +407,7 @@ func (proxy *DBusProxy) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -425,7 +425,7 @@ func (proxy *DBusProxy) NameOwner() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -442,7 +442,7 @@ func (proxy *DBusProxy) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -483,7 +483,7 @@ func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Varia
 	var _arg2 *C.GVariant   // out
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.gchar)(C.CString(propertyName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
 

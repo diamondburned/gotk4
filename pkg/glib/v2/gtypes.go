@@ -32,9 +32,9 @@ func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gp
 	var b cgo.Handle        // out
 	var userData cgo.Handle // out
 
-	a = (cgo.Handle)(arg0)
-	b = (cgo.Handle)(arg1)
-	userData = (cgo.Handle)(arg2)
+	a = (cgo.Handle)(unsafe.Pointer(arg0))
+	b = (cgo.Handle)(unsafe.Pointer(arg1))
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(CompareDataFunc)
 	gint := fn(a, b, userData)
@@ -58,8 +58,8 @@ func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
 	var data cgo.Handle     // out
 	var userData cgo.Handle // out
 
-	data = (cgo.Handle)(arg0)
-	userData = (cgo.Handle)(arg1)
+	data = (cgo.Handle)(unsafe.Pointer(arg0))
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(Func)
 	fn(data, userData)
@@ -81,9 +81,9 @@ func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 	var value cgo.Handle    // out
 	var userData cgo.Handle // out
 
-	key = (cgo.Handle)(arg0)
-	value = (cgo.Handle)(arg1)
-	userData = (cgo.Handle)(arg2)
+	key = (cgo.Handle)(unsafe.Pointer(arg0))
+	value = (cgo.Handle)(unsafe.Pointer(arg1))
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(HFunc)
 	fn(key, value, userData)
@@ -166,7 +166,7 @@ func (time_ *TimeVal) ToISO8601() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

@@ -329,7 +329,7 @@ func NewBuilderFromFile(filename string) *Builder {
 	var _arg1 *C.char       // out
 	var _cret *C.GtkBuilder // in
 
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_new_from_file(_arg1)
@@ -349,7 +349,7 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 	var _arg1 *C.char       // out
 	var _cret *C.GtkBuilder // in
 
-	_arg1 = (*C.char)(C.CString(resourcePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_new_from_resource(_arg1)
@@ -374,7 +374,7 @@ func NewBuilderFromString(_string string, length int) *Builder {
 	var _arg2 C.gssize      // out
 	var _cret *C.GtkBuilder // in
 
-	_arg1 = (*C.char)(C.CString(_string))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
@@ -410,7 +410,7 @@ func (builder *Builder) AddFromFile(filename string) error {
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_builder_add_from_file(_arg0, _arg1, &_cerr)
@@ -441,7 +441,7 @@ func (builder *Builder) AddFromResource(resourcePath string) error {
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(resourcePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_builder_add_from_resource(_arg0, _arg1, &_cerr)
@@ -473,7 +473,7 @@ func (builder *Builder) AddFromString(buffer string, length int) error {
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(buffer))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(buffer)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
@@ -502,14 +502,14 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.char)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice(_arg2, len(objectIds))
 		for i := range objectIds {
-			out[i] = (*C.char)(C.CString(objectIds[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(objectIds[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -540,14 +540,14 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(resourcePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.char)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice(_arg2, len(objectIds))
 		for i := range objectIds {
-			out[i] = (*C.char)(C.CString(objectIds[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(objectIds[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -579,7 +579,7 @@ func (builder *Builder) AddObjectsFromString(buffer string, length int, objectId
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(buffer))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(buffer)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 	_arg3 = (**C.char)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -587,7 +587,7 @@ func (builder *Builder) AddObjectsFromString(buffer string, length int, objectId
 	{
 		out := unsafe.Slice(_arg3, len(objectIds))
 		for i := range objectIds {
-			out[i] = (*C.char)(C.CString(objectIds[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(objectIds[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -609,9 +609,9 @@ func (builder *Builder) ExposeObject(name string, object gextras.Objector) {
 	var _arg2 *C.GObject    // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer((&object).Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	C.gtk_builder_expose_object(_arg0, _arg1, _arg2)
 }
@@ -630,9 +630,9 @@ func (builder *Builder) ExtendWithTemplate(object gextras.Objector, templateType
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
 	_arg2 = C.GType(templateType)
-	_arg3 = (*C.char)(C.CString(buffer))
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(buffer)))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.gssize(length)
 
@@ -672,7 +672,7 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 	var _cret *C.GObject    // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_get_object(_arg0, _arg1)
@@ -711,7 +711,7 @@ func (builder *Builder) TranslationDomain() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -726,7 +726,7 @@ func (builder *Builder) TypeFromName(typeName string) externglib.Type {
 	var _cret C.GType       // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(typeName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(typeName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_get_type_from_name(_arg0, _arg1)
@@ -752,7 +752,7 @@ func (builder *Builder) SetCurrentObject(currentObject gextras.Objector) {
 	var _arg1 *C.GObject    // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer((&currentObject).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(currentObject.Native()))
 
 	C.gtk_builder_set_current_object(_arg0, _arg1)
 }
@@ -776,7 +776,7 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(C.CString(domain))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_builder_set_translation_domain(_arg0, _arg1)
@@ -801,7 +801,7 @@ func (builder *Builder) ValueFromStringType(typ externglib.Type, _string string)
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = C.GType(typ)
-	_arg2 = (*C.char)(C.CString(_string))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, &_arg3, &_cerr)

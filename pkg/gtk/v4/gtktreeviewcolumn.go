@@ -71,7 +71,7 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*CellRenderer)
 	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(*TreeModel)
 	iter = (*TreeIter)(unsafe.Pointer(arg3))
-	data = (cgo.Handle)(arg4)
+	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeCellDataFunc)
 	fn(treeColumn, cell, treeModel, iter, data)
@@ -285,7 +285,7 @@ func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attr
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(attribute))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(column)
 
@@ -686,7 +686,7 @@ func (treeColumn *TreeViewColumn) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -989,7 +989,7 @@ func (treeColumn *TreeViewColumn) SetTitle(title string) {
 	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.char)(C.CString(title))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tree_view_column_set_title(_arg0, _arg1)

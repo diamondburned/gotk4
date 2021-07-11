@@ -397,7 +397,7 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(propertyName))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
@@ -417,7 +417,7 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(childProperty))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_container_child_notify(_arg0, _arg1, _arg2)
@@ -432,7 +432,7 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(propertyName))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 

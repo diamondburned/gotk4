@@ -64,7 +64,7 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gb
 	var data cgo.Handle            // out
 
 	filterInfo = (*FileFilterInfo)(unsafe.Pointer(arg0))
-	data = (cgo.Handle)(arg1)
+	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(FileFilterFunc)
 	ok := fn(filterInfo, data)
@@ -215,7 +215,7 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
-	_arg1 = (*C.gchar)(C.CString(mimeType))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
@@ -227,7 +227,7 @@ func (filter *FileFilter) AddPattern(pattern string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
-	_arg1 = (*C.gchar)(C.CString(pattern))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_pattern(_arg0, _arg1)
@@ -280,7 +280,7 @@ func (filter *FileFilter) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -313,7 +313,7 @@ func (filter *FileFilter) SetName(name string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)

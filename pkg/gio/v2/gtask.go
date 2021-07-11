@@ -304,7 +304,7 @@ func NewTask(sourceObject gextras.Objector, cancellable Cancellabler, callback A
 	var _arg4 C.gpointer
 	var _cret *C.GTask // in
 
-	_arg1 = C.gpointer(unsafe.Pointer((&sourceObject).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
@@ -410,7 +410,7 @@ func (task *Task) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -478,7 +478,7 @@ func (task *Task) SourceTag() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -494,7 +494,7 @@ func (task *Task) TaskData() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -584,7 +584,7 @@ func (task *Task) PropagatePointer() (cgo.Handle, error) {
 	var _gpointer cgo.Handle // out
 	var _goerr error         // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gpointer, _goerr
@@ -742,7 +742,7 @@ func (task *Task) SetName(name string) {
 	var _arg1 *C.gchar // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_task_set_name(_arg0, _arg1)
@@ -820,7 +820,7 @@ func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
-	_arg1 = (C.gpointer)(sourceTag)
+	_arg1 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	C.g_task_set_source_tag(_arg0, _arg1)
 }

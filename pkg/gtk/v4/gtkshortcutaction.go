@@ -69,7 +69,7 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (c
 	runtime.SetFinalizer(args, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ShortcutFunc)
 	ok := fn(widget, args, userData)
@@ -216,7 +216,7 @@ func NewNamedAction(name string) *NamedAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
 
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_named_action_new(_arg1)
@@ -239,7 +239,7 @@ func (self *NamedAction) ActionName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -344,7 +344,7 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
 
-	_arg1 = (*C.char)(C.CString(_string))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_action_parse_string(_arg1)
@@ -370,7 +370,7 @@ func (self *ShortcutAction) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -417,7 +417,7 @@ func NewSignalAction(signalName string) *SignalAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
 
-	_arg1 = (*C.char)(C.CString(signalName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(signalName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_signal_action_new(_arg1)
@@ -440,7 +440,7 @@ func (self *SignalAction) SignalName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

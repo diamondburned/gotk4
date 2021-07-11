@@ -111,7 +111,7 @@ func NewEditableLabel(str string) *EditableLabel {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_editable_label_new(_arg1)

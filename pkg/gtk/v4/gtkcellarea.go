@@ -48,7 +48,7 @@ func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2
 	renderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*CellRenderer)
 	cellArea = (*gdk.Rectangle)(unsafe.Pointer(arg1))
 	cellBackground = (*gdk.Rectangle)(unsafe.Pointer(arg2))
-	data = (cgo.Handle)(arg3)
+	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(CellAllocCallback)
 	ok := fn(renderer, cellArea, cellBackground, data)
@@ -75,7 +75,7 @@ func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.gboole
 	var data cgo.Handle        // out
 
 	renderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*CellRenderer)
-	data = (cgo.Handle)(arg1)
+	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(CellCallback)
 	ok := fn(renderer, data)
@@ -494,7 +494,7 @@ func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(attribute))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(column)
 
@@ -510,7 +510,7 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(attribute))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_cell_area_attribute_disconnect(_arg0, _arg1, _arg2)
@@ -526,7 +526,7 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(attribute))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_cell_area_attribute_get_column(_arg0, _arg1, _arg2)
@@ -547,7 +547,7 @@ func (area *CellArea) CellGetProperty(renderer CellRendererer, propertyName stri
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(propertyName))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
@@ -563,7 +563,7 @@ func (area *CellArea) CellSetProperty(renderer CellRendererer, propertyName stri
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(propertyName))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
@@ -713,7 +713,7 @@ func (area *CellArea) CurrentPathString() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

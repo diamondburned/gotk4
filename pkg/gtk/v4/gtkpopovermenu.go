@@ -234,7 +234,7 @@ func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(id))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_popover_menu_add_child(_arg0, _arg1, _arg2)

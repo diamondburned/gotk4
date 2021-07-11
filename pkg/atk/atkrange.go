@@ -44,7 +44,7 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 
 	_arg1 = C.gdouble(lowerLimit)
 	_arg2 = C.gdouble(upperLimit)
-	_arg3 = (*C.gchar)(C.CString(description))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.atk_range_new(_arg1, _arg2, _arg3)
@@ -103,7 +103,7 @@ func (_range *Range) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

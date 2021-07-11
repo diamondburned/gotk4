@@ -218,7 +218,7 @@ func NewButtonFromIconName(iconName string, size int) *Button {
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.gchar)(C.CString(iconName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
@@ -244,7 +244,7 @@ func NewButtonFromStock(stockId string) *Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(stockId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_from_stock(_arg1)
@@ -262,7 +262,7 @@ func NewButtonWithLabel(label string) *Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(label))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_with_label(_arg1)
@@ -283,7 +283,7 @@ func NewButtonWithMnemonic(label string) *Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(label))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_with_mnemonic(_arg1)
@@ -449,7 +449,7 @@ func (button *Button) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -616,7 +616,7 @@ func (button *Button) SetLabel(label string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.gchar)(C.CString(label))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_button_set_label(_arg0, _arg1)

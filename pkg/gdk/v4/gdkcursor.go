@@ -121,7 +121,7 @@ func NewCursorFromName(name string, fallback Cursorrer) *Cursor {
 	var _arg2 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GdkCursor)(unsafe.Pointer((fallback).(gextras.Nativer).Native()))
 
@@ -235,7 +235,7 @@ func (cursor *Cursor) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

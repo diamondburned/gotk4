@@ -43,7 +43,7 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointe
 	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(MapListModelMapFunc)
 	object := fn(item, userData)

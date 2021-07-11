@@ -71,7 +71,7 @@ func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	path = (*TreePath)(unsafe.Pointer(arg1))
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
-	data = (cgo.Handle)(arg3)
+	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeModelForeachFunc)
 	ok := fn(model, path, iter, data)
@@ -551,7 +551,7 @@ func (treeModel *TreeModel) IterFromString(pathString string) (TreeIter, bool) {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
-	_arg2 = (*C.gchar)(C.CString(pathString))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(pathString)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_tree_model_get_iter_from_string(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
@@ -620,7 +620,7 @@ func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1058,7 +1058,7 @@ func NewTreePathFromString(path string) *TreePath {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkTreePath // in
 
-	_arg1 = (*C.gchar)(C.CString(path))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_tree_path_new_from_string(_arg1)
@@ -1260,7 +1260,7 @@ func (path *TreePath) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1324,7 +1324,7 @@ func NewTreeRowReferenceProxy(proxy gextras.Objector, model TreeModeller, path *
 	var _arg3 *C.GtkTreePath         // out
 	var _cret *C.GtkTreeRowReference // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&proxy).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(proxy.Native()))
 	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg3 = (*C.GtkTreePath)(unsafe.Pointer(path))
 

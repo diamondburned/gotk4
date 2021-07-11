@@ -118,7 +118,7 @@ func GetDisplay() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -133,7 +133,7 @@ func GetDisplayArgName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -149,7 +149,7 @@ func GetProgramClass() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -216,7 +216,7 @@ func NotifyStartupComplete() {
 func NotifyStartupCompleteWithID(startupId string) {
 	var _arg1 *C.gchar // out
 
-	_arg1 = (*C.gchar)(C.CString(startupId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_notify_startup_complete_with_id(_arg1)
@@ -289,7 +289,7 @@ func PreParseLibgtkOnly() {
 func SetAllowedBackends(backends string) {
 	var _arg1 *C.gchar // out
 
-	_arg1 = (*C.gchar)(C.CString(backends))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(backends)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_allowed_backends(_arg1)
@@ -316,7 +316,7 @@ func SetDoubleClickTime(msec uint) {
 func SetProgramClass(programClass string) {
 	var _arg1 *C.gchar // out
 
-	_arg1 = (*C.gchar)(C.CString(programClass))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(programClass)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_program_class(_arg1)

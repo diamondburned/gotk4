@@ -78,7 +78,7 @@ func (node *Node) ChildIndex(data cgo.Handle) int {
 	var _cret C.gint     // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(node))
-	_arg1 = (C.gpointer)(data)
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_node_child_index(_arg0, _arg1)
 

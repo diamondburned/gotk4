@@ -105,7 +105,7 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 	var _arg2 C.gboolean     // out
 	var _cret *C.GtkTextMark // in
 
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if leftGravity {
 		_arg2 = C.TRUE
@@ -186,7 +186,7 @@ func (mark *TextMark) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

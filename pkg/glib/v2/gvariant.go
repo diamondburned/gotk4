@@ -445,7 +445,7 @@ func NewVariantBytestringArray(strv []string) *Variant {
 	{
 		out := unsafe.Slice(_arg1, len(strv))
 		for i := range strv {
-			out[i] = (*C.gchar)(C.CString(strv[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(strv[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -514,7 +514,7 @@ func NewVariantFixedArray(elementType *VariantType, elements cgo.Handle, nElemen
 	var _cret *C.GVariant     // in
 
 	_arg1 = (*C.GVariantType)(unsafe.Pointer(elementType))
-	_arg2 = (C.gconstpointer)(elements)
+	_arg2 = (C.gconstpointer)(unsafe.Pointer(elements))
 	_arg3 = C.gsize(nElements)
 	_arg4 = C.gsize(elementSize)
 
@@ -638,7 +638,7 @@ func NewVariantObjectPath(objectPath string) *Variant {
 	var _arg1 *C.gchar    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (*C.gchar)(C.CString(objectPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_new_object_path(_arg1)
@@ -666,7 +666,7 @@ func NewVariantObjv(strv []string) *Variant {
 	{
 		out := unsafe.Slice(_arg1, len(strv))
 		for i := range strv {
-			out[i] = (*C.gchar)(C.CString(strv[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(strv[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -689,7 +689,7 @@ func NewVariantSignature(signature string) *Variant {
 	var _arg1 *C.gchar    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (*C.gchar)(C.CString(signature))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(signature)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_new_signature(_arg1)
@@ -710,7 +710,7 @@ func NewVariantString(_string string) *Variant {
 	var _arg1 *C.gchar    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (*C.gchar)(C.CString(_string))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_new_string(_arg1)
@@ -738,7 +738,7 @@ func NewVariantStrv(strv []string) *Variant {
 	{
 		out := unsafe.Slice(_arg1, len(strv))
 		for i := range strv {
-			out[i] = (*C.gchar)(C.CString(strv[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(strv[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -913,7 +913,7 @@ func (value *Variant) CheckFormatString(formatString string, copyOnly bool) bool
 	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
-	_arg1 = (*C.gchar)(C.CString(formatString))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(formatString)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if copyOnly {
 		_arg2 = C.TRUE
@@ -1000,7 +1000,7 @@ func (value *Variant) DupString() (uint, string) {
 	var _utf8 string // out
 
 	_length = uint(_arg1)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _length, _utf8
@@ -1189,7 +1189,7 @@ func (value *Variant) Data() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -1411,7 +1411,7 @@ func (value *Variant) String() (uint, string) {
 	var _utf8 string // out
 
 	_length = uint(_arg1)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _length, _utf8
 }
@@ -1447,7 +1447,7 @@ func (value *Variant) TypeString() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1675,7 +1675,7 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 	var _cret *C.GVariant     // in
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(dictionary))
-	_arg1 = (*C.gchar)(C.CString(key))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType))
 
@@ -1736,7 +1736,7 @@ func (value *Variant) Print(typeAnnotate bool) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1818,7 +1818,7 @@ func (value *Variant) Store(data cgo.Handle) {
 	var _arg1 C.gpointer  // out
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
-	_arg1 = (C.gpointer)(data)
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_variant_store(_arg0, _arg1)
 }
@@ -2191,7 +2191,7 @@ func (dict *VariantDict) Contains(key string) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
-	_arg1 = (*C.gchar)(C.CString(key))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_dict_contains(_arg0, _arg1)
@@ -2240,7 +2240,7 @@ func (dict *VariantDict) InsertValue(key string, value *Variant) {
 	var _arg2 *C.GVariant     // out
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
-	_arg1 = (*C.gchar)(C.CString(key))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
 
@@ -2264,7 +2264,7 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 	var _cret *C.GVariant     // in
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
-	_arg1 = (*C.gchar)(C.CString(key))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType))
 
@@ -2310,7 +2310,7 @@ func (dict *VariantDict) Remove(key string) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
-	_arg1 = (*C.gchar)(C.CString(key))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_dict_remove(_arg0, _arg1)

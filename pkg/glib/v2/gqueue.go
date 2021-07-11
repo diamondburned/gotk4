@@ -71,7 +71,7 @@ func (queue *Queue) Index(data cgo.Handle) int {
 	var _cret C.gint          // in
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gconstpointer)(data)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_index(_arg0, _arg1)
 
@@ -122,7 +122,7 @@ func (queue *Queue) PeekHead() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -140,7 +140,7 @@ func (queue *Queue) PeekNth(n uint) cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -156,7 +156,7 @@ func (queue *Queue) PeekTail() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -172,7 +172,7 @@ func (queue *Queue) PopHead() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -190,7 +190,7 @@ func (queue *Queue) PopNth(n uint) cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -206,7 +206,7 @@ func (queue *Queue) PopTail() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -217,7 +217,7 @@ func (queue *Queue) PushHead(data cgo.Handle) {
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gpointer)(data)
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_queue_push_head(_arg0, _arg1)
 }
@@ -229,7 +229,7 @@ func (queue *Queue) PushNth(data cgo.Handle, n int) {
 	var _arg2 C.gint     // out
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gpointer)(data)
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 	_arg2 = C.gint(n)
 
 	C.g_queue_push_nth(_arg0, _arg1, _arg2)
@@ -241,7 +241,7 @@ func (queue *Queue) PushTail(data cgo.Handle) {
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gpointer)(data)
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_queue_push_tail(_arg0, _arg1)
 }
@@ -253,7 +253,7 @@ func (queue *Queue) Remove(data cgo.Handle) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gconstpointer)(data)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_remove(_arg0, _arg1)
 
@@ -273,7 +273,7 @@ func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 	var _cret C.guint         // in
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gconstpointer)(data)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_remove_all(_arg0, _arg1)
 

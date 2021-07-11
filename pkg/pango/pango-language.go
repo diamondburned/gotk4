@@ -66,7 +66,7 @@ func (language *Language) SampleString() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -83,7 +83,7 @@ func (language *Language) Matches(rangeList string) bool {
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(language))
-	_arg1 = (*C.char)(C.CString(rangeList))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(rangeList)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_language_matches(_arg0, _arg1)
@@ -108,7 +108,7 @@ func (language *Language) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

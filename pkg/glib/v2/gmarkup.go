@@ -126,7 +126,7 @@ func MarkupEscapeText(text string, length int) string {
 	var _arg2 C.gssize // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
@@ -134,7 +134,7 @@ func MarkupEscapeText(text string, length int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -205,7 +205,7 @@ func (context *MarkupParseContext) Element() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -247,7 +247,7 @@ func (context *MarkupParseContext) UserData() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -268,7 +268,7 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(textLen)
 
@@ -303,7 +303,7 @@ func (context *MarkupParseContext) Pop() cgo.Handle {
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -358,7 +358,7 @@ func (context *MarkupParseContext) Push(parser *MarkupParser, userData cgo.Handl
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
 	_arg1 = (*C.GMarkupParser)(unsafe.Pointer(parser))
-	_arg2 = (C.gpointer)(userData)
+	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
 
 	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
 }

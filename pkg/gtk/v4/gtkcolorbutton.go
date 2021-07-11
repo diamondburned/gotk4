@@ -158,7 +158,7 @@ func (button *ColorButton) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -182,7 +182,7 @@ func (button *ColorButton) SetTitle(title string) {
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.char)(C.CString(title))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_color_button_set_title(_arg0, _arg1)

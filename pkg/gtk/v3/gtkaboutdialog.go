@@ -258,14 +258,14 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 	var _arg2 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(sectionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(sectionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(people)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice(_arg2, len(people))
 		for i := range people {
-			out[i] = (*C.gchar)(C.CString(people[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(people[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -295,7 +295,7 @@ func (about *AboutDialog) Artists() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -324,7 +324,7 @@ func (about *AboutDialog) Authors() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -342,7 +342,7 @@ func (about *AboutDialog) Comments() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -358,7 +358,7 @@ func (about *AboutDialog) Copyright() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -385,7 +385,7 @@ func (about *AboutDialog) Documenters() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -403,7 +403,7 @@ func (about *AboutDialog) License() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -452,7 +452,7 @@ func (about *AboutDialog) LogoIconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -468,7 +468,7 @@ func (about *AboutDialog) ProgramName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -485,7 +485,7 @@ func (about *AboutDialog) TranslatorCredits() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -501,7 +501,7 @@ func (about *AboutDialog) Version() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -517,7 +517,7 @@ func (about *AboutDialog) Website() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -533,7 +533,7 @@ func (about *AboutDialog) WebsiteLabel() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -569,7 +569,7 @@ func (about *AboutDialog) SetArtists(artists []string) {
 	{
 		out := unsafe.Slice(_arg1, len(artists))
 		for i := range artists {
-			out[i] = (*C.gchar)(C.CString(artists[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(artists[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -589,7 +589,7 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 	{
 		out := unsafe.Slice(_arg1, len(authors))
 		for i := range authors {
-			out[i] = (*C.gchar)(C.CString(authors[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(authors[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -604,7 +604,7 @@ func (about *AboutDialog) SetComments(comments string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(comments))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(comments)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_comments(_arg0, _arg1)
@@ -617,7 +617,7 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(copyright))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(copyright)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_copyright(_arg0, _arg1)
@@ -635,7 +635,7 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 	{
 		out := unsafe.Slice(_arg1, len(documenters))
 		for i := range documenters {
-			out[i] = (*C.gchar)(C.CString(documenters[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(documenters[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -650,7 +650,7 @@ func (about *AboutDialog) SetLicense(license string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(license))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(license)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_license(_arg0, _arg1)
@@ -677,7 +677,7 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_logo_icon_name(_arg0, _arg1)
@@ -690,7 +690,7 @@ func (about *AboutDialog) SetProgramName(name string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_program_name(_arg0, _arg1)
@@ -716,7 +716,7 @@ func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(translatorCredits))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(translatorCredits)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_translator_credits(_arg0, _arg1)
@@ -728,7 +728,7 @@ func (about *AboutDialog) SetVersion(version string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(version))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(version)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_version(_arg0, _arg1)
@@ -740,7 +740,7 @@ func (about *AboutDialog) SetWebsite(website string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(website))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(website)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_website(_arg0, _arg1)
@@ -752,7 +752,7 @@ func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(C.CString(websiteLabel))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(websiteLabel)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_website_label(_arg0, _arg1)

@@ -260,13 +260,13 @@ func NewAction(name string, label string, tooltip string, stockId string) *Actio
 	var _arg4 *C.gchar     // out
 	var _cret *C.GtkAction // in
 
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(label))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(C.CString(tooltip))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(C.CString(stockId))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg4))
 
 	_cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
@@ -434,7 +434,7 @@ func (action *Action) AccelPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -493,7 +493,7 @@ func (action *Action) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -534,7 +534,7 @@ func (action *Action) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -552,7 +552,7 @@ func (action *Action) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -592,7 +592,7 @@ func (action *Action) ShortLabel() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -610,7 +610,7 @@ func (action *Action) StockID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -629,7 +629,7 @@ func (action *Action) Tooltip() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -770,7 +770,7 @@ func (action *Action) SetAccelPath(accelPath string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.gchar)(C.CString(accelPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_accel_path(_arg0, _arg1)
@@ -821,7 +821,7 @@ func (action *Action) SetIconName(iconName string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_icon_name(_arg0, _arg1)
@@ -854,7 +854,7 @@ func (action *Action) SetLabel(label string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.gchar)(C.CString(label))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_label(_arg0, _arg1)
@@ -885,7 +885,7 @@ func (action *Action) SetShortLabel(shortLabel string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.gchar)(C.CString(shortLabel))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(shortLabel)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_short_label(_arg0, _arg1)
@@ -899,7 +899,7 @@ func (action *Action) SetStockID(stockId string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.gchar)(C.CString(stockId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_stock_id(_arg0, _arg1)
@@ -914,7 +914,7 @@ func (action *Action) SetTooltip(tooltip string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.gchar)(C.CString(tooltip))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_tooltip(_arg0, _arg1)

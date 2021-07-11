@@ -1152,7 +1152,7 @@ func (file *File) Basename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -1171,7 +1171,7 @@ func (file *File) Child(name string) *File {
 	var _cret *C.GFile // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child(_arg0, _arg1)
@@ -1197,7 +1197,7 @@ func (file *File) ChildForDisplayName(displayName string) (*File, error) {
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.char)(C.CString(displayName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child_for_display_name(_arg0, _arg1, &_cerr)
@@ -1252,7 +1252,7 @@ func (file *File) ParseName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1272,7 +1272,7 @@ func (file *File) Path() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -1293,7 +1293,7 @@ func (parent *File) RelativePath(descendant Filer) string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -1312,7 +1312,7 @@ func (file *File) URI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1339,7 +1339,7 @@ func (file *File) URIScheme() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1409,7 +1409,7 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.char)(C.CString(uriScheme))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_has_uri_scheme(_arg0, _arg1)
@@ -1521,7 +1521,7 @@ func (file *File) LoadContents(cancellable Cancellabler) ([]byte, string, error)
 	runtime.SetFinalizer(&_contents, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	_etagOut = C.GoString((*C.gchar)(_arg4))
+	_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -1580,7 +1580,7 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 	runtime.SetFinalizer(&_contents, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	_etagOut = C.GoString((*C.gchar)(_arg4))
+	_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -1612,7 +1612,7 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 	runtime.SetFinalizer(&_contents, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	_etagOut = C.GoString((*C.gchar)(_arg4))
+	_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -1729,7 +1729,7 @@ func (file *File) MakeSymbolicLink(symlinkValue string, cancellable Cancellabler
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.char)(C.CString(symlinkValue))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(symlinkValue)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -1909,7 +1909,7 @@ func (file *File) PeekPath() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -2095,7 +2095,7 @@ func (file *File) QueryFilesystemInfo(attributes string, cancellable Cancellable
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.char)(C.CString(attributes))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -2128,7 +2128,7 @@ func (file *File) QueryFilesystemInfoAsync(attributes string, ioPriority int, ca
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.char)(C.CString(attributes))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -2340,7 +2340,7 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 	var _newEtag string // out
 	var _goerr error    // out
 
-	_newEtag = C.GoString((*C.gchar)(_arg2))
+	_newEtag = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -2400,7 +2400,7 @@ func (file *File) ResolveRelativePath(relativePath string) *File {
 	var _cret *C.GFile // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.char)(C.CString(relativePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(relativePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_resolve_relative_path(_arg0, _arg1)
@@ -2457,7 +2457,7 @@ func (file *File) SetDisplayName(displayName string, cancellable Cancellabler) (
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.char)(C.CString(displayName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -2488,7 +2488,7 @@ func (file *File) SetDisplayNameAsync(displayName string, ioPriority int, cancel
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.char)(C.CString(displayName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))

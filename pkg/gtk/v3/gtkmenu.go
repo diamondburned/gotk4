@@ -71,7 +71,7 @@ func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C
 	menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Menu)
 	x = (*int)(unsafe.Pointer(arg1))
 	y = (*int)(unsafe.Pointer(arg2))
-	userData = (cgo.Handle)(arg4)
+	userData = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(MenuPositionFunc)
 	pushIn := fn(menu, x, y, userData)
@@ -301,7 +301,7 @@ func (menu *Menu) AccelPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -408,7 +408,7 @@ func (menu *Menu) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -538,7 +538,7 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 	var _arg1 *C.gchar   // out
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.gchar)(C.CString(accelPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_set_accel_path(_arg0, _arg1)
@@ -629,7 +629,7 @@ func (menu *Menu) SetTitle(title string) {
 	var _arg1 *C.gchar   // out
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.gchar)(C.CString(title))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_set_title(_arg0, _arg1)

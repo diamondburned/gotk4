@@ -43,7 +43,7 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.char)(C.CString(mountPath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mountPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_is_mount_path_system_internal(_arg1)
@@ -69,7 +69,7 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.char)(C.CString(devicePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(devicePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_is_system_device_path(_arg1)
@@ -94,7 +94,7 @@ func UnixIsSystemFSType(fsType string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.char)(C.CString(fsType))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fsType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_is_system_fs_type(_arg1)
@@ -118,7 +118,7 @@ func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
 	var _arg2 C.guint64          // in
 	var _cret *C.GUnixMountEntry // in
 
-	_arg1 = (*C.char)(C.CString(mountPath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mountPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_mount_at(_arg1, &_arg2)
@@ -182,7 +182,7 @@ func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
 	var _arg2 C.guint64          // in
 	var _cret *C.GUnixMountEntry // in
 
-	_arg1 = (*C.char)(C.CString(filePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_mount_for(_arg1, &_arg2)
@@ -219,7 +219,7 @@ func UnixMountGetDevicePath(mountEntry *UnixMountEntry) string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -235,7 +235,7 @@ func UnixMountGetFSType(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -251,7 +251,7 @@ func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -271,7 +271,7 @@ func UnixMountGetOptions(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -291,7 +291,7 @@ func UnixMountGetRootPath(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -342,7 +342,7 @@ func UnixMountGuessName(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -614,7 +614,7 @@ func (mountPoint *UnixMountPoint) DevicePath() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -630,7 +630,7 @@ func (mountPoint *UnixMountPoint) FSType() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -646,7 +646,7 @@ func (mountPoint *UnixMountPoint) MountPath() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -662,7 +662,7 @@ func (mountPoint *UnixMountPoint) Options() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -713,7 +713,7 @@ func (mountPoint *UnixMountPoint) GuessName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

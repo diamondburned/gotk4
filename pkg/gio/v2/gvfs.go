@@ -54,8 +54,8 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 	var userData cgo.Handle // out
 
 	vfs = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*VFS)
-	identifier = C.GoString((*C.gchar)(arg1))
-	userData = (cgo.Handle)(arg2)
+	identifier = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(VFSFileLookupFunc)
 	file := fn(vfs, identifier, userData)
@@ -142,7 +142,7 @@ func (vfs *VFS) FileForPath(path string) *File {
 	var _cret *C.GFile // in
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
-	_arg1 = (*C.char)(C.CString(path))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_get_file_for_path(_arg0, _arg1)
@@ -164,7 +164,7 @@ func (vfs *VFS) FileForURI(uri string) *File {
 	var _cret *C.GFile // in
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
-	_arg1 = (*C.char)(C.CString(uri))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_get_file_for_uri(_arg0, _arg1)
@@ -197,7 +197,7 @@ func (vfs *VFS) SupportedURISchemes() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -231,7 +231,7 @@ func (vfs *VFS) ParseName(parseName string) *File {
 	var _cret *C.GFile // in
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
-	_arg1 = (*C.char)(C.CString(parseName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parseName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_parse_name(_arg0, _arg1)
@@ -251,7 +251,7 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
-	_arg1 = (*C.char)(C.CString(scheme))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(scheme)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_unregister_uri_scheme(_arg0, _arg1)

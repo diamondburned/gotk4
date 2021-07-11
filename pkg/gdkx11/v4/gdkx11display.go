@@ -33,7 +33,7 @@ func init() {
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.char // out
 
-	_arg1 = (*C.char)(C.CString(smClientId))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(smClientId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_set_sm_client_id(_arg1)
@@ -245,7 +245,7 @@ func (display *X11Display) StartupNotificationID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -294,7 +294,7 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(C.CString(theme))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(theme)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(size)
 
@@ -319,7 +319,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(C.CString(startupId))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_display_set_startup_notification_id(_arg0, _arg1)
@@ -354,7 +354,7 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	var _cret C.int // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
@@ -364,7 +364,7 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	var _ctext []byte
 	var _gint int // out
 
-	_encoding = C.GoString((*C.gchar)(_arg2))
+	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	_format = int(_arg3)
 	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
 	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
@@ -395,7 +395,7 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
@@ -405,7 +405,7 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	var _ctext []byte
 	var _ok bool // out
 
-	_encoding = C.GoString((*C.gchar)(_arg2))
+	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	_format = int(_arg3)
 	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
 	runtime.SetFinalizer(&_ctext, func(v *[]byte) {

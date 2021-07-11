@@ -244,7 +244,10 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	switch {
 	case value.Resolved.IsBuiltin("cgo.Handle"):
 		value.header.Import("runtime/cgo")
-		value.p.Linef("%s = (%s)(%s)", value.Out.Set, value.Out.Type, value.InName)
+		value.header.Import("unsafe")
+		// unsafe.Pointer is needed for pointer to pointers, so we're playing it
+		// safe.
+		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.Out.Set, value.Out.Type, value.InName)
 		return true
 
 	case value.Resolved.IsBuiltin("string"):
@@ -254,10 +257,13 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 		// Preemptively cast the value to char*, since this might be used for
 		// uchar as well.
-		value.p.Linef("%s = C.GoString((*C.gchar)(%s))", value.Out.Set, value.InName)
+		value.header.Import("unsafe")
+		value.p.Linef(
+			"%s = C.GoString((*C.gchar)(unsafe.Pointer(%s)))",
+			value.Out.Set, value.InName,
+		)
 		// Only free this if C is transferring ownership to us.
 		if value.isTransferring() {
-			value.header.Import("unsafe")
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
 		}
 		return true
@@ -270,7 +276,8 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			value.p.LineTmpl(value, `
 				if <.InPtr 0><.In.Name> != 0 {
 					<.OutPtr 0><.Out.Set> = true
-				}`)
+				}
+			`)
 		case "_Bool", "bool":
 			fallthrough
 		default:

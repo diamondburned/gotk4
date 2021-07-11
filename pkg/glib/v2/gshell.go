@@ -40,7 +40,7 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 	var _arg2 C.gint    // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(C.CString(commandLine))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(commandLine)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_shell_parse_argv(_arg1, &_arg2, &_arg3, &_cerr)
@@ -53,7 +53,7 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 		src := unsafe.Slice(_arg3, _arg2)
 		_argvp = make([]string, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_argvp[i] = C.GoString((*C.gchar)(src[i]))
+			_argvp[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -71,14 +71,14 @@ func ShellQuote(unquotedString string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(unquotedString))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(unquotedString)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_shell_quote(_arg1)
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -107,7 +107,7 @@ func ShellUnquote(quotedString string) (string, error) {
 	var _cret *C.gchar  // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(C.CString(quotedString))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(quotedString)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_shell_unquote(_arg1, &_cerr)
@@ -115,7 +115,7 @@ func ShellUnquote(quotedString string) (string, error) {
 	var _filename string // out
 	var _goerr error     // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

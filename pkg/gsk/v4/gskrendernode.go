@@ -46,7 +46,7 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	start = (*ParseLocation)(unsafe.Pointer(arg0))
 	end = (*ParseLocation)(unsafe.Pointer(arg1))
 	err = gerror.Take(unsafe.Pointer(arg2))
-	userData = (cgo.Handle)(arg3)
+	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(ParseErrorFunc)
 	fn(start, end, err, userData)
@@ -192,7 +192,7 @@ func (node *RenderNode) WriteToFile(filename string) error {
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gsk_render_node_write_to_file(_arg0, _arg1, &_cerr)

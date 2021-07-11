@@ -40,7 +40,7 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 
 	grabWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
 	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
-	funcData = (cgo.Handle)(arg2)
+	funcData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(grabWidget, event, funcData)
@@ -82,7 +82,7 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

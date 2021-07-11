@@ -100,7 +100,7 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) *AppIn
 	var _cret *C.GAppInfo              // in
 
 	_arg0 = (*C.GDesktopAppInfoLookup)(unsafe.Pointer(lookup.Native()))
-	_arg1 = (*C.char)(C.CString(uriScheme))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_lookup_get_default_for_uri_scheme(_arg0, _arg1)
@@ -198,7 +198,7 @@ func NewDesktopAppInfo(desktopId string) *DesktopAppInfo {
 	var _arg1 *C.char            // out
 	var _cret *C.GDesktopAppInfo // in
 
-	_arg1 = (*C.char)(C.CString(desktopId))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(desktopId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_new(_arg1)
@@ -215,7 +215,7 @@ func NewDesktopAppInfoFromFilename(filename string) *DesktopAppInfo {
 	var _arg1 *C.char            // out
 	var _cret *C.GDesktopAppInfo // in
 
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_new_from_filename(_arg1)
@@ -253,14 +253,14 @@ func (info *DesktopAppInfo) ActionName(actionName string) string {
 	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_action_name(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -275,7 +275,7 @@ func (info *DesktopAppInfo) Boolean(key string) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.char)(C.CString(key))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_boolean(_arg0, _arg1)
@@ -300,7 +300,7 @@ func (info *DesktopAppInfo) Categories() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -318,7 +318,7 @@ func (info *DesktopAppInfo) Filename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -334,7 +334,7 @@ func (info *DesktopAppInfo) GenericName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -378,7 +378,7 @@ func (info *DesktopAppInfo) Keywords() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -395,14 +395,14 @@ func (info *DesktopAppInfo) LocaleString(key string) string {
 	var _cret *C.char            // in
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.char)(C.CString(key))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_locale_string(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -445,7 +445,7 @@ func (info *DesktopAppInfo) ShowIn(desktopEnv string) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.gchar)(C.CString(desktopEnv))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(desktopEnv)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_show_in(_arg0, _arg1)
@@ -472,7 +472,7 @@ func (info *DesktopAppInfo) StartupWmClass() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -486,14 +486,14 @@ func (info *DesktopAppInfo) String(key string) string {
 	var _cret *C.char            // in
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.char)(C.CString(key))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_string(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -507,7 +507,7 @@ func (info *DesktopAppInfo) HasKey(key string) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.char)(C.CString(key))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_has_key(_arg0, _arg1)
@@ -542,7 +542,7 @@ func (info *DesktopAppInfo) LaunchAction(actionName string, launchContext AppLau
 	var _arg2 *C.GAppLaunchContext // out
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer((launchContext).(gextras.Nativer).Native()))
 
@@ -574,7 +574,7 @@ func (info *DesktopAppInfo) ListActions() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 

@@ -192,7 +192,7 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.char)(C.CString(uri))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkRecentData)(unsafe.Pointer(recentData))
 
@@ -222,7 +222,7 @@ func (manager *RecentManager) AddItem(uri string) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.char)(C.CString(uri))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_manager_add_item(_arg0, _arg1)
@@ -244,7 +244,7 @@ func (manager *RecentManager) HasItem(uri string) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.char)(C.CString(uri))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_manager_has_item(_arg0, _arg1)
@@ -268,7 +268,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.char)(C.CString(uri))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_manager_lookup_item(_arg0, _arg1, &_cerr)
@@ -298,9 +298,9 @@ func (manager *RecentManager) MoveItem(uri string, newUri string) error {
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.char)(C.CString(uri))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(newUri))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(newUri)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_recent_manager_move_item(_arg0, _arg1, _arg2, &_cerr)
@@ -339,7 +339,7 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.char)(C.CString(uri))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_manager_remove_item(_arg0, _arg1, &_cerr)
@@ -386,7 +386,7 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
-	_arg1 = (*C.char)(C.CString(appName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
@@ -447,7 +447,7 @@ func (info *RecentInfo) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -465,7 +465,7 @@ func (info *RecentInfo) DisplayName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -497,7 +497,7 @@ func (info *RecentInfo) MIMEType() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -538,7 +538,7 @@ func (info *RecentInfo) ShortName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -555,7 +555,7 @@ func (info *RecentInfo) URI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -575,7 +575,7 @@ func (info *RecentInfo) URIDisplay() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -589,7 +589,7 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
-	_arg1 = (*C.char)(C.CString(appName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_info_has_application(_arg0, _arg1)
@@ -611,7 +611,7 @@ func (info *RecentInfo) HasGroup(groupName string) bool {
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
-	_arg1 = (*C.char)(C.CString(groupName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_info_has_group(_arg0, _arg1)
@@ -656,7 +656,7 @@ func (info *RecentInfo) LastApplication() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

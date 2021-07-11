@@ -48,7 +48,7 @@ func NewPaperSize(name string) *PaperSize {
 	var _arg1 *C.char         // out
 	var _cret *C.GtkPaperSize // in
 
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_paper_size_new(_arg1)
@@ -89,7 +89,7 @@ func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSi
 	var _arg3 C.double        // out
 	var _cret *C.GtkPaperSize // in
 
-	_arg1 = (*C.char)(C.CString(ippName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(ippName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.double(width)
 	_arg3 = C.double(height)
@@ -114,7 +114,7 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
-	_arg2 = (*C.char)(C.CString(groupName))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_paper_size_new_from_key_file(_arg1, _arg2, &_cerr)
@@ -139,9 +139,9 @@ func NewPaperSizeFromPpd(ppdName string, ppdDisplayName string, width float64, h
 	var _arg4 C.double        // out
 	var _cret *C.GtkPaperSize // in
 
-	_arg1 = (*C.char)(C.CString(ppdName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(ppdName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(ppdDisplayName))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(ppdDisplayName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.double(width)
 	_arg4 = C.double(height)
@@ -202,7 +202,7 @@ func (size *PaperSize) DisplayName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -218,7 +218,7 @@ func (size *PaperSize) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -234,7 +234,7 @@ func (size *PaperSize) PpdName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -323,7 +323,7 @@ func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(size))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
-	_arg2 = (*C.char)(C.CString(groupName))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_paper_size_to_key_file(_arg0, _arg1, _arg2)

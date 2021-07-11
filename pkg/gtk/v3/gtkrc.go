@@ -192,7 +192,7 @@ func marshalRCFlags(p uintptr) (interface{}, error) {
 func RCAddDefaultFile(filename string) {
 	var _arg1 *C.gchar // out
 
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_add_default_file(_arg1)
@@ -206,14 +206,14 @@ func RCFindModuleInPath(moduleFile string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(moduleFile))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(moduleFile)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_rc_find_module_in_path(_arg1)
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -232,14 +232,14 @@ func RCFindPixmapInPath(settings Settingser, scanner *glib.Scanner, pixmapFile s
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
 	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner))
-	_arg3 = (*C.gchar)(C.CString(pixmapFile))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(pixmapFile)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -266,7 +266,7 @@ func RCGetDefaultFiles() []string {
 		src := unsafe.Slice(_cret, i)
 		_filenames = make([]string, i)
 		for i := range src {
-			_filenames[i] = C.GoString((*C.gchar)(src[i]))
+			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -285,7 +285,7 @@ func RCGetImModuleFile() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -304,7 +304,7 @@ func RCGetImModulePath() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -322,7 +322,7 @@ func RCGetModuleDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -372,9 +372,9 @@ func RCGetStyleByPaths(settings Settingser, widgetPath string, classPath string,
 	var _cret *C.GtkStyle    // in
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(widgetPath))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(widgetPath)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.char)(C.CString(classPath))
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(classPath)))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GType(typ)
 
@@ -398,7 +398,7 @@ func RCGetThemeDir() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -410,7 +410,7 @@ func RCGetThemeDir() string {
 func RCParse(filename string) {
 	var _arg1 *C.gchar // out
 
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_parse(_arg1)
@@ -489,7 +489,7 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 func RCParseString(rcString string) {
 	var _arg1 *C.gchar // out
 
-	_arg1 = (*C.gchar)(C.CString(rcString))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(rcString)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_parse_string(_arg1)
@@ -570,7 +570,7 @@ func RCSetDefaultFiles(filenames []string) {
 	{
 		out := unsafe.Slice(_arg1, len(filenames))
 		for i := range filenames {
-			out[i] = (*C.gchar)(C.CString(filenames[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(filenames[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}

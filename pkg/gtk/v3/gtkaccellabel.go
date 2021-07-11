@@ -113,7 +113,7 @@ func NewAccelLabel(_string string) *AccelLabel {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(_string))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_accel_label_new(_arg1)

@@ -337,7 +337,7 @@ func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gboolean)
 	var userData cgo.Handle // out
 
 	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Window)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(WindowChildFunc)
 	ok := fn(window, userData)
@@ -2104,7 +2104,7 @@ func (window *Window) UserData() cgo.Handle {
 
 	var _data cgo.Handle // out
 
-	_data = (cgo.Handle)(_arg1)
+	_data = (cgo.Handle)(unsafe.Pointer(_arg1))
 
 	return _data
 }
@@ -2927,7 +2927,7 @@ func (window *Window) SetIconName(name string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_icon_name(_arg0, _arg1)
@@ -3106,7 +3106,7 @@ func (window *Window) SetRole(role string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(role))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(role)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_role(_arg0, _arg1)
@@ -3179,7 +3179,7 @@ func (window *Window) SetStartupID(startupId string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(startupId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_startup_id(_arg0, _arg1)
@@ -3240,7 +3240,7 @@ func (window *Window) SetTitle(title string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(C.CString(title))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_title(_arg0, _arg1)
@@ -3286,7 +3286,7 @@ func (window *Window) SetUserData(userData gextras.Objector) {
 	var _arg1 C.gpointer   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = C.gpointer(unsafe.Pointer((&userData).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(userData.Native()))
 
 	C.gdk_window_set_user_data(_arg0, _arg1)
 }

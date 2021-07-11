@@ -89,7 +89,7 @@ func (schema *SettingsSchema) ID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -104,7 +104,7 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	var _cret *C.GSettingsSchemaKey // in
 
 	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_schema_get_key(_arg0, _arg1)
@@ -139,7 +139,7 @@ func (schema *SettingsSchema) Path() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -151,7 +151,7 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_schema_has_key(_arg0, _arg1)
@@ -188,7 +188,7 @@ func (schema *SettingsSchema) ListChildren() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -221,7 +221,7 @@ func (schema *SettingsSchema) ListKeys() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -319,7 +319,7 @@ func (key *SettingsSchemaKey) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -335,7 +335,7 @@ func (key *SettingsSchemaKey) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -414,7 +414,7 @@ func (key *SettingsSchemaKey) Summary() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -507,7 +507,7 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	var _cret *C.GSettingsSchemaSource // in
 	var _cerr *C.GError                // in
 
-	_arg1 = (*C.gchar)(C.CString(directory))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(directory)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GSettingsSchemaSource)(unsafe.Pointer(parent))
 	if trusted {
@@ -571,7 +571,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 		src := unsafe.Slice(_arg2, i)
 		_nonRelocatable = make([]string, i)
 		for i := range src {
-			_nonRelocatable[i] = C.GoString((*C.gchar)(src[i]))
+			_nonRelocatable[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -585,7 +585,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 		src := unsafe.Slice(_arg3, i)
 		_relocatable = make([]string, i)
 		for i := range src {
-			_relocatable[i] = C.GoString((*C.gchar)(src[i]))
+			_relocatable[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -610,7 +610,7 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 	var _cret *C.GSettingsSchema       // in
 
 	_arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(source))
-	_arg1 = (*C.gchar)(C.CString(schemaId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(schemaId)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if recursive {
 		_arg2 = C.TRUE

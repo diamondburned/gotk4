@@ -296,7 +296,7 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject gextras.Objector) (u
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 
 	_cret = C.g_socket_listener_add_any_inet_port(_arg0, _arg1, &_cerr)
 
@@ -328,7 +328,7 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject gextras.Ob
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = C.guint16(port)
-	_arg2 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 
 	C.g_socket_listener_add_inet_port(_arg0, _arg1, _arg2, &_cerr)
 
@@ -358,7 +358,7 @@ func (listener *SocketListener) AddSocket(socket Socketter, sourceObject gextras
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = (*C.GSocket)(unsafe.Pointer((socket).(gextras.Nativer).Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 
 	C.g_socket_listener_add_socket(_arg0, _arg1, _arg2, &_cerr)
 

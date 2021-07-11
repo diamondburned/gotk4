@@ -177,7 +177,7 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 	var _arg2 *C.GtkIconSet     // out
 
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
-	_arg1 = (*C.gchar)(C.CString(stockId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
 
@@ -212,7 +212,7 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 	var _cret *C.GtkIconSet     // in
 
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
-	_arg1 = (*C.gchar)(C.CString(stockId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_factory_lookup(_arg0, _arg1)

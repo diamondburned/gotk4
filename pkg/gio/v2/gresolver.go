@@ -169,7 +169,7 @@ func (resolver *Resolver) LookupByAddress(address InetAddresser, cancellable Can
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -215,7 +215,7 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -234,7 +234,7 @@ func (resolver *Resolver) LookupByNameAsync(hostname string, cancellable Cancell
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.gchar)(C.CString(hostname))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -257,11 +257,11 @@ func (resolver *Resolver) LookupServiceAsync(service string, protocol string, do
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.gchar)(C.CString(service))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(protocol))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(C.CString(domain))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)

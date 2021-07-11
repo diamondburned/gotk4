@@ -47,9 +47,9 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, a
 	var userData cgo.Handle         // out
 
 	completion = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*EntryCompletion)
-	key = C.GoString((*C.gchar)(arg1))
+	key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
-	userData = (cgo.Handle)(arg3)
+	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(EntryCompletionMatchFunc)
 	ok := fn(completion, key, iter, userData)
@@ -268,14 +268,14 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 	var _cret *C.gchar              // in
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
-	_arg1 = (*C.char)(C.CString(key))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_entry_completion_compute_prefix(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -307,7 +307,7 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -481,7 +481,7 @@ func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string)
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 	_arg1 = C.gint(index_)
-	_arg2 = (*C.gchar)(C.CString(markup))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_completion_insert_action_markup(_arg0, _arg1, _arg2)
@@ -500,7 +500,7 @@ func (completion *EntryCompletion) InsertActionText(index_ int, text string) {
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 	_arg1 = C.gint(index_)
-	_arg2 = (*C.gchar)(C.CString(text))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_completion_insert_action_text(_arg0, _arg1, _arg2)

@@ -128,7 +128,7 @@ func NewTextureFromResource(resourcePath string) *Texture {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkTexture // in
 
-	_arg1 = (*C.char)(C.CString(resourcePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_texture_new_from_resource(_arg1)
@@ -184,7 +184,7 @@ func (texture *Texture) SaveToPng(filename string) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_texture_save_to_png(_arg0, _arg1)

@@ -207,7 +207,7 @@ func (stream *DataOutputStream) PutString(str string, cancellable Cancellabler) 
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 

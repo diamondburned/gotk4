@@ -379,7 +379,7 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
-	_arg1 = (*C.gchar)(C.CString(stringToExpand))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stringToExpand)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_match_info_expand_references(_arg0, _arg1, &_cerr)
@@ -387,7 +387,7 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -420,7 +420,7 @@ func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -461,7 +461,7 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -483,14 +483,14 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 	var _cret *C.gchar      // in
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_match_info_fetch_named(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -510,7 +510,7 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_match_info_fetch_named_pos(_arg0, _arg1, &_arg2, &_arg3)
@@ -633,7 +633,7 @@ func (matchInfo *MatchInfo) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -944,7 +944,7 @@ func (regex *Regex) Pattern() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -956,7 +956,7 @@ func (regex *Regex) StringNumber(name string) int {
 	var _cret C.gint    // in
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_regex_get_string_number(_arg0, _arg1)

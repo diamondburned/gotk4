@@ -49,11 +49,11 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	sender = C.GoString((*C.gchar)(arg1))
-	objectPath = C.GoString((*C.gchar)(arg2))
-	interfaceName = C.GoString((*C.gchar)(arg3))
-	propertyName = C.GoString((*C.gchar)(arg4))
-	userData = (cgo.Handle)(arg6)
+	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg6))
 
 	fn := v.(DBusInterfaceGetPropertyFunc)
 	err, variant := fn(connection, sender, objectPath, interfaceName, propertyName, userData)
@@ -85,17 +85,17 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	var userData cgo.Handle              // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	sender = C.GoString((*C.gchar)(arg1))
-	objectPath = C.GoString((*C.gchar)(arg2))
-	interfaceName = C.GoString((*C.gchar)(arg3))
-	methodName = C.GoString((*C.gchar)(arg4))
+	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	methodName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	parameters = (*glib.Variant)(unsafe.Pointer(arg5))
 	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
 	invocation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6)))).(*DBusMethodInvocation)
-	userData = (cgo.Handle)(arg7)
+	userData = (cgo.Handle)(unsafe.Pointer(arg7))
 
 	fn := v.(DBusInterfaceMethodCallFunc)
 	fn(connection, sender, objectPath, interfaceName, methodName, parameters, invocation, userData)
@@ -121,16 +121,16 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	sender = C.GoString((*C.gchar)(arg1))
-	objectPath = C.GoString((*C.gchar)(arg2))
-	interfaceName = C.GoString((*C.gchar)(arg3))
-	propertyName = C.GoString((*C.gchar)(arg4))
+	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	value = (*glib.Variant)(unsafe.Pointer(arg5))
 	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(value, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(arg7)
+	userData = (cgo.Handle)(unsafe.Pointer(arg7))
 
 	fn := v.(DBusInterfaceSetPropertyFunc)
 	err, ok := fn(connection, sender, objectPath, interfaceName, propertyName, value, userData)
@@ -221,7 +221,7 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 	if arg2 != 0 {
 		incoming = true
 	}
-	userData = (cgo.Handle)(arg3)
+	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(DBusMessageFilterFunction)
 	dBusMessage := fn(connection, message, incoming, userData)
@@ -251,16 +251,16 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	senderName = C.GoString((*C.gchar)(arg1))
-	objectPath = C.GoString((*C.gchar)(arg2))
-	interfaceName = C.GoString((*C.gchar)(arg3))
-	signalName = C.GoString((*C.gchar)(arg4))
+	senderName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	parameters = (*glib.Variant)(unsafe.Pointer(arg5))
 	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(arg6)
+	userData = (cgo.Handle)(unsafe.Pointer(arg6))
 
 	fn := v.(DBusSignalCallback)
 	fn(connection, senderName, objectPath, interfaceName, signalName, parameters, userData)
@@ -287,16 +287,16 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	sender = C.GoString((*C.gchar)(arg1))
-	objectPath = C.GoString((*C.gchar)(arg2))
-	interfaceName = C.GoString((*C.gchar)(arg3))
-	node = C.GoString((*C.gchar)(arg4))
-	userData = (cgo.Handle)(arg6)
+	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	node = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg6))
 
 	fn := v.(DBusSubtreeDispatchFunc)
 	outUserData, dBusInterfaceVTable := fn(connection, sender, objectPath, interfaceName, node, userData)
 
-	*arg5 = (C.gpointer)(outUserData)
+	*arg5 = (C.gpointer)(unsafe.Pointer(outUserData))
 	cret = (*C.GDBusInterfaceVTable)(unsafe.Pointer(dBusInterfaceVTable))
 
 	return cret
@@ -329,9 +329,9 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	sender = C.GoString((*C.gchar)(arg1))
-	objectPath = C.GoString((*C.gchar)(arg2))
-	userData = (cgo.Handle)(arg3)
+	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(DBusSubtreeEnumerateFunc)
 	utf8s := fn(connection, sender, objectPath, userData)
@@ -340,7 +340,7 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	{
 		out := unsafe.Slice(cret, len(utf8s))
 		for i := range utf8s {
-			out[i] = (*C.gchar)(C.CString(utf8s[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
 		}
 	}
 
@@ -381,10 +381,10 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	sender = C.GoString((*C.gchar)(arg1))
-	objectPath = C.GoString((*C.gchar)(arg2))
-	node = C.GoString((*C.gchar)(arg3))
-	userData = (cgo.Handle)(arg4)
+	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	node = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(DBusSubtreeIntrospectFunc)
 	dBusInterfaceInfos := fn(connection, sender, objectPath, node, userData)

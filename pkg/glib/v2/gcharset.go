@@ -39,7 +39,7 @@ func GetCharset() (string, bool) {
 	var _charset string // out
 	var _ok bool        // out
 
-	_charset = C.GoString((*C.gchar)(_arg1))
+	_charset = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -55,7 +55,7 @@ func GetCodeset() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -86,7 +86,7 @@ func GetConsoleCharset() (string, bool) {
 	var _charset string // out
 	var _ok bool        // out
 
-	_charset = C.GoString((*C.gchar)(_arg1))
+	_charset = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -121,7 +121,7 @@ func GetLanguageNames() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -142,7 +142,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 	var _arg1 *C.gchar // out
 	var _cret **C.gchar
 
-	_arg1 = (*C.gchar)(C.CString(categoryName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(categoryName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_language_names_with_category(_arg1)
@@ -159,7 +159,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -185,7 +185,7 @@ func GetLocaleVariants(locale string) []string {
 	var _arg1 *C.gchar // out
 	var _cret **C.gchar
 
-	_arg1 = (*C.gchar)(C.CString(locale))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_locale_variants(_arg1)
@@ -202,7 +202,7 @@ func GetLocaleVariants(locale string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

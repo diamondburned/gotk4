@@ -80,7 +80,7 @@ func (factory *ObjectFactory) CreateAccessible(obj gextras.Objector) *ObjectClas
 	var _cret *C.AtkObject        // in
 
 	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer((&obj).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
 

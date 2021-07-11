@@ -100,7 +100,7 @@ func (password *TLSPassword) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -155,7 +155,7 @@ func (password *TLSPassword) Warning() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -167,7 +167,7 @@ func (password *TLSPassword) SetDescription(description string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
-	_arg1 = (*C.gchar)(C.CString(description))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_description(_arg0, _arg1)
@@ -200,7 +200,7 @@ func (password *TLSPassword) SetWarning(warning string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
-	_arg1 = (*C.gchar)(C.CString(warning))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(warning)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_warning(_arg0, _arg1)

@@ -415,7 +415,7 @@ func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, u
 
 	_startOffset = int(_arg2)
 	_endOffset = int(_arg3)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _startOffset, _endOffset, _utf8
@@ -436,7 +436,7 @@ func (text *Text) Text(startOffset int, endOffset int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

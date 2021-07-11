@@ -133,7 +133,7 @@ func (stream *FileInputStream) QueryInfo(attributes string, cancellable Cancella
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.char)(C.CString(attributes))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -167,7 +167,7 @@ func (stream *FileInputStream) QueryInfoAsync(attributes string, ioPriority int,
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.char)(C.CString(attributes))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))

@@ -110,7 +110,7 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _cret *C.GTlsCertificate // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.gchar)(C.CString(file))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_tls_certificate_new_from_file(_arg1, &_cerr)
@@ -141,9 +141,9 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (*TLSCertificat
 	var _cret *C.GTlsCertificate // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.gchar)(C.CString(certFile))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(certFile)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(keyFile))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(keyFile)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_certificate_new_from_files(_arg1, _arg2, &_cerr)
@@ -176,7 +176,7 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	var _cret *C.GTlsCertificate // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.gchar)(C.CString(data))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(data)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
@@ -219,9 +219,9 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 	var _cret *C.GTlsCertificate // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.gchar)(C.CString(pkcs11Uri))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pkcs11Uri)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(privateKeyPkcs11Uri))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(privateKeyPkcs11Uri)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_certificate_new_from_pkcs11_uris(_arg1, _arg2, &_cerr)

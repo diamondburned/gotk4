@@ -358,7 +358,7 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -539,7 +539,7 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 	{
 		out := unsafe.Slice(_arg1, len(protocols))
 		for i := range protocols {
-			out[i] = (*C.gchar)(C.CString(protocols[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(protocols[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}

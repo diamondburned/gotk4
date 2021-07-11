@@ -38,8 +38,8 @@ func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpo
 	var userData cgo.Handle       // out
 
 	toplevel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*WaylandToplevel)
-	handle = C.GoString((*C.gchar)(arg1))
-	userData = (cgo.Handle)(arg2)
+	handle = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(WaylandToplevelExported)
 	fn(toplevel, handle, userData)

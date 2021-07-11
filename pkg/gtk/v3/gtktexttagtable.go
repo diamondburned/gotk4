@@ -42,7 +42,7 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 	var data cgo.Handle // out
 
 	tag = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TextTag)
-	data = (cgo.Handle)(arg1)
+	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TextTagTableForeach)
 	fn(tag, data)
@@ -194,7 +194,7 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 	var _cret *C.GtkTextTag      // in
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_text_tag_table_lookup(_arg0, _arg1)

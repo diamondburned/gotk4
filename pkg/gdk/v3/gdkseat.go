@@ -67,7 +67,7 @@ func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpoint
 
 	seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Seat)
 	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*Window)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(SeatGrabPrepareFunc)
 	fn(seat, window, userData)

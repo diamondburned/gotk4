@@ -113,7 +113,7 @@ func NewInetAddressFromString(_string string) *InetAddress {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GInetAddress // in
 
-	_arg1 = (*C.gchar)(C.CString(_string))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_inet_address_new_from_string(_arg1)
@@ -374,7 +374,7 @@ func (address *InetAddress) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

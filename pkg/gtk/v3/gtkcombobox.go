@@ -358,7 +358,7 @@ func (comboBox *ComboBox) ActiveID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -595,7 +595,7 @@ func (comboBox *ComboBox) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -680,7 +680,7 @@ func (comboBox *ComboBox) SetActiveID(activeId string) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.gchar)(C.CString(activeId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(activeId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_combo_box_set_active_id(_arg0, _arg1)
@@ -833,7 +833,7 @@ func (comboBox *ComboBox) SetTitle(title string) {
 	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.gchar)(C.CString(title))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_combo_box_set_title(_arg0, _arg1)

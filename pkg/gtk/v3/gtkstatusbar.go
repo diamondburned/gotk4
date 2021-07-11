@@ -146,7 +146,7 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	var _cret C.guint         // in
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(statusbar.Native()))
-	_arg1 = (*C.gchar)(C.CString(contextDescription))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contextDescription)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_statusbar_get_context_id(_arg0, _arg1)
@@ -198,7 +198,7 @@ func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(statusbar.Native()))
 	_arg1 = C.guint(contextId)
-	_arg2 = (*C.gchar)(C.CString(text))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_statusbar_push(_arg0, _arg1, _arg2)

@@ -112,7 +112,7 @@ func NewNoOpObject(obj gextras.Objector) *NoOpObject {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&obj).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_no_op_object_new(_arg1)
 

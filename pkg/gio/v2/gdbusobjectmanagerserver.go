@@ -107,7 +107,7 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 	var _arg1 *C.gchar                    // out
 	var _cret *C.GDBusObjectManagerServer // in
 
-	_arg1 = (*C.gchar)(C.CString(objectPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_server_new(_arg1)
@@ -212,7 +212,7 @@ func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	var _cret C.gboolean                  // in
 
 	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.gchar)(C.CString(objectPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_server_unexport(_arg0, _arg1)

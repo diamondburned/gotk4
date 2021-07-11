@@ -869,7 +869,7 @@ func (socket *Socket) JoinMulticastGroup(group InetAddresser, sourceSpecific boo
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.gchar)(C.CString(iface))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_join_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -905,7 +905,7 @@ func (socket *Socket) JoinMulticastGroupSSM(group InetAddresser, sourceSpecific 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.GInetAddress)(unsafe.Pointer((sourceSpecific).(gextras.Nativer).Native()))
-	_arg3 = (*C.gchar)(C.CString(iface))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_join_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -938,7 +938,7 @@ func (socket *Socket) LeaveMulticastGroup(group InetAddresser, sourceSpecific bo
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.gchar)(C.CString(iface))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_leave_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -966,7 +966,7 @@ func (socket *Socket) LeaveMulticastGroupSSM(group InetAddresser, sourceSpecific
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.GInetAddress)(unsafe.Pointer((sourceSpecific).(gextras.Nativer).Native()))
-	_arg3 = (*C.gchar)(C.CString(iface))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_leave_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)

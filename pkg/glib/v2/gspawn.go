@@ -144,7 +144,7 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 
 	var userData cgo.Handle // out
 
-	userData = (cgo.Handle)(arg0)
+	userData = (cgo.Handle)(unsafe.Pointer(arg0))
 
 	fn := v.(SpawnChildSetupFunc)
 	fn(userData)
@@ -213,7 +213,7 @@ func SpawnCommandLineAsync(commandLine string) error {
 	var _arg1 *C.gchar  // out
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(C.CString(commandLine))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(commandLine)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_spawn_command_line_async(_arg1, &_cerr)
@@ -252,7 +252,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	var _arg4 C.gint    // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(C.CString(commandLine))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(commandLine)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_spawn_command_line_sync(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)

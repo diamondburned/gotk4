@@ -270,7 +270,7 @@ func NewCursorFromName(display Displayyer, name string) *Cursor {
 	var _cret *C.GdkCursor  // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(name))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)

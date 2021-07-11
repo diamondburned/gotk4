@@ -49,7 +49,7 @@ func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, a
 
 	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Clipboard)
 	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*gdkpixbuf.Pixbuf)
-	data = (cgo.Handle)(arg2)
+	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ClipboardImageReceivedFunc)
 	fn(clipboard, pixbuf, data)
@@ -72,7 +72,7 @@ func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData,
 
 	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Clipboard)
 	selectionData = (*SelectionData)(unsafe.Pointer(arg1))
-	data = (cgo.Handle)(arg2)
+	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ClipboardReceivedFunc)
 	fn(clipboard, selectionData, data)
@@ -94,8 +94,8 @@ func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C
 	var data cgo.Handle      // out
 
 	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Clipboard)
-	text = C.GoString((*C.gchar)(arg1))
-	data = (cgo.Handle)(arg2)
+	text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ClipboardTextReceivedFunc)
 	fn(clipboard, text, data)
@@ -127,10 +127,10 @@ func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C
 		src := unsafe.Slice(arg1, i)
 		uris = make([]string, i)
 		for i := range src {
-			uris[i] = C.GoString((*C.gchar)(src[i]))
+			uris[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
-	data = (cgo.Handle)(arg2)
+	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ClipboardURIReceivedFunc)
 	fn(clipboard, uris, data)
@@ -406,7 +406,7 @@ func (clipboard *Clipboard) SetText(text string, len int) {
 	var _arg2 C.gint          // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 
@@ -455,7 +455,7 @@ func (clipboard *Clipboard) WaitForText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -484,7 +484,7 @@ func (clipboard *Clipboard) WaitForUris() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

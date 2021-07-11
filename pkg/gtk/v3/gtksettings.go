@@ -103,7 +103,7 @@ func (settings *Settings) ResetProperty(name string) {
 	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_settings_reset_property(_arg0, _arg1)
@@ -117,10 +117,10 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 	var _arg3 *C.gchar       // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(vDouble)
-	_arg3 = (*C.gchar)(C.CString(origin))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_settings_set_double_property(_arg0, _arg1, _arg2, _arg3)
@@ -134,10 +134,10 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 	var _arg3 *C.gchar       // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(vLong)
-	_arg3 = (*C.gchar)(C.CString(origin))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_settings_set_long_property(_arg0, _arg1, _arg2, _arg3)
@@ -150,7 +150,7 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	var _arg2 *C.GtkSettingsValue // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkSettingsValue)(unsafe.Pointer(svalue))
 
@@ -165,11 +165,11 @@ func (settings *Settings) SetStringProperty(name string, vString string, origin 
 	var _arg3 *C.gchar       // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(vString))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(vString)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(C.CString(origin))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)

@@ -123,7 +123,7 @@ func (self *NumerableIcon) BackgroundIconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -159,7 +159,7 @@ func (self *NumerableIcon) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -219,7 +219,7 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_numerable_icon_set_background_icon_name(_arg0, _arg1)
@@ -264,7 +264,7 @@ func (self *NumerableIcon) SetLabel(label string) {
 	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.gchar)(C.CString(label))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_numerable_icon_set_label(_arg0, _arg1)

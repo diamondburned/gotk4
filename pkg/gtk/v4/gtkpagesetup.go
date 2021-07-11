@@ -135,7 +135,7 @@ func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 	var _cret *C.GtkPageSetup // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.char)(C.CString(fileName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_page_setup_new_from_file(_arg1, &_cerr)
@@ -180,7 +180,7 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
-	_arg2 = (*C.char)(C.CString(groupName))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_page_setup_new_from_key_file(_arg1, _arg2, &_cerr)
@@ -251,7 +251,7 @@ func (setup *PageSetup) LoadFile(fileName string) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
-	_arg1 = (*C.char)(C.CString(fileName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_page_setup_load_file(_arg0, _arg1, &_cerr)
@@ -273,7 +273,7 @@ func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) err
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
-	_arg2 = (*C.char)(C.CString(groupName))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_page_setup_load_key_file(_arg0, _arg1, _arg2, &_cerr)
@@ -318,7 +318,7 @@ func (setup *PageSetup) ToFile(fileName string) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
-	_arg1 = (*C.char)(C.CString(fileName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_page_setup_to_file(_arg0, _arg1, &_cerr)
@@ -358,7 +358,7 @@ func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
-	_arg2 = (*C.char)(C.CString(groupName))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_page_setup_to_key_file(_arg0, _arg1, _arg2)

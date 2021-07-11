@@ -154,7 +154,7 @@ func NewActionGroup(name string) *ActionGroup {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkActionGroup // in
 
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_action_group_new(_arg1)
@@ -200,7 +200,7 @@ func (actionGroup *ActionGroup) AddActionWithAccel(action Actioner, accelerator 
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(accelerator))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
@@ -233,7 +233,7 @@ func (actionGroup *ActionGroup) Action(actionName string) *Action {
 	var _cret *C.GtkAction      // in
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_action_group_get_action(_arg0, _arg1)
@@ -258,7 +258,7 @@ func (actionGroup *ActionGroup) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -362,7 +362,7 @@ func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.gchar)(C.CString(domain))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_group_set_translation_domain(_arg0, _arg1)
@@ -394,14 +394,14 @@ func (actionGroup *ActionGroup) TranslateString(_string string) string {
 	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.gchar)(C.CString(_string))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_action_group_translate_string(_arg0, _arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

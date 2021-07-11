@@ -170,14 +170,14 @@ func Basename(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(fileName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_basename(_arg1)
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -194,7 +194,7 @@ func BuildFilenamev(args []string) string {
 	{
 		out := unsafe.Slice(_arg1, len(args))
 		for i := range args {
-			out[i] = (*C.gchar)(C.CString(args[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(args[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -203,7 +203,7 @@ func BuildFilenamev(args []string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -217,14 +217,14 @@ func BuildPathv(separator string, args []string) string {
 	var _arg2 **C.gchar
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(separator))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(separator)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(args)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice(_arg2, len(args))
 		for i := range args {
-			out[i] = (*C.gchar)(C.CString(args[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(args[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -233,7 +233,7 @@ func BuildPathv(separator string, args []string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -260,16 +260,16 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 	var _arg2 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(relativeTo))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(relativeTo)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_canonicalize_filename(_arg1, _arg2)
 
 	var _ret string // out
 
-	_ret = C.GoString((*C.gchar)(_cret))
+	_ret = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _ret
@@ -314,7 +314,7 @@ func FileGetContents(filename string) ([]byte, error) {
 	var _arg3 C.gsize   // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_get_contents(_arg1, &_arg2, &_arg3, &_cerr)
@@ -351,7 +351,7 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	var _cret C.gint    // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(C.CString(tmpl))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tmpl)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_open_tmp(_arg1, &_arg2, &_cerr)
@@ -360,7 +360,7 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	var _gint int        // out
 	var _goerr error     // out
 
-	_nameUsed = C.GoString((*C.gchar)(_arg2))
+	_nameUsed = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -376,7 +376,7 @@ func FileReadLink(filename string) (string, error) {
 	var _cret *C.gchar  // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_read_link(_arg1, &_cerr)
@@ -384,7 +384,7 @@ func FileReadLink(filename string) (string, error) {
 	var _ret string  // out
 	var _goerr error // out
 
-	_ret = C.GoString((*C.gchar)(_cret))
+	_ret = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -401,7 +401,7 @@ func FileSetContents(filename string, contents []byte) error {
 	var _arg3 C.gssize
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = C.gssize(len(contents))
 	_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
@@ -431,7 +431,7 @@ func GetCurrentDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -444,7 +444,7 @@ func MkdirWithParents(pathname string, mode int) int {
 	var _arg2 C.gint   // out
 	var _cret C.gint   // in
 
-	_arg1 = (*C.gchar)(C.CString(pathname))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pathname)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(mode)
 
@@ -467,14 +467,14 @@ func PathGetBasename(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(fileName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_path_get_basename(_arg1)
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -490,14 +490,14 @@ func PathGetDirname(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(fileName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_path_get_dirname(_arg1)
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -529,7 +529,7 @@ func PathIsAbsolute(fileName string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(C.CString(fileName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_path_is_absolute(_arg1)
@@ -550,14 +550,14 @@ func PathSkipRoot(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(fileName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_path_skip_root(_arg1)
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }

@@ -44,7 +44,7 @@ func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
 	var userData cgo.Handle    // out
 
 	menuButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*MenuButton)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(MenuButtonCreatePopupFunc)
 	fn(menuButton, userData)
@@ -236,7 +236,7 @@ func (menuButton *MenuButton) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -252,7 +252,7 @@ func (menuButton *MenuButton) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -347,7 +347,7 @@ func (menuButton *MenuButton) SetIconName(iconName string) {
 	var _arg1 *C.char          // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.char)(C.CString(iconName))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_button_set_icon_name(_arg0, _arg1)
@@ -359,7 +359,7 @@ func (menuButton *MenuButton) SetLabel(label string) {
 	var _arg1 *C.char          // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.char)(C.CString(label))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_button_set_label(_arg0, _arg1)

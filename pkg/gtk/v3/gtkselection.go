@@ -90,7 +90,7 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	var _arg3 C.guint           // out
 	var _cret *C.GtkTargetEntry // in
 
-	_arg1 = (*C.gchar)(C.CString(target))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(target)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(flags)
 	_arg3 = C.guint(info)

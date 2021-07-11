@@ -208,7 +208,7 @@ func (fontsel *FontSelection) FontName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -245,7 +245,7 @@ func (fontsel *FontSelection) PreviewText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -318,7 +318,7 @@ func (fontsel *FontSelection) SetFontName(fontname string) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(fontsel.Native()))
-	_arg1 = (*C.gchar)(C.CString(fontname))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_selection_set_font_name(_arg0, _arg1)
@@ -341,7 +341,7 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(fontsel.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_selection_set_preview_text(_arg0, _arg1)
@@ -412,7 +412,7 @@ func NewFontSelectionDialog(title string) *FontSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(C.CString(title))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_selection_dialog_new(_arg1)
@@ -462,7 +462,7 @@ func (fsd *FontSelectionDialog) FontName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -517,7 +517,7 @@ func (fsd *FontSelectionDialog) PreviewText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -531,7 +531,7 @@ func (fsd *FontSelectionDialog) SetFontName(fontname string) bool {
 	var _cret C.gboolean                // in
 
 	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(fsd.Native()))
-	_arg1 = (*C.gchar)(C.CString(fontname))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_selection_dialog_set_font_name(_arg0, _arg1)
@@ -553,7 +553,7 @@ func (fsd *FontSelectionDialog) SetPreviewText(text string) {
 	var _arg1 *C.gchar                  // out
 
 	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(fsd.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_selection_dialog_set_preview_text(_arg0, _arg1)

@@ -102,7 +102,7 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 	var _arg2 C.guint           // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = (*C.char)(C.CString(address))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(address)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(port)
 

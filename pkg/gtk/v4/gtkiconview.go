@@ -70,7 +70,7 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 
 	iconView = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*IconView)
 	path = (*TreePath)(unsafe.Pointer(arg1))
-	data = (cgo.Handle)(arg2)
+	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(IconViewForeachFunc)
 	fn(iconView, path, data)

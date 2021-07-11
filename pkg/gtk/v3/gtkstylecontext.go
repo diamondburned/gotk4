@@ -256,7 +256,7 @@ func (context *StyleContext) AddClass(className string) {
 	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(className))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(className)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_add_class(_arg0, _arg1)
@@ -297,7 +297,7 @@ func (context *StyleContext) CancelAnimations(regionId cgo.Handle) {
 	var _arg1 C.gpointer         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (C.gpointer)(regionId)
+	_arg1 = (C.gpointer)(unsafe.Pointer(regionId))
 
 	C.gtk_style_context_cancel_animations(_arg0, _arg1)
 }
@@ -440,7 +440,7 @@ func (context *StyleContext) Section(property string) *CSSSection {
 	var _cret *C.GtkCssSection   // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(property))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_get_section(_arg0, _arg1)
@@ -486,7 +486,7 @@ func (context *StyleContext) StyleProperty(propertyName string, value *externgli
 	var _arg2 *C.GValue          // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(propertyName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
@@ -500,7 +500,7 @@ func (context *StyleContext) HasClass(className string) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(className))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(className)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
@@ -525,7 +525,7 @@ func (context *StyleContext) HasRegion(regionName string) (RegionFlags, bool) {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(regionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(regionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_region(_arg0, _arg1, &_arg2)
@@ -562,7 +562,7 @@ func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(colorName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
@@ -586,7 +586,7 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	var _cret *C.GtkIconSet      // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(stockId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_lookup_icon_set(_arg0, _arg1)
@@ -630,7 +630,7 @@ func (context *StyleContext) PushAnimatableRegion(regionId cgo.Handle) {
 	var _arg1 C.gpointer         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (C.gpointer)(regionId)
+	_arg1 = (C.gpointer)(unsafe.Pointer(regionId))
 
 	C.gtk_style_context_push_animatable_region(_arg0, _arg1)
 }
@@ -641,7 +641,7 @@ func (context *StyleContext) RemoveClass(className string) {
 	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(className))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(className)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_remove_class(_arg0, _arg1)
@@ -666,7 +666,7 @@ func (context *StyleContext) RemoveRegion(regionName string) {
 	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.gchar)(C.CString(regionName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(regionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_remove_region(_arg0, _arg1)

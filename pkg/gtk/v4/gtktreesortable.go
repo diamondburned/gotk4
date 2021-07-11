@@ -52,7 +52,7 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	a = (*TreeIter)(unsafe.Pointer(arg1))
 	b = (*TreeIter)(unsafe.Pointer(arg2))
-	userData = (cgo.Handle)(arg3)
+	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeIterCompareFunc)
 	gint := fn(model, a, b, userData)

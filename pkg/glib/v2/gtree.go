@@ -83,8 +83,8 @@ func (tree *Tree) Insert(key cgo.Handle, value cgo.Handle) {
 	var _arg2 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gpointer)(key)
-	_arg2 = (C.gpointer)(value)
+	_arg1 = (C.gpointer)(unsafe.Pointer(key))
+	_arg2 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_tree_insert(_arg0, _arg1, _arg2)
 }
@@ -98,13 +98,13 @@ func (tree *Tree) Lookup(key cgo.Handle) cgo.Handle {
 	var _cret C.gpointer      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gconstpointer)(key)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_lookup(_arg0, _arg1)
 
 	var _gpointer cgo.Handle // out
 
-	_gpointer = (cgo.Handle)(_cret)
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -120,7 +120,7 @@ func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, valu
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gconstpointer)(lookupKey)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(lookupKey))
 
 	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -128,8 +128,8 @@ func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, valu
 	var _value cgo.Handle   // out
 	var _ok bool            // out
 
-	_origKey = (cgo.Handle)(_arg2)
-	_value = (cgo.Handle)(_arg3)
+	_origKey = (cgo.Handle)(unsafe.Pointer(_arg2))
+	_value = (cgo.Handle)(unsafe.Pointer(_arg3))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -190,7 +190,7 @@ func (tree *Tree) Remove(key cgo.Handle) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gconstpointer)(key)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_remove(_arg0, _arg1)
 
@@ -211,8 +211,8 @@ func (tree *Tree) Replace(key cgo.Handle, value cgo.Handle) {
 	var _arg2 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gpointer)(key)
-	_arg2 = (C.gpointer)(value)
+	_arg1 = (C.gpointer)(unsafe.Pointer(key))
+	_arg2 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_tree_replace(_arg0, _arg1, _arg2)
 }
@@ -227,7 +227,7 @@ func (tree *Tree) Steal(key cgo.Handle) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gconstpointer)(key)
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_steal(_arg0, _arg1)
 

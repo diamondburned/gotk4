@@ -154,7 +154,7 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 	{
 		out := unsafe.Slice(_arg1, len(strings))
 		for i := range strings {
-			out[i] = (*C.char)(C.CString(strings[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(strings[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}

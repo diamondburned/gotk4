@@ -91,7 +91,7 @@ func NewUnixSocketAddress(path string) *UnixSocketAddress {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = (*C.gchar)(C.CString(path))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_socket_address_new(_arg1)
@@ -175,7 +175,7 @@ func (address *UnixSocketAddress) Path() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

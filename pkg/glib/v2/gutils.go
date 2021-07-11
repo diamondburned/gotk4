@@ -140,14 +140,14 @@ func FindProgramInPath(program string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(program))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(program)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_find_program_in_path(_arg1)
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -176,7 +176,7 @@ func FormatSize(size uint64) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -203,7 +203,7 @@ func FormatSizeForDisplay(size int64) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -222,7 +222,7 @@ func GetApplicationName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -254,7 +254,7 @@ func GetHomeDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -278,7 +278,7 @@ func GetHostName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -295,14 +295,14 @@ func GetOsInfo(keyName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(C.CString(keyName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(keyName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_os_info(_arg1)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -322,7 +322,7 @@ func GetPrgname() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -338,7 +338,7 @@ func GetRealName() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -379,7 +379,7 @@ func GetSystemConfigDirs() []string {
 		src := unsafe.Slice(_cret, i)
 		_filenames = make([]string, i)
 		for i := range src {
-			_filenames[i] = C.GoString((*C.gchar)(src[i]))
+			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -434,7 +434,7 @@ func GetSystemDataDirs() []string {
 		src := unsafe.Slice(_cret, i)
 		_filenames = make([]string, i)
 		for i := range src {
-			_filenames[i] = C.GoString((*C.gchar)(src[i]))
+			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -459,7 +459,7 @@ func GetTmpDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -488,7 +488,7 @@ func GetUserCacheDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -518,7 +518,7 @@ func GetUserConfigDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -548,7 +548,7 @@ func GetUserDataDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -564,7 +564,7 @@ func GetUserName() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -587,7 +587,7 @@ func GetUserRuntimeDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -608,7 +608,7 @@ func ParseDebugString(_string string, keys []DebugKey) uint {
 	var _arg3 C.guint
 	var _cret C.guint // in
 
-	_arg1 = (*C.gchar)(C.CString(_string))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = C.guint(len(keys))
 	_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
@@ -647,7 +647,7 @@ func ReloadUserSpecialDirsCache() {
 func SetApplicationName(applicationName string) {
 	var _arg1 *C.gchar // out
 
-	_arg1 = (*C.gchar)(C.CString(applicationName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_set_application_name(_arg1)
@@ -665,7 +665,7 @@ func SetApplicationName(applicationName string) {
 func SetPrgname(prgname string) {
 	var _arg1 *C.gchar // out
 
-	_arg1 = (*C.gchar)(C.CString(prgname))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(prgname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_set_prgname(_arg1)

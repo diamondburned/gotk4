@@ -46,7 +46,7 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 	if arg5 != 0 {
 		createTags = true
 	}
-	userData = (cgo.Handle)(arg6)
+	userData = (cgo.Handle)(unsafe.Pointer(arg6))
 
 	fn := v.(TextBufferDeserializeFunc)
 	ok := fn(registerBuffer, contentBuffer, iter, data, createTags, userData)
@@ -79,7 +79,7 @@ func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer,
 	contentBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*TextBuffer)
 	start = (*TextIter)(unsafe.Pointer(arg2))
 	end = (*TextIter)(unsafe.Pointer(arg3))
-	userData = (cgo.Handle)(arg5)
+	userData = (cgo.Handle)(unsafe.Pointer(arg5))
 
 	fn := v.(TextBufferSerializeFunc)
 	length, guint8 := fn(registerBuffer, contentBuffer, start, end, userData)

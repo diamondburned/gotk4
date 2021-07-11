@@ -102,7 +102,7 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var _cret *C.GFileAttributeInfo     // in
 
 	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(list))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_info_list_lookup(_arg0, _arg1)

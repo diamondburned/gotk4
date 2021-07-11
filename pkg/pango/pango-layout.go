@@ -869,7 +869,7 @@ func (layout *Layout) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1227,7 +1227,7 @@ func (layout *Layout) SetMarkup(markup string, length int) {
 	var _arg2 C.int          // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.char)(C.CString(markup))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 
@@ -1254,7 +1254,7 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int, accelMarker 
 	var _arg4 C.gunichar     // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.char)(C.CString(markup))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = C.gunichar(accelMarker)
@@ -1338,7 +1338,7 @@ func (layout *Layout) SetText(text string, length int) {
 	var _arg2 C.int          // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.char)(C.CString(text))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 

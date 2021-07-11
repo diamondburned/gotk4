@@ -44,7 +44,7 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.Gt
 	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(FlowBoxCreateWidgetFunc)
 	widget := fn(item, userData)
@@ -71,7 +71,7 @@ func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cret C.g
 	var userData cgo.Handle // out
 
 	child = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FlowBoxChild)
-	userData = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(FlowBoxFilterFunc)
 	ok := fn(child, userData)
@@ -101,7 +101,7 @@ func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 
 
 	box = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FlowBox)
 	child = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*FlowBoxChild)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FlowBoxForeachFunc)
 	fn(box, child, userData)
@@ -124,7 +124,7 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 
 	child1 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FlowBoxChild)
 	child2 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*FlowBoxChild)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FlowBoxSortFunc)
 	gint := fn(child1, child2, userData)

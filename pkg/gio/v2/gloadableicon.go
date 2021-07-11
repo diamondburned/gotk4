@@ -109,7 +109,7 @@ func (icon *LoadableIcon) Load(size int, cancellable Cancellabler) (string, *Inp
 	var _inputStream *InputStream // out
 	var _goerr error              // out
 
-	_typ = C.GoString((*C.gchar)(_arg2))
+	_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -154,7 +154,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, *InputStream, e
 	var _inputStream *InputStream // out
 	var _goerr error              // out
 
-	_typ = C.GoString((*C.gchar)(_arg2))
+	_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

@@ -70,7 +70,7 @@ func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C
 
 	family = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*pango.FontFamily)
 	face = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*pango.FontFace)
-	data = (cgo.Handle)(arg2)
+	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FontFilterFunc)
 	ok := fn(family, face, data)
@@ -211,7 +211,7 @@ func (fontchooser *FontChooser) Font() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -293,7 +293,7 @@ func (fontchooser *FontChooser) FontFeatures() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -343,7 +343,7 @@ func (fontchooser *FontChooser) Language() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -376,7 +376,7 @@ func (fontchooser *FontChooser) PreviewText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -406,7 +406,7 @@ func (fontchooser *FontChooser) SetFont(fontname string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
-	_arg1 = (*C.gchar)(C.CString(fontname))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_font(_arg0, _arg1)
@@ -459,7 +459,7 @@ func (fontchooser *FontChooser) SetLanguage(language string) {
 	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
-	_arg1 = (*C.char)(C.CString(language))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(language)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_language(_arg0, _arg1)
@@ -472,7 +472,7 @@ func (fontchooser *FontChooser) SetPreviewText(text string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_preview_text(_arg0, _arg1)

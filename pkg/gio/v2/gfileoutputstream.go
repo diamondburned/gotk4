@@ -153,7 +153,7 @@ func (stream *FileOutputStream) Etag() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -182,7 +182,7 @@ func (stream *FileOutputStream) QueryInfo(attributes string, cancellable Cancell
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.char)(C.CString(attributes))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -212,7 +212,7 @@ func (stream *FileOutputStream) QueryInfoAsync(attributes string, ioPriority int
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.char)(C.CString(attributes))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))

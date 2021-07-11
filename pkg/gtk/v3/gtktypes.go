@@ -377,7 +377,7 @@ func (source *IconSource) Filename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(_cret))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -397,7 +397,7 @@ func (source *IconSource) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -533,7 +533,7 @@ func (source *IconSource) SetFilename(filename string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(source))
-	_arg1 = (*C.gchar)(C.CString(filename))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_source_set_filename(_arg0, _arg1)
@@ -548,7 +548,7 @@ func (source *IconSource) SetIconName(iconName string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(source))
-	_arg1 = (*C.gchar)(C.CString(iconName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_source_set_icon_name(_arg0, _arg1)
@@ -755,7 +755,7 @@ func (selectionData *SelectionData) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -782,7 +782,7 @@ func (selectionData *SelectionData) Uris() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -820,7 +820,7 @@ func (selectionData *SelectionData) SetText(str string, len int) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
-	_arg1 = (*C.gchar)(C.CString(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 
@@ -848,7 +848,7 @@ func (selectionData *SelectionData) SetUris(uris []string) bool {
 	{
 		out := unsafe.Slice(_arg1, len(uris))
 		for i := range uris {
-			out[i] = (*C.gchar)(C.CString(uris[i]))
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(uris[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -1172,7 +1172,7 @@ func (path *WidgetPath) IterAddClass(pos int, name string) {
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
-	_arg2 = (*C.gchar)(C.CString(name))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_add_class(_arg0, _arg1, _arg2)
@@ -1218,7 +1218,7 @@ func (path *WidgetPath) IterGetName(pos int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1237,7 +1237,7 @@ func (path *WidgetPath) IterGetObjectName(pos int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1334,7 +1334,7 @@ func (path *WidgetPath) IterHasClass(pos int, name string) bool {
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
-	_arg2 = (*C.gchar)(C.CString(name))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_class(_arg0, _arg1, _arg2)
@@ -1358,7 +1358,7 @@ func (path *WidgetPath) IterHasName(pos int, name string) bool {
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
-	_arg2 = (*C.gchar)(C.CString(name))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_name(_arg0, _arg1, _arg2)
@@ -1385,7 +1385,7 @@ func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) 
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
-	_arg2 = (*C.gchar)(C.CString(name))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_region(_arg0, _arg1, _arg2, &_arg3)
@@ -1410,7 +1410,7 @@ func (path *WidgetPath) IterRemoveClass(pos int, name string) {
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
-	_arg2 = (*C.gchar)(C.CString(name))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_remove_class(_arg0, _arg1, _arg2)
@@ -1427,7 +1427,7 @@ func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
-	_arg2 = (*C.gchar)(C.CString(name))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_remove_region(_arg0, _arg1, _arg2)
@@ -1442,7 +1442,7 @@ func (path *WidgetPath) IterSetName(pos int, name string) {
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
-	_arg2 = (*C.gchar)(C.CString(name))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_set_name(_arg0, _arg1, _arg2)
@@ -1459,7 +1459,7 @@ func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
-	_arg2 = (*C.char)(C.CString(name))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_set_object_name(_arg0, _arg1, _arg2)
@@ -1544,7 +1544,7 @@ func (path *WidgetPath) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

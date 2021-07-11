@@ -46,7 +46,7 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	path = (*TreePath)(unsafe.Pointer(arg1))
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
-	data = (cgo.Handle)(arg3)
+	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeSelectionForeachFunc)
 	fn(model, path, iter, data)
@@ -79,7 +79,7 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	if arg3 != 0 {
 		pathCurrentlySelected = true
 	}
-	data = (cgo.Handle)(arg4)
+	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeSelectionFunc)
 	ok := fn(selection, model, path, pathCurrentlySelected, data)

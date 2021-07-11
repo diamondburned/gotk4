@@ -260,7 +260,7 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(name))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_stack_add_named(_arg0, _arg1, _arg2)
@@ -285,9 +285,9 @@ func (stack *Stack) AddTitled(child Widgetter, name string, title string) *Stack
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.char)(C.CString(name))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.char)(C.CString(title))
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
@@ -308,7 +308,7 @@ func (stack *Stack) ChildByName(name string) *Widget {
 	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
@@ -497,7 +497,7 @@ func (stack *Stack) VisibleChildName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -606,7 +606,7 @@ func (stack *Stack) SetVisibleChildName(name string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_set_visible_child_name(_arg0, _arg1)
@@ -698,7 +698,7 @@ func (self *StackPage) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -714,7 +714,7 @@ func (self *StackPage) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -748,7 +748,7 @@ func (self *StackPage) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -798,7 +798,7 @@ func (self *StackPage) SetIconName(setting string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(setting))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(setting)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_page_set_icon_name(_arg0, _arg1)
@@ -810,7 +810,7 @@ func (self *StackPage) SetName(setting string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(setting))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(setting)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_page_set_name(_arg0, _arg1)
@@ -835,7 +835,7 @@ func (self *StackPage) SetTitle(setting string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(setting))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(setting)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_page_set_title(_arg0, _arg1)

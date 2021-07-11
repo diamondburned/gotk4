@@ -44,7 +44,7 @@ func gotk4_ExpressionNotify(arg0 C.gpointer) {
 
 	var userData cgo.Handle // out
 
-	userData = (cgo.Handle)(arg0)
+	userData = (cgo.Handle)(unsafe.Pointer(arg0))
 
 	fn := v.(ExpressionNotify)
 	fn(userData)
@@ -408,10 +408,10 @@ func (self *Expression) Bind(target gextras.Objector, property string, this_ gex
 	var _cret *C.GtkExpressionWatch // in
 
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
-	_arg1 = C.gpointer(unsafe.Pointer((&target).Native()))
-	_arg2 = (*C.char)(C.CString(property))
+	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(property)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.gpointer(unsafe.Pointer((&this_).Native()))
+	_arg3 = C.gpointer(unsafe.Pointer(this_.Native()))
 
 	_cret = C.gtk_expression_bind(_arg0, _arg1, _arg2, _arg3)
 
@@ -442,7 +442,7 @@ func (self *Expression) Evaluate(this_ gextras.Objector, value *externglib.Value
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
-	_arg1 = C.gpointer(unsafe.Pointer((&this_).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(this_.Native()))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gtk_expression_evaluate(_arg0, _arg1, _arg2)
@@ -570,7 +570,7 @@ func NewObjectExpression(object gextras.Objector) *ObjectExpression {
 	var _arg1 *C.GObject       // out
 	var _cret *C.GtkExpression // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	_cret = C.gtk_object_expression_new(_arg1)
 
@@ -644,7 +644,7 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 
 	_arg1 = C.GType(thisType)
 	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
-	_arg3 = (*C.char)(C.CString(propertyName))
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_property_expression_new(_arg1, _arg2, _arg3)

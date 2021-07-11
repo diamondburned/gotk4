@@ -390,7 +390,7 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 	var _goerr error // out
 
 	_length = uint(_arg2)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -419,7 +419,7 @@ func (stream *DataInputStream) ReadLineUTF8(cancellable Cancellabler) (uint, str
 	var _goerr error // out
 
 	_length = uint(_arg1)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -530,7 +530,7 @@ func (stream *DataInputStream) ReadUntil(stopChars string, cancellable Cancellab
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.gchar)(C.CString(stopChars))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -541,7 +541,7 @@ func (stream *DataInputStream) ReadUntil(stopChars string, cancellable Cancellab
 	var _goerr error // out
 
 	_length = uint(_arg2)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -573,7 +573,7 @@ func (stream *DataInputStream) ReadUntilAsync(stopChars string, ioPriority int, 
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.gchar)(C.CString(stopChars))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -605,7 +605,7 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 	var _goerr error // out
 
 	_length = uint(_arg2)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -632,7 +632,7 @@ func (stream *DataInputStream) ReadUpto(stopChars string, stopCharsLen int, canc
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.gchar)(C.CString(stopChars))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -644,7 +644,7 @@ func (stream *DataInputStream) ReadUpto(stopChars string, stopCharsLen int, canc
 	var _goerr error // out
 
 	_length = uint(_arg3)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -672,7 +672,7 @@ func (stream *DataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int,
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.gchar)(C.CString(stopChars))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
 	_arg3 = C.gint(ioPriority)
@@ -708,7 +708,7 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	var _goerr error // out
 
 	_length = uint(_arg2)
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

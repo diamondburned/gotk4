@@ -139,7 +139,7 @@ func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItemmer, label string) *
 	var _cret *C.GtkWidget        // in
 
 	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(label))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
@@ -163,7 +163,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItemmer, label string
 	var _cret *C.GtkWidget        // in
 
 	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
-	_arg2 = (*C.gchar)(C.CString(label))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)

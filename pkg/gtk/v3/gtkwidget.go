@@ -70,7 +70,7 @@ func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 	var data cgo.Handle // out
 
 	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
-	data = (cgo.Handle)(arg1)
+	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(Callback)
 	fn(widget, data)
@@ -93,7 +93,7 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 
 	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
 	frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*gdk.FrameClock)
-	userData = (cgo.Handle)(arg2)
+	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock, userData)
@@ -1227,7 +1227,7 @@ func (widget *Widget) ChildNotify(childProperty string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(childProperty))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_child_notify(_arg0, _arg1)
@@ -1252,9 +1252,9 @@ func (widget *Widget) ClassPath() (pathLength uint, path string, pathReversed st
 	var _pathReversed string // out
 
 	_pathLength = uint(_arg1)
-	_path = C.GoString((*C.gchar)(_arg2))
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_pathReversed = C.GoString((*C.gchar)(_arg3))
+	_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	return _pathLength, _path, _pathReversed
@@ -1290,7 +1290,7 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	var _cret *C.PangoLayout // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
@@ -1596,7 +1596,7 @@ func (widget *Widget) DragSourceSetIconName(iconName string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_drag_source_set_icon_name(_arg0, _arg1)
@@ -1624,7 +1624,7 @@ func (widget *Widget) DragSourceSetIconStock(stockId string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(stockId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_drag_source_set_icon_stock(_arg0, _arg1)
@@ -1766,7 +1766,7 @@ func (widget *Widget) ActionGroup(prefix string) *gio.ActionGroup {
 	var _cret *C.GActionGroup // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(prefix))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(prefix)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_get_action_group(_arg0, _arg1)
@@ -1982,7 +1982,7 @@ func (widget *Widget) CompositeName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -2468,7 +2468,7 @@ func (widget *Widget) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -3104,7 +3104,7 @@ func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *ex
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GType(widgetType)
-	_arg2 = (*C.gchar)(C.CString(name))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
@@ -3127,7 +3127,7 @@ func (widget *Widget) TooltipMarkup() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -3144,7 +3144,7 @@ func (widget *Widget) TooltipText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -3635,7 +3635,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 	var _arg2 *C.GActionGroup // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 
@@ -3838,7 +3838,7 @@ func (widget *Widget) ListActionPrefixes() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -3995,7 +3995,7 @@ func (widget *Widget) OverrideSymbolicColor(name string, color *gdk.RGBA) {
 	var _arg2 *C.GdkRGBA   // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
 
@@ -4029,9 +4029,9 @@ func (widget *Widget) Path() (pathLength uint, path string, pathReversed string)
 	var _pathReversed string // out
 
 	_pathLength = uint(_arg1)
-	_path = C.GoString((*C.gchar)(_arg2))
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_pathReversed = C.GoString((*C.gchar)(_arg3))
+	_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	return _pathLength, _path, _pathReversed
@@ -4260,10 +4260,10 @@ func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpi
 	var _cret *C.GdkPixbuf  // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(stockId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
-	_arg3 = (*C.gchar)(C.CString(detail))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_widget_render_icon(_arg0, _arg1, _arg2, _arg3)
@@ -4292,7 +4292,7 @@ func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixb
 	var _cret *C.GdkPixbuf  // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(stockId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
@@ -4371,7 +4371,7 @@ func (widget *Widget) SetAccelPath(accelPath string, accelGroup AccelGrouper) {
 	var _arg2 *C.GtkAccelGroup // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(accelPath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
 
@@ -4466,7 +4466,7 @@ func (widget *Widget) SetCompositeName(name string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_composite_name(_arg0, _arg1)
@@ -4790,7 +4790,7 @@ func (widget *Widget) SetName(name string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_name(_arg0, _arg1)
@@ -5024,7 +5024,7 @@ func (widget *Widget) SetTooltipMarkup(markup string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(markup))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_markup(_arg0, _arg1)
@@ -5040,7 +5040,7 @@ func (widget *Widget) SetTooltipText(text string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(text))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_text(_arg0, _arg1)
@@ -5252,7 +5252,7 @@ func (widget *Widget) StyleGetProperty(propertyName string, value *externglib.Va
 	var _arg2 *C.GValue    // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(C.CString(propertyName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 

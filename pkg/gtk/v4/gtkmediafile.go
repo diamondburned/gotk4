@@ -124,7 +124,7 @@ func NewMediaFileForFilename(filename string) *MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_media_file_new_for_filename(_arg1)
@@ -163,7 +163,7 @@ func NewMediaFileForResource(resourcePath string) *MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg1 = (*C.char)(C.CString(resourcePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_media_file_new_for_resource(_arg1)
@@ -242,7 +242,7 @@ func (self *MediaFile) SetFilename(filename string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(filename))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_media_file_set_filename(_arg0, _arg1)
@@ -273,7 +273,7 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(resourcePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_media_file_set_resource(_arg0, _arg1)

@@ -52,7 +52,7 @@ func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.gchar // out
 	var _cret C.guint  // in
 
-	_arg1 = (*C.gchar)(C.CString(keyvalName))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(keyvalName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_keyval_from_name(_arg1)
@@ -114,7 +114,7 @@ func KeyvalName(keyval uint) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

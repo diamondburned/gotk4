@@ -322,7 +322,7 @@ func NewLabel(str string) *Label {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_label_new(_arg1)
@@ -352,7 +352,7 @@ func NewLabelWithMnemonic(str string) *Label {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_label_new_with_mnemonic(_arg1)
@@ -408,7 +408,7 @@ func (self *Label) CurrentURI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -481,7 +481,7 @@ func (self *Label) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -683,7 +683,7 @@ func (self *Label) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -879,7 +879,7 @@ func (self *Label) SetLabel(str string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_label(_arg0, _arg1)
@@ -927,7 +927,7 @@ func (self *Label) SetMarkup(str string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_markup(_arg0, _arg1)
@@ -949,7 +949,7 @@ func (self *Label) SetMarkupWithMnemonic(str string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_markup_with_mnemonic(_arg0, _arg1)
@@ -1038,7 +1038,7 @@ func (self *Label) SetText(str string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_text(_arg0, _arg1)
@@ -1055,7 +1055,7 @@ func (self *Label) SetTextWithMnemonic(str string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(C.CString(str))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_text_with_mnemonic(_arg0, _arg1)

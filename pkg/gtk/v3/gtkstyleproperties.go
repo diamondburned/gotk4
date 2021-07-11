@@ -117,7 +117,7 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	var _cret *C.GtkSymbolicColor   // in
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_properties_lookup_color(_arg0, _arg1)
@@ -143,7 +143,7 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 	var _arg2 *C.GtkSymbolicColor   // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
 
@@ -351,7 +351,7 @@ func (gradient *Gradient) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -461,7 +461,7 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GtkSymbolicColor // in
 
-	_arg1 = (*C.gchar)(C.CString(name))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_symbolic_color_new_name(_arg1)
@@ -505,7 +505,7 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 	var _arg2 C.gint              // out
 	var _cret *C.GtkSymbolicColor // in
 
-	_arg1 = (*C.gchar)(C.CString(themeClass))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(themeClass)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(id)
 
@@ -595,7 +595,7 @@ func (color *SymbolicColor) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

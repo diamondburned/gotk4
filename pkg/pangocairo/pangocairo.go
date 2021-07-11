@@ -48,7 +48,7 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 	if arg2 != 0 {
 		doPath = true
 	}
-	data = (cgo.Handle)(arg3)
+	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(ShapeRendererFunc)
 	fn(cr, attr, doPath, data)
@@ -281,7 +281,7 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 	var _arg3 *C.PangoGlyphItem // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.char)(C.CString(text))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 

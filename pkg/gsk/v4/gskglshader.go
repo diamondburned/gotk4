@@ -174,7 +174,7 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 	var _arg1 *C.char        // out
 	var _cret *C.GskGLShader // in
 
-	_arg1 = (*C.char)(C.CString(resourcePath))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gsk_gl_shader_new_from_resource(_arg1)
@@ -221,7 +221,7 @@ func (shader *GLShader) FindUniformByName(name string) int {
 	var _cret C.int          // in
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = (*C.char)(C.CString(name))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gsk_gl_shader_find_uniform_by_name(_arg0, _arg1)
@@ -298,7 +298,7 @@ func (shader *GLShader) Resource() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -317,7 +317,7 @@ func (shader *GLShader) UniformName(idx int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

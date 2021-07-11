@@ -430,8 +430,8 @@ func (application *Application) BindBusyProperty(object gextras.Objector, proper
 	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = C.gpointer(unsafe.Pointer((&object).Native()))
-	_arg2 = (*C.gchar)(C.CString(property))
+	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_application_bind_busy_property(_arg0, _arg1, _arg2)
@@ -448,7 +448,7 @@ func (application *Application) ApplicationID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -505,7 +505,7 @@ func (application *Application) DBusObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -626,7 +626,7 @@ func (application *Application) ResourceBasePath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -693,7 +693,7 @@ func (application *Application) Open(files []*File, hint string) {
 			out[i] = (*C.GFile)(unsafe.Pointer(files[i].Native()))
 		}
 	}
-	_arg3 = (*C.gchar)(C.CString(hint))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(hint)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_application_open(_arg0, _arg1, _arg2, _arg3)
@@ -861,7 +861,7 @@ func (application *Application) Run(argv []string) int {
 	{
 		out := unsafe.Slice(_arg2, len(argv))
 		for i := range argv {
-			out[i] = (*C.char)(C.CString(argv[i]))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(argv[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
@@ -905,7 +905,7 @@ func (application *Application) SendNotification(id string, notification Notific
 	var _arg2 *C.GNotification // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(id))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GNotification)(unsafe.Pointer((notification).(gextras.Nativer).Native()))
 
@@ -941,7 +941,7 @@ func (application *Application) SetApplicationID(applicationId string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(applicationId))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_application_id(_arg0, _arg1)
@@ -988,7 +988,7 @@ func (application *Application) SetOptionContextDescription(description string) 
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(description))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_option_context_description(_arg0, _arg1)
@@ -1006,7 +1006,7 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(parameterString))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(parameterString)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_option_context_parameter_string(_arg0, _arg1)
@@ -1020,7 +1020,7 @@ func (application *Application) SetOptionContextSummary(summary string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(summary))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(summary)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_option_context_summary(_arg0, _arg1)
@@ -1062,7 +1062,7 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(resourcePath))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_resource_base_path(_arg0, _arg1)
@@ -1077,8 +1077,8 @@ func (application *Application) UnbindBusyProperty(object gextras.Objector, prop
 	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = C.gpointer(unsafe.Pointer((&object).Native()))
-	_arg2 = (*C.gchar)(C.CString(property))
+	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_application_unbind_busy_property(_arg0, _arg1, _arg2)
@@ -1117,7 +1117,7 @@ func (application *Application) WithdrawNotification(id string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(C.CString(id))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_withdraw_notification(_arg0, _arg1)

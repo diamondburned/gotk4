@@ -167,7 +167,7 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 	var _arg1 C.gpointer               // out
 
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
-	_arg1 = (C.gpointer)(data)
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_socket_control_message_serialize(_arg0, _arg1)
 }

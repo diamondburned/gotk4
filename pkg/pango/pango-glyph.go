@@ -202,19 +202,13 @@ func (_string *GlyphString) Copy() *GlyphString {
 func (glyphs *GlyphString) Extents(font Fonter) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out
-	var _arg2 C.PangoRectangle    // in
-	var _arg3 C.PangoRectangle    // in
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
 
-	C.pango_glyph_string_extents(_arg0, _arg1, &_arg2, &_arg3)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg3)))
+	C.pango_glyph_string_extents(_arg0, _arg1, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }
@@ -229,21 +223,15 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRec
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out
 	var _arg3 *C.PangoFont        // out
-	var _arg4 C.PangoRectangle    // in
-	var _arg5 C.PangoRectangle    // in
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg1 = C.int(start)
 	_arg2 = C.int(end)
 	_arg3 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
 
-	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg4)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg5)))
+	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }

@@ -278,7 +278,7 @@ func (paintable *Paintable) Flags() PaintableFlags {
 
 	var _paintableFlags PaintableFlags // out
 
-	_paintableFlags = (PaintableFlags)(_cret)
+	_paintableFlags = PaintableFlags(_cret)
 
 	return _paintableFlags
 }

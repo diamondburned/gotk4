@@ -30,6 +30,7 @@ type StatusbarAccessibler interface {
 	privateStatusbarAccessible()
 }
 
+//
 type StatusbarAccessible struct {
 	ContainerAccessible
 }

@@ -219,7 +219,7 @@ func UnixMountGetDevicePath(mountEntry *UnixMountEntry) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -235,7 +235,7 @@ func UnixMountGetFSType(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -251,7 +251,7 @@ func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -271,7 +271,7 @@ func UnixMountGetOptions(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -291,7 +291,7 @@ func UnixMountGetRootPath(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -342,7 +342,7 @@ func UnixMountGuessName(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -614,7 +614,7 @@ func (mountPoint *UnixMountPoint) DevicePath() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -630,7 +630,7 @@ func (mountPoint *UnixMountPoint) FSType() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -646,7 +646,7 @@ func (mountPoint *UnixMountPoint) MountPath() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -662,7 +662,7 @@ func (mountPoint *UnixMountPoint) Options() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -713,7 +713,7 @@ func (mountPoint *UnixMountPoint) GuessName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

@@ -4,9 +4,10 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -32,11 +33,11 @@ func init() {
 //
 // Since this function is called for each data access, it’s not a particularly
 // efficient operation.
-type TreeModelFilterModifyFunc func(model *TreeModel, iter *TreeIter, column int, data interface{}) (value externglib.Value)
+type TreeModelFilterModifyFunc func(model *TreeModel, iter *TreeIter, column int, data cgo.Handle) (value externglib.Value)
 
 //export gotk4_TreeModelFilterModifyFunc
 func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.gint, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
+	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -44,12 +45,12 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 	var model *TreeModel // out
 	var iter *TreeIter   // out
 	var column int       // out
-	var data interface{} // out
+	var data cgo.Handle  // out
 
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
 	column = int(arg3)
-	data = box.Get(uintptr(arg4))
+	data = (cgo.Handle)(arg4)
 
 	fn := v.(TreeModelFilterModifyFunc)
 	value := fn(model, iter, column, data)
@@ -59,22 +60,22 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 
 // TreeModelFilterVisibleFunc: function which decides whether the row indicated
 // by @iter is visible.
-type TreeModelFilterVisibleFunc func(model *TreeModel, iter *TreeIter, data interface{}) (ok bool)
+type TreeModelFilterVisibleFunc func(model *TreeModel, iter *TreeIter, data cgo.Handle) (ok bool)
 
 //export gotk4_TreeModelFilterVisibleFunc
 func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var model *TreeModel // out
 	var iter *TreeIter   // out
-	var data interface{} // out
+	var data cgo.Handle  // out
 
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
-	data = box.Get(uintptr(arg2))
+	data = (cgo.Handle)(arg2)
 
 	fn := v.(TreeModelFilterVisibleFunc)
 	ok := fn(model, iter, data)
@@ -91,8 +92,9 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TreeModelFilterOverrider interface {
+	//
 	Modify(childModel TreeModeller, iter *TreeIter, value *externglib.Value, column int)
-
+	//
 	Visible(childModel TreeModeller, iter *TreeIter) bool
 }
 
@@ -232,19 +234,17 @@ func (filter *TreeModelFilter) ClearCache() {
 // set, false is returned.
 func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelFilter // out
-	var _arg1 C.GtkTreeIter         // in
-	var _arg2 *C.GtkTreeIter        // out
-	var _cret C.gboolean            // in
+	var _filterIter TreeIter
+	var _arg2 *C.GtkTreeIter // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter))
 
-	_cret = C.gtk_tree_model_filter_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
+	_cret = C.gtk_tree_model_filter_convert_child_iter_to_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_filterIter)), _arg2)
 
-	var _filterIter TreeIter // out
-	var _ok bool             // out
+	var _ok bool // out
 
-	_filterIter = *(*TreeIter)(unsafe.Pointer((&_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -281,17 +281,13 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 // @filter_iter.
 func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelFilter // out
-	var _arg1 C.GtkTreeIter         // in
-	var _arg2 *C.GtkTreeIter        // out
+	var _childIter TreeIter
+	var _arg2 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(filterIter))
 
-	C.gtk_tree_model_filter_convert_iter_to_child_iter(_arg0, &_arg1, _arg2)
-
-	var _childIter TreeIter // out
-
-	_childIter = *(*TreeIter)(unsafe.Pointer((&_arg1)))
+	C.gtk_tree_model_filter_convert_iter_to_child_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_childIter)), _arg2)
 
 	return _childIter
 }

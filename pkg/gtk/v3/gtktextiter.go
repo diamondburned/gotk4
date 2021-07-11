@@ -4,9 +4,10 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -54,20 +55,21 @@ func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 	return TextSearchFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type TextCharPredicate func(ch uint32, userData interface{}) (ok bool)
+//
+type TextCharPredicate func(ch uint32, userData cgo.Handle) (ok bool)
 
 //export gotk4_TextCharPredicate
 func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var ch uint32            // out
-	var userData interface{} // out
+	var ch uint32           // out
+	var userData cgo.Handle // out
 
 	ch = uint32(arg0)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(TextCharPredicate)
 	ok := fn(ch, userData)
@@ -206,7 +208,7 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
 	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
-	_arg2 = C.gpointer(box.Assign(pred))
+	_arg2 = C.gpointer(gbox.Assign(pred))
 	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit))
 
 	_cret = C.gtk_text_iter_backward_find_char(_arg0, _arg1, _arg2, _arg3)
@@ -863,7 +865,7 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
 	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
-	_arg2 = C.gpointer(box.Assign(pred))
+	_arg2 = C.gpointer(gbox.Assign(pred))
 	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit))
 
 	_cret = C.gtk_text_iter_forward_find_char(_arg0, _arg1, _arg2, _arg3)
@@ -1216,22 +1218,16 @@ func (iter *TextIter) free() {
 // any tags present at @iter. If any tags affected @values, the function returns
 // true.
 func (iter *TextIter) Attributes() (TextAttributes, bool) {
-	var _arg0 *C.GtkTextIter      // out
-	var _arg1 C.GtkTextAttributes // in
-	var _cret C.gboolean          // in
+	var _arg0 *C.GtkTextIter // out
+	var _values TextAttributes
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
 
-	_cret = C.gtk_text_iter_get_attributes(_arg0, &_arg1)
+	_cret = C.gtk_text_iter_get_attributes(_arg0, (*C.GtkTextAttributes)(unsafe.Pointer(&_values)))
 
-	var _values TextAttributes // out
-	var _ok bool               // out
+	var _ok bool // out
 
-	_values = *(*TextAttributes)(unsafe.Pointer((&_arg1)))
-	C.gtk_text_attributes_ref((&_arg1))
-	runtime.SetFinalizer(_values, func(v TextAttributes) {
-		C.gtk_text_attributes_unref((C.GtkTextAttributes)(unsafe.Pointer(v)))
-	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1457,7 +1453,7 @@ func (start *TextIter) Slice(end *TextIter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1479,7 +1475,7 @@ func (start *TextIter) Text(end *TextIter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1536,7 +1532,7 @@ func (start *TextIter) VisibleSlice(end *TextIter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1557,7 +1553,7 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

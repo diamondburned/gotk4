@@ -3,9 +3,9 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -62,7 +62,7 @@ type ActionMapper interface {
 	AddAction(action Actioner)
 	// AddActionEntries: convenience function for creating multiple Action
 	// instances and adding them to a Map.
-	AddActionEntries(entries []ActionEntry, userData interface{})
+	AddActionEntries(entries []ActionEntry, userData cgo.Handle)
 	// LookupAction looks up the action with the name @action_name in
 	// @action_map.
 	LookupAction(actionName string) *Action
@@ -148,7 +148,7 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 //
 //      return G_ACTION_GROUP (group);
 //    }
-func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData interface{}) {
+func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo.Handle) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GActionEntry
 	var _arg2 C.gint
@@ -157,7 +157,7 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData int
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg2 = C.gint(len(entries))
 	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = (C.gpointer)(box.Assign(userData))
+	_arg3 = (C.gpointer)(userData)
 
 	C.g_action_map_add_action_entries(_arg0, _arg1, _arg2, _arg3)
 }

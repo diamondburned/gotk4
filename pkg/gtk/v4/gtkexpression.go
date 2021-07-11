@@ -4,9 +4,10 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -32,18 +33,18 @@ func init() {
 
 // ExpressionNotify: callback called by gtk_expression_watch() when the
 // expression value changes.
-type ExpressionNotify func(userData interface{})
+type ExpressionNotify func(userData cgo.Handle)
 
 //export gotk4_ExpressionNotify
 func gotk4_ExpressionNotify(arg0 C.gpointer) {
-	v := box.Get(uintptr(arg0))
+	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var userData interface{} // out
+	var userData cgo.Handle // out
 
-	userData = box.Get(uintptr(arg0))
+	userData = (cgo.Handle)(arg0)
 
 	fn := v.(ExpressionNotify)
 	fn(userData)
@@ -407,10 +408,10 @@ func (self *Expression) Bind(target gextras.Objector, property string, this_ gex
 	var _cret *C.GtkExpressionWatch // in
 
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(target.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&target).Native()))
 	_arg2 = (*C.char)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gpointer)(unsafe.Pointer(this_.Native()))
+	_arg3 = C.gpointer(unsafe.Pointer((&this_).Native()))
 
 	_cret = C.gtk_expression_bind(_arg0, _arg1, _arg2, _arg3)
 
@@ -441,7 +442,7 @@ func (self *Expression) Evaluate(this_ gextras.Objector, value *externglib.Value
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(this_.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&this_).Native()))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gtk_expression_evaluate(_arg0, _arg1, _arg2)
@@ -569,7 +570,7 @@ func NewObjectExpression(object gextras.Objector) *ObjectExpression {
 	var _arg1 *C.GObject       // out
 	var _cret *C.GtkExpression // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
 
 	_cret = C.gtk_object_expression_new(_arg1)
 
@@ -641,7 +642,7 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 	var _arg3 *C.char          // out
 	var _cret *C.GtkExpression // in
 
-	_arg1 = (C.GType)(thisType)
+	_arg1 = C.GType(thisType)
 	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 	_arg3 = (*C.char)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg3))

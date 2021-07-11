@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -145,7 +145,7 @@ func (stream *DataInputStream) ByteOrder() DataStreamByteOrder {
 
 	var _dataStreamByteOrder DataStreamByteOrder // out
 
-	_dataStreamByteOrder = (DataStreamByteOrder)(_cret)
+	_dataStreamByteOrder = DataStreamByteOrder(_cret)
 
 	return _dataStreamByteOrder
 }
@@ -161,7 +161,7 @@ func (stream *DataInputStream) NewlineType() DataStreamNewlineType {
 
 	var _dataStreamNewlineType DataStreamNewlineType // out
 
-	_dataStreamNewlineType = (DataStreamNewlineType)(_cret)
+	_dataStreamNewlineType = DataStreamNewlineType(_cret)
 
 	return _dataStreamNewlineType
 }
@@ -328,7 +328,7 @@ func (stream *DataInputStream) ReadLineAsync(ioPriority int, cancellable Cancell
 	_arg1 = C.gint(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_data_input_stream_read_line_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -390,7 +390,7 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 	var _goerr error // out
 
 	_length = uint(_arg2)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -419,7 +419,7 @@ func (stream *DataInputStream) ReadLineUTF8(cancellable Cancellabler) (uint, str
 	var _goerr error // out
 
 	_length = uint(_arg1)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -541,7 +541,7 @@ func (stream *DataInputStream) ReadUntil(stopChars string, cancellable Cancellab
 	var _goerr error // out
 
 	_length = uint(_arg2)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -578,7 +578,7 @@ func (stream *DataInputStream) ReadUntilAsync(stopChars string, ioPriority int, 
 	_arg2 = C.gint(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
+	_arg5 = C.gpointer(gbox.Assign(callback))
 
 	C.g_data_input_stream_read_until_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -605,7 +605,7 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 	var _goerr error // out
 
 	_length = uint(_arg2)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -644,7 +644,7 @@ func (stream *DataInputStream) ReadUpto(stopChars string, stopCharsLen int, canc
 	var _goerr error // out
 
 	_length = uint(_arg3)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -678,7 +678,7 @@ func (stream *DataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int,
 	_arg3 = C.gint(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(box.Assign(callback))
+	_arg6 = C.gpointer(gbox.Assign(callback))
 
 	C.g_data_input_stream_read_upto_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -708,7 +708,7 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	var _goerr error // out
 
 	_length = uint(_arg2)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

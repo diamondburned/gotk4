@@ -408,7 +408,7 @@ func (self *Label) CurrentURI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -426,7 +426,7 @@ func (self *Label) Ellipsize() pango.EllipsizeMode {
 
 	var _ellipsizeMode pango.EllipsizeMode // out
 
-	_ellipsizeMode = (pango.EllipsizeMode)(_cret)
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
 
 	return _ellipsizeMode
 }
@@ -462,7 +462,7 @@ func (self *Label) Justify() Justification {
 
 	var _justification Justification // out
 
-	_justification = (Justification)(_cret)
+	_justification = Justification(_cret)
 
 	return _justification
 }
@@ -481,7 +481,7 @@ func (self *Label) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -683,7 +683,7 @@ func (self *Label) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -780,7 +780,7 @@ func (self *Label) WrapMode() pango.WrapMode {
 
 	var _wrapMode pango.WrapMode // out
 
-	_wrapMode = (pango.WrapMode)(_cret)
+	_wrapMode = pango.WrapMode(_cret)
 
 	return _wrapMode
 }

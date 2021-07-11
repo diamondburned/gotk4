@@ -30,6 +30,7 @@ type ImageCellAccessibler interface {
 	privateImageCellAccessible()
 }
 
+//
 type ImageCellAccessible struct {
 	RendererCellAccessible
 

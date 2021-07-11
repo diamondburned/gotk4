@@ -199,7 +199,7 @@ func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
-	_tlsCertificateFlags = (TLSCertificateFlags)(_cret)
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
 
 	return _tlsCertificateFlags
 }

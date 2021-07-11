@@ -311,7 +311,7 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 	var _arg1 C.GType              // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 
 	_cret = C.gdk_content_formats_new_for_gtype(_arg1)
 
@@ -338,7 +338,7 @@ func (formats *ContentFormats) ContainGType(typ externglib.Type) bool {
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 
 	_cret = C.gdk_content_formats_contain_gtype(_arg0, _arg1)
 
@@ -429,7 +429,7 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -468,7 +468,7 @@ func (formats *ContentFormats) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -683,18 +683,16 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
-	var _cret C.gboolean      // in
+	var _dest Rectangle
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(src1))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
 
-	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
+	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
 
-	var _dest Rectangle // out
-	var _ok bool        // out
+	var _ok bool // out
 
-	_dest = *(*Rectangle)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -713,16 +711,12 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
+	var _dest Rectangle
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(src1))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
 
-	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
-
-	var _dest Rectangle // out
-
-	_dest = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.gdk_rectangle_union(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
 
 	return _dest
 }

@@ -97,7 +97,7 @@ func (node *BlendNode) BlendMode() BlendMode {
 
 	var _blendMode BlendMode // out
 
-	_blendMode = (BlendMode)(_cret)
+	_blendMode = BlendMode(_cret)
 
 	return _blendMode
 }
@@ -1089,7 +1089,7 @@ func (node *DebugNode) Message() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

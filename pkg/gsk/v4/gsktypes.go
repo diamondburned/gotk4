@@ -94,7 +94,7 @@ func (self *Transform) Category() TransformCategory {
 
 	var _transformCategory TransformCategory // out
 
-	_transformCategory = (TransformCategory)(_cret)
+	_transformCategory = TransformCategory(_cret)
 
 	return _transformCategory
 }
@@ -366,16 +366,12 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 //
 // The previous value of @out_matrix will be ignored.
 func (self *Transform) ToMatrix() graphene.Matrix {
-	var _arg0 *C.GskTransform     // out
-	var _arg1 C.graphene_matrix_t // in
+	var _arg0 *C.GskTransform // out
+	var _outMatrix graphene.Matrix
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
 
-	C.gsk_transform_to_matrix(_arg0, &_arg1)
-
-	var _outMatrix graphene.Matrix // out
-
-	_outMatrix = *(*graphene.Matrix)(unsafe.Pointer((&_arg1)))
+	C.gsk_transform_to_matrix(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_outMatrix)))
 
 	return _outMatrix
 }
@@ -395,7 +391,7 @@ func (self *Transform) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -452,16 +448,12 @@ func (next *Transform) Transform(other *Transform) *Transform {
 func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 	var _arg0 *C.GskTransform    // out
 	var _arg1 *C.graphene_rect_t // out
-	var _arg2 C.graphene_rect_t  // in
+	var _outRect graphene.Rect
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect))
 
-	C.gsk_transform_transform_bounds(_arg0, _arg1, &_arg2)
-
-	var _outRect graphene.Rect // out
-
-	_outRect = *(*graphene.Rect)(unsafe.Pointer((&_arg2)))
+	C.gsk_transform_transform_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_outRect)))
 
 	return _outRect
 }
@@ -471,16 +463,12 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 func (self *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 *C.graphene_point_t // out
-	var _arg2 C.graphene_point_t  // in
+	var _outPoint graphene.Point
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point))
 
-	C.gsk_transform_transform_point(_arg0, _arg1, &_arg2)
-
-	var _outPoint graphene.Point // out
-
-	_outPoint = *(*graphene.Point)(unsafe.Pointer((&_arg2)))
+	C.gsk_transform_transform_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_outPoint)))
 
 	return _outPoint
 }

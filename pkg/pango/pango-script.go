@@ -347,11 +347,11 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 	var _end string    // out
 	var _script Script // out
 
-	_start = C.GoString(_arg1)
+	_start = C.GoString((*C.gchar)(_arg1))
 	defer C.free(unsafe.Pointer(_arg1))
-	_end = C.GoString(_arg2)
+	_end = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
-	_script = (Script)(_arg3)
+	_script = Script(_arg3)
 
 	return _start, _end, _script
 }

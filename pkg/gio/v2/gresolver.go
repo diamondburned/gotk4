@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -84,9 +84,9 @@ type ResolverOverrider interface {
 	// call g_resolver_lookup_by_name_finish() to get the result. See
 	// g_resolver_lookup_by_name() for more details.
 	LookupByNameAsync(hostname string, cancellable Cancellabler, callback AsyncReadyCallback)
-
+	//
 	LookupServiceAsync(rrname string, cancellable Cancellabler, callback AsyncReadyCallback)
-
+	//
 	Reload()
 }
 
@@ -169,7 +169,7 @@ func (resolver *Resolver) LookupByAddress(address InetAddresser, cancellable Can
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -190,7 +190,7 @@ func (resolver *Resolver) LookupByAddressAsync(address InetAddresser, cancellabl
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_resolver_lookup_by_address_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -215,7 +215,7 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -238,7 +238,7 @@ func (resolver *Resolver) LookupByNameAsync(hostname string, cancellable Cancell
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_resolver_lookup_by_name_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -265,7 +265,7 @@ func (resolver *Resolver) LookupServiceAsync(service string, protocol string, do
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(box.Assign(callback))
+	_arg6 = C.gpointer(gbox.Assign(callback))
 
 	C.g_resolver_lookup_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

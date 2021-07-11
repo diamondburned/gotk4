@@ -47,6 +47,7 @@ func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ToolbarOverrider interface {
+	//
 	PopupContextMenu(x int, y int, buttonNumber int) bool
 }
 
@@ -219,7 +220,7 @@ func (toolbar *Toolbar) IconSize() IconSize {
 
 	var _iconSize IconSize // out
 
-	_iconSize = (IconSize)(_cret)
+	_iconSize = IconSize(_cret)
 
 	return _iconSize
 }
@@ -290,7 +291,7 @@ func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
 
 	var _reliefStyle ReliefStyle // out
 
-	_reliefStyle = (ReliefStyle)(_cret)
+	_reliefStyle = ReliefStyle(_cret)
 
 	return _reliefStyle
 }
@@ -326,7 +327,7 @@ func (toolbar *Toolbar) Style() ToolbarStyle {
 
 	var _toolbarStyle ToolbarStyle // out
 
-	_toolbarStyle = (ToolbarStyle)(_cret)
+	_toolbarStyle = ToolbarStyle(_cret)
 
 	return _toolbarStyle
 }

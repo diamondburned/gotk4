@@ -65,8 +65,8 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(p1))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(p2))
+	_arg0 = C.gconstpointer(unsafe.Pointer(p1))
+	_arg1 = C.gconstpointer(unsafe.Pointer(p2))
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
 
@@ -93,7 +93,7 @@ func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(p))
+	_arg0 = C.gconstpointer(unsafe.Pointer(p))
 
 	_cret = C.gdk_rgba_hash(_arg0)
 
@@ -159,7 +159,7 @@ func (rgba *RGBA) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

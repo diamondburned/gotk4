@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -32,20 +33,20 @@ func init() {
 // leaf node and will never have children. If it does not have children but may
 // get children later, it should return an empty model that is filled once
 // children arrive.
-type TreeListModelCreateModelFunc func(item *externglib.Object, userData interface{}) (listModel *gio.ListModel)
+type TreeListModelCreateModelFunc func(item *externglib.Object, userData cgo.Handle) (listModel *gio.ListModel)
 
 //export gotk4_TreeListModelCreateModelFunc
 func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GListModel) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object // out
-	var userData interface{}    // out
+	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(TreeListModelCreateModelFunc)
 	listModel := fn(item, userData)

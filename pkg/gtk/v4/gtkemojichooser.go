@@ -74,7 +74,7 @@ func wrapEmojiChooser(obj *externglib.Object) EmojiChooserer {
 					Object: obj,
 				},
 			},
-			Native: Native{
+			NativeSurface: NativeSurface{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,

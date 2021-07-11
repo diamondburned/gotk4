@@ -4,11 +4,12 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -56,22 +57,22 @@ func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
 
 // IconViewForeachFunc: function used by gtk_icon_view_selected_foreach() to map
 // all selected rows. It will be called on every selected row in the view.
-type IconViewForeachFunc func(iconView *IconView, path *TreePath, data interface{})
+type IconViewForeachFunc func(iconView *IconView, path *TreePath, data cgo.Handle)
 
 //export gotk4_IconViewForeachFunc
 func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var iconView *IconView // out
 	var path *TreePath     // out
-	var data interface{}   // out
+	var data cgo.Handle    // out
 
 	iconView = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*IconView)
 	path = (*TreePath)(unsafe.Pointer(arg1))
-	data = box.Get(uintptr(arg2))
+	data = (cgo.Handle)(arg2)
 
 	fn := v.(IconViewForeachFunc)
 	fn(iconView, path, data)
@@ -82,17 +83,18 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type IconViewOverrider interface {
+	//
 	ActivateCursorItem() bool
 	// ItemActivated activates the item determined by @path.
 	ItemActivated(path *TreePath)
 	// SelectAll selects all the icons. @icon_view must has its selection mode
 	// set to K_SELECTION_MULTIPLE.
 	SelectAll()
-
+	//
 	SelectCursorItem()
-
+	//
 	SelectionChanged()
-
+	//
 	ToggleCursorItem()
 	// UnselectAll unselects all the icons.
 	UnselectAll()
@@ -428,19 +430,17 @@ func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (gdk.Rec
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 *C.GtkTreePath     // out
 	var _arg2 *C.GtkCellRenderer // out
-	var _arg3 C.GdkRectangle     // in
-	var _cret C.gboolean         // in
+	var _rect gdk.Rectangle
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
 
-	_cret = C.gtk_icon_view_get_cell_rect(_arg0, _arg1, _arg2, &_arg3)
+	_cret = C.gtk_icon_view_get_cell_rect(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
+	var _ok bool // out
 
-	_rect = *(*gdk.Rectangle)(unsafe.Pointer((&_arg3)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -486,23 +486,18 @@ func (iconView *IconView) Columns() int {
 //
 // The returned TreePath must be freed with gtk_tree_path_free().
 func (iconView *IconView) Cursor() (*TreePath, *CellRenderer, bool) {
-	var _arg0 *C.GtkIconView     // out
-	var _arg1 *C.GtkTreePath     // in
+	var _arg0 *C.GtkIconView // out
+	var _path *TreePath
 	var _arg2 *C.GtkCellRenderer // in
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 
-	_cret = C.gtk_icon_view_get_cursor(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_icon_view_get_cursor(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg2)
 
-	var _path *TreePath     // out
 	var _cell *CellRenderer // out
 	var _ok bool            // out
 
-	_path = (*TreePath)(unsafe.Pointer(_arg1))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
-	})
 	_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*CellRenderer)
 	if _cret != 0 {
 		_ok = true
@@ -513,10 +508,10 @@ func (iconView *IconView) Cursor() (*TreePath, *CellRenderer, bool) {
 
 // DestItemAtPos determines the destination item for a given position.
 func (iconView *IconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool) {
-	var _arg0 *C.GtkIconView            // out
-	var _arg1 C.gint                    // out
-	var _arg2 C.gint                    // out
-	var _arg3 *C.GtkTreePath            // in
+	var _arg0 *C.GtkIconView // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _path *TreePath
 	var _arg4 C.GtkIconViewDropPosition // in
 	var _cret C.gboolean                // in
 
@@ -524,17 +519,12 @@ func (iconView *IconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconVi
 	_arg1 = C.gint(dragX)
 	_arg2 = C.gint(dragY)
 
-	_cret = C.gtk_icon_view_get_dest_item_at_pos(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	_cret = C.gtk_icon_view_get_dest_item_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4)
 
-	var _path *TreePath           // out
 	var _pos IconViewDropPosition // out
 	var _ok bool                  // out
 
-	_path = (*TreePath)(unsafe.Pointer(_arg3))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
-	})
-	_pos = (IconViewDropPosition)(_arg4)
+	_pos = IconViewDropPosition(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -545,22 +535,17 @@ func (iconView *IconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconVi
 // DragDestItem gets information about the item that is highlighted for
 // feedback.
 func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
-	var _arg0 *C.GtkIconView            // out
-	var _arg1 *C.GtkTreePath            // in
+	var _arg0 *C.GtkIconView // out
+	var _path *TreePath
 	var _arg2 C.GtkIconViewDropPosition // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 
-	C.gtk_icon_view_get_drag_dest_item(_arg0, &_arg1, &_arg2)
+	C.gtk_icon_view_get_drag_dest_item(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg2)
 
-	var _path *TreePath           // out
 	var _pos IconViewDropPosition // out
 
-	_path = (*TreePath)(unsafe.Pointer(_arg1))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
-	})
-	_pos = (IconViewDropPosition)(_arg2)
+	_pos = IconViewDropPosition(_arg2)
 
 	return _path, _pos
 }
@@ -572,10 +557,10 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 // gtk_icon_view_convert_widget_to_bin_window_coords() for converting widget
 // coordinates to bin_window coordinates.
 func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, *CellRenderer, bool) {
-	var _arg0 *C.GtkIconView     // out
-	var _arg1 C.gint             // out
-	var _arg2 C.gint             // out
-	var _arg3 *C.GtkTreePath     // in
+	var _arg0 *C.GtkIconView // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _path *TreePath
 	var _arg4 *C.GtkCellRenderer // in
 	var _cret C.gboolean         // in
 
@@ -583,16 +568,11 @@ func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, *CellRenderer, boo
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
-	_cret = C.gtk_icon_view_get_item_at_pos(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	_cret = C.gtk_icon_view_get_item_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4)
 
-	var _path *TreePath     // out
 	var _cell *CellRenderer // out
 	var _ok bool            // out
 
-	_path = (*TreePath)(unsafe.Pointer(_arg3))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
-	})
 	_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(*CellRenderer)
 	if _cret != 0 {
 		_ok = true
@@ -632,7 +612,7 @@ func (iconView *IconView) ItemOrientation() Orientation {
 
 	var _orientation Orientation // out
 
-	_orientation = (Orientation)(_cret)
+	_orientation = Orientation(_cret)
 
 	return _orientation
 }
@@ -826,7 +806,7 @@ func (iconView *IconView) SelectionMode() SelectionMode {
 
 	var _selectionMode SelectionMode // out
 
-	_selectionMode = (SelectionMode)(_cret)
+	_selectionMode = SelectionMode(_cret)
 
 	return _selectionMode
 }
@@ -886,26 +866,16 @@ func (iconView *IconView) TooltipColumn() int {
 // Both paths should be freed with gtk_tree_path_free() after use.
 func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool) {
 	var _arg0 *C.GtkIconView // out
-	var _arg1 *C.GtkTreePath // in
-	var _arg2 *C.GtkTreePath // in
-	var _cret C.gboolean     // in
+	var _startPath *TreePath
+	var _endPath *TreePath
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 
-	_cret = C.gtk_icon_view_get_visible_range(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_icon_view_get_visible_range(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_startPath)), (**C.GtkTreePath)(unsafe.Pointer(&_endPath)))
 
-	var _startPath *TreePath // out
-	var _endPath *TreePath   // out
-	var _ok bool             // out
+	var _ok bool // out
 
-	_startPath = (*TreePath)(unsafe.Pointer(_arg1))
-	runtime.SetFinalizer(_startPath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
-	})
-	_endPath = (*TreePath)(unsafe.Pointer(_arg2))
-	runtime.SetFinalizer(_endPath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
-	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1007,7 +977,7 @@ func (iconView *IconView) SelectedForeach(fn IconViewForeachFunc) {
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_IconViewForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
+	_arg2 = C.gpointer(gbox.Assign(fn))
 
 	C.gtk_icon_view_selected_foreach(_arg0, _arg1, _arg2)
 }

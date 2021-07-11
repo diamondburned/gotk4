@@ -95,7 +95,7 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 
 	var _seatCapabilities SeatCapabilities // out
 
-	_seatCapabilities = (SeatCapabilities)(_cret)
+	_seatCapabilities = SeatCapabilities(_cret)
 
 	return _seatCapabilities
 }

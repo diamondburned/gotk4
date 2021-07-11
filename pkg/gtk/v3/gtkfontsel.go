@@ -59,6 +59,7 @@ type FontSelectioner interface {
 	SetPreviewText(text string)
 }
 
+//
 type FontSelection struct {
 	Box
 }
@@ -207,7 +208,7 @@ func (fontsel *FontSelection) FontName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -244,7 +245,7 @@ func (fontsel *FontSelection) PreviewText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -364,6 +365,7 @@ type FontSelectionDialogger interface {
 	SetPreviewText(text string)
 }
 
+//
 type FontSelectionDialog struct {
 	Dialog
 }
@@ -460,7 +462,7 @@ func (fsd *FontSelectionDialog) FontName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -515,7 +517,7 @@ func (fsd *FontSelectionDialog) PreviewText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

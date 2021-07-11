@@ -4,10 +4,11 @@ package gdk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -323,20 +324,20 @@ func marshalWindowHints(p uintptr) (interface{}, error) {
 // WindowChildFunc: function of this type is passed to
 // gdk_window_invalidate_maybe_recurse(). It gets called for each child of the
 // window to determine whether to recursively invalidate it or now.
-type WindowChildFunc func(window *Window, userData interface{}) (ok bool)
+type WindowChildFunc func(window *Window, userData cgo.Handle) (ok bool)
 
 //export gotk4_WindowChildFunc
 func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var window *Window       // out
-	var userData interface{} // out
+	var window *Window      // out
+	var userData cgo.Handle // out
 
 	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Window)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(WindowChildFunc)
 	ok := fn(window, userData)
@@ -417,10 +418,11 @@ func OffscreenWindowSetEmbedder(window Windowwer, embedder Windowwer) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WindowOverrider interface {
+	//
 	CreateSurface(width int, height int) *cairo.Surface
-
+	//
 	FromEmbedder(embedderX float64, embedderY float64, offscreenX *float64, offscreenY *float64)
-
+	//
 	ToEmbedder(offscreenX float64, offscreenY float64, embedderX *float64, embedderY *float64)
 }
 
@@ -595,7 +597,7 @@ type Windowwer interface {
 	UpdateArea() *cairo.Region
 	// UserData retrieves the user data for @window, which is normally the
 	// widget that @window belongs to.
-	UserData() interface{}
+	UserData() cgo.Handle
 	// VisibleRegion computes the region of the @window that is potentially
 	// visible.
 	VisibleRegion() *cairo.Region
@@ -796,6 +798,7 @@ type Windowwer interface {
 	Withdraw()
 }
 
+//
 type Window struct {
 	*externglib.Object
 }
@@ -1395,7 +1398,7 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 	var _decorations WMDecoration // out
 	var _ok bool                  // out
 
-	_decorations = (WMDecoration)(_arg1)
+	_decorations = WMDecoration(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1438,7 +1441,7 @@ func (window *Window) DeviceEvents(device Devicer) EventMask {
 
 	var _eventMask EventMask // out
 
-	_eventMask = (EventMask)(_cret)
+	_eventMask = EventMask(_cret)
 
 	return _eventMask
 }
@@ -1468,7 +1471,7 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 
 	_x = int(_arg2)
 	_y = int(_arg3)
-	_mask = (ModifierType)(_arg4)
+	_mask = ModifierType(_arg4)
 	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
 
 	return _x, _y, _mask, _ret
@@ -1497,7 +1500,7 @@ func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64
 
 	_x = float64(_arg2)
 	_y = float64(_arg3)
-	_mask = (ModifierType)(_arg4)
+	_mask = ModifierType(_arg4)
 	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
 
 	return _x, _y, _mask, _ret
@@ -1533,7 +1536,7 @@ func (window *Window) DragProtocol() (*Window, DragProtocol) {
 	var _dragProtocol DragProtocol // out
 
 	_target = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(*Window)
-	_dragProtocol = (DragProtocol)(_cret)
+	_dragProtocol = DragProtocol(_cret)
 
 	return _target, _dragProtocol
 }
@@ -1609,7 +1612,7 @@ func (window *Window) Events() EventMask {
 
 	var _eventMask EventMask // out
 
-	_eventMask = (EventMask)(_cret)
+	_eventMask = EventMask(_cret)
 
 	return _eventMask
 }
@@ -1655,16 +1658,12 @@ func (window *Window) FrameClock() *FrameClock {
 // coordinates. To get the position of the window itself (rather than the frame)
 // in root window coordinates, use gdk_window_get_origin().
 func (window *Window) FrameExtents() Rectangle {
-	var _arg0 *C.GdkWindow   // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GdkWindow // out
+	var _rect Rectangle
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gdk_window_get_frame_extents(_arg0, &_arg1)
-
-	var _rect Rectangle // out
-
-	_rect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	C.gdk_window_get_frame_extents(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
 	return _rect
 }
@@ -1680,7 +1679,7 @@ func (window *Window) FullscreenMode() FullscreenMode {
 
 	var _fullscreenMode FullscreenMode // out
 
-	_fullscreenMode = (FullscreenMode)(_cret)
+	_fullscreenMode = FullscreenMode(_cret)
 
 	return _fullscreenMode
 }
@@ -1876,7 +1875,7 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret *Window) {
 
 	_x = int(_arg1)
 	_y = int(_arg2)
-	_mask = (ModifierType)(_arg3)
+	_mask = ModifierType(_arg3)
 	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
 
 	return _x, _y, _mask, _ret
@@ -2005,7 +2004,7 @@ func (window *Window) State() WindowState {
 
 	var _windowState WindowState // out
 
-	_windowState = (WindowState)(_cret)
+	_windowState = WindowState(_cret)
 
 	return _windowState
 }
@@ -2064,7 +2063,7 @@ func (window *Window) TypeHint() WindowTypeHint {
 
 	var _windowTypeHint WindowTypeHint // out
 
-	_windowTypeHint = (WindowTypeHint)(_cret)
+	_windowTypeHint = WindowTypeHint(_cret)
 
 	return _windowTypeHint
 }
@@ -2095,7 +2094,7 @@ func (window *Window) UpdateArea() *cairo.Region {
 
 // UserData retrieves the user data for @window, which is normally the widget
 // that @window belongs to. See gdk_window_set_user_data().
-func (window *Window) UserData() interface{} {
+func (window *Window) UserData() cgo.Handle {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gpointer   // in
 
@@ -2103,9 +2102,9 @@ func (window *Window) UserData() interface{} {
 
 	C.gdk_window_get_user_data(_arg0, &_arg1)
 
-	var _data interface{} // out
+	var _data cgo.Handle // out
 
-	_data = box.Get(uintptr(_arg1))
+	_data = (cgo.Handle)(_arg1)
 
 	return _data
 }
@@ -2178,7 +2177,7 @@ func (window *Window) WindowType() WindowType {
 
 	var _windowType WindowType // out
 
-	_windowType = (WindowType)(_cret)
+	_windowType = WindowType(_cret)
 
 	return _windowType
 }
@@ -2276,7 +2275,7 @@ func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 	_arg2 = (*[0]byte)(C.gotk4_WindowChildFunc)
-	_arg3 = C.gpointer(box.Assign(childFunc))
+	_arg3 = C.gpointer(gbox.Assign(childFunc))
 
 	C.gdk_window_invalidate_maybe_recurse(_arg0, _arg1, _arg2, _arg3)
 }
@@ -3287,7 +3286,7 @@ func (window *Window) SetUserData(userData gextras.Objector) {
 	var _arg1 C.gpointer   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(userData.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&userData).Native()))
 
 	C.gdk_window_set_user_data(_arg0, _arg1)
 }

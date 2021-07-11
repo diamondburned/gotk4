@@ -214,7 +214,7 @@ func (channel *IOChannel) Flush() (IOStatus, error) {
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
-	_ioStatus = (IOStatus)(_cret)
+	_ioStatus = IOStatus(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
@@ -233,7 +233,7 @@ func (channel *IOChannel) BufferCondition() IOCondition {
 
 	var _ioCondition IOCondition // out
 
-	_ioCondition = (IOCondition)(_cret)
+	_ioCondition = IOCondition(_cret)
 
 	return _ioCondition
 }
@@ -306,7 +306,7 @@ func (channel *IOChannel) Encoding() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -329,7 +329,7 @@ func (channel *IOChannel) Flags() IOFlags {
 
 	var _ioFlags IOFlags // out
 
-	_ioFlags = (IOFlags)(_cret)
+	_ioFlags = IOFlags(_cret)
 
 	return _ioFlags
 }
@@ -348,7 +348,7 @@ func (channel *IOChannel) LineTerm(length *int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -386,7 +386,7 @@ func (channel *IOChannel) Read(buf string, count uint, bytesRead *uint) IOError 
 
 	var _ioError IOError // out
 
-	_ioError = (IOError)(_cret)
+	_ioError = IOError(_cret)
 
 	return _ioError
 }
@@ -412,11 +412,11 @@ func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorP
 	var _ioStatus IOStatus  // out
 	var _goerr error        // out
 
-	_strReturn = C.GoString(_arg1)
+	_strReturn = C.GoString((*C.gchar)(_arg1))
 	defer C.free(unsafe.Pointer(_arg1))
 	_length = uint(_arg2)
 	_terminatorPos = uint(_arg3)
-	_ioStatus = (IOStatus)(_cret)
+	_ioStatus = IOStatus(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _strReturn, _length, _terminatorPos, _ioStatus, _goerr
@@ -442,7 +442,7 @@ func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	runtime.SetFinalizer(&_strReturn, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
 	})
-	_ioStatus = (IOStatus)(_cret)
+	_ioStatus = IOStatus(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _strReturn, _ioStatus, _goerr
@@ -465,7 +465,7 @@ func (channel *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 	var _goerr error       // out
 
 	_thechar = uint32(_arg1)
-	_ioStatus = (IOStatus)(_cret)
+	_ioStatus = IOStatus(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _thechar, _ioStatus, _goerr
@@ -595,7 +595,7 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
-	_ioStatus = (IOStatus)(_cret)
+	_ioStatus = IOStatus(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
@@ -635,7 +635,7 @@ func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
-	_ioStatus = (IOStatus)(_cret)
+	_ioStatus = IOStatus(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
@@ -689,7 +689,7 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 
 	var _ioError IOError // out
 
-	_ioError = (IOError)(_cret)
+	_ioError = IOError(_cret)
 
 	return _ioError
 }
@@ -719,7 +719,7 @@ func (channel *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, err
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg3)
-	_ioStatus = (IOStatus)(_cret)
+	_ioStatus = IOStatus(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _ioStatus, _goerr
@@ -741,7 +741,7 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
-	_ioStatus = (IOStatus)(_cret)
+	_ioStatus = IOStatus(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr

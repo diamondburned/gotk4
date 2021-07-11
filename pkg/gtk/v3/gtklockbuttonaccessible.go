@@ -30,6 +30,7 @@ type LockButtonAccessibler interface {
 	privateLockButtonAccessible()
 }
 
+//
 type LockButtonAccessible struct {
 	ButtonAccessible
 }

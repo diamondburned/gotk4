@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -265,7 +265,7 @@ func (conn *DTLSConnection) CloseAsync(ioPriority int, cancellable Cancellabler,
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_dtls_connection_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -358,7 +358,7 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -394,7 +394,7 @@ func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
-	_tlsCertificateFlags = (TLSCertificateFlags)(_cret)
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
 
 	return _tlsCertificateFlags
 }
@@ -415,7 +415,7 @@ func (conn *DTLSConnection) RehandshakeMode() TLSRehandshakeMode {
 
 	var _tlsRehandshakeMode TLSRehandshakeMode // out
 
-	_tlsRehandshakeMode = (TLSRehandshakeMode)(_cret)
+	_tlsRehandshakeMode = TLSRehandshakeMode(_cret)
 
 	return _tlsRehandshakeMode
 }
@@ -494,7 +494,7 @@ func (conn *DTLSConnection) HandshakeAsync(ioPriority int, cancellable Cancellab
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_dtls_connection_handshake_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -700,7 +700,7 @@ func (conn *DTLSConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool,
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(box.Assign(callback))
+	_arg6 = C.gpointer(gbox.Assign(callback))
 
 	C.g_dtls_connection_shutdown_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

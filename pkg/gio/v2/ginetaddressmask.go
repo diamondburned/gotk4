@@ -171,7 +171,7 @@ func (mask *InetAddressMask) Family() SocketFamily {
 
 	var _socketFamily SocketFamily // out
 
-	_socketFamily = (SocketFamily)(_cret)
+	_socketFamily = SocketFamily(_cret)
 
 	return _socketFamily
 }
@@ -223,7 +223,7 @@ func (mask *InetAddressMask) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

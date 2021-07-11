@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -34,24 +35,24 @@ func init() {
 //
 // For example, if @model is a product catalogue, then a compare function for
 // the “price” column could be one which returns `price_of(@a) - price_of(@b)`.
-type TreeIterCompareFunc func(model *TreeModel, a *TreeIter, b *TreeIter, userData interface{}) (gint int)
+type TreeIterCompareFunc func(model *TreeModel, a *TreeIter, b *TreeIter, userData cgo.Handle) (gint int)
 
 //export gotk4_TreeIterCompareFunc
 func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.int) {
-	v := box.Get(uintptr(arg3))
+	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var model *TreeModel     // out
-	var a *TreeIter          // out
-	var b *TreeIter          // out
-	var userData interface{} // out
+	var model *TreeModel    // out
+	var a *TreeIter         // out
+	var b *TreeIter         // out
+	var userData cgo.Handle // out
 
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	a = (*TreeIter)(unsafe.Pointer(arg1))
 	b = (*TreeIter)(unsafe.Pointer(arg2))
-	userData = box.Get(uintptr(arg3))
+	userData = (cgo.Handle)(arg3)
 
 	fn := v.(TreeIterCompareFunc)
 	gint := fn(model, a, b, userData)
@@ -139,7 +140,7 @@ func (sortable *TreeSortable) SortColumnID() (int, SortType, bool) {
 	var _ok bool          // out
 
 	_sortColumnId = int(_arg1)
-	_order = (SortType)(_arg2)
+	_order = SortType(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}

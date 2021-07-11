@@ -30,6 +30,7 @@ type ListBoxRowAccessibler interface {
 	privateListBoxRowAccessible()
 }
 
+//
 type ListBoxRowAccessible struct {
 	ContainerAccessible
 }

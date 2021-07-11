@@ -53,7 +53,7 @@ func AcceleratorGetDefaultModMask() gdk.ModifierType {
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(_cret)
+	_modifierType = gdk.ModifierType(_cret)
 
 	return _modifierType
 }
@@ -83,7 +83,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg2)
-	_acceleratorMods = (gdk.ModifierType)(_arg3)
+	_acceleratorMods = gdk.ModifierType(_arg3)
 
 	return _acceleratorKey, _acceleratorMods
 }
@@ -130,7 +130,7 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 			_acceleratorCodes[i] = uint(src[i])
 		}
 	}
-	_acceleratorMods = (gdk.ModifierType)(_arg4)
+	_acceleratorMods = gdk.ModifierType(_arg4)
 
 	return _acceleratorKey, _acceleratorCodes, _acceleratorMods
 }
@@ -228,7 +228,7 @@ func (accelGroup *AccelGroup) ModifierMask() gdk.ModifierType {
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(_cret)
+	_modifierType = gdk.ModifierType(_cret)
 
 	return _modifierType
 }
@@ -258,6 +258,7 @@ func (accelGroup *AccelGroup) Unlock() {
 	C.gtk_accel_group_unlock(_arg0)
 }
 
+//
 type AccelGroupEntry struct {
 	native C.GtkAccelGroupEntry
 }
@@ -267,6 +268,7 @@ func (a *AccelGroupEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+//
 type AccelKey struct {
 	native C.GtkAccelKey
 }

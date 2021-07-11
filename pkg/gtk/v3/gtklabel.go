@@ -32,10 +32,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type LabelOverrider interface {
+	//
 	ActivateLink(uri string) bool
-
+	//
 	CopyClipboard()
-
+	//
 	PopulatePopup(menu Menuer)
 }
 
@@ -310,7 +311,7 @@ func (label *Label) CurrentURI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -327,7 +328,7 @@ func (label *Label) Ellipsize() pango.EllipsizeMode {
 
 	var _ellipsizeMode pango.EllipsizeMode // out
 
-	_ellipsizeMode = (pango.EllipsizeMode)(_cret)
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
 
 	return _ellipsizeMode
 }
@@ -343,7 +344,7 @@ func (label *Label) Justify() Justification {
 
 	var _justification Justification // out
 
-	_justification = (Justification)(_cret)
+	_justification = Justification(_cret)
 
 	return _justification
 }
@@ -360,7 +361,7 @@ func (label *Label) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -442,7 +443,7 @@ func (label *Label) LineWrapMode() pango.WrapMode {
 
 	var _wrapMode pango.WrapMode // out
 
-	_wrapMode = (pango.WrapMode)(_cret)
+	_wrapMode = pango.WrapMode(_cret)
 
 	return _wrapMode
 }
@@ -590,7 +591,7 @@ func (label *Label) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

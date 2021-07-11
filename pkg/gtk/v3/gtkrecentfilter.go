@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -54,20 +55,20 @@ func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 
 // RecentFilterFunc: type of function that is used with custom filters, see
 // gtk_recent_filter_add_custom().
-type RecentFilterFunc func(filterInfo *RecentFilterInfo, userData interface{}) (ok bool)
+type RecentFilterFunc func(filterInfo *RecentFilterInfo, userData cgo.Handle) (ok bool)
 
 //export gotk4_RecentFilterFunc
 func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var filterInfo *RecentFilterInfo // out
-	var userData interface{}         // out
+	var userData cgo.Handle          // out
 
 	filterInfo = (*RecentFilterInfo)(unsafe.Pointer(arg0))
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(RecentFilterFunc)
 	ok := fn(filterInfo, userData)
@@ -327,7 +328,7 @@ func (filter *RecentFilter) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -347,7 +348,7 @@ func (filter *RecentFilter) Needed() RecentFilterFlags {
 
 	var _recentFilterFlags RecentFilterFlags // out
 
-	_recentFilterFlags = (RecentFilterFlags)(_cret)
+	_recentFilterFlags = RecentFilterFlags(_cret)
 
 	return _recentFilterFlags
 }

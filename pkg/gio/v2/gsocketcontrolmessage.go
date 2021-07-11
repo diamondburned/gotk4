@@ -3,9 +3,9 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -44,14 +44,14 @@ type SocketControlMessageOverrider interface {
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
 	Size() uint
-
+	//
 	Type() int
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
 	//
 	// @data is guaranteed to have enough space to fit the size returned by
 	// g_socket_control_message_get_size() on this object.
-	Serialize(data interface{})
+	Serialize(data cgo.Handle)
 }
 
 // SocketControlMessager describes SocketControlMessage's methods.
@@ -65,7 +65,7 @@ type SocketControlMessager interface {
 	Size() uint
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
-	Serialize(data interface{})
+	Serialize(data cgo.Handle)
 }
 
 // SocketControlMessage is a special-purpose utility message that can be sent to
@@ -162,12 +162,12 @@ func (message *SocketControlMessage) Size() uint {
 //
 // @data is guaranteed to have enough space to fit the size returned by
 // g_socket_control_message_get_size() on this object.
-func (message *SocketControlMessage) Serialize(data interface{}) {
+func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 	var _arg0 *C.GSocketControlMessage // out
 	var _arg1 C.gpointer               // out
 
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
-	_arg1 = (C.gpointer)(box.Assign(data))
+	_arg1 = (C.gpointer)(data)
 
 	C.g_socket_control_message_serialize(_arg0, _arg1)
 }

@@ -34,7 +34,7 @@ type HypertextOverrider interface {
 	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
 	NLinks() int
-
+	//
 	LinkSelected(linkIndex int)
 }
 

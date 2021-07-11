@@ -4,10 +4,11 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -38,22 +39,22 @@ type Allocation = gdk.Rectangle
 
 // TickCallback: callback type for adding a function to update animations. See
 // gtk_widget_add_tick_callback().
-type TickCallback func(widget *Widget, frameClock *gdk.FrameClock, userData interface{}) (ok bool)
+type TickCallback func(widget *Widget, frameClock *gdk.FrameClock, userData cgo.Handle) (ok bool)
 
 //export gotk4_TickCallback
 func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var widget *Widget             // out
 	var frameClock *gdk.FrameClock // out
-	var userData interface{}       // out
+	var userData cgo.Handle        // out
 
 	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
 	frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*gdk.FrameClock)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock, userData)
@@ -102,7 +103,7 @@ type WidgetOverrider interface {
 	Map()
 	// MnemonicActivate emits the `GtkWidget`::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
-
+	//
 	QueryTooltip(x int, y int, keyboardTooltip bool, tooltip Tooltipper) bool
 	// Realize creates the GDK resources associated with a widget.
 	//
@@ -120,7 +121,7 @@ type WidgetOverrider interface {
 	// approach is to connect to a signal that will be called after the widget
 	// is realized automatically, such as [signal@Gtk.Widget::realize].
 	Realize()
-
+	//
 	Root()
 	// SetFocusChild: set @child as the current focus child of @widget.
 	//
@@ -141,9 +142,9 @@ type WidgetOverrider interface {
 	// mapped; other shown widgets are realized and mapped when their toplevel
 	// container is realized and mapped.
 	Show()
-
+	//
 	SizeAllocate(width int, height int, baseline int)
-
+	//
 	Snapshot(snapshot Snapshotter)
 	// Unmap causes a widget to be unmapped if it’s currently mapped.
 	//
@@ -154,7 +155,7 @@ type WidgetOverrider interface {
 	//
 	// This function is only useful in widget implementations.
 	Unrealize()
-
+	//
 	Unroot()
 }
 
@@ -281,7 +282,7 @@ type Widgetter interface {
 	// Name retrieves the name of a widget.
 	Name() string
 	// GetNative returns the `GtkNative` widget that contains @widget.
-	GetNative() *Native
+	GetNative() *NativeSurface
 	// NextSibling returns the widgets next sibling.
 	NextSibling() *Widget
 	// Opacity the requested opacity for this widget.
@@ -996,20 +997,18 @@ func (widget *Widget) Allocate(width int, height int, baseline int, transform *g
 //
 // It is valid for @widget and @target to be the same widget.
 func (widget *Widget) ComputeBounds(target Widgetter) (graphene.Rect, bool) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkWidget      // out
-	var _arg2 C.graphene_rect_t // in
-	var _cret C.gboolean        // in
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+	var _outBounds graphene.Rect
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
 
-	_cret = C.gtk_widget_compute_bounds(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_widget_compute_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_outBounds)))
 
-	var _outBounds graphene.Rect // out
-	var _ok bool                 // out
+	var _ok bool // out
 
-	_outBounds = *(*graphene.Rect)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1026,19 +1025,17 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (gra
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 *C.graphene_point_t // out
-	var _arg3 C.graphene_point_t  // in
-	var _cret C.gboolean          // in
+	var _outPoint graphene.Point
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(point))
 
-	_cret = C.gtk_widget_compute_point(_arg0, _arg1, _arg2, &_arg3)
+	_cret = C.gtk_widget_compute_point(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_outPoint)))
 
-	var _outPoint graphene.Point // out
-	var _ok bool                 // out
+	var _ok bool // out
 
-	_outPoint = *(*graphene.Point)(unsafe.Pointer((&_arg3)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1049,20 +1046,18 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (gra
 // ComputeTransform computes a matrix suitable to describe a transformation from
 // @widget's coordinate system into @target's coordinate system.
 func (widget *Widget) ComputeTransform(target Widgetter) (graphene.Matrix, bool) {
-	var _arg0 *C.GtkWidget        // out
-	var _arg1 *C.GtkWidget        // out
-	var _arg2 C.graphene_matrix_t // in
-	var _cret C.gboolean          // in
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+	var _outTransform graphene.Matrix
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
 
-	_cret = C.gtk_widget_compute_transform(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_widget_compute_transform(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_outTransform)))
 
-	var _outTransform graphene.Matrix // out
-	var _ok bool                      // out
+	var _ok bool // out
 
-	_outTransform = *(*graphene.Matrix)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1252,7 +1247,7 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) *Widget {
 	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (C.GType)(widgetType)
+	_arg1 = C.GType(widgetType)
 
 	_cret = C.gtk_widget_get_ancestor(_arg0, _arg1)
 
@@ -1368,7 +1363,7 @@ func (widget *Widget) CSSClasses() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -1387,7 +1382,7 @@ func (self *Widget) CSSName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1423,7 +1418,7 @@ func (widget *Widget) Direction() TextDirection {
 
 	var _textDirection TextDirection // out
 
-	_textDirection = (TextDirection)(_cret)
+	_textDirection = TextDirection(_cret)
 
 	return _textDirection
 }
@@ -1614,7 +1609,7 @@ func (widget *Widget) HAlign() Align {
 
 	var _align Align // out
 
-	_align = (Align)(_cret)
+	_align = Align(_cret)
 
 	return _align
 }
@@ -1848,7 +1843,7 @@ func (widget *Widget) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1859,7 +1854,7 @@ func (widget *Widget) Name() string {
 // tree with a native ancestor.
 //
 // `GtkNative` widgets will return themselves here.
-func (widget *Widget) GetNative() *Native {
+func (widget *Widget) GetNative() *NativeSurface {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkNative // in
 
@@ -1867,9 +1862,9 @@ func (widget *Widget) GetNative() *Native {
 
 	_cret = C.gtk_widget_get_native(_arg0)
 
-	var _native *Native // out
+	var _native *NativeSurface // out
 
-	_native = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Native)
+	_native = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*NativeSurface)
 
 	return _native
 }
@@ -1921,7 +1916,7 @@ func (widget *Widget) Overflow() Overflow {
 
 	var _overflow Overflow // out
 
-	_overflow = (Overflow)(_cret)
+	_overflow = Overflow(_cret)
 
 	return _overflow
 }
@@ -1981,19 +1976,13 @@ func (widget *Widget) Parent() *Widget {
 //
 // Use [id@gtk_widget_measure] if you want to support baseline alignment.
 func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkRequisition // in
-	var _arg2 C.GtkRequisition // in
+	var _arg0 *C.GtkWidget // out
+	var _minimumSize Requisition
+	var _naturalSize Requisition
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_get_preferred_size(_arg0, &_arg1, &_arg2)
-
-	var _minimumSize Requisition // out
-	var _naturalSize Requisition // out
-
-	_minimumSize = *(*Requisition)(unsafe.Pointer((&_arg1)))
-	_naturalSize = *(*Requisition)(unsafe.Pointer((&_arg2)))
+	C.gtk_widget_get_preferred_size(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_minimumSize)), (*C.GtkRequisition)(unsafe.Pointer(&_naturalSize)))
 
 	return _minimumSize, _naturalSize
 }
@@ -2093,7 +2082,7 @@ func (widget *Widget) RequestMode() SizeRequestMode {
 
 	var _sizeRequestMode SizeRequestMode // out
 
-	_sizeRequestMode = (SizeRequestMode)(_cret)
+	_sizeRequestMode = SizeRequestMode(_cret)
 
 	return _sizeRequestMode
 }
@@ -2231,7 +2220,7 @@ func (widget *Widget) StateFlags() StateFlags {
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = (StateFlags)(_cret)
+	_stateFlags = StateFlags(_cret)
 
 	return _stateFlags
 }
@@ -2270,7 +2259,7 @@ func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *ex
 	var _cret *C.GObject   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (C.GType)(widgetType)
+	_arg1 = C.GType(widgetType)
 	_arg2 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -2297,7 +2286,7 @@ func (widget *Widget) TooltipMarkup() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -2317,7 +2306,7 @@ func (widget *Widget) TooltipText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -2333,7 +2322,7 @@ func (widget *Widget) VAlign() Align {
 
 	var _align Align // out
 
-	_align = (Align)(_cret)
+	_align = Align(_cret)
 
 	return _align
 }

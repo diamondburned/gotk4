@@ -4,9 +4,10 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -64,18 +65,19 @@ func marshalRecentSortType(p uintptr) (interface{}, error) {
 	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type RecentSortFunc func(a *RecentInfo, b *RecentInfo, userData interface{}) (gint int)
+//
+type RecentSortFunc func(a *RecentInfo, b *RecentInfo, userData cgo.Handle) (gint int)
 
 //export gotk4_RecentSortFunc
 func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) (cret C.gint) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var a *RecentInfo        // out
-	var b *RecentInfo        // out
-	var userData interface{} // out
+	var a *RecentInfo       // out
+	var b *RecentInfo       // out
+	var userData cgo.Handle // out
 
 	a = (*RecentInfo)(unsafe.Pointer(arg0))
 	C.gtk_recent_info_ref(arg0)
@@ -87,7 +89,7 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 	runtime.SetFinalizer(b, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(RecentSortFunc)
 	gint := fn(a, b, userData)
@@ -110,7 +112,7 @@ type RecentChooserOverrider interface {
 	AddFilter(filter RecentFilterer)
 	// CurrentURI gets the URI currently selected by @chooser.
 	CurrentURI() string
-
+	//
 	ItemActivated()
 	// RemoveFilter removes @filter from the list of RecentFilter objects held
 	// by @chooser.
@@ -120,7 +122,7 @@ type RecentChooserOverrider interface {
 	SelectAll()
 	// SelectURI selects @uri inside @chooser.
 	SelectURI(uri string) error
-
+	//
 	SelectionChanged()
 	// SetCurrentURI sets @uri as the current URI for @chooser.
 	SetCurrentURI(uri string) error
@@ -276,7 +278,7 @@ func (chooser *RecentChooser) CurrentURI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -439,7 +441,7 @@ func (chooser *RecentChooser) SortType() RecentSortType {
 
 	var _recentSortType RecentSortType // out
 
-	_recentSortType = (RecentSortType)(_cret)
+	_recentSortType = RecentSortType(_cret)
 
 	return _recentSortType
 }

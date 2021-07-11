@@ -226,7 +226,7 @@ func (infoBar *InfoBar) MessageType() MessageType {
 
 	var _messageType MessageType // out
 
-	_messageType = (MessageType)(_cret)
+	_messageType = MessageType(_cret)
 
 	return _messageType
 }

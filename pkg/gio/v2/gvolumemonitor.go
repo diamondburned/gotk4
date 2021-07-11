@@ -37,33 +37,34 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type VolumeMonitorOverrider interface {
+	//
 	DriveChanged(drive Driver)
-
+	//
 	DriveConnected(drive Driver)
-
+	//
 	DriveDisconnected(drive Driver)
-
+	//
 	DriveEjectButton(drive Driver)
-
+	//
 	DriveStopButton(drive Driver)
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
 	MountForUUID(uuid string) *Mount
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid())
 	VolumeForUUID(uuid string) *Volume
-
+	//
 	MountAdded(mount Mounter)
-
+	//
 	MountChanged(mount Mounter)
-
+	//
 	MountPreUnmount(mount Mounter)
-
+	//
 	MountRemoved(mount Mounter)
-
+	//
 	VolumeAdded(volume Volumer)
-
+	//
 	VolumeChanged(volume Volumer)
-
+	//
 	VolumeRemoved(volume Volumer)
 }
 

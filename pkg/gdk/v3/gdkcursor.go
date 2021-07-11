@@ -361,7 +361,7 @@ func (cursor *Cursor) CursorType() CursorType {
 
 	var _cursorType CursorType // out
 
-	_cursorType = (CursorType)(_cret)
+	_cursorType = CursorType(_cret)
 
 	return _cursorType
 }

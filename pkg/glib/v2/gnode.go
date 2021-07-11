@@ -3,9 +3,8 @@
 package glib
 
 import (
+	"runtime/cgo"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -73,13 +72,13 @@ func (n *Node) Native() unsafe.Pointer {
 
 // ChildIndex gets the position of the first child of a #GNode which contains
 // the given data.
-func (node *Node) ChildIndex(data interface{}) int {
+func (node *Node) ChildIndex(data cgo.Handle) int {
 	var _arg0 *C.GNode   // out
 	var _arg1 C.gpointer // out
 	var _cret C.gint     // in
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(node))
-	_arg1 = (C.gpointer)(box.Assign(data))
+	_arg1 = (C.gpointer)(data)
 
 	_cret = C.g_node_child_index(_arg0, _arg1)
 

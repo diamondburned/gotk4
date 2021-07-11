@@ -30,6 +30,7 @@ type MenuItemAccessibler interface {
 	privateMenuItemAccessible()
 }
 
+//
 type MenuItemAccessible struct {
 	ContainerAccessible
 

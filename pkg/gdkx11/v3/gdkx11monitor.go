@@ -28,6 +28,7 @@ type X11Monitorrer interface {
 	privateX11Monitor()
 }
 
+//
 type X11Monitor struct {
 	gdk.Monitor
 }

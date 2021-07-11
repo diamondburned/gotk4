@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -132,20 +133,20 @@ func marshalPrintStatus(p uintptr) (interface{}, error) {
 //
 // This function will be called when the page setup dialog is dismissed, and
 // also serves as destroy notify for @data.
-type PageSetupDoneFunc func(pageSetup *PageSetup, data interface{})
+type PageSetupDoneFunc func(pageSetup *PageSetup, data cgo.Handle)
 
 //export gotk4_PageSetupDoneFunc
 func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var pageSetup *PageSetup // out
-	var data interface{}     // out
+	var data cgo.Handle      // out
 
 	pageSetup = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*PageSetup)
-	data = box.Get(uintptr(arg1))
+	data = (cgo.Handle)(arg1)
 
 	fn := v.(PageSetupDoneFunc)
 	fn(pageSetup, data)
@@ -194,7 +195,7 @@ func PrintRunPageSetupDialogAsync(parent Windowwer, pageSetup PageSetupper, sett
 	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer((pageSetup).(gextras.Nativer).Native()))
 	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_PageSetupDoneFunc)
-	_arg5 = C.gpointer(box.Assign(doneCb))
+	_arg5 = C.gpointer(gbox.Assign(doneCb))
 
 	C.gtk_print_run_page_setup_dialog_async(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -204,22 +205,23 @@ func PrintRunPageSetupDialogAsync(parent Windowwer, pageSetup PageSetupper, sett
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PrintOperationOverrider interface {
+	//
 	BeginPrint(context PrintContexter)
-
+	//
 	CustomWidgetApply(widget Widgetter)
-
+	//
 	DrawPage(context PrintContexter, pageNr int)
-
+	//
 	EndPrint(context PrintContexter)
-
+	//
 	Paginate(context PrintContexter) bool
-
+	//
 	Preview(preview PrintOperationPreviewer, context PrintContexter, parent Windowwer) bool
-
+	//
 	RequestPageSetup(context PrintContexter, pageNr int, setup PageSetupper)
-
+	//
 	StatusChanged()
-
+	//
 	UpdateCustomWidget(widget Widgetter, setup PageSetupper, settings PrintSettingser)
 }
 
@@ -551,7 +553,7 @@ func (op *PrintOperation) Status() PrintStatus {
 
 	var _printStatus PrintStatus // out
 
-	_printStatus = (PrintStatus)(_cret)
+	_printStatus = PrintStatus(_cret)
 
 	return _printStatus
 }
@@ -572,7 +574,7 @@ func (op *PrintOperation) StatusString() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

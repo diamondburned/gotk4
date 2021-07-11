@@ -28,6 +28,7 @@ type X11DragContexter interface {
 	privateX11DragContext()
 }
 
+//
 type X11DragContext struct {
 	gdk.DragContext
 }

@@ -460,7 +460,7 @@ func (chooser *FileChooser) Action() FileChooserAction {
 
 	var _fileChooserAction FileChooserAction // out
 
-	_fileChooserAction = (FileChooserAction)(_cret)
+	_fileChooserAction = FileChooserAction(_cret)
 
 	return _fileChooserAction
 }
@@ -479,7 +479,7 @@ func (chooser *FileChooser) Choice(id string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -523,7 +523,7 @@ func (chooser *FileChooser) CurrentFolder() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -566,7 +566,7 @@ func (chooser *FileChooser) CurrentFolderURI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -590,7 +590,7 @@ func (chooser *FileChooser) CurrentName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -668,7 +668,7 @@ func (chooser *FileChooser) Filename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -738,7 +738,7 @@ func (chooser *FileChooser) PreviewFilename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -756,7 +756,7 @@ func (chooser *FileChooser) PreviewURI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -852,7 +852,7 @@ func (chooser *FileChooser) URI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

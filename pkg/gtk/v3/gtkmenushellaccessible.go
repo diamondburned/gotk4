@@ -30,6 +30,7 @@ type MenuShellAccessibler interface {
 	privateMenuShellAccessible()
 }
 
+//
 type MenuShellAccessible struct {
 	ContainerAccessible
 

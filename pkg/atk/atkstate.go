@@ -21,6 +21,7 @@ func init() {
 	})
 }
 
+//
 type State = uint64
 
 // StateType: possible types of states of an object

@@ -150,7 +150,7 @@ func (popup *Popup) RectAnchor() Gravity {
 
 	var _gravity Gravity // out
 
-	_gravity = (Gravity)(_cret)
+	_gravity = Gravity(_cret)
 
 	return _gravity
 }
@@ -169,7 +169,7 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 
 	var _gravity Gravity // out
 
-	_gravity = (Gravity)(_cret)
+	_gravity = Gravity(_cret)
 
 	return _gravity
 }

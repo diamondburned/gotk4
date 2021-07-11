@@ -374,7 +374,7 @@ func (appinfo *AppInfo) Commandline() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -390,7 +390,7 @@ func (appinfo *AppInfo) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -407,7 +407,7 @@ func (appinfo *AppInfo) DisplayName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -423,7 +423,7 @@ func (appinfo *AppInfo) Executable() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -460,7 +460,7 @@ func (appinfo *AppInfo) ID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -476,7 +476,7 @@ func (appinfo *AppInfo) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -506,7 +506,7 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -677,7 +677,7 @@ type AppLaunchContextOverrider interface {
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
 	LaunchFailed(startupNotifyId string)
-
+	//
 	Launched(info AppInfor, platformData *glib.Variant)
 }
 
@@ -760,7 +760,7 @@ func (context *AppLaunchContext) Environment() []string {
 		src := unsafe.Slice(_cret, i)
 		_filenames = make([]string, i)
 		for i := range src {
-			_filenames[i] = C.GoString(src[i])
+			_filenames[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

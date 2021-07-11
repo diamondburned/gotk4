@@ -3,9 +3,10 @@
 package glib
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -70,11 +71,11 @@ const (
 //
 // This is not used if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
-type LogFunc func(logDomain string, logLevel LogLevelFlags, message string, userData interface{})
+type LogFunc func(logDomain string, logLevel LogLevelFlags, message string, userData cgo.Handle)
 
 //export gotk4_LogFunc
 func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
-	v := box.Get(uintptr(arg3))
+	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -82,17 +83,18 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 	var logDomain string       // out
 	var logLevel LogLevelFlags // out
 	var message string         // out
-	var userData interface{}   // out
+	var userData cgo.Handle    // out
 
-	logDomain = C.GoString(arg0)
-	logLevel = (LogLevelFlags)(arg1)
-	message = C.GoString(arg2)
-	userData = box.Get(uintptr(arg3))
+	logDomain = C.GoString((*C.gchar)(arg0))
+	logLevel = LogLevelFlags(arg1)
+	message = C.GoString((*C.gchar)(arg2))
+	userData = (cgo.Handle)(arg3)
 
 	fn := v.(LogFunc)
 	fn(logDomain, logLevel, message, userData)
 }
 
+//
 func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string) {
 	var _arg1 *C.char // out
 	var _arg2 *C.char // out

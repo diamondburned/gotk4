@@ -168,7 +168,7 @@ func (constraint *Constraint) Relation() ConstraintRelation {
 
 	var _constraintRelation ConstraintRelation // out
 
-	_constraintRelation = (ConstraintRelation)(_cret)
+	_constraintRelation = ConstraintRelation(_cret)
 
 	return _constraintRelation
 }
@@ -205,7 +205,7 @@ func (constraint *Constraint) SourceAttribute() ConstraintAttribute {
 
 	var _constraintAttribute ConstraintAttribute // out
 
-	_constraintAttribute = (ConstraintAttribute)(_cret)
+	_constraintAttribute = ConstraintAttribute(_cret)
 
 	return _constraintAttribute
 }
@@ -258,7 +258,7 @@ func (constraint *Constraint) TargetAttribute() ConstraintAttribute {
 
 	var _constraintAttribute ConstraintAttribute // out
 
-	_constraintAttribute = (ConstraintAttribute)(_cret)
+	_constraintAttribute = ConstraintAttribute(_cret)
 
 	return _constraintAttribute
 }

@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -144,7 +144,7 @@ func (proxy *Proxy) ConnectAsync(connection IOStreamer, proxyAddress ProxyAddres
 	_arg2 = (*C.GProxyAddress)(unsafe.Pointer((proxyAddress).(gextras.Nativer).Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
+	_arg5 = C.gpointer(gbox.Assign(callback))
 
 	C.g_proxy_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

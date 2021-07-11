@@ -31,6 +31,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type MenuShellOverrider interface {
+	//
 	ActivateCurrent(forceHide bool)
 	// Cancel cancels the selection within the menu shell.
 	Cancel()
@@ -38,16 +39,16 @@ type MenuShellOverrider interface {
 	//
 	// Typically this results in the menu shell being erased from the screen.
 	Deactivate()
-
+	//
 	PopupDelay() int
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
 	// indicated by @position.
 	Insert(child Widgetter, position int)
-
+	//
 	MoveSelected(distance int) bool
 	// SelectItem selects the menu item from the menu shell.
 	SelectItem(menuItem Widgetter)
-
+	//
 	SelectionDone()
 }
 

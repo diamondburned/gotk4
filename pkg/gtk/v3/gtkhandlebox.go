@@ -30,8 +30,9 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type HandleBoxOverrider interface {
+	//
 	ChildAttached(child Widgetter)
-
+	//
 	ChildDetached(child Widgetter)
 }
 
@@ -154,7 +155,7 @@ func (handleBox *HandleBox) HandlePosition() PositionType {
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(_cret)
+	_positionType = PositionType(_cret)
 
 	return _positionType
 }
@@ -173,7 +174,7 @@ func (handleBox *HandleBox) ShadowType() ShadowType {
 
 	var _shadowType ShadowType // out
 
-	_shadowType = (ShadowType)(_cret)
+	_shadowType = ShadowType(_cret)
 
 	return _shadowType
 }
@@ -192,7 +193,7 @@ func (handleBox *HandleBox) SnapEdge() PositionType {
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(_cret)
+	_positionType = PositionType(_cret)
 
 	return _positionType
 }

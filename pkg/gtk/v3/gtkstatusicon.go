@@ -32,18 +32,19 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StatusIconOverrider interface {
+	//
 	Activate()
-
+	//
 	ButtonPressEvent(event *gdk.EventButton) bool
-
+	//
 	ButtonReleaseEvent(event *gdk.EventButton) bool
-
+	//
 	PopupMenu(button uint, activateTime uint32)
-
+	//
 	QueryTooltip(x int, y int, keyboardMode bool, tooltip Tooltipper) bool
-
+	//
 	ScrollEvent(event *gdk.EventScroll) bool
-
+	//
 	SizeChanged(size int) bool
 }
 
@@ -313,22 +314,22 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientation, bool) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkScreen     // in
-	var _arg2 C.GdkRectangle   // in
+	var _area gdk.Rectangle
 	var _arg3 C.GtkOrientation // in
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
-	_cret = C.gtk_status_icon_get_geometry(_arg0, &_arg1, &_arg2, &_arg3)
+	_cret = C.gtk_status_icon_get_geometry(_arg0, &_arg1, (*C.GdkRectangle)(unsafe.Pointer(&_area)), &_arg3)
 
-	var _screen *gdk.Screen      // out
-	var _area gdk.Rectangle      // out
+	var _screen *gdk.Screen // out
+
 	var _orientation Orientation // out
 	var _ok bool                 // out
 
 	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*gdk.Screen)
-	_area = *(*gdk.Rectangle)(unsafe.Pointer((&_arg2)))
-	_orientation = (Orientation)(_arg3)
+
+	_orientation = Orientation(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -399,7 +400,7 @@ func (statusIcon *StatusIcon) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -488,7 +489,7 @@ func (statusIcon *StatusIcon) Stock() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -510,7 +511,7 @@ func (statusIcon *StatusIcon) StorageType() ImageType {
 
 	var _imageType ImageType // out
 
-	_imageType = (ImageType)(_cret)
+	_imageType = ImageType(_cret)
 
 	return _imageType
 }
@@ -529,7 +530,7 @@ func (statusIcon *StatusIcon) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -548,7 +549,7 @@ func (statusIcon *StatusIcon) TooltipMarkup() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -568,7 +569,7 @@ func (statusIcon *StatusIcon) TooltipText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

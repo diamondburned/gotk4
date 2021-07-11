@@ -84,6 +84,7 @@ func marshalDialogFlags(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DialogOverrider interface {
+	//
 	Close()
 	// Response emits the ::response signal with the given response ID.
 	//
@@ -248,7 +249,7 @@ func wrapDialog(obj *externglib.Object) Dialogger {
 				},
 			},
 			Root: Root{
-				Native: Native{
+				NativeSurface: NativeSurface{
 					Widget: Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,

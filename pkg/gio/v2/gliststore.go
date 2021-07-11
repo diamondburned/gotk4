@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -96,7 +96,7 @@ func NewListStore(itemType externglib.Type) *ListStore {
 	var _arg1 C.GType       // out
 	var _cret *C.GListStore // in
 
-	_arg1 = (C.GType)(itemType)
+	_arg1 = C.GType(itemType)
 
 	_cret = C.g_list_store_new(_arg1)
 
@@ -118,7 +118,7 @@ func (store *ListStore) Append(item gextras.Objector) {
 	var _arg1 C.gpointer    // out
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(item.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&item).Native()))
 
 	C.g_list_store_append(_arg0, _arg1)
 }
@@ -136,7 +136,7 @@ func (store *ListStore) Find(item gextras.Objector) (uint, bool) {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(item.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&item).Native()))
 
 	_cret = C.g_list_store_find(_arg0, _arg1, &_arg2)
 
@@ -166,7 +166,7 @@ func (store *ListStore) Insert(position uint, item gextras.Objector) {
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
 	_arg1 = C.guint(position)
-	_arg2 = (C.gpointer)(unsafe.Pointer(item.Native()))
+	_arg2 = C.gpointer(unsafe.Pointer((&item).Native()))
 
 	C.g_list_store_insert(_arg0, _arg1, _arg2)
 }
@@ -187,9 +187,9 @@ func (store *ListStore) InsertSorted(item gextras.Objector, compareFunc glib.Com
 	var _cret C.guint // in
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(item.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&item).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_CompareDataFunc)
-	_arg3 = C.gpointer(box.Assign(compareFunc))
+	_arg3 = C.gpointer(gbox.Assign(compareFunc))
 
 	_cret = C.g_list_store_insert_sorted(_arg0, _arg1, _arg2, _arg3)
 
@@ -232,7 +232,7 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
-	_arg2 = C.gpointer(box.Assign(compareFunc))
+	_arg2 = C.gpointer(gbox.Assign(compareFunc))
 
 	C.g_list_store_sort(_arg0, _arg1, _arg2)
 }
@@ -266,7 +266,7 @@ func (store *ListStore) Splice(position uint, nRemovals uint, additions []*exter
 	{
 		out := unsafe.Slice(_arg3, len(additions))
 		for i := range additions {
-			out[i] = (C.gpointer)(unsafe.Pointer(additions[i].Native()))
+			out[i] = C.gpointer(unsafe.Pointer(additions[i].Native()))
 		}
 	}
 

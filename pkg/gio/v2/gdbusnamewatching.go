@@ -3,9 +3,10 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,11 +29,11 @@ import "C"
 
 // BusNameAppearedCallback: invoked when the name being watched is known to have
 // to have an owner.
-type BusNameAppearedCallback func(connection *DBusConnection, name string, nameOwner string, userData interface{})
+type BusNameAppearedCallback func(connection *DBusConnection, name string, nameOwner string, userData cgo.Handle)
 
 //export gotk4_BusNameAppearedCallback
 func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
-	v := box.Get(uintptr(arg3))
+	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -40,12 +41,12 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var connection *DBusConnection // out
 	var name string                // out
 	var nameOwner string           // out
-	var userData interface{}       // out
+	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	name = C.GoString(arg1)
-	nameOwner = C.GoString(arg2)
-	userData = box.Get(uintptr(arg3))
+	name = C.GoString((*C.gchar)(arg1))
+	nameOwner = C.GoString((*C.gchar)(arg2))
+	userData = (cgo.Handle)(arg3)
 
 	fn := v.(BusNameAppearedCallback)
 	fn(connection, name, nameOwner, userData)
@@ -56,22 +57,22 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 //
 // This is also invoked when the BusConnection on which the watch was
 // established has been closed. In that case, @connection will be nil.
-type BusNameVanishedCallback func(connection *DBusConnection, name string, userData interface{})
+type BusNameVanishedCallback func(connection *DBusConnection, name string, userData cgo.Handle)
 
 //export gotk4_BusNameVanishedCallback
 func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection *DBusConnection // out
 	var name string                // out
-	var userData interface{}       // out
+	var userData cgo.Handle        // out
 
 	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
-	name = C.GoString(arg1)
-	userData = box.Get(uintptr(arg2))
+	name = C.GoString((*C.gchar)(arg1))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(BusNameVanishedCallback)
 	fn(connection, name, userData)

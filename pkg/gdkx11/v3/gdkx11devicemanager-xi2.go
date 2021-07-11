@@ -28,6 +28,7 @@ type X11DeviceManagerXI2er interface {
 	privateX11DeviceManagerXI2()
 }
 
+//
 type X11DeviceManagerXI2 struct {
 	X11DeviceManagerCore
 }

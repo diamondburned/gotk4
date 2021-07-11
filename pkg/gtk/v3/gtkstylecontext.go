@@ -4,9 +4,9 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -33,6 +33,7 @@ func init() {
 type StyleContextPrintFlags int
 
 const (
+	//
 	StyleContextPrintFlagsNone StyleContextPrintFlags = 0b0
 	// StyleContextPrintFlagsRecurse: print the entire tree of CSS nodes
 	// starting at the style context's node
@@ -51,6 +52,7 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StyleContextOverrider interface {
+	//
 	Changed()
 }
 
@@ -65,7 +67,7 @@ type StyleContexter interface {
 	AddProvider(provider StyleProviderer, priority uint)
 	// CancelAnimations stops all running animations for @region_id and all
 	// animatable regions underneath.
-	CancelAnimations(regionId interface{})
+	CancelAnimations(regionId cgo.Handle)
 	// Direction returns the widget direction used for rendering.
 	Direction() TextDirection
 	// FrameClock returns the FrameClock to which @context is attached.
@@ -110,7 +112,7 @@ type StyleContexter interface {
 	// transition animations for this region if
 	// gtk_style_context_notify_state_change() is called for a given state, and
 	// the current theme/style defines transition animations for state changes.
-	PushAnimatableRegion(regionId interface{})
+	PushAnimatableRegion(regionId cgo.Handle)
 	// RemoveClass removes @class_name from @context.
 	RemoveClass(className string)
 	// RemoveProvider removes @provider from the style providers list in
@@ -290,12 +292,12 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 // animatable regions.
 //
 // Deprecated: This function does nothing.
-func (context *StyleContext) CancelAnimations(regionId interface{}) {
+func (context *StyleContext) CancelAnimations(regionId cgo.Handle) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.gpointer         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (C.gpointer)(box.Assign(regionId))
+	_arg1 = (C.gpointer)(regionId)
 
 	C.gtk_style_context_cancel_animations(_arg0, _arg1)
 }
@@ -314,7 +316,7 @@ func (context *StyleContext) Direction() TextDirection {
 
 	var _textDirection TextDirection // out
 
-	_textDirection = (TextDirection)(_cret)
+	_textDirection = TextDirection(_cret)
 
 	return _textDirection
 }
@@ -347,7 +349,7 @@ func (context *StyleContext) JunctionSides() JunctionSides {
 
 	var _junctionSides JunctionSides // out
 
-	_junctionSides = (JunctionSides)(_cret)
+	_junctionSides = JunctionSides(_cret)
 
 	return _junctionSides
 }
@@ -469,7 +471,7 @@ func (context *StyleContext) State() StateFlags {
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = (StateFlags)(_cret)
+	_stateFlags = StateFlags(_cret)
 
 	return _stateFlags
 }
@@ -531,7 +533,7 @@ func (context *StyleContext) HasRegion(regionName string) (RegionFlags, bool) {
 	var _flagsReturn RegionFlags // out
 	var _ok bool                 // out
 
-	_flagsReturn = (RegionFlags)(_arg2)
+	_flagsReturn = RegionFlags(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -556,19 +558,17 @@ func (context *StyleContext) Invalidate() {
 func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
-	var _arg2 C.GdkRGBA          // in
-	var _cret C.gboolean         // in
+	var _color gdk.RGBA
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
-	var _color gdk.RGBA // out
-	var _ok bool        // out
+	var _ok bool // out
 
-	_color = *(*gdk.RGBA)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -625,12 +625,12 @@ func (context *StyleContext) PopAnimatableRegion() {
 // identify rendered elements subject to a state transition.
 //
 // Deprecated: This function does nothing.
-func (context *StyleContext) PushAnimatableRegion(regionId interface{}) {
+func (context *StyleContext) PushAnimatableRegion(regionId cgo.Handle) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.gpointer         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (C.gpointer)(box.Assign(regionId))
+	_arg1 = (C.gpointer)(regionId)
 
 	C.gtk_style_context_push_animatable_region(_arg0, _arg1)
 }

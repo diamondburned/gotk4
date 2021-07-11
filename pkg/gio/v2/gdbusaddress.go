@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -46,7 +46,7 @@ func DBusAddressEscapeValue(_string string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -73,7 +73,7 @@ func DBusAddressGetStream(address string, cancellable Cancellabler, callback Asy
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
 }
@@ -97,7 +97,7 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, *IOStream, error) {
 	var _ioStream *IOStream // out
 	var _goerr error        // out
 
-	_outGuid = C.GoString(_arg2)
+	_outGuid = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
 	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IOStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -133,7 +133,7 @@ func DBusAddressGetStreamSync(address string, cancellable Cancellabler) (string,
 	var _ioStream *IOStream // out
 	var _goerr error        // out
 
-	_outGuid = C.GoString(_arg2)
+	_outGuid = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
 	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IOStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

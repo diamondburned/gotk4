@@ -303,7 +303,7 @@ func (self *LevelBar) Mode() LevelBarMode {
 
 	var _levelBarMode LevelBarMode // out
 
-	_levelBarMode = (LevelBarMode)(_cret)
+	_levelBarMode = LevelBarMode(_cret)
 
 	return _levelBarMode
 }

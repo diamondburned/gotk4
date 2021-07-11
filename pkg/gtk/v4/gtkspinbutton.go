@@ -500,7 +500,7 @@ func (spinButton *SpinButton) UpdatePolicy() SpinButtonUpdatePolicy {
 
 	var _spinButtonUpdatePolicy SpinButtonUpdatePolicy // out
 
-	_spinButtonUpdatePolicy = (SpinButtonUpdatePolicy)(_cret)
+	_spinButtonUpdatePolicy = SpinButtonUpdatePolicy(_cret)
 
 	return _spinButtonUpdatePolicy
 }

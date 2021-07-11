@@ -32,6 +32,7 @@ type ColorSelectionDialogger interface {
 	ColorSelection() *Widget
 }
 
+//
 type ColorSelectionDialog struct {
 	Dialog
 }

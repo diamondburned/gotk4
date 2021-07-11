@@ -30,6 +30,7 @@ type StackAccessibler interface {
 	privateStackAccessible()
 }
 
+//
 type StackAccessible struct {
 	ContainerAccessible
 }

@@ -4,11 +4,12 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -56,20 +57,20 @@ func marshalWidgetHelpType(p uintptr) (interface{}, error) {
 
 // Callback: type of the callback functions used for e.g. iterating over the
 // children of a container, see gtk_container_foreach().
-type Callback func(widget *Widget, data interface{})
+type Callback func(widget *Widget, data cgo.Handle)
 
 //export gotk4_Callback
 func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var widget *Widget   // out
-	var data interface{} // out
+	var widget *Widget  // out
+	var data cgo.Handle // out
 
 	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
-	data = box.Get(uintptr(arg1))
+	data = (cgo.Handle)(arg1)
 
 	fn := v.(Callback)
 	fn(widget, data)
@@ -77,22 +78,22 @@ func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 
 // TickCallback: callback type for adding a function to update animations. See
 // gtk_widget_add_tick_callback().
-type TickCallback func(widget *Widget, frameClock *gdk.FrameClock, userData interface{}) (ok bool)
+type TickCallback func(widget *Widget, frameClock *gdk.FrameClock, userData cgo.Handle) (ok bool)
 
 //export gotk4_TickCallback
 func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var widget *Widget             // out
 	var frameClock *gdk.FrameClock // out
-	var userData interface{}       // out
+	var userData cgo.Handle        // out
 
 	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
 	frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*gdk.FrameClock)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock, userData)
@@ -157,12 +158,13 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Wind
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WidgetOverrider interface {
+	//
 	AdjustBaselineAllocation(baseline *int)
-
+	//
 	AdjustBaselineRequest(minimumBaseline *int, naturalBaseline *int)
-
+	//
 	ButtonPressEvent(event *gdk.EventButton) bool
-
+	//
 	ButtonReleaseEvent(event *gdk.EventButton) bool
 	// CanActivateAccel determines whether an accelerator that activates the
 	// signal identified by @signal_id can currently be activated. This is done
@@ -171,13 +173,13 @@ type WidgetOverrider interface {
 	// default check is that the widget must be sensitive, and the widget and
 	// all its ancestors mapped.
 	CanActivateAccel(signalId uint) bool
-
+	//
 	CompositedChanged()
-
+	//
 	ConfigureEvent(event *gdk.EventConfigure) bool
-
+	//
 	DamageEvent(event *gdk.EventExpose) bool
-
+	//
 	DeleteEvent(event *gdk.EventAny) bool
 	// Destroy destroys a widget.
 	//
@@ -211,31 +213,31 @@ type WidgetOverrider interface {
 	//
 	// See also: gtk_container_remove()
 	Destroy()
-
+	//
 	DestroyEvent(event *gdk.EventAny) bool
-
+	//
 	DragBegin(context gdk.DragContexter)
-
+	//
 	DragDataDelete(context gdk.DragContexter)
-
+	//
 	DragDataGet(context gdk.DragContexter, selectionData *SelectionData, info uint, time_ uint)
-
+	//
 	DragDataReceived(context gdk.DragContexter, x int, y int, selectionData *SelectionData, info uint, time_ uint)
-
+	//
 	DragDrop(context gdk.DragContexter, x int, y int, time_ uint) bool
-
+	//
 	DragEnd(context gdk.DragContexter)
-
+	//
 	DragLeave(context gdk.DragContexter, time_ uint)
-
+	//
 	DragMotion(context gdk.DragContexter, x int, y int, time_ uint) bool
-
+	//
 	Draw(cr *cairo.Context) bool
-
+	//
 	EnterNotifyEvent(event *gdk.EventCrossing) bool
-
+	//
 	FocusInEvent(event *gdk.EventFocus) bool
-
+	//
 	FocusOutEvent(event *gdk.EventFocus) bool
 	// Accessible returns the accessible object that describes the widget to an
 	// assistive technology.
@@ -307,7 +309,7 @@ type WidgetOverrider interface {
 	// widgets need to request something either in context of their children or
 	// in context of their allocation capabilities.
 	RequestMode() SizeRequestMode
-
+	//
 	GrabBrokenEvent(event *gdk.EventGrabBroken) bool
 	// GrabFocus causes @widget to have the keyboard focus for the Window it's
 	// inside. @widget must be a focusable widget, such as a Entry; something
@@ -320,39 +322,39 @@ type WidgetOverrider interface {
 	// related signals. Grabbing the focus immediately after creating the widget
 	// will likely fail and cause critical warnings.
 	GrabFocus()
-
+	//
 	GrabNotify(wasGrabbed bool)
 	// Hide reverses the effects of gtk_widget_show(), causing the widget to be
 	// hidden (invisible to the user).
 	Hide()
-
+	//
 	HierarchyChanged(previousToplevel Widgetter)
-
+	//
 	KeyPressEvent(event *gdk.EventKey) bool
-
+	//
 	KeyReleaseEvent(event *gdk.EventKey) bool
-
+	//
 	LeaveNotifyEvent(event *gdk.EventCrossing) bool
 	// Map: this function is only for use in widget implementations. Causes a
 	// widget to be mapped if it isn’t already.
 	Map()
-
+	//
 	MapEvent(event *gdk.EventAny) bool
 	// MnemonicActivate emits the Widget::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
-
+	//
 	MotionNotifyEvent(event *gdk.EventMotion) bool
-
+	//
 	ParentSet(previousParent Widgetter)
-
+	//
 	PopupMenu() bool
-
+	//
 	PropertyNotifyEvent(event *gdk.EventProperty) bool
-
+	//
 	ProximityInEvent(event *gdk.EventProximity) bool
-
+	//
 	ProximityOutEvent(event *gdk.EventProximity) bool
-
+	//
 	QueryTooltip(x int, y int, keyboardTooltip bool, tooltip Tooltipper) bool
 	// QueueDrawRegion invalidates the area of @widget defined by @region by
 	// calling gdk_window_invalidate_region() on the widget’s window and all its
@@ -381,19 +383,19 @@ type WidgetOverrider interface {
 	// is realized automatically, such as Widget::draw. Or simply
 	// g_signal_connect () to the Widget::realize signal.
 	Realize()
-
+	//
 	ScreenChanged(previousScreen gdk.Screener)
-
+	//
 	ScrollEvent(event *gdk.EventScroll) bool
-
+	//
 	SelectionClearEvent(event *gdk.EventSelection) bool
-
+	//
 	SelectionGet(selectionData *SelectionData, info uint, time_ uint)
-
+	//
 	SelectionNotifyEvent(event *gdk.EventSelection) bool
-
+	//
 	SelectionReceived(selectionData *SelectionData, time_ uint)
-
+	//
 	SelectionRequestEvent(event *gdk.EventSelection) bool
 	// Show flags a widget to be displayed. Any widget that isn’t shown will not
 	// appear on the screen. If you want to show all the widgets in a container,
@@ -410,24 +412,24 @@ type WidgetOverrider interface {
 	// ShowAll: recursively shows a widget, and any child widgets (if the widget
 	// is a container).
 	ShowAll()
-
+	//
 	StyleSet(previousStyle Styler)
-
+	//
 	StyleUpdated()
-
+	//
 	TouchEvent(event *gdk.EventTouch) bool
 	// Unmap: this function is only for use in widget implementations. Causes a
 	// widget to be unmapped if it’s currently mapped.
 	Unmap()
-
+	//
 	UnmapEvent(event *gdk.EventAny) bool
 	// Unrealize: this function is only useful in widget implementations. Causes
 	// a widget to be unrealized (frees all GDK resources associated with the
 	// widget, such as @widget->window).
 	Unrealize()
-
+	//
 	VisibilityNotifyEvent(event *gdk.EventVisibility) bool
-
+	//
 	WindowStateEvent(event *gdk.EventWindowState) bool
 }
 
@@ -1250,9 +1252,9 @@ func (widget *Widget) ClassPath() (pathLength uint, path string, pathReversed st
 	var _pathReversed string // out
 
 	_pathLength = uint(_arg1)
-	_path = C.GoString(_arg2)
+	_path = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
-	_pathReversed = C.GoString(_arg3)
+	_pathReversed = C.GoString((*C.gchar)(_arg3))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	return _pathLength, _path, _pathReversed
@@ -1845,7 +1847,7 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) *Widget {
 	var _cret *C.GtkWidget // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (C.GType)(widgetType)
+	_arg1 = C.GType(widgetType)
 
 	_cret = C.gtk_widget_get_ancestor(_arg0, _arg1)
 
@@ -1934,16 +1936,12 @@ func (widget *Widget) CanFocus() bool {
 //
 // Deprecated: Use gtk_widget_get_preferred_size() instead.
 func (widget *Widget) ChildRequisition() Requisition {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkRequisition // in
+	var _arg0 *C.GtkWidget // out
+	var _requisition Requisition
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_get_child_requisition(_arg0, &_arg1)
-
-	var _requisition Requisition // out
-
-	_requisition = *(*Requisition)(unsafe.Pointer((&_arg1)))
+	C.gtk_widget_get_child_requisition(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
 
 	return _requisition
 }
@@ -1984,7 +1982,7 @@ func (widget *Widget) CompositeName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -2026,7 +2024,7 @@ func (widget *Widget) DeviceEvents(device gdk.Devicer) gdk.EventMask {
 
 	var _eventMask gdk.EventMask // out
 
-	_eventMask = (gdk.EventMask)(_cret)
+	_eventMask = gdk.EventMask(_cret)
 
 	return _eventMask
 }
@@ -2043,7 +2041,7 @@ func (widget *Widget) Direction() TextDirection {
 
 	var _textDirection TextDirection // out
 
-	_textDirection = (TextDirection)(_cret)
+	_textDirection = TextDirection(_cret)
 
 	return _textDirection
 }
@@ -2213,7 +2211,7 @@ func (widget *Widget) HAlign() Align {
 
 	var _align Align // out
 
-	_align = (Align)(_cret)
+	_align = Align(_cret)
 
 	return _align
 }
@@ -2470,7 +2468,7 @@ func (widget *Widget) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -2716,19 +2714,13 @@ func (widget *Widget) PreferredHeightForWidth(width int) (minimumHeight int, nat
 // Use gtk_widget_get_preferred_height_and_baseline_for_width() if you want to
 // support baseline alignment.
 func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkRequisition // in
-	var _arg2 C.GtkRequisition // in
+	var _arg0 *C.GtkWidget // out
+	var _minimumSize Requisition
+	var _naturalSize Requisition
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_get_preferred_size(_arg0, &_arg1, &_arg2)
-
-	var _minimumSize Requisition // out
-	var _naturalSize Requisition // out
-
-	_minimumSize = *(*Requisition)(unsafe.Pointer((&_arg1)))
-	_naturalSize = *(*Requisition)(unsafe.Pointer((&_arg2)))
+	C.gtk_widget_get_preferred_size(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_minimumSize)), (*C.GtkRequisition)(unsafe.Pointer(&_naturalSize)))
 
 	return _minimumSize, _naturalSize
 }
@@ -2842,7 +2834,7 @@ func (widget *Widget) RequestMode() SizeRequestMode {
 
 	var _sizeRequestMode SizeRequestMode // out
 
-	_sizeRequestMode = (SizeRequestMode)(_cret)
+	_sizeRequestMode = SizeRequestMode(_cret)
 
 	return _sizeRequestMode
 }
@@ -2860,16 +2852,12 @@ func (widget *Widget) RequestMode() SizeRequestMode {
 // cache sizes across requests and allocations, add an explicit cache to the
 // widget in question instead.
 func (widget *Widget) Requisition() Requisition {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkRequisition // in
+	var _arg0 *C.GtkWidget // out
+	var _requisition Requisition
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_get_requisition(_arg0, &_arg1)
-
-	var _requisition Requisition // out
-
-	_requisition = *(*Requisition)(unsafe.Pointer((&_arg1)))
+	C.gtk_widget_get_requisition(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
 
 	return _requisition
 }
@@ -3019,7 +3007,7 @@ func (widget *Widget) State() StateType {
 
 	var _stateType StateType // out
 
-	_stateType = (StateType)(_cret)
+	_stateType = StateType(_cret)
 
 	return _stateType
 }
@@ -3040,7 +3028,7 @@ func (widget *Widget) StateFlags() StateFlags {
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = (StateFlags)(_cret)
+	_stateFlags = StateFlags(_cret)
 
 	return _stateFlags
 }
@@ -3115,7 +3103,7 @@ func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *ex
 	var _cret *C.GObject   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (C.GType)(widgetType)
+	_arg1 = C.GType(widgetType)
 	_arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -3139,7 +3127,7 @@ func (widget *Widget) TooltipMarkup() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -3156,7 +3144,7 @@ func (widget *Widget) TooltipText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -3239,7 +3227,7 @@ func (widget *Widget) VAlign() Align {
 
 	var _align Align // out
 
-	_align = (Align)(_cret)
+	_align = Align(_cret)
 
 	return _align
 }
@@ -3256,7 +3244,7 @@ func (widget *Widget) VAlignWithBaseline() Align {
 
 	var _align Align // out
 
-	_align = (Align)(_cret)
+	_align = Align(_cret)
 
 	return _align
 }
@@ -3661,18 +3649,16 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 func (widget *Widget) Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
-	var _cret C.gboolean      // in
+	var _intersection gdk.Rectangle
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(area))
 
-	_cret = C.gtk_widget_intersect(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_widget_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_intersection)))
 
-	var _intersection gdk.Rectangle // out
-	var _ok bool                    // out
+	var _ok bool // out
 
-	_intersection = *(*gdk.Rectangle)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -3852,7 +3838,7 @@ func (widget *Widget) ListActionPrefixes() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -4043,9 +4029,9 @@ func (widget *Widget) Path() (pathLength uint, path string, pathReversed string)
 	var _pathReversed string // out
 
 	_pathLength = uint(_arg1)
-	_path = C.GoString(_arg2)
+	_path = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
-	_pathReversed = C.GoString(_arg3)
+	_pathReversed = C.GoString((*C.gchar)(_arg3))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	return _pathLength, _path, _pathReversed
@@ -5230,16 +5216,12 @@ func (widget *Widget) ShowNow() {
 //
 // Deprecated: Use gtk_widget_get_preferred_size() instead.
 func (widget *Widget) SizeRequest() Requisition {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkRequisition // in
+	var _arg0 *C.GtkWidget // out
+	var _requisition Requisition
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_size_request(_arg0, &_arg1)
-
-	var _requisition Requisition // out
-
-	_requisition = *(*Requisition)(unsafe.Pointer((&_arg1)))
+	C.gtk_widget_size_request(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
 
 	return _requisition
 }

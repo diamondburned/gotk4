@@ -68,12 +68,13 @@ func marshalUIManagerItemType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type UIManagerOverrider interface {
+	//
 	ActionsChanged()
-
+	//
 	AddWidget(widget Widgetter)
-
+	//
 	ConnectProxy(action Actioner, proxy Widgetter)
-
+	//
 	DisconnectProxy(action Actioner, proxy Widgetter)
 	// Action looks up an action by following a path. See
 	// gtk_ui_manager_get_widget() for more information about paths.
@@ -97,9 +98,9 @@ type UIManagerOverrider interface {
 	//
 	// Deprecated: since version 3.10.
 	Widget(path string) *Widget
-
+	//
 	PostActivate(action Actioner)
-
+	//
 	PreActivate(action Actioner)
 }
 
@@ -581,7 +582,7 @@ func (manager *UIManager) Ui() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

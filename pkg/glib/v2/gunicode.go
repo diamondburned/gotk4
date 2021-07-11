@@ -593,7 +593,7 @@ func UCS4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, ut
 
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -616,7 +616,7 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 
 	var _unicodeBreakType UnicodeBreakType // out
 
-	_unicodeBreakType = (UnicodeBreakType)(_cret)
+	_unicodeBreakType = UnicodeBreakType(_cret)
 
 	return _unicodeBreakType
 }
@@ -811,7 +811,7 @@ func UnicharGetScript(ch uint32) UnicodeScript {
 
 	var _unicodeScript UnicodeScript // out
 
-	_unicodeScript = (UnicodeScript)(_cret)
+	_unicodeScript = UnicodeScript(_cret)
 
 	return _unicodeScript
 }
@@ -1226,7 +1226,7 @@ func UnicharType(c uint32) UnicodeType {
 
 	var _unicodeType UnicodeType // out
 
-	_unicodeType = (UnicodeType)(_cret)
+	_unicodeType = UnicodeType(_cret)
 
 	return _unicodeType
 }
@@ -1320,7 +1320,7 @@ func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 
 	var _unicodeScript UnicodeScript // out
 
-	_unicodeScript = (UnicodeScript)(_cret)
+	_unicodeScript = UnicodeScript(_cret)
 
 	return _unicodeScript
 }
@@ -1384,7 +1384,7 @@ func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, u
 
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -1414,7 +1414,7 @@ func UTF8Casefold(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1464,7 +1464,7 @@ func UTF8CollateKey(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1495,7 +1495,7 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1525,7 +1525,7 @@ func UTF8FindNextChar(p string, end string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1551,7 +1551,7 @@ func UTF8FindPrevChar(str string, p string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1625,7 +1625,7 @@ func UTF8MakeValid(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1657,7 +1657,7 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1703,7 +1703,7 @@ func UTF8PrevChar(p string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1726,7 +1726,7 @@ func UTF8Strchr(p string, len int, c uint32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1747,7 +1747,7 @@ func UTF8Strdown(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1797,7 +1797,7 @@ func UTF8Strncpy(dest string, src string, n uint) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1820,7 +1820,7 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1849,7 +1849,7 @@ func UTF8Strreverse(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1872,7 +1872,7 @@ func UTF8Strup(str string, len int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1895,7 +1895,7 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -2012,7 +2012,7 @@ func UTF8Validate(str []byte) (string, bool) {
 	var _end string // out
 	var _ok bool    // out
 
-	_end = C.GoString(_arg3)
+	_end = C.GoString((*C.gchar)(_arg3))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2038,7 +2038,7 @@ func UTF8ValidateLen(str []byte) (string, bool) {
 	var _end string // out
 	var _ok bool    // out
 
-	_end = C.GoString(_arg3)
+	_end = C.GoString((*C.gchar)(_arg3))
 	if _cret != 0 {
 		_ok = true
 	}

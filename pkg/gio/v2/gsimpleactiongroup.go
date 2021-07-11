@@ -3,9 +3,9 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -37,7 +37,7 @@ func init() {
 type SimpleActionGrouper interface {
 	// AddEntries: convenience function for creating multiple Action instances
 	// and adding them to the action group.
-	AddEntries(entries []ActionEntry, userData interface{})
+	AddEntries(entries []ActionEntry, userData cgo.Handle)
 	// Insert adds an action to the action group.
 	Insert(action Actioner)
 	// Lookup looks up the action with the name @action_name in the group.
@@ -95,7 +95,7 @@ func NewSimpleActionGroup() *SimpleActionGroup {
 // adding them to the action group.
 //
 // Deprecated: Use g_action_map_add_action_entries().
-func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData interface{}) {
+func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.Handle) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GActionEntry
 	var _arg2 C.gint
@@ -104,7 +104,7 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData inte
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg2 = C.gint(len(entries))
 	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
-	_arg3 = (C.gpointer)(box.Assign(userData))
+	_arg3 = (C.gpointer)(userData)
 
 	C.g_simple_action_group_add_entries(_arg0, _arg1, _arg2, _arg3)
 }

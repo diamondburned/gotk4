@@ -37,7 +37,7 @@ func InternMIMEType(_string string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -93,7 +93,7 @@ func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	var _arg1 C.GType                     // out
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(builder))
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 
 	C.gdk_content_formats_builder_add_gtype(_arg0, _arg1)
 }

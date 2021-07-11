@@ -34,7 +34,7 @@ type TextMarker interface {
 	Name() string
 	// Visible returns true if the mark is visible.
 	Visible() bool
-
+	//
 	SetVisible(setting bool)
 }
 
@@ -189,7 +189,7 @@ func (mark *TextMark) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -214,6 +214,7 @@ func (mark *TextMark) Visible() bool {
 	return _ok
 }
 
+//
 func (mark *TextMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out

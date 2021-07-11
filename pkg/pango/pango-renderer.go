@@ -50,6 +50,7 @@ func marshalRenderPart(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RendererOverrider interface {
+	//
 	Begin()
 	// DrawErrorUnderline: draw a squiggly line that approximately covers the
 	// given rectangle in the style of an underline used to indicate a spelling
@@ -79,9 +80,9 @@ type RendererOverrider interface {
 	// DrawGlyphs draws the glyphs in @glyphs with the specified
 	// `PangoRenderer`.
 	DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int)
-
+	//
 	DrawShape(attr *AttrShape, x int, y int)
-
+	//
 	End()
 }
 

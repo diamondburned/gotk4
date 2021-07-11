@@ -30,6 +30,7 @@ type BooleanCellAccessibler interface {
 	privateBooleanCellAccessible()
 }
 
+//
 type BooleanCellAccessible struct {
 	RendererCellAccessible
 }

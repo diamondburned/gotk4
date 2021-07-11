@@ -37,10 +37,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type MountOperationOverrider interface {
+	//
 	Aborted()
 	// AskQuestion: virtual implementation of Operation::ask-question.
 	AskQuestion(message string, choices []string)
-
+	//
 	ShowUnmountProgress(message string, timeLeft int64, bytesLeft int64)
 }
 
@@ -188,7 +189,7 @@ func (op *MountOperation) Domain() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -242,7 +243,7 @@ func (op *MountOperation) Password() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -258,7 +259,7 @@ func (op *MountOperation) PasswordSave() PasswordSave {
 
 	var _passwordSave PasswordSave // out
 
-	_passwordSave = (PasswordSave)(_cret)
+	_passwordSave = PasswordSave(_cret)
 
 	return _passwordSave
 }
@@ -290,7 +291,7 @@ func (op *MountOperation) Username() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

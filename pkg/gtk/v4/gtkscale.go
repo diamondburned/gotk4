@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -24,22 +25,23 @@ func init() {
 	})
 }
 
-type ScaleFormatValueFunc func(scale *Scale, value float64, userData interface{}) (utf8 string)
+//
+type ScaleFormatValueFunc func(scale *Scale, value float64, userData cgo.Handle) (utf8 string)
 
 //export gotk4_ScaleFormatValueFunc
 func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) (cret *C.char) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var scale *Scale         // out
-	var value float64        // out
-	var userData interface{} // out
+	var scale *Scale        // out
+	var value float64       // out
+	var userData cgo.Handle // out
 
 	scale = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Scale)
 	value = float64(arg1)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(ScaleFormatValueFunc)
 	utf8 := fn(scale, value, userData)
@@ -318,7 +320,7 @@ func (scale *Scale) ValuePos() PositionType {
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(_cret)
+	_positionType = PositionType(_cret)
 
 	return _positionType
 }

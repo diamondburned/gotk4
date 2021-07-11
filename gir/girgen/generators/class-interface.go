@@ -16,7 +16,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	// As of right now, interface overriding and subclassing is not supported
 	// yet, so the interface currently has no use.
 	type {{ .StructName }}Overrider interface {
-		{{ range .Virtuals -}}
+		{{ range .Virtuals }}
 		{{- GoDoc . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
 		{{ end }}
@@ -52,7 +52,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		return {{ .Wrap "obj" }}
 	}
 
-	{{ if .GLibGetType }}
+	{{ if .HasMarshaler }}
 	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
 		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 		obj := externglib.Take(unsafe.Pointer(val))
@@ -110,6 +110,11 @@ func GenerateClass(gen FileGeneratorWriter, class *gir.Class) bool {
 	return true
 }
 
+type ifacegenData struct {
+	*ifacegen.Generator
+	HasMarshaler bool
+}
+
 func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {
 	writer := FileWriterFromType(gen, igen)
 	writer.Header().NeedsExternGLib()
@@ -120,10 +125,16 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 		writer.Header().ImportImpl(parent.Resolved)
 	}
 
+	data := ifacegenData{
+		Generator:    igen,
+		HasMarshaler: false,
+	}
+
 	if igen.GLibGetType != "" && !types.FilterCType(gen, igen.GLibGetType) {
+		data.HasMarshaler = true
 		writer.Header().AddMarshaler(igen.GLibGetType, igen.InterfaceName)
 	}
 
-	writer.Pen().WriteTmpl(classInterfaceTmpl, igen)
+	writer.Pen().WriteTmpl(classInterfaceTmpl, data)
 	file.ApplyHeader(writer, igen)
 }

@@ -489,7 +489,7 @@ func (scrolledWindow *ScrolledWindow) Placement() CornerType {
 
 	var _cornerType CornerType // out
 
-	_cornerType = (CornerType)(_cret)
+	_cornerType = CornerType(_cret)
 
 	return _cornerType
 }
@@ -508,8 +508,8 @@ func (scrolledWindow *ScrolledWindow) Policy() (hscrollbarPolicy PolicyType, vsc
 	var _hscrollbarPolicy PolicyType // out
 	var _vscrollbarPolicy PolicyType // out
 
-	_hscrollbarPolicy = (PolicyType)(_arg1)
-	_vscrollbarPolicy = (PolicyType)(_arg2)
+	_hscrollbarPolicy = PolicyType(_arg1)
+	_vscrollbarPolicy = PolicyType(_arg2)
 
 	return _hscrollbarPolicy, _vscrollbarPolicy
 }
@@ -566,7 +566,7 @@ func (scrolledWindow *ScrolledWindow) ShadowType() ShadowType {
 
 	var _shadowType ShadowType // out
 
-	_shadowType = (ShadowType)(_cret)
+	_shadowType = ShadowType(_cret)
 
 	return _shadowType
 }

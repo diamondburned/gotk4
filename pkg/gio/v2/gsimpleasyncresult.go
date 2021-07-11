@@ -3,9 +3,10 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -47,9 +48,9 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 	var _arg3 C.gpointer
 	var _arg4 *C.GError // out
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 	_arg4 = (*C.GError)(gerror.New(err))
 
 	C.g_simple_async_report_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
@@ -283,17 +284,17 @@ func marshalSimpleAsyncResulter(p uintptr) (interface{}, error) {
 // returns.
 //
 // Deprecated: Use g_task_new() instead.
-func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag interface{}) *SimpleAsyncResult {
+func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag cgo.Handle) *SimpleAsyncResult {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 	var _arg4 C.gpointer            // out
 	var _cret *C.GSimpleAsyncResult // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
-	_arg4 = (C.gpointer)(box.Assign(sourceTag))
+	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg4 = (C.gpointer)(sourceTag)
 
 	_cret = C.g_simple_async_result_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -314,9 +315,9 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 	var _arg4 *C.GError             // out
 	var _cret *C.GSimpleAsyncResult // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 	_arg4 = (*C.GError)(gerror.New(err))
 
 	_cret = C.g_simple_async_result_new_from_error(_arg1, _arg2, _arg3, _arg4)

@@ -3,10 +3,11 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -29,11 +30,11 @@ func init() {
 //
 // This function should exclusively redraw the contents of the drawing area and
 // must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width int, height int, userData interface{})
+type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width int, height int, userData cgo.Handle)
 
 //export gotk4_DrawingAreaDrawFunc
 func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
+	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -42,13 +43,13 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	var cr *cairo.Context        // out
 	var width int                // out
 	var height int               // out
-	var userData interface{}     // out
+	var userData cgo.Handle      // out
 
 	drawingArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DrawingArea)
 	cr = (*cairo.Context)(unsafe.Pointer(arg1))
 	width = int(arg2)
 	height = int(arg3)
-	userData = box.Get(uintptr(arg4))
+	userData = (cgo.Handle)(arg4)
 
 	fn := v.(DrawingAreaDrawFunc)
 	fn(drawingArea, cr, width, height, userData)
@@ -59,6 +60,7 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DrawingAreaOverrider interface {
+	//
 	Resize(width int, height int)
 }
 

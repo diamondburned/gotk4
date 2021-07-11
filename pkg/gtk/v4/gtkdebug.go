@@ -19,7 +19,7 @@ func GetDebugFlags() DebugFlags {
 
 	var _debugFlags DebugFlags // out
 
-	_debugFlags = (DebugFlags)(_cret)
+	_debugFlags = DebugFlags(_cret)
 
 	return _debugFlags
 }

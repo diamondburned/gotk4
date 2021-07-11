@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,11 +29,11 @@ func init() {
 // TreeSelectionForeachFunc: function used by
 // gtk_tree_selection_selected_foreach() to map all selected rows. It will be
 // called on every selected row in the view.
-type TreeSelectionForeachFunc func(model *TreeModel, path *TreePath, iter *TreeIter, data interface{})
+type TreeSelectionForeachFunc func(model *TreeModel, path *TreePath, iter *TreeIter, data cgo.Handle)
 
 //export gotk4_TreeSelectionForeachFunc
 func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
-	v := box.Get(uintptr(arg3))
+	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -40,12 +41,12 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 	var model *TreeModel // out
 	var path *TreePath   // out
 	var iter *TreeIter   // out
-	var data interface{} // out
+	var data cgo.Handle  // out
 
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
 	path = (*TreePath)(unsafe.Pointer(arg1))
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
-	data = box.Get(uintptr(arg3))
+	data = (cgo.Handle)(arg3)
 
 	fn := v.(TreeSelectionForeachFunc)
 	fn(model, path, iter, data)
@@ -57,11 +58,11 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 //
 // A return value of true indicates to @selection that it is okay to change the
 // selection.
-type TreeSelectionFunc func(selection *TreeSelection, model *TreeModel, path *TreePath, pathCurrentlySelected bool, data interface{}) (ok bool)
+type TreeSelectionFunc func(selection *TreeSelection, model *TreeModel, path *TreePath, pathCurrentlySelected bool, data cgo.Handle) (ok bool)
 
 //export gotk4_TreeSelectionFunc
 func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg4))
+	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -70,7 +71,7 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	var model *TreeModel           // out
 	var path *TreePath             // out
 	var pathCurrentlySelected bool // out
-	var data interface{}           // out
+	var data cgo.Handle            // out
 
 	selection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeSelection)
 	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*TreeModel)
@@ -78,7 +79,7 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	if arg3 != 0 {
 		pathCurrentlySelected = true
 	}
-	data = box.Get(uintptr(arg4))
+	data = (cgo.Handle)(arg4)
 
 	fn := v.(TreeSelectionFunc)
 	ok := fn(selection, model, path, pathCurrentlySelected, data)
@@ -202,7 +203,7 @@ func (selection *TreeSelection) Mode() SelectionMode {
 
 	var _selectionMode SelectionMode // out
 
-	_selectionMode = (SelectionMode)(_cret)
+	_selectionMode = SelectionMode(_cret)
 
 	return _selectionMode
 }
@@ -215,19 +216,19 @@ func (selection *TreeSelection) Mode() SelectionMode {
 func (selection *TreeSelection) Selected() (*TreeModel, TreeIter, bool) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
-	var _arg2 C.GtkTreeIter       // in
-	var _cret C.gboolean          // in
+	var _iter TreeIter
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
 
-	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	var _model *TreeModel // out
-	var _iter TreeIter    // out
-	var _ok bool          // out
+
+	var _ok bool // out
 
 	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*TreeModel)
-	_iter = *(*TreeIter)(unsafe.Pointer((&_arg2)))
+
 	if _cret != 0 {
 		_ok = true
 	}
@@ -348,7 +349,7 @@ func (selection *TreeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_TreeSelectionForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
+	_arg2 = C.gpointer(gbox.Assign(fn))
 
 	C.gtk_tree_selection_selected_foreach(_arg0, _arg1, _arg2)
 }

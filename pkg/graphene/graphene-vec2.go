@@ -61,16 +61,12 @@ func (v *Vec2) Native() unsafe.Pointer {
 func (a *Vec2) Add(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _arg2 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b))
 
-	C.graphene_vec2_add(_arg0, _arg1, &_arg2)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg2)))
+	C.graphene_vec2_add(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -81,16 +77,12 @@ func (a *Vec2) Add(b *Vec2) Vec2 {
 func (a *Vec2) Divide(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _arg2 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b))
 
-	C.graphene_vec2_divide(_arg0, _arg1, &_arg2)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg2)))
+	C.graphene_vec2_divide(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -237,17 +229,13 @@ func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
 	var _arg2 C.double           // out
-	var _arg3 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v1))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(v2))
 	_arg2 = C.double(factor)
 
-	C.graphene_vec2_interpolate(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg3)))
+	C.graphene_vec2_interpolate(_arg0, _arg1, _arg2, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -273,16 +261,12 @@ func (v *Vec2) Length() float32 {
 func (a *Vec2) Max(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _arg2 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b))
 
-	C.graphene_vec2_max(_arg0, _arg1, &_arg2)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg2)))
+	C.graphene_vec2_max(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -292,16 +276,12 @@ func (a *Vec2) Max(b *Vec2) Vec2 {
 func (a *Vec2) Min(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _arg2 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b))
 
-	C.graphene_vec2_min(_arg0, _arg1, &_arg2)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg2)))
+	C.graphene_vec2_min(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -311,16 +291,12 @@ func (a *Vec2) Min(b *Vec2) Vec2 {
 func (a *Vec2) Multiply(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _arg2 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b))
 
-	C.graphene_vec2_multiply(_arg0, _arg1, &_arg2)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg2)))
+	C.graphene_vec2_multiply(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -351,15 +327,11 @@ func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 // Negate negates the given #graphene_vec2_t.
 func (v *Vec2) Negate() Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
-	var _arg1 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v))
 
-	C.graphene_vec2_negate(_arg0, &_arg1)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg1)))
+	C.graphene_vec2_negate(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -367,15 +339,11 @@ func (v *Vec2) Negate() Vec2 {
 // Normalize computes the normalized vector for the given vector @v.
 func (v *Vec2) Normalize() Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
-	var _arg1 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v))
 
-	C.graphene_vec2_normalize(_arg0, &_arg1)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg1)))
+	C.graphene_vec2_normalize(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -385,16 +353,12 @@ func (v *Vec2) Normalize() Vec2 {
 func (v *Vec2) Scale(factor float32) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
-	var _arg2 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v))
 	_arg1 = C.float(factor)
 
-	C.graphene_vec2_scale(_arg0, _arg1, &_arg2)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg2)))
+	C.graphene_vec2_scale(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -405,16 +369,12 @@ func (v *Vec2) Scale(factor float32) Vec2 {
 func (a *Vec2) Subtract(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _arg2 C.graphene_vec2_t  // in
+	var _res Vec2
 
 	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b))
 
-	C.graphene_vec2_subtract(_arg0, _arg1, &_arg2)
-
-	var _res Vec2 // out
-
-	_res = *(*Vec2)(unsafe.Pointer((&_arg2)))
+	C.graphene_vec2_subtract(_arg0, _arg1, (*C.graphene_vec2_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }

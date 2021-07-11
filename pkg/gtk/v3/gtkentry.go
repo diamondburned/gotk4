@@ -48,26 +48,27 @@ func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type EntryOverrider interface {
+	//
 	Activate()
-
+	//
 	Backspace()
-
+	//
 	CopyClipboard()
-
+	//
 	CutClipboard()
-
+	//
 	FrameSize(x *int, y *int, width *int, height *int)
-
+	//
 	TextAreaSize(x *int, y *int, width *int, height *int)
-
+	//
 	InsertAtCursor(str string)
-
+	//
 	InsertEmoji()
-
+	//
 	PasteClipboard()
-
+	//
 	PopulatePopup(popup Widgetter)
-
+	//
 	ToggleOverwrite()
 }
 
@@ -569,7 +570,7 @@ func (entry *Entry) InputHints() InputHints {
 
 	var _inputHints InputHints // out
 
-	_inputHints = (InputHints)(_cret)
+	_inputHints = InputHints(_cret)
 
 	return _inputHints
 }
@@ -585,7 +586,7 @@ func (entry *Entry) InputPurpose() InputPurpose {
 
 	var _inputPurpose InputPurpose // out
 
-	_inputPurpose = (InputPurpose)(_cret)
+	_inputPurpose = InputPurpose(_cret)
 
 	return _inputPurpose
 }
@@ -734,7 +735,7 @@ func (entry *Entry) PlaceholderText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -805,7 +806,7 @@ func (entry *Entry) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -817,16 +818,12 @@ func (entry *Entry) Text() string {
 //
 // See also gtk_entry_get_icon_area().
 func (entry *Entry) TextArea() gdk.Rectangle {
-	var _arg0 *C.GtkEntry    // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GtkEntry // out
+	var _textArea gdk.Rectangle
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 
-	C.gtk_entry_get_text_area(_arg0, &_arg1)
-
-	var _textArea gdk.Rectangle // out
-
-	_textArea = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
+	C.gtk_entry_get_text_area(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_textArea)))
 
 	return _textArea
 }

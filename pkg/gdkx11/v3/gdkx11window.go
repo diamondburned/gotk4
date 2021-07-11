@@ -73,6 +73,7 @@ type X11Windowwer interface {
 	SetUTF8Property(name string, value string)
 }
 
+//
 type X11Window struct {
 	gdk.Window
 }

@@ -260,7 +260,7 @@ func (info *DesktopAppInfo) ActionName(actionName string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -300,7 +300,7 @@ func (info *DesktopAppInfo) Categories() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -318,7 +318,7 @@ func (info *DesktopAppInfo) Filename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -334,7 +334,7 @@ func (info *DesktopAppInfo) GenericName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -378,7 +378,7 @@ func (info *DesktopAppInfo) Keywords() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -402,7 +402,7 @@ func (info *DesktopAppInfo) LocaleString(key string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -472,7 +472,7 @@ func (info *DesktopAppInfo) StartupWmClass() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -493,7 +493,7 @@ func (info *DesktopAppInfo) String(key string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -574,7 +574,7 @@ func (info *DesktopAppInfo) ListActions() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 

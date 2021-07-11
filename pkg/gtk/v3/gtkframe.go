@@ -149,7 +149,7 @@ func (frame *Frame) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -203,7 +203,7 @@ func (frame *Frame) ShadowType() ShadowType {
 
 	var _shadowType ShadowType // out
 
-	_shadowType = (ShadowType)(_cret)
+	_shadowType = ShadowType(_cret)
 
 	return _shadowType
 }

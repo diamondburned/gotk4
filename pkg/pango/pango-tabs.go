@@ -155,7 +155,7 @@ func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _alignment TabAlign // out
 	var _location int       // out
 
-	_alignment = (TabAlign)(_arg2)
+	_alignment = TabAlign(_arg2)
 	_location = int(_arg3)
 
 	return _alignment, _location

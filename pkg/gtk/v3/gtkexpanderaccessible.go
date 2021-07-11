@@ -30,6 +30,7 @@ type ExpanderAccessibler interface {
 	privateExpanderAccessible()
 }
 
+//
 type ExpanderAccessible struct {
 	ContainerAccessible
 

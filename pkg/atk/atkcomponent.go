@@ -62,6 +62,7 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ComponentOverrider interface {
+	//
 	BoundsChanged(bounds *Rectangle)
 	// Alpha returns the alpha value (i.e. the opacity) for this @component, on
 	// a scale from 0 (fully transparent) to 1.0 (fully opaque).
@@ -171,7 +172,7 @@ func (component *Component) Layer() Layer {
 
 	var _layer Layer // out
 
-	_layer = (Layer)(_cret)
+	_layer = Layer(_cret)
 
 	return _layer
 }

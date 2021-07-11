@@ -4,9 +4,9 @@ package glib
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -506,7 +506,7 @@ func NewVariantDouble(value float64) *Variant {
 }
 
 // NewVariantFixedArray constructs a struct Variant.
-func NewVariantFixedArray(elementType *VariantType, elements interface{}, nElements uint, elementSize uint) *Variant {
+func NewVariantFixedArray(elementType *VariantType, elements cgo.Handle, nElements uint, elementSize uint) *Variant {
 	var _arg1 *C.GVariantType // out
 	var _arg2 C.gconstpointer // out
 	var _arg3 C.gsize         // out
@@ -514,7 +514,7 @@ func NewVariantFixedArray(elementType *VariantType, elements interface{}, nEleme
 	var _cret *C.GVariant     // in
 
 	_arg1 = (*C.GVariantType)(unsafe.Pointer(elementType))
-	_arg2 = (C.gconstpointer)(box.Assign(elements))
+	_arg2 = (C.gconstpointer)(elements)
 	_arg3 = C.gsize(nElements)
 	_arg4 = C.gsize(elementSize)
 
@@ -941,7 +941,7 @@ func (value *Variant) Classify() VariantClass {
 
 	var _variantClass VariantClass // out
 
-	_variantClass = (VariantClass)(_cret)
+	_variantClass = VariantClass(_cret)
 
 	return _variantClass
 }
@@ -969,8 +969,8 @@ func (one *Variant) Compare(two *Variant) int {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(one))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(two))
+	_arg0 = C.gconstpointer(unsafe.Pointer(one))
+	_arg1 = C.gconstpointer(unsafe.Pointer(two))
 
 	_cret = C.g_variant_compare(_arg0, _arg1)
 
@@ -1000,7 +1000,7 @@ func (value *Variant) DupString() (uint, string) {
 	var _utf8 string // out
 
 	_length = uint(_arg1)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _length, _utf8
@@ -1015,8 +1015,8 @@ func (one *Variant) Equal(two *Variant) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(one))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(two))
+	_arg0 = C.gconstpointer(unsafe.Pointer(one))
+	_arg1 = C.gconstpointer(unsafe.Pointer(two))
 
 	_cret = C.g_variant_equal(_arg0, _arg1)
 
@@ -1179,7 +1179,7 @@ func (value *Variant) ChildValue(index_ uint) *Variant {
 // file always contains a G_VARIANT_TYPE_VARIANT and it is always in
 // little-endian order") or explicitly (by storing the type and/or endianness in
 // addition to the serialised data).
-func (value *Variant) Data() interface{} {
+func (value *Variant) Data() cgo.Handle {
 	var _arg0 *C.GVariant     // out
 	var _cret C.gconstpointer // in
 
@@ -1187,9 +1187,9 @@ func (value *Variant) Data() interface{} {
 
 	_cret = C.g_variant_get_data(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
@@ -1411,7 +1411,7 @@ func (value *Variant) String() (uint, string) {
 	var _utf8 string // out
 
 	_length = uint(_arg1)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _length, _utf8
 }
@@ -1447,7 +1447,7 @@ func (value *Variant) TypeString() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1543,7 +1543,7 @@ func (value *Variant) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(value))
+	_arg0 = C.gconstpointer(unsafe.Pointer(value))
 
 	_cret = C.g_variant_hash(_arg0)
 
@@ -1736,7 +1736,7 @@ func (value *Variant) Print(typeAnnotate bool) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1813,12 +1813,12 @@ func (value *Variant) RefSink() *Variant {
 // different) its endianness must also be available.
 //
 // This function is approximately O(n) in the size of @data.
-func (value *Variant) Store(data interface{}) {
+func (value *Variant) Store(data cgo.Handle) {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gpointer  // out
 
 	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
-	_arg1 = (C.gpointer)(box.Assign(data))
+	_arg1 = (C.gpointer)(data)
 
 	C.g_variant_store(_arg0, _arg1)
 }

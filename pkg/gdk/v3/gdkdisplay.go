@@ -452,7 +452,7 @@ func (display *Display) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -480,7 +480,7 @@ func (display *Display) Pointer() (screen *Screen, x int, y int, mask ModifierTy
 	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*Screen)
 	_x = int(_arg2)
 	_y = int(_arg3)
-	_mask = (ModifierType)(_arg4)
+	_mask = ModifierType(_arg4)
 
 	return _screen, _x, _y, _mask
 }

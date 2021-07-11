@@ -146,6 +146,10 @@ func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult)
 
 	ptr := countPtrs(typ, result)
 
+	if isGpointer(typ.CType, typ.Name, int(ptr)) {
+		ptr++
+	}
+
 	// Always use internal types (like GVariant) by reference and not value,
 	// since Go will refuse to allocate them.
 	if record, ok := result.Type.(*gir.Record); ok {
@@ -199,6 +203,27 @@ func (typ *Resolved) IsExternGLib(glibType string) bool {
 	return thisType == glibType
 }
 
+var gpointerTypes = map[string]struct{}{
+	"gpointer":      {},
+	"gconstpointer": {},
+}
+
+// IsGpointer returns true if the given type is a gpointer type.
+func (typ *Resolved) IsGpointer() bool {
+	return isGpointer(typ.CType, typ.GType, int(typ.Ptr)-1)
+}
+
+func isGpointer(ctype, gtype string, ptr int) bool {
+	_, is := gpointerTypes[CleanCType(ctype, true)]
+	if ptr > 0 {
+		// If the CType is a pointer, then we make sure that this isn't just a C
+		// pointer type masked into a gpointer.
+		_, is2 := gpointerTypes[gtype]
+		is = is && is2
+	}
+	return is
+}
+
 // IsCallback returns true if the current ResolvedType is a callback.
 func (typ *Resolved) IsCallback() bool {
 	if typ.Extern == nil {
@@ -233,6 +258,14 @@ func (typ *Resolved) IsClass() bool {
 	}
 	_, ok := typ.Extern.Type.(*gir.Class)
 	return ok
+}
+
+// PublicIsInterface returns true if the type is a class or interface.
+func (typ *Resolved) PublicIsInterface() bool {
+	if typ.Builtin != nil {
+		return *typ.Builtin == "gextras.Objector"
+	}
+	return typ.IsClass() || typ.IsInterface()
 }
 
 // IsPrimitive returns true if the resolved type is a builtin type that can be
@@ -478,7 +511,7 @@ func (typ *Resolved) PublicType(needsNamespace bool) string {
 
 	name := typ.PublicName()
 	// Classes have a pointer in C, but we implement it as an interface in Go.
-	ptrStr := typ.ptr(typ.IsClass() || typ.IsInterface())
+	ptrStr := typ.ptr(typ.PublicIsInterface())
 
 	if !needsNamespace {
 		return ptrStr + name
@@ -589,7 +622,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 
 	switch typ.Name {
 	case "gpointer":
-		return builtinType("", "interface{}", typ)
+		return builtinType("runtime/cgo", "Handle", typ)
 	}
 
 	// Resolve the unknown namespace that is GLib and primitive types.

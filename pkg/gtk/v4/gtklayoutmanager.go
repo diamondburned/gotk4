@@ -34,11 +34,11 @@ type LayoutManagerOverrider interface {
 	// CreateLayoutChild: create a LayoutChild instance for the given @for_child
 	// widget.
 	CreateLayoutChild(widget Widgetter, forChild Widgetter) *LayoutChild
-
+	//
 	RequestMode(widget Widgetter) SizeRequestMode
-
+	//
 	Root()
-
+	//
 	Unroot()
 }
 
@@ -175,7 +175,7 @@ func (manager *LayoutManager) RequestMode() SizeRequestMode {
 
 	var _sizeRequestMode SizeRequestMode // out
 
-	_sizeRequestMode = (SizeRequestMode)(_cret)
+	_sizeRequestMode = SizeRequestMode(_cret)
 
 	return _sizeRequestMode
 }

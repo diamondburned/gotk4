@@ -21,6 +21,7 @@ type HeaderBarAccessibler interface {
 	privateHeaderBarAccessible()
 }
 
+//
 type HeaderBarAccessible struct {
 	ContainerAccessible
 }
@@ -45,12 +46,6 @@ func wrapHeaderBarAccessible(obj *externglib.Object) HeaderBarAccessibler {
 			},
 		},
 	}
-}
-
-func marshalHeaderBarAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHeaderBarAccessible(obj), nil
 }
 
 func (*HeaderBarAccessible) privateHeaderBarAccessible() {}

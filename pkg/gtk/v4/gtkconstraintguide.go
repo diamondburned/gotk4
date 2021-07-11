@@ -132,7 +132,7 @@ func (guide *ConstraintGuide) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -162,7 +162,7 @@ func (guide *ConstraintGuide) Strength() ConstraintStrength {
 
 	var _constraintStrength ConstraintStrength // out
 
-	_constraintStrength = (ConstraintStrength)(_cret)
+	_constraintStrength = ConstraintStrength(_cret)
 
 	return _constraintStrength
 }

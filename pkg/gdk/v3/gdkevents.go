@@ -725,6 +725,7 @@ func (e *EventSelection) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
+//
 type EventSequence struct {
 	native C.GdkEventSequence
 }

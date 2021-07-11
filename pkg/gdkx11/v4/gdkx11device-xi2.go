@@ -23,13 +23,15 @@ func init() {
 	})
 }
 
+//
 type X11DeviceType int
 
 const (
+	//
 	X11DeviceTypeLogical X11DeviceType = iota
-
+	//
 	X11DeviceTypePhysical
-
+	//
 	X11DeviceTypeFloating
 )
 
@@ -38,6 +40,7 @@ type X11DeviceXI2er interface {
 	privateX11DeviceXI2()
 }
 
+//
 type X11DeviceXI2 struct {
 	gdk.Device
 }

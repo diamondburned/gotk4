@@ -30,6 +30,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type LevelBarOverrider interface {
+	//
 	OffsetChanged(name string)
 }
 
@@ -251,7 +252,7 @@ func (self *LevelBar) Mode() LevelBarMode {
 
 	var _levelBarMode LevelBarMode // out
 
-	_levelBarMode = (LevelBarMode)(_cret)
+	_levelBarMode = LevelBarMode(_cret)
 
 	return _levelBarMode
 }

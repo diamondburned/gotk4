@@ -30,6 +30,7 @@ type FrameAccessibler interface {
 	privateFrameAccessible()
 }
 
+//
 type FrameAccessible struct {
 	ContainerAccessible
 }

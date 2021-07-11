@@ -30,6 +30,7 @@ func init() {
 	})
 }
 
+//
 type MovementStep int
 
 const (
@@ -59,11 +60,13 @@ func marshalMovementStep(p uintptr) (interface{}, error) {
 	return MovementStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+//
 type NotebookTab int
 
 const (
+	//
 	NotebookTabFirst NotebookTab = iota
-
+	//
 	NotebookTabLast
 )
 
@@ -71,6 +74,7 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 	return NotebookTab(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+//
 type ResizeMode int
 
 const (
@@ -86,6 +90,7 @@ func marshalResizeMode(p uintptr) (interface{}, error) {
 	return ResizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+//
 type ScrollStep int
 
 const (
@@ -107,51 +112,53 @@ func marshalScrollStep(p uintptr) (interface{}, error) {
 	return ScrollStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+//
 type DebugFlag int
 
 const (
+	//
 	DebugFlagMisc DebugFlag = 0b1
-
+	//
 	DebugFlagPlugsocket DebugFlag = 0b10
-
+	//
 	DebugFlagText DebugFlag = 0b100
-
+	//
 	DebugFlagTree DebugFlag = 0b1000
-
+	//
 	DebugFlagUpdates DebugFlag = 0b10000
-
+	//
 	DebugFlagKeybindings DebugFlag = 0b100000
-
+	//
 	DebugFlagMultihead DebugFlag = 0b1000000
-
+	//
 	DebugFlagModules DebugFlag = 0b10000000
-
+	//
 	DebugFlagGeometry DebugFlag = 0b100000000
-
+	//
 	DebugFlagIcontheme DebugFlag = 0b1000000000
-
+	//
 	DebugFlagPrinting DebugFlag = 0b10000000000
-
+	//
 	DebugFlagBuilder DebugFlag = 0b100000000000
-
+	//
 	DebugFlagSizeRequest DebugFlag = 0b1000000000000
-
+	//
 	DebugFlagNoCSSCache DebugFlag = 0b10000000000000
-
+	//
 	DebugFlagBaselines DebugFlag = 0b100000000000000
-
+	//
 	DebugFlagPixelCache DebugFlag = 0b1000000000000000
-
+	//
 	DebugFlagNoPixelCache DebugFlag = 0b10000000000000000
-
+	//
 	DebugFlagInteractive DebugFlag = 0b100000000000000000
-
+	//
 	DebugFlagTouchscreen DebugFlag = 0b1000000000000000000
-
+	//
 	DebugFlagActions DebugFlag = 0b10000000000000000000
-
+	//
 	DebugFlagResize DebugFlag = 0b100000000000000000000
-
+	//
 	DebugFlagLayout DebugFlag = 0b1000000000000000000000
 )
 
@@ -164,6 +171,7 @@ type EntryIconAccessibler interface {
 	privateEntryIconAccessible()
 }
 
+//
 type EntryIconAccessible struct {
 	atk.ObjectClass
 

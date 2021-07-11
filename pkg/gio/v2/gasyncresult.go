@@ -3,9 +3,9 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -42,10 +42,10 @@ type AsyncResultOverrider interface {
 	// SourceObject gets the source object from a Result.
 	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.
-	UserData() interface{}
+	UserData() cgo.Handle
 	// IsTagged checks if @res has the given @source_tag (generally a function
 	// pointer indicating the function @res was created by).
-	IsTagged(sourceTag interface{}) bool
+	IsTagged(sourceTag cgo.Handle) bool
 }
 
 // AsyncResulter describes AsyncResult's methods.
@@ -53,10 +53,10 @@ type AsyncResulter interface {
 	// SourceObject gets the source object from a Result.
 	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.
-	UserData() interface{}
+	UserData() cgo.Handle
 	// IsTagged checks if @res has the given @source_tag (generally a function
 	// pointer indicating the function @res was created by).
-	IsTagged(sourceTag interface{}) bool
+	IsTagged(sourceTag cgo.Handle) bool
 	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
 	// g_simple_async_result_propagate_error().
 	LegacyPropagateError() error
@@ -180,7 +180,7 @@ func (res *AsyncResult) SourceObject() *externglib.Object {
 }
 
 // UserData gets the user data from a Result.
-func (res *AsyncResult) UserData() interface{} {
+func (res *AsyncResult) UserData() cgo.Handle {
 	var _arg0 *C.GAsyncResult // out
 	var _cret C.gpointer      // in
 
@@ -188,22 +188,22 @@ func (res *AsyncResult) UserData() interface{} {
 
 	_cret = C.g_async_result_get_user_data(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
 
 // IsTagged checks if @res has the given @source_tag (generally a function
 // pointer indicating the function @res was created by).
-func (res *AsyncResult) IsTagged(sourceTag interface{}) bool {
+func (res *AsyncResult) IsTagged(sourceTag cgo.Handle) bool {
 	var _arg0 *C.GAsyncResult // out
 	var _arg1 C.gpointer      // out
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-	_arg1 = (C.gpointer)(box.Assign(sourceTag))
+	_arg1 = (C.gpointer)(sourceTag)
 
 	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
 

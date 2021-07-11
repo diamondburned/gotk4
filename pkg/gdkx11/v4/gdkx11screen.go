@@ -45,6 +45,7 @@ type X11Screener interface {
 	SupportsNetWmHint(propertyName string) bool
 }
 
+//
 type X11Screen struct {
 	*externglib.Object
 }
@@ -131,7 +132,7 @@ func (screen *X11Screen) WindowManagerName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

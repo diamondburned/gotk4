@@ -26,12 +26,13 @@ func init() {
 
 // EventControllerKeyyer describes EventControllerKey's methods.
 type EventControllerKeyyer interface {
+	//
 	Forward(widget Widgetter) bool
-
+	//
 	Group() uint
 	// ImContext gets the IM context of a key controller.
 	ImContext() *IMContext
-
+	//
 	SetImContext(imContext IMContexter)
 }
 
@@ -62,6 +63,7 @@ func marshalEventControllerKeyyer(p uintptr) (interface{}, error) {
 	return wrapEventControllerKey(obj), nil
 }
 
+//
 func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
@@ -77,6 +79,7 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	return _eventControllerKey
 }
 
+//
 func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
@@ -96,6 +99,7 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	return _ok
 }
 
+//
 func (controller *EventControllerKey) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
@@ -127,6 +131,7 @@ func (controller *EventControllerKey) ImContext() *IMContext {
 	return _imContext
 }
 
+//
 func (controller *EventControllerKey) SetImContext(imContext IMContexter) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out

@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -30,20 +31,20 @@ func init() {
 // This function is called when the popup of @menu_button is shown, but none has
 // been provided via [method@Gtk.MenuButton.set_popover] or
 // [method@Gtk.MenuButton.set_menu_model].
-type MenuButtonCreatePopupFunc func(menuButton *MenuButton, userData interface{})
+type MenuButtonCreatePopupFunc func(menuButton *MenuButton, userData cgo.Handle)
 
 //export gotk4_MenuButtonCreatePopupFunc
 func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var menuButton *MenuButton // out
-	var userData interface{}   // out
+	var userData cgo.Handle    // out
 
 	menuButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*MenuButton)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(MenuButtonCreatePopupFunc)
 	fn(menuButton, userData)
@@ -201,7 +202,7 @@ func (menuButton *MenuButton) Direction() ArrowType {
 
 	var _arrowType ArrowType // out
 
-	_arrowType = (ArrowType)(_cret)
+	_arrowType = ArrowType(_cret)
 
 	return _arrowType
 }
@@ -235,7 +236,7 @@ func (menuButton *MenuButton) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -251,7 +252,7 @@ func (menuButton *MenuButton) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

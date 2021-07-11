@@ -236,7 +236,7 @@ func (e *Euler) Order() EulerOrder {
 
 	var _eulerOrder EulerOrder // out
 
-	_eulerOrder = (EulerOrder)(_cret)
+	_eulerOrder = EulerOrder(_cret)
 
 	return _eulerOrder
 }
@@ -353,31 +353,23 @@ func (e *Euler) InitFromEuler(src *Euler) *Euler {
 // between Euler-based, quaternion-based, and angle-axis-based rotations.
 func (e *Euler) ToMatrix() Matrix {
 	var _arg0 *C.graphene_euler_t // out
-	var _arg1 C.graphene_matrix_t // in
+	var _res Matrix
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
-	C.graphene_euler_to_matrix(_arg0, &_arg1)
-
-	var _res Matrix // out
-
-	_res = *(*Matrix)(unsafe.Pointer((&_arg1)))
+	C.graphene_euler_to_matrix(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
 
 // ToQuaternion converts a #graphene_euler_t into a #graphene_quaternion_t.
 func (e *Euler) ToQuaternion() Quaternion {
-	var _arg0 *C.graphene_euler_t     // out
-	var _arg1 C.graphene_quaternion_t // in
+	var _arg0 *C.graphene_euler_t // out
+	var _res Quaternion
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
-	C.graphene_euler_to_quaternion(_arg0, &_arg1)
-
-	var _res Quaternion // out
-
-	_res = *(*Quaternion)(unsafe.Pointer((&_arg1)))
+	C.graphene_euler_to_quaternion(_arg0, (*C.graphene_quaternion_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -386,15 +378,11 @@ func (e *Euler) ToQuaternion() Quaternion {
 // #graphene_vec3_t with them.
 func (e *Euler) ToVec3() Vec3 {
 	var _arg0 *C.graphene_euler_t // out
-	var _arg1 C.graphene_vec3_t   // in
+	var _res Vec3
 
 	_arg0 = (*C.graphene_euler_t)(unsafe.Pointer(e))
 
-	C.graphene_euler_to_vec3(_arg0, &_arg1)
-
-	var _res Vec3 // out
-
-	_res = *(*Vec3)(unsafe.Pointer((&_arg1)))
+	C.graphene_euler_to_vec3(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }

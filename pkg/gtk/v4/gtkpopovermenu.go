@@ -165,7 +165,7 @@ func wrapPopoverMenu(obj *externglib.Object) PopoverMenuer {
 					Object: obj,
 				},
 			},
-			Native: Native{
+			NativeSurface: NativeSurface{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,

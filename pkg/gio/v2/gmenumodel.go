@@ -110,7 +110,7 @@ func (iter *MenuAttributeIter) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -132,23 +132,19 @@ func (iter *MenuAttributeIter) Name() string {
 func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _arg1 *C.gchar              // in
-	var _arg2 *C.GVariant           // in
-	var _cret C.gboolean            // in
+	var _value *glib.Variant
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(iter.Native()))
 
-	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, &_arg2)
+	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, (**C.GVariant)(unsafe.Pointer(&_value)))
 
-	var _outName string      // out
-	var _value *glib.Variant // out
-	var _ok bool             // out
+	var _outName string // out
 
-	_outName = C.GoString(_arg1)
-	_value = (*glib.Variant)(unsafe.Pointer(_arg2))
-	C.g_variant_ref(_arg2)
-	runtime.SetFinalizer(_value, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
-	})
+	var _ok bool // out
+
+	_outName = C.GoString((*C.gchar)(_arg1))
+
 	if _cret != 0 {
 		_ok = true
 	}
@@ -272,7 +268,7 @@ func (iter *MenuLinkIter) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -304,7 +300,7 @@ func (iter *MenuLinkIter) GetNext() (string, *MenuModel, bool) {
 	var _value *MenuModel // out
 	var _ok bool          // out
 
-	_outLink = C.GoString(_arg1)
+	_outLink = C.GoString((*C.gchar)(_arg1))
 	_value = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(*MenuModel)
 	if _cret != 0 {
 		_ok = true

@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -51,11 +52,11 @@ func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
 // “text” attribute of “cell” by converting it to its written equivalent.
 //
 // See also: gtk_tree_view_column_set_cell_data_func()
-type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter, data interface{})
+type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter, data cgo.Handle)
 
 //export gotk4_TreeCellDataFunc
 func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
+	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -64,13 +65,13 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 	var cell *CellRenderer         // out
 	var treeModel *TreeModel       // out
 	var iter *TreeIter             // out
-	var data interface{}           // out
+	var data cgo.Handle            // out
 
 	treeColumn = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeViewColumn)
 	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*CellRenderer)
 	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(*TreeModel)
 	iter = (*TreeIter)(unsafe.Pointer(arg3))
-	data = box.Get(uintptr(arg4))
+	data = (cgo.Handle)(arg4)
 
 	fn := v.(TreeCellDataFunc)
 	fn(treeColumn, cell, treeModel, iter, data)
@@ -600,7 +601,7 @@ func (treeColumn *TreeViewColumn) Sizing() TreeViewColumnSizing {
 
 	var _treeViewColumnSizing TreeViewColumnSizing // out
 
-	_treeViewColumnSizing = (TreeViewColumnSizing)(_cret)
+	_treeViewColumnSizing = TreeViewColumnSizing(_cret)
 
 	return _treeViewColumnSizing
 }
@@ -653,7 +654,7 @@ func (treeColumn *TreeViewColumn) SortOrder() SortType {
 
 	var _sortType SortType // out
 
-	_sortType = (SortType)(_cret)
+	_sortType = SortType(_cret)
 
 	return _sortType
 }
@@ -685,7 +686,7 @@ func (treeColumn *TreeViewColumn) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

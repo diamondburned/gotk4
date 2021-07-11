@@ -169,7 +169,7 @@ func (self *ShortcutController) MnemonicsModifiers() gdk.ModifierType {
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(_cret)
+	_modifierType = gdk.ModifierType(_cret)
 
 	return _modifierType
 }
@@ -186,7 +186,7 @@ func (self *ShortcutController) Scope() ShortcutScope {
 
 	var _shortcutScope ShortcutScope // out
 
-	_shortcutScope = (ShortcutScope)(_cret)
+	_shortcutScope = ShortcutScope(_cret)
 
 	return _shortcutScope
 }

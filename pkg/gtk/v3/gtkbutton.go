@@ -31,6 +31,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ButtonOverrider interface {
+	//
 	Activate()
 	// Clicked emits a Button::clicked signal to the given Button.
 	Clicked()
@@ -429,7 +430,7 @@ func (button *Button) ImagePosition() PositionType {
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(_cret)
+	_positionType = PositionType(_cret)
 
 	return _positionType
 }
@@ -448,7 +449,7 @@ func (button *Button) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -464,7 +465,7 @@ func (button *Button) Relief() ReliefStyle {
 
 	var _reliefStyle ReliefStyle // out
 
-	_reliefStyle = (ReliefStyle)(_cret)
+	_reliefStyle = ReliefStyle(_cret)
 
 	return _reliefStyle
 }

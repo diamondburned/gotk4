@@ -343,7 +343,7 @@ func (notebook *Notebook) GroupName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -380,7 +380,7 @@ func (notebook *Notebook) MenuLabelText(child Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -567,7 +567,7 @@ func (notebook *Notebook) TabLabelText(child Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -583,7 +583,7 @@ func (notebook *Notebook) TabPos() PositionType {
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(_cret)
+	_positionType = PositionType(_cret)
 
 	return _positionType
 }

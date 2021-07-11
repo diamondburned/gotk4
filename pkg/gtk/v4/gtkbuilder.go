@@ -611,7 +611,7 @@ func (builder *Builder) ExposeObject(name string, object gextras.Objector) {
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer((&object).Native()))
 
 	C.gtk_builder_expose_object(_arg0, _arg1, _arg2)
 }
@@ -630,8 +630,8 @@ func (builder *Builder) ExtendWithTemplate(object gextras.Objector, templateType
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = (C.GType)(templateType)
+	_arg1 = (*C.GObject)(unsafe.Pointer((&object).Native()))
+	_arg2 = C.GType(templateType)
 	_arg3 = (*C.char)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.gssize(length)
@@ -711,7 +711,7 @@ func (builder *Builder) TranslationDomain() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -752,7 +752,7 @@ func (builder *Builder) SetCurrentObject(currentObject gextras.Objector) {
 	var _arg1 *C.GObject    // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(currentObject.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&currentObject).Native()))
 
 	C.gtk_builder_set_current_object(_arg0, _arg1)
 }
@@ -800,7 +800,7 @@ func (builder *Builder) ValueFromStringType(typ externglib.Type, _string string)
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 	_arg2 = (*C.char)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg2))
 

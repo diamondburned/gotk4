@@ -213,7 +213,7 @@ func RCFindModuleInPath(moduleFile string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -239,7 +239,7 @@ func RCFindPixmapInPath(settings Settingser, scanner *glib.Scanner, pixmapFile s
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -266,7 +266,7 @@ func RCGetDefaultFiles() []string {
 		src := unsafe.Slice(_cret, i)
 		_filenames = make([]string, i)
 		for i := range src {
-			_filenames[i] = C.GoString(src[i])
+			_filenames[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -285,7 +285,7 @@ func RCGetImModuleFile() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -304,7 +304,7 @@ func RCGetImModulePath() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -322,7 +322,7 @@ func RCGetModuleDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -376,7 +376,7 @@ func RCGetStyleByPaths(settings Settingser, widgetPath string, classPath string,
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(C.CString(classPath))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.GType)(typ)
+	_arg4 = C.GType(typ)
 
 	_cret = C.gtk_rc_get_style_by_paths(_arg1, _arg2, _arg3, _arg4)
 
@@ -398,7 +398,7 @@ func RCGetThemeDir() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -424,17 +424,15 @@ func RCParse(filename string) {
 // Deprecated: Use CssProvider instead.
 func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
-	var _arg2 C.GdkColor  // in
-	var _cret C.guint     // in
+	var _color gdk.Color
+	var _cret C.guint // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
 
-	_cret = C.gtk_rc_parse_color(_arg1, &_arg2)
+	_cret = C.gtk_rc_parse_color(_arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
-	var _color gdk.Color // out
-	var _guint uint      // out
+	var _guint uint // out
 
-	_color = *(*gdk.Color)(unsafe.Pointer((&_arg2)))
 	_guint = uint(_cret)
 
 	return _color, _guint
@@ -448,18 +446,16 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 func RCParseColorFull(scanner *glib.Scanner, style RCStyler) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
-	var _arg3 C.GdkColor    // in
-	var _cret C.guint       // in
+	var _color gdk.Color
+	var _cret C.guint // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
 
-	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
+	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
-	var _color gdk.Color // out
-	var _guint uint      // out
+	var _guint uint // out
 
-	_color = *(*gdk.Color)(unsafe.Pointer((&_arg3)))
 	_guint = uint(_cret)
 
 	return _color, _guint
@@ -481,7 +477,7 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 	var _state StateType // out
 	var _guint uint      // out
 
-	_state = (StateType)(_arg2)
+	_state = StateType(_arg2)
 	_guint = uint(_cret)
 
 	return _state, _guint
@@ -587,8 +583,9 @@ func RCSetDefaultFiles(filenames []string) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RCStyleOverrider interface {
+	//
 	Merge(src RCStyler)
-
+	//
 	Parse(settings Settingser, scanner *glib.Scanner) uint
 }
 

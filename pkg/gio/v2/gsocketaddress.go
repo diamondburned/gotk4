@@ -3,9 +3,9 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -50,7 +50,7 @@ type SocketAddressOverrider interface {
 	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
 	// returned. If the address type is not known on the system then a
 	// G_IO_ERROR_NOT_SUPPORTED error is returned.
-	ToNative(dest interface{}, destlen uint) error
+	ToNative(dest cgo.Handle, destlen uint) error
 }
 
 // SocketAddresser describes SocketAddress's methods.
@@ -61,7 +61,7 @@ type SocketAddresser interface {
 	NativeSize() int
 	// ToNative converts a Address to a native struct sockaddr, which can be
 	// passed to low-level functions like connect() or bind().
-	ToNative(dest interface{}, destlen uint) error
+	ToNative(dest cgo.Handle, destlen uint) error
 }
 
 // SocketAddress is the equivalent of struct sockaddr in the BSD sockets API.
@@ -95,12 +95,12 @@ func marshalSocketAddresser(p uintptr) (interface{}, error) {
 
 // NewSocketAddressFromNative creates a Address subclass corresponding to the
 // native struct sockaddr @native.
-func NewSocketAddressFromNative(native interface{}, len uint) *SocketAddress {
+func NewSocketAddressFromNative(native cgo.Handle, len uint) *SocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = (C.gpointer)(box.Assign(native))
+	_arg1 = (C.gpointer)(native)
 	_arg2 = C.gsize(len)
 
 	_cret = C.g_socket_address_new_from_native(_arg1, _arg2)
@@ -123,7 +123,7 @@ func (address *SocketAddress) Family() SocketFamily {
 
 	var _socketFamily SocketFamily // out
 
-	_socketFamily = (SocketFamily)(_cret)
+	_socketFamily = SocketFamily(_cret)
 
 	return _socketFamily
 }
@@ -151,14 +151,14 @@ func (address *SocketAddress) NativeSize() int {
 // If not enough space is available, a G_IO_ERROR_NO_SPACE error is returned. If
 // the address type is not known on the system then a G_IO_ERROR_NOT_SUPPORTED
 // error is returned.
-func (address *SocketAddress) ToNative(dest interface{}, destlen uint) error {
+func (address *SocketAddress) ToNative(dest cgo.Handle, destlen uint) error {
 	var _arg0 *C.GSocketAddress // out
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
-	_arg1 = (C.gpointer)(box.Assign(dest))
+	_arg1 = (C.gpointer)(dest)
 	_arg2 = C.gsize(destlen)
 
 	C.g_socket_address_to_native(_arg0, _arg1, _arg2, &_cerr)

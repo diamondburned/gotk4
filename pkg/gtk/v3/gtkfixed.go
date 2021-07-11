@@ -146,6 +146,7 @@ func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
 	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
 }
 
+//
 type FixedChild struct {
 	native C.GtkFixedChild
 }

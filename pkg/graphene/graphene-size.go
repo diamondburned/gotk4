@@ -127,17 +127,13 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 *C.graphene_size_t // out
 	var _arg2 C.double           // out
-	var _arg3 C.graphene_size_t  // in
+	var _res Size
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(b))
 	_arg2 = C.double(factor)
 
-	C.graphene_size_interpolate(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Size // out
-
-	_res = *(*Size)(unsafe.Pointer((&_arg3)))
+	C.graphene_size_interpolate(_arg0, _arg1, _arg2, (*C.graphene_size_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -146,16 +142,12 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 func (s *Size) Scale(factor float32) Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 C.float            // out
-	var _arg2 C.graphene_size_t  // in
+	var _res Size
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s))
 	_arg1 = C.float(factor)
 
-	C.graphene_size_scale(_arg0, _arg1, &_arg2)
-
-	var _res Size // out
-
-	_res = *(*Size)(unsafe.Pointer((&_arg2)))
+	C.graphene_size_scale(_arg0, _arg1, (*C.graphene_size_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }

@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -241,7 +241,7 @@ func (client *SocketClient) ConnectAsync(connectable SocketConnectabler, cancell
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_socket_client_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -341,7 +341,7 @@ func (client *SocketClient) ConnectToHostAsync(hostAndPort string, defaultPort u
 	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
+	_arg5 = C.gpointer(gbox.Assign(callback))
 
 	C.g_socket_client_connect_to_host_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -424,7 +424,7 @@ func (client *SocketClient) ConnectToServiceAsync(domain string, service string,
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
+	_arg5 = C.gpointer(gbox.Assign(callback))
 
 	C.g_socket_client_connect_to_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -514,7 +514,7 @@ func (client *SocketClient) ConnectToURIAsync(uri string, defaultPort uint16, ca
 	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
+	_arg5 = C.gpointer(gbox.Assign(callback))
 
 	C.g_socket_client_connect_to_uri_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -573,7 +573,7 @@ func (client *SocketClient) Family() SocketFamily {
 
 	var _socketFamily SocketFamily // out
 
-	_socketFamily = (SocketFamily)(_cret)
+	_socketFamily = SocketFamily(_cret)
 
 	return _socketFamily
 }
@@ -609,7 +609,7 @@ func (client *SocketClient) Protocol() SocketProtocol {
 
 	var _socketProtocol SocketProtocol // out
 
-	_socketProtocol = (SocketProtocol)(_cret)
+	_socketProtocol = SocketProtocol(_cret)
 
 	return _socketProtocol
 }
@@ -645,7 +645,7 @@ func (client *SocketClient) SocketType() SocketType {
 
 	var _socketType SocketType // out
 
-	_socketType = (SocketType)(_cret)
+	_socketType = SocketType(_cret)
 
 	return _socketType
 }
@@ -699,7 +699,7 @@ func (client *SocketClient) TLSValidationFlags() TLSCertificateFlags {
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
-	_tlsCertificateFlags = (TLSCertificateFlags)(_cret)
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
 
 	return _tlsCertificateFlags
 }

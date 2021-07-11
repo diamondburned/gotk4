@@ -28,6 +28,7 @@ type X11DeviceManagerCorer interface {
 	privateX11DeviceManagerCore()
 }
 
+//
 type X11DeviceManagerCore struct {
 	gdk.DeviceManager
 }

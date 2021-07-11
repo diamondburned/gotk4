@@ -67,9 +67,9 @@ type HyperlinkOverrider interface {
 	// changed this method returns true if the link is still valid (with respect
 	// to the document it references) and false otherwise.
 	IsValid() bool
-
+	//
 	LinkActivated()
-
+	//
 	LinkState() uint
 }
 
@@ -217,7 +217,7 @@ func (link_ *Hyperlink) URI(i int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

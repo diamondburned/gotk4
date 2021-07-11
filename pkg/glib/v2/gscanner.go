@@ -3,9 +3,8 @@
 package glib
 
 import (
+	"runtime/cgo"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -157,7 +156,7 @@ func (scanner *Scanner) CurToken() TokenType {
 
 	var _tokenType TokenType // out
 
-	_tokenType = (TokenType)(_cret)
+	_tokenType = TokenType(_cret)
 
 	return _tokenType
 }
@@ -203,7 +202,7 @@ func (scanner *Scanner) NextToken() TokenType {
 
 	var _tokenType TokenType // out
 
-	_tokenType = (TokenType)(_cret)
+	_tokenType = TokenType(_cret)
 
 	return _tokenType
 }
@@ -235,7 +234,7 @@ func (scanner *Scanner) InputText(text string, textLen uint) {
 
 // LookupSymbol looks up a symbol in the current scope and return its value. If
 // the symbol is not bound in the current scope, nil is returned.
-func (scanner *Scanner) LookupSymbol(symbol string) interface{} {
+func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 	var _arg0 *C.GScanner // out
 	var _arg1 *C.gchar    // out
 	var _cret C.gpointer  // in
@@ -246,9 +245,9 @@ func (scanner *Scanner) LookupSymbol(symbol string) interface{} {
 
 	_cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
@@ -274,13 +273,13 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 
 	var _tokenType TokenType // out
 
-	_tokenType = (TokenType)(_cret)
+	_tokenType = TokenType(_cret)
 
 	return _tokenType
 }
 
 // ScopeAddSymbol adds a symbol to the given scope.
-func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value interface{}) {
+func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Handle) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
@@ -290,14 +289,14 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value interf
 	_arg1 = C.guint(scopeId)
 	_arg2 = (*C.gchar)(C.CString(symbol))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.gpointer)(box.Assign(value))
+	_arg3 = (C.gpointer)(value)
 
 	C.g_scanner_scope_add_symbol(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
 // symbol is not bound in the scope, nil is returned.
-func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) interface{} {
+func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handle {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
@@ -310,9 +309,9 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) interface
 
 	_cret = C.g_scanner_scope_lookup_symbol(_arg0, _arg1, _arg2)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }

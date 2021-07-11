@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,8 +41,9 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FileIOStreamOverrider interface {
+	//
 	CanSeek() bool
-
+	//
 	CanTruncate() bool
 	// Etag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
@@ -75,9 +76,9 @@ type FileIOStreamOverrider interface {
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
-
+	//
 	Tell() int64
-
+	//
 	TruncateFn(size int64, cancellable Cancellabler) error
 }
 
@@ -158,7 +159,7 @@ func (stream *FileIOStream) Etag() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -222,7 +223,7 @@ func (stream *FileIOStream) QueryInfoAsync(attributes string, ioPriority int, ca
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
+	_arg5 = C.gpointer(gbox.Assign(callback))
 
 	C.g_file_io_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

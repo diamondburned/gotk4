@@ -37,6 +37,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TLSPasswordOverrider interface {
+	//
 	DefaultWarning() string
 	// Value: get the password value. If @length is not nil then it will be
 	// filled in with the length of the password value. (Note that the password
@@ -99,7 +100,7 @@ func (password *TLSPassword) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -115,7 +116,7 @@ func (password *TLSPassword) Flags() TLSPasswordFlags {
 
 	var _tlsPasswordFlags TLSPasswordFlags // out
 
-	_tlsPasswordFlags = (TLSPasswordFlags)(_cret)
+	_tlsPasswordFlags = TLSPasswordFlags(_cret)
 
 	return _tlsPasswordFlags
 }
@@ -154,7 +155,7 @@ func (password *TLSPassword) Warning() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

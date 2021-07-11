@@ -55,7 +55,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg5 *C.char    // in
 	var _cret C.gboolean // in
 
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 	_arg2 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg2))
 	if warn {
@@ -69,7 +69,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _ok bool               // out
 
 	_value = int(_arg3)
-	_possibleValues = C.GoString(_arg5)
+	_possibleValues = C.GoString((*C.gchar)(_arg5))
 	defer C.free(unsafe.Pointer(_arg5))
 	if _cret != 0 {
 		_ok = true
@@ -101,7 +101,7 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _stretch Stretch // out
 	var _ok bool         // out
 
-	_stretch = (Stretch)(_arg2)
+	_stretch = Stretch(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -130,7 +130,7 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 	var _style Style // out
 	var _ok bool     // out
 
-	_style = (Style)(_arg2)
+	_style = Style(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -159,7 +159,7 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _variant Variant // out
 	var _ok bool         // out
 
-	_variant = (Variant)(_arg2)
+	_variant = Variant(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -188,7 +188,7 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _weight Weight // out
 	var _ok bool       // out
 
-	_weight = (Weight)(_arg2)
+	_weight = Weight(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -221,7 +221,7 @@ func SplitFileList(str string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -243,7 +243,7 @@ func TrimString(str string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -296,7 +296,7 @@ func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) strin
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -312,7 +312,7 @@ func VersionString() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -25,11 +26,11 @@ func init() {
 
 // CellLayoutDataFunc: function which should set the value of @cell_layout’s
 // cell renderer(s) as appropriate.
-type CellLayoutDataFunc func(cellLayout *CellLayout, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter, data interface{})
+type CellLayoutDataFunc func(cellLayout *CellLayout, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter, data cgo.Handle)
 
 //export gotk4_CellLayoutDataFunc
 func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
+	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -38,13 +39,13 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 	var cell *CellRenderer     // out
 	var treeModel *TreeModel   // out
 	var iter *TreeIter         // out
-	var data interface{}       // out
+	var data cgo.Handle        // out
 
 	cellLayout = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*CellLayout)
 	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*CellRenderer)
 	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(*TreeModel)
 	iter = (*TreeIter)(unsafe.Pointer(arg3))
-	data = box.Get(uintptr(arg4))
+	data = (cgo.Handle)(arg4)
 
 	fn := v.(CellLayoutDataFunc)
 	fn(cellLayout, cell, treeModel, iter, data)

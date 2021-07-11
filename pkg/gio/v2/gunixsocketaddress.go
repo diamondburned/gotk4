@@ -135,7 +135,7 @@ func (address *UnixSocketAddress) AddressType() UnixSocketAddressType {
 
 	var _unixSocketAddressType UnixSocketAddressType // out
 
-	_unixSocketAddressType = (UnixSocketAddressType)(_cret)
+	_unixSocketAddressType = UnixSocketAddressType(_cret)
 
 	return _unixSocketAddressType
 }
@@ -175,7 +175,7 @@ func (address *UnixSocketAddress) Path() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

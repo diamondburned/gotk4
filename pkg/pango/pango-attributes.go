@@ -4,9 +4,10 @@ package pango
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -192,42 +193,42 @@ func marshalShowFlags(p uintptr) (interface{}, error) {
 
 // AttrDataCopyFunc: type of a function that can duplicate user data for an
 // attribute.
-type AttrDataCopyFunc func(userData interface{}) (gpointer interface{})
+type AttrDataCopyFunc func(userData cgo.Handle) (gpointer cgo.Handle)
 
 //export gotk4_AttrDataCopyFunc
 func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
-	v := box.Get(uintptr(arg0))
+	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var userData interface{} // out
+	var userData cgo.Handle // out
 
-	userData = box.Get(uintptr(arg0))
+	userData = (cgo.Handle)(arg0)
 
 	fn := v.(AttrDataCopyFunc)
 	gpointer := fn(userData)
 
-	cret = (C.gpointer)(box.Assign(gpointer))
+	cret = (C.gpointer)(gpointer)
 
 	return cret
 }
 
 // AttrFilterFunc: type of a function filtering a list of attributes.
-type AttrFilterFunc func(attribute *Attribute, userData interface{}) (ok bool)
+type AttrFilterFunc func(attribute *Attribute, userData cgo.Handle) (ok bool)
 
 //export gotk4_AttrFilterFunc
 func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var attribute *Attribute // out
-	var userData interface{} // out
+	var userData cgo.Handle  // out
 
 	attribute = (*Attribute)(unsafe.Pointer(arg0))
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(AttrFilterFunc)
 	ok := fn(attribute, userData)
@@ -583,26 +584,20 @@ func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
 // use g_markup_parse_context_free() to do so.
 func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
 	var _arg1 *C.GMarkupParseContext // out
-	var _arg2 *C.PangoAttrList       // in
-	var _arg3 *C.char                // in
-	var _arg4 C.gunichar             // in
-	var _cerr *C.GError              // in
+	var _attrList *AttrList
+	var _arg3 *C.char    // in
+	var _arg4 C.gunichar // in
+	var _cerr *C.GError  // in
 
 	_arg1 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
 
-	C.pango_markup_parser_finish(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+	C.pango_markup_parser_finish(_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg3, &_arg4, &_cerr)
 
-	var _attrList *AttrList // out
-	var _text string        // out
-	var _accelChar uint32   // out
-	var _goerr error        // out
+	var _text string      // out
+	var _accelChar uint32 // out
+	var _goerr error      // out
 
-	_attrList = (*AttrList)(unsafe.Pointer(_arg2))
-	C.pango_attr_list_ref(_arg2)
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
-	})
-	_text = C.GoString(_arg3)
+	_text = C.GoString((*C.gchar)(_arg3))
 	defer C.free(unsafe.Pointer(_arg3))
 	_accelChar = uint32(_arg4)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -670,32 +665,26 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 // If any error happens, none of the output arguments are touched except for
 // @error.
 func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
-	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
-	var _arg3 C.gunichar       // out
-	var _arg4 *C.PangoAttrList // in
-	var _arg5 *C.char          // in
-	var _arg6 C.gunichar       // in
-	var _cerr *C.GError        // in
+	var _arg1 *C.char    // out
+	var _arg2 C.int      // out
+	var _arg3 C.gunichar // out
+	var _attrList *AttrList
+	var _arg5 *C.char    // in
+	var _arg6 C.gunichar // in
+	var _cerr *C.GError  // in
 
 	_arg1 = (*C.char)(C.CString(markupText))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = C.gunichar(accelMarker)
 
-	C.pango_parse_markup(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_cerr)
+	C.pango_parse_markup(_arg1, _arg2, _arg3, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg5, &_arg6, &_cerr)
 
-	var _attrList *AttrList // out
-	var _text string        // out
-	var _accelChar uint32   // out
-	var _goerr error        // out
+	var _text string      // out
+	var _accelChar uint32 // out
+	var _goerr error      // out
 
-	_attrList = (*AttrList)(unsafe.Pointer(_arg4))
-	C.pango_attr_list_ref(_arg4)
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
-	})
-	_text = C.GoString(_arg5)
+	_text = C.GoString((*C.gchar)(_arg5))
 	defer C.free(unsafe.Pointer(_arg5))
 	_accelChar = uint32(_arg6)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -973,7 +962,7 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(list))
 	_arg1 = (*[0]byte)(C.gotk4_AttrFilterFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
+	_arg2 = C.gpointer(gbox.Assign(fn))
 
 	_cret = C.pango_attr_list_filter(_arg0, _arg1, _arg2)
 
@@ -1347,7 +1336,7 @@ func (color *Color) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

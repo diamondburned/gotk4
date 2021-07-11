@@ -83,12 +83,13 @@ func marshalWindowType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WindowOverrider interface {
+	//
 	ActivateDefault()
-
+	//
 	ActivateFocus()
-
+	//
 	EnableDebugging(toggle bool) bool
-
+	//
 	KeysChanged()
 	// SetFocus: if @focus is not the current focus widget, and is focusable,
 	// sets it as the focus widget for the window. If @focus is nil, unsets the
@@ -820,7 +821,7 @@ func (window *Window) Gravity() gdk.Gravity {
 
 	var _gravity gdk.Gravity // out
 
-	_gravity = (gdk.Gravity)(_cret)
+	_gravity = gdk.Gravity(_cret)
 
 	return _gravity
 }
@@ -911,7 +912,7 @@ func (window *Window) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -928,7 +929,7 @@ func (window *Window) MnemonicModifier() gdk.ModifierType {
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(_cret)
+	_modifierType = gdk.ModifierType(_cret)
 
 	return _modifierType
 }
@@ -1063,18 +1064,16 @@ func (window *Window) Resizable() bool {
 //
 // Deprecated: Resize grips have been removed.
 func (window *Window) ResizeGripArea() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkWindow   // out
-	var _arg1 C.GdkRectangle // in
-	var _cret C.gboolean     // in
+	var _arg0 *C.GtkWindow // out
+	var _rect gdk.Rectangle
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	_cret = C.gtk_window_get_resize_grip_area(_arg0, &_arg1)
+	_cret = C.gtk_window_get_resize_grip_area(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
+	var _ok bool // out
 
-	_rect = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1094,7 +1093,7 @@ func (window *Window) Role() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1221,7 +1220,7 @@ func (window *Window) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1271,7 +1270,7 @@ func (window *Window) TypeHint() gdk.WindowTypeHint {
 
 	var _windowTypeHint gdk.WindowTypeHint // out
 
-	_windowTypeHint = (gdk.WindowTypeHint)(_cret)
+	_windowTypeHint = gdk.WindowTypeHint(_cret)
 
 	return _windowTypeHint
 }
@@ -1305,7 +1304,7 @@ func (window *Window) WindowType() WindowType {
 
 	var _windowType WindowType // out
 
-	_windowType = (WindowType)(_cret)
+	_windowType = WindowType(_cret)
 
 	return _windowType
 }

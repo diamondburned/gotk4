@@ -97,22 +97,23 @@ func marshalTextWindowType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TextViewOverrider interface {
+	//
 	Backspace()
-
+	//
 	CopyClipboard()
-
+	//
 	CutClipboard()
-
+	//
 	InsertAtCursor(str string)
-
+	//
 	InsertEmoji()
-
+	//
 	PasteClipboard()
-
+	//
 	PopulatePopup(popup Widgetter)
-
+	//
 	SetAnchor()
-
+	//
 	ToggleOverwrite()
 }
 
@@ -571,19 +572,13 @@ func (textView *TextView) Buffer() *TextBuffer {
 func (textView *TextView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
-	var _arg2 C.GdkRectangle // in
-	var _arg3 C.GdkRectangle // in
+	var _strong gdk.Rectangle
+	var _weak gdk.Rectangle
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
 
-	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, &_arg2, &_arg3)
-
-	var _strong gdk.Rectangle // out
-	var _weak gdk.Rectangle   // out
-
-	_strong = *(*gdk.Rectangle)(unsafe.Pointer((&_arg2)))
-	_weak = *(*gdk.Rectangle)(unsafe.Pointer((&_arg3)))
+	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_strong)), (*C.GdkRectangle)(unsafe.Pointer(&_weak)))
 
 	return _strong, _weak
 }
@@ -697,7 +692,7 @@ func (textView *TextView) InputHints() InputHints {
 
 	var _inputHints InputHints // out
 
-	_inputHints = (InputHints)(_cret)
+	_inputHints = InputHints(_cret)
 
 	return _inputHints
 }
@@ -713,7 +708,7 @@ func (textView *TextView) InputPurpose() InputPurpose {
 
 	var _inputPurpose InputPurpose // out
 
-	_inputPurpose = (InputPurpose)(_cret)
+	_inputPurpose = InputPurpose(_cret)
 
 	return _inputPurpose
 }
@@ -725,21 +720,19 @@ func (textView *TextView) InputPurpose() InputPurpose {
 // gtk_text_view_window_to_buffer_coords().
 func (textView *TextView) IterAtLocation(x int, y int) (TextIter, bool) {
 	var _arg0 *C.GtkTextView // out
-	var _arg1 C.GtkTextIter  // in
-	var _arg2 C.gint         // out
-	var _arg3 C.gint         // out
-	var _cret C.gboolean     // in
+	var _iter TextIter
+	var _arg2 C.gint     // out
+	var _arg3 C.gint     // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
-	_cret = C.gtk_text_view_get_iter_at_location(_arg0, &_arg1, _arg2, _arg3)
+	_cret = C.gtk_text_view_get_iter_at_location(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
 
-	var _iter TextIter // out
-	var _ok bool       // out
+	var _ok bool // out
 
-	_iter = *(*TextIter)(unsafe.Pointer((&_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -757,23 +750,21 @@ func (textView *TextView) IterAtLocation(x int, y int) (TextIter, bool) {
 // returns cursor locations, i.e. positions between characters.
 func (textView *TextView) IterAtPosition(x int, y int) (TextIter, int, bool) {
 	var _arg0 *C.GtkTextView // out
-	var _arg1 C.GtkTextIter  // in
-	var _arg2 C.gint         // in
-	var _arg3 C.gint         // out
-	var _arg4 C.gint         // out
-	var _cret C.gboolean     // in
+	var _iter TextIter
+	var _arg2 C.gint     // in
+	var _arg3 C.gint     // out
+	var _arg4 C.gint     // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg3 = C.gint(x)
 	_arg4 = C.gint(y)
 
-	_cret = C.gtk_text_view_get_iter_at_position(_arg0, &_arg1, &_arg2, _arg3, _arg4)
+	_cret = C.gtk_text_view_get_iter_at_position(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), &_arg2, _arg3, _arg4)
 
-	var _iter TextIter // out
-	var _trailing int  // out
-	var _ok bool       // out
+	var _trailing int // out
+	var _ok bool      // out
 
-	_iter = *(*TextIter)(unsafe.Pointer((&_arg1)))
 	_trailing = int(_arg2)
 	if _cret != 0 {
 		_ok = true
@@ -789,16 +780,12 @@ func (textView *TextView) IterAtPosition(x int, y int) (TextIter, int, bool) {
 func (textView *TextView) IterLocation(iter *TextIter) gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
-	var _arg2 C.GdkRectangle // in
+	var _location gdk.Rectangle
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
 
-	C.gtk_text_view_get_iter_location(_arg0, _arg1, &_arg2)
-
-	var _location gdk.Rectangle // out
-
-	_location = *(*gdk.Rectangle)(unsafe.Pointer((&_arg2)))
+	C.gtk_text_view_get_iter_location(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_location)))
 
 	return _location
 }
@@ -815,7 +802,7 @@ func (textView *TextView) Justification() Justification {
 
 	var _justification Justification // out
 
-	_justification = (Justification)(_cret)
+	_justification = Justification(_cret)
 
 	return _justification
 }
@@ -843,19 +830,17 @@ func (textView *TextView) LeftMargin() int {
 // with the coordinate of the top edge of the line.
 func (textView *TextView) LineAtY(y int) (TextIter, int) {
 	var _arg0 *C.GtkTextView // out
-	var _arg1 C.GtkTextIter  // in
-	var _arg2 C.gint         // out
-	var _arg3 C.gint         // in
+	var _targetIter TextIter
+	var _arg2 C.gint // out
+	var _arg3 C.gint // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg2 = C.gint(y)
 
-	C.gtk_text_view_get_line_at_y(_arg0, &_arg1, _arg2, &_arg3)
+	C.gtk_text_view_get_line_at_y(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_targetIter)), _arg2, &_arg3)
 
-	var _targetIter TextIter // out
-	var _lineTop int         // out
+	var _lineTop int // out
 
-	_targetIter = *(*TextIter)(unsafe.Pointer((&_arg1)))
 	_lineTop = int(_arg3)
 
 	return _targetIter, _lineTop
@@ -1052,15 +1037,11 @@ func (textView *TextView) VAdjustment() *Adjustment {
 // gtk_text_view_buffer_to_window_coords().
 func (textView *TextView) VisibleRect() gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
-	var _arg1 C.GdkRectangle // in
+	var _visibleRect gdk.Rectangle
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 
-	C.gtk_text_view_get_visible_rect(_arg0, &_arg1)
-
-	var _visibleRect gdk.Rectangle // out
-
-	_visibleRect = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
+	C.gtk_text_view_get_visible_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_visibleRect)))
 
 	return _visibleRect
 }
@@ -1081,7 +1062,7 @@ func (textView *TextView) WindowType(window gdk.Windowwer) TextWindowType {
 
 	var _textWindowType TextWindowType // out
 
-	_textWindowType = (TextWindowType)(_cret)
+	_textWindowType = TextWindowType(_cret)
 
 	return _textWindowType
 }
@@ -1097,7 +1078,7 @@ func (textView *TextView) WrapMode() WrapMode {
 
 	var _wrapMode WrapMode // out
 
-	_wrapMode = (WrapMode)(_cret)
+	_wrapMode = WrapMode(_cret)
 
 	return _wrapMode
 }

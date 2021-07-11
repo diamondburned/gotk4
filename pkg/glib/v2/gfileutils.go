@@ -177,7 +177,7 @@ func Basename(fileName string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -203,7 +203,7 @@ func BuildFilenamev(args []string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -233,7 +233,7 @@ func BuildPathv(separator string, args []string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -269,7 +269,7 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 
 	var _ret string // out
 
-	_ret = C.GoString(_cret)
+	_ret = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _ret
@@ -293,7 +293,7 @@ func FileErrorFromErrno(errNo int) FileError {
 
 	var _fileError FileError // out
 
-	_fileError = (FileError)(_cret)
+	_fileError = FileError(_cret)
 
 	return _fileError
 }
@@ -360,7 +360,7 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	var _gint int        // out
 	var _goerr error     // out
 
-	_nameUsed = C.GoString(_arg2)
+	_nameUsed = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
 	_gint = int(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -384,7 +384,7 @@ func FileReadLink(filename string) (string, error) {
 	var _ret string  // out
 	var _goerr error // out
 
-	_ret = C.GoString(_cret)
+	_ret = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -431,7 +431,7 @@ func GetCurrentDir() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -474,7 +474,7 @@ func PathGetBasename(fileName string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -497,7 +497,7 @@ func PathGetDirname(fileName string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -557,7 +557,7 @@ func PathSkipRoot(fileName string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }

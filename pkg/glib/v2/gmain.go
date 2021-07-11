@@ -4,9 +4,10 @@ package glib
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,18 +35,18 @@ type MainContextPusher = C.void
 // When calling g_source_set_callback(), you may need to cast a function of a
 // different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
 // incompatible function types.
-type SourceFunc func(userData interface{}) (ok bool)
+type SourceFunc func(userData cgo.Handle) (ok bool)
 
 //export gotk4_SourceFunc
 func gotk4_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg0))
+	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var userData interface{} // out
+	var userData cgo.Handle // out
 
-	userData = box.Get(uintptr(arg0))
+	userData = (cgo.Handle)(arg0)
 
 	fn := v.(SourceFunc)
 	ok := fn(userData)
@@ -112,11 +113,11 @@ func GetRealTime() int64 {
 }
 
 // IdleRemoveByData removes the idle function with the given data.
-func IdleRemoveByData(data interface{}) bool {
+func IdleRemoveByData(data cgo.Handle) bool {
 	var _arg1 C.gpointer // out
 	var _cret C.gboolean // in
 
-	_arg1 = (C.gpointer)(box.Assign(data))
+	_arg1 = (C.gpointer)(data)
 
 	_cret = C.g_idle_remove_by_data(_arg1)
 
@@ -411,7 +412,7 @@ func (context *MainContext) Dispatch() {
 // FindSourceByFuncsUserData finds a source with the given source functions and
 // user data. If multiple sources exist with the same source function and user
 // data, the first one found will be returned.
-func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData interface{}) *Source {
+func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 *C.GSourceFuncs // out
 	var _arg2 C.gpointer      // out
@@ -419,7 +420,7 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
 	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(funcs))
-	_arg2 = (C.gpointer)(box.Assign(userData))
+	_arg2 = (C.gpointer)(userData)
 
 	_cret = C.g_main_context_find_source_by_funcs_user_data(_arg0, _arg1, _arg2)
 
@@ -469,13 +470,13 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 // FindSourceByUserData finds a source with the given user data for the
 // callback. If multiple sources exist with the same user data, the first one
 // found will be returned.
-func (context *MainContext) FindSourceByUserData(userData interface{}) *Source {
+func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gpointer      // out
 	var _cret *C.GSource      // in
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
-	_arg1 = (C.gpointer)(box.Assign(userData))
+	_arg1 = (C.gpointer)(userData)
 
 	_cret = C.g_main_context_find_source_by_user_data(_arg0, _arg1)
 
@@ -1063,7 +1064,7 @@ func (source *Source) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1179,19 +1180,19 @@ func (source *Source) IsDestroyed() bool {
 // call this API on a #GSource that you did not create.
 //
 // As the name suggests, this function is not available on Windows.
-func (source *Source) QueryUnixFd(tag interface{}) IOCondition {
+func (source *Source) QueryUnixFd(tag cgo.Handle) IOCondition {
 	var _arg0 *C.GSource     // out
 	var _arg1 C.gpointer     // out
 	var _cret C.GIOCondition // in
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (C.gpointer)(box.Assign(tag))
+	_arg1 = (C.gpointer)(tag)
 
 	_cret = C.g_source_query_unix_fd(_arg0, _arg1)
 
 	var _ioCondition IOCondition // out
 
-	_ioCondition = (IOCondition)(_cret)
+	_ioCondition = IOCondition(_cret)
 
 	return _ioCondition
 }
@@ -1256,12 +1257,12 @@ func (source *Source) RemovePoll(fd *PollFD) {
 // call this API on a #GSource that you did not create.
 //
 // As the name suggests, this function is not available on Windows.
-func (source *Source) RemoveUnixFd(tag interface{}) {
+func (source *Source) RemoveUnixFd(tag cgo.Handle) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (C.gpointer)(box.Assign(tag))
+	_arg1 = (C.gpointer)(tag)
 
 	C.g_source_remove_unix_fd(_arg0, _arg1)
 }
@@ -1275,13 +1276,13 @@ func (source *Source) RemoveUnixFd(tag interface{}) {
 // It is safe to call this function multiple times on a source which has already
 // been attached to a context. The changes will take effect for the next time
 // the source is dispatched after this call returns.
-func (source *Source) SetCallbackIndirect(callbackData interface{}, callbackFuncs *SourceCallbackFuncs) {
+func (source *Source) SetCallbackIndirect(callbackData cgo.Handle, callbackFuncs *SourceCallbackFuncs) {
 	var _arg0 *C.GSource              // out
 	var _arg1 C.gpointer              // out
 	var _arg2 *C.GSourceCallbackFuncs // out
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (C.gpointer)(box.Assign(callbackData))
+	_arg1 = (C.gpointer)(callbackData)
 	_arg2 = (*C.GSourceCallbackFuncs)(unsafe.Pointer(callbackFuncs))
 
 	C.g_source_set_callback_indirect(_arg0, _arg1, _arg2)

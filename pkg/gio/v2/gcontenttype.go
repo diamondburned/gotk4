@@ -81,7 +81,7 @@ func ContentTypeFromMIMEType(mimeType string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -100,7 +100,7 @@ func ContentTypeGetDescription(typ string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -122,7 +122,7 @@ func ContentTypeGetGenericIconName(typ string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -164,7 +164,7 @@ func ContentTypeGetMIMEDirs() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -184,7 +184,7 @@ func ContentTypeGetMIMEType(typ string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -231,7 +231,7 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	if _arg4 != 0 {
 		_resultUncertain = true
 	}
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _resultUncertain, _utf8
@@ -269,7 +269,7 @@ func ContentTypeGuessForTree(root Filer) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

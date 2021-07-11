@@ -356,7 +356,7 @@ func (palette *ToolPalette) Style() ToolbarStyle {
 
 	var _toolbarStyle ToolbarStyle // out
 
-	_toolbarStyle = (ToolbarStyle)(_cret)
+	_toolbarStyle = ToolbarStyle(_cret)
 
 	return _toolbarStyle
 }

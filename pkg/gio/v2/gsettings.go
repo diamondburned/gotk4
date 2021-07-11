@@ -4,9 +4,10 @@ package gio
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -74,18 +75,18 @@ func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
 // SettingsBindGetMapping: type for the function that is used to convert from
 // #GSettings to an object property. The @value is already initialized to hold
 // values of the appropriate type.
-type SettingsBindGetMapping func(value *externglib.Value, variant *glib.Variant, userData interface{}) (ok bool)
+type SettingsBindGetMapping func(value *externglib.Value, variant *glib.Variant, userData cgo.Handle) (ok bool)
 
 //export gotk4_SettingsBindGetMapping
 func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var value *externglib.Value // out
 	var variant *glib.Variant   // out
-	var userData interface{}    // out
+	var userData cgo.Handle     // out
 
 	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
 	variant = (*glib.Variant)(unsafe.Pointer(arg1))
@@ -93,7 +94,7 @@ func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpoin
 	runtime.SetFinalizer(variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(SettingsBindGetMapping)
 	ok := fn(value, variant, userData)
@@ -107,22 +108,22 @@ func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpoin
 
 // SettingsBindSetMapping: type for the function that is used to convert an
 // object property value to a #GVariant for storing it in #GSettings.
-type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.VariantType, userData interface{}) (variant *glib.Variant)
+type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.VariantType, userData cgo.Handle) (variant *glib.Variant)
 
 //export gotk4_SettingsBindSetMapping
 func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) (cret *C.GVariant) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var value *externglib.Value        // out
 	var expectedType *glib.VariantType // out
-	var userData interface{}           // out
+	var userData cgo.Handle            // out
 
 	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
 	expectedType = (*glib.VariantType)(unsafe.Pointer(arg1))
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(SettingsBindSetMapping)
 	variant := fn(value, expectedType, userData)
@@ -142,29 +143,29 @@ func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.g
 // If @value is nil then it means that the mapping function is being given a
 // "last chance" to successfully return a valid value. true must be returned in
 // this case.
-type SettingsGetMapping func(value *glib.Variant, userData interface{}) (result interface{}, ok bool)
+type SettingsGetMapping func(value *glib.Variant, userData cgo.Handle) (result cgo.Handle, ok bool)
 
 //export gotk4_SettingsGetMapping
 func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var value *glib.Variant  // out
-	var userData interface{} // out
+	var value *glib.Variant // out
+	var userData cgo.Handle // out
 
 	value = (*glib.Variant)(unsafe.Pointer(arg0))
 	C.g_variant_ref(arg0)
 	runtime.SetFinalizer(value, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(SettingsGetMapping)
 	result, ok := fn(value, userData)
 
-	*arg1 = (C.gpointer)(box.Assign(result))
+	*arg1 = (C.gpointer)(result)
 	if ok {
 		cret = C.TRUE
 	}
@@ -177,8 +178,9 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SettingsOverrider interface {
+	//
 	Changed(key string)
-
+	//
 	WritableChanged(key string)
 }
 
@@ -217,7 +219,7 @@ type Settingser interface {
 	Int64(key string) int64
 	// Mapped gets the value that is stored at @key in @settings, subject to
 	// application-level validation/mapping.
-	Mapped(key string, mapping SettingsGetMapping) interface{}
+	Mapped(key string, mapping SettingsGetMapping) cgo.Handle
 	// Range queries the range of a key.
 	Range(key string) *glib.Variant
 	// String gets the value that is stored at @key in @settings.
@@ -664,7 +666,7 @@ func (settings *Settings) BindWritable(key string, object gextras.Objector, prop
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
+	_arg2 = C.gpointer(unsafe.Pointer((&object).Native()))
 	_arg3 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg3))
 	if inverted {
@@ -981,7 +983,7 @@ func (settings *Settings) Int64(key string) int64 {
 // which is initially set to nil. The same pointer is given to each invocation
 // of @mapping. The final value of that #gpointer is what is returned by this
 // function. nil is valid; it is returned just as any other value would be.
-func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
+func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) cgo.Handle {
 	var _arg0 *C.GSettings          // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GSettingsGetMapping // out
@@ -992,13 +994,13 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) interfa
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*[0]byte)(C.gotk4_SettingsGetMapping)
-	_arg3 = C.gpointer(box.Assign(mapping))
+	_arg3 = C.gpointer(gbox.Assign(mapping))
 
 	_cret = C.g_settings_get_mapped(_arg0, _arg1, _arg2, _arg3)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
@@ -1047,7 +1049,7 @@ func (settings *Settings) String(key string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1080,7 +1082,7 @@ func (settings *Settings) Strv(key string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -1252,7 +1254,7 @@ func (settings *Settings) ListChildren() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -1289,7 +1291,7 @@ func (settings *Settings) ListKeys() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

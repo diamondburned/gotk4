@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -70,7 +70,7 @@ type NetworkMonitorOverrider interface {
 	// CanReachFinish finishes an async network connectivity test. See
 	// g_network_monitor_can_reach_async().
 	CanReachFinish(result AsyncResulter) error
-
+	//
 	NetworkChanged(networkAvailable bool)
 }
 
@@ -175,7 +175,7 @@ func (monitor *NetworkMonitor) CanReachAsync(connectable SocketConnectabler, can
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_network_monitor_can_reach_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -228,7 +228,7 @@ func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 
 	var _networkConnectivity NetworkConnectivity // out
 
-	_networkConnectivity = (NetworkConnectivity)(_cret)
+	_networkConnectivity = NetworkConnectivity(_cret)
 
 	return _networkConnectivity
 }

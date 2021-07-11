@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -109,7 +109,7 @@ func (icon *LoadableIcon) Load(size int, cancellable Cancellabler) (string, *Inp
 	var _inputStream *InputStream // out
 	var _goerr error              // out
 
-	_typ = C.GoString(_arg2)
+	_typ = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -131,7 +131,7 @@ func (icon *LoadableIcon) LoadAsync(size int, cancellable Cancellabler, callback
 	_arg1 = C.int(size)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_loadable_icon_load_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -154,7 +154,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, *InputStream, e
 	var _inputStream *InputStream // out
 	var _goerr error              // out
 
-	_typ = C.GoString(_arg2)
+	_typ = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

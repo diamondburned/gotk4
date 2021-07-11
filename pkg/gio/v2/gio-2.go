@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -179,7 +179,7 @@ type DBusAuthObserverer interface {
 	// AllowMechanism emits the BusAuthObserver::allow-mechanism signal on
 	// @observer.
 	AllowMechanism(mechanism string) bool
-
+	//
 	AuthorizeAuthenticatedPeer(stream IOStreamer, credentials Credentialser) bool
 }
 
@@ -585,7 +585,7 @@ func (connection *DBusConnection) Close(cancellable Cancellabler, callback Async
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_dbus_connection_close(_arg0, _arg1, _arg2, _arg3)
 }
@@ -763,7 +763,7 @@ func (connection *DBusConnection) Flush(cancellable Cancellabler, callback Async
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_dbus_connection_flush(_arg0, _arg1, _arg2, _arg3)
 }
@@ -817,7 +817,7 @@ func (connection *DBusConnection) Capabilities() DBusCapabilityFlags {
 
 	var _dBusCapabilityFlags DBusCapabilityFlags // out
 
-	_dBusCapabilityFlags = (DBusCapabilityFlags)(_cret)
+	_dBusCapabilityFlags = DBusCapabilityFlags(_cret)
 
 	return _dBusCapabilityFlags
 }
@@ -852,7 +852,7 @@ func (connection *DBusConnection) Flags() DBusConnectionFlags {
 
 	var _dBusConnectionFlags DBusConnectionFlags // out
 
-	_dBusConnectionFlags = (DBusConnectionFlags)(_cret)
+	_dBusConnectionFlags = DBusConnectionFlags(_cret)
 
 	return _dBusConnectionFlags
 }
@@ -869,7 +869,7 @@ func (connection *DBusConnection) Guid() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -949,7 +949,7 @@ func (connection *DBusConnection) UniqueName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1394,7 +1394,7 @@ func (message *DBusMessage) Arg0() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1430,7 +1430,7 @@ func (message *DBusMessage) ByteOrder() DBusMessageByteOrder {
 
 	var _dBusMessageByteOrder DBusMessageByteOrder // out
 
-	_dBusMessageByteOrder = (DBusMessageByteOrder)(_cret)
+	_dBusMessageByteOrder = DBusMessageByteOrder(_cret)
 
 	return _dBusMessageByteOrder
 }
@@ -1447,7 +1447,7 @@ func (message *DBusMessage) Destination() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1464,7 +1464,7 @@ func (message *DBusMessage) ErrorName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1480,7 +1480,7 @@ func (message *DBusMessage) Flags() DBusMessageFlags {
 
 	var _dBusMessageFlags DBusMessageFlags // out
 
-	_dBusMessageFlags = (DBusMessageFlags)(_cret)
+	_dBusMessageFlags = DBusMessageFlags(_cret)
 
 	return _dBusMessageFlags
 }
@@ -1525,7 +1525,7 @@ func (message *DBusMessage) Interface() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1562,7 +1562,7 @@ func (message *DBusMessage) Member() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1578,7 +1578,7 @@ func (message *DBusMessage) MessageType() DBusMessageType {
 
 	var _dBusMessageType DBusMessageType // out
 
-	_dBusMessageType = (DBusMessageType)(_cret)
+	_dBusMessageType = DBusMessageType(_cret)
 
 	return _dBusMessageType
 }
@@ -1612,7 +1612,7 @@ func (message *DBusMessage) Path() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1646,7 +1646,7 @@ func (message *DBusMessage) Sender() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1679,7 +1679,7 @@ func (message *DBusMessage) Signature() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1799,7 +1799,7 @@ func (message *DBusMessage) Print(indent uint) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -2083,7 +2083,7 @@ func (invocation *DBusMethodInvocation) InterfaceName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -2146,7 +2146,7 @@ func (invocation *DBusMethodInvocation) MethodName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -2162,7 +2162,7 @@ func (invocation *DBusMethodInvocation) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -2230,7 +2230,7 @@ func (invocation *DBusMethodInvocation) Sender() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -2401,7 +2401,7 @@ func (server *DBusServer) ClientAddress() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -2417,7 +2417,7 @@ func (server *DBusServer) Flags() DBusServerFlags {
 
 	var _dBusServerFlags DBusServerFlags // out
 
-	_dBusServerFlags = (DBusServerFlags)(_cret)
+	_dBusServerFlags = DBusServerFlags(_cret)
 
 	return _dBusServerFlags
 }
@@ -2433,7 +2433,7 @@ func (server *DBusServer) Guid() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -3565,7 +3565,7 @@ func NewPropertyAction(name string, object gextras.Objector, propertyName string
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.gpointer)(unsafe.Pointer(object.Native()))
+	_arg2 = C.gpointer(unsafe.Pointer((&object).Native()))
 	_arg3 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -3989,9 +3989,9 @@ func (subprocess *Subprocess) CommunicateUTF8(stdinBuf string, cancellable Cance
 	var _stderrBuf string // out
 	var _goerr error      // out
 
-	_stdoutBuf = C.GoString(_arg3)
+	_stdoutBuf = C.GoString((*C.gchar)(_arg3))
 	defer C.free(unsafe.Pointer(_arg3))
-	_stderrBuf = C.GoString(_arg4)
+	_stderrBuf = C.GoString((*C.gchar)(_arg4))
 	defer C.free(unsafe.Pointer(_arg4))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -4012,7 +4012,7 @@ func (subprocess *Subprocess) CommunicateUTF8Async(stdinBuf string, cancellable 
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_subprocess_communicate_utf8_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -4035,9 +4035,9 @@ func (subprocess *Subprocess) CommunicateUTF8Finish(result AsyncResulter) (stdou
 	var _stderrBuf string // out
 	var _goerr error      // out
 
-	_stdoutBuf = C.GoString(_arg2)
+	_stdoutBuf = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
-	_stderrBuf = C.GoString(_arg3)
+	_stderrBuf = C.GoString((*C.gchar)(_arg3))
 	defer C.free(unsafe.Pointer(_arg3))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -4095,7 +4095,7 @@ func (subprocess *Subprocess) Identifier() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -4330,7 +4330,7 @@ func (subprocess *Subprocess) WaitAsync(cancellable Cancellabler, callback Async
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_subprocess_wait_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -4366,7 +4366,7 @@ func (subprocess *Subprocess) WaitCheckAsync(cancellable Cancellabler, callback 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_subprocess_wait_check_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -4519,7 +4519,7 @@ func (self *SubprocessLauncher) env(variable string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -4969,7 +4969,7 @@ func (self *TestDBus) BusAddress() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -4985,7 +4985,7 @@ func (self *TestDBus) Flags() TestDBusFlags {
 
 	var _testDBusFlags TestDBusFlags // out
 
-	_testDBusFlags = (TestDBusFlags)(_cret)
+	_testDBusFlags = TestDBusFlags(_cret)
 
 	return _testDBusFlags
 }

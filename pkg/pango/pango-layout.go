@@ -332,7 +332,7 @@ func (layout *Layout) Alignment() Alignment {
 
 	var _alignment Alignment // out
 
-	_alignment = (Alignment)(_cret)
+	_alignment = Alignment(_cret)
 
 	return _alignment
 }
@@ -436,21 +436,15 @@ func (layout *Layout) Context() *Context {
 // the location where characters of the directionality opposite to the base
 // direction of the layout are inserted.
 func (layout *Layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
-	var _arg0 *C.PangoLayout   // out
-	var _arg1 C.int            // out
-	var _arg2 C.PangoRectangle // in
-	var _arg3 C.PangoRectangle // in
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // out
+	var _strongPos Rectangle
+	var _weakPos Rectangle
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = C.int(index_)
 
-	C.pango_layout_get_cursor_pos(_arg0, _arg1, &_arg2, &_arg3)
-
-	var _strongPos Rectangle // out
-	var _weakPos Rectangle   // out
-
-	_strongPos = *(*Rectangle)(unsafe.Pointer((&_arg2)))
-	_weakPos = *(*Rectangle)(unsafe.Pointer((&_arg3)))
+	C.pango_layout_get_cursor_pos(_arg0, _arg1, (*C.PangoRectangle)(unsafe.Pointer(&_strongPos)), (*C.PangoRectangle)(unsafe.Pointer(&_weakPos)))
 
 	return _strongPos, _weakPos
 }
@@ -468,7 +462,7 @@ func (layout *Layout) Direction(index int) Direction {
 
 	var _direction Direction // out
 
-	_direction = (Direction)(_cret)
+	_direction = Direction(_cret)
 
 	return _direction
 }
@@ -489,7 +483,7 @@ func (layout *Layout) Ellipsize() EllipsizeMode {
 
 	var _ellipsizeMode EllipsizeMode // out
 
-	_ellipsizeMode = (EllipsizeMode)(_cret)
+	_ellipsizeMode = EllipsizeMode(_cret)
 
 	return _ellipsizeMode
 }
@@ -505,19 +499,13 @@ func (layout *Layout) Ellipsize() EllipsizeMode {
 // The extents are given in layout coordinates and in Pango units; layout
 // coordinates begin at the top left corner of the layout.
 func (layout *Layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoLayout   // out
-	var _arg1 C.PangoRectangle // in
-	var _arg2 C.PangoRectangle // in
+	var _arg0 *C.PangoLayout // out
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
-	C.pango_layout_get_extents(_arg0, &_arg1, &_arg2)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.pango_layout_get_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }
@@ -725,19 +713,13 @@ func (layout *Layout) LogAttrs() []LogAttr {
 // that the rounded rectangles fully contain the unrounded one (that is, passes
 // them as first argument to `pango_extents_to_pixels()`).
 func (layout *Layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoLayout   // out
-	var _arg1 C.PangoRectangle // in
-	var _arg2 C.PangoRectangle // in
+	var _arg0 *C.PangoLayout // out
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
-	C.pango_layout_get_pixel_extents(_arg0, &_arg1, &_arg2)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.pango_layout_get_pixel_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }
@@ -887,7 +869,7 @@ func (layout *Layout) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -943,7 +925,7 @@ func (layout *Layout) Wrap() WrapMode {
 
 	var _wrapMode WrapMode // out
 
-	_wrapMode = (WrapMode)(_cret)
+	_wrapMode = WrapMode(_cret)
 
 	return _wrapMode
 }
@@ -984,18 +966,14 @@ func (layout *Layout) IndexToLineX(index_ int, trailing bool) (line int, xPos in
 // of the grapheme. If the directionality of the grapheme is right-to-left, then
 // `pos->width` will be negative.
 func (layout *Layout) IndexToPos(index_ int) Rectangle {
-	var _arg0 *C.PangoLayout   // out
-	var _arg1 C.int            // out
-	var _arg2 C.PangoRectangle // in
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // out
+	var _pos Rectangle
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = C.int(index_)
 
-	C.pango_layout_index_to_pos(_arg0, _arg1, &_arg2)
-
-	var _pos Rectangle // out
-
-	_pos = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.pango_layout_index_to_pos(_arg0, _arg1, (*C.PangoRectangle)(unsafe.Pointer(&_pos)))
 
 	return _pos
 }
@@ -1506,15 +1484,11 @@ func (iter *LayoutIter) Baseline() int {
 // level of clusters.
 func (iter *LayoutIter) CharExtents() Rectangle {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 C.PangoRectangle   // in
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(iter))
 
-	C.pango_layout_iter_get_char_extents(_arg0, &_arg1)
-
-	var _logicalRect Rectangle // out
-
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	C.pango_layout_iter_get_char_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _logicalRect
 }
@@ -1523,18 +1497,12 @@ func (iter *LayoutIter) CharExtents() Rectangle {
 // (origin is the top left of the entire layout).
 func (iter *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 C.PangoRectangle   // in
-	var _arg2 C.PangoRectangle   // in
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(iter))
 
-	C.pango_layout_iter_get_cluster_extents(_arg0, &_arg1, &_arg2)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.pango_layout_iter_get_cluster_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }
@@ -1578,18 +1546,12 @@ func (iter *LayoutIter) Layout() *Layout {
 // @ink_rect or @logical_rect can be nil if you aren't interested in them.
 func (iter *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 C.PangoRectangle   // in
-	var _arg2 C.PangoRectangle   // in
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(iter))
 
-	C.pango_layout_iter_get_layout_extents(_arg0, &_arg1, &_arg2)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.pango_layout_iter_get_layout_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }
@@ -1625,18 +1587,12 @@ func (iter *LayoutIter) Line() *LayoutLine {
 // [method@Pango.LayoutLine.get_extents].
 func (iter *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 C.PangoRectangle   // in
-	var _arg2 C.PangoRectangle   // in
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(iter))
 
-	C.pango_layout_iter_get_line_extents(_arg0, &_arg1, &_arg2)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.pango_layout_iter_get_line_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }
@@ -1696,18 +1652,12 @@ func (iter *LayoutIter) LineYrange() (y0 int, y1 int) {
 // is the top left of the entire layout).
 func (iter *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
-	var _arg1 C.PangoRectangle   // in
-	var _arg2 C.PangoRectangle   // in
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(iter))
 
-	C.pango_layout_iter_get_run_extents(_arg0, &_arg1, &_arg2)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.pango_layout_iter_get_run_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }
@@ -1813,18 +1763,12 @@ func (l *LayoutLine) Native() unsafe.Pointer {
 // the rectangles.
 func (line *LayoutLine) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutLine // out
-	var _arg1 C.PangoRectangle   // in
-	var _arg2 C.PangoRectangle   // in
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(line))
 
-	C.pango_layout_line_get_extents(_arg0, &_arg1, &_arg2)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.pango_layout_line_get_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }
@@ -1855,18 +1799,12 @@ func (line *LayoutLine) Height() int {
 // them as first argument to [func@extents_to_pixels]).
 func (layoutLine *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoLayoutLine // out
-	var _arg1 C.PangoRectangle   // in
-	var _arg2 C.PangoRectangle   // in
+	var _inkRect Rectangle
+	var _logicalRect Rectangle
 
 	_arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(layoutLine))
 
-	C.pango_layout_line_get_pixel_extents(_arg0, &_arg1, &_arg2)
-
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
-
-	_inkRect = *(*Rectangle)(unsafe.Pointer((&_arg1)))
-	_logicalRect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
+	C.pango_layout_line_get_pixel_extents(_arg0, (*C.PangoRectangle)(unsafe.Pointer(&_inkRect)), (*C.PangoRectangle)(unsafe.Pointer(&_logicalRect)))
 
 	return _inkRect, _logicalRect
 }

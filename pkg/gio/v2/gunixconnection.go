@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -148,7 +148,7 @@ func (connection *UnixConnection) ReceiveCredentialsAsync(cancellable Cancellabl
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_unix_connection_receive_credentials_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -251,7 +251,7 @@ func (connection *UnixConnection) SendCredentialsAsync(cancellable Cancellabler,
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_unix_connection_send_credentials_async(_arg0, _arg1, _arg2, _arg3)
 }

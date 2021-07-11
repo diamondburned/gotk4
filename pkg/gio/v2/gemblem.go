@@ -114,7 +114,7 @@ func (emblem *Emblem) Origin() EmblemOrigin {
 
 	var _emblemOrigin EmblemOrigin // out
 
-	_emblemOrigin = (EmblemOrigin)(_cret)
+	_emblemOrigin = EmblemOrigin(_cret)
 
 	return _emblemOrigin
 }

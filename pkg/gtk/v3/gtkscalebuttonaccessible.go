@@ -30,6 +30,7 @@ type ScaleButtonAccessibler interface {
 	privateScaleButtonAccessible()
 }
 
+//
 type ScaleButtonAccessible struct {
 	ButtonAccessible
 

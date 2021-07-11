@@ -78,7 +78,7 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 		f.header.AddCallbackHeader("extern void callbackDelete(gpointer);")
 
 		if f.isRoot {
-			f.header.ImportCore("box")
+			f.header.ImportCore("gbox")
 		}
 	}
 
@@ -155,7 +155,7 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 	if f.isRoot && f.header.CallbackDelete {
 		fpen.Words("//export callbackDelete")
 		fpen.Words("func callbackDelete(ptr C.gpointer) {")
-		fpen.Words("  box.Delete(box.Callback, uintptr(ptr))")
+		fpen.Words("  gbox.Delete(gbox.Callback, uintptr(ptr))")
 		fpen.Words("}")
 		fpen.EmptyLine()
 	}

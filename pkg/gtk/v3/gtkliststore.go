@@ -153,7 +153,7 @@ func NewListStoreV(types []externglib.Type) *ListStore {
 	{
 		out := unsafe.Slice(_arg2, len(types))
 		for i := range types {
-			out[i] = (C.GType)(types[i])
+			out[i] = C.GType(types[i])
 		}
 	}
 
@@ -171,15 +171,11 @@ func NewListStoreV(types []externglib.Type) *ListStore {
 // values, you need to call gtk_list_store_set() or gtk_list_store_set_value().
 func (listStore *ListStore) Append() TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _arg1 C.GtkTreeIter   // in
+	var _iter TreeIter
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 
-	C.gtk_list_store_append(_arg0, &_arg1)
-
-	var _iter TreeIter // out
-
-	_iter = *(*TreeIter)(unsafe.Pointer((&_arg1)))
+	C.gtk_list_store_append(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	return _iter
 }
@@ -200,17 +196,13 @@ func (listStore *ListStore) Clear() {
 // gtk_list_store_set() or gtk_list_store_set_value().
 func (listStore *ListStore) Insert(position int) TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _arg1 C.GtkTreeIter   // in
-	var _arg2 C.gint          // out
+	var _iter TreeIter
+	var _arg2 C.gint // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = C.gint(position)
 
-	C.gtk_list_store_insert(_arg0, &_arg1, _arg2)
-
-	var _iter TreeIter // out
-
-	_iter = *(*TreeIter)(unsafe.Pointer((&_arg1)))
+	C.gtk_list_store_insert(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
 
 	return _iter
 }
@@ -222,17 +214,13 @@ func (listStore *ListStore) Insert(position int) TreeIter {
 // gtk_list_store_set_value().
 func (listStore *ListStore) InsertAfter(sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _arg1 C.GtkTreeIter   // in
-	var _arg2 *C.GtkTreeIter  // out
+	var _iter TreeIter
+	var _arg2 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling))
 
-	C.gtk_list_store_insert_after(_arg0, &_arg1, _arg2)
-
-	var _iter TreeIter // out
-
-	_iter = *(*TreeIter)(unsafe.Pointer((&_arg1)))
+	C.gtk_list_store_insert_after(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
 
 	return _iter
 }
@@ -244,17 +232,13 @@ func (listStore *ListStore) InsertAfter(sibling *TreeIter) TreeIter {
 // gtk_list_store_set_value().
 func (listStore *ListStore) InsertBefore(sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _arg1 C.GtkTreeIter   // in
-	var _arg2 *C.GtkTreeIter  // out
+	var _iter TreeIter
+	var _arg2 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling))
 
-	C.gtk_list_store_insert_before(_arg0, &_arg1, _arg2)
-
-	var _iter TreeIter // out
-
-	_iter = *(*TreeIter)(unsafe.Pointer((&_arg1)))
+	C.gtk_list_store_insert_before(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
 
 	return _iter
 }
@@ -264,8 +248,8 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) TreeIter {
 // mainly intended for language-bindings.
 func (listStore *ListStore) InsertWithValuesv(position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _arg1 C.GtkTreeIter   // in
-	var _arg2 C.gint          // out
+	var _iter TreeIter
+	var _arg2 C.gint // out
 	var _arg3 *C.gint
 	var _arg5 C.gint
 	var _arg4 *C.GValue
@@ -284,11 +268,7 @@ func (listStore *ListStore) InsertWithValuesv(position int, columns []int, value
 		}
 	}
 
-	C.gtk_list_store_insert_with_valuesv(_arg0, &_arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _iter TreeIter // out
-
-	_iter = *(*TreeIter)(unsafe.Pointer((&_arg1)))
+	C.gtk_list_store_insert_with_valuesv(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3, _arg4, _arg5)
 
 	return _iter
 }
@@ -351,15 +331,11 @@ func (store *ListStore) MoveBefore(iter *TreeIter, position *TreeIter) {
 // values, you need to call gtk_list_store_set() or gtk_list_store_set_value().
 func (listStore *ListStore) Prepend() TreeIter {
 	var _arg0 *C.GtkListStore // out
-	var _arg1 C.GtkTreeIter   // in
+	var _iter TreeIter
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 
-	C.gtk_list_store_prepend(_arg0, &_arg1)
-
-	var _iter TreeIter // out
-
-	_iter = *(*TreeIter)(unsafe.Pointer((&_arg1)))
+	C.gtk_list_store_prepend(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	return _iter
 }
@@ -418,7 +394,7 @@ func (listStore *ListStore) SetColumnTypes(types []externglib.Type) {
 	{
 		out := unsafe.Slice(_arg2, len(types))
 		for i := range types {
-			out[i] = (C.GType)(types[i])
+			out[i] = C.GType(types[i])
 		}
 	}
 

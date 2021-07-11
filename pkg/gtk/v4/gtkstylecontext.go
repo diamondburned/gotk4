@@ -53,6 +53,7 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StyleContextOverrider interface {
+	//
 	Changed()
 }
 
@@ -204,15 +205,11 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 // Border gets the border for a given state as a `GtkBorder`.
 func (context *StyleContext) Border() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkBorder        // in
+	var _border Border
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_style_context_get_border(_arg0, &_arg1)
-
-	var _border Border // out
-
-	_border = *(*Border)(unsafe.Pointer((&_arg1)))
+	C.gtk_style_context_get_border(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_border)))
 
 	return _border
 }
@@ -220,15 +217,11 @@ func (context *StyleContext) Border() Border {
 // Color gets the foreground color for a given state.
 func (context *StyleContext) Color() gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GdkRGBA          // in
+	var _color gdk.RGBA
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_style_context_get_color(_arg0, &_arg1)
-
-	var _color gdk.RGBA // out
-
-	_color = *(*gdk.RGBA)(unsafe.Pointer((&_arg1)))
+	C.gtk_style_context_get_color(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
 	return _color
 }
@@ -252,15 +245,11 @@ func (context *StyleContext) Display() *gdk.Display {
 // Margin gets the margin for a given state as a `GtkBorder`.
 func (context *StyleContext) Margin() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkBorder        // in
+	var _margin Border
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_style_context_get_margin(_arg0, &_arg1)
-
-	var _margin Border // out
-
-	_margin = *(*Border)(unsafe.Pointer((&_arg1)))
+	C.gtk_style_context_get_margin(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_margin)))
 
 	return _margin
 }
@@ -268,15 +257,11 @@ func (context *StyleContext) Margin() Border {
 // Padding gets the padding for a given state as a `GtkBorder`.
 func (context *StyleContext) Padding() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkBorder        // in
+	var _padding Border
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_style_context_get_padding(_arg0, &_arg1)
-
-	var _padding Border // out
-
-	_padding = *(*Border)(unsafe.Pointer((&_arg1)))
+	C.gtk_style_context_get_padding(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_padding)))
 
 	return _padding
 }
@@ -313,7 +298,7 @@ func (context *StyleContext) State() StateFlags {
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = (StateFlags)(_cret)
+	_stateFlags = StateFlags(_cret)
 
 	return _stateFlags
 }
@@ -343,19 +328,17 @@ func (context *StyleContext) HasClass(className string) bool {
 func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
-	var _arg2 C.GdkRGBA          // in
-	var _cret C.gboolean         // in
+	var _color gdk.RGBA
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
-	var _color gdk.RGBA // out
-	var _ok bool        // out
+	var _ok bool // out
 
-	_color = *(*gdk.RGBA)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}

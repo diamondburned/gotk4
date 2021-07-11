@@ -28,14 +28,15 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WindowOverrider interface {
+	//
 	ActivateDefault()
-
+	//
 	ActivateFocus()
-
+	//
 	CloseRequest() bool
-
+	//
 	EnableDebugging(toggle bool) bool
-
+	//
 	KeysChanged()
 }
 
@@ -240,7 +241,7 @@ func wrapWindow(obj *externglib.Object) Windowwer {
 			},
 		},
 		Root: Root{
-			Native: Native{
+			NativeSurface: NativeSurface{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
@@ -589,7 +590,7 @@ func (window *Window) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -659,7 +660,7 @@ func (window *Window) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

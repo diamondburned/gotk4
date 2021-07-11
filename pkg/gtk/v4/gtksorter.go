@@ -159,14 +159,14 @@ func (self *Sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Orde
 	var _cret C.GtkOrdering // in
 
 	_arg0 = (*C.GtkSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(item1.Native()))
-	_arg2 = (C.gpointer)(unsafe.Pointer(item2.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&item1).Native()))
+	_arg2 = C.gpointer(unsafe.Pointer((&item2).Native()))
 
 	_cret = C.gtk_sorter_compare(_arg0, _arg1, _arg2)
 
 	var _ordering Ordering // out
 
-	_ordering = (Ordering)(_cret)
+	_ordering = Ordering(_cret)
 
 	return _ordering
 }
@@ -186,7 +186,7 @@ func (self *Sorter) Order() SorterOrder {
 
 	var _sorterOrder SorterOrder // out
 
-	_sorterOrder = (SorterOrder)(_cret)
+	_sorterOrder = SorterOrder(_cret)
 
 	return _sorterOrder
 }

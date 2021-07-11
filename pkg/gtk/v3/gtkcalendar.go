@@ -3,10 +3,11 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -57,26 +58,26 @@ func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail
 // information for the specified day. Examples for such details are holidays or
 // appointments. The function returns nil when no information is available.
-type CalendarDetailFunc func(calendar *Calendar, year uint, month uint, day uint, userData interface{}) (utf8 string)
+type CalendarDetailFunc func(calendar *Calendar, year uint, month uint, day uint, userData cgo.Handle) (utf8 string)
 
 //export gotk4_CalendarDetailFunc
 func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) (cret *C.gchar) {
-	v := box.Get(uintptr(arg4))
+	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var calendar *Calendar   // out
-	var year uint            // out
-	var month uint           // out
-	var day uint             // out
-	var userData interface{} // out
+	var calendar *Calendar  // out
+	var year uint           // out
+	var month uint          // out
+	var day uint            // out
+	var userData cgo.Handle // out
 
 	calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Calendar)
 	year = uint(arg1)
 	month = uint(arg2)
 	day = uint(arg3)
-	userData = box.Get(uintptr(arg4))
+	userData = (cgo.Handle)(arg4)
 
 	fn := v.(CalendarDetailFunc)
 	utf8 := fn(calendar, year, month, day, userData)
@@ -91,18 +92,19 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CalendarOverrider interface {
+	//
 	DaySelected()
-
+	//
 	DaySelectedDoubleClick()
-
+	//
 	MonthChanged()
-
+	//
 	NextMonth()
-
+	//
 	NextYear()
-
+	//
 	PrevMonth()
-
+	//
 	PrevYear()
 }
 
@@ -294,7 +296,7 @@ func (calendar *Calendar) DisplayOptions() CalendarDisplayOptions {
 
 	var _calendarDisplayOptions CalendarDisplayOptions // out
 
-	_calendarDisplayOptions = (CalendarDisplayOptions)(_cret)
+	_calendarDisplayOptions = CalendarDisplayOptions(_cret)
 
 	return _calendarDisplayOptions
 }

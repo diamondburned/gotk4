@@ -297,20 +297,18 @@ func (cellView *CellView) Model() *TreeModel {
 // property or by setting the currently displayed row of the CellView and using
 // gtk_widget_get_preferred_size().
 func (cellView *CellView) SizeOfRow(path *TreePath) (Requisition, bool) {
-	var _arg0 *C.GtkCellView   // out
-	var _arg1 *C.GtkTreePath   // out
-	var _arg2 C.GtkRequisition // in
-	var _cret C.gboolean       // in
+	var _arg0 *C.GtkCellView // out
+	var _arg1 *C.GtkTreePath // out
+	var _requisition Requisition
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
-	_cret = C.gtk_cell_view_get_size_of_row(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_cell_view_get_size_of_row(_arg0, _arg1, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
 
-	var _requisition Requisition // out
-	var _ok bool                 // out
+	var _ok bool // out
 
-	_requisition = *(*Requisition)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}

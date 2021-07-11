@@ -415,6 +415,7 @@ func (table *Table) SetRowSpacings(spacing uint) {
 	C.gtk_table_set_row_spacings(_arg0, _arg1)
 }
 
+//
 type TableChild struct {
 	native C.GtkTableChild
 }
@@ -424,6 +425,7 @@ func (t *TableChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
+//
 type TableRowCol struct {
 	native C.GtkTableRowCol
 }

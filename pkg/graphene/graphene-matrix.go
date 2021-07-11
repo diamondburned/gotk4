@@ -65,30 +65,20 @@ func (m *Matrix) Native() unsafe.Pointer {
 // Gems II", edited by Jim Arvo, and available online
 // (http://tog.acm.org/resources/GraphicsGems/gemsii/unmatrix.c).
 func (m *Matrix) Decompose() (translate Vec3, scale Vec3, rotate Quaternion, shear Vec3, perspective Vec4, ok bool) {
-	var _arg0 *C.graphene_matrix_t    // out
-	var _arg1 C.graphene_vec3_t       // in
-	var _arg2 C.graphene_vec3_t       // in
-	var _arg3 C.graphene_quaternion_t // in
-	var _arg4 C.graphene_vec3_t       // in
-	var _arg5 C.graphene_vec4_t       // in
-	var _cret C._Bool                 // in
+	var _arg0 *C.graphene_matrix_t // out
+	var _translate Vec3
+	var _scale Vec3
+	var _rotate Quaternion
+	var _shear Vec3
+	var _perspective Vec4
+	var _cret C._Bool // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 
-	_cret = C.graphene_matrix_decompose(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5)
+	_cret = C.graphene_matrix_decompose(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_translate)), (*C.graphene_vec3_t)(unsafe.Pointer(&_scale)), (*C.graphene_quaternion_t)(unsafe.Pointer(&_rotate)), (*C.graphene_vec3_t)(unsafe.Pointer(&_shear)), (*C.graphene_vec4_t)(unsafe.Pointer(&_perspective)))
 
-	var _translate Vec3    // out
-	var _scale Vec3        // out
-	var _rotate Quaternion // out
-	var _shear Vec3        // out
-	var _perspective Vec4  // out
-	var _ok bool           // out
+	var _ok bool // out
 
-	_translate = *(*Vec3)(unsafe.Pointer((&_arg1)))
-	_scale = *(*Vec3)(unsafe.Pointer((&_arg2)))
-	_rotate = *(*Quaternion)(unsafe.Pointer((&_arg3)))
-	_shear = *(*Vec3)(unsafe.Pointer((&_arg4)))
-	_perspective = *(*Vec4)(unsafe.Pointer((&_arg5)))
 	if _cret {
 		_ok = true
 	}
@@ -184,16 +174,12 @@ func (m *Matrix) free() {
 func (m *Matrix) Row(index_ uint) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
-	var _arg2 C.graphene_vec4_t    // in
+	var _res Vec4
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = C.uint(index_)
 
-	C.graphene_matrix_get_row(_arg0, _arg1, &_arg2)
-
-	var _res Vec4 // out
-
-	_res = *(*Vec4)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_get_row(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -643,17 +629,13 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
 	var _arg2 C.double             // out
-	var _arg3 C.graphene_matrix_t  // in
+	var _res Matrix
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b))
 	_arg2 = C.double(factor)
 
-	C.graphene_matrix_interpolate(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Matrix // out
-
-	_res = *(*Matrix)(unsafe.Pointer((&_arg3)))
+	C.graphene_matrix_interpolate(_arg0, _arg1, _arg2, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -661,17 +643,15 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
 // Inverse inverts the given matrix.
 func (m *Matrix) Inverse() (Matrix, bool) {
 	var _arg0 *C.graphene_matrix_t // out
-	var _arg1 C.graphene_matrix_t  // in
-	var _cret C._Bool              // in
+	var _res Matrix
+	var _cret C._Bool // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 
-	_cret = C.graphene_matrix_inverse(_arg0, &_arg1)
+	_cret = C.graphene_matrix_inverse(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
-	var _res Matrix // out
-	var _ok bool    // out
+	var _ok bool // out
 
-	_res = *(*Matrix)(unsafe.Pointer((&_arg1)))
 	if _cret {
 		_ok = true
 	}
@@ -761,16 +741,12 @@ func (m *Matrix) IsSingular() bool {
 func (a *Matrix) Multiply(b *Matrix) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
-	var _arg2 C.graphene_matrix_t  // in
+	var _res Matrix
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b))
 
-	C.graphene_matrix_multiply(_arg0, _arg1, &_arg2)
-
-	var _res Matrix // out
-
-	_res = *(*Matrix)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_multiply(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -801,15 +777,11 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 // Normalize normalizes the given #graphene_matrix_t.
 func (m *Matrix) Normalize() Matrix {
 	var _arg0 *C.graphene_matrix_t // out
-	var _arg1 C.graphene_matrix_t  // in
+	var _res Matrix
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 
-	C.graphene_matrix_normalize(_arg0, &_arg1)
-
-	var _res Matrix // out
-
-	_res = *(*Matrix)(unsafe.Pointer((&_arg1)))
+	C.graphene_matrix_normalize(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -818,16 +790,12 @@ func (m *Matrix) Normalize() Matrix {
 func (m *Matrix) Perspective(depth float32) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
-	var _arg2 C.graphene_matrix_t  // in
+	var _res Matrix
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = C.float(depth)
 
-	C.graphene_matrix_perspective(_arg0, _arg1, &_arg2)
-
-	var _res Matrix // out
-
-	_res = *(*Matrix)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_perspective(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -848,16 +816,12 @@ func (m *Matrix) Print() {
 func (m *Matrix) ProjectPoint(p *Point) Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
-	var _arg2 C.graphene_point_t   // in
+	var _res Point
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
 
-	C.graphene_matrix_project_point(_arg0, _arg1, &_arg2)
-
-	var _res Point // out
-
-	_res = *(*Point)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_project_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -869,16 +833,12 @@ func (m *Matrix) ProjectPoint(p *Point) Point {
 func (m *Matrix) ProjectRect(r *Rect) Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _arg2 C.graphene_quad_t    // in
+	var _res Quad
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_matrix_project_rect(_arg0, _arg1, &_arg2)
-
-	var _res Quad // out
-
-	_res = *(*Quad)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_project_rect(_arg0, _arg1, (*C.graphene_quad_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -890,16 +850,12 @@ func (m *Matrix) ProjectRect(r *Rect) Quad {
 func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _arg2 C.graphene_rect_t    // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_matrix_project_rect_bounds(_arg0, _arg1, &_arg2)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_project_rect_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1113,16 +1069,12 @@ func (m *Matrix) ToFloat() [16]float32 {
 func (m *Matrix) TransformBounds(r *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _arg2 C.graphene_rect_t    // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_matrix_transform_bounds(_arg0, _arg1, &_arg2)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_transform_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1135,16 +1087,12 @@ func (m *Matrix) TransformBounds(r *Rect) Rect {
 func (m *Matrix) TransformBox(b *Box) Box {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_box_t    // out
-	var _arg2 C.graphene_box_t     // in
+	var _res Box
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b))
 
-	C.graphene_matrix_transform_box(_arg0, _arg1, &_arg2)
-
-	var _res Box // out
-
-	_res = *(*Box)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_transform_box(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1159,16 +1107,12 @@ func (m *Matrix) TransformBox(b *Box) Box {
 func (m *Matrix) TransformPoint(p *Point) Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
-	var _arg2 C.graphene_point_t   // in
+	var _res Point
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
 
-	C.graphene_matrix_transform_point(_arg0, _arg1, &_arg2)
-
-	var _res Point // out
-
-	_res = *(*Point)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_transform_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1184,16 +1128,12 @@ func (m *Matrix) TransformPoint(p *Point) Point {
 func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _arg2 C.graphene_point3d_t  // in
+	var _res Point3D
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
 
-	C.graphene_matrix_transform_point3d(_arg0, _arg1, &_arg2)
-
-	var _res Point3D // out
-
-	_res = *(*Point3D)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_transform_point3d(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1202,16 +1142,12 @@ func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 func (m *Matrix) TransformRay(r *Ray) Ray {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_ray_t    // out
-	var _arg2 C.graphene_ray_t     // in
+	var _res Ray
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_ray_t)(unsafe.Pointer(r))
 
-	C.graphene_matrix_transform_ray(_arg0, _arg1, &_arg2)
-
-	var _res Ray // out
-
-	_res = *(*Ray)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_transform_ray(_arg0, _arg1, (*C.graphene_ray_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1225,16 +1161,12 @@ func (m *Matrix) TransformRay(r *Ray) Ray {
 func (m *Matrix) TransformRect(r *Rect) Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _arg2 C.graphene_quad_t    // in
+	var _res Quad
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_matrix_transform_rect(_arg0, _arg1, &_arg2)
-
-	var _res Quad // out
-
-	_res = *(*Quad)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_transform_rect(_arg0, _arg1, (*C.graphene_quad_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1244,16 +1176,12 @@ func (m *Matrix) TransformRect(r *Rect) Quad {
 func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_sphere_t // out
-	var _arg2 C.graphene_sphere_t  // in
+	var _res Sphere
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
 
-	C.graphene_matrix_transform_sphere(_arg0, _arg1, &_arg2)
-
-	var _res Sphere // out
-
-	_res = *(*Sphere)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_transform_sphere(_arg0, _arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1268,16 +1196,12 @@ func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec3_t   // out
-	var _arg2 C.graphene_vec3_t    // in
+	var _res Vec3
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
 
-	C.graphene_matrix_transform_vec3(_arg0, _arg1, &_arg2)
-
-	var _res Vec3 // out
-
-	_res = *(*Vec3)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_transform_vec3(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1288,16 +1212,12 @@ func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec4_t   // out
-	var _arg2 C.graphene_vec4_t    // in
+	var _res Vec4
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v))
 
-	C.graphene_matrix_transform_vec4(_arg0, _arg1, &_arg2)
-
-	var _res Vec4 // out
-
-	_res = *(*Vec4)(unsafe.Pointer((&_arg2)))
+	C.graphene_matrix_transform_vec4(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1320,15 +1240,11 @@ func (m *Matrix) Translate(pos *Point3D) {
 // Transpose transposes the given matrix.
 func (m *Matrix) Transpose() Matrix {
 	var _arg0 *C.graphene_matrix_t // out
-	var _arg1 C.graphene_matrix_t  // in
+	var _res Matrix
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 
-	C.graphene_matrix_transpose(_arg0, &_arg1)
-
-	var _res Matrix // out
-
-	_res = *(*Matrix)(unsafe.Pointer((&_arg1)))
+	C.graphene_matrix_transpose(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1339,17 +1255,13 @@ func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Po
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_matrix_t  // out
 	var _arg2 *C.graphene_point3d_t // out
-	var _arg3 C.graphene_point3d_t  // in
+	var _res Point3D
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(projection))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(modelview))
 	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
 
-	C.graphene_matrix_unproject_point3d(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Point3D // out
-
-	_res = *(*Point3D)(unsafe.Pointer((&_arg3)))
+	C.graphene_matrix_unproject_point3d(_arg0, _arg1, _arg2, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1361,17 +1273,13 @@ func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
 	var _arg2 *C.graphene_rect_t   // out
-	var _arg3 C.graphene_rect_t    // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
 
-	C.graphene_matrix_untransform_bounds(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg3)))
+	C.graphene_matrix_untransform_bounds(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -1382,19 +1290,17 @@ func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (Point, bool) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
 	var _arg2 *C.graphene_rect_t   // out
-	var _arg3 C.graphene_point_t   // in
-	var _cret C._Bool              // in
+	var _res Point
+	var _cret C._Bool // in
 
 	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
 	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
 
-	_cret = C.graphene_matrix_untransform_point(_arg0, _arg1, _arg2, &_arg3)
+	_cret = C.graphene_matrix_untransform_point(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
 
-	var _res Point // out
-	var _ok bool   // out
+	var _ok bool // out
 
-	_res = *(*Point)(unsafe.Pointer((&_arg3)))
 	if _cret {
 		_ok = true
 	}

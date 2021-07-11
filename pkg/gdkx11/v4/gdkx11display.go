@@ -82,6 +82,7 @@ type X11Displayyer interface {
 	UTF8ToCompoundText(str string) (string, int, []byte, bool)
 }
 
+//
 type X11Display struct {
 	gdk.Display
 }
@@ -244,7 +245,7 @@ func (display *X11Display) StartupNotificationID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -363,7 +364,7 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	var _ctext []byte
 	var _gint int // out
 
-	_encoding = C.GoString(_arg2)
+	_encoding = C.GoString((*C.gchar)(_arg2))
 	_format = int(_arg3)
 	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
 	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
@@ -404,7 +405,7 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	var _ctext []byte
 	var _ok bool // out
 
-	_encoding = C.GoString(_arg2)
+	_encoding = C.GoString((*C.gchar)(_arg2))
 	_format = int(_arg3)
 	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
 	runtime.SetFinalizer(&_ctext, func(v *[]byte) {

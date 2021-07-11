@@ -133,7 +133,7 @@ func (drag *Drag) Actions() DragAction {
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(_cret)
+	_dragAction = DragAction(_cret)
 
 	return _dragAction
 }
@@ -239,7 +239,7 @@ func (drag *Drag) SelectedAction() DragAction {
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(_cret)
+	_dragAction = DragAction(_cret)
 
 	return _dragAction
 }

@@ -42,6 +42,8 @@ type CellRendererSpinButtonner interface {
 // a handler for the CellRenderer::editing-started signal.
 //
 // The CellRendererSpin cell renderer was added in GTK+ 2.10.
+//
+// This type has been renamed from CellRendererSpin.
 type CellRendererSpinButton struct {
 	CellRendererText
 }

@@ -3,9 +3,9 @@
 package atk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -37,7 +37,7 @@ type DocumentOverrider interface {
 	// Deprecated: Since 2.12. @document is already a representation of the
 	// document. Use it directly, or one of its children, as an instance of the
 	// DOM.
-	Document() interface{}
+	Document() cgo.Handle
 	// DocumentAttributeValue retrieves the value of the given @attribute_name
 	// inside @document.
 	DocumentAttributeValue(attributeName string) string
@@ -68,7 +68,7 @@ type Documenter interface {
 	// CurrentPageNumber retrieves the current page number inside @document.
 	CurrentPageNumber() int
 	// Document gets a gpointer that points to an instance of the DOM.
-	Document() interface{}
+	Document() cgo.Handle
 	// DocumentType gets a string indicating the document type.
 	DocumentType() string
 	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
@@ -123,7 +123,7 @@ func (document *Document) AttributeValue(attributeName string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -150,7 +150,7 @@ func (document *Document) CurrentPageNumber() int {
 //
 // Deprecated: Since 2.12. @document is already a representation of the
 // document. Use it directly, or one of its children, as an instance of the DOM.
-func (document *Document) Document() interface{} {
+func (document *Document) Document() cgo.Handle {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gpointer     // in
 
@@ -158,9 +158,9 @@ func (document *Document) Document() interface{} {
 
 	_cret = C.atk_document_get_document(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
@@ -179,7 +179,7 @@ func (document *Document) DocumentType() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -200,7 +200,7 @@ func (document *Document) Locale() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

@@ -124,15 +124,11 @@ func (p *Plane) Constant() float32 {
 // #graphene_plane_t.
 func (p *Plane) Normal() Vec3 {
 	var _arg0 *C.graphene_plane_t // out
-	var _arg1 C.graphene_vec3_t   // in
+	var _normal Vec3
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
 
-	C.graphene_plane_get_normal(_arg0, &_arg1)
-
-	var _normal Vec3 // out
-
-	_normal = *(*Vec3)(unsafe.Pointer((&_arg1)))
+	C.graphene_plane_get_normal(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_normal)))
 
 	return _normal
 }
@@ -247,15 +243,11 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 // effectively mirroring the plane across the origin.
 func (p *Plane) Negate() Plane {
 	var _arg0 *C.graphene_plane_t // out
-	var _arg1 C.graphene_plane_t  // in
+	var _res Plane
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
 
-	C.graphene_plane_negate(_arg0, &_arg1)
-
-	var _res Plane // out
-
-	_res = *(*Plane)(unsafe.Pointer((&_arg1)))
+	C.graphene_plane_negate(_arg0, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -264,15 +256,11 @@ func (p *Plane) Negate() Plane {
 // the constant accordingly.
 func (p *Plane) Normalize() Plane {
 	var _arg0 *C.graphene_plane_t // out
-	var _arg1 C.graphene_plane_t  // in
+	var _res Plane
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
 
-	C.graphene_plane_normalize(_arg0, &_arg1)
-
-	var _res Plane // out
-
-	_res = *(*Plane)(unsafe.Pointer((&_arg1)))
+	C.graphene_plane_normalize(_arg0, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -288,17 +276,13 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 	var _arg0 *C.graphene_plane_t  // out
 	var _arg1 *C.graphene_matrix_t // out
 	var _arg2 *C.graphene_matrix_t // out
-	var _arg3 C.graphene_plane_t   // in
+	var _res Plane
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix))
 	_arg2 = (*C.graphene_matrix_t)(unsafe.Pointer(normalMatrix))
 
-	C.graphene_plane_transform(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Plane // out
-
-	_res = *(*Plane)(unsafe.Pointer((&_arg3)))
+	C.graphene_plane_transform(_arg0, _arg1, _arg2, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }

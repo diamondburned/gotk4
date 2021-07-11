@@ -69,7 +69,7 @@ func (orientable *Orientable) Orientation() Orientation {
 
 	var _orientation Orientation // out
 
-	_orientation = (Orientation)(_cret)
+	_orientation = Orientation(_cret)
 
 	return _orientation
 }

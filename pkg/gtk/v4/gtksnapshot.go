@@ -44,7 +44,7 @@ type Snapshotter interface {
 	AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
 	// AppendInsetShadow appends an inset shadow into the box given by @outline.
 	AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
-
+	//
 	AppendLayout(layout pango.Layouter, color *gdk.RGBA)
 	// AppendLinearGradient appends a linear gradient node with the given stops
 	// to @snapshot.
@@ -289,6 +289,7 @@ func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk
 	C.gtk_snapshot_append_inset_shadow(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
+//
 func (snapshot *Snapshot) AppendLayout(layout pango.Layouter, color *gdk.RGBA) {
 	var _arg0 *C.GtkSnapshot // out
 	var _arg1 *C.PangoLayout // out

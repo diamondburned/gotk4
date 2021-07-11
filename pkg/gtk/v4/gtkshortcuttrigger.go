@@ -186,7 +186,7 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(_cret)
+	_modifierType = gdk.ModifierType(_cret)
 
 	return _modifierType
 }
@@ -384,8 +384,8 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 	var _arg1 C.gconstpointer // out
 	var _cret C.int           // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(trigger1.Native()))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer((trigger2).(gextras.Nativer).Native()))
+	_arg0 = C.gconstpointer(unsafe.Pointer(trigger1.Native()))
+	_arg1 = C.gconstpointer(unsafe.Pointer((trigger2).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_shortcut_trigger_compare(_arg0, _arg1)
 
@@ -405,8 +405,8 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(trigger1.Native()))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer((trigger2).(gextras.Nativer).Native()))
+	_arg0 = C.gconstpointer(unsafe.Pointer(trigger1.Native()))
+	_arg1 = C.gconstpointer(unsafe.Pointer((trigger2).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_shortcut_trigger_equal(_arg0, _arg1)
 
@@ -432,7 +432,7 @@ func (trigger *ShortcutTrigger) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(trigger.Native()))
+	_arg0 = C.gconstpointer(unsafe.Pointer(trigger.Native()))
 
 	_cret = C.gtk_shortcut_trigger_hash(_arg0)
 
@@ -465,7 +465,7 @@ func (self *ShortcutTrigger) ToLabel(display gdk.Displayyer) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -485,7 +485,7 @@ func (self *ShortcutTrigger) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -508,7 +508,7 @@ func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gd
 
 	var _keyMatch gdk.KeyMatch // out
 
-	_keyMatch = (gdk.KeyMatch)(_cret)
+	_keyMatch = gdk.KeyMatch(_cret)
 
 	return _keyMatch
 }

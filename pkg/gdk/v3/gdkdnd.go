@@ -193,7 +193,7 @@ func DragFindWindowForScreen(context DragContexter, dragWindow Windowwer, screen
 	var _protocol DragProtocol // out
 
 	_destWindow = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))).(*Window)
-	_protocol = (DragProtocol)(_arg7)
+	_protocol = DragProtocol(_arg7)
 
 	return _destWindow, _protocol
 }

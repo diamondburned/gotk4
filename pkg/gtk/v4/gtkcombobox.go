@@ -28,8 +28,9 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ComboBoxOverrider interface {
+	//
 	Changed()
-
+	//
 	FormatEntryText(path string) string
 }
 
@@ -297,7 +298,7 @@ func (comboBox *ComboBox) ActiveID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -307,17 +308,15 @@ func (comboBox *ComboBox) ActiveID() string {
 // If no item is active, @iter is left unchanged.
 func (comboBox *ComboBox) ActiveIter() (TreeIter, bool) {
 	var _arg0 *C.GtkComboBox // out
-	var _arg1 C.GtkTreeIter  // in
-	var _cret C.gboolean     // in
+	var _iter TreeIter
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
-	_cret = C.gtk_combo_box_get_active_iter(_arg0, &_arg1)
+	_cret = C.gtk_combo_box_get_active_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
-	var _iter TreeIter // out
-	var _ok bool       // out
+	var _ok bool // out
 
-	_iter = *(*TreeIter)(unsafe.Pointer((&_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -337,7 +336,7 @@ func (comboBox *ComboBox) ButtonSensitivity() SensitivityType {
 
 	var _sensitivityType SensitivityType // out
 
-	_sensitivityType = (SensitivityType)(_cret)
+	_sensitivityType = SensitivityType(_cret)
 
 	return _sensitivityType
 }

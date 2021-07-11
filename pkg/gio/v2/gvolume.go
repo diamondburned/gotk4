@@ -42,7 +42,7 @@ type VolumeOverrider interface {
 	CanEject() bool
 	// CanMount checks if a volume can be mounted.
 	CanMount() bool
-
+	//
 	Changed()
 	// EjectFinish finishes ejecting a volume. If any errors occurred during the
 	// operation, @error will be set to contain the errors and false will be
@@ -101,7 +101,7 @@ type VolumeOverrider interface {
 	// guaranteed to return the mount right after calling this function; there's
 	// no need to listen for the 'mount-added' signal on Monitor.
 	MountFinish(result AsyncResulter) error
-
+	//
 	Removed()
 	// ShouldAutomount returns whether the volume should be automatically
 	// mounted.
@@ -301,7 +301,7 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -385,7 +385,7 @@ func (volume *Volume) Identifier(kind string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -418,7 +418,7 @@ func (volume *Volume) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -435,7 +435,7 @@ func (volume *Volume) SortKey() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -469,7 +469,7 @@ func (volume *Volume) UUID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

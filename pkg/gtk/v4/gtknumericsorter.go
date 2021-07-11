@@ -108,7 +108,7 @@ func (self *NumericSorter) SortOrder() SortType {
 
 	var _sortType SortType // out
 
-	_sortType = (SortType)(_cret)
+	_sortType = SortType(_cret)
 
 	return _sortType
 }

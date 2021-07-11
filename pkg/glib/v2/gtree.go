@@ -4,9 +4,9 @@ package glib
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -77,14 +77,14 @@ func (tree *Tree) Height() int {
 //
 // Inserts a new key and value into a #GTree as g_tree_insert_node() does, only
 // this function does not return the inserted or set node.
-func (tree *Tree) Insert(key interface{}, value interface{}) {
+func (tree *Tree) Insert(key cgo.Handle, value cgo.Handle) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gpointer)(box.Assign(key))
-	_arg2 = (C.gpointer)(box.Assign(value))
+	_arg1 = (C.gpointer)(key)
+	_arg2 = (C.gpointer)(value)
 
 	C.g_tree_insert(_arg0, _arg1, _arg2)
 }
@@ -92,19 +92,19 @@ func (tree *Tree) Insert(key interface{}, value interface{}) {
 // Lookup gets the value corresponding to the given key. Since a #GTree is
 // automatically balanced as key/value pairs are added, key lookup is O(log n)
 // (where n is the number of key/value pairs in the tree).
-func (tree *Tree) Lookup(key interface{}) interface{} {
+func (tree *Tree) Lookup(key cgo.Handle) cgo.Handle {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gpointer      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gconstpointer)(box.Assign(key))
+	_arg1 = (C.gconstpointer)(key)
 
 	_cret = C.g_tree_lookup(_arg0, _arg1)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
@@ -112,7 +112,7 @@ func (tree *Tree) Lookup(key interface{}) interface{} {
 // LookupExtended looks up a key in the #GTree, returning the original key and
 // the associated value. This is useful if you need to free the memory allocated
 // for the original key, for example before calling g_tree_remove().
-func (tree *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value interface{}, ok bool) {
+func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, value cgo.Handle, ok bool) {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gpointer      // in
@@ -120,16 +120,16 @@ func (tree *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, va
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gconstpointer)(box.Assign(lookupKey))
+	_arg1 = (C.gconstpointer)(lookupKey)
 
 	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _origKey interface{} // out
-	var _value interface{}   // out
-	var _ok bool             // out
+	var _origKey cgo.Handle // out
+	var _value cgo.Handle   // out
+	var _ok bool            // out
 
-	_origKey = box.Get(uintptr(_arg2))
-	_value = box.Get(uintptr(_arg3))
+	_origKey = (cgo.Handle)(_arg2)
+	_value = (cgo.Handle)(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -184,13 +184,13 @@ func (tree *Tree) ref() *Tree {
 //
 // The cost of maintaining a balanced tree while removing a key/value result in
 // a O(n log(n)) operation where most of the other operations are O(log(n)).
-func (tree *Tree) Remove(key interface{}) bool {
+func (tree *Tree) Remove(key cgo.Handle) bool {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gconstpointer)(box.Assign(key))
+	_arg1 = (C.gconstpointer)(key)
 
 	_cret = C.g_tree_remove(_arg0, _arg1)
 
@@ -205,14 +205,14 @@ func (tree *Tree) Remove(key interface{}) bool {
 
 // Replace inserts a new key and value into a #GTree as g_tree_replace_node()
 // does, only this function does not return the inserted or set node.
-func (tree *Tree) Replace(key interface{}, value interface{}) {
+func (tree *Tree) Replace(key cgo.Handle, value cgo.Handle) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gpointer)(box.Assign(key))
-	_arg2 = (C.gpointer)(box.Assign(value))
+	_arg1 = (C.gpointer)(key)
+	_arg2 = (C.gpointer)(value)
 
 	C.g_tree_replace(_arg0, _arg1, _arg2)
 }
@@ -221,13 +221,13 @@ func (tree *Tree) Replace(key interface{}, value interface{}) {
 // the key and value destroy functions.
 //
 // If the key does not exist in the #GTree, the function does nothing.
-func (tree *Tree) Steal(key interface{}) bool {
+func (tree *Tree) Steal(key cgo.Handle) bool {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
-	_arg1 = (C.gconstpointer)(box.Assign(key))
+	_arg1 = (C.gconstpointer)(key)
 
 	_cret = C.g_tree_steal(_arg0, _arg1)
 

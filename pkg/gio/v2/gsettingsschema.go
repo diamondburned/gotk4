@@ -89,7 +89,7 @@ func (schema *SettingsSchema) ID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -139,7 +139,7 @@ func (schema *SettingsSchema) Path() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -188,7 +188,7 @@ func (schema *SettingsSchema) ListChildren() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -221,7 +221,7 @@ func (schema *SettingsSchema) ListKeys() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -319,7 +319,7 @@ func (key *SettingsSchemaKey) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -335,7 +335,7 @@ func (key *SettingsSchemaKey) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -414,7 +414,7 @@ func (key *SettingsSchemaKey) Summary() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -571,7 +571,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 		src := unsafe.Slice(_arg2, i)
 		_nonRelocatable = make([]string, i)
 		for i := range src {
-			_nonRelocatable[i] = C.GoString(src[i])
+			_nonRelocatable[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -585,7 +585,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 		src := unsafe.Slice(_arg3, i)
 		_relocatable = make([]string, i)
 		for i := range src {
-			_relocatable[i] = C.GoString(src[i])
+			_relocatable[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

@@ -142,7 +142,7 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -205,7 +205,7 @@ func (keyFile *KeyFile) Groups() (uint, []string) {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -303,7 +303,7 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -339,7 +339,7 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -378,7 +378,7 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -396,7 +396,7 @@ func (keyFile *KeyFile) StartGroup() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -427,7 +427,7 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -485,7 +485,7 @@ func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -946,7 +946,7 @@ func (keyFile *KeyFile) ToData() (uint, string, error) {
 	var _goerr error // out
 
 	_length = uint(_arg1)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

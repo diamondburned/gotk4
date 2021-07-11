@@ -3,9 +3,10 @@
 package glib
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -18,22 +19,22 @@ import "C"
 // two values. The function should return a negative integer if the first value
 // comes before the second, 0 if they are equal, or a positive integer if the
 // first value comes after the second.
-type CompareDataFunc func(a interface{}, b interface{}, userData interface{}) (gint int)
+type CompareDataFunc func(a cgo.Handle, b cgo.Handle, userData cgo.Handle) (gint int)
 
 //export gotk4_CompareDataFunc
 func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) (cret C.gint) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var a interface{}        // out
-	var b interface{}        // out
-	var userData interface{} // out
+	var a cgo.Handle        // out
+	var b cgo.Handle        // out
+	var userData cgo.Handle // out
 
-	a = box.Get(uintptr(arg0))
-	b = box.Get(uintptr(arg1))
-	userData = box.Get(uintptr(arg2))
+	a = (cgo.Handle)(arg0)
+	b = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(CompareDataFunc)
 	gint := fn(a, b, userData)
@@ -45,20 +46,20 @@ func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gp
 
 // Func specifies the type of functions passed to g_list_foreach() and
 // g_slist_foreach().
-type Func func(data interface{}, userData interface{})
+type Func func(data cgo.Handle, userData cgo.Handle)
 
 //export gotk4_Func
 func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var data interface{}     // out
-	var userData interface{} // out
+	var data cgo.Handle     // out
+	var userData cgo.Handle // out
 
-	data = box.Get(uintptr(arg0))
-	userData = box.Get(uintptr(arg1))
+	data = (cgo.Handle)(arg0)
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(Func)
 	fn(data, userData)
@@ -67,22 +68,22 @@ func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
 // HFunc specifies the type of the function passed to g_hash_table_foreach(). It
 // is called with each key/value pair, together with the @user_data parameter
 // which is passed to g_hash_table_foreach().
-type HFunc func(key interface{}, value interface{}, userData interface{})
+type HFunc func(key cgo.Handle, value cgo.Handle, userData cgo.Handle)
 
 //export gotk4_HFunc
 func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var key interface{}      // out
-	var value interface{}    // out
-	var userData interface{} // out
+	var key cgo.Handle      // out
+	var value cgo.Handle    // out
+	var userData cgo.Handle // out
 
-	key = box.Get(uintptr(arg0))
-	value = box.Get(uintptr(arg1))
-	userData = box.Get(uintptr(arg2))
+	key = (cgo.Handle)(arg0)
+	value = (cgo.Handle)(arg1)
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(HFunc)
 	fn(key, value, userData)
@@ -165,7 +166,7 @@ func (time_ *TimeVal) ToISO8601() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -29,25 +30,25 @@ func init() {
 //
 // The returned items must conform to the item type of the model they are used
 // with.
-type MapListModelMapFunc func(item *externglib.Object, userData interface{}) (object *externglib.Object)
+type MapListModelMapFunc func(item *externglib.Object, userData cgo.Handle) (object *externglib.Object)
 
 //export gotk4_MapListModelMapFunc
 func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointer) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object // out
-	var userData interface{}    // out
+	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(MapListModelMapFunc)
 	object := fn(item, userData)
 
-	cret = (C.gpointer)(unsafe.Pointer(object.Native()))
+	cret = C.gpointer(unsafe.Pointer(object.Native()))
 
 	return cret
 }

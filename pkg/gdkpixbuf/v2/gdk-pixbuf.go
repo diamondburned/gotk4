@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -834,7 +834,7 @@ func (pixbuf *Pixbuf) Colorspace() Colorspace {
 
 	var _colorspace Colorspace // out
 
-	_colorspace = (Colorspace)(_cret)
+	_colorspace = Colorspace(_cret)
 
 	return _colorspace
 }
@@ -916,7 +916,7 @@ func (pixbuf *Pixbuf) Option(key string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1147,7 +1147,7 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_PixbufSaveFunc)
-	_arg2 = C.gpointer(box.Assign(saveFunc))
+	_arg2 = C.gpointer(gbox.Assign(saveFunc))
 	_arg3 = (*C.char)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (**C.char)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))

@@ -95,7 +95,7 @@ func QueryVisualTypes() []VisualType {
 		src := unsafe.Slice(_arg1, _arg2)
 		_visualTypes = make([]VisualType, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_visualTypes[i] = (VisualType)(src[i])
+			_visualTypes[i] = VisualType(src[i])
 		}
 	}
 
@@ -216,7 +216,7 @@ func (visual *Visual) ByteOrder() ByteOrder {
 
 	var _byteOrder ByteOrder // out
 
-	_byteOrder = (ByteOrder)(_cret)
+	_byteOrder = ByteOrder(_cret)
 
 	return _byteOrder
 }
@@ -338,7 +338,7 @@ func (visual *Visual) VisualType() VisualType {
 
 	var _visualType VisualType // out
 
-	_visualType = (VisualType)(_cret)
+	_visualType = VisualType(_cret)
 
 	return _visualType
 }

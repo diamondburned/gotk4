@@ -238,7 +238,7 @@ func (menuButton *MenuButton) Direction() ArrowType {
 
 	var _arrowType ArrowType // out
 
-	_arrowType = (ArrowType)(_cret)
+	_arrowType = ArrowType(_cret)
 
 	return _arrowType
 }

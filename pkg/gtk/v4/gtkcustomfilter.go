@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,20 +29,20 @@ func init() {
 //
 // If the filter matches the item, this function must return true. If the item
 // should be filtered out, false must be returned.
-type CustomFilterFunc func(item *externglib.Object, userData interface{}) (ok bool)
+type CustomFilterFunc func(item *externglib.Object, userData cgo.Handle) (ok bool)
 
 //export gotk4_CustomFilterFunc
 func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object // out
-	var userData interface{}    // out
+	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(CustomFilterFunc)
 	ok := fn(item, userData)

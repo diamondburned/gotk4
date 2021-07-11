@@ -115,6 +115,7 @@ func AlternativeDialogButtonOrder(screen gdk.Screener) bool {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DialogOverrider interface {
+	//
 	Close()
 	// Response emits the Dialog::response signal with the given response ID.
 	// Used to indicate that the user has responded to the dialog in some way;

@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -27,20 +28,20 @@ func init() {
 
 // TextTagTableForeach: function used with gtk_text_tag_table_foreach(), to
 // iterate over every `GtkTextTag` inside a `GtkTextTagTable`.
-type TextTagTableForeach func(tag *TextTag, data interface{})
+type TextTagTableForeach func(tag *TextTag, data cgo.Handle)
 
 //export gotk4_TextTagTableForeach
 func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var tag *TextTag     // out
-	var data interface{} // out
+	var tag *TextTag    // out
+	var data cgo.Handle // out
 
 	tag = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TextTag)
-	data = box.Get(uintptr(arg1))
+	data = (cgo.Handle)(arg1)
 
 	fn := v.(TextTagTableForeach)
 	fn(tag, data)
@@ -152,7 +153,7 @@ func (table *TextTagTable) Foreach(fn TextTagTableForeach) {
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_TextTagTableForeach)
-	_arg2 = C.gpointer(box.Assign(fn))
+	_arg2 = C.gpointer(gbox.Assign(fn))
 
 	C.gtk_text_tag_table_foreach(_arg0, _arg1, _arg2)
 }

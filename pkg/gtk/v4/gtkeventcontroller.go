@@ -132,7 +132,7 @@ func (controller *EventController) CurrentEventState() gdk.ModifierType {
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(_cret)
+	_modifierType = gdk.ModifierType(_cret)
 
 	return _modifierType
 }
@@ -165,7 +165,7 @@ func (controller *EventController) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -181,7 +181,7 @@ func (controller *EventController) PropagationLimit() PropagationLimit {
 
 	var _propagationLimit PropagationLimit // out
 
-	_propagationLimit = (PropagationLimit)(_cret)
+	_propagationLimit = PropagationLimit(_cret)
 
 	return _propagationLimit
 }
@@ -198,7 +198,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 
 	var _propagationPhase PropagationPhase // out
 
-	_propagationPhase = (PropagationPhase)(_cret)
+	_propagationPhase = PropagationPhase(_cret)
 
 	return _propagationPhase
 }

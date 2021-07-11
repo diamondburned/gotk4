@@ -30,6 +30,7 @@ type ProgressBarAccessibler interface {
 	privateProgressBarAccessible()
 }
 
+//
 type ProgressBarAccessible struct {
 	WidgetAccessible
 

@@ -3,10 +3,11 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -31,20 +32,20 @@ func init() {
 
 // FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
 // gtk_flow_box_bind_model() for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func(item *externglib.Object, userData interface{}) (widget *Widget)
+type FlowBoxCreateWidgetFunc func(item *externglib.Object, userData cgo.Handle) (widget *Widget)
 
 //export gotk4_FlowBoxCreateWidgetFunc
 func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object // out
-	var userData interface{}    // out
+	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(FlowBoxCreateWidgetFunc)
 	widget := fn(item, userData)
@@ -56,20 +57,20 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.Gt
 
 // FlowBoxFilterFunc: function that will be called whenrever a child changes or
 // is added. It lets you control if the child should be visible or not.
-type FlowBoxFilterFunc func(child *FlowBoxChild, userData interface{}) (ok bool)
+type FlowBoxFilterFunc func(child *FlowBoxChild, userData cgo.Handle) (ok bool)
 
 //export gotk4_FlowBoxFilterFunc
 func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var child *FlowBoxChild  // out
-	var userData interface{} // out
+	var child *FlowBoxChild // out
+	var userData cgo.Handle // out
 
 	child = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FlowBoxChild)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(FlowBoxFilterFunc)
 	ok := fn(child, userData)
@@ -83,22 +84,22 @@ func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cret C.g
 
 // FlowBoxForeachFunc: function used by gtk_flow_box_selected_foreach(). It will
 // be called on every selected child of the @box.
-type FlowBoxForeachFunc func(box *FlowBox, child *FlowBoxChild, userData interface{})
+type FlowBoxForeachFunc func(box *FlowBox, child *FlowBoxChild, userData cgo.Handle)
 
 //export gotk4_FlowBoxForeachFunc
 func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var box *FlowBox         // out
-	var child *FlowBoxChild  // out
-	var userData interface{} // out
+	var box *FlowBox        // out
+	var child *FlowBoxChild // out
+	var userData cgo.Handle // out
 
 	box = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FlowBox)
 	child = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*FlowBoxChild)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(FlowBoxForeachFunc)
 	fn(box, child, userData)
@@ -106,22 +107,22 @@ func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 
 
 // FlowBoxSortFunc: function to compare two children to determine which should
 // come first.
-type FlowBoxSortFunc func(child1 *FlowBoxChild, child2 *FlowBoxChild, userData interface{}) (gint int)
+type FlowBoxSortFunc func(child1 *FlowBoxChild, child2 *FlowBoxChild, userData cgo.Handle) (gint int)
 
 //export gotk4_FlowBoxSortFunc
 func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cret C.gint) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var child1 *FlowBoxChild // out
 	var child2 *FlowBoxChild // out
-	var userData interface{} // out
+	var userData cgo.Handle  // out
 
 	child1 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FlowBoxChild)
 	child2 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*FlowBoxChild)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(FlowBoxSortFunc)
 	gint := fn(child1, child2, userData)
@@ -136,14 +137,15 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FlowBoxOverrider interface {
+	//
 	ActivateCursorChild()
-
+	//
 	ChildActivated(child FlowBoxChilder)
 	// SelectAll: select all children of @box, if the selection mode allows it.
 	SelectAll()
-
+	//
 	SelectedChildrenChanged()
-
+	//
 	ToggleCursorChild()
 	// UnselectAll: unselect all children of @box, if the selection mode allows
 	// it.
@@ -457,7 +459,7 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 
 	var _selectionMode SelectionMode // out
 
-	_selectionMode = (SelectionMode)(_cret)
+	_selectionMode = SelectionMode(_cret)
 
 	return _selectionMode
 }
@@ -538,7 +540,7 @@ func (box *FlowBox) SelectedForeach(fn FlowBoxForeachFunc) {
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_FlowBoxForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
+	_arg2 = C.gpointer(gbox.Assign(fn))
 
 	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
 }
@@ -685,6 +687,7 @@ func (box *FlowBox) UnselectChild(child FlowBoxChilder) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FlowBoxChildOverrider interface {
+	//
 	Activate()
 }
 
@@ -700,6 +703,7 @@ type FlowBoxChilder interface {
 	IsSelected() bool
 }
 
+//
 type FlowBoxChild struct {
 	Bin
 }

@@ -3,9 +3,10 @@
 package atk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -64,20 +65,20 @@ func marshalKeyEventType(p uintptr) (interface{}, error) {
 // occurs, if registered via atk_add_key_event_listener. It allows for
 // pre-emptive interception of key events via the return code as described
 // below.
-type KeySnoopFunc func(event *KeyEventStruct, userData interface{}) (gint int)
+type KeySnoopFunc func(event *KeyEventStruct, userData cgo.Handle) (gint int)
 
 //export gotk4_KeySnoopFunc
 func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var event *KeyEventStruct // out
-	var userData interface{}  // out
+	var userData cgo.Handle   // out
 
 	event = (*KeyEventStruct)(unsafe.Pointer(arg0))
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(event, userData)
@@ -137,7 +138,7 @@ func GetToolkitName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -151,7 +152,7 @@ func GetToolkitVersion() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -164,7 +165,7 @@ func GetVersion() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

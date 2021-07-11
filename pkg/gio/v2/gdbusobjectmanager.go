@@ -44,13 +44,13 @@ type DBusObjectManagerOverrider interface {
 	GetObject(objectPath string) *DBusObject
 	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
-
+	//
 	InterfaceAdded(object DBusObjector, interface_ DBusInterfacer)
-
+	//
 	InterfaceRemoved(object DBusObjector, interface_ DBusInterfacer)
-
+	//
 	ObjectAdded(object DBusObjector)
-
+	//
 	ObjectRemoved(object DBusObjector)
 }
 
@@ -146,7 +146,7 @@ func (manager *DBusObjectManager) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

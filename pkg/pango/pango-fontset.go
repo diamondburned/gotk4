@@ -4,9 +4,10 @@ package pango
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -29,22 +30,22 @@ func init() {
 
 // FontsetForeachFunc: callback used by pango_fontset_foreach() when enumerating
 // fonts in a fontset.
-type FontsetForeachFunc func(fontset *Fontset, font *Font, userData interface{}) (ok bool)
+type FontsetForeachFunc func(fontset *Fontset, font *Font, userData cgo.Handle) (ok bool)
 
 //export gotk4_FontsetForeachFunc
 func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var fontset *Fontset     // out
-	var font *Font           // out
-	var userData interface{} // out
+	var fontset *Fontset    // out
+	var font *Font          // out
+	var userData cgo.Handle // out
 
 	fontset = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Fontset)
 	font = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*Font)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(FontsetForeachFunc)
 	ok := fn(fontset, font, userData)
@@ -69,7 +70,7 @@ type FontsetOverrider interface {
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
 	Font(wc uint) *Font
-
+	//
 	Language() *Language
 	// Metrics: get overall metric information for the fonts in the fontset.
 	Metrics() *FontMetrics
@@ -126,7 +127,7 @@ func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
 
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(fontset.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
+	_arg2 = C.gpointer(gbox.Assign(fn))
 
 	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
 }

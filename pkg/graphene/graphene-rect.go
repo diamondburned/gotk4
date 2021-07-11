@@ -113,16 +113,12 @@ func (a *Rect) Equal(b *Rect) bool {
 func (r *Rect) Expand(p *Point) Rect {
 	var _arg0 *C.graphene_rect_t  // out
 	var _arg1 *C.graphene_point_t // out
-	var _arg2 C.graphene_rect_t   // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
 
-	C.graphene_rect_expand(_arg0, _arg1, &_arg2)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg2)))
+	C.graphene_rect_expand(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -156,15 +152,11 @@ func (r *Rect) Area() float32 {
 // rectangle.
 func (r *Rect) BottomLeft() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+	var _p Point
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_rect_get_bottom_left(_arg0, &_arg1)
-
-	var _p Point // out
-
-	_p = *(*Point)(unsafe.Pointer((&_arg1)))
+	C.graphene_rect_get_bottom_left(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
 
 	return _p
 }
@@ -173,15 +165,11 @@ func (r *Rect) BottomLeft() Point {
 // rectangle.
 func (r *Rect) BottomRight() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+	var _p Point
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_rect_get_bottom_right(_arg0, &_arg1)
-
-	var _p Point // out
-
-	_p = *(*Point)(unsafe.Pointer((&_arg1)))
+	C.graphene_rect_get_bottom_right(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
 
 	return _p
 }
@@ -189,15 +177,11 @@ func (r *Rect) BottomRight() Point {
 // Center retrieves the coordinates of the center of the given rectangle.
 func (r *Rect) Center() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+	var _p Point
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_rect_get_center(_arg0, &_arg1)
-
-	var _p Point // out
-
-	_p = *(*Point)(unsafe.Pointer((&_arg1)))
+	C.graphene_rect_get_center(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
 
 	return _p
 }
@@ -222,15 +206,11 @@ func (r *Rect) Height() float32 {
 // rectangle.
 func (r *Rect) TopLeft() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+	var _p Point
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_rect_get_top_left(_arg0, &_arg1)
-
-	var _p Point // out
-
-	_p = *(*Point)(unsafe.Pointer((&_arg1)))
+	C.graphene_rect_get_top_left(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
 
 	return _p
 }
@@ -239,15 +219,11 @@ func (r *Rect) TopLeft() Point {
 // rectangle.
 func (r *Rect) TopRight() Point {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_point_t // in
+	var _p Point
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_rect_get_top_right(_arg0, &_arg1)
-
-	var _p Point // out
-
-	_p = *(*Point)(unsafe.Pointer((&_arg1)))
+	C.graphene_rect_get_top_right(_arg0, (*C.graphene_point_t)(unsafe.Pointer(&_p)))
 
 	return _p
 }
@@ -413,17 +389,13 @@ func (r *Rect) InsetR(dX float32, dY float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
-	var _arg3 C.graphene_rect_t  // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = C.float(dX)
 	_arg2 = C.float(dY)
 
-	C.graphene_rect_inset_r(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg3)))
+	C.graphene_rect_inset_r(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -434,17 +406,13 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 C.double           // out
-	var _arg3 C.graphene_rect_t  // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b))
 	_arg2 = C.double(factor)
 
-	C.graphene_rect_interpolate(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg3)))
+	C.graphene_rect_interpolate(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -460,18 +428,16 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 func (a *Rect) Intersection(b *Rect) (Rect, bool) {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
-	var _arg2 C.graphene_rect_t  // in
-	var _cret C._Bool            // in
+	var _res Rect
+	var _cret C._Bool // in
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b))
 
-	_cret = C.graphene_rect_intersection(_arg0, _arg1, &_arg2)
+	_cret = C.graphene_rect_intersection(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
-	var _res Rect // out
-	var _ok bool  // out
+	var _ok bool // out
 
-	_res = *(*Rect)(unsafe.Pointer((&_arg2)))
 	if _cret {
 		_ok = true
 	}
@@ -504,15 +470,11 @@ func (r *Rect) Normalize() *Rect {
 // values, and that the origin is in the top-left corner of the rectangle.
 func (r *Rect) NormalizeR() Rect {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_rect_t  // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_rect_normalize_r(_arg0, &_arg1)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg1)))
+	C.graphene_rect_normalize_r(_arg0, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -546,17 +508,13 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
-	var _arg3 C.graphene_rect_t  // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = C.float(dX)
 	_arg2 = C.float(dY)
 
-	C.graphene_rect_offset_r(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg3)))
+	C.graphene_rect_offset_r(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -573,15 +531,11 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 // Deprecated: Use graphene_rect_round_extents() instead.
 func (r *Rect) Round() Rect {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_rect_t  // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_rect_round(_arg0, &_arg1)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg1)))
+	C.graphene_rect_round(_arg0, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -605,15 +559,11 @@ func (r *Rect) Round() Rect {
 // corners of the original rectangle outside the rounded one.
 func (r *Rect) RoundExtents() Rect {
 	var _arg0 *C.graphene_rect_t // out
-	var _arg1 C.graphene_rect_t  // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 
-	C.graphene_rect_round_extents(_arg0, &_arg1)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg1)))
+	C.graphene_rect_round_extents(_arg0, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -644,17 +594,13 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
-	var _arg3 C.graphene_rect_t  // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r))
 	_arg1 = C.float(sH)
 	_arg2 = C.float(sV)
 
-	C.graphene_rect_scale(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg3)))
+	C.graphene_rect_scale(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -667,16 +613,12 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 func (a *Rect) Union(b *Rect) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
-	var _arg2 C.graphene_rect_t  // in
+	var _res Rect
 
 	_arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b))
 
-	C.graphene_rect_union(_arg0, _arg1, &_arg2)
-
-	var _res Rect // out
-
-	_res = *(*Rect)(unsafe.Pointer((&_arg2)))
+	C.graphene_rect_union(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }

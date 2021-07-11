@@ -3,9 +3,10 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -55,12 +56,12 @@ type InputStreamOverrider interface {
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
 	CloseFinish(result AsyncResulter) error
-
+	//
 	CloseFn(cancellable Cancellabler) error
 	// ReadFinish finishes an asynchronous stream read operation.
 	ReadFinish(result AsyncResulter) (int, error)
-
-	ReadFn(buffer interface{}, count uint, cancellable Cancellabler) (int, error)
+	//
+	ReadFn(buffer *cgo.Handle, count uint, cancellable Cancellabler) (int, error)
 	// Skip tries to skip @count bytes from the stream. Will block during the
 	// operation.
 	//
@@ -241,7 +242,7 @@ func (stream *InputStream) CloseAsync(ioPriority int, cancellable Cancellabler, 
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_input_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -362,7 +363,7 @@ func (stream *InputStream) ReadBytesAsync(count uint, ioPriority int, cancellabl
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
+	_arg5 = C.gpointer(gbox.Assign(callback))
 
 	C.g_input_stream_read_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -478,7 +479,7 @@ func (stream *InputStream) SkipAsync(count uint, ioPriority int, cancellable Can
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(box.Assign(callback))
+	_arg5 = C.gpointer(gbox.Assign(callback))
 
 	C.g_input_stream_skip_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

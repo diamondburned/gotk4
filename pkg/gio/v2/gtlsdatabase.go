@@ -135,7 +135,7 @@ func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) st
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -214,7 +214,7 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 	var _tlsCertificateFlags TLSCertificateFlags // out
 	var _goerr error                             // out
 
-	_tlsCertificateFlags = (TLSCertificateFlags)(_cret)
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificateFlags, _goerr

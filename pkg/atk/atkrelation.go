@@ -81,7 +81,7 @@ func (relation *Relation) RelationType() RelationType {
 
 	var _relationType RelationType // out
 
-	_relationType = (RelationType)(_cret)
+	_relationType = RelationType(_cret)
 
 	return _relationType
 }

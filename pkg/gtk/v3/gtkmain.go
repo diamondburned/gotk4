@@ -4,9 +4,10 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -24,22 +25,22 @@ import "C"
 
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
 // They can be used to implement custom key event handling.
-type KeySnoopFunc func(grabWidget *Widget, event *gdk.EventKey, funcData interface{}) (gint int)
+type KeySnoopFunc func(grabWidget *Widget, event *gdk.EventKey, funcData cgo.Handle) (gint int)
 
 //export gotk4_KeySnoopFunc
 func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) (cret C.gint) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var grabWidget *Widget   // out
-	var event *gdk.EventKey  // out
-	var funcData interface{} // out
+	var grabWidget *Widget  // out
+	var event *gdk.EventKey // out
+	var funcData cgo.Handle // out
 
 	grabWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
 	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
-	funcData = box.Get(uintptr(arg2))
+	funcData = (cgo.Handle)(arg2)
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(grabWidget, event, funcData)
@@ -81,7 +82,7 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -211,7 +212,7 @@ func GetCurrentEventState() (gdk.ModifierType, bool) {
 	var _state gdk.ModifierType // out
 	var _ok bool                // out
 
-	_state = (gdk.ModifierType)(_arg1)
+	_state = gdk.ModifierType(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -292,7 +293,7 @@ func GetLocaleDirection() TextDirection {
 
 	var _textDirection TextDirection // out
 
-	_textDirection = (TextDirection)(_cret)
+	_textDirection = TextDirection(_cret)
 
 	return _textDirection
 }

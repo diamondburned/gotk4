@@ -490,7 +490,7 @@ func (value *ValueConverted) logPrefix() string {
 // guarantee that conversion routines get what they expect.
 func (value *ValueConverted) isPtr(wantC int) bool {
 	// See this same piece of code in convertRef for more information.
-	if types.IsGpointer(value.Resolved.CType) && wantC > 0 {
+	if value.Resolved.IsGpointer() && wantC > 0 {
 		wantC--
 	}
 
@@ -516,10 +516,9 @@ func (value *ValueConverted) isPtr(wantC int) bool {
 // InNamePtrPubl adds in an edge case if the value being inputted is possibly a
 // Go interface.
 func (value *ValueConverted) InNamePtrPubl(want int) string {
-	if want > 0 && value.PreferPublic {
+	if want > 0 && value.PreferPublic && value.Resolved.PublicIsInterface() {
 		want--
 	}
-
 	return value.InNamePtr(want)
 }
 
@@ -533,11 +532,12 @@ func (value *ValueConverted) InNamePtr(want int) string {
 }
 
 func (value *ValueConverted) InPtr(want int) string {
-	if value.Direction == ConvertCToGo && types.IsGpointer(value.Resolved.CType) && want > 0 {
-		want--
+	// Account for gpointer.
+	has := strings.Count(value.In.Type, "*")
+	if value.Direction == ConvertCToGo && value.Resolved.IsGpointer() {
+		has++
 	}
 
-	has := strings.Count(value.In.Type, "*")
 	return value._ptr(has, want)
 }
 
@@ -545,6 +545,9 @@ func (value *ValueConverted) InPtr(want int) string {
 // the pointer-prefixed type.
 func (value *ValueConverted) OutCast(want int) string {
 	ptr := value.OutPtr(want)
+	if ptr == "" && !strings.Contains(value.Out.Type, "*") {
+		return value.Out.Type
+	}
 	return fmt.Sprintf("%s(%s%s)", ptr, ptr, value.Out.Type)
 }
 
@@ -556,11 +559,12 @@ func (value *ValueConverted) OutInPtr(want int) string {
 }
 
 func (value *ValueConverted) OutPtr(want int) string {
-	if value.Direction == ConvertGoToC && types.IsGpointer(value.Resolved.CType) && want > 0 {
-		want--
+	has := strings.Count(value.Out.Type, "*")
+	// Account for gpointer.
+	if value.Direction == ConvertGoToC && value.Resolved.IsGpointer() {
+		has++
 	}
 
-	has := strings.Count(value.Out.Type, "*")
 	ptr := value._ptr(want, has)
 	if ptr == "&" {
 		// Refuse to reference the value we converted, since that requires a

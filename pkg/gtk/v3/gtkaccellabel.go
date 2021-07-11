@@ -139,7 +139,7 @@ func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg1)
-	_acceleratorMods = (gdk.ModifierType)(_arg2)
+	_acceleratorMods = gdk.ModifierType(_arg2)
 
 	return _acceleratorKey, _acceleratorMods
 }

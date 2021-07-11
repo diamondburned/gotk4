@@ -31,6 +31,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ColorButtonOverrider interface {
+	//
 	ColorSet()
 }
 
@@ -204,15 +205,11 @@ func (button *ColorButton) Alpha() uint16 {
 // Deprecated: Use gtk_color_chooser_get_rgba() instead.
 func (button *ColorButton) Color() gdk.Color {
 	var _arg0 *C.GtkColorButton // out
-	var _arg1 C.GdkColor        // in
+	var _color gdk.Color
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
-	C.gtk_color_button_get_color(_arg0, &_arg1)
-
-	var _color gdk.Color // out
-
-	_color = *(*gdk.Color)(unsafe.Pointer((&_arg1)))
+	C.gtk_color_button_get_color(_arg0, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
 	return _color
 }
@@ -228,7 +225,7 @@ func (button *ColorButton) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

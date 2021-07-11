@@ -369,7 +369,7 @@ func (image *Image) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -385,7 +385,7 @@ func (image *Image) IconSize() IconSize {
 
 	var _iconSize IconSize // out
 
-	_iconSize = (IconSize)(_cret)
+	_iconSize = IconSize(_cret)
 
 	return _iconSize
 }
@@ -441,7 +441,7 @@ func (image *Image) StorageType() ImageType {
 
 	var _imageType ImageType // out
 
-	_imageType = (ImageType)(_cret)
+	_imageType = ImageType(_cret)
 
 	return _imageType
 }

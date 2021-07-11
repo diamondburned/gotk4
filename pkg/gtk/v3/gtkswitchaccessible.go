@@ -30,6 +30,7 @@ type SwitchAccessibler interface {
 	privateSwitchAccessible()
 }
 
+//
 type SwitchAccessible struct {
 	WidgetAccessible
 

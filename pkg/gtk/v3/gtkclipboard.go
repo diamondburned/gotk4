@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -33,22 +34,22 @@ func init() {
 
 // ClipboardImageReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_image() are received, or when the request fails.
-type ClipboardImageReceivedFunc func(clipboard *Clipboard, pixbuf *gdkpixbuf.Pixbuf, data interface{})
+type ClipboardImageReceivedFunc func(clipboard *Clipboard, pixbuf *gdkpixbuf.Pixbuf, data cgo.Handle)
 
 //export gotk4_ClipboardImageReceivedFunc
 func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var clipboard *Clipboard     // out
 	var pixbuf *gdkpixbuf.Pixbuf // out
-	var data interface{}         // out
+	var data cgo.Handle          // out
 
 	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Clipboard)
 	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*gdkpixbuf.Pixbuf)
-	data = box.Get(uintptr(arg2))
+	data = (cgo.Handle)(arg2)
 
 	fn := v.(ClipboardImageReceivedFunc)
 	fn(clipboard, pixbuf, data)
@@ -56,22 +57,22 @@ func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, a
 
 // ClipboardReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_contents() are received, or when the request fails.
-type ClipboardReceivedFunc func(clipboard *Clipboard, selectionData *SelectionData, data interface{})
+type ClipboardReceivedFunc func(clipboard *Clipboard, selectionData *SelectionData, data cgo.Handle)
 
 //export gotk4_ClipboardReceivedFunc
 func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var clipboard *Clipboard         // out
 	var selectionData *SelectionData // out
-	var data interface{}             // out
+	var data cgo.Handle              // out
 
 	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Clipboard)
 	selectionData = (*SelectionData)(unsafe.Pointer(arg1))
-	data = box.Get(uintptr(arg2))
+	data = (cgo.Handle)(arg2)
 
 	fn := v.(ClipboardReceivedFunc)
 	fn(clipboard, selectionData, data)
@@ -79,22 +80,22 @@ func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData,
 
 // ClipboardTextReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_text() are received, or when the request fails.
-type ClipboardTextReceivedFunc func(clipboard *Clipboard, text string, data interface{})
+type ClipboardTextReceivedFunc func(clipboard *Clipboard, text string, data cgo.Handle)
 
 //export gotk4_ClipboardTextReceivedFunc
 func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var clipboard *Clipboard // out
 	var text string          // out
-	var data interface{}     // out
+	var data cgo.Handle      // out
 
 	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Clipboard)
-	text = C.GoString(arg1)
-	data = box.Get(uintptr(arg2))
+	text = C.GoString((*C.gchar)(arg1))
+	data = (cgo.Handle)(arg2)
 
 	fn := v.(ClipboardTextReceivedFunc)
 	fn(clipboard, text, data)
@@ -102,18 +103,18 @@ func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C
 
 // ClipboardURIReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_uris() are received, or when the request fails.
-type ClipboardURIReceivedFunc func(clipboard *Clipboard, uris []string, data interface{})
+type ClipboardURIReceivedFunc func(clipboard *Clipboard, uris []string, data cgo.Handle)
 
 //export gotk4_ClipboardURIReceivedFunc
 func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var clipboard *Clipboard // out
 	var uris []string
-	var data interface{} // out
+	var data cgo.Handle // out
 
 	clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Clipboard)
 	{
@@ -126,10 +127,10 @@ func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C
 		src := unsafe.Slice(arg1, i)
 		uris = make([]string, i)
 		for i := range src {
-			uris[i] = C.GoString(src[i])
+			uris[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
-	data = box.Get(uintptr(arg2))
+	data = (cgo.Handle)(arg2)
 
 	fn := v.(ClipboardURIReceivedFunc)
 	fn(clipboard, uris, data)
@@ -321,7 +322,7 @@ func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ClipboardImageReceivedFunc)
-	_arg2 = C.gpointer(box.Assign(callback))
+	_arg2 = C.gpointer(gbox.Assign(callback))
 
 	C.gtk_clipboard_request_image(_arg0, _arg1, _arg2)
 }
@@ -341,7 +342,7 @@ func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ClipboardTextReceivedFunc)
-	_arg2 = C.gpointer(box.Assign(callback))
+	_arg2 = C.gpointer(gbox.Assign(callback))
 
 	C.gtk_clipboard_request_text(_arg0, _arg1, _arg2)
 }
@@ -360,7 +361,7 @@ func (clipboard *Clipboard) RequestUris(callback ClipboardURIReceivedFunc) {
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ClipboardURIReceivedFunc)
-	_arg2 = C.gpointer(box.Assign(callback))
+	_arg2 = C.gpointer(gbox.Assign(callback))
 
 	C.gtk_clipboard_request_uris(_arg0, _arg1, _arg2)
 }
@@ -454,7 +455,7 @@ func (clipboard *Clipboard) WaitForText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -483,7 +484,7 @@ func (clipboard *Clipboard) WaitForUris() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

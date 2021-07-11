@@ -95,7 +95,7 @@ func (tool *DeviceTool) Axes() AxisFlags {
 
 	var _axisFlags AxisFlags // out
 
-	_axisFlags = (AxisFlags)(_cret)
+	_axisFlags = AxisFlags(_cret)
 
 	return _axisFlags
 }
@@ -155,7 +155,7 @@ func (tool *DeviceTool) ToolType() DeviceToolType {
 
 	var _deviceToolType DeviceToolType // out
 
-	_deviceToolType = (DeviceToolType)(_cret)
+	_deviceToolType = DeviceToolType(_cret)
 
 	return _deviceToolType
 }

@@ -34,30 +34,31 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ThemingEngineOverrider interface {
+	//
 	RenderActivity(cr *cairo.Context, x float64, y float64, width float64, height float64)
-
+	//
 	RenderArrow(cr *cairo.Context, angle float64, x float64, y float64, size float64)
-
+	//
 	RenderBackground(cr *cairo.Context, x float64, y float64, width float64, height float64)
-
+	//
 	RenderCheck(cr *cairo.Context, x float64, y float64, width float64, height float64)
-
+	//
 	RenderExpander(cr *cairo.Context, x float64, y float64, width float64, height float64)
-
+	//
 	RenderFocus(cr *cairo.Context, x float64, y float64, width float64, height float64)
-
+	//
 	RenderFrame(cr *cairo.Context, x float64, y float64, width float64, height float64)
-
+	//
 	RenderHandle(cr *cairo.Context, x float64, y float64, width float64, height float64)
-
+	//
 	RenderIcon(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuffer, x float64, y float64)
-
+	//
 	RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x float64, y float64)
-
+	//
 	RenderLayout(cr *cairo.Context, x float64, y float64, layout pango.Layouter)
-
+	//
 	RenderLine(cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
-
+	//
 	RenderOption(cr *cairo.Context, x float64, y float64, width float64, height float64)
 }
 
@@ -128,7 +129,7 @@ func (engine *ThemingEngine) Direction() TextDirection {
 
 	var _textDirection TextDirection // out
 
-	_textDirection = (TextDirection)(_cret)
+	_textDirection = TextDirection(_cret)
 
 	return _textDirection
 }
@@ -146,7 +147,7 @@ func (engine *ThemingEngine) JunctionSides() JunctionSides {
 
 	var _junctionSides JunctionSides // out
 
-	_junctionSides = (JunctionSides)(_cret)
+	_junctionSides = JunctionSides(_cret)
 
 	return _junctionSides
 }
@@ -204,7 +205,7 @@ func (engine *ThemingEngine) State() StateFlags {
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = (StateFlags)(_cret)
+	_stateFlags = StateFlags(_cret)
 
 	return _stateFlags
 }
@@ -274,7 +275,7 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _flags RegionFlags // out
 	var _ok bool           // out
 
-	_flags = (RegionFlags)(_arg2)
+	_flags = RegionFlags(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -289,19 +290,17 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 func (engine *ThemingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
-	var _arg2 C.GdkRGBA           // in
-	var _cret C.gboolean          // in
+	var _color gdk.RGBA
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = (*C.gchar)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
-	var _color gdk.RGBA // out
-	var _ok bool        // out
+	var _ok bool // out
 
-	_color = *(*gdk.RGBA)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}

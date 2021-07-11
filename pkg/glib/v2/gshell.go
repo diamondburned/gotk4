@@ -53,7 +53,7 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 		src := unsafe.Slice(_arg3, _arg2)
 		_argvp = make([]string, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_argvp[i] = C.GoString(src[i])
+			_argvp[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -78,7 +78,7 @@ func ShellQuote(unquotedString string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _filename
@@ -115,7 +115,7 @@ func ShellUnquote(quotedString string) (string, error) {
 	var _filename string // out
 	var _goerr error     // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

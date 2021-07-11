@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -184,7 +184,7 @@ func (interaction *TLSInteraction) AskPassword(password TLSPassworder, cancellab
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out
 
-	_tlsInteractionResult = (TLSInteractionResult)(_cret)
+	_tlsInteractionResult = TLSInteractionResult(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
@@ -216,7 +216,7 @@ func (interaction *TLSInteraction) AskPasswordAsync(password TLSPassworder, canc
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer((password).(gextras.Nativer).Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_tls_interaction_ask_password_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -245,7 +245,7 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out
 
-	_tlsInteractionResult = (TLSInteractionResult)(_cret)
+	_tlsInteractionResult = TLSInteractionResult(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
@@ -285,7 +285,7 @@ func (interaction *TLSInteraction) InvokeAskPassword(password TLSPassworder, can
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out
 
-	_tlsInteractionResult = (TLSInteractionResult)(_cret)
+	_tlsInteractionResult = TLSInteractionResult(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
@@ -316,7 +316,7 @@ func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out
 
-	_tlsInteractionResult = (TLSInteractionResult)(_cret)
+	_tlsInteractionResult = TLSInteractionResult(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr

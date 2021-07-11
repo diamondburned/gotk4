@@ -163,7 +163,7 @@ func (layout *PopupLayout) AnchorHints() AnchorHints {
 
 	var _anchorHints AnchorHints // out
 
-	_anchorHints = (AnchorHints)(_cret)
+	_anchorHints = AnchorHints(_cret)
 
 	return _anchorHints
 }
@@ -214,7 +214,7 @@ func (layout *PopupLayout) RectAnchor() Gravity {
 
 	var _gravity Gravity // out
 
-	_gravity = (Gravity)(_cret)
+	_gravity = Gravity(_cret)
 
 	return _gravity
 }
@@ -255,7 +255,7 @@ func (layout *PopupLayout) SurfaceAnchor() Gravity {
 
 	var _gravity Gravity // out
 
-	_gravity = (Gravity)(_cret)
+	_gravity = Gravity(_cret)
 
 	return _gravity
 }

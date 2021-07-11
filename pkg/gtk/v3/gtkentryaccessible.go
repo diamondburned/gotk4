@@ -30,6 +30,7 @@ type EntryAccessibler interface {
 	privateEntryAccessible()
 }
 
+//
 type EntryAccessible struct {
 	WidgetAccessible
 

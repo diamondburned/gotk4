@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,6 +41,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SocketListenerOverrider interface {
+	//
 	Changed()
 }
 
@@ -170,7 +171,7 @@ func (listener *SocketListener) AcceptAsync(cancellable Cancellabler, callback A
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_socket_listener_accept_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -249,7 +250,7 @@ func (listener *SocketListener) AcceptSocketAsync(cancellable Cancellabler, call
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_socket_listener_accept_socket_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -295,7 +296,7 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject gextras.Objector) (u
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
 
 	_cret = C.g_socket_listener_add_any_inet_port(_arg0, _arg1, &_cerr)
 
@@ -327,7 +328,7 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject gextras.Ob
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = C.guint16(port)
-	_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
 
 	C.g_socket_listener_add_inet_port(_arg0, _arg1, _arg2, &_cerr)
 
@@ -357,7 +358,7 @@ func (listener *SocketListener) AddSocket(socket Socketter, sourceObject gextras
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = (*C.GSocket)(unsafe.Pointer((socket).(gextras.Nativer).Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer((&sourceObject).Native()))
 
 	C.g_socket_listener_add_socket(_arg0, _arg1, _arg2, &_cerr)
 

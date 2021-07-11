@@ -31,14 +31,15 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PanedOverrider interface {
+	//
 	AcceptPosition() bool
-
+	//
 	CancelPosition() bool
-
+	//
 	CycleChildFocus(reverse bool) bool
-
+	//
 	CycleHandleFocus(reverse bool) bool
-
+	//
 	ToggleHandleFocus() bool
 }
 

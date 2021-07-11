@@ -96,18 +96,16 @@ func CairoDrawFromGL(cr *cairo.Context, window Windowwer, source int, sourceType
 // cairo_clip_extents(). It rounds the clip extents to integer coordinates and
 // returns a boolean indicating if a clip area exists.
 func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
-	var _arg1 *C.cairo_t     // out
-	var _arg2 C.GdkRectangle // in
-	var _cret C.gboolean     // in
+	var _arg1 *C.cairo_t // out
+	var _rect Rectangle
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
 
-	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, &_arg2)
+	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var _rect Rectangle // out
-	var _ok bool        // out
+	var _ok bool // out
 
-	_rect = *(*Rectangle)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}

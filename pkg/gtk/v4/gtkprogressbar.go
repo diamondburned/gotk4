@@ -170,7 +170,7 @@ func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
 
 	var _ellipsizeMode pango.EllipsizeMode // out
 
-	_ellipsizeMode = (pango.EllipsizeMode)(_cret)
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
 
 	return _ellipsizeMode
 }
@@ -261,7 +261,7 @@ func (pbar *ProgressBar) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

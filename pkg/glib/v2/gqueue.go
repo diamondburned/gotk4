@@ -3,9 +3,8 @@
 package glib
 
 import (
+	"runtime/cgo"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -66,13 +65,13 @@ func (queue *Queue) Length() uint {
 
 // Index returns the position of the first element in @queue which contains
 // @data.
-func (queue *Queue) Index(data interface{}) int {
+func (queue *Queue) Index(data cgo.Handle) int {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gconstpointer)(box.Assign(data))
+	_arg1 = (C.gconstpointer)(data)
 
 	_cret = C.g_queue_index(_arg0, _arg1)
 
@@ -113,7 +112,7 @@ func (queue *Queue) IsEmpty() bool {
 }
 
 // PeekHead returns the first element of the queue.
-func (queue *Queue) PeekHead() interface{} {
+func (queue *Queue) PeekHead() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
 
@@ -121,15 +120,15 @@ func (queue *Queue) PeekHead() interface{} {
 
 	_cret = C.g_queue_peek_head(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
 
 // PeekNth returns the @n'th element of @queue.
-func (queue *Queue) PeekNth(n uint) interface{} {
+func (queue *Queue) PeekNth(n uint) cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
 	var _cret C.gpointer // in
@@ -139,15 +138,15 @@ func (queue *Queue) PeekNth(n uint) interface{} {
 
 	_cret = C.g_queue_peek_nth(_arg0, _arg1)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
 
 // PeekTail returns the last element of the queue.
-func (queue *Queue) PeekTail() interface{} {
+func (queue *Queue) PeekTail() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
 
@@ -155,15 +154,15 @@ func (queue *Queue) PeekTail() interface{} {
 
 	_cret = C.g_queue_peek_tail(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
 
 // PopHead removes the first element of the queue and returns its data.
-func (queue *Queue) PopHead() interface{} {
+func (queue *Queue) PopHead() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
 
@@ -171,15 +170,15 @@ func (queue *Queue) PopHead() interface{} {
 
 	_cret = C.g_queue_pop_head(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
 
 // PopNth removes the @n'th element of @queue and returns its data.
-func (queue *Queue) PopNth(n uint) interface{} {
+func (queue *Queue) PopNth(n uint) cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
 	var _cret C.gpointer // in
@@ -189,15 +188,15 @@ func (queue *Queue) PopNth(n uint) interface{} {
 
 	_cret = C.g_queue_pop_nth(_arg0, _arg1)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
 
 // PopTail removes the last element of the queue and returns its data.
-func (queue *Queue) PopTail() interface{} {
+func (queue *Queue) PopTail() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
 
@@ -205,56 +204,56 @@ func (queue *Queue) PopTail() interface{} {
 
 	_cret = C.g_queue_pop_tail(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
 
 // PushHead adds a new element at the head of the queue.
-func (queue *Queue) PushHead(data interface{}) {
+func (queue *Queue) PushHead(data cgo.Handle) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gpointer)(box.Assign(data))
+	_arg1 = (C.gpointer)(data)
 
 	C.g_queue_push_head(_arg0, _arg1)
 }
 
 // PushNth inserts a new element into @queue at the given position.
-func (queue *Queue) PushNth(data interface{}, n int) {
+func (queue *Queue) PushNth(data cgo.Handle, n int) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
 	var _arg2 C.gint     // out
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gpointer)(box.Assign(data))
+	_arg1 = (C.gpointer)(data)
 	_arg2 = C.gint(n)
 
 	C.g_queue_push_nth(_arg0, _arg1, _arg2)
 }
 
 // PushTail adds a new element at the tail of the queue.
-func (queue *Queue) PushTail(data interface{}) {
+func (queue *Queue) PushTail(data cgo.Handle) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gpointer)(box.Assign(data))
+	_arg1 = (C.gpointer)(data)
 
 	C.g_queue_push_tail(_arg0, _arg1)
 }
 
 // Remove removes the first element in @queue that contains @data.
-func (queue *Queue) Remove(data interface{}) bool {
+func (queue *Queue) Remove(data cgo.Handle) bool {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gconstpointer)(box.Assign(data))
+	_arg1 = (C.gconstpointer)(data)
 
 	_cret = C.g_queue_remove(_arg0, _arg1)
 
@@ -268,13 +267,13 @@ func (queue *Queue) Remove(data interface{}) bool {
 }
 
 // RemoveAll: remove all elements whose data equals @data from @queue.
-func (queue *Queue) RemoveAll(data interface{}) uint {
+func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
 	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
-	_arg1 = (C.gconstpointer)(box.Assign(data))
+	_arg1 = (C.gconstpointer)(data)
 
 	_cret = C.g_queue_remove_all(_arg0, _arg1)
 

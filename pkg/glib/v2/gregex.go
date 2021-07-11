@@ -387,7 +387,7 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -420,7 +420,7 @@ func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -461,7 +461,7 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -490,7 +490,7 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -633,7 +633,7 @@ func (matchInfo *MatchInfo) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -858,7 +858,7 @@ func (regex *Regex) CompileFlags() RegexCompileFlags {
 
 	var _regexCompileFlags RegexCompileFlags // out
 
-	_regexCompileFlags = (RegexCompileFlags)(_cret)
+	_regexCompileFlags = RegexCompileFlags(_cret)
 
 	return _regexCompileFlags
 }
@@ -892,7 +892,7 @@ func (regex *Regex) MatchFlags() RegexMatchFlags {
 
 	var _regexMatchFlags RegexMatchFlags // out
 
-	_regexMatchFlags = (RegexMatchFlags)(_cret)
+	_regexMatchFlags = RegexMatchFlags(_cret)
 
 	return _regexMatchFlags
 }
@@ -944,7 +944,7 @@ func (regex *Regex) Pattern() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

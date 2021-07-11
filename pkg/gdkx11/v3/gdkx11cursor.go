@@ -28,6 +28,7 @@ type X11Cursorrer interface {
 	privateX11Cursor()
 }
 
+//
 type X11Cursor struct {
 	gdk.Cursor
 }

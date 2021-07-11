@@ -24,6 +24,7 @@ func init() {
 	})
 }
 
+//
 type TextAppearance struct {
 	native C.GtkTextAppearance
 }

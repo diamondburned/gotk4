@@ -69,7 +69,7 @@ func wrapDragIcon(obj *externglib.Object) DragIconner {
 			},
 		},
 		Root: Root{
-			Native: Native{
+			NativeSurface: NativeSurface{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,

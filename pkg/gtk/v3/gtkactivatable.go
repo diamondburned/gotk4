@@ -36,7 +36,7 @@ type ActivatableOverrider interface {
 	//
 	// Deprecated: since version 3.10.
 	SyncActionProperties(action Actioner)
-
+	//
 	Update(action Actioner, propertyName string)
 }
 

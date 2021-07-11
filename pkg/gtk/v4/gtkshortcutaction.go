@@ -4,9 +4,10 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -49,18 +50,18 @@ func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 }
 
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
-type ShortcutFunc func(widget *Widget, args *glib.Variant, userData interface{}) (ok bool)
+type ShortcutFunc func(widget *Widget, args *glib.Variant, userData cgo.Handle) (ok bool)
 
 //export gotk4_ShortcutFunc
 func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var widget *Widget       // out
-	var args *glib.Variant   // out
-	var userData interface{} // out
+	var widget *Widget      // out
+	var args *glib.Variant  // out
+	var userData cgo.Handle // out
 
 	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
 	args = (*glib.Variant)(unsafe.Pointer(arg1))
@@ -68,7 +69,7 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (c
 	runtime.SetFinalizer(args, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(ShortcutFunc)
 	ok := fn(widget, args, userData)
@@ -238,7 +239,7 @@ func (self *NamedAction) ActionName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -369,7 +370,7 @@ func (self *ShortcutAction) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -439,7 +440,7 @@ func (self *SignalAction) SignalName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

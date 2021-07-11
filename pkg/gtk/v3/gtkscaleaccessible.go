@@ -30,6 +30,7 @@ type ScaleAccessibler interface {
 	privateScaleAccessible()
 }
 
+//
 type ScaleAccessible struct {
 	RangeAccessible
 }

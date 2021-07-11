@@ -30,36 +30,37 @@ func init() {
 type ValueType int
 
 const (
+	//
 	ValueTypeVeryWeak ValueType = iota
-
+	//
 	ValueTypeWeak
-
+	//
 	ValueTypeAcceptable
-
+	//
 	ValueTypeStrong
-
+	//
 	ValueTypeVeryStrong
-
+	//
 	ValueTypeVeryLow
-
+	//
 	ValueTypeLow
-
+	//
 	ValueTypeMedium
-
+	//
 	ValueTypeHigh
-
+	//
 	ValueTypeVeryHigh
-
+	//
 	ValueTypeVeryBad
-
+	//
 	ValueTypeBad
-
+	//
 	ValueTypeGood
-
+	//
 	ValueTypeVeryGood
-
+	//
 	ValueTypeBest
-
+	//
 	ValueTypeLastDefined
 )
 
@@ -386,7 +387,7 @@ func (obj *Value) ValueAndText() (float64, string) {
 	var _text string   // out
 
 	_value = float64(_arg1)
-	_text = C.GoString(_arg2)
+	_text = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	return _value, _text

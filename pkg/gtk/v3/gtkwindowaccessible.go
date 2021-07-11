@@ -30,6 +30,7 @@ type WindowAccessibler interface {
 	privateWindowAccessible()
 }
 
+//
 type WindowAccessible struct {
 	ContainerAccessible
 }

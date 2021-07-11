@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -21,11 +22,11 @@ import "C"
 // TextBufferDeserializeFunc: function that is called to deserialize rich text
 // that has been serialized with gtk_text_buffer_serialize(), and insert it at
 // @iter.
-type TextBufferDeserializeFunc func(registerBuffer *TextBuffer, contentBuffer *TextBuffer, iter *TextIter, data []byte, createTags bool, userData interface{}) (ok bool)
+type TextBufferDeserializeFunc func(registerBuffer *TextBuffer, contentBuffer *TextBuffer, iter *TextIter, data []byte, createTags bool, userData cgo.Handle) (ok bool)
 
 //export gotk4_TextBufferDeserializeFunc
 func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.guint8, arg4 C.gsize, arg5 C.gboolean, arg6 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg6))
+	v := gbox.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -34,8 +35,8 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 	var contentBuffer *TextBuffer  // out
 	var iter *TextIter             // out
 	var data []byte
-	var createTags bool      // out
-	var userData interface{} // out
+	var createTags bool     // out
+	var userData cgo.Handle // out
 
 	registerBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TextBuffer)
 	contentBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*TextBuffer)
@@ -45,7 +46,7 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 	if arg5 != 0 {
 		createTags = true
 	}
-	userData = box.Get(uintptr(arg6))
+	userData = (cgo.Handle)(arg6)
 
 	fn := v.(TextBufferDeserializeFunc)
 	ok := fn(registerBuffer, contentBuffer, iter, data, createTags, userData)
@@ -59,11 +60,11 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 
 // TextBufferSerializeFunc: function that is called to serialize the content of
 // a text buffer. It must return the serialized form of the content.
-type TextBufferSerializeFunc func(registerBuffer *TextBuffer, contentBuffer *TextBuffer, start *TextIter, end *TextIter, userData interface{}) (length uint, guint8 *byte)
+type TextBufferSerializeFunc func(registerBuffer *TextBuffer, contentBuffer *TextBuffer, start *TextIter, end *TextIter, userData cgo.Handle) (length uint, guint8 *byte)
 
 //export gotk4_TextBufferSerializeFunc
 func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.gsize, arg5 C.gpointer) (cret *C.guint8) {
-	v := box.Get(uintptr(arg5))
+	v := gbox.Get(uintptr(arg5))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -72,13 +73,13 @@ func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer,
 	var contentBuffer *TextBuffer  // out
 	var start *TextIter            // out
 	var end *TextIter              // out
-	var userData interface{}       // out
+	var userData cgo.Handle        // out
 
 	registerBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TextBuffer)
 	contentBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*TextBuffer)
 	start = (*TextIter)(unsafe.Pointer(arg2))
 	end = (*TextIter)(unsafe.Pointer(arg3))
-	userData = box.Get(uintptr(arg5))
+	userData = (cgo.Handle)(arg5)
 
 	fn := v.(TextBufferSerializeFunc)
 	length, guint8 := fn(registerBuffer, contentBuffer, start, end, userData)

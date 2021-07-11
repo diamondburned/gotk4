@@ -178,7 +178,7 @@ func (section *CSSSection) SectionType() CSSSectionType {
 
 	var _cssSectionType CSSSectionType // out
 
-	_cssSectionType = (CSSSectionType)(_cret)
+	_cssSectionType = CSSSectionType(_cret)
 
 	return _cssSectionType
 }

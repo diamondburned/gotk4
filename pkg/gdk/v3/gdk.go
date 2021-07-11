@@ -24,17 +24,19 @@ func init() {
 	})
 }
 
+//
 type Status int
 
 const (
+	//
 	StatusOk Status = 0
-
+	//
 	StatusError Status = -1
-
+	//
 	StatusErrorParam Status = -2
-
+	//
 	StatusErrorFile Status = -3
-
+	//
 	StatusErrorMem Status = -4
 )
 
@@ -53,6 +55,7 @@ type DeviceTooler interface {
 	ToolType() DeviceToolType
 }
 
+//
 type DeviceTool struct {
 	*externglib.Object
 }
@@ -126,7 +129,7 @@ func (tool *DeviceTool) ToolType() DeviceToolType {
 
 	var _deviceToolType DeviceToolType // out
 
-	_deviceToolType = (DeviceToolType)(_cret)
+	_deviceToolType = DeviceToolType(_cret)
 
 	return _deviceToolType
 }
@@ -159,6 +162,7 @@ type DragContexter interface {
 	SetHotspot(hotX int, hotY int)
 }
 
+//
 type DragContext struct {
 	*externglib.Object
 }
@@ -192,7 +196,7 @@ func (context *DragContext) Actions() DragAction {
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(_cret)
+	_dragAction = DragAction(_cret)
 
 	return _dragAction
 }
@@ -260,7 +264,7 @@ func (context *DragContext) Protocol() DragProtocol {
 
 	var _dragProtocol DragProtocol // out
 
-	_dragProtocol = (DragProtocol)(_cret)
+	_dragProtocol = DragProtocol(_cret)
 
 	return _dragProtocol
 }
@@ -276,7 +280,7 @@ func (context *DragContext) SelectedAction() DragAction {
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(_cret)
+	_dragAction = DragAction(_cret)
 
 	return _dragAction
 }
@@ -308,7 +312,7 @@ func (context *DragContext) SuggestedAction() DragAction {
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(_cret)
+	_dragAction = DragAction(_cret)
 
 	return _dragAction
 }

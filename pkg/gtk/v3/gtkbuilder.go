@@ -3,9 +3,9 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -108,7 +108,7 @@ type Builderer interface {
 	AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error)
 	// ConnectSignals: this method is a simpler variation of
 	// gtk_builder_connect_signals_full().
-	ConnectSignals(userData interface{})
+	ConnectSignals(userData cgo.Handle)
 	// ExposeObject: add @object to the @builder object pool so it can be
 	// referenced just like any other object built by builder.
 	ExposeObject(name string, object gextras.Objector)
@@ -661,12 +661,12 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 // with MODULE_EXPORT, or they will not be put in the symbol table. On Linux and
 // Unices, this is not necessary; applications should instead be compiled with
 // the -Wl,--export-dynamic CFLAGS, and linked against gmodule-export-2.0.
-func (builder *Builder) ConnectSignals(userData interface{}) {
+func (builder *Builder) ConnectSignals(userData cgo.Handle) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 C.gpointer    // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (C.gpointer)(box.Assign(userData))
+	_arg1 = (C.gpointer)(userData)
 
 	C.gtk_builder_connect_signals(_arg0, _arg1)
 }
@@ -681,7 +681,7 @@ func (builder *Builder) ExposeObject(name string, object gextras.Objector) {
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer((&object).Native()))
 
 	C.gtk_builder_expose_object(_arg0, _arg1, _arg2)
 }
@@ -702,7 +702,7 @@ func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType extern
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
-	_arg2 = (C.GType)(templateType)
+	_arg2 = C.GType(templateType)
 	_arg3 = (*C.gchar)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.gsize(length)
@@ -772,7 +772,7 @@ func (builder *Builder) TranslationDomain() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -840,7 +840,7 @@ func (builder *Builder) ValueFromStringType(typ externglib.Type, _string string)
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 	_arg2 = (*C.gchar)(C.CString(_string))
 	defer C.free(unsafe.Pointer(_arg2))
 

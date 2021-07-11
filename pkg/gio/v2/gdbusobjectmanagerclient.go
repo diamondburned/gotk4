@@ -39,6 +39,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectManagerClientOverrider interface {
+	//
 	InterfaceProxySignal(objectProxy DBusObjectProxier, interfaceProxy DBusProxier, senderName string, signalName string, parameters *glib.Variant)
 }
 
@@ -220,7 +221,7 @@ func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 
 	var _dBusObjectManagerClientFlags DBusObjectManagerClientFlags // out
 
-	_dBusObjectManagerClientFlags = (DBusObjectManagerClientFlags)(_cret)
+	_dBusObjectManagerClientFlags = DBusObjectManagerClientFlags(_cret)
 
 	return _dBusObjectManagerClientFlags
 }
@@ -237,7 +238,7 @@ func (manager *DBusObjectManagerClient) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -255,7 +256,7 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

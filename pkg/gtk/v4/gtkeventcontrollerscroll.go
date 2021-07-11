@@ -123,7 +123,7 @@ func (scroll *EventControllerScroll) Flags() EventControllerScrollFlags {
 
 	var _eventControllerScrollFlags EventControllerScrollFlags // out
 
-	_eventControllerScrollFlags = (EventControllerScrollFlags)(_cret)
+	_eventControllerScrollFlags = EventControllerScrollFlags(_cret)
 
 	return _eventControllerScrollFlags
 }

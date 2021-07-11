@@ -32,7 +32,7 @@ func init() {
 type MenuItemOverrider interface {
 	// Activate emits the MenuItem::activate signal on the given item
 	Activate()
-
+	//
 	ActivateItem()
 	// Deselect emits the MenuItem::deselect signal on the given item.
 	Deselect()
@@ -257,7 +257,7 @@ func (menuItem *MenuItem) AccelPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -273,7 +273,7 @@ func (menuItem *MenuItem) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

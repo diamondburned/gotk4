@@ -114,7 +114,7 @@ func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 
 	var _dataStreamByteOrder DataStreamByteOrder // out
 
-	_dataStreamByteOrder = (DataStreamByteOrder)(_cret)
+	_dataStreamByteOrder = DataStreamByteOrder(_cret)
 
 	return _dataStreamByteOrder
 }

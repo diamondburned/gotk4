@@ -38,11 +38,11 @@ type EntryBufferOverrider interface {
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DeleteText(position uint, nChars uint) uint
-
+	//
 	DeletedText(position uint, nChars uint)
 	// Length retrieves the length in characters of the buffer.
 	Length() uint
-
+	//
 	Text(nBytes *uint) string
 	// InsertText inserts @n_chars characters of @chars into the contents of the
 	// buffer, at position @position.
@@ -54,7 +54,7 @@ type EntryBufferOverrider interface {
 	//
 	// Note that the position and length are in characters, not in bytes.
 	InsertText(position uint, chars string, nChars uint) uint
-
+	//
 	InsertedText(position uint, chars string, nChars uint)
 }
 
@@ -256,7 +256,7 @@ func (buffer *EntryBuffer) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

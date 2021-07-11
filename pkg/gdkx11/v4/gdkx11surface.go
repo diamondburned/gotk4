@@ -78,6 +78,7 @@ type X11Surfacer interface {
 	SetUTF8Property(name string, value string)
 }
 
+//
 type X11Surface struct {
 	gdk.Surface
 }

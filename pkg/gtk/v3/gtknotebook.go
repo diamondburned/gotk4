@@ -30,18 +30,19 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type NotebookOverrider interface {
+	//
 	ChangeCurrentPage(offset int) bool
-
+	//
 	InsertPage(child Widgetter, tabLabel Widgetter, menuLabel Widgetter, position int) int
-
+	//
 	PageAdded(child Widgetter, pageNum uint)
-
+	//
 	PageRemoved(child Widgetter, pageNum uint)
-
+	//
 	PageReordered(child Widgetter, pageNum uint)
-
+	//
 	SelectPage(moveFocus bool) bool
-
+	//
 	SwitchPage(page Widgetter, pageNum uint)
 }
 
@@ -358,7 +359,7 @@ func (notebook *Notebook) GroupName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -395,7 +396,7 @@ func (notebook *Notebook) MenuLabelText(child Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -564,7 +565,7 @@ func (notebook *Notebook) TabLabelText(child Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -581,7 +582,7 @@ func (notebook *Notebook) TabPos() PositionType {
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(_cret)
+	_positionType = PositionType(_cret)
 
 	return _positionType
 }

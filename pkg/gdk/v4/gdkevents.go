@@ -430,7 +430,7 @@ func (event *CrossingEvent) Detail() NotifyType {
 
 	var _notifyType NotifyType // out
 
-	_notifyType = (NotifyType)(_cret)
+	_notifyType = NotifyType(_cret)
 
 	return _notifyType
 }
@@ -464,7 +464,7 @@ func (event *CrossingEvent) Mode() CrossingMode {
 
 	var _crossingMode CrossingMode // out
 
-	_crossingMode = (CrossingMode)(_cret)
+	_crossingMode = CrossingMode(_cret)
 
 	return _crossingMode
 }
@@ -720,7 +720,7 @@ func (event *Event) EventType() EventType {
 
 	var _eventType EventType // out
 
-	_eventType = (EventType)(_cret)
+	_eventType = EventType(_cret)
 
 	return _eventType
 }
@@ -736,7 +736,7 @@ func (event *Event) ModifierState() ModifierType {
 
 	var _modifierType ModifierType // out
 
-	_modifierType = (ModifierType)(_cret)
+	_modifierType = ModifierType(_cret)
 
 	return _modifierType
 }
@@ -1056,7 +1056,7 @@ func (event *KeyEvent) ConsumedModifiers() ModifierType {
 
 	var _modifierType ModifierType // out
 
-	_modifierType = (ModifierType)(_cret)
+	_modifierType = ModifierType(_cret)
 
 	return _modifierType
 }
@@ -1143,7 +1143,7 @@ func (event *KeyEvent) Match() (uint, ModifierType, bool) {
 	var _ok bool                // out
 
 	_keyval = uint(_arg1)
-	_modifiers = (ModifierType)(_arg2)
+	_modifiers = ModifierType(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1385,7 +1385,7 @@ func (event *ScrollEvent) Direction() ScrollDirection {
 
 	var _scrollDirection ScrollDirection // out
 
-	_scrollDirection = (ScrollDirection)(_cret)
+	_scrollDirection = ScrollDirection(_cret)
 
 	return _scrollDirection
 }
@@ -1537,7 +1537,7 @@ func (event *TouchpadEvent) GesturePhase() TouchpadGesturePhase {
 
 	var _touchpadGesturePhase TouchpadGesturePhase // out
 
-	_touchpadGesturePhase = (TouchpadGesturePhase)(_cret)
+	_touchpadGesturePhase = TouchpadGesturePhase(_cret)
 
 	return _touchpadGesturePhase
 }

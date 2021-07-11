@@ -146,7 +146,7 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 
 	var _sizeGroupMode SizeGroupMode // out
 
-	_sizeGroupMode = (SizeGroupMode)(_cret)
+	_sizeGroupMode = SizeGroupMode(_cret)
 
 	return _sizeGroupMode
 }

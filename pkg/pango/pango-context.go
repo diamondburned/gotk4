@@ -155,7 +155,7 @@ func (context *Context) BaseDir() Direction {
 
 	var _direction Direction // out
 
-	_direction = (Direction)(_cret)
+	_direction = Direction(_cret)
 
 	return _direction
 }
@@ -173,7 +173,7 @@ func (context *Context) BaseGravity() Gravity {
 
 	var _gravity Gravity // out
 
-	_gravity = (Gravity)(_cret)
+	_gravity = Gravity(_cret)
 
 	return _gravity
 }
@@ -226,7 +226,7 @@ func (context *Context) Gravity() Gravity {
 
 	var _gravity Gravity // out
 
-	_gravity = (Gravity)(_cret)
+	_gravity = Gravity(_cret)
 
 	return _gravity
 }
@@ -244,7 +244,7 @@ func (context *Context) GravityHint() GravityHint {
 
 	var _gravityHint GravityHint // out
 
-	_gravityHint = (GravityHint)(_cret)
+	_gravityHint = GravityHint(_cret)
 
 	return _gravityHint
 }

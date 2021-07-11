@@ -12,6 +12,7 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+//
 type SIMD4F struct {
 	native C.graphene_simd4f_t
 }
@@ -21,6 +22,7 @@ func (s *SIMD4F) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
+//
 type SIMD4X4F struct {
 	native C.graphene_simd4x4f_t
 }

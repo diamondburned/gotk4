@@ -128,7 +128,7 @@ func wrapApplicationWindow(obj *externglib.Object) ApplicationWindowwer {
 				},
 			},
 			Root: Root{
-				Native: Native{
+				NativeSurface: NativeSurface{
 					Widget: Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,

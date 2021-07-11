@@ -4,9 +4,10 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -30,22 +31,23 @@ func init() {
 	})
 }
 
-type PrintSettingsFunc func(key string, value string, userData interface{})
+//
+type PrintSettingsFunc func(key string, value string, userData cgo.Handle)
 
 //export gotk4_PrintSettingsFunc
 func gotk4_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var key string           // out
-	var value string         // out
-	var userData interface{} // out
+	var key string          // out
+	var value string        // out
+	var userData cgo.Handle // out
 
-	key = C.GoString(arg0)
-	value = C.GoString(arg1)
-	userData = box.Get(uintptr(arg2))
+	key = C.GoString((*C.gchar)(arg0))
+	value = C.GoString((*C.gchar)(arg1))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(PrintSettingsFunc)
 	fn(key, value, userData)
@@ -322,7 +324,7 @@ func (settings *PrintSettings) Foreach(fn PrintSettingsFunc) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_PrintSettingsFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
+	_arg2 = C.gpointer(gbox.Assign(fn))
 
 	C.gtk_print_settings_foreach(_arg0, _arg1, _arg2)
 }
@@ -341,7 +343,7 @@ func (settings *PrintSettings) Get(key string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -399,7 +401,7 @@ func (settings *PrintSettings) DefaultSource() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -415,7 +417,7 @@ func (settings *PrintSettings) Dither() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -475,7 +477,7 @@ func (settings *PrintSettings) Duplex() PrintDuplex {
 
 	var _printDuplex PrintDuplex // out
 
-	_printDuplex = (PrintDuplex)(_cret)
+	_printDuplex = PrintDuplex(_cret)
 
 	return _printDuplex
 }
@@ -491,7 +493,7 @@ func (settings *PrintSettings) Finishings() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -550,7 +552,7 @@ func (settings *PrintSettings) MediaType() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -598,7 +600,7 @@ func (settings *PrintSettings) NumberUpLayout() NumberUpLayout {
 
 	var _numberUpLayout NumberUpLayout // out
 
-	_numberUpLayout = (NumberUpLayout)(_cret)
+	_numberUpLayout = NumberUpLayout(_cret)
 
 	return _numberUpLayout
 }
@@ -615,7 +617,7 @@ func (settings *PrintSettings) Orientation() PageOrientation {
 
 	var _pageOrientation PageOrientation // out
 
-	_pageOrientation = (PageOrientation)(_cret)
+	_pageOrientation = PageOrientation(_cret)
 
 	return _pageOrientation
 }
@@ -631,7 +633,7 @@ func (settings *PrintSettings) OutputBin() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -647,7 +649,7 @@ func (settings *PrintSettings) PageSet() PageSet {
 
 	var _pageSet PageSet // out
 
-	_pageSet = (PageSet)(_cret)
+	_pageSet = PageSet(_cret)
 
 	return _pageSet
 }
@@ -683,7 +685,7 @@ func (settings *PrintSettings) PrintPages() PrintPages {
 
 	var _printPages PrintPages // out
 
-	_printPages = (PrintPages)(_cret)
+	_printPages = PrintPages(_cret)
 
 	return _printPages
 }
@@ -700,7 +702,7 @@ func (settings *PrintSettings) Printer() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -732,7 +734,7 @@ func (settings *PrintSettings) Quality() PrintQuality {
 
 	var _printQuality PrintQuality // out
 
-	_printQuality = (PrintQuality)(_cret)
+	_printQuality = PrintQuality(_cret)
 
 	return _printQuality
 }

@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -206,7 +206,7 @@ func (permission *Permission) AcquireAsync(cancellable Cancellabler, callback As
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -362,7 +362,7 @@ func (permission *Permission) ReleaseAsync(cancellable Cancellabler, callback As
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
 }

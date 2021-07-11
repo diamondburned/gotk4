@@ -48,7 +48,7 @@ type DBusInterfaceSkeletonOverrider interface {
 	// later (e.g. in an idle handler). This technique is useful for collapsing
 	// multiple property changes into one.
 	Flush()
-
+	//
 	GAuthorizeMethod(invocation DBusMethodInvocationer) bool
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by @interface_.
@@ -184,7 +184,7 @@ func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 
 	var _dBusInterfaceSkeletonFlags DBusInterfaceSkeletonFlags // out
 
-	_dBusInterfaceSkeletonFlags = (DBusInterfaceSkeletonFlags)(_cret)
+	_dBusInterfaceSkeletonFlags = DBusInterfaceSkeletonFlags(_cret)
 
 	return _dBusInterfaceSkeletonFlags
 }
@@ -221,7 +221,7 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

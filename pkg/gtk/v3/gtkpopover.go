@@ -32,6 +32,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PopoverOverrider interface {
+	//
 	Closed()
 }
 
@@ -263,7 +264,7 @@ func (popover *Popover) ConstrainTo() PopoverConstraint {
 
 	var _popoverConstraint PopoverConstraint // out
 
-	_popoverConstraint = (PopoverConstraint)(_cret)
+	_popoverConstraint = PopoverConstraint(_cret)
 
 	return _popoverConstraint
 }
@@ -308,18 +309,16 @@ func (popover *Popover) Modal() bool {
 // return true and fill in @rect with such rectangle, otherwise it will return
 // false and fill in @rect with the attached widget coordinates.
 func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkPopover  // out
-	var _arg1 C.GdkRectangle // in
-	var _cret C.gboolean     // in
+	var _arg0 *C.GtkPopover // out
+	var _rect gdk.Rectangle
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
-	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
+	_cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
+	var _ok bool // out
 
-	_rect = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -338,7 +337,7 @@ func (popover *Popover) Position() PositionType {
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(_cret)
+	_positionType = PositionType(_cret)
 
 	return _positionType
 }

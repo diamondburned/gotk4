@@ -27,9 +27,11 @@ func init() {
 
 // PlugAccessibler describes PlugAccessible's methods.
 type PlugAccessibler interface {
+	//
 	ID() string
 }
 
+//
 type PlugAccessible struct {
 	WindowAccessible
 }
@@ -64,6 +66,7 @@ func marshalPlugAccessibler(p uintptr) (interface{}, error) {
 	return wrapPlugAccessible(obj), nil
 }
 
+//
 func (plug *PlugAccessible) ID() string {
 	var _arg0 *C.GtkPlugAccessible // out
 	var _cret *C.gchar             // in
@@ -74,7 +77,7 @@ func (plug *PlugAccessible) ID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

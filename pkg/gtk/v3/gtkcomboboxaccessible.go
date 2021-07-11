@@ -30,6 +30,7 @@ type ComboBoxAccessibler interface {
 	privateComboBoxAccessible()
 }
 
+//
 type ComboBoxAccessible struct {
 	ContainerAccessible
 

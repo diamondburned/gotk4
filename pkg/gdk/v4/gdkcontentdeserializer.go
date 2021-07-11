@@ -3,9 +3,9 @@
 package gdk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -56,10 +56,10 @@ type ContentDeserializerer interface {
 	// Priority gets the I/O priority for the current operation.
 	Priority() int
 	// TaskData gets the data that was associated with the current operation.
-	TaskData() interface{}
+	TaskData() cgo.Handle
 	// UserData gets the user data that was passed when the deserializer was
 	// registered.
-	UserData() interface{}
+	UserData() cgo.Handle
 	// Value gets the `GValue` to store the deserialized object in.
 	Value() *externglib.Value
 	// ReturnError: indicate that the deserialization has ended with an error.
@@ -170,7 +170,7 @@ func (deserializer *ContentDeserializer) MIMEType() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -196,7 +196,7 @@ func (deserializer *ContentDeserializer) Priority() int {
 // TaskData gets the data that was associated with the current operation.
 //
 // See [method@Gdk.ContentDeserializer.set_task_data].
-func (deserializer *ContentDeserializer) TaskData() interface{} {
+func (deserializer *ContentDeserializer) TaskData() cgo.Handle {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.gpointer                // in
 
@@ -204,16 +204,16 @@ func (deserializer *ContentDeserializer) TaskData() interface{} {
 
 	_cret = C.gdk_content_deserializer_get_task_data(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
 
 // UserData gets the user data that was passed when the deserializer was
 // registered.
-func (deserializer *ContentDeserializer) UserData() interface{} {
+func (deserializer *ContentDeserializer) UserData() cgo.Handle {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.gpointer                // in
 
@@ -221,9 +221,9 @@ func (deserializer *ContentDeserializer) UserData() interface{} {
 
 	_cret = C.gdk_content_deserializer_get_user_data(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }

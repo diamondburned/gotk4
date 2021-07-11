@@ -219,7 +219,7 @@ func (device *Device) Axes() AxisFlags {
 
 	var _axisFlags AxisFlags // out
 
-	_axisFlags = (AxisFlags)(_cret)
+	_axisFlags = AxisFlags(_cret)
 
 	return _axisFlags
 }
@@ -237,7 +237,7 @@ func (device *Device) AxisUse(index_ uint) AxisUse {
 
 	var _axisUse AxisUse // out
 
-	_axisUse = (AxisUse)(_cret)
+	_axisUse = AxisUse(_cret)
 
 	return _axisUse
 }
@@ -253,7 +253,7 @@ func (device *Device) DeviceType() DeviceType {
 
 	var _deviceType DeviceType // out
 
-	_deviceType = (DeviceType)(_cret)
+	_deviceType = DeviceType(_cret)
 
 	return _deviceType
 }
@@ -312,7 +312,7 @@ func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 	var _ok bool                // out
 
 	_keyval = uint(_arg2)
-	_modifiers = (ModifierType)(_arg3)
+	_modifiers = ModifierType(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -351,7 +351,7 @@ func (device *Device) Mode() InputMode {
 
 	var _inputMode InputMode // out
 
-	_inputMode = (InputMode)(_cret)
+	_inputMode = InputMode(_cret)
 
 	return _inputMode
 }
@@ -399,7 +399,7 @@ func (device *Device) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -467,7 +467,7 @@ func (device *Device) ProductID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -499,7 +499,7 @@ func (device *Device) Source() InputSource {
 
 	var _inputSource InputSource // out
 
-	_inputSource = (InputSource)(_cret)
+	_inputSource = InputSource(_cret)
 
 	return _inputSource
 }
@@ -538,7 +538,7 @@ func (device *Device) VendorID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

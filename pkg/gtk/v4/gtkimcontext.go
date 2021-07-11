@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,6 +29,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type IMContextOverrider interface {
+	//
 	Commit(str string)
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// delete characters around the cursor position by emitting the
@@ -107,18 +107,18 @@ type IMContextOverrider interface {
 	// `::retrieve-surrounding` signal, so input methods must be prepared to
 	// function without context.
 	SurroundingWithSelection() (text string, cursorIndex int, anchorIndex int, ok bool)
-
+	//
 	PreeditChanged()
-
+	//
 	PreeditEnd()
-
+	//
 	PreeditStart()
 	// Reset: notify the input method that a change such as a change in cursor
 	// position has been made.
 	//
 	// This will typically cause the input method to clear the preedit state.
 	Reset()
-
+	//
 	RetrieveSurrounding() bool
 	// SetClientWidget: set the client widget for the input context.
 	//
@@ -346,26 +346,22 @@ func (context *IMContext) FocusOut() {
 //
 // This string should be displayed inserted at the insertion point.
 func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
-	var _arg0 *C.GtkIMContext  // out
-	var _arg1 *C.char          // in
-	var _arg2 *C.PangoAttrList // in
-	var _arg3 C.int            // in
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.char         // in
+	var _attrs *pango.AttrList
+	var _arg3 C.int // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
+	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrs)), &_arg3)
 
-	var _str string            // out
-	var _attrs *pango.AttrList // out
-	var _cursorPos int         // out
+	var _str string // out
 
-	_str = C.GoString(_arg1)
+	var _cursorPos int // out
+
+	_str = C.GoString((*C.gchar)(_arg1))
 	defer C.free(unsafe.Pointer(_arg1))
-	_attrs = (*pango.AttrList)(unsafe.Pointer(_arg2))
-	C.pango_attr_list_ref(_arg2)
-	runtime.SetFinalizer(_attrs, func(v *pango.AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
-	})
+
 	_cursorPos = int(_arg3)
 
 	return _str, _attrs, _cursorPos
@@ -403,7 +399,7 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 	var _cursorIndex int // out
 	var _ok bool         // out
 
-	_text = C.GoString(_arg1)
+	_text = C.GoString((*C.gchar)(_arg1))
 	defer C.free(unsafe.Pointer(_arg1))
 	_cursorIndex = int(_arg2)
 	if _cret != 0 {
@@ -444,7 +440,7 @@ func (context *IMContext) SurroundingWithSelection() (text string, cursorIndex i
 	var _anchorIndex int // out
 	var _ok bool         // out
 
-	_text = C.GoString(_arg1)
+	_text = C.GoString((*C.gchar)(_arg1))
 	defer C.free(unsafe.Pointer(_arg1))
 	_cursorIndex = int(_arg2)
 	_anchorIndex = int(_arg3)

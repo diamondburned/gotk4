@@ -159,7 +159,7 @@ func (box *Box) BaselinePosition() BaselinePosition {
 
 	var _baselinePosition BaselinePosition // out
 
-	_baselinePosition = (BaselinePosition)(_cret)
+	_baselinePosition = BaselinePosition(_cret)
 
 	return _baselinePosition
 }
@@ -287,7 +287,7 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 		_fill = true
 	}
 	_padding = uint(_arg4)
-	_packType = (PackType)(_arg5)
+	_packType = PackType(_arg5)
 
 	return _expand, _fill, _padding, _packType
 }

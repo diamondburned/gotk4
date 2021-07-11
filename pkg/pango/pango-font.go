@@ -166,7 +166,7 @@ type FontOverrider interface {
 	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
 	// size in device units.
 	Describe() *FontDescription
-
+	//
 	DescribeAbsolute() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
 	Coverage(language *Language) *Coverage
@@ -491,7 +491,7 @@ func (face *FontFace) FaceName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -669,7 +669,7 @@ func (family *FontFamily) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -909,7 +909,7 @@ func (desc *FontDescription) Family() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -927,7 +927,7 @@ func (desc *FontDescription) Gravity() Gravity {
 
 	var _gravity Gravity // out
 
-	_gravity = (Gravity)(_cret)
+	_gravity = Gravity(_cret)
 
 	return _gravity
 }
@@ -943,7 +943,7 @@ func (desc *FontDescription) SetFields() FontMask {
 
 	var _fontMask FontMask // out
 
-	_fontMask = (FontMask)(_cret)
+	_fontMask = FontMask(_cret)
 
 	return _fontMask
 }
@@ -1001,7 +1001,7 @@ func (desc *FontDescription) Stretch() Stretch {
 
 	var _stretch Stretch // out
 
-	_stretch = (Stretch)(_cret)
+	_stretch = Stretch(_cret)
 
 	return _stretch
 }
@@ -1019,7 +1019,7 @@ func (desc *FontDescription) Style() Style {
 
 	var _style Style // out
 
-	_style = (Style)(_cret)
+	_style = Style(_cret)
 
 	return _style
 }
@@ -1037,7 +1037,7 @@ func (desc *FontDescription) Variant() Variant {
 
 	var _variant Variant // out
 
-	_variant = (Variant)(_cret)
+	_variant = Variant(_cret)
 
 	return _variant
 }
@@ -1055,7 +1055,7 @@ func (desc *FontDescription) Variations() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1073,7 +1073,7 @@ func (desc *FontDescription) Weight() Weight {
 
 	var _weight Weight // out
 
-	_weight = (Weight)(_cret)
+	_weight = Weight(_cret)
 
 	return _weight
 }
@@ -1263,7 +1263,7 @@ func (desc *FontDescription) ToFilename() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -1285,7 +1285,7 @@ func (desc *FontDescription) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

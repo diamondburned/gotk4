@@ -29,6 +29,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type EditableOverrider interface {
+	//
 	Changed()
 	// DeleteText deletes a sequence of characters. The characters that are
 	// deleted are those characters at positions from @start_pos up to, but not
@@ -234,7 +235,7 @@ func (editable *Editable) Chars(startPos int, endPos int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

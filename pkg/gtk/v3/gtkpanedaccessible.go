@@ -30,6 +30,7 @@ type PanedAccessibler interface {
 	privatePanedAccessible()
 }
 
+//
 type PanedAccessible struct {
 	ContainerAccessible
 

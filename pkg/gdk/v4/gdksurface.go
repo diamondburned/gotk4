@@ -306,7 +306,7 @@ func (surface *Surface) DevicePosition(device Devicer) (x float64, y float64, ma
 
 	_x = float64(_arg2)
 	_y = float64(_arg3)
-	_mask = (ModifierType)(_arg4)
+	_mask = ModifierType(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}

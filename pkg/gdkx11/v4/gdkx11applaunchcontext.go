@@ -29,6 +29,7 @@ type X11AppLaunchContexter interface {
 	privateX11AppLaunchContext()
 }
 
+//
 type X11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }

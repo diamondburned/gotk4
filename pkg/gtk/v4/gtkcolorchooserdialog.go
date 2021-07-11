@@ -69,7 +69,7 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialogger {
 					},
 				},
 				Root: Root{
-					Native: Native{
+					NativeSurface: NativeSurface{
 						Widget: Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,

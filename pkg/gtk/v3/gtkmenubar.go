@@ -123,7 +123,7 @@ func (menubar *MenuBar) ChildPackDirection() PackDirection {
 
 	var _packDirection PackDirection // out
 
-	_packDirection = (PackDirection)(_cret)
+	_packDirection = PackDirection(_cret)
 
 	return _packDirection
 }
@@ -140,7 +140,7 @@ func (menubar *MenuBar) PackDirection() PackDirection {
 
 	var _packDirection PackDirection // out
 
-	_packDirection = (PackDirection)(_cret)
+	_packDirection = PackDirection(_cret)
 
 	return _packDirection
 }

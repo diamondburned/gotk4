@@ -39,7 +39,7 @@ func GetCharset() (string, bool) {
 	var _charset string // out
 	var _ok bool        // out
 
-	_charset = C.GoString(_arg1)
+	_charset = C.GoString((*C.gchar)(_arg1))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -55,7 +55,7 @@ func GetCodeset() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -86,7 +86,7 @@ func GetConsoleCharset() (string, bool) {
 	var _charset string // out
 	var _ok bool        // out
 
-	_charset = C.GoString(_arg1)
+	_charset = C.GoString((*C.gchar)(_arg1))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -121,7 +121,7 @@ func GetLanguageNames() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -159,7 +159,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -202,7 +202,7 @@ func GetLocaleVariants(locale string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

@@ -137,7 +137,7 @@ func (coverage *Coverage) Get(index_ int) CoverageLevel {
 
 	var _coverageLevel CoverageLevel // out
 
-	_coverageLevel = (CoverageLevel)(_cret)
+	_coverageLevel = CoverageLevel(_cret)
 
 	return _coverageLevel
 }

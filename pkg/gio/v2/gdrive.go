@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -51,11 +51,11 @@ type DriveOverrider interface {
 	CanStartDegraded() bool
 	// CanStop checks if a drive can be stopped.
 	CanStop() bool
-
+	//
 	Changed()
-
+	//
 	Disconnected()
-
+	//
 	EjectButton()
 	// EjectFinish finishes ejecting a drive.
 	//
@@ -107,7 +107,7 @@ type DriveOverrider interface {
 	PollForMediaFinish(result AsyncResulter) error
 	// StartFinish finishes starting a drive.
 	StartFinish(result AsyncResulter) error
-
+	//
 	StopButton()
 	// StopFinish finishes stopping a drive.
 	StopFinish(result AsyncResulter) error
@@ -364,7 +364,7 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -403,7 +403,7 @@ func (drive *Drive) Identifier(kind string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -420,7 +420,7 @@ func (drive *Drive) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -437,7 +437,7 @@ func (drive *Drive) SortKey() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -453,7 +453,7 @@ func (drive *Drive) StartStopType() DriveStartStopType {
 
 	var _driveStartStopType DriveStartStopType // out
 
-	_driveStartStopType = (DriveStartStopType)(_cret)
+	_driveStartStopType = DriveStartStopType(_cret)
 
 	return _driveStartStopType
 }
@@ -582,7 +582,7 @@ func (drive *Drive) PollForMedia(cancellable Cancellabler, callback AsyncReadyCa
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(box.Assign(callback))
+	_arg3 = C.gpointer(gbox.Assign(callback))
 
 	C.g_drive_poll_for_media(_arg0, _arg1, _arg2, _arg3)
 }

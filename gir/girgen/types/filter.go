@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"log"
 	"regexp"
 	"strings"
@@ -60,7 +61,15 @@ func (ren typeRenamer) Preprocess(repos gir.Repositories) {
 		log.Panicf("GIR type %q not found", ren.from)
 	}
 
+	oldName := result.Name()
 	result.SetName(ren.to)
+
+	if info := cmt.GetInfoFields(result.Type); info.Elements != nil {
+		changedMsg := fmt.Sprintf("This type has been renamed from %s.", oldName)
+		if info.Elements.Doc != nil {
+			info.Elements.Doc.String += "\n\n" + changedMsg
+		}
+	}
 }
 
 type modifyCallable struct {

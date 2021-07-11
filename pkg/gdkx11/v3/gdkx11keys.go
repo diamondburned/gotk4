@@ -33,6 +33,7 @@ type X11Keymapper interface {
 	KeyIsModifier(keycode uint) bool
 }
 
+//
 type X11Keymap struct {
 	gdk.Keymap
 }

@@ -150,7 +150,7 @@ func (self *Filter) Strictness() FilterMatch {
 
 	var _filterMatch FilterMatch // out
 
-	_filterMatch = (FilterMatch)(_cret)
+	_filterMatch = FilterMatch(_cret)
 
 	return _filterMatch
 }
@@ -162,7 +162,7 @@ func (self *Filter) Match(item gextras.Objector) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(item.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&item).Native()))
 
 	_cret = C.gtk_filter_match(_arg0, _arg1)
 

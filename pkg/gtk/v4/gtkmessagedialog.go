@@ -127,7 +127,7 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialogger {
 					},
 				},
 				Root: Root{
-					Native: Native{
+					NativeSurface: NativeSurface{
 						Widget: Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,

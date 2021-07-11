@@ -175,6 +175,7 @@ func (settings *Settings) SetStringProperty(name string, vString string, origin 
 	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
 }
 
+//
 type SettingsValue struct {
 	native C.GtkSettingsValue
 }

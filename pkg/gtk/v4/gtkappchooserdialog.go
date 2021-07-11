@@ -74,7 +74,7 @@ func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialogger {
 					},
 				},
 				Root: Root{
-					Native: Native{
+					NativeSurface: NativeSurface{
 						Widget: Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
@@ -138,7 +138,7 @@ func (self *AppChooserDialog) Heading() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

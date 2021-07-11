@@ -37,6 +37,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FilenameCompleterOverrider interface {
+	//
 	GotCompletionData()
 }
 
@@ -102,7 +103,7 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -132,7 +133,7 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

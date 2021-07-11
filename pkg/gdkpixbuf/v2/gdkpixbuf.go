@@ -27,6 +27,7 @@ type PixbufSimpleAnimIterer interface {
 	privatePixbufSimpleAnimIter()
 }
 
+//
 type PixbufSimpleAnimIter struct {
 	PixbufAnimationIter
 }

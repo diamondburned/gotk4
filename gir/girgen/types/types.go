@@ -119,11 +119,7 @@ func EnsureNamespace(nsp *gir.NamespaceFindResult, girType string) string {
 }
 
 func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
-	ptr := uint8(strings.Count(typ.CType, "*"))
-	if IsGpointer(typ.CType) {
-		ptr++
-	}
-	return ptr
+	return uint8(strings.Count(typ.CType, "*"))
 }
 
 var objectorMethods = map[string]struct{}{
@@ -156,17 +152,6 @@ func init() {
 		replacers = append(replacers, " "+prefix, "")
 	}
 	cTypePrefixEraser = strings.NewReplacer(replacers...)
-}
-
-var gpointerTypes = map[string]struct{}{
-	"gpointer":      {},
-	"gconstpointer": {},
-}
-
-// IsGpointer returns true if the given type is a gpointer type.
-func IsGpointer(ctype string) bool {
-	_, is := gpointerTypes[ctype]
-	return is
 }
 
 // MovePtr moves the same number of pointers from the given orig string into

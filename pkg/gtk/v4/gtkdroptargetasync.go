@@ -103,7 +103,7 @@ func (self *DropTargetAsync) Actions() gdk.DragAction {
 
 	var _dragAction gdk.DragAction // out
 
-	_dragAction = (gdk.DragAction)(_cret)
+	_dragAction = gdk.DragAction(_cret)
 
 	return _dragAction
 }

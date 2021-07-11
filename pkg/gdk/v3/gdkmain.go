@@ -118,7 +118,7 @@ func GetDisplay() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -133,7 +133,7 @@ func GetDisplayArgName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -149,7 +149,7 @@ func GetProgramClass() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -179,7 +179,7 @@ func KeyboardGrab(window Windowwer, ownerEvents bool, time_ uint32) GrabStatus {
 
 	var _grabStatus GrabStatus // out
 
-	_grabStatus = (GrabStatus)(_cret)
+	_grabStatus = GrabStatus(_cret)
 
 	return _grabStatus
 }

@@ -30,6 +30,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ExpanderOverrider interface {
+	//
 	Activate()
 }
 
@@ -223,7 +224,7 @@ func (expander *Expander) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

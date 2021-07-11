@@ -49,7 +49,7 @@ type Rooter interface {
 // `GtkRoot` also maintains the location of keyboard focus inside its widget
 // hierarchy, with [method@Gtk.Root.set_focus] and [method@Gtk.Root.get_focus].
 type Root struct {
-	Native
+	NativeSurface
 }
 
 var (
@@ -59,7 +59,7 @@ var (
 
 func wrapRoot(obj *externglib.Object) Rooter {
 	return &Root{
-		Native: Native{
+		NativeSurface: NativeSurface{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,

@@ -4,9 +4,9 @@ package glib
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -134,7 +134,7 @@ func MarkupEscapeText(text string, length int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -205,7 +205,7 @@ func (context *MarkupParseContext) Element() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -237,7 +237,7 @@ func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 // This will either be the user_data that was provided to
 // g_markup_parse_context_new() or to the most recent call of
 // g_markup_parse_context_push().
-func (context *MarkupParseContext) UserData() interface{} {
+func (context *MarkupParseContext) UserData() cgo.Handle {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
 
@@ -245,9 +245,9 @@ func (context *MarkupParseContext) UserData() interface{} {
 
 	_cret = C.g_markup_parse_context_get_user_data(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
@@ -293,7 +293,7 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 // This function is not intended to be directly called by users interested in
 // invoking subparsers. Instead, it is intended to be used by the subparsers
 // themselves to implement a higher-level interface.
-func (context *MarkupParseContext) Pop() interface{} {
+func (context *MarkupParseContext) Pop() cgo.Handle {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
 
@@ -301,9 +301,9 @@ func (context *MarkupParseContext) Pop() interface{} {
 
 	_cret = C.g_markup_parse_context_pop(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
@@ -351,14 +351,14 @@ func (context *MarkupParseContext) Pop() interface{} {
 //
 //      // else, handle other tags...
 //    }
-func (context *MarkupParseContext) Push(parser *MarkupParser, userData interface{}) {
+func (context *MarkupParseContext) Push(parser *MarkupParser, userData cgo.Handle) {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.GMarkupParser       // out
 	var _arg2 C.gpointer             // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
 	_arg1 = (*C.GMarkupParser)(unsafe.Pointer(parser))
-	_arg2 = (C.gpointer)(box.Assign(userData))
+	_arg2 = (C.gpointer)(userData)
 
 	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
 }

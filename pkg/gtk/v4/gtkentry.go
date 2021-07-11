@@ -45,6 +45,7 @@ func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type EntryOverrider interface {
+	//
 	Activate()
 }
 
@@ -508,7 +509,7 @@ func (entry *Entry) InputHints() InputHints {
 
 	var _inputHints InputHints // out
 
-	_inputHints = (InputHints)(_cret)
+	_inputHints = InputHints(_cret)
 
 	return _inputHints
 }
@@ -524,7 +525,7 @@ func (entry *Entry) InputPurpose() InputPurpose {
 
 	var _inputPurpose InputPurpose // out
 
-	_inputPurpose = (InputPurpose)(_cret)
+	_inputPurpose = InputPurpose(_cret)
 
 	return _inputPurpose
 }
@@ -594,7 +595,7 @@ func (entry *Entry) PlaceholderText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

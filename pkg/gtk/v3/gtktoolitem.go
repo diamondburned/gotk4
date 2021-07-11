@@ -31,6 +31,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ToolItemOverrider interface {
+	//
 	CreateMenuProxy() bool
 	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
 	// @tool_item. Toolbar and other ToolShell implementations use this function
@@ -189,7 +190,7 @@ func (toolItem *ToolItem) EllipsizeMode() pango.EllipsizeMode {
 
 	var _ellipsizeMode pango.EllipsizeMode // out
 
-	_ellipsizeMode = (pango.EllipsizeMode)(_cret)
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
 
 	return _ellipsizeMode
 }
@@ -282,7 +283,7 @@ func (toolItem *ToolItem) Orientation() Orientation {
 
 	var _orientation Orientation // out
 
-	_orientation = (Orientation)(_cret)
+	_orientation = Orientation(_cret)
 
 	return _orientation
 }
@@ -326,7 +327,7 @@ func (toolItem *ToolItem) ReliefStyle() ReliefStyle {
 
 	var _reliefStyle ReliefStyle // out
 
-	_reliefStyle = (ReliefStyle)(_cret)
+	_reliefStyle = ReliefStyle(_cret)
 
 	return _reliefStyle
 }
@@ -362,7 +363,7 @@ func (toolItem *ToolItem) TextOrientation() Orientation {
 
 	var _orientation Orientation // out
 
-	_orientation = (Orientation)(_cret)
+	_orientation = Orientation(_cret)
 
 	return _orientation
 }
@@ -405,7 +406,7 @@ func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
 
 	var _toolbarStyle ToolbarStyle // out
 
-	_toolbarStyle = (ToolbarStyle)(_cret)
+	_toolbarStyle = ToolbarStyle(_cret)
 
 	return _toolbarStyle
 }

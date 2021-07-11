@@ -76,8 +76,9 @@ func marshalCellRendererState(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellRendererOverrider interface {
+	//
 	EditingCanceled()
-
+	//
 	EditingStarted(editable CellEditabler, path string)
 	// PreferredHeight retreives a renderer’s natural size when rendered to
 	// @widget.
@@ -319,19 +320,13 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int) (
 func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize Requisition, naturalSize Requisition) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
-	var _arg2 C.GtkRequisition   // in
-	var _arg3 C.GtkRequisition   // in
+	var _minimumSize Requisition
+	var _naturalSize Requisition
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
-	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, &_arg2, &_arg3)
-
-	var _minimumSize Requisition // out
-	var _naturalSize Requisition // out
-
-	_minimumSize = *(*Requisition)(unsafe.Pointer((&_arg2)))
-	_naturalSize = *(*Requisition)(unsafe.Pointer((&_arg3)))
+	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, (*C.GtkRequisition)(unsafe.Pointer(&_minimumSize)), (*C.GtkRequisition)(unsafe.Pointer(&_naturalSize)))
 
 	return _minimumSize, _naturalSize
 }
@@ -393,7 +388,7 @@ func (cell *CellRenderer) RequestMode() SizeRequestMode {
 
 	var _sizeRequestMode SizeRequestMode // out
 
-	_sizeRequestMode = (SizeRequestMode)(_cret)
+	_sizeRequestMode = SizeRequestMode(_cret)
 
 	return _sizeRequestMode
 }

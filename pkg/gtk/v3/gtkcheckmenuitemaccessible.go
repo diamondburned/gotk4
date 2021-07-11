@@ -30,6 +30,7 @@ type CheckMenuItemAccessibler interface {
 	privateCheckMenuItemAccessible()
 }
 
+//
 type CheckMenuItemAccessible struct {
 	MenuItemAccessible
 }

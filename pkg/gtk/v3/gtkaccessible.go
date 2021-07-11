@@ -35,9 +35,9 @@ type AccessibleOverrider interface {
 	//
 	// Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
 	ConnectWidgetDestroyed()
-
+	//
 	WidgetSet()
-
+	//
 	WidgetUnset()
 }
 

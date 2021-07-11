@@ -381,13 +381,10 @@ func ReflowLinesIndent(indentLvl int, cmt string, opts ...Option) string {
 	col := CommentsColumnLimit - (CommentsTabWidth * indentLvl)
 
 	cmt = docText(cmt, col)
+	cmt = strings.TrimSpace(cmt)
 
 	ident := strings.Repeat("\t", indentLvl)
 	lines := strings.Split(cmt, "\n")
-	if len(lines) > 0 && lines[len(lines)-1] == "" {
-		// Trim the trailing empty line, if any.
-		lines = lines[:len(lines)-1]
-	}
 
 	for i, line := range lines {
 		lines[i] = ident + "// " + line

@@ -181,7 +181,7 @@ func (g *CallbackGenerator) renderBlock() bool {
 		secReturn
 	)
 
-	g.pen.Linef(secPrefix, "v := box.Get(uintptr(%s))", callbackArg(*g.Closure))
+	g.pen.Linef(secPrefix, "v := gbox.Get(uintptr(%s))", callbackArg(*g.Closure))
 	g.pen.Linef(secPrefix, "if v == nil {")
 	g.pen.Linef(secPrefix, "  panic(`callback not found`)")
 	g.pen.Linef(secPrefix, "}")
@@ -290,7 +290,7 @@ func (g *CallbackGenerator) renderBlock() bool {
 
 	// Only add the import now, since we know that the callback will be
 	// generated.
-	g.header.ImportCore("box")
+	g.header.ImportCore("gbox")
 
 	return true
 }

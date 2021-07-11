@@ -563,7 +563,7 @@ func (socket *Socket) Family() SocketFamily {
 
 	var _socketFamily SocketFamily // out
 
-	_socketFamily = (SocketFamily)(_cret)
+	_socketFamily = SocketFamily(_cret)
 
 	return _socketFamily
 }
@@ -727,7 +727,7 @@ func (socket *Socket) Protocol() SocketProtocol {
 
 	var _socketProtocol SocketProtocol // out
 
-	_socketProtocol = (SocketProtocol)(_cret)
+	_socketProtocol = SocketProtocol(_cret)
 
 	return _socketProtocol
 }
@@ -763,7 +763,7 @@ func (socket *Socket) SocketType() SocketType {
 
 	var _socketType SocketType // out
 
-	_socketType = (SocketType)(_cret)
+	_socketType = SocketType(_cret)
 
 	return _socketType
 }
@@ -1234,7 +1234,7 @@ func (socket *Socket) SendMessageWithTimeout(address SocketAddresser, vectors []
 	var _goerr error                   // out
 
 	_bytesWritten = uint(_arg8)
-	_pollableReturn = (PollableReturn)(_cret)
+	_pollableReturn = PollableReturn(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesWritten, _pollableReturn, _goerr

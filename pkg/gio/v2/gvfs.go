@@ -3,9 +3,10 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -39,22 +40,22 @@ func init() {
 //
 // The client should return a reference to the new file that has been created
 // for @uri, or nil to continue with the default implementation.
-type VFSFileLookupFunc func(vfs *VFS, identifier string, userData interface{}) (file *File)
+type VFSFileLookupFunc func(vfs *VFS, identifier string, userData cgo.Handle) (file *File)
 
 //export gotk4_VFSFileLookupFunc
 func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret *C.GFile) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var vfs *VFS             // out
-	var identifier string    // out
-	var userData interface{} // out
+	var vfs *VFS            // out
+	var identifier string   // out
+	var userData cgo.Handle // out
 
 	vfs = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*VFS)
-	identifier = C.GoString(arg1)
-	userData = box.Get(uintptr(arg2))
+	identifier = C.GoString((*C.gchar)(arg1))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(VFSFileLookupFunc)
 	file := fn(vfs, identifier, userData)
@@ -69,6 +70,7 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type VFSOverrider interface {
+	//
 	AddWritableNamespaces(list *FileAttributeInfoList)
 	// FileForPath gets a #GFile for @path.
 	FileForPath(path string) *File
@@ -82,9 +84,9 @@ type VFSOverrider interface {
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
 	IsActive() bool
-
+	//
 	LocalFileMoved(source string, dest string)
-
+	//
 	LocalFileRemoved(filename string)
 	// ParseName: this operation never fails, but the returned object might not
 	// support any I/O operations if the @parse_name cannot be parsed by the
@@ -195,7 +197,7 @@ func (vfs *VFS) SupportedURISchemes() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 

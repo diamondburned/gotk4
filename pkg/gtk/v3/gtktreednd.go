@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -37,22 +36,19 @@ func init() {
 func TreeGetRowDragData(selectionData *SelectionData) (*TreeModel, *TreePath, bool) {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // in
-	var _arg3 *C.GtkTreePath      // in
-	var _cret C.gboolean          // in
+	var _path *TreePath
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
 
-	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
+	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)))
 
 	var _treeModel *TreeModel // out
-	var _path *TreePath       // out
-	var _ok bool              // out
+
+	var _ok bool // out
 
 	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*TreeModel)
-	_path = (*TreePath)(unsafe.Pointer(_arg3))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
-	})
+
 	if _cret != 0 {
 		_ok = true
 	}
@@ -113,6 +109,7 @@ type TreeDragDester interface {
 	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
+//
 type TreeDragDest struct {
 	*externglib.Object
 }
@@ -222,6 +219,7 @@ type TreeDragSourcer interface {
 	RowDraggable(path *TreePath) bool
 }
 
+//
 type TreeDragSource struct {
 	*externglib.Object
 }

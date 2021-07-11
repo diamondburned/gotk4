@@ -30,6 +30,7 @@ type ImageAccessibler interface {
 	privateImageAccessible()
 }
 
+//
 type ImageAccessible struct {
 	WidgetAccessible
 

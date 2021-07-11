@@ -73,6 +73,7 @@ type ButtonBoxxer interface {
 	SetChildSecondary(child Widgetter, isSecondary bool)
 }
 
+//
 type ButtonBox struct {
 	Box
 }
@@ -165,7 +166,7 @@ func (widget *ButtonBox) Layout() ButtonBoxStyle {
 
 	var _buttonBoxStyle ButtonBoxStyle // out
 
-	_buttonBoxStyle = (ButtonBoxStyle)(_cret)
+	_buttonBoxStyle = ButtonBoxStyle(_cret)
 
 	return _buttonBoxStyle
 }

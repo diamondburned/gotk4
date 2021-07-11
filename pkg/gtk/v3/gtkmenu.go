@@ -3,10 +3,11 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -53,24 +54,24 @@ func marshalArrowPlacement(p uintptr) (interface{}, error) {
 // the @x and @y parameters to the coordinates where the menu is to be drawn. To
 // make the menu appear on a different monitor than the mouse pointer,
 // gtk_menu_set_monitor() must be called.
-type MenuPositionFunc func(menu *Menu, x *int, y *int, userData interface{}) (pushIn bool)
+type MenuPositionFunc func(menu *Menu, x *int, y *int, userData cgo.Handle) (pushIn bool)
 
 //export gotk4_MenuPositionFunc
 func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C.gboolean, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
+	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var menu *Menu           // out
-	var x *int               // out
-	var y *int               // out
-	var userData interface{} // out
+	var menu *Menu          // out
+	var x *int              // out
+	var y *int              // out
+	var userData cgo.Handle // out
 
 	menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Menu)
 	x = (*int)(unsafe.Pointer(arg1))
 	y = (*int)(unsafe.Pointer(arg2))
-	userData = box.Get(uintptr(arg4))
+	userData = (cgo.Handle)(arg4)
 
 	fn := v.(MenuPositionFunc)
 	pushIn := fn(menu, x, y, userData)
@@ -300,7 +301,7 @@ func (menu *Menu) AccelPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -407,7 +408,7 @@ func (menu *Menu) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -468,7 +469,7 @@ func (menu *Menu) Popup(parentMenuShell Widgetter, parentMenuItem Widgetter, fn 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((parentMenuShell).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((parentMenuItem).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_MenuPositionFunc)
-	_arg4 = C.gpointer(box.Assign(fn))
+	_arg4 = C.gpointer(gbox.Assign(fn))
 	_arg5 = C.guint(button)
 	_arg6 = C.guint32(activateTime)
 

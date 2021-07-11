@@ -353,7 +353,7 @@ func (self *Text) InputHints() InputHints {
 
 	var _inputHints InputHints // out
 
-	_inputHints = (InputHints)(_cret)
+	_inputHints = InputHints(_cret)
 
 	return _inputHints
 }
@@ -369,7 +369,7 @@ func (self *Text) InputPurpose() InputPurpose {
 
 	var _inputPurpose InputPurpose // out
 
-	_inputPurpose = (InputPurpose)(_cret)
+	_inputPurpose = InputPurpose(_cret)
 
 	return _inputPurpose
 }
@@ -446,7 +446,7 @@ func (self *Text) PlaceholderText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

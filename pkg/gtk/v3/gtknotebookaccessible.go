@@ -30,6 +30,7 @@ type NotebookAccessibler interface {
 	privateNotebookAccessible()
 }
 
+//
 type NotebookAccessible struct {
 	ContainerAccessible
 

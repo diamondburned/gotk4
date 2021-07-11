@@ -30,6 +30,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type InfoBarOverrider interface {
+	//
 	Close()
 	// Response emits the “response” signal with the given @response_id.
 	Response(responseId int)
@@ -51,7 +52,7 @@ type InfoBarrer interface {
 	ContentArea() *Box
 	// MessageType returns the message type of the message area.
 	MessageType() MessageType
-
+	//
 	Revealed() bool
 	// ShowCloseButton returns whether the widget will display a standard close
 	// button.
@@ -274,11 +275,12 @@ func (infoBar *InfoBar) MessageType() MessageType {
 
 	var _messageType MessageType // out
 
-	_messageType = (MessageType)(_cret)
+	_messageType = MessageType(_cret)
 
 	return _messageType
 }
 
+//
 func (infoBar *InfoBar) Revealed() bool {
 	var _arg0 *C.GtkInfoBar // out
 	var _cret C.gboolean    // in

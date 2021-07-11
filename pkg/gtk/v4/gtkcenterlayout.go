@@ -97,7 +97,7 @@ func (self *CenterLayout) BaselinePosition() BaselinePosition {
 
 	var _baselinePosition BaselinePosition // out
 
-	_baselinePosition = (BaselinePosition)(_cret)
+	_baselinePosition = BaselinePosition(_cret)
 
 	return _baselinePosition
 }
@@ -145,7 +145,7 @@ func (self *CenterLayout) Orientation() Orientation {
 
 	var _orientation Orientation // out
 
-	_orientation = (Orientation)(_cret)
+	_orientation = Orientation(_cret)
 
 	return _orientation
 }

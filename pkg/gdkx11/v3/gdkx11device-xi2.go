@@ -28,6 +28,7 @@ type X11DeviceXI2er interface {
 	privateX11DeviceXI2()
 }
 
+//
 type X11DeviceXI2 struct {
 	gdk.Device
 }

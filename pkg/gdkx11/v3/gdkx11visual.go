@@ -28,6 +28,7 @@ type X11Visualer interface {
 	privateX11Visual()
 }
 
+//
 type X11Visual struct {
 	gdk.Visual
 }

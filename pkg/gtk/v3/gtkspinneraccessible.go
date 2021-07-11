@@ -30,6 +30,7 @@ type SpinnerAccessibler interface {
 	privateSpinnerAccessible()
 }
 
+//
 type SpinnerAccessible struct {
 	WidgetAccessible
 

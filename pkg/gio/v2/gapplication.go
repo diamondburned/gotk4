@@ -46,21 +46,21 @@ type ApplicationOverrider interface {
 	//
 	// The application must be registered before calling this function.
 	Activate()
-
+	//
 	AddPlatformData(builder *glib.VariantBuilder)
-
+	//
 	AfterEmit(platformData *glib.Variant)
-
+	//
 	BeforeEmit(platformData *glib.Variant)
-
+	//
 	CommandLine(commandLine ApplicationCommandLiner) int
-
+	//
 	DBusRegister(connection DBusConnectioner, objectPath string) error
-
+	//
 	DBusUnregister(connection DBusConnectioner, objectPath string)
-
+	//
 	HandleLocalOptions(options *glib.VariantDict) int
-
+	//
 	NameLost() bool
 	// Open opens the given files.
 	//
@@ -77,13 +77,13 @@ type ApplicationOverrider interface {
 	// The application must be registered before calling this function and it
 	// must have the G_APPLICATION_HANDLES_OPEN flag set.
 	Open(files []*File, hint string)
-
+	//
 	QuitMainloop()
-
+	//
 	RunMainloop()
-
+	//
 	Shutdown()
-
+	//
 	Startup()
 }
 
@@ -430,7 +430,7 @@ func (application *Application) BindBusyProperty(object gextras.Objector, proper
 	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(object.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&object).Native()))
 	_arg2 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -448,7 +448,7 @@ func (application *Application) ApplicationID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -505,7 +505,7 @@ func (application *Application) DBusObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -523,7 +523,7 @@ func (application *Application) Flags() ApplicationFlags {
 
 	var _applicationFlags ApplicationFlags // out
 
-	_applicationFlags = (ApplicationFlags)(_cret)
+	_applicationFlags = ApplicationFlags(_cret)
 
 	return _applicationFlags
 }
@@ -626,7 +626,7 @@ func (application *Application) ResourceBasePath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1077,7 +1077,7 @@ func (application *Application) UnbindBusyProperty(object gextras.Objector, prop
 	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(object.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&object).Native()))
 	_arg2 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg2))
 

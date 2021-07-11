@@ -183,18 +183,16 @@ func marshalGesturer(p uintptr) (interface{}, error) {
 // as if constrained in an infinitely small area, @rect width and height will
 // thus be 0 regardless of the number of touchpoints.
 func (gesture *Gesture) BoundingBox() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkGesture  // out
-	var _arg1 C.GdkRectangle // in
-	var _cret C.gboolean     // in
+	var _arg0 *C.GtkGesture // out
+	var _rect gdk.Rectangle
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
-	_cret = C.gtk_gesture_get_bounding_box(_arg0, &_arg1)
+	_cret = C.gtk_gesture_get_bounding_box(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
+	var _ok bool // out
 
-	_rect = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -331,7 +329,7 @@ func (gesture *Gesture) SequenceState(sequence *gdk.EventSequence) EventSequence
 
 	var _eventSequenceState EventSequenceState // out
 
-	_eventSequenceState = (EventSequenceState)(_cret)
+	_eventSequenceState = EventSequenceState(_cret)
 
 	return _eventSequenceState
 }

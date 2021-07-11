@@ -221,7 +221,7 @@ func (setup *PageSetup) Orientation() PageOrientation {
 
 	var _pageOrientation PageOrientation // out
 
-	_pageOrientation = (PageOrientation)(_cret)
+	_pageOrientation = PageOrientation(_cret)
 
 	return _pageOrientation
 }

@@ -4,9 +4,10 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -50,20 +51,20 @@ func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 
 // FileFilterFunc: type of function that is used with custom filters, see
 // gtk_file_filter_add_custom().
-type FileFilterFunc func(filterInfo *FileFilterInfo, data interface{}) (ok bool)
+type FileFilterFunc func(filterInfo *FileFilterInfo, data cgo.Handle) (ok bool)
 
 //export gotk4_FileFilterFunc
 func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var filterInfo *FileFilterInfo // out
-	var data interface{}           // out
+	var data cgo.Handle            // out
 
 	filterInfo = (*FileFilterInfo)(unsafe.Pointer(arg0))
-	data = box.Get(uintptr(arg1))
+	data = (cgo.Handle)(arg1)
 
 	fn := v.(FileFilterFunc)
 	ok := fn(filterInfo, data)
@@ -279,7 +280,7 @@ func (filter *FileFilter) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -299,7 +300,7 @@ func (filter *FileFilter) Needed() FileFilterFlags {
 
 	var _fileFilterFlags FileFilterFlags // out
 
-	_fileFilterFlags = (FileFilterFlags)(_cret)
+	_fileFilterFlags = FileFilterFlags(_cret)
 
 	return _fileFilterFlags
 }

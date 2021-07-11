@@ -71,7 +71,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 
 	var _propagationPhase PropagationPhase // out
 
-	_propagationPhase = (PropagationPhase)(_cret)
+	_propagationPhase = PropagationPhase(_cret)
 
 	return _propagationPhase
 }

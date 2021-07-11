@@ -175,17 +175,13 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
 	var _arg2 C.double            // out
-	var _arg3 C.graphene_point_t  // in
+	var _res Point
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b))
 	_arg2 = C.double(factor)
 
-	C.graphene_point_interpolate(_arg0, _arg1, _arg2, &_arg3)
-
-	var _res Point // out
-
-	_res = *(*Point)(unsafe.Pointer((&_arg3)))
+	C.graphene_point_interpolate(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }
@@ -217,15 +213,11 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 // #graphene_vec2_t.
 func (p *Point) ToVec2() Vec2 {
 	var _arg0 *C.graphene_point_t // out
-	var _arg1 C.graphene_vec2_t   // in
+	var _v Vec2
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
 
-	C.graphene_point_to_vec2(_arg0, &_arg1)
-
-	var _v Vec2 // out
-
-	_v = *(*Vec2)(unsafe.Pointer((&_arg1)))
+	C.graphene_point_to_vec2(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_v)))
 
 	return _v
 }

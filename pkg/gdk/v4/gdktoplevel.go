@@ -230,7 +230,7 @@ func (toplevel *Toplevel) State() ToplevelState {
 
 	var _toplevelState ToplevelState // out
 
-	_toplevelState = (ToplevelState)(_cret)
+	_toplevelState = ToplevelState(_cret)
 
 	return _toplevelState
 }

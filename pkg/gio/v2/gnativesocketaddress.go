@@ -3,9 +3,9 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -66,12 +66,12 @@ func marshalNativeSocketAddresser(p uintptr) (interface{}, error) {
 }
 
 // NewNativeSocketAddress creates a new SocketAddress for @native and @len.
-func NewNativeSocketAddress(native interface{}, len uint) *NativeSocketAddress {
+func NewNativeSocketAddress(native cgo.Handle, len uint) *NativeSocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = (C.gpointer)(box.Assign(native))
+	_arg1 = (C.gpointer)(native)
 	_arg2 = C.gsize(len)
 
 	_cret = C.g_native_socket_address_new(_arg1, _arg2)

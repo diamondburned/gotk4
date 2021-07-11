@@ -51,12 +51,13 @@ func marshalExpanderStyle(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StyleOverrider interface {
+	//
 	Copy(src Styler)
-
+	//
 	InitFromRC(rcStyle RCStyler)
-
+	//
 	Realize()
-
+	//
 	Unrealize()
 }
 
@@ -169,7 +170,7 @@ func (style *Style) StyleProperty(widgetType externglib.Type, propertyName strin
 	var _arg3 C.GValue    // in
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
-	_arg1 = (C.GType)(widgetType)
+	_arg1 = C.GType(widgetType)
 	_arg2 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -209,19 +210,17 @@ func (style *Style) HasContext() bool {
 func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 	var _arg0 *C.GtkStyle // out
 	var _arg1 *C.gchar    // out
-	var _arg2 C.GdkColor  // in
-	var _cret C.gboolean  // in
+	var _color gdk.Color
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg1 = (*C.gchar)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	_cret = C.gtk_style_lookup_color(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_style_lookup_color(_arg0, _arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
-	var _color gdk.Color // out
-	var _ok bool         // out
+	var _ok bool // out
 
-	_color = *(*gdk.Color)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}

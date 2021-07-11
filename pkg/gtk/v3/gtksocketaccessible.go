@@ -27,9 +27,11 @@ func init() {
 
 // SocketAccessibler describes SocketAccessible's methods.
 type SocketAccessibler interface {
+	//
 	Embed(path string)
 }
 
+//
 type SocketAccessible struct {
 	ContainerAccessible
 }
@@ -62,6 +64,7 @@ func marshalSocketAccessibler(p uintptr) (interface{}, error) {
 	return wrapSocketAccessible(obj), nil
 }
 
+//
 func (socket *SocketAccessible) Embed(path string) {
 	var _arg0 *C.GtkSocketAccessible // out
 	var _arg1 *C.gchar               // out

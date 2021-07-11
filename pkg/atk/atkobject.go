@@ -3,9 +3,10 @@
 package atk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -486,18 +487,18 @@ func marshalRole(p uintptr) (interface{}, error) {
 
 // Function is a function definition used for padding which has been added to
 // class and interface structures to allow for expansion in the future.
-type Function func(userData interface{}) (ok bool)
+type Function func(userData cgo.Handle) (ok bool)
 
 //export gotk4_Function
 func gotk4_Function(arg0 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg0))
+	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var userData interface{} // out
+	var userData cgo.Handle // out
 
-	userData = box.Get(uintptr(arg0))
+	userData = (cgo.Handle)(arg0)
 
 	fn := v.(Function)
 	ok := fn(userData)
@@ -545,10 +546,11 @@ func (*ImplementorIface) privateImplementorIface() {}
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ObjectClassOverrider interface {
-	ActiveDescendantChanged(child interface{})
-
-	ChildrenChanged(changeIndex uint, changedChild interface{})
-
+	//
+	ActiveDescendantChanged(child *cgo.Handle)
+	//
+	ChildrenChanged(changeIndex uint, changedChild cgo.Handle)
+	//
 	FocusEvent(focusIn bool)
 	// Description gets the accessible description of the accessible.
 	Description() string
@@ -564,7 +566,7 @@ type ObjectClassOverrider interface {
 	//
 	// Deprecated: Use atk_component_get_mdi_zorder instead.
 	MDIZOrder() int
-
+	//
 	NChildren() int
 	// Name gets the accessible name of the accessible.
 	Name() string
@@ -586,8 +588,8 @@ type ObjectClassOverrider interface {
 	// Object. It does initialization required for the new object. It is
 	// intended that this function should called only in the ..._new() functions
 	// used to create an instance of a subclass of Object
-	Initialize(data interface{})
-
+	Initialize(data cgo.Handle)
+	//
 	PropertyChange(values *PropertyValues)
 	// RefRelationSet gets the RelationSet associated with the object.
 	RefRelationSet() *RelationSet
@@ -611,9 +613,9 @@ type ObjectClassOverrider interface {
 	// SetParent sets the accessible parent of the accessible. @parent can be
 	// NULL.
 	SetParent(parent ObjectClasser)
-
+	//
 	StateChange(name string, stateSet bool)
-
+	//
 	VisibleDataChanged()
 }
 
@@ -644,7 +646,7 @@ type ObjectClasser interface {
 	Role() Role
 	// Initialize: this function is called when implementing subclasses of
 	// Object.
-	Initialize(data interface{})
+	Initialize(data cgo.Handle)
 	// PeekParent gets the accessible parent of the accessible, if it has been
 	// manually assigned with atk_object_set_parent.
 	PeekParent() *ObjectClass
@@ -716,7 +718,7 @@ func (accessible *ObjectClass) AccessibleID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -732,7 +734,7 @@ func (accessible *ObjectClass) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -767,7 +769,7 @@ func (accessible *ObjectClass) Layer() Layer {
 
 	var _layer Layer // out
 
-	_layer = (Layer)(_cret)
+	_layer = Layer(_cret)
 
 	return _layer
 }
@@ -818,7 +820,7 @@ func (accessible *ObjectClass) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -835,7 +837,7 @@ func (accessible *ObjectClass) ObjectLocale() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -874,7 +876,7 @@ func (accessible *ObjectClass) Role() Role {
 
 	var _role Role // out
 
-	_role = (Role)(_cret)
+	_role = Role(_cret)
 
 	return _role
 }
@@ -883,12 +885,12 @@ func (accessible *ObjectClass) Role() Role {
 // It does initialization required for the new object. It is intended that this
 // function should called only in the ..._new() functions used to create an
 // instance of a subclass of Object
-func (accessible *ObjectClass) Initialize(data interface{}) {
+func (accessible *ObjectClass) Initialize(data cgo.Handle) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gpointer   // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (C.gpointer)(box.Assign(data))
+	_arg1 = (C.gpointer)(data)
 
 	C.atk_object_initialize(_arg0, _arg1)
 }

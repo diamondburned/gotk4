@@ -173,7 +173,7 @@ func (viewport *Viewport) ShadowType() ShadowType {
 
 	var _shadowType ShadowType // out
 
-	_shadowType = (ShadowType)(_cret)
+	_shadowType = ShadowType(_cret)
 
 	return _shadowType
 }

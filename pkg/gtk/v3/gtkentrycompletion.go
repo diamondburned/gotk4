@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -31,11 +32,11 @@ func init() {
 // g_utf8_normalize() and g_utf8_casefold()). If this is not appropriate, match
 // functions have access to the unmodified key via `gtk_entry_get_text
 // (GTK_ENTRY (gtk_entry_completion_get_entry ()))`.
-type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter, userData interface{}) (ok bool)
+type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter, userData cgo.Handle) (ok bool)
 
 //export gotk4_EntryCompletionMatchFunc
 func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg3))
+	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -43,12 +44,12 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, a
 	var completion *EntryCompletion // out
 	var key string                  // out
 	var iter *TreeIter              // out
-	var userData interface{}        // out
+	var userData cgo.Handle         // out
 
 	completion = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*EntryCompletion)
-	key = C.GoString(arg1)
+	key = C.GoString((*C.gchar)(arg1))
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
-	userData = box.Get(uintptr(arg3))
+	userData = (cgo.Handle)(arg3)
 
 	fn := v.(EntryCompletionMatchFunc)
 	ok := fn(completion, key, iter, userData)
@@ -65,14 +66,15 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, a
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type EntryCompletionOverrider interface {
+	//
 	ActionActivated(index_ int)
-
+	//
 	CursorOnMatch(model TreeModeller, iter *TreeIter) bool
-
+	//
 	InsertPrefix(prefix string) bool
-
+	//
 	MatchSelected(model TreeModeller, iter *TreeIter) bool
-
+	//
 	NoMatches()
 }
 
@@ -273,7 +275,7 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -305,7 +307,7 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

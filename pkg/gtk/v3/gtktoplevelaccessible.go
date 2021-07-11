@@ -30,6 +30,7 @@ type ToplevelAccessibler interface {
 	privateToplevelAccessible()
 }
 
+//
 type ToplevelAccessible struct {
 	atk.ObjectClass
 }

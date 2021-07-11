@@ -4,9 +4,10 @@ package gio
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -60,9 +61,9 @@ type Tasker interface {
 	// SourceObject gets the source object from @task.
 	SourceObject() *externglib.Object
 	// SourceTag gets @task's source tag.
-	SourceTag() interface{}
+	SourceTag() cgo.Handle
 	// TaskData gets @task's `task_data`.
-	TaskData() interface{}
+	TaskData() cgo.Handle
 	// HadError tests if @task resulted in an error.
 	HadError() bool
 	// PropagateBoolean gets the result of @task as a #gboolean.
@@ -71,7 +72,7 @@ type Tasker interface {
 	PropagateInt() (int, error)
 	// PropagatePointer gets the result of @task as a pointer, and transfers
 	// ownership of that value to the caller.
-	PropagatePointer() (interface{}, error)
+	PropagatePointer() (cgo.Handle, error)
 	// PropagateValue gets the result of @task as a #GValue, and transfers
 	// ownership of that value to the caller.
 	PropagateValue() (externglib.Value, error)
@@ -102,7 +103,7 @@ type Tasker interface {
 	// SetReturnOnCancel sets or clears @task's return-on-cancel flag.
 	SetReturnOnCancel(returnOnCancel bool) bool
 	// SetSourceTag sets @task's source tag.
-	SetSourceTag(sourceTag interface{})
+	SetSourceTag(sourceTag cgo.Handle)
 }
 
 // Task represents and manages a cancellable "task".
@@ -303,10 +304,10 @@ func NewTask(sourceObject gextras.Objector, cancellable Cancellabler, callback A
 	var _arg4 C.gpointer
 	var _cret *C.GTask // in
 
-	_arg1 = (C.gpointer)(unsafe.Pointer(sourceObject.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer((&sourceObject).Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	_cret = C.g_task_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -409,7 +410,7 @@ func (task *Task) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -467,7 +468,7 @@ func (task *Task) SourceObject() *externglib.Object {
 }
 
 // SourceTag gets @task's source tag. See g_task_set_source_tag().
-func (task *Task) SourceTag() interface{} {
+func (task *Task) SourceTag() cgo.Handle {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 
@@ -475,15 +476,15 @@ func (task *Task) SourceTag() interface{} {
 
 	_cret = C.g_task_get_source_tag(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
 
 // TaskData gets @task's `task_data`.
-func (task *Task) TaskData() interface{} {
+func (task *Task) TaskData() cgo.Handle {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 
@@ -491,9 +492,9 @@ func (task *Task) TaskData() interface{} {
 
 	_cret = C.g_task_get_task_data(_arg0)
 
-	var _gpointer interface{} // out
+	var _gpointer cgo.Handle // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 
 	return _gpointer
 }
@@ -571,7 +572,7 @@ func (task *Task) PropagateInt() (int, error) {
 //
 // Since this method transfers ownership of the return value (or error) to the
 // caller, you may only call it once.
-func (task *Task) PropagatePointer() (interface{}, error) {
+func (task *Task) PropagatePointer() (cgo.Handle, error) {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 	var _cerr *C.GError  // in
@@ -580,10 +581,10 @@ func (task *Task) PropagatePointer() (interface{}, error) {
 
 	_cret = C.g_task_propagate_pointer(_arg0, &_cerr)
 
-	var _gpointer interface{} // out
-	var _goerr error          // out
+	var _gpointer cgo.Handle // out
+	var _goerr error         // out
 
-	_gpointer = box.Get(uintptr(_cret))
+	_gpointer = (cgo.Handle)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _gpointer, _goerr
@@ -814,12 +815,12 @@ func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 // tagging) and then later check it using g_task_get_source_tag() (or
 // g_async_result_is_tagged()) in the task's "finish" function, to figure out if
 // the response came from a particular place.
-func (task *Task) SetSourceTag(sourceTag interface{}) {
+func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
-	_arg1 = (C.gpointer)(box.Assign(sourceTag))
+	_arg1 = (C.gpointer)(sourceTag)
 
 	C.g_task_set_source_tag(_arg0, _arg1)
 }

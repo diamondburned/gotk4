@@ -4,9 +4,10 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -42,7 +43,7 @@ const (
 	FontChooserLevelStyle FontChooserLevel = 0b1
 	// FontChooserLevelSize: allow selecting a specific font size
 	FontChooserLevelSize FontChooserLevel = 0b10
-
+	//
 	FontChooserLevelVariations FontChooserLevel = 0b100
 	// FontChooserLevelFeatures: allow selecting specific OpenType font features
 	FontChooserLevelFeatures FontChooserLevel = 0b1000
@@ -54,22 +55,22 @@ func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 
 // FontFilterFunc: type of function that is used for deciding what fonts get
 // shown in a FontChooser. See gtk_font_chooser_set_filter_func().
-type FontFilterFunc func(family *pango.FontFamily, face *pango.FontFace, data interface{}) (ok bool)
+type FontFilterFunc func(family *pango.FontFamily, face *pango.FontFace, data cgo.Handle) (ok bool)
 
 //export gotk4_FontFilterFunc
 func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var family *pango.FontFamily // out
 	var face *pango.FontFace     // out
-	var data interface{}         // out
+	var data cgo.Handle          // out
 
 	family = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*pango.FontFamily)
 	face = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*pango.FontFace)
-	data = box.Get(uintptr(arg2))
+	data = (cgo.Handle)(arg2)
 
 	fn := v.(FontFilterFunc)
 	ok := fn(family, face, data)
@@ -86,6 +87,7 @@ func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FontChooserOverrider interface {
+	//
 	FontActivated(fontname string)
 	// FontFace gets the FontFace representing the selected font group details
 	// (i.e. family, slant, weight, width, etc).
@@ -209,7 +211,7 @@ func (fontchooser *FontChooser) Font() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -291,7 +293,7 @@ func (fontchooser *FontChooser) FontFeatures() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -341,7 +343,7 @@ func (fontchooser *FontChooser) Language() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -358,7 +360,7 @@ func (fontchooser *FontChooser) Level() FontChooserLevel {
 
 	var _fontChooserLevel FontChooserLevel // out
 
-	_fontChooserLevel = (FontChooserLevel)(_cret)
+	_fontChooserLevel = FontChooserLevel(_cret)
 
 	return _fontChooserLevel
 }
@@ -374,7 +376,7 @@ func (fontchooser *FontChooser) PreviewText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

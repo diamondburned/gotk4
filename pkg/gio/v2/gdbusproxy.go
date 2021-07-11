@@ -40,6 +40,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusProxyOverrider interface {
+	//
 	GSignal(senderName string, signalName string, parameters *glib.Variant)
 }
 
@@ -297,7 +298,7 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -352,7 +353,7 @@ func (proxy *DBusProxy) Flags() DBusProxyFlags {
 
 	var _dBusProxyFlags DBusProxyFlags // out
 
-	_dBusProxyFlags = (DBusProxyFlags)(_cret)
+	_dBusProxyFlags = DBusProxyFlags(_cret)
 
 	return _dBusProxyFlags
 }
@@ -390,7 +391,7 @@ func (proxy *DBusProxy) InterfaceName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -406,7 +407,7 @@ func (proxy *DBusProxy) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -424,7 +425,7 @@ func (proxy *DBusProxy) NameOwner() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -441,7 +442,7 @@ func (proxy *DBusProxy) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

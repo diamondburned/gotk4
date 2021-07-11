@@ -38,7 +38,7 @@ type ActionOverrider interface {
 	//
 	// Deprecated: Use g_action_group_activate_action() on a #GAction instead.
 	Activate()
-
+	//
 	ConnectProxy(proxy Widgetter)
 	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
 	// item or the toolbar item it creates, this function returns an instance of
@@ -59,7 +59,7 @@ type ActionOverrider interface {
 	// Deprecated: Use a ToolItem and associate it with a #GAction using
 	// gtk_actionable_set_action_name() instead.
 	CreateToolItem() *Widget
-
+	//
 	DisconnectProxy(proxy Widgetter)
 }
 
@@ -434,7 +434,7 @@ func (action *Action) AccelPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -493,7 +493,7 @@ func (action *Action) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -534,7 +534,7 @@ func (action *Action) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -552,7 +552,7 @@ func (action *Action) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -592,7 +592,7 @@ func (action *Action) ShortLabel() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -610,7 +610,7 @@ func (action *Action) StockID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -629,7 +629,7 @@ func (action *Action) Tooltip() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

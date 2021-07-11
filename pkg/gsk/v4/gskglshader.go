@@ -298,7 +298,7 @@ func (shader *GLShader) Resource() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -317,7 +317,7 @@ func (shader *GLShader) UniformName(idx int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -355,7 +355,7 @@ func (shader *GLShader) UniformType(idx int) GLUniformType {
 
 	var _glUniformType GLUniformType // out
 
-	_glUniformType = (GLUniformType)(_cret)
+	_glUniformType = GLUniformType(_cret)
 
 	return _glUniformType
 }

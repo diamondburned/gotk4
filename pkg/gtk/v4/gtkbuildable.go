@@ -3,9 +3,9 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -33,22 +33,22 @@ type BuildableOverrider interface {
 	AddChild(builder Builderer, child gextras.Objector, typ string)
 	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
 	// once for each custom tag handled by the @buildable.
-	CustomFinished(builder Builderer, child gextras.Objector, tagname string, data interface{})
+	CustomFinished(builder Builderer, child gextras.Objector, tagname string, data cgo.Handle)
 	// CustomTagEnd: called at the end of each custom element handled by the
 	// buildable.
-	CustomTagEnd(builder Builderer, child gextras.Objector, tagname string, data interface{})
+	CustomTagEnd(builder Builderer, child gextras.Objector, tagname string, data cgo.Handle)
 	// CustomTagStart: called for each unknown element under `<child>`.
-	CustomTagStart(builder Builderer, child gextras.Objector, tagname string) (BuildableParser, interface{}, bool)
-
+	CustomTagStart(builder Builderer, child gextras.Objector, tagname string) (BuildableParser, cgo.Handle, bool)
+	//
 	ID() string
 	// InternalChild retrieves the internal child called @childname of the
 	// @buildable object.
 	InternalChild(builder Builderer, childname string) *externglib.Object
-
+	//
 	ParserFinished(builder Builderer)
-
+	//
 	SetBuildableProperty(builder Builderer, name string, value *externglib.Value)
-
+	//
 	SetID(id string)
 }
 
@@ -106,7 +106,7 @@ func (buildable *Buildable) BuildableID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

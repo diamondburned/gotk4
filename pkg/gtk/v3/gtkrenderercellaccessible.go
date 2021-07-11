@@ -30,6 +30,7 @@ type RendererCellAccessibler interface {
 	privateRendererCellAccessible()
 }
 
+//
 type RendererCellAccessible struct {
 	CellAccessible
 }
@@ -63,6 +64,7 @@ func marshalRendererCellAccessibler(p uintptr) (interface{}, error) {
 	return wrapRendererCellAccessible(obj), nil
 }
 
+//
 func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible {
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.AtkObject       // in

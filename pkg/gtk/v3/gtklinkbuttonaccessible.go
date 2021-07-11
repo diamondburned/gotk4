@@ -30,6 +30,7 @@ type LinkButtonAccessibler interface {
 	privateLinkButtonAccessible()
 }
 
+//
 type LinkButtonAccessible struct {
 	ButtonAccessible
 

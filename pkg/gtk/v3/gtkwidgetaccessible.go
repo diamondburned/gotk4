@@ -30,6 +30,7 @@ type WidgetAccessibler interface {
 	privateWidgetAccessible()
 }
 
+//
 type WidgetAccessible struct {
 	Accessible
 

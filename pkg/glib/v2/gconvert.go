@@ -66,7 +66,7 @@ func FilenameDisplayBasename(filename string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -98,7 +98,7 @@ func FilenameDisplayName(filename string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -121,9 +121,9 @@ func FilenameFromURI(uri string) (hostname string, filename string, goerr error)
 	var _filename string // out
 	var _goerr error     // out
 
-	_hostname = C.GoString(_arg2)
+	_hostname = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -161,7 +161,7 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 
 	_bytesRead = uint(_arg3)
 	_bytesWritten = uint(_arg4)
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -186,7 +186,7 @@ func FilenameToURI(filename string, hostname string) (string, error) {
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -225,7 +225,7 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 
 	_bytesRead = uint(_arg3)
 	_bytesWritten = uint(_arg4)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -274,7 +274,7 @@ func GetFilenameCharsets() ([]string, bool) {
 		src := unsafe.Slice(_arg1, i)
 		_filenameCharsets = make([]string, i)
 		for i := range src {
-			_filenameCharsets[i] = C.GoString(src[i])
+			_filenameCharsets[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 	if _cret != 0 {
@@ -314,7 +314,7 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 
 	_bytesRead = uint(_arg3)
 	_bytesWritten = uint(_arg4)
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

@@ -107,17 +107,15 @@ func marshalScrollabler(p uintptr) (interface{}, error) {
 // the right position.
 func (scrollable *Scrollable) Border() (Border, bool) {
 	var _arg0 *C.GtkScrollable // out
-	var _arg1 C.GtkBorder      // in
-	var _cret C.gboolean       // in
+	var _border Border
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
 
-	_cret = C.gtk_scrollable_get_border(_arg0, &_arg1)
+	_cret = C.gtk_scrollable_get_border(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_border)))
 
-	var _border Border // out
-	var _ok bool       // out
+	var _ok bool // out
 
-	_border = *(*Border)(unsafe.Pointer((&_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -152,7 +150,7 @@ func (scrollable *Scrollable) HscrollPolicy() ScrollablePolicy {
 
 	var _scrollablePolicy ScrollablePolicy // out
 
-	_scrollablePolicy = (ScrollablePolicy)(_cret)
+	_scrollablePolicy = ScrollablePolicy(_cret)
 
 	return _scrollablePolicy
 }
@@ -184,7 +182,7 @@ func (scrollable *Scrollable) VscrollPolicy() ScrollablePolicy {
 
 	var _scrollablePolicy ScrollablePolicy // out
 
-	_scrollablePolicy = (ScrollablePolicy)(_cret)
+	_scrollablePolicy = ScrollablePolicy(_cret)
 
 	return _scrollablePolicy
 }

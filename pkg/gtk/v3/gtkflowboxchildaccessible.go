@@ -30,6 +30,7 @@ type FlowBoxChildAccessibler interface {
 	privateFlowBoxChildAccessible()
 }
 
+//
 type FlowBoxChildAccessible struct {
 	ContainerAccessible
 }

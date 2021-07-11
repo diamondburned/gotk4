@@ -5,7 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -45,7 +45,7 @@ type MountOverrider interface {
 	CanEject() bool
 	// CanUnmount checks if @mount can be unmounted.
 	CanUnmount() bool
-
+	//
 	Changed()
 	// EjectFinish finishes ejecting a mount. If any errors occurred during the
 	// operation, @error will be set to contain the errors and false will be
@@ -109,7 +109,7 @@ type MountOverrider interface {
 	// This is a synchronous operation and as such may block doing IO; see
 	// g_mount_guess_content_type() for the asynchronous version.
 	GuessContentTypeSync(forceRescan bool, cancellable Cancellabler) ([]string, error)
-
+	//
 	PreUnmount()
 	// RemountFinish finishes remounting a mount. If any errors occurred during
 	// the operation, @error will be set to contain the errors and false will be
@@ -125,7 +125,7 @@ type MountOverrider interface {
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
 	UnmountWithOperationFinish(result AsyncResulter) error
-
+	//
 	Unmounted()
 }
 
@@ -358,7 +358,7 @@ func (mount *Mount) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -391,7 +391,7 @@ func (mount *Mount) SortKey() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -425,7 +425,7 @@ func (mount *Mount) UUID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -471,7 +471,7 @@ func (mount *Mount) GuessContentType(forceRescan bool, cancellable Cancellabler,
 	}
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(box.Assign(callback))
+	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_mount_guess_content_type(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -504,7 +504,7 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -550,7 +550,7 @@ func (mount *Mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellab
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

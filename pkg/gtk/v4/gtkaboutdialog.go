@@ -79,11 +79,11 @@ type AboutDialogger interface {
 	// Artists returns the string which are displayed in the "Artists" tab of
 	// the secondary credits dialog.
 	Artists() []string
-
+	//
 	Authors() []string
 	// Comments returns the comments string.
 	Comments() string
-
+	//
 	Copyright() string
 	// Documenters returns the string which are displayed in the "Documenters"
 	// tab of the secondary credits dialog.
@@ -223,7 +223,7 @@ func wrapAboutDialog(obj *externglib.Object) AboutDialogger {
 				},
 			},
 			Root: Root{
-				Native: Native{
+				NativeSurface: NativeSurface{
 					Widget: Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
@@ -310,7 +310,7 @@ func (about *AboutDialog) Artists() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -339,7 +339,7 @@ func (about *AboutDialog) Authors() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -357,7 +357,7 @@ func (about *AboutDialog) Comments() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -373,7 +373,7 @@ func (about *AboutDialog) Copyright() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -400,7 +400,7 @@ func (about *AboutDialog) Documenters() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -418,7 +418,7 @@ func (about *AboutDialog) License() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -434,7 +434,7 @@ func (about *AboutDialog) LicenseType() License {
 
 	var _license License // out
 
-	_license = (License)(_cret)
+	_license = License(_cret)
 
 	return _license
 }
@@ -466,7 +466,7 @@ func (about *AboutDialog) LogoIconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -482,7 +482,7 @@ func (about *AboutDialog) ProgramName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -499,7 +499,7 @@ func (about *AboutDialog) SystemInformation() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -516,7 +516,7 @@ func (about *AboutDialog) TranslatorCredits() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -532,7 +532,7 @@ func (about *AboutDialog) Version() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -548,7 +548,7 @@ func (about *AboutDialog) Website() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -564,7 +564,7 @@ func (about *AboutDialog) WebsiteLabel() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

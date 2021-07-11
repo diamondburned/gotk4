@@ -80,7 +80,7 @@ func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) *Widget {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((baseWidget).(gextras.Nativer).Native()))
-	_arg2 = (C.GType)(widgetType)
+	_arg2 = C.GType(widgetType)
 
 	_cret = C.gtk_test_find_sibling(_arg1, _arg2)
 
@@ -107,7 +107,7 @@ func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(labelPattern))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (C.GType)(widgetType)
+	_arg3 = C.GType(widgetType)
 
 	_cret = C.gtk_test_find_widget(_arg1, _arg2, _arg3)
 
@@ -204,7 +204,7 @@ func TestTextGet(widget Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

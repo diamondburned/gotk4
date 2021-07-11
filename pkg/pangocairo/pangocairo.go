@@ -3,10 +3,11 @@
 package pangocairo
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -28,11 +29,11 @@ func init() {
 
 // ShapeRendererFunc: function type for rendering attributes of type
 // PANGO_ATTR_SHAPE with Pango's Cairo renderer.
-type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool, data interface{})
+type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool, data cgo.Handle)
 
 //export gotk4_ShapeRendererFunc
 func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer) {
-	v := box.Get(uintptr(arg3))
+	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -40,14 +41,14 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 	var cr *cairo.Context     // out
 	var attr *pango.AttrShape // out
 	var doPath bool           // out
-	var data interface{}      // out
+	var data cgo.Handle       // out
 
 	cr = (*cairo.Context)(unsafe.Pointer(arg0))
 	attr = (*pango.AttrShape)(unsafe.Pointer(arg1))
 	if arg2 != 0 {
 		doPath = true
 	}
-	data = box.Get(uintptr(arg3))
+	data = (cgo.Handle)(arg3)
 
 	fn := v.(ShapeRendererFunc)
 	fn(cr, attr, doPath, data)
@@ -460,7 +461,7 @@ func (fontmap *FontMap) FontType() cairo.FontType {
 
 	var _fontType cairo.FontType // out
 
-	_fontType = (cairo.FontType)(_cret)
+	_fontType = cairo.FontType(_cret)
 
 	return _fontType
 }

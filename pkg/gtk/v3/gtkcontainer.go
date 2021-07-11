@@ -8,7 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -46,14 +46,14 @@ type ContainerOverrider interface {
 	// Note that some containers, such as ScrolledWindow or ListBox, may add
 	// intermediate children between the added widget and the container.
 	Add(widget Widgetter)
-
+	//
 	CheckResize()
 	// ChildType returns the type of the children supported by the container.
 	//
 	// Note that this may return G_TYPE_NONE to indicate that no more children
 	// can be added, e.g. for a Paned which already has two children.
 	ChildType() externglib.Type
-
+	//
 	CompositeName(child Widgetter) string
 	// Forall invokes @callback on each direct child of @container, including
 	// children that are considered “internal” (implementation details of the
@@ -93,7 +93,7 @@ type ContainerOverrider interface {
 type Containerer interface {
 	// Add adds @widget to @container.
 	Add(widget Widgetter)
-
+	//
 	CheckResize()
 	// ChildGetProperty gets the value of a child property for @child and
 	// @container.
@@ -378,6 +378,7 @@ func (container *Container) Add(widget Widgetter) {
 	C.gtk_container_add(_arg0, _arg1)
 }
 
+//
 func (container *Container) CheckResize() {
 	var _arg0 *C.GtkContainer // out
 
@@ -471,7 +472,7 @@ func (container *Container) Forall(callback Callback) {
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_Callback)
-	_arg2 = C.gpointer(box.Assign(callback))
+	_arg2 = C.gpointer(gbox.Assign(callback))
 
 	C.gtk_container_forall(_arg0, _arg1, _arg2)
 }
@@ -493,7 +494,7 @@ func (container *Container) Foreach(callback Callback) {
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_Callback)
-	_arg2 = C.gpointer(box.Assign(callback))
+	_arg2 = C.gpointer(gbox.Assign(callback))
 
 	C.gtk_container_foreach(_arg0, _arg1, _arg2)
 }
@@ -605,7 +606,7 @@ func (container *Container) ResizeMode() ResizeMode {
 
 	var _resizeMode ResizeMode // out
 
-	_resizeMode = (ResizeMode)(_cret)
+	_resizeMode = ResizeMode(_cret)
 
 	return _resizeMode
 }

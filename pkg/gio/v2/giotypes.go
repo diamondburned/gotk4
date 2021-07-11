@@ -4,9 +4,10 @@ package gio
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -43,22 +44,22 @@ func init() {
 // the [thread-default main context][g-main-context-push-thread-default] where
 // the #GTask was created. All other users of ReadyCallback must likewise call
 // it asynchronously in a later iteration of the main context.
-type AsyncReadyCallback func(sourceObject *externglib.Object, res *AsyncResult, userData interface{})
+type AsyncReadyCallback func(sourceObject *externglib.Object, res *AsyncResult, userData cgo.Handle)
 
 //export gotk4_AsyncReadyCallback
 func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var sourceObject *externglib.Object // out
 	var res *AsyncResult                // out
-	var userData interface{}            // out
+	var userData cgo.Handle             // out
 
 	sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
 	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*AsyncResult)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(AsyncReadyCallback)
 	fn(sourceObject, res, userData)
@@ -66,20 +67,20 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 
 // CancellableSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_cancellable_source_new().
-type CancellableSourceFunc func(cancellable *Cancellable, userData interface{}) (ok bool)
+type CancellableSourceFunc func(cancellable *Cancellable, userData cgo.Handle) (ok bool)
 
 //export gotk4_CancellableSourceFunc
 func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var cancellable *Cancellable // out
-	var userData interface{}     // out
+	var userData cgo.Handle      // out
 
 	cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Cancellable)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(CancellableSourceFunc)
 	ok := fn(cancellable, userData)
@@ -97,11 +98,11 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.
 //
 // This function is called in the [thread-default main
 // loop][g-main-context-push-thread-default] that @manager was constructed in.
-type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string, userData interface{}) (gType externglib.Type)
+type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string, userData cgo.Handle) (gType externglib.Type)
 
 //export gotk4_DBusProxyTypeFunc
 func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
-	v := box.Get(uintptr(arg3))
+	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -109,39 +110,39 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	var manager *DBusObjectManagerClient // out
 	var objectPath string                // out
 	var interfaceName string             // out
-	var userData interface{}             // out
+	var userData cgo.Handle              // out
 
 	manager = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusObjectManagerClient)
-	objectPath = C.GoString(arg1)
-	interfaceName = C.GoString(arg2)
-	userData = box.Get(uintptr(arg3))
+	objectPath = C.GoString((*C.gchar)(arg1))
+	interfaceName = C.GoString((*C.gchar)(arg2))
+	userData = (cgo.Handle)(arg3)
 
 	fn := v.(DBusProxyTypeFunc)
 	gType := fn(manager, objectPath, interfaceName, userData)
 
-	cret = (C.GType)(gType)
+	cret = C.GType(gType)
 
 	return cret
 }
 
 // DatagramBasedSourceFunc: this is the function type of the callback used for
 // the #GSource returned by g_datagram_based_create_source().
-type DatagramBasedSourceFunc func(datagramBased *DatagramBased, condition glib.IOCondition, userData interface{}) (ok bool)
+type DatagramBasedSourceFunc func(datagramBased *DatagramBased, condition glib.IOCondition, userData cgo.Handle) (ok bool)
 
 //export gotk4_DatagramBasedSourceFunc
 func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var datagramBased *DatagramBased // out
 	var condition glib.IOCondition   // out
-	var userData interface{}         // out
+	var userData cgo.Handle          // out
 
 	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DatagramBased)
-	condition = (glib.IOCondition)(arg1)
-	userData = box.Get(uintptr(arg2))
+	condition = glib.IOCondition(arg1)
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(DatagramBasedSourceFunc)
 	ok := fn(datagramBased, condition, userData)
@@ -180,20 +181,20 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 //
 // The last progress callback may or may not be equal to the final result.
 // Always check the async result to get the final value.
-type FileMeasureProgressCallback func(reporting bool, currentSize uint64, numDirs uint64, numFiles uint64, userData interface{})
+type FileMeasureProgressCallback func(reporting bool, currentSize uint64, numDirs uint64, numFiles uint64, userData cgo.Handle)
 
 //export gotk4_FileMeasureProgressCallback
 func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
+	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var reporting bool       // out
-	var currentSize uint64   // out
-	var numDirs uint64       // out
-	var numFiles uint64      // out
-	var userData interface{} // out
+	var reporting bool      // out
+	var currentSize uint64  // out
+	var numDirs uint64      // out
+	var numFiles uint64     // out
+	var userData cgo.Handle // out
 
 	if arg0 != 0 {
 		reporting = true
@@ -201,7 +202,7 @@ func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.g
 	currentSize = uint64(arg1)
 	numDirs = uint64(arg2)
 	numFiles = uint64(arg3)
-	userData = box.Get(uintptr(arg4))
+	userData = (cgo.Handle)(arg4)
 
 	fn := v.(FileMeasureProgressCallback)
 	fn(reporting, currentSize, numDirs, numFiles, userData)
@@ -210,22 +211,22 @@ func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.g
 // FileProgressCallback: when doing file operations that may take a while, such
 // as moving a file or copying a file, a progress callback is used to pass how
 // far along that operation is to the application.
-type FileProgressCallback func(currentNumBytes int64, totalNumBytes int64, userData interface{})
+type FileProgressCallback func(currentNumBytes int64, totalNumBytes int64, userData cgo.Handle)
 
 //export gotk4_FileProgressCallback
 func gotk4_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var currentNumBytes int64 // out
 	var totalNumBytes int64   // out
-	var userData interface{}  // out
+	var userData cgo.Handle   // out
 
 	currentNumBytes = int64(arg0)
 	totalNumBytes = int64(arg1)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(FileProgressCallback)
 	fn(currentNumBytes, totalNumBytes, userData)
@@ -236,22 +237,22 @@ func gotk4_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer)
 // any more data from the file should be loaded. A ReadMoreCallback function
 // facilitates this by returning true if more data should be read, or false
 // otherwise.
-type FileReadMoreCallback func(fileContents string, fileSize int64, callbackData interface{}) (ok bool)
+type FileReadMoreCallback func(fileContents string, fileSize int64, callbackData cgo.Handle) (ok bool)
 
 //export gotk4_FileReadMoreCallback
 func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var fileContents string      // out
-	var fileSize int64           // out
-	var callbackData interface{} // out
+	var fileContents string     // out
+	var fileSize int64          // out
+	var callbackData cgo.Handle // out
 
-	fileContents = C.GoString(arg0)
+	fileContents = C.GoString((*C.gchar)(arg0))
 	fileSize = int64(arg1)
-	callbackData = box.Get(uintptr(arg2))
+	callbackData = (cgo.Handle)(arg2)
 
 	fn := v.(FileReadMoreCallback)
 	ok := fn(fileContents, fileSize, callbackData)
@@ -266,20 +267,20 @@ func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) (
 // PollableSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_pollable_input_stream_create_source() and
 // g_pollable_output_stream_create_source().
-type PollableSourceFunc func(pollableStream *externglib.Object, userData interface{}) (ok bool)
+type PollableSourceFunc func(pollableStream *externglib.Object, userData cgo.Handle) (ok bool)
 
 //export gotk4_PollableSourceFunc
 func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var pollableStream *externglib.Object // out
-	var userData interface{}              // out
+	var userData cgo.Handle               // out
 
 	pollableStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(PollableSourceFunc)
 	ok := fn(pollableStream, userData)
@@ -293,22 +294,22 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gboolean
 
 // SocketSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_socket_create_source().
-type SocketSourceFunc func(socket *Socket, condition glib.IOCondition, userData interface{}) (ok bool)
+type SocketSourceFunc func(socket *Socket, condition glib.IOCondition, userData cgo.Handle) (ok bool)
 
 //export gotk4_SocketSourceFunc
 func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var socket *Socket             // out
 	var condition glib.IOCondition // out
-	var userData interface{}       // out
+	var userData cgo.Handle        // out
 
 	socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Socket)
-	condition = (glib.IOCondition)(arg1)
-	userData = box.Get(uintptr(arg2))
+	condition = glib.IOCondition(arg1)
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(SocketSourceFunc)
 	ok := fn(socket, condition, userData)
@@ -393,7 +394,7 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -505,7 +506,7 @@ func (matcher *FileAttributeMatcher) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -877,7 +878,7 @@ func (target *SrvTarget) Hostname() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

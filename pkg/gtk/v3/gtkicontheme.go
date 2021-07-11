@@ -279,7 +279,7 @@ func (iconInfo *IconInfo) DisplayName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -289,17 +289,15 @@ func (iconInfo *IconInfo) DisplayName() string {
 // Deprecated: Embedded rectangles are deprecated.
 func (iconInfo *IconInfo) EmbeddedRect() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkIconInfo // out
-	var _arg1 C.GdkRectangle // in
-	var _cret C.gboolean     // in
+	var _rectangle gdk.Rectangle
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
 
-	_cret = C.gtk_icon_info_get_embedded_rect(_arg0, &_arg1)
+	_cret = C.gtk_icon_info_get_embedded_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rectangle)))
 
-	var _rectangle gdk.Rectangle // out
-	var _ok bool                 // out
+	var _ok bool // out
 
-	_rectangle = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -321,7 +319,7 @@ func (iconInfo *IconInfo) Filename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -599,6 +597,7 @@ func (iconInfo *IconInfo) SetRawCoordinates(rawCoordinates bool) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type IconThemeOverrider interface {
+	//
 	Changed()
 }
 
@@ -782,7 +781,7 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -839,7 +838,7 @@ func (iconTheme *IconTheme) SearchPath() []string {
 		src := unsafe.Slice(_arg1, _arg2)
 		_path = make([]string, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_path[i] = C.GoString(src[i])
+			_path[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}

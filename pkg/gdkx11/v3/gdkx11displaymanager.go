@@ -28,6 +28,7 @@ type X11DisplayManagerer interface {
 	privateX11DisplayManager()
 }
 
+//
 type X11DisplayManager struct {
 	gdk.DisplayManager
 }

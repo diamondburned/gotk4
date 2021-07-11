@@ -189,7 +189,7 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, *gio.I
 	var _inputStream *gio.InputStream // out
 	var _goerr error                  // out
 
-	_outMimeType = C.GoString(_arg2)
+	_outMimeType = C.GoString((*C.gchar)(_arg2))
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.InputStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -213,7 +213,7 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

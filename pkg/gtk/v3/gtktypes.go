@@ -31,6 +31,7 @@ func init() {
 	})
 }
 
+//
 type IconSet struct {
 	native C.GtkIconSet
 }
@@ -257,6 +258,7 @@ func (iconSet *IconSet) unref() {
 	C.gtk_icon_set_unref(_arg0)
 }
 
+//
 type IconSource struct {
 	native C.GtkIconSource
 }
@@ -334,7 +336,7 @@ func (source *IconSource) Direction() TextDirection {
 
 	var _textDirection TextDirection // out
 
-	_textDirection = (TextDirection)(_cret)
+	_textDirection = TextDirection(_cret)
 
 	return _textDirection
 }
@@ -375,7 +377,7 @@ func (source *IconSource) Filename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -395,7 +397,7 @@ func (source *IconSource) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -475,7 +477,7 @@ func (source *IconSource) State() StateType {
 
 	var _stateType StateType // out
 
-	_stateType = (StateType)(_cret)
+	_stateType = StateType(_cret)
 
 	return _stateType
 }
@@ -635,6 +637,7 @@ func (source *IconSource) SetStateWildcarded(setting bool) {
 	C.gtk_icon_source_set_state_wildcarded(_arg0, _arg1)
 }
 
+//
 type SelectionData struct {
 	native C.GtkSelectionData
 }
@@ -752,7 +755,7 @@ func (selectionData *SelectionData) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -779,7 +782,7 @@ func (selectionData *SelectionData) Uris() []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -1034,7 +1037,7 @@ func (path *WidgetPath) AppendType(typ externglib.Type) int {
 	var _cret C.gint           // in
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 
 	_cret = C.gtk_widget_path_append_type(_arg0, _arg1)
 
@@ -1126,7 +1129,7 @@ func (path *WidgetPath) HasParent(typ externglib.Type) bool {
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 
 	_cret = C.gtk_widget_path_has_parent(_arg0, _arg1)
 
@@ -1147,7 +1150,7 @@ func (path *WidgetPath) IsType(typ externglib.Type) bool {
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 
 	_cret = C.gtk_widget_path_is_type(_arg0, _arg1)
 
@@ -1215,7 +1218,7 @@ func (path *WidgetPath) IterGetName(pos int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1234,7 +1237,7 @@ func (path *WidgetPath) IterGetObjectName(pos int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -1316,7 +1319,7 @@ func (path *WidgetPath) IterGetState(pos int) StateFlags {
 
 	var _stateFlags StateFlags // out
 
-	_stateFlags = (StateFlags)(_cret)
+	_stateFlags = StateFlags(_cret)
 
 	return _stateFlags
 }
@@ -1390,7 +1393,7 @@ func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) 
 	var _flags RegionFlags // out
 	var _ok bool           // out
 
-	_flags = (RegionFlags)(_arg3)
+	_flags = RegionFlags(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1471,7 +1474,7 @@ func (path *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
-	_arg2 = (C.GType)(typ)
+	_arg2 = C.GType(typ)
 
 	C.gtk_widget_path_iter_set_object_type(_arg0, _arg1, _arg2)
 }
@@ -1500,7 +1503,7 @@ func (path *WidgetPath) PrependType(typ externglib.Type) {
 	var _arg1 C.GType          // out
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
-	_arg1 = (C.GType)(typ)
+	_arg1 = C.GType(typ)
 
 	C.gtk_widget_path_prepend_type(_arg0, _arg1)
 }
@@ -1541,7 +1544,7 @@ func (path *WidgetPath) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8

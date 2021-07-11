@@ -242,11 +242,9 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	}
 
 	switch {
-	case value.Resolved.IsBuiltin("interface{}"):
-		value.header.ImportCore("box")
-		// This isn't handled properly if In.Type is a typed pointer and not a
-		// gpointer.
-		value.p.Linef("%s = box.Get(uintptr(%s))", value.Out.Set, value.InName)
+	case value.Resolved.IsBuiltin("cgo.Handle"):
+		value.header.Import("runtime/cgo")
+		value.p.Linef("%s = (%s)(%s)", value.Out.Set, value.Out.Type, value.InName)
 		return true
 
 	case value.Resolved.IsBuiltin("string"):
@@ -254,7 +252,9 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		value.p.Linef("%s = C.GoString(%s)", value.Out.Set, value.InName)
+		// Preemptively cast the value to char*, since this might be used for
+		// uchar as well.
+		value.p.Linef("%s = C.GoString((*C.gchar)(%s))", value.Out.Set, value.InName)
 		// Only free this if C is transferring ownership to us.
 		if value.isTransferring() {
 			value.header.Import("unsafe")
@@ -369,21 +369,21 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		return value.cgoSetObject(conv)
 
 	case *gir.Record:
-		// // We can slightly cheat here. Since Go structs are declared by wrapping
-		// // the C type, we can directly cast to the C type if this is an output
-		// // parameter. This saves us a copy.
-		// if value.Resolved.Ptr < 2 && value.outputAllocs() {
-		// 	value.header.Import("unsafe")
+		// We can slightly cheat here. Since Go structs are declared by wrapping
+		// the C type, we can directly cast to the C type if this is an output
+		// parameter. This saves us a copy.
+		if value.Resolved.Ptr < 2 && value.outputAllocs() {
+			value.header.Import("unsafe")
 
-		// 	value.outDecl.Reset()
-		// 	value.inDecl.Reset()
+			value.outDecl.Reset()
+			value.inDecl.Reset()
 
-		// 	// Write the Go type directly.
-		// 	value.inDecl.Linef("var %s %s", value.OutName, value.Out.Type)
-		// 	value.In.Call = fmt.Sprintf("(%s)(%s)", value.In.Type, value.OutName)
+			// Write the Go type directly.
+			value.inDecl.Linef("var %s %s", value.OutName, value.Out.Type)
+			value.In.Call = fmt.Sprintf("(*%s)(unsafe.Pointer(&%s))", value.In.Type, value.OutName)
 
-		// 	return true
-		// }
+			return true
+		}
 
 		value.header.Import("unsafe")
 		// Require 1 pointer to avoid weird copies.
@@ -395,7 +395,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		var free *gir.Method
 		var unref bool
 
-		if ref := types.RecordHasRef(v); ref != nil {
+		if ref := types.RecordHasRef(v); ref != nil && value.Resolved.Ptr > 0 {
 			value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InNamePtr(1))
 			unref = true
 			free = types.RecordHasUnref(v)
@@ -406,10 +406,13 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		// We can take ownership if the type can be reference-counted anyway.
 		if value.isTransferring() || unref {
 			value.header.Import("runtime")
-			value.p.Linef("runtime.SetFinalizer(%s, func(v %s) {", value.OutName, value.Out.Type)
+			value.p.LineTmpl(value,
+				"runtime.SetFinalizer(<.OutInPtr 1><.OutName>, func(v <.OutPtr 1><.Out.Type>) {")
 
 			if free != nil {
-				value.p.Linef("C.%s((%s)(unsafe.Pointer(v)))", free.CIdentifier, value.In.Type)
+				value.p.Linef(
+					"C.%s((%s%s)(unsafe.Pointer(v)))",
+					free.CIdentifier, value.OutPtr(1), value.In.Type)
 			} else {
 				value.p.Linef("C.free(unsafe.Pointer(v))")
 			}

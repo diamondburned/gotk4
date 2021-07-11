@@ -31,10 +31,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RangeOverrider interface {
+	//
 	AdjustBounds(newValue float64)
-
+	//
 	RangeBorder(border_ *Border)
-
+	//
 	ValueChanged()
 }
 
@@ -240,7 +241,7 @@ func (_range *Range) LowerStepperSensitivity() SensitivityType {
 
 	var _sensitivityType SensitivityType // out
 
-	_sensitivityType = (SensitivityType)(_cret)
+	_sensitivityType = SensitivityType(_cret)
 
 	return _sensitivityType
 }
@@ -270,16 +271,12 @@ func (_range *Range) MinSliderSize() int {
 //
 // This function is useful mainly for Range subclasses.
 func (_range *Range) RangeRect() gdk.Rectangle {
-	var _arg0 *C.GtkRange    // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GtkRange // out
+	var _rangeRect gdk.Rectangle
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
-	C.gtk_range_get_range_rect(_arg0, &_arg1)
-
-	var _rangeRect gdk.Rectangle // out
-
-	_rangeRect = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
+	C.gtk_range_get_range_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rangeRect)))
 
 	return _rangeRect
 }
@@ -391,7 +388,7 @@ func (_range *Range) UpperStepperSensitivity() SensitivityType {
 
 	var _sensitivityType SensitivityType // out
 
-	_sensitivityType = (SensitivityType)(_cret)
+	_sensitivityType = SensitivityType(_cret)
 
 	return _sensitivityType
 }

@@ -323,7 +323,7 @@ func (sidebar *PlacesSidebar) OpenFlags() PlacesOpenFlags {
 
 	var _placesOpenFlags PlacesOpenFlags // out
 
-	_placesOpenFlags = (PlacesOpenFlags)(_cret)
+	_placesOpenFlags = PlacesOpenFlags(_cret)
 
 	return _placesOpenFlags
 }

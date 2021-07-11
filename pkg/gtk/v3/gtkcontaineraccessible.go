@@ -30,6 +30,7 @@ type ContainerAccessibler interface {
 	privateContainerAccessible()
 }
 
+//
 type ContainerAccessible struct {
 	WidgetAccessible
 }

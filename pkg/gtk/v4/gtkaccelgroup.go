@@ -27,7 +27,7 @@ func AcceleratorGetDefaultModMask() gdk.ModifierType {
 
 	var _modifierType gdk.ModifierType // out
 
-	_modifierType = (gdk.ModifierType)(_cret)
+	_modifierType = gdk.ModifierType(_cret)
 
 	return _modifierType
 }
@@ -60,7 +60,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 	var _ok bool                          // out
 
 	_acceleratorKey = uint(_arg2)
-	_acceleratorMods = (gdk.ModifierType)(_arg3)
+	_acceleratorMods = gdk.ModifierType(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -115,7 +115,7 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Displayyer) (ui
 			_acceleratorCodes[i] = uint(src[i])
 		}
 	}
-	_acceleratorMods = (gdk.ModifierType)(_arg5)
+	_acceleratorMods = gdk.ModifierType(_arg5)
 	if _cret != 0 {
 		_ok = true
 	}

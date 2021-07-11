@@ -161,7 +161,7 @@ func (self *StringFilter) MatchMode() StringFilterMatchMode {
 
 	var _stringFilterMatchMode StringFilterMatchMode // out
 
-	_stringFilterMatchMode = (StringFilterMatchMode)(_cret)
+	_stringFilterMatchMode = StringFilterMatchMode(_cret)
 
 	return _stringFilterMatchMode
 }
@@ -177,7 +177,7 @@ func (self *StringFilter) Search() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

@@ -30,6 +30,7 @@ type RadioMenuItemAccessibler interface {
 	privateRadioMenuItemAccessible()
 }
 
+//
 type RadioMenuItemAccessible struct {
 	CheckMenuItemAccessible
 }

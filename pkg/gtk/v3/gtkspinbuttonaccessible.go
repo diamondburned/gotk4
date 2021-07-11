@@ -30,6 +30,7 @@ type SpinButtonAccessibler interface {
 	privateSpinButtonAccessible()
 }
 
+//
 type SpinButtonAccessible struct {
 	EntryAccessible
 

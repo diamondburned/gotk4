@@ -30,6 +30,7 @@ type TextCellAccessibler interface {
 	privateTextCellAccessible()
 }
 
+//
 type TextCellAccessible struct {
 	RendererCellAccessible
 

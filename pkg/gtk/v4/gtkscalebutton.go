@@ -27,6 +27,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ScaleButtonOverrider interface {
+	//
 	ValueChanged(value float64)
 }
 

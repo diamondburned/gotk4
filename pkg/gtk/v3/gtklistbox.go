@@ -3,10 +3,11 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -36,20 +37,20 @@ func init() {
 // created by the GtkListBoxCreateWidgetFunc, but this forced all widgets inside
 // the row to be shown, and is no longer the case. Applications should be
 // updated to show the desired row widgets.
-type ListBoxCreateWidgetFunc func(item *externglib.Object, userData interface{}) (widget *Widget)
+type ListBoxCreateWidgetFunc func(item *externglib.Object, userData cgo.Handle) (widget *Widget)
 
 //export gotk4_ListBoxCreateWidgetFunc
 func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object // out
-	var userData interface{}    // out
+	var userData cgo.Handle     // out
 
 	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(ListBoxCreateWidgetFunc)
 	widget := fn(item, userData)
@@ -61,20 +62,20 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.Gt
 
 // ListBoxFilterFunc: will be called whenever the row changes or is added and
 // lets you control if the row should be visible or not.
-type ListBoxFilterFunc func(row *ListBoxRow, userData interface{}) (ok bool)
+type ListBoxFilterFunc func(row *ListBoxRow, userData cgo.Handle) (ok bool)
 
 //export gotk4_ListBoxFilterFunc
 func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var row *ListBoxRow      // out
-	var userData interface{} // out
+	var row *ListBoxRow     // out
+	var userData cgo.Handle // out
 
 	row = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBoxRow)
-	userData = box.Get(uintptr(arg1))
+	userData = (cgo.Handle)(arg1)
 
 	fn := v.(ListBoxFilterFunc)
 	ok := fn(row, userData)
@@ -88,44 +89,44 @@ func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret C.gbo
 
 // ListBoxForeachFunc: function used by gtk_list_box_selected_foreach(). It will
 // be called on every selected child of the @box.
-type ListBoxForeachFunc func(box *ListBox, row *ListBoxRow, userData interface{})
+type ListBoxForeachFunc func(box *ListBox, row *ListBoxRow, userData cgo.Handle)
 
 //export gotk4_ListBoxForeachFunc
 func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var box *ListBox         // out
-	var row *ListBoxRow      // out
-	var userData interface{} // out
+	var box *ListBox        // out
+	var row *ListBoxRow     // out
+	var userData cgo.Handle // out
 
 	box = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBox)
 	row = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*ListBoxRow)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(ListBoxForeachFunc)
 	fn(box, row, userData)
 }
 
 // ListBoxSortFunc: compare two rows to determine which should be first.
-type ListBoxSortFunc func(row1 *ListBoxRow, row2 *ListBoxRow, userData interface{}) (gint int)
+type ListBoxSortFunc func(row1 *ListBoxRow, row2 *ListBoxRow, userData cgo.Handle) (gint int)
 
 //export gotk4_ListBoxSortFunc
 func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret C.gint) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var row1 *ListBoxRow     // out
-	var row2 *ListBoxRow     // out
-	var userData interface{} // out
+	var row1 *ListBoxRow    // out
+	var row2 *ListBoxRow    // out
+	var userData cgo.Handle // out
 
 	row1 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBoxRow)
 	row2 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*ListBoxRow)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(ListBoxSortFunc)
 	gint := fn(row1, row2, userData)
@@ -139,22 +140,22 @@ func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.
 // changes this is called, which lets you update the header on @row. You may
 // remove or set a new one via gtk_list_box_row_set_header() or just change the
 // state of the current header widget.
-type ListBoxUpdateHeaderFunc func(row *ListBoxRow, before *ListBoxRow, userData interface{})
+type ListBoxUpdateHeaderFunc func(row *ListBoxRow, before *ListBoxRow, userData cgo.Handle)
 
 //export gotk4_ListBoxUpdateHeaderFunc
 func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var row *ListBoxRow      // out
-	var before *ListBoxRow   // out
-	var userData interface{} // out
+	var row *ListBoxRow     // out
+	var before *ListBoxRow  // out
+	var userData cgo.Handle // out
 
 	row = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBoxRow)
 	before = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*ListBoxRow)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(ListBoxUpdateHeaderFunc)
 	fn(row, before, userData)
@@ -165,16 +166,17 @@ func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow,
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ListBoxOverrider interface {
+	//
 	ActivateCursorRow()
-
+	//
 	RowActivated(row ListBoxRowwer)
-
+	//
 	RowSelected(row ListBoxRowwer)
 	// SelectAll: select all children of @box, if the selection mode allows it.
 	SelectAll()
-
+	//
 	SelectedRowsChanged()
-
+	//
 	ToggleCursorRow()
 	// UnselectAll: unselect all children of @box, if the selection mode allows
 	// it.
@@ -443,7 +445,7 @@ func (box *ListBox) SelectionMode() SelectionMode {
 
 	var _selectionMode SelectionMode // out
 
-	_selectionMode = (SelectionMode)(_cret)
+	_selectionMode = SelectionMode(_cret)
 
 	return _selectionMode
 }
@@ -541,7 +543,7 @@ func (box *ListBox) SelectedForeach(fn ListBoxForeachFunc) {
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ListBoxForeachFunc)
-	_arg2 = C.gpointer(box.Assign(fn))
+	_arg2 = C.gpointer(gbox.Assign(fn))
 
 	C.gtk_list_box_selected_foreach(_arg0, _arg1, _arg2)
 }
@@ -614,6 +616,7 @@ func (box *ListBox) UnselectRow(row ListBoxRowwer) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ListBoxRowOverrider interface {
+	//
 	Activate()
 }
 
@@ -643,6 +646,7 @@ type ListBoxRowwer interface {
 	SetSelectable(selectable bool)
 }
 
+//
 type ListBoxRow struct {
 	Bin
 

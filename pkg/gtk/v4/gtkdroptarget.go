@@ -139,7 +139,7 @@ func (self *DropTarget) Actions() gdk.DragAction {
 
 	var _dragAction gdk.DragAction // out
 
-	_dragAction = (gdk.DragAction)(_cret)
+	_dragAction = gdk.DragAction(_cret)
 
 	return _dragAction
 }
@@ -246,7 +246,7 @@ func (self *DropTarget) SetGTypes(types []externglib.Type) {
 	{
 		out := unsafe.Slice(_arg1, len(types))
 		for i := range types {
-			out[i] = (C.GType)(types[i])
+			out[i] = C.GType(types[i])
 		}
 	}
 

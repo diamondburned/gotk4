@@ -97,7 +97,7 @@ func RenderBackgroundGetClip(context StyleContexter, x float64, y float64, width
 	var _arg3 C.gdouble          // out
 	var _arg4 C.gdouble          // out
 	var _arg5 C.gdouble          // out
-	var _arg6 C.GdkRectangle     // in
+	var _outClip gdk.Rectangle
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = C.gdouble(x)
@@ -105,11 +105,7 @@ func RenderBackgroundGetClip(context StyleContexter, x float64, y float64, width
 	_arg4 = C.gdouble(width)
 	_arg5 = C.gdouble(height)
 
-	C.gtk_render_background_get_clip(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
-
-	var _outClip gdk.Rectangle // out
-
-	_outClip = *(*gdk.Rectangle)(unsafe.Pointer((&_arg6)))
+	C.gtk_render_background_get_clip(_arg1, _arg2, _arg3, _arg4, _arg5, (*C.GdkRectangle)(unsafe.Pointer(&_outClip)))
 
 	return _outClip
 }

@@ -42,9 +42,9 @@ type DBusObjectOverrider interface {
 	Interface(interfaceName string) *DBusInterface
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string
-
+	//
 	InterfaceAdded(interface_ DBusInterfacer)
-
+	//
 	InterfaceRemoved(interface_ DBusInterfacer)
 }
 
@@ -112,7 +112,7 @@ func (object *DBusObject) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

@@ -31,8 +31,9 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ScaleOverrider interface {
+	//
 	DrawValue()
-
+	//
 	FormatValue(value float64) string
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// Layout representing the text in the scale. Remember when using the Layout
@@ -293,7 +294,7 @@ func (scale *Scale) ValuePos() PositionType {
 
 	var _positionType PositionType // out
 
-	_positionType = (PositionType)(_cret)
+	_positionType = PositionType(_cret)
 
 	return _positionType
 }

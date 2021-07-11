@@ -3,9 +3,10 @@
 package gdkpixbuf
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -108,21 +109,21 @@ func marshalPixbufError(p uintptr) (interface{}, error) {
 // If successful it should return `TRUE`; if an error occurs it should set
 // `error` and return `FALSE`, in which case `gdk_pixbuf_save_to_callback()`
 // will fail with the same error.
-type PixbufSaveFunc func(buf []byte, data interface{}) (err error, ok bool)
+type PixbufSaveFunc func(buf []byte, data cgo.Handle) (err error, ok bool)
 
 //export gotk4_PixbufSaveFunc
 func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) (cret C.gboolean) {
-	v := box.Get(uintptr(arg3))
+	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var buf []byte
-	var data interface{} // out
+	var data cgo.Handle // out
 
 	buf = make([]byte, arg1)
 	copy(buf, unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1))
-	data = box.Get(uintptr(arg3))
+	data = (cgo.Handle)(arg3)
 
 	fn := v.(PixbufSaveFunc)
 	err, ok := fn(buf, data)

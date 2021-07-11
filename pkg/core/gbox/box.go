@@ -1,4 +1,4 @@
-package box
+package gbox
 
 import (
 	"sync"

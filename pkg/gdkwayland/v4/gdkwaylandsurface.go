@@ -3,9 +3,10 @@
 package gdkwayland
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,22 +24,22 @@ import "C"
 //
 // The @handle can be passed to other processes, for the purpose of marking
 // surfaces as transient for out-of-process surfaces.
-type WaylandToplevelExported func(toplevel *WaylandToplevel, handle string, userData interface{})
+type WaylandToplevelExported func(toplevel *WaylandToplevel, handle string, userData cgo.Handle)
 
 //export gotk4_WaylandToplevelExported
 func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var toplevel *WaylandToplevel // out
 	var handle string             // out
-	var userData interface{}      // out
+	var userData cgo.Handle       // out
 
 	toplevel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*WaylandToplevel)
-	handle = C.GoString(arg1)
-	userData = box.Get(uintptr(arg2))
+	handle = C.GoString((*C.gchar)(arg1))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(WaylandToplevelExported)
 	fn(toplevel, handle, userData)

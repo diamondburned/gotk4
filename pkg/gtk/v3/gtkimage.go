@@ -496,7 +496,7 @@ func (image *Image) IconName() (string, int) {
 	var _iconName string // out
 	var _size int        // out
 
-	_iconName = C.GoString(_arg1)
+	_iconName = C.GoString((*C.gchar)(_arg1))
 	_size = int(_arg2)
 
 	return _iconName, _size
@@ -582,7 +582,7 @@ func (image *Image) Stock() (string, int) {
 	var _stockId string // out
 	var _size int       // out
 
-	_stockId = C.GoString(_arg1)
+	_stockId = C.GoString((*C.gchar)(_arg1))
 	_size = int(_arg2)
 
 	return _stockId, _size
@@ -601,7 +601,7 @@ func (image *Image) StorageType() ImageType {
 
 	var _imageType ImageType // out
 
-	_imageType = (ImageType)(_cret)
+	_imageType = ImageType(_cret)
 
 	return _imageType
 }

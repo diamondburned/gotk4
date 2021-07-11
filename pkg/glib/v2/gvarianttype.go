@@ -302,7 +302,7 @@ func (typ *VariantType) DupString() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -341,8 +341,8 @@ func (type1 *VariantType) Equal(type2 *VariantType) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(type1))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(type2))
+	_arg0 = C.gconstpointer(unsafe.Pointer(type1))
+	_arg1 = C.gconstpointer(unsafe.Pointer(type2))
 
 	_cret = C.g_variant_type_equal(_arg0, _arg1)
 
@@ -421,7 +421,7 @@ func (typ *VariantType) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = (C.gconstpointer)(unsafe.Pointer(typ))
+	_arg0 = C.gconstpointer(unsafe.Pointer(typ))
 
 	_cret = C.g_variant_type_hash(_arg0)
 

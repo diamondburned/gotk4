@@ -98,7 +98,7 @@ func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
 
 	var _baselinePosition BaselinePosition // out
 
-	_baselinePosition = (BaselinePosition)(_cret)
+	_baselinePosition = BaselinePosition(_cret)
 
 	return _baselinePosition
 }

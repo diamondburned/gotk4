@@ -30,6 +30,7 @@ type RangeAccessibler interface {
 	privateRangeAccessible()
 }
 
+//
 type RangeAccessible struct {
 	WidgetAccessible
 

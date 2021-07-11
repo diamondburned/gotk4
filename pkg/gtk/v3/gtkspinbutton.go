@@ -74,12 +74,13 @@ func marshalSpinType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SpinButtonOverrider interface {
+	//
 	Input(newValue *float64) int
-
+	//
 	Output() int
-
+	//
 	ValueChanged()
-
+	//
 	Wrapped()
 }
 
@@ -425,7 +426,7 @@ func (spinButton *SpinButton) UpdatePolicy() SpinButtonUpdatePolicy {
 
 	var _spinButtonUpdatePolicy SpinButtonUpdatePolicy // out
 
-	_spinButtonUpdatePolicy = (SpinButtonUpdatePolicy)(_cret)
+	_spinButtonUpdatePolicy = SpinButtonUpdatePolicy(_cret)
 
 	return _spinButtonUpdatePolicy
 }

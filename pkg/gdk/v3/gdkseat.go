@@ -3,9 +3,10 @@
 package gdk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -51,22 +52,22 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 // SeatGrabPrepareFunc: type of the callback used to set up @window so it can be
 // grabbed. A typical action would be ensuring the window is visible, although
 // there's room for other initialization actions.
-type SeatGrabPrepareFunc func(seat *Seat, window *Window, userData interface{})
+type SeatGrabPrepareFunc func(seat *Seat, window *Window, userData cgo.Handle)
 
 //export gotk4_SeatGrabPrepareFunc
 func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
+	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var seat *Seat           // out
-	var window *Window       // out
-	var userData interface{} // out
+	var seat *Seat          // out
+	var window *Window      // out
+	var userData cgo.Handle // out
 
 	seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Seat)
 	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*Window)
-	userData = box.Get(uintptr(arg2))
+	userData = (cgo.Handle)(arg2)
 
 	fn := v.(SeatGrabPrepareFunc)
 	fn(seat, window, userData)
@@ -119,7 +120,7 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 
 	var _seatCapabilities SeatCapabilities // out
 
-	_seatCapabilities = (SeatCapabilities)(_cret)
+	_seatCapabilities = SeatCapabilities(_cret)
 
 	return _seatCapabilities
 }

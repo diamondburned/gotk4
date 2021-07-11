@@ -186,7 +186,7 @@ func (group *ToolItemGroup) Ellipsize() pango.EllipsizeMode {
 
 	var _ellipsizeMode pango.EllipsizeMode // out
 
-	_ellipsizeMode = (pango.EllipsizeMode)(_cret)
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
 
 	return _ellipsizeMode
 }
@@ -202,7 +202,7 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 
 	var _reliefStyle ReliefStyle // out
 
-	_reliefStyle = (ReliefStyle)(_cret)
+	_reliefStyle = ReliefStyle(_cret)
 
 	return _reliefStyle
 }
@@ -236,7 +236,7 @@ func (group *ToolItemGroup) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

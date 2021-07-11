@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -72,20 +73,20 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 // “forward” button and for handling the behavior of the “last” button.
 //
 // See [method@Gtk.Assistant.set_forward_page_func].
-type AssistantPageFunc func(currentPage int, data interface{}) (gint int)
+type AssistantPageFunc func(currentPage int, data cgo.Handle) (gint int)
 
 //export gotk4_AssistantPageFunc
 func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var currentPage int  // out
-	var data interface{} // out
+	var currentPage int // out
+	var data cgo.Handle // out
 
 	currentPage = int(arg0)
-	data = box.Get(uintptr(arg1))
+	data = (cgo.Handle)(arg1)
 
 	fn := v.(AssistantPageFunc)
 	gint := fn(currentPage, data)
@@ -207,7 +208,7 @@ func wrapAssistant(obj *externglib.Object) Assistanter {
 				},
 			},
 			Root: Root{
-				Native: Native{
+				NativeSurface: NativeSurface{
 					Widget: Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
@@ -397,7 +398,7 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -415,7 +416,7 @@ func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 
 	var _assistantPageType AssistantPageType // out
 
-	_assistantPageType = (AssistantPageType)(_cret)
+	_assistantPageType = AssistantPageType(_cret)
 
 	return _assistantPageType
 }

@@ -35,7 +35,7 @@ type ToolShellOverrider interface {
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_ellipsize_mode() instead.
 	EllipsizeMode() pango.EllipsizeMode
-
+	//
 	IconSize() IconSize
 	// Orientation retrieves the current orientation for the tool shell. Tool
 	// items must not call this function directly, but rely on
@@ -141,7 +141,7 @@ func (shell *ToolShell) EllipsizeMode() pango.EllipsizeMode {
 
 	var _ellipsizeMode pango.EllipsizeMode // out
 
-	_ellipsizeMode = (pango.EllipsizeMode)(_cret)
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
 
 	return _ellipsizeMode
 }
@@ -176,7 +176,7 @@ func (shell *ToolShell) Orientation() Orientation {
 
 	var _orientation Orientation // out
 
-	_orientation = (Orientation)(_cret)
+	_orientation = Orientation(_cret)
 
 	return _orientation
 }
@@ -194,7 +194,7 @@ func (shell *ToolShell) ReliefStyle() ReliefStyle {
 
 	var _reliefStyle ReliefStyle // out
 
-	_reliefStyle = (ReliefStyle)(_cret)
+	_reliefStyle = ReliefStyle(_cret)
 
 	return _reliefStyle
 }
@@ -212,7 +212,7 @@ func (shell *ToolShell) Style() ToolbarStyle {
 
 	var _toolbarStyle ToolbarStyle // out
 
-	_toolbarStyle = (ToolbarStyle)(_cret)
+	_toolbarStyle = ToolbarStyle(_cret)
 
 	return _toolbarStyle
 }
@@ -248,7 +248,7 @@ func (shell *ToolShell) TextOrientation() Orientation {
 
 	var _orientation Orientation // out
 
-	_orientation = (Orientation)(_cret)
+	_orientation = Orientation(_cret)
 
 	return _orientation
 }

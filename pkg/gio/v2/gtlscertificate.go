@@ -305,7 +305,7 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
-	_tlsCertificateFlags = (TLSCertificateFlags)(_cret)
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
 
 	return _tlsCertificateFlags
 }

@@ -30,6 +30,7 @@ type ScrolledWindowAccessibler interface {
 	privateScrolledWindowAccessible()
 }
 
+//
 type ScrolledWindowAccessible struct {
 	ContainerAccessible
 }

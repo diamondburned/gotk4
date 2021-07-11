@@ -353,7 +353,7 @@ func (stack *Stack) TransitionType() StackTransitionType {
 
 	var _stackTransitionType StackTransitionType // out
 
-	_stackTransitionType = (StackTransitionType)(_cret)
+	_stackTransitionType = StackTransitionType(_cret)
 
 	return _stackTransitionType
 }
@@ -406,7 +406,7 @@ func (stack *Stack) VisibleChildName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }

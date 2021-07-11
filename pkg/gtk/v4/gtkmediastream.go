@@ -33,7 +33,7 @@ type MediaStreamOverrider interface {
 	//
 	// If the stream is not playing, do nothing.
 	Pause()
-
+	//
 	Play() bool
 	// Realize: called by users to attach the media stream to a `GdkSurface`
 	// they manage.
@@ -67,7 +67,7 @@ type MediaStreamOverrider interface {
 	// This causes the stream to release all resources it had allocated from
 	// @surface.
 	Unrealize(surface gdk.Surfacer)
-
+	//
 	UpdateAudio(muted bool, volume float64)
 }
 

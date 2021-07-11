@@ -30,6 +30,7 @@ type ToggleButtonAccessibler interface {
 	privateToggleButtonAccessible()
 }
 
+//
 type ToggleButtonAccessible struct {
 	ButtonAccessible
 }

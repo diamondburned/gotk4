@@ -95,17 +95,15 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 // represents.
 func (gesture *GestureMultiPress) Area() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGestureMultiPress // out
-	var _arg1 C.GdkRectangle          // in
-	var _cret C.gboolean              // in
+	var _rect gdk.Rectangle
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(gesture.Native()))
 
-	_cret = C.gtk_gesture_multi_press_get_area(_arg0, &_arg1)
+	_cret = C.gtk_gesture_multi_press_get_area(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
+	var _ok bool // out
 
-	_rect = *(*gdk.Rectangle)(unsafe.Pointer((&_arg1)))
 	if _cret != 0 {
 		_ok = true
 	}

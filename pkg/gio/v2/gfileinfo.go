@@ -3,9 +3,9 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -52,7 +52,7 @@ type FileInfor interface {
 	AttributeByteString(attribute string) string
 	// AttributeData gets the attribute type, value and status for an attribute
 	// key.
-	AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool)
+	AttributeData(attribute string) (FileAttributeType, cgo.Handle, FileAttributeStatus, bool)
 	// AttributeInt32 gets a signed 32-bit integer contained within the
 	// attribute.
 	AttributeInt32(attribute string) int32
@@ -290,7 +290,7 @@ func (info *FileInfo) AttributeAsString(attribute string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
@@ -333,13 +333,13 @@ func (info *FileInfo) AttributeByteString(attribute string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
 
 // AttributeData gets the attribute type, value and status for an attribute key.
-func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool) {
+func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, cgo.Handle, FileAttributeStatus, bool) {
 	var _arg0 *C.GFileInfo           // out
 	var _arg1 *C.char                // out
 	var _arg2 C.GFileAttributeType   // in
@@ -354,13 +354,13 @@ func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, interf
 	_cret = C.g_file_info_get_attribute_data(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
 	var _typ FileAttributeType      // out
-	var _valuePp interface{}        // out
+	var _valuePp cgo.Handle         // out
 	var _status FileAttributeStatus // out
 	var _ok bool                    // out
 
-	_typ = (FileAttributeType)(_arg2)
-	_valuePp = box.Get(uintptr(_arg3))
-	_status = (FileAttributeStatus)(_arg4)
+	_typ = FileAttributeType(_arg2)
+	_valuePp = (cgo.Handle)(_arg3)
+	_status = FileAttributeStatus(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -444,7 +444,7 @@ func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 
 	var _fileAttributeStatus FileAttributeStatus // out
 
-	_fileAttributeStatus = (FileAttributeStatus)(_cret)
+	_fileAttributeStatus = FileAttributeStatus(_cret)
 
 	return _fileAttributeStatus
 }
@@ -464,7 +464,7 @@ func (info *FileInfo) AttributeString(attribute string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -494,7 +494,7 @@ func (info *FileInfo) AttributeStringv(attribute string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 		}
 	}
 
@@ -515,7 +515,7 @@ func (info *FileInfo) AttributeType(attribute string) FileAttributeType {
 
 	var _fileAttributeType FileAttributeType // out
 
-	_fileAttributeType = (FileAttributeType)(_cret)
+	_fileAttributeType = FileAttributeType(_cret)
 
 	return _fileAttributeType
 }
@@ -573,7 +573,7 @@ func (info *FileInfo) ContentType() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -590,7 +590,7 @@ func (info *FileInfo) DisplayName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -606,7 +606,7 @@ func (info *FileInfo) EditName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -623,7 +623,7 @@ func (info *FileInfo) Etag() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -641,7 +641,7 @@ func (info *FileInfo) FileType() FileType {
 
 	var _fileType FileType // out
 
-	_fileType = (FileType)(_cret)
+	_fileType = FileType(_cret)
 
 	return _fileType
 }
@@ -723,15 +723,11 @@ func (info *FileInfo) IsSymlink() bool {
 // deprecated due to the year 2038 problem.
 func (info *FileInfo) ModificationTime() glib.TimeVal {
 	var _arg0 *C.GFileInfo // out
-	var _arg1 C.GTimeVal   // in
+	var _result glib.TimeVal
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
-	C.g_file_info_get_modification_time(_arg0, &_arg1)
-
-	var _result glib.TimeVal // out
-
-	_result = *(*glib.TimeVal)(unsafe.Pointer((&_arg1)))
+	C.g_file_info_get_modification_time(_arg0, (*C.GTimeVal)(unsafe.Pointer(&_result)))
 
 	return _result
 }
@@ -747,7 +743,7 @@ func (info *FileInfo) Name() string {
 
 	var _filename string // out
 
-	_filename = C.GoString(_cret)
+	_filename = C.GoString((*C.gchar)(_cret))
 
 	return _filename
 }
@@ -814,7 +810,7 @@ func (info *FileInfo) SymlinkTarget() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -887,7 +883,7 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString(src[i])
+			_utf8s[i] = C.GoString((*C.gchar)(src[i]))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
@@ -991,7 +987,7 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue gextras.Obj
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(attrValue.Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer((&attrValue).Native()))
 
 	C.g_file_info_set_attribute_object(_arg0, _arg1, _arg2)
 }

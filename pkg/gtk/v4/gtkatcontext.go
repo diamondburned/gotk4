@@ -84,7 +84,7 @@ func (self *ATContext) AccessibleRole() AccessibleRole {
 
 	var _accessibleRole AccessibleRole // out
 
-	_accessibleRole = (AccessibleRole)(_cret)
+	_accessibleRole = AccessibleRole(_cret)
 
 	return _accessibleRole
 }

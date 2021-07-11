@@ -28,6 +28,7 @@ type X11GLContexter interface {
 	privateX11GLContext()
 }
 
+//
 type X11GLContext struct {
 	gdk.GLContext
 }

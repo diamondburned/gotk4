@@ -30,6 +30,7 @@ type LevelBarAccessibler interface {
 	privateLevelBarAccessible()
 }
 
+//
 type LevelBarAccessible struct {
 	WidgetAccessible
 

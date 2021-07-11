@@ -126,15 +126,11 @@ func (s *Sphere) free() {
 // #graphene_sphere_t.
 func (s *Sphere) BoundingBox() Box {
 	var _arg0 *C.graphene_sphere_t // out
-	var _arg1 C.graphene_box_t     // in
+	var _box Box
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
 
-	C.graphene_sphere_get_bounding_box(_arg0, &_arg1)
-
-	var _box Box // out
-
-	_box = *(*Box)(unsafe.Pointer((&_arg1)))
+	C.graphene_sphere_get_bounding_box(_arg0, (*C.graphene_box_t)(unsafe.Pointer(&_box)))
 
 	return _box
 }
@@ -142,15 +138,11 @@ func (s *Sphere) BoundingBox() Box {
 // Center retrieves the coordinates of the center of a #graphene_sphere_t.
 func (s *Sphere) Center() Point3D {
 	var _arg0 *C.graphene_sphere_t // out
-	var _arg1 C.graphene_point3d_t // in
+	var _center Point3D
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
 
-	C.graphene_sphere_get_center(_arg0, &_arg1)
-
-	var _center Point3D // out
-
-	_center = *(*Point3D)(unsafe.Pointer((&_arg1)))
+	C.graphene_sphere_get_center(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_center)))
 
 	return _center
 }
@@ -267,16 +259,12 @@ func (s *Sphere) IsEmpty() bool {
 func (s *Sphere) Translate(point *Point3D) Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _arg2 C.graphene_sphere_t   // in
+	var _res Sphere
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
 
-	C.graphene_sphere_translate(_arg0, _arg1, &_arg2)
-
-	var _res Sphere // out
-
-	_res = *(*Sphere)(unsafe.Pointer((&_arg2)))
+	C.graphene_sphere_translate(_arg0, _arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&_res)))
 
 	return _res
 }

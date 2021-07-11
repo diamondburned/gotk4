@@ -235,7 +235,7 @@ func (revealer *Revealer) TransitionType() RevealerTransitionType {
 
 	var _revealerTransitionType RevealerTransitionType // out
 
-	_revealerTransitionType = (RevealerTransitionType)(_cret)
+	_revealerTransitionType = RevealerTransitionType(_cret)
 
 	return _revealerTransitionType
 }

@@ -127,16 +127,12 @@ func (monitor *Monitor) Display() *Display {
 // display coordinate space. The returned geometry is in ”application pixels”,
 // not in ”device pixels” (see gdk_monitor_get_scale_factor()).
 func (monitor *Monitor) Geometry() Rectangle {
-	var _arg0 *C.GdkMonitor  // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GdkMonitor // out
+	var _geometry Rectangle
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
-	C.gdk_monitor_get_geometry(_arg0, &_arg1)
-
-	var _geometry Rectangle // out
-
-	_geometry = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	C.gdk_monitor_get_geometry(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_geometry)))
 
 	return _geometry
 }
@@ -173,7 +169,7 @@ func (monitor *Monitor) Manufacturer() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -189,7 +185,7 @@ func (monitor *Monitor) Model() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString(_cret)
+	_utf8 = C.GoString((*C.gchar)(_cret))
 
 	return _utf8
 }
@@ -246,7 +242,7 @@ func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 
 	var _subpixelLayout SubpixelLayout // out
 
-	_subpixelLayout = (SubpixelLayout)(_cret)
+	_subpixelLayout = SubpixelLayout(_cret)
 
 	return _subpixelLayout
 }
@@ -278,16 +274,12 @@ func (monitor *Monitor) WidthMm() int {
 // return the monitor geometry if a workarea is not available, or does not
 // apply.
 func (monitor *Monitor) Workarea() Rectangle {
-	var _arg0 *C.GdkMonitor  // out
-	var _arg1 C.GdkRectangle // in
+	var _arg0 *C.GdkMonitor // out
+	var _workarea Rectangle
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
-	C.gdk_monitor_get_workarea(_arg0, &_arg1)
-
-	var _workarea Rectangle // out
-
-	_workarea = *(*Rectangle)(unsafe.Pointer((&_arg1)))
+	C.gdk_monitor_get_workarea(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_workarea)))
 
 	return _workarea
 }

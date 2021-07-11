@@ -3,9 +3,10 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -16,26 +17,27 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+//
 type Stock = string
 
 // TranslateFunc: function used to translate messages in e.g. IconFactory and
 // ActionGroup.
 //
 // Deprecated: since version 3.10.
-type TranslateFunc func(path string, funcData interface{}) (utf8 string)
+type TranslateFunc func(path string, funcData cgo.Handle) (utf8 string)
 
 //export gotk4_TranslateFunc
 func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
-	v := box.Get(uintptr(arg1))
+	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var path string          // out
-	var funcData interface{} // out
+	var path string         // out
+	var funcData cgo.Handle // out
 
-	path = C.GoString(arg0)
-	funcData = box.Get(uintptr(arg1))
+	path = C.GoString((*C.gchar)(arg0))
+	funcData = (cgo.Handle)(arg1)
 
 	fn := v.(TranslateFunc)
 	utf8 := fn(path, funcData)
@@ -81,19 +83,17 @@ func StockAddStatic(items []StockItem) {
 //
 // Deprecated: since version 3.10.
 func StockLookup(stockId string) (StockItem, bool) {
-	var _arg1 *C.gchar       // out
-	var _arg2 C.GtkStockItem // in
-	var _cret C.gboolean     // in
+	var _arg1 *C.gchar // out
+	var _item StockItem
+	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	_cret = C.gtk_stock_lookup(_arg1, &_arg2)
+	_cret = C.gtk_stock_lookup(_arg1, (*C.GtkStockItem)(unsafe.Pointer(&_item)))
 
-	var _item StockItem // out
-	var _ok bool        // out
+	var _ok bool // out
 
-	_item = *(*StockItem)(unsafe.Pointer((&_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}

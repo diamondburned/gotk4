@@ -105,7 +105,7 @@ func (self *Drop) Actions() DragAction {
 
 	var _dragAction DragAction // out
 
-	_dragAction = (DragAction)(_cret)
+	_dragAction = DragAction(_cret)
 
 	return _dragAction
 }
@@ -222,7 +222,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream
 	var _inputStream *gio.InputStream // out
 	var _goerr error                  // out
 
-	_outMimeType = C.GoString(_arg2)
+	_outMimeType = C.GoString((*C.gchar)(_arg2))
 	defer C.free(unsafe.Pointer(_arg2))
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.InputStream)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

@@ -28,6 +28,7 @@ type X11Dragger interface {
 	privateX11Drag()
 }
 
+//
 type X11Drag struct {
 	gdk.Drag
 }

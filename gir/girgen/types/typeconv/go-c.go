@@ -286,12 +286,9 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	}
 
 	switch {
-	case value.Resolved.IsBuiltin("interface{}"):
-		value.header.ImportCore("box")
-		value.p.Linef(
-			"%s = (%s)(box.Assign(%s))",
-			value.Out.Set, value.Out.Type, value.InName,
-		)
+	case value.Resolved.IsBuiltin("cgo.Handle"):
+		value.header.Import("runtime/cgo")
+		value.p.Linef("%s = (%s)(%s)", value.Out.Set, value.Out.Type, value.InName)
 		return true
 
 	case value.Resolved.IsBuiltin("string"):
@@ -436,7 +433,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		value.header.ImportCore("box")
+		value.header.ImportCore("gbox")
 		value.header.AddCallback(v)
 
 		// Return the constant function here. The function will dynamically load
@@ -447,7 +444,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.p.Linef("%s = (*[0]byte)(C.%s%s)", value.Out.Set, file.CallbackPrefix, exportedName)
 
 		value.outDecl.Linef("var %s %s", closure.OutName, closure.Out.Type)
-		value.p.Linef("%s = %s(box.Assign(%s))", closure.Out.Set, closure.Out.Type, value.InName)
+		value.p.Linef("%s = %s(gbox.Assign(%s))", closure.Out.Set, closure.Out.Type, value.InName)
 
 		if value.Destroy != nil {
 			if destroy := conv.convertParam(*value.Destroy); destroy != nil {

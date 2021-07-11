@@ -3,9 +3,10 @@
 package glib
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/box"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 )
 
@@ -132,18 +133,18 @@ const (
 // child environment differently from the parent, you should use
 // g_get_environ(), g_environ_setenv(), and g_environ_unsetenv(), and then pass
 // the complete environment list to the `g_spawn...` function.
-type SpawnChildSetupFunc func(userData interface{})
+type SpawnChildSetupFunc func(userData cgo.Handle)
 
 //export gotk4_SpawnChildSetupFunc
 func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
-	v := box.Get(uintptr(arg0))
+	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var userData interface{} // out
+	var userData cgo.Handle // out
 
-	userData = box.Get(uintptr(arg0))
+	userData = (cgo.Handle)(arg0)
 
 	fn := v.(SpawnChildSetupFunc)
 	fn(userData)

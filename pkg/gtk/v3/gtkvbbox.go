@@ -27,33 +27,24 @@ func init() {
 
 // VButtonBoxxer describes VButtonBox's methods.
 type VButtonBoxxer interface {
-	gextras.Objector
-
 	privateVButtonBox()
 }
 
 type VButtonBox struct {
-	*externglib.Object
-
 	ButtonBox
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ VButtonBoxxer = (*VButtonBox)(nil)
+var (
+	_ VButtonBoxxer   = (*VButtonBox)(nil)
+	_ gextras.Nativer = (*VButtonBox)(nil)
+)
 
-func wrapVButtonBoxxer(obj *externglib.Object) VButtonBoxxer {
+func wrapVButtonBox(obj *externglib.Object) VButtonBoxxer {
 	return &VButtonBox{
-		Object: obj,
 		ButtonBox: ButtonBox{
-			Object: obj,
 			Box: Box{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -64,41 +55,11 @@ func wrapVButtonBoxxer(obj *externglib.Object) VButtonBoxxer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			Orientable: Orientable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -106,7 +67,7 @@ func wrapVButtonBoxxer(obj *externglib.Object) VButtonBoxxer {
 func marshalVButtonBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVButtonBoxxer(obj), nil
+	return wrapVButtonBox(obj), nil
 }
 
 // NewVButtonBox creates a new vertical button box.

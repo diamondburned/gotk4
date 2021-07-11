@@ -27,34 +27,27 @@ func init() {
 
 // VSeparatorrer describes VSeparator's methods.
 type VSeparatorrer interface {
-	gextras.Objector
-
 	privateVSeparator()
 }
 
-// VSeparator: the VSeparator widget is a vertical separator, used to group the
-// widgets within a window. It displays a vertical line with a shadow to make it
-// appear sunken into the interface.
+// VSeparator widget is a vertical separator, used to group the widgets within a
+// window. It displays a vertical line with a shadow to make it appear sunken
+// into the interface.
 //
 // GtkVSeparator has been deprecated, use Separator instead.
 type VSeparator struct {
-	*externglib.Object
-
 	Separator
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ VSeparatorrer = (*VSeparator)(nil)
+var (
+	_ VSeparatorrer   = (*VSeparator)(nil)
+	_ gextras.Nativer = (*VSeparator)(nil)
+)
 
-func wrapVSeparatorrer(obj *externglib.Object) VSeparatorrer {
+func wrapVSeparator(obj *externglib.Object) VSeparatorrer {
 	return &VSeparator{
-		Object: obj,
 		Separator: Separator{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -65,24 +58,9 @@ func wrapVSeparatorrer(obj *externglib.Object) VSeparatorrer {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -90,7 +68,7 @@ func wrapVSeparatorrer(obj *externglib.Object) VSeparatorrer {
 func marshalVSeparatorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVSeparatorrer(obj), nil
+	return wrapVSeparator(obj), nil
 }
 
 // NewVSeparator creates a new VSeparator.

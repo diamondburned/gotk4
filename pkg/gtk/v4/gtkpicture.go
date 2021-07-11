@@ -27,24 +27,40 @@ func init() {
 
 // Picturer describes Picture's methods.
 type Picturer interface {
-	gextras.Objector
-
+	// AlternativeText gets the alternative textual description of the picture.
 	AlternativeText() string
+	// CanShrink returns whether the `GtkPicture` respects its contents size.
 	CanShrink() bool
+	// File gets the `GFile` currently displayed if @self is displaying a file.
 	File() *gio.File
+	// KeepAspectRatio returns whether the `GtkPicture` preserves its contents
+	// aspect ratio.
 	KeepAspectRatio() bool
+	// Paintable gets the `GdkPaintable` being displayed by the `GtkPicture`.
 	Paintable() *gdk.Paintable
+	// SetAlternativeText sets an alternative textual description for the
+	// picture contents.
 	SetAlternativeText(alternativeText string)
+	// SetCanShrink: if set to true, the @self can be made smaller than its
+	// contents.
 	SetCanShrink(canShrink bool)
+	// SetFile makes @self load and display @file.
 	SetFile(file gio.Filer)
+	// SetFilename makes @self load and display the given @filename.
 	SetFilename(filename string)
+	// SetKeepAspectRatio: if set to true, the @self will render its contents
+	// according to their aspect ratio.
 	SetKeepAspectRatio(keepAspectRatio bool)
+	// SetPaintable makes @self display the given @paintable.
 	SetPaintable(paintable gdk.Paintabler)
+	// SetPixbuf sets a `GtkPicture` to show a `GdkPixbuf`.
 	SetPixbuf(pixbuf gdkpixbuf.Pixbuffer)
+	// SetResource makes @self load and display the resource at the given
+	// @resource_path.
 	SetResource(resourcePath string)
 }
 
-// Picture: the `GtkPicture` widget displays a `GdkPaintable`.
+// Picture: `GtkPicture` widget displays a `GdkPaintable`.
 //
 // !An example GtkPicture (picture.png)
 //
@@ -91,21 +107,17 @@ type Picturer interface {
 //
 // `GtkPicture` uses the `GTK_ACCESSIBLE_ROLE_IMG` role.
 type Picture struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Picturer = (*Picture)(nil)
+var (
+	_ Picturer        = (*Picture)(nil)
+	_ gextras.Nativer = (*Picture)(nil)
+)
 
-func wrapPicturer(obj *externglib.Object) Picturer {
+func wrapPicture(obj *externglib.Object) Picturer {
 	return &Picture{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -119,22 +131,13 @@ func wrapPicturer(obj *externglib.Object) Picturer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalPicturer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPicturer(obj), nil
+	return wrapPicture(obj), nil
 }
 
 // NewPicture creates a new empty `GtkPicture` widget.
@@ -162,7 +165,7 @@ func NewPictureForFile(file gio.Filer) *Picture {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_picture_new_for_file(_arg1)
 
@@ -202,7 +205,7 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_picture_new_for_paintable(_arg1)
 
@@ -223,7 +226,7 @@ func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Picture {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_picture_new_for_pixbuf(_arg1)
 
@@ -395,7 +398,7 @@ func (self *Picture) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile      // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	C.gtk_picture_set_file(_arg0, _arg1)
 }
@@ -444,7 +447,7 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 	var _arg1 *C.GdkPaintable // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
 
 	C.gtk_picture_set_paintable(_arg0, _arg1)
 }
@@ -459,7 +462,7 @@ func (self *Picture) SetPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
 	var _arg1 *C.GdkPixbuf  // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	C.gtk_picture_set_pixbuf(_arg0, _arg1)
 }

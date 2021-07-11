@@ -25,22 +25,25 @@ func init() {
 	})
 }
 
-// SwitcherOverrider contains methods that are overridable.
+// SwitchOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SwitcherOverrider interface {
+type SwitchOverrider interface {
 	Activate()
+
 	StateSet(state bool) bool
 }
 
 // Switcher describes Switch's methods.
 type Switcher interface {
-	gextras.Objector
-
+	// Active gets whether the Switch is in its “on” or “off” state.
 	Active() bool
+	// State gets the underlying state of the Switch.
 	State() bool
+	// SetActive changes the state of @sw to the desired one.
 	SetActive(isActive bool)
+	// SetState sets the underlying state of the Switch.
 	SetState(state bool)
 }
 
@@ -58,22 +61,20 @@ type Switcher interface {
 // GtkSwitch has two css nodes, the main node with the name switch and a subnode
 // named slider. Neither of them is using any style classes.
 type Switch struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
+
 	Actionable
 	Activatable
-	Buildable
 }
 
-var _ Switcher = (*Switch)(nil)
+var (
+	_ Switcher        = (*Switch)(nil)
+	_ gextras.Nativer = (*Switch)(nil)
+)
 
-func wrapSwitcher(obj *externglib.Object) Switcher {
+func wrapSwitch(obj *externglib.Object) Switcher {
 	return &Switch{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -84,13 +85,8 @@ func wrapSwitcher(obj *externglib.Object) Switcher {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
 		Actionable: Actionable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -105,16 +101,13 @@ func wrapSwitcher(obj *externglib.Object) Switcher {
 		Activatable: Activatable{
 			Object: obj,
 		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalSwitcher(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSwitcher(obj), nil
+	return wrapSwitch(obj), nil
 }
 
 // NewSwitch creates a new Switch widget.
@@ -128,6 +121,12 @@ func NewSwitch() *Switch {
 	__switch = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Switch)
 
 	return __switch
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Switch) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.

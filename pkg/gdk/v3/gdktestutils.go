@@ -4,6 +4,8 @@ package gdk
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -20,7 +22,7 @@ import "C"
 func TestRenderSync(window Windowwer) {
 	var _arg1 *C.GdkWindow // out
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gdk_test_render_sync(_arg1)
 }

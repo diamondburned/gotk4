@@ -23,11 +23,11 @@ func init() {
 	})
 }
 
-// DocumenterOverrider contains methods that are overridable.
+// DocumentOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DocumenterOverrider interface {
+type DocumentOverrider interface {
 	// CurrentPageNumber retrieves the current page number inside @document.
 	CurrentPageNumber() int
 	// Document gets a gpointer that points to an instance of the DOM. It is up
@@ -62,30 +62,41 @@ type DocumenterOverrider interface {
 
 // Documenter describes Document's methods.
 type Documenter interface {
-	gextras.Objector
-
+	// AttributeValue retrieves the value of the given @attribute_name inside
+	// @document.
 	AttributeValue(attributeName string) string
+	// CurrentPageNumber retrieves the current page number inside @document.
 	CurrentPageNumber() int
+	// Document gets a gpointer that points to an instance of the DOM.
 	Document() interface{}
+	// DocumentType gets a string indicating the document type.
 	DocumentType() string
+	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
+	// of the content of this document instance.
 	Locale() string
+	// PageCount retrieves the total number of pages inside @document.
 	PageCount() int
+	// SetAttributeValue sets the value for the given @attribute_name inside
+	// @document.
 	SetAttributeValue(attributeName string, attributeValue string) bool
 }
 
-// Document: the AtkDocument interface should be supported by any object whose
-// content is a representation or view of a document. The AtkDocument interface
-// should appear on the toplevel container for the document content; however
-// AtkDocument instances may be nested (i.e. an AtkDocument may be a descendant
-// of another AtkDocument) in those cases where one document contains "embedded
-// content" which can reasonably be considered a document in its own right.
+// Document interface should be supported by any object whose content is a
+// representation or view of a document. The AtkDocument interface should appear
+// on the toplevel container for the document content; however AtkDocument
+// instances may be nested (i.e. an AtkDocument may be a descendant of another
+// AtkDocument) in those cases where one document contains "embedded content"
+// which can reasonably be considered a document in its own right.
 type Document struct {
 	*externglib.Object
 }
 
-var _ Documenter = (*Document)(nil)
+var (
+	_ Documenter      = (*Document)(nil)
+	_ gextras.Nativer = (*Document)(nil)
+)
 
-func wrapDocumenter(obj *externglib.Object) Documenter {
+func wrapDocument(obj *externglib.Object) Documenter {
 	return &Document{
 		Object: obj,
 	}
@@ -94,7 +105,7 @@ func wrapDocumenter(obj *externglib.Object) Documenter {
 func marshalDocumenter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDocumenter(obj), nil
+	return wrapDocument(obj), nil
 }
 
 // AttributeValue retrieves the value of the given @attribute_name inside

@@ -20,20 +20,27 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_filter_get_type()), F: marshalFileFilterrer},
+		{T: externglib.Type(C.gtk_file_filter_get_type()), F: marshalFileFilterer},
 	})
 }
 
-// FileFilterrer describes FileFilter's methods.
-type FileFilterrer interface {
-	gextras.Objector
-
+// FileFilterer describes FileFilter's methods.
+type FileFilterer interface {
+	// AddMIMEType adds a rule allowing a given mime type to @filter.
 	AddMIMEType(mimeType string)
+	// AddPattern adds a rule allowing a shell style glob to a filter.
 	AddPattern(pattern string)
+	// AddPixbufFormats adds a rule allowing image files in the formats
+	// supported by GdkPixbuf.
 	AddPixbufFormats()
+	// Attributes gets the attributes that need to be filled in for the
+	// `GFileInfo` passed to this filter.
 	Attributes() []string
+	// Name gets the human-readable name for the filter.
 	Name() string
+	// SetName sets a human-readable name of the filter.
 	SetName(name string)
+	// ToGVariant: serialize a file filter to an `a{sv}` variant.
 	ToGVariant() *glib.Variant
 }
 
@@ -71,17 +78,18 @@ type FileFilterrer interface {
 // </mime-types> <patterns> <pattern>*.txt</pattern> <pattern>*.png</pattern>
 // </patterns> </object> “`
 type FileFilter struct {
-	*externglib.Object
-
 	Filter
+
 	Buildable
 }
 
-var _ FileFilterrer = (*FileFilter)(nil)
+var (
+	_ FileFilterer    = (*FileFilter)(nil)
+	_ gextras.Nativer = (*FileFilter)(nil)
+)
 
-func wrapFileFilterrer(obj *externglib.Object) FileFilterrer {
+func wrapFileFilter(obj *externglib.Object) FileFilterer {
 	return &FileFilter{
-		Object: obj,
 		Filter: Filter{
 			Object: obj,
 		},
@@ -91,10 +99,10 @@ func wrapFileFilterrer(obj *externglib.Object) FileFilterrer {
 	}
 }
 
-func marshalFileFilterrer(p uintptr) (interface{}, error) {
+func marshalFileFilterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileFilterrer(obj), nil
+	return wrapFileFilter(obj), nil
 }
 
 // NewFileFilter creates a new `GtkFileFilter` with no rules added to it.
@@ -135,6 +143,12 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	_fileFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileFilter)
 
 	return _fileFilter
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FileFilter) Native() uintptr {
+	return v.Filter.Object.Native()
 }
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.

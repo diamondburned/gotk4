@@ -18,27 +18,43 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_expander_get_type()), F: marshalExpanderrer},
+		{T: externglib.Type(C.gtk_expander_get_type()), F: marshalExpanderer},
 	})
 }
 
-// Expanderrer describes Expander's methods.
-type Expanderrer interface {
-	gextras.Objector
-
+// Expanderer describes Expander's methods.
+type Expanderer interface {
+	// Child gets the child widget of @expander.
 	Child() *Widget
+	// Expanded queries a Expander and returns its current state.
 	Expanded() bool
+	// Label fetches the text from a label widget.
 	Label() string
+	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() *Widget
+	// ResizeToplevel returns whether the expander will resize the toplevel
+	// widget containing the expander upon resizing and collpasing.
 	ResizeToplevel() bool
+	// UseMarkup returns whether the label’s text is interpreted as Pango
+	// markup.
 	UseMarkup() bool
+	// UseUnderline returns whether an underline in the text indicates a
+	// mnemonic.
 	UseUnderline() bool
+	// SetChild sets the child widget of @expander.
 	SetChild(child Widgetter)
+	// SetExpanded sets the state of the expander.
 	SetExpanded(expanded bool)
+	// SetLabel sets the text of the label of the expander to @label.
 	SetLabel(label string)
+	// SetLabelWidget: set the label widget for the expander.
 	SetLabelWidget(labelWidget Widgetter)
+	// SetResizeToplevel sets whether the expander will resize the toplevel
+	// widget containing the expander upon resizing and collpasing.
 	SetResizeToplevel(resizeToplevel bool)
+	// SetUseMarkup sets whether the text of the label contains Pango markup.
 	SetUseMarkup(useMarkup bool)
+	// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
 	SetUseUnderline(useUnderline bool)
 }
 
@@ -116,21 +132,17 @@ type Expanderrer interface {
 //
 // `GtkExpander` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Expander struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Expanderrer = (*Expander)(nil)
+var (
+	_ Expanderer      = (*Expander)(nil)
+	_ gextras.Nativer = (*Expander)(nil)
+)
 
-func wrapExpanderrer(obj *externglib.Object) Expanderrer {
+func wrapExpander(obj *externglib.Object) Expanderer {
 	return &Expander{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -144,22 +156,13 @@ func wrapExpanderrer(obj *externglib.Object) Expanderrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
-func marshalExpanderrer(p uintptr) (interface{}, error) {
+func marshalExpanderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapExpanderrer(obj), nil
+	return wrapExpander(obj), nil
 }
 
 // NewExpander creates a new expander using @label as the text of the label.
@@ -338,7 +341,7 @@ func (expander *Expander) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_expander_set_child(_arg0, _arg1)
 }
@@ -381,7 +384,7 @@ func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
 
 	C.gtk_expander_set_label_widget(_arg0, _arg1)
 }

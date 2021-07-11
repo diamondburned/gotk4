@@ -35,9 +35,9 @@ func init() {
 
 // UnixFDMessager describes UnixFDMessage's methods.
 type UnixFDMessager interface {
-	gextras.Objector
-
+	// AppendFd adds a file descriptor to @message.
 	AppendFd(fd int) error
+	// FdList gets the FDList contained in @message.
 	FdList() *UnixFDList
 }
 
@@ -57,9 +57,12 @@ type UnixFDMessage struct {
 	SocketControlMessage
 }
 
-var _ UnixFDMessager = (*UnixFDMessage)(nil)
+var (
+	_ UnixFDMessager  = (*UnixFDMessage)(nil)
+	_ gextras.Nativer = (*UnixFDMessage)(nil)
+)
 
-func wrapUnixFDMessager(obj *externglib.Object) UnixFDMessager {
+func wrapUnixFDMessage(obj *externglib.Object) UnixFDMessager {
 	return &UnixFDMessage{
 		SocketControlMessage: SocketControlMessage{
 			Object: obj,
@@ -70,7 +73,7 @@ func wrapUnixFDMessager(obj *externglib.Object) UnixFDMessager {
 func marshalUnixFDMessager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixFDMessager(obj), nil
+	return wrapUnixFDMessage(obj), nil
 }
 
 // NewUnixFDMessage creates a new FDMessage containing an empty file descriptor
@@ -92,7 +95,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDLister) *UnixFDMessage {
 	var _arg1 *C.GUnixFDList           // out
 	var _cret *C.GSocketControlMessage // in
 
-	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	_arg1 = (*C.GUnixFDList)(unsafe.Pointer((fdList).(gextras.Nativer).Native()))
 
 	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
 

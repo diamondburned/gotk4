@@ -21,7 +21,7 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2er, deviceId int) *
 	var _arg2 C.int                     // out
 	var _cret *C.GdkDevice              // in
 
-	_arg1 = (*C.GdkX11DeviceManagerXI2)(unsafe.Pointer(deviceManager.Native()))
+	_arg1 = (*C.GdkX11DeviceManagerXI2)(unsafe.Pointer((deviceManager).(gextras.Nativer).Native()))
 	_arg2 = C.int(deviceId)
 
 	_cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)

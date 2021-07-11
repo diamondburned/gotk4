@@ -186,16 +186,25 @@ func UnicodeToKeyval(wc uint32) uint {
 
 // Keymapper describes Keymap's methods.
 type Keymapper interface {
-	gextras.Objector
-
+	// CapsLockState returns whether the Caps Lock modifer is locked.
 	CapsLockState() bool
+	// Direction returns the direction of effective layout of the keymap.
 	Direction() pango.Direction
+	// EntriesForKeycode returns the keyvals bound to @hardware_keycode.
 	EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool)
+	// EntriesForKeyval obtains a list of keycode/group/level combinations that
+	// will generate @keyval.
 	EntriesForKeyval(keyval uint) ([]KeymapKey, bool)
+	// ModifierState returns the current modifier state.
 	ModifierState() uint
+	// NumLockState returns whether the Num Lock modifer is locked.
 	NumLockState() bool
+	// ScrollLockState returns whether the Scroll Lock modifer is locked.
 	ScrollLockState() bool
+	// HaveBidiLayouts determines if keyboard layouts for both right-to-left and
+	// left-to-right languages are in use.
 	HaveBidiLayouts() bool
+	// LookupKey looks up the keyval mapped to a keycode/group/level triplet.
 	LookupKey(key *KeymapKey) uint
 }
 
@@ -209,9 +218,12 @@ type Keymap struct {
 	*externglib.Object
 }
 
-var _ Keymapper = (*Keymap)(nil)
+var (
+	_ Keymapper       = (*Keymap)(nil)
+	_ gextras.Nativer = (*Keymap)(nil)
+)
 
-func wrapKeymapper(obj *externglib.Object) Keymapper {
+func wrapKeymap(obj *externglib.Object) Keymapper {
 	return &Keymap{
 		Object: obj,
 	}
@@ -220,7 +232,7 @@ func wrapKeymapper(obj *externglib.Object) Keymapper {
 func marshalKeymapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapKeymapper(obj), nil
+	return wrapKeymap(obj), nil
 }
 
 // CapsLockState returns whether the Caps Lock modifer is locked.

@@ -26,50 +26,104 @@ func init() {
 	})
 }
 
-// ComboBoxxerOverrider contains methods that are overridable.
+// ComboBoxOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ComboBoxxerOverrider interface {
+type ComboBoxOverrider interface {
 	Changed()
+
 	FormatEntryText(path string) string
 }
 
 // ComboBoxxer describes ComboBox's methods.
 type ComboBoxxer interface {
-	gextras.Objector
-
+	// Active returns the index of the currently active item, or -1 if there’s
+	// no active item.
 	Active() int
+	// ActiveID returns the ID of the active row of @combo_box.
 	ActiveID() string
+	// ActiveIter sets @iter to point to the currently active item, if any item
+	// is active.
 	ActiveIter() (TreeIter, bool)
+	// AddTearoffs gets the current value of the :add-tearoffs property.
 	AddTearoffs() bool
+	// ButtonSensitivity returns whether the combo box sets the dropdown button
+	// sensitive or not when there are no items in the model.
 	ButtonSensitivity() SensitivityType
+	// ColumnSpanColumn returns the column with column span information for
+	// @combo_box.
 	ColumnSpanColumn() int
+	// EntryTextColumn returns the column which @combo_box is using to get the
+	// strings from to display in the internal entry.
 	EntryTextColumn() int
+	// FocusOnClick returns whether the combo box grabs focus when it is clicked
+	// with the mouse.
 	FocusOnClick() bool
+	// HasEntry returns whether the combo box has an entry.
 	HasEntry() bool
+	// IDColumn returns the column which @combo_box is using to get string IDs
+	// for values from.
 	IDColumn() int
+	// Model returns the TreeModel which is acting as data source for
+	// @combo_box.
 	Model() *TreeModel
+	// PopupAccessible gets the accessible object corresponding to the combo
+	// box’s popup.
 	PopupAccessible() *atk.ObjectClass
+	// PopupFixedWidth gets whether the popup uses a fixed width matching the
+	// allocated width of the combo box.
 	PopupFixedWidth() bool
+	// RowSpanColumn returns the column with row span information for
+	// @combo_box.
 	RowSpanColumn() int
+	// Title gets the current title of the menu in tearoff mode.
 	Title() string
+	// WrapWidth returns the wrap width which is used to determine the number of
+	// columns for the popup menu.
 	WrapWidth() int
+	// Popdown hides the menu or dropdown list of @combo_box.
 	Popdown()
+	// Popup pops up the menu or dropdown list of @combo_box.
 	Popup()
+	// PopupForDevice pops up the menu or dropdown list of @combo_box, the popup
+	// window will be grabbed so only @device and its associated
+	// pointer/keyboard are the only Devices able to send events to it.
 	PopupForDevice(device gdk.Devicer)
+	// SetActive sets the active item of @combo_box to be the item at @index.
 	SetActive(index_ int)
+	// SetActiveID changes the active row of @combo_box to the one that has an
+	// ID equal to @active_id, or unsets the active row if @active_id is nil.
 	SetActiveID(activeId string) bool
+	// SetActiveIter sets the current active item to be the one referenced by
+	// @iter, or unsets the active item if @iter is nil.
 	SetActiveIter(iter *TreeIter)
+	// SetAddTearoffs sets whether the popup menu should have a tearoff menu
+	// item.
 	SetAddTearoffs(addTearoffs bool)
+	// SetColumnSpanColumn sets the column with column span information for
+	// @combo_box to be @column_span.
 	SetColumnSpanColumn(columnSpan int)
+	// SetEntryTextColumn sets the model column which @combo_box should use to
+	// get strings from to be @text_column.
 	SetEntryTextColumn(textColumn int)
+	// SetFocusOnClick sets whether the combo box will grab focus when it is
+	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
+	// SetIDColumn sets the model column which @combo_box should use to get
+	// string IDs for values from.
 	SetIDColumn(idColumn int)
+	// SetModel sets the model used by @combo_box to be @model.
 	SetModel(model TreeModeller)
+	// SetPopupFixedWidth specifies whether the popup’s width should be a fixed
+	// width matching the allocated width of the combo box.
 	SetPopupFixedWidth(fixed bool)
+	// SetRowSpanColumn sets the column with row span information for @combo_box
+	// to be @row_span.
 	SetRowSpanColumn(rowSpan int)
+	// SetTitle sets the menu’s title in tearoff mode.
 	SetTitle(title string)
+	// SetWrapWidth sets the wrap width of @combo_box to be @width.
 	SetWrapWidth(width int)
 }
 
@@ -111,26 +165,22 @@ type ComboBoxxer interface {
 // button, both with the .combo class added. The button also contains another
 // node with name arrow.
 type ComboBox struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
+
 	CellEditable
 	CellLayout
 }
 
-var _ ComboBoxxer = (*ComboBox)(nil)
+var (
+	_ ComboBoxxer     = (*ComboBox)(nil)
+	_ gextras.Nativer = (*ComboBox)(nil)
+)
 
-func wrapComboBoxxer(obj *externglib.Object) ComboBoxxer {
+func wrapComboBox(obj *externglib.Object) ComboBoxxer {
 	return &ComboBox{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -141,30 +191,10 @@ func wrapComboBoxxer(obj *externglib.Object) ComboBoxxer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		CellEditable: CellEditable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -185,7 +215,7 @@ func wrapComboBoxxer(obj *externglib.Object) ComboBoxxer {
 func marshalComboBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComboBoxxer(obj), nil
+	return wrapComboBox(obj), nil
 }
 
 // NewComboBox creates a new empty ComboBox.
@@ -206,7 +236,7 @@ func NewComboBoxWithArea(area CellAreaer) *ComboBox {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((area).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_combo_box_new_with_area(_arg1)
 
@@ -224,7 +254,7 @@ func NewComboBoxWithAreaAndEntry(area CellAreaer) *ComboBox {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((area).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_combo_box_new_with_area_and_entry(_arg1)
 
@@ -254,7 +284,7 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_combo_box_new_with_model(_arg1)
 
@@ -271,7 +301,7 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_combo_box_new_with_model_and_entry(_arg1)
 
@@ -280,6 +310,12 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	_comboBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ComboBox)
 
 	return _comboBox
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ComboBox) Native() uintptr {
+	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Active returns the index of the currently active item, or -1 if there’s no
@@ -617,7 +653,7 @@ func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 	var _arg1 *C.GdkDevice   // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
 
 	C.gtk_combo_box_popup_for_device(_arg0, _arg1)
 }
@@ -758,7 +794,7 @@ func (comboBox *ComboBox) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_combo_box_set_model(_arg0, _arg1)
 }

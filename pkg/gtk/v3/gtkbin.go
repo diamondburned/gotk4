@@ -27,34 +27,30 @@ func init() {
 
 // Binner describes Bin's methods.
 type Binner interface {
-	gextras.Objector
-
+	// Child gets the child of the Bin, or nil if the bin contains no child
+	// widget.
 	Child() *Widget
 }
 
-// Bin: the Bin widget is a container with just one child. It is not very useful
-// itself, but it is useful for deriving subclasses, since it provides common
-// code needed for handling a single child widget.
+// Bin widget is a container with just one child. It is not very useful itself,
+// but it is useful for deriving subclasses, since it provides common code
+// needed for handling a single child widget.
 //
 // Many GTK+ widgets are subclasses of Bin, including Window, Button, Frame,
 // HandleBox or ScrolledWindow.
 type Bin struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Binner = (*Bin)(nil)
+var (
+	_ Binner          = (*Bin)(nil)
+	_ gextras.Nativer = (*Bin)(nil)
+)
 
-func wrapBinner(obj *externglib.Object) Binner {
+func wrapBin(obj *externglib.Object) Binner {
 	return &Bin{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -65,18 +61,6 @@ func wrapBinner(obj *externglib.Object) Binner {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -84,7 +68,7 @@ func wrapBinner(obj *externglib.Object) Binner {
 func marshalBinner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBinner(obj), nil
+	return wrapBin(obj), nil
 }
 
 // Child gets the child of the Bin, or nil if the bin contains no child widget.

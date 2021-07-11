@@ -30,17 +30,17 @@ type SeatCapabilities int
 const (
 	// SeatCapabilitiesNone: no input capabilities
 	SeatCapabilitiesNone SeatCapabilities = 0b0
-	// SeatCapabilitiesPointer: the seat has a pointer (e.g. mouse)
+	// SeatCapabilitiesPointer: seat has a pointer (e.g. mouse)
 	SeatCapabilitiesPointer SeatCapabilities = 0b1
-	// SeatCapabilitiesTouch: the seat has touchscreen(s) attached
+	// SeatCapabilitiesTouch: seat has touchscreen(s) attached
 	SeatCapabilitiesTouch SeatCapabilities = 0b10
-	// SeatCapabilitiesTabletStylus: the seat has drawing tablet(s) attached
+	// SeatCapabilitiesTabletStylus: seat has drawing tablet(s) attached
 	SeatCapabilitiesTabletStylus SeatCapabilities = 0b100
-	// SeatCapabilitiesKeyboard: the seat has keyboard(s) attached
+	// SeatCapabilitiesKeyboard: seat has keyboard(s) attached
 	SeatCapabilitiesKeyboard SeatCapabilities = 0b1000
-	// SeatCapabilitiesAllPointing: the union of all pointing capabilities
+	// SeatCapabilitiesAllPointing: union of all pointing capabilities
 	SeatCapabilitiesAllPointing SeatCapabilities = 0b111
-	// SeatCapabilitiesAll: the union of all capabilities
+	// SeatCapabilitiesAll: union of all capabilities
 	SeatCapabilitiesAll SeatCapabilities = 0b1111
 )
 
@@ -74,24 +74,29 @@ func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpoint
 
 // Seater describes Seat's methods.
 type Seater interface {
-	gextras.Objector
-
+	// Capabilities returns the capabilities this Seat currently has.
 	Capabilities() SeatCapabilities
+	// Display returns the Display this seat belongs to.
 	Display() *Display
+	// Keyboard returns the master device that routes keyboard events.
 	Keyboard() *Device
+	// Pointer returns the master device that routes pointer events.
 	Pointer() *Device
+	// Ungrab releases a grab added through gdk_seat_grab().
 	Ungrab()
 }
 
-// Seat: the Seat object represents a collection of input devices that belong to
-// a user.
+// Seat object represents a collection of input devices that belong to a user.
 type Seat struct {
 	*externglib.Object
 }
 
-var _ Seater = (*Seat)(nil)
+var (
+	_ Seater          = (*Seat)(nil)
+	_ gextras.Nativer = (*Seat)(nil)
+)
 
-func wrapSeater(obj *externglib.Object) Seater {
+func wrapSeat(obj *externglib.Object) Seater {
 	return &Seat{
 		Object: obj,
 	}
@@ -100,7 +105,7 @@ func wrapSeater(obj *externglib.Object) Seater {
 func marshalSeater(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeater(obj), nil
+	return wrapSeat(obj), nil
 }
 
 // Capabilities returns the capabilities this Seat currently has.

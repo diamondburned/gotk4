@@ -24,11 +24,11 @@ func init() {
 	})
 }
 
-// StreamableContenterOverrider contains methods that are overridable.
+// StreamableContentOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type StreamableContenterOverrider interface {
+type StreamableContentOverrider interface {
 	// MIMEType gets the character string of the specified mime type. The first
 	// mime type is at position 0, the second at position 1, and so on.
 	MIMEType(i int) string
@@ -49,11 +49,15 @@ type StreamableContenterOverrider interface {
 
 // StreamableContenter describes StreamableContent's methods.
 type StreamableContenter interface {
-	gextras.Objector
-
+	// MIMEType gets the character string of the specified mime type.
 	MIMEType(i int) string
+	// NMIMETypes gets the number of mime types supported by this object.
 	NMIMETypes() int
+	// Stream gets the content in the specified mime type.
 	Stream(mimeType string) *glib.IOChannel
+	// URI: get a string representing a URI in IETF standard format (see
+	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
+	// be streamed in the specified mime-type, if one is available.
 	URI(mimeType string) string
 }
 
@@ -76,9 +80,12 @@ type StreamableContent struct {
 	*externglib.Object
 }
 
-var _ StreamableContenter = (*StreamableContent)(nil)
+var (
+	_ StreamableContenter = (*StreamableContent)(nil)
+	_ gextras.Nativer     = (*StreamableContent)(nil)
+)
 
-func wrapStreamableContenter(obj *externglib.Object) StreamableContenter {
+func wrapStreamableContent(obj *externglib.Object) StreamableContenter {
 	return &StreamableContent{
 		Object: obj,
 	}
@@ -87,7 +94,7 @@ func wrapStreamableContenter(obj *externglib.Object) StreamableContenter {
 func marshalStreamableContenter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStreamableContenter(obj), nil
+	return wrapStreamableContent(obj), nil
 }
 
 // MIMEType gets the character string of the specified mime type. The first mime

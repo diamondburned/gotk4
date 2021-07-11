@@ -24,8 +24,6 @@ func init() {
 
 // Snapshotter describes Snapshot's methods.
 type Snapshotter interface {
-	gextras.Objector
-
 	privateSnapshot()
 }
 
@@ -36,9 +34,12 @@ type Snapshot struct {
 	*externglib.Object
 }
 
-var _ Snapshotter = (*Snapshot)(nil)
+var (
+	_ Snapshotter     = (*Snapshot)(nil)
+	_ gextras.Nativer = (*Snapshot)(nil)
+)
 
-func wrapSnapshotter(obj *externglib.Object) Snapshotter {
+func wrapSnapshot(obj *externglib.Object) Snapshotter {
 	return &Snapshot{
 		Object: obj,
 	}
@@ -47,7 +48,7 @@ func wrapSnapshotter(obj *externglib.Object) Snapshotter {
 func marshalSnapshotter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSnapshotter(obj), nil
+	return wrapSnapshot(obj), nil
 }
 
 func (*Snapshot) privateSnapshot() {}

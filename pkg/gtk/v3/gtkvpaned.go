@@ -27,36 +27,28 @@ func init() {
 
 // VPanedder describes VPaned's methods.
 type VPanedder interface {
-	gextras.Objector
-
 	privateVPaned()
 }
 
-// VPaned: the VPaned widget is a container widget with two children arranged
-// vertically. The division between the two panes is adjustable by the user by
-// dragging a handle. See Paned for details.
+// VPaned widget is a container widget with two children arranged vertically.
+// The division between the two panes is adjustable by the user by dragging a
+// handle. See Paned for details.
 //
 // GtkVPaned has been deprecated, use Paned instead.
 type VPaned struct {
-	*externglib.Object
-
 	Paned
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ VPanedder = (*VPaned)(nil)
+var (
+	_ VPanedder       = (*VPaned)(nil)
+	_ gextras.Nativer = (*VPaned)(nil)
+)
 
-func wrapVPanedder(obj *externglib.Object) VPanedder {
+func wrapVPaned(obj *externglib.Object) VPanedder {
 	return &VPaned{
-		Object: obj,
 		Paned: Paned{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -67,31 +59,10 @@ func wrapVPanedder(obj *externglib.Object) VPanedder {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -99,7 +70,7 @@ func wrapVPanedder(obj *externglib.Object) VPanedder {
 func marshalVPanedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVPanedder(obj), nil
+	return wrapVPaned(obj), nil
 }
 
 // NewVPaned: create a new VPaned

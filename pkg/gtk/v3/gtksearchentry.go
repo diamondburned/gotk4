@@ -25,21 +25,22 @@ func init() {
 	})
 }
 
-// SearchEntrierOverrider contains methods that are overridable.
+// SearchEntryOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SearchEntrierOverrider interface {
+type SearchEntryOverrider interface {
 	NextMatch()
+
 	PreviousMatch()
+
 	SearchChanged()
+
 	StopSearch()
 }
 
 // SearchEntrier describes SearchEntry's methods.
 type SearchEntrier interface {
-	gextras.Objector
-
 	privateSearchEntry()
 }
 
@@ -67,24 +68,18 @@ type SearchEntrier interface {
 // SearchBar. If that is not the case, you can use
 // gtk_search_entry_handle_event() to pass events.
 type SearchEntry struct {
-	*externglib.Object
-
 	Entry
-	atk.ImplementorIface
-	Buildable
-	CellEditable
-	Editable
 }
 
-var _ SearchEntrier = (*SearchEntry)(nil)
+var (
+	_ SearchEntrier   = (*SearchEntry)(nil)
+	_ gextras.Nativer = (*SearchEntry)(nil)
+)
 
-func wrapSearchEntrier(obj *externglib.Object) SearchEntrier {
+func wrapSearchEntry(obj *externglib.Object) SearchEntrier {
 	return &SearchEntry{
-		Object: obj,
 		Entry: Entry{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -95,16 +90,8 @@ func wrapSearchEntrier(obj *externglib.Object) SearchEntrier {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
 			CellEditable: CellEditable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -120,37 +107,13 @@ func wrapSearchEntrier(obj *externglib.Object) SearchEntrier {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		CellEditable: CellEditable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Editable: Editable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalSearchEntrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSearchEntrier(obj), nil
+	return wrapSearchEntry(obj), nil
 }
 
 // NewSearchEntry creates a SearchEntry, with a find icon when the search field

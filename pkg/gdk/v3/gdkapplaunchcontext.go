@@ -25,13 +25,24 @@ func init() {
 
 // AppLaunchContexter describes AppLaunchContext's methods.
 type AppLaunchContexter interface {
-	gextras.Objector
-
+	// SetDesktop sets the workspace on which applications will be launched when
+	// using this context when running under a window manager that supports
+	// multiple workspaces, as described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec).
 	SetDesktop(desktop int)
+	// SetDisplay sets the display on which applications will be launched when
+	// using this context.
 	SetDisplay(display Displayyer)
+	// SetIcon sets the icon for applications that are launched with this
+	// context.
 	SetIcon(icon gio.Iconner)
+	// SetIconName sets the icon for applications that are launched with this
+	// context.
 	SetIconName(iconName string)
+	// SetScreen sets the screen on which applications will be launched when
+	// using this context.
 	SetScreen(screen Screener)
+	// SetTimestamp sets the timestamp of @context.
 	SetTimestamp(timestamp uint32)
 }
 
@@ -56,9 +67,12 @@ type AppLaunchContext struct {
 	gio.AppLaunchContext
 }
 
-var _ AppLaunchContexter = (*AppLaunchContext)(nil)
+var (
+	_ AppLaunchContexter = (*AppLaunchContext)(nil)
+	_ gextras.Nativer    = (*AppLaunchContext)(nil)
+)
 
-func wrapAppLaunchContexter(obj *externglib.Object) AppLaunchContexter {
+func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContexter {
 	return &AppLaunchContext{
 		AppLaunchContext: gio.AppLaunchContext{
 			Object: obj,
@@ -69,7 +83,7 @@ func wrapAppLaunchContexter(obj *externglib.Object) AppLaunchContexter {
 func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppLaunchContexter(obj), nil
+	return wrapAppLaunchContext(obj), nil
 }
 
 // NewAppLaunchContext creates a new AppLaunchContext.
@@ -113,7 +127,7 @@ func (context *AppLaunchContext) SetDisplay(display Displayyer) {
 	var _arg1 *C.GdkDisplay          // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
 
 	C.gdk_app_launch_context_set_display(_arg0, _arg1)
 }
@@ -129,7 +143,7 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon               // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
 }
@@ -163,7 +177,7 @@ func (context *AppLaunchContext) SetScreen(screen Screener) {
 	var _arg1 *C.GdkScreen           // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
 
 	C.gdk_app_launch_context_set_screen(_arg0, _arg1)
 }

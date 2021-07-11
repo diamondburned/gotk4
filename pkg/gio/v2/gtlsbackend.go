@@ -32,11 +32,11 @@ func init() {
 	})
 }
 
-// TLSBackenderOverrider contains methods that are overridable.
+// TLSBackendOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSBackenderOverrider interface {
+type TLSBackendOverrider interface {
 	// DefaultDatabase gets the default Database used to verify TLS connections.
 	DefaultDatabase() *TLSDatabase
 	// SupportsDTLS checks if DTLS is supported. DTLS support may not be
@@ -49,17 +49,33 @@ type TLSBackenderOverrider interface {
 
 // TLSBackender describes TLSBackend's methods.
 type TLSBackender interface {
-	gextras.Objector
-
+	// CertificateType gets the #GType of @backend's Certificate implementation.
 	CertificateType() externglib.Type
+	// ClientConnectionType gets the #GType of @backend's ClientConnection
+	// implementation.
 	ClientConnectionType() externglib.Type
+	// DefaultDatabase gets the default Database used to verify TLS connections.
 	DefaultDatabase() *TLSDatabase
+	// DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
+	// implementation.
 	DTLSClientConnectionType() externglib.Type
+	// DTLSServerConnectionType gets the #GType of @backend’s ServerConnection
+	// implementation.
 	DTLSServerConnectionType() externglib.Type
+	// FileDatabaseType gets the #GType of @backend's FileDatabase
+	// implementation.
 	FileDatabaseType() externglib.Type
+	// ServerConnectionType gets the #GType of @backend's ServerConnection
+	// implementation.
 	ServerConnectionType() externglib.Type
+	// SetDefaultDatabase: set the default Database used to verify TLS
+	// connections Any subsequent call to g_tls_backend_get_default_database()
+	// will return the database set in this call.
 	SetDefaultDatabase(database TLSDatabaser)
+	// SupportsDTLS checks if DTLS is supported.
 	SupportsDTLS() bool
+	// SupportsTLS checks if TLS is supported; if this returns false for the
+	// default Backend, it means no "real" TLS backend is available.
 	SupportsTLS() bool
 }
 
@@ -68,9 +84,12 @@ type TLSBackend struct {
 	*externglib.Object
 }
 
-var _ TLSBackender = (*TLSBackend)(nil)
+var (
+	_ TLSBackender    = (*TLSBackend)(nil)
+	_ gextras.Nativer = (*TLSBackend)(nil)
+)
 
-func wrapTLSBackender(obj *externglib.Object) TLSBackender {
+func wrapTLSBackend(obj *externglib.Object) TLSBackender {
 	return &TLSBackend{
 		Object: obj,
 	}
@@ -79,7 +98,7 @@ func wrapTLSBackender(obj *externglib.Object) TLSBackender {
 func marshalTLSBackender(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSBackender(obj), nil
+	return wrapTLSBackend(obj), nil
 }
 
 // CertificateType gets the #GType of @backend's Certificate implementation.
@@ -211,7 +230,7 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	var _arg1 *C.GTlsDatabase // out
 
 	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
-	_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
+	_arg1 = (*C.GTlsDatabase)(unsafe.Pointer((database).(gextras.Nativer).Native()))
 
 	C.g_tls_backend_set_default_database(_arg0, _arg1)
 }

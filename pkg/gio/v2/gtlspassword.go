@@ -32,11 +32,11 @@ func init() {
 	})
 }
 
-// TLSPassworderOverrider contains methods that are overridable.
+// TLSPasswordOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSPassworderOverrider interface {
+type TLSPasswordOverrider interface {
 	DefaultWarning() string
 	// Value: get the password value. If @length is not nil then it will be
 	// filled in with the length of the password value. (Note that the password
@@ -47,14 +47,21 @@ type TLSPassworderOverrider interface {
 
 // TLSPassworder describes TLSPassword's methods.
 type TLSPassworder interface {
-	gextras.Objector
-
+	// Description: get a description string about what the password will be
+	// used for.
 	Description() string
+	// Flags: get flags about the password.
 	Flags() TLSPasswordFlags
+	// Value: get the password value.
 	Value(length *uint) *byte
+	// Warning: get a user readable translated warning.
 	Warning() string
+	// SetDescription: set a description string about what the password will be
+	// used for.
 	SetDescription(description string)
+	// SetValue: set the value for this password.
 	SetValue(value []byte)
+	// SetWarning: set a user readable translated warning.
 	SetWarning(warning string)
 }
 
@@ -63,9 +70,12 @@ type TLSPassword struct {
 	*externglib.Object
 }
 
-var _ TLSPassworder = (*TLSPassword)(nil)
+var (
+	_ TLSPassworder   = (*TLSPassword)(nil)
+	_ gextras.Nativer = (*TLSPassword)(nil)
+)
 
-func wrapTLSPassworder(obj *externglib.Object) TLSPassworder {
+func wrapTLSPassword(obj *externglib.Object) TLSPassworder {
 	return &TLSPassword{
 		Object: obj,
 	}
@@ -74,7 +84,7 @@ func wrapTLSPassworder(obj *externglib.Object) TLSPassworder {
 func marshalTLSPassworder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSPassworder(obj), nil
+	return wrapTLSPassword(obj), nil
 }
 
 // Description: get a description string about what the password will be used

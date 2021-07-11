@@ -32,19 +32,18 @@ func init() {
 	})
 }
 
-// FileDescriptorBasedderOverrider contains methods that are overridable.
+// FileDescriptorBasedOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileDescriptorBasedderOverrider interface {
+type FileDescriptorBasedOverrider interface {
 	// Fd gets the underlying file descriptor.
 	Fd() int
 }
 
 // FileDescriptorBasedder describes FileDescriptorBased's methods.
 type FileDescriptorBasedder interface {
-	gextras.Objector
-
+	// Fd gets the underlying file descriptor.
 	Fd() int
 }
 
@@ -58,9 +57,12 @@ type FileDescriptorBased struct {
 	*externglib.Object
 }
 
-var _ FileDescriptorBasedder = (*FileDescriptorBased)(nil)
+var (
+	_ FileDescriptorBasedder = (*FileDescriptorBased)(nil)
+	_ gextras.Nativer        = (*FileDescriptorBased)(nil)
+)
 
-func wrapFileDescriptorBasedder(obj *externglib.Object) FileDescriptorBasedder {
+func wrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBasedder {
 	return &FileDescriptorBased{
 		Object: obj,
 	}
@@ -69,7 +71,7 @@ func wrapFileDescriptorBasedder(obj *externglib.Object) FileDescriptorBasedder {
 func marshalFileDescriptorBasedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileDescriptorBasedder(obj), nil
+	return wrapFileDescriptorBased(obj), nil
 }
 
 // Fd gets the underlying file descriptor.

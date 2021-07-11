@@ -27,38 +27,30 @@ func init() {
 
 // VScrollbarrer describes VScrollbar's methods.
 type VScrollbarrer interface {
-	gextras.Objector
-
 	privateVScrollbar()
 }
 
-// VScrollbar: the VScrollbar widget is a widget arranged vertically creating a
-// scrollbar. See Scrollbar for details on scrollbars. Adjustment pointers may
-// be added to handle the adjustment of the scrollbar or it may be left nil in
-// which case one will be created for you. See Scrollbar for a description of
-// what the fields in an adjustment represent for a scrollbar.
+// VScrollbar widget is a widget arranged vertically creating a scrollbar. See
+// Scrollbar for details on scrollbars. Adjustment pointers may be added to
+// handle the adjustment of the scrollbar or it may be left nil in which case
+// one will be created for you. See Scrollbar for a description of what the
+// fields in an adjustment represent for a scrollbar.
 //
 // GtkVScrollbar has been deprecated, use Scrollbar instead.
 type VScrollbar struct {
-	*externglib.Object
-
 	Scrollbar
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ VScrollbarrer = (*VScrollbar)(nil)
+var (
+	_ VScrollbarrer   = (*VScrollbar)(nil)
+	_ gextras.Nativer = (*VScrollbar)(nil)
+)
 
-func wrapVScrollbarrer(obj *externglib.Object) VScrollbarrer {
+func wrapVScrollbar(obj *externglib.Object) VScrollbarrer {
 	return &VScrollbar{
-		Object: obj,
 		Scrollbar: Scrollbar{
-			Object: obj,
 			Range: Range{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -69,34 +61,10 @@ func wrapVScrollbarrer(obj *externglib.Object) VScrollbarrer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			Orientable: Orientable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -104,7 +72,7 @@ func wrapVScrollbarrer(obj *externglib.Object) VScrollbarrer {
 func marshalVScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVScrollbarrer(obj), nil
+	return wrapVScrollbar(obj), nil
 }
 
 // NewVScrollbar creates a new vertical scrollbar.
@@ -114,7 +82,7 @@ func NewVScrollbar(adjustment Adjustmenter) *VScrollbar {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_vscrollbar_new(_arg1)
 

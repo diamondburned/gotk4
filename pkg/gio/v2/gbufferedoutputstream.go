@@ -34,11 +34,14 @@ func init() {
 
 // BufferedOutputStreamer describes BufferedOutputStream's methods.
 type BufferedOutputStreamer interface {
-	gextras.Objector
-
+	// AutoGrow checks if the buffer automatically grows as data is added.
 	AutoGrow() bool
+	// BufferSize gets the size of the buffer in the @stream.
 	BufferSize() uint
+	// SetAutoGrow sets whether or not the @stream's buffer should automatically
+	// grow.
 	SetAutoGrow(autoGrow bool)
+	// SetBufferSize sets the size of the internal buffer to @size.
 	SetBufferSize(size uint)
 }
 
@@ -62,9 +65,12 @@ type BufferedOutputStream struct {
 	Seekable
 }
 
-var _ BufferedOutputStreamer = (*BufferedOutputStream)(nil)
+var (
+	_ BufferedOutputStreamer = (*BufferedOutputStream)(nil)
+	_ gextras.Nativer        = (*BufferedOutputStream)(nil)
+)
 
-func wrapBufferedOutputStreamer(obj *externglib.Object) BufferedOutputStreamer {
+func wrapBufferedOutputStream(obj *externglib.Object) BufferedOutputStreamer {
 	return &BufferedOutputStream{
 		FilterOutputStream: FilterOutputStream{
 			OutputStream: OutputStream{
@@ -80,7 +86,7 @@ func wrapBufferedOutputStreamer(obj *externglib.Object) BufferedOutputStreamer {
 func marshalBufferedOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBufferedOutputStreamer(obj), nil
+	return wrapBufferedOutputStream(obj), nil
 }
 
 // NewBufferedOutputStream creates a new buffered output stream for a base
@@ -89,7 +95,7 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _cret *C.GOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
 
 	_cret = C.g_buffered_output_stream_new(_arg1)
 
@@ -107,7 +113,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 	var _arg2 C.gsize          // out
 	var _cret *C.GOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
 	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)

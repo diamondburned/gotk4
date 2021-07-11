@@ -38,27 +38,51 @@ func init() {
 
 // DataInputStreamer describes DataInputStream's methods.
 type DataInputStreamer interface {
-	gextras.Objector
-
+	// ByteOrder gets the byte order for the data input stream.
 	ByteOrder() DataStreamByteOrder
+	// NewlineType gets the current newline type for the @stream.
 	NewlineType() DataStreamNewlineType
+	// ReadByte reads an unsigned 8-bit/1-byte value from @stream.
 	ReadByte(cancellable Cancellabler) (byte, error)
+	// ReadInt16 reads a 16-bit/2-byte value from @stream.
 	ReadInt16(cancellable Cancellabler) (int16, error)
+	// ReadInt32 reads a signed 32-bit/4-byte value from @stream.
 	ReadInt32(cancellable Cancellabler) (int32, error)
+	// ReadInt64 reads a 64-bit/8-byte value from @stream.
 	ReadInt64(cancellable Cancellabler) (int64, error)
+	// ReadLine reads a line from the data input stream.
 	ReadLine(cancellable Cancellabler) (uint, []byte, error)
+	// ReadLineAsync asynchronous version of g_data_input_stream_read_line().
 	ReadLineAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// ReadLineFinish: finish an asynchronous call started by
+	// g_data_input_stream_read_line_async().
 	ReadLineFinish(result AsyncResulter) (uint, []byte, error)
+	// ReadLineFinishUTF8: finish an asynchronous call started by
+	// g_data_input_stream_read_line_async().
 	ReadLineFinishUTF8(result AsyncResulter) (uint, string, error)
+	// ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
 	ReadLineUTF8(cancellable Cancellabler) (uint, string, error)
+	// ReadUint16 reads an unsigned 16-bit/2-byte value from @stream.
 	ReadUint16(cancellable Cancellabler) (uint16, error)
+	// ReadUint32 reads an unsigned 32-bit/4-byte value from @stream.
 	ReadUint32(cancellable Cancellabler) (uint32, error)
+	// ReadUint64 reads an unsigned 64-bit/8-byte value from @stream.
 	ReadUint64(cancellable Cancellabler) (uint64, error)
+	// ReadUntil reads a string from the data input stream, up to the first
+	// occurrence of any of the stop characters.
 	ReadUntil(stopChars string, cancellable Cancellabler) (uint, string, error)
+	// ReadUntilAsync asynchronous version of g_data_input_stream_read_until().
 	ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// ReadUntilFinish: finish an asynchronous call started by
+	// g_data_input_stream_read_until_async().
 	ReadUntilFinish(result AsyncResulter) (uint, string, error)
+	// ReadUpto reads a string from the data input stream, up to the first
+	// occurrence of any of the stop characters.
 	ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellabler) (uint, string, error)
+	// ReadUptoAsync asynchronous version of g_data_input_stream_read_upto().
 	ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// ReadUptoFinish: finish an asynchronous call started by
+	// g_data_input_stream_read_upto_async().
 	ReadUptoFinish(result AsyncResulter) (uint, string, error)
 }
 
@@ -66,13 +90,14 @@ type DataInputStreamer interface {
 // for reading structured data directly from a binary input stream.
 type DataInputStream struct {
 	BufferedInputStream
-
-	Seekable
 }
 
-var _ DataInputStreamer = (*DataInputStream)(nil)
+var (
+	_ DataInputStreamer = (*DataInputStream)(nil)
+	_ gextras.Nativer   = (*DataInputStream)(nil)
+)
 
-func wrapDataInputStreamer(obj *externglib.Object) DataInputStreamer {
+func wrapDataInputStream(obj *externglib.Object) DataInputStreamer {
 	return &DataInputStream{
 		BufferedInputStream: BufferedInputStream{
 			FilterInputStream: FilterInputStream{
@@ -84,16 +109,13 @@ func wrapDataInputStreamer(obj *externglib.Object) DataInputStreamer {
 				Object: obj,
 			},
 		},
-		Seekable: Seekable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalDataInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDataInputStreamer(obj), nil
+	return wrapDataInputStream(obj), nil
 }
 
 // NewDataInputStream creates a new data input stream for the @base_stream.
@@ -101,7 +123,7 @@ func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 	var _arg1 *C.GInputStream     // out
 	var _cret *C.GDataInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_new(_arg1)
 
@@ -152,7 +174,7 @@ func (stream *DataInputStream) ReadByte(cancellable Cancellabler) (byte, error) 
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_byte(_arg0, _arg1, &_cerr)
 
@@ -177,7 +199,7 @@ func (stream *DataInputStream) ReadInt16(cancellable Cancellabler) (int16, error
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_int16(_arg0, _arg1, &_cerr)
 
@@ -206,7 +228,7 @@ func (stream *DataInputStream) ReadInt32(cancellable Cancellabler) (int32, error
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_int32(_arg0, _arg1, &_cerr)
 
@@ -235,7 +257,7 @@ func (stream *DataInputStream) ReadInt64(cancellable Cancellabler) (int64, error
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_int64(_arg0, _arg1, &_cerr)
 
@@ -263,7 +285,7 @@ func (stream *DataInputStream) ReadLine(cancellable Cancellabler) (uint, []byte,
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_line(_arg0, &_arg1, _arg2, &_cerr)
 
@@ -290,8 +312,8 @@ func (stream *DataInputStream) ReadLine(cancellable Cancellabler) (uint, []byte,
 	return _length, _guint8s, _goerr
 }
 
-// ReadLineAsync: the asynchronous version of g_data_input_stream_read_line().
-// It is an error to have two outstanding calls to this function.
+// ReadLineAsync asynchronous version of g_data_input_stream_read_line(). It is
+// an error to have two outstanding calls to this function.
 //
 // When the operation is finished, @callback will be called. You can then call
 // g_data_input_stream_read_line_finish() to get the result of the operation.
@@ -304,7 +326,7 @@ func (stream *DataInputStream) ReadLineAsync(ioPriority int, cancellable Cancell
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.gint(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -322,7 +344,7 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_line_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -359,7 +381,7 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_line_finish_utf8(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -388,7 +410,7 @@ func (stream *DataInputStream) ReadLineUTF8(cancellable Cancellabler) (uint, str
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_line_utf8(_arg0, &_arg1, _arg2, &_cerr)
 
@@ -416,7 +438,7 @@ func (stream *DataInputStream) ReadUint16(cancellable Cancellabler) (uint16, err
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_uint16(_arg0, _arg1, &_cerr)
 
@@ -445,7 +467,7 @@ func (stream *DataInputStream) ReadUint32(cancellable Cancellabler) (uint32, err
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_uint32(_arg0, _arg1, &_cerr)
 
@@ -473,7 +495,7 @@ func (stream *DataInputStream) ReadUint64(cancellable Cancellabler) (uint64, err
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_uint64(_arg0, _arg1, &_cerr)
 
@@ -510,7 +532,7 @@ func (stream *DataInputStream) ReadUntil(stopChars string, cancellable Cancellab
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.gchar)(C.CString(stopChars))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_until(_arg0, _arg1, &_arg2, _arg3, &_cerr)
 
@@ -526,8 +548,8 @@ func (stream *DataInputStream) ReadUntil(stopChars string, cancellable Cancellab
 	return _length, _utf8, _goerr
 }
 
-// ReadUntilAsync: the asynchronous version of g_data_input_stream_read_until().
-// It is an error to have two outstanding calls to this function.
+// ReadUntilAsync asynchronous version of g_data_input_stream_read_until(). It
+// is an error to have two outstanding calls to this function.
 //
 // Note that, in contrast to g_data_input_stream_read_until(), this function
 // does not consume the stop character that it finds. You must read it for
@@ -554,7 +576,7 @@ func (stream *DataInputStream) ReadUntilAsync(stopChars string, ioPriority int, 
 	_arg1 = (*C.gchar)(C.CString(stopChars))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -574,7 +596,7 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_until_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -613,7 +635,7 @@ func (stream *DataInputStream) ReadUpto(stopChars string, stopCharsLen int, canc
 	_arg1 = (*C.gchar)(C.CString(stopChars))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_upto(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
 
@@ -629,8 +651,8 @@ func (stream *DataInputStream) ReadUpto(stopChars string, stopCharsLen int, canc
 	return _length, _utf8, _goerr
 }
 
-// ReadUptoAsync: the asynchronous version of g_data_input_stream_read_upto().
-// It is an error to have two outstanding calls to this function.
+// ReadUptoAsync asynchronous version of g_data_input_stream_read_upto(). It is
+// an error to have two outstanding calls to this function.
 //
 // In contrast to g_data_input_stream_read_until(), this function does not
 // consume the stop character. You have to use g_data_input_stream_read_byte()
@@ -654,7 +676,7 @@ func (stream *DataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int,
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
 	_arg3 = C.gint(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg6 = C.gpointer(box.Assign(callback))
 
@@ -677,7 +699,7 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_upto_finish(_arg0, _arg1, &_arg2, &_cerr)
 

@@ -33,11 +33,11 @@ func init() {
 	})
 }
 
-// TLSDatabaserOverrider contains methods that are overridable.
+// TLSDatabaseOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSDatabaserOverrider interface {
+type TLSDatabaseOverrider interface {
 	// CreateCertificateHandle: create a handle string for the certificate. The
 	// database will only be able to create a handle for certificates that
 	// originate from the database. In cases where the database cannot create a
@@ -73,11 +73,15 @@ type TLSDatabaserOverrider interface {
 
 // TLSDatabaser describes TLSDatabase's methods.
 type TLSDatabaser interface {
-	gextras.Objector
-
+	// CreateCertificateHandle: create a handle string for the certificate.
 	CreateCertificateHandle(certificate TLSCertificater) string
+	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
+	// certificate by its handle.
 	LookupCertificateForHandleFinish(result AsyncResulter) (*TLSCertificate, error)
+	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
+	// operation.
 	LookupCertificateIssuerFinish(result AsyncResulter) (*TLSCertificate, error)
+	// VerifyChainFinish: finish an asynchronous verify chain operation.
 	VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
 }
 
@@ -94,9 +98,12 @@ type TLSDatabase struct {
 	*externglib.Object
 }
 
-var _ TLSDatabaser = (*TLSDatabase)(nil)
+var (
+	_ TLSDatabaser    = (*TLSDatabase)(nil)
+	_ gextras.Nativer = (*TLSDatabase)(nil)
+)
 
-func wrapTLSDatabaser(obj *externglib.Object) TLSDatabaser {
+func wrapTLSDatabase(obj *externglib.Object) TLSDatabaser {
 	return &TLSDatabase{
 		Object: obj,
 	}
@@ -105,7 +112,7 @@ func wrapTLSDatabaser(obj *externglib.Object) TLSDatabaser {
 func marshalTLSDatabaser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSDatabaser(obj), nil
+	return wrapTLSDatabase(obj), nil
 }
 
 // CreateCertificateHandle: create a handle string for the certificate. The
@@ -122,7 +129,7 @@ func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) st
 	var _cret *C.gchar           // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((certificate).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_database_create_certificate_handle(_arg0, _arg1)
 
@@ -147,7 +154,7 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle_finish(_arg0, _arg1, &_cerr)
 
@@ -170,7 +177,7 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (*T
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_issuer_finish(_arg0, _arg1, &_cerr)
 
@@ -200,7 +207,7 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_database_verify_chain_finish(_arg0, _arg1, &_cerr)
 

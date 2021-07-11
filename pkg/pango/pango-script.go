@@ -23,7 +23,7 @@ func init() {
 	})
 }
 
-// Script: the `PangoScript` enumeration identifies different writing systems.
+// Script: `PangoScript` enumeration identifies different writing systems.
 //
 // The values correspond to the names as defined in the Unicode standard. See
 // Unicode Standard Annex 24: Script names

@@ -27,10 +27,11 @@ func init() {
 
 // Texturer describes Texture's methods.
 type Texturer interface {
-	gextras.Objector
-
+	// Height returns the height of the @texture, in pixels.
 	Height() int
+	// Width returns the width of @texture, in pixels.
 	Width() int
+	// SaveToPng: store the given @texture to the @filename as a PNG file.
 	SaveToPng(filename string) bool
 }
 
@@ -53,9 +54,12 @@ type Texture struct {
 	Paintable
 }
 
-var _ Texturer = (*Texture)(nil)
+var (
+	_ Texturer        = (*Texture)(nil)
+	_ gextras.Nativer = (*Texture)(nil)
+)
 
-func wrapTexturer(obj *externglib.Object) Texturer {
+func wrapTexture(obj *externglib.Object) Texturer {
 	return &Texture{
 		Object: obj,
 		Paintable: Paintable{
@@ -67,7 +71,7 @@ func wrapTexturer(obj *externglib.Object) Texturer {
 func marshalTexturer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTexturer(obj), nil
+	return wrapTexture(obj), nil
 }
 
 // NewTextureForPixbuf creates a new texture object representing the
@@ -76,7 +80,7 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Texture {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GdkTexture // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_texture_new_for_pixbuf(_arg1)
 
@@ -98,7 +102,7 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _cret *C.GdkTexture // in
 	var _cerr *C.GError     // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_texture_new_from_file(_arg1, &_cerr)
 

@@ -35,11 +35,15 @@ func init() {
 
 // MemoryOutputStreamer describes MemoryOutputStream's methods.
 type MemoryOutputStreamer interface {
-	gextras.Objector
-
+	// Data gets any loaded data from the @ostream.
 	Data() interface{}
+	// DataSize returns the number of bytes from the start up to including the
+	// last byte written in the stream that has not been truncated away.
 	DataSize() uint
+	// Size gets the size of the currently allocated data area (available from
+	// g_memory_output_stream_get_data()).
 	Size() uint
+	// StealData gets any loaded data from the @ostream.
 	StealData() interface{}
 }
 
@@ -49,18 +53,19 @@ type MemoryOutputStreamer interface {
 // As of GLib 2.34, OutputStream trivially implements OutputStream: it always
 // polls as ready.
 type MemoryOutputStream struct {
-	*externglib.Object
-
 	OutputStream
+
 	PollableOutputStream
 	Seekable
 }
 
-var _ MemoryOutputStreamer = (*MemoryOutputStream)(nil)
+var (
+	_ MemoryOutputStreamer = (*MemoryOutputStream)(nil)
+	_ gextras.Nativer      = (*MemoryOutputStream)(nil)
+)
 
-func wrapMemoryOutputStreamer(obj *externglib.Object) MemoryOutputStreamer {
+func wrapMemoryOutputStream(obj *externglib.Object) MemoryOutputStreamer {
 	return &MemoryOutputStream{
-		Object: obj,
 		OutputStream: OutputStream{
 			Object: obj,
 		},
@@ -78,7 +83,7 @@ func wrapMemoryOutputStreamer(obj *externglib.Object) MemoryOutputStreamer {
 func marshalMemoryOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryOutputStreamer(obj), nil
+	return wrapMemoryOutputStream(obj), nil
 }
 
 // NewMemoryOutputStreamResizable creates a new OutputStream, using g_realloc()
@@ -93,6 +98,12 @@ func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 	_memoryOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryOutputStream)
 
 	return _memoryOutputStream
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *MemoryOutputStream) Native() uintptr {
+	return v.OutputStream.Object.Native()
 }
 
 // Data gets any loaded data from the @ostream.

@@ -291,7 +291,9 @@ func Interfacify(word string) string {
 	case strings.HasSuffix(word, "ct"):
 		return word + "or"
 
-	case wordIsCVC(word):
+	// CVC form w/ -er is weird, since you'd get words like Builderrer instead
+	// of Builderer.
+	case wordIsCVC(word) && !strings.HasSuffix(word, "er"):
 		return word + string(word[len(word)-1]) + "er"
 
 	case wordEndsInConsonant(word):

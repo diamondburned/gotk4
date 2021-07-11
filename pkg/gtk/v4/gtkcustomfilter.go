@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_custom_filter_get_type()), F: marshalCustomFilterrer},
+		{T: externglib.Type(C.gtk_custom_filter_get_type()), F: marshalCustomFilterer},
 	})
 }
 
@@ -53,10 +53,8 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) 
 	return cret
 }
 
-// CustomFilterrer describes CustomFilter's methods.
-type CustomFilterrer interface {
-	gextras.Objector
-
+// CustomFilterer describes CustomFilter's methods.
+type CustomFilterer interface {
 	privateCustomFilter()
 }
 
@@ -66,9 +64,12 @@ type CustomFilter struct {
 	Filter
 }
 
-var _ CustomFilterrer = (*CustomFilter)(nil)
+var (
+	_ CustomFilterer  = (*CustomFilter)(nil)
+	_ gextras.Nativer = (*CustomFilter)(nil)
+)
 
-func wrapCustomFilterrer(obj *externglib.Object) CustomFilterrer {
+func wrapCustomFilter(obj *externglib.Object) CustomFilterer {
 	return &CustomFilter{
 		Filter: Filter{
 			Object: obj,
@@ -76,10 +77,10 @@ func wrapCustomFilterrer(obj *externglib.Object) CustomFilterrer {
 	}
 }
 
-func marshalCustomFilterrer(p uintptr) (interface{}, error) {
+func marshalCustomFilterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCustomFilterrer(obj), nil
+	return wrapCustomFilter(obj), nil
 }
 
 func (*CustomFilter) privateCustomFilter() {}

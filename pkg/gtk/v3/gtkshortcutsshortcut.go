@@ -31,29 +31,29 @@ func init() {
 type ShortcutType int
 
 const (
-	// Accelerator: the shortcut is a keyboard accelerator. The
+	// Accelerator: shortcut is a keyboard accelerator. The
 	// ShortcutsShortcut:accelerator property will be used.
 	ShortcutTypeAccelerator ShortcutType = iota
-	// GesturePinch: the shortcut is a pinch gesture. GTK+ provides an icon and
+	// GesturePinch: shortcut is a pinch gesture. GTK+ provides an icon and
 	// subtitle.
 	ShortcutTypeGesturePinch
-	// GestureStretch: the shortcut is a stretch gesture. GTK+ provides an icon
-	// and subtitle.
+	// GestureStretch: shortcut is a stretch gesture. GTK+ provides an icon and
+	// subtitle.
 	ShortcutTypeGestureStretch
-	// GestureRotateClockwise: the shortcut is a clockwise rotation gesture.
-	// GTK+ provides an icon and subtitle.
+	// GestureRotateClockwise: shortcut is a clockwise rotation gesture. GTK+
+	// provides an icon and subtitle.
 	ShortcutTypeGestureRotateClockwise
-	// GestureRotateCounterclockwise: the shortcut is a counterclockwise
-	// rotation gesture. GTK+ provides an icon and subtitle.
+	// GestureRotateCounterclockwise: shortcut is a counterclockwise rotation
+	// gesture. GTK+ provides an icon and subtitle.
 	ShortcutTypeGestureRotateCounterclockwise
-	// GestureTwoFingerSwipeLeft: the shortcut is a two-finger swipe gesture.
-	// GTK+ provides an icon and subtitle.
+	// GestureTwoFingerSwipeLeft: shortcut is a two-finger swipe gesture. GTK+
+	// provides an icon and subtitle.
 	ShortcutTypeGestureTwoFingerSwipeLeft
-	// GestureTwoFingerSwipeRight: the shortcut is a two-finger swipe gesture.
-	// GTK+ provides an icon and subtitle.
+	// GestureTwoFingerSwipeRight: shortcut is a two-finger swipe gesture. GTK+
+	// provides an icon and subtitle.
 	ShortcutTypeGestureTwoFingerSwipeRight
-	// Gesture: the shortcut is a gesture. The ShortcutsShortcut:icon property
-	// will be used.
+	// Gesture: shortcut is a gesture. The ShortcutsShortcut:icon property will
+	// be used.
 	ShortcutTypeGesture
 )
 
@@ -63,33 +63,25 @@ func marshalShortcutType(p uintptr) (interface{}, error) {
 
 // ShortcutsShortcutter describes ShortcutsShortcut's methods.
 type ShortcutsShortcutter interface {
-	gextras.Objector
-
 	privateShortcutsShortcut()
 }
 
 // ShortcutsShortcut represents a single keyboard shortcut or gesture with a
 // short text. This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsShortcut struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ ShortcutsShortcutter = (*ShortcutsShortcut)(nil)
+var (
+	_ ShortcutsShortcutter = (*ShortcutsShortcut)(nil)
+	_ gextras.Nativer      = (*ShortcutsShortcut)(nil)
+)
 
-func wrapShortcutsShortcutter(obj *externglib.Object) ShortcutsShortcutter {
+func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcutter {
 	return &ShortcutsShortcut{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -100,31 +92,10 @@ func wrapShortcutsShortcutter(obj *externglib.Object) ShortcutsShortcutter {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -132,7 +103,7 @@ func wrapShortcutsShortcutter(obj *externglib.Object) ShortcutsShortcutter {
 func marshalShortcutsShortcutter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsShortcutter(obj), nil
+	return wrapShortcutsShortcut(obj), nil
 }
 
 func (*ShortcutsShortcut) privateShortcutsShortcut() {}

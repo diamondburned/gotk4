@@ -25,18 +25,24 @@ func init() {
 	})
 }
 
-// RadioButtonnerOverrider contains methods that are overridable.
+// RadioButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RadioButtonnerOverrider interface {
+type RadioButtonOverrider interface {
 	GroupChanged()
 }
 
 // RadioButtonner describes RadioButton's methods.
 type RadioButtonner interface {
-	gextras.Objector
-
+	// JoinGroup joins a RadioButton object to the group of another RadioButton
+	// object Use this in language bindings instead of the
+	// gtk_radio_button_get_group() and gtk_radio_button_set_group() methods A
+	// common way to set up a group of radio buttons is the following:
+	// GtkRadioButton *radio_button; GtkRadioButton *last_button; while
+	// (some_condition) { radio_button = gtk_radio_button_new (NULL);
+	// gtk_radio_button_join_group (radio_button, last_button); last_button =
+	// radio_button; }
 	JoinGroup(groupSource RadioButtonner)
 }
 
@@ -101,32 +107,22 @@ type RadioButtonner interface {
 // Inside the ToggleButton::toggled handler, gtk_toggle_button_get_active() can
 // be used to determine if the button has been selected or deselected.
 type RadioButton struct {
-	*externglib.Object
-
 	CheckButton
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ RadioButtonner = (*RadioButton)(nil)
+var (
+	_ RadioButtonner  = (*RadioButton)(nil)
+	_ gextras.Nativer = (*RadioButton)(nil)
+)
 
-func wrapRadioButtonner(obj *externglib.Object) RadioButtonner {
+func wrapRadioButton(obj *externglib.Object) RadioButtonner {
 	return &RadioButton{
-		Object: obj,
 		CheckButton: CheckButton{
-			Object: obj,
 			ToggleButton: ToggleButton{
-				Object: obj,
 				Button: Button{
-					Object: obj,
 					Bin: Bin{
-						Object: obj,
 						Container: Container{
-							Object: obj,
 							Widget: Widget{
-								Object: obj,
 								InitiallyUnowned: externglib.InitiallyUnowned{
 									Object: obj,
 								},
@@ -137,27 +133,10 @@ func wrapRadioButtonner(obj *externglib.Object) RadioButtonner {
 									Object: obj,
 								},
 							},
-							ImplementorIface: atk.ImplementorIface{
-								Object: obj,
-							},
-							Buildable: Buildable{
-								Object: obj,
-							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
 					},
 					Actionable: Actionable{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -172,83 +151,8 @@ func wrapRadioButtonner(obj *externglib.Object) RadioButtonner {
 					Activatable: Activatable{
 						Object: obj,
 					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Actionable: Actionable{
-					Object: obj,
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-				},
-				Activatable: Activatable{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Actionable: Actionable{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-			},
-			Activatable: Activatable{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -256,7 +160,7 @@ func wrapRadioButtonner(obj *externglib.Object) RadioButtonner {
 func marshalRadioButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioButtonner(obj), nil
+	return wrapRadioButton(obj), nil
 }
 
 // NewRadioButtonFromWidget creates a new RadioButton, adding it to the same
@@ -266,7 +170,7 @@ func NewRadioButtonFromWidget(radioGroupMember RadioButtonner) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((radioGroupMember).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_radio_button_new_from_widget(_arg1)
 
@@ -284,7 +188,7 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButtonner, label st
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((radioGroupMember).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -305,7 +209,7 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButtonner, label
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((radioGroupMember).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -341,7 +245,7 @@ func (radioButton *RadioButton) JoinGroup(groupSource RadioButtonner) {
 	var _arg1 *C.GtkRadioButton // out
 
 	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(radioButton.Native()))
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(groupSource.Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((groupSource).(gextras.Nativer).Native()))
 
 	C.gtk_radio_button_join_group(_arg0, _arg1)
 }

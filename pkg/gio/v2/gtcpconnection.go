@@ -34,9 +34,9 @@ func init() {
 
 // TCPConnectioner describes TCPConnection's methods.
 type TCPConnectioner interface {
-	gextras.Objector
-
+	// GracefulDisconnect checks if graceful disconnects are used.
 	GracefulDisconnect() bool
+	// SetGracefulDisconnect: this enables graceful disconnects on close.
 	SetGracefulDisconnect(gracefulDisconnect bool)
 }
 
@@ -46,9 +46,12 @@ type TCPConnection struct {
 	SocketConnection
 }
 
-var _ TCPConnectioner = (*TCPConnection)(nil)
+var (
+	_ TCPConnectioner = (*TCPConnection)(nil)
+	_ gextras.Nativer = (*TCPConnection)(nil)
+)
 
-func wrapTCPConnectioner(obj *externglib.Object) TCPConnectioner {
+func wrapTCPConnection(obj *externglib.Object) TCPConnectioner {
 	return &TCPConnection{
 		SocketConnection: SocketConnection{
 			IOStream: IOStream{
@@ -61,7 +64,7 @@ func wrapTCPConnectioner(obj *externglib.Object) TCPConnectioner {
 func marshalTCPConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTCPConnectioner(obj), nil
+	return wrapTCPConnection(obj), nil
 }
 
 // GracefulDisconnect checks if graceful disconnects are used. See

@@ -24,16 +24,26 @@ func init() {
 
 // ListItemmer describes ListItem's methods.
 type ListItemmer interface {
-	gextras.Objector
-
+	// Activatable checks if a list item has been set to be activatable via
+	// gtk_list_item_set_activatable().
 	Activatable() bool
+	// Child gets the child previously set via gtk_list_item_set_child() or nil
+	// if none was set.
 	Child() *Widget
+	// Item gets the model item that associated with @self.
 	Item() *externglib.Object
+	// Position gets the position in the model that @self currently displays.
 	Position() uint
+	// Selectable checks if a list item has been set to be selectable via
+	// gtk_list_item_set_selectable().
 	Selectable() bool
+	// Selected checks if the item is displayed as selected.
 	Selected() bool
+	// SetActivatable sets @self to be activatable.
 	SetActivatable(activatable bool)
+	// SetChild sets the child to be used for this listitem.
 	SetChild(child Widgetter)
+	// SetSelectable sets @self to be selectable.
 	SetSelectable(selectable bool)
 }
 
@@ -56,9 +66,12 @@ type ListItem struct {
 	*externglib.Object
 }
 
-var _ ListItemmer = (*ListItem)(nil)
+var (
+	_ ListItemmer     = (*ListItem)(nil)
+	_ gextras.Nativer = (*ListItem)(nil)
+)
 
-func wrapListItemmer(obj *externglib.Object) ListItemmer {
+func wrapListItem(obj *externglib.Object) ListItemmer {
 	return &ListItem{
 		Object: obj,
 	}
@@ -67,7 +80,7 @@ func wrapListItemmer(obj *externglib.Object) ListItemmer {
 func marshalListItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListItemmer(obj), nil
+	return wrapListItem(obj), nil
 }
 
 // Activatable checks if a list item has been set to be activatable via
@@ -213,7 +226,7 @@ func (self *ListItem) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_list_item_set_child(_arg0, _arg1)
 }

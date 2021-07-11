@@ -25,11 +25,11 @@ func init() {
 	})
 }
 
-// CellEditablerOverrider contains methods that are overridable.
+// CellEditableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CellEditablerOverrider interface {
+type CellEditableOverrider interface {
 	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
 	// RemoveWidget emits the CellEditable::remove-widget signal.
@@ -38,29 +38,27 @@ type CellEditablerOverrider interface {
 
 // CellEditabler describes CellEditable's methods.
 type CellEditabler interface {
-	gextras.Objector
-
+	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
+	// RemoveWidget emits the CellEditable::remove-widget signal.
 	RemoveWidget()
 }
 
-// CellEditable: the CellEditable interface must be implemented for widgets to
-// be usable to edit the contents of a TreeView cell. It provides a way to
-// specify how temporary widgets should be configured for editing, get the new
-// value, etc.
+// CellEditable interface must be implemented for widgets to be usable to edit
+// the contents of a TreeView cell. It provides a way to specify how temporary
+// widgets should be configured for editing, get the new value, etc.
 type CellEditable struct {
-	*externglib.Object
-
 	Widget
 }
 
-var _ CellEditabler = (*CellEditable)(nil)
+var (
+	_ CellEditabler   = (*CellEditable)(nil)
+	_ gextras.Nativer = (*CellEditable)(nil)
+)
 
-func wrapCellEditabler(obj *externglib.Object) CellEditabler {
+func wrapCellEditable(obj *externglib.Object) CellEditabler {
 	return &CellEditable{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -77,7 +75,7 @@ func wrapCellEditabler(obj *externglib.Object) CellEditabler {
 func marshalCellEditabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellEditabler(obj), nil
+	return wrapCellEditable(obj), nil
 }
 
 // EditingDone emits the CellEditable::editing-done signal.

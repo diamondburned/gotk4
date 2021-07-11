@@ -26,10 +26,13 @@ func init() {
 
 // IMMulticontexter describes IMMulticontext's methods.
 type IMMulticontexter interface {
-	gextras.Objector
-
+	// AppendMenuitems: add menuitems for various available input methods to a
+	// menu; the menuitems, when selected, will switch the input method for the
+	// context and the global default input method.
 	AppendMenuitems(menushell MenuSheller)
+	// ContextID gets the id of the currently active slave of the @context.
 	ContextID() string
+	// SetContextID sets the context id for @context.
 	SetContextID(contextId string)
 }
 
@@ -37,9 +40,12 @@ type IMMulticontext struct {
 	IMContext
 }
 
-var _ IMMulticontexter = (*IMMulticontext)(nil)
+var (
+	_ IMMulticontexter = (*IMMulticontext)(nil)
+	_ gextras.Nativer  = (*IMMulticontext)(nil)
+)
 
-func wrapIMMulticontexter(obj *externglib.Object) IMMulticontexter {
+func wrapIMMulticontext(obj *externglib.Object) IMMulticontexter {
 	return &IMMulticontext{
 		IMContext: IMContext{
 			Object: obj,
@@ -50,7 +56,7 @@ func wrapIMMulticontexter(obj *externglib.Object) IMMulticontexter {
 func marshalIMMulticontexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIMMulticontexter(obj), nil
+	return wrapIMMulticontext(obj), nil
 }
 
 // NewIMMulticontext creates a new IMMulticontext.
@@ -78,7 +84,7 @@ func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 	var _arg1 *C.GtkMenuShell      // out
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkMenuShell)(unsafe.Pointer(menushell.Native()))
+	_arg1 = (*C.GtkMenuShell)(unsafe.Pointer((menushell).(gextras.Nativer).Native()))
 
 	C.gtk_im_multicontext_append_menuitems(_arg0, _arg1)
 }

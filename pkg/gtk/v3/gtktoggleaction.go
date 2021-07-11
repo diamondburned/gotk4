@@ -24,11 +24,11 @@ func init() {
 	})
 }
 
-// ToggleActionerOverrider contains methods that are overridable.
+// ToggleActionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToggleActionerOverrider interface {
+type ToggleActionOverrider interface {
 	// Toggled emits the “toggled” signal on the toggle action.
 	//
 	// Deprecated: since version 3.10.
@@ -37,37 +37,38 @@ type ToggleActionerOverrider interface {
 
 // ToggleActioner describes ToggleAction's methods.
 type ToggleActioner interface {
-	gextras.Objector
-
+	// Active returns the checked state of the toggle action.
 	Active() bool
+	// DrawAsRadio returns whether the action should have proxies like a radio
+	// action.
 	DrawAsRadio() bool
+	// SetActive sets the checked state on the toggle action.
 	SetActive(isActive bool)
+	// SetDrawAsRadio sets whether the action should have proxies like a radio
+	// action.
 	SetDrawAsRadio(drawAsRadio bool)
+	// Toggled emits the “toggled” signal on the toggle action.
 	Toggled()
 }
 
 // ToggleAction corresponds roughly to a CheckMenuItem. It has an “active” state
 // specifying whether the action has been checked or not.
 type ToggleAction struct {
-	*externglib.Object
-
 	Action
-	Buildable
 }
 
-var _ ToggleActioner = (*ToggleAction)(nil)
+var (
+	_ ToggleActioner  = (*ToggleAction)(nil)
+	_ gextras.Nativer = (*ToggleAction)(nil)
+)
 
-func wrapToggleActioner(obj *externglib.Object) ToggleActioner {
+func wrapToggleAction(obj *externglib.Object) ToggleActioner {
 	return &ToggleAction{
-		Object: obj,
 		Action: Action{
 			Object: obj,
 			Buildable: Buildable{
 				Object: obj,
 			},
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -75,7 +76,7 @@ func wrapToggleActioner(obj *externglib.Object) ToggleActioner {
 func marshalToggleActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleActioner(obj), nil
+	return wrapToggleAction(obj), nil
 }
 
 // NewToggleAction creates a new ToggleAction object. To add the action to a

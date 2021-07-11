@@ -24,16 +24,25 @@ func init() {
 
 // SearchBarrer describes SearchBar's methods.
 type SearchBarrer interface {
-	gextras.Objector
-
+	// ConnectEntry connects the `GtkEditable widget passed as the one to be
+	// used in this search bar.
 	ConnectEntry(entry Editabler)
+	// Child gets the child widget of @bar.
 	Child() *Widget
+	// KeyCaptureWidget gets the widget that @bar is capturing key events from.
 	KeyCaptureWidget() *Widget
+	// SearchMode returns whether the search mode is on or off.
 	SearchMode() bool
+	// ShowCloseButton returns whether the close button is shown.
 	ShowCloseButton() bool
+	// SetChild sets the child widget of @bar.
 	SetChild(child Widgetter)
+	// SetKeyCaptureWidget sets @widget as the widget that @bar will capture key
+	// events from.
 	SetKeyCaptureWidget(widget Widgetter)
+	// SetSearchMode switches the search mode on or off.
 	SetSearchMode(searchMode bool)
+	// SetShowCloseButton shows or hides the close button.
 	SetShowCloseButton(visible bool)
 }
 
@@ -78,21 +87,17 @@ type SearchBarrer interface {
 //
 // `GtkSearchBar` uses the GTK_ACCESSIBLE_ROLE_SEARCH role.
 type SearchBar struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ SearchBarrer = (*SearchBar)(nil)
+var (
+	_ SearchBarrer    = (*SearchBar)(nil)
+	_ gextras.Nativer = (*SearchBar)(nil)
+)
 
-func wrapSearchBarrer(obj *externglib.Object) SearchBarrer {
+func wrapSearchBar(obj *externglib.Object) SearchBarrer {
 	return &SearchBar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -106,22 +111,13 @@ func wrapSearchBarrer(obj *externglib.Object) SearchBarrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalSearchBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSearchBarrer(obj), nil
+	return wrapSearchBar(obj), nil
 }
 
 // NewSearchBar creates a `GtkSearchBar`.
@@ -151,7 +147,7 @@ func (bar *SearchBar) ConnectEntry(entry Editabler) {
 	var _arg1 *C.GtkEditable  // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkEditable)(unsafe.Pointer(entry.Native()))
+	_arg1 = (*C.GtkEditable)(unsafe.Pointer((entry).(gextras.Nativer).Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 }
@@ -230,7 +226,7 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_search_bar_set_child(_arg0, _arg1)
 }
@@ -251,7 +247,7 @@ func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_search_bar_set_key_capture_widget(_arg0, _arg1)
 }

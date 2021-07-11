@@ -27,29 +27,22 @@ func init() {
 
 // MenuButtonAccessibler describes MenuButtonAccessible's methods.
 type MenuButtonAccessibler interface {
-	gextras.Objector
-
 	privateMenuButtonAccessible()
 }
 
 type MenuButtonAccessible struct {
-	*externglib.Object
-
 	ToggleButtonAccessible
-	atk.Action
-	atk.Component
-	atk.Image
 }
 
-var _ MenuButtonAccessibler = (*MenuButtonAccessible)(nil)
+var (
+	_ MenuButtonAccessibler = (*MenuButtonAccessible)(nil)
+	_ gextras.Nativer       = (*MenuButtonAccessible)(nil)
+)
 
-func wrapMenuButtonAccessibler(obj *externglib.Object) MenuButtonAccessibler {
+func wrapMenuButtonAccessible(obj *externglib.Object) MenuButtonAccessibler {
 	return &MenuButtonAccessible{
-		Object: obj,
 		ToggleButtonAccessible: ToggleButtonAccessible{
-			Object: obj,
 			ButtonAccessible: ButtonAccessible{
-				Object: obj,
 				ContainerAccessible: ContainerAccessible{
 					WidgetAccessible: WidgetAccessible{
 						Accessible: Accessible{
@@ -61,38 +54,14 @@ func wrapMenuButtonAccessibler(obj *externglib.Object) MenuButtonAccessibler {
 							Object: obj,
 						},
 					},
-					Component: atk.Component{
-						Object: obj,
-					},
 				},
 				Action: atk.Action{
-					Object: obj,
-				},
-				Component: atk.Component{
 					Object: obj,
 				},
 				Image: atk.Image{
 					Object: obj,
 				},
 			},
-			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
-				Object: obj,
-			},
-			Image: atk.Image{
-				Object: obj,
-			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
-		Image: atk.Image{
-			Object: obj,
 		},
 	}
 }
@@ -100,7 +69,7 @@ func wrapMenuButtonAccessibler(obj *externglib.Object) MenuButtonAccessibler {
 func marshalMenuButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuButtonAccessibler(obj), nil
+	return wrapMenuButtonAccessible(obj), nil
 }
 
 func (*MenuButtonAccessible) privateMenuButtonAccessible() {}

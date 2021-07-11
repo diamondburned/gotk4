@@ -27,24 +27,22 @@ func init() {
 
 // ImageAccessibler describes ImageAccessible's methods.
 type ImageAccessibler interface {
-	gextras.Objector
-
 	privateImageAccessible()
 }
 
 type ImageAccessible struct {
-	*externglib.Object
-
 	WidgetAccessible
-	atk.Component
+
 	atk.Image
 }
 
-var _ ImageAccessibler = (*ImageAccessible)(nil)
+var (
+	_ ImageAccessibler = (*ImageAccessible)(nil)
+	_ gextras.Nativer  = (*ImageAccessible)(nil)
+)
 
-func wrapImageAccessibler(obj *externglib.Object) ImageAccessibler {
+func wrapImageAccessible(obj *externglib.Object) ImageAccessibler {
 	return &ImageAccessible{
-		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
 				ObjectClass: atk.ObjectClass{
@@ -55,9 +53,6 @@ func wrapImageAccessibler(obj *externglib.Object) ImageAccessibler {
 				Object: obj,
 			},
 		},
-		Component: atk.Component{
-			Object: obj,
-		},
 		Image: atk.Image{
 			Object: obj,
 		},
@@ -67,7 +62,7 @@ func wrapImageAccessibler(obj *externglib.Object) ImageAccessibler {
 func marshalImageAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImageAccessibler(obj), nil
+	return wrapImageAccessible(obj), nil
 }
 
 func (*ImageAccessible) privateImageAccessible() {}

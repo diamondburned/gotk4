@@ -25,10 +25,14 @@ func init() {
 
 // DropControllerMotioner describes DropControllerMotion's methods.
 type DropControllerMotioner interface {
-	gextras.Objector
-
+	// ContainsPointer returns if a Drag-and-Drop operation is within the widget
+	// @self or one of its children.
 	ContainsPointer() bool
+	// Drop returns the `GdkDrop` of a current Drag-and-Drop operation over the
+	// widget of @self.
 	Drop() *gdk.Drop
+	// IsPointer returns if a Drag-and-Drop operation is within the widget
+	// @self, not one of its children.
 	IsPointer() bool
 }
 
@@ -44,9 +48,12 @@ type DropControllerMotion struct {
 	EventController
 }
 
-var _ DropControllerMotioner = (*DropControllerMotion)(nil)
+var (
+	_ DropControllerMotioner = (*DropControllerMotion)(nil)
+	_ gextras.Nativer        = (*DropControllerMotion)(nil)
+)
 
-func wrapDropControllerMotioner(obj *externglib.Object) DropControllerMotioner {
+func wrapDropControllerMotion(obj *externglib.Object) DropControllerMotioner {
 	return &DropControllerMotion{
 		EventController: EventController{
 			Object: obj,
@@ -57,7 +64,7 @@ func wrapDropControllerMotioner(obj *externglib.Object) DropControllerMotioner {
 func marshalDropControllerMotioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropControllerMotioner(obj), nil
+	return wrapDropControllerMotion(obj), nil
 }
 
 // NewDropControllerMotion creates a new event controller that will handle

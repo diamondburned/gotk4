@@ -27,24 +27,46 @@ func init() {
 
 // Gridder describes Grid's methods.
 type Gridder interface {
-	gextras.Objector
-
+	// Attach adds a widget to the grid.
 	Attach(child Widgetter, left int, top int, width int, height int)
+	// BaselineRow returns which row defines the global baseline of @grid.
 	BaselineRow() int
+	// ChildAt gets the child of @grid whose area covers the grid cell whose
+	// upper left corner is at @left, @top.
 	ChildAt(left int, top int) *Widget
+	// ColumnHomogeneous returns whether all columns of @grid have the same
+	// width.
 	ColumnHomogeneous() bool
+	// ColumnSpacing returns the amount of space between the columns of @grid.
 	ColumnSpacing() uint
+	// RowBaselinePosition returns the baseline position of @row as set by
+	// gtk_grid_set_row_baseline_position() or the default value
+	// GTK_BASELINE_POSITION_CENTER.
 	RowBaselinePosition(row int) BaselinePosition
+	// RowHomogeneous returns whether all rows of @grid have the same height.
 	RowHomogeneous() bool
+	// RowSpacing returns the amount of space between the rows of @grid.
 	RowSpacing() uint
+	// InsertColumn inserts a column at the specified position.
 	InsertColumn(position int)
+	// InsertRow inserts a row at the specified position.
 	InsertRow(position int)
+	// RemoveColumn removes a column from the grid.
 	RemoveColumn(position int)
+	// RemoveRow removes a row from the grid.
 	RemoveRow(position int)
+	// SetBaselineRow sets which row defines the global baseline for the entire
+	// grid.
 	SetBaselineRow(row int)
+	// SetColumnHomogeneous sets whether all columns of @grid will have the same
+	// width.
 	SetColumnHomogeneous(homogeneous bool)
+	// SetColumnSpacing sets the amount of space between columns of @grid.
 	SetColumnSpacing(spacing uint)
+	// SetRowHomogeneous sets whether all rows of @grid will have the same
+	// height.
 	SetRowHomogeneous(homogeneous bool)
+	// SetRowSpacing sets the amount of space between rows of @grid.
 	SetRowSpacing(spacing uint)
 }
 
@@ -66,23 +88,20 @@ type Gridder interface {
 //
 // GtkGrid uses a single CSS node with name grid.
 type Grid struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
+
 	Orientable
 }
 
-var _ Gridder = (*Grid)(nil)
+var (
+	_ Gridder         = (*Grid)(nil)
+	_ gextras.Nativer = (*Grid)(nil)
+)
 
-func wrapGridder(obj *externglib.Object) Gridder {
+func wrapGrid(obj *externglib.Object) Gridder {
 	return &Grid{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -93,18 +112,6 @@ func wrapGridder(obj *externglib.Object) Gridder {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
@@ -115,7 +122,7 @@ func wrapGridder(obj *externglib.Object) Gridder {
 func marshalGridder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGridder(obj), nil
+	return wrapGrid(obj), nil
 }
 
 // NewGrid creates a new grid widget.
@@ -131,6 +138,12 @@ func NewGrid() *Grid {
 	return _grid
 }
 
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Grid) Native() uintptr {
+	return v.Container.Widget.InitiallyUnowned.Object.Native()
+}
+
 // Attach adds a widget to the grid.
 //
 // The position of @child is determined by @left and @top. The number of “cells”
@@ -144,7 +157,7 @@ func (grid *Grid) Attach(child Widgetter, left int, top int, width int, height i
 	var _arg5 C.gint       // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.gint(left)
 	_arg3 = C.gint(top)
 	_arg4 = C.gint(width)

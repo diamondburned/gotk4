@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// IOStreamerOverrider contains methods that are overridable.
+// IOStreamOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type IOStreamerOverrider interface {
+type IOStreamOverrider interface {
 	// CloseAsync requests an asynchronous close of the stream, releasing
 	// resources related to it. When the operation is finished @callback will be
 	// called. You can then call g_io_stream_close_finish() to get the result of
@@ -54,6 +54,7 @@ type IOStreamerOverrider interface {
 	CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
 	// CloseFinish closes a stream.
 	CloseFinish(result AsyncResulter) error
+
 	CloseFn(cancellable Cancellabler) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
@@ -65,16 +66,24 @@ type IOStreamerOverrider interface {
 
 // IOStreamer describes IOStream's methods.
 type IOStreamer interface {
-	gextras.Objector
-
+	// ClearPending clears the pending flag on @stream.
 	ClearPending()
+	// Close closes the stream, releasing resources related to it.
 	Close(cancellable Cancellabler) error
+	// CloseAsync requests an asynchronous close of the stream, releasing
+	// resources related to it.
 	CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// CloseFinish closes a stream.
 	CloseFinish(result AsyncResulter) error
+	// InputStream gets the input stream for this object.
 	InputStream() *InputStream
+	// OutputStream gets the output stream for this object.
 	OutputStream() *OutputStream
+	// HasPending checks if a stream has pending actions.
 	HasPending() bool
+	// IsClosed checks if a stream is closed.
 	IsClosed() bool
+	// SetPending sets @stream to have actions pending.
 	SetPending() error
 }
 
@@ -126,9 +135,12 @@ type IOStream struct {
 	*externglib.Object
 }
 
-var _ IOStreamer = (*IOStream)(nil)
+var (
+	_ IOStreamer      = (*IOStream)(nil)
+	_ gextras.Nativer = (*IOStream)(nil)
+)
 
-func wrapIOStreamer(obj *externglib.Object) IOStreamer {
+func wrapIOStream(obj *externglib.Object) IOStreamer {
 	return &IOStream{
 		Object: obj,
 	}
@@ -137,7 +149,7 @@ func wrapIOStreamer(obj *externglib.Object) IOStreamer {
 func marshalIOStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIOStreamer(obj), nil
+	return wrapIOStream(obj), nil
 }
 
 // ClearPending clears the pending flag on @stream.
@@ -187,7 +199,7 @@ func (stream *IOStream) Close(cancellable Cancellabler) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_io_stream_close(_arg0, _arg1, &_cerr)
 
@@ -216,7 +228,7 @@ func (stream *IOStream) CloseAsync(ioPriority int, cancellable Cancellabler, cal
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -230,7 +242,7 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_io_stream_close_finish(_arg0, _arg1, &_cerr)
 

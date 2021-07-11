@@ -27,24 +27,22 @@ func init() {
 
 // ExpanderAccessibler describes ExpanderAccessible's methods.
 type ExpanderAccessibler interface {
-	gextras.Objector
-
 	privateExpanderAccessible()
 }
 
 type ExpanderAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
+
 	atk.Action
-	atk.Component
 }
 
-var _ ExpanderAccessibler = (*ExpanderAccessible)(nil)
+var (
+	_ ExpanderAccessibler = (*ExpanderAccessible)(nil)
+	_ gextras.Nativer     = (*ExpanderAccessible)(nil)
+)
 
-func wrapExpanderAccessibler(obj *externglib.Object) ExpanderAccessibler {
+func wrapExpanderAccessible(obj *externglib.Object) ExpanderAccessibler {
 	return &ExpanderAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -56,14 +54,8 @@ func wrapExpanderAccessibler(obj *externglib.Object) ExpanderAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
 		},
 		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
 			Object: obj,
 		},
 	}
@@ -72,7 +64,7 @@ func wrapExpanderAccessibler(obj *externglib.Object) ExpanderAccessibler {
 func marshalExpanderAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapExpanderAccessibler(obj), nil
+	return wrapExpanderAccessible(obj), nil
 }
 
 func (*ExpanderAccessible) privateExpanderAccessible() {}

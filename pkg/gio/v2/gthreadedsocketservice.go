@@ -32,18 +32,16 @@ func init() {
 	})
 }
 
-// ThreadedSocketServicerOverrider contains methods that are overridable.
+// ThreadedSocketServiceOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ThreadedSocketServicerOverrider interface {
+type ThreadedSocketServiceOverrider interface {
 	Run(connection SocketConnectioner, sourceObject gextras.Objector) bool
 }
 
 // ThreadedSocketServicer describes ThreadedSocketService's methods.
 type ThreadedSocketServicer interface {
-	gextras.Objector
-
 	privateThreadedSocketService()
 }
 
@@ -64,9 +62,12 @@ type ThreadedSocketService struct {
 	SocketService
 }
 
-var _ ThreadedSocketServicer = (*ThreadedSocketService)(nil)
+var (
+	_ ThreadedSocketServicer = (*ThreadedSocketService)(nil)
+	_ gextras.Nativer        = (*ThreadedSocketService)(nil)
+)
 
-func wrapThreadedSocketServicer(obj *externglib.Object) ThreadedSocketServicer {
+func wrapThreadedSocketService(obj *externglib.Object) ThreadedSocketServicer {
 	return &ThreadedSocketService{
 		SocketService: SocketService{
 			SocketListener: SocketListener{
@@ -79,7 +80,7 @@ func wrapThreadedSocketServicer(obj *externglib.Object) ThreadedSocketServicer {
 func marshalThreadedSocketServicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapThreadedSocketServicer(obj), nil
+	return wrapThreadedSocketService(obj), nil
 }
 
 // NewThreadedSocketService creates a new SocketService with no listeners.

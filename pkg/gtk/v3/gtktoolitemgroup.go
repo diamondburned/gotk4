@@ -28,21 +28,34 @@ func init() {
 
 // ToolItemGrouper describes ToolItemGroup's methods.
 type ToolItemGrouper interface {
-	gextras.Objector
-
+	// Collapsed gets whether @group is collapsed or expanded.
 	Collapsed() bool
+	// DropItem gets the tool item at position (x, y).
 	DropItem(x int, y int) *ToolItem
+	// Ellipsize gets the ellipsization mode of @group.
 	Ellipsize() pango.EllipsizeMode
+	// HeaderRelief gets the relief mode of the header button of @group.
 	HeaderRelief() ReliefStyle
+	// ItemPosition gets the position of @item in @group as index.
 	ItemPosition(item ToolItemmer) int
+	// Label gets the label of @group.
 	Label() string
+	// LabelWidget gets the label widget of @group.
 	LabelWidget() *Widget
+	// NItems gets the number of tool items in @group.
 	NItems() uint
+	// NthItem gets the tool item at @index in group.
 	NthItem(index uint) *ToolItem
+	// Insert inserts @item at @position in the list of children of @group.
 	Insert(item ToolItemmer, position int)
+	// SetCollapsed sets whether the @group should be collapsed or expanded.
 	SetCollapsed(collapsed bool)
+	// SetItemPosition sets the position of @item in the list of children of
+	// @group.
 	SetItemPosition(item ToolItemmer, position int)
+	// SetLabel sets the label of the tool item group.
 	SetLabel(label string)
+	// SetLabelWidget sets the label of the tool item group.
 	SetLabelWidget(labelWidget Widgetter)
 }
 
@@ -54,23 +67,20 @@ type ToolItemGrouper interface {
 //
 // GtkToolItemGroup has a single CSS node named toolitemgroup.
 type ToolItemGroup struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
+
 	ToolShell
 }
 
-var _ ToolItemGrouper = (*ToolItemGroup)(nil)
+var (
+	_ ToolItemGrouper = (*ToolItemGroup)(nil)
+	_ gextras.Nativer = (*ToolItemGroup)(nil)
+)
 
-func wrapToolItemGrouper(obj *externglib.Object) ToolItemGrouper {
+func wrapToolItemGroup(obj *externglib.Object) ToolItemGrouper {
 	return &ToolItemGroup{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -81,23 +91,9 @@ func wrapToolItemGrouper(obj *externglib.Object) ToolItemGrouper {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		ToolShell: ToolShell{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -115,7 +111,7 @@ func wrapToolItemGrouper(obj *externglib.Object) ToolItemGrouper {
 func marshalToolItemGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolItemGrouper(obj), nil
+	return wrapToolItemGroup(obj), nil
 }
 
 // NewToolItemGroup creates a new tool item group with label @label.
@@ -133,6 +129,12 @@ func NewToolItemGroup(label string) *ToolItemGroup {
 	_toolItemGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolItemGroup)
 
 	return _toolItemGroup
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ToolItemGroup) Native() uintptr {
+	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Collapsed gets whether @group is collapsed or expanded.
@@ -212,7 +214,7 @@ func (group *ToolItemGroup) ItemPosition(item ToolItemmer) int {
 	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_tool_item_group_get_item_position(_arg0, _arg1)
 
@@ -297,7 +299,7 @@ func (group *ToolItemGroup) Insert(item ToolItemmer, position int) {
 	var _arg2 C.gint              // out
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_tool_item_group_insert(_arg0, _arg1, _arg2)
@@ -323,7 +325,7 @@ func (group *ToolItemGroup) SetItemPosition(item ToolItemmer, position int) {
 	var _arg2 C.gint              // out
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_tool_item_group_set_item_position(_arg0, _arg1, _arg2)
@@ -349,7 +351,7 @@ func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
 
 	C.gtk_tool_item_group_set_label_widget(_arg0, _arg1)
 }

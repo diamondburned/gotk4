@@ -24,10 +24,13 @@ func init() {
 
 // PixbufSimpleAnimmer describes PixbufSimpleAnim's methods.
 type PixbufSimpleAnimmer interface {
-	gextras.Objector
-
+	// AddFrame adds a new frame to @animation.
 	AddFrame(pixbuf Pixbuffer)
+	// Loop gets whether @animation should loop indefinitely when it reaches the
+	// end.
 	Loop() bool
+	// SetLoop sets whether @animation should loop indefinitely when it reaches
+	// the end.
 	SetLoop(loop bool)
 }
 
@@ -36,9 +39,12 @@ type PixbufSimpleAnim struct {
 	PixbufAnimation
 }
 
-var _ PixbufSimpleAnimmer = (*PixbufSimpleAnim)(nil)
+var (
+	_ PixbufSimpleAnimmer = (*PixbufSimpleAnim)(nil)
+	_ gextras.Nativer     = (*PixbufSimpleAnim)(nil)
+)
 
-func wrapPixbufSimpleAnimmer(obj *externglib.Object) PixbufSimpleAnimmer {
+func wrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnimmer {
 	return &PixbufSimpleAnim{
 		PixbufAnimation: PixbufAnimation{
 			Object: obj,
@@ -49,7 +55,7 @@ func wrapPixbufSimpleAnimmer(obj *externglib.Object) PixbufSimpleAnimmer {
 func marshalPixbufSimpleAnimmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufSimpleAnimmer(obj), nil
+	return wrapPixbufSimpleAnim(obj), nil
 }
 
 // NewPixbufSimpleAnim creates a new, empty animation.
@@ -79,7 +85,7 @@ func (animation *PixbufSimpleAnim) AddFrame(pixbuf Pixbuffer) {
 	var _arg1 *C.GdkPixbuf           // out
 
 	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(animation.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	C.gdk_pixbuf_simple_anim_add_frame(_arg0, _arg1)
 }

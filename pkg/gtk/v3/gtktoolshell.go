@@ -26,15 +26,16 @@ func init() {
 	})
 }
 
-// ToolShellerOverrider contains methods that are overridable.
+// ToolShellOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToolShellerOverrider interface {
+type ToolShellOverrider interface {
 	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_ellipsize_mode() instead.
 	EllipsizeMode() pango.EllipsizeMode
+
 	IconSize() IconSize
 	// Orientation retrieves the current orientation for the tool shell. Tool
 	// items must not call this function directly, but rely on
@@ -72,34 +73,42 @@ type ToolShellerOverrider interface {
 
 // ToolSheller describes ToolShell's methods.
 type ToolSheller interface {
-	gextras.Objector
-
+	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	EllipsizeMode() pango.EllipsizeMode
+	// IconSize retrieves the icon size for the tool shell.
 	IconSize() int
+	// Orientation retrieves the current orientation for the tool shell.
 	Orientation() Orientation
+	// ReliefStyle returns the relief style of buttons on @shell.
 	ReliefStyle() ReliefStyle
+	// Style retrieves whether the tool shell has text, icons, or both.
 	Style() ToolbarStyle
+	// TextAlignment retrieves the current text alignment for the tool shell.
 	TextAlignment() float32
+	// TextOrientation retrieves the current text orientation for the tool
+	// shell.
 	TextOrientation() Orientation
+	// TextSizeGroup retrieves the current text size group for the tool shell.
 	TextSizeGroup() *SizeGroup
+	// RebuildMenu: calling this function signals the tool shell that the
+	// overflow menu item for tool items have changed.
 	RebuildMenu()
 }
 
-// ToolShell: the ToolShell interface allows container widgets to provide
-// additional information when embedding ToolItem widgets.
+// ToolShell interface allows container widgets to provide additional
+// information when embedding ToolItem widgets.
 type ToolShell struct {
-	*externglib.Object
-
 	Widget
 }
 
-var _ ToolSheller = (*ToolShell)(nil)
+var (
+	_ ToolSheller     = (*ToolShell)(nil)
+	_ gextras.Nativer = (*ToolShell)(nil)
+)
 
-func wrapToolSheller(obj *externglib.Object) ToolSheller {
+func wrapToolShell(obj *externglib.Object) ToolSheller {
 	return &ToolShell{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -116,7 +125,7 @@ func wrapToolSheller(obj *externglib.Object) ToolSheller {
 func marshalToolSheller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolSheller(obj), nil
+	return wrapToolShell(obj), nil
 }
 
 // EllipsizeMode retrieves the current ellipsize mode for the tool shell. Tool

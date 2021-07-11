@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// FontMapperOverrider contains methods that are overridable.
+// FontMapOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FontMapperOverrider interface {
+type FontMapOverrider interface {
 	// Changed forces a change in the context, which will cause any
 	// `PangoContext` using this fontmap to change.
 	//
@@ -61,14 +61,22 @@ type FontMapperOverrider interface {
 
 // FontMapper describes FontMap's methods.
 type FontMapper interface {
-	gextras.Objector
-
+	// Changed forces a change in the context, which will cause any
+	// `PangoContext` using this fontmap to change.
 	Changed()
+	// CreateContext creates a `PangoContext` connected to @fontmap.
 	CreateContext() *Context
+	// Family gets a font family by name.
 	Family(name string) *FontFamily
+	// Serial returns the current serial number of @fontmap.
 	Serial() uint
+	// ListFamilies: list all families for a fontmap.
 	ListFamilies() []*FontFamily
+	// LoadFont: load the font in the fontmap that is the closest match for
+	// @desc.
 	LoadFont(context Contexter, desc *FontDescription) *Font
+	// LoadFontset: load a set of fonts in the fontmap that can be used to
+	// render a font matching @desc.
 	LoadFontset(context Contexter, desc *FontDescription, language *Language) *Fontset
 }
 
@@ -81,9 +89,12 @@ type FontMap struct {
 	*externglib.Object
 }
 
-var _ FontMapper = (*FontMap)(nil)
+var (
+	_ FontMapper      = (*FontMap)(nil)
+	_ gextras.Nativer = (*FontMap)(nil)
+)
 
-func wrapFontMapper(obj *externglib.Object) FontMapper {
+func wrapFontMap(obj *externglib.Object) FontMapper {
 	return &FontMap{
 		Object: obj,
 	}
@@ -92,7 +103,7 @@ func wrapFontMapper(obj *externglib.Object) FontMapper {
 func marshalFontMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontMapper(obj), nil
+	return wrapFontMap(obj), nil
 }
 
 // Changed forces a change in the context, which will cause any `PangoContext`
@@ -210,7 +221,7 @@ func (fontmap *FontMap) LoadFont(context Contexter, desc *FontDescription) *Font
 	var _cret *C.PangoFont            // in
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 
 	_cret = C.pango_font_map_load_font(_arg0, _arg1, _arg2)
@@ -232,7 +243,7 @@ func (fontmap *FontMap) LoadFontset(context Contexter, desc *FontDescription, la
 	var _cret *C.PangoFontset         // in
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(language))
 

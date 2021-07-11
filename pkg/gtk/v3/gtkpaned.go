@@ -26,32 +26,45 @@ func init() {
 	})
 }
 
-// PanedderOverrider contains methods that are overridable.
+// PanedOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PanedderOverrider interface {
+type PanedOverrider interface {
 	AcceptPosition() bool
+
 	CancelPosition() bool
+
 	CycleChildFocus(reverse bool) bool
+
 	CycleHandleFocus(reverse bool) bool
+
 	ToggleHandleFocus() bool
 }
 
 // Panedder describes Paned's methods.
 type Panedder interface {
-	gextras.Objector
-
+	// Add1 adds a child to the top or left pane with default parameters.
 	Add1(child Widgetter)
+	// Add2 adds a child to the bottom or right pane with default parameters.
 	Add2(child Widgetter)
+	// Child1 obtains the first child of the paned widget.
 	Child1() *Widget
+	// Child2 obtains the second child of the paned widget.
 	Child2() *Widget
+	// HandleWindow returns the Window of the handle.
 	HandleWindow() *gdk.Window
+	// Position obtains the position of the divider between the two panes.
 	Position() int
+	// WideHandle gets the Paned:wide-handle property.
 	WideHandle() bool
+	// Pack1 adds a child to the top or left pane.
 	Pack1(child Widgetter, resize bool, shrink bool)
+	// Pack2 adds a child to the bottom or right pane.
 	Pack2(child Widgetter, resize bool, shrink bool)
+	// SetPosition sets the position of the divider between the two panes.
 	SetPosition(position int)
+	// SetWideHandle sets the Paned:wide-handle property.
 	SetWideHandle(wide bool)
 }
 
@@ -95,23 +108,20 @@ type Panedder interface {
 //    gtk_paned_pack2 (GTK_PANED (hpaned), frame2, FALSE, FALSE);
 //    gtk_widget_set_size_request (frame2, 50, -1);
 type Paned struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
+
 	Orientable
 }
 
-var _ Panedder = (*Paned)(nil)
+var (
+	_ Panedder        = (*Paned)(nil)
+	_ gextras.Nativer = (*Paned)(nil)
+)
 
-func wrapPanedder(obj *externglib.Object) Panedder {
+func wrapPaned(obj *externglib.Object) Panedder {
 	return &Paned{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -122,18 +132,6 @@ func wrapPanedder(obj *externglib.Object) Panedder {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
@@ -144,7 +142,13 @@ func wrapPanedder(obj *externglib.Object) Panedder {
 func marshalPanedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPanedder(obj), nil
+	return wrapPaned(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Paned) Native() uintptr {
+	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Add1 adds a child to the top or left pane with default parameters. This is
@@ -154,7 +158,7 @@ func (paned *Paned) Add1(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_paned_add1(_arg0, _arg1)
 }
@@ -166,7 +170,7 @@ func (paned *Paned) Add2(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_paned_add2(_arg0, _arg1)
 }
@@ -263,7 +267,7 @@ func (paned *Paned) Pack1(child Widgetter, resize bool, shrink bool) {
 	var _arg3 C.gboolean   // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	if resize {
 		_arg2 = C.TRUE
 	}
@@ -282,7 +286,7 @@ func (paned *Paned) Pack2(child Widgetter, resize bool, shrink bool) {
 	var _arg3 C.gboolean   // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	if resize {
 		_arg2 = C.TRUE
 	}

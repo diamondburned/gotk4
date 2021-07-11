@@ -28,7 +28,7 @@ func X11GetServerTime(window X11Windowwer) uint32 {
 	var _arg1 *C.GdkWindow // out
 	var _cret C.guint32    // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
@@ -41,16 +41,35 @@ func X11GetServerTime(window X11Windowwer) uint32 {
 
 // X11Windowwer describes X11Window's methods.
 type X11Windowwer interface {
-	gextras.Objector
-
+	// Desktop gets the number of the workspace @window is on.
 	Desktop() uint32
+	// MoveToCurrentDesktop moves the window to the correct workspace when
+	// running under a window manager that supports multiple workspaces, as
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	MoveToCurrentDesktop()
+	// MoveToDesktop moves the window to the given workspace when running unde a
+	// window manager that supports multiple workspaces, as described in the
+	// Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	MoveToDesktop(desktop uint32)
+	// SetFrameExtents: this is the same as gdk_window_set_shadow_width() but it
+	// only works on GdkX11Window.
 	SetFrameExtents(left int, right int, top int, bottom int)
+	// SetFrameSyncEnabled: this function can be used to disable frame
+	// synchronization for a window.
 	SetFrameSyncEnabled(frameSyncEnabled bool)
+	// SetHideTitlebarWhenMaximized: set a hint for the window manager,
+	// requesting that the titlebar should be hidden when the window is
+	// maximized.
 	SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool)
+	// SetThemeVariant: GTK+ applications can request a dark theme variant.
 	SetThemeVariant(variant string)
+	// SetUserTime: application can use this call to update the
+	// _NET_WM_USER_TIME property on a toplevel window.
 	SetUserTime(timestamp uint32)
+	// SetUTF8Property: this function modifies or removes an arbitrary X11
+	// window property of type UTF8_STRING.
 	SetUTF8Property(name string, value string)
 }
 
@@ -58,9 +77,12 @@ type X11Window struct {
 	gdk.Window
 }
 
-var _ X11Windowwer = (*X11Window)(nil)
+var (
+	_ X11Windowwer    = (*X11Window)(nil)
+	_ gextras.Nativer = (*X11Window)(nil)
+)
 
-func wrapX11Windowwer(obj *externglib.Object) X11Windowwer {
+func wrapX11Window(obj *externglib.Object) X11Windowwer {
 	return &X11Window{
 		Window: gdk.Window{
 			Object: obj,
@@ -71,7 +93,7 @@ func wrapX11Windowwer(obj *externglib.Object) X11Windowwer {
 func marshalX11Windowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Windowwer(obj), nil
+	return wrapX11Window(obj), nil
 }
 
 // Desktop gets the number of the workspace @window is on.
@@ -192,13 +214,13 @@ func (window *X11Window) SetThemeVariant(variant string) {
 	C.gdk_x11_window_set_theme_variant(_arg0, _arg1)
 }
 
-// SetUserTime: the application can use this call to update the
-// _NET_WM_USER_TIME property on a toplevel window. This property stores an
-// Xserver time which represents the time of the last user input event received
-// for this window. This property may be used by the window manager to alter the
-// focus, stacking, and/or placement behavior of windows when they are mapped
-// depending on whether the new window was created by a user action or is a
-// "pop-up" window activated by a timer or some other event.
+// SetUserTime: application can use this call to update the _NET_WM_USER_TIME
+// property on a toplevel window. This property stores an Xserver time which
+// represents the time of the last user input event received for this window.
+// This property may be used by the window manager to alter the focus, stacking,
+// and/or placement behavior of windows when they are mapped depending on
+// whether the new window was created by a user action or is a "pop-up" window
+// activated by a timer or some other event.
 //
 // Note that this property is automatically updated by GDK, so this function
 // should only be used by applications which handle input events bypassing GDK.

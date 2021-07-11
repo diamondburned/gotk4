@@ -25,15 +25,26 @@ func init() {
 
 // TreeModelSorter describes TreeModelSort's methods.
 type TreeModelSorter interface {
-	gextras.Objector
-
+	// ClearCache: this function should almost never be called.
 	ClearCache()
+	// ConvertChildIterToIter sets @sort_iter to point to the row in
+	// @tree_model_sort that corresponds to the row pointed at by @child_iter.
 	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+	// ConvertChildPathToPath converts @child_path to a path relative to
+	// @tree_model_sort.
 	ConvertChildPathToPath(childPath *TreePath) *TreePath
+	// ConvertIterToChildIter sets @child_iter to point to the row pointed to by
+	// @sorted_iter.
 	ConvertIterToChildIter(sortedIter *TreeIter) TreeIter
+	// ConvertPathToChildPath converts @sorted_path to a path on the child model
+	// of @tree_model_sort.
 	ConvertPathToChildPath(sortedPath *TreePath) *TreePath
+	// Model returns the model the TreeModelSort is sorting.
 	Model() *TreeModel
+	// IterIsValid: > This function is slow.
 	IterIsValid(iter *TreeIter) bool
+	// ResetDefaultSortFunc: this resets the default sort function to be in the
+	// “unsorted” state.
 	ResetDefaultSortFunc()
 }
 
@@ -98,19 +109,18 @@ type TreeModelSort struct {
 	*externglib.Object
 
 	TreeDragSource
-	TreeModel
 	TreeSortable
 }
 
-var _ TreeModelSorter = (*TreeModelSort)(nil)
+var (
+	_ TreeModelSorter = (*TreeModelSort)(nil)
+	_ gextras.Nativer = (*TreeModelSort)(nil)
+)
 
-func wrapTreeModelSorter(obj *externglib.Object) TreeModelSorter {
+func wrapTreeModelSort(obj *externglib.Object) TreeModelSorter {
 	return &TreeModelSort{
 		Object: obj,
 		TreeDragSource: TreeDragSource{
-			Object: obj,
-		},
-		TreeModel: TreeModel{
 			Object: obj,
 		},
 		TreeSortable: TreeSortable{
@@ -124,7 +134,7 @@ func wrapTreeModelSorter(obj *externglib.Object) TreeModelSorter {
 func marshalTreeModelSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeModelSorter(obj), nil
+	return wrapTreeModelSort(obj), nil
 }
 
 // NewTreeModelSortWithModel creates a new TreeModelSort, with @child_model as
@@ -133,7 +143,7 @@ func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(childModel.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((childModel).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_tree_model_sort_new_with_model(_arg1)
 

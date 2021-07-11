@@ -25,9 +25,11 @@ func init() {
 
 // X11Keymapper describes X11Keymap's methods.
 type X11Keymapper interface {
-	gextras.Objector
-
+	// GroupForState extracts the group from the state field sent in an X Key
+	// event.
 	GroupForState(state uint) int
+	// KeyIsModifier determines whether a particular key code represents a key
+	// that is a modifier.
 	KeyIsModifier(keycode uint) bool
 }
 
@@ -35,9 +37,12 @@ type X11Keymap struct {
 	gdk.Keymap
 }
 
-var _ X11Keymapper = (*X11Keymap)(nil)
+var (
+	_ X11Keymapper    = (*X11Keymap)(nil)
+	_ gextras.Nativer = (*X11Keymap)(nil)
+)
 
-func wrapX11Keymapper(obj *externglib.Object) X11Keymapper {
+func wrapX11Keymap(obj *externglib.Object) X11Keymapper {
 	return &X11Keymap{
 		Keymap: gdk.Keymap{
 			Object: obj,
@@ -48,7 +53,7 @@ func wrapX11Keymapper(obj *externglib.Object) X11Keymapper {
 func marshalX11Keymapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Keymapper(obj), nil
+	return wrapX11Keymap(obj), nil
 }
 
 // GroupForState extracts the group from the state field sent in an X Key event.

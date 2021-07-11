@@ -25,8 +25,6 @@ func init() {
 
 // X11GLContexter describes X11GLContext's methods.
 type X11GLContexter interface {
-	gextras.Objector
-
 	privateX11GLContext()
 }
 
@@ -34,9 +32,12 @@ type X11GLContext struct {
 	gdk.GLContext
 }
 
-var _ X11GLContexter = (*X11GLContext)(nil)
+var (
+	_ X11GLContexter  = (*X11GLContext)(nil)
+	_ gextras.Nativer = (*X11GLContext)(nil)
+)
 
-func wrapX11GLContexter(obj *externglib.Object) X11GLContexter {
+func wrapX11GLContext(obj *externglib.Object) X11GLContexter {
 	return &X11GLContext{
 		GLContext: gdk.GLContext{
 			Object: obj,
@@ -47,7 +48,7 @@ func wrapX11GLContexter(obj *externglib.Object) X11GLContexter {
 func marshalX11GLContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11GLContexter(obj), nil
+	return wrapX11GLContext(obj), nil
 }
 
 func (*X11GLContext) privateX11GLContext() {}

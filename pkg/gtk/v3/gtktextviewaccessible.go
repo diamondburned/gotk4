@@ -27,26 +27,24 @@ func init() {
 
 // TextViewAccessibler describes TextViewAccessible's methods.
 type TextViewAccessibler interface {
-	gextras.Objector
-
 	privateTextViewAccessible()
 }
 
 type TextViewAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
-	atk.Component
+
 	atk.EditableText
 	atk.StreamableContent
 	atk.Text
 }
 
-var _ TextViewAccessibler = (*TextViewAccessible)(nil)
+var (
+	_ TextViewAccessibler = (*TextViewAccessible)(nil)
+	_ gextras.Nativer     = (*TextViewAccessible)(nil)
+)
 
-func wrapTextViewAccessibler(obj *externglib.Object) TextViewAccessibler {
+func wrapTextViewAccessible(obj *externglib.Object) TextViewAccessibler {
 	return &TextViewAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -58,12 +56,6 @@ func wrapTextViewAccessibler(obj *externglib.Object) TextViewAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 		EditableText: atk.EditableText{
 			Object: obj,
@@ -80,7 +72,13 @@ func wrapTextViewAccessibler(obj *externglib.Object) TextViewAccessibler {
 func marshalTextViewAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextViewAccessibler(obj), nil
+	return wrapTextViewAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *TextViewAccessible) Native() uintptr {
+	return v.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*TextViewAccessible) privateTextViewAccessible() {}

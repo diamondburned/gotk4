@@ -24,28 +24,34 @@ func init() {
 
 // RelationSetter describes RelationSet's methods.
 type RelationSetter interface {
-	gextras.Objector
-
+	// Add a new relation to the current relation set if it is not already
+	// present.
 	Add(relation Relationer)
+	// NRelations determines the number of relations in a relation set.
 	NRelations() int
+	// Relation determines the relation at the specified position in the
+	// relation set.
 	Relation(i int) *Relation
+	// Remove removes a relation from the relation set.
 	Remove(relation Relationer)
 }
 
-// RelationSet: the AtkRelationSet held by an object establishes its
-// relationships with objects beyond the normal "parent/child" hierarchical
-// relationships that all user interface objects have. AtkRelationSets establish
-// whether objects are labelled or controlled by other components, share group
-// membership with other components (for instance within a radio-button group),
-// or share content which "flows" between them, among other types of possible
-// relationships.
+// RelationSet held by an object establishes its relationships with objects
+// beyond the normal "parent/child" hierarchical relationships that all user
+// interface objects have. AtkRelationSets establish whether objects are
+// labelled or controlled by other components, share group membership with other
+// components (for instance within a radio-button group), or share content which
+// "flows" between them, among other types of possible relationships.
 type RelationSet struct {
 	*externglib.Object
 }
 
-var _ RelationSetter = (*RelationSet)(nil)
+var (
+	_ RelationSetter  = (*RelationSet)(nil)
+	_ gextras.Nativer = (*RelationSet)(nil)
+)
 
-func wrapRelationSetter(obj *externglib.Object) RelationSetter {
+func wrapRelationSet(obj *externglib.Object) RelationSetter {
 	return &RelationSet{
 		Object: obj,
 	}
@@ -54,7 +60,7 @@ func wrapRelationSetter(obj *externglib.Object) RelationSetter {
 func marshalRelationSetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRelationSetter(obj), nil
+	return wrapRelationSet(obj), nil
 }
 
 // NewRelationSet creates a new empty relation set.
@@ -79,7 +85,7 @@ func (set *RelationSet) Add(relation Relationer) {
 	var _arg1 *C.AtkRelation    // out
 
 	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer((relation).(gextras.Nativer).Native()))
 
 	C.atk_relation_set_add(_arg0, _arg1)
 }
@@ -126,7 +132,7 @@ func (set *RelationSet) Remove(relation Relationer) {
 	var _arg1 *C.AtkRelation    // out
 
 	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer((relation).(gextras.Nativer).Native()))
 
 	C.atk_relation_set_remove(_arg0, _arg1)
 }

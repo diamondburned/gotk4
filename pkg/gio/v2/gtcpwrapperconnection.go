@@ -34,8 +34,7 @@ func init() {
 
 // TCPWrapperConnectioner describes TCPWrapperConnection's methods.
 type TCPWrapperConnectioner interface {
-	gextras.Objector
-
+	// BaseIOStream gets @conn's base OStream
 	BaseIOStream() *IOStream
 }
 
@@ -47,9 +46,12 @@ type TCPWrapperConnection struct {
 	TCPConnection
 }
 
-var _ TCPWrapperConnectioner = (*TCPWrapperConnection)(nil)
+var (
+	_ TCPWrapperConnectioner = (*TCPWrapperConnection)(nil)
+	_ gextras.Nativer        = (*TCPWrapperConnection)(nil)
+)
 
-func wrapTCPWrapperConnectioner(obj *externglib.Object) TCPWrapperConnectioner {
+func wrapTCPWrapperConnection(obj *externglib.Object) TCPWrapperConnectioner {
 	return &TCPWrapperConnection{
 		TCPConnection: TCPConnection{
 			SocketConnection: SocketConnection{
@@ -64,7 +66,7 @@ func wrapTCPWrapperConnectioner(obj *externglib.Object) TCPWrapperConnectioner {
 func marshalTCPWrapperConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTCPWrapperConnectioner(obj), nil
+	return wrapTCPWrapperConnection(obj), nil
 }
 
 // NewTCPWrapperConnection wraps @base_io_stream and @socket together as a
@@ -74,8 +76,8 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket Socketter) *TCPWrap
 	var _arg2 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in
 
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(baseIoStream.Native()))
-	_arg2 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((baseIoStream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GSocket)(unsafe.Pointer((socket).(gextras.Nativer).Native()))
 
 	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
 

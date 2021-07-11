@@ -25,64 +25,73 @@ func init() {
 	})
 }
 
-// FontButtonnerOverrider contains methods that are overridable.
+// FontButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FontButtonnerOverrider interface {
+type FontButtonOverrider interface {
 	FontSet()
 }
 
 // FontButtonner describes FontButton's methods.
 type FontButtonner interface {
-	gextras.Objector
-
+	// FontName retrieves the name of the currently selected font.
 	FontName() string
+	// ShowSize returns whether the font size will be shown in the label.
 	ShowSize() bool
+	// ShowStyle returns whether the name of the font style will be shown in the
+	// label.
 	ShowStyle() bool
+	// Title retrieves the title of the font chooser dialog.
 	Title() string
+	// UseFont returns whether the selected font is used in the label.
 	UseFont() bool
+	// UseSize returns whether the selected size is used in the label.
 	UseSize() bool
+	// SetFontName sets or updates the currently-displayed font in font picker
+	// dialog.
 	SetFontName(fontname string) bool
+	// SetShowSize: if @show_size is true, the font size will be displayed along
+	// with the name of the selected font.
 	SetShowSize(showSize bool)
+	// SetShowStyle: if @show_style is true, the font style will be displayed
+	// along with name of the selected font.
 	SetShowStyle(showStyle bool)
+	// SetTitle sets the title for the font chooser dialog.
 	SetTitle(title string)
+	// SetUseFont: if @use_font is true, the font name will be written using the
+	// selected font.
 	SetUseFont(useFont bool)
+	// SetUseSize: if @use_size is true, the font name will be written using the
+	// selected size.
 	SetUseSize(useSize bool)
 }
 
-// FontButton: the FontButton is a button which displays the currently selected
-// font an allows to open a font chooser dialog to change the font. It is
-// suitable widget for selecting a font in a preference dialog.
+// FontButton is a button which displays the currently selected font an allows
+// to open a font chooser dialog to change the font. It is suitable widget for
+// selecting a font in a preference dialog.
 //
 //
 // CSS nodes
 //
 // GtkFontButton has a single CSS node with name button and style class .font.
 type FontButton struct {
-	*externglib.Object
-
 	Button
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
+
 	FontChooser
 }
 
-var _ FontButtonner = (*FontButton)(nil)
+var (
+	_ FontButtonner   = (*FontButton)(nil)
+	_ gextras.Nativer = (*FontButton)(nil)
+)
 
-func wrapFontButtonner(obj *externglib.Object) FontButtonner {
+func wrapFontButton(obj *externglib.Object) FontButtonner {
 	return &FontButton{
-		Object: obj,
 		Button: Button{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -93,27 +102,10 @@ func wrapFontButtonner(obj *externglib.Object) FontButtonner {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -128,33 +120,6 @@ func wrapFontButtonner(obj *externglib.Object) FontButtonner {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		FontChooser: FontChooser{
 			Object: obj,
@@ -165,7 +130,7 @@ func wrapFontButtonner(obj *externglib.Object) FontButtonner {
 func marshalFontButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontButtonner(obj), nil
+	return wrapFontButton(obj), nil
 }
 
 // NewFontButton creates a new font picker widget.
@@ -196,6 +161,12 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 	_fontButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontButton)
 
 	return _fontButton
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FontButton) Native() uintptr {
+	return v.Button.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // FontName retrieves the name of the currently selected font. This name

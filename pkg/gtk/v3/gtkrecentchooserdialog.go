@@ -27,8 +27,6 @@ func init() {
 
 // RecentChooserDialogger describes RecentChooserDialog's methods.
 type RecentChooserDialogger interface {
-	gextras.Objector
-
 	privateRecentChooserDialog()
 }
 
@@ -73,29 +71,23 @@ type RecentChooserDialogger interface {
 //
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserDialog struct {
-	*externglib.Object
-
 	Dialog
-	atk.ImplementorIface
-	Buildable
+
 	RecentChooser
 }
 
-var _ RecentChooserDialogger = (*RecentChooserDialog)(nil)
+var (
+	_ RecentChooserDialogger = (*RecentChooserDialog)(nil)
+	_ gextras.Nativer        = (*RecentChooserDialog)(nil)
+)
 
-func wrapRecentChooserDialogger(obj *externglib.Object) RecentChooserDialogger {
+func wrapRecentChooserDialog(obj *externglib.Object) RecentChooserDialogger {
 	return &RecentChooserDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -106,39 +98,9 @@ func wrapRecentChooserDialogger(obj *externglib.Object) RecentChooserDialogger {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		RecentChooser: RecentChooser{
 			Object: obj,
@@ -149,7 +111,13 @@ func wrapRecentChooserDialogger(obj *externglib.Object) RecentChooserDialogger {
 func marshalRecentChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooserDialogger(obj), nil
+	return wrapRecentChooserDialog(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *RecentChooserDialog) Native() uintptr {
+	return v.Dialog.Window.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*RecentChooserDialog) privateRecentChooserDialog() {}

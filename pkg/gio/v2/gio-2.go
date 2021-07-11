@@ -37,12 +37,12 @@ func init() {
 		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorrer},
 		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconner},
 		{T: externglib.Type(C.g_dbus_action_group_get_type()), F: marshalDBusActionGrouper},
-		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserverrer},
+		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserverer},
 		{T: externglib.Type(C.g_dbus_connection_get_type()), F: marshalDBusConnectioner},
 		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModeller},
 		{T: externglib.Type(C.g_dbus_message_get_type()), F: marshalDBusMessager},
 		{T: externglib.Type(C.g_dbus_method_invocation_get_type()), F: marshalDBusMethodInvocationer},
-		{T: externglib.Type(C.g_dbus_server_get_type()), F: marshalDBusServerrer},
+		{T: externglib.Type(C.g_dbus_server_get_type()), F: marshalDBusServerer},
 		{T: externglib.Type(C.g_menu_get_type()), F: marshalMenuer},
 		{T: externglib.Type(C.g_menu_item_get_type()), F: marshalMenuItemmer},
 		{T: externglib.Type(C.g_notification_get_type()), F: marshalNotificationer},
@@ -51,15 +51,13 @@ func init() {
 		{T: externglib.Type(C.g_simple_io_stream_get_type()), F: marshalSimpleIOStreamer},
 		{T: externglib.Type(C.g_simple_permission_get_type()), F: marshalSimplePermissioner},
 		{T: externglib.Type(C.g_subprocess_get_type()), F: marshalSubprocesser},
-		{T: externglib.Type(C.g_subprocess_launcher_get_type()), F: marshalSubprocessLauncherrer},
+		{T: externglib.Type(C.g_subprocess_launcher_get_type()), F: marshalSubprocessLauncherer},
 		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBusser},
 	})
 }
 
 // AppInfoMonitorrer describes AppInfoMonitor's methods.
 type AppInfoMonitorrer interface {
-	gextras.Objector
-
 	privateAppInfoMonitor()
 }
 
@@ -82,9 +80,12 @@ type AppInfoMonitor struct {
 	*externglib.Object
 }
 
-var _ AppInfoMonitorrer = (*AppInfoMonitor)(nil)
+var (
+	_ AppInfoMonitorrer = (*AppInfoMonitor)(nil)
+	_ gextras.Nativer   = (*AppInfoMonitor)(nil)
+)
 
-func wrapAppInfoMonitorrer(obj *externglib.Object) AppInfoMonitorrer {
+func wrapAppInfoMonitor(obj *externglib.Object) AppInfoMonitorrer {
 	return &AppInfoMonitor{
 		Object: obj,
 	}
@@ -93,15 +94,13 @@ func wrapAppInfoMonitorrer(obj *externglib.Object) AppInfoMonitorrer {
 func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppInfoMonitorrer(obj), nil
+	return wrapAppInfoMonitor(obj), nil
 }
 
 func (*AppInfoMonitor) privateAppInfoMonitor() {}
 
 // BytesIconner describes BytesIcon's methods.
 type BytesIconner interface {
-	gextras.Objector
-
 	privateBytesIcon()
 }
 
@@ -110,18 +109,17 @@ type BytesIconner interface {
 type BytesIcon struct {
 	*externglib.Object
 
-	Icon
 	LoadableIcon
 }
 
-var _ BytesIconner = (*BytesIcon)(nil)
+var (
+	_ BytesIconner    = (*BytesIcon)(nil)
+	_ gextras.Nativer = (*BytesIcon)(nil)
+)
 
-func wrapBytesIconner(obj *externglib.Object) BytesIconner {
+func wrapBytesIcon(obj *externglib.Object) BytesIconner {
 	return &BytesIcon{
 		Object: obj,
-		Icon: Icon{
-			Object: obj,
-		},
 		LoadableIcon: LoadableIcon{
 			Icon: Icon{
 				Object: obj,
@@ -133,15 +131,13 @@ func wrapBytesIconner(obj *externglib.Object) BytesIconner {
 func marshalBytesIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBytesIconner(obj), nil
+	return wrapBytesIcon(obj), nil
 }
 
 func (*BytesIcon) privateBytesIcon() {}
 
 // DBusActionGrouper describes DBusActionGroup's methods.
 type DBusActionGrouper interface {
-	gextras.Objector
-
 	privateDBusActionGroup()
 }
 
@@ -151,18 +147,17 @@ type DBusActionGrouper interface {
 type DBusActionGroup struct {
 	*externglib.Object
 
-	ActionGroup
 	RemoteActionGroup
 }
 
-var _ DBusActionGrouper = (*DBusActionGroup)(nil)
+var (
+	_ DBusActionGrouper = (*DBusActionGroup)(nil)
+	_ gextras.Nativer   = (*DBusActionGroup)(nil)
+)
 
-func wrapDBusActionGrouper(obj *externglib.Object) DBusActionGrouper {
+func wrapDBusActionGroup(obj *externglib.Object) DBusActionGrouper {
 	return &DBusActionGroup{
 		Object: obj,
-		ActionGroup: ActionGroup{
-			Object: obj,
-		},
 		RemoteActionGroup: RemoteActionGroup{
 			ActionGroup: ActionGroup{
 				Object: obj,
@@ -174,23 +169,24 @@ func wrapDBusActionGrouper(obj *externglib.Object) DBusActionGrouper {
 func marshalDBusActionGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusActionGrouper(obj), nil
+	return wrapDBusActionGroup(obj), nil
 }
 
 func (*DBusActionGroup) privateDBusActionGroup() {}
 
-// DBusAuthObserverrer describes DBusAuthObserver's methods.
-type DBusAuthObserverrer interface {
-	gextras.Objector
-
+// DBusAuthObserverer describes DBusAuthObserver's methods.
+type DBusAuthObserverer interface {
+	// AllowMechanism emits the BusAuthObserver::allow-mechanism signal on
+	// @observer.
 	AllowMechanism(mechanism string) bool
+
 	AuthorizeAuthenticatedPeer(stream IOStreamer, credentials Credentialser) bool
 }
 
-// DBusAuthObserver: the BusAuthObserver type provides a mechanism for
-// participating in how a BusServer (or a BusConnection) authenticates remote
-// peers. Simply instantiate a BusAuthObserver and connect to the signals you
-// are interested in. Note that new signals may be added in the future
+// DBusAuthObserver type provides a mechanism for participating in how a
+// BusServer (or a BusConnection) authenticates remote peers. Simply instantiate
+// a BusAuthObserver and connect to the signals you are interested in. Note that
+// new signals may be added in the future
 //
 //
 // Controlling Authentication Mechanisms
@@ -225,18 +221,21 @@ type DBusAuthObserver struct {
 	*externglib.Object
 }
 
-var _ DBusAuthObserverrer = (*DBusAuthObserver)(nil)
+var (
+	_ DBusAuthObserverer = (*DBusAuthObserver)(nil)
+	_ gextras.Nativer    = (*DBusAuthObserver)(nil)
+)
 
-func wrapDBusAuthObserverrer(obj *externglib.Object) DBusAuthObserverrer {
+func wrapDBusAuthObserver(obj *externglib.Object) DBusAuthObserverer {
 	return &DBusAuthObserver{
 		Object: obj,
 	}
 }
 
-func marshalDBusAuthObserverrer(p uintptr) (interface{}, error) {
+func marshalDBusAuthObserverer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusAuthObserverrer(obj), nil
+	return wrapDBusAuthObserver(obj), nil
 }
 
 // NewDBusAuthObserver creates a new BusAuthObserver object.
@@ -283,8 +282,8 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCredentials)(unsafe.Pointer((credentials).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_auth_observer_authorize_authenticated_peer(_arg0, _arg1, _arg2)
 
@@ -299,43 +298,82 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 
 // DBusConnectioner describes DBusConnection's methods.
 type DBusConnectioner interface {
-	gextras.Objector
-
+	// CallFinish finishes an operation started with g_dbus_connection_call().
 	CallFinish(res AsyncResulter) (*glib.Variant, error)
+	// CallWithUnixFdListFinish finishes an operation started with
+	// g_dbus_connection_call_with_unix_fd_list().
 	CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList, *glib.Variant, error)
+	// Close closes @connection.
 	Close(cancellable Cancellabler, callback AsyncReadyCallback)
+	// CloseFinish finishes an operation started with g_dbus_connection_close().
 	CloseFinish(res AsyncResulter) error
+	// CloseSync: synchronously closes @connection.
 	CloseSync(cancellable Cancellabler) error
+	// EmitSignal emits a signal.
 	EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error
+	// ExportActionGroup exports @action_group on @connection at @object_path.
 	ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint, error)
+	// ExportMenuModel exports @menu on @connection at @object_path.
 	ExportMenuModel(objectPath string, menu MenuModeller) (uint, error)
+	// Flush: asynchronously flushes @connection, that is, writes all queued
+	// outgoing message to the transport and then flushes the transport (using
+	// g_output_stream_flush_async()).
 	Flush(cancellable Cancellabler, callback AsyncReadyCallback)
+	// FlushFinish finishes an operation started with g_dbus_connection_flush().
 	FlushFinish(res AsyncResulter) error
+	// FlushSync: synchronously flushes @connection.
 	FlushSync(cancellable Cancellabler) error
+	// Capabilities gets the capabilities negotiated with the remote peer
 	Capabilities() DBusCapabilityFlags
+	// ExitOnClose gets whether the process is terminated when @connection is
+	// closed by the remote peer.
 	ExitOnClose() bool
+	// Flags gets the flags used to construct this connection
 	Flags() DBusConnectionFlags
+	// Guid: GUID of the peer performing the role of server when authenticating.
 	Guid() string
+	// LastSerial retrieves the last serial number assigned to a BusMessage on
+	// the current thread.
 	LastSerial() uint32
+	// PeerCredentials gets the credentials of the authenticated peer.
 	PeerCredentials() *Credentials
+	// Stream gets the underlying stream used for IO.
 	Stream() *IOStream
+	// UniqueName gets the unique name of @connection as assigned by the message
+	// bus.
 	UniqueName() string
+	// IsClosed gets whether @connection is closed.
 	IsClosed() bool
+	// RemoveFilter removes a filter.
 	RemoveFilter(filterId uint)
+	// SendMessageWithReplyFinish finishes an operation started with
+	// g_dbus_connection_send_message_with_reply().
 	SendMessageWithReplyFinish(res AsyncResulter) (*DBusMessage, error)
+	// SetExitOnClose sets whether the process should be terminated when
+	// @connection is closed by the remote peer.
 	SetExitOnClose(exitOnClose bool)
+	// SignalUnsubscribe unsubscribes from signals.
 	SignalUnsubscribe(subscriptionId uint)
+	// StartMessageProcessing: if @connection was created with
+	// G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING, this method starts
+	// processing messages.
 	StartMessageProcessing()
+	// UnexportActionGroup reverses the effect of a previous call to
+	// g_dbus_connection_export_action_group().
 	UnexportActionGroup(exportId uint)
+	// UnexportMenuModel reverses the effect of a previous call to
+	// g_dbus_connection_export_menu_model().
 	UnexportMenuModel(exportId uint)
+	// UnregisterObject unregisters an object.
 	UnregisterObject(registrationId uint) bool
+	// UnregisterSubtree unregisters a subtree.
 	UnregisterSubtree(registrationId uint) bool
 }
 
-// DBusConnection: the BusConnection type is used for D-Bus connections to
-// remote peers such as a message buses. It is a low-level API that offers a lot
-// of flexibility. For instance, it lets you establish a connection over any
-// transport that can by represented as a OStream.
+// DBusConnection type is used for D-Bus connections to remote peers such as a
+// message buses. It is a low-level API that offers a lot of flexibility. For
+// instance, it lets you establish a connection over any transport that can by
+// represented as a OStream.
 //
 // This class is rarely used directly in D-Bus clients. If you are writing a
 // D-Bus client, it is often easier to use the g_bus_own_name(),
@@ -390,9 +428,12 @@ type DBusConnection struct {
 	Initable
 }
 
-var _ DBusConnectioner = (*DBusConnection)(nil)
+var (
+	_ DBusConnectioner = (*DBusConnection)(nil)
+	_ gextras.Nativer  = (*DBusConnection)(nil)
+)
 
-func wrapDBusConnectioner(obj *externglib.Object) DBusConnectioner {
+func wrapDBusConnection(obj *externglib.Object) DBusConnectioner {
 	return &DBusConnection{
 		Object: obj,
 		AsyncInitable: AsyncInitable{
@@ -407,7 +448,7 @@ func wrapDBusConnectioner(obj *externglib.Object) DBusConnectioner {
 func marshalDBusConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusConnectioner(obj), nil
+	return wrapDBusConnection(obj), nil
 }
 
 // NewDBusConnectionFinish finishes an operation started with
@@ -417,7 +458,7 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_connection_new_finish(_arg1, &_cerr)
 
@@ -437,7 +478,7 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_connection_new_for_address_finish(_arg1, &_cerr)
 
@@ -458,7 +499,7 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_connection_call_finish(_arg0, _arg1, &_cerr)
 
@@ -495,7 +536,7 @@ func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_connection_call_with_unix_fd_list_finish(_arg0, &_arg1, _arg2, &_cerr)
 
@@ -542,7 +583,7 @@ func (connection *DBusConnection) Close(cancellable Cancellabler, callback Async
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -556,7 +597,7 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	C.g_dbus_connection_close_finish(_arg0, _arg1, &_cerr)
 
@@ -576,7 +617,7 @@ func (connection *DBusConnection) CloseSync(cancellable Cancellabler) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_dbus_connection_close_sync(_arg0, _arg1, &_cerr)
 
@@ -653,7 +694,7 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer((actionGroup).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_connection_export_action_group(_arg0, _arg1, _arg2, &_cerr)
 
@@ -687,7 +728,7 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer((menu).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_connection_export_menu_model(_arg0, _arg1, _arg2, &_cerr)
 
@@ -720,7 +761,7 @@ func (connection *DBusConnection) Flush(cancellable Cancellabler, callback Async
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -734,7 +775,7 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	C.g_dbus_connection_flush_finish(_arg0, _arg1, &_cerr)
 
@@ -754,7 +795,7 @@ func (connection *DBusConnection) FlushSync(cancellable Cancellabler) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_dbus_connection_flush_sync(_arg0, _arg1, &_cerr)
 
@@ -816,8 +857,8 @@ func (connection *DBusConnection) Flags() DBusConnectionFlags {
 	return _dBusConnectionFlags
 }
 
-// Guid: the GUID of the peer performing the role of server when authenticating.
-// See BusConnection:guid for more details.
+// Guid: GUID of the peer performing the role of server when authenticating. See
+// BusConnection:guid for more details.
 func (connection *DBusConnection) Guid() string {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.gchar           // in
@@ -967,7 +1008,7 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_connection_send_message_with_reply_finish(_arg0, _arg1, &_cerr)
 
@@ -1105,8 +1146,6 @@ func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 
 // DBusMenuModeller describes DBusMenuModel's methods.
 type DBusMenuModeller interface {
-	gextras.Objector
-
 	privateDBusMenuModel()
 }
 
@@ -1117,9 +1156,12 @@ type DBusMenuModel struct {
 	MenuModel
 }
 
-var _ DBusMenuModeller = (*DBusMenuModel)(nil)
+var (
+	_ DBusMenuModeller = (*DBusMenuModel)(nil)
+	_ gextras.Nativer  = (*DBusMenuModel)(nil)
+)
 
-func wrapDBusMenuModeller(obj *externglib.Object) DBusMenuModeller {
+func wrapDBusMenuModel(obj *externglib.Object) DBusMenuModeller {
 	return &DBusMenuModel{
 		MenuModel: MenuModel{
 			Object: obj,
@@ -1130,50 +1172,106 @@ func wrapDBusMenuModeller(obj *externglib.Object) DBusMenuModeller {
 func marshalDBusMenuModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusMenuModeller(obj), nil
+	return wrapDBusMenuModel(obj), nil
 }
 
 func (*DBusMenuModel) privateDBusMenuModel() {}
 
 // DBusMessager describes DBusMessage's methods.
 type DBusMessager interface {
-	gextras.Objector
-
+	// Copy copies @message.
 	Copy() (*DBusMessage, error)
+	// Arg0: convenience to get the first item in the body of @message.
 	Arg0() string
+	// Body gets the body of a message.
 	Body() *glib.Variant
+	// ByteOrder gets the byte order of @message.
 	ByteOrder() DBusMessageByteOrder
+	// Destination: convenience getter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
 	Destination() string
+	// ErrorName: convenience getter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
 	ErrorName() string
+	// Flags gets the flags for @message.
 	Flags() DBusMessageFlags
+	// HeaderFields gets an array of all header fields on @message that are set.
 	HeaderFields() []byte
+	// Interface: convenience getter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
 	Interface() string
+	// Locked checks whether @message is locked.
 	Locked() bool
+	// Member: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
+	// header field.
 	Member() string
+	// MessageType gets the type of @message.
 	MessageType() DBusMessageType
+	// NumUnixFds: convenience getter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
 	NumUnixFds() uint32
+	// Path: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
+	// field.
 	Path() string
+	// ReplySerial: convenience getter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
 	ReplySerial() uint32
+	// Sender: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
+	// header field.
 	Sender() string
+	// Serial gets the serial for @message.
 	Serial() uint32
+	// Signature: convenience getter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
 	Signature() string
+	// UnixFdList gets the UNIX file descriptors associated with @message, if
+	// any.
 	UnixFdList() *UnixFDList
+	// Lock: if @message is locked, does nothing.
 	Lock()
+	// NewMethodErrorLiteral creates a new BusMessage that is an error reply to
+	// @method_call_message.
 	NewMethodErrorLiteral(errorName string, errorMessage string) *DBusMessage
+	// NewMethodReply creates a new BusMessage that is a reply to
+	// @method_call_message.
 	NewMethodReply() *DBusMessage
+	// Print produces a human-readable multi-line description of @message.
 	Print(indent uint) string
+	// SetBody sets the body @message.
 	SetBody(body *glib.Variant)
+	// SetDestination: convenience setter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
 	SetDestination(value string)
+	// SetErrorName: convenience setter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
 	SetErrorName(value string)
+	// SetInterface: convenience setter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
 	SetInterface(value string)
+	// SetMember: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
+	// header field.
 	SetMember(value string)
+	// SetNumUnixFds: convenience setter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
 	SetNumUnixFds(value uint32)
+	// SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH
+	// header field.
 	SetPath(value string)
+	// SetReplySerial: convenience setter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
 	SetReplySerial(value uint32)
+	// SetSender: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
+	// header field.
 	SetSender(value string)
+	// SetSerial sets the serial for @message.
 	SetSerial(serial uint32)
+	// SetSignature: convenience setter for the
+	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
 	SetSignature(value string)
+	// SetUnixFdList sets the UNIX file descriptors associated with @message.
 	SetUnixFdList(fdList UnixFDLister)
+	// ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
+	// nothing and returns false.
 	ToGerror() error
 }
 
@@ -1183,9 +1281,12 @@ type DBusMessage struct {
 	*externglib.Object
 }
 
-var _ DBusMessager = (*DBusMessage)(nil)
+var (
+	_ DBusMessager    = (*DBusMessage)(nil)
+	_ gextras.Nativer = (*DBusMessage)(nil)
+)
 
-func wrapDBusMessager(obj *externglib.Object) DBusMessager {
+func wrapDBusMessage(obj *externglib.Object) DBusMessager {
 	return &DBusMessage{
 		Object: obj,
 	}
@@ -1194,7 +1295,7 @@ func wrapDBusMessager(obj *externglib.Object) DBusMessager {
 func marshalDBusMessager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusMessager(obj), nil
+	return wrapDBusMessage(obj), nil
 }
 
 // NewDBusMessage creates a new empty BusMessage.
@@ -1860,7 +1961,7 @@ func (message *DBusMessage) SetUnixFdList(fdList UnixFDLister) {
 	var _arg1 *C.GUnixFDList  // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
-	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	_arg1 = (*C.GUnixFDList)(unsafe.Pointer((fdList).(gextras.Nativer).Native()))
 
 	C.g_dbus_message_set_unix_fd_list(_arg0, _arg1)
 }
@@ -1889,20 +1990,37 @@ func (message *DBusMessage) ToGerror() error {
 
 // DBusMethodInvocationer describes DBusMethodInvocation's methods.
 type DBusMethodInvocationer interface {
-	gextras.Objector
-
+	// Connection gets the BusConnection the method was invoked on.
 	Connection() *DBusConnection
+	// InterfaceName gets the name of the D-Bus interface the method was invoked
+	// on.
 	InterfaceName() string
+	// Message gets the BusMessage for the method invocation.
 	Message() *DBusMessage
+	// MethodInfo gets information about the method call, if any.
 	MethodInfo() *DBusMethodInfo
+	// MethodName gets the name of the method that was invoked.
 	MethodName() string
+	// ObjectPath gets the object path the method was invoked on.
 	ObjectPath() string
+	// Parameters gets the parameters of the method invocation.
 	Parameters() *glib.Variant
+	// PropertyInfo gets information about the property that this method call is
+	// for, if any.
 	PropertyInfo() *DBusPropertyInfo
+	// Sender gets the bus name that invoked the method.
 	Sender() string
+	// ReturnDBusError finishes handling a D-Bus method call by returning an
+	// error.
 	ReturnDBusError(errorName string, errorMessage string)
+	// ReturnGerror: like g_dbus_method_invocation_return_error() but takes a
+	// #GError instead of the error domain, error code and message.
 	ReturnGerror(err error)
+	// ReturnValue finishes handling a D-Bus method call by returning
+	// @parameters.
 	ReturnValue(parameters *glib.Variant)
+	// ReturnValueWithUnixFdList: like g_dbus_method_invocation_return_value()
+	// but also takes a FDList.
 	ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDLister)
 }
 
@@ -1917,9 +2035,12 @@ type DBusMethodInvocation struct {
 	*externglib.Object
 }
 
-var _ DBusMethodInvocationer = (*DBusMethodInvocation)(nil)
+var (
+	_ DBusMethodInvocationer = (*DBusMethodInvocation)(nil)
+	_ gextras.Nativer        = (*DBusMethodInvocation)(nil)
+)
 
-func wrapDBusMethodInvocationer(obj *externglib.Object) DBusMethodInvocationer {
+func wrapDBusMethodInvocation(obj *externglib.Object) DBusMethodInvocationer {
 	return &DBusMethodInvocation{
 		Object: obj,
 	}
@@ -1928,7 +2049,7 @@ func wrapDBusMethodInvocationer(obj *externglib.Object) DBusMethodInvocationer {
 func marshalDBusMethodInvocationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusMethodInvocationer(obj), nil
+	return wrapDBusMethodInvocation(obj), nil
 }
 
 // Connection gets the BusConnection the method was invoked on.
@@ -2199,20 +2320,26 @@ func (invocation *DBusMethodInvocation) ReturnValueWithUnixFdList(parameters *gl
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 	_arg1 = (*C.GVariant)(unsafe.Pointer(parameters))
-	_arg2 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	_arg2 = (*C.GUnixFDList)(unsafe.Pointer((fdList).(gextras.Nativer).Native()))
 
 	C.g_dbus_method_invocation_return_value_with_unix_fd_list(_arg0, _arg1, _arg2)
 }
 
-// DBusServerrer describes DBusServer's methods.
-type DBusServerrer interface {
-	gextras.Objector
-
+// DBusServerer describes DBusServer's methods.
+type DBusServerer interface {
+	// ClientAddress gets a D-Bus address
+	// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
+	// string that can be used by clients to connect to @server.
 	ClientAddress() string
+	// Flags gets the flags for @server.
 	Flags() DBusServerFlags
+	// Guid gets the GUID for @server.
 	Guid() string
+	// IsActive gets whether @server is active.
 	IsActive() bool
+	// Start starts @server.
 	Start()
+	// Stop stops @server.
 	Stop()
 }
 
@@ -2241,9 +2368,12 @@ type DBusServer struct {
 	Initable
 }
 
-var _ DBusServerrer = (*DBusServer)(nil)
+var (
+	_ DBusServerer    = (*DBusServer)(nil)
+	_ gextras.Nativer = (*DBusServer)(nil)
+)
 
-func wrapDBusServerrer(obj *externglib.Object) DBusServerrer {
+func wrapDBusServer(obj *externglib.Object) DBusServerer {
 	return &DBusServer{
 		Object: obj,
 		Initable: Initable{
@@ -2252,10 +2382,10 @@ func wrapDBusServerrer(obj *externglib.Object) DBusServerrer {
 	}
 }
 
-func marshalDBusServerrer(p uintptr) (interface{}, error) {
+func marshalDBusServerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusServerrer(obj), nil
+	return wrapDBusServer(obj), nil
 }
 
 // ClientAddress gets a D-Bus address
@@ -2346,22 +2476,43 @@ func (server *DBusServer) Stop() {
 
 // Menuer describes Menu's methods.
 type Menuer interface {
-	gextras.Objector
-
+	// Append: convenience function for appending a normal menu item to the end
+	// of @menu.
 	Append(label string, detailedAction string)
+	// AppendItem appends @item to the end of @menu.
 	AppendItem(item MenuItemmer)
+	// AppendSection: convenience function for appending a section menu item to
+	// the end of @menu.
 	AppendSection(label string, section MenuModeller)
+	// AppendSubmenu: convenience function for appending a submenu menu item to
+	// the end of @menu.
 	AppendSubmenu(label string, submenu MenuModeller)
+	// Freeze marks @menu as frozen.
 	Freeze()
+	// Insert: convenience function for inserting a normal menu item into @menu.
 	Insert(position int, label string, detailedAction string)
+	// InsertItem inserts @item into @menu.
 	InsertItem(position int, item MenuItemmer)
+	// InsertSection: convenience function for inserting a section menu item
+	// into @menu.
 	InsertSection(position int, label string, section MenuModeller)
+	// InsertSubmenu: convenience function for inserting a submenu menu item
+	// into @menu.
 	InsertSubmenu(position int, label string, submenu MenuModeller)
+	// Prepend: convenience function for prepending a normal menu item to the
+	// start of @menu.
 	Prepend(label string, detailedAction string)
+	// PrependItem prepends @item to the start of @menu.
 	PrependItem(item MenuItemmer)
+	// PrependSection: convenience function for prepending a section menu item
+	// to the start of @menu.
 	PrependSection(label string, section MenuModeller)
+	// PrependSubmenu: convenience function for prepending a submenu menu item
+	// to the start of @menu.
 	PrependSubmenu(label string, submenu MenuModeller)
+	// Remove removes an item from the menu.
 	Remove(position int)
+	// RemoveAll removes all items in the menu.
 	RemoveAll()
 }
 
@@ -2376,9 +2527,12 @@ type Menu struct {
 	MenuModel
 }
 
-var _ Menuer = (*Menu)(nil)
+var (
+	_ Menuer          = (*Menu)(nil)
+	_ gextras.Nativer = (*Menu)(nil)
+)
 
-func wrapMenuer(obj *externglib.Object) Menuer {
+func wrapMenu(obj *externglib.Object) Menuer {
 	return &Menu{
 		MenuModel: MenuModel{
 			Object: obj,
@@ -2389,7 +2543,7 @@ func wrapMenuer(obj *externglib.Object) Menuer {
 func marshalMenuer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuer(obj), nil
+	return wrapMenu(obj), nil
 }
 
 // NewMenu creates a new #GMenu.
@@ -2432,7 +2586,7 @@ func (menu *Menu) AppendItem(item MenuItemmer) {
 	var _arg1 *C.GMenuItem // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.GMenuItem)(unsafe.Pointer(item.Native()))
+	_arg1 = (*C.GMenuItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
 
 	C.g_menu_append_item(_arg0, _arg1)
 }
@@ -2448,7 +2602,7 @@ func (menu *Menu) AppendSection(label string, section MenuModeller) {
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
 
 	C.g_menu_append_section(_arg0, _arg1, _arg2)
 }
@@ -2464,7 +2618,7 @@ func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
 
 	C.g_menu_append_submenu(_arg0, _arg1, _arg2)
 }
@@ -2526,7 +2680,7 @@ func (menu *Menu) InsertItem(position int, item MenuItemmer) {
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = C.gint(position)
-	_arg2 = (*C.GMenuItem)(unsafe.Pointer(item.Native()))
+	_arg2 = (*C.GMenuItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
 
 	C.g_menu_insert_item(_arg0, _arg1, _arg2)
 }
@@ -2544,7 +2698,7 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 	_arg1 = C.gint(position)
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+	_arg3 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
 
 	C.g_menu_insert_section(_arg0, _arg1, _arg2, _arg3)
 }
@@ -2562,7 +2716,7 @@ func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller
 	_arg1 = C.gint(position)
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+	_arg3 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
 
 	C.g_menu_insert_submenu(_arg0, _arg1, _arg2, _arg3)
 }
@@ -2592,7 +2746,7 @@ func (menu *Menu) PrependItem(item MenuItemmer) {
 	var _arg1 *C.GMenuItem // out
 
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.GMenuItem)(unsafe.Pointer(item.Native()))
+	_arg1 = (*C.GMenuItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
 
 	C.g_menu_prepend_item(_arg0, _arg1)
 }
@@ -2608,7 +2762,7 @@ func (menu *Menu) PrependSection(label string, section MenuModeller) {
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
 
 	C.g_menu_prepend_section(_arg0, _arg1, _arg2)
 }
@@ -2624,7 +2778,7 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
 
 	C.g_menu_prepend_submenu(_arg0, _arg1, _arg2)
 }
@@ -2660,17 +2814,28 @@ func (menu *Menu) RemoveAll() {
 
 // MenuItemmer describes MenuItem's methods.
 type MenuItemmer interface {
-	gextras.Objector
-
+	// AttributeValue queries the named @attribute on @menu_item.
 	AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
+	// Link queries the named @link on @menu_item.
 	Link(link string) *MenuModel
+	// SetActionAndTargetValue sets or unsets the "action" and "target"
+	// attributes of @menu_item.
 	SetActionAndTargetValue(action string, targetValue *glib.Variant)
+	// SetAttributeValue sets or unsets an attribute on @menu_item.
 	SetAttributeValue(attribute string, value *glib.Variant)
+	// SetDetailedAction sets the "action" and possibly the "target" attribute
+	// of @menu_item.
 	SetDetailedAction(detailedAction string)
+	// SetIcon sets (or unsets) the icon on @menu_item.
 	SetIcon(icon Iconner)
+	// SetLabel sets or unsets the "label" attribute of @menu_item.
 	SetLabel(label string)
+	// SetLink creates a link from @menu_item to @model if non-nil, or unsets
+	// it.
 	SetLink(link string, model MenuModeller)
+	// SetSection sets or unsets the "section" link of @menu_item to @section.
 	SetSection(section MenuModeller)
+	// SetSubmenu sets or unsets the "submenu" link of @menu_item to @submenu.
 	SetSubmenu(submenu MenuModeller)
 }
 
@@ -2680,9 +2845,12 @@ type MenuItem struct {
 	*externglib.Object
 }
 
-var _ MenuItemmer = (*MenuItem)(nil)
+var (
+	_ MenuItemmer     = (*MenuItem)(nil)
+	_ gextras.Nativer = (*MenuItem)(nil)
+)
 
-func wrapMenuItemmer(obj *externglib.Object) MenuItemmer {
+func wrapMenuItem(obj *externglib.Object) MenuItemmer {
 	return &MenuItem{
 		Object: obj,
 	}
@@ -2691,7 +2859,7 @@ func wrapMenuItemmer(obj *externglib.Object) MenuItemmer {
 func marshalMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuItemmer(obj), nil
+	return wrapMenuItem(obj), nil
 }
 
 // NewMenuItem creates a new Item.
@@ -2730,7 +2898,7 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	var _arg2 C.gint        // out
 	var _cret *C.GMenuItem  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg2 = C.gint(itemIndex)
 
 	_cret = C.g_menu_item_new_from_model(_arg1, _arg2)
@@ -2806,7 +2974,7 @@ func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
 
 	_cret = C.g_menu_item_new_section(_arg1, _arg2)
 
@@ -2828,7 +2996,7 @@ func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 
 	_arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
 
 	_cret = C.g_menu_item_new_submenu(_arg1, _arg2)
 
@@ -3002,7 +3170,7 @@ func (menuItem *MenuItem) SetIcon(icon Iconner) {
 	var _arg1 *C.GIcon     // out
 
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.g_menu_item_set_icon(_arg0, _arg1)
 }
@@ -3040,7 +3208,7 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
 	_arg1 = (*C.gchar)(C.CString(link))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.g_menu_item_set_link(_arg0, _arg1, _arg2)
 }
@@ -3056,7 +3224,7 @@ func (menuItem *MenuItem) SetSection(section MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
 
 	C.g_menu_item_set_section(_arg0, _arg1)
 }
@@ -3072,22 +3240,32 @@ func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
 
 	C.g_menu_item_set_submenu(_arg0, _arg1)
 }
 
 // Notificationer describes Notification's methods.
 type Notificationer interface {
-	gextras.Objector
-
+	// AddButton adds a button to @notification that activates the action in
+	// @detailed_action when clicked.
 	AddButton(label string, detailedAction string)
+	// AddButtonWithTargetValue adds a button to @notification that activates
+	// @action when clicked.
 	AddButtonWithTargetValue(label string, action string, target *glib.Variant)
+	// SetBody sets the body of @notification to @body.
 	SetBody(body string)
+	// SetDefaultAction sets the default action of @notification to
+	// @detailed_action.
 	SetDefaultAction(detailedAction string)
+	// SetDefaultActionAndTargetValue sets the default action of @notification
+	// to @action.
 	SetDefaultActionAndTargetValue(action string, target *glib.Variant)
+	// SetIcon sets the icon of @notification to @icon.
 	SetIcon(icon Iconner)
+	// SetTitle sets the title of @notification to @title.
 	SetTitle(title string)
+	// SetUrgent: deprecated in favor of g_notification_set_priority().
 	SetUrgent(urgent bool)
 }
 
@@ -3115,9 +3293,12 @@ type Notification struct {
 	*externglib.Object
 }
 
-var _ Notificationer = (*Notification)(nil)
+var (
+	_ Notificationer  = (*Notification)(nil)
+	_ gextras.Nativer = (*Notification)(nil)
+)
 
-func wrapNotificationer(obj *externglib.Object) Notificationer {
+func wrapNotification(obj *externglib.Object) Notificationer {
 	return &Notification{
 		Object: obj,
 	}
@@ -3126,7 +3307,7 @@ func wrapNotificationer(obj *externglib.Object) Notificationer {
 func marshalNotificationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotificationer(obj), nil
+	return wrapNotification(obj), nil
 }
 
 // NewNotification creates a new #GNotification with @title as its title.
@@ -3256,7 +3437,7 @@ func (notification *Notification) SetIcon(icon Iconner) {
 	var _arg1 *C.GIcon         // out
 
 	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.g_notification_set_icon(_arg0, _arg1)
 }
@@ -3291,8 +3472,6 @@ func (notification *Notification) SetUrgent(urgent bool) {
 
 // PropertyActioner describes PropertyAction's methods.
 type PropertyActioner interface {
-	gextras.Objector
-
 	privatePropertyAction()
 }
 
@@ -3350,9 +3529,12 @@ type PropertyAction struct {
 	Action
 }
 
-var _ PropertyActioner = (*PropertyAction)(nil)
+var (
+	_ PropertyActioner = (*PropertyAction)(nil)
+	_ gextras.Nativer  = (*PropertyAction)(nil)
+)
 
-func wrapPropertyActioner(obj *externglib.Object) PropertyActioner {
+func wrapPropertyAction(obj *externglib.Object) PropertyActioner {
 	return &PropertyAction{
 		Object: obj,
 		Action: Action{
@@ -3364,7 +3546,7 @@ func wrapPropertyActioner(obj *externglib.Object) PropertyActioner {
 func marshalPropertyActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPropertyActioner(obj), nil
+	return wrapPropertyAction(obj), nil
 }
 
 // NewPropertyAction creates a #GAction corresponding to the value of property
@@ -3400,10 +3582,11 @@ func (*PropertyAction) privatePropertyAction() {}
 
 // SimpleActioner describes SimpleAction's methods.
 type SimpleActioner interface {
-	gextras.Objector
-
+	// SetEnabled sets the action as enabled or not.
 	SetEnabled(enabled bool)
+	// SetState sets the state of the action.
 	SetState(value *glib.Variant)
+	// SetStateHint sets the state hint for the action.
 	SetStateHint(stateHint *glib.Variant)
 }
 
@@ -3418,9 +3601,12 @@ type SimpleAction struct {
 	Action
 }
 
-var _ SimpleActioner = (*SimpleAction)(nil)
+var (
+	_ SimpleActioner  = (*SimpleAction)(nil)
+	_ gextras.Nativer = (*SimpleAction)(nil)
+)
 
-func wrapSimpleActioner(obj *externglib.Object) SimpleActioner {
+func wrapSimpleAction(obj *externglib.Object) SimpleActioner {
 	return &SimpleAction{
 		Object: obj,
 		Action: Action{
@@ -3432,7 +3618,7 @@ func wrapSimpleActioner(obj *externglib.Object) SimpleActioner {
 func marshalSimpleActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleActioner(obj), nil
+	return wrapSimpleAction(obj), nil
 }
 
 // NewSimpleAction creates a new action.
@@ -3535,8 +3721,6 @@ func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 
 // SimpleIOStreamer describes SimpleIOStream's methods.
 type SimpleIOStreamer interface {
-	gextras.Objector
-
 	privateSimpleIOStream()
 }
 
@@ -3551,9 +3735,12 @@ type SimpleIOStream struct {
 	IOStream
 }
 
-var _ SimpleIOStreamer = (*SimpleIOStream)(nil)
+var (
+	_ SimpleIOStreamer = (*SimpleIOStream)(nil)
+	_ gextras.Nativer  = (*SimpleIOStream)(nil)
+)
 
-func wrapSimpleIOStreamer(obj *externglib.Object) SimpleIOStreamer {
+func wrapSimpleIOStream(obj *externglib.Object) SimpleIOStreamer {
 	return &SimpleIOStream{
 		IOStream: IOStream{
 			Object: obj,
@@ -3564,7 +3751,7 @@ func wrapSimpleIOStreamer(obj *externglib.Object) SimpleIOStreamer {
 func marshalSimpleIOStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleIOStreamer(obj), nil
+	return wrapSimpleIOStream(obj), nil
 }
 
 // NewSimpleIOStream creates a new IOStream wrapping @input_stream and
@@ -3574,8 +3761,8 @@ func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *
 	var _arg2 *C.GOutputStream // out
 	var _cret *C.GIOStream     // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(inputStream.Native()))
-	_arg2 = (*C.GOutputStream)(unsafe.Pointer(outputStream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((inputStream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer((outputStream).(gextras.Nativer).Native()))
 
 	_cret = C.g_simple_io_stream_new(_arg1, _arg2)
 
@@ -3590,8 +3777,6 @@ func (*SimpleIOStream) privateSimpleIOStream() {}
 
 // SimplePermissioner describes SimplePermission's methods.
 type SimplePermissioner interface {
-	gextras.Objector
-
 	privateSimplePermission()
 }
 
@@ -3604,9 +3789,12 @@ type SimplePermission struct {
 	Permission
 }
 
-var _ SimplePermissioner = (*SimplePermission)(nil)
+var (
+	_ SimplePermissioner = (*SimplePermission)(nil)
+	_ gextras.Nativer    = (*SimplePermission)(nil)
+)
 
-func wrapSimplePermissioner(obj *externglib.Object) SimplePermissioner {
+func wrapSimplePermission(obj *externglib.Object) SimplePermissioner {
 	return &SimplePermission{
 		Permission: Permission{
 			Object: obj,
@@ -3617,7 +3805,7 @@ func wrapSimplePermissioner(obj *externglib.Object) SimplePermissioner {
 func marshalSimplePermissioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimplePermissioner(obj), nil
+	return wrapSimplePermission(obj), nil
 }
 
 // NewSimplePermission creates a new #GPermission instance that represents an
@@ -3643,28 +3831,63 @@ func (*SimplePermission) privateSimplePermission() {}
 
 // Subprocesser describes Subprocess's methods.
 type Subprocesser interface {
-	gextras.Objector
-
+	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
+	// output of the process as UTF-8, and returns it as a regular NUL
+	// terminated string.
 	CommunicateUTF8(stdinBuf string, cancellable Cancellabler) (stdoutBuf string, stderrBuf string, goerr error)
+	// CommunicateUTF8Async asynchronous version of
+	// g_subprocess_communicate_utf8().
 	CommunicateUTF8Async(stdinBuf string, cancellable Cancellabler, callback AsyncReadyCallback)
+	// CommunicateUTF8Finish: complete an invocation of
+	// g_subprocess_communicate_utf8_async().
 	CommunicateUTF8Finish(result AsyncResulter) (stdoutBuf string, stderrBuf string, goerr error)
+	// ForceExit: use an operating-system specific method to attempt an
+	// immediate, forceful termination of the process.
 	ForceExit()
+	// ExitStatus: check the exit status of the subprocess, given that it exited
+	// normally.
 	ExitStatus() int
+	// Identifier: on UNIX, returns the process ID as a decimal string.
 	Identifier() string
+	// IfExited: check if the given subprocess exited normally (ie: by way of
+	// exit() or return from main()).
 	IfExited() bool
+	// IfSignaled: check if the given subprocess terminated in response to a
+	// signal.
 	IfSignaled() bool
+	// Status gets the raw status code of the process, as from waitpid().
 	Status() int
+	// StderrPipe gets the Stream from which to read the stderr output of
+	// @subprocess.
 	StderrPipe() *InputStream
+	// StdinPipe gets the Stream that you can write to in order to give data to
+	// the stdin of @subprocess.
 	StdinPipe() *OutputStream
+	// StdoutPipe gets the Stream from which to read the stdout output of
+	// @subprocess.
 	StdoutPipe() *InputStream
+	// Successful checks if the process was "successful".
 	Successful() bool
+	// TermSig: get the signal number that caused the subprocess to terminate,
+	// given that it terminated due to a signal.
 	TermSig() int
+	// SendSignal sends the UNIX signal @signal_num to the subprocess, if it is
+	// still running.
 	SendSignal(signalNum int)
+	// Wait: synchronously wait for the subprocess to terminate.
 	Wait(cancellable Cancellabler) error
+	// WaitAsync: wait for the subprocess to terminate.
 	WaitAsync(cancellable Cancellabler, callback AsyncReadyCallback)
+	// WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
 	WaitCheck(cancellable Cancellabler) error
+	// WaitCheckAsync combines g_subprocess_wait_async() with
+	// g_spawn_check_exit_status().
 	WaitCheckAsync(cancellable Cancellabler, callback AsyncReadyCallback)
+	// WaitCheckFinish collects the result of a previous call to
+	// g_subprocess_wait_check_async().
 	WaitCheckFinish(result AsyncResulter) error
+	// WaitFinish collects the result of a previous call to
+	// g_subprocess_wait_async().
 	WaitFinish(result AsyncResulter) error
 }
 
@@ -3722,9 +3945,12 @@ type Subprocess struct {
 	Initable
 }
 
-var _ Subprocesser = (*Subprocess)(nil)
+var (
+	_ Subprocesser    = (*Subprocess)(nil)
+	_ gextras.Nativer = (*Subprocess)(nil)
+)
 
-func wrapSubprocesser(obj *externglib.Object) Subprocesser {
+func wrapSubprocess(obj *externglib.Object) Subprocesser {
 	return &Subprocess{
 		Object: obj,
 		Initable: Initable{
@@ -3736,7 +3962,7 @@ func wrapSubprocesser(obj *externglib.Object) Subprocesser {
 func marshalSubprocesser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSubprocesser(obj), nil
+	return wrapSubprocess(obj), nil
 }
 
 // CommunicateUTF8: like g_subprocess_communicate(), but validates the output of
@@ -3755,7 +3981,7 @@ func (subprocess *Subprocess) CommunicateUTF8(stdinBuf string, cancellable Cance
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 	_arg1 = (*C.char)(C.CString(stdinBuf))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_subprocess_communicate_utf8(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -3784,7 +4010,7 @@ func (subprocess *Subprocess) CommunicateUTF8Async(stdinBuf string, cancellable 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 	_arg1 = (*C.char)(C.CString(stdinBuf))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -3801,7 +4027,7 @@ func (subprocess *Subprocess) CommunicateUTF8Finish(result AsyncResulter) (stdou
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_subprocess_communicate_utf8_finish(_arg0, _arg1, &_arg2, &_arg3, &_cerr)
 
@@ -4081,7 +4307,7 @@ func (subprocess *Subprocess) Wait(cancellable Cancellabler) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_subprocess_wait(_arg0, _arg1, &_cerr)
 
@@ -4102,7 +4328,7 @@ func (subprocess *Subprocess) WaitAsync(cancellable Cancellabler, callback Async
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -4116,7 +4342,7 @@ func (subprocess *Subprocess) WaitCheck(cancellable Cancellabler) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_subprocess_wait_check(_arg0, _arg1, &_cerr)
 
@@ -4138,7 +4364,7 @@ func (subprocess *Subprocess) WaitCheckAsync(cancellable Cancellabler, callback 
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -4153,7 +4379,7 @@ func (subprocess *Subprocess) WaitCheckFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_subprocess_wait_check_finish(_arg0, _arg1, &_cerr)
 
@@ -4172,7 +4398,7 @@ func (subprocess *Subprocess) WaitFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_subprocess_wait_finish(_arg0, _arg1, &_cerr)
 
@@ -4183,23 +4409,49 @@ func (subprocess *Subprocess) WaitFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// SubprocessLauncherrer describes SubprocessLauncher's methods.
-type SubprocessLauncherrer interface {
-	gextras.Objector
-
+// SubprocessLauncherer describes SubprocessLauncher's methods.
+type SubprocessLauncherer interface {
+	// Close closes all the file descriptors previously passed to the object
+	// with g_subprocess_launcher_take_fd(),
+	// g_subprocess_launcher_take_stderr_fd(), etc.
 	Close()
+	// Env returns the value of the environment variable @variable in the
+	// environment of processes launched from this launcher.
 	env(variable string) string
+	// SetCwd sets the current working directory that processes will be launched
+	// with.
 	SetCwd(cwd string)
+	// SetEnviron: replace the entire environment of processes launched from
+	// this launcher with the given 'environ' variable.
 	SetEnviron(env []string)
+	// SetStderrFilePath sets the file path to use as the stderr for spawned
+	// processes.
 	SetStderrFilePath(path string)
+	// SetStdinFilePath sets the file path to use as the stdin for spawned
+	// processes.
 	SetStdinFilePath(path string)
+	// SetStdoutFilePath sets the file path to use as the stdout for spawned
+	// processes.
 	SetStdoutFilePath(path string)
+	// Setenv sets the environment variable @variable in the environment of
+	// processes launched from this launcher.
 	Setenv(variable string, value string, overwrite bool)
+	// Spawnv creates a #GSubprocess given a provided array of arguments.
 	Spawnv(argv []string) (*Subprocess, error)
+	// TakeFd: transfer an arbitrary file descriptor from parent process to the
+	// child.
 	TakeFd(sourceFd int, targetFd int)
+	// TakeStderrFd sets the file descriptor to use as the stderr for spawned
+	// processes.
 	TakeStderrFd(fd int)
+	// TakeStdinFd sets the file descriptor to use as the stdin for spawned
+	// processes.
 	TakeStdinFd(fd int)
+	// TakeStdoutFd sets the file descriptor to use as the stdout for spawned
+	// processes.
 	TakeStdoutFd(fd int)
+	// Unsetenv removes the environment variable @variable from the environment
+	// of processes launched from this launcher.
 	Unsetenv(variable string)
 }
 
@@ -4214,18 +4466,21 @@ type SubprocessLauncher struct {
 	*externglib.Object
 }
 
-var _ SubprocessLauncherrer = (*SubprocessLauncher)(nil)
+var (
+	_ SubprocessLauncherer = (*SubprocessLauncher)(nil)
+	_ gextras.Nativer      = (*SubprocessLauncher)(nil)
+)
 
-func wrapSubprocessLauncherrer(obj *externglib.Object) SubprocessLauncherrer {
+func wrapSubprocessLauncher(obj *externglib.Object) SubprocessLauncherer {
 	return &SubprocessLauncher{
 		Object: obj,
 	}
 }
 
-func marshalSubprocessLauncherrer(p uintptr) (interface{}, error) {
+func marshalSubprocessLauncherer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSubprocessLauncherrer(obj), nil
+	return wrapSubprocessLauncher(obj), nil
 }
 
 // Close closes all the file descriptors previously passed to the object with
@@ -4569,13 +4824,17 @@ func (self *SubprocessLauncher) Unsetenv(variable string) {
 
 // TestDBusser describes TestDBus's methods.
 type TestDBusser interface {
-	gextras.Objector
-
+	// AddServiceDir: add a path where dbus-daemon will look up .service files.
 	AddServiceDir(path string)
+	// Down: stop the session bus started by g_test_dbus_up().
 	Down()
+	// BusAddress: get the address on which dbus-daemon is running.
 	BusAddress() string
+	// Flags: get the flags of the DBus object.
 	Flags() TestDBusFlags
+	// Stop the session bus started by g_test_dbus_up().
 	Stop()
+	// Up: start a dbus-daemon instance and set DBUS_SESSION_BUS_ADDRESS.
 	Up()
 }
 
@@ -4654,9 +4913,12 @@ type TestDBus struct {
 	*externglib.Object
 }
 
-var _ TestDBusser = (*TestDBus)(nil)
+var (
+	_ TestDBusser     = (*TestDBus)(nil)
+	_ gextras.Nativer = (*TestDBus)(nil)
+)
 
-func wrapTestDBusser(obj *externglib.Object) TestDBusser {
+func wrapTestDBus(obj *externglib.Object) TestDBusser {
 	return &TestDBus{
 		Object: obj,
 	}
@@ -4665,7 +4927,7 @@ func wrapTestDBusser(obj *externglib.Object) TestDBusser {
 func marshalTestDBusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTestDBusser(obj), nil
+	return wrapTestDBus(obj), nil
 }
 
 // AddServiceDir: add a path where dbus-daemon will look up .service files. This

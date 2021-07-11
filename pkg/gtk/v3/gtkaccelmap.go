@@ -26,8 +26,6 @@ func init() {
 
 // AccelMapper describes AccelMap's methods.
 type AccelMapper interface {
-	gextras.Objector
-
 	privateAccelMap()
 }
 
@@ -85,9 +83,12 @@ type AccelMap struct {
 	*externglib.Object
 }
 
-var _ AccelMapper = (*AccelMap)(nil)
+var (
+	_ AccelMapper     = (*AccelMap)(nil)
+	_ gextras.Nativer = (*AccelMap)(nil)
+)
 
-func wrapAccelMapper(obj *externglib.Object) AccelMapper {
+func wrapAccelMap(obj *externglib.Object) AccelMapper {
 	return &AccelMap{
 		Object: obj,
 	}
@@ -96,7 +97,7 @@ func wrapAccelMapper(obj *externglib.Object) AccelMapper {
 func marshalAccelMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccelMapper(obj), nil
+	return wrapAccelMap(obj), nil
 }
 
 func (*AccelMap) privateAccelMap() {}

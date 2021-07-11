@@ -24,12 +24,15 @@ func init() {
 
 // Cursorrer describes Cursor's methods.
 type Cursorrer interface {
-	gextras.Objector
-
+	// Fallback returns the fallback for this @cursor.
 	Fallback() *Cursor
+	// HotspotX returns the horizontal offset of the hotspot.
 	HotspotX() int
+	// HotspotY returns the vertical offset of the hotspot.
 	HotspotY() int
+	// Name returns the name of the cursor.
 	Name() string
+	// Texture returns the texture for the cursor.
 	Texture() *Texture
 }
 
@@ -71,9 +74,12 @@ type Cursor struct {
 	*externglib.Object
 }
 
-var _ Cursorrer = (*Cursor)(nil)
+var (
+	_ Cursorrer       = (*Cursor)(nil)
+	_ gextras.Nativer = (*Cursor)(nil)
+)
 
-func wrapCursorrer(obj *externglib.Object) Cursorrer {
+func wrapCursor(obj *externglib.Object) Cursorrer {
 	return &Cursor{
 		Object: obj,
 	}
@@ -82,7 +88,7 @@ func wrapCursorrer(obj *externglib.Object) Cursorrer {
 func marshalCursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCursorrer(obj), nil
+	return wrapCursor(obj), nil
 }
 
 // NewCursorFromName creates a new cursor by looking up @name in the current
@@ -117,7 +123,7 @@ func NewCursorFromName(name string, fallback Cursorrer) *Cursor {
 
 	_arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
+	_arg2 = (*C.GdkCursor)(unsafe.Pointer((fallback).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
@@ -136,10 +142,10 @@ func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback
 	var _arg4 *C.GdkCursor  // out
 	var _cret *C.GdkCursor  // in
 
-	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
 	_arg2 = C.int(hotspotX)
 	_arg3 = C.int(hotspotY)
-	_arg4 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
+	_arg4 = (*C.GdkCursor)(unsafe.Pointer((fallback).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_cursor_new_from_texture(_arg1, _arg2, _arg3, _arg4)
 

@@ -97,7 +97,7 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 func FocusTrackerNotify(object ObjectClasser) {
 	var _arg1 *C.AtkObject // out
 
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((object).(gextras.Nativer).Native()))
 
 	C.atk_focus_tracker_notify(_arg1)
 }
@@ -216,8 +216,6 @@ func RemoveKeyEventListener(listenerId uint) {
 
 // Utiller describes Util's methods.
 type Utiller interface {
-	gextras.Objector
-
 	privateUtil()
 }
 
@@ -229,9 +227,12 @@ type Util struct {
 	*externglib.Object
 }
 
-var _ Utiller = (*Util)(nil)
+var (
+	_ Utiller         = (*Util)(nil)
+	_ gextras.Nativer = (*Util)(nil)
+)
 
-func wrapUtiller(obj *externglib.Object) Utiller {
+func wrapUtil(obj *externglib.Object) Utiller {
 	return &Util{
 		Object: obj,
 	}
@@ -240,7 +241,7 @@ func wrapUtiller(obj *externglib.Object) Utiller {
 func marshalUtiller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUtiller(obj), nil
+	return wrapUtil(obj), nil
 }
 
 func (*Util) privateUtil() {}

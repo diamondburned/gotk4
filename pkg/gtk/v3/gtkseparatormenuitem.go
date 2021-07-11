@@ -27,42 +27,32 @@ func init() {
 
 // SeparatorMenuItemmer describes SeparatorMenuItem's methods.
 type SeparatorMenuItemmer interface {
-	gextras.Objector
-
 	privateSeparatorMenuItem()
 }
 
-// SeparatorMenuItem: the SeparatorMenuItem is a separator used to group items
-// within a menu. It displays a horizontal line with a shadow to make it appear
-// sunken into the interface.
+// SeparatorMenuItem is a separator used to group items within a menu. It
+// displays a horizontal line with a shadow to make it appear sunken into the
+// interface.
 //
 //
 // CSS nodes
 //
 // GtkSeparatorMenuItem has a single CSS node with name separator.
 type SeparatorMenuItem struct {
-	*externglib.Object
-
 	MenuItem
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ SeparatorMenuItemmer = (*SeparatorMenuItem)(nil)
+var (
+	_ SeparatorMenuItemmer = (*SeparatorMenuItem)(nil)
+	_ gextras.Nativer      = (*SeparatorMenuItem)(nil)
+)
 
-func wrapSeparatorMenuItemmer(obj *externglib.Object) SeparatorMenuItemmer {
+func wrapSeparatorMenuItem(obj *externglib.Object) SeparatorMenuItemmer {
 	return &SeparatorMenuItem{
-		Object: obj,
 		MenuItem: MenuItem{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -73,27 +63,10 @@ func wrapSeparatorMenuItemmer(obj *externglib.Object) SeparatorMenuItemmer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -108,33 +81,6 @@ func wrapSeparatorMenuItemmer(obj *externglib.Object) SeparatorMenuItemmer {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -142,7 +88,7 @@ func wrapSeparatorMenuItemmer(obj *externglib.Object) SeparatorMenuItemmer {
 func marshalSeparatorMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparatorMenuItemmer(obj), nil
+	return wrapSeparatorMenuItem(obj), nil
 }
 
 // NewSeparatorMenuItem creates a new SeparatorMenuItem.

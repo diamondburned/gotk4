@@ -76,11 +76,11 @@ const (
 	PixdataTypeSampleWidth8 PixdataType = 0b10000000000000000
 	// PixdataTypeSampleWidthMask: mask for the sample width flags of the enum.
 	PixdataTypeSampleWidthMask PixdataType = 0b11110000000000000000
-	// PixdataTypeEncodingRaw: the pixel data is in raw form.
+	// PixdataTypeEncodingRaw: pixel data is in raw form.
 	PixdataTypeEncodingRaw PixdataType = 0b1000000000000000000000000
-	// PixdataTypeEncodingRle: the pixel data is run-length encoded. Runs may be
-	// up to 127 bytes long; their length is stored in a single byte preceding
-	// the pixel data for the run. If a run is constant, its length byte has the
+	// PixdataTypeEncodingRle: pixel data is run-length encoded. Runs may be up
+	// to 127 bytes long; their length is stored in a single byte preceding the
+	// pixel data for the run. If a run is constant, its length byte has the
 	// high bit set and the pixel data consists of a single pixel which must be
 	// repeated.
 	PixdataTypeEncodingRle PixdataType = 0b10000000000000000000000000

@@ -22,16 +22,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_get_type()), F: marshalAppChooserrer},
+		{T: externglib.Type(C.gtk_app_chooser_get_type()), F: marshalAppChooserer},
 	})
 }
 
-// AppChooserrer describes AppChooser's methods.
-type AppChooserrer interface {
-	gextras.Objector
-
+// AppChooserer describes AppChooser's methods.
+type AppChooserer interface {
+	// AppInfo returns the currently selected application.
 	AppInfo() *gio.AppInfo
+	// ContentType returns the current value of the AppChooser:content-type
+	// property.
 	ContentType() string
+	// Refresh reloads the list of applications.
 	Refresh()
 }
 
@@ -52,18 +54,17 @@ type AppChooserrer interface {
 // To obtain the application that has been selected in a AppChooser, use
 // gtk_app_chooser_get_app_info().
 type AppChooser struct {
-	*externglib.Object
-
 	Widget
 }
 
-var _ AppChooserrer = (*AppChooser)(nil)
+var (
+	_ AppChooserer    = (*AppChooser)(nil)
+	_ gextras.Nativer = (*AppChooser)(nil)
+)
 
-func wrapAppChooserrer(obj *externglib.Object) AppChooserrer {
+func wrapAppChooser(obj *externglib.Object) AppChooserer {
 	return &AppChooser{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -77,10 +78,10 @@ func wrapAppChooserrer(obj *externglib.Object) AppChooserrer {
 	}
 }
 
-func marshalAppChooserrer(p uintptr) (interface{}, error) {
+func marshalAppChooserer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooserrer(obj), nil
+	return wrapAppChooser(obj), nil
 }
 
 // AppInfo returns the currently selected application.

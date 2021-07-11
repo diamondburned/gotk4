@@ -24,32 +24,27 @@ func init() {
 
 // GLTexturer describes GLTexture's methods.
 type GLTexturer interface {
-	gextras.Objector
-
+	// Release releases the GL resources held by a `GdkGLTexture`.
 	Release()
 }
 
 // GLTexture: gdkTexture representing a GL texture object.
 type GLTexture struct {
-	*externglib.Object
-
 	Texture
-	Paintable
 }
 
-var _ GLTexturer = (*GLTexture)(nil)
+var (
+	_ GLTexturer      = (*GLTexture)(nil)
+	_ gextras.Nativer = (*GLTexture)(nil)
+)
 
-func wrapGLTexturer(obj *externglib.Object) GLTexturer {
+func wrapGLTexture(obj *externglib.Object) GLTexturer {
 	return &GLTexture{
-		Object: obj,
 		Texture: Texture{
 			Object: obj,
 			Paintable: Paintable{
 				Object: obj,
 			},
-		},
-		Paintable: Paintable{
-			Object: obj,
 		},
 	}
 }
@@ -57,7 +52,7 @@ func wrapGLTexturer(obj *externglib.Object) GLTexturer {
 func marshalGLTexturer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLTexturer(obj), nil
+	return wrapGLTexture(obj), nil
 }
 
 // Release releases the GL resources held by a `GdkGLTexture`.

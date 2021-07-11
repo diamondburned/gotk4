@@ -25,8 +25,6 @@ func init() {
 
 // X11DeviceManagerCorer describes X11DeviceManagerCore's methods.
 type X11DeviceManagerCorer interface {
-	gextras.Objector
-
 	privateX11DeviceManagerCore()
 }
 
@@ -34,9 +32,12 @@ type X11DeviceManagerCore struct {
 	gdk.DeviceManager
 }
 
-var _ X11DeviceManagerCorer = (*X11DeviceManagerCore)(nil)
+var (
+	_ X11DeviceManagerCorer = (*X11DeviceManagerCore)(nil)
+	_ gextras.Nativer       = (*X11DeviceManagerCore)(nil)
+)
 
-func wrapX11DeviceManagerCorer(obj *externglib.Object) X11DeviceManagerCorer {
+func wrapX11DeviceManagerCore(obj *externglib.Object) X11DeviceManagerCorer {
 	return &X11DeviceManagerCore{
 		DeviceManager: gdk.DeviceManager{
 			Object: obj,
@@ -47,7 +48,7 @@ func wrapX11DeviceManagerCorer(obj *externglib.Object) X11DeviceManagerCorer {
 func marshalX11DeviceManagerCorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11DeviceManagerCorer(obj), nil
+	return wrapX11DeviceManagerCore(obj), nil
 }
 
 func (*X11DeviceManagerCore) privateX11DeviceManagerCore() {}

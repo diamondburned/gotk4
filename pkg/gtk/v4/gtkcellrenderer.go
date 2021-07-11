@@ -20,7 +20,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_cell_renderer_mode_get_type()), F: marshalCellRendererMode},
 		{T: externglib.Type(C.gtk_cell_renderer_state_get_type()), F: marshalCellRendererState},
-		{T: externglib.Type(C.gtk_cell_renderer_get_type()), F: marshalCellRendererrer},
+		{T: externglib.Type(C.gtk_cell_renderer_get_type()), F: marshalCellRendererer},
 	})
 }
 
@@ -28,13 +28,13 @@ func init() {
 type CellRendererMode int
 
 const (
-	// Inert: the cell is just for display and cannot be interacted with. Note
-	// that this doesn’t mean that eg. the row being drawn can’t be selected --
-	// just that a particular element of it cannot be individually modified.
+	// Inert: cell is just for display and cannot be interacted with. Note that
+	// this doesn’t mean that eg. the row being drawn can’t be selected -- just
+	// that a particular element of it cannot be individually modified.
 	CellRendererModeInert CellRendererMode = iota
-	// Activatable: the cell can be clicked.
+	// Activatable: cell can be clicked.
 	CellRendererModeActivatable
-	// Editable: the cell can be edited or otherwise modified.
+	// Editable: cell can be edited or otherwise modified.
 	CellRendererModeEditable
 )
 
@@ -46,20 +46,20 @@ func marshalCellRendererMode(p uintptr) (interface{}, error) {
 type CellRendererState int
 
 const (
-	// CellRendererStateSelected: the cell is currently selected, and probably
-	// has a selection colored background to render to.
+	// CellRendererStateSelected: cell is currently selected, and probably has a
+	// selection colored background to render to.
 	CellRendererStateSelected CellRendererState = 0b1
-	// CellRendererStatePrelit: the mouse is hovering over the cell.
+	// CellRendererStatePrelit: mouse is hovering over the cell.
 	CellRendererStatePrelit CellRendererState = 0b10
-	// CellRendererStateInsensitive: the cell is drawn in an insensitive manner
+	// CellRendererStateInsensitive: cell is drawn in an insensitive manner
 	CellRendererStateInsensitive CellRendererState = 0b100
-	// CellRendererStateSorted: the cell is in a sorted row
+	// CellRendererStateSorted: cell is in a sorted row
 	CellRendererStateSorted CellRendererState = 0b1000
-	// CellRendererStateFocused: the cell is in the focus row.
+	// CellRendererStateFocused: cell is in the focus row.
 	CellRendererStateFocused CellRendererState = 0b10000
-	// CellRendererStateExpandable: the cell is in a row that can be expanded
+	// CellRendererStateExpandable: cell is in a row that can be expanded
 	CellRendererStateExpandable CellRendererState = 0b100000
-	// CellRendererStateExpanded: the cell is in a row that is expanded
+	// CellRendererStateExpanded: cell is in a row that is expanded
 	CellRendererStateExpanded CellRendererState = 0b1000000
 )
 
@@ -67,12 +67,13 @@ func marshalCellRendererState(p uintptr) (interface{}, error) {
 	return CellRendererState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// CellRendererrerOverrider contains methods that are overridable.
+// CellRendererOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CellRendererrerOverrider interface {
+type CellRendererOverrider interface {
 	EditingCanceled()
+
 	EditingStarted(editable CellEditabler, path string)
 	// PreferredHeight retrieves a renderer’s natural size when rendered to
 	// @widget.
@@ -91,31 +92,60 @@ type CellRendererrerOverrider interface {
 	RequestMode() SizeRequestMode
 }
 
-// CellRendererrer describes CellRenderer's methods.
-type CellRendererrer interface {
-	gextras.Objector
-
+// CellRendererer describes CellRenderer's methods.
+type CellRendererer interface {
+	// Alignment fills in @xalign and @yalign with the appropriate values of
+	// @cell.
 	Alignment() (xalign float32, yalign float32)
+	// FixedSize fills in @width and @height with the appropriate size of @cell.
 	FixedSize() (width int, height int)
+	// IsExpanded checks whether the given CellRenderer is expanded.
 	IsExpanded() bool
+	// IsExpander checks whether the given CellRenderer is an expander.
 	IsExpander() bool
+	// Padding fills in @xpad and @ypad with the appropriate values of @cell.
 	Padding() (xpad int, ypad int)
+	// PreferredHeight retrieves a renderer’s natural size when rendered to
+	// @widget.
 	PreferredHeight(widget Widgetter) (minimumSize int, naturalSize int)
+	// PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
+	// height if it were rendered to @widget with the specified @width.
 	PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight int, naturalHeight int)
+	// PreferredSize retrieves the minimum and natural size of a cell taking
+	// into account the widget’s preference for height-for-width management.
 	PreferredSize(widget Widgetter) (minimumSize Requisition, naturalSize Requisition)
+	// PreferredWidth retrieves a renderer’s natural size when rendered to
+	// @widget.
 	PreferredWidth(widget Widgetter) (minimumSize int, naturalSize int)
+	// PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
+	// width if it were rendered to @widget with the specified @height.
 	PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth int, naturalWidth int)
+	// RequestMode gets whether the cell renderer prefers a height-for-width
+	// layout or a width-for-height layout.
 	RequestMode() SizeRequestMode
+	// Sensitive returns the cell renderer’s sensitivity.
 	Sensitive() bool
+	// Visible returns the cell renderer’s visibility.
 	Visible() bool
+	// IsActivatable checks whether the cell renderer can do something when
+	// activated.
 	IsActivatable() bool
+	// SetAlignment sets the renderer’s alignment within its available space.
 	SetAlignment(xalign float32, yalign float32)
+	// SetFixedSize sets the renderer size to be explicit, independent of the
+	// properties set.
 	SetFixedSize(width int, height int)
+	// SetIsExpanded sets whether the given CellRenderer is expanded.
 	SetIsExpanded(isExpanded bool)
+	// SetIsExpander sets whether the given CellRenderer is an expander.
 	SetIsExpander(isExpander bool)
+	// SetPadding sets the renderer’s padding.
 	SetPadding(xpad int, ypad int)
+	// SetSensitive sets the cell renderer’s sensitivity.
 	SetSensitive(sensitive bool)
+	// SetVisible sets the cell renderer’s visibility.
 	SetVisible(visible bool)
+	// StopEditing informs the cell renderer that the editing is stopped.
 	StopEditing(canceled bool)
 }
 
@@ -157,9 +187,12 @@ type CellRenderer struct {
 	externglib.InitiallyUnowned
 }
 
-var _ CellRendererrer = (*CellRenderer)(nil)
+var (
+	_ CellRendererer  = (*CellRenderer)(nil)
+	_ gextras.Nativer = (*CellRenderer)(nil)
+)
 
-func wrapCellRendererrer(obj *externglib.Object) CellRendererrer {
+func wrapCellRenderer(obj *externglib.Object) CellRendererer {
 	return &CellRenderer{
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
@@ -167,10 +200,10 @@ func wrapCellRendererrer(obj *externglib.Object) CellRendererrer {
 	}
 }
 
-func marshalCellRendererrer(p uintptr) (interface{}, error) {
+func marshalCellRendererer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererrer(obj), nil
+	return wrapCellRenderer(obj), nil
 }
 
 // Alignment fills in @xalign and @yalign with the appropriate values of @cell.
@@ -274,7 +307,7 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize int, na
 	var _arg3 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_cell_renderer_get_preferred_height(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -297,7 +330,7 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int) (
 	var _arg4 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = C.int(width)
 
 	C.gtk_cell_renderer_get_preferred_height_for_width(_arg0, _arg1, _arg2, &_arg3, &_arg4)
@@ -320,7 +353,7 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize Requisiti
 	var _arg3 C.GtkRequisition   // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -341,7 +374,7 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize int, nat
 	var _arg3 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_cell_renderer_get_preferred_width(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -364,7 +397,7 @@ func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int) 
 	var _arg4 C.int              // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = C.int(height)
 
 	C.gtk_cell_renderer_get_preferred_width_for_height(_arg0, _arg1, _arg2, &_arg3, &_arg4)

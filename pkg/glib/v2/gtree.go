@@ -23,9 +23,9 @@ func init() {
 	})
 }
 
-// Tree: the GTree struct is an opaque data structure representing a [balanced
-// binary tree][glib-Balanced-Binary-Trees]. It should be accessed only by using
-// the following functions.
+// Tree struct is an opaque data structure representing a [balanced binary
+// tree][glib-Balanced-Binary-Trees]. It should be accessed only by using the
+// following functions.
 type Tree struct {
 	native C.GTree
 }

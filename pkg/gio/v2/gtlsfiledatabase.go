@@ -34,8 +34,6 @@ func init() {
 
 // TLSFileDatabaser describes TLSFileDatabase's methods.
 type TLSFileDatabaser interface {
-	gextras.Objector
-
 	privateTLSFileDatabase()
 }
 
@@ -46,9 +44,12 @@ type TLSFileDatabase struct {
 	TLSDatabase
 }
 
-var _ TLSFileDatabaser = (*TLSFileDatabase)(nil)
+var (
+	_ TLSFileDatabaser = (*TLSFileDatabase)(nil)
+	_ gextras.Nativer  = (*TLSFileDatabase)(nil)
+)
 
-func wrapTLSFileDatabaser(obj *externglib.Object) TLSFileDatabaser {
+func wrapTLSFileDatabase(obj *externglib.Object) TLSFileDatabaser {
 	return &TLSFileDatabase{
 		TLSDatabase: TLSDatabase{
 			Object: obj,
@@ -59,7 +60,7 @@ func wrapTLSFileDatabaser(obj *externglib.Object) TLSFileDatabaser {
 func marshalTLSFileDatabaser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSFileDatabaser(obj), nil
+	return wrapTLSFileDatabase(obj), nil
 }
 
 func (*TLSFileDatabase) privateTLSFileDatabase() {}

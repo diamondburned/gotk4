@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// BuilderClosureFlags: the list of flags that can be passed to
+// BuilderClosureFlags: list of flags that can be passed to
 // gtk_builder_create_closure().
 //
 // New values may be added in the future for new features, so external
@@ -34,7 +34,7 @@ func init() {
 type BuilderClosureFlags int
 
 const (
-	// BuilderClosureFlagsSwapped: the closure should be created swapped. See
+	// BuilderClosureFlagsSwapped: closure should be created swapped. See
 	// g_cclosure_new_swap() for details.
 	BuilderClosureFlagsSwapped BuilderClosureFlags = 0b1
 )
@@ -43,19 +43,18 @@ func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
 	return BuilderClosureFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// BuilderScoperOverrider contains methods that are overridable.
+// BuilderScopeOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type BuilderScoperOverrider interface {
-	TypeFromFunction(builder Builderrer, functionName string) externglib.Type
-	TypeFromName(builder Builderrer, typeName string) externglib.Type
+type BuilderScopeOverrider interface {
+	TypeFromFunction(builder Builderer, functionName string) externglib.Type
+
+	TypeFromName(builder Builderer, typeName string) externglib.Type
 }
 
 // BuilderScoper describes BuilderScope's methods.
 type BuilderScoper interface {
-	gextras.Objector
-
 	privateBuilderScope()
 }
 
@@ -77,9 +76,12 @@ type BuilderScope struct {
 	*externglib.Object
 }
 
-var _ BuilderScoper = (*BuilderScope)(nil)
+var (
+	_ BuilderScoper   = (*BuilderScope)(nil)
+	_ gextras.Nativer = (*BuilderScope)(nil)
+)
 
-func wrapBuilderScoper(obj *externglib.Object) BuilderScoper {
+func wrapBuilderScope(obj *externglib.Object) BuilderScoper {
 	return &BuilderScope{
 		Object: obj,
 	}
@@ -88,15 +90,13 @@ func wrapBuilderScoper(obj *externglib.Object) BuilderScoper {
 func marshalBuilderScoper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderScoper(obj), nil
+	return wrapBuilderScope(obj), nil
 }
 
 func (*BuilderScope) privateBuilderScope() {}
 
 // BuilderCScoper describes BuilderCScope's methods.
 type BuilderCScoper interface {
-	gextras.Objector
-
 	privateBuilderCScope()
 }
 
@@ -121,9 +121,12 @@ type BuilderCScope struct {
 	BuilderScope
 }
 
-var _ BuilderCScoper = (*BuilderCScope)(nil)
+var (
+	_ BuilderCScoper  = (*BuilderCScope)(nil)
+	_ gextras.Nativer = (*BuilderCScope)(nil)
+)
 
-func wrapBuilderCScoper(obj *externglib.Object) BuilderCScoper {
+func wrapBuilderCScope(obj *externglib.Object) BuilderCScoper {
 	return &BuilderCScope{
 		Object: obj,
 		BuilderScope: BuilderScope{
@@ -135,7 +138,7 @@ func wrapBuilderCScoper(obj *externglib.Object) BuilderCScoper {
 func marshalBuilderCScoper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderCScoper(obj), nil
+	return wrapBuilderCScope(obj), nil
 }
 
 // NewBuilderCScope creates a new `GtkBuilderCScope` object to use with future

@@ -27,9 +27,11 @@ func init() {
 
 // RecentChooserMenuer describes RecentChooserMenu's methods.
 type RecentChooserMenuer interface {
-	gextras.Objector
-
+	// ShowNumbers returns the value set by
+	// gtk_recent_chooser_menu_set_show_numbers().
 	ShowNumbers() bool
+	// SetShowNumbers sets whether a number should be added to the items of
+	// @menu.
 	SetShowNumbers(showNumbers bool)
 }
 
@@ -52,28 +54,23 @@ type RecentChooserMenuer interface {
 //
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserMenu struct {
-	*externglib.Object
-
 	Menu
-	atk.ImplementorIface
+
 	Activatable
-	Buildable
 	RecentChooser
 }
 
-var _ RecentChooserMenuer = (*RecentChooserMenu)(nil)
+var (
+	_ RecentChooserMenuer = (*RecentChooserMenu)(nil)
+	_ gextras.Nativer     = (*RecentChooserMenu)(nil)
+)
 
-func wrapRecentChooserMenuer(obj *externglib.Object) RecentChooserMenuer {
+func wrapRecentChooserMenu(obj *externglib.Object) RecentChooserMenuer {
 	return &RecentChooserMenu{
-		Object: obj,
 		Menu: Menu{
-			Object: obj,
 			MenuShell: MenuShell{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -84,34 +81,10 @@ func wrapRecentChooserMenuer(obj *externglib.Object) RecentChooserMenuer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
 		},
 		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
 			Object: obj,
 		},
 		RecentChooser: RecentChooser{
@@ -123,7 +96,7 @@ func wrapRecentChooserMenuer(obj *externglib.Object) RecentChooserMenuer {
 func marshalRecentChooserMenuer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooserMenuer(obj), nil
+	return wrapRecentChooserMenu(obj), nil
 }
 
 // NewRecentChooserMenu creates a new RecentChooserMenu widget.
@@ -155,11 +128,11 @@ func NewRecentChooserMenu() *RecentChooserMenu {
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object or if you wish to share
 // a common RecentManager object among multiple RecentChooser widgets.
-func NewRecentChooserMenuForManager(manager RecentManagerrer) *RecentChooserMenu {
+func NewRecentChooserMenuForManager(manager RecentManagerer) *RecentChooserMenu {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((manager).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
 
@@ -168,6 +141,12 @@ func NewRecentChooserMenuForManager(manager RecentManagerrer) *RecentChooserMenu
 	_recentChooserMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserMenu)
 
 	return _recentChooserMenu
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *RecentChooserMenu) Native() uintptr {
+	return v.Menu.MenuShell.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // ShowNumbers returns the value set by

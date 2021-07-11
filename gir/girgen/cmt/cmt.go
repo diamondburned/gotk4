@@ -120,12 +120,23 @@ type (
 	originalTypeName string
 	additionalString string
 	trailingNewLine  struct{}
+	synopsize        struct{}
 )
 
 func (overrideSelfName) opts() {}
 func (originalTypeName) opts() {}
 func (additionalString) opts() {}
 func (trailingNewLine) opts()  {}
+func (synopsize) opts()        {}
+
+func searchOpts(opts []Option, f func(opt Option) bool) bool {
+	for _, opt := range opts {
+		if f(opt) {
+			return true
+		}
+	}
+	return false
+}
 
 // OverrideSelfName overrides the Go type name that's implicitly converted
 // automatically by GoDoc.
@@ -142,9 +153,18 @@ func isLower(s string) bool {
 	return strings.IndexFunc(s, unicode.IsUpper) == -1
 }
 
+// Synopsis renders the synopsis of the documentation.
+func Synopsis(v interface{}, indentLvl int, opts ...Option) string {
+	return goDoc(v, indentLvl, append(opts, synopsize{}))
+}
+
 // GoDoc renders a Go documentation string from the given struct. The struct
 // should contain at least the field Name, InfoAttrs and InfoElements.
 func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
+	return goDoc(v, indentLvl, opts)
+}
+
+func goDoc(v interface{}, indentLvl int, opts []Option) string {
 	inf := GetInfoFields(v)
 
 	var self string
@@ -160,25 +180,25 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 		}
 	}
 
-	var doc strings.Builder
+	var docBuilder strings.Builder
 	if inf.Elements != nil && inf.Elements.Doc != nil {
-		doc.WriteString(inf.Elements.Doc.String)
+		docBuilder.WriteString(inf.Elements.Doc.String)
 	}
 
 	if inf.Attrs != nil && inf.Attrs.Deprecated {
-		if doc.Len() > 0 {
-			doc.WriteString("\n\n")
+		if docBuilder.Len() > 0 {
+			docBuilder.WriteString("\n\n")
 		}
 
 		switch {
 		case inf.Elements != nil && inf.Elements.DocDeprecated != nil:
 			v := strings.TrimSuffix(inf.Elements.DocDeprecated.String, ".")
-			fmt.Fprintf(&doc, "Deprecated: %s.", v)
+			fmt.Fprintf(&docBuilder, "Deprecated: %s.", v)
 		case inf.Attrs.DeprecatedVersion != "":
 			v := strings.TrimSuffix(inf.Attrs.DeprecatedVersion, ".")
-			fmt.Fprintf(&doc, "Deprecated: since version %s.", v)
+			fmt.Fprintf(&docBuilder, "Deprecated: since version %s.", v)
 		default:
-			fmt.Fprintf(&doc, "Deprecated.")
+			fmt.Fprintf(&docBuilder, "Deprecated.")
 		}
 	}
 
@@ -188,17 +208,27 @@ func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
 			self = string(opt)
 
 		case additionalString:
-			if doc.Len() > 0 {
-				doc.WriteString("\n\n")
+			if docBuilder.Len() > 0 {
+				docBuilder.WriteString("\n\n")
 			}
-			doc.WriteString(string(opt))
+			docBuilder.WriteString(string(opt))
 		}
 	}
 
-	return CommentReflowLinesIndent(
-		indentLvl, self, doc.String(),
-		append(opts, originalTypeName(orig))...,
-	)
+	opts = append(opts, originalTypeName(orig))
+	cmt := format(self, docBuilder.String(), opts)
+
+	synopsize := searchOpts(opts, func(opt Option) bool {
+		_, ok := opt.(synopsize)
+		return ok
+	})
+	if synopsize {
+		cmt = doc.Synopsis(cmt)
+	}
+
+	cmt = ReflowLinesIndent(indentLvl, cmt, opts...)
+
+	return cmt
 }
 
 // nthWord returns the nth word, or an empty string if none.
@@ -234,9 +264,7 @@ func popFirstWord(paragraph string) string {
 	return parts[1]
 }
 
-// CommentReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go
-// comment strings. It is automatically indented.
-func CommentReflowLinesIndent(indentLvl int, self, cmt string, opts ...Option) string {
+func format(self, cmt string, opts []Option) string {
 	if cmt == "" {
 		return ""
 	}
@@ -245,7 +273,7 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string, opts ...Option) s
 
 	if self != "" {
 		switch strings.ToLower(nthWord(cmt, 0)) {
-		case "a", "an":
+		case "a", "an", "the":
 			cmt = popFirstWord(cmt)
 		}
 
@@ -343,6 +371,12 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string, opts ...Option) s
 		}
 	})
 
+	return cmt
+}
+
+// ReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go comment
+// strings. It is automatically indented.
+func ReflowLinesIndent(indentLvl int, cmt string, opts ...Option) string {
 	// Account for the indentation in the column limit.
 	col := CommentsColumnLimit - (CommentsTabWidth * indentLvl)
 

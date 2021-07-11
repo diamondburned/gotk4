@@ -25,21 +25,25 @@ func init() {
 	})
 }
 
-// LinkButtonnerOverrider contains methods that are overridable.
+// LinkButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type LinkButtonnerOverrider interface {
+type LinkButtonOverrider interface {
 	ActivateLink() bool
 }
 
 // LinkButtonner describes LinkButton's methods.
 type LinkButtonner interface {
-	gextras.Objector
-
+	// URI retrieves the URI set using gtk_link_button_set_uri().
 	URI() string
+	// Visited retrieves the “visited” state of the URI where the LinkButton
+	// points.
 	Visited() bool
+	// SetURI sets @uri as the URI where the LinkButton points.
 	SetURI(uri string)
+	// SetVisited sets the “visited” state of the URI where the LinkButton
+	// points.
 	SetVisited(visited bool)
 }
 
@@ -64,28 +68,20 @@ type LinkButtonner interface {
 // GtkLinkButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .link style class.
 type LinkButton struct {
-	*externglib.Object
-
 	Button
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ LinkButtonner = (*LinkButton)(nil)
+var (
+	_ LinkButtonner   = (*LinkButton)(nil)
+	_ gextras.Nativer = (*LinkButton)(nil)
+)
 
-func wrapLinkButtonner(obj *externglib.Object) LinkButtonner {
+func wrapLinkButton(obj *externglib.Object) LinkButtonner {
 	return &LinkButton{
-		Object: obj,
 		Button: Button{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -96,27 +92,10 @@ func wrapLinkButtonner(obj *externglib.Object) LinkButtonner {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -131,33 +110,6 @@ func wrapLinkButtonner(obj *externglib.Object) LinkButtonner {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -165,7 +117,7 @@ func wrapLinkButtonner(obj *externglib.Object) LinkButtonner {
 func marshalLinkButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLinkButtonner(obj), nil
+	return wrapLinkButton(obj), nil
 }
 
 // NewLinkButton creates a new LinkButton with the URI as its text.

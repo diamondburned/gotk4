@@ -97,7 +97,7 @@ func AlternativeDialogButtonOrder(screen gdk.Screener) bool {
 	var _arg1 *C.GdkScreen // out
 	var _cret C.gboolean   // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_alternative_dialog_button_order(_arg1)
 
@@ -110,11 +110,11 @@ func AlternativeDialogButtonOrder(screen gdk.Screener) bool {
 	return _ok
 }
 
-// DialoggerOverrider contains methods that are overridable.
+// DialogOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DialoggerOverrider interface {
+type DialogOverrider interface {
 	Close()
 	// Response emits the Dialog::response signal with the given response ID.
 	// Used to indicate that the user has responded to the dialog in some way;
@@ -125,19 +125,38 @@ type DialoggerOverrider interface {
 
 // Dialogger describes Dialog's methods.
 type Dialogger interface {
-	gextras.Objector
-
+	// AddActionWidget adds an activatable widget to the action area of a
+	// Dialog, connecting a signal handler that will emit the Dialog::response
+	// signal on the dialog when the widget is activated.
 	AddActionWidget(child Widgetter, responseId int)
+	// AddButton adds a button with the given text and sets things up so that
+	// clicking the button will emit the Dialog::response signal with the given
+	// @response_id.
 	AddButton(buttonText string, responseId int) *Widget
+	// ActionArea returns the action area of @dialog.
 	ActionArea() *Box
+	// ContentArea returns the content area of @dialog.
 	ContentArea() *Box
+	// HeaderBar returns the header bar of @dialog.
 	HeaderBar() *HeaderBar
+	// ResponseForWidget gets the response id of a widget in the action area of
+	// a dialog.
 	ResponseForWidget(widget Widgetter) int
+	// WidgetForResponse gets the widget button that uses the given response ID
+	// in the action area of a dialog.
 	WidgetForResponse(responseId int) *Widget
+	// Response emits the Dialog::response signal with the given response ID.
 	Response(responseId int)
+	// Run blocks in a recursive main loop until the @dialog either emits the
+	// Dialog::response signal, or is destroyed.
 	Run() int
+	// SetAlternativeButtonOrderFromArray sets an alternative button order.
 	SetAlternativeButtonOrderFromArray(newOrder []int)
+	// SetDefaultResponse sets the last widget in the dialog’s action area with
+	// the given @response_id as the default widget for the dialog.
 	SetDefaultResponse(responseId int)
+	// SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)`
+	// for each widget in the dialog’s action area with the given @response_id.
 	SetResponseSensitive(responseId int, setting bool)
 }
 
@@ -253,26 +272,20 @@ type Dialogger interface {
 //      </action-widgets>
 //    </object>
 type Dialog struct {
-	*externglib.Object
-
 	Window
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Dialogger = (*Dialog)(nil)
+var (
+	_ Dialogger       = (*Dialog)(nil)
+	_ gextras.Nativer = (*Dialog)(nil)
+)
 
-func wrapDialogger(obj *externglib.Object) Dialogger {
+func wrapDialog(obj *externglib.Object) Dialogger {
 	return &Dialog{
-		Object: obj,
 		Window: Window{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -283,32 +296,8 @@ func wrapDialogger(obj *externglib.Object) Dialogger {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -316,7 +305,7 @@ func wrapDialogger(obj *externglib.Object) Dialogger {
 func marshalDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDialogger(obj), nil
+	return wrapDialog(obj), nil
 }
 
 // NewDialog creates a new dialog box.
@@ -346,7 +335,7 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.gint(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
@@ -436,7 +425,7 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 

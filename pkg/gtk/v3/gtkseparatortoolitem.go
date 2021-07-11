@@ -27,9 +27,9 @@ func init() {
 
 // SeparatorToolItemmer describes SeparatorToolItem's methods.
 type SeparatorToolItemmer interface {
-	gextras.Objector
-
+	// Draw returns whether @item is drawn as a line, or just blank.
 	Draw() bool
+	// SetDraw: whether @item is drawn as a vertical line, or just blank.
 	SetDraw(draw bool)
 }
 
@@ -48,27 +48,20 @@ type SeparatorToolItemmer interface {
 //
 // GtkSeparatorToolItem has a single CSS node with name separator.
 type SeparatorToolItem struct {
-	*externglib.Object
-
 	ToolItem
-	atk.ImplementorIface
-	Activatable
-	Buildable
 }
 
-var _ SeparatorToolItemmer = (*SeparatorToolItem)(nil)
+var (
+	_ SeparatorToolItemmer = (*SeparatorToolItem)(nil)
+	_ gextras.Nativer      = (*SeparatorToolItem)(nil)
+)
 
-func wrapSeparatorToolItemmer(obj *externglib.Object) SeparatorToolItemmer {
+func wrapSeparatorToolItem(obj *externglib.Object) SeparatorToolItemmer {
 	return &SeparatorToolItem{
-		Object: obj,
 		ToolItem: ToolItem{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -79,38 +72,11 @@ func wrapSeparatorToolItemmer(obj *externglib.Object) SeparatorToolItemmer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -118,7 +84,7 @@ func wrapSeparatorToolItemmer(obj *externglib.Object) SeparatorToolItemmer {
 func marshalSeparatorToolItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparatorToolItemmer(obj), nil
+	return wrapSeparatorToolItem(obj), nil
 }
 
 // NewSeparatorToolItem: create a new SeparatorToolItem

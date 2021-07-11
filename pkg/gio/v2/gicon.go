@@ -34,11 +34,11 @@ func init() {
 	})
 }
 
-// IconnerOverrider contains methods that are overridable.
+// IconOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type IconnerOverrider interface {
+type IconOverrider interface {
 	// Equal checks if two icons are equal.
 	Equal(icon2 Iconner) bool
 	// Hash gets a hash for an icon.
@@ -54,10 +54,13 @@ type IconnerOverrider interface {
 
 // Iconner describes Icon's methods.
 type Iconner interface {
-	gextras.Objector
-
+	// Equal checks if two icons are equal.
 	Equal(icon2 Iconner) bool
+	// Serialize serializes a #GIcon into a #GVariant.
 	Serialize() *glib.Variant
+	// String generates a textual representation of @icon that can be used for
+	// serialization such as when passing @icon to a different process or saving
+	// it to persistent storage.
 	String() string
 }
 
@@ -90,9 +93,12 @@ type Icon struct {
 	*externglib.Object
 }
 
-var _ Iconner = (*Icon)(nil)
+var (
+	_ Iconner         = (*Icon)(nil)
+	_ gextras.Nativer = (*Icon)(nil)
+)
 
-func wrapIconner(obj *externglib.Object) Iconner {
+func wrapIcon(obj *externglib.Object) Iconner {
 	return &Icon{
 		Object: obj,
 	}
@@ -101,7 +107,7 @@ func wrapIconner(obj *externglib.Object) Iconner {
 func marshalIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconner(obj), nil
+	return wrapIcon(obj), nil
 }
 
 // Equal checks if two icons are equal.
@@ -111,7 +117,7 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GIcon)(unsafe.Pointer(icon1.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon2).(gextras.Nativer).Native()))
 
 	_cret = C.g_icon_equal(_arg0, _arg1)
 

@@ -24,9 +24,9 @@ func init() {
 
 // WindowHandler describes WindowHandle's methods.
 type WindowHandler interface {
-	gextras.Objector
-
+	// Child gets the child widget of @self.
 	Child() *Widget
+	// SetChild sets the child widget of @self.
 	SetChild(child Widgetter)
 }
 
@@ -45,21 +45,17 @@ type WindowHandler interface {
 //
 // `GtkWindowHandle` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowHandle struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ WindowHandler = (*WindowHandle)(nil)
+var (
+	_ WindowHandler   = (*WindowHandle)(nil)
+	_ gextras.Nativer = (*WindowHandle)(nil)
+)
 
-func wrapWindowHandler(obj *externglib.Object) WindowHandler {
+func wrapWindowHandle(obj *externglib.Object) WindowHandler {
 	return &WindowHandle{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -73,22 +69,13 @@ func wrapWindowHandler(obj *externglib.Object) WindowHandler {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalWindowHandler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowHandler(obj), nil
+	return wrapWindowHandle(obj), nil
 }
 
 // NewWindowHandle creates a new `GtkWindowHandle`.
@@ -126,7 +113,7 @@ func (self *WindowHandle) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_window_handle_set_child(_arg0, _arg1)
 }

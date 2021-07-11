@@ -23,8 +23,8 @@ func init() {
 	})
 }
 
-// DestDefaults: the DestDefaults enumeration specifies the various types of
-// action that will be taken on behalf of the user for a drag destination site.
+// DestDefaults enumeration specifies the various types of action that will be
+// taken on behalf of the user for a drag destination site.
 type DestDefaults int
 
 const (

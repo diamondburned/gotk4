@@ -24,8 +24,6 @@ func init() {
 
 // ListItemFactorier describes ListItemFactory's methods.
 type ListItemFactorier interface {
-	gextras.Objector
-
 	privateListItemFactory()
 }
 
@@ -82,9 +80,12 @@ type ListItemFactory struct {
 	*externglib.Object
 }
 
-var _ ListItemFactorier = (*ListItemFactory)(nil)
+var (
+	_ ListItemFactorier = (*ListItemFactory)(nil)
+	_ gextras.Nativer   = (*ListItemFactory)(nil)
+)
 
-func wrapListItemFactorier(obj *externglib.Object) ListItemFactorier {
+func wrapListItemFactory(obj *externglib.Object) ListItemFactorier {
 	return &ListItemFactory{
 		Object: obj,
 	}
@@ -93,7 +94,7 @@ func wrapListItemFactorier(obj *externglib.Object) ListItemFactorier {
 func marshalListItemFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListItemFactorier(obj), nil
+	return wrapListItemFactory(obj), nil
 }
 
 func (*ListItemFactory) privateListItemFactory() {}

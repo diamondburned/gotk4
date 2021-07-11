@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// HypertexterOverrider contains methods that are overridable.
+// HypertextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type HypertexterOverrider interface {
+type HypertextOverrider interface {
 	// Link gets the link in this hypertext document at index @link_index
 	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
@@ -34,15 +34,18 @@ type HypertexterOverrider interface {
 	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
 	NLinks() int
+
 	LinkSelected(linkIndex int)
 }
 
 // Hypertexter describes Hypertext's methods.
 type Hypertexter interface {
-	gextras.Objector
-
+	// Link gets the link in this hypertext document at index @link_index
 	Link(linkIndex int) *Hyperlink
+	// LinkIndex gets the index into the array of hyperlinks that is associated
+	// with the character specified by @char_index.
 	LinkIndex(charIndex int) int
+	// NLinks gets the number of links within this hypertext document.
 	NLinks() int
 }
 
@@ -57,9 +60,12 @@ type Hypertext struct {
 	*externglib.Object
 }
 
-var _ Hypertexter = (*Hypertext)(nil)
+var (
+	_ Hypertexter     = (*Hypertext)(nil)
+	_ gextras.Nativer = (*Hypertext)(nil)
+)
 
-func wrapHypertexter(obj *externglib.Object) Hypertexter {
+func wrapHypertext(obj *externglib.Object) Hypertexter {
 	return &Hypertext{
 		Object: obj,
 	}
@@ -68,7 +74,7 @@ func wrapHypertexter(obj *externglib.Object) Hypertexter {
 func marshalHypertexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHypertexter(obj), nil
+	return wrapHypertext(obj), nil
 }
 
 // Link gets the link in this hypertext document at index @link_index

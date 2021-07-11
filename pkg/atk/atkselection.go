@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// SelectionerOverrider contains methods that are overridable.
+// SelectionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SelectionerOverrider interface {
+type SelectionOverrider interface {
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.
 	AddSelection(i int) bool
@@ -57,19 +57,34 @@ type SelectionerOverrider interface {
 	// SelectAllSelection causes every child of the object to be selected if the
 	// object supports multiple selections.
 	SelectAllSelection() bool
+
 	SelectionChanged()
 }
 
 // Selectioner describes Selection's methods.
 type Selectioner interface {
-	gextras.Objector
-
+	// AddSelection adds the specified accessible child of the object to the
+	// object's selection.
 	AddSelection(i int) bool
+	// ClearSelection clears the selection in the object so that no children in
+	// the object are selected.
 	ClearSelection() bool
+	// SelectionCount gets the number of accessible children currently selected.
 	SelectionCount() int
+	// IsChildSelected determines if the current child of this object is
+	// selected Note: callers should not rely on nil or on a zero value for
+	// indication of whether AtkSelectionIface is implemented, they should use
+	// type checking/interface checking macros or the atk_get_accessible_value()
+	// convenience method.
 	IsChildSelected(i int) bool
+	// RefSelection gets a reference to the accessible object representing the
+	// specified selected child of the object.
 	RefSelection(i int) *ObjectClass
+	// RemoveSelection removes the specified child of the object from the
+	// object's selection.
 	RemoveSelection(i int) bool
+	// SelectAllSelection causes every child of the object to be selected if the
+	// object supports multiple selections.
 	SelectAllSelection() bool
 }
 
@@ -86,9 +101,12 @@ type Selection struct {
 	*externglib.Object
 }
 
-var _ Selectioner = (*Selection)(nil)
+var (
+	_ Selectioner     = (*Selection)(nil)
+	_ gextras.Nativer = (*Selection)(nil)
+)
 
-func wrapSelectioner(obj *externglib.Object) Selectioner {
+func wrapSelection(obj *externglib.Object) Selectioner {
 	return &Selection{
 		Object: obj,
 	}
@@ -97,7 +115,7 @@ func wrapSelectioner(obj *externglib.Object) Selectioner {
 func marshalSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSelectioner(obj), nil
+	return wrapSelection(obj), nil
 }
 
 // AddSelection adds the specified accessible child of the object to the

@@ -21,18 +21,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_content_provider_get_type()), F: marshalContentProviderrer},
+		{T: externglib.Type(C.gdk_content_provider_get_type()), F: marshalContentProviderer},
 	})
 }
 
-// ContentProviderrerOverrider contains methods that are overridable.
+// ContentProviderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ContentProviderrerOverrider interface {
+type ContentProviderOverrider interface {
 	AttachClipboard(clipboard Clipboarder)
 	// ContentChanged emits the ::content-changed signal.
 	ContentChanged()
+
 	DetachClipboard(clipboard Clipboarder)
 	// Value gets the contents of @provider stored in @value.
 	//
@@ -59,14 +60,19 @@ type ContentProviderrerOverrider interface {
 	WriteMIMETypeFinish(result gio.AsyncResulter) error
 }
 
-// ContentProviderrer describes ContentProvider's methods.
-type ContentProviderrer interface {
-	gextras.Objector
-
+// ContentProviderer describes ContentProvider's methods.
+type ContentProviderer interface {
+	// ContentChanged emits the ::content-changed signal.
 	ContentChanged()
+	// Value gets the contents of @provider stored in @value.
 	Value(value *externglib.Value) error
+	// RefFormats gets the formats that the provider can provide its current
+	// contents in.
 	RefFormats() *ContentFormats
+	// RefStorableFormats gets the formats that the provider suggests other
+	// applications to store the data in.
 	RefStorableFormats() *ContentFormats
+	// WriteMIMETypeFinish finishes an asynchronous write operation.
 	WriteMIMETypeFinish(result gio.AsyncResulter) error
 }
 
@@ -84,18 +90,21 @@ type ContentProvider struct {
 	*externglib.Object
 }
 
-var _ ContentProviderrer = (*ContentProvider)(nil)
+var (
+	_ ContentProviderer = (*ContentProvider)(nil)
+	_ gextras.Nativer   = (*ContentProvider)(nil)
+)
 
-func wrapContentProviderrer(obj *externglib.Object) ContentProviderrer {
+func wrapContentProvider(obj *externglib.Object) ContentProviderer {
 	return &ContentProvider{
 		Object: obj,
 	}
 }
 
-func marshalContentProviderrer(p uintptr) (interface{}, error) {
+func marshalContentProviderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContentProviderrer(obj), nil
+	return wrapContentProvider(obj), nil
 }
 
 // NewContentProviderForValue: create a content provider that provides the given
@@ -239,7 +248,7 @@ func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) e
 	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, &_cerr)
 

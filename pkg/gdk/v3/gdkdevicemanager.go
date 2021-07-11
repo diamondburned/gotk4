@@ -18,15 +18,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_device_manager_get_type()), F: marshalDeviceManagerrer},
+		{T: externglib.Type(C.gdk_device_manager_get_type()), F: marshalDeviceManagerer},
 	})
 }
 
-// DeviceManagerrer describes DeviceManager's methods.
-type DeviceManagerrer interface {
-	gextras.Objector
-
+// DeviceManagerer describes DeviceManager's methods.
+type DeviceManagerer interface {
+	// ClientPointer returns the client pointer, that is, the master pointer
+	// that acts as the core pointer for this application.
 	ClientPointer() *Device
+	// Display gets the Display associated to @device_manager.
 	Display() *Display
 }
 
@@ -138,18 +139,21 @@ type DeviceManager struct {
 	*externglib.Object
 }
 
-var _ DeviceManagerrer = (*DeviceManager)(nil)
+var (
+	_ DeviceManagerer = (*DeviceManager)(nil)
+	_ gextras.Nativer = (*DeviceManager)(nil)
+)
 
-func wrapDeviceManagerrer(obj *externglib.Object) DeviceManagerrer {
+func wrapDeviceManager(obj *externglib.Object) DeviceManagerer {
 	return &DeviceManager{
 		Object: obj,
 	}
 }
 
-func marshalDeviceManagerrer(p uintptr) (interface{}, error) {
+func marshalDeviceManagerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDeviceManagerrer(obj), nil
+	return wrapDeviceManager(obj), nil
 }
 
 // ClientPointer returns the client pointer, that is, the master pointer that

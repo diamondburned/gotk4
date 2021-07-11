@@ -26,8 +26,6 @@ func init() {
 
 // CellRendererCombor describes CellRendererCombo's methods.
 type CellRendererCombor interface {
-	gextras.Objector
-
 	privateCellRendererCombo()
 }
 
@@ -47,9 +45,12 @@ type CellRendererCombo struct {
 	CellRendererText
 }
 
-var _ CellRendererCombor = (*CellRendererCombo)(nil)
+var (
+	_ CellRendererCombor = (*CellRendererCombo)(nil)
+	_ gextras.Nativer    = (*CellRendererCombo)(nil)
+)
 
-func wrapCellRendererCombor(obj *externglib.Object) CellRendererCombor {
+func wrapCellRendererCombo(obj *externglib.Object) CellRendererCombor {
 	return &CellRendererCombo{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
@@ -64,7 +65,7 @@ func wrapCellRendererCombor(obj *externglib.Object) CellRendererCombor {
 func marshalCellRendererCombor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererCombor(obj), nil
+	return wrapCellRendererCombo(obj), nil
 }
 
 // NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is

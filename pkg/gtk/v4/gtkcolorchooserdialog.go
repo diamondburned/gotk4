@@ -24,8 +24,6 @@ func init() {
 
 // ColorChooserDialogger describes ColorChooserDialog's methods.
 type ColorChooserDialogger interface {
-	gextras.Objector
-
 	privateColorChooserDialog()
 }
 
@@ -42,29 +40,21 @@ type ColorChooserDialogger interface {
 // [method@Gtk.ColorChooser.set_rgba]. To get the selected color use
 // [method@Gtk.ColorChooser.get_rgba].
 type ColorChooserDialog struct {
-	*externglib.Object
-
 	Dialog
-	Accessible
-	Buildable
+
 	ColorChooser
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
 }
 
-var _ ColorChooserDialogger = (*ColorChooserDialog)(nil)
+var (
+	_ ColorChooserDialogger = (*ColorChooserDialog)(nil)
+	_ gextras.Nativer       = (*ColorChooserDialog)(nil)
+)
 
-func wrapColorChooserDialogger(obj *externglib.Object) ColorChooserDialogger {
+func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialogger {
 	return &ColorChooserDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -78,39 +68,9 @@ func wrapColorChooserDialogger(obj *externglib.Object) ColorChooserDialogger {
 						Object: obj,
 					},
 				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-				Native: Native{
-					Object: obj,
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						Accessible: Accessible{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-						ConstraintTarget: ConstraintTarget{
-							Object: obj,
-						},
-					},
-				},
 				Root: Root{
-					Object: obj,
 					Native: Native{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -125,160 +85,13 @@ func wrapColorChooserDialogger(obj *externglib.Object) ColorChooserDialogger {
 							},
 						},
 					},
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						Accessible: Accessible{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-						ConstraintTarget: ConstraintTarget{
-							Object: obj,
-						},
-					},
 				},
 				ShortcutManager: ShortcutManager{
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Root: Root{
-				Object: obj,
-				Native: Native{
-					Object: obj,
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						Accessible: Accessible{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-						ConstraintTarget: ConstraintTarget{
-							Object: obj,
-						},
-					},
-				},
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			ShortcutManager: ShortcutManager{
-				Object: obj,
-			},
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		ColorChooser: ColorChooser{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		Root: Root{
-			Object: obj,
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
 	}
@@ -287,7 +100,7 @@ func wrapColorChooserDialogger(obj *externglib.Object) ColorChooserDialogger {
 func marshalColorChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorChooserDialogger(obj), nil
+	return wrapColorChooserDialog(obj), nil
 }
 
 // NewColorChooserDialog creates a new `GtkColorChooserDialog`.
@@ -298,7 +111,7 @@ func NewColorChooserDialog(title string, parent Windowwer) *ColorChooserDialog {
 
 	_arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
 
@@ -307,6 +120,12 @@ func NewColorChooserDialog(title string, parent Windowwer) *ColorChooserDialog {
 	_colorChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserDialog)
 
 	return _colorChooserDialog
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ColorChooserDialog) Native() uintptr {
+	return v.Dialog.Window.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*ColorChooserDialog) privateColorChooserDialog() {}

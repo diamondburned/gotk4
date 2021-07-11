@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// TLSInteractionerOverrider contains methods that are overridable.
+// TLSInteractionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSInteractionerOverrider interface {
+type TLSInteractionOverrider interface {
 	// AskPassword: run synchronous interaction to ask the user for a password.
 	// In general, g_tls_interaction_invoke_ask_password() should be used
 	// instead of this function.
@@ -101,12 +101,17 @@ type TLSInteractionerOverrider interface {
 
 // TLSInteractioner describes TLSInteraction's methods.
 type TLSInteractioner interface {
-	gextras.Objector
-
+	// AskPassword: run synchronous interaction to ask the user for a password.
 	AskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error)
+	// AskPasswordAsync: run asynchronous interaction to ask the user for a
+	// password.
 	AskPasswordAsync(password TLSPassworder, cancellable Cancellabler, callback AsyncReadyCallback)
+	// AskPasswordFinish: complete an ask password user interaction request.
 	AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
+	// InvokeAskPassword: invoke the interaction to ask the user for a password.
 	InvokeAskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error)
+	// RequestCertificateFinish: complete a request certificate user interaction
+	// request.
 	RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
 }
 
@@ -133,9 +138,12 @@ type TLSInteraction struct {
 	*externglib.Object
 }
 
-var _ TLSInteractioner = (*TLSInteraction)(nil)
+var (
+	_ TLSInteractioner = (*TLSInteraction)(nil)
+	_ gextras.Nativer  = (*TLSInteraction)(nil)
+)
 
-func wrapTLSInteractioner(obj *externglib.Object) TLSInteractioner {
+func wrapTLSInteraction(obj *externglib.Object) TLSInteractioner {
 	return &TLSInteraction{
 		Object: obj,
 	}
@@ -144,7 +152,7 @@ func wrapTLSInteractioner(obj *externglib.Object) TLSInteractioner {
 func marshalTLSInteractioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSInteractioner(obj), nil
+	return wrapTLSInteraction(obj), nil
 }
 
 // AskPassword: run synchronous interaction to ask the user for a password. In
@@ -168,8 +176,8 @@ func (interaction *TLSInteraction) AskPassword(password TLSPassworder, cancellab
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer((password).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_interaction_ask_password(_arg0, _arg1, _arg2, &_cerr)
 
@@ -205,8 +213,8 @@ func (interaction *TLSInteraction) AskPasswordAsync(password TLSPassworder, canc
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer((password).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -230,7 +238,7 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_interaction_ask_password_finish(_arg0, _arg1, &_cerr)
 
@@ -269,8 +277,8 @@ func (interaction *TLSInteraction) InvokeAskPassword(password TLSPassworder, can
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer((password).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_interaction_invoke_ask_password(_arg0, _arg1, _arg2, &_cerr)
 
@@ -301,7 +309,7 @@ func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_interaction_request_certificate_finish(_arg0, _arg1, &_cerr)
 

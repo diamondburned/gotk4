@@ -48,34 +48,53 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 	return StyleContextPrintFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// StyleContexterOverrider contains methods that are overridable.
+// StyleContextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type StyleContexterOverrider interface {
+type StyleContextOverrider interface {
 	Changed()
 }
 
 // StyleContexter describes StyleContext's methods.
 type StyleContexter interface {
-	gextras.Objector
-
+	// AddClass adds a style class to @context, so later uses of the style
+	// context will make use of this new class for styling.
 	AddClass(className string)
-	AddProvider(provider StyleProviderrer, priority uint)
+	// AddProvider adds a style provider to @context, to be used in style
+	// construction.
+	AddProvider(provider StyleProviderer, priority uint)
+	// Border gets the border for a given state as a `GtkBorder`.
 	Border() Border
+	// Color gets the foreground color for a given state.
 	Color() gdk.RGBA
+	// Display returns the `GdkDisplay` to which @context is attached.
 	Display() *gdk.Display
+	// Margin gets the margin for a given state as a `GtkBorder`.
 	Margin() Border
+	// Padding gets the padding for a given state as a `GtkBorder`.
 	Padding() Border
+	// Scale returns the scale used for assets.
 	Scale() int
+	// State returns the state used for style matching.
 	State() StateFlags
+	// HasClass returns true if @context currently has defined the given class
+	// name.
 	HasClass(className string) bool
+	// LookupColor looks up and resolves a color name in the @context color map.
 	LookupColor(colorName string) (gdk.RGBA, bool)
+	// RemoveClass removes @class_name from @context.
 	RemoveClass(className string)
-	RemoveProvider(provider StyleProviderrer)
+	// RemoveProvider removes @provider from the style providers list in
+	// @context.
+	RemoveProvider(provider StyleProviderer)
+	// Restore restores @context state to a previous stage.
 	Restore()
+	// Save saves the @context state.
 	Save()
+	// SetDisplay attaches @context to the given display.
 	SetDisplay(display gdk.Displayyer)
+	// SetScale sets the scale to use when getting image assets for the style.
 	SetScale(scale int)
 }
 
@@ -122,9 +141,12 @@ type StyleContext struct {
 	*externglib.Object
 }
 
-var _ StyleContexter = (*StyleContext)(nil)
+var (
+	_ StyleContexter  = (*StyleContext)(nil)
+	_ gextras.Nativer = (*StyleContext)(nil)
+)
 
-func wrapStyleContexter(obj *externglib.Object) StyleContexter {
+func wrapStyleContext(obj *externglib.Object) StyleContexter {
 	return &StyleContext{
 		Object: obj,
 	}
@@ -133,7 +155,7 @@ func wrapStyleContexter(obj *externglib.Object) StyleContexter {
 func marshalStyleContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleContexter(obj), nil
+	return wrapStyleContext(obj), nil
 }
 
 // AddClass adds a style class to @context, so later uses of the style context
@@ -167,13 +189,13 @@ func (context *StyleContext) AddClass(className string) {
 // Note: If both priorities are the same, a `GtkStyleProvider` added through
 // this function takes precedence over another added through
 // [func@Gtk.StyleContext.add_provider_for_display].
-func (context *StyleContext) AddProvider(provider StyleProviderrer, priority uint) {
+func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
 	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
@@ -354,12 +376,12 @@ func (context *StyleContext) RemoveClass(className string) {
 }
 
 // RemoveProvider removes @provider from the style providers list in @context.
-func (context *StyleContext) RemoveProvider(provider StyleProviderrer) {
+func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
 
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
@@ -404,7 +426,7 @@ func (context *StyleContext) SetDisplay(display gdk.Displayyer) {
 	var _arg1 *C.GdkDisplay      // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
 
 	C.gtk_style_context_set_display(_arg0, _arg1)
 }

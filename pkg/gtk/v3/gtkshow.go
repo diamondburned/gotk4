@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
@@ -32,7 +33,7 @@ func ShowURI(screen gdk.Screener, uri string, timestamp uint32) error {
 	var _arg3 C.guint32    // out
 	var _cerr *C.GError    // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)
@@ -64,7 +65,7 @@ func ShowURIOnWindow(parent Windowwer, uri string, timestamp uint32) error {
 	var _arg3 C.guint32    // out
 	var _cerr *C.GError    // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)

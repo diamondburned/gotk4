@@ -25,8 +25,6 @@ func init() {
 
 // X11Monitorrer describes X11Monitor's methods.
 type X11Monitorrer interface {
-	gextras.Objector
-
 	privateX11Monitor()
 }
 
@@ -34,9 +32,12 @@ type X11Monitor struct {
 	gdk.Monitor
 }
 
-var _ X11Monitorrer = (*X11Monitor)(nil)
+var (
+	_ X11Monitorrer   = (*X11Monitor)(nil)
+	_ gextras.Nativer = (*X11Monitor)(nil)
+)
 
-func wrapX11Monitorrer(obj *externglib.Object) X11Monitorrer {
+func wrapX11Monitor(obj *externglib.Object) X11Monitorrer {
 	return &X11Monitor{
 		Monitor: gdk.Monitor{
 			Object: obj,
@@ -47,7 +48,7 @@ func wrapX11Monitorrer(obj *externglib.Object) X11Monitorrer {
 func marshalX11Monitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Monitorrer(obj), nil
+	return wrapX11Monitor(obj), nil
 }
 
 func (*X11Monitor) privateX11Monitor() {}

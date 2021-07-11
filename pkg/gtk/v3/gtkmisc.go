@@ -27,16 +27,18 @@ func init() {
 
 // Miscer describes Misc's methods.
 type Miscer interface {
-	gextras.Objector
-
+	// Alignment gets the X and Y alignment of the widget within its allocation.
 	Alignment() (xalign float32, yalign float32)
+	// Padding gets the padding in the X and Y directions of the widget.
 	Padding() (xpad int, ypad int)
+	// SetAlignment sets the alignment of the widget.
 	SetAlignment(xalign float32, yalign float32)
+	// SetPadding sets the amount of space to add around the widget.
 	SetPadding(xpad int, ypad int)
 }
 
-// Misc: the Misc widget is an abstract widget which is not useful itself, but
-// is used to derive subclasses which have alignment and padding attributes.
+// Misc widget is an abstract widget which is not useful itself, but is used to
+// derive subclasses which have alignment and padding attributes.
 //
 // The horizontal and vertical padding attributes allows extra space to be added
 // around the widget.
@@ -51,20 +53,17 @@ type Miscer interface {
 // widget, so GtkMisc should not be used in new code. To reflect this fact, all
 // Misc API has been deprecated.
 type Misc struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Miscer = (*Misc)(nil)
+var (
+	_ Miscer          = (*Misc)(nil)
+	_ gextras.Nativer = (*Misc)(nil)
+)
 
-func wrapMiscer(obj *externglib.Object) Miscer {
+func wrapMisc(obj *externglib.Object) Miscer {
 	return &Misc{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -75,19 +74,13 @@ func wrapMiscer(obj *externglib.Object) Miscer {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalMiscer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMiscer(obj), nil
+	return wrapMisc(obj), nil
 }
 
 // Alignment gets the X and Y alignment of the widget within its allocation. See

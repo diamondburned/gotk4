@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// FileInputStreamerOverrider contains methods that are overridable.
+// FileInputStreamOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileInputStreamerOverrider interface {
+type FileInputStreamOverrider interface {
 	CanSeek() bool
 	// QueryInfo queries a file input stream the given @attributes. This
 	// function blocks while querying the stream. For the asynchronous
@@ -63,15 +63,17 @@ type FileInputStreamerOverrider interface {
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous info query operation.
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
+
 	Tell() int64
 }
 
 // FileInputStreamer describes FileInputStream's methods.
 type FileInputStreamer interface {
-	gextras.Objector
-
+	// QueryInfo queries a file input stream the given @attributes.
 	QueryInfo(attributes string, cancellable Cancellabler) (*FileInfo, error)
+	// QueryInfoAsync queries the stream information asynchronously.
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// QueryInfoFinish finishes an asynchronous info query operation.
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 }
 
@@ -84,17 +86,18 @@ type FileInputStreamer interface {
 // g_seekable_can_seek(). To position a file input stream, use
 // g_seekable_seek().
 type FileInputStream struct {
-	*externglib.Object
-
 	InputStream
+
 	Seekable
 }
 
-var _ FileInputStreamer = (*FileInputStream)(nil)
+var (
+	_ FileInputStreamer = (*FileInputStream)(nil)
+	_ gextras.Nativer   = (*FileInputStream)(nil)
+)
 
-func wrapFileInputStreamer(obj *externglib.Object) FileInputStreamer {
+func wrapFileInputStream(obj *externglib.Object) FileInputStreamer {
 	return &FileInputStream{
-		Object: obj,
 		InputStream: InputStream{
 			Object: obj,
 		},
@@ -107,7 +110,13 @@ func wrapFileInputStreamer(obj *externglib.Object) FileInputStreamer {
 func marshalFileInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileInputStreamer(obj), nil
+	return wrapFileInputStream(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FileInputStream) Native() uintptr {
+	return v.InputStream.Object.Native()
 }
 
 // QueryInfo queries a file input stream the given @attributes. This function
@@ -125,7 +134,7 @@ func (stream *FileInputStream) QueryInfo(attributes string, cancellable Cancella
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_input_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
@@ -160,7 +169,7 @@ func (stream *FileInputStream) QueryInfoAsync(attributes string, ioPriority int,
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -175,7 +184,7 @@ func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo,
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_input_stream_query_info_finish(_arg0, _arg1, &_cerr)
 

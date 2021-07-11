@@ -57,11 +57,11 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ComponenterOverrider contains methods that are overridable.
+// ComponentOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ComponenterOverrider interface {
+type ComponentOverrider interface {
 	BoundsChanged(bounds *Rectangle)
 	// Alpha returns the alpha value (i.e. the opacity) for this @component, on
 	// a scale from 0 (fully transparent) to 1.0 (fully opaque).
@@ -94,14 +94,21 @@ type ComponenterOverrider interface {
 
 // Componenter describes Component's methods.
 type Componenter interface {
-	gextras.Objector
-
+	// Alpha returns the alpha value (i.e.
 	Alpha() float64
+	// Layer gets the layer of the component.
 	Layer() Layer
+	// MDIZOrder gets the zorder of the component.
 	MDIZOrder() int
+	// Size gets the size of the @component in terms of width and height.
 	Size() (width int, height int)
+	// GrabFocus grabs focus for this @component.
 	GrabFocus() bool
+	// RemoveFocusHandler: remove the handler specified by @handler_id from the
+	// list of functions to be executed when this object receives focus events
+	// (in or out).
 	RemoveFocusHandler(handlerId uint)
+	// SetSize: set the size of the @component in terms of width and height.
 	SetSize(width int, height int) bool
 }
 
@@ -119,9 +126,12 @@ type Component struct {
 	*externglib.Object
 }
 
-var _ Componenter = (*Component)(nil)
+var (
+	_ Componenter     = (*Component)(nil)
+	_ gextras.Nativer = (*Component)(nil)
+)
 
-func wrapComponenter(obj *externglib.Object) Componenter {
+func wrapComponent(obj *externglib.Object) Componenter {
 	return &Component{
 		Object: obj,
 	}
@@ -130,7 +140,7 @@ func wrapComponenter(obj *externglib.Object) Componenter {
 func marshalComponenter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComponenter(obj), nil
+	return wrapComponent(obj), nil
 }
 
 // Alpha returns the alpha value (i.e. the opacity) for this @component, on a

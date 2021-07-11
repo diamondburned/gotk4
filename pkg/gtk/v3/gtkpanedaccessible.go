@@ -27,24 +27,22 @@ func init() {
 
 // PanedAccessibler describes PanedAccessible's methods.
 type PanedAccessibler interface {
-	gextras.Objector
-
 	privatePanedAccessible()
 }
 
 type PanedAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
-	atk.Component
+
 	atk.Value
 }
 
-var _ PanedAccessibler = (*PanedAccessible)(nil)
+var (
+	_ PanedAccessibler = (*PanedAccessible)(nil)
+	_ gextras.Nativer  = (*PanedAccessible)(nil)
+)
 
-func wrapPanedAccessibler(obj *externglib.Object) PanedAccessibler {
+func wrapPanedAccessible(obj *externglib.Object) PanedAccessibler {
 	return &PanedAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -56,12 +54,6 @@ func wrapPanedAccessibler(obj *externglib.Object) PanedAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 		Value: atk.Value{
 			Object: obj,
@@ -72,7 +64,7 @@ func wrapPanedAccessibler(obj *externglib.Object) PanedAccessibler {
 func marshalPanedAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPanedAccessibler(obj), nil
+	return wrapPanedAccessible(obj), nil
 }
 
 func (*PanedAccessible) privatePanedAccessible() {}

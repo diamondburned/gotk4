@@ -25,29 +25,45 @@ func init() {
 	})
 }
 
-// ToolButtonnerOverrider contains methods that are overridable.
+// ToolButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToolButtonnerOverrider interface {
+type ToolButtonOverrider interface {
 	Clicked()
 }
 
 // ToolButtonner describes ToolButton's methods.
 type ToolButtonner interface {
-	gextras.Objector
-
+	// IconName returns the name of the themed icon for the tool button, see
+	// gtk_tool_button_set_icon_name().
 	IconName() string
+	// IconWidget: return the widget used as icon widget on @button.
 	IconWidget() *Widget
+	// Label returns the label used by the tool button, or nil if the tool
+	// button doesn’t have a label.
 	Label() string
+	// LabelWidget returns the widget used as label on @button.
 	LabelWidget() *Widget
+	// StockID returns the name of the stock item.
 	StockID() string
+	// UseUnderline returns whether underscores in the label property are used
+	// as mnemonics on menu items on the overflow menu.
 	UseUnderline() bool
+	// SetIconName sets the icon for the tool button from a named themed icon.
 	SetIconName(iconName string)
+	// SetIconWidget sets @icon as the widget used as icon on @button.
 	SetIconWidget(iconWidget Widgetter)
+	// SetLabel sets @label as the label used for the tool button.
 	SetLabel(label string)
+	// SetLabelWidget sets @label_widget as the widget that will be used as the
+	// label for @button.
 	SetLabelWidget(labelWidget Widgetter)
+	// SetStockID sets the name of the stock item.
 	SetStockID(stockId string)
+	// SetUseUnderline: if set, an underline in the label property indicates
+	// that the next character should be used for the mnemonic accelerator key
+	// in the overflow menu.
 	SetUseUnderline(useUnderline bool)
 }
 
@@ -73,28 +89,22 @@ type ToolButtonner interface {
 //
 // GtkToolButton has a single CSS node with name toolbutton.
 type ToolButton struct {
-	*externglib.Object
-
 	ToolItem
-	atk.ImplementorIface
+
 	Actionable
-	Activatable
-	Buildable
 }
 
-var _ ToolButtonner = (*ToolButton)(nil)
+var (
+	_ ToolButtonner   = (*ToolButton)(nil)
+	_ gextras.Nativer = (*ToolButton)(nil)
+)
 
-func wrapToolButtonner(obj *externglib.Object) ToolButtonner {
+func wrapToolButton(obj *externglib.Object) ToolButtonner {
 	return &ToolButton{
-		Object: obj,
 		ToolItem: ToolItem{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -105,37 +115,14 @@ func wrapToolButtonner(obj *externglib.Object) ToolButtonner {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
 		},
 		Actionable: Actionable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -147,19 +134,13 @@ func wrapToolButtonner(obj *externglib.Object) ToolButtonner {
 				},
 			},
 		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolButtonner(obj), nil
+	return wrapToolButton(obj), nil
 }
 
 // NewToolButton creates a new ToolButton using @icon_widget as contents and
@@ -169,7 +150,7 @@ func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((iconWidget).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -204,6 +185,12 @@ func NewToolButtonFromStock(stockId string) *ToolButton {
 	_toolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolButton)
 
 	return _toolButton
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ToolButton) Native() uintptr {
+	return v.ToolItem.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // IconName returns the name of the themed icon for the tool button, see
@@ -339,7 +326,7 @@ func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((iconWidget).(gextras.Nativer).Native()))
 
 	C.gtk_tool_button_set_icon_widget(_arg0, _arg1)
 }
@@ -371,7 +358,7 @@ func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
 
 	C.gtk_tool_button_set_label_widget(_arg0, _arg1)
 }

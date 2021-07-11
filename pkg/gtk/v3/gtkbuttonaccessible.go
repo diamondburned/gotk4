@@ -27,25 +27,23 @@ func init() {
 
 // ButtonAccessibler describes ButtonAccessible's methods.
 type ButtonAccessibler interface {
-	gextras.Objector
-
 	privateButtonAccessible()
 }
 
 type ButtonAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
+
 	atk.Action
-	atk.Component
 	atk.Image
 }
 
-var _ ButtonAccessibler = (*ButtonAccessible)(nil)
+var (
+	_ ButtonAccessibler = (*ButtonAccessible)(nil)
+	_ gextras.Nativer   = (*ButtonAccessible)(nil)
+)
 
-func wrapButtonAccessibler(obj *externglib.Object) ButtonAccessibler {
+func wrapButtonAccessible(obj *externglib.Object) ButtonAccessibler {
 	return &ButtonAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -57,14 +55,8 @@ func wrapButtonAccessibler(obj *externglib.Object) ButtonAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
 		},
 		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
 			Object: obj,
 		},
 		Image: atk.Image{
@@ -76,7 +68,13 @@ func wrapButtonAccessibler(obj *externglib.Object) ButtonAccessibler {
 func marshalButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButtonAccessibler(obj), nil
+	return wrapButtonAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ButtonAccessible) Native() uintptr {
+	return v.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*ButtonAccessible) privateButtonAccessible() {}

@@ -25,22 +25,23 @@ func init() {
 
 // ConstraintTargetter describes ConstraintTarget's methods.
 type ConstraintTargetter interface {
-	gextras.Objector
-
 	privateConstraintTarget()
 }
 
-// ConstraintTarget: the `GtkConstraintTarget` interface is implemented by
-// objects that can be used as source or target in `GtkConstraint`s.
+// ConstraintTarget: `GtkConstraintTarget` interface is implemented by objects
+// that can be used as source or target in `GtkConstraint`s.
 //
 // Besides `GtkWidget`, it is also implemented by `GtkConstraintGuide`.
 type ConstraintTarget struct {
 	*externglib.Object
 }
 
-var _ ConstraintTargetter = (*ConstraintTarget)(nil)
+var (
+	_ ConstraintTargetter = (*ConstraintTarget)(nil)
+	_ gextras.Nativer     = (*ConstraintTarget)(nil)
+)
 
-func wrapConstraintTargetter(obj *externglib.Object) ConstraintTargetter {
+func wrapConstraintTarget(obj *externglib.Object) ConstraintTargetter {
 	return &ConstraintTarget{
 		Object: obj,
 	}
@@ -49,25 +50,43 @@ func wrapConstraintTargetter(obj *externglib.Object) ConstraintTargetter {
 func marshalConstraintTargetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstraintTargetter(obj), nil
+	return wrapConstraintTarget(obj), nil
 }
 
 func (*ConstraintTarget) privateConstraintTarget() {}
 
 // Constrainter describes Constraint's methods.
 type Constrainter interface {
-	gextras.Objector
-
+	// Constant retrieves the constant factor added to the source attributes'
+	// value.
 	Constant() float64
+	// Multiplier retrieves the multiplication factor applied to the source
+	// attribute's value.
 	Multiplier() float64
+	// Relation: order relation between the terms of the constraint.
 	Relation() ConstraintRelation
+	// Source retrieves the [iface@Gtk.ConstraintTarget] used as the source for
+	// the constraint.
 	Source() *ConstraintTarget
+	// SourceAttribute retrieves the attribute of the source to be read by the
+	// constraint.
 	SourceAttribute() ConstraintAttribute
+	// Strength retrieves the strength of the constraint.
 	Strength() int
+	// Target retrieves the [iface@Gtk.ConstraintTarget] used as the target for
+	// the constraint.
 	Target() *ConstraintTarget
+	// TargetAttribute retrieves the attribute of the target to be set by the
+	// constraint.
 	TargetAttribute() ConstraintAttribute
+	// IsAttached checks whether the constraint is attached to a
+	// [class@Gtk.ConstraintLayout], and it is contributing to the layout.
 	IsAttached() bool
+	// IsConstant checks whether the constraint describes a relation between an
+	// attribute on the [property@Gtk.Constraint:target] and a constant value.
 	IsConstant() bool
+	// IsRequired checks whether the constraint is a required relation for
+	// solving the constraint layout.
 	IsRequired() bool
 }
 
@@ -88,9 +107,12 @@ type Constraint struct {
 	*externglib.Object
 }
 
-var _ Constrainter = (*Constraint)(nil)
+var (
+	_ Constrainter    = (*Constraint)(nil)
+	_ gextras.Nativer = (*Constraint)(nil)
+)
 
-func wrapConstrainter(obj *externglib.Object) Constrainter {
+func wrapConstraint(obj *externglib.Object) Constrainter {
 	return &Constraint{
 		Object: obj,
 	}
@@ -99,7 +121,7 @@ func wrapConstrainter(obj *externglib.Object) Constrainter {
 func marshalConstrainter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstrainter(obj), nil
+	return wrapConstraint(obj), nil
 }
 
 // Constant retrieves the constant factor added to the source attributes' value.
@@ -135,7 +157,7 @@ func (constraint *Constraint) Multiplier() float64 {
 	return _gdouble
 }
 
-// Relation: the order relation between the terms of the constraint.
+// Relation: order relation between the terms of the constraint.
 func (constraint *Constraint) Relation() ConstraintRelation {
 	var _arg0 *C.GtkConstraint        // out
 	var _cret C.GtkConstraintRelation // in

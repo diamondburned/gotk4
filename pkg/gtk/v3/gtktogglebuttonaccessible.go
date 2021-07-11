@@ -27,27 +27,21 @@ func init() {
 
 // ToggleButtonAccessibler describes ToggleButtonAccessible's methods.
 type ToggleButtonAccessibler interface {
-	gextras.Objector
-
 	privateToggleButtonAccessible()
 }
 
 type ToggleButtonAccessible struct {
-	*externglib.Object
-
 	ButtonAccessible
-	atk.Action
-	atk.Component
-	atk.Image
 }
 
-var _ ToggleButtonAccessibler = (*ToggleButtonAccessible)(nil)
+var (
+	_ ToggleButtonAccessibler = (*ToggleButtonAccessible)(nil)
+	_ gextras.Nativer         = (*ToggleButtonAccessible)(nil)
+)
 
-func wrapToggleButtonAccessibler(obj *externglib.Object) ToggleButtonAccessibler {
+func wrapToggleButtonAccessible(obj *externglib.Object) ToggleButtonAccessibler {
 	return &ToggleButtonAccessible{
-		Object: obj,
 		ButtonAccessible: ButtonAccessible{
-			Object: obj,
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
@@ -59,28 +53,13 @@ func wrapToggleButtonAccessibler(obj *externglib.Object) ToggleButtonAccessibler
 						Object: obj,
 					},
 				},
-				Component: atk.Component{
-					Object: obj,
-				},
 			},
 			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
 				Object: obj,
 			},
 			Image: atk.Image{
 				Object: obj,
 			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
-		Image: atk.Image{
-			Object: obj,
 		},
 	}
 }
@@ -88,7 +67,7 @@ func wrapToggleButtonAccessibler(obj *externglib.Object) ToggleButtonAccessibler
 func marshalToggleButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleButtonAccessibler(obj), nil
+	return wrapToggleButtonAccessible(obj), nil
 }
 
 func (*ToggleButtonAccessible) privateToggleButtonAccessible() {}

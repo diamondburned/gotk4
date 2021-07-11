@@ -27,6 +27,7 @@ func NewGoTemplate(block string) *template.Template {
 		"FirstLetter":    strcases.FirstLetter,
 
 		"GoDoc":            cmt.GoDoc,
+		"Synopsis":         cmt.Synopsis,
 		"OverrideSelfName": cmt.OverrideSelfName,
 		"AdditionalString": cmt.AdditionalString,
 		"TrailingNewLine":  cmt.TrailingNewLine,

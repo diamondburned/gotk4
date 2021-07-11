@@ -27,7 +27,7 @@ func init() {
 	})
 }
 
-// BlendMode: the blend modes available for render nodes.
+// BlendMode: blend modes available for render nodes.
 //
 // The implementation of each blend mode is deferred to the rendering pipeline.
 //
@@ -36,10 +36,10 @@ func init() {
 type BlendMode int
 
 const (
-	// Default: the default blend mode, which specifies no blending
+	// Default blend mode, which specifies no blending
 	BlendModeDefault BlendMode = iota
-	// Multiply: the source color is multiplied by the destination and replaces
-	// the destination
+	// Multiply: source color is multiplied by the destination and replaces the
+	// destination
 	BlendModeMultiply
 	// Screen multiplies the complements of the destination and source color
 	// values, then complements the result.
@@ -85,17 +85,17 @@ func marshalBlendMode(p uintptr) (interface{}, error) {
 	return BlendMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Corner: the corner indices used by RoundedRect.
+// Corner: corner indices used by RoundedRect.
 type Corner int
 
 const (
-	// TopLeft: the top left corner
+	// TopLeft: top left corner
 	CornerTopLeft Corner = iota
-	// TopRight: the top right corner
+	// TopRight: top right corner
 	CornerTopRight
-	// BottomRight: the bottom right corner
+	// BottomRight: bottom right corner
 	CornerBottomRight
-	// BottomLeft: the bottom left corner
+	// BottomLeft: bottom left corner
 	CornerBottomLeft
 )
 
@@ -133,7 +133,7 @@ func marshalGLUniformType(p uintptr) (interface{}, error) {
 	return GLUniformType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RenderNodeType: the type of a node determines what the node is rendering.
+// RenderNodeType: type of a node determines what the node is rendering.
 type RenderNodeType int
 
 const (
@@ -196,7 +196,7 @@ func marshalRenderNodeType(p uintptr) (interface{}, error) {
 	return RenderNodeType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ScalingFilter: the filters used when scaling texture data.
+// ScalingFilter filters used when scaling texture data.
 //
 // The actual implementation of each filter is deferred to the rendering
 // pipeline.
@@ -220,11 +220,11 @@ func marshalScalingFilter(p uintptr) (interface{}, error) {
 type SerializationError int
 
 const (
-	// UnsupportedFormat: the format can not be identified
+	// UnsupportedFormat: format can not be identified
 	SerializationErrorUnsupportedFormat SerializationError = iota
-	// UnsupportedVersion: the version of the data is not understood
+	// UnsupportedVersion: version of the data is not understood
 	SerializationErrorUnsupportedVersion
-	// InvalidData: the given data may not exist in a proper serialization
+	// InvalidData: given data may not exist in a proper serialization
 	SerializationErrorInvalidData
 )
 
@@ -232,7 +232,7 @@ func marshalSerializationError(p uintptr) (interface{}, error) {
 	return SerializationError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TransformCategory: the categories of matrices relevant for GSK and GTK.
+// TransformCategory categories of matrices relevant for GSK and GTK.
 //
 // Note that any category includes matrices of all later categories. So if you
 // want to for example check if a matrix is a 2D matrix, `category >=
@@ -245,25 +245,25 @@ func marshalSerializationError(p uintptr) (interface{}, error) {
 type TransformCategory int
 
 const (
-	// Unknown: the category of the matrix has not been determined.
+	// Unknown: category of the matrix has not been determined.
 	TransformCategoryUnknown TransformCategory = iota
 	// Any: analyzing the matrix concluded that it does not fit in any other
 	// category.
 	TransformCategoryAny
-	// 3D: the matrix is a 3D matrix. This means that the w column (the last
-	// column) has the values (0, 0, 0, 1).
+	// 3D: matrix is a 3D matrix. This means that the w column (the last column)
+	// has the values (0, 0, 0, 1).
 	TransformCategory3D
-	// 2D: the matrix is a 2D matrix. This is equivalent to
-	// graphene_matrix_is_2d() returning true. In particular, this means that
-	// Cairo can deal with the matrix.
+	// 2D: matrix is a 2D matrix. This is equivalent to graphene_matrix_is_2d()
+	// returning true. In particular, this means that Cairo can deal with the
+	// matrix.
 	TransformCategory2D
-	// 2DAffine: the matrix is a combination of 2D scale and 2D translation
+	// 2DAffine: matrix is a combination of 2D scale and 2D translation
 	// operations. In particular, this means that any rectangle can be
 	// transformed exactly using this matrix.
 	TransformCategory2DAffine
-	// 2DTranslate: the matrix is a 2D translation.
+	// 2DTranslate: matrix is a 2D translation.
 	TransformCategory2DTranslate
-	// Identity: the matrix is the identity matrix.
+	// Identity: matrix is the identity matrix.
 	TransformCategoryIdentity
 )
 

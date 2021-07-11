@@ -19,14 +19,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_display_manager_get_type()), F: marshalX11DisplayManagerrer},
+		{T: externglib.Type(C.gdk_x11_display_manager_get_type()), F: marshalX11DisplayManagerer},
 	})
 }
 
-// X11DisplayManagerrer describes X11DisplayManager's methods.
-type X11DisplayManagerrer interface {
-	gextras.Objector
-
+// X11DisplayManagerer describes X11DisplayManager's methods.
+type X11DisplayManagerer interface {
 	privateX11DisplayManager()
 }
 
@@ -34,9 +32,12 @@ type X11DisplayManager struct {
 	gdk.DisplayManager
 }
 
-var _ X11DisplayManagerrer = (*X11DisplayManager)(nil)
+var (
+	_ X11DisplayManagerer = (*X11DisplayManager)(nil)
+	_ gextras.Nativer     = (*X11DisplayManager)(nil)
+)
 
-func wrapX11DisplayManagerrer(obj *externglib.Object) X11DisplayManagerrer {
+func wrapX11DisplayManager(obj *externglib.Object) X11DisplayManagerer {
 	return &X11DisplayManager{
 		DisplayManager: gdk.DisplayManager{
 			Object: obj,
@@ -44,10 +45,10 @@ func wrapX11DisplayManagerrer(obj *externglib.Object) X11DisplayManagerrer {
 	}
 }
 
-func marshalX11DisplayManagerrer(p uintptr) (interface{}, error) {
+func marshalX11DisplayManagerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11DisplayManagerrer(obj), nil
+	return wrapX11DisplayManager(obj), nil
 }
 
 func (*X11DisplayManager) privateX11DisplayManager() {}

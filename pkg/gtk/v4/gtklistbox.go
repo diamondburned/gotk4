@@ -157,32 +157,64 @@ func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow,
 
 // ListBoxxer describes ListBox's methods.
 type ListBoxxer interface {
-	gextras.Objector
-
+	// Append a widget to the list.
 	Append(child Widgetter)
+	// DragHighlightRow: add a drag highlight to a row.
 	DragHighlightRow(row ListBoxRowwer)
+	// DragUnhighlightRow: if a row has previously been highlighted via
+	// gtk_list_box_drag_highlight_row(), it will have the highlight removed.
 	DragUnhighlightRow()
+	// ActivateOnSingleClick returns whether rows activate on single clicks.
 	ActivateOnSingleClick() bool
+	// Adjustment gets the adjustment (if any) that the widget uses to for
+	// vertical scrolling.
 	Adjustment() *Adjustment
+	// RowAtIndex gets the n-th child in the list (not counting headers).
 	RowAtIndex(index_ int) *ListBoxRow
+	// RowAtY gets the row at the @y position.
 	RowAtY(y int) *ListBoxRow
+	// SelectedRow gets the selected row, or nil if no rows are selected.
 	SelectedRow() *ListBoxRow
+	// SelectionMode gets the selection mode of the listbox.
 	SelectionMode() SelectionMode
+	// ShowSeparators returns whether the list box should show separators
+	// between rows.
 	ShowSeparators() bool
+	// Insert the @child into the @box at @position.
 	Insert(child Widgetter, position int)
+	// InvalidateFilter: update the filtering for all rows.
 	InvalidateFilter()
+	// InvalidateHeaders: update the separators for all rows.
 	InvalidateHeaders()
+	// InvalidateSort: update the sorting for all rows.
 	InvalidateSort()
+	// Prepend a widget to the list.
 	Prepend(child Widgetter)
+	// Remove removes a child from @box.
 	Remove(child Widgetter)
+	// SelectAll: select all children of @box, if the selection mode allows it.
 	SelectAll()
+	// SelectRow: make @row the currently selected row.
 	SelectRow(row ListBoxRowwer)
+	// SelectedForeach calls a function for each selected child.
 	SelectedForeach(fn ListBoxForeachFunc)
+	// SetActivateOnSingleClick: if @single is true, rows will be activated when
+	// you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
+	// SetAdjustment sets the adjustment (if any) that the widget uses to for
+	// vertical scrolling.
 	SetAdjustment(adjustment Adjustmenter)
+	// SetPlaceholder sets the placeholder widget that is shown in the list when
+	// it doesn't display any visible children.
 	SetPlaceholder(placeholder Widgetter)
+	// SetShowSeparators sets whether the list box should show separators
+	// between rows.
 	SetShowSeparators(showSeparators bool)
+	// UnselectAll: unselect all children of @box, if the selection mode allows
+	// it.
 	UnselectAll()
+	// UnselectRow unselects a single row of @box, if the selection mode allows
+	// it.
 	UnselectRow(row ListBoxRowwer)
 }
 
@@ -237,21 +269,17 @@ type ListBoxxer interface {
 // `GtkListBox` uses the GTK_ACCESSIBLE_ROLE_LIST role and `GtkListBoxRow` uses
 // the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListBox struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ ListBoxxer = (*ListBox)(nil)
+var (
+	_ ListBoxxer      = (*ListBox)(nil)
+	_ gextras.Nativer = (*ListBox)(nil)
+)
 
-func wrapListBoxxer(obj *externglib.Object) ListBoxxer {
+func wrapListBox(obj *externglib.Object) ListBoxxer {
 	return &ListBox{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -265,22 +293,13 @@ func wrapListBoxxer(obj *externglib.Object) ListBoxxer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalListBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBoxxer(obj), nil
+	return wrapListBox(obj), nil
 }
 
 // NewListBox creates a new `GtkListBox` container.
@@ -305,7 +324,7 @@ func (box *ListBox) Append(child Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_append(_arg0, _arg1)
 }
@@ -322,7 +341,7 @@ func (box *ListBox) DragHighlightRow(row ListBoxRowwer) {
 	var _arg1 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
+	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer((row).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_drag_highlight_row(_arg0, _arg1)
 }
@@ -478,7 +497,7 @@ func (box *ListBox) Insert(child Widgetter, position int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.int(position)
 
 	C.gtk_list_box_insert(_arg0, _arg1, _arg2)
@@ -531,7 +550,7 @@ func (box *ListBox) Prepend(child Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_prepend(_arg0, _arg1)
 }
@@ -542,7 +561,7 @@ func (box *ListBox) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_remove(_arg0, _arg1)
 }
@@ -562,7 +581,7 @@ func (box *ListBox) SelectRow(row ListBoxRowwer) {
 	var _arg1 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
+	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer((row).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_select_row(_arg0, _arg1)
 }
@@ -609,7 +628,7 @@ func (box *ListBox) SetAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_set_adjustment(_arg0, _arg1)
 }
@@ -621,7 +640,7 @@ func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(placeholder.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((placeholder).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_set_placeholder(_arg0, _arg1)
 }
@@ -655,55 +674,63 @@ func (box *ListBox) UnselectRow(row ListBoxRowwer) {
 	var _arg1 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
+	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer((row).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_unselect_row(_arg0, _arg1)
 }
 
-// ListBoxRowwerOverrider contains methods that are overridable.
+// ListBoxRowOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ListBoxRowwerOverrider interface {
+type ListBoxRowOverrider interface {
 	Activate()
 }
 
 // ListBoxRowwer describes ListBoxRow's methods.
 type ListBoxRowwer interface {
-	gextras.Objector
-
+	// Changed marks @row as changed, causing any state that depends on this to
+	// be updated.
 	Changed()
+	// Activatable gets whether the row is activatable.
 	Activatable() bool
+	// Child gets the child widget of @row.
 	Child() *Widget
+	// Header returns the current header of the @row.
 	Header() *Widget
+	// Index gets the current index of the @row in its `GtkListBox` container.
 	Index() int
+	// Selectable gets whether the row can be selected.
 	Selectable() bool
+	// IsSelected returns whether the child is currently selected in its
+	// `GtkListBox` container.
 	IsSelected() bool
+	// SetActivatable: set whether the row is activatable.
 	SetActivatable(activatable bool)
+	// SetChild sets the child widget of @self.
 	SetChild(child Widgetter)
+	// SetHeader sets the current header of the @row.
 	SetHeader(header Widgetter)
+	// SetSelectable: set whether the row can be selected.
 	SetSelectable(selectable bool)
 }
 
 // ListBoxRow: `GtkListBoxRow` is the kind of widget that can be added to a
 // `GtkListBox`.
 type ListBoxRow struct {
-	*externglib.Object
-
 	Widget
-	Accessible
+
 	Actionable
-	Buildable
-	ConstraintTarget
 }
 
-var _ ListBoxRowwer = (*ListBoxRow)(nil)
+var (
+	_ ListBoxRowwer   = (*ListBoxRow)(nil)
+	_ gextras.Nativer = (*ListBoxRow)(nil)
+)
 
-func wrapListBoxRowwer(obj *externglib.Object) ListBoxRowwer {
+func wrapListBoxRow(obj *externglib.Object) ListBoxRowwer {
 	return &ListBoxRow{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -717,13 +744,8 @@ func wrapListBoxRowwer(obj *externglib.Object) ListBoxRowwer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
 		Actionable: Actionable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -738,19 +760,13 @@ func wrapListBoxRowwer(obj *externglib.Object) ListBoxRowwer {
 				},
 			},
 		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalListBoxRowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBoxRowwer(obj), nil
+	return wrapListBoxRow(obj), nil
 }
 
 // NewListBoxRow creates a new `GtkListBoxRow`.
@@ -764,6 +780,12 @@ func NewListBoxRow() *ListBoxRow {
 	_listBoxRow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListBoxRow)
 
 	return _listBoxRow
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ListBoxRow) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Changed marks @row as changed, causing any state that depends on this to be
@@ -916,7 +938,7 @@ func (row *ListBoxRow) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_row_set_child(_arg0, _arg1)
 }
@@ -931,7 +953,7 @@ func (row *ListBoxRow) SetHeader(header Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(header.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((header).(gextras.Nativer).Native()))
 
 	C.gtk_list_box_row_set_header(_arg0, _arg1)
 }

@@ -27,36 +27,67 @@ func init() {
 	})
 }
 
-// GLAreaerOverrider contains methods that are overridable.
+// GLAreaOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type GLAreaerOverrider interface {
+type GLAreaOverrider interface {
 	Render(context gdk.GLContexter) bool
+
 	Resize(width int, height int)
 }
 
 // GLAreaer describes GLArea's methods.
 type GLAreaer interface {
-	gextras.Objector
-
+	// AttachBuffers ensures that the @area framebuffer object is made the
+	// current draw and read target, and that all the required buffers for the
+	// @area are created and bound to the frambuffer.
 	AttachBuffers()
+	// AutoRender returns whether the area is in auto render mode or not.
 	AutoRender() bool
+	// Context retrieves the GLContext used by @area.
 	Context() *gdk.GLContext
+	// Error gets the current error set on the @area.
 	Error() error
+	// HasAlpha returns whether the area has an alpha component.
 	HasAlpha() bool
+	// HasDepthBuffer returns whether the area has a depth buffer.
 	HasDepthBuffer() bool
+	// HasStencilBuffer returns whether the area has a stencil buffer.
 	HasStencilBuffer() bool
+	// RequiredVersion retrieves the required version of OpenGL set using
+	// gtk_gl_area_set_required_version().
 	RequiredVersion() (major int, minor int)
+	// UseES retrieves the value set by gtk_gl_area_set_use_es().
 	UseES() bool
+	// MakeCurrent ensures that the GLContext used by @area is associated with
+	// the GLArea.
 	MakeCurrent()
+	// QueueRender marks the currently rendered data (if any) as invalid, and
+	// queues a redraw of the widget, ensuring that the GLArea::render signal is
+	// emitted during the draw.
 	QueueRender()
+	// SetAutoRender: if @auto_render is true the GLArea::render signal will be
+	// emitted every time the widget draws.
 	SetAutoRender(autoRender bool)
+	// SetError sets an error on the area which will be shown instead of the GL
+	// rendering.
 	SetError(err error)
+	// SetHasAlpha: if @has_alpha is true the buffer allocated by the widget
+	// will have an alpha channel component, and when rendering to the window
+	// the result will be composited over whatever is below the widget.
 	SetHasAlpha(hasAlpha bool)
+	// SetHasDepthBuffer: if @has_depth_buffer is true the widget will allocate
+	// and enable a depth buffer for the target framebuffer.
 	SetHasDepthBuffer(hasDepthBuffer bool)
+	// SetHasStencilBuffer: if @has_stencil_buffer is true the widget will
+	// allocate and enable a stencil buffer for the target framebuffer.
 	SetHasStencilBuffer(hasStencilBuffer bool)
+	// SetRequiredVersion sets the required version of OpenGL to be used when
+	// creating the context for the widget.
 	SetRequiredVersion(major int, minor int)
+	// SetUseES sets whether the @area should create an OpenGL or an OpenGL ES
+	// context.
 	SetUseES(useEs bool)
 }
 
@@ -116,20 +147,17 @@ type GLAreaer interface {
 // If you need to change the options for creating the GLContext you should use
 // the GLArea::create-context signal.
 type GLArea struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ GLAreaer = (*GLArea)(nil)
+var (
+	_ GLAreaer        = (*GLArea)(nil)
+	_ gextras.Nativer = (*GLArea)(nil)
+)
 
-func wrapGLAreaer(obj *externglib.Object) GLAreaer {
+func wrapGLArea(obj *externglib.Object) GLAreaer {
 	return &GLArea{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -140,19 +168,13 @@ func wrapGLAreaer(obj *externglib.Object) GLAreaer {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalGLAreaer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLAreaer(obj), nil
+	return wrapGLArea(obj), nil
 }
 
 // NewGLArea creates a new GLArea widget.

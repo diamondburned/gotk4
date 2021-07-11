@@ -34,11 +34,11 @@ func init() {
 	})
 }
 
-// ApplicationCommandLinerOverrider contains methods that are overridable.
+// ApplicationCommandLineOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ApplicationCommandLinerOverrider interface {
+type ApplicationCommandLineOverrider interface {
 	// Stdin gets the stdin of the invoking process.
 	//
 	// The Stream can be used to read data passed to the standard input of the
@@ -49,23 +49,40 @@ type ApplicationCommandLinerOverrider interface {
 	//
 	// You must only call this function once per commandline invocation.
 	Stdin() *InputStream
+
 	PrintLiteral(message string)
+
 	PrinterrLiteral(message string)
 }
 
 // ApplicationCommandLiner describes ApplicationCommandLine's methods.
 type ApplicationCommandLiner interface {
-	gextras.Objector
-
+	// CreateFileForArg creates a #GFile corresponding to a filename that was
+	// given as part of the invocation of @cmdline.
 	CreateFileForArg(arg string) *File
+	// Cwd gets the working directory of the command line invocation.
 	Cwd() string
+	// Environ gets the contents of the 'environ' variable of the command line
+	// invocation, as would be returned by g_get_environ(), ie as a
+	// nil-terminated list of strings in the form 'NAME=VALUE'.
 	Environ() []string
+	// ExitStatus gets the exit status of @cmdline.
 	ExitStatus() int
+	// IsRemote determines if @cmdline represents a remote invocation.
 	IsRemote() bool
+	// OptionsDict gets the options there were passed to
+	// g_application_command_line().
 	OptionsDict() *glib.VariantDict
+	// PlatformData gets the platform data associated with the invocation of
+	// @cmdline.
 	PlatformData() *glib.Variant
+	// Stdin gets the stdin of the invoking process.
 	Stdin() *InputStream
+	// Env gets the value of a particular environment variable of the command
+	// line invocation, as would be returned by g_getenv().
 	env(name string) string
+	// SetExitStatus sets the exit status that will be used when the invoking
+	// process exits.
 	SetExitStatus(exitStatus int)
 }
 
@@ -144,9 +161,12 @@ type ApplicationCommandLine struct {
 	*externglib.Object
 }
 
-var _ ApplicationCommandLiner = (*ApplicationCommandLine)(nil)
+var (
+	_ ApplicationCommandLiner = (*ApplicationCommandLine)(nil)
+	_ gextras.Nativer         = (*ApplicationCommandLine)(nil)
+)
 
-func wrapApplicationCommandLiner(obj *externglib.Object) ApplicationCommandLiner {
+func wrapApplicationCommandLine(obj *externglib.Object) ApplicationCommandLiner {
 	return &ApplicationCommandLine{
 		Object: obj,
 	}
@@ -155,7 +175,7 @@ func wrapApplicationCommandLiner(obj *externglib.Object) ApplicationCommandLiner
 func marshalApplicationCommandLiner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationCommandLiner(obj), nil
+	return wrapApplicationCommandLine(obj), nil
 }
 
 // CreateFileForArg creates a #GFile corresponding to a filename that was given

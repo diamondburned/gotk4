@@ -25,18 +25,37 @@ func init() {
 
 // GridLayouter describes GridLayout's methods.
 type GridLayouter interface {
-	gextras.Objector
-
+	// BaselineRow retrieves the row set with
+	// gtk_grid_layout_set_baseline_row().
 	BaselineRow() int
+	// ColumnHomogeneous checks whether all columns of @grid should have the
+	// same width.
 	ColumnHomogeneous() bool
+	// ColumnSpacing retrieves the spacing set with
+	// gtk_grid_layout_set_column_spacing().
 	ColumnSpacing() uint
+	// RowBaselinePosition returns the baseline position of @row.
 	RowBaselinePosition(row int) BaselinePosition
+	// RowHomogeneous checks whether all rows of @grid should have the same
+	// height.
 	RowHomogeneous() bool
+	// RowSpacing retrieves the spacing set with
+	// gtk_grid_layout_set_row_spacing().
 	RowSpacing() uint
+	// SetBaselineRow sets which row defines the global baseline for the entire
+	// grid.
 	SetBaselineRow(row int)
+	// SetColumnHomogeneous sets whether all columns of @grid should have the
+	// same width.
 	SetColumnHomogeneous(homogeneous bool)
+	// SetColumnSpacing sets the amount of space to insert between consecutive
+	// columns.
 	SetColumnSpacing(spacing uint)
+	// SetRowHomogeneous sets whether all rows of @grid should have the same
+	// height.
 	SetRowHomogeneous(homogeneous bool)
+	// SetRowSpacing sets the amount of space to insert between consecutive
+	// rows.
 	SetRowSpacing(spacing uint)
 }
 
@@ -58,9 +77,12 @@ type GridLayout struct {
 	LayoutManager
 }
 
-var _ GridLayouter = (*GridLayout)(nil)
+var (
+	_ GridLayouter    = (*GridLayout)(nil)
+	_ gextras.Nativer = (*GridLayout)(nil)
+)
 
-func wrapGridLayouter(obj *externglib.Object) GridLayouter {
+func wrapGridLayout(obj *externglib.Object) GridLayouter {
 	return &GridLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -71,7 +93,7 @@ func wrapGridLayouter(obj *externglib.Object) GridLayouter {
 func marshalGridLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGridLayouter(obj), nil
+	return wrapGridLayout(obj), nil
 }
 
 // NewGridLayout creates a new `GtkGridLayout`.
@@ -262,15 +284,22 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 
 // GridLayoutChilder describes GridLayoutChild's methods.
 type GridLayoutChilder interface {
-	gextras.Objector
-
+	// Column retrieves the column number to which @child attaches its left
+	// side.
 	Column() int
+	// ColumnSpan retrieves the number of columns that @child spans to.
 	ColumnSpan() int
+	// Row retrieves the row number to which @child attaches its top side.
 	Row() int
+	// RowSpan retrieves the number of rows that @child spans to.
 	RowSpan() int
+	// SetColumn sets the column number to attach the left side of @child.
 	SetColumn(column int)
+	// SetColumnSpan sets the number of columns @child spans to.
 	SetColumnSpan(span int)
+	// SetRow sets the row to place @child in.
 	SetRow(row int)
+	// SetRowSpan sets the number of rows @child spans to.
 	SetRowSpan(span int)
 }
 
@@ -279,9 +308,12 @@ type GridLayoutChild struct {
 	LayoutChild
 }
 
-var _ GridLayoutChilder = (*GridLayoutChild)(nil)
+var (
+	_ GridLayoutChilder = (*GridLayoutChild)(nil)
+	_ gextras.Nativer   = (*GridLayoutChild)(nil)
+)
 
-func wrapGridLayoutChilder(obj *externglib.Object) GridLayoutChilder {
+func wrapGridLayoutChild(obj *externglib.Object) GridLayoutChilder {
 	return &GridLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,
@@ -292,7 +324,7 @@ func wrapGridLayoutChilder(obj *externglib.Object) GridLayoutChilder {
 func marshalGridLayoutChilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGridLayoutChilder(obj), nil
+	return wrapGridLayoutChild(obj), nil
 }
 
 // Column retrieves the column number to which @child attaches its left side.

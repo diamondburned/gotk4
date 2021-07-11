@@ -27,11 +27,15 @@ func init() {
 
 // WindowGrouper describes WindowGroup's methods.
 type WindowGrouper interface {
-	gextras.Objector
-
+	// AddWindow adds a window to a WindowGroup.
 	AddWindow(window Windowwer)
+	// CurrentDeviceGrab returns the current grab widget for @device, or nil if
+	// none.
 	CurrentDeviceGrab(device gdk.Devicer) *Widget
+	// CurrentGrab gets the current grab widget of the given group, see
+	// gtk_grab_add().
 	CurrentGrab() *Widget
+	// RemoveWindow removes a window from a WindowGroup.
 	RemoveWindow(window Windowwer)
 }
 
@@ -52,9 +56,12 @@ type WindowGroup struct {
 	*externglib.Object
 }
 
-var _ WindowGrouper = (*WindowGroup)(nil)
+var (
+	_ WindowGrouper   = (*WindowGroup)(nil)
+	_ gextras.Nativer = (*WindowGroup)(nil)
+)
 
-func wrapWindowGrouper(obj *externglib.Object) WindowGrouper {
+func wrapWindowGroup(obj *externglib.Object) WindowGrouper {
 	return &WindowGroup{
 		Object: obj,
 	}
@@ -63,7 +70,7 @@ func wrapWindowGrouper(obj *externglib.Object) WindowGrouper {
 func marshalWindowGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowGrouper(obj), nil
+	return wrapWindowGroup(obj), nil
 }
 
 // NewWindowGroup creates a new WindowGroup object. Grabs added with
@@ -86,7 +93,7 @@ func (windowGroup *WindowGroup) AddWindow(window Windowwer) {
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_window_group_add_window(_arg0, _arg1)
 }
@@ -99,7 +106,7 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) *Widget {
 	var _cret *C.GtkWidget      // in
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
 
@@ -133,7 +140,7 @@ func (windowGroup *WindowGroup) RemoveWindow(window Windowwer) {
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_window_group_remove_window(_arg0, _arg1)
 }

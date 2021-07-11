@@ -35,7 +35,7 @@ import "C"
 func DragCancel(context gdk.DragContexter) {
 	var _arg1 *C.GdkDragContext // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 
 	C.gtk_drag_cancel(_arg1)
 }
@@ -48,7 +48,7 @@ func DragFinish(context gdk.DragContexter, success bool, del bool, time_ uint32)
 	var _arg3 C.gboolean        // out
 	var _arg4 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	if success {
 		_arg2 = C.TRUE
 	}
@@ -65,7 +65,7 @@ func DragGetSourceWidget(context gdk.DragContexter) *Widget {
 	var _arg1 *C.GdkDragContext // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_drag_get_source_widget(_arg1)
 
@@ -80,7 +80,7 @@ func DragGetSourceWidget(context gdk.DragContexter) *Widget {
 func DragSetIconDefault(context gdk.DragContexter) {
 	var _arg1 *C.GdkDragContext // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 
 	C.gtk_drag_set_icon_default(_arg1)
 }
@@ -94,8 +94,8 @@ func DragSetIconGIcon(context gdk.DragContexter, icon gio.Iconner, hotX int, hot
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 
@@ -112,7 +112,7 @@ func DragSetIconName(context gdk.DragContexter, iconName string, hotX int, hotY 
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
@@ -128,8 +128,8 @@ func DragSetIconPixbuf(context gdk.DragContexter, pixbuf gdkpixbuf.Pixbuffer, ho
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 
@@ -145,7 +145,7 @@ func DragSetIconStock(context gdk.DragContexter, stockId string, hotX int, hotY 
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
@@ -165,7 +165,7 @@ func DragSetIconSurface(context gdk.DragContexter, surface *cairo.Surface) {
 	var _arg1 *C.GdkDragContext  // out
 	var _arg2 *C.cairo_surface_t // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
 
 	C.gtk_drag_set_icon_surface(_arg1, _arg2)
@@ -180,8 +180,8 @@ func DragSetIconWidget(context gdk.DragContexter, widget Widgetter, hotX int, ho
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 

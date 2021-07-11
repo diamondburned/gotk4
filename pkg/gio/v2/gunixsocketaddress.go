@@ -34,11 +34,13 @@ func init() {
 
 // UnixSocketAddresser describes UnixSocketAddress's methods.
 type UnixSocketAddresser interface {
-	gextras.Objector
-
+	// AddressType gets @address's type.
 	AddressType() UnixSocketAddressType
+	// IsAbstract tests if @address is abstract.
 	IsAbstract() bool
+	// Path gets @address's path, or for abstract sockets the "name".
 	Path() string
+	// PathLen gets the length of @address's path.
 	PathLen() uint
 }
 
@@ -56,25 +58,21 @@ type UnixSocketAddresser interface {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixSocketAddress struct {
-	*externglib.Object
-
 	SocketAddress
-	SocketConnectable
 }
 
-var _ UnixSocketAddresser = (*UnixSocketAddress)(nil)
+var (
+	_ UnixSocketAddresser = (*UnixSocketAddress)(nil)
+	_ gextras.Nativer     = (*UnixSocketAddress)(nil)
+)
 
-func wrapUnixSocketAddresser(obj *externglib.Object) UnixSocketAddresser {
+func wrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddresser {
 	return &UnixSocketAddress{
-		Object: obj,
 		SocketAddress: SocketAddress{
 			Object: obj,
 			SocketConnectable: SocketConnectable{
 				Object: obj,
 			},
-		},
-		SocketConnectable: SocketConnectable{
-			Object: obj,
 		},
 	}
 }
@@ -82,7 +80,7 @@ func wrapUnixSocketAddresser(obj *externglib.Object) UnixSocketAddresser {
 func marshalUnixSocketAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixSocketAddresser(obj), nil
+	return wrapUnixSocketAddress(obj), nil
 }
 
 // NewUnixSocketAddress creates a new SocketAddress for @path.

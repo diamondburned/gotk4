@@ -21,7 +21,7 @@ func init() {
 	})
 }
 
-// Language: the `PangoLanguage` structure is used to represent a language.
+// Language: `PangoLanguage` structure is used to represent a language.
 //
 // `PangoLanguage` pointers can be efficiently copied and compared with each
 // other.

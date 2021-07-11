@@ -57,17 +57,34 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 
 // SimpleAsyncResulter describes SimpleAsyncResult's methods.
 type SimpleAsyncResulter interface {
-	gextras.Objector
-
+	// Complete completes an asynchronous I/O job immediately.
 	Complete()
+	// CompleteInIdle completes an asynchronous function in an idle handler in
+	// the [thread-default main context][g-main-context-push-thread-default] of
+	// the thread that @simple was initially created in (and re-pushes that
+	// context around the invocation of the callback).
 	CompleteInIdle()
+	// OpResGboolean gets the operation result boolean from within the
+	// asynchronous result.
 	OpResGboolean() bool
+	// OpResGssize gets a gssize from the asynchronous result.
 	OpResGssize() int
+	// PropagateError propagates an error from within the simple asynchronous
+	// result to a given destination.
 	PropagateError() error
+	// SetCheckCancellable sets a #GCancellable to check before dispatching
+	// results.
 	SetCheckCancellable(checkCancellable Cancellabler)
+	// SetFromError sets the result from a #GError.
 	SetFromError(err error)
+	// SetHandleCancellation sets whether to handle cancellation within the
+	// asynchronous operation.
 	SetHandleCancellation(handleCancellation bool)
+	// SetOpResGboolean sets the operation result to a boolean within the
+	// asynchronous result.
 	SetOpResGboolean(opRes bool)
+	// SetOpResGssize sets the operation result within the asynchronous result
+	// to the given @op_res.
 	SetOpResGssize(opRes int)
 }
 
@@ -234,9 +251,12 @@ type SimpleAsyncResult struct {
 	AsyncResult
 }
 
-var _ SimpleAsyncResulter = (*SimpleAsyncResult)(nil)
+var (
+	_ SimpleAsyncResulter = (*SimpleAsyncResult)(nil)
+	_ gextras.Nativer     = (*SimpleAsyncResult)(nil)
+)
 
-func wrapSimpleAsyncResulter(obj *externglib.Object) SimpleAsyncResulter {
+func wrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResulter {
 	return &SimpleAsyncResult{
 		Object: obj,
 		AsyncResult: AsyncResult{
@@ -248,7 +268,7 @@ func wrapSimpleAsyncResulter(obj *externglib.Object) SimpleAsyncResulter {
 func marshalSimpleAsyncResulter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleAsyncResulter(obj), nil
+	return wrapSimpleAsyncResult(obj), nil
 }
 
 // NewSimpleAsyncResult creates a AsyncResult.
@@ -426,7 +446,7 @@ func (simple *SimpleAsyncResult) SetCheckCancellable(checkCancellable Cancellabl
 	var _arg1 *C.GCancellable       // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(checkCancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((checkCancellable).(gextras.Nativer).Native()))
 
 	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
 }

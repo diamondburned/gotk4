@@ -28,23 +28,40 @@ func init() {
 
 // MenuButtonner describes MenuButton's methods.
 type MenuButtonner interface {
-	gextras.Objector
-
+	// AlignWidget returns the parent Widget to use to line up with menu.
 	AlignWidget() *Widget
+	// Direction returns the direction the popup will be pointing at when popped
+	// up.
 	Direction() ArrowType
+	// MenuModel returns the Model used to generate the popup.
 	MenuModel() *gio.MenuModel
+	// Popover returns the Popover that pops out of the button.
 	Popover() *Popover
+	// Popup returns the Menu that pops out of the button.
 	Popup() *Menu
+	// UsePopover returns whether a Popover or a Menu will be constructed from
+	// the menu model.
 	UsePopover() bool
+	// SetAlignWidget sets the Widget to use to line the menu with when popped
+	// up.
 	SetAlignWidget(alignWidget Widgetter)
+	// SetMenuModel sets the Model from which the popup will be constructed, or
+	// nil to dissociate any existing menu model and disable the button.
 	SetMenuModel(menuModel gio.MenuModeller)
+	// SetPopover sets the Popover that will be popped up when the @menu_button
+	// is clicked, or nil to dissociate any existing popover and disable the
+	// button.
 	SetPopover(popover Widgetter)
+	// SetPopup sets the Menu that will be popped up when the @menu_button is
+	// clicked, or nil to dissociate any existing menu and disable the button.
 	SetPopup(menu Widgetter)
+	// SetUsePopover sets whether to construct a Popover instead of Menu when
+	// gtk_menu_button_set_menu_model() is called.
 	SetUsePopover(usePopover bool)
 }
 
-// MenuButton: the MenuButton widget is used to display a popup when clicked on.
-// This popup can be provided either as a Menu, a Popover or an abstract Model.
+// MenuButton widget is used to display a popup when clicked on. This popup can
+// be provided either as a Menu, a Popover or an abstract Model.
 //
 // The MenuButton widget can hold any valid child widget. That is, it can hold
 // almost any other standard Widget. The most commonly used child is Image. If
@@ -125,30 +142,21 @@ type MenuButtonner interface {
 // GtkMenuButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .popup style class.
 type MenuButton struct {
-	*externglib.Object
-
 	ToggleButton
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ MenuButtonner = (*MenuButton)(nil)
+var (
+	_ MenuButtonner   = (*MenuButton)(nil)
+	_ gextras.Nativer = (*MenuButton)(nil)
+)
 
-func wrapMenuButtonner(obj *externglib.Object) MenuButtonner {
+func wrapMenuButton(obj *externglib.Object) MenuButtonner {
 	return &MenuButton{
-		Object: obj,
 		ToggleButton: ToggleButton{
-			Object: obj,
 			Button: Button{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -159,27 +167,10 @@ func wrapMenuButtonner(obj *externglib.Object) MenuButtonner {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
 				},
 				Actionable: Actionable{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -194,58 +185,7 @@ func wrapMenuButtonner(obj *externglib.Object) MenuButtonner {
 				Activatable: Activatable{
 					Object: obj,
 				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Actionable: Actionable{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-			},
-			Activatable: Activatable{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -253,7 +193,7 @@ func wrapMenuButtonner(obj *externglib.Object) MenuButtonner {
 func marshalMenuButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuButtonner(obj), nil
+	return wrapMenuButton(obj), nil
 }
 
 // NewMenuButton creates a new MenuButton widget with downwards-pointing arrow
@@ -384,7 +324,7 @@ func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(alignWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((alignWidget).(gextras.Nativer).Native()))
 
 	C.gtk_menu_button_set_align_widget(_arg0, _arg1)
 }
@@ -404,7 +344,7 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg1 *C.GMenuModel    // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((menuModel).(gextras.Nativer).Native()))
 
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
@@ -419,7 +359,7 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(popover.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((popover).(gextras.Nativer).Native()))
 
 	C.gtk_menu_button_set_popover(_arg0, _arg1)
 }
@@ -434,7 +374,7 @@ func (menuButton *MenuButton) SetPopup(menu Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((menu).(gextras.Nativer).Native()))
 
 	C.gtk_menu_button_set_popup(_arg0, _arg1)
 }

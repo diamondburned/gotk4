@@ -35,18 +35,23 @@ func init() {
 
 // Credentialser describes Credentials's methods.
 type Credentialser interface {
-	gextras.Objector
-
+	// UnixPid tries to get the UNIX process identifier from @credentials.
 	UnixPid() (int, error)
+	// UnixUser tries to get the UNIX user identifier from @credentials.
 	UnixUser() (uint, error)
+	// IsSameUser checks if @credentials and @other_credentials is the same
+	// user.
 	IsSameUser(otherCredentials Credentialser) error
+	// SetUnixUser tries to set the UNIX user identifier on @credentials.
 	SetUnixUser(uid uint) error
+	// String creates a human-readable textual representation of @credentials
+	// that can be used in logging and debug messages.
 	String() string
 }
 
-// Credentials: the #GCredentials type is a reference-counted wrapper for native
-// credentials. This information is typically used for identifying,
-// authenticating and authorizing other processes.
+// Credentials type is a reference-counted wrapper for native credentials. This
+// information is typically used for identifying, authenticating and authorizing
+// other processes.
 //
 // Some operating systems supports looking up the credentials of the remote peer
 // of a communication endpoint - see e.g. g_socket_get_credentials().
@@ -78,9 +83,12 @@ type Credentials struct {
 	*externglib.Object
 }
 
-var _ Credentialser = (*Credentials)(nil)
+var (
+	_ Credentialser   = (*Credentials)(nil)
+	_ gextras.Nativer = (*Credentials)(nil)
+)
 
-func wrapCredentialser(obj *externglib.Object) Credentialser {
+func wrapCredentials(obj *externglib.Object) Credentialser {
 	return &Credentials{
 		Object: obj,
 	}
@@ -89,7 +97,7 @@ func wrapCredentialser(obj *externglib.Object) Credentialser {
 func marshalCredentialser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCredentialser(obj), nil
+	return wrapCredentials(obj), nil
 }
 
 // NewCredentials creates a new #GCredentials object with credentials matching
@@ -162,7 +170,7 @@ func (credentials *Credentials) IsSameUser(otherCredentials Credentialser) error
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
-	_arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer((otherCredentials).(gextras.Nativer).Native()))
 
 	C.g_credentials_is_same_user(_arg0, _arg1, &_cerr)
 

@@ -27,29 +27,24 @@ func init() {
 
 // TextCellAccessibler describes TextCellAccessible's methods.
 type TextCellAccessibler interface {
-	gextras.Objector
-
 	privateTextCellAccessible()
 }
 
 type TextCellAccessible struct {
-	*externglib.Object
-
 	RendererCellAccessible
-	atk.Action
-	atk.Component
+
 	atk.Text
 }
 
-var _ TextCellAccessibler = (*TextCellAccessible)(nil)
+var (
+	_ TextCellAccessibler = (*TextCellAccessible)(nil)
+	_ gextras.Nativer     = (*TextCellAccessible)(nil)
+)
 
-func wrapTextCellAccessibler(obj *externglib.Object) TextCellAccessibler {
+func wrapTextCellAccessible(obj *externglib.Object) TextCellAccessibler {
 	return &TextCellAccessible{
-		Object: obj,
 		RendererCellAccessible: RendererCellAccessible{
-			Object: obj,
 			CellAccessible: CellAccessible{
-				Object: obj,
 				Accessible: Accessible{
 					ObjectClass: atk.ObjectClass{
 						Object: obj,
@@ -62,18 +57,6 @@ func wrapTextCellAccessibler(obj *externglib.Object) TextCellAccessibler {
 					Object: obj,
 				},
 			},
-			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 		Text: atk.Text{
 			Object: obj,
@@ -84,7 +67,13 @@ func wrapTextCellAccessibler(obj *externglib.Object) TextCellAccessibler {
 func marshalTextCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextCellAccessibler(obj), nil
+	return wrapTextCellAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *TextCellAccessible) Native() uintptr {
+	return v.RendererCellAccessible.CellAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*TextCellAccessible) privateTextCellAccessible() {}

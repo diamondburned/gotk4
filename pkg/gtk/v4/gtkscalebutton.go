@@ -22,25 +22,33 @@ func init() {
 	})
 }
 
-// ScaleButtonnerOverrider contains methods that are overridable.
+// ScaleButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ScaleButtonnerOverrider interface {
+type ScaleButtonOverrider interface {
 	ValueChanged(value float64)
 }
 
 // ScaleButtonner describes ScaleButton's methods.
 type ScaleButtonner interface {
-	gextras.Objector
-
+	// Adjustment gets the `GtkAdjustment` associated with the
+	// `GtkScaleButton`’s scale.
 	Adjustment() *Adjustment
+	// MinusButton retrieves the minus button of the `GtkScaleButton`.
 	MinusButton() *Button
+	// PlusButton retrieves the plus button of the `GtkScaleButton.`
 	PlusButton() *Button
+	// Popup retrieves the popup of the `GtkScaleButton`.
 	Popup() *Widget
+	// Value gets the current value of the scale button.
 	Value() float64
+	// SetAdjustment sets the `GtkAdjustment` to be used as a model for the
+	// `GtkScaleButton`’s scale.
 	SetAdjustment(adjustment Adjustmenter)
+	// SetIcons sets the icons to be used by the scale button.
 	SetIcons(icons []string)
+	// SetValue sets the current value of the scale.
 	SetValue(value float64)
 }
 
@@ -56,22 +64,19 @@ type ScaleButtonner interface {
 // `GtkScaleButton` has a single CSS node with name button. To differentiate it
 // from a plain `GtkButton`, it gets the .scale style class.
 type ScaleButton struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 }
 
-var _ ScaleButtonner = (*ScaleButton)(nil)
+var (
+	_ ScaleButtonner  = (*ScaleButton)(nil)
+	_ gextras.Nativer = (*ScaleButton)(nil)
+)
 
-func wrapScaleButtonner(obj *externglib.Object) ScaleButtonner {
+func wrapScaleButton(obj *externglib.Object) ScaleButtonner {
 	return &ScaleButton{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -85,15 +90,6 @@ func wrapScaleButtonner(obj *externglib.Object) ScaleButtonner {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -103,7 +99,7 @@ func wrapScaleButtonner(obj *externglib.Object) ScaleButtonner {
 func marshalScaleButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScaleButtonner(obj), nil
+	return wrapScaleButton(obj), nil
 }
 
 // NewScaleButton creates a `GtkScaleButton`.
@@ -137,6 +133,12 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) *Sca
 	_scaleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ScaleButton)
 
 	return _scaleButton
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ScaleButton) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Adjustment gets the `GtkAdjustment` associated with the `GtkScaleButton`’s
@@ -231,7 +233,7 @@ func (button *ScaleButton) SetAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment  // out
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_scale_button_set_adjustment(_arg0, _arg1)
 }

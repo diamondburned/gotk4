@@ -41,11 +41,11 @@ type ImageType int
 const (
 	// Empty: there is no image displayed by the widget
 	ImageTypeEmpty ImageType = iota
-	// IconName: the widget contains a named icon
+	// IconName: widget contains a named icon
 	ImageTypeIconName
-	// GIcon: the widget contains a #GIcon
+	// GIcon: widget contains a #GIcon
 	ImageTypeGIcon
-	// Paintable: the widget contains a Paintable
+	// Paintable: widget contains a Paintable
 	ImageTypePaintable
 )
 
@@ -55,25 +55,39 @@ func marshalImageType(p uintptr) (interface{}, error) {
 
 // Imager describes Image's methods.
 type Imager interface {
-	gextras.Objector
-
+	// Clear resets the image to be empty.
 	Clear()
+	// GIcon gets the `GIcon` being displayed by the `GtkImage`.
 	GIcon() *gio.Icon
+	// IconName gets the icon name and size being displayed by the `GtkImage`.
 	IconName() string
+	// IconSize gets the icon size used by the @image when rendering icons.
 	IconSize() IconSize
+	// Paintable gets the image `GdkPaintable` being displayed by the
+	// `GtkImage`.
 	Paintable() *gdk.Paintable
+	// PixelSize gets the pixel size used for named icons.
 	PixelSize() int
+	// StorageType gets the type of representation being used by the `GtkImage`
+	// to store image data.
 	StorageType() ImageType
+	// SetFromFile sets a `GtkImage` to show a file.
 	SetFromFile(filename string)
+	// SetFromGIcon sets a `GtkImage` to show a `GIcon`.
 	SetFromGIcon(icon gio.Iconner)
+	// SetFromIconName sets a `GtkImage` to show a named icon.
 	SetFromIconName(iconName string)
+	// SetFromPaintable sets a `GtkImage` to show a `GdkPaintable`.
 	SetFromPaintable(paintable gdk.Paintabler)
+	// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
 	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer)
+	// SetFromResource sets a `GtkImage` to show a resource.
 	SetFromResource(resourcePath string)
+	// SetPixelSize sets the pixel size to use for named icons.
 	SetPixelSize(pixelSize int)
 }
 
-// Image: the `GtkImage` widget displays an image.
+// Image: `GtkImage` widget displays an image.
 //
 // !An example GtkImage (image.png)
 //
@@ -113,21 +127,17 @@ type Imager interface {
 //
 // `GtkImage` uses the `GTK_ACCESSIBLE_ROLE_IMG` role.
 type Image struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Imager = (*Image)(nil)
+var (
+	_ Imager          = (*Image)(nil)
+	_ gextras.Nativer = (*Image)(nil)
+)
 
-func wrapImager(obj *externglib.Object) Imager {
+func wrapImage(obj *externglib.Object) Imager {
 	return &Image{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -141,22 +151,13 @@ func wrapImager(obj *externglib.Object) Imager {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalImager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImager(obj), nil
+	return wrapImage(obj), nil
 }
 
 // NewImage creates a new empty `GtkImage` widget.
@@ -211,7 +212,7 @@ func NewImageFromGIcon(icon gio.Iconner) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_image_new_from_gicon(_arg1)
 
@@ -256,7 +257,7 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_image_new_from_paintable(_arg1)
 
@@ -283,7 +284,7 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 
@@ -467,7 +468,7 @@ func (image *Image) SetFromGIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon    // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.gtk_image_set_from_gicon(_arg0, _arg1)
 }
@@ -494,7 +495,7 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 	var _arg1 *C.GdkPaintable // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
 
 	C.gtk_image_set_from_paintable(_arg0, _arg1)
 }
@@ -510,7 +511,7 @@ func (image *Image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
 	var _arg1 *C.GdkPixbuf // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }

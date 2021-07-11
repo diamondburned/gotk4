@@ -24,12 +24,24 @@ func init() {
 
 // X11Screener describes X11Screen's methods.
 type X11Screener interface {
-	gextras.Objector
-
+	// CurrentDesktop returns the current workspace for @screen when running
+	// under a window manager that supports multiple workspaces, as described in
+	// the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	CurrentDesktop() uint32
+	// NumberOfDesktops returns the number of workspaces for @screen when
+	// running under a window manager that supports multiple workspaces, as
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	NumberOfDesktops() uint32
+	// ScreenNumber returns the index of a X11Screen.
 	ScreenNumber() int
+	// WindowManagerName returns the name of the window manager for @screen.
 	WindowManagerName() string
+	// SupportsNetWmHint: this function is specific to the X11 backend of GDK,
+	// and indicates whether the window manager supports a certain hint from the
+	// Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	SupportsNetWmHint(propertyName string) bool
 }
 
@@ -37,9 +49,12 @@ type X11Screen struct {
 	*externglib.Object
 }
 
-var _ X11Screener = (*X11Screen)(nil)
+var (
+	_ X11Screener     = (*X11Screen)(nil)
+	_ gextras.Nativer = (*X11Screen)(nil)
+)
 
-func wrapX11Screener(obj *externglib.Object) X11Screener {
+func wrapX11Screen(obj *externglib.Object) X11Screener {
 	return &X11Screen{
 		Object: obj,
 	}
@@ -48,7 +63,7 @@ func wrapX11Screener(obj *externglib.Object) X11Screener {
 func marshalX11Screener(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Screener(obj), nil
+	return wrapX11Screen(obj), nil
 }
 
 // CurrentDesktop returns the current workspace for @screen when running under a

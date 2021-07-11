@@ -26,14 +26,23 @@ func init() {
 
 // ConstraintLayouter describes ConstraintLayout's methods.
 type ConstraintLayouter interface {
-	gextras.Objector
-
+	// AddConstraint adds a constraint to the layout manager.
 	AddConstraint(constraint Constrainter)
+	// AddGuide adds a guide to `layout`.
 	AddGuide(guide ConstraintGuider)
+	// ObserveConstraints returns a `GListModel` to track the constraints that
+	// are part of the layout.
 	ObserveConstraints() *gio.ListModel
+	// ObserveGuides returns a `GListModel` to track the guides that are part of
+	// the layout.
 	ObserveGuides() *gio.ListModel
+	// RemoveAllConstraints removes all constraints from the layout manager.
 	RemoveAllConstraints()
+	// RemoveConstraint removes `constraint` from the layout manager, so that it
+	// no longer influences the layout.
 	RemoveConstraint(constraint Constrainter)
+	// RemoveGuide removes `guide` from the layout manager, so that it no longer
+	// influences the layout.
 	RemoveGuide(guide ConstraintGuider)
 }
 
@@ -182,17 +191,18 @@ type ConstraintLayouter interface {
 // “` // width of button1 must be equal to width of button2 // divided by 2 plus
 // 12 [button1(button2 / 2 + 12)] “`
 type ConstraintLayout struct {
-	*externglib.Object
-
 	LayoutManager
+
 	Buildable
 }
 
-var _ ConstraintLayouter = (*ConstraintLayout)(nil)
+var (
+	_ ConstraintLayouter = (*ConstraintLayout)(nil)
+	_ gextras.Nativer    = (*ConstraintLayout)(nil)
+)
 
-func wrapConstraintLayouter(obj *externglib.Object) ConstraintLayouter {
+func wrapConstraintLayout(obj *externglib.Object) ConstraintLayouter {
 	return &ConstraintLayout{
-		Object: obj,
 		LayoutManager: LayoutManager{
 			Object: obj,
 		},
@@ -205,7 +215,7 @@ func wrapConstraintLayouter(obj *externglib.Object) ConstraintLayouter {
 func marshalConstraintLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstraintLayouter(obj), nil
+	return wrapConstraintLayout(obj), nil
 }
 
 // NewConstraintLayout creates a new `GtkConstraintLayout` layout manager.
@@ -219,6 +229,12 @@ func NewConstraintLayout() *ConstraintLayout {
 	_constraintLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ConstraintLayout)
 
 	return _constraintLayout
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ConstraintLayout) Native() uintptr {
+	return v.LayoutManager.Object.Native()
 }
 
 // AddConstraint adds a constraint to the layout manager.
@@ -239,7 +255,7 @@ func (layout *ConstraintLayout) AddConstraint(constraint Constrainter) {
 	var _arg1 *C.GtkConstraint       // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
+	_arg1 = (*C.GtkConstraint)(unsafe.Pointer((constraint).(gextras.Nativer).Native()))
 
 	C.gtk_constraint_layout_add_constraint(_arg0, _arg1)
 }
@@ -255,7 +271,7 @@ func (layout *ConstraintLayout) AddGuide(guide ConstraintGuider) {
 	var _arg1 *C.GtkConstraintGuide  // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer((guide).(gextras.Nativer).Native()))
 
 	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
 }
@@ -324,7 +340,7 @@ func (layout *ConstraintLayout) RemoveConstraint(constraint Constrainter) {
 	var _arg1 *C.GtkConstraint       // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
+	_arg1 = (*C.GtkConstraint)(unsafe.Pointer((constraint).(gextras.Nativer).Native()))
 
 	C.gtk_constraint_layout_remove_constraint(_arg0, _arg1)
 }
@@ -336,15 +352,13 @@ func (layout *ConstraintLayout) RemoveGuide(guide ConstraintGuider) {
 	var _arg1 *C.GtkConstraintGuide  // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer((guide).(gextras.Nativer).Native()))
 
 	C.gtk_constraint_layout_remove_guide(_arg0, _arg1)
 }
 
 // ConstraintLayoutChilder describes ConstraintLayoutChild's methods.
 type ConstraintLayoutChilder interface {
-	gextras.Objector
-
 	privateConstraintLayoutChild()
 }
 
@@ -354,9 +368,12 @@ type ConstraintLayoutChild struct {
 	LayoutChild
 }
 
-var _ ConstraintLayoutChilder = (*ConstraintLayoutChild)(nil)
+var (
+	_ ConstraintLayoutChilder = (*ConstraintLayoutChild)(nil)
+	_ gextras.Nativer         = (*ConstraintLayoutChild)(nil)
+)
 
-func wrapConstraintLayoutChilder(obj *externglib.Object) ConstraintLayoutChilder {
+func wrapConstraintLayoutChild(obj *externglib.Object) ConstraintLayoutChilder {
 	return &ConstraintLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,
@@ -367,7 +384,7 @@ func wrapConstraintLayoutChilder(obj *externglib.Object) ConstraintLayoutChilder
 func marshalConstraintLayoutChilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstraintLayoutChilder(obj), nil
+	return wrapConstraintLayoutChild(obj), nil
 }
 
 func (*ConstraintLayoutChild) privateConstraintLayoutChild() {}

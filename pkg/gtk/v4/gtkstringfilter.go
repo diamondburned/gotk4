@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_string_filter_match_mode_get_type()), F: marshalStringFilterMatchMode},
-		{T: externglib.Type(C.gtk_string_filter_get_type()), F: marshalStringFilterrer},
+		{T: externglib.Type(C.gtk_string_filter_get_type()), F: marshalStringFilterer},
 	})
 }
 
@@ -27,12 +27,12 @@ func init() {
 type StringFilterMatchMode int
 
 const (
-	// Exact: the search string and text must match exactly.
+	// Exact: search string and text must match exactly.
 	StringFilterMatchModeExact StringFilterMatchMode = iota
-	// Substring: the search string must be contained as a substring inside the
+	// Substring: search string must be contained as a substring inside the
 	// text.
 	StringFilterMatchModeSubstring
-	// Prefix: the text must begin with the search string.
+	// Prefix: text must begin with the search string.
 	StringFilterMatchModePrefix
 )
 
@@ -40,16 +40,23 @@ func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 	return StringFilterMatchMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// StringFilterrer describes StringFilter's methods.
-type StringFilterrer interface {
-	gextras.Objector
-
+// StringFilterer describes StringFilter's methods.
+type StringFilterer interface {
+	// Expression gets the expression that the string filter uses to obtain
+	// strings from items.
 	Expression() *Expression
+	// IgnoreCase returns whether the filter ignores case differences.
 	IgnoreCase() bool
+	// MatchMode returns the match mode that the filter is using.
 	MatchMode() StringFilterMatchMode
+	// Search gets the search term.
 	Search() string
+	// SetExpression sets the expression that the string filter uses to obtain
+	// strings from items.
 	SetExpression(expression Expressioner)
+	// SetIgnoreCase sets whether the filter ignores case differences.
 	SetIgnoreCase(ignoreCase bool)
+	// SetSearch sets the string to search for.
 	SetSearch(search string)
 }
 
@@ -70,9 +77,12 @@ type StringFilter struct {
 	Filter
 }
 
-var _ StringFilterrer = (*StringFilter)(nil)
+var (
+	_ StringFilterer  = (*StringFilter)(nil)
+	_ gextras.Nativer = (*StringFilter)(nil)
+)
 
-func wrapStringFilterrer(obj *externglib.Object) StringFilterrer {
+func wrapStringFilter(obj *externglib.Object) StringFilterer {
 	return &StringFilter{
 		Filter: Filter{
 			Object: obj,
@@ -80,10 +90,10 @@ func wrapStringFilterrer(obj *externglib.Object) StringFilterrer {
 	}
 }
 
-func marshalStringFilterrer(p uintptr) (interface{}, error) {
+func marshalStringFilterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStringFilterrer(obj), nil
+	return wrapStringFilter(obj), nil
 }
 
 // NewStringFilter creates a new string filter.
@@ -94,7 +104,7 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringFilter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_string_filter_new(_arg1)
 
@@ -181,7 +191,7 @@ func (self *StringFilter) SetExpression(expression Expressioner) {
 	var _arg1 *C.GtkExpression   // out
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	C.gtk_string_filter_set_expression(_arg0, _arg1)
 }

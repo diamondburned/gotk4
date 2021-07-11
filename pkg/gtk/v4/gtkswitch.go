@@ -24,11 +24,13 @@ func init() {
 
 // Switcher describes Switch's methods.
 type Switcher interface {
-	gextras.Objector
-
+	// Active gets whether the `GtkSwitch` is in its “on” or “off” state.
 	Active() bool
+	// State gets the underlying state of the `GtkSwitch`.
 	State() bool
+	// SetActive changes the state of @self to the desired one.
 	SetActive(isActive bool)
+	// SetState sets the underlying state of the `GtkSwitch`.
 	SetState(state bool)
 }
 
@@ -56,22 +58,19 @@ type Switcher interface {
 //
 // `GtkSwitch` uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
 type Switch struct {
-	*externglib.Object
-
 	Widget
-	Accessible
+
 	Actionable
-	Buildable
-	ConstraintTarget
 }
 
-var _ Switcher = (*Switch)(nil)
+var (
+	_ Switcher        = (*Switch)(nil)
+	_ gextras.Nativer = (*Switch)(nil)
+)
 
-func wrapSwitcher(obj *externglib.Object) Switcher {
+func wrapSwitch(obj *externglib.Object) Switcher {
 	return &Switch{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -85,13 +84,8 @@ func wrapSwitcher(obj *externglib.Object) Switcher {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
 		Actionable: Actionable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -106,19 +100,13 @@ func wrapSwitcher(obj *externglib.Object) Switcher {
 				},
 			},
 		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalSwitcher(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSwitcher(obj), nil
+	return wrapSwitch(obj), nil
 }
 
 // NewSwitch creates a new `GtkSwitch` widget.
@@ -132,6 +120,12 @@ func NewSwitch() *Switch {
 	__switch = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Switch)
 
 	return __switch
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Switch) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Active gets whether the `GtkSwitch` is in its “on” or “off” state.

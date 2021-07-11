@@ -24,25 +24,31 @@ func init() {
 	})
 }
 
-// MediaFilerOverrider contains methods that are overridable.
+// MediaFileOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type MediaFilerOverrider interface {
+type MediaFileOverrider interface {
 	Close()
+
 	Open()
 }
 
 // MediaFiler describes MediaFile's methods.
 type MediaFiler interface {
-	gextras.Objector
-
+	// Clear resets the media file to be empty.
 	Clear()
+	// File returns the file that @self is currently playing from.
 	File() *gio.File
+	// InputStream returns the stream that @self is currently playing from.
 	InputStream() *gio.InputStream
+	// SetFile sets the `GtkMediaFile` to play the given file.
 	SetFile(file gio.Filer)
+	// SetFilename sets the `GtkMediaFile to play the given file.
 	SetFilename(filename string)
+	// SetInputStream sets the `GtkMediaFile` to play the given stream.
 	SetInputStream(stream gio.InputStreamer)
+	// SetResource sets the `GtkMediaFile to play the given resource.
 	SetResource(resourcePath string)
 }
 
@@ -55,25 +61,21 @@ type MediaFiler interface {
 //
 // GTK itself includes implementations using GStreamer and ffmpeg.
 type MediaFile struct {
-	*externglib.Object
-
 	MediaStream
-	gdk.Paintable
 }
 
-var _ MediaFiler = (*MediaFile)(nil)
+var (
+	_ MediaFiler      = (*MediaFile)(nil)
+	_ gextras.Nativer = (*MediaFile)(nil)
+)
 
-func wrapMediaFiler(obj *externglib.Object) MediaFiler {
+func wrapMediaFile(obj *externglib.Object) MediaFiler {
 	return &MediaFile{
-		Object: obj,
 		MediaStream: MediaStream{
 			Object: obj,
 			Paintable: gdk.Paintable{
 				Object: obj,
 			},
-		},
-		Paintable: gdk.Paintable{
-			Object: obj,
 		},
 	}
 }
@@ -81,7 +83,7 @@ func wrapMediaFiler(obj *externglib.Object) MediaFiler {
 func marshalMediaFiler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMediaFiler(obj), nil
+	return wrapMediaFile(obj), nil
 }
 
 // NewMediaFile creates a new empty media file.
@@ -102,7 +104,7 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 	var _arg1 *C.GFile          // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_media_file_new_for_file(_arg1)
 
@@ -141,7 +143,7 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 	var _arg1 *C.GInputStream   // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_media_file_new_for_input_stream(_arg1)
 
@@ -225,7 +227,7 @@ func (self *MediaFile) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile        // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	C.gtk_media_file_set_file(_arg0, _arg1)
 }
@@ -256,7 +258,7 @@ func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 	var _arg1 *C.GInputStream // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 
 	C.gtk_media_file_set_input_stream(_arg0, _arg1)
 }

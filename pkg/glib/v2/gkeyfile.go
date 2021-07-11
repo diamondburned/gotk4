@@ -27,11 +27,11 @@ func init() {
 type KeyFileError int
 
 const (
-	// UnknownEncoding: the text being parsed was in an unknown encoding
+	// UnknownEncoding: text being parsed was in an unknown encoding
 	KeyFileErrorUnknownEncoding KeyFileError = iota
 	// Parse: document was ill-formed
 	KeyFileErrorParse
-	// NotFound: the file was not found
+	// NotFound: file was not found
 	KeyFileErrorNotFound
 	// KeyNotFound: requested key was not found
 	KeyFileErrorKeyNotFound
@@ -57,8 +57,8 @@ const (
 	KeyFileFlagsKeepTranslations KeyFileFlags = 0b10
 )
 
-// KeyFile: the GKeyFile struct contains only private data and should not be
-// accessed directly.
+// KeyFile struct contains only private data and should not be accessed
+// directly.
 type KeyFile struct {
 	native C.GKeyFile
 }

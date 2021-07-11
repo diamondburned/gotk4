@@ -20,17 +20,21 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_controller_get_type()), F: marshalShortcutControllerrer},
+		{T: externglib.Type(C.gtk_shortcut_controller_get_type()), F: marshalShortcutControllerer},
 	})
 }
 
-// ShortcutControllerrer describes ShortcutController's methods.
-type ShortcutControllerrer interface {
-	gextras.Objector
-
+// ShortcutControllerer describes ShortcutController's methods.
+type ShortcutControllerer interface {
+	// AddShortcut adds @shortcut to the list of shortcuts handled by @self.
 	AddShortcut(shortcut Shortcutter)
+	// MnemonicsModifiers gets the mnemonics modifiers for when this controller
+	// activates its shortcuts.
 	MnemonicsModifiers() gdk.ModifierType
+	// Scope gets the scope for when this controller activates its shortcuts.
 	Scope() ShortcutScope
+	// RemoveShortcut removes @shortcut from the list of shortcuts handled by
+	// @self.
 	RemoveShortcut(shortcut Shortcutter)
 }
 
@@ -68,18 +72,19 @@ type ShortcutControllerrer interface {
 // `GtkShortcutAction`. See [ctor@Gtk.ShortcutTrigger.parse_string] to learn
 // more about the syntax for triggers.
 type ShortcutController struct {
-	*externglib.Object
-
 	EventController
+
 	gio.ListModel
 	Buildable
 }
 
-var _ ShortcutControllerrer = (*ShortcutController)(nil)
+var (
+	_ ShortcutControllerer = (*ShortcutController)(nil)
+	_ gextras.Nativer      = (*ShortcutController)(nil)
+)
 
-func wrapShortcutControllerrer(obj *externglib.Object) ShortcutControllerrer {
+func wrapShortcutController(obj *externglib.Object) ShortcutControllerer {
 	return &ShortcutController{
-		Object: obj,
 		EventController: EventController{
 			Object: obj,
 		},
@@ -92,10 +97,10 @@ func wrapShortcutControllerrer(obj *externglib.Object) ShortcutControllerrer {
 	}
 }
 
-func marshalShortcutControllerrer(p uintptr) (interface{}, error) {
+func marshalShortcutControllerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutControllerrer(obj), nil
+	return wrapShortcutController(obj), nil
 }
 
 // NewShortcutController creates a new shortcut controller.
@@ -121,7 +126,7 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_shortcut_controller_new_for_model(_arg1)
 
@@ -130,6 +135,12 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	_shortcutController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutController)
 
 	return _shortcutController
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ShortcutController) Native() uintptr {
+	return v.EventController.Object.Native()
 }
 
 // AddShortcut adds @shortcut to the list of shortcuts handled by @self.
@@ -141,7 +152,7 @@ func (self *ShortcutController) AddShortcut(shortcut Shortcutter) {
 	var _arg1 *C.GtkShortcut           // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer((shortcut).(gextras.Nativer).Native()))
 
 	C.gtk_shortcut_controller_add_shortcut(_arg0, _arg1)
 }
@@ -189,7 +200,7 @@ func (self *ShortcutController) RemoveShortcut(shortcut Shortcutter) {
 	var _arg1 *C.GtkShortcut           // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer((shortcut).(gextras.Nativer).Native()))
 
 	C.gtk_shortcut_controller_remove_shortcut(_arg0, _arg1)
 }

@@ -40,26 +40,25 @@ func init() {
 type AxisUse int
 
 const (
-	// Ignore: the axis is ignored.
+	// Ignore axis is ignored.
 	AxisUseIgnore AxisUse = iota
-	// X: the axis is used as the x axis.
+	// X axis is used as the x axis.
 	AxisUseX
-	// Y: the axis is used as the y axis.
+	// Y axis is used as the y axis.
 	AxisUseY
-	// Pressure: the axis is used for pressure information.
+	// Pressure axis is used for pressure information.
 	AxisUsePressure
-	// Xtilt: the axis is used for x tilt information.
+	// Xtilt axis is used for x tilt information.
 	AxisUseXtilt
-	// Ytilt: the axis is used for y tilt information.
+	// Ytilt axis is used for y tilt information.
 	AxisUseYtilt
-	// Wheel: the axis is used for wheel information.
+	// Wheel axis is used for wheel information.
 	AxisUseWheel
-	// Distance: the axis is used for pen/tablet distance information. (Since:
-	// 3.22)
+	// Distance axis is used for pen/tablet distance information. (Since: 3.22)
 	AxisUseDistance
-	// Rotation: the axis is used for pen rotation information. (Since: 3.22)
+	// Rotation axis is used for pen rotation information. (Since: 3.22)
 	AxisUseRotation
-	// Slider: the axis is used for pen slider information. (Since: 3.22)
+	// Slider axis is used for pen slider information. (Since: 3.22)
 	AxisUseSlider
 	// Last: constant equal to the numerically highest axis value.
 	AxisUseLast
@@ -74,11 +73,11 @@ func marshalAxisUse(p uintptr) (interface{}, error) {
 type ByteOrder int
 
 const (
-	// LsbFirst: the values are stored with the least-significant byte first.
-	// For instance, the 32-bit value 0xffeecc would be stored in memory as
-	// 0xcc, 0xee, 0xff, 0x00.
+	// LsbFirst values are stored with the least-significant byte first. For
+	// instance, the 32-bit value 0xffeecc would be stored in memory as 0xcc,
+	// 0xee, 0xff, 0x00.
 	ByteOrderLsbFirst ByteOrder = iota
-	// MsbFirst: the values are stored with the most-significant byte first. For
+	// MsbFirst values are stored with the most-significant byte first. For
 	// instance, the 32-bit value 0xffeecc would be stored in memory as 0x00,
 	// 0xff, 0xee, 0xcc.
 	ByteOrderMsbFirst
@@ -94,9 +93,9 @@ type GLError int
 const (
 	// NotAvailable: openGL support is not available
 	GLErrorNotAvailable GLError = iota
-	// UnsupportedFormat: the requested visual format is not supported
+	// UnsupportedFormat: requested visual format is not supported
 	GLErrorUnsupportedFormat
-	// UnsupportedProfile: the requested profile is not supported
+	// UnsupportedProfile: requested profile is not supported
 	GLErrorUnsupportedProfile
 )
 
@@ -126,18 +125,17 @@ func marshalGrabOwnership(p uintptr) (interface{}, error) {
 type GrabStatus int
 
 const (
-	// Success: the resource was successfully grabbed.
+	// Success: resource was successfully grabbed.
 	GrabStatusSuccess GrabStatus = iota
-	// AlreadyGrabbed: the resource is actively grabbed by another client.
+	// AlreadyGrabbed: resource is actively grabbed by another client.
 	GrabStatusAlreadyGrabbed
-	// InvalidTime: the resource was grabbed more recently than the specified
-	// time.
+	// InvalidTime: resource was grabbed more recently than the specified time.
 	GrabStatusInvalidTime
-	// NotViewable: the grab window or the @confine_to window are not viewable.
+	// NotViewable: grab window or the @confine_to window are not viewable.
 	GrabStatusNotViewable
-	// Frozen: the resource is frozen by an active grab of another client.
+	// Frozen: resource is frozen by an active grab of another client.
 	GrabStatusFrozen
-	// Failed: the grab failed for some other reason. Since 3.16
+	// Failed: grab failed for some other reason. Since 3.16
 	GrabStatusFailed
 )
 
@@ -154,27 +152,26 @@ func marshalGrabStatus(p uintptr) (interface{}, error) {
 type ModifierIntent int
 
 const (
-	// PrimaryAccelerator: the primary modifier used to invoke menu
-	// accelerators.
+	// PrimaryAccelerator: primary modifier used to invoke menu accelerators.
 	ModifierIntentPrimaryAccelerator ModifierIntent = iota
-	// ContextMenu: the modifier used to invoke context menus. Note that mouse
+	// ContextMenu: modifier used to invoke context menus. Note that mouse
 	// button 3 always triggers context menus. When this modifier is not 0, it
 	// additionally triggers context menus when used with mouse button 1.
 	ModifierIntentContextMenu
-	// ExtendSelection: the modifier used to extend selections using
+	// ExtendSelection: modifier used to extend selections using
 	// `modifier`-click or `modifier`-cursor-key
 	ModifierIntentExtendSelection
-	// ModifySelection: the modifier used to modify selections, which in most
-	// cases means toggling the clicked item into or out of the selection.
+	// ModifySelection: modifier used to modify selections, which in most cases
+	// means toggling the clicked item into or out of the selection.
 	ModifierIntentModifySelection
 	// NoTextInput: when any of these modifiers is pressed, the key event cannot
 	// produce a symbol directly. This is meant to be used for input methods,
 	// and for use cases like typeahead search.
 	ModifierIntentNoTextInput
-	// ShiftGroup: the modifier that switches between keyboard groups (AltGr on
+	// ShiftGroup: modifier that switches between keyboard groups (AltGr on
 	// X11/Windows and Option/Alt on OS X).
 	ModifierIntentShiftGroup
-	// DefaultModMask: the set of modifier masks accepted as modifiers in
+	// DefaultModMask: set of modifier masks accepted as modifiers in
 	// accelerators. Needed because Command is mapped to MOD2 on OSX, which is
 	// widely used, but on X11 MOD2 is NumLock and using that for a mod key is
 	// problematic at best. Ref:
@@ -343,7 +340,7 @@ const (
 	EventMaskTouchpadGestureMask EventMask = 0b1000000000000000000000000
 	// EventMaskTabletPadMask: receive tablet pad events. Since 3.22
 	EventMaskTabletPadMask EventMask = 0b10000000000000000000000000
-	// EventMaskAllEventsMask: the combination of all the above event masks.
+	// EventMaskAllEventsMask: combination of all the above event masks.
 	EventMaskAllEventsMask EventMask = 0b11111111111111111111111110
 )
 
@@ -371,39 +368,38 @@ func marshalEventMask(p uintptr) (interface{}, error) {
 type ModifierType int
 
 const (
-	// ModifierTypeShiftMask: the Shift key.
+	// ModifierTypeShiftMask: shift key.
 	ModifierTypeShiftMask ModifierType = 0b1
 	// ModifierTypeLockMask: lock key (depending on the modifier mapping of the
 	// X server this may either be CapsLock or ShiftLock).
 	ModifierTypeLockMask ModifierType = 0b10
-	// ModifierTypeControlMask: the Control key.
+	// ModifierTypeControlMask: control key.
 	ModifierTypeControlMask ModifierType = 0b100
-	// ModifierTypeMod1Mask: the fourth modifier key (it depends on the modifier
+	// ModifierTypeMod1Mask: fourth modifier key (it depends on the modifier
 	// mapping of the X server which key is interpreted as this modifier, but
 	// normally it is the Alt key).
 	ModifierTypeMod1Mask ModifierType = 0b1000
-	// ModifierTypeMod2Mask: the fifth modifier key (it depends on the modifier
+	// ModifierTypeMod2Mask: fifth modifier key (it depends on the modifier
 	// mapping of the X server which key is interpreted as this modifier).
 	ModifierTypeMod2Mask ModifierType = 0b10000
-	// ModifierTypeMod3Mask: the sixth modifier key (it depends on the modifier
+	// ModifierTypeMod3Mask: sixth modifier key (it depends on the modifier
 	// mapping of the X server which key is interpreted as this modifier).
 	ModifierTypeMod3Mask ModifierType = 0b100000
-	// ModifierTypeMod4Mask: the seventh modifier key (it depends on the
-	// modifier mapping of the X server which key is interpreted as this
-	// modifier).
+	// ModifierTypeMod4Mask: seventh modifier key (it depends on the modifier
+	// mapping of the X server which key is interpreted as this modifier).
 	ModifierTypeMod4Mask ModifierType = 0b1000000
-	// ModifierTypeMod5Mask: the eighth modifier key (it depends on the modifier
+	// ModifierTypeMod5Mask: eighth modifier key (it depends on the modifier
 	// mapping of the X server which key is interpreted as this modifier).
 	ModifierTypeMod5Mask ModifierType = 0b10000000
-	// ModifierTypeButton1Mask: the first mouse button.
+	// ModifierTypeButton1Mask: first mouse button.
 	ModifierTypeButton1Mask ModifierType = 0b100000000
-	// ModifierTypeButton2Mask: the second mouse button.
+	// ModifierTypeButton2Mask: second mouse button.
 	ModifierTypeButton2Mask ModifierType = 0b1000000000
-	// ModifierTypeButton3Mask: the third mouse button.
+	// ModifierTypeButton3Mask: third mouse button.
 	ModifierTypeButton3Mask ModifierType = 0b10000000000
-	// ModifierTypeButton4Mask: the fourth mouse button.
+	// ModifierTypeButton4Mask: fourth mouse button.
 	ModifierTypeButton4Mask ModifierType = 0b100000000000
-	// ModifierTypeButton5Mask: the fifth mouse button.
+	// ModifierTypeButton5Mask: fifth mouse button.
 	ModifierTypeButton5Mask ModifierType = 0b1000000000000
 	// ModifierTypeModifierReserved13Mask: reserved bit flag; do not use in your
 	// own code
@@ -444,11 +440,11 @@ const (
 	// ModifierTypeModifierReserved25Mask: reserved bit flag; do not use in your
 	// own code
 	ModifierTypeModifierReserved25Mask ModifierType = 0b10000000000000000000000000
-	// ModifierTypeSuperMask: the Super modifier. Since 2.10
+	// ModifierTypeSuperMask: super modifier. Since 2.10
 	ModifierTypeSuperMask ModifierType = 0b100000000000000000000000000
-	// ModifierTypeHyperMask: the Hyper modifier. Since 2.10
+	// ModifierTypeHyperMask: hyper modifier. Since 2.10
 	ModifierTypeHyperMask ModifierType = 0b1000000000000000000000000000
-	// ModifierTypeMetaMask: the Meta modifier. Since 2.10
+	// ModifierTypeMetaMask: meta modifier. Since 2.10
 	ModifierTypeMetaMask ModifierType = 0b10000000000000000000000000000
 	// ModifierTypeModifierReserved29Mask: reserved bit flag; do not use in your
 	// own code

@@ -25,31 +25,39 @@ func init() {
 	})
 }
 
-// FileChooserButtonnerOverrider contains methods that are overridable.
+// FileChooserButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileChooserButtonnerOverrider interface {
+type FileChooserButtonOverrider interface {
 	FileSet()
 }
 
 // FileChooserButtonner describes FileChooserButton's methods.
 type FileChooserButtonner interface {
-	gextras.Objector
-
+	// FocusOnClick returns whether the button grabs focus when it is clicked
+	// with the mouse.
 	FocusOnClick() bool
+	// Title retrieves the title of the browse dialog used by @button.
 	Title() string
+	// WidthChars retrieves the width in characters of the @button widget’s
+	// entry and/or label.
 	WidthChars() int
+	// SetFocusOnClick sets whether the button will grab focus when it is
+	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
+	// SetTitle modifies the @title of the browse dialog used by @button.
 	SetTitle(title string)
+	// SetWidthChars sets the width (in characters) that @button will use to
+	// @n_chars.
 	SetWidthChars(nChars int)
 }
 
-// FileChooserButton: the FileChooserButton is a widget that lets the user
-// select a file. It implements the FileChooser interface. Visually, it is a
-// file name with a button to bring up a FileChooserDialog. The user can then
-// use that dialog to change the file associated with that button. This widget
-// does not support setting the FileChooser:select-multiple property to true.
+// FileChooserButton is a widget that lets the user select a file. It implements
+// the FileChooser interface. Visually, it is a file name with a button to bring
+// up a FileChooserDialog. The user can then use that dialog to change the file
+// associated with that button. This widget does not support setting the
+// FileChooser:select-multiple property to true.
 //
 // Create a button to let the user select a file in /etc
 //
@@ -77,26 +85,21 @@ type FileChooserButtonner interface {
 // GtkFileChooserButton has a CSS node with name “filechooserbutton”, containing
 // a subnode for the internal button with name “button” and style class “.file”.
 type FileChooserButton struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
+
 	FileChooser
-	Orientable
 }
 
-var _ FileChooserButtonner = (*FileChooserButton)(nil)
+var (
+	_ FileChooserButtonner = (*FileChooserButton)(nil)
+	_ gextras.Nativer      = (*FileChooserButton)(nil)
+)
 
-func wrapFileChooserButtonner(obj *externglib.Object) FileChooserButtonner {
+func wrapFileChooserButton(obj *externglib.Object) FileChooserButtonner {
 	return &FileChooserButton{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -107,33 +110,12 @@ func wrapFileChooserButtonner(obj *externglib.Object) FileChooserButtonner {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 		FileChooser: FileChooser{
-			Object: obj,
-		},
-		Orientable: Orientable{
 			Object: obj,
 		},
 	}
@@ -142,7 +124,7 @@ func wrapFileChooserButtonner(obj *externglib.Object) FileChooserButtonner {
 func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserButtonner(obj), nil
+	return wrapFileChooserButton(obj), nil
 }
 
 // NewFileChooserButtonWithDialog creates a FileChooserButton widget which uses
@@ -158,7 +140,7 @@ func NewFileChooserButtonWithDialog(dialog Dialogger) *FileChooserButton {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(dialog.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((dialog).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_file_chooser_button_new_with_dialog(_arg1)
 
@@ -167,6 +149,12 @@ func NewFileChooserButtonWithDialog(dialog Dialogger) *FileChooserButton {
 	_fileChooserButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileChooserButton)
 
 	return _fileChooserButton
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FileChooserButton) Native() uintptr {
+	return v.Box.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // FocusOnClick returns whether the button grabs focus when it is clicked with

@@ -24,10 +24,13 @@ func init() {
 
 // Relationer describes Relation's methods.
 type Relationer interface {
-	gextras.Objector
-
+	// AddTarget adds the specified AtkObject to the target for the relation, if
+	// it is not already present.
 	AddTarget(target ObjectClasser)
+	// RelationType gets the type of @relation
 	RelationType() RelationType
+	// RemoveTarget: remove the specified AtkObject from the target for the
+	// relation.
 	RemoveTarget(target ObjectClasser) bool
 }
 
@@ -38,9 +41,12 @@ type Relation struct {
 	*externglib.Object
 }
 
-var _ Relationer = (*Relation)(nil)
+var (
+	_ Relationer      = (*Relation)(nil)
+	_ gextras.Nativer = (*Relation)(nil)
+)
 
-func wrapRelationer(obj *externglib.Object) Relationer {
+func wrapRelation(obj *externglib.Object) Relationer {
 	return &Relation{
 		Object: obj,
 	}
@@ -49,7 +55,7 @@ func wrapRelationer(obj *externglib.Object) Relationer {
 func marshalRelationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRelationer(obj), nil
+	return wrapRelation(obj), nil
 }
 
 // AddTarget adds the specified AtkObject to the target for the relation, if it
@@ -59,7 +65,7 @@ func (relation *Relation) AddTarget(target ObjectClasser) {
 	var _arg1 *C.AtkObject   // out
 
 	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
 
 	C.atk_relation_add_target(_arg0, _arg1)
 }
@@ -88,7 +94,7 @@ func (relation *Relation) RemoveTarget(target ObjectClasser) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
 
 	_cret = C.atk_relation_remove_target(_arg0, _arg1)
 

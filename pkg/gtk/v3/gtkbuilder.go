@@ -23,7 +23,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_builder_error_get_type()), F: marshalBuilderError},
-		{T: externglib.Type(C.gtk_builder_get_type()), F: marshalBuilderrer},
+		{T: externglib.Type(C.gtk_builder_get_type()), F: marshalBuilderer},
 	})
 }
 
@@ -35,7 +35,7 @@ const (
 	// InvalidTypeFunction: type-func attribute didn’t name a function that
 	// returns a #GType.
 	BuilderErrorInvalidTypeFunction BuilderError = iota
-	// UnhandledTag: the input contained a tag that Builder can’t handle.
+	// UnhandledTag: input contained a tag that Builder can’t handle.
 	BuilderErrorUnhandledTag
 	// MissingAttribute: attribute that is required by Builder was missing.
 	BuilderErrorMissingAttribute
@@ -47,19 +47,19 @@ const (
 	BuilderErrorMissingPropertyValue
 	// InvalidValue couldn’t parse some attribute value.
 	BuilderErrorInvalidValue
-	// VersionMismatch: the input file requires a newer version of GTK+.
+	// VersionMismatch: input file requires a newer version of GTK+.
 	BuilderErrorVersionMismatch
 	// DuplicateID: object id occurred twice.
 	BuilderErrorDuplicateID
 	// ObjectTypeRefused: specified object type is of the same type or derived
 	// from the type of the composite class being extended with builder XML.
 	BuilderErrorObjectTypeRefused
-	// TemplateMismatch: the wrong type was specified in a composite class’s
+	// TemplateMismatch: wrong type was specified in a composite class’s
 	// template XML
 	BuilderErrorTemplateMismatch
-	// InvalidProperty: the specified property is unknown for the object class.
+	// InvalidProperty: specified property is unknown for the object class.
 	BuilderErrorInvalidProperty
-	// InvalidSignal: the specified signal is unknown for the object class.
+	// InvalidSignal: specified signal is unknown for the object class.
 	BuilderErrorInvalidSignal
 	// InvalidID: object id is unknown
 	BuilderErrorInvalidID
@@ -69,36 +69,67 @@ func marshalBuilderError(p uintptr) (interface{}, error) {
 	return BuilderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// BuilderrerOverrider contains methods that are overridable.
+// BuilderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type BuilderrerOverrider interface {
+type BuilderOverrider interface {
 	// TypeFromName looks up a type by name, using the virtual function that
 	// Builder has for that purpose. This is mainly used when implementing the
 	// Buildable interface on a type.
 	TypeFromName(typeName string) externglib.Type
 }
 
-// Builderrer describes Builder's methods.
-type Builderrer interface {
-	gextras.Objector
-
+// Builderer describes Builder's methods.
+type Builderer interface {
+	// AddFromFile parses a file containing a [GtkBuilder UI
+	// definition][BUILDER-UI] and merges it with the current contents of
+	// @builder.
 	AddFromFile(filename string) (uint, error)
+	// AddFromResource parses a resource file containing a [GtkBuilder UI
+	// definition][BUILDER-UI] and merges it with the current contents of
+	// @builder.
 	AddFromResource(resourcePath string) (uint, error)
+	// AddFromString parses a string containing a [GtkBuilder UI
+	// definition][BUILDER-UI] and merges it with the current contents of
+	// @builder.
 	AddFromString(buffer string, length uint) (uint, error)
+	// AddObjectsFromFile parses a file containing a [GtkBuilder UI
+	// definition][BUILDER-UI] building only the requested objects and merges
+	// them with the current contents of @builder.
 	AddObjectsFromFile(filename string, objectIds []string) (uint, error)
+	// AddObjectsFromResource parses a resource file containing a [GtkBuilder UI
+	// definition][BUILDER-UI] building only the requested objects and merges
+	// them with the current contents of @builder.
 	AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error)
+	// AddObjectsFromString parses a string containing a [GtkBuilder UI
+	// definition][BUILDER-UI] building only the requested objects and merges
+	// them with the current contents of @builder.
 	AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error)
+	// ConnectSignals: this method is a simpler variation of
+	// gtk_builder_connect_signals_full().
 	ConnectSignals(userData interface{})
+	// ExposeObject: add @object to the @builder object pool so it can be
+	// referenced just like any other object built by builder.
 	ExposeObject(name string, object gextras.Objector)
+	// ExtendWithTemplate: main private entry point for building composite
+	// container components from template XML.
 	ExtendWithTemplate(widget Widgetter, templateType externglib.Type, buffer string, length uint) (uint, error)
+	// Application gets the Application associated with the builder.
 	Application() *Application
+	// GetObject gets the object named @name.
 	GetObject(name string) *externglib.Object
+	// TranslationDomain gets the translation domain of @builder.
 	TranslationDomain() string
+	// TypeFromName looks up a type by name, using the virtual function that
+	// Builder has for that purpose.
 	TypeFromName(typeName string) externglib.Type
+	// SetApplication sets the application associated with @builder.
 	SetApplication(application Applicationer)
+	// SetTranslationDomain sets the translation domain of @builder.
 	SetTranslationDomain(domain string)
+	// ValueFromStringType: like gtk_builder_value_from_string(), this function
+	// demarshals a value from a string, but takes a #GType instead of Spec.
 	ValueFromStringType(typ externglib.Type, _string string) (externglib.Value, error)
 }
 
@@ -277,18 +308,21 @@ type Builder struct {
 	*externglib.Object
 }
 
-var _ Builderrer = (*Builder)(nil)
+var (
+	_ Builderer       = (*Builder)(nil)
+	_ gextras.Nativer = (*Builder)(nil)
+)
 
-func wrapBuilderrer(obj *externglib.Object) Builderrer {
+func wrapBuilder(obj *externglib.Object) Builderer {
 	return &Builder{
 		Object: obj,
 	}
 }
 
-func marshalBuilderrer(p uintptr) (interface{}, error) {
+func marshalBuilderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderrer(obj), nil
+	return wrapBuilder(obj), nil
 }
 
 // NewBuilder creates a new empty builder object.
@@ -667,7 +701,7 @@ func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType extern
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = (C.GType)(templateType)
 	_arg3 = (*C.gchar)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -773,7 +807,7 @@ func (builder *Builder) SetApplication(application Applicationer) {
 	var _arg1 *C.GtkApplication // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer((application).(gextras.Nativer).Native()))
 
 	C.gtk_builder_set_application(_arg0, _arg1)
 }

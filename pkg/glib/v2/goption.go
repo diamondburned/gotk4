@@ -22,35 +22,35 @@ func init() {
 	})
 }
 
-// OptionArg: the Arg enum values determine which type of extra argument the
-// options expect to find. If an option expects an extra argument, it can be
-// specified in several ways; with a short option: `-x arg`, with a long option:
-// `--name arg` or combined in a single argument: `--name=arg`.
+// OptionArg enum values determine which type of extra argument the options
+// expect to find. If an option expects an extra argument, it can be specified
+// in several ways; with a short option: `-x arg`, with a long option: `--name
+// arg` or combined in a single argument: `--name=arg`.
 type OptionArg int
 
 const (
 	// None: no extra argument. This is useful for simple flags.
 	OptionArgNone OptionArg = iota
-	// String: the option takes a UTF-8 string argument.
+	// String: option takes a UTF-8 string argument.
 	OptionArgString
-	// Int: the option takes an integer argument.
+	// Int: option takes an integer argument.
 	OptionArgInt
-	// Callback: the option provides a callback (of type ArgFunc) to parse the
-	// extra argument.
+	// Callback: option provides a callback (of type ArgFunc) to parse the extra
+	// argument.
 	OptionArgCallback
-	// Filename: the option takes a filename as argument, which will be in the
-	// GLib filename encoding rather than UTF-8.
+	// Filename: option takes a filename as argument, which will be in the GLib
+	// filename encoding rather than UTF-8.
 	OptionArgFilename
-	// StringArray: the option takes a string argument, multiple uses of the
-	// option are collected into an array of strings.
+	// StringArray: option takes a string argument, multiple uses of the option
+	// are collected into an array of strings.
 	OptionArgStringArray
-	// FilenameArray: the option takes a filename as argument, multiple uses of
-	// the option are collected into an array of strings.
+	// FilenameArray: option takes a filename as argument, multiple uses of the
+	// option are collected into an array of strings.
 	OptionArgFilenameArray
-	// Double: the option takes a double argument. The argument can be formatted
+	// Double: option takes a double argument. The argument can be formatted
 	// either for the user's locale or for the "C" locale. Since 2.12
 	OptionArgDouble
-	// Int64: the option takes a 64-bit integer. Like G_OPTION_ARG_INT but for
+	// Int64: option takes a 64-bit integer. Like G_OPTION_ARG_INT but for
 	// larger numbers. The number can be in decimal base, or in hexadecimal
 	// (when prefixed with `0x`, for example, `0xffffffff`). Since 2.12
 	OptionArgInt64
@@ -76,9 +76,9 @@ type OptionFlags int
 const (
 	// OptionFlagsNone: no flags. Since: 2.42.
 	OptionFlagsNone OptionFlags = 0b0
-	// OptionFlagsHidden: the option doesn't appear in `--help` output.
+	// OptionFlagsHidden: option doesn't appear in `--help` output.
 	OptionFlagsHidden OptionFlags = 0b1
-	// OptionFlagsInMain: the option appears in the main section of the `--help`
+	// OptionFlagsInMain: option appears in the main section of the `--help`
 	// output, even if it is defined in a group.
 	OptionFlagsInMain OptionFlags = 0b10
 	// OptionFlagsReverse: for options of the G_OPTION_ARG_NONE kind, this flag

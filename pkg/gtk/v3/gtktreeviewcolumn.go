@@ -27,9 +27,9 @@ func init() {
 	})
 }
 
-// TreeViewColumnSizing: the sizing method the column uses to determine its
-// width. Please note that @GTK_TREE_VIEW_COLUMN_AUTOSIZE are inefficient for
-// large views, and can make columns appear choppy.
+// TreeViewColumnSizing: sizing method the column uses to determine its width.
+// Please note that @GTK_TREE_VIEW_COLUMN_AUTOSIZE are inefficient for large
+// views, and can make columns appear choppy.
 type TreeViewColumnSizing int
 
 const (
@@ -77,11 +77,11 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 	fn(treeColumn, cell, treeModel, iter, data)
 }
 
-// TreeViewColumnerOverrider contains methods that are overridable.
+// TreeViewColumnOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TreeViewColumnerOverrider interface {
+type TreeViewColumnOverrider interface {
 	// Clicked emits the “clicked” signal on the column. This function will only
 	// work if @tree_column is clickable.
 	Clicked()
@@ -89,77 +89,142 @@ type TreeViewColumnerOverrider interface {
 
 // TreeViewColumner describes TreeViewColumn's methods.
 type TreeViewColumner interface {
-	gextras.Objector
-
-	AddAttribute(cellRenderer CellRendererrer, attribute string, column int)
-	CellGetPosition(cellRenderer CellRendererrer) (xOffset int, width int, ok bool)
+	// AddAttribute adds an attribute mapping to the list in @tree_column.
+	AddAttribute(cellRenderer CellRendererer, attribute string, column int)
+	// CellGetPosition obtains the horizontal position and size of a cell in a
+	// column.
+	CellGetPosition(cellRenderer CellRendererer) (xOffset int, width int, ok bool)
+	// CellGetSize obtains the width and height needed to render the column.
 	CellGetSize(cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int)
+	// CellIsVisible returns true if any of the cells packed into the
+	// @tree_column are visible.
 	CellIsVisible() bool
+	// CellSetCellData sets the cell renderer based on the @tree_model and
+	// @iter.
 	CellSetCellData(treeModel TreeModeller, iter *TreeIter, isExpander bool, isExpanded bool)
+	// Clear unsets all the mappings on all renderers on the @tree_column.
 	Clear()
-	ClearAttributes(cellRenderer CellRendererrer)
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_tree_view_column_set_attributes().
+	ClearAttributes(cellRenderer CellRendererer)
+	// Clicked emits the “clicked” signal on the column.
 	Clicked()
-	FocusCell(cell CellRendererrer)
+	// FocusCell sets the current keyboard focus to be at @cell, if the column
+	// contains 2 or more editable and activatable cells.
+	FocusCell(cell CellRendererer)
+	// Alignment returns the current x alignment of @tree_column.
 	Alignment() float32
+	// Button returns the button used in the treeview column header
 	Button() *Widget
+	// Clickable returns true if the user can click on the header for the
+	// column.
 	Clickable() bool
+	// Expand returns true if the column expands to fill available space.
 	Expand() bool
+	// FixedWidth gets the fixed width of the column.
 	FixedWidth() int
+	// MaxWidth returns the maximum width in pixels of the @tree_column, or -1
+	// if no maximum width is set.
 	MaxWidth() int
+	// MinWidth returns the minimum width in pixels of the @tree_column, or -1
+	// if no minimum width is set.
 	MinWidth() int
+	// Reorderable returns true if the @tree_column can be reordered by the
+	// user.
 	Reorderable() bool
+	// Resizable returns true if the @tree_column can be resized by the end
+	// user.
 	Resizable() bool
+	// Sizing returns the current type of @tree_column.
 	Sizing() TreeViewColumnSizing
+	// SortColumnID gets the logical @sort_column_id that the model sorts on
+	// when this column is selected for sorting.
 	SortColumnID() int
+	// SortIndicator gets the value set by
+	// gtk_tree_view_column_set_sort_indicator().
 	SortIndicator() bool
+	// SortOrder gets the value set by gtk_tree_view_column_set_sort_order().
 	SortOrder() SortType
+	// Spacing returns the spacing of @tree_column.
 	Spacing() int
+	// Title returns the title of the widget.
 	Title() string
+	// TreeView returns the TreeView wherein @tree_column has been inserted.
 	TreeView() *Widget
+	// Visible returns true if @tree_column is visible.
 	Visible() bool
+	// Widget returns the Widget in the button on the column header.
 	Widget() *Widget
+	// Width returns the current size of @tree_column in pixels.
 	Width() int
+	// XOffset returns the current X offset of @tree_column in pixels.
 	XOffset() int
-	PackEnd(cell CellRendererrer, expand bool)
-	PackStart(cell CellRendererrer, expand bool)
+	// PackEnd adds the @cell to end of the column.
+	PackEnd(cell CellRendererer, expand bool)
+	// PackStart packs the @cell into the beginning of the column.
+	PackStart(cell CellRendererer, expand bool)
+	// QueueResize flags the column, and the cell renderers added to this
+	// column, to have their sizes renegotiated.
 	QueueResize()
+	// SetAlignment sets the alignment of the title or custom widget inside the
+	// column header.
 	SetAlignment(xalign float32)
+	// SetClickable sets the header to be active if @clickable is true.
 	SetClickable(clickable bool)
+	// SetExpand sets the column to take available extra space.
 	SetExpand(expand bool)
+	// SetFixedWidth: if @fixed_width is not -1, sets the fixed width of
+	// @tree_column; otherwise unsets it.
 	SetFixedWidth(fixedWidth int)
+	// SetMaxWidth sets the maximum width of the @tree_column.
 	SetMaxWidth(maxWidth int)
+	// SetMinWidth sets the minimum width of the @tree_column.
 	SetMinWidth(minWidth int)
+	// SetReorderable: if @reorderable is true, then the column can be reordered
+	// by the end user dragging the header.
 	SetReorderable(reorderable bool)
+	// SetResizable: if @resizable is true, then the user can explicitly resize
+	// the column by grabbing the outer edge of the column button.
 	SetResizable(resizable bool)
+	// SetSortColumnID sets the logical @sort_column_id that this column sorts
+	// on when this column is selected for sorting.
 	SetSortColumnID(sortColumnId int)
+	// SetSortIndicator: call this function with a @setting of true to display
+	// an arrow in the header button indicating the column is sorted.
 	SetSortIndicator(setting bool)
+	// SetSpacing sets the spacing field of @tree_column, which is the number of
+	// pixels to place between cell renderers packed into it.
 	SetSpacing(spacing int)
+	// SetTitle sets the title of the @tree_column.
 	SetTitle(title string)
+	// SetVisible sets the visibility of @tree_column.
 	SetVisible(visible bool)
+	// SetWidget sets the widget in the header to be @widget.
 	SetWidget(widget Widgetter)
 }
 
-// TreeViewColumn: the GtkTreeViewColumn object represents a visible column in a
-// TreeView widget. It allows to set properties of the column header, and
-// functions as a holding pen for the cell renderers which determine how the
-// data in the column is displayed.
+// TreeViewColumn object represents a visible column in a TreeView widget. It
+// allows to set properties of the column header, and functions as a holding pen
+// for the cell renderers which determine how the data in the column is
+// displayed.
 //
 // Please refer to the [tree widget conceptual overview][TreeWidget] for an
 // overview of all the objects and data types related to the tree widget and how
 // they work together.
 type TreeViewColumn struct {
-	*externglib.Object
-
 	externglib.InitiallyUnowned
+
 	Buildable
 	CellLayout
 }
 
-var _ TreeViewColumner = (*TreeViewColumn)(nil)
+var (
+	_ TreeViewColumner = (*TreeViewColumn)(nil)
+	_ gextras.Nativer  = (*TreeViewColumn)(nil)
+)
 
-func wrapTreeViewColumner(obj *externglib.Object) TreeViewColumner {
+func wrapTreeViewColumn(obj *externglib.Object) TreeViewColumner {
 	return &TreeViewColumn{
-		Object: obj,
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
@@ -175,7 +240,7 @@ func wrapTreeViewColumner(obj *externglib.Object) TreeViewColumner {
 func marshalTreeViewColumner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeViewColumner(obj), nil
+	return wrapTreeViewColumn(obj), nil
 }
 
 // NewTreeViewColumn creates a new TreeViewColumn.
@@ -197,7 +262,7 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 	var _arg1 *C.GtkCellArea       // out
 	var _cret *C.GtkTreeViewColumn // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((area).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_tree_view_column_new_with_area(_arg1)
 
@@ -208,19 +273,25 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 	return _treeViewColumn
 }
 
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *TreeViewColumn) Native() uintptr {
+	return v.InitiallyUnowned.Object.Native()
+}
+
 // AddAttribute adds an attribute mapping to the list in @tree_column. The
 // @column is the column of the model to get a value from, and the @attribute is
 // the parameter on @cell_renderer to be set from the value. So for example if
 // column 2 of the model contains strings, you could have the “text” attribute
 // of a CellRendererText get its values from column 2.
-func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererrer, attribute string, column int) {
+func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attribute string, column int) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkCellRenderer   // out
 	var _arg2 *C.gchar             // out
 	var _arg3 C.gint               // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(column)
@@ -231,7 +302,7 @@ func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererrer, att
 // CellGetPosition obtains the horizontal position and size of a cell in a
 // column. If the cell is not found in the column, @start_pos and @width are not
 // changed and false is returned.
-func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererrer) (xOffset int, width int, ok bool) {
+func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererer) (xOffset int, width int, ok bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkCellRenderer   // out
 	var _arg2 C.gint               // in
@@ -239,7 +310,7 @@ func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererrer) 
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_tree_view_column_cell_get_position(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -316,7 +387,7 @@ func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeller, iter *
 	var _arg4 C.gboolean           // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((treeModel).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 	if isExpander {
 		_arg3 = C.TRUE
@@ -339,12 +410,12 @@ func (treeColumn *TreeViewColumn) Clear() {
 
 // ClearAttributes clears all existing attributes previously set with
 // gtk_tree_view_column_set_attributes().
-func (treeColumn *TreeViewColumn) ClearAttributes(cellRenderer CellRendererrer) {
+func (treeColumn *TreeViewColumn) ClearAttributes(cellRenderer CellRendererer) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkCellRenderer   // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
 
 	C.gtk_tree_view_column_clear_attributes(_arg0, _arg1)
 }
@@ -361,12 +432,12 @@ func (treeColumn *TreeViewColumn) Clicked() {
 
 // FocusCell sets the current keyboard focus to be at @cell, if the column
 // contains 2 or more editable and activatable cells.
-func (treeColumn *TreeViewColumn) FocusCell(cell CellRendererrer) {
+func (treeColumn *TreeViewColumn) FocusCell(cell CellRendererer) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkCellRenderer   // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
 
 	C.gtk_tree_view_column_focus_cell(_arg0, _arg1)
 }
@@ -716,13 +787,13 @@ func (treeColumn *TreeViewColumn) XOffset() int {
 // PackEnd adds the @cell to end of the column. If @expand is false, then the
 // @cell is allocated no more space than it needs. Any unused space is divided
 // evenly between cells for which @expand is true.
-func (treeColumn *TreeViewColumn) PackEnd(cell CellRendererrer, expand bool) {
+func (treeColumn *TreeViewColumn) PackEnd(cell CellRendererer, expand bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkCellRenderer   // out
 	var _arg2 C.gboolean           // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -733,13 +804,13 @@ func (treeColumn *TreeViewColumn) PackEnd(cell CellRendererrer, expand bool) {
 // PackStart packs the @cell into the beginning of the column. If @expand is
 // false, then the @cell is allocated no more space than it needs. Any unused
 // space is divided evenly between cells for which @expand is true.
-func (treeColumn *TreeViewColumn) PackStart(cell CellRendererrer, expand bool) {
+func (treeColumn *TreeViewColumn) PackStart(cell CellRendererer, expand bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkCellRenderer   // out
 	var _arg2 C.gboolean           // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -953,7 +1024,7 @@ func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_tree_view_column_set_widget(_arg0, _arg1)
 }

@@ -27,20 +27,19 @@ func init() {
 
 // PopoverAccessibler describes PopoverAccessible's methods.
 type PopoverAccessibler interface {
-	gextras.Objector
-
 	privatePopoverAccessible()
 }
 
 type PopoverAccessible struct {
 	ContainerAccessible
-
-	atk.Component
 }
 
-var _ PopoverAccessibler = (*PopoverAccessible)(nil)
+var (
+	_ PopoverAccessibler = (*PopoverAccessible)(nil)
+	_ gextras.Nativer    = (*PopoverAccessible)(nil)
+)
 
-func wrapPopoverAccessibler(obj *externglib.Object) PopoverAccessibler {
+func wrapPopoverAccessible(obj *externglib.Object) PopoverAccessibler {
 	return &PopoverAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -53,12 +52,6 @@ func wrapPopoverAccessibler(obj *externglib.Object) PopoverAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -66,7 +59,7 @@ func wrapPopoverAccessibler(obj *externglib.Object) PopoverAccessibler {
 func marshalPopoverAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopoverAccessibler(obj), nil
+	return wrapPopoverAccessible(obj), nil
 }
 
 func (*PopoverAccessible) privatePopoverAccessible() {}

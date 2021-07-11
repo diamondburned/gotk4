@@ -25,13 +25,19 @@ func init() {
 
 // BookmarkLister describes BookmarkList's methods.
 type BookmarkLister interface {
-	gextras.Objector
-
+	// Attributes gets the attributes queried on the children.
 	Attributes() string
+	// Filename returns the filename of the bookmark file that this list is
+	// loading.
 	Filename() string
+	// IOPriority gets the IO priority to use while loading file.
 	IOPriority() int
+	// IsLoading returns true if the files are currently being loaded.
 	IsLoading() bool
+	// SetAttributes sets the @attributes to be enumerated and starts the
+	// enumeration.
 	SetAttributes(attributes string)
+	// SetIOPriority sets the IO priority to use while loading files.
 	SetIOPriority(ioPriority int)
 }
 
@@ -48,9 +54,12 @@ type BookmarkList struct {
 	gio.ListModel
 }
 
-var _ BookmarkLister = (*BookmarkList)(nil)
+var (
+	_ BookmarkLister  = (*BookmarkList)(nil)
+	_ gextras.Nativer = (*BookmarkList)(nil)
+)
 
-func wrapBookmarkLister(obj *externglib.Object) BookmarkLister {
+func wrapBookmarkList(obj *externglib.Object) BookmarkLister {
 	return &BookmarkList{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -62,7 +71,7 @@ func wrapBookmarkLister(obj *externglib.Object) BookmarkLister {
 func marshalBookmarkLister(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBookmarkLister(obj), nil
+	return wrapBookmarkList(obj), nil
 }
 
 // NewBookmarkList creates a new `GtkBookmarkList` with the given @attributes.

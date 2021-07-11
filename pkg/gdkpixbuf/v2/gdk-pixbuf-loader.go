@@ -19,30 +19,41 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_loader_get_type()), F: marshalPixbufLoaderrer},
+		{T: externglib.Type(C.gdk_pixbuf_loader_get_type()), F: marshalPixbufLoaderer},
 	})
 }
 
-// PixbufLoaderrerOverrider contains methods that are overridable.
+// PixbufLoaderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PixbufLoaderrerOverrider interface {
+type PixbufLoaderOverrider interface {
 	AreaPrepared()
+
 	AreaUpdated(x int, y int, width int, height int)
+
 	Closed()
+
 	SizePrepared(width int, height int)
 }
 
-// PixbufLoaderrer describes PixbufLoader's methods.
-type PixbufLoaderrer interface {
-	gextras.Objector
-
+// PixbufLoaderer describes PixbufLoader's methods.
+type PixbufLoaderer interface {
+	// Close informs a pixbuf loader that no further writes with
+	// gdk_pixbuf_loader_write() will occur, so that it can free its internal
+	// loading structures.
 	Close() error
+	// Animation queries the PixbufAnimation that a pixbuf loader is currently
+	// creating.
 	Animation() *PixbufAnimation
+	// Format obtains the available information about the format of the
+	// currently loading image file.
 	Format() *PixbufFormat
+	// Pixbuf queries the Pixbuf that a pixbuf loader is currently creating.
 	Pixbuf() *Pixbuf
+	// SetSize causes the image to be scaled while it is loaded.
 	SetSize(width int, height int)
+	// Write parses the next `count` bytes in the given image buffer.
 	Write(buf []byte) error
 }
 
@@ -96,18 +107,21 @@ type PixbufLoader struct {
 	*externglib.Object
 }
 
-var _ PixbufLoaderrer = (*PixbufLoader)(nil)
+var (
+	_ PixbufLoaderer  = (*PixbufLoader)(nil)
+	_ gextras.Nativer = (*PixbufLoader)(nil)
+)
 
-func wrapPixbufLoaderrer(obj *externglib.Object) PixbufLoaderrer {
+func wrapPixbufLoader(obj *externglib.Object) PixbufLoaderer {
 	return &PixbufLoader{
 		Object: obj,
 	}
 }
 
-func marshalPixbufLoaderrer(p uintptr) (interface{}, error) {
+func marshalPixbufLoaderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufLoaderrer(obj), nil
+	return wrapPixbufLoader(obj), nil
 }
 
 // NewPixbufLoader creates a new pixbuf loader object.

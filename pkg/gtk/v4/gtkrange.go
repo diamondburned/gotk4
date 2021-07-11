@@ -23,41 +23,76 @@ func init() {
 	})
 }
 
-// RangerOverrider contains methods that are overridable.
+// RangeOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RangerOverrider interface {
+type RangeOverrider interface {
 	AdjustBounds(newValue float64)
+
 	RangeBorder(border_ *Border)
+
 	ValueChanged()
 }
 
 // Ranger describes Range's methods.
 type Ranger interface {
-	gextras.Objector
-
+	// Adjustment: get the adjustment which is the “model” object for
+	// `GtkRange`.
 	Adjustment() *Adjustment
+	// FillLevel gets the current position of the fill level indicator.
 	FillLevel() float64
+	// Flippable gets whether the `GtkRange` respects text direction.
 	Flippable() bool
+	// Inverted gets whether the range is inverted.
 	Inverted() bool
+	// RangeRect: this function returns the area that contains the range’s
+	// trough, in coordinates relative to @range's origin.
 	RangeRect() gdk.Rectangle
+	// RestrictToFillLevel gets whether the range is restricted to the fill
+	// level.
 	RestrictToFillLevel() bool
+	// RoundDigits gets the number of digits to round the value to when it
+	// changes.
 	RoundDigits() int
+	// ShowFillLevel gets whether the range displays the fill level graphically.
 	ShowFillLevel() bool
+	// SliderRange: this function returns sliders range along the long
+	// dimension, in widget->window coordinates.
 	SliderRange() (sliderStart int, sliderEnd int)
+	// SliderSizeFixed: this function is useful mainly for `GtkRange`
+	// subclasses.
 	SliderSizeFixed() bool
+	// Value gets the current value of the range.
 	Value() float64
+	// SetAdjustment sets the adjustment to be used as the “model” object for
+	// the `GtkRange` The adjustment indicates the current range value, the
+	// minimum and maximum range values, the step/page increments used for
+	// keybindings and scrolling, and the page size.
 	SetAdjustment(adjustment Adjustmenter)
+	// SetFillLevel: set the new position of the fill level indicator.
 	SetFillLevel(fillLevel float64)
+	// SetFlippable sets whether the `GtkRange` respects text direction.
 	SetFlippable(flippable bool)
+	// SetIncrements sets the step and page sizes for the range.
 	SetIncrements(step float64, page float64)
+	// SetInverted sets whether to invert the range.
 	SetInverted(setting bool)
+	// SetRange sets the allowable values in the `GtkRange`.
 	SetRange(min float64, max float64)
+	// SetRestrictToFillLevel sets whether the slider is restricted to the fill
+	// level.
 	SetRestrictToFillLevel(restrictToFillLevel bool)
+	// SetRoundDigits sets the number of digits to round the value to when it
+	// changes.
 	SetRoundDigits(roundDigits int)
+	// SetShowFillLevel sets whether a graphical fill level is show on the
+	// trough.
 	SetShowFillLevel(showFillLevel bool)
+	// SetSliderSizeFixed sets whether the range’s slider has a fixed size, or a
+	// size that depends on its adjustment’s page size.
 	SetSliderSizeFixed(sizeFixed bool)
+	// SetValue sets the current value of the range.
 	SetValue(value float64)
 }
 
@@ -71,22 +106,19 @@ type Ranger interface {
 // `GtkRange` provides properties and methods for setting a “fill level” on
 // range widgets. See [method@Gtk.Range.set_fill_level].
 type Range struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 }
 
-var _ Ranger = (*Range)(nil)
+var (
+	_ Ranger          = (*Range)(nil)
+	_ gextras.Nativer = (*Range)(nil)
+)
 
-func wrapRanger(obj *externglib.Object) Ranger {
+func wrapRange(obj *externglib.Object) Ranger {
 	return &Range{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -100,15 +132,6 @@ func wrapRanger(obj *externglib.Object) Ranger {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -118,7 +141,13 @@ func wrapRanger(obj *externglib.Object) Ranger {
 func marshalRanger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRanger(obj), nil
+	return wrapRange(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Range) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Adjustment: get the adjustment which is the “model” object for `GtkRange`.
@@ -339,7 +368,7 @@ func (_range *Range) SetAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_range_set_adjustment(_arg0, _arg1)
 }

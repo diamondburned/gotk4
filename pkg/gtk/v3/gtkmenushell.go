@@ -26,11 +26,11 @@ func init() {
 	})
 }
 
-// MenuShellerOverrider contains methods that are overridable.
+// MenuShellOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type MenuShellerOverrider interface {
+type MenuShellOverrider interface {
 	ActivateCurrent(forceHide bool)
 	// Cancel cancels the selection within the menu shell.
 	Cancel()
@@ -38,33 +38,55 @@ type MenuShellerOverrider interface {
 	//
 	// Typically this results in the menu shell being erased from the screen.
 	Deactivate()
+
 	PopupDelay() int
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
 	// indicated by @position.
 	Insert(child Widgetter, position int)
+
 	MoveSelected(distance int) bool
 	// SelectItem selects the menu item from the menu shell.
 	SelectItem(menuItem Widgetter)
+
 	SelectionDone()
 }
 
 // MenuSheller describes MenuShell's methods.
 type MenuSheller interface {
-	gextras.Objector
-
+	// ActivateItem activates the menu item within the menu shell.
 	ActivateItem(menuItem Widgetter, forceDeactivate bool)
+	// Append adds a new MenuItem to the end of the menu shell's item list.
 	Append(child MenuItemmer)
+	// BindModel establishes a binding between a MenuShell and a Model.
 	BindModel(model gio.MenuModeller, actionNamespace string, withSeparators bool)
+	// Cancel cancels the selection within the menu shell.
 	Cancel()
+	// Deactivate deactivates the menu shell.
 	Deactivate()
+	// Deselect deselects the currently selected item from the menu shell, if
+	// any.
 	Deselect()
+	// ParentShell gets the parent menu shell.
 	ParentShell() *Widget
+	// SelectedItem gets the currently selected item.
 	SelectedItem() *Widget
+	// TakeFocus returns true if the menu shell will take the keyboard focus on
+	// popup.
 	TakeFocus() bool
+	// Insert adds a new MenuItem to the menu shell’s item list at the position
+	// indicated by @position.
 	Insert(child Widgetter, position int)
+	// Prepend adds a new MenuItem to the beginning of the menu shell's item
+	// list.
 	Prepend(child Widgetter)
+	// SelectFirst: select the first visible or selectable child of the menu
+	// shell; don’t select tearoff items unless the only item is a tearoff item.
 	SelectFirst(searchSensitive bool)
+	// SelectItem selects the menu item from the menu shell.
 	SelectItem(menuItem Widgetter)
+	// SetTakeFocus: if @take_focus is true (the default) the menu shell will
+	// take the keyboard focus so that it will receive all keyboard events which
+	// is needed to enable keyboard navigation in menus.
 	SetTakeFocus(takeFocus bool)
 }
 
@@ -93,22 +115,18 @@ type MenuSheller interface {
 // selected menu item.) The current menu is the menu that contains the current
 // menu item. It will always have a GTK grab and receive all key presses.
 type MenuShell struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ MenuSheller = (*MenuShell)(nil)
+var (
+	_ MenuSheller     = (*MenuShell)(nil)
+	_ gextras.Nativer = (*MenuShell)(nil)
+)
 
-func wrapMenuSheller(obj *externglib.Object) MenuSheller {
+func wrapMenuShell(obj *externglib.Object) MenuSheller {
 	return &MenuShell{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -119,18 +137,6 @@ func wrapMenuSheller(obj *externglib.Object) MenuSheller {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -138,7 +144,7 @@ func wrapMenuSheller(obj *externglib.Object) MenuSheller {
 func marshalMenuSheller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuSheller(obj), nil
+	return wrapMenuShell(obj), nil
 }
 
 // ActivateItem activates the menu item within the menu shell.
@@ -148,7 +154,7 @@ func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate boo
 	var _arg2 C.gboolean      // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((menuItem).(gextras.Nativer).Native()))
 	if forceDeactivate {
 		_arg2 = C.TRUE
 	}
@@ -162,7 +168,7 @@ func (menuShell *MenuShell) Append(child MenuItemmer) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_menu_shell_append(_arg0, _arg1)
 }
@@ -202,7 +208,7 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace st
 	var _arg3 C.gboolean      // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(actionNamespace))
 	defer C.free(unsafe.Pointer(_arg2))
 	if withSeparators {
@@ -303,7 +309,7 @@ func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 	var _arg2 C.gint          // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_menu_shell_insert(_arg0, _arg1, _arg2)
@@ -315,7 +321,7 @@ func (menuShell *MenuShell) Prepend(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_menu_shell_prepend(_arg0, _arg1)
 }
@@ -340,7 +346,7 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((menuItem).(gextras.Nativer).Native()))
 
 	C.gtk_menu_shell_select_item(_arg0, _arg1)
 }

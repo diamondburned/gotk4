@@ -27,28 +27,22 @@ func init() {
 
 // BooleanCellAccessibler describes BooleanCellAccessible's methods.
 type BooleanCellAccessibler interface {
-	gextras.Objector
-
 	privateBooleanCellAccessible()
 }
 
 type BooleanCellAccessible struct {
-	*externglib.Object
-
 	RendererCellAccessible
-	atk.Action
-	atk.Component
 }
 
-var _ BooleanCellAccessibler = (*BooleanCellAccessible)(nil)
+var (
+	_ BooleanCellAccessibler = (*BooleanCellAccessible)(nil)
+	_ gextras.Nativer        = (*BooleanCellAccessible)(nil)
+)
 
-func wrapBooleanCellAccessibler(obj *externglib.Object) BooleanCellAccessibler {
+func wrapBooleanCellAccessible(obj *externglib.Object) BooleanCellAccessibler {
 	return &BooleanCellAccessible{
-		Object: obj,
 		RendererCellAccessible: RendererCellAccessible{
-			Object: obj,
 			CellAccessible: CellAccessible{
-				Object: obj,
 				Accessible: Accessible{
 					ObjectClass: atk.ObjectClass{
 						Object: obj,
@@ -61,18 +55,6 @@ func wrapBooleanCellAccessibler(obj *externglib.Object) BooleanCellAccessibler {
 					Object: obj,
 				},
 			},
-			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -80,7 +62,7 @@ func wrapBooleanCellAccessibler(obj *externglib.Object) BooleanCellAccessibler {
 func marshalBooleanCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBooleanCellAccessibler(obj), nil
+	return wrapBooleanCellAccessible(obj), nil
 }
 
 func (*BooleanCellAccessible) privateBooleanCellAccessible() {}

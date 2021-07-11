@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 )
 
@@ -16,7 +17,7 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-// CairoDrawFromGL: the main way to draw GL content in GTK.
+// CairoDrawFromGL: main way to draw GL content in GTK.
 //
 // It takes a render buffer ID (@source_type == RENDERBUFFER) or a texture id
 // (@source_type == TEXTURE) and draws it onto @cr with an OVER operation,
@@ -45,7 +46,7 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source int, sourceType
 	var _arg9 C.int         // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg2 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
 	_arg3 = C.int(source)
 	_arg4 = C.int(sourceType)
 	_arg5 = C.int(bufferScale)
@@ -113,7 +114,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuffer, pixbufX
 	var _arg4 C.double     // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 	_arg3 = C.double(pixbufX)
 	_arg4 = C.double(pixbufY)
 

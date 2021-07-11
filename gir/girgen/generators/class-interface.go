@@ -11,12 +11,12 @@ import (
 
 var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ if .Virtuals }}
-	// {{ .InterfaceName }}Overrider contains methods that are overridable.
+	// {{ .StructName }}Overrider contains methods that are overridable.
 	//
 	// As of right now, interface overriding and subclassing is not supported
 	// yet, so the interface currently has no use.
-	type {{ .InterfaceName }}Overrider interface {
-		{{ range .Virtuals }}
+	type {{ .StructName }}Overrider interface {
+		{{ range .Virtuals -}}
 		{{- GoDoc . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
 		{{ end }}
@@ -25,16 +25,15 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	// {{ .InterfaceName }} describes {{ .StructName }}'s methods.
 	type {{ .InterfaceName }} interface {
-		gextras.Objector
-
 		{{ range .Methods }}
+		{{- Synopsis . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
 		{{ else }}
 		private{{ .StructName }}()
 		{{ end }}
 	}
 
-	{{ GoDoc . 0 }}
+	{{ GoDoc . 0 (OverrideSelfName .StructName) }}
 	type {{ .StructName }} struct {
 		{{ index .Tree.ImplTypes 0 }}
 
@@ -43,9 +42,13 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{ end }}
 	}
 
-	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
+	var (
+		_ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
+		_ gextras.Nativer = (*{{ .StructName }})(nil)
+	)
 
-	func wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
+	{{ $wrapper := .Tree.WrapName false }}
+	func {{ $wrapper }}(obj *externglib.Object) {{ .InterfaceName }} {
 		return {{ .Wrap "obj" }}
 	}
 
@@ -53,13 +56,26 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
 		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 		obj := externglib.Take(unsafe.Pointer(val))
-		return wrap{{ .InterfaceName }}(obj), nil
+		return {{ $wrapper }}(obj), nil
 	}
 	{{ end }}
 
 	{{ range .Constructors }}
 	{{ GoDoc . 0 }}
 	func {{ .Name }}{{ .Tail }} {{ .Block }}
+	{{ end }}
+
+	{{ if .Tree.HasAmbiguousSelector }}
+	{{ $field := (.Tree.FirstGObjectSelector "v") }}
+	// Native implements gextras.Nativer. It returns the underlying GObject
+	// field.
+	func (v *{{ $.StructName }}) Native() uintptr {
+		return {{ if $field -}}
+			{{ $field }}.Native()
+		{{- else -}}
+			uintptr(unsafe.Pointer(v))
+		{{- end }}
+	}
 	{{ end }}
 
 	{{ range .Methods }}

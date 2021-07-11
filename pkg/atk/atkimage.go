@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// ImagerOverrider contains methods that are overridable.
+// ImageOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ImagerOverrider interface {
+type ImageOverrider interface {
 	// ImageDescription: get a textual description of this image.
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.
@@ -44,11 +44,13 @@ type ImagerOverrider interface {
 
 // Imager describes Image's methods.
 type Imager interface {
-	gextras.Objector
-
+	// ImageDescription: get a textual description of this image.
 	ImageDescription() string
+	// ImageLocale retrieves the locale identifier associated to the Image.
 	ImageLocale() string
+	// ImageSize: get the width and height in pixels for the specified image.
 	ImageSize() (width int, height int)
+	// SetImageDescription sets the textual description for this image.
 	SetImageDescription(description string) bool
 }
 
@@ -67,9 +69,12 @@ type Image struct {
 	*externglib.Object
 }
 
-var _ Imager = (*Image)(nil)
+var (
+	_ Imager          = (*Image)(nil)
+	_ gextras.Nativer = (*Image)(nil)
+)
 
-func wrapImager(obj *externglib.Object) Imager {
+func wrapImage(obj *externglib.Object) Imager {
 	return &Image{
 		Object: obj,
 	}
@@ -78,7 +83,7 @@ func wrapImager(obj *externglib.Object) Imager {
 func marshalImager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImager(obj), nil
+	return wrapImage(obj), nil
 }
 
 // ImageDescription: get a textual description of this image.

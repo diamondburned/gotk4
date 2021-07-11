@@ -25,9 +25,9 @@ func init() {
 
 // MultiSelectioner describes MultiSelection's methods.
 type MultiSelectioner interface {
-	gextras.Objector
-
+	// Model returns the underlying model of @self.
 	Model() *gio.ListModel
+	// SetModel sets the model that @self should wrap.
 	SetModel(model gio.ListModeller)
 }
 
@@ -36,18 +36,17 @@ type MultiSelectioner interface {
 type MultiSelection struct {
 	*externglib.Object
 
-	gio.ListModel
 	SelectionModel
 }
 
-var _ MultiSelectioner = (*MultiSelection)(nil)
+var (
+	_ MultiSelectioner = (*MultiSelection)(nil)
+	_ gextras.Nativer  = (*MultiSelection)(nil)
+)
 
-func wrapMultiSelectioner(obj *externglib.Object) MultiSelectioner {
+func wrapMultiSelection(obj *externglib.Object) MultiSelectioner {
 	return &MultiSelection{
 		Object: obj,
-		ListModel: gio.ListModel{
-			Object: obj,
-		},
 		SelectionModel: SelectionModel{
 			ListModel: gio.ListModel{
 				Object: obj,
@@ -59,7 +58,7 @@ func wrapMultiSelectioner(obj *externglib.Object) MultiSelectioner {
 func marshalMultiSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMultiSelectioner(obj), nil
+	return wrapMultiSelection(obj), nil
 }
 
 // NewMultiSelection creates a new selection to handle @model.
@@ -67,7 +66,7 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 	var _arg1 *C.GListModel        // out
 	var _cret *C.GtkMultiSelection // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_multi_selection_new(_arg1)
 
@@ -102,7 +101,7 @@ func (self *MultiSelection) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel        // out
 
 	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_multi_selection_set_model(_arg0, _arg1)
 }

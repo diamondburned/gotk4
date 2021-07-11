@@ -25,19 +25,32 @@ func init() {
 
 // ProgressBarrer describes ProgressBar's methods.
 type ProgressBarrer interface {
-	gextras.Objector
-
+	// Ellipsize returns the ellipsizing position of the progress bar.
 	Ellipsize() pango.EllipsizeMode
+	// Fraction returns the current fraction of the task that’s been completed.
 	Fraction() float64
+	// Inverted returns whether the progress bar is inverted.
 	Inverted() bool
+	// PulseStep retrieves the pulse step.
 	PulseStep() float64
+	// ShowText returns whether the `GtkProgressBar` shows text.
 	ShowText() bool
+	// Text retrieves the text that is displayed with the progress bar.
 	Text() string
+	// Pulse indicates that some progress has been made, but you don’t know how
+	// much.
 	Pulse()
+	// SetFraction causes the progress bar to “fill in” the given fraction of
+	// the bar.
 	SetFraction(fraction float64)
+	// SetInverted sets whether the progress bar is inverted.
 	SetInverted(inverted bool)
+	// SetPulseStep sets the fraction of total progress bar length to move the
+	// bouncing block.
 	SetPulseStep(fraction float64)
+	// SetShowText sets whether the progress bar will show text next to the bar.
 	SetShowText(showText bool)
+	// SetText causes the given @text to appear next to the progress bar.
 	SetText(text string)
 }
 
@@ -87,22 +100,19 @@ type ProgressBarrer interface {
 //
 // `GtkProgressBar` uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
 type ProgressBar struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 }
 
-var _ ProgressBarrer = (*ProgressBar)(nil)
+var (
+	_ ProgressBarrer  = (*ProgressBar)(nil)
+	_ gextras.Nativer = (*ProgressBar)(nil)
+)
 
-func wrapProgressBarrer(obj *externglib.Object) ProgressBarrer {
+func wrapProgressBar(obj *externglib.Object) ProgressBarrer {
 	return &ProgressBar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -116,15 +126,6 @@ func wrapProgressBarrer(obj *externglib.Object) ProgressBarrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -134,7 +135,7 @@ func wrapProgressBarrer(obj *externglib.Object) ProgressBarrer {
 func marshalProgressBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProgressBarrer(obj), nil
+	return wrapProgressBar(obj), nil
 }
 
 // NewProgressBar creates a new `GtkProgressBar`.
@@ -148,6 +149,12 @@ func NewProgressBar() *ProgressBar {
 	_progressBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ProgressBar)
 
 	return _progressBar
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ProgressBar) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Ellipsize returns the ellipsizing position of the progress bar.

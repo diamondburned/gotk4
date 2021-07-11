@@ -26,12 +26,15 @@ func init() {
 
 // Nativer describes Native's methods.
 type Nativer interface {
-	gextras.Objector
-
+	// Renderer returns the renderer that is used for this `GtkNative`.
 	Renderer() *gsk.Renderer
+	// Surface returns the surface of this `GtkNative`.
 	Surface() *gdk.Surface
+	// SurfaceTransform retrieves the surface transform of @self.
 	SurfaceTransform() (x float64, y float64)
+	// Realize realizes a `GtkNative`.
 	Realize()
+	// Unrealize unrealizes a `GtkNative`.
 	Unrealize()
 }
 
@@ -51,18 +54,17 @@ type Nativer interface {
 // [class@Gsk.Renderer] for rendering on that surface. To get the renderer, use
 // [method@Gtk.Native.get_renderer].
 type Native struct {
-	*externglib.Object
-
 	Widget
 }
 
-var _ Nativer = (*Native)(nil)
+var (
+	_ Nativer         = (*Native)(nil)
+	_ gextras.Nativer = (*Native)(nil)
+)
 
-func wrapNativer(obj *externglib.Object) Nativer {
+func wrapNative(obj *externglib.Object) Nativer {
 	return &Native{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -82,7 +84,7 @@ func wrapNativer(obj *externglib.Object) Nativer {
 func marshalNativer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNativer(obj), nil
+	return wrapNative(obj), nil
 }
 
 // Renderer returns the renderer that is used for this `GtkNative`.

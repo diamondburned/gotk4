@@ -27,25 +27,23 @@ func init() {
 
 // ComboBoxAccessibler describes ComboBoxAccessible's methods.
 type ComboBoxAccessibler interface {
-	gextras.Objector
-
 	privateComboBoxAccessible()
 }
 
 type ComboBoxAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
+
 	atk.Action
-	atk.Component
 	atk.Selection
 }
 
-var _ ComboBoxAccessibler = (*ComboBoxAccessible)(nil)
+var (
+	_ ComboBoxAccessibler = (*ComboBoxAccessible)(nil)
+	_ gextras.Nativer     = (*ComboBoxAccessible)(nil)
+)
 
-func wrapComboBoxAccessibler(obj *externglib.Object) ComboBoxAccessibler {
+func wrapComboBoxAccessible(obj *externglib.Object) ComboBoxAccessibler {
 	return &ComboBoxAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -57,14 +55,8 @@ func wrapComboBoxAccessibler(obj *externglib.Object) ComboBoxAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
 		},
 		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
 			Object: obj,
 		},
 		Selection: atk.Selection{
@@ -76,7 +68,13 @@ func wrapComboBoxAccessibler(obj *externglib.Object) ComboBoxAccessibler {
 func marshalComboBoxAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComboBoxAccessibler(obj), nil
+	return wrapComboBoxAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ComboBoxAccessible) Native() uintptr {
+	return v.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*ComboBoxAccessible) privateComboBoxAccessible() {}

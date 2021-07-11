@@ -26,12 +26,13 @@ func init() {
 	})
 }
 
-// ScalerOverrider contains methods that are overridable.
+// ScaleOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ScalerOverrider interface {
+type ScaleOverrider interface {
 	DrawValue()
+
 	FormatValue(value float64) string
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// Layout representing the text in the scale. Remember when using the Layout
@@ -45,17 +46,32 @@ type ScalerOverrider interface {
 
 // Scaler describes Scale's methods.
 type Scaler interface {
-	gextras.Objector
-
+	// ClearMarks removes any marks that have been added with
+	// gtk_scale_add_mark().
 	ClearMarks()
+	// Digits gets the number of decimal places that are displayed in the value.
 	Digits() int
+	// DrawValue returns whether the current value is displayed as a string next
+	// to the slider.
 	DrawValue() bool
+	// HasOrigin returns whether the scale has an origin.
 	HasOrigin() bool
+	// Layout gets the Layout used to display the scale.
 	Layout() *pango.Layout
+	// LayoutOffsets obtains the coordinates where the scale will draw the
+	// Layout representing the text in the scale.
 	LayoutOffsets() (x int, y int)
+	// ValuePos gets the position in which the current value is displayed.
 	ValuePos() PositionType
+	// SetDigits sets the number of decimal places that are displayed in the
+	// value.
 	SetDigits(digits int)
+	// SetDrawValue specifies whether the current value is displayed as a string
+	// next to the slider.
 	SetDrawValue(drawValue bool)
+	// SetHasOrigin: if Scale:has-origin is set to true (the default), the scale
+	// will highlight the part of the trough between the origin (bottom or left
+	// side) and the current value.
 	SetHasOrigin(hasOrigin bool)
 }
 
@@ -129,23 +145,18 @@ type Scaler interface {
 // If the scale is displaying the value (see Scale:draw-value), there is subnode
 // with name value.
 type Scale struct {
-	*externglib.Object
-
 	Range
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ Scaler = (*Scale)(nil)
+var (
+	_ Scaler          = (*Scale)(nil)
+	_ gextras.Nativer = (*Scale)(nil)
+)
 
-func wrapScaler(obj *externglib.Object) Scaler {
+func wrapScale(obj *externglib.Object) Scaler {
 	return &Scale{
-		Object: obj,
 		Range: Range{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -156,24 +167,9 @@ func wrapScaler(obj *externglib.Object) Scaler {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -181,7 +177,7 @@ func wrapScaler(obj *externglib.Object) Scaler {
 func marshalScaler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScaler(obj), nil
+	return wrapScale(obj), nil
 }
 
 // ClearMarks removes any marks that have been added with gtk_scale_add_mark().

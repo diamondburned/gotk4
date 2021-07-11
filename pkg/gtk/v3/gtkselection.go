@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,8 +27,7 @@ func init() {
 	})
 }
 
-// TargetFlags: the TargetFlags enumeration is used to specify constraints on a
-// TargetEntry.
+// TargetFlags enumeration is used to specify constraints on a TargetEntry.
 type TargetFlags int
 
 const (
@@ -55,7 +55,7 @@ func marshalTargetFlags(p uintptr) (interface{}, error) {
 func SelectionRemoveAll(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_selection_remove_all(_arg1)
 }
@@ -199,7 +199,7 @@ func (list *TargetList) AddImageTargets(info uint, writable bool) {
 // gtk_text_buffer_register_serialize_format() or
 // gtk_text_buffer_register_deserialize_format() to the target list. All targets
 // are added with the same @info.
-func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer TextBufferrer) {
+func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer TextBufferer) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
@@ -210,7 +210,7 @@ func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffe
 	if deserializable {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer((buffer).(gextras.Nativer).Native()))
 
 	C.gtk_target_list_add_rich_text_targets(_arg0, _arg1, _arg2, _arg3)
 }

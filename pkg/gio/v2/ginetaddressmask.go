@@ -35,13 +35,17 @@ func init() {
 
 // InetAddressMasker describes InetAddressMask's methods.
 type InetAddressMasker interface {
-	gextras.Objector
-
+	// Equal tests if @mask and @mask2 are the same mask.
 	Equal(mask2 InetAddressMasker) bool
+	// Address gets @mask's base address
 	Address() *InetAddress
+	// Family gets the Family of @mask's address
 	Family() SocketFamily
+	// Length gets @mask's length
 	Length() uint
+	// Matches tests if @address falls within the range described by @mask.
 	Matches(address InetAddresser) bool
+	// String converts @mask back to its corresponding string form.
 	String() string
 }
 
@@ -55,9 +59,12 @@ type InetAddressMask struct {
 	Initable
 }
 
-var _ InetAddressMasker = (*InetAddressMask)(nil)
+var (
+	_ InetAddressMasker = (*InetAddressMask)(nil)
+	_ gextras.Nativer   = (*InetAddressMask)(nil)
+)
 
-func wrapInetAddressMasker(obj *externglib.Object) InetAddressMasker {
+func wrapInetAddressMask(obj *externglib.Object) InetAddressMasker {
 	return &InetAddressMask{
 		Object: obj,
 		Initable: Initable{
@@ -69,7 +76,7 @@ func wrapInetAddressMasker(obj *externglib.Object) InetAddressMasker {
 func marshalInetAddressMasker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInetAddressMasker(obj), nil
+	return wrapInetAddressMask(obj), nil
 }
 
 // NewInetAddressMask creates a new AddressMask representing all addresses whose
@@ -80,7 +87,7 @@ func NewInetAddressMask(addr InetAddresser, length uint) (*InetAddressMask, erro
 	var _cret *C.GInetAddressMask // in
 	var _cerr *C.GError           // in
 
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(addr.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((addr).(gextras.Nativer).Native()))
 	_arg2 = C.guint(length)
 
 	_cret = C.g_inet_address_mask_new(_arg1, _arg2, &_cerr)
@@ -124,7 +131,7 @@ func (mask *InetAddressMask) Equal(mask2 InetAddressMasker) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(mask.Native()))
-	_arg1 = (*C.GInetAddressMask)(unsafe.Pointer(mask2.Native()))
+	_arg1 = (*C.GInetAddressMask)(unsafe.Pointer((mask2).(gextras.Nativer).Native()))
 
 	_cret = C.g_inet_address_mask_equal(_arg0, _arg1)
 
@@ -192,7 +199,7 @@ func (mask *InetAddressMask) Matches(address InetAddresser) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(mask.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 
 	_cret = C.g_inet_address_mask_matches(_arg0, _arg1)
 

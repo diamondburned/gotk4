@@ -81,11 +81,11 @@ const (
 type SeekType int
 
 const (
-	// Cur: the current position in the file.
+	// Cur: current position in the file.
 	SeekTypeCur SeekType = iota
-	// Set: the start of the file.
+	// Set: start of the file.
 	SeekTypeSet
-	// End: the end of the file.
+	// End of the file.
 	SeekTypeEnd
 )
 
@@ -115,12 +115,12 @@ const (
 	// g_io_channel_seek_position() can be used on it. This flag cannot be
 	// changed.
 	IOFlagsIsSeekable IOFlags = 0b10000
-	// IOFlagsMask: the mask that specifies all the valid flags.
+	// IOFlagsMask that specifies all the valid flags.
 	IOFlagsMask IOFlags = 0b11111
-	// IOFlagsGetMask: the mask of the flags that are returned from
+	// IOFlagsGetMask: mask of the flags that are returned from
 	// g_io_channel_get_flags()
 	IOFlagsGetMask IOFlags = 0b11111
-	// IOFlagsSetMask: the mask of the flags that the user can modify with
+	// IOFlagsSetMask: mask of the flags that the user can modify with
 	// g_io_channel_set_flags()
 	IOFlagsSetMask IOFlags = 0b11
 )
@@ -502,7 +502,7 @@ func (channel *IOChannel) SetBufferSize(size uint) {
 	C.g_io_channel_set_buffer_size(_arg0, _arg1)
 }
 
-// SetBuffered: the buffering state can only be set if the channel's encoding is
+// SetBuffered: buffering state can only be set if the channel's encoding is
 // nil. For any other encoding, the channel must be buffered.
 //
 // A buffered channel can only be set unbuffered if the channel's internal

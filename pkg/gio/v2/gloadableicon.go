@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// LoadableIconnerOverrider contains methods that are overridable.
+// LoadableIconOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type LoadableIconnerOverrider interface {
+type LoadableIconOverrider interface {
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
 	Load(size int, cancellable Cancellabler) (string, *InputStream, error)
@@ -55,10 +55,12 @@ type LoadableIconnerOverrider interface {
 
 // LoadableIconner describes LoadableIcon's methods.
 type LoadableIconner interface {
-	gextras.Objector
-
+	// Load loads a loadable icon.
 	Load(size int, cancellable Cancellabler) (string, *InputStream, error)
+	// LoadAsync loads an icon asynchronously.
 	LoadAsync(size int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// LoadFinish finishes an asynchronous icon load started in
+	// g_loadable_icon_load_async().
 	LoadFinish(res AsyncResulter) (string, *InputStream, error)
 }
 
@@ -68,9 +70,12 @@ type LoadableIcon struct {
 	Icon
 }
 
-var _ LoadableIconner = (*LoadableIcon)(nil)
+var (
+	_ LoadableIconner = (*LoadableIcon)(nil)
+	_ gextras.Nativer = (*LoadableIcon)(nil)
+)
 
-func wrapLoadableIconner(obj *externglib.Object) LoadableIconner {
+func wrapLoadableIcon(obj *externglib.Object) LoadableIconner {
 	return &LoadableIcon{
 		Icon: Icon{
 			Object: obj,
@@ -81,7 +86,7 @@ func wrapLoadableIconner(obj *externglib.Object) LoadableIconner {
 func marshalLoadableIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLoadableIconner(obj), nil
+	return wrapLoadableIcon(obj), nil
 }
 
 // Load loads a loadable icon. For the asynchronous version of this function,
@@ -96,7 +101,7 @@ func (icon *LoadableIcon) Load(size int, cancellable Cancellabler) (string, *Inp
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
 	_arg1 = C.int(size)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_loadable_icon_load(_arg0, _arg1, &_arg2, _arg3, &_cerr)
 
@@ -124,7 +129,7 @@ func (icon *LoadableIcon) LoadAsync(size int, cancellable Cancellabler, callback
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
 	_arg1 = C.int(size)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -141,7 +146,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, *InputStream, e
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)
 

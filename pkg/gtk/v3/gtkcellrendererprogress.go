@@ -26,8 +26,6 @@ func init() {
 
 // CellRendererProgresser describes CellRendererProgress's methods.
 type CellRendererProgresser interface {
-	gextras.Objector
-
 	privateCellRendererProgress()
 }
 
@@ -41,9 +39,12 @@ type CellRendererProgress struct {
 	Orientable
 }
 
-var _ CellRendererProgresser = (*CellRendererProgress)(nil)
+var (
+	_ CellRendererProgresser = (*CellRendererProgress)(nil)
+	_ gextras.Nativer        = (*CellRendererProgress)(nil)
+)
 
-func wrapCellRendererProgresser(obj *externglib.Object) CellRendererProgresser {
+func wrapCellRendererProgress(obj *externglib.Object) CellRendererProgresser {
 	return &CellRendererProgress{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -59,7 +60,7 @@ func wrapCellRendererProgresser(obj *externglib.Object) CellRendererProgresser {
 func marshalCellRendererProgresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererProgresser(obj), nil
+	return wrapCellRendererProgress(obj), nil
 }
 
 // NewCellRendererProgress creates a new CellRendererProgress.
@@ -73,6 +74,12 @@ func NewCellRendererProgress() *CellRendererProgress {
 	_cellRendererProgress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererProgress)
 
 	return _cellRendererProgress
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *CellRendererProgress) Native() uintptr {
+	return v.CellRenderer.InitiallyUnowned.Object.Native()
 }
 
 func (*CellRendererProgress) privateCellRendererProgress() {}

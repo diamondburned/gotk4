@@ -36,12 +36,13 @@ func init() {
 	})
 }
 
-// FileIOStreamerOverrider contains methods that are overridable.
+// FileIOStreamOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileIOStreamerOverrider interface {
+type FileIOStreamOverrider interface {
 	CanSeek() bool
+
 	CanTruncate() bool
 	// Etag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
@@ -74,17 +75,22 @@ type FileIOStreamerOverrider interface {
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
+
 	Tell() int64
+
 	TruncateFn(size int64, cancellable Cancellabler) error
 }
 
 // FileIOStreamer describes FileIOStream's methods.
 type FileIOStreamer interface {
-	gextras.Objector
-
+	// Etag gets the entity tag for the file when it has been written.
 	Etag() string
+	// QueryInfo queries a file io stream for the given @attributes.
 	QueryInfo(attributes string, cancellable Cancellabler) (*FileInfo, error)
+	// QueryInfoAsync: asynchronously queries the @stream for a Info.
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// QueryInfoFinish finalizes the asynchronous query started by
+	// g_file_io_stream_query_info_async().
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 }
 
@@ -106,17 +112,18 @@ type FileIOStreamer interface {
 // implementation of #GSeekable just call into the same operations on the output
 // stream.
 type FileIOStream struct {
-	*externglib.Object
-
 	IOStream
+
 	Seekable
 }
 
-var _ FileIOStreamer = (*FileIOStream)(nil)
+var (
+	_ FileIOStreamer  = (*FileIOStream)(nil)
+	_ gextras.Nativer = (*FileIOStream)(nil)
+)
 
-func wrapFileIOStreamer(obj *externglib.Object) FileIOStreamer {
+func wrapFileIOStream(obj *externglib.Object) FileIOStreamer {
 	return &FileIOStream{
-		Object: obj,
 		IOStream: IOStream{
 			Object: obj,
 		},
@@ -129,7 +136,13 @@ func wrapFileIOStreamer(obj *externglib.Object) FileIOStreamer {
 func marshalFileIOStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileIOStreamer(obj), nil
+	return wrapFileIOStream(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FileIOStream) Native() uintptr {
+	return v.IOStream.Object.Native()
 }
 
 // Etag gets the entity tag for the file when it has been written. This must be
@@ -176,7 +189,7 @@ func (stream *FileIOStream) QueryInfo(attributes string, cancellable Cancellable
 	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_io_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
@@ -207,7 +220,7 @@ func (stream *FileIOStream) QueryInfoAsync(attributes string, ioPriority int, ca
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -223,7 +236,7 @@ func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, er
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_io_stream_query_info_finish(_arg0, _arg1, &_cerr)
 

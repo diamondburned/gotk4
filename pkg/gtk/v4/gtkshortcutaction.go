@@ -38,7 +38,7 @@ func init() {
 type ShortcutActionFlags int
 
 const (
-	// ShortcutActionFlagsExclusive: the action is the only action that can be
+	// ShortcutActionFlagsExclusive: action is the only action that can be
 	// activated. If this flag is not set, a future activation may select a
 	// different action.
 	ShortcutActionFlagsExclusive ShortcutActionFlags = 0b1
@@ -82,8 +82,6 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (c
 
 // ActivateActioner describes ActivateAction's methods.
 type ActivateActioner interface {
-	gextras.Objector
-
 	privateActivateAction()
 }
 
@@ -92,9 +90,12 @@ type ActivateAction struct {
 	ShortcutAction
 }
 
-var _ ActivateActioner = (*ActivateAction)(nil)
+var (
+	_ ActivateActioner = (*ActivateAction)(nil)
+	_ gextras.Nativer  = (*ActivateAction)(nil)
+)
 
-func wrapActivateActioner(obj *externglib.Object) ActivateActioner {
+func wrapActivateAction(obj *externglib.Object) ActivateActioner {
 	return &ActivateAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -105,15 +106,13 @@ func wrapActivateActioner(obj *externglib.Object) ActivateActioner {
 func marshalActivateActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActivateActioner(obj), nil
+	return wrapActivateAction(obj), nil
 }
 
 func (*ActivateAction) privateActivateAction() {}
 
 // CallbackActioner describes CallbackAction's methods.
 type CallbackActioner interface {
-	gextras.Objector
-
 	privateCallbackAction()
 }
 
@@ -122,9 +121,12 @@ type CallbackAction struct {
 	ShortcutAction
 }
 
-var _ CallbackActioner = (*CallbackAction)(nil)
+var (
+	_ CallbackActioner = (*CallbackAction)(nil)
+	_ gextras.Nativer  = (*CallbackAction)(nil)
+)
 
-func wrapCallbackActioner(obj *externglib.Object) CallbackActioner {
+func wrapCallbackAction(obj *externglib.Object) CallbackActioner {
 	return &CallbackAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -135,15 +137,13 @@ func wrapCallbackActioner(obj *externglib.Object) CallbackActioner {
 func marshalCallbackActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCallbackActioner(obj), nil
+	return wrapCallbackAction(obj), nil
 }
 
 func (*CallbackAction) privateCallbackAction() {}
 
 // MnemonicActioner describes MnemonicAction's methods.
 type MnemonicActioner interface {
-	gextras.Objector
-
 	privateMnemonicAction()
 }
 
@@ -153,9 +153,12 @@ type MnemonicAction struct {
 	ShortcutAction
 }
 
-var _ MnemonicActioner = (*MnemonicAction)(nil)
+var (
+	_ MnemonicActioner = (*MnemonicAction)(nil)
+	_ gextras.Nativer  = (*MnemonicAction)(nil)
+)
 
-func wrapMnemonicActioner(obj *externglib.Object) MnemonicActioner {
+func wrapMnemonicAction(obj *externglib.Object) MnemonicActioner {
 	return &MnemonicAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -166,15 +169,14 @@ func wrapMnemonicActioner(obj *externglib.Object) MnemonicActioner {
 func marshalMnemonicActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMnemonicActioner(obj), nil
+	return wrapMnemonicAction(obj), nil
 }
 
 func (*MnemonicAction) privateMnemonicAction() {}
 
 // NamedActioner describes NamedAction's methods.
 type NamedActioner interface {
-	gextras.Objector
-
+	// ActionName returns the name of the action that will be activated.
 	ActionName() string
 }
 
@@ -183,9 +185,12 @@ type NamedAction struct {
 	ShortcutAction
 }
 
-var _ NamedActioner = (*NamedAction)(nil)
+var (
+	_ NamedActioner   = (*NamedAction)(nil)
+	_ gextras.Nativer = (*NamedAction)(nil)
+)
 
-func wrapNamedActioner(obj *externglib.Object) NamedActioner {
+func wrapNamedAction(obj *externglib.Object) NamedActioner {
 	return &NamedAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -196,7 +201,7 @@ func wrapNamedActioner(obj *externglib.Object) NamedActioner {
 func marshalNamedActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNamedActioner(obj), nil
+	return wrapNamedAction(obj), nil
 }
 
 // NewNamedAction creates an action that when activated, activates the named
@@ -240,8 +245,6 @@ func (self *NamedAction) ActionName() string {
 
 // NothingActioner describes NothingAction's methods.
 type NothingActioner interface {
-	gextras.Objector
-
 	privateNothingAction()
 }
 
@@ -250,9 +253,12 @@ type NothingAction struct {
 	ShortcutAction
 }
 
-var _ NothingActioner = (*NothingAction)(nil)
+var (
+	_ NothingActioner = (*NothingAction)(nil)
+	_ gextras.Nativer = (*NothingAction)(nil)
+)
 
-func wrapNothingActioner(obj *externglib.Object) NothingActioner {
+func wrapNothingAction(obj *externglib.Object) NothingActioner {
 	return &NothingAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -263,15 +269,14 @@ func wrapNothingActioner(obj *externglib.Object) NothingActioner {
 func marshalNothingActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNothingActioner(obj), nil
+	return wrapNothingAction(obj), nil
 }
 
 func (*NothingAction) privateNothingAction() {}
 
 // ShortcutActioner describes ShortcutAction's methods.
 type ShortcutActioner interface {
-	gextras.Objector
-
+	// String prints the given action into a human-readable string.
 	String() string
 }
 
@@ -306,9 +311,12 @@ type ShortcutAction struct {
 	*externglib.Object
 }
 
-var _ ShortcutActioner = (*ShortcutAction)(nil)
+var (
+	_ ShortcutActioner = (*ShortcutAction)(nil)
+	_ gextras.Nativer  = (*ShortcutAction)(nil)
+)
 
-func wrapShortcutActioner(obj *externglib.Object) ShortcutActioner {
+func wrapShortcutAction(obj *externglib.Object) ShortcutActioner {
 	return &ShortcutAction{
 		Object: obj,
 	}
@@ -317,7 +325,7 @@ func wrapShortcutActioner(obj *externglib.Object) ShortcutActioner {
 func marshalShortcutActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutActioner(obj), nil
+	return wrapShortcutAction(obj), nil
 }
 
 // NewShortcutActionParseString tries to parse the given string into an action.
@@ -369,8 +377,7 @@ func (self *ShortcutAction) String() string {
 
 // SignalActioner describes SignalAction's methods.
 type SignalActioner interface {
-	gextras.Objector
-
+	// SignalName returns the name of the signal that will be emitted.
 	SignalName() string
 }
 
@@ -382,9 +389,12 @@ type SignalAction struct {
 	ShortcutAction
 }
 
-var _ SignalActioner = (*SignalAction)(nil)
+var (
+	_ SignalActioner  = (*SignalAction)(nil)
+	_ gextras.Nativer = (*SignalAction)(nil)
+)
 
-func wrapSignalActioner(obj *externglib.Object) SignalActioner {
+func wrapSignalAction(obj *externglib.Object) SignalActioner {
 	return &SignalAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -395,7 +405,7 @@ func wrapSignalActioner(obj *externglib.Object) SignalActioner {
 func marshalSignalActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSignalActioner(obj), nil
+	return wrapSignalAction(obj), nil
 }
 
 // NewSignalAction creates an action that when activated, emits the given action

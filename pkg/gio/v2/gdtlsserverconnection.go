@@ -34,26 +34,22 @@ func init() {
 
 // DTLSServerConnectioner describes DTLSServerConnection's methods.
 type DTLSServerConnectioner interface {
-	gextras.Objector
-
 	privateDTLSServerConnection()
 }
 
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
 type DTLSServerConnection struct {
-	DatagramBased
-
 	DTLSConnection
 }
 
-var _ DTLSServerConnectioner = (*DTLSServerConnection)(nil)
+var (
+	_ DTLSServerConnectioner = (*DTLSServerConnection)(nil)
+	_ gextras.Nativer        = (*DTLSServerConnection)(nil)
+)
 
-func wrapDTLSServerConnectioner(obj *externglib.Object) DTLSServerConnectioner {
+func wrapDTLSServerConnection(obj *externglib.Object) DTLSServerConnectioner {
 	return &DTLSServerConnection{
-		DatagramBased: DatagramBased{
-			Object: obj,
-		},
 		DTLSConnection: DTLSConnection{
 			DatagramBased: DatagramBased{
 				Object: obj,
@@ -65,7 +61,7 @@ func wrapDTLSServerConnectioner(obj *externglib.Object) DTLSServerConnectioner {
 func marshalDTLSServerConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDTLSServerConnectioner(obj), nil
+	return wrapDTLSServerConnection(obj), nil
 }
 
 func (*DTLSServerConnection) privateDTLSServerConnection() {}

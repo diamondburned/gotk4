@@ -24,15 +24,16 @@ func init() {
 	})
 }
 
-// MediaStreamerOverrider contains methods that are overridable.
+// MediaStreamOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type MediaStreamerOverrider interface {
+type MediaStreamOverrider interface {
 	// Pause pauses playback of the stream.
 	//
 	// If the stream is not playing, do nothing.
 	Pause()
+
 	Play() bool
 	// Realize: called by users to attach the media stream to a `GdkSurface`
 	// they manage.
@@ -66,41 +67,75 @@ type MediaStreamerOverrider interface {
 	// This causes the stream to release all resources it had allocated from
 	// @surface.
 	Unrealize(surface gdk.Surfacer)
+
 	UpdateAudio(muted bool, volume float64)
 }
 
 // MediaStreamer describes MediaStream's methods.
 type MediaStreamer interface {
-	gextras.Objector
-
+	// Ended pauses the media stream and marks it as ended.
 	Ended()
+	// Gerror sets @self into an error state.
 	Gerror(err error)
+	// Duration gets the duration of the stream.
 	Duration() int64
+	// GetEnded returns whether the streams playback is finished.
 	GetEnded() bool
+	// Error: if the stream is in an error state, returns the `GError`
+	// explaining that state.
 	Error() error
+	// Loop returns whether the stream is set to loop.
 	Loop() bool
+	// Muted returns whether the audio for the stream is muted.
 	Muted() bool
+	// Playing: return whether the stream is currently playing.
 	Playing() bool
+	// Timestamp returns the current presentation timestamp in microseconds.
 	Timestamp() int64
+	// Volume returns the volume of the audio for the stream.
 	Volume() float64
+	// HasAudio returns whether the stream has audio.
 	HasAudio() bool
+	// HasVideo returns whether the stream has video.
 	HasVideo() bool
+	// IsPrepared returns whether the stream has finished initializing.
 	IsPrepared() bool
+	// IsSeekable checks if a stream may be seekable.
 	IsSeekable() bool
+	// IsSeeking checks if there is currently a seek operation going on.
 	IsSeeking() bool
+	// Pause pauses playback of the stream.
 	Pause()
+	// Play starts playing the stream.
 	Play()
+	// Prepared: called by `GtkMediaStream` implementations to advertise the
+	// stream being ready to play and providing details about the stream.
 	Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64)
+	// Realize: called by users to attach the media stream to a `GdkSurface`
+	// they manage.
 	Realize(surface gdk.Surfacer)
+	// Seek: start a seek operation on @self to @timestamp.
 	Seek(timestamp int64)
+	// SeekFailed ends a seek operation started via GtkMediaStream.seek() as a
+	// failure.
 	SeekFailed()
+	// SeekSuccess ends a seek operation started via GtkMediaStream.seek()
+	// successfully.
 	SeekSuccess()
+	// SetLoop sets whether the stream should loop.
 	SetLoop(loop bool)
+	// SetMuted sets whether the audio stream should be muted.
 	SetMuted(muted bool)
+	// SetPlaying starts or pauses playback of the stream.
 	SetPlaying(playing bool)
+	// SetVolume sets the volume of the audio stream.
 	SetVolume(volume float64)
+	// Unprepared resets a given media stream implementation.
 	Unprepared()
+	// Unrealize undoes a previous call to gtk_media_stream_realize().
 	Unrealize(surface gdk.Surfacer)
+	// Update: media stream implementations should regularly call this function
+	// to update the timestamp reported by the stream.
 	Update(timestamp int64)
 }
 
@@ -123,9 +158,12 @@ type MediaStream struct {
 	gdk.Paintable
 }
 
-var _ MediaStreamer = (*MediaStream)(nil)
+var (
+	_ MediaStreamer   = (*MediaStream)(nil)
+	_ gextras.Nativer = (*MediaStream)(nil)
+)
 
-func wrapMediaStreamer(obj *externglib.Object) MediaStreamer {
+func wrapMediaStream(obj *externglib.Object) MediaStreamer {
 	return &MediaStream{
 		Object: obj,
 		Paintable: gdk.Paintable{
@@ -137,7 +175,7 @@ func wrapMediaStreamer(obj *externglib.Object) MediaStreamer {
 func marshalMediaStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMediaStreamer(obj), nil
+	return wrapMediaStream(obj), nil
 }
 
 // Ended pauses the media stream and marks it as ended.
@@ -506,7 +544,7 @@ func (self *MediaStream) Realize(surface gdk.Surfacer) {
 	var _arg1 *C.GdkSurface     // out
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
 
 	C.gtk_media_stream_realize(_arg0, _arg1)
 }
@@ -653,7 +691,7 @@ func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 	var _arg1 *C.GdkSurface     // out
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
 
 	C.gtk_media_stream_unrealize(_arg0, _arg1)
 }

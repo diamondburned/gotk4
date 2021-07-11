@@ -18,14 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_cairo_renderer_get_type()), F: marshalCairoRendererrer},
+		{T: externglib.Type(C.gsk_cairo_renderer_get_type()), F: marshalCairoRendererer},
 	})
 }
 
-// CairoRendererrer describes CairoRenderer's methods.
-type CairoRendererrer interface {
-	gextras.Objector
-
+// CairoRendererer describes CairoRenderer's methods.
+type CairoRendererer interface {
 	privateCairoRenderer()
 }
 
@@ -36,9 +34,12 @@ type CairoRenderer struct {
 	Renderer
 }
 
-var _ CairoRendererrer = (*CairoRenderer)(nil)
+var (
+	_ CairoRendererer = (*CairoRenderer)(nil)
+	_ gextras.Nativer = (*CairoRenderer)(nil)
+)
 
-func wrapCairoRendererrer(obj *externglib.Object) CairoRendererrer {
+func wrapCairoRenderer(obj *externglib.Object) CairoRendererer {
 	return &CairoRenderer{
 		Renderer: Renderer{
 			Object: obj,
@@ -46,10 +47,10 @@ func wrapCairoRendererrer(obj *externglib.Object) CairoRendererrer {
 	}
 }
 
-func marshalCairoRendererrer(p uintptr) (interface{}, error) {
+func marshalCairoRendererer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCairoRendererrer(obj), nil
+	return wrapCairoRenderer(obj), nil
 }
 
 // NewCairoRenderer creates a new Cairo renderer.

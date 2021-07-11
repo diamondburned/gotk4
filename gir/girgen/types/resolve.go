@@ -339,6 +339,15 @@ func (typ *Resolved) HasPointer(gen FileGenerator) bool {
 	return true
 }
 
+// FullGType returns the GType with the namespace.
+func (typ *Resolved) FullGType() string {
+	if typ.Extern == nil {
+		return typ.GType
+	}
+
+	return EnsureNamespace(typ.Extern.NamespaceFindResult, typ.GType)
+}
+
 // GoImplType is a convenient function around ResolvedType.ImplType.
 func GoImplType(gen FileGenerator, resolved *Resolved) string {
 	return resolved.ImplType(resolved.NeedsNamespace(gen.Namespace()))
@@ -487,7 +496,7 @@ func (typ *Resolved) WrapName(needsNamespace bool) string {
 	name := typ.Extern.Name()
 	name = strcases.PascalToGo(name)
 
-	wrapName := "Wrap" + name
+	wrapName := "wrap" + name
 	if needsNamespace {
 		// The wrapper is all exported, so it's probably public. In reality it
 		// doesn't matter, since all extern types will have the same imports.

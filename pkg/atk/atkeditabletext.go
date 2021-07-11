@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// EditableTexterOverrider contains methods that are overridable.
+// EditableTextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type EditableTexterOverrider interface {
+type EditableTextOverrider interface {
 	// CopyText: copy text from @start_pos up to, but not including @end_pos to
 	// the clipboard.
 	CopyText(startPos int, endPos int)
@@ -45,13 +45,19 @@ type EditableTexterOverrider interface {
 
 // EditableTexter describes EditableText's methods.
 type EditableTexter interface {
-	gextras.Objector
-
+	// CopyText: copy text from @start_pos up to, but not including @end_pos to
+	// the clipboard.
 	CopyText(startPos int, endPos int)
+	// CutText: copy text from @start_pos up to, but not including @end_pos to
+	// the clipboard and then delete from the widget.
 	CutText(startPos int, endPos int)
+	// DeleteText: delete text @start_pos up to, but not including @end_pos.
 	DeleteText(startPos int, endPos int)
+	// InsertText: insert text at a given position.
 	InsertText(_string string, length int, position *int)
+	// PasteText: paste text from clipboard to specified @position.
 	PasteText(position int)
+	// SetTextContents: set text contents of @text.
 	SetTextContents(_string string)
 }
 
@@ -67,9 +73,12 @@ type EditableText struct {
 	*externglib.Object
 }
 
-var _ EditableTexter = (*EditableText)(nil)
+var (
+	_ EditableTexter  = (*EditableText)(nil)
+	_ gextras.Nativer = (*EditableText)(nil)
+)
 
-func wrapEditableTexter(obj *externglib.Object) EditableTexter {
+func wrapEditableText(obj *externglib.Object) EditableTexter {
 	return &EditableText{
 		Object: obj,
 	}
@@ -78,7 +87,7 @@ func wrapEditableTexter(obj *externglib.Object) EditableTexter {
 func marshalEditableTexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEditableTexter(obj), nil
+	return wrapEditableText(obj), nil
 }
 
 // CopyText: copy text from @start_pos up to, but not including @end_pos to the

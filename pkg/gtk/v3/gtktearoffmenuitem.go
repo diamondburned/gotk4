@@ -27,8 +27,6 @@ func init() {
 
 // TearoffMenuItemmer describes TearoffMenuItem's methods.
 type TearoffMenuItemmer interface {
-	gextras.Objector
-
 	privateTearoffMenuItem()
 }
 
@@ -47,28 +45,20 @@ type TearoffMenuItemmer interface {
 // > TearoffMenuItem is deprecated and should not be used in newly > written
 // code. Menus are not meant to be torn around.
 type TearoffMenuItem struct {
-	*externglib.Object
-
 	MenuItem
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ TearoffMenuItemmer = (*TearoffMenuItem)(nil)
+var (
+	_ TearoffMenuItemmer = (*TearoffMenuItem)(nil)
+	_ gextras.Nativer    = (*TearoffMenuItem)(nil)
+)
 
-func wrapTearoffMenuItemmer(obj *externglib.Object) TearoffMenuItemmer {
+func wrapTearoffMenuItem(obj *externglib.Object) TearoffMenuItemmer {
 	return &TearoffMenuItem{
-		Object: obj,
 		MenuItem: MenuItem{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -79,27 +69,10 @@ func wrapTearoffMenuItemmer(obj *externglib.Object) TearoffMenuItemmer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -114,33 +87,6 @@ func wrapTearoffMenuItemmer(obj *externglib.Object) TearoffMenuItemmer {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -148,7 +94,7 @@ func wrapTearoffMenuItemmer(obj *externglib.Object) TearoffMenuItemmer {
 func marshalTearoffMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTearoffMenuItemmer(obj), nil
+	return wrapTearoffMenuItem(obj), nil
 }
 
 // NewTearoffMenuItem creates a new TearoffMenuItem.

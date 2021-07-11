@@ -24,13 +24,13 @@ func init() {
 
 // Scrollbarrer describes Scrollbar's methods.
 type Scrollbarrer interface {
-	gextras.Objector
-
+	// Adjustment returns the scrollbar's adjustment.
 	Adjustment() *Adjustment
+	// SetAdjustment makes the scrollbar use the given adjustment.
 	SetAdjustment(adjustment Adjustmenter)
 }
 
-// Scrollbar: the `GtkScrollbar` widget is a horizontal or vertical scrollbar.
+// Scrollbar: `GtkScrollbar` widget is a horizontal or vertical scrollbar.
 //
 // !An example GtkScrollbar (scrollbar.png)
 //
@@ -70,22 +70,19 @@ type Scrollbarrer interface {
 //
 // `GtkScrollbar` uses the GTK_ACCESSIBLE_ROLE_SCROLLBAR role.
 type Scrollbar struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 }
 
-var _ Scrollbarrer = (*Scrollbar)(nil)
+var (
+	_ Scrollbarrer    = (*Scrollbar)(nil)
+	_ gextras.Nativer = (*Scrollbar)(nil)
+)
 
-func wrapScrollbarrer(obj *externglib.Object) Scrollbarrer {
+func wrapScrollbar(obj *externglib.Object) Scrollbarrer {
 	return &Scrollbar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -99,15 +96,6 @@ func wrapScrollbarrer(obj *externglib.Object) Scrollbarrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -117,7 +105,13 @@ func wrapScrollbarrer(obj *externglib.Object) Scrollbarrer {
 func marshalScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrollbarrer(obj), nil
+	return wrapScrollbar(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Scrollbar) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Adjustment returns the scrollbar's adjustment.
@@ -142,7 +136,7 @@ func (self *Scrollbar) SetAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_scrollbar_set_adjustment(_arg0, _arg1)
 }

@@ -34,10 +34,13 @@ func init() {
 
 // FilterOutputStreamer describes FilterOutputStream's methods.
 type FilterOutputStreamer interface {
-	gextras.Objector
-
+	// BaseStream gets the base stream for the filter stream.
 	BaseStream() *OutputStream
+	// CloseBaseStream returns whether the base stream will be closed when
+	// @stream is closed.
 	CloseBaseStream() bool
+	// SetCloseBaseStream sets whether the base stream will be closed when
+	// @stream is closed.
 	SetCloseBaseStream(closeBase bool)
 }
 
@@ -49,9 +52,12 @@ type FilterOutputStream struct {
 	OutputStream
 }
 
-var _ FilterOutputStreamer = (*FilterOutputStream)(nil)
+var (
+	_ FilterOutputStreamer = (*FilterOutputStream)(nil)
+	_ gextras.Nativer      = (*FilterOutputStream)(nil)
+)
 
-func wrapFilterOutputStreamer(obj *externglib.Object) FilterOutputStreamer {
+func wrapFilterOutputStream(obj *externglib.Object) FilterOutputStreamer {
 	return &FilterOutputStream{
 		OutputStream: OutputStream{
 			Object: obj,
@@ -62,7 +68,7 @@ func wrapFilterOutputStreamer(obj *externglib.Object) FilterOutputStreamer {
 func marshalFilterOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilterOutputStreamer(obj), nil
+	return wrapFilterOutputStream(obj), nil
 }
 
 // BaseStream gets the base stream for the filter stream.

@@ -25,16 +25,26 @@ func init() {
 
 // SingleSelectioner describes SingleSelection's methods.
 type SingleSelectioner interface {
-	gextras.Objector
-
+	// Autoselect checks if autoselect has been enabled or disabled via
+	// gtk_single_selection_set_autoselect().
 	Autoselect() bool
+	// CanUnselect: if true, gtk_selection_model_unselect_item() is supported
+	// and allows unselecting the selected item.
 	CanUnselect() bool
+	// Model gets the model that @self is wrapping.
 	Model() *gio.ListModel
+	// Selected gets the position of the selected item.
 	Selected() uint
+	// SelectedItem gets the selected item.
 	SelectedItem() *externglib.Object
+	// SetAutoselect enables or disables autoselect.
 	SetAutoselect(autoselect bool)
+	// SetCanUnselect: if true, unselecting the current item via
+	// gtk_selection_model_unselect_item() is supported.
 	SetCanUnselect(canUnselect bool)
+	// SetModel sets the model that @self should wrap.
 	SetModel(model gio.ListModeller)
+	// SetSelected selects the item at the given position.
 	SetSelected(position uint)
 }
 
@@ -48,18 +58,17 @@ type SingleSelectioner interface {
 type SingleSelection struct {
 	*externglib.Object
 
-	gio.ListModel
 	SelectionModel
 }
 
-var _ SingleSelectioner = (*SingleSelection)(nil)
+var (
+	_ SingleSelectioner = (*SingleSelection)(nil)
+	_ gextras.Nativer   = (*SingleSelection)(nil)
+)
 
-func wrapSingleSelectioner(obj *externglib.Object) SingleSelectioner {
+func wrapSingleSelection(obj *externglib.Object) SingleSelectioner {
 	return &SingleSelection{
 		Object: obj,
-		ListModel: gio.ListModel{
-			Object: obj,
-		},
 		SelectionModel: SelectionModel{
 			ListModel: gio.ListModel{
 				Object: obj,
@@ -71,7 +80,7 @@ func wrapSingleSelectioner(obj *externglib.Object) SingleSelectioner {
 func marshalSingleSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSingleSelectioner(obj), nil
+	return wrapSingleSelection(obj), nil
 }
 
 // NewSingleSelection creates a new selection to handle @model.
@@ -79,7 +88,7 @@ func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkSingleSelection // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_single_selection_new(_arg1)
 
@@ -223,7 +232,7 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel         // out
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_single_selection_set_model(_arg0, _arg1)
 }

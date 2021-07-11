@@ -25,15 +25,20 @@ func init() {
 
 // SortListModeller describes SortListModel's methods.
 type SortListModeller interface {
-	gextras.Objector
-
+	// Incremental returns whether incremental sorting is enabled.
 	Incremental() bool
+	// Model gets the model currently sorted or nil if none.
 	Model() *gio.ListModel
+	// Pending estimates progress of an ongoing sorting operation.
 	Pending() uint
+	// Sorter gets the sorter that is used to sort @self.
 	Sorter() *Sorter
+	// SetIncremental sets the sort model to do an incremental sort.
 	SetIncremental(incremental bool)
+	// SetModel sets the model to be sorted.
 	SetModel(model gio.ListModeller)
-	SetSorter(sorter Sorterrer)
+	// SetSorter sets a new sorter on @self.
+	SetSorter(sorter Sorterer)
 }
 
 // SortListModel: `GtkSortListModel` is a list model that sorts the elements of
@@ -53,9 +58,12 @@ type SortListModel struct {
 	gio.ListModel
 }
 
-var _ SortListModeller = (*SortListModel)(nil)
+var (
+	_ SortListModeller = (*SortListModel)(nil)
+	_ gextras.Nativer  = (*SortListModel)(nil)
+)
 
-func wrapSortListModeller(obj *externglib.Object) SortListModeller {
+func wrapSortListModel(obj *externglib.Object) SortListModeller {
 	return &SortListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -67,18 +75,18 @@ func wrapSortListModeller(obj *externglib.Object) SortListModeller {
 func marshalSortListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSortListModeller(obj), nil
+	return wrapSortListModel(obj), nil
 }
 
 // NewSortListModel creates a new sort list model that uses the @sorter to sort
 // @model.
-func NewSortListModel(model gio.ListModeller, sorter Sorterrer) *SortListModel {
+func NewSortListModel(model gio.ListModeller, sorter Sorterer) *SortListModel {
 	var _arg1 *C.GListModel       // out
 	var _arg2 *C.GtkSorter        // out
 	var _cret *C.GtkSortListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkSorter)(unsafe.Pointer((sorter).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_sort_list_model_new(_arg1, _arg2)
 
@@ -205,18 +213,18 @@ func (self *SortListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel       // out
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_sort_list_model_set_model(_arg0, _arg1)
 }
 
 // SetSorter sets a new sorter on @self.
-func (self *SortListModel) SetSorter(sorter Sorterrer) {
+func (self *SortListModel) SetSorter(sorter Sorterer) {
 	var _arg0 *C.GtkSortListModel // out
 	var _arg1 *C.GtkSorter        // out
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer((sorter).(gextras.Nativer).Native()))
 
 	C.gtk_sort_list_model_set_sorter(_arg0, _arg1)
 }

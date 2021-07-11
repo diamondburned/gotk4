@@ -25,13 +25,20 @@ func init() {
 
 // DrawContexter describes DrawContext's methods.
 type DrawContexter interface {
-	gextras.Objector
-
+	// BeginFrame indicates that you are beginning the process of redrawing
+	// @region on the @context's surface.
 	BeginFrame(region *cairo.Region)
+	// EndFrame ends a drawing operation started with
+	// gdk_draw_context_begin_frame().
 	EndFrame()
+	// Display retrieves the `GdkDisplay` the @context is created for
 	Display() *Display
+	// FrameRegion retrieves the region that is currently being repainted.
 	FrameRegion() *cairo.Region
+	// Surface retrieves the surface that @context is bound to.
 	Surface() *Surface
+	// IsInFrame returns true if @context is in the process of drawing to its
+	// surface.
 	IsInFrame() bool
 }
 
@@ -48,9 +55,12 @@ type DrawContext struct {
 	*externglib.Object
 }
 
-var _ DrawContexter = (*DrawContext)(nil)
+var (
+	_ DrawContexter   = (*DrawContext)(nil)
+	_ gextras.Nativer = (*DrawContext)(nil)
+)
 
-func wrapDrawContexter(obj *externglib.Object) DrawContexter {
+func wrapDrawContext(obj *externglib.Object) DrawContexter {
 	return &DrawContext{
 		Object: obj,
 	}
@@ -59,7 +69,7 @@ func wrapDrawContexter(obj *externglib.Object) DrawContexter {
 func marshalDrawContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrawContexter(obj), nil
+	return wrapDrawContext(obj), nil
 }
 
 // BeginFrame indicates that you are beginning the process of redrawing @region

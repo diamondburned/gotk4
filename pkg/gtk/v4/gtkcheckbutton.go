@@ -22,27 +22,36 @@ func init() {
 	})
 }
 
-// CheckButtonnerOverrider contains methods that are overridable.
+// CheckButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CheckButtonnerOverrider interface {
+type CheckButtonOverrider interface {
 	Activate()
+
 	Toggled()
 }
 
 // CheckButtonner describes CheckButton's methods.
 type CheckButtonner interface {
-	gextras.Objector
-
+	// Active returns whether the check button is active.
 	Active() bool
+	// Inconsistent returns whether the check button is in an inconsistent
+	// state.
 	Inconsistent() bool
+	// Label returns the label of the check button.
 	Label() string
+	// UseUnderline returns whether underlines in the label indicate mnemonics.
 	UseUnderline() bool
+	// SetActive changes the check buttons active state.
 	SetActive(setting bool)
+	// SetGroup adds @self to the group of @group.
 	SetGroup(group CheckButtonner)
+	// SetInconsistent sets the `GtkCheckButton` to inconsistent state.
 	SetInconsistent(inconsistent bool)
+	// SetLabel sets the text of @self.
 	SetLabel(label string)
+	// SetUseUnderline sets whether underlines in the label indicate mnemonics.
 	SetUseUnderline(setting bool)
 }
 
@@ -98,22 +107,19 @@ type CheckButtonner interface {
 //
 // `GtkCheckButton` uses the GTK_ACCESSIBLE_ROLE_CHECKBOX role.
 type CheckButton struct {
-	*externglib.Object
-
 	Widget
-	Accessible
+
 	Actionable
-	Buildable
-	ConstraintTarget
 }
 
-var _ CheckButtonner = (*CheckButton)(nil)
+var (
+	_ CheckButtonner  = (*CheckButton)(nil)
+	_ gextras.Nativer = (*CheckButton)(nil)
+)
 
-func wrapCheckButtonner(obj *externglib.Object) CheckButtonner {
+func wrapCheckButton(obj *externglib.Object) CheckButtonner {
 	return &CheckButton{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -127,13 +133,8 @@ func wrapCheckButtonner(obj *externglib.Object) CheckButtonner {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
 		Actionable: Actionable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -148,19 +149,13 @@ func wrapCheckButtonner(obj *externglib.Object) CheckButtonner {
 				},
 			},
 		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalCheckButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckButtonner(obj), nil
+	return wrapCheckButton(obj), nil
 }
 
 // NewCheckButton creates a new `GtkCheckButton`.
@@ -209,6 +204,12 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButton)
 
 	return _checkButton
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *CheckButton) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Active returns whether the check button is active.
@@ -313,7 +314,7 @@ func (self *CheckButton) SetGroup(group CheckButtonner) {
 	var _arg1 *C.GtkCheckButton // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 
 	C.gtk_check_button_set_group(_arg0, _arg1)
 }

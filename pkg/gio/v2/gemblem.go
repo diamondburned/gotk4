@@ -34,9 +34,9 @@ func init() {
 
 // Emblemmer describes Emblem's methods.
 type Emblemmer interface {
-	gextras.Objector
-
+	// GetIcon gives back the icon from @emblem.
 	GetIcon() *Icon
+	// Origin gets the origin of the emblem.
 	Origin() EmblemOrigin
 }
 
@@ -51,9 +51,12 @@ type Emblem struct {
 	Icon
 }
 
-var _ Emblemmer = (*Emblem)(nil)
+var (
+	_ Emblemmer       = (*Emblem)(nil)
+	_ gextras.Nativer = (*Emblem)(nil)
+)
 
-func wrapEmblemmer(obj *externglib.Object) Emblemmer {
+func wrapEmblem(obj *externglib.Object) Emblemmer {
 	return &Emblem{
 		Object: obj,
 		Icon: Icon{
@@ -65,7 +68,7 @@ func wrapEmblemmer(obj *externglib.Object) Emblemmer {
 func marshalEmblemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEmblemmer(obj), nil
+	return wrapEmblem(obj), nil
 }
 
 // NewEmblem creates a new emblem for @icon.
@@ -73,7 +76,7 @@ func NewEmblem(icon Iconner) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	_cret = C.g_emblem_new(_arg1)
 

@@ -45,7 +45,7 @@ const (
 	StretchCondensed
 	// SemiCondensed: semi condensed width
 	StretchSemiCondensed
-	// Normal: the normal width
+	// Normal width
 	StretchNormal
 	// SemiExpanded: semi expanded width
 	StretchSemiExpanded
@@ -65,11 +65,11 @@ func marshalStretch(p uintptr) (interface{}, error) {
 type Style int
 
 const (
-	// Normal: the font is upright.
+	// Normal: font is upright.
 	StyleNormal Style = iota
-	// Oblique: the font is slanted, but in a roman style.
+	// Oblique: font is slanted, but in a roman style.
 	StyleOblique
-	// Italic: the font is slanted in an italic style.
+	// Italic: font is slanted in an italic style.
 	StyleItalic
 )
 
@@ -99,29 +99,29 @@ func marshalVariant(p uintptr) (interface{}, error) {
 type Weight int
 
 const (
-	// Thin: the thin weight (= 100; Since: 1.24)
+	// Thin weight (= 100; Since: 1.24)
 	WeightThin Weight = 100
-	// Ultralight: the ultralight weight (= 200)
+	// Ultralight weight (= 200)
 	WeightUltralight Weight = 200
-	// Light: the light weight (= 300)
+	// Light weight (= 300)
 	WeightLight Weight = 300
-	// Semilight: the semilight weight (= 350; Since: 1.36.7)
+	// Semilight weight (= 350; Since: 1.36.7)
 	WeightSemilight Weight = 350
-	// Book: the book weight (= 380; Since: 1.24)
+	// Book weight (= 380; Since: 1.24)
 	WeightBook Weight = 380
-	// Normal: the default weight (= 400)
+	// Normal: default weight (= 400)
 	WeightNormal Weight = 400
-	// Medium: the normal weight (= 500; Since: 1.24)
+	// Medium: normal weight (= 500; Since: 1.24)
 	WeightMedium Weight = 500
-	// Semibold: the semibold weight (= 600)
+	// Semibold weight (= 600)
 	WeightSemibold Weight = 600
-	// Bold: the bold weight (= 700)
+	// Bold weight (= 700)
 	WeightBold Weight = 700
-	// Ultrabold: the ultrabold weight (= 800)
+	// Ultrabold weight (= 800)
 	WeightUltrabold Weight = 800
-	// Heavy: the heavy weight (= 900)
+	// Heavy weight (= 900)
 	WeightHeavy Weight = 900
-	// Ultraheavy: the ultraheavy weight (= 1000; Since: 1.24)
+	// Ultraheavy weight (= 1000; Since: 1.24)
 	WeightUltraheavy Weight = 1000
 )
 
@@ -129,24 +129,24 @@ func marshalWeight(p uintptr) (interface{}, error) {
 	return Weight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FontMask: the bits in a `PangoFontMask` correspond to the set fields in a
+// FontMask bits in a `PangoFontMask` correspond to the set fields in a
 // `PangoFontDescription`.
 type FontMask int
 
 const (
-	// FontMaskFamily: the font family is specified.
+	// FontMaskFamily: font family is specified.
 	FontMaskFamily FontMask = 0b1
-	// FontMaskStyle: the font style is specified.
+	// FontMaskStyle: font style is specified.
 	FontMaskStyle FontMask = 0b10
-	// FontMaskVariant: the font variant is specified.
+	// FontMaskVariant: font variant is specified.
 	FontMaskVariant FontMask = 0b100
-	// FontMaskWeight: the font weight is specified.
+	// FontMaskWeight: font weight is specified.
 	FontMaskWeight FontMask = 0b1000
-	// FontMaskStretch: the font stretch is specified.
+	// FontMaskStretch: font stretch is specified.
 	FontMaskStretch FontMask = 0b10000
-	// FontMaskSize: the font size is specified.
+	// FontMaskSize: font size is specified.
 	FontMaskSize FontMask = 0b100000
-	// FontMaskGravity: the font gravity is specified (Since: 1.16.)
+	// FontMaskGravity: font gravity is specified (Since: 1.16.)
 	FontMaskGravity FontMask = 0b1000000
 	// FontMaskVariations: openType font variations are specified (Since: 1.42)
 	FontMaskVariations FontMask = 0b10000000
@@ -156,16 +156,17 @@ func marshalFontMask(p uintptr) (interface{}, error) {
 	return FontMask(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FonterOverrider contains methods that are overridable.
+// FontOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FonterOverrider interface {
+type FontOverrider interface {
 	// Describe returns a description of the font, with font size set in points.
 	//
 	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
 	// size in device units.
 	Describe() *FontDescription
+
 	DescribeAbsolute() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
 	Coverage(language *Language) *Coverage
@@ -193,14 +194,20 @@ type FonterOverrider interface {
 
 // Fonter describes Font's methods.
 type Fonter interface {
-	gextras.Objector
-
+	// Describe returns a description of the font, with font size set in points.
 	Describe() *FontDescription
+	// DescribeWithAbsoluteSize returns a description of the font, with absolute
+	// font size set in device units.
 	DescribeWithAbsoluteSize() *FontDescription
+	// Coverage computes the coverage map for a given font and language tag.
 	Coverage(language *Language) *Coverage
+	// Face gets the `PangoFontFace` to which @font belongs.
 	Face() *FontFace
+	// FontMap gets the font map for which the font was created.
 	FontMap() *FontMap
+	// Metrics gets overall metric information for a font.
 	Metrics(language *Language) *FontMetrics
+	// HasChar returns whether the font provides a glyph for this character.
 	HasChar(wc uint32) bool
 }
 
@@ -210,9 +217,12 @@ type Font struct {
 	*externglib.Object
 }
 
-var _ Fonter = (*Font)(nil)
+var (
+	_ Fonter          = (*Font)(nil)
+	_ gextras.Nativer = (*Font)(nil)
+)
 
-func wrapFonter(obj *externglib.Object) Fonter {
+func wrapFont(obj *externglib.Object) Fonter {
 	return &Font{
 		Object: obj,
 	}
@@ -221,7 +231,7 @@ func wrapFonter(obj *externglib.Object) Fonter {
 func marshalFonter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFonter(obj), nil
+	return wrapFont(obj), nil
 }
 
 // Describe returns a description of the font, with font size set in points.
@@ -378,11 +388,11 @@ func (font *Font) HasChar(wc uint32) bool {
 	return _ok
 }
 
-// FontFacerOverrider contains methods that are overridable.
+// FontFaceOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FontFacerOverrider interface {
+type FontFaceOverrider interface {
 	// Describe returns the family, style, variant, weight and stretch of a
 	// `PangoFontFace`. The size field of the resulting font description will be
 	// unset.
@@ -408,12 +418,19 @@ type FontFacerOverrider interface {
 
 // FontFacer describes FontFace's methods.
 type FontFacer interface {
-	gextras.Objector
-
+	// Describe returns the family, style, variant, weight and stretch of a
+	// `PangoFontFace`.
 	Describe() *FontDescription
+	// FaceName gets a name representing the style of this face among the
+	// different faces in the `PangoFontFamily` for the face.
 	FaceName() string
+	// Family gets the `PangoFontFamily` that @face belongs to.
 	Family() *FontFamily
+	// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
+	// underlying font rendering engine from another face, perhaps by shearing,
+	// emboldening, or lightening it.
 	IsSynthesized() bool
+	// ListSizes: list the available sizes for a font.
 	ListSizes() []int
 }
 
@@ -423,9 +440,12 @@ type FontFace struct {
 	*externglib.Object
 }
 
-var _ FontFacer = (*FontFace)(nil)
+var (
+	_ FontFacer       = (*FontFace)(nil)
+	_ gextras.Nativer = (*FontFace)(nil)
+)
 
-func wrapFontFacer(obj *externglib.Object) FontFacer {
+func wrapFontFace(obj *externglib.Object) FontFacer {
 	return &FontFace{
 		Object: obj,
 	}
@@ -434,7 +454,7 @@ func wrapFontFacer(obj *externglib.Object) FontFacer {
 func marshalFontFacer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontFacer(obj), nil
+	return wrapFontFace(obj), nil
 }
 
 // Describe returns the family, style, variant, weight and stretch of a
@@ -537,11 +557,11 @@ func (face *FontFace) ListSizes() []int {
 	return _sizes
 }
 
-// FontFamilierOverrider contains methods that are overridable.
+// FontFamilyOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FontFamilierOverrider interface {
+type FontFamilyOverrider interface {
 	// Face gets the `PangoFontFace` of @family with the given name.
 	Face(name string) *FontFace
 	// Name gets the name of the family.
@@ -576,12 +596,17 @@ type FontFamilierOverrider interface {
 
 // FontFamilier describes FontFamily's methods.
 type FontFamilier interface {
-	gextras.Objector
-
+	// Face gets the `PangoFontFace` of @family with the given name.
 	Face(name string) *FontFace
+	// Name gets the name of the family.
 	Name() string
+	// IsMonospace: monospace font is a font designed for text display where the
+	// the characters form a regular grid.
 	IsMonospace() bool
+	// IsVariable: variable font is a font which has axes that can be modified
+	// to produce different faces.
 	IsVariable() bool
+	// ListFaces lists the different font faces that make up @family.
 	ListFaces() []*FontFace
 }
 
@@ -594,9 +619,12 @@ type FontFamily struct {
 	*externglib.Object
 }
 
-var _ FontFamilier = (*FontFamily)(nil)
+var (
+	_ FontFamilier    = (*FontFamily)(nil)
+	_ gextras.Nativer = (*FontFamily)(nil)
+)
 
-func wrapFontFamilier(obj *externglib.Object) FontFamilier {
+func wrapFontFamily(obj *externglib.Object) FontFamilier {
 	return &FontFamily{
 		Object: obj,
 	}
@@ -605,7 +633,7 @@ func wrapFontFamilier(obj *externglib.Object) FontFamilier {
 func marshalFontFamilier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontFamilier(obj), nil
+	return wrapFontFamily(obj), nil
 }
 
 // Face gets the `PangoFontFace` of @family with the given name.

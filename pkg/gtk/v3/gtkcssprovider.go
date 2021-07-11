@@ -23,7 +23,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_css_provider_error_get_type()), F: marshalCSSProviderError},
-		{T: externglib.Type(C.gtk_css_provider_get_type()), F: marshalCSSProviderrer},
+		{T: externglib.Type(C.gtk_css_provider_get_type()), F: marshalCSSProviderer},
 	})
 }
 
@@ -49,22 +49,30 @@ func marshalCSSProviderError(p uintptr) (interface{}, error) {
 	return CSSProviderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// CSSProviderrerOverrider contains methods that are overridable.
+// CSSProviderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CSSProviderrerOverrider interface {
+type CSSProviderOverrider interface {
 	ParsingError(section *CSSSection, err error)
 }
 
-// CSSProviderrer describes CSSProvider's methods.
-type CSSProviderrer interface {
-	gextras.Objector
-
+// CSSProviderer describes CSSProvider's methods.
+type CSSProviderer interface {
+	// LoadFromData loads @data into @css_provider, and by doing so clears any
+	// previously loaded information.
 	LoadFromData(data []byte) error
+	// LoadFromFile loads the data contained in @file into @css_provider, making
+	// it clear any previously loaded information.
 	LoadFromFile(file gio.Filer) error
+	// LoadFromPath loads the data contained in @path into @css_provider, making
+	// it clear any previously loaded information.
 	LoadFromPath(path string) error
+	// LoadFromResource loads the data contained in the resource at
+	// @resource_path into the CssProvider, clearing any previously loaded
+	// information.
 	LoadFromResource(resourcePath string)
+	// String converts the @provider into a string representation in CSS format.
 	String() string
 }
 
@@ -97,9 +105,12 @@ type CSSProvider struct {
 	StyleProvider
 }
 
-var _ CSSProviderrer = (*CSSProvider)(nil)
+var (
+	_ CSSProviderer   = (*CSSProvider)(nil)
+	_ gextras.Nativer = (*CSSProvider)(nil)
+)
 
-func wrapCSSProviderrer(obj *externglib.Object) CSSProviderrer {
+func wrapCSSProvider(obj *externglib.Object) CSSProviderer {
 	return &CSSProvider{
 		Object: obj,
 		StyleProvider: StyleProvider{
@@ -108,10 +119,10 @@ func wrapCSSProviderrer(obj *externglib.Object) CSSProviderrer {
 	}
 }
 
-func marshalCSSProviderrer(p uintptr) (interface{}, error) {
+func marshalCSSProviderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCSSProviderrer(obj), nil
+	return wrapCSSProvider(obj), nil
 }
 
 // NewCSSProvider returns a newly created CssProvider.
@@ -156,7 +167,7 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	C.gtk_css_provider_load_from_file(_arg0, _arg1, &_cerr)
 

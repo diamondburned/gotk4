@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_recent_filter_flags_get_type()), F: marshalRecentFilterFlags},
-		{T: externglib.Type(C.gtk_recent_filter_get_type()), F: marshalRecentFilterrer},
+		{T: externglib.Type(C.gtk_recent_filter_get_type()), F: marshalRecentFilterer},
 	})
 }
 
@@ -31,19 +31,19 @@ func init() {
 type RecentFilterFlags int
 
 const (
-	// RecentFilterFlagsURI: the URI of the file being tested
+	// RecentFilterFlagsURI: URI of the file being tested
 	RecentFilterFlagsURI RecentFilterFlags = 0b1
-	// RecentFilterFlagsDisplayName: the string that will be used to display the
+	// RecentFilterFlagsDisplayName: string that will be used to display the
 	// file in the recent chooser
 	RecentFilterFlagsDisplayName RecentFilterFlags = 0b10
-	// RecentFilterFlagsMIMEType: the mime type of the file
+	// RecentFilterFlagsMIMEType: mime type of the file
 	RecentFilterFlagsMIMEType RecentFilterFlags = 0b100
-	// RecentFilterFlagsApplication: the list of applications that have
-	// registered the file
+	// RecentFilterFlagsApplication: list of applications that have registered
+	// the file
 	RecentFilterFlagsApplication RecentFilterFlags = 0b1000
-	// RecentFilterFlagsGroup: the groups to which the file belongs to
+	// RecentFilterFlagsGroup groups to which the file belongs to
 	RecentFilterFlagsGroup RecentFilterFlags = 0b10000
-	// RecentFilterFlagsAge: the number of days elapsed since the file has been
+	// RecentFilterFlagsAge: number of days elapsed since the file has been
 	// registered
 	RecentFilterFlagsAge RecentFilterFlags = 0b100000
 )
@@ -52,7 +52,7 @@ func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 	return RecentFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RecentFilterFunc: the type of function that is used with custom filters, see
+// RecentFilterFunc: type of function that is used with custom filters, see
 // gtk_recent_filter_add_custom().
 type RecentFilterFunc func(filterInfo *RecentFilterInfo, userData interface{}) (ok bool)
 
@@ -79,19 +79,38 @@ func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret 
 	return cret
 }
 
-// RecentFilterrer describes RecentFilter's methods.
-type RecentFilterrer interface {
-	gextras.Objector
-
+// RecentFilterer describes RecentFilter's methods.
+type RecentFilterer interface {
+	// AddAge adds a rule that allows resources based on their age - that is,
+	// the number of days elapsed since they were last modified.
 	AddAge(days int)
+	// AddApplication adds a rule that allows resources based on the name of the
+	// application that has registered them.
 	AddApplication(application string)
+	// AddGroup adds a rule that allows resources based on the name of the group
+	// to which they belong
 	AddGroup(group string)
+	// AddMIMEType adds a rule that allows resources based on their registered
+	// MIME type.
 	AddMIMEType(mimeType string)
+	// AddPattern adds a rule that allows resources based on a pattern matching
+	// their display name.
 	AddPattern(pattern string)
+	// AddPixbufFormats adds a rule allowing image files in the formats
+	// supported by GdkPixbuf.
 	AddPixbufFormats()
+	// Filter tests whether a file should be displayed according to @filter.
 	Filter(filterInfo *RecentFilterInfo) bool
+	// Name gets the human-readable name for the filter.
 	Name() string
+	// Needed gets the fields that need to be filled in for the RecentFilterInfo
+	// passed to gtk_recent_filter_filter() This function will not typically be
+	// used by applications; it is intended principally for use in the
+	// implementation of RecentChooser.
 	Needed() RecentFilterFlags
+	// SetName sets the human-readable name of the filter; this is the string
+	// that will be displayed in the recently used resources selector user
+	// interface if there is a selectable list of filters.
 	SetName(name string)
 }
 
@@ -142,17 +161,18 @@ type RecentFilterrer interface {
 //      </applications>
 //    </object>
 type RecentFilter struct {
-	*externglib.Object
-
 	externglib.InitiallyUnowned
+
 	Buildable
 }
 
-var _ RecentFilterrer = (*RecentFilter)(nil)
+var (
+	_ RecentFilterer  = (*RecentFilter)(nil)
+	_ gextras.Nativer = (*RecentFilter)(nil)
+)
 
-func wrapRecentFilterrer(obj *externglib.Object) RecentFilterrer {
+func wrapRecentFilter(obj *externglib.Object) RecentFilterer {
 	return &RecentFilter{
-		Object: obj,
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
@@ -162,10 +182,10 @@ func wrapRecentFilterrer(obj *externglib.Object) RecentFilterrer {
 	}
 }
 
-func marshalRecentFilterrer(p uintptr) (interface{}, error) {
+func marshalRecentFilterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentFilterrer(obj), nil
+	return wrapRecentFilter(obj), nil
 }
 
 // NewRecentFilter creates a new RecentFilter with no rules added to it. Such
@@ -187,6 +207,12 @@ func NewRecentFilter() *RecentFilter {
 	_recentFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentFilter)
 
 	return _recentFilter
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *RecentFilter) Native() uintptr {
+	return v.InitiallyUnowned.Object.Native()
 }
 
 // AddAge adds a rule that allows resources based on their age - that is, the

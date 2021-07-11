@@ -18,8 +18,8 @@ import "C"
 
 type Stock = string
 
-// TranslateFunc: the function used to translate messages in e.g. IconFactory
-// and ActionGroup.
+// TranslateFunc: function used to translate messages in e.g. IconFactory and
+// ActionGroup.
 //
 // Deprecated: since version 3.10.
 type TranslateFunc func(path string, funcData interface{}) (utf8 string)

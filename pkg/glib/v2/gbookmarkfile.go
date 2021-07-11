@@ -22,7 +22,7 @@ const (
 	BookmarkFileErrorURINotFound
 	// Read: document was ill formed
 	BookmarkFileErrorRead
-	// UnknownEncoding: the text being parsed was in an unknown encoding
+	// UnknownEncoding: text being parsed was in an unknown encoding
 	BookmarkFileErrorUnknownEncoding
 	// Write: error occurred while writing
 	BookmarkFileErrorWrite

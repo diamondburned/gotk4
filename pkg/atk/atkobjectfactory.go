@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// ObjectFactorierOverrider contains methods that are overridable.
+// ObjectFactoryOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ObjectFactorierOverrider interface {
+type ObjectFactoryOverrider interface {
 	// Invalidate: inform @factory that it is no longer being used to create
 	// accessibles. When called, @factory may need to inform Objects which it
 	// has created that they need to be re-instantiated. Note: primarily used
@@ -36,10 +36,14 @@ type ObjectFactorierOverrider interface {
 
 // ObjectFactorier describes ObjectFactory's methods.
 type ObjectFactorier interface {
-	gextras.Objector
-
+	// CreateAccessible provides an Object that implements an accessibility
+	// interface on behalf of @obj
 	CreateAccessible(obj gextras.Objector) *ObjectClass
+	// AccessibleType gets the GType of the accessible which is created by the
+	// factory.
 	AccessibleType() externglib.Type
+	// Invalidate: inform @factory that it is no longer being used to create
+	// accessibles.
 	Invalidate()
 }
 
@@ -51,9 +55,12 @@ type ObjectFactory struct {
 	*externglib.Object
 }
 
-var _ ObjectFactorier = (*ObjectFactory)(nil)
+var (
+	_ ObjectFactorier = (*ObjectFactory)(nil)
+	_ gextras.Nativer = (*ObjectFactory)(nil)
+)
 
-func wrapObjectFactorier(obj *externglib.Object) ObjectFactorier {
+func wrapObjectFactory(obj *externglib.Object) ObjectFactorier {
 	return &ObjectFactory{
 		Object: obj,
 	}
@@ -62,7 +69,7 @@ func wrapObjectFactorier(obj *externglib.Object) ObjectFactorier {
 func marshalObjectFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapObjectFactorier(obj), nil
+	return wrapObjectFactory(obj), nil
 }
 
 // CreateAccessible provides an Object that implements an accessibility

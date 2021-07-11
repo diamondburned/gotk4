@@ -25,13 +25,17 @@ func init() {
 
 // DragSourcer describes DragSource's methods.
 type DragSourcer interface {
-	gextras.Objector
-
+	// DragCancel cancels a currently ongoing drag operation.
 	DragCancel()
+	// Actions gets the actions that are currently set on the `GtkDragSource`.
 	Actions() gdk.DragAction
+	// Content gets the current content provider of a `GtkDragSource`.
 	Content() *gdk.ContentProvider
+	// Drag returns the underlying `GdkDrag` object for an ongoing drag.
 	Drag() *gdk.Drag
-	SetContent(content gdk.ContentProviderrer)
+	// SetContent sets a content provider on a `GtkDragSource`.
+	SetContent(content gdk.ContentProviderer)
+	// SetIcon sets a paintable to use as icon during DND operations.
 	SetIcon(paintable gdk.Paintabler, hotX int, hotY int)
 }
 
@@ -94,9 +98,12 @@ type DragSource struct {
 	GestureSingle
 }
 
-var _ DragSourcer = (*DragSource)(nil)
+var (
+	_ DragSourcer     = (*DragSource)(nil)
+	_ gextras.Nativer = (*DragSource)(nil)
+)
 
-func wrapDragSourcer(obj *externglib.Object) DragSourcer {
+func wrapDragSource(obj *externglib.Object) DragSourcer {
 	return &DragSource{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -111,7 +118,7 @@ func wrapDragSourcer(obj *externglib.Object) DragSourcer {
 func marshalDragSourcer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragSourcer(obj), nil
+	return wrapDragSource(obj), nil
 }
 
 // NewDragSource creates a new `GtkDragSource` object.
@@ -194,12 +201,12 @@ func (source *DragSource) Drag() *gdk.Drag {
 //
 // You may consider setting the content provider back to nil in a
 // [signal@Gtk.DragSource::drag-end] signal handler.
-func (source *DragSource) SetContent(content gdk.ContentProviderrer) {
+func (source *DragSource) SetContent(content gdk.ContentProviderer) {
 	var _arg0 *C.GtkDragSource      // out
 	var _arg1 *C.GdkContentProvider // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
-	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
+	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer((content).(gextras.Nativer).Native()))
 
 	C.gtk_drag_source_set_content(_arg0, _arg1)
 }
@@ -221,7 +228,7 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX int, hotY int) 
 	var _arg3 C.int            // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
 	_arg2 = C.int(hotX)
 	_arg3 = C.int(hotY)
 

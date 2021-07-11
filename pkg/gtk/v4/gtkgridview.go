@@ -24,19 +24,34 @@ func init() {
 
 // GridViewer describes GridView's methods.
 type GridViewer interface {
-	gextras.Objector
-
+	// EnableRubberband returns whether rows can be selected by dragging with
+	// the mouse.
 	EnableRubberband() bool
+	// Factory gets the factory that's currently used to populate list items.
 	Factory() *ListItemFactory
+	// MaxColumns gets the maximum number of columns that the grid will use.
 	MaxColumns() uint
+	// MinColumns gets the minimum number of columns that the grid will use.
 	MinColumns() uint
+	// Model gets the model that's currently used to read the items displayed.
 	Model() *SelectionModel
+	// SingleClickActivate returns whether items will be activated on single
+	// click and selected on hover.
 	SingleClickActivate() bool
+	// SetEnableRubberband sets whether selections can be changed by dragging
+	// with the mouse.
 	SetEnableRubberband(enableRubberband bool)
+	// SetFactory sets the `GtkListItemFactory` to use for populating list
+	// items.
 	SetFactory(factory ListItemFactorier)
+	// SetMaxColumns sets the maximum number of columns to use.
 	SetMaxColumns(maxColumns uint)
+	// SetMinColumns sets the minimum number of columns to use.
 	SetMinColumns(minColumns uint)
+	// SetModel sets the imodel to use.
 	SetModel(model SelectionModeller)
+	// SetSingleClickActivate sets whether items should be activated on single
+	// click and selected on hover.
 	SetSingleClickActivate(singleClickActivate bool)
 }
 
@@ -69,25 +84,18 @@ type GridViewer interface {
 // `GtkGridView` uses the GTK_ACCESSIBLE_ROLE_GRID role, and the items use the
 // GTK_ACCESSIBLE_ROLE_GRID_CELL role.
 type GridView struct {
-	*externglib.Object
-
 	ListBase
-	Accessible
-	Buildable
-	ConstraintTarget
-	Orientable
-	Scrollable
 }
 
-var _ GridViewer = (*GridView)(nil)
+var (
+	_ GridViewer      = (*GridView)(nil)
+	_ gextras.Nativer = (*GridView)(nil)
+)
 
-func wrapGridViewer(obj *externglib.Object) GridViewer {
+func wrapGridView(obj *externglib.Object) GridViewer {
 	return &GridView{
-		Object: obj,
 		ListBase: ListBase{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -101,15 +109,6 @@ func wrapGridViewer(obj *externglib.Object) GridViewer {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
 			Orientable: Orientable{
 				Object: obj,
 			},
@@ -117,28 +116,13 @@ func wrapGridViewer(obj *externglib.Object) GridViewer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
-		},
-		Scrollable: Scrollable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalGridViewer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGridViewer(obj), nil
+	return wrapGridView(obj), nil
 }
 
 // NewGridView creates a new `GtkGridView` that uses the given @factory for
@@ -152,8 +136,8 @@ func NewGridView(model SelectionModeller, factory ListItemFactorier) *GridView {
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer((factory).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_grid_view_new(_arg1, _arg2)
 
@@ -286,7 +270,7 @@ func (self *GridView) SetFactory(factory ListItemFactorier) {
 	var _arg1 *C.GtkListItemFactory // out
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((factory).(gextras.Nativer).Native()))
 
 	C.gtk_grid_view_set_factory(_arg0, _arg1)
 }
@@ -331,7 +315,7 @@ func (self *GridView) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel // out
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_grid_view_set_model(_arg0, _arg1)
 }

@@ -48,16 +48,19 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 
 // TextTagTabler describes TextTagTable's methods.
 type TextTagTabler interface {
-	gextras.Objector
-
+	// Add a tag to the table.
 	Add(tag TextTagger) bool
+	// Foreach calls @func on each tag in @table, with user data @data.
 	Foreach(fn TextTagTableForeach)
+	// Size returns the size of the table (number of tags)
 	Size() int
+	// Lookup: look up a named tag.
 	Lookup(name string) *TextTag
+	// Remove a tag from the table.
 	Remove(tag TextTagger)
 }
 
-// TextTagTable: the collection of tags in a `GtkTextBuffer`
+// TextTagTable: collection of tags in a `GtkTextBuffer`
 //
 // You may wish to begin by reading the text widget conceptual overview
 // (section-text-widget.html), which gives an overview of all the objects and
@@ -78,9 +81,12 @@ type TextTagTable struct {
 	Buildable
 }
 
-var _ TextTagTabler = (*TextTagTable)(nil)
+var (
+	_ TextTagTabler   = (*TextTagTable)(nil)
+	_ gextras.Nativer = (*TextTagTable)(nil)
+)
 
-func wrapTextTagTabler(obj *externglib.Object) TextTagTabler {
+func wrapTextTagTable(obj *externglib.Object) TextTagTabler {
 	return &TextTagTable{
 		Object: obj,
 		Buildable: Buildable{
@@ -92,7 +98,7 @@ func wrapTextTagTabler(obj *externglib.Object) TextTagTabler {
 func marshalTextTagTabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextTagTabler(obj), nil
+	return wrapTextTagTable(obj), nil
 }
 
 // NewTextTagTable creates a new `GtkTextTagTable`.
@@ -122,7 +128,7 @@ func (table *TextTagTable) Add(tag TextTagger) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_tag_table_add(_arg0, _arg1)
 
@@ -196,7 +202,7 @@ func (table *TextTagTable) Remove(tag TextTagger) {
 	var _arg1 *C.GtkTextTag      // out
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
 
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
 }

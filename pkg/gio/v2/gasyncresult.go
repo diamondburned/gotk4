@@ -34,11 +34,11 @@ func init() {
 	})
 }
 
-// AsyncResulterOverrider contains methods that are overridable.
+// AsyncResultOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AsyncResulterOverrider interface {
+type AsyncResultOverrider interface {
 	// SourceObject gets the source object from a Result.
 	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.
@@ -50,11 +50,15 @@ type AsyncResulterOverrider interface {
 
 // AsyncResulter describes AsyncResult's methods.
 type AsyncResulter interface {
-	gextras.Objector
-
+	// SourceObject gets the source object from a Result.
 	SourceObject() *externglib.Object
+	// UserData gets the user data from a Result.
 	UserData() interface{}
+	// IsTagged checks if @res has the given @source_tag (generally a function
+	// pointer indicating the function @res was created by).
 	IsTagged(sourceTag interface{}) bool
+	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
+	// g_simple_async_result_propagate_error().
 	LegacyPropagateError() error
 }
 
@@ -142,9 +146,12 @@ type AsyncResult struct {
 	*externglib.Object
 }
 
-var _ AsyncResulter = (*AsyncResult)(nil)
+var (
+	_ AsyncResulter   = (*AsyncResult)(nil)
+	_ gextras.Nativer = (*AsyncResult)(nil)
+)
 
-func wrapAsyncResulter(obj *externglib.Object) AsyncResulter {
+func wrapAsyncResult(obj *externglib.Object) AsyncResulter {
 	return &AsyncResult{
 		Object: obj,
 	}
@@ -153,7 +160,7 @@ func wrapAsyncResulter(obj *externglib.Object) AsyncResulter {
 func marshalAsyncResulter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAsyncResulter(obj), nil
+	return wrapAsyncResult(obj), nil
 }
 
 // SourceObject gets the source object from a Result.

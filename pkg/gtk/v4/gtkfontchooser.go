@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_font_chooser_level_get_type()), F: marshalFontChooserLevel},
-		{T: externglib.Type(C.gtk_font_chooser_get_type()), F: marshalFontChooserrer},
+		{T: externglib.Type(C.gtk_font_chooser_get_type()), F: marshalFontChooserer},
 	})
 }
 
@@ -50,7 +50,7 @@ func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 	return FontChooserLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FontFilterFunc: the type of function that is used for deciding what fonts get
+// FontFilterFunc: type of function that is used for deciding what fonts get
 // shown in a `GtkFontChooser`.
 //
 // See [method@Gtk.FontChooser.set_filter_func].
@@ -81,11 +81,11 @@ func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C
 	return cret
 }
 
-// FontChooserrerOverrider contains methods that are overridable.
+// FontChooserOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FontChooserrerOverrider interface {
+type FontChooserOverrider interface {
 	FontActivated(fontname string)
 	// FontFace gets the `PangoFontFace` representing the selected font group
 	// details (i.e. family, slant, weight, width, etc).
@@ -102,7 +102,7 @@ type FontChooserrerOverrider interface {
 	// FontMap gets the custom font map of this font chooser widget, or nil if
 	// it does not have one.
 	FontMap() *pango.FontMap
-	// FontSize: the selected font size.
+	// FontSize: selected font size.
 	FontSize() int
 	// SetFontMap sets a custom font map to use for this font chooser widget.
 	//
@@ -127,26 +127,44 @@ type FontChooserrerOverrider interface {
 	SetFontMap(fontmap pango.FontMapper)
 }
 
-// FontChooserrer describes FontChooser's methods.
-type FontChooserrer interface {
-	gextras.Objector
-
+// FontChooserer describes FontChooser's methods.
+type FontChooserer interface {
+	// Font gets the currently-selected font name.
 	Font() string
+	// FontDesc gets the currently-selected font.
 	FontDesc() *pango.FontDescription
+	// FontFace gets the `PangoFontFace` representing the selected font group
+	// details (i.e.
 	FontFace() *pango.FontFace
+	// FontFamily gets the `PangoFontFamily` representing the selected font
+	// family.
 	FontFamily() *pango.FontFamily
+	// FontFeatures gets the currently-selected font features.
 	FontFeatures() string
+	// FontMap gets the custom font map of this font chooser widget, or nil if
+	// it does not have one.
 	FontMap() *pango.FontMap
+	// FontSize: selected font size.
 	FontSize() int
+	// Language gets the language that is used for font features.
 	Language() string
+	// Level returns the current level of granularity for selecting fonts.
 	Level() FontChooserLevel
+	// PreviewText gets the text displayed in the preview area.
 	PreviewText() string
+	// ShowPreviewEntry returns whether the preview entry is shown or not.
 	ShowPreviewEntry() bool
+	// SetFont sets the currently-selected font.
 	SetFont(fontname string)
+	// SetFontDesc sets the currently-selected font from @font_desc.
 	SetFontDesc(fontDesc *pango.FontDescription)
+	// SetFontMap sets a custom font map to use for this font chooser widget.
 	SetFontMap(fontmap pango.FontMapper)
+	// SetLanguage sets the language to use for font features.
 	SetLanguage(language string)
+	// SetPreviewText sets the text displayed in the preview area.
 	SetPreviewText(text string)
+	// SetShowPreviewEntry shows or hides the editable preview entry.
 	SetShowPreviewEntry(showPreviewEntry bool)
 }
 
@@ -160,18 +178,21 @@ type FontChooser struct {
 	*externglib.Object
 }
 
-var _ FontChooserrer = (*FontChooser)(nil)
+var (
+	_ FontChooserer   = (*FontChooser)(nil)
+	_ gextras.Nativer = (*FontChooser)(nil)
+)
 
-func wrapFontChooserrer(obj *externglib.Object) FontChooserrer {
+func wrapFontChooser(obj *externglib.Object) FontChooserer {
 	return &FontChooser{
 		Object: obj,
 	}
 }
 
-func marshalFontChooserrer(p uintptr) (interface{}, error) {
+func marshalFontChooserer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontChooserrer(obj), nil
+	return wrapFontChooser(obj), nil
 }
 
 // Font gets the currently-selected font name.
@@ -299,7 +320,7 @@ func (fontchooser *FontChooser) FontMap() *pango.FontMap {
 	return _fontMap
 }
 
-// FontSize: the selected font size.
+// FontSize: selected font size.
 func (fontchooser *FontChooser) FontSize() int {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret C.int             // in
@@ -431,7 +452,7 @@ func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _arg1 *C.PangoFontMap   // out
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
+	_arg1 = (*C.PangoFontMap)(unsafe.Pointer((fontmap).(gextras.Nativer).Native()))
 
 	C.gtk_font_chooser_set_font_map(_arg0, _arg1)
 }

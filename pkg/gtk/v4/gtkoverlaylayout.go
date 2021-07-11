@@ -25,8 +25,6 @@ func init() {
 
 // OverlayLayouter describes OverlayLayout's methods.
 type OverlayLayouter interface {
-	gextras.Objector
-
 	privateOverlayLayout()
 }
 
@@ -41,9 +39,12 @@ type OverlayLayout struct {
 	LayoutManager
 }
 
-var _ OverlayLayouter = (*OverlayLayout)(nil)
+var (
+	_ OverlayLayouter = (*OverlayLayout)(nil)
+	_ gextras.Nativer = (*OverlayLayout)(nil)
+)
 
-func wrapOverlayLayouter(obj *externglib.Object) OverlayLayouter {
+func wrapOverlayLayout(obj *externglib.Object) OverlayLayouter {
 	return &OverlayLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -54,7 +55,7 @@ func wrapOverlayLayouter(obj *externglib.Object) OverlayLayouter {
 func marshalOverlayLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOverlayLayouter(obj), nil
+	return wrapOverlayLayout(obj), nil
 }
 
 // NewOverlayLayout creates a new `GtkOverlayLayout` instance.
@@ -74,11 +75,13 @@ func (*OverlayLayout) privateOverlayLayout() {}
 
 // OverlayLayoutChilder describes OverlayLayoutChild's methods.
 type OverlayLayoutChilder interface {
-	gextras.Objector
-
+	// ClipOverlay retrieves whether the child is clipped.
 	ClipOverlay() bool
+	// Measure retrieves whether the child is measured.
 	Measure() bool
+	// SetClipOverlay sets whether to clip this child.
 	SetClipOverlay(clipOverlay bool)
+	// SetMeasure sets whether to measure this child.
 	SetMeasure(measure bool)
 }
 
@@ -88,9 +91,12 @@ type OverlayLayoutChild struct {
 	LayoutChild
 }
 
-var _ OverlayLayoutChilder = (*OverlayLayoutChild)(nil)
+var (
+	_ OverlayLayoutChilder = (*OverlayLayoutChild)(nil)
+	_ gextras.Nativer      = (*OverlayLayoutChild)(nil)
+)
 
-func wrapOverlayLayoutChilder(obj *externglib.Object) OverlayLayoutChilder {
+func wrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChilder {
 	return &OverlayLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,
@@ -101,7 +107,7 @@ func wrapOverlayLayoutChilder(obj *externglib.Object) OverlayLayoutChilder {
 func marshalOverlayLayoutChilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOverlayLayoutChilder(obj), nil
+	return wrapOverlayLayoutChild(obj), nil
 }
 
 // ClipOverlay retrieves whether the child is clipped.

@@ -146,9 +146,9 @@ const (
 	UnicodeBreakTypeZeroWidthJoiner
 )
 
-// UnicodeScript: the Script enumeration identifies different writing systems.
-// The values correspond to the names as defined in the Unicode standard. The
-// enumeration has been added in GLib 2.14, and is interchangeable with Script.
+// UnicodeScript enumeration identifies different writing systems. The values
+// correspond to the names as defined in the Unicode standard. The enumeration
+// has been added in GLib 2.14, and is interchangeable with Script.
 //
 // Note that new types may be added in the future. Applications should be ready
 // to handle unknown values. See Unicode Standard Annex #24: Script names

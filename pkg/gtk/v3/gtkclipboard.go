@@ -137,34 +137,64 @@ func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C
 
 // Clipboarder describes Clipboard's methods.
 type Clipboarder interface {
-	gextras.Objector
-
+	// Clear clears the contents of the clipboard.
 	Clear()
+	// Display gets the Display associated with @clipboard
 	Display() *gdk.Display
+	// Owner: if the clipboard contents callbacks were set with
+	// gtk_clipboard_set_with_owner(), and the gtk_clipboard_set_with_data() or
+	// gtk_clipboard_clear() has not subsequently called, returns the owner set
+	// by gtk_clipboard_set_with_owner().
 	Owner() *externglib.Object
+	// RequestImage requests the contents of the clipboard as image.
 	RequestImage(callback ClipboardImageReceivedFunc)
+	// RequestText requests the contents of the clipboard as text.
 	RequestText(callback ClipboardTextReceivedFunc)
+	// RequestUris requests the contents of the clipboard as URIs.
 	RequestUris(callback ClipboardURIReceivedFunc)
+	// SetCanStore hints that the clipboard data should be stored somewhere when
+	// the application exits or when gtk_clipboard_store () is called.
 	SetCanStore(targets []TargetEntry)
+	// SetImage sets the contents of the clipboard to the given Pixbuf.
 	SetImage(pixbuf gdkpixbuf.Pixbuffer)
+	// SetText sets the contents of the clipboard to the given UTF-8 string.
 	SetText(text string, len int)
+	// Store stores the current clipboard data somewhere so that it will stay
+	// around after the application has quit.
 	Store()
+	// WaitForImage requests the contents of the clipboard as image and converts
+	// the result to a Pixbuf.
 	WaitForImage() *gdkpixbuf.Pixbuf
+	// WaitForText requests the contents of the clipboard as text and converts
+	// the result to UTF-8 if necessary.
 	WaitForText() string
+	// WaitForUris requests the contents of the clipboard as URIs.
 	WaitForUris() []string
+	// WaitIsImageAvailable: test to see if there is an image available to be
+	// pasted This is done by requesting the TARGETS atom and checking if it
+	// contains any of the supported image targets.
 	WaitIsImageAvailable() bool
-	WaitIsRichTextAvailable(buffer TextBufferrer) bool
+	// WaitIsRichTextAvailable: test to see if there is rich text available to
+	// be pasted This is done by requesting the TARGETS atom and checking if it
+	// contains any of the supported rich text targets.
+	WaitIsRichTextAvailable(buffer TextBufferer) bool
+	// WaitIsTextAvailable: test to see if there is text available to be pasted
+	// This is done by requesting the TARGETS atom and checking if it contains
+	// any of the supported text targets.
 	WaitIsTextAvailable() bool
+	// WaitIsUrisAvailable: test to see if there is a list of URIs available to
+	// be pasted This is done by requesting the TARGETS atom and checking if it
+	// contains the URI targets.
 	WaitIsUrisAvailable() bool
 }
 
-// Clipboard: the Clipboard object represents a clipboard of data shared between
-// different processes or between different widgets in the same process. Each
-// clipboard is identified by a name encoded as a Atom. (Conversion to and from
-// strings can be done with gdk_atom_intern() and gdk_atom_name().) The default
-// clipboard corresponds to the “CLIPBOARD” atom; another commonly used
-// clipboard is the “PRIMARY” clipboard, which, in X, traditionally contains the
-// currently selected text.
+// Clipboard object represents a clipboard of data shared between different
+// processes or between different widgets in the same process. Each clipboard is
+// identified by a name encoded as a Atom. (Conversion to and from strings can
+// be done with gdk_atom_intern() and gdk_atom_name().) The default clipboard
+// corresponds to the “CLIPBOARD” atom; another commonly used clipboard is the
+// “PRIMARY” clipboard, which, in X, traditionally contains the currently
+// selected text.
 //
 // To support having a number of different formats on the clipboard at the same
 // time, the clipboard mechanism allows providing callbacks instead of the
@@ -212,9 +242,12 @@ type Clipboard struct {
 	*externglib.Object
 }
 
-var _ Clipboarder = (*Clipboard)(nil)
+var (
+	_ Clipboarder     = (*Clipboard)(nil)
+	_ gextras.Nativer = (*Clipboard)(nil)
+)
 
-func wrapClipboarder(obj *externglib.Object) Clipboarder {
+func wrapClipboard(obj *externglib.Object) Clipboarder {
 	return &Clipboard{
 		Object: obj,
 	}
@@ -223,7 +256,7 @@ func wrapClipboarder(obj *externglib.Object) Clipboarder {
 func marshalClipboarder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapClipboarder(obj), nil
+	return wrapClipboard(obj), nil
 }
 
 // Clear clears the contents of the clipboard. Generally this should only be
@@ -358,7 +391,7 @@ func (clipboard *Clipboard) SetImage(pixbuf gdkpixbuf.Pixbuffer) {
 	var _arg1 *C.GdkPixbuf    // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	C.gtk_clipboard_set_image(_arg0, _arg1)
 }
@@ -492,13 +525,13 @@ func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 // This function is a little faster than calling
 // gtk_clipboard_wait_for_rich_text() since it doesn’t need to retrieve the
 // actual text.
-func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer TextBufferrer) bool {
+func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer TextBufferer) bool {
 	var _arg0 *C.GtkClipboard  // out
 	var _arg1 *C.GtkTextBuffer // out
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer((buffer).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_clipboard_wait_is_rich_text_available(_arg0, _arg1)
 

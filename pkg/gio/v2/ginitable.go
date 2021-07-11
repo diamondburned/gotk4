@@ -33,11 +33,11 @@ func init() {
 	})
 }
 
-// InitablerOverrider contains methods that are overridable.
+// InitableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type InitablerOverrider interface {
+type InitableOverrider interface {
 	// Init initializes the object implementing the interface.
 	//
 	// This method is intended for language bindings. If writing in C,
@@ -81,8 +81,7 @@ type InitablerOverrider interface {
 
 // Initabler describes Initable's methods.
 type Initabler interface {
-	gextras.Objector
-
+	// Init initializes the object implementing the interface.
 	Init(cancellable Cancellabler) error
 }
 
@@ -112,9 +111,12 @@ type Initable struct {
 	*externglib.Object
 }
 
-var _ Initabler = (*Initable)(nil)
+var (
+	_ Initabler       = (*Initable)(nil)
+	_ gextras.Nativer = (*Initable)(nil)
+)
 
-func wrapInitabler(obj *externglib.Object) Initabler {
+func wrapInitable(obj *externglib.Object) Initabler {
 	return &Initable{
 		Object: obj,
 	}
@@ -123,7 +125,7 @@ func wrapInitabler(obj *externglib.Object) Initabler {
 func marshalInitabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInitabler(obj), nil
+	return wrapInitable(obj), nil
 }
 
 // Init initializes the object implementing the interface.
@@ -169,7 +171,7 @@ func (initable *Initable) Init(cancellable Cancellabler) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInitable)(unsafe.Pointer(initable.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_initable_init(_arg0, _arg1, &_cerr)
 

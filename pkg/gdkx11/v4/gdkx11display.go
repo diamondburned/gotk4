@@ -41,23 +41,44 @@ func X11SetSmClientID(smClientId string) {
 
 // X11Displayyer describes X11Display's methods.
 type X11Displayyer interface {
-	gextras.Objector
-
+	// ErrorTrapPop pops the error trap pushed by
+	// gdk_x11_display_error_trap_push().
 	ErrorTrapPop() int
+	// ErrorTrapPopIgnored pops the error trap pushed by
+	// gdk_x11_display_error_trap_push().
 	ErrorTrapPopIgnored()
+	// ErrorTrapPush begins a range of X requests on @display for which X error
+	// events will be ignored.
 	ErrorTrapPush()
+	// DefaultGroup returns the default group leader surface for all toplevel
+	// surfaces on @display.
 	DefaultGroup() *gdk.Surface
+	// GlxVersion retrieves the version of the GLX implementation.
 	GlxVersion() (major int, minor int, ok bool)
+	// PrimaryMonitor gets the primary monitor for the display.
 	PrimaryMonitor() *gdk.Monitor
+	// Screen retrieves the X11Screen of the @display.
 	Screen() *X11Screen
+	// StartupNotificationID gets the startup notification ID for a display.
 	StartupNotificationID() string
+	// UserTime returns the timestamp of the last user interaction on @display.
 	UserTime() uint32
+	// Grab: call XGrabServer() on @display.
 	Grab()
+	// SetCursorTheme sets the cursor theme from which the images for cursor
+	// should be taken.
 	SetCursorTheme(theme string, size int)
+	// SetStartupNotificationID sets the startup notification ID for a display.
 	SetStartupNotificationID(startupId string)
+	// SetSurfaceScale forces a specific window scale for all windows on this
+	// display, instead of using the default or user configured scale.
 	SetSurfaceScale(scale int)
+	// StringToCompoundText: convert a string from the encoding of the current
+	// locale into a form suitable for storing in a window property.
 	StringToCompoundText(str string) (encoding string, format int, ctext []byte, gint int)
+	// Ungrab @display after it has been grabbed with gdk_x11_display_grab().
 	Ungrab()
+	// UTF8ToCompoundText converts from UTF-8 to compound text.
 	UTF8ToCompoundText(str string) (string, int, []byte, bool)
 }
 
@@ -65,9 +86,12 @@ type X11Display struct {
 	gdk.Display
 }
 
-var _ X11Displayyer = (*X11Display)(nil)
+var (
+	_ X11Displayyer   = (*X11Display)(nil)
+	_ gextras.Nativer = (*X11Display)(nil)
+)
 
-func wrapX11Displayyer(obj *externglib.Object) X11Displayyer {
+func wrapX11Display(obj *externglib.Object) X11Displayyer {
 	return &X11Display{
 		Display: gdk.Display{
 			Object: obj,
@@ -78,7 +102,7 @@ func wrapX11Displayyer(obj *externglib.Object) X11Displayyer {
 func marshalX11Displayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Displayyer(obj), nil
+	return wrapX11Display(obj), nil
 }
 
 // ErrorTrapPop pops the error trap pushed by gdk_x11_display_error_trap_push().

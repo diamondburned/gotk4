@@ -25,35 +25,48 @@ func init() {
 	})
 }
 
-// LevelBarrerOverrider contains methods that are overridable.
+// LevelBarOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type LevelBarrerOverrider interface {
+type LevelBarOverrider interface {
 	OffsetChanged(name string)
 }
 
 // LevelBarrer describes LevelBar's methods.
 type LevelBarrer interface {
-	gextras.Objector
-
+	// AddOffsetValue adds a new offset marker on @self at the position
+	// specified by @value.
 	AddOffsetValue(name string, value float64)
+	// Inverted: return the value of the LevelBar:inverted property.
 	Inverted() bool
+	// MaxValue returns the value of the LevelBar:max-value property.
 	MaxValue() float64
+	// MinValue returns the value of the LevelBar:min-value property.
 	MinValue() float64
+	// Mode returns the value of the LevelBar:mode property.
 	Mode() LevelBarMode
+	// OffsetValue fetches the value specified for the offset marker @name in
+	// @self, returning true in case an offset named @name was found.
 	OffsetValue(name string) (float64, bool)
+	// Value returns the value of the LevelBar:value property.
 	Value() float64
+	// RemoveOffsetValue removes an offset marker previously added with
+	// gtk_level_bar_add_offset_value().
 	RemoveOffsetValue(name string)
+	// SetInverted sets the value of the LevelBar:inverted property.
 	SetInverted(inverted bool)
+	// SetMaxValue sets the value of the LevelBar:max-value property.
 	SetMaxValue(value float64)
+	// SetMinValue sets the value of the LevelBar:min-value property.
 	SetMinValue(value float64)
+	// SetValue sets the value of the LevelBar:value property.
 	SetValue(value float64)
 }
 
-// LevelBar: the LevelBar is a bar widget that can be used as a level indicator.
-// Typical use cases are displaying the strength of a password, or showing the
-// charge level of a battery.
+// LevelBar is a bar widget that can be used as a level indicator. Typical use
+// cases are displaying the strength of a password, or showing the charge level
+// of a battery.
 //
 // Use gtk_level_bar_set_value() to set the current value, and
 // gtk_level_bar_add_offset_value() to set the value offsets at which the bar
@@ -85,21 +98,19 @@ type LevelBarrer interface {
 // In horizontal orientation, the nodes are always arranged from left to right,
 // regardless of text direction.
 type LevelBar struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
+
 	Orientable
 }
 
-var _ LevelBarrer = (*LevelBar)(nil)
+var (
+	_ LevelBarrer     = (*LevelBar)(nil)
+	_ gextras.Nativer = (*LevelBar)(nil)
+)
 
-func wrapLevelBarrer(obj *externglib.Object) LevelBarrer {
+func wrapLevelBar(obj *externglib.Object) LevelBarrer {
 	return &LevelBar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -110,12 +121,6 @@ func wrapLevelBarrer(obj *externglib.Object) LevelBarrer {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -125,7 +130,7 @@ func wrapLevelBarrer(obj *externglib.Object) LevelBarrer {
 func marshalLevelBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLevelBarrer(obj), nil
+	return wrapLevelBar(obj), nil
 }
 
 // NewLevelBar creates a new LevelBar.
@@ -158,6 +163,12 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) *LevelBar {
 	_levelBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LevelBar)
 
 	return _levelBar
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *LevelBar) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // AddOffsetValue adds a new offset marker on @self at the position specified by

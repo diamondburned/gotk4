@@ -27,24 +27,22 @@ func init() {
 
 // IconViewAccessibler describes IconViewAccessible's methods.
 type IconViewAccessibler interface {
-	gextras.Objector
-
 	privateIconViewAccessible()
 }
 
 type IconViewAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
-	atk.Component
+
 	atk.Selection
 }
 
-var _ IconViewAccessibler = (*IconViewAccessible)(nil)
+var (
+	_ IconViewAccessibler = (*IconViewAccessible)(nil)
+	_ gextras.Nativer     = (*IconViewAccessible)(nil)
+)
 
-func wrapIconViewAccessibler(obj *externglib.Object) IconViewAccessibler {
+func wrapIconViewAccessible(obj *externglib.Object) IconViewAccessibler {
 	return &IconViewAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -56,12 +54,6 @@ func wrapIconViewAccessibler(obj *externglib.Object) IconViewAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 		Selection: atk.Selection{
 			Object: obj,
@@ -72,7 +64,7 @@ func wrapIconViewAccessibler(obj *externglib.Object) IconViewAccessibler {
 func marshalIconViewAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconViewAccessibler(obj), nil
+	return wrapIconViewAccessible(obj), nil
 }
 
 func (*IconViewAccessible) privateIconViewAccessible() {}

@@ -64,11 +64,11 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 	return cret
 }
 
-// VFSerOverrider contains methods that are overridable.
+// VFSOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type VFSerOverrider interface {
+type VFSOverrider interface {
 	AddWritableNamespaces(list *FileAttributeInfoList)
 	// FileForPath gets a #GFile for @path.
 	FileForPath(path string) *File
@@ -82,7 +82,9 @@ type VFSerOverrider interface {
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
 	IsActive() bool
+
 	LocalFileMoved(source string, dest string)
+
 	LocalFileRemoved(filename string)
 	// ParseName: this operation never fails, but the returned object might not
 	// support any I/O operations if the @parse_name cannot be parsed by the
@@ -92,13 +94,20 @@ type VFSerOverrider interface {
 
 // VFSer describes VFS's methods.
 type VFSer interface {
-	gextras.Objector
-
+	// FileForPath gets a #GFile for @path.
 	FileForPath(path string) *File
+	// FileForURI gets a #GFile for @uri.
 	FileForURI(uri string) *File
+	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
 	SupportedURISchemes() []string
+	// IsActive checks if the VFS is active.
 	IsActive() bool
+	// ParseName: this operation never fails, but the returned object might not
+	// support any I/O operations if the @parse_name cannot be parsed by the
+	// #GVfs module.
 	ParseName(parseName string) *File
+	// UnregisterURIScheme unregisters the URI handler for @scheme previously
+	// registered with g_vfs_register_uri_scheme().
 	UnregisterURIScheme(scheme string) bool
 }
 
@@ -107,9 +116,12 @@ type VFS struct {
 	*externglib.Object
 }
 
-var _ VFSer = (*VFS)(nil)
+var (
+	_ VFSer           = (*VFS)(nil)
+	_ gextras.Nativer = (*VFS)(nil)
+)
 
-func wrapVFSer(obj *externglib.Object) VFSer {
+func wrapVFS(obj *externglib.Object) VFSer {
 	return &VFS{
 		Object: obj,
 	}
@@ -118,7 +130,7 @@ func wrapVFSer(obj *externglib.Object) VFSer {
 func marshalVFSer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVFSer(obj), nil
+	return wrapVFS(obj), nil
 }
 
 // FileForPath gets a #GFile for @path.

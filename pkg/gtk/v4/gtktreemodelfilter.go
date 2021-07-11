@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_model_filter_get_type()), F: marshalTreeModelFilterrer},
+		{T: externglib.Type(C.gtk_tree_model_filter_get_type()), F: marshalTreeModelFilterer},
 	})
 }
 
@@ -84,26 +84,39 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 	return cret
 }
 
-// TreeModelFilterrerOverrider contains methods that are overridable.
+// TreeModelFilterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TreeModelFilterrerOverrider interface {
+type TreeModelFilterOverrider interface {
 	Modify(childModel TreeModeller, iter *TreeIter, value *externglib.Value, column int)
+
 	Visible(childModel TreeModeller, iter *TreeIter) bool
 }
 
-// TreeModelFilterrer describes TreeModelFilter's methods.
-type TreeModelFilterrer interface {
-	gextras.Objector
-
+// TreeModelFilterer describes TreeModelFilter's methods.
+type TreeModelFilterer interface {
+	// ClearCache: this function should almost never be called.
 	ClearCache()
+	// ConvertChildIterToIter sets @filter_iter to point to the row in @filter
+	// that corresponds to the row pointed at by @child_iter.
 	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+	// ConvertChildPathToPath converts @child_path to a path relative to
+	// @filter.
 	ConvertChildPathToPath(childPath *TreePath) *TreePath
+	// ConvertIterToChildIter sets @child_iter to point to the row pointed to by
+	// @filter_iter.
 	ConvertIterToChildIter(filterIter *TreeIter) TreeIter
+	// ConvertPathToChildPath converts @filter_path to a path on the child model
+	// of @filter.
 	ConvertPathToChildPath(filterPath *TreePath) *TreePath
+	// Model returns a pointer to the child model of @filter.
 	Model() *TreeModel
+	// Refilter emits ::row_changed for each row in the child model, which
+	// causes the filter to re-evaluate whether a row is visible or not.
 	Refilter()
+	// SetVisibleColumn sets @column of the child_model to be the column where
+	// @filter should look for visibility information.
 	SetVisibleColumn(column int)
 }
 
@@ -177,9 +190,12 @@ type TreeModelFilter struct {
 	TreeModel
 }
 
-var _ TreeModelFilterrer = (*TreeModelFilter)(nil)
+var (
+	_ TreeModelFilterer = (*TreeModelFilter)(nil)
+	_ gextras.Nativer   = (*TreeModelFilter)(nil)
+)
 
-func wrapTreeModelFilterrer(obj *externglib.Object) TreeModelFilterrer {
+func wrapTreeModelFilter(obj *externglib.Object) TreeModelFilterer {
 	return &TreeModelFilter{
 		Object: obj,
 		TreeDragSource: TreeDragSource{
@@ -191,10 +207,10 @@ func wrapTreeModelFilterrer(obj *externglib.Object) TreeModelFilterrer {
 	}
 }
 
-func marshalTreeModelFilterrer(p uintptr) (interface{}, error) {
+func marshalTreeModelFilterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeModelFilterrer(obj), nil
+	return wrapTreeModelFilter(obj), nil
 }
 
 // ClearCache: this function should almost never be called. It clears the

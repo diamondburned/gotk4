@@ -29,38 +29,60 @@ func init() {
 	})
 }
 
-// ThemingEnginerOverrider contains methods that are overridable.
+// ThemingEngineOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ThemingEnginerOverrider interface {
+type ThemingEngineOverrider interface {
 	RenderActivity(cr *cairo.Context, x float64, y float64, width float64, height float64)
+
 	RenderArrow(cr *cairo.Context, angle float64, x float64, y float64, size float64)
+
 	RenderBackground(cr *cairo.Context, x float64, y float64, width float64, height float64)
+
 	RenderCheck(cr *cairo.Context, x float64, y float64, width float64, height float64)
+
 	RenderExpander(cr *cairo.Context, x float64, y float64, width float64, height float64)
+
 	RenderFocus(cr *cairo.Context, x float64, y float64, width float64, height float64)
+
 	RenderFrame(cr *cairo.Context, x float64, y float64, width float64, height float64)
+
 	RenderHandle(cr *cairo.Context, x float64, y float64, width float64, height float64)
+
 	RenderIcon(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuffer, x float64, y float64)
+
 	RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x float64, y float64)
+
 	RenderLayout(cr *cairo.Context, x float64, y float64, layout pango.Layouter)
+
 	RenderLine(cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
+
 	RenderOption(cr *cairo.Context, x float64, y float64, width float64, height float64)
 }
 
 // ThemingEnginer describes ThemingEngine's methods.
 type ThemingEnginer interface {
-	gextras.Objector
-
+	// Direction returns the widget direction used for rendering.
 	Direction() TextDirection
+	// JunctionSides returns the widget direction used for rendering.
 	JunctionSides() JunctionSides
+	// Path returns the widget path used for style matching.
 	Path() *WidgetPath
+	// Screen returns the Screen to which @engine currently rendering to.
 	Screen() *gdk.Screen
+	// State returns the state used when rendering.
 	State() StateFlags
+	// StyleProperty gets the value for a widget style property.
 	StyleProperty(propertyName string) externglib.Value
+	// HasClass returns true if the currently rendered contents have defined the
+	// given class name.
 	HasClass(styleClass string) bool
+	// HasRegion returns true if the currently rendered contents have the region
+	// defined.
 	HasRegion(styleRegion string) (RegionFlags, bool)
+	// LookupColor looks up and resolves a color name in the current style’s
+	// color map.
 	LookupColor(colorName string) (gdk.RGBA, bool)
 }
 
@@ -75,9 +97,12 @@ type ThemingEngine struct {
 	*externglib.Object
 }
 
-var _ ThemingEnginer = (*ThemingEngine)(nil)
+var (
+	_ ThemingEnginer  = (*ThemingEngine)(nil)
+	_ gextras.Nativer = (*ThemingEngine)(nil)
+)
 
-func wrapThemingEnginer(obj *externglib.Object) ThemingEnginer {
+func wrapThemingEngine(obj *externglib.Object) ThemingEnginer {
 	return &ThemingEngine{
 		Object: obj,
 	}
@@ -86,7 +111,7 @@ func wrapThemingEnginer(obj *externglib.Object) ThemingEnginer {
 func marshalThemingEnginer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapThemingEnginer(obj), nil
+	return wrapThemingEngine(obj), nil
 }
 
 // Direction returns the widget direction used for rendering.

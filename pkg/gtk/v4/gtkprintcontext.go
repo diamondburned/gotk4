@@ -26,18 +26,35 @@ func init() {
 
 // PrintContexter describes PrintContext's methods.
 type PrintContexter interface {
-	gextras.Objector
-
+	// CreatePangoContext creates a new `PangoContext` that can be used with the
+	// `GtkPrintContext`.
 	CreatePangoContext() *pango.Context
+	// CreatePangoLayout creates a new `PangoLayout` that is suitable for use
+	// with the `GtkPrintContext`.
 	CreatePangoLayout() *pango.Layout
+	// CairoContext obtains the cairo context that is associated with the
+	// `GtkPrintContext`.
 	CairoContext() *cairo.Context
+	// DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
+	// per inch.
 	DPIX() float64
+	// DPIY obtains the vertical resolution of the `GtkPrintContext`, in dots
+	// per inch.
 	DPIY() float64
+	// HardMargins obtains the hardware printer margins of the
+	// `GtkPrintContext`, in units.
 	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
+	// Height obtains the height of the `GtkPrintContext`, in pixels.
 	Height() float64
+	// PageSetup obtains the `GtkPageSetup` that determines the page dimensions
+	// of the `GtkPrintContext`.
 	PageSetup() *PageSetup
+	// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
+	// `GtkPrintContext`.
 	PangoFontmap() *pango.FontMap
+	// Width obtains the width of the `GtkPrintContext`, in pixels.
 	Width() float64
+	// SetCairoContext sets a new cairo context on a print context.
 	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
 }
 
@@ -109,9 +126,12 @@ type PrintContext struct {
 	*externglib.Object
 }
 
-var _ PrintContexter = (*PrintContext)(nil)
+var (
+	_ PrintContexter  = (*PrintContext)(nil)
+	_ gextras.Nativer = (*PrintContext)(nil)
+)
 
-func wrapPrintContexter(obj *externglib.Object) PrintContexter {
+func wrapPrintContext(obj *externglib.Object) PrintContexter {
 	return &PrintContext{
 		Object: obj,
 	}
@@ -120,7 +140,7 @@ func wrapPrintContexter(obj *externglib.Object) PrintContexter {
 func marshalPrintContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPrintContexter(obj), nil
+	return wrapPrintContext(obj), nil
 }
 
 // CreatePangoContext creates a new `PangoContext` that can be used with the

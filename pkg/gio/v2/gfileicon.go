@@ -34,8 +34,7 @@ func init() {
 
 // FileIconner describes FileIcon's methods.
 type FileIconner interface {
-	gextras.Objector
-
+	// File gets the #GFile associated with the given @icon.
 	File() *File
 }
 
@@ -43,18 +42,17 @@ type FileIconner interface {
 type FileIcon struct {
 	*externglib.Object
 
-	Icon
 	LoadableIcon
 }
 
-var _ FileIconner = (*FileIcon)(nil)
+var (
+	_ FileIconner     = (*FileIcon)(nil)
+	_ gextras.Nativer = (*FileIcon)(nil)
+)
 
-func wrapFileIconner(obj *externglib.Object) FileIconner {
+func wrapFileIcon(obj *externglib.Object) FileIconner {
 	return &FileIcon{
 		Object: obj,
-		Icon: Icon{
-			Object: obj,
-		},
 		LoadableIcon: LoadableIcon{
 			Icon: Icon{
 				Object: obj,
@@ -66,7 +64,7 @@ func wrapFileIconner(obj *externglib.Object) FileIconner {
 func marshalFileIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileIconner(obj), nil
+	return wrapFileIcon(obj), nil
 }
 
 // NewFileIcon creates a new icon for a file.
@@ -74,7 +72,7 @@ func NewFileIcon(file Filer) *FileIcon {
 	var _arg1 *C.GFile // out
 	var _cret *C.GIcon // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_icon_new(_arg1)
 

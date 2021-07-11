@@ -34,8 +34,6 @@ func init() {
 
 // ProxyAddressEnumeratorrer describes ProxyAddressEnumerator's methods.
 type ProxyAddressEnumeratorrer interface {
-	gextras.Objector
-
 	privateProxyAddressEnumerator()
 }
 
@@ -51,9 +49,12 @@ type ProxyAddressEnumerator struct {
 	SocketAddressEnumerator
 }
 
-var _ ProxyAddressEnumeratorrer = (*ProxyAddressEnumerator)(nil)
+var (
+	_ ProxyAddressEnumeratorrer = (*ProxyAddressEnumerator)(nil)
+	_ gextras.Nativer           = (*ProxyAddressEnumerator)(nil)
+)
 
-func wrapProxyAddressEnumeratorrer(obj *externglib.Object) ProxyAddressEnumeratorrer {
+func wrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumeratorrer {
 	return &ProxyAddressEnumerator{
 		SocketAddressEnumerator: SocketAddressEnumerator{
 			Object: obj,
@@ -64,7 +65,7 @@ func wrapProxyAddressEnumeratorrer(obj *externglib.Object) ProxyAddressEnumerato
 func marshalProxyAddressEnumeratorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProxyAddressEnumeratorrer(obj), nil
+	return wrapProxyAddressEnumerator(obj), nil
 }
 
 func (*ProxyAddressEnumerator) privateProxyAddressEnumerator() {}

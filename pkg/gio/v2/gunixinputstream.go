@@ -34,10 +34,13 @@ func init() {
 
 // UnixInputStreamer describes UnixInputStream's methods.
 type UnixInputStreamer interface {
-	gextras.Objector
-
+	// CloseFd returns whether the file descriptor of @stream will be closed
+	// when the stream is closed.
 	CloseFd() bool
+	// Fd: return the UNIX file descriptor that the stream reads from.
 	Fd() int
+	// SetCloseFd sets whether the file descriptor of @stream shall be closed
+	// when the stream is closed.
 	SetCloseFd(closeFd bool)
 }
 
@@ -50,18 +53,19 @@ type UnixInputStreamer interface {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixInputStream struct {
-	*externglib.Object
-
 	InputStream
+
 	FileDescriptorBased
 	PollableInputStream
 }
 
-var _ UnixInputStreamer = (*UnixInputStream)(nil)
+var (
+	_ UnixInputStreamer = (*UnixInputStream)(nil)
+	_ gextras.Nativer   = (*UnixInputStream)(nil)
+)
 
-func wrapUnixInputStreamer(obj *externglib.Object) UnixInputStreamer {
+func wrapUnixInputStream(obj *externglib.Object) UnixInputStreamer {
 	return &UnixInputStream{
-		Object: obj,
 		InputStream: InputStream{
 			Object: obj,
 		},
@@ -79,7 +83,7 @@ func wrapUnixInputStreamer(obj *externglib.Object) UnixInputStreamer {
 func marshalUnixInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixInputStreamer(obj), nil
+	return wrapUnixInputStream(obj), nil
 }
 
 // NewUnixInputStream creates a new InputStream for the given @fd.
@@ -103,6 +107,12 @@ func NewUnixInputStream(fd int, closeFd bool) *UnixInputStream {
 	_unixInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixInputStream)
 
 	return _unixInputStream
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *UnixInputStream) Native() uintptr {
+	return v.InputStream.Object.Native()
 }
 
 // CloseFd returns whether the file descriptor of @stream will be closed when

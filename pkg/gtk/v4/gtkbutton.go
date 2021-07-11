@@ -22,33 +22,42 @@ func init() {
 	})
 }
 
-// ButtonnerOverrider contains methods that are overridable.
+// ButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ButtonnerOverrider interface {
+type ButtonOverrider interface {
 	Activate()
+
 	Clicked()
 }
 
 // Buttonner describes Button's methods.
 type Buttonner interface {
-	gextras.Objector
-
+	// Child gets the child widget of @button.
 	Child() *Widget
+	// HasFrame returns whether the button has a frame.
 	HasFrame() bool
+	// IconName returns the icon name of the button.
 	IconName() string
+	// Label fetches the text from the label of the button.
 	Label() string
+	// UseUnderline gets whether underlines are interpreted as mnemonics.
 	UseUnderline() bool
+	// SetChild sets the child widget of @button.
 	SetChild(child Widgetter)
+	// SetHasFrame sets the style of the button.
 	SetHasFrame(hasFrame bool)
+	// SetIconName adds a `GtkImage` with the given icon name as a child.
 	SetIconName(iconName string)
+	// SetLabel sets the text of the label of the button to @label.
 	SetLabel(label string)
+	// SetUseUnderline sets whether to use underlines as mnemonics.
 	SetUseUnderline(useUnderline bool)
 }
 
-// Button: the `GtkButton` widget is generally used to trigger a callback
-// function that is called when the button is pressed.
+// Button: `GtkButton` widget is generally used to trigger a callback function
+// that is called when the button is pressed.
 //
 // !An example GtkButton (button.png)
 //
@@ -80,22 +89,19 @@ type Buttonner interface {
 //
 // `GtkButton` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Button struct {
-	*externglib.Object
-
 	Widget
-	Accessible
+
 	Actionable
-	Buildable
-	ConstraintTarget
 }
 
-var _ Buttonner = (*Button)(nil)
+var (
+	_ Buttonner       = (*Button)(nil)
+	_ gextras.Nativer = (*Button)(nil)
+)
 
-func wrapButtonner(obj *externglib.Object) Buttonner {
+func wrapButton(obj *externglib.Object) Buttonner {
 	return &Button{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -109,13 +115,8 @@ func wrapButtonner(obj *externglib.Object) Buttonner {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
 		Actionable: Actionable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -130,19 +131,13 @@ func wrapButtonner(obj *externglib.Object) Buttonner {
 				},
 			},
 		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButtonner(obj), nil
+	return wrapButton(obj), nil
 }
 
 // NewButton creates a new `GtkButton` widget.
@@ -220,6 +215,12 @@ func NewButtonWithMnemonic(label string) *Button {
 	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
 
 	return _button
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Button) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Child gets the child widget of @button.
@@ -322,7 +323,7 @@ func (button *Button) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_button_set_child(_arg0, _arg1)
 }

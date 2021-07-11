@@ -22,8 +22,8 @@ func init() {
 	})
 }
 
-// ChecksumType: the hashing algorithm to be used by #GChecksum when performing
-// the digest of some data.
+// ChecksumType: hashing algorithm to be used by #GChecksum when performing the
+// digest of some data.
 //
 // Note that the Type enumeration may be extended at a later date to include new
 // hashing algorithm types.

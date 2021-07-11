@@ -27,21 +27,41 @@ func init() {
 
 // HeaderBarrer describes HeaderBar's methods.
 type HeaderBarrer interface {
-	gextras.Objector
-
+	// CustomTitle retrieves the custom title widget of the header.
 	CustomTitle() *Widget
+	// DecorationLayout gets the decoration layout set with
+	// gtk_header_bar_set_decoration_layout().
 	DecorationLayout() string
+	// HasSubtitle retrieves whether the header bar reserves space for a
+	// subtitle, regardless if one is currently set or not.
 	HasSubtitle() bool
+	// ShowCloseButton returns whether this header bar shows the standard window
+	// decorations.
 	ShowCloseButton() bool
+	// Subtitle retrieves the subtitle of the header.
 	Subtitle() string
+	// Title retrieves the title of the header.
 	Title() string
+	// PackEnd adds @child to @bar, packed with reference to the end of the
+	// @bar.
 	PackEnd(child Widgetter)
+	// PackStart adds @child to @bar, packed with reference to the start of the
+	// @bar.
 	PackStart(child Widgetter)
+	// SetCustomTitle sets a custom title for the HeaderBar.
 	SetCustomTitle(titleWidget Widgetter)
+	// SetDecorationLayout sets the decoration layout for this header bar,
+	// overriding the Settings:gtk-decoration-layout setting.
 	SetDecorationLayout(layout string)
+	// SetHasSubtitle sets whether the header bar should reserve space for a
+	// subtitle, even if none is currently set.
 	SetHasSubtitle(setting bool)
+	// SetShowCloseButton sets whether this header bar shows the standard window
+	// decorations, including close, maximize, and minimize.
 	SetShowCloseButton(setting bool)
+	// SetSubtitle sets the subtitle of the HeaderBar.
 	SetSubtitle(subtitle string)
+	// SetTitle sets the title of the HeaderBar.
 	SetTitle(title string)
 }
 
@@ -60,22 +80,18 @@ type HeaderBarrer interface {
 // titlebar widget of a Window (see gtk_window_set_titlebar()), as it gives
 // features typical of titlebars while allowing the addition of child widgets.
 type HeaderBar struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ HeaderBarrer = (*HeaderBar)(nil)
+var (
+	_ HeaderBarrer    = (*HeaderBar)(nil)
+	_ gextras.Nativer = (*HeaderBar)(nil)
+)
 
-func wrapHeaderBarrer(obj *externglib.Object) HeaderBarrer {
+func wrapHeaderBar(obj *externglib.Object) HeaderBarrer {
 	return &HeaderBar{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -86,18 +102,6 @@ func wrapHeaderBarrer(obj *externglib.Object) HeaderBarrer {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -105,7 +109,7 @@ func wrapHeaderBarrer(obj *externglib.Object) HeaderBarrer {
 func marshalHeaderBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHeaderBarrer(obj), nil
+	return wrapHeaderBar(obj), nil
 }
 
 // NewHeaderBar creates a new HeaderBar widget.
@@ -232,7 +236,7 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_header_bar_pack_end(_arg0, _arg1)
 }
@@ -244,7 +248,7 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_header_bar_pack_start(_arg0, _arg1)
 }
@@ -263,7 +267,7 @@ func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((titleWidget).(gextras.Nativer).Native()))
 
 	C.gtk_header_bar_set_custom_title(_arg0, _arg1)
 }

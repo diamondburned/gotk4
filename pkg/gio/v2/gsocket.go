@@ -35,55 +35,130 @@ func init() {
 
 // Socketter describes Socket's methods.
 type Socketter interface {
-	gextras.Objector
-
+	// Accept incoming connections on a connection-based socket.
 	Accept(cancellable Cancellabler) (*Socket, error)
+	// Bind: when a socket is created it is attached to an address family, but
+	// it doesn't have an address in this family.
 	Bind(address SocketAddresser, allowReuse bool) error
+	// CheckConnectResult checks and resets the pending connect error for the
+	// socket.
 	CheckConnectResult() error
+	// Close closes the socket, shutting down any active connection.
 	Close() error
+	// ConnectSocketter: connect the socket to the specified remote address.
 	ConnectSocketter(address SocketAddresser, cancellable Cancellabler) error
+	// ConnectionFactoryCreateConnection creates a Connection subclass of the
+	// right type for @socket.
 	ConnectionFactoryCreateConnection() *SocketConnection
+	// AvailableBytes: get the amount of data pending in the OS input buffer,
+	// without blocking.
 	AvailableBytes() int
+	// Blocking gets the blocking mode of the socket.
 	Blocking() bool
+	// Broadcast gets the broadcast setting on @socket; if true, it is possible
+	// to send packets to broadcast addresses.
 	Broadcast() bool
+	// Credentials returns the credentials of the foreign process connected to
+	// this socket, if any (e.g.
 	Credentials() (*Credentials, error)
+	// Family gets the socket family of the socket.
 	Family() SocketFamily
+	// Fd returns the underlying OS socket object.
 	Fd() int
+	// Keepalive gets the keepalive mode of the socket.
 	Keepalive() bool
+	// ListenBacklog gets the listen backlog setting of the socket.
 	ListenBacklog() int
+	// LocalAddress: try to get the local address of a bound socket.
 	LocalAddress() (*SocketAddress, error)
+	// MulticastLoopback gets the multicast loopback setting on @socket; if true
+	// (the default), outgoing multicast packets will be looped back to
+	// multicast listeners on the same host.
 	MulticastLoopback() bool
+	// MulticastTTL gets the multicast time-to-live setting on @socket; see
+	// g_socket_set_multicast_ttl() for more details.
 	MulticastTTL() uint
+	// Option gets the value of an integer-valued option on @socket, as with
+	// getsockopt().
 	Option(level int, optname int) (int, error)
+	// Protocol gets the socket protocol id the socket was created with.
 	Protocol() SocketProtocol
+	// RemoteAddress: try to get the remote address of a connected socket.
 	RemoteAddress() (*SocketAddress, error)
+	// SocketType gets the socket type of the socket.
 	SocketType() SocketType
+	// Timeout gets the timeout setting of the socket.
 	Timeout() uint
+	// TTL gets the unicast time-to-live setting on @socket; see
+	// g_socket_set_ttl() for more details.
 	TTL() uint
+	// IsClosed checks whether a socket is closed.
 	IsClosed() bool
+	// IsConnected: check whether the socket is connected.
 	IsConnected() bool
+	// JoinMulticastGroup registers @socket to receive multicast messages sent
+	// to @group.
 	JoinMulticastGroup(group InetAddresser, sourceSpecific bool, iface string) error
+	// JoinMulticastGroupSSM registers @socket to receive multicast messages
+	// sent to @group.
 	JoinMulticastGroupSSM(group InetAddresser, sourceSpecific InetAddresser, iface string) error
+	// LeaveMulticastGroup removes @socket from the multicast group defined by
+	// @group, @iface, and @source_specific (which must all have the same values
+	// they had when you joined the group).
 	LeaveMulticastGroup(group InetAddresser, sourceSpecific bool, iface string) error
+	// LeaveMulticastGroupSSM removes @socket from the multicast group defined
+	// by @group, @iface, and @source_specific (which must all have the same
+	// values they had when you joined the group).
 	LeaveMulticastGroupSSM(group InetAddresser, sourceSpecific InetAddresser, iface string) error
+	// Listen marks the socket as a server socket, i.e.
 	Listen() error
+	// ReceiveMessages: receive multiple data messages from @socket in one go.
 	ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellabler) (int, error)
+	// Send tries to send @size bytes from @buffer on the socket.
 	Send(buffer []byte, cancellable Cancellabler) (int, error)
+	// SendMessage: send data to @address on @socket.
 	SendMessage(address SocketAddresser, vectors []OutputVector, messages []*SocketControlMessage, flags int, cancellable Cancellabler) (int, error)
+	// SendMessageWithTimeout: this behaves exactly the same as
+	// g_socket_send_message(), except that the choice of timeout behavior is
+	// determined by the @timeout_us argument rather than by @socket's
+	// properties.
 	SendMessageWithTimeout(address SocketAddresser, vectors []OutputVector, messages []*SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellabler) (uint, PollableReturn, error)
+	// SendMessages: send multiple data messages from @socket in one go.
 	SendMessages(messages []OutputMessage, flags int, cancellable Cancellabler) (int, error)
+	// SendTo tries to send @size bytes from @buffer to @address.
 	SendTo(address SocketAddresser, buffer []byte, cancellable Cancellabler) (int, error)
+	// SendWithBlocking: this behaves exactly the same as g_socket_send(),
+	// except that the choice of blocking or non-blocking behavior is determined
+	// by the @blocking argument rather than by @socket's properties.
 	SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellabler) (int, error)
+	// SetBlocking sets the blocking mode of the socket.
 	SetBlocking(blocking bool)
+	// SetBroadcast sets whether @socket should allow sending to broadcast
+	// addresses.
 	SetBroadcast(broadcast bool)
+	// SetKeepalive sets or unsets the SO_KEEPALIVE flag on the underlying
+	// socket.
 	SetKeepalive(keepalive bool)
+	// SetListenBacklog sets the maximum number of outstanding connections
+	// allowed when listening on this socket.
 	SetListenBacklog(backlog int)
+	// SetMulticastLoopback sets whether outgoing multicast packets will be
+	// received by sockets listening on that multicast address on the same host.
 	SetMulticastLoopback(loopback bool)
+	// SetMulticastTTL sets the time-to-live for outgoing multicast datagrams on
+	// @socket.
 	SetMulticastTTL(ttl uint)
+	// SetOption sets the value of an integer-valued option on @socket, as with
+	// setsockopt().
 	SetOption(level int, optname int, value int) error
+	// SetTimeout sets the time in seconds after which I/O operations on @socket
+	// will time out if they have not yet completed.
 	SetTimeout(timeout uint)
+	// SetTTL sets the time-to-live for outgoing unicast packets on @socket.
 	SetTTL(ttl uint)
+	// Shutdown: shut down part or all of a full-duplex connection.
 	Shutdown(shutdownRead bool, shutdownWrite bool) error
+	// SpeaksIPv4 checks if a socket is capable of speaking IPv4.
 	SpeaksIPv4() bool
 }
 
@@ -142,9 +217,12 @@ type Socket struct {
 	Initable
 }
 
-var _ Socketter = (*Socket)(nil)
+var (
+	_ Socketter       = (*Socket)(nil)
+	_ gextras.Nativer = (*Socket)(nil)
+)
 
-func wrapSocketter(obj *externglib.Object) Socketter {
+func wrapSocket(obj *externglib.Object) Socketter {
 	return &Socket{
 		Object: obj,
 		DatagramBased: DatagramBased{
@@ -159,7 +237,7 @@ func wrapSocketter(obj *externglib.Object) Socketter {
 func marshalSocketter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketter(obj), nil
+	return wrapSocket(obj), nil
 }
 
 // NewSocketFromFd creates a new #GSocket from a native file descriptor or
@@ -209,7 +287,7 @@ func (socket *Socket) Accept(cancellable Cancellabler) (*Socket, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_accept(_arg0, _arg1, &_cerr)
 
@@ -251,7 +329,7 @@ func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	if allowReuse {
 		_arg2 = C.TRUE
 	}
@@ -347,8 +425,8 @@ func (socket *Socket) ConnectSocketter(address SocketAddresser, cancellable Canc
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_socket_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -787,7 +865,7 @@ func (socket *Socket) JoinMulticastGroup(group InetAddresser, sourceSpecific boo
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
@@ -825,8 +903,8 @@ func (socket *Socket) JoinMulticastGroupSSM(group InetAddresser, sourceSpecific 
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
-	_arg2 = (*C.GInetAddress)(unsafe.Pointer(sourceSpecific.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg2 = (*C.GInetAddress)(unsafe.Pointer((sourceSpecific).(gextras.Nativer).Native()))
 	_arg3 = (*C.gchar)(C.CString(iface))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -856,7 +934,7 @@ func (socket *Socket) LeaveMulticastGroup(group InetAddresser, sourceSpecific bo
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
@@ -886,8 +964,8 @@ func (socket *Socket) LeaveMulticastGroupSSM(group InetAddresser, sourceSpecific
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
-	_arg2 = (*C.GInetAddress)(unsafe.Pointer(sourceSpecific.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg2 = (*C.GInetAddress)(unsafe.Pointer((sourceSpecific).(gextras.Nativer).Native()))
 	_arg3 = (*C.gchar)(C.CString(iface))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -982,7 +1060,7 @@ func (socket *Socket) ReceiveMessages(messages []InputMessage, flags int, cancel
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
 	_arg3 = C.gint(flags)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -1020,7 +1098,7 @@ func (socket *Socket) Send(buffer []byte, cancellable Cancellabler) (int, error)
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_send(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -1085,7 +1163,7 @@ func (socket *Socket) SendMessage(address SocketAddresser, vectors []OutputVecto
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	_arg3 = C.gint(len(vectors))
 	_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	_arg5 = C.gint(len(messages))
@@ -1098,7 +1176,7 @@ func (socket *Socket) SendMessage(address SocketAddresser, vectors []OutputVecto
 		}
 	}
 	_arg6 = C.gint(flags)
-	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_send_message(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
 
@@ -1133,7 +1211,7 @@ func (socket *Socket) SendMessageWithTimeout(address SocketAddresser, vectors []
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	_arg3 = C.gint(len(vectors))
 	_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	_arg5 = C.gint(len(messages))
@@ -1147,7 +1225,7 @@ func (socket *Socket) SendMessageWithTimeout(address SocketAddresser, vectors []
 	}
 	_arg6 = C.gint(flags)
 	_arg7 = C.gint64(timeoutUs)
-	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg9 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_send_message_with_timeout(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_arg8, _arg9, &_cerr)
 
@@ -1208,7 +1286,7 @@ func (socket *Socket) SendMessages(messages []OutputMessage, flags int, cancella
 	_arg2 = C.guint(len(messages))
 	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
 	_arg3 = C.gint(flags)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -1235,10 +1313,10 @@ func (socket *Socket) SendTo(address SocketAddresser, buffer []byte, cancellable
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	_arg3 = C.gsize(len(buffer))
 	_arg2 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_send_to(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -1269,7 +1347,7 @@ func (socket *Socket) SendWithBlocking(buffer []byte, blocking bool, cancellable
 	if blocking {
 		_arg3 = C.TRUE
 	}
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_send_with_blocking(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 

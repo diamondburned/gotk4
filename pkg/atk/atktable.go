@@ -22,17 +22,20 @@ func init() {
 	})
 }
 
-// TablerOverrider contains methods that are overridable.
+// TableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TablerOverrider interface {
+type TableOverrider interface {
 	// AddColumnSelection adds the specified @column to the selection.
 	AddColumnSelection(column int) bool
 	// AddRowSelection adds the specified @row to the selection.
 	AddRowSelection(row int) bool
+
 	ColumnDeleted(column int, numDeleted int)
+
 	ColumnInserted(column int, numInserted int)
+
 	ColumnReordered()
 	// Caption gets the caption for the @table.
 	Caption() *ObjectClass
@@ -91,6 +94,7 @@ type TablerOverrider interface {
 	// IsSelected gets a boolean value indicating whether the accessible object
 	// at the specified @row and @column is selected
 	IsSelected(row int, column int) bool
+
 	ModelChanged()
 	// RefAt: get a reference to the table cell at @row, @column. This cell
 	// should implement the interface TableCell
@@ -99,8 +103,11 @@ type TablerOverrider interface {
 	RemoveColumnSelection(column int) bool
 	// RemoveRowSelection removes the specified @row from the selection.
 	RemoveRowSelection(row int) bool
+
 	RowDeleted(row int, numDeleted int)
+
 	RowInserted(row int, numInserted int)
+
 	RowReordered()
 	// SetCaption sets the caption for the table.
 	SetCaption(caption ObjectClasser)
@@ -120,36 +127,77 @@ type TablerOverrider interface {
 
 // Tabler describes Table's methods.
 type Tabler interface {
-	gextras.Objector
-
+	// AddColumnSelection adds the specified @column to the selection.
 	AddColumnSelection(column int) bool
+	// AddRowSelection adds the specified @row to the selection.
 	AddRowSelection(row int) bool
+	// Caption gets the caption for the @table.
 	Caption() *ObjectClass
+	// ColumnAtIndex gets a #gint representing the column at the specified
+	// @index_.
 	ColumnAtIndex(index_ int) int
+	// ColumnDescription gets the description text of the specified @column in
+	// the table
 	ColumnDescription(column int) string
+	// ColumnExtentAt gets the number of columns occupied by the accessible
+	// object at the specified @row and @column in the @table.
 	ColumnExtentAt(row int, column int) int
+	// ColumnHeader gets the column header of a specified column in an
+	// accessible table.
 	ColumnHeader(column int) *ObjectClass
+	// IndexAt gets a #gint representing the index at the specified @row and
+	// @column.
 	IndexAt(row int, column int) int
+	// NColumns gets the number of columns in the table.
 	NColumns() int
+	// NRows gets the number of rows in the table.
 	NRows() int
+	// RowAtIndex gets a #gint representing the row at the specified @index_.
 	RowAtIndex(index_ int) int
+	// RowDescription gets the description text of the specified row in the
+	// table
 	RowDescription(row int) string
+	// RowExtentAt gets the number of rows occupied by the accessible object at
+	// a specified @row and @column in the @table.
 	RowExtentAt(row int, column int) int
+	// RowHeader gets the row header of a specified row in an accessible table.
 	RowHeader(row int) *ObjectClass
+	// SelectedColumns gets the selected columns of the table by initializing
+	// **selected with the selected column numbers.
 	SelectedColumns(selected **int) int
+	// SelectedRows gets the selected rows of the table by initializing
+	// **selected with the selected row numbers.
 	SelectedRows(selected **int) int
+	// Summary gets the summary description of the table.
 	Summary() *ObjectClass
+	// IsColumnSelected gets a boolean value indicating whether the specified
+	// @column is selected
 	IsColumnSelected(column int) bool
+	// IsRowSelected gets a boolean value indicating whether the specified @row
+	// is selected
 	IsRowSelected(row int) bool
+	// IsSelected gets a boolean value indicating whether the accessible object
+	// at the specified @row and @column is selected
 	IsSelected(row int, column int) bool
+	// RefAt: get a reference to the table cell at @row, @column.
 	RefAt(row int, column int) *ObjectClass
+	// RemoveColumnSelection adds the specified @column to the selection.
 	RemoveColumnSelection(column int) bool
+	// RemoveRowSelection removes the specified @row from the selection.
 	RemoveRowSelection(row int) bool
+	// SetCaption sets the caption for the table.
 	SetCaption(caption ObjectClasser)
+	// SetColumnDescription sets the description text for the specified @column
+	// of the @table.
 	SetColumnDescription(column int, description string)
+	// SetColumnHeader sets the specified column header to @header.
 	SetColumnHeader(column int, header ObjectClasser)
+	// SetRowDescription sets the description text for the specified @row of
+	// @table.
 	SetRowDescription(row int, description string)
+	// SetRowHeader sets the specified row header to @header.
 	SetRowHeader(row int, header ObjectClasser)
+	// SetSummary sets the summary description of the table.
 	SetSummary(accessible ObjectClasser)
 }
 
@@ -181,9 +229,12 @@ type Table struct {
 	*externglib.Object
 }
 
-var _ Tabler = (*Table)(nil)
+var (
+	_ Tabler          = (*Table)(nil)
+	_ gextras.Nativer = (*Table)(nil)
+)
 
-func wrapTabler(obj *externglib.Object) Tabler {
+func wrapTable(obj *externglib.Object) Tabler {
 	return &Table{
 		Object: obj,
 	}
@@ -192,7 +243,7 @@ func wrapTabler(obj *externglib.Object) Tabler {
 func marshalTabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTabler(obj), nil
+	return wrapTable(obj), nil
 }
 
 // AddColumnSelection adds the specified @column to the selection.
@@ -650,7 +701,7 @@ func (table *Table) SetCaption(caption ObjectClasser) {
 	var _arg1 *C.AtkObject // out
 
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(caption.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((caption).(gextras.Nativer).Native()))
 
 	C.atk_table_set_caption(_arg0, _arg1)
 }
@@ -678,7 +729,7 @@ func (table *Table) SetColumnHeader(column int, header ObjectClasser) {
 
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(header.Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer((header).(gextras.Nativer).Native()))
 
 	C.atk_table_set_column_header(_arg0, _arg1, _arg2)
 }
@@ -705,7 +756,7 @@ func (table *Table) SetRowHeader(row int, header ObjectClasser) {
 
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(header.Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer((header).(gextras.Nativer).Native()))
 
 	C.atk_table_set_row_header(_arg0, _arg1, _arg2)
 }
@@ -716,7 +767,7 @@ func (table *Table) SetSummary(accessible ObjectClasser) {
 	var _arg1 *C.AtkObject // out
 
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((accessible).(gextras.Nativer).Native()))
 
 	C.atk_table_set_summary(_arg0, _arg1)
 }

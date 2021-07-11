@@ -26,31 +26,49 @@ func init() {
 
 // ListStorer describes ListStore's methods.
 type ListStorer interface {
-	gextras.Objector
-
+	// Append appends a new row to @list_store.
 	Append() TreeIter
+	// Clear removes all rows from the list store.
 	Clear()
+	// Insert creates a new row at @position.
 	Insert(position int) TreeIter
+	// InsertAfter inserts a new row after @sibling.
 	InsertAfter(sibling *TreeIter) TreeIter
+	// InsertBefore inserts a new row before @sibling.
 	InsertBefore(sibling *TreeIter) TreeIter
+	// InsertWithValuesv: variant of gtk_list_store_insert_with_values() which
+	// takes the columns and values as two arrays, instead of varargs.
 	InsertWithValuesv(position int, columns []int, values []externglib.Value) TreeIter
+	// IterIsValid: > This function is slow.
 	IterIsValid(iter *TreeIter) bool
+	// MoveAfter moves @iter in @store to the position after @position.
 	MoveAfter(iter *TreeIter, position *TreeIter)
+	// MoveBefore moves @iter in @store to the position before @position.
 	MoveBefore(iter *TreeIter, position *TreeIter)
+	// Prepend prepends a new row to @list_store.
 	Prepend() TreeIter
+	// Remove removes the given row from the list store.
 	Remove(iter *TreeIter) bool
+	// Reorder reorders @store to follow the order indicated by @new_order.
 	Reorder(newOrder []int)
+	// SetColumnTypes: this function is meant primarily for #GObjects that
+	// inherit from ListStore, and should only be used when constructing a new
+	// ListStore.
 	SetColumnTypes(types []externglib.Type)
+	// SetValue sets the data in the cell specified by @iter and @column.
 	SetValue(iter *TreeIter, column int, value *externglib.Value)
+	// SetValuesv: variant of gtk_list_store_set_valist() which takes the
+	// columns and values as two arrays, instead of varargs.
 	SetValuesv(iter *TreeIter, columns []int, values []externglib.Value)
+	// Swap swaps @a and @b in @store.
 	Swap(a *TreeIter, b *TreeIter)
 }
 
-// ListStore: the ListStore object is a list model for use with a TreeView
-// widget. It implements the TreeModel interface, and consequentialy, can use
-// all of the methods available there. It also implements the TreeSortable
-// interface so it can be sorted by the view. Finally, it also implements the
-// tree [drag and drop][gtk3-GtkTreeView-drag-and-drop] interfaces.
+// ListStore object is a list model for use with a TreeView widget. It
+// implements the TreeModel interface, and consequentialy, can use all of the
+// methods available there. It also implements the TreeSortable interface so it
+// can be sorted by the view. Finally, it also implements the tree [drag and
+// drop][gtk3-GtkTreeView-drag-and-drop] interfaces.
 //
 // The ListStore can accept most GObject types as a column type, though it can’t
 // accept all custom types. Internally, it will keep a copy of data passed in
@@ -88,13 +106,15 @@ type ListStore struct {
 	Buildable
 	TreeDragDest
 	TreeDragSource
-	TreeModel
 	TreeSortable
 }
 
-var _ ListStorer = (*ListStore)(nil)
+var (
+	_ ListStorer      = (*ListStore)(nil)
+	_ gextras.Nativer = (*ListStore)(nil)
+)
 
-func wrapListStorer(obj *externglib.Object) ListStorer {
+func wrapListStore(obj *externglib.Object) ListStorer {
 	return &ListStore{
 		Object: obj,
 		Buildable: Buildable{
@@ -104,9 +124,6 @@ func wrapListStorer(obj *externglib.Object) ListStorer {
 			Object: obj,
 		},
 		TreeDragSource: TreeDragSource{
-			Object: obj,
-		},
-		TreeModel: TreeModel{
 			Object: obj,
 		},
 		TreeSortable: TreeSortable{
@@ -120,7 +137,7 @@ func wrapListStorer(obj *externglib.Object) ListStorer {
 func marshalListStorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListStorer(obj), nil
+	return wrapListStore(obj), nil
 }
 
 // NewListStoreV: non-vararg creation function. Used primarily by language

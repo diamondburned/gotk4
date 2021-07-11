@@ -24,12 +24,18 @@ func init() {
 
 // Statusbarrer describes Statusbar's methods.
 type Statusbarrer interface {
-	gextras.Objector
-
+	// ContextID returns a new context identifier, given a description of the
+	// actual context.
 	ContextID(contextDescription string) uint
+	// Pop removes the first message in the `GtkStatusbar`’s stack with the
+	// given context id.
 	Pop(contextId uint)
+	// Push pushes a new message onto a statusbar’s stack.
 	Push(contextId uint, text string) uint
+	// Remove forces the removal of a message from a statusbar’s stack.
 	Remove(contextId uint, messageId uint)
+	// RemoveAll forces the removal of all messages from a statusbar's stack
+	// with the exact @context_id.
 	RemoveAll(contextId uint)
 }
 
@@ -71,21 +77,17 @@ type Statusbarrer interface {
 //
 // `GtkStatusbar` has a single CSS node with name `statusbar`.
 type Statusbar struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Statusbarrer = (*Statusbar)(nil)
+var (
+	_ Statusbarrer    = (*Statusbar)(nil)
+	_ gextras.Nativer = (*Statusbar)(nil)
+)
 
-func wrapStatusbarrer(obj *externglib.Object) Statusbarrer {
+func wrapStatusbar(obj *externglib.Object) Statusbarrer {
 	return &Statusbar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -99,22 +101,13 @@ func wrapStatusbarrer(obj *externglib.Object) Statusbarrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalStatusbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStatusbarrer(obj), nil
+	return wrapStatusbar(obj), nil
 }
 
 // NewStatusbar creates a new `GtkStatusbar` ready for messages.

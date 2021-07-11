@@ -27,8 +27,6 @@ func init() {
 
 // HBoxxer describes HBox's methods.
 type HBoxxer interface {
-	gextras.Objector
-
 	privateHBox()
 }
 
@@ -50,25 +48,19 @@ type HBoxxer interface {
 // For more information about migrating to Grid, see [Migrating from other
 // containers to GtkGrid][gtk-migrating-GtkGrid].
 type HBox struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ HBoxxer = (*HBox)(nil)
+var (
+	_ HBoxxer         = (*HBox)(nil)
+	_ gextras.Nativer = (*HBox)(nil)
+)
 
-func wrapHBoxxer(obj *externglib.Object) HBoxxer {
+func wrapHBox(obj *externglib.Object) HBoxxer {
 	return &HBox{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -79,31 +71,10 @@ func wrapHBoxxer(obj *externglib.Object) HBoxxer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -111,7 +82,7 @@ func wrapHBoxxer(obj *externglib.Object) HBoxxer {
 func marshalHBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHBoxxer(obj), nil
+	return wrapHBox(obj), nil
 }
 
 // NewHBox creates a new HBox.

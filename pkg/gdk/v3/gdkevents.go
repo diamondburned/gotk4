@@ -85,16 +85,16 @@ type EventType int
 const (
 	// Nothing: special code to indicate a null event.
 	EventTypeNothing EventType = -1
-	// Delete: the window manager has requested that the toplevel window be
-	// hidden or destroyed, usually when the user clicks on a special icon in
-	// the title bar.
+	// Delete: window manager has requested that the toplevel window be hidden
+	// or destroyed, usually when the user clicks on a special icon in the title
+	// bar.
 	EventTypeDelete EventType = 0
-	// Destroy: the window has been destroyed.
+	// Destroy: window has been destroyed.
 	EventTypeDestroy EventType = 1
 	// Expose: all or part of the window has become visible and needs to be
 	// redrawn.
 	EventTypeExpose EventType = 2
-	// MotionNotify: the pointer (usually a mouse) has moved.
+	// MotionNotify: pointer (usually a mouse) has moved.
 	EventTypeMotionNotify EventType = 3
 	// ButtonPress: mouse button has been pressed.
 	EventTypeButtonPress EventType = 4
@@ -115,23 +115,22 @@ const (
 	EventTypeKeyPress EventType = 8
 	// KeyRelease: key has been released.
 	EventTypeKeyRelease EventType = 9
-	// EnterNotify: the pointer has entered the window.
+	// EnterNotify: pointer has entered the window.
 	EventTypeEnterNotify EventType = 10
-	// LeaveNotify: the pointer has left the window.
+	// LeaveNotify: pointer has left the window.
 	EventTypeLeaveNotify EventType = 11
-	// FocusChange: the keyboard focus has entered or left the window.
+	// FocusChange: keyboard focus has entered or left the window.
 	EventTypeFocusChange EventType = 12
-	// Configure: the size, position or stacking order of the window has
-	// changed. Note that GTK+ discards these events for GDK_WINDOW_CHILD
-	// windows.
+	// Configure: size, position or stacking order of the window has changed.
+	// Note that GTK+ discards these events for GDK_WINDOW_CHILD windows.
 	EventTypeConfigure EventType = 13
-	// Map: the window has been mapped.
+	// Map: window has been mapped.
 	EventTypeMap EventType = 14
-	// Unmap: the window has been unmapped.
+	// Unmap: window has been unmapped.
 	EventTypeUnmap EventType = 15
 	// PropertyNotify: property on the window has been changed or deleted.
 	EventTypePropertyNotify EventType = 16
-	// SelectionClear: the application has lost ownership of a selection.
+	// SelectionClear: application has lost ownership of a selection.
 	EventTypeSelectionClear EventType = 17
 	// SelectionRequest: another application has requested a selection.
 	EventTypeSelectionRequest EventType = 18
@@ -143,39 +142,38 @@ const (
 	// ProximityOut: input device has moved out of contact with a sensing
 	// surface.
 	EventTypeProximityOut EventType = 21
-	// DragEnter: the mouse has entered the window while a drag is in progress.
+	// DragEnter: mouse has entered the window while a drag is in progress.
 	EventTypeDragEnter EventType = 22
-	// DragLeave: the mouse has left the window while a drag is in progress.
+	// DragLeave: mouse has left the window while a drag is in progress.
 	EventTypeDragLeave EventType = 23
-	// DragMotion: the mouse has moved in the window while a drag is in
-	// progress.
+	// DragMotion: mouse has moved in the window while a drag is in progress.
 	EventTypeDragMotion EventType = 24
-	// DragStatus: the status of the drag operation initiated by the window has
+	// DragStatus status of the drag operation initiated by the window has
 	// changed.
 	EventTypeDragStatus EventType = 25
 	// DropStart: drop operation onto the window has started.
 	EventTypeDropStart EventType = 26
-	// DropFinished: the drop operation initiated by the window has completed.
+	// DropFinished: drop operation initiated by the window has completed.
 	EventTypeDropFinished EventType = 27
 	// ClientEvent: message has been received from another application.
 	EventTypeClientEvent EventType = 28
-	// VisibilityNotify: the window visibility status has changed.
+	// VisibilityNotify: window visibility status has changed.
 	EventTypeVisibilityNotify EventType = 29
-	// Scroll: the scroll wheel was turned
+	// Scroll wheel was turned
 	EventTypeScroll EventType = 31
-	// WindowState: the state of a window has changed. See WindowState for the
+	// WindowState: state of a window has changed. See WindowState for the
 	// possible window states
 	EventTypeWindowState EventType = 32
 	// Setting has been modified.
 	EventTypeSetting EventType = 33
-	// OwnerChange: the owner of a selection has changed. This event type was
-	// added in 2.6
+	// OwnerChange: owner of a selection has changed. This event type was added
+	// in 2.6
 	EventTypeOwnerChange EventType = 34
 	// GrabBroken: pointer or keyboard grab was broken. This event type was
 	// added in 2.8.
 	EventTypeGrabBroken EventType = 35
-	// Damage: the content of the window has been changed. This event type was
-	// added in 2.14.
+	// Damage: content of the window has been changed. This event type was added
+	// in 2.14.
 	EventTypeDamage EventType = 36
 	// TouchBegin: new touch event sequence has just started. This event type
 	// was added in 3.4.
@@ -242,19 +240,16 @@ func marshalFilterReturn(p uintptr) (interface{}, error) {
 type NotifyType int
 
 const (
-	// Ancestor: the window is entered from an ancestor or left towards an
-	// ancestor.
+	// Ancestor: window is entered from an ancestor or left towards an ancestor.
 	NotifyTypeAncestor NotifyType = iota
-	// Virtual: the pointer moves between an ancestor and an inferior of the
-	// window.
+	// Virtual: pointer moves between an ancestor and an inferior of the window.
 	NotifyTypeVirtual
-	// Inferior: the window is entered from an inferior or left towards an
-	// inferior.
+	// Inferior: window is entered from an inferior or left towards an inferior.
 	NotifyTypeInferior
-	// Nonlinear: the window is entered from or left towards a window which is
+	// Nonlinear: window is entered from or left towards a window which is
 	// neither an ancestor nor an inferior.
 	NotifyTypeNonlinear
-	// NonlinearVirtual: the pointer moves between two windows which are not
+	// NonlinearVirtual: pointer moves between two windows which are not
 	// ancestors of each other and the window is part of the ancestor chain
 	// between one of these windows and their least common ancestor.
 	NotifyTypeNonlinearVirtual
@@ -272,9 +267,9 @@ type OwnerChange int
 const (
 	// NewOwner: some other app claimed the ownership
 	OwnerChangeNewOwner OwnerChange = iota
-	// Destroy: the window was destroyed
+	// Destroy: window was destroyed
 	OwnerChangeDestroy
-	// Close: the client was closed
+	// Close: client was closed
 	OwnerChangeClose
 )
 
@@ -286,9 +281,9 @@ func marshalOwnerChange(p uintptr) (interface{}, error) {
 type PropertyState int
 
 const (
-	// NewValue: the property value was changed.
+	// NewValue: property value was changed.
 	PropertyStateNewValue PropertyState = iota
-	// Delete: the property was deleted.
+	// Delete: property was deleted.
 	PropertyStateDelete
 )
 
@@ -300,16 +295,16 @@ func marshalPropertyState(p uintptr) (interface{}, error) {
 type ScrollDirection int
 
 const (
-	// Up: the window is scrolled up.
+	// Up: window is scrolled up.
 	ScrollDirectionUp ScrollDirection = iota
-	// Down: the window is scrolled down.
+	// Down: window is scrolled down.
 	ScrollDirectionDown
-	// Left: the window is scrolled to the left.
+	// Left: window is scrolled to the left.
 	ScrollDirectionLeft
-	// Right: the window is scrolled to the right.
+	// Right: window is scrolled to the right.
 	ScrollDirectionRight
-	// Smooth: the scrolling is determined by the delta values in EventScroll.
-	// See gdk_event_get_scroll_deltas(). Since: 3.4
+	// Smooth: scrolling is determined by the delta values in EventScroll. See
+	// gdk_event_get_scroll_deltas(). Since: 3.4
 	ScrollDirectionSmooth
 )
 
@@ -355,13 +350,13 @@ func marshalSettingAction(p uintptr) (interface{}, error) {
 type TouchpadGesturePhase int
 
 const (
-	// Begin: the gesture has begun.
+	// Begin: gesture has begun.
 	TouchpadGesturePhaseBegin TouchpadGesturePhase = iota
-	// Update: the gesture has been updated.
+	// Update: gesture has been updated.
 	TouchpadGesturePhaseUpdate
-	// End: the gesture was finished, changes should be permanently applied.
+	// End: gesture was finished, changes should be permanently applied.
 	TouchpadGesturePhaseEnd
-	// Cancel: the gesture was cancelled, all changes should be undone.
+	// Cancel: gesture was cancelled, all changes should be undone.
 	TouchpadGesturePhaseCancel
 )
 
@@ -374,11 +369,11 @@ func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
 type VisibilityState int
 
 const (
-	// Unobscured: the window is completely visible.
+	// Unobscured: window is completely visible.
 	VisibilityStateUnobscured VisibilityState = iota
-	// Partial: the window is partially visible.
+	// Partial: window is partially visible.
 	VisibilityStatePartial
-	// FullyObscured: the window is not visible at all.
+	// FullyObscured: window is not visible at all.
 	VisibilityStateFullyObscured
 )
 
@@ -390,25 +385,25 @@ func marshalVisibilityState(p uintptr) (interface{}, error) {
 type WindowState int
 
 const (
-	// WindowStateWithdrawn: the window is not shown.
+	// WindowStateWithdrawn: window is not shown.
 	WindowStateWithdrawn WindowState = 0b1
-	// WindowStateIconified: the window is minimized.
+	// WindowStateIconified: window is minimized.
 	WindowStateIconified WindowState = 0b10
-	// WindowStateMaximized: the window is maximized.
+	// WindowStateMaximized: window is maximized.
 	WindowStateMaximized WindowState = 0b100
-	// WindowStateSticky: the window is sticky.
+	// WindowStateSticky: window is sticky.
 	WindowStateSticky WindowState = 0b1000
-	// WindowStateFullscreen: the window is maximized without decorations.
+	// WindowStateFullscreen: window is maximized without decorations.
 	WindowStateFullscreen WindowState = 0b10000
-	// WindowStateAbove: the window is kept above other windows.
+	// WindowStateAbove: window is kept above other windows.
 	WindowStateAbove WindowState = 0b100000
-	// WindowStateBelow: the window is kept below other windows.
+	// WindowStateBelow: window is kept below other windows.
 	WindowStateBelow WindowState = 0b1000000
-	// WindowStateFocused: the window is presented as focused (with active
+	// WindowStateFocused: window is presented as focused (with active
 	// decorations).
 	WindowStateFocused WindowState = 0b10000000
-	// WindowStateTiled: the window is in a tiled state, Since 3.10. Since
-	// 3.22.23, this is deprecated in favor of per-edge information.
+	// WindowStateTiled: window is in a tiled state, Since 3.10. Since 3.22.23,
+	// this is deprecated in favor of per-edge information.
 	WindowStateTiled WindowState = 0b100000000
 	// WindowStateTopTiled: whether the top edge is tiled, Since 3.22.23
 	WindowStateTopTiled WindowState = 0b1000000000

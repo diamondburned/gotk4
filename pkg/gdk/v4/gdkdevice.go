@@ -29,22 +29,22 @@ func init() {
 type InputSource int
 
 const (
-	// Mouse: the device is a mouse. (This will be reported for the core
-	// pointer, even if it is something else, such as a trackball.)
+	// Mouse: device is a mouse. (This will be reported for the core pointer,
+	// even if it is something else, such as a trackball.)
 	InputSourceMouse InputSource = iota
-	// Pen: the device is a stylus of a graphics tablet or similar device.
+	// Pen: device is a stylus of a graphics tablet or similar device.
 	InputSourcePen
-	// Keyboard: the device is a keyboard.
+	// Keyboard: device is a keyboard.
 	InputSourceKeyboard
-	// Touchscreen: the device is a direct-input touch device, such as a
-	// touchscreen or tablet
+	// Touchscreen: device is a direct-input touch device, such as a touchscreen
+	// or tablet
 	InputSourceTouchscreen
-	// Touchpad: the device is an indirect touch device, such as a touchpad
+	// Touchpad: device is an indirect touch device, such as a touchpad
 	InputSourceTouchpad
-	// Trackpoint: the device is a trackpoint
+	// Trackpoint: device is a trackpoint
 	InputSourceTrackpoint
-	// TabletPad: the device is a "pad", a collection of buttons, rings and
-	// strips found in drawing tablets
+	// TabletPad: device is a "pad", a collection of buttons, rings and strips
+	// found in drawing tablets
 	InputSourceTabletPad
 )
 
@@ -54,29 +54,51 @@ func marshalInputSource(p uintptr) (interface{}, error) {
 
 // Devicer describes Device's methods.
 type Devicer interface {
-	gextras.Objector
-
+	// CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
+	// locked.
 	CapsLockState() bool
+	// DeviceTool retrieves the current tool for @device.
 	DeviceTool() *DeviceTool
+	// Direction returns the direction of effective layout of the keyboard.
 	Direction() pango.Direction
+	// Display returns the `GdkDisplay` to which @device pertains.
 	Display() *Display
+	// HasCursor determines whether the pointer follows device motion.
 	HasCursor() bool
+	// ModifierState retrieves the current modifier state of the keyboard.
 	ModifierState() ModifierType
+	// Name: name of the device, suitable for showing in a user interface.
 	Name() string
+	// NumLockState retrieves whether the Num Lock modifier of the keyboard is
+	// locked.
 	NumLockState() bool
+	// NumTouches retrieves the number of touch points associated to @device.
 	NumTouches() uint
+	// ProductID returns the product ID of this device.
 	ProductID() string
+	// ScrollLockState retrieves whether the Scroll Lock modifier of the
+	// keyboard is locked.
 	ScrollLockState() bool
+	// Seat returns the `GdkSeat` the device belongs to.
 	Seat() *Seat
+	// Source determines the type of the device.
 	Source() InputSource
+	// SurfaceAtPosition obtains the surface underneath @device, returning the
+	// location of the device in @win_x and @win_y Returns nil if the surface
+	// tree under @device is not known to GDK (for example, belongs to another
+	// application).
 	SurfaceAtPosition() (winX float64, winY float64, surface *Surface)
+	// Timestamp returns the timestamp of the last activity for this device.
 	Timestamp() uint32
+	// VendorID returns the vendor ID of this device.
 	VendorID() string
+	// HasBidiLayouts determines if layouts for both right-to-left and
+	// left-to-right languages are in use on the keyboard.
 	HasBidiLayouts() bool
 }
 
-// Device: the `GdkDevice` object represents an input device, such as a
-// keyboard, a mouse, or a touchpad.
+// Device: `GdkDevice` object represents an input device, such as a keyboard, a
+// mouse, or a touchpad.
 //
 // See the [class@Gdk.Seat] documentation for more information about the various
 // kinds of devices, and their relationships.
@@ -84,9 +106,12 @@ type Device struct {
 	*externglib.Object
 }
 
-var _ Devicer = (*Device)(nil)
+var (
+	_ Devicer         = (*Device)(nil)
+	_ gextras.Nativer = (*Device)(nil)
+)
 
-func wrapDevicer(obj *externglib.Object) Devicer {
+func wrapDevice(obj *externglib.Object) Devicer {
 	return &Device{
 		Object: obj,
 	}
@@ -95,7 +120,7 @@ func wrapDevicer(obj *externglib.Object) Devicer {
 func marshalDevicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDevicer(obj), nil
+	return wrapDevice(obj), nil
 }
 
 // CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
@@ -210,7 +235,7 @@ func (device *Device) ModifierState() ModifierType {
 	return _modifierType
 }
 
-// Name: the name of the device, suitable for showing in a user interface.
+// Name: name of the device, suitable for showing in a user interface.
 func (device *Device) Name() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in

@@ -20,7 +20,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_sorter_change_get_type()), F: marshalSorterChange},
 		{T: externglib.Type(C.gtk_sorter_order_get_type()), F: marshalSorterOrder},
-		{T: externglib.Type(C.gtk_sorter_get_type()), F: marshalSorterrer},
+		{T: externglib.Type(C.gtk_sorter_get_type()), F: marshalSorterer},
 	})
 }
 
@@ -29,17 +29,17 @@ func init() {
 type SorterChange int
 
 const (
-	// Different: the sorter change cannot be described by any of the other
+	// Different: sorter change cannot be described by any of the other
 	// enumeration values
 	SorterChangeDifferent SorterChange = iota
-	// Inverted: the sort order was inverted. Comparisons that returned
+	// Inverted: sort order was inverted. Comparisons that returned
 	// GTK_ORDERING_SMALLER now return GTK_ORDERING_LARGER and vice versa. Other
 	// comparisons return the same values as before.
 	SorterChangeInverted
-	// LessStrict: the sorter is less strict: Comparisons may now return
+	// LessStrict: sorter is less strict: Comparisons may now return
 	// GTK_ORDERING_EQUAL that did not do so before.
 	SorterChangeLessStrict
-	// MoreStrict: the sorter is more strict: Comparisons that did return
+	// MoreStrict: sorter is more strict: Comparisons that did return
 	// GTK_ORDERING_EQUAL may not do so anymore.
 	SorterChangeMoreStrict
 )
@@ -67,11 +67,11 @@ func marshalSorterOrder(p uintptr) (interface{}, error) {
 	return SorterOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SorterrerOverrider contains methods that are overridable.
+// SorterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SorterrerOverrider interface {
+type SorterOverrider interface {
 	// Compare compares two given items according to the sort order implemented
 	// by the sorter.
 	//
@@ -92,11 +92,12 @@ type SorterrerOverrider interface {
 	Order() SorterOrder
 }
 
-// Sorterrer describes Sorter's methods.
-type Sorterrer interface {
-	gextras.Objector
-
+// Sorterer describes Sorter's methods.
+type Sorterer interface {
+	// Compare compares two given items according to the sort order implemented
+	// by the sorter.
 	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
+	// Order gets the order that @self conforms to.
 	Order() SorterOrder
 }
 
@@ -123,18 +124,21 @@ type Sorter struct {
 	*externglib.Object
 }
 
-var _ Sorterrer = (*Sorter)(nil)
+var (
+	_ Sorterer        = (*Sorter)(nil)
+	_ gextras.Nativer = (*Sorter)(nil)
+)
 
-func wrapSorterrer(obj *externglib.Object) Sorterrer {
+func wrapSorter(obj *externglib.Object) Sorterer {
 	return &Sorter{
 		Object: obj,
 	}
 }
 
-func marshalSorterrer(p uintptr) (interface{}, error) {
+func marshalSorterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSorterrer(obj), nil
+	return wrapSorter(obj), nil
 }
 
 // Compare compares two given items according to the sort order implemented by

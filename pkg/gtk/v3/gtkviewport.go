@@ -28,20 +28,25 @@ func init() {
 
 // Viewporter describes Viewport's methods.
 type Viewporter interface {
-	gextras.Objector
-
+	// BinWindow gets the bin window of the Viewport.
 	BinWindow() *gdk.Window
+	// HAdjustment returns the horizontal adjustment of the viewport.
 	HAdjustment() *Adjustment
+	// ShadowType gets the shadow type of the Viewport.
 	ShadowType() ShadowType
+	// VAdjustment returns the vertical adjustment of the viewport.
 	VAdjustment() *Adjustment
+	// ViewWindow gets the view window of the Viewport.
 	ViewWindow() *gdk.Window
+	// SetHAdjustment sets the horizontal adjustment of the viewport.
 	SetHAdjustment(adjustment Adjustmenter)
+	// SetVAdjustment sets the vertical adjustment of the viewport.
 	SetVAdjustment(adjustment Adjustmenter)
 }
 
-// Viewport: the Viewport widget acts as an adaptor class, implementing
-// scrollability for child widgets that lack their own scrolling capabilities.
-// Use GtkViewport to scroll child widgets such as Grid, Box, and so on.
+// Viewport widget acts as an adaptor class, implementing scrollability for
+// child widgets that lack their own scrolling capabilities. Use GtkViewport to
+// scroll child widgets such as Grid, Box, and so on.
 //
 // If a widget has native scrolling abilities, such as TextView, TreeView or
 // IconView, it can be added to a ScrolledWindow with gtk_container_add(). If a
@@ -58,25 +63,21 @@ type Viewporter interface {
 //
 // GtkViewport has a single CSS node with name viewport.
 type Viewport struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
+
 	Scrollable
 }
 
-var _ Viewporter = (*Viewport)(nil)
+var (
+	_ Viewporter      = (*Viewport)(nil)
+	_ gextras.Nativer = (*Viewport)(nil)
+)
 
-func wrapViewporter(obj *externglib.Object) Viewporter {
+func wrapViewport(obj *externglib.Object) Viewporter {
 	return &Viewport{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -87,25 +88,7 @@ func wrapViewporter(obj *externglib.Object) Viewporter {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
@@ -116,7 +99,7 @@ func wrapViewporter(obj *externglib.Object) Viewporter {
 func marshalViewporter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapViewporter(obj), nil
+	return wrapViewport(obj), nil
 }
 
 // NewViewport creates a new Viewport with the given adjustments, or with
@@ -126,8 +109,8 @@ func NewViewport(hadjustment Adjustmenter, vadjustment Adjustmenter) *Viewport {
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((hadjustment).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((vadjustment).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
@@ -136,6 +119,12 @@ func NewViewport(hadjustment Adjustmenter, vadjustment Adjustmenter) *Viewport {
 	_viewport = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Viewport)
 
 	return _viewport
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Viewport) Native() uintptr {
+	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BinWindow gets the bin window of the Viewport.
@@ -231,7 +220,7 @@ func (viewport *Viewport) SetHAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_viewport_set_hadjustment(_arg0, _arg1)
 }
@@ -244,7 +233,7 @@ func (viewport *Viewport) SetVAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_viewport_set_vadjustment(_arg0, _arg1)
 }

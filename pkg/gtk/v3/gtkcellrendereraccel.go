@@ -42,18 +42,16 @@ func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
 	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// CellRendererAccellerOverrider contains methods that are overridable.
+// CellRendererAccelOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CellRendererAccellerOverrider interface {
+type CellRendererAccelOverrider interface {
 	AccelCleared(pathString string)
 }
 
 // CellRendererAcceller describes CellRendererAccel's methods.
 type CellRendererAcceller interface {
-	gextras.Objector
-
 	privateCellRendererAccel()
 }
 
@@ -66,9 +64,12 @@ type CellRendererAccel struct {
 	CellRendererText
 }
 
-var _ CellRendererAcceller = (*CellRendererAccel)(nil)
+var (
+	_ CellRendererAcceller = (*CellRendererAccel)(nil)
+	_ gextras.Nativer      = (*CellRendererAccel)(nil)
+)
 
-func wrapCellRendererAcceller(obj *externglib.Object) CellRendererAcceller {
+func wrapCellRendererAccel(obj *externglib.Object) CellRendererAcceller {
 	return &CellRendererAccel{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
@@ -83,7 +84,7 @@ func wrapCellRendererAcceller(obj *externglib.Object) CellRendererAcceller {
 func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererAcceller(obj), nil
+	return wrapCellRendererAccel(obj), nil
 }
 
 // NewCellRendererAccel creates a new CellRendererAccel.

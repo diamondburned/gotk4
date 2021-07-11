@@ -22,19 +22,21 @@ func init() {
 	})
 }
 
-// PrintOperationPreviewerOverrider contains methods that are overridable.
+// PrintOperationPreviewOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PrintOperationPreviewerOverrider interface {
+type PrintOperationPreviewOverrider interface {
 	// EndPreview ends a preview.
 	//
 	// This function must be called to finish a custom print preview.
 	EndPreview()
+
 	GotPageSize(context PrintContexter, pageSetup PageSetupper)
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
 	IsSelected(pageNr int) bool
+
 	Ready(context PrintContexter)
 	// RenderPage renders a page to the preview.
 	//
@@ -51,10 +53,12 @@ type PrintOperationPreviewerOverrider interface {
 
 // PrintOperationPreviewer describes PrintOperationPreview's methods.
 type PrintOperationPreviewer interface {
-	gextras.Objector
-
+	// EndPreview ends a preview.
 	EndPreview()
+	// IsSelected returns whether the given page is included in the set of pages
+	// that have been selected for printing.
 	IsSelected(pageNr int) bool
+	// RenderPage renders a page to the preview.
 	RenderPage(pageNr int)
 }
 
@@ -67,9 +71,12 @@ type PrintOperationPreview struct {
 	*externglib.Object
 }
 
-var _ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
+var (
+	_ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
+	_ gextras.Nativer         = (*PrintOperationPreview)(nil)
+)
 
-func wrapPrintOperationPreviewer(obj *externglib.Object) PrintOperationPreviewer {
+func wrapPrintOperationPreview(obj *externglib.Object) PrintOperationPreviewer {
 	return &PrintOperationPreview{
 		Object: obj,
 	}
@@ -78,7 +85,7 @@ func wrapPrintOperationPreviewer(obj *externglib.Object) PrintOperationPreviewer
 func marshalPrintOperationPreviewer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPrintOperationPreviewer(obj), nil
+	return wrapPrintOperationPreview(obj), nil
 }
 
 // EndPreview ends a preview.

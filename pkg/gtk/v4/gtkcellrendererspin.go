@@ -24,8 +24,6 @@ func init() {
 
 // CellRendererSpinner describes CellRendererSpin's methods.
 type CellRendererSpinner interface {
-	gextras.Objector
-
 	privateCellRendererSpin()
 }
 
@@ -48,9 +46,12 @@ type CellRendererSpin struct {
 	CellRendererText
 }
 
-var _ CellRendererSpinner = (*CellRendererSpin)(nil)
+var (
+	_ CellRendererSpinner = (*CellRendererSpin)(nil)
+	_ gextras.Nativer     = (*CellRendererSpin)(nil)
+)
 
-func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
+func wrapCellRendererSpin(obj *externglib.Object) CellRendererSpinner {
 	return &CellRendererSpin{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
@@ -65,7 +66,7 @@ func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererSpinner(obj), nil
+	return wrapCellRendererSpin(obj), nil
 }
 
 // NewCellRendererSpin creates a new CellRendererSpin.

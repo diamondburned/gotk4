@@ -25,21 +25,26 @@ func init() {
 	})
 }
 
-// MenuToolButtonnerOverrider contains methods that are overridable.
+// MenuToolButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type MenuToolButtonnerOverrider interface {
+type MenuToolButtonOverrider interface {
 	ShowMenu()
 }
 
 // MenuToolButtonner describes MenuToolButton's methods.
 type MenuToolButtonner interface {
-	gextras.Objector
-
+	// Menu gets the Menu associated with MenuToolButton.
 	Menu() *Widget
+	// SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip
+	// for the arrow button which pops up the menu.
 	SetArrowTooltipMarkup(markup string)
+	// SetArrowTooltipText sets the tooltip text to be used as tooltip for the
+	// arrow button which pops up the menu.
 	SetArrowTooltipText(text string)
+	// SetMenu sets the Menu that is popped up when the user clicks on the
+	// arrow.
 	SetMenu(menu Widgetter)
 }
 
@@ -63,30 +68,21 @@ type MenuToolButtonner interface {
 //      </child>
 //    </object>
 type MenuToolButton struct {
-	*externglib.Object
-
 	ToolButton
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ MenuToolButtonner = (*MenuToolButton)(nil)
+var (
+	_ MenuToolButtonner = (*MenuToolButton)(nil)
+	_ gextras.Nativer   = (*MenuToolButton)(nil)
+)
 
-func wrapMenuToolButtonner(obj *externglib.Object) MenuToolButtonner {
+func wrapMenuToolButton(obj *externglib.Object) MenuToolButtonner {
 	return &MenuToolButton{
-		Object: obj,
 		ToolButton: ToolButton{
-			Object: obj,
 			ToolItem: ToolItem{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -97,37 +93,14 @@ func wrapMenuToolButtonner(obj *externglib.Object) MenuToolButtonner {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
 				},
 				Activatable: Activatable{
 					Object: obj,
 				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -139,36 +112,6 @@ func wrapMenuToolButtonner(obj *externglib.Object) MenuToolButtonner {
 					},
 				},
 			},
-			Activatable: Activatable{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -176,7 +119,7 @@ func wrapMenuToolButtonner(obj *externglib.Object) MenuToolButtonner {
 func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuToolButtonner(obj), nil
+	return wrapMenuToolButton(obj), nil
 }
 
 // NewMenuToolButton creates a new MenuToolButton using @icon_widget as icon and
@@ -186,7 +129,7 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((iconWidget).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -271,7 +214,7 @@ func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((menu).(gextras.Nativer).Native()))
 
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
 }

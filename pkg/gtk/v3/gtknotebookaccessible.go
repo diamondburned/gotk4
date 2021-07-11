@@ -27,24 +27,22 @@ func init() {
 
 // NotebookAccessibler describes NotebookAccessible's methods.
 type NotebookAccessibler interface {
-	gextras.Objector
-
 	privateNotebookAccessible()
 }
 
 type NotebookAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
-	atk.Component
+
 	atk.Selection
 }
 
-var _ NotebookAccessibler = (*NotebookAccessible)(nil)
+var (
+	_ NotebookAccessibler = (*NotebookAccessible)(nil)
+	_ gextras.Nativer     = (*NotebookAccessible)(nil)
+)
 
-func wrapNotebookAccessibler(obj *externglib.Object) NotebookAccessibler {
+func wrapNotebookAccessible(obj *externglib.Object) NotebookAccessibler {
 	return &NotebookAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -56,12 +54,6 @@ func wrapNotebookAccessibler(obj *externglib.Object) NotebookAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 		Selection: atk.Selection{
 			Object: obj,
@@ -72,7 +64,7 @@ func wrapNotebookAccessibler(obj *externglib.Object) NotebookAccessibler {
 func marshalNotebookAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotebookAccessibler(obj), nil
+	return wrapNotebookAccessible(obj), nil
 }
 
 func (*NotebookAccessible) privateNotebookAccessible() {}

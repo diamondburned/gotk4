@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// FileEnumeratorrerOverrider contains methods that are overridable.
+// FileEnumeratorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileEnumeratorrerOverrider interface {
+type FileEnumeratorOverrider interface {
 	// CloseAsync: asynchronously closes the file enumerator.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
@@ -61,6 +61,7 @@ type FileEnumeratorrerOverrider interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
 	// be returned.
 	CloseFinish(result AsyncResulter) error
+
 	CloseFn(cancellable Cancellabler) error
 	// NextFile returns information for the next file in the enumerated object.
 	// Will block until the information is available. The Info returned from
@@ -97,18 +98,32 @@ type FileEnumeratorrerOverrider interface {
 
 // FileEnumeratorrer describes FileEnumerator's methods.
 type FileEnumeratorrer interface {
-	gextras.Objector
-
+	// Close releases all resources used by this enumerator, making the
+	// enumerator return G_IO_ERROR_CLOSED on all calls.
 	Close(cancellable Cancellabler) error
+	// CloseAsync: asynchronously closes the file enumerator.
 	CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// CloseFinish finishes closing a file enumerator, started from
+	// g_file_enumerator_close_async().
 	CloseFinish(result AsyncResulter) error
+	// Child: return a new #GFile which refers to the file named by @info in the
+	// source directory of @enumerator.
 	Child(info FileInfor) *File
+	// Container: get the #GFile container which is being enumerated.
 	Container() *File
+	// HasPending checks if the file enumerator has pending operations.
 	HasPending() bool
+	// IsClosed checks if the file enumerator has been closed.
 	IsClosed() bool
+	// Iterate: this is a version of g_file_enumerator_next_file() that's easier
+	// to use correctly from C programs.
 	Iterate(cancellable Cancellabler) (*FileInfo, *File, error)
+	// NextFile returns information for the next file in the enumerated object.
 	NextFile(cancellable Cancellabler) (*FileInfo, error)
+	// NextFilesAsync: request information for a number of files from the
+	// enumerator asynchronously.
 	NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// SetPending sets the file enumerator as having pending operations.
 	SetPending(pending bool)
 }
 
@@ -139,9 +154,12 @@ type FileEnumerator struct {
 	*externglib.Object
 }
 
-var _ FileEnumeratorrer = (*FileEnumerator)(nil)
+var (
+	_ FileEnumeratorrer = (*FileEnumerator)(nil)
+	_ gextras.Nativer   = (*FileEnumerator)(nil)
+)
 
-func wrapFileEnumeratorrer(obj *externglib.Object) FileEnumeratorrer {
+func wrapFileEnumerator(obj *externglib.Object) FileEnumeratorrer {
 	return &FileEnumerator{
 		Object: obj,
 	}
@@ -150,7 +168,7 @@ func wrapFileEnumeratorrer(obj *externglib.Object) FileEnumeratorrer {
 func marshalFileEnumeratorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileEnumeratorrer(obj), nil
+	return wrapFileEnumerator(obj), nil
 }
 
 // Close releases all resources used by this enumerator, making the enumerator
@@ -165,7 +183,7 @@ func (enumerator *FileEnumerator) Close(cancellable Cancellabler) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_file_enumerator_close(_arg0, _arg1, &_cerr)
 
@@ -191,7 +209,7 @@ func (enumerator *FileEnumerator) CloseAsync(ioPriority int, cancellable Cancell
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -215,7 +233,7 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_file_enumerator_close_finish(_arg0, _arg1, &_cerr)
 
@@ -241,7 +259,7 @@ func (enumerator *FileEnumerator) Child(info FileInfor) *File {
 	var _cret *C.GFile           // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer((info).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_enumerator_get_child(_arg0, _arg1)
 
@@ -345,7 +363,7 @@ func (direnum *FileEnumerator) Iterate(cancellable Cancellabler) (*FileInfo, *Fi
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(direnum.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_file_enumerator_iterate(_arg0, &_arg1, &_arg2, _arg3, &_cerr)
 
@@ -377,7 +395,7 @@ func (enumerator *FileEnumerator) NextFile(cancellable Cancellabler) (*FileInfo,
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_enumerator_next_file(_arg0, _arg1, &_cerr)
 
@@ -420,7 +438,7 @@ func (enumerator *FileEnumerator) NextFilesAsync(numFiles int, ioPriority int, c
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = C.int(numFiles)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 

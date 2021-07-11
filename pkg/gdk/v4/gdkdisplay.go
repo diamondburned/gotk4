@@ -26,29 +26,61 @@ func init() {
 
 // Displayyer describes Display's methods.
 type Displayyer interface {
-	gextras.Objector
-
+	// Beep emits a short beep on @display
 	Beep()
+	// Close closes the connection to the windowing system for the given
+	// display.
 	Close()
+	// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
+	// @display.
 	DeviceIsGrabbed(device Devicer) bool
+	// Flush flushes any requests queued for the windowing system.
 	Flush()
+	// AppLaunchContext returns a `GdkAppLaunchContext` suitable for launching
+	// applications on the given display.
 	AppLaunchContext() *AppLaunchContext
+	// Clipboard gets the clipboard used for copy/paste operations.
 	Clipboard() *Clipboard
+	// DefaultSeat returns the default `GdkSeat` for this display.
 	DefaultSeat() *Seat
+	// MonitorAtSurface gets the monitor in which the largest area of @surface
+	// resides.
 	MonitorAtSurface(surface Surfacer) *Monitor
+	// Monitors gets the list of monitors associated with this display.
 	Monitors() *gio.ListModel
+	// Name gets the name of the display.
 	Name() string
+	// PrimaryClipboard gets the clipboard used for the primary selection.
 	PrimaryClipboard() *Clipboard
+	// Setting retrieves a desktop-wide setting such as double-click time for
+	// the @display.
 	Setting(name string, value *externglib.Value) bool
+	// StartupNotificationID gets the startup notification ID for a Wayland
+	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
+	// IsClosed finds out if the display has been closed.
 	IsClosed() bool
+	// IsComposited returns whether surfaces can reasonably be expected to have
+	// their alpha channel drawn correctly on the screen.
 	IsComposited() bool
+	// IsRGBA returns whether surfaces on this @display are created with an
+	// alpha channel.
 	IsRGBA() bool
+	// MapKeycode returns the keyvals bound to @keycode.
 	MapKeycode(keycode uint) ([]KeymapKey, []uint, bool)
+	// MapKeyval obtains a list of keycode/group/level combinations that will
+	// generate @keyval.
 	MapKeyval(keyval uint) ([]KeymapKey, bool)
+	// NotifyStartupComplete indicates to the GUI environment that the
+	// application has finished loading, using a given identifier.
 	NotifyStartupComplete(startupId string)
+	// PutEvent appends the given event onto the front of the event queue for
+	// @display.
 	PutEvent(event Eventer)
+	// SupportsInputShapes returns true if the display supports input shapes.
 	SupportsInputShapes() bool
+	// Sync flushes any requests queued for the windowing system and waits until
+	// all requests have been handled.
 	Sync()
 }
 
@@ -71,9 +103,12 @@ type Display struct {
 	*externglib.Object
 }
 
-var _ Displayyer = (*Display)(nil)
+var (
+	_ Displayyer      = (*Display)(nil)
+	_ gextras.Nativer = (*Display)(nil)
+)
 
-func wrapDisplayyer(obj *externglib.Object) Displayyer {
+func wrapDisplay(obj *externglib.Object) Displayyer {
 	return &Display{
 		Object: obj,
 	}
@@ -82,7 +117,7 @@ func wrapDisplayyer(obj *externglib.Object) Displayyer {
 func marshalDisplayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDisplayyer(obj), nil
+	return wrapDisplay(obj), nil
 }
 
 // Beep emits a short beep on @display
@@ -113,7 +148,7 @@ func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
 
@@ -206,7 +241,7 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 	var _cret *C.GdkMonitor // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_display_get_monitor_at_surface(_arg0, _arg1)
 
@@ -496,7 +531,7 @@ func (display *Display) PutEvent(event Eventer) {
 	var _arg1 *C.GdkEvent   // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
 
 	C.gdk_display_put_event(_arg0, _arg1)
 }

@@ -24,12 +24,17 @@ func init() {
 
 // BoxLayouter describes BoxLayout's methods.
 type BoxLayouter interface {
-	gextras.Objector
-
+	// BaselinePosition gets the value set by
+	// gtk_box_layout_set_baseline_position().
 	BaselinePosition() BaselinePosition
+	// Homogeneous returns whether the layout is set to be homogeneous.
 	Homogeneous() bool
+	// Spacing returns the space that @box_layout puts between children.
 	Spacing() uint
+	// SetHomogeneous sets whether the box layout will allocate the same size to
+	// all children.
 	SetHomogeneous(homogeneous bool)
+	// SetSpacing sets how much spacing to put between children.
 	SetSpacing(spacing uint)
 }
 
@@ -48,17 +53,18 @@ type BoxLayouter interface {
 // If you want to specify the amount of space placed between each child, you can
 // use the [property@Gtk.BoxLayout:spacing] property.
 type BoxLayout struct {
-	*externglib.Object
-
 	LayoutManager
+
 	Orientable
 }
 
-var _ BoxLayouter = (*BoxLayout)(nil)
+var (
+	_ BoxLayouter     = (*BoxLayout)(nil)
+	_ gextras.Nativer = (*BoxLayout)(nil)
+)
 
-func wrapBoxLayouter(obj *externglib.Object) BoxLayouter {
+func wrapBoxLayout(obj *externglib.Object) BoxLayouter {
 	return &BoxLayout{
-		Object: obj,
 		LayoutManager: LayoutManager{
 			Object: obj,
 		},
@@ -71,7 +77,13 @@ func wrapBoxLayouter(obj *externglib.Object) BoxLayouter {
 func marshalBoxLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBoxLayouter(obj), nil
+	return wrapBoxLayout(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *BoxLayout) Native() uintptr {
+	return v.LayoutManager.Object.Native()
 }
 
 // BaselinePosition gets the value set by

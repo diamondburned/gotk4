@@ -41,9 +41,9 @@ func marshalDevicePadFeature(p uintptr) (interface{}, error) {
 
 // DevicePadder describes DevicePad's methods.
 type DevicePadder interface {
-	gextras.Objector
-
+	// GroupNModes returns the number of modes that @group may have.
 	GroupNModes(groupIdx int) int
+	// NGroups returns the number of groups this pad device has.
 	NGroups() int
 }
 
@@ -67,9 +67,12 @@ type DevicePad struct {
 	Device
 }
 
-var _ DevicePadder = (*DevicePad)(nil)
+var (
+	_ DevicePadder    = (*DevicePad)(nil)
+	_ gextras.Nativer = (*DevicePad)(nil)
+)
 
-func wrapDevicePadder(obj *externglib.Object) DevicePadder {
+func wrapDevicePad(obj *externglib.Object) DevicePadder {
 	return &DevicePad{
 		Device: Device{
 			Object: obj,
@@ -80,7 +83,7 @@ func wrapDevicePadder(obj *externglib.Object) DevicePadder {
 func marshalDevicePadder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDevicePadder(obj), nil
+	return wrapDevicePad(obj), nil
 }
 
 // GroupNModes returns the number of modes that @group may have.

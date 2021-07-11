@@ -26,8 +26,7 @@ func init() {
 
 // IMContextSimpler describes IMContextSimple's methods.
 type IMContextSimpler interface {
-	gextras.Objector
-
+	// AddComposeFile adds an additional table from the X11 compose file.
 	AddComposeFile(composeFile string)
 }
 
@@ -52,9 +51,12 @@ type IMContextSimple struct {
 	IMContext
 }
 
-var _ IMContextSimpler = (*IMContextSimple)(nil)
+var (
+	_ IMContextSimpler = (*IMContextSimple)(nil)
+	_ gextras.Nativer  = (*IMContextSimple)(nil)
+)
 
-func wrapIMContextSimpler(obj *externglib.Object) IMContextSimpler {
+func wrapIMContextSimple(obj *externglib.Object) IMContextSimpler {
 	return &IMContextSimple{
 		IMContext: IMContext{
 			Object: obj,
@@ -65,7 +67,7 @@ func wrapIMContextSimpler(obj *externglib.Object) IMContextSimpler {
 func marshalIMContextSimpler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIMContextSimpler(obj), nil
+	return wrapIMContextSimple(obj), nil
 }
 
 // NewIMContextSimple creates a new IMContextSimple.

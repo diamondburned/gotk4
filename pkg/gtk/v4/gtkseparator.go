@@ -24,8 +24,6 @@ func init() {
 
 // Separatorrer describes Separator's methods.
 type Separatorrer interface {
-	gextras.Objector
-
 	privateSeparator()
 }
 
@@ -47,22 +45,19 @@ type Separatorrer interface {
 //
 // `GtkSeparator` uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
 type Separator struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 }
 
-var _ Separatorrer = (*Separator)(nil)
+var (
+	_ Separatorrer    = (*Separator)(nil)
+	_ gextras.Nativer = (*Separator)(nil)
+)
 
-func wrapSeparatorrer(obj *externglib.Object) Separatorrer {
+func wrapSeparator(obj *externglib.Object) Separatorrer {
 	return &Separator{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -76,15 +71,6 @@ func wrapSeparatorrer(obj *externglib.Object) Separatorrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -94,7 +80,13 @@ func wrapSeparatorrer(obj *externglib.Object) Separatorrer {
 func marshalSeparatorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparatorrer(obj), nil
+	return wrapSeparator(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Separator) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*Separator) privateSeparator() {}

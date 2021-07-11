@@ -27,8 +27,6 @@ func init() {
 
 // RadioToolButtonner describes RadioToolButton's methods.
 type RadioToolButtonner interface {
-	gextras.Objector
-
 	privateRadioToolButton()
 }
 
@@ -45,32 +43,22 @@ type RadioToolButtonner interface {
 //
 // GtkRadioToolButton has a single CSS node with name toolbutton.
 type RadioToolButton struct {
-	*externglib.Object
-
 	ToggleToolButton
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ RadioToolButtonner = (*RadioToolButton)(nil)
+var (
+	_ RadioToolButtonner = (*RadioToolButton)(nil)
+	_ gextras.Nativer    = (*RadioToolButton)(nil)
+)
 
-func wrapRadioToolButtonner(obj *externglib.Object) RadioToolButtonner {
+func wrapRadioToolButton(obj *externglib.Object) RadioToolButtonner {
 	return &RadioToolButton{
-		Object: obj,
 		ToggleToolButton: ToggleToolButton{
-			Object: obj,
 			ToolButton: ToolButton{
-				Object: obj,
 				ToolItem: ToolItem{
-					Object: obj,
 					Bin: Bin{
-						Object: obj,
 						Container: Container{
-							Object: obj,
 							Widget: Widget{
-								Object: obj,
 								InitiallyUnowned: externglib.InitiallyUnowned{
 									Object: obj,
 								},
@@ -81,37 +69,14 @@ func wrapRadioToolButtonner(obj *externglib.Object) RadioToolButtonner {
 									Object: obj,
 								},
 							},
-							ImplementorIface: atk.ImplementorIface{
-								Object: obj,
-							},
-							Buildable: Buildable{
-								Object: obj,
-							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
 					},
 					Activatable: Activatable{
 						Object: obj,
 					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
 				},
 				Actionable: Actionable{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -123,61 +88,7 @@ func wrapRadioToolButtonner(obj *externglib.Object) RadioToolButtonner {
 						},
 					},
 				},
-				Activatable: Activatable{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Actionable: Actionable{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-			},
-			Activatable: Activatable{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -185,7 +96,7 @@ func wrapRadioToolButtonner(obj *externglib.Object) RadioToolButtonner {
 func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioToolButtonner(obj), nil
+	return wrapRadioToolButton(obj), nil
 }
 
 // NewRadioToolButtonFromWidget creates a new RadioToolButton adding it to the
@@ -194,7 +105,7 @@ func NewRadioToolButtonFromWidget(group RadioToolButtonner) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _cret *C.GtkToolItem        // in
 
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
 
@@ -215,7 +126,7 @@ func NewRadioToolButtonWithStockFromWidget(group RadioToolButtonner, stockId str
 	var _arg2 *C.gchar              // out
 	var _cret *C.GtkToolItem        // in
 
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg2))
 

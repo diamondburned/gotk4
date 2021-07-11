@@ -61,8 +61,7 @@ const (
 	TraverseFlagsNonLeafs TraverseFlags = 0b10
 )
 
-// Node: the #GNode struct represents one node in a [n-ary
-// tree][glib-N-ary-Trees].
+// Node struct represents one node in a [n-ary tree][glib-N-ary-Trees].
 type Node struct {
 	native C.GNode
 }

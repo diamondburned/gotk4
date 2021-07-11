@@ -18,15 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_entry_buffer_get_type()), F: marshalEntryBufferrer},
+		{T: externglib.Type(C.gtk_entry_buffer_get_type()), F: marshalEntryBufferer},
 	})
 }
 
-// EntryBufferrerOverrider contains methods that are overridable.
+// EntryBufferOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type EntryBufferrerOverrider interface {
+type EntryBufferOverrider interface {
 	// DeleteText deletes a sequence of characters from the buffer.
 	//
 	// @n_chars characters are deleted starting at @position. If @n_chars is
@@ -37,9 +37,11 @@ type EntryBufferrerOverrider interface {
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DeleteText(position uint, nChars uint) uint
+
 	DeletedText(position uint, nChars uint)
 	// Length retrieves the length in characters of the buffer.
 	Length() uint
+
 	Text(nBytes *uint) string
 	// InsertText inserts @n_chars characters of @chars into the contents of the
 	// buffer, at position @position.
@@ -51,22 +53,33 @@ type EntryBufferrerOverrider interface {
 	//
 	// Note that the position and length are in characters, not in bytes.
 	InsertText(position uint, chars string, nChars uint) uint
+
 	InsertedText(position uint, chars string, nChars uint)
 }
 
-// EntryBufferrer describes EntryBuffer's methods.
-type EntryBufferrer interface {
-	gextras.Objector
-
+// EntryBufferer describes EntryBuffer's methods.
+type EntryBufferer interface {
+	// DeleteText deletes a sequence of characters from the buffer.
 	DeleteText(position uint, nChars int) uint
+	// EmitDeletedText: used when subclassing `GtkEntryBuffer`.
 	EmitDeletedText(position uint, nChars uint)
+	// EmitInsertedText: used when subclassing `GtkEntryBuffer`.
 	EmitInsertedText(position uint, chars string, nChars uint)
+	// Bytes retrieves the length in bytes of the buffer.
 	Bytes() uint
+	// Length retrieves the length in characters of the buffer.
 	Length() uint
+	// MaxLength retrieves the maximum allowed length of the text in @buffer.
 	MaxLength() int
+	// Text retrieves the contents of the buffer.
 	Text() string
+	// InsertText inserts @n_chars characters of @chars into the contents of the
+	// buffer, at position @position.
 	InsertText(position uint, chars string, nChars int) uint
+	// SetMaxLength sets the maximum allowed length of the contents of the
+	// buffer.
 	SetMaxLength(maxLength int)
+	// SetText sets the text in the buffer.
 	SetText(chars string, nChars int)
 }
 
@@ -84,18 +97,21 @@ type EntryBuffer struct {
 	*externglib.Object
 }
 
-var _ EntryBufferrer = (*EntryBuffer)(nil)
+var (
+	_ EntryBufferer   = (*EntryBuffer)(nil)
+	_ gextras.Nativer = (*EntryBuffer)(nil)
+)
 
-func wrapEntryBufferrer(obj *externglib.Object) EntryBufferrer {
+func wrapEntryBuffer(obj *externglib.Object) EntryBufferer {
 	return &EntryBuffer{
 		Object: obj,
 	}
 }
 
-func marshalEntryBufferrer(p uintptr) (interface{}, error) {
+func marshalEntryBufferer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryBufferrer(obj), nil
+	return wrapEntryBuffer(obj), nil
 }
 
 // NewEntryBuffer: create a new `GtkEntryBuffer` object.

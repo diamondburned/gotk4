@@ -29,42 +29,50 @@ func init() {
 
 // FontSelectioner describes FontSelection's methods.
 type FontSelectioner interface {
-	gextras.Objector
-
+	// Face gets the FontFace representing the selected font group details (i.e.
 	Face() *pango.FontFace
+	// FaceList: this returns the TreeView which lists all styles available for
+	// the selected font.
 	FaceList() *Widget
+	// Family gets the FontFamily representing the selected font family.
 	Family() *pango.FontFamily
+	// FamilyList: this returns the TreeView that lists font families, for
+	// example, “Sans”, “Serif”, etc.
 	FamilyList() *Widget
+	// FontName gets the currently-selected font name.
 	FontName() string
+	// PreviewEntry: this returns the Entry used to display the font as a
+	// preview.
 	PreviewEntry() *Widget
+	// PreviewText gets the text displayed in the preview area.
 	PreviewText() string
+	// Size: selected font size.
 	Size() int
+	// SizeEntry: this returns the Entry used to allow the user to edit the font
+	// number manually instead of selecting it from the list of font sizes.
 	SizeEntry() *Widget
+	// SizeList: this returns the TreeView used to list font sizes.
 	SizeList() *Widget
+	// SetFontName sets the currently-selected font.
 	SetFontName(fontname string) bool
+	// SetPreviewText sets the text displayed in the preview area.
 	SetPreviewText(text string)
 }
 
 type FontSelection struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ FontSelectioner = (*FontSelection)(nil)
+var (
+	_ FontSelectioner = (*FontSelection)(nil)
+	_ gextras.Nativer = (*FontSelection)(nil)
+)
 
-func wrapFontSelectioner(obj *externglib.Object) FontSelectioner {
+func wrapFontSelection(obj *externglib.Object) FontSelectioner {
 	return &FontSelection{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -75,31 +83,10 @@ func wrapFontSelectioner(obj *externglib.Object) FontSelectioner {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -107,7 +94,7 @@ func wrapFontSelectioner(obj *externglib.Object) FontSelectioner {
 func marshalFontSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontSelectioner(obj), nil
+	return wrapFontSelection(obj), nil
 }
 
 // NewFontSelection creates a new FontSelection.
@@ -262,7 +249,7 @@ func (fontsel *FontSelection) PreviewText() string {
 	return _utf8
 }
 
-// Size: the selected font size.
+// Size: selected font size.
 //
 // Deprecated: Use FontChooser.
 func (fontsel *FontSelection) Size() int {
@@ -361,40 +348,38 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 
 // FontSelectionDialogger describes FontSelectionDialog's methods.
 type FontSelectionDialogger interface {
-	gextras.Objector
-
+	// CancelButton gets the “Cancel” button.
 	CancelButton() *Widget
+	// FontName gets the currently-selected font name.
 	FontName() string
+	// FontSelection retrieves the FontSelection widget embedded in the dialog.
 	FontSelection() *Widget
+	// OkButton gets the “OK” button.
 	OkButton() *Widget
+	// PreviewText gets the text displayed in the preview area.
 	PreviewText() string
+	// SetFontName sets the currently selected font.
 	SetFontName(fontname string) bool
+	// SetPreviewText sets the text displayed in the preview area.
 	SetPreviewText(text string)
 }
 
 type FontSelectionDialog struct {
-	*externglib.Object
-
 	Dialog
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ FontSelectionDialogger = (*FontSelectionDialog)(nil)
+var (
+	_ FontSelectionDialogger = (*FontSelectionDialog)(nil)
+	_ gextras.Nativer        = (*FontSelectionDialog)(nil)
+)
 
-func wrapFontSelectionDialogger(obj *externglib.Object) FontSelectionDialogger {
+func wrapFontSelectionDialog(obj *externglib.Object) FontSelectionDialogger {
 	return &FontSelectionDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -405,39 +390,9 @@ func wrapFontSelectionDialogger(obj *externglib.Object) FontSelectionDialogger {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -445,7 +400,7 @@ func wrapFontSelectionDialogger(obj *externglib.Object) FontSelectionDialogger {
 func marshalFontSelectionDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontSelectionDialogger(obj), nil
+	return wrapFontSelectionDialog(obj), nil
 }
 
 // NewFontSelectionDialog creates a new FontSelectionDialog.

@@ -20,7 +20,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_filter_change_get_type()), F: marshalFilterChange},
 		{T: externglib.Type(C.gtk_filter_match_get_type()), F: marshalFilterMatch},
-		{T: externglib.Type(C.gtk_filter_get_type()), F: marshalFilterrer},
+		{T: externglib.Type(C.gtk_filter_get_type()), F: marshalFilterer},
 	})
 }
 
@@ -32,14 +32,14 @@ func init() {
 type FilterChange int
 
 const (
-	// Different: the filter change cannot be described with any of the other
+	// Different: filter change cannot be described with any of the other
 	// enumeration values.
 	FilterChangeDifferent FilterChange = iota
-	// LessStrict: the filter is less strict than it was before: All items that
-	// it used to return true for still return true, others now may, too.
+	// LessStrict: filter is less strict than it was before: All items that it
+	// used to return true for still return true, others now may, too.
 	FilterChangeLessStrict
-	// MoreStrict: the filter is more strict than it was before: All items that
-	// it used to return false for still return false, others now may, too.
+	// MoreStrict: filter is more strict than it was before: All items that it
+	// used to return false for still return false, others now may, too.
 	FilterChangeMoreStrict
 )
 
@@ -55,14 +55,13 @@ func marshalFilterChange(p uintptr) (interface{}, error) {
 type FilterMatch int
 
 const (
-	// Some: the filter matches some items, gtk_filter_match() may return true
-	// or false
+	// Some: filter matches some items, gtk_filter_match() may return true or
+	// false
 	FilterMatchSome FilterMatch = iota
-	// None: the filter does not match any item, gtk_filter_match() will always
+	// None: filter does not match any item, gtk_filter_match() will always
 	// return false.
 	FilterMatchNone
-	// All: the filter matches all items, gtk_filter_match() will alays return
-	// true.
+	// All: filter matches all items, gtk_filter_match() will alays return true.
 	FilterMatchAll
 )
 
@@ -70,11 +69,11 @@ func marshalFilterMatch(p uintptr) (interface{}, error) {
 	return FilterMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FilterrerOverrider contains methods that are overridable.
+// FilterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FilterrerOverrider interface {
+type FilterOverrider interface {
 	// Strictness gets the known strictness of @filters. If the strictness is
 	// not known, GTK_FILTER_MATCH_SOME is returned.
 	//
@@ -87,11 +86,11 @@ type FilterrerOverrider interface {
 	Match(item gextras.Objector) bool
 }
 
-// Filterrer describes Filter's methods.
-type Filterrer interface {
-	gextras.Objector
-
+// Filterer describes Filter's methods.
+type Filterer interface {
+	// Strictness gets the known strictness of @filters.
 	Strictness() FilterMatch
+	// Match checks if the given @item is matched by the filter or not.
 	Match(item gextras.Objector) bool
 }
 
@@ -117,18 +116,21 @@ type Filter struct {
 	*externglib.Object
 }
 
-var _ Filterrer = (*Filter)(nil)
+var (
+	_ Filterer        = (*Filter)(nil)
+	_ gextras.Nativer = (*Filter)(nil)
+)
 
-func wrapFilterrer(obj *externglib.Object) Filterrer {
+func wrapFilter(obj *externglib.Object) Filterer {
 	return &Filter{
 		Object: obj,
 	}
 }
 
-func marshalFilterrer(p uintptr) (interface{}, error) {
+func marshalFilterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilterrer(obj), nil
+	return wrapFilter(obj), nil
 }
 
 // Strictness gets the known strictness of @filters. If the strictness is not

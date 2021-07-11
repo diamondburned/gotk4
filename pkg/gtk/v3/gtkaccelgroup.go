@@ -137,11 +137,16 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 
 // AccelGrouper describes AccelGroup's methods.
 type AccelGrouper interface {
-	gextras.Objector
-
+	// IsLocked locks are added and removed using gtk_accel_group_lock() and
+	// gtk_accel_group_unlock().
 	IsLocked() bool
+	// ModifierMask gets a ModifierType representing the mask for this
+	// @accel_group.
 	ModifierMask() gdk.ModifierType
+	// Lock locks the given accelerator group.
 	Lock()
+	// Unlock undoes the last call to gtk_accel_group_lock() on this
+	// @accel_group.
 	Unlock()
 }
 
@@ -162,9 +167,12 @@ type AccelGroup struct {
 	*externglib.Object
 }
 
-var _ AccelGrouper = (*AccelGroup)(nil)
+var (
+	_ AccelGrouper    = (*AccelGroup)(nil)
+	_ gextras.Nativer = (*AccelGroup)(nil)
+)
 
-func wrapAccelGrouper(obj *externglib.Object) AccelGrouper {
+func wrapAccelGroup(obj *externglib.Object) AccelGrouper {
 	return &AccelGroup{
 		Object: obj,
 	}
@@ -173,7 +181,7 @@ func wrapAccelGrouper(obj *externglib.Object) AccelGrouper {
 func marshalAccelGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccelGrouper(obj), nil
+	return wrapAccelGroup(obj), nil
 }
 
 // NewAccelGroup creates a new AccelGroup.

@@ -24,8 +24,6 @@ func init() {
 
 // GestureClicker describes GestureClick's methods.
 type GestureClicker interface {
-	gextras.Objector
-
 	privateGestureClick()
 }
 
@@ -40,9 +38,12 @@ type GestureClick struct {
 	GestureSingle
 }
 
-var _ GestureClicker = (*GestureClick)(nil)
+var (
+	_ GestureClicker  = (*GestureClick)(nil)
+	_ gextras.Nativer = (*GestureClick)(nil)
+)
 
-func wrapGestureClicker(obj *externglib.Object) GestureClicker {
+func wrapGestureClick(obj *externglib.Object) GestureClicker {
 	return &GestureClick{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -57,7 +58,7 @@ func wrapGestureClicker(obj *externglib.Object) GestureClicker {
 func marshalGestureClicker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureClicker(obj), nil
+	return wrapGestureClick(obj), nil
 }
 
 // NewGestureClick returns a newly created `GtkGesture` that recognizes single

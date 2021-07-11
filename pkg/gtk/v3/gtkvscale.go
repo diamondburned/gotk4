@@ -27,38 +27,30 @@ func init() {
 
 // VScaler describes VScale's methods.
 type VScaler interface {
-	gextras.Objector
-
 	privateVScale()
 }
 
-// VScale: the VScale widget is used to allow the user to select a value using a
-// vertical slider. To create one, use gtk_hscale_new_with_range().
+// VScale widget is used to allow the user to select a value using a vertical
+// slider. To create one, use gtk_hscale_new_with_range().
 //
 // The position to show the current value, and the number of decimal places
 // shown can be set using the parent Scale class’s functions.
 //
 // GtkVScale has been deprecated, use Scale instead.
 type VScale struct {
-	*externglib.Object
-
 	Scale
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ VScaler = (*VScale)(nil)
+var (
+	_ VScaler         = (*VScale)(nil)
+	_ gextras.Nativer = (*VScale)(nil)
+)
 
-func wrapVScaler(obj *externglib.Object) VScaler {
+func wrapVScale(obj *externglib.Object) VScaler {
 	return &VScale{
-		Object: obj,
 		Scale: Scale{
-			Object: obj,
 			Range: Range{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -69,34 +61,10 @@ func wrapVScaler(obj *externglib.Object) VScaler {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			Orientable: Orientable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -104,7 +72,7 @@ func wrapVScaler(obj *externglib.Object) VScaler {
 func marshalVScaler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVScaler(obj), nil
+	return wrapVScale(obj), nil
 }
 
 // NewVScale creates a new VScale.
@@ -114,7 +82,7 @@ func NewVScale(adjustment Adjustmenter) *VScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_vscale_new(_arg1)
 

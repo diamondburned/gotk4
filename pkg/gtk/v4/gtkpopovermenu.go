@@ -40,11 +40,14 @@ func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
 
 // PopoverMenuer describes PopoverMenu's methods.
 type PopoverMenuer interface {
-	gextras.Objector
-
+	// AddChild adds a custom widget to a generated menu.
 	AddChild(child Widgetter, id string) bool
+	// MenuModel returns the menu model used to populate the popover.
 	MenuModel() *gio.MenuModel
+	// RemoveChild removes a widget that has previously been added with
+	// gtk_popover_menu_add_child().
 	RemoveChild(child Widgetter) bool
+	// SetMenuModel sets a new menu model on @popover.
 	SetMenuModel(model gio.MenuModeller)
 }
 
@@ -137,25 +140,18 @@ type PopoverMenuer interface {
 // GTK_ACCESSIBLE_ROLE_MENU_ITEM_RADIO roles, depending on the action they are
 // connected to.
 type PopoverMenu struct {
-	*externglib.Object
-
 	Popover
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	ShortcutManager
 }
 
-var _ PopoverMenuer = (*PopoverMenu)(nil)
+var (
+	_ PopoverMenuer   = (*PopoverMenu)(nil)
+	_ gextras.Nativer = (*PopoverMenu)(nil)
+)
 
-func wrapPopoverMenuer(obj *externglib.Object) PopoverMenuer {
+func wrapPopoverMenu(obj *externglib.Object) PopoverMenuer {
 	return &PopoverMenu{
-		Object: obj,
 		Popover: Popover{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -169,19 +165,8 @@ func wrapPopoverMenuer(obj *externglib.Object) PopoverMenuer {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
 			Native: Native{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -200,43 +185,13 @@ func wrapPopoverMenuer(obj *externglib.Object) PopoverMenuer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		ShortcutManager: ShortcutManager{
-			Object: obj,
-		},
 	}
 }
 
 func marshalPopoverMenuer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopoverMenuer(obj), nil
+	return wrapPopoverMenu(obj), nil
 }
 
 // NewPopoverMenuFromModel creates a `GtkPopoverMenu` and populates it according
@@ -256,7 +211,7 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_popover_menu_new_from_model(_arg1)
 
@@ -278,7 +233,7 @@ func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -317,7 +272,7 @@ func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_popover_menu_remove_child(_arg0, _arg1)
 
@@ -339,7 +294,7 @@ func (popover *PopoverMenu) SetMenuModel(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_popover_menu_set_menu_model(_arg0, _arg1)
 }

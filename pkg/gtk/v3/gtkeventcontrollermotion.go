@@ -26,8 +26,6 @@ func init() {
 
 // EventControllerMotioner describes EventControllerMotion's methods.
 type EventControllerMotioner interface {
-	gextras.Objector
-
 	privateEventControllerMotion()
 }
 
@@ -39,9 +37,12 @@ type EventControllerMotion struct {
 	EventController
 }
 
-var _ EventControllerMotioner = (*EventControllerMotion)(nil)
+var (
+	_ EventControllerMotioner = (*EventControllerMotion)(nil)
+	_ gextras.Nativer         = (*EventControllerMotion)(nil)
+)
 
-func wrapEventControllerMotioner(obj *externglib.Object) EventControllerMotioner {
+func wrapEventControllerMotion(obj *externglib.Object) EventControllerMotioner {
 	return &EventControllerMotion{
 		EventController: EventController{
 			Object: obj,
@@ -52,7 +53,7 @@ func wrapEventControllerMotioner(obj *externglib.Object) EventControllerMotioner
 func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerMotioner(obj), nil
+	return wrapEventControllerMotion(obj), nil
 }
 
 // NewEventControllerMotion creates a new event controller that will handle
@@ -61,7 +62,7 @@ func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_event_controller_motion_new(_arg1)
 

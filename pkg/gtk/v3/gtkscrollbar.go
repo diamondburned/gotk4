@@ -27,13 +27,11 @@ func init() {
 
 // Scrollbarrer describes Scrollbar's methods.
 type Scrollbarrer interface {
-	gextras.Objector
-
 	privateScrollbar()
 }
 
-// Scrollbar: the Scrollbar widget is a horizontal or vertical scrollbar,
-// depending on the value of the Orientable:orientation property.
+// Scrollbar widget is a horizontal or vertical scrollbar, depending on the
+// value of the Orientable:orientation property.
 //
 // Its position and movement are controlled by the adjustment that is passed to
 // or created by gtk_scrollbar_new(). See Adjustment for more details. The
@@ -71,23 +69,18 @@ type Scrollbarrer interface {
 // classes related to overlay scrolling (.overlay-indicator, .dragging,
 // .hovering).
 type Scrollbar struct {
-	*externglib.Object
-
 	Range
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ Scrollbarrer = (*Scrollbar)(nil)
+var (
+	_ Scrollbarrer    = (*Scrollbar)(nil)
+	_ gextras.Nativer = (*Scrollbar)(nil)
+)
 
-func wrapScrollbarrer(obj *externglib.Object) Scrollbarrer {
+func wrapScrollbar(obj *externglib.Object) Scrollbarrer {
 	return &Scrollbar{
-		Object: obj,
 		Range: Range{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -98,24 +91,9 @@ func wrapScrollbarrer(obj *externglib.Object) Scrollbarrer {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -123,7 +101,7 @@ func wrapScrollbarrer(obj *externglib.Object) Scrollbarrer {
 func marshalScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrollbarrer(obj), nil
+	return wrapScrollbar(obj), nil
 }
 
 func (*Scrollbar) privateScrollbar() {}

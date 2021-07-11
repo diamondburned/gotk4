@@ -404,9 +404,9 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	}
 
 	if value.ManualCast {
-		if !value.Resolved.NeedsNamespace(conv.currentNamespace) {
+		if !value.NeedsNamespace {
 			value.p.LineTmpl(m,
-				`<.Value.OutSet> = <.Value.OutPtr 1>wrap<-.Value.Resolved.PublicType false->
+				`<.Value.OutSet> = <.Value.OutPtr 1><.Value.Resolved.WrapName false ->
 				              (externglib.<f>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))`,
 			)
 			return true

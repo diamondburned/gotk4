@@ -58,15 +58,28 @@ func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 
 // FrameClocker describes FrameClock's methods.
 type FrameClocker interface {
-	gextras.Objector
-
+	// BeginUpdating starts updates for an animation.
 	BeginUpdating()
+	// EndUpdating stops updates for an animation.
 	EndUpdating()
+	// CurrentTimings gets the frame timings for the current frame.
 	CurrentTimings() *FrameTimings
+	// FrameCounter maintains a 64-bit counter that increments for each frame
+	// drawn.
 	FrameCounter() int64
+	// FrameTime gets the time that should currently be used for animations.
 	FrameTime() int64
+	// HistoryStart internally keeps a history of FrameTimings objects for
+	// recent frames that can be retrieved with gdk_frame_clock_get_timings().
 	HistoryStart() int64
+	// RefreshInfo: using the frame history stored in the frame clock, finds the
+	// last known presentation time and refresh interval, and assuming that
+	// presentation times are separated by the refresh interval, predicts a
+	// presentation time that is a multiple of the refresh interval after the
+	// last presentation time, and later than @base_time.
 	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
+	// Timings retrieves a FrameTimings object holding timing information for
+	// the current frame or a recent frame.
 	Timings(frameCounter int64) *FrameTimings
 }
 
@@ -103,9 +116,12 @@ type FrameClock struct {
 	*externglib.Object
 }
 
-var _ FrameClocker = (*FrameClock)(nil)
+var (
+	_ FrameClocker    = (*FrameClock)(nil)
+	_ gextras.Nativer = (*FrameClock)(nil)
+)
 
-func wrapFrameClocker(obj *externglib.Object) FrameClocker {
+func wrapFrameClock(obj *externglib.Object) FrameClocker {
 	return &FrameClock{
 		Object: obj,
 	}
@@ -114,7 +130,7 @@ func wrapFrameClocker(obj *externglib.Object) FrameClocker {
 func marshalFrameClocker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFrameClocker(obj), nil
+	return wrapFrameClock(obj), nil
 }
 
 // BeginUpdating starts updates for an animation. Until a matching call to

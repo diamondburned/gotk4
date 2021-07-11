@@ -18,28 +18,27 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_manager_get_type()), F: marshalShortcutManagerrer},
+		{T: externglib.Type(C.gtk_shortcut_manager_get_type()), F: marshalShortcutManagerer},
 	})
 }
 
-// ShortcutManagerrerOverrider contains methods that are overridable.
+// ShortcutManagerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ShortcutManagerrerOverrider interface {
-	AddController(controller ShortcutControllerrer)
-	RemoveController(controller ShortcutControllerrer)
+type ShortcutManagerOverrider interface {
+	AddController(controller ShortcutControllerer)
+
+	RemoveController(controller ShortcutControllerer)
 }
 
-// ShortcutManagerrer describes ShortcutManager's methods.
-type ShortcutManagerrer interface {
-	gextras.Objector
-
+// ShortcutManagerer describes ShortcutManager's methods.
+type ShortcutManagerer interface {
 	privateShortcutManager()
 }
 
-// ShortcutManager: the `GtkShortcutManager` interface is used to implement
-// shortcut scopes.
+// ShortcutManager: `GtkShortcutManager` interface is used to implement shortcut
+// scopes.
 //
 // This is important for [iface@Gtk.Native] widgets that have their own surface,
 // since the event controllers that are used to implement managed and global
@@ -54,18 +53,21 @@ type ShortcutManager struct {
 	*externglib.Object
 }
 
-var _ ShortcutManagerrer = (*ShortcutManager)(nil)
+var (
+	_ ShortcutManagerer = (*ShortcutManager)(nil)
+	_ gextras.Nativer   = (*ShortcutManager)(nil)
+)
 
-func wrapShortcutManagerrer(obj *externglib.Object) ShortcutManagerrer {
+func wrapShortcutManager(obj *externglib.Object) ShortcutManagerer {
 	return &ShortcutManager{
 		Object: obj,
 	}
 }
 
-func marshalShortcutManagerrer(p uintptr) (interface{}, error) {
+func marshalShortcutManagerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutManagerrer(obj), nil
+	return wrapShortcutManager(obj), nil
 }
 
 func (*ShortcutManager) privateShortcutManager() {}

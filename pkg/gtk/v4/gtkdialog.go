@@ -79,11 +79,11 @@ func marshalDialogFlags(p uintptr) (interface{}, error) {
 	return DialogFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DialoggerOverrider contains methods that are overridable.
+// DialogOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DialoggerOverrider interface {
+type DialogOverrider interface {
 	Close()
 	// Response emits the ::response signal with the given response ID.
 	//
@@ -93,16 +93,28 @@ type DialoggerOverrider interface {
 
 // Dialogger describes Dialog's methods.
 type Dialogger interface {
-	gextras.Objector
-
+	// AddActionWidget adds an activatable widget to the action area of a
+	// `GtkDialog`.
 	AddActionWidget(child Widgetter, responseId int)
+	// AddButton adds a button with the given text.
 	AddButton(buttonText string, responseId int) *Widget
+	// ContentArea returns the content area of @dialog.
 	ContentArea() *Box
+	// HeaderBar returns the header bar of @dialog.
 	HeaderBar() *HeaderBar
+	// ResponseForWidget gets the response id of a widget in the action area of
+	// a dialog.
 	ResponseForWidget(widget Widgetter) int
+	// WidgetForResponse gets the widget button that uses the given response ID
+	// in the action area of a dialog.
 	WidgetForResponse(responseId int) *Widget
+	// Response emits the ::response signal with the given response ID.
 	Response(responseId int)
+	// SetDefaultResponse sets the default widget for the dialog based on the
+	// response ID.
 	SetDefaultResponse(responseId int)
+	// SetResponseSensitive: convenient way to sensitize/desensitize dialog
+	// buttons.
 	SetResponseSensitive(responseId int, setting bool)
 }
 
@@ -210,26 +222,18 @@ type Dialogger interface {
 //
 // `GtkDialog` uses the GTK_ACCESSIBLE_ROLE_DIALOG role.
 type Dialog struct {
-	*externglib.Object
-
 	Window
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
 }
 
-var _ Dialogger = (*Dialog)(nil)
+var (
+	_ Dialogger       = (*Dialog)(nil)
+	_ gextras.Nativer = (*Dialog)(nil)
+)
 
-func wrapDialogger(obj *externglib.Object) Dialogger {
+func wrapDialog(obj *externglib.Object) Dialogger {
 	return &Dialog{
-		Object: obj,
 		Window: Window{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -243,39 +247,9 @@ func wrapDialogger(obj *externglib.Object) Dialogger {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
 			Root: Root{
-				Object: obj,
 				Native: Native{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -290,91 +264,10 @@ func wrapDialogger(obj *externglib.Object) Dialogger {
 						},
 					},
 				},
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		Root: Root{
-			Object: obj,
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		ShortcutManager: ShortcutManager{
-			Object: obj,
 		},
 	}
 }
@@ -382,7 +275,7 @@ func wrapDialogger(obj *externglib.Object) Dialogger {
 func marshalDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDialogger(obj), nil
+	return wrapDialog(obj), nil
 }
 
 // NewDialog creates a new dialog box.
@@ -416,7 +309,7 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg2 C.int        // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.int(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
@@ -491,7 +384,7 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _cret C.int        // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 

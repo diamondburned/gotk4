@@ -24,8 +24,6 @@ func init() {
 
 // ShortcutsWindowwer describes ShortcutsWindow's methods.
 type ShortcutsWindowwer interface {
-	gextras.Objector
-
 	privateShortcutsWindow()
 }
 
@@ -74,26 +72,18 @@ type ShortcutsWindowwer interface {
 // The .ui file for this example can be found here
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
 type ShortcutsWindow struct {
-	*externglib.Object
-
 	Window
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
 }
 
-var _ ShortcutsWindowwer = (*ShortcutsWindow)(nil)
+var (
+	_ ShortcutsWindowwer = (*ShortcutsWindow)(nil)
+	_ gextras.Nativer    = (*ShortcutsWindow)(nil)
+)
 
-func wrapShortcutsWindowwer(obj *externglib.Object) ShortcutsWindowwer {
+func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindowwer {
 	return &ShortcutsWindow{
-		Object: obj,
 		Window: Window{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -107,39 +97,9 @@ func wrapShortcutsWindowwer(obj *externglib.Object) ShortcutsWindowwer {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
 			Root: Root{
-				Object: obj,
 				Native: Native{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -154,91 +114,10 @@ func wrapShortcutsWindowwer(obj *externglib.Object) ShortcutsWindowwer {
 						},
 					},
 				},
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		Root: Root{
-			Object: obj,
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		ShortcutManager: ShortcutManager{
-			Object: obj,
 		},
 	}
 }
@@ -246,7 +125,7 @@ func wrapShortcutsWindowwer(obj *externglib.Object) ShortcutsWindowwer {
 func marshalShortcutsWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsWindowwer(obj), nil
+	return wrapShortcutsWindow(obj), nil
 }
 
 func (*ShortcutsWindow) privateShortcutsWindow() {}

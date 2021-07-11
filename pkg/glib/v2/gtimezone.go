@@ -32,11 +32,11 @@ func init() {
 type TimeType int
 
 const (
-	// Standard: the time is in local standard time
+	// Standard: time is in local standard time
 	TimeTypeStandard TimeType = iota
-	// Daylight: the time is in local daylight time
+	// Daylight: time is in local daylight time
 	TimeTypeDaylight
-	// Universal: the time is in UTC
+	// Universal: time is in UTC
 	TimeTypeUniversal
 )
 

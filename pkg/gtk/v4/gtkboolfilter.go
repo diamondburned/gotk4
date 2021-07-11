@@ -18,17 +18,21 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bool_filter_get_type()), F: marshalBoolFilterrer},
+		{T: externglib.Type(C.gtk_bool_filter_get_type()), F: marshalBoolFilterer},
 	})
 }
 
-// BoolFilterrer describes BoolFilter's methods.
-type BoolFilterrer interface {
-	gextras.Objector
-
+// BoolFilterer describes BoolFilter's methods.
+type BoolFilterer interface {
+	// Expression gets the expression that the filter uses to evaluate if an
+	// item should be filtered.
 	Expression() *Expression
+	// Invert returns whether the filter inverts the expression.
 	Invert() bool
+	// SetExpression sets the expression that the filter uses to check if items
+	// should be filtered.
 	SetExpression(expression Expressioner)
+	// SetInvert sets whether the filter should invert the expression.
 	SetInvert(invert bool)
 }
 
@@ -38,9 +42,12 @@ type BoolFilter struct {
 	Filter
 }
 
-var _ BoolFilterrer = (*BoolFilter)(nil)
+var (
+	_ BoolFilterer    = (*BoolFilter)(nil)
+	_ gextras.Nativer = (*BoolFilter)(nil)
+)
 
-func wrapBoolFilterrer(obj *externglib.Object) BoolFilterrer {
+func wrapBoolFilter(obj *externglib.Object) BoolFilterer {
 	return &BoolFilter{
 		Filter: Filter{
 			Object: obj,
@@ -48,10 +55,10 @@ func wrapBoolFilterrer(obj *externglib.Object) BoolFilterrer {
 	}
 }
 
-func marshalBoolFilterrer(p uintptr) (interface{}, error) {
+func marshalBoolFilterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBoolFilterrer(obj), nil
+	return wrapBoolFilter(obj), nil
 }
 
 // NewBoolFilter creates a new bool filter.
@@ -59,7 +66,7 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 	var _arg1 *C.GtkExpression // out
 	var _cret *C.GtkBoolFilter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_bool_filter_new(_arg1)
 
@@ -114,7 +121,7 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 	var _arg1 *C.GtkExpression // out
 
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	C.gtk_bool_filter_set_expression(_arg0, _arg1)
 }

@@ -26,8 +26,8 @@ func init() {
 
 // TextChildAnchorrer describes TextChildAnchor's methods.
 type TextChildAnchorrer interface {
-	gextras.Objector
-
+	// Deleted determines whether a child anchor has been deleted from the
+	// buffer.
 	Deleted() bool
 }
 
@@ -38,9 +38,12 @@ type TextChildAnchor struct {
 	*externglib.Object
 }
 
-var _ TextChildAnchorrer = (*TextChildAnchor)(nil)
+var (
+	_ TextChildAnchorrer = (*TextChildAnchor)(nil)
+	_ gextras.Nativer    = (*TextChildAnchor)(nil)
+)
 
-func wrapTextChildAnchorrer(obj *externglib.Object) TextChildAnchorrer {
+func wrapTextChildAnchor(obj *externglib.Object) TextChildAnchorrer {
 	return &TextChildAnchor{
 		Object: obj,
 	}
@@ -49,7 +52,7 @@ func wrapTextChildAnchorrer(obj *externglib.Object) TextChildAnchorrer {
 func marshalTextChildAnchorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextChildAnchorrer(obj), nil
+	return wrapTextChildAnchor(obj), nil
 }
 
 // NewTextChildAnchor creates a new TextChildAnchor. Usually you would then

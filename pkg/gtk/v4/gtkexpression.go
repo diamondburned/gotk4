@@ -91,7 +91,7 @@ func ValueSetExpression(value *externglib.Value, expression Expressioner) {
 	var _arg2 *C.GtkExpression // out
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	C.gtk_value_set_expression(_arg1, _arg2)
 }
@@ -104,15 +104,13 @@ func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 	var _arg2 *C.GtkExpression // out
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	C.gtk_value_take_expression(_arg1, _arg2)
 }
 
 // CClosureExpressioner describes CClosureExpression's methods.
 type CClosureExpressioner interface {
-	gextras.Objector
-
 	privateCClosureExpression()
 }
 
@@ -121,9 +119,12 @@ type CClosureExpression struct {
 	Expression
 }
 
-var _ CClosureExpressioner = (*CClosureExpression)(nil)
+var (
+	_ CClosureExpressioner = (*CClosureExpression)(nil)
+	_ gextras.Nativer      = (*CClosureExpression)(nil)
+)
 
-func wrapCClosureExpressioner(obj *externglib.Object) CClosureExpressioner {
+func wrapCClosureExpression(obj *externglib.Object) CClosureExpressioner {
 	return &CClosureExpression{
 		Expression: Expression{
 			Object: obj,
@@ -134,15 +135,13 @@ func wrapCClosureExpressioner(obj *externglib.Object) CClosureExpressioner {
 func marshalCClosureExpressioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCClosureExpressioner(obj), nil
+	return wrapCClosureExpression(obj), nil
 }
 
 func (*CClosureExpression) privateCClosureExpression() {}
 
 // ClosureExpressioner describes ClosureExpression's methods.
 type ClosureExpressioner interface {
-	gextras.Objector
-
 	privateClosureExpression()
 }
 
@@ -152,9 +151,12 @@ type ClosureExpression struct {
 	Expression
 }
 
-var _ ClosureExpressioner = (*ClosureExpression)(nil)
+var (
+	_ ClosureExpressioner = (*ClosureExpression)(nil)
+	_ gextras.Nativer     = (*ClosureExpression)(nil)
+)
 
-func wrapClosureExpressioner(obj *externglib.Object) ClosureExpressioner {
+func wrapClosureExpression(obj *externglib.Object) ClosureExpressioner {
 	return &ClosureExpression{
 		Expression: Expression{
 			Object: obj,
@@ -165,15 +167,14 @@ func wrapClosureExpressioner(obj *externglib.Object) ClosureExpressioner {
 func marshalClosureExpressioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapClosureExpressioner(obj), nil
+	return wrapClosureExpression(obj), nil
 }
 
 func (*ClosureExpression) privateClosureExpression() {}
 
 // ConstantExpressioner describes ConstantExpression's methods.
 type ConstantExpressioner interface {
-	gextras.Objector
-
+	// Value gets the value that a constant expression evaluates to.
 	Value() *externglib.Value
 }
 
@@ -182,9 +183,12 @@ type ConstantExpression struct {
 	Expression
 }
 
-var _ ConstantExpressioner = (*ConstantExpression)(nil)
+var (
+	_ ConstantExpressioner = (*ConstantExpression)(nil)
+	_ gextras.Nativer      = (*ConstantExpression)(nil)
+)
 
-func wrapConstantExpressioner(obj *externglib.Object) ConstantExpressioner {
+func wrapConstantExpression(obj *externglib.Object) ConstantExpressioner {
 	return &ConstantExpression{
 		Expression: Expression{
 			Object: obj,
@@ -195,7 +199,7 @@ func wrapConstantExpressioner(obj *externglib.Object) ConstantExpressioner {
 func marshalConstantExpressioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstantExpressioner(obj), nil
+	return wrapConstantExpression(obj), nil
 }
 
 // NewConstantExpressionForValue creates an expression that always evaluates to
@@ -233,13 +237,18 @@ func (expression *ConstantExpression) Value() *externglib.Value {
 
 // Expressioner describes Expression's methods.
 type Expressioner interface {
-	gextras.Objector
-
+	// Bind `target`'s property named `property` to `self`.
 	Bind(target gextras.Objector, property string, this_ gextras.Objector) *ExpressionWatch
+	// Evaluate evaluates the given expression and on success stores the result
+	// in @value.
 	Evaluate(this_ gextras.Objector, value *externglib.Value) bool
+	// ValueType gets the `GType` that this expression evaluates to.
 	ValueType() externglib.Type
+	// IsStatic checks if the expression is static.
 	IsStatic() bool
+	// Ref acquires a reference on the given `GtkExpression`.
 	ref() *Expression
+	// Unref releases a reference on the given `GtkExpression`.
 	unref()
 }
 
@@ -362,9 +371,12 @@ type Expression struct {
 	*externglib.Object
 }
 
-var _ Expressioner = (*Expression)(nil)
+var (
+	_ Expressioner    = (*Expression)(nil)
+	_ gextras.Nativer = (*Expression)(nil)
+)
 
-func wrapExpressioner(obj *externglib.Object) Expressioner {
+func wrapExpression(obj *externglib.Object) Expressioner {
 	return &Expression{
 		Object: obj,
 	}
@@ -373,7 +385,7 @@ func wrapExpressioner(obj *externglib.Object) Expressioner {
 func marshalExpressioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapExpressioner(obj), nil
+	return wrapExpression(obj), nil
 }
 
 // Bind `target`'s property named `property` to `self`.
@@ -516,8 +528,7 @@ func (self *Expression) unref() {
 
 // ObjectExpressioner describes ObjectExpression's methods.
 type ObjectExpressioner interface {
-	gextras.Objector
-
+	// Object gets the object that the expression evaluates to.
 	Object() *externglib.Object
 }
 
@@ -526,9 +537,12 @@ type ObjectExpression struct {
 	Expression
 }
 
-var _ ObjectExpressioner = (*ObjectExpression)(nil)
+var (
+	_ ObjectExpressioner = (*ObjectExpression)(nil)
+	_ gextras.Nativer    = (*ObjectExpression)(nil)
+)
 
-func wrapObjectExpressioner(obj *externglib.Object) ObjectExpressioner {
+func wrapObjectExpression(obj *externglib.Object) ObjectExpressioner {
 	return &ObjectExpression{
 		Expression: Expression{
 			Object: obj,
@@ -539,7 +553,7 @@ func wrapObjectExpressioner(obj *externglib.Object) ObjectExpressioner {
 func marshalObjectExpressioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapObjectExpressioner(obj), nil
+	return wrapObjectExpression(obj), nil
 }
 
 // NewObjectExpression creates an expression evaluating to the given `object`
@@ -584,8 +598,8 @@ func (expression *ObjectExpression) Object() *externglib.Object {
 
 // PropertyExpressioner describes PropertyExpression's methods.
 type PropertyExpressioner interface {
-	gextras.Objector
-
+	// GetExpression gets the expression specifying the object of a property
+	// expression.
 	GetExpression() *Expression
 }
 
@@ -594,9 +608,12 @@ type PropertyExpression struct {
 	Expression
 }
 
-var _ PropertyExpressioner = (*PropertyExpression)(nil)
+var (
+	_ PropertyExpressioner = (*PropertyExpression)(nil)
+	_ gextras.Nativer      = (*PropertyExpression)(nil)
+)
 
-func wrapPropertyExpressioner(obj *externglib.Object) PropertyExpressioner {
+func wrapPropertyExpression(obj *externglib.Object) PropertyExpressioner {
 	return &PropertyExpression{
 		Expression: Expression{
 			Object: obj,
@@ -607,7 +624,7 @@ func wrapPropertyExpressioner(obj *externglib.Object) PropertyExpressioner {
 func marshalPropertyExpressioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPropertyExpressioner(obj), nil
+	return wrapPropertyExpression(obj), nil
 }
 
 // NewPropertyExpression creates an expression that looks up a property via the
@@ -625,7 +642,7 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 	var _cret *C.GtkExpression // in
 
 	_arg1 = (C.GType)(thisType)
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 	_arg3 = (*C.char)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg3))
 

@@ -27,14 +27,12 @@ func init() {
 
 // FontChooserWidgetter describes FontChooserWidget's methods.
 type FontChooserWidgetter interface {
-	gextras.Objector
-
 	privateFontChooserWidget()
 }
 
-// FontChooserWidget: the FontChooserWidget widget lists the available fonts,
-// styles and sizes, allowing the user to select a font. It is used in the
-// FontChooserDialog widget to provide a dialog box for selecting fonts.
+// FontChooserWidget widget lists the available fonts, styles and sizes,
+// allowing the user to select a font. It is used in the FontChooserDialog
+// widget to provide a dialog box for selecting fonts.
 //
 // To set the font which is initially selected, use gtk_font_chooser_set_font()
 // or gtk_font_chooser_set_font_desc().
@@ -50,26 +48,21 @@ type FontChooserWidgetter interface {
 //
 // GtkFontChooserWidget has a single CSS node with name fontchooser.
 type FontChooserWidget struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
+
 	FontChooser
-	Orientable
 }
 
-var _ FontChooserWidgetter = (*FontChooserWidget)(nil)
+var (
+	_ FontChooserWidgetter = (*FontChooserWidget)(nil)
+	_ gextras.Nativer      = (*FontChooserWidget)(nil)
+)
 
-func wrapFontChooserWidgetter(obj *externglib.Object) FontChooserWidgetter {
+func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidgetter {
 	return &FontChooserWidget{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -80,33 +73,12 @@ func wrapFontChooserWidgetter(obj *externglib.Object) FontChooserWidgetter {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 		FontChooser: FontChooser{
-			Object: obj,
-		},
-		Orientable: Orientable{
 			Object: obj,
 		},
 	}
@@ -115,7 +87,7 @@ func wrapFontChooserWidgetter(obj *externglib.Object) FontChooserWidgetter {
 func marshalFontChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontChooserWidgetter(obj), nil
+	return wrapFontChooserWidget(obj), nil
 }
 
 // NewFontChooserWidget creates a new FontChooserWidget.
@@ -129,6 +101,12 @@ func NewFontChooserWidget() *FontChooserWidget {
 	_fontChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontChooserWidget)
 
 	return _fontChooserWidget
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FontChooserWidget) Native() uintptr {
+	return v.Box.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*FontChooserWidget) privateFontChooserWidget() {}

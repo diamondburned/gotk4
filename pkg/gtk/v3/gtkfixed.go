@@ -27,15 +27,15 @@ func init() {
 
 // Fixedder describes Fixed's methods.
 type Fixedder interface {
-	gextras.Objector
-
+	// Move moves a child of a Fixed container to the given position.
 	Move(widget Widgetter, x int, y int)
+	// Put adds a widget to a Fixed container at the given position.
 	Put(widget Widgetter, x int, y int)
 }
 
-// Fixed: the Fixed widget is a container which can place child widgets at fixed
-// positions and with fixed sizes, given in pixels. Fixed performs no automatic
-// layout management.
+// Fixed widget is a container which can place child widgets at fixed positions
+// and with fixed sizes, given in pixels. Fixed performs no automatic layout
+// management.
 //
 // For most applications, you should not use this container! It keeps you from
 // having to learn about the other GTK+ containers, but it results in broken
@@ -71,22 +71,18 @@ type Fixedder interface {
 // See also Layout, which shares the ability to perform fixed positioning of
 // child widgets and additionally adds custom drawing and scrollability.
 type Fixed struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Fixedder = (*Fixed)(nil)
+var (
+	_ Fixedder        = (*Fixed)(nil)
+	_ gextras.Nativer = (*Fixed)(nil)
+)
 
-func wrapFixedder(obj *externglib.Object) Fixedder {
+func wrapFixed(obj *externglib.Object) Fixedder {
 	return &Fixed{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -97,18 +93,6 @@ func wrapFixedder(obj *externglib.Object) Fixedder {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -116,7 +100,7 @@ func wrapFixedder(obj *externglib.Object) Fixedder {
 func marshalFixedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixedder(obj), nil
+	return wrapFixed(obj), nil
 }
 
 // NewFixed creates a new Fixed.
@@ -140,7 +124,7 @@ func (fixed *Fixed) Move(widget Widgetter, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -155,7 +139,7 @@ func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 

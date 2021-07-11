@@ -25,34 +25,72 @@ func init() {
 
 // Screener describes Screen's methods.
 type Screener interface {
-	gextras.Objector
-
+	// ActiveWindow returns the screen’s currently active window.
 	ActiveWindow() *Window
+	// Display gets the display to which the @screen belongs.
 	Display() *Display
+	// FontOptions gets any options previously set with
+	// gdk_screen_set_font_options().
 	FontOptions() *cairo.FontOptions
+	// Height gets the height of @screen in pixels.
 	Height() int
+	// HeightMm returns the height of @screen in millimeters.
 	HeightMm() int
+	// MonitorAtPoint returns the monitor number in which the point (@x,@y) is
+	// located.
 	MonitorAtPoint(x int, y int) int
+	// MonitorAtWindow returns the number of the monitor in which the largest
+	// area of the bounding rectangle of @window resides.
 	MonitorAtWindow(window Windowwer) int
+	// MonitorGeometry retrieves the Rectangle representing the size and
+	// position of the individual monitor within the entire screen area.
 	MonitorGeometry(monitorNum int) Rectangle
+	// MonitorHeightMm gets the height in millimeters of the specified monitor.
 	MonitorHeightMm(monitorNum int) int
+	// MonitorPlugName returns the output name of the specified monitor.
 	MonitorPlugName(monitorNum int) string
+	// MonitorScaleFactor returns the internal scale factor that maps from
+	// monitor coordinates to the actual device pixels.
 	MonitorScaleFactor(monitorNum int) int
+	// MonitorWidthMm gets the width in millimeters of the specified monitor, if
+	// available.
 	MonitorWidthMm(monitorNum int) int
+	// MonitorWorkarea retrieves the Rectangle representing the size and
+	// position of the “work area” on a monitor within the entire screen area.
 	MonitorWorkarea(monitorNum int) Rectangle
+	// NMonitors returns the number of monitors which @screen consists of.
 	NMonitors() int
+	// Number gets the index of @screen among the screens in the display to
+	// which it belongs.
 	Number() int
+	// PrimaryMonitor gets the primary monitor for @screen.
 	PrimaryMonitor() int
+	// Resolution gets the resolution for font handling on the screen; see
+	// gdk_screen_set_resolution() for full details.
 	Resolution() float64
+	// RGBAVisual gets a visual to use for creating windows with an alpha
+	// channel.
 	RGBAVisual() *Visual
+	// RootWindow gets the root window of @screen.
 	RootWindow() *Window
+	// Setting retrieves a desktop-wide setting such as double-click time for
+	// the Screen @screen.
 	Setting(name string, value *externglib.Value) bool
+	// SystemVisual: get the system’s default visual for @screen.
 	SystemVisual() *Visual
+	// Width gets the width of @screen in pixels.
 	Width() int
+	// WidthMm gets the width of @screen in millimeters.
 	WidthMm() int
+	// IsComposited returns whether windows with an RGBA visual can reasonably
+	// be expected to have their alpha channel drawn correctly on the screen.
 	IsComposited() bool
+	// MakeDisplayName determines the name to pass to gdk_display_open() to get
+	// a Display with this screen as the default screen.
 	MakeDisplayName() string
+	// SetFontOptions sets the default font options for the screen.
 	SetFontOptions(options *cairo.FontOptions)
+	// SetResolution sets the resolution for font handling on the screen.
 	SetResolution(dpi float64)
 }
 
@@ -70,9 +108,12 @@ type Screen struct {
 	*externglib.Object
 }
 
-var _ Screener = (*Screen)(nil)
+var (
+	_ Screener        = (*Screen)(nil)
+	_ gextras.Nativer = (*Screen)(nil)
+)
 
-func wrapScreener(obj *externglib.Object) Screener {
+func wrapScreen(obj *externglib.Object) Screener {
 	return &Screen{
 		Object: obj,
 	}
@@ -81,7 +122,7 @@ func wrapScreener(obj *externglib.Object) Screener {
 func marshalScreener(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScreener(obj), nil
+	return wrapScreen(obj), nil
 }
 
 // ActiveWindow returns the screen’s currently active window.
@@ -222,7 +263,7 @@ func (screen *Screen) MonitorAtWindow(window Windowwer) int {
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_screen_get_monitor_at_window(_arg0, _arg1)
 

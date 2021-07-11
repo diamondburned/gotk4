@@ -27,16 +27,26 @@ func init() {
 
 // ComboBoxTexter describes ComboBoxText's methods.
 type ComboBoxTexter interface {
-	gextras.Objector
-
+	// Append appends @text to the list of strings stored in @combo_box.
 	Append(id string, text string)
+	// AppendText appends @text to the list of strings stored in @combo_box.
 	AppendText(text string)
+	// ActiveText returns the currently active string in @combo_box, or nil if
+	// none is selected.
 	ActiveText() string
+	// Insert inserts @text at @position in the list of strings stored in
+	// @combo_box.
 	Insert(position int, id string, text string)
+	// InsertText inserts @text at @position in the list of strings stored in
+	// @combo_box.
 	InsertText(position int, text string)
+	// Prepend prepends @text to the list of strings stored in @combo_box.
 	Prepend(id string, text string)
+	// PrependText prepends @text to the list of strings stored in @combo_box.
 	PrependText(text string)
+	// Remove removes the string at @position from @combo_box.
 	Remove(position int)
+	// RemoveAll removes all the text entries from the combo box.
 	RemoveAll()
 }
 
@@ -88,28 +98,20 @@ type ComboBoxTexter interface {
 // class .combo to the main CSS nodes of its entry and button children, and the
 // .linked class to the node of its internal box.
 type ComboBoxText struct {
-	*externglib.Object
-
 	ComboBox
-	atk.ImplementorIface
-	Buildable
-	CellEditable
-	CellLayout
 }
 
-var _ ComboBoxTexter = (*ComboBoxText)(nil)
+var (
+	_ ComboBoxTexter  = (*ComboBoxText)(nil)
+	_ gextras.Nativer = (*ComboBoxText)(nil)
+)
 
-func wrapComboBoxTexter(obj *externglib.Object) ComboBoxTexter {
+func wrapComboBoxText(obj *externglib.Object) ComboBoxTexter {
 	return &ComboBoxText{
-		Object: obj,
 		ComboBox: ComboBox{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -120,30 +122,10 @@ func wrapComboBoxTexter(obj *externglib.Object) ComboBoxTexter {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			CellEditable: CellEditable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -159,37 +141,13 @@ func wrapComboBoxTexter(obj *externglib.Object) ComboBoxTexter {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		CellEditable: CellEditable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		CellLayout: CellLayout{
-			Object: obj,
-		},
 	}
 }
 
 func marshalComboBoxTexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComboBoxTexter(obj), nil
+	return wrapComboBoxText(obj), nil
 }
 
 // NewComboBoxText creates a new ComboBoxText, which is a ComboBox just

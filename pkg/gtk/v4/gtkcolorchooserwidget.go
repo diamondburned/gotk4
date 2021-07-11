@@ -24,12 +24,10 @@ func init() {
 
 // ColorChooserWidgetter describes ColorChooserWidget's methods.
 type ColorChooserWidgetter interface {
-	gextras.Objector
-
 	privateColorChooserWidget()
 }
 
-// ColorChooserWidget: the `GtkColorChooserWidget` widget lets the user select a
+// ColorChooserWidget: `GtkColorChooserWidget` widget lets the user select a
 // color.
 //
 // By default, the chooser presents a predefined palette of colors, plus a small
@@ -56,22 +54,19 @@ type ColorChooserWidgetter interface {
 //
 // `GtkColorChooserWidget` has a single CSS node with name colorchooser.
 type ColorChooserWidget struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
+
 	ColorChooser
-	ConstraintTarget
 }
 
-var _ ColorChooserWidgetter = (*ColorChooserWidget)(nil)
+var (
+	_ ColorChooserWidgetter = (*ColorChooserWidget)(nil)
+	_ gextras.Nativer       = (*ColorChooserWidget)(nil)
+)
 
-func wrapColorChooserWidgetter(obj *externglib.Object) ColorChooserWidgetter {
+func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidgetter {
 	return &ColorChooserWidget{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -85,16 +80,7 @@ func wrapColorChooserWidgetter(obj *externglib.Object) ColorChooserWidgetter {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 		ColorChooser: ColorChooser{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
@@ -103,7 +89,7 @@ func wrapColorChooserWidgetter(obj *externglib.Object) ColorChooserWidgetter {
 func marshalColorChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorChooserWidgetter(obj), nil
+	return wrapColorChooserWidget(obj), nil
 }
 
 // NewColorChooserWidget creates a new `GtkColorChooserWidget`.
@@ -117,6 +103,12 @@ func NewColorChooserWidget() *ColorChooserWidget {
 	_colorChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserWidget)
 
 	return _colorChooserWidget
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ColorChooserWidget) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*ColorChooserWidget) privateColorChooserWidget() {}

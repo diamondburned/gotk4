@@ -27,20 +27,19 @@ func init() {
 
 // PlugAccessibler describes PlugAccessible's methods.
 type PlugAccessibler interface {
-	gextras.Objector
-
 	ID() string
 }
 
 type PlugAccessible struct {
 	WindowAccessible
-
-	atk.Component
 }
 
-var _ PlugAccessibler = (*PlugAccessible)(nil)
+var (
+	_ PlugAccessibler = (*PlugAccessible)(nil)
+	_ gextras.Nativer = (*PlugAccessible)(nil)
+)
 
-func wrapPlugAccessibler(obj *externglib.Object) PlugAccessibler {
+func wrapPlugAccessible(obj *externglib.Object) PlugAccessibler {
 	return &PlugAccessible{
 		WindowAccessible: WindowAccessible{
 			ContainerAccessible: ContainerAccessible{
@@ -54,16 +53,7 @@ func wrapPlugAccessibler(obj *externglib.Object) PlugAccessibler {
 						Object: obj,
 					},
 				},
-				Component: atk.Component{
-					Object: obj,
-				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -71,7 +61,7 @@ func wrapPlugAccessibler(obj *externglib.Object) PlugAccessibler {
 func marshalPlugAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlugAccessibler(obj), nil
+	return wrapPlugAccessible(obj), nil
 }
 
 func (plug *PlugAccessible) ID() string {

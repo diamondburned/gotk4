@@ -32,11 +32,11 @@ func init() {
 	})
 }
 
-// SocketConnectablerOverrider contains methods that are overridable.
+// SocketConnectableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketConnectablerOverrider interface {
+type SocketConnectableOverrider interface {
 	// Enumerate creates a AddressEnumerator for @connectable.
 	Enumerate() *SocketAddressEnumerator
 	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
@@ -59,10 +59,13 @@ type SocketConnectablerOverrider interface {
 
 // SocketConnectabler describes SocketConnectable's methods.
 type SocketConnectabler interface {
-	gextras.Objector
-
+	// Enumerate creates a AddressEnumerator for @connectable.
 	Enumerate() *SocketAddressEnumerator
+	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
 	ProxyEnumerate() *SocketAddressEnumerator
+	// String: format a Connectable as a string.
 	String() string
 }
 
@@ -124,9 +127,12 @@ type SocketConnectable struct {
 	*externglib.Object
 }
 
-var _ SocketConnectabler = (*SocketConnectable)(nil)
+var (
+	_ SocketConnectabler = (*SocketConnectable)(nil)
+	_ gextras.Nativer    = (*SocketConnectable)(nil)
+)
 
-func wrapSocketConnectabler(obj *externglib.Object) SocketConnectabler {
+func wrapSocketConnectable(obj *externglib.Object) SocketConnectabler {
 	return &SocketConnectable{
 		Object: obj,
 	}
@@ -135,7 +141,7 @@ func wrapSocketConnectabler(obj *externglib.Object) SocketConnectabler {
 func marshalSocketConnectabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketConnectabler(obj), nil
+	return wrapSocketConnectable(obj), nil
 }
 
 // Enumerate creates a AddressEnumerator for @connectable.

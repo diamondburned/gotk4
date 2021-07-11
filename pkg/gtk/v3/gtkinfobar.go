@@ -25,11 +25,11 @@ func init() {
 	})
 }
 
-// InfoBarrerOverrider contains methods that are overridable.
+// InfoBarOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type InfoBarrerOverrider interface {
+type InfoBarOverrider interface {
 	Close()
 	// Response emits the “response” signal with the given @response_id.
 	Response(responseId int)
@@ -37,19 +37,36 @@ type InfoBarrerOverrider interface {
 
 // InfoBarrer describes InfoBar's methods.
 type InfoBarrer interface {
-	gextras.Objector
-
+	// AddActionWidget: add an activatable widget to the action area of a
+	// InfoBar, connecting a signal handler that will emit the InfoBar::response
+	// signal on the message area when the widget is activated.
 	AddActionWidget(child Widgetter, responseId int)
+	// AddButton adds a button with the given text and sets things up so that
+	// clicking the button will emit the “response” signal with the given
+	// response_id.
 	AddButton(buttonText string, responseId int) *Button
+	// ActionArea returns the action area of @info_bar.
 	ActionArea() *Box
+	// ContentArea returns the content area of @info_bar.
 	ContentArea() *Box
+	// MessageType returns the message type of the message area.
 	MessageType() MessageType
+
 	Revealed() bool
+	// ShowCloseButton returns whether the widget will display a standard close
+	// button.
 	ShowCloseButton() bool
+	// Response emits the “response” signal with the given @response_id.
 	Response(responseId int)
+	// SetDefaultResponse sets the last widget in the info bar’s action area
+	// with the given response_id as the default widget for the dialog.
 	SetDefaultResponse(responseId int)
+	// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
+	// each widget in the info bars’s action area with the given response_id.
 	SetResponseSensitive(responseId int, setting bool)
+	// SetRevealed sets the GtkInfoBar:revealed property to @revealed.
 	SetRevealed(revealed bool)
+	// SetShowCloseButton: if true, a standard close button is shown.
 	SetShowCloseButton(setting bool)
 }
 
@@ -124,25 +141,19 @@ type InfoBarrer interface {
 // the style classes .info, .warning, .error or .question, depending on the
 // message type.
 type InfoBar struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ InfoBarrer = (*InfoBar)(nil)
+var (
+	_ InfoBarrer      = (*InfoBar)(nil)
+	_ gextras.Nativer = (*InfoBar)(nil)
+)
 
-func wrapInfoBarrer(obj *externglib.Object) InfoBarrer {
+func wrapInfoBar(obj *externglib.Object) InfoBarrer {
 	return &InfoBar{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -153,31 +164,10 @@ func wrapInfoBarrer(obj *externglib.Object) InfoBarrer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -185,7 +175,7 @@ func wrapInfoBarrer(obj *externglib.Object) InfoBarrer {
 func marshalInfoBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInfoBarrer(obj), nil
+	return wrapInfoBar(obj), nil
 }
 
 // NewInfoBar creates a new InfoBar object.
@@ -211,7 +201,7 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.gint(responseId)
 
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)

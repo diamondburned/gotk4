@@ -24,11 +24,11 @@ func init() {
 	})
 }
 
-// ActionGrouperOverrider contains methods that are overridable.
+// ActionGroupOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionGrouperOverrider interface {
+type ActionGroupOverrider interface {
 	// Action looks up an action in the action group by name.
 	//
 	// Deprecated: since version 3.10.
@@ -37,20 +37,37 @@ type ActionGrouperOverrider interface {
 
 // ActionGrouper describes ActionGroup's methods.
 type ActionGrouper interface {
-	gextras.Objector
-
+	// AddAction adds an action object to the action group.
 	AddAction(action Actioner)
+	// AddActionWithAccel adds an action object to the action group and sets up
+	// the accelerator.
 	AddActionWithAccel(action Actioner, accelerator string)
+	// AccelGroup gets the accelerator group.
 	AccelGroup() *AccelGroup
+	// Action looks up an action in the action group by name.
 	Action(actionName string) *Action
+	// Name gets the name of the action group.
 	Name() string
+	// Sensitive returns true if the group is sensitive.
 	Sensitive() bool
+	// Visible returns true if the group is visible.
 	Visible() bool
+	// RemoveAction removes an action object from the action group.
 	RemoveAction(action Actioner)
+	// SetAccelGroup sets the accelerator group to be used by every action in
+	// this group.
 	SetAccelGroup(accelGroup AccelGrouper)
+	// SetSensitive changes the sensitivity of @action_group Deprecated: since
+	// version 3.10.
 	SetSensitive(sensitive bool)
+	// SetTranslationDomain sets the translation domain and uses g_dgettext()
+	// for translating the @label and @tooltip of ActionEntrys added by
+	// gtk_action_group_add_actions().
 	SetTranslationDomain(domain string)
+	// SetVisible changes the visible of @action_group.
 	SetVisible(visible bool)
+	// TranslateString translates a string using the function set with
+	// gtk_action_group_set_translate_func().
 	TranslateString(_string string) string
 }
 
@@ -109,9 +126,12 @@ type ActionGroup struct {
 	Buildable
 }
 
-var _ ActionGrouper = (*ActionGroup)(nil)
+var (
+	_ ActionGrouper   = (*ActionGroup)(nil)
+	_ gextras.Nativer = (*ActionGroup)(nil)
+)
 
-func wrapActionGrouper(obj *externglib.Object) ActionGrouper {
+func wrapActionGroup(obj *externglib.Object) ActionGrouper {
 	return &ActionGroup{
 		Object: obj,
 		Buildable: Buildable{
@@ -123,7 +143,7 @@ func wrapActionGrouper(obj *externglib.Object) ActionGrouper {
 func marshalActionGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionGrouper(obj), nil
+	return wrapActionGroup(obj), nil
 }
 
 // NewActionGroup creates a new ActionGroup object. The name of the action group
@@ -159,7 +179,7 @@ func (actionGroup *ActionGroup) AddAction(action Actioner) {
 	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
 
 	C.gtk_action_group_add_action(_arg0, _arg1)
 }
@@ -179,7 +199,7 @@ func (actionGroup *ActionGroup) AddActionWithAccel(action Actioner, accelerator 
 	var _arg2 *C.gchar          // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -295,7 +315,7 @@ func (actionGroup *ActionGroup) RemoveAction(action Actioner) {
 	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
 
 	C.gtk_action_group_remove_action(_arg0, _arg1)
 }
@@ -309,7 +329,7 @@ func (actionGroup *ActionGroup) SetAccelGroup(accelGroup AccelGrouper) {
 	var _arg1 *C.GtkAccelGroup  // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
 
 	C.gtk_action_group_set_accel_group(_arg0, _arg1)
 }

@@ -24,9 +24,11 @@ func init() {
 
 // EventControllerFocusser describes EventControllerFocus's methods.
 type EventControllerFocusser interface {
-	gextras.Objector
-
+	// ContainsFocus returns true if focus is within @self or one of its
+	// children.
 	ContainsFocus() bool
+	// IsFocus returns true if focus is within @self, but not one of its
+	// children.
 	IsFocus() bool
 }
 
@@ -43,9 +45,12 @@ type EventControllerFocus struct {
 	EventController
 }
 
-var _ EventControllerFocusser = (*EventControllerFocus)(nil)
+var (
+	_ EventControllerFocusser = (*EventControllerFocus)(nil)
+	_ gextras.Nativer         = (*EventControllerFocus)(nil)
+)
 
-func wrapEventControllerFocusser(obj *externglib.Object) EventControllerFocusser {
+func wrapEventControllerFocus(obj *externglib.Object) EventControllerFocusser {
 	return &EventControllerFocus{
 		EventController: EventController{
 			Object: obj,
@@ -56,7 +61,7 @@ func wrapEventControllerFocusser(obj *externglib.Object) EventControllerFocusser
 func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerFocusser(obj), nil
+	return wrapEventControllerFocus(obj), nil
 }
 
 // NewEventControllerFocus creates a new event controller that will handle focus

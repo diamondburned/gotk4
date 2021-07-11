@@ -31,12 +31,12 @@ func init() {
 type AttachOptions int
 
 const (
-	// AttachOptionsExpand: the widget should expand to take up any extra space
-	// in its container that has been allocated.
+	// AttachOptionsExpand: widget should expand to take up any extra space in
+	// its container that has been allocated.
 	AttachOptionsExpand AttachOptions = 0b1
-	// AttachOptionsShrink: the widget should shrink as and when possible.
+	// AttachOptionsShrink: widget should shrink as and when possible.
 	AttachOptionsShrink AttachOptions = 0b10
-	// AttachOptionsFill: the widget should fill the space allocated to it.
+	// AttachOptionsFill: widget should fill the space allocated to it.
 	AttachOptionsFill AttachOptions = 0b100
 )
 
@@ -46,26 +46,47 @@ func marshalAttachOptions(p uintptr) (interface{}, error) {
 
 // Tabler describes Table's methods.
 type Tabler interface {
-	gextras.Objector
-
+	// AttachDefaults as there are many options associated with
+	// gtk_table_attach(), this convenience function provides the programmer
+	// with a means to add children to a table with identical padding and
+	// expansion options.
 	AttachDefaults(widget Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
+	// ColSpacing gets the amount of space between column @col, and column @col
+	// + 1.
 	ColSpacing(column uint) uint
+	// DefaultColSpacing gets the default column spacing for the table.
 	DefaultColSpacing() uint
+	// DefaultRowSpacing gets the default row spacing for the table.
 	DefaultRowSpacing() uint
+	// Homogeneous returns whether the table cells are all constrained to the
+	// same width and height.
 	Homogeneous() bool
+	// RowSpacing gets the amount of space between row @row, and row @row + 1.
 	RowSpacing(row uint) uint
+	// Size gets the number of rows and columns in the table.
 	Size() (rows uint, columns uint)
+	// Resize: if you need to change a table’s size after it has been created,
+	// this function allows you to do so.
 	Resize(rows uint, columns uint)
+	// SetColSpacing alters the amount of space between a given table column and
+	// the following column.
 	SetColSpacing(column uint, spacing uint)
+	// SetColSpacings sets the space between every column in @table equal to
+	// @spacing.
 	SetColSpacings(spacing uint)
+	// SetHomogeneous changes the homogenous property of table cells, ie.
 	SetHomogeneous(homogeneous bool)
+	// SetRowSpacing changes the space between a given table row and the
+	// subsequent row.
 	SetRowSpacing(row uint, spacing uint)
+	// SetRowSpacings sets the space between every row in @table equal to
+	// @spacing.
 	SetRowSpacings(spacing uint)
 }
 
-// Table: the Table functions allow the programmer to arrange widgets in rows
-// and columns, making it easy to align many widgets next to each other,
-// horizontally and vertically.
+// Table functions allow the programmer to arrange widgets in rows and columns,
+// making it easy to align many widgets next to each other, horizontally and
+// vertically.
 //
 // Tables are created with a call to gtk_table_new(), the size of which can
 // later be changed with gtk_table_resize().
@@ -87,22 +108,18 @@ type Tabler interface {
 // capabilities as GtkTable for arranging widgets in a rectangular grid, but >
 // does support height-for-width geometry management.
 type Table struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Tabler = (*Table)(nil)
+var (
+	_ Tabler          = (*Table)(nil)
+	_ gextras.Nativer = (*Table)(nil)
+)
 
-func wrapTabler(obj *externglib.Object) Tabler {
+func wrapTable(obj *externglib.Object) Tabler {
 	return &Table{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -113,18 +130,6 @@ func wrapTabler(obj *externglib.Object) Tabler {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -132,7 +137,7 @@ func wrapTabler(obj *externglib.Object) Tabler {
 func marshalTabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTabler(obj), nil
+	return wrapTable(obj), nil
 }
 
 // NewTable: used to create a new table widget. An initial size must be given by
@@ -180,7 +185,7 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint, rightAttac
 	var _arg5 C.guint      // out
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = C.guint(leftAttach)
 	_arg3 = C.guint(rightAttach)
 	_arg4 = C.guint(topAttach)

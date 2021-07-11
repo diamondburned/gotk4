@@ -26,11 +26,11 @@ func init() {
 	})
 }
 
-// CheckMenuItemmerOverrider contains methods that are overridable.
+// CheckMenuItemOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CheckMenuItemmerOverrider interface {
+type CheckMenuItemOverrider interface {
 	DrawIndicator(cr *cairo.Context)
 	// Toggled emits the CheckMenuItem::toggled signal.
 	Toggled()
@@ -38,14 +38,24 @@ type CheckMenuItemmerOverrider interface {
 
 // CheckMenuItemmer describes CheckMenuItem's methods.
 type CheckMenuItemmer interface {
-	gextras.Objector
-
+	// Active returns whether the check menu item is active.
 	Active() bool
+	// DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
 	DrawAsRadio() bool
+	// Inconsistent retrieves the value set by
+	// gtk_check_menu_item_set_inconsistent().
 	Inconsistent() bool
+	// SetActive sets the active state of the menu item’s check box.
 	SetActive(isActive bool)
+	// SetDrawAsRadio sets whether @check_menu_item is drawn like a
+	// RadioMenuItem
 	SetDrawAsRadio(drawAsRadio bool)
+	// SetInconsistent: if the user has selected a range of elements (such as
+	// some text or spreadsheet cells) that are affected by a boolean setting,
+	// and the current values in that range are inconsistent, you may want to
+	// display the check in an “in between” state.
 	SetInconsistent(setting bool)
+	// Toggled emits the CheckMenuItem::toggled signal.
 	Toggled()
 }
 
@@ -64,28 +74,20 @@ type CheckMenuItemmer interface {
 // GtkCheckMenuItem has a main CSS node with name menuitem, and a subnode with
 // name check, which gets the .left or .right style class.
 type CheckMenuItem struct {
-	*externglib.Object
-
 	MenuItem
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ CheckMenuItemmer = (*CheckMenuItem)(nil)
+var (
+	_ CheckMenuItemmer = (*CheckMenuItem)(nil)
+	_ gextras.Nativer  = (*CheckMenuItem)(nil)
+)
 
-func wrapCheckMenuItemmer(obj *externglib.Object) CheckMenuItemmer {
+func wrapCheckMenuItem(obj *externglib.Object) CheckMenuItemmer {
 	return &CheckMenuItem{
-		Object: obj,
 		MenuItem: MenuItem{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -96,27 +98,10 @@ func wrapCheckMenuItemmer(obj *externglib.Object) CheckMenuItemmer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -131,33 +116,6 @@ func wrapCheckMenuItemmer(obj *externglib.Object) CheckMenuItemmer {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -165,7 +123,7 @@ func wrapCheckMenuItemmer(obj *externglib.Object) CheckMenuItemmer {
 func marshalCheckMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckMenuItemmer(obj), nil
+	return wrapCheckMenuItem(obj), nil
 }
 
 // NewCheckMenuItem creates a new CheckMenuItem.

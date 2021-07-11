@@ -28,16 +28,27 @@ func init() {
 
 // Layouter describes Layout's methods.
 type Layouter interface {
-	gextras.Objector
-
+	// BinWindow: retrieve the bin window of the layout used for drawing
+	// operations.
 	BinWindow() *gdk.Window
+	// HAdjustment: this function should only be called after the layout has
+	// been placed in a ScrolledWindow or otherwise configured for scrolling.
 	HAdjustment() *Adjustment
+	// Size gets the size that has been set on the layout, and that determines
+	// the total extents of the layout’s scrollbar area.
 	Size() (width uint, height uint)
+	// VAdjustment: this function should only be called after the layout has
+	// been placed in a ScrolledWindow or otherwise configured for scrolling.
 	VAdjustment() *Adjustment
+	// Move moves a current child of @layout to a new position.
 	Move(childWidget Widgetter, x int, y int)
+	// Put adds @child_widget to @layout, at position (@x,@y).
 	Put(childWidget Widgetter, x int, y int)
+	// SetHAdjustment sets the horizontal scroll adjustment for the layout.
 	SetHAdjustment(adjustment Adjustmenter)
+	// SetSize sets the size of the scrollable area of the layout.
 	SetSize(width uint, height uint)
+	// SetVAdjustment sets the vertical scroll adjustment for the layout.
 	SetVAdjustment(adjustment Adjustmenter)
 }
 
@@ -54,23 +65,20 @@ type Layouter interface {
 // by gtk_layout_get_bin_window(), rather than to the one returned by
 // gtk_widget_get_window() as you would for a DrawingArea.
 type Layout struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
+
 	Scrollable
 }
 
-var _ Layouter = (*Layout)(nil)
+var (
+	_ Layouter        = (*Layout)(nil)
+	_ gextras.Nativer = (*Layout)(nil)
+)
 
-func wrapLayouter(obj *externglib.Object) Layouter {
+func wrapLayout(obj *externglib.Object) Layouter {
 	return &Layout{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -81,18 +89,6 @@ func wrapLayouter(obj *externglib.Object) Layouter {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
@@ -103,7 +99,7 @@ func wrapLayouter(obj *externglib.Object) Layouter {
 func marshalLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLayouter(obj), nil
+	return wrapLayout(obj), nil
 }
 
 // NewLayout creates a new Layout. Unless you have a specific adjustment you’d
@@ -114,8 +110,8 @@ func NewLayout(hadjustment Adjustmenter, vadjustment Adjustmenter) *Layout {
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((hadjustment).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((vadjustment).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_layout_new(_arg1, _arg2)
 
@@ -124,6 +120,12 @@ func NewLayout(hadjustment Adjustmenter, vadjustment Adjustmenter) *Layout {
 	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Layout)
 
 	return _layout
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Layout) Native() uintptr {
+	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BinWindow: retrieve the bin window of the layout used for drawing operations.
@@ -216,7 +218,7 @@ func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((childWidget).(gextras.Nativer).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -232,7 +234,7 @@ func (layout *Layout) Put(childWidget Widgetter, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((childWidget).(gextras.Nativer).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -249,7 +251,7 @@ func (layout *Layout) SetHAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_layout_set_hadjustment(_arg0, _arg1)
 }
@@ -277,7 +279,7 @@ func (layout *Layout) SetVAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)
 }

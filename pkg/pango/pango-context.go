@@ -25,27 +25,55 @@ func init() {
 
 // Contexter describes Context's methods.
 type Contexter interface {
-	gextras.Objector
-
+	// Changed forces a change in the context, which will cause any
+	// `PangoLayout` using this context to re-layout.
 	Changed()
+	// BaseDir retrieves the base direction for the context.
 	BaseDir() Direction
+	// BaseGravity retrieves the base gravity for the context.
 	BaseGravity() Gravity
+	// FontDescription: retrieve the default font description for the context.
 	FontDescription() *FontDescription
+	// FontMap gets the `PangoFontMap` used to look up fonts for this context.
 	FontMap() *FontMap
+	// Gravity retrieves the gravity for the context.
 	Gravity() Gravity
+	// GravityHint retrieves the gravity hint for the context.
 	GravityHint() GravityHint
+	// Language retrieves the global language tag for the context.
 	Language() *Language
+	// Matrix gets the transformation matrix that will be applied when rendering
+	// with this context.
 	Matrix() *Matrix
+	// Metrics: get overall metric information for a particular font
+	// description.
 	Metrics(desc *FontDescription, language *Language) *FontMetrics
+	// RoundGlyphPositions returns whether font rendering with this context
+	// should round glyph positions and widths.
 	RoundGlyphPositions() bool
+	// Serial returns the current serial number of @context.
 	Serial() uint
+	// ListFamilies: list all families for a context.
 	ListFamilies() []*FontFamily
+	// LoadFont loads the font in one of the fontmaps in the context that is the
+	// closest match for @desc.
 	LoadFont(desc *FontDescription) *Font
+	// LoadFontset: load a set of fonts in the context that can be used to
+	// render a font matching @desc.
 	LoadFontset(desc *FontDescription, language *Language) *Fontset
+	// SetFontDescription: set the default font description for the context
 	SetFontDescription(desc *FontDescription)
+	// SetFontMap sets the font map to be searched when fonts are looked-up in
+	// this context.
 	SetFontMap(fontMap FontMapper)
+	// SetLanguage sets the global language tag for the context.
 	SetLanguage(language *Language)
+	// SetMatrix sets the transformation matrix that will be applied when
+	// rendering with this context.
 	SetMatrix(matrix *Matrix)
+	// SetRoundGlyphPositions sets whether font rendering with this context
+	// should round glyph positions and widths to integral positions, in device
+	// units.
 	SetRoundGlyphPositions(roundPositions bool)
 }
 
@@ -61,9 +89,12 @@ type Context struct {
 	*externglib.Object
 }
 
-var _ Contexter = (*Context)(nil)
+var (
+	_ Contexter       = (*Context)(nil)
+	_ gextras.Nativer = (*Context)(nil)
+)
 
-func wrapContexter(obj *externglib.Object) Contexter {
+func wrapContext(obj *externglib.Object) Contexter {
 	return &Context{
 		Object: obj,
 	}
@@ -72,7 +103,7 @@ func wrapContexter(obj *externglib.Object) Contexter {
 func marshalContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContexter(obj), nil
+	return wrapContext(obj), nil
 }
 
 // NewContext creates a new `PangoContext` initialized to default values.
@@ -420,7 +451,7 @@ func (context *Context) SetFontMap(fontMap FontMapper) {
 	var _arg1 *C.PangoFontMap // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
+	_arg1 = (*C.PangoFontMap)(unsafe.Pointer((fontMap).(gextras.Nativer).Native()))
 
 	C.pango_context_set_font_map(_arg0, _arg1)
 }

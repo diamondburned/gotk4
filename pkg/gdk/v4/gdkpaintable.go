@@ -29,10 +29,10 @@ func init() {
 type PaintableFlags int
 
 const (
-	// PaintableFlagsSize: the size is immutable. The
+	// PaintableFlagsSize is immutable. The
 	// [signal@GdkPaintable::invalidate-size] signal will never be emitted.
 	PaintableFlagsSize PaintableFlags = 0b1
-	// PaintableFlagsContents: the content is immutable. The
+	// PaintableFlagsContents: content is immutable. The
 	// [signal@GdkPaintable::invalidate-contents] signal will never be emitted.
 	PaintableFlagsContents PaintableFlags = 0b10
 )
@@ -41,11 +41,11 @@ func marshalPaintableFlags(p uintptr) (interface{}, error) {
 	return PaintableFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PaintablerOverrider contains methods that are overridable.
+// PaintableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PaintablerOverrider interface {
+type PaintableOverrider interface {
 	// CurrentImage gets an immutable paintable for the current contents
 	// displayed by @paintable.
 	//
@@ -113,16 +113,29 @@ type PaintablerOverrider interface {
 
 // Paintabler describes Paintable's methods.
 type Paintabler interface {
-	gextras.Objector
-
+	// ComputeConcreteSize: compute a concrete size for the `GdkPaintable`.
 	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
+	// CurrentImage gets an immutable paintable for the current contents
+	// displayed by @paintable.
 	CurrentImage() *Paintable
+	// Flags: get flags for the paintable.
 	Flags() PaintableFlags
+	// IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would
+	// like to be displayed at.
 	IntrinsicAspectRatio() float64
+	// IntrinsicHeight gets the preferred height the @paintable would like to be
+	// displayed at.
 	IntrinsicHeight() int
+	// IntrinsicWidth gets the preferred width the @paintable would like to be
+	// displayed at.
 	IntrinsicWidth() int
+	// InvalidateContents: called by implementations of `GdkPaintable` to
+	// invalidate their contents.
 	InvalidateContents()
+	// InvalidateSize: called by implementations of `GdkPaintable` to invalidate
+	// their size.
 	InvalidateSize()
+	// Snapshot snapshots the given paintable with the given @width and @height.
 	Snapshot(snapshot Snapshotter, width float64, height float64)
 }
 
@@ -175,9 +188,12 @@ type Paintable struct {
 	*externglib.Object
 }
 
-var _ Paintabler = (*Paintable)(nil)
+var (
+	_ Paintabler      = (*Paintable)(nil)
+	_ gextras.Nativer = (*Paintable)(nil)
+)
 
-func wrapPaintabler(obj *externglib.Object) Paintabler {
+func wrapPaintable(obj *externglib.Object) Paintabler {
 	return &Paintable{
 		Object: obj,
 	}
@@ -186,7 +202,7 @@ func wrapPaintabler(obj *externglib.Object) Paintabler {
 func marshalPaintabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPaintabler(obj), nil
+	return wrapPaintable(obj), nil
 }
 
 // ComputeConcreteSize: compute a concrete size for the `GdkPaintable`.
@@ -400,7 +416,7 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height
 	var _arg3 C.double        // out
 
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-	_arg1 = (*C.GdkSnapshot)(unsafe.Pointer(snapshot.Native()))
+	_arg1 = (*C.GdkSnapshot)(unsafe.Pointer((snapshot).(gextras.Nativer).Native()))
 	_arg2 = C.double(width)
 	_arg3 = C.double(height)
 

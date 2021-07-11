@@ -28,38 +28,34 @@ func init() {
 
 // MenuBarrer describes MenuBar's methods.
 type MenuBarrer interface {
-	gextras.Objector
-
+	// ChildPackDirection retrieves the current child pack direction of the
+	// menubar.
 	ChildPackDirection() PackDirection
+	// PackDirection retrieves the current pack direction of the menubar.
 	PackDirection() PackDirection
 }
 
-// MenuBar: the MenuBar is a subclass of MenuShell which contains one or more
-// MenuItems. The result is a standard menu bar which can hold many menu items.
+// MenuBar is a subclass of MenuShell which contains one or more MenuItems. The
+// result is a standard menu bar which can hold many menu items.
 //
 //
 // CSS nodes
 //
 // GtkMenuBar has a single CSS node with name menubar.
 type MenuBar struct {
-	*externglib.Object
-
 	MenuShell
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ MenuBarrer = (*MenuBar)(nil)
+var (
+	_ MenuBarrer      = (*MenuBar)(nil)
+	_ gextras.Nativer = (*MenuBar)(nil)
+)
 
-func wrapMenuBarrer(obj *externglib.Object) MenuBarrer {
+func wrapMenuBar(obj *externglib.Object) MenuBarrer {
 	return &MenuBar{
-		Object: obj,
 		MenuShell: MenuShell{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -70,25 +66,7 @@ func wrapMenuBarrer(obj *externglib.Object) MenuBarrer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -96,7 +74,7 @@ func wrapMenuBarrer(obj *externglib.Object) MenuBarrer {
 func marshalMenuBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuBarrer(obj), nil
+	return wrapMenuBar(obj), nil
 }
 
 // NewMenuBar creates a new MenuBar
@@ -122,7 +100,7 @@ func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_menu_bar_new_from_model(_arg1)
 

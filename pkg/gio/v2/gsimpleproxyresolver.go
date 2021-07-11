@@ -28,15 +28,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_simple_proxy_resolver_get_type()), F: marshalSimpleProxyResolverrer},
+		{T: externglib.Type(C.g_simple_proxy_resolver_get_type()), F: marshalSimpleProxyResolverer},
 	})
 }
 
-// SimpleProxyResolverrer describes SimpleProxyResolver's methods.
-type SimpleProxyResolverrer interface {
-	gextras.Objector
-
+// SimpleProxyResolverer describes SimpleProxyResolver's methods.
+type SimpleProxyResolverer interface {
+	// SetDefaultProxy sets the default proxy on @resolver, to be used for any
+	// URIs that don't match ProxyResolver:ignore-hosts or a proxy set via
+	// g_simple_proxy_resolver_set_uri_proxy().
 	SetDefaultProxy(defaultProxy string)
+	// SetURIProxy adds a URI-scheme-specific proxy to @resolver; URIs whose
+	// scheme matches @uri_scheme (and which don't match
+	// ProxyResolver:ignore-hosts) will be proxied via @proxy.
 	SetURIProxy(uriScheme string, proxy string)
 }
 
@@ -53,9 +57,12 @@ type SimpleProxyResolver struct {
 	ProxyResolver
 }
 
-var _ SimpleProxyResolverrer = (*SimpleProxyResolver)(nil)
+var (
+	_ SimpleProxyResolverer = (*SimpleProxyResolver)(nil)
+	_ gextras.Nativer       = (*SimpleProxyResolver)(nil)
+)
 
-func wrapSimpleProxyResolverrer(obj *externglib.Object) SimpleProxyResolverrer {
+func wrapSimpleProxyResolver(obj *externglib.Object) SimpleProxyResolverer {
 	return &SimpleProxyResolver{
 		Object: obj,
 		ProxyResolver: ProxyResolver{
@@ -64,10 +71,10 @@ func wrapSimpleProxyResolverrer(obj *externglib.Object) SimpleProxyResolverrer {
 	}
 }
 
-func marshalSimpleProxyResolverrer(p uintptr) (interface{}, error) {
+func marshalSimpleProxyResolverer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleProxyResolverrer(obj), nil
+	return wrapSimpleProxyResolver(obj), nil
 }
 
 // SetDefaultProxy sets the default proxy on @resolver, to be used for any URIs

@@ -34,8 +34,7 @@ func init() {
 
 // UnixCredentialsMessager describes UnixCredentialsMessage's methods.
 type UnixCredentialsMessager interface {
-	gextras.Objector
-
+	// Credentials gets the credentials stored in @message.
 	Credentials() *Credentials
 }
 
@@ -52,9 +51,12 @@ type UnixCredentialsMessage struct {
 	SocketControlMessage
 }
 
-var _ UnixCredentialsMessager = (*UnixCredentialsMessage)(nil)
+var (
+	_ UnixCredentialsMessager = (*UnixCredentialsMessage)(nil)
+	_ gextras.Nativer         = (*UnixCredentialsMessage)(nil)
+)
 
-func wrapUnixCredentialsMessager(obj *externglib.Object) UnixCredentialsMessager {
+func wrapUnixCredentialsMessage(obj *externglib.Object) UnixCredentialsMessager {
 	return &UnixCredentialsMessage{
 		SocketControlMessage: SocketControlMessage{
 			Object: obj,
@@ -65,7 +67,7 @@ func wrapUnixCredentialsMessager(obj *externglib.Object) UnixCredentialsMessager
 func marshalUnixCredentialsMessager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixCredentialsMessager(obj), nil
+	return wrapUnixCredentialsMessage(obj), nil
 }
 
 // NewUnixCredentialsMessage creates a new CredentialsMessage with credentials
@@ -88,7 +90,7 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentialser) *UnixCr
 	var _arg1 *C.GCredentials          // out
 	var _cret *C.GSocketControlMessage // in
 
-	_arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer((credentials).(gextras.Nativer).Native()))
 
 	_cret = C.g_unix_credentials_message_new_with_credentials(_arg1)
 

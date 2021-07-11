@@ -27,53 +27,104 @@ func init() {
 
 // Labeller describes Label's methods.
 type Labeller interface {
-	gextras.Objector
-
+	// Attributes gets the labels attribute list.
 	Attributes() *pango.AttrList
+	// CurrentURI returns the URI for the currently active link in the label.
 	CurrentURI() string
+	// Ellipsize returns the ellipsizing position of the label.
 	Ellipsize() pango.EllipsizeMode
+	// ExtraMenu gets the extra menu model of @label.
 	ExtraMenu() *gio.MenuModel
+	// Justify returns the justification of the label.
 	Justify() Justification
+	// Label fetches the text from a label.
 	Label() string
+	// Layout gets the `PangoLayout` used to display the label.
 	Layout() *pango.Layout
+	// LayoutOffsets obtains the coordinates where the label will draw its
+	// `PangoLayout`.
 	LayoutOffsets() (x int, y int)
+	// Lines gets the number of lines to which an ellipsized, wrapping label
+	// should be limited.
 	Lines() int
+	// MaxWidthChars retrieves the desired maximum width of @label, in
+	// characters.
 	MaxWidthChars() int
+	// MnemonicKeyval: return the mnemonic accelerator.
 	MnemonicKeyval() uint
+	// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
+	// of this label.
 	MnemonicWidget() *Widget
+	// Selectable returns whether the label is selectable.
 	Selectable() bool
+	// SelectionBounds gets the selected range of characters in the label.
 	SelectionBounds() (start int, end int, ok bool)
+	// SingleLineMode returns whether the label is in single line mode.
 	SingleLineMode() bool
+	// Text fetches the text from a label.
 	Text() string
+	// UseMarkup returns whether the label’s text is interpreted as Pango
+	// markup.
 	UseMarkup() bool
+	// UseUnderline returns whether an embedded underlines in the label indicate
+	// mnemonics.
 	UseUnderline() bool
+	// WidthChars retrieves the desired width of @label, in characters.
 	WidthChars() int
+	// Wrap returns whether lines in the label are automatically wrapped.
 	Wrap() bool
+	// WrapMode returns line wrap mode used by the label.
 	WrapMode() pango.WrapMode
+	// Xalign gets the `xalign` of the label.
 	Xalign() float32
+	// Yalign gets the `yalign` of the label.
 	Yalign() float32
+	// SelectRegion selects a range of characters in the label, if the label is
+	// selectable.
 	SelectRegion(startOffset int, endOffset int)
+	// SetAttributes: apply attributes to the label text.
 	SetAttributes(attrs *pango.AttrList)
+	// SetExtraMenu sets a menu model to add when constructing the context menu
+	// for @label.
 	SetExtraMenu(model gio.MenuModeller)
+	// SetLabel sets the text of the label.
 	SetLabel(str string)
+	// SetLines sets the number of lines to which an ellipsized, wrapping label
+	// should be limited.
 	SetLines(lines int)
+	// SetMarkup sets the labels text and attributes from markup.
 	SetMarkup(str string)
+	// SetMarkupWithMnemonic sets the labels text, attributes and mnemonic from
+	// markup.
 	SetMarkupWithMnemonic(str string)
+	// SetMaxWidthChars sets the desired maximum width in characters of @label
+	// to @n_chars.
 	SetMaxWidthChars(nChars int)
+	// SetMnemonicWidget: associate the label with its mnemonic target.
 	SetMnemonicWidget(widget Widgetter)
+	// SetSelectable makes text in the label selectable.
 	SetSelectable(setting bool)
+	// SetSingleLineMode sets whether the label is in single line mode.
 	SetSingleLineMode(singleLineMode bool)
+	// SetText sets the text within the `GtkLabel` widget.
 	SetText(str string)
+	// SetTextWithMnemonic sets the label’s text from the string @str.
 	SetTextWithMnemonic(str string)
+	// SetUseMarkup sets whether the text of the label contains markup.
 	SetUseMarkup(setting bool)
+	// SetUseUnderline sets whether underlines in the text indicate mnemonics.
 	SetUseUnderline(setting bool)
+	// SetWidthChars sets the desired width in characters of @label to @n_chars.
 	SetWidthChars(nChars int)
+	// SetWrap toggles line wrapping within the `GtkLabel` widget.
 	SetWrap(wrap bool)
+	// SetXalign sets the `xalign` of the label.
 	SetXalign(xalign float32)
+	// SetYalign sets the `yalign` of the label.
 	SetYalign(yalign float32)
 }
 
-// Label: the `GtkLabel` widget displays a small amount of text.
+// Label: `GtkLabel` widget displays a small amount of text.
 //
 // As the name implies, most labels are used to label another widget such as a
 // [class@Button].
@@ -231,21 +282,17 @@ type Labeller interface {
 // the [signal@Gtk.Label::activate-link] signal and the
 // [method@Gtk.Label.get_current_uri] function.
 type Label struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Labeller = (*Label)(nil)
+var (
+	_ Labeller        = (*Label)(nil)
+	_ gextras.Nativer = (*Label)(nil)
+)
 
-func wrapLabeller(obj *externglib.Object) Labeller {
+func wrapLabel(obj *externglib.Object) Labeller {
 	return &Label{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -259,22 +306,13 @@ func wrapLabeller(obj *externglib.Object) Labeller {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLabeller(obj), nil
+	return wrapLabel(obj), nil
 }
 
 // NewLabel creates a new label with the given text inside it.
@@ -826,7 +864,7 @@ func (self *Label) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_label_set_extra_menu(_arg0, _arg1)
 }
@@ -950,7 +988,7 @@ func (self *Label) SetMnemonicWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_label_set_mnemonic_widget(_arg0, _arg1)
 }

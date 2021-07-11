@@ -23,32 +23,51 @@ func init() {
 	})
 }
 
-// GLAreaerOverrider contains methods that are overridable.
+// GLAreaOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type GLAreaerOverrider interface {
+type GLAreaOverrider interface {
 	Resize(width int, height int)
 }
 
 // GLAreaer describes GLArea's methods.
 type GLAreaer interface {
-	gextras.Objector
-
+	// AttachBuffers binds buffers to the framebuffer.
 	AttachBuffers()
+	// AutoRender returns whether the area is in auto render mode or not.
 	AutoRender() bool
+	// Error gets the current error set on the @area.
 	Error() error
+	// HasDepthBuffer returns whether the area has a depth buffer.
 	HasDepthBuffer() bool
+	// HasStencilBuffer returns whether the area has a stencil buffer.
 	HasStencilBuffer() bool
+	// RequiredVersion retrieves the required version of OpenGL.
 	RequiredVersion() (major int, minor int)
+	// UseES returns whether the `GtkGLArea` should use OpenGL ES.
 	UseES() bool
+	// MakeCurrent ensures that the `GdkGLContext` used by @area is associated
+	// with the `GtkGLArea`.
 	MakeCurrent()
+	// QueueRender marks the currently rendered data (if any) as invalid, and
+	// queues a redraw of the widget.
 	QueueRender()
+	// SetAutoRender sets whether the `GtkGLArea` is in auto render mode.
 	SetAutoRender(autoRender bool)
+	// SetError sets an error on the area which will be shown instead of the GL
+	// rendering.
 	SetError(err error)
+	// SetHasDepthBuffer sets whether the `GtkGLArea` should use a depth buffer.
 	SetHasDepthBuffer(hasDepthBuffer bool)
+	// SetHasStencilBuffer sets whether the `GtkGLArea` should use a stencil
+	// buffer.
 	SetHasStencilBuffer(hasStencilBuffer bool)
+	// SetRequiredVersion sets the required version of OpenGL to be used when
+	// creating the context for the widget.
 	SetRequiredVersion(major int, minor int)
+	// SetUseES sets whether the @area should create an OpenGL or an OpenGL ES
+	// context.
 	SetUseES(useEs bool)
 }
 
@@ -146,21 +165,17 @@ type GLAreaer interface {
 // If you need to change the options for creating the `GdkGLContext` you should
 // use the [signal@Gtk.GLArea::create-context] signal.
 type GLArea struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ GLAreaer = (*GLArea)(nil)
+var (
+	_ GLAreaer        = (*GLArea)(nil)
+	_ gextras.Nativer = (*GLArea)(nil)
+)
 
-func wrapGLAreaer(obj *externglib.Object) GLAreaer {
+func wrapGLArea(obj *externglib.Object) GLAreaer {
 	return &GLArea{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -174,22 +189,13 @@ func wrapGLAreaer(obj *externglib.Object) GLAreaer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalGLAreaer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLAreaer(obj), nil
+	return wrapGLArea(obj), nil
 }
 
 // NewGLArea creates a new `GtkGLArea` widget.

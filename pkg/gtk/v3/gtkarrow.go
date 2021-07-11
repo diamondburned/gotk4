@@ -27,8 +27,6 @@ func init() {
 
 // Arrowwer describes Arrow's methods.
 type Arrowwer interface {
-	gextras.Objector
-
 	privateArrow()
 }
 
@@ -51,22 +49,18 @@ type Arrowwer interface {
 // same effect with an image, use the icon names “pan-start-symbolic“ and
 // “pan-end-symbolic“, which react to the text direction.
 type Arrow struct {
-	*externglib.Object
-
 	Misc
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Arrowwer = (*Arrow)(nil)
+var (
+	_ Arrowwer        = (*Arrow)(nil)
+	_ gextras.Nativer = (*Arrow)(nil)
+)
 
-func wrapArrowwer(obj *externglib.Object) Arrowwer {
+func wrapArrow(obj *externglib.Object) Arrowwer {
 	return &Arrow{
-		Object: obj,
 		Misc: Misc{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -77,18 +71,6 @@ func wrapArrowwer(obj *externglib.Object) Arrowwer {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -96,7 +78,7 @@ func wrapArrowwer(obj *externglib.Object) Arrowwer {
 func marshalArrowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapArrowwer(obj), nil
+	return wrapArrow(obj), nil
 }
 
 func (*Arrow) privateArrow() {}

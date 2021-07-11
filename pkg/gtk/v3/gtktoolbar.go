@@ -42,30 +42,49 @@ func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {
 	return ToolbarSpaceStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ToolbarrerOverrider contains methods that are overridable.
+// ToolbarOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToolbarrerOverrider interface {
+type ToolbarOverrider interface {
 	PopupContextMenu(x int, y int, buttonNumber int) bool
 }
 
 // Toolbarrer describes Toolbar's methods.
 type Toolbarrer interface {
-	gextras.Objector
-
+	// DropIndex returns the position corresponding to the indicated point on
+	// @toolbar.
 	DropIndex(x int, y int) int
+	// IconSize retrieves the icon size for the toolbar.
 	IconSize() IconSize
+	// ItemIndex returns the position of @item on the toolbar, starting from 0.
 	ItemIndex(item ToolItemmer) int
+	// NItems returns the number of items on the toolbar.
 	NItems() int
+	// NthItem returns the @n'th item on @toolbar, or nil if the toolbar does
+	// not contain an @n'th item.
 	NthItem(n int) *ToolItem
+	// ReliefStyle returns the relief style of buttons on @toolbar.
 	ReliefStyle() ReliefStyle
+	// ShowArrow returns whether the toolbar has an overflow menu.
 	ShowArrow() bool
+	// Style retrieves whether the toolbar has text, icons, or both .
 	Style() ToolbarStyle
+	// Insert a ToolItem into the toolbar at position @pos.
 	Insert(item ToolItemmer, pos int)
+	// SetDropHighlightItem highlights @toolbar to give an idea of what it would
+	// look like if @item was added to @toolbar at the position indicated by
+	// @index_.
 	SetDropHighlightItem(toolItem ToolItemmer, index_ int)
+	// SetShowArrow sets whether to show an overflow menu when @toolbar isn’t
+	// allocated enough size to show all of its items.
 	SetShowArrow(showArrow bool)
+	// UnsetIconSize unsets toolbar icon size set with
+	// gtk_toolbar_set_icon_size(), so that user preferences will be used to
+	// determine the icon size.
 	UnsetIconSize()
+	// UnsetStyle unsets a toolbar style set with gtk_toolbar_set_style(), so
+	// that user preferences will be used to determine the toolbar style.
 	UnsetStyle()
 }
 
@@ -94,24 +113,21 @@ type Toolbarrer interface {
 //
 // GtkToolbar has a single CSS node with name toolbar.
 type Toolbar struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
+
 	Orientable
 	ToolShell
 }
 
-var _ Toolbarrer = (*Toolbar)(nil)
+var (
+	_ Toolbarrer      = (*Toolbar)(nil)
+	_ gextras.Nativer = (*Toolbar)(nil)
+)
 
-func wrapToolbarrer(obj *externglib.Object) Toolbarrer {
+func wrapToolbar(obj *externglib.Object) Toolbarrer {
 	return &Toolbar{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -122,26 +138,12 @@ func wrapToolbarrer(obj *externglib.Object) Toolbarrer {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
 		ToolShell: ToolShell{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -159,7 +161,7 @@ func wrapToolbarrer(obj *externglib.Object) Toolbarrer {
 func marshalToolbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolbarrer(obj), nil
+	return wrapToolbar(obj), nil
 }
 
 // NewToolbar creates a new toolbar.
@@ -173,6 +175,12 @@ func NewToolbar() *Toolbar {
 	_toolbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Toolbar)
 
 	return _toolbar
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Toolbar) Native() uintptr {
+	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // DropIndex returns the position corresponding to the indicated point on
@@ -224,7 +232,7 @@ func (toolbar *Toolbar) ItemIndex(item ToolItemmer) int {
 	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_toolbar_get_item_index(_arg0, _arg1)
 
@@ -332,7 +340,7 @@ func (toolbar *Toolbar) Insert(item ToolItemmer, pos int) {
 	var _arg2 C.gint         // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
 	_arg2 = C.gint(pos)
 
 	C.gtk_toolbar_insert(_arg0, _arg1, _arg2)
@@ -352,7 +360,7 @@ func (toolbar *Toolbar) SetDropHighlightItem(toolItem ToolItemmer, index_ int) {
 	var _arg2 C.gint         // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((toolItem).(gextras.Nativer).Native()))
 	_arg2 = C.gint(index_)
 
 	C.gtk_toolbar_set_drop_highlight_item(_arg0, _arg1, _arg2)

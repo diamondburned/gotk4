@@ -24,14 +24,20 @@ func init() {
 
 // CenterBoxxer describes CenterBox's methods.
 type CenterBoxxer interface {
-	gextras.Objector
-
+	// BaselinePosition gets the value set by
+	// gtk_center_box_set_baseline_position().
 	BaselinePosition() BaselinePosition
+	// CenterWidget gets the center widget, or nil if there is none.
 	CenterWidget() *Widget
+	// EndWidget gets the end widget, or nil if there is none.
 	EndWidget() *Widget
+	// StartWidget gets the start widget, or nil if there is none.
 	StartWidget() *Widget
+	// SetCenterWidget sets the center widget.
 	SetCenterWidget(child Widgetter)
+	// SetEndWidget sets the end widget.
 	SetEndWidget(child Widgetter)
+	// SetStartWidget sets the start widget.
 	SetStartWidget(child Widgetter)
 }
 
@@ -72,22 +78,19 @@ type CenterBoxxer interface {
 //
 // `GtkCenterBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type CenterBox struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 }
 
-var _ CenterBoxxer = (*CenterBox)(nil)
+var (
+	_ CenterBoxxer    = (*CenterBox)(nil)
+	_ gextras.Nativer = (*CenterBox)(nil)
+)
 
-func wrapCenterBoxxer(obj *externglib.Object) CenterBoxxer {
+func wrapCenterBox(obj *externglib.Object) CenterBoxxer {
 	return &CenterBox{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -101,15 +104,6 @@ func wrapCenterBoxxer(obj *externglib.Object) CenterBoxxer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -119,7 +113,7 @@ func wrapCenterBoxxer(obj *externglib.Object) CenterBoxxer {
 func marshalCenterBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCenterBoxxer(obj), nil
+	return wrapCenterBox(obj), nil
 }
 
 // NewCenterBox creates a new `GtkCenterBox`.
@@ -133,6 +127,12 @@ func NewCenterBox() *CenterBox {
 	_centerBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CenterBox)
 
 	return _centerBox
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *CenterBox) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BaselinePosition gets the value set by
@@ -208,7 +208,7 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_center_box_set_center_widget(_arg0, _arg1)
 }
@@ -221,7 +221,7 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_center_box_set_end_widget(_arg0, _arg1)
 }
@@ -234,7 +234,7 @@ func (self *CenterBox) SetStartWidget(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_center_box_set_start_widget(_arg0, _arg1)
 }

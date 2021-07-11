@@ -25,31 +25,34 @@ func init() {
 	})
 }
 
-// HandleBoxxerOverrider contains methods that are overridable.
+// HandleBoxOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type HandleBoxxerOverrider interface {
+type HandleBoxOverrider interface {
 	ChildAttached(child Widgetter)
+
 	ChildDetached(child Widgetter)
 }
 
 // HandleBoxxer describes HandleBox's methods.
 type HandleBoxxer interface {
-	gextras.Objector
-
+	// ChildDetached: whether the handlebox’s child is currently detached.
 	ChildDetached() bool
+	// HandlePosition gets the handle position of the handle box.
 	HandlePosition() PositionType
+	// ShadowType gets the type of shadow drawn around the handle box.
 	ShadowType() ShadowType
+	// SnapEdge gets the edge used for determining reattachment of the handle
+	// box.
 	SnapEdge() PositionType
 }
 
-// HandleBox: the HandleBox widget allows a portion of a window to be "torn
-// off". It is a bin widget which displays its child and a handle that the user
-// can drag to tear off a separate window (the “float window”) containing the
-// child widget. A thin “ghost” is drawn in the original location of the
-// handlebox. By dragging the separate window back to its original location, it
-// can be reattached.
+// HandleBox widget allows a portion of a window to be "torn off". It is a bin
+// widget which displays its child and a handle that the user can drag to tear
+// off a separate window (the “float window”) containing the child widget. A
+// thin “ghost” is drawn in the original location of the handlebox. By dragging
+// the separate window back to its original location, it can be reattached.
 //
 // When reattaching, the ghost and float window, must be aligned along one of
 // the edges, the “snap edge”. This either can be specified by the application
@@ -68,24 +71,19 @@ type HandleBoxxer interface {
 // make it useful and most importantly does not fit well into modern >
 // application design. Do not use it. There is no replacement.
 type HandleBox struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ HandleBoxxer = (*HandleBox)(nil)
+var (
+	_ HandleBoxxer    = (*HandleBox)(nil)
+	_ gextras.Nativer = (*HandleBox)(nil)
+)
 
-func wrapHandleBoxxer(obj *externglib.Object) HandleBoxxer {
+func wrapHandleBox(obj *externglib.Object) HandleBoxxer {
 	return &HandleBox{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -96,25 +94,7 @@ func wrapHandleBoxxer(obj *externglib.Object) HandleBoxxer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -122,7 +102,7 @@ func wrapHandleBoxxer(obj *externglib.Object) HandleBoxxer {
 func marshalHandleBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHandleBoxxer(obj), nil
+	return wrapHandleBox(obj), nil
 }
 
 // NewHandleBox: create a new handle box.

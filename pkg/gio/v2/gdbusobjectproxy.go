@@ -34,8 +34,7 @@ func init() {
 
 // DBusObjectProxier describes DBusObjectProxy's methods.
 type DBusObjectProxier interface {
-	gextras.Objector
-
+	// Connection gets the connection that @proxy is for.
 	Connection() *DBusConnection
 }
 
@@ -48,9 +47,12 @@ type DBusObjectProxy struct {
 	DBusObject
 }
 
-var _ DBusObjectProxier = (*DBusObjectProxy)(nil)
+var (
+	_ DBusObjectProxier = (*DBusObjectProxy)(nil)
+	_ gextras.Nativer   = (*DBusObjectProxy)(nil)
+)
 
-func wrapDBusObjectProxier(obj *externglib.Object) DBusObjectProxier {
+func wrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxier {
 	return &DBusObjectProxy{
 		Object: obj,
 		DBusObject: DBusObject{
@@ -62,7 +64,7 @@ func wrapDBusObjectProxier(obj *externglib.Object) DBusObjectProxier {
 func marshalDBusObjectProxier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectProxier(obj), nil
+	return wrapDBusObjectProxy(obj), nil
 }
 
 // NewDBusObjectProxy creates a new BusObjectProxy for the given connection and
@@ -72,7 +74,7 @@ func NewDBusObjectProxy(connection DBusConnectioner, objectPath string) *DBusObj
 	var _arg2 *C.gchar            // out
 	var _cret *C.GDBusObjectProxy // in
 
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg2))
 

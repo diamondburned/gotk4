@@ -32,22 +32,27 @@ func init() {
 	})
 }
 
-// DBusObjectSkeletonnerOverrider contains methods that are overridable.
+// DBusObjectSkeletonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusObjectSkeletonnerOverrider interface {
+type DBusObjectSkeletonOverrider interface {
 	AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation DBusMethodInvocationer) bool
 }
 
 // DBusObjectSkeletonner describes DBusObjectSkeleton's methods.
 type DBusObjectSkeletonner interface {
-	gextras.Objector
-
+	// AddInterface adds @interface_ to @object.
 	AddInterface(interface_ DBusInterfaceSkeletonner)
+	// Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
+	// interfaces belonging to @object.
 	Flush()
+	// RemoveInterface removes @interface_ from @object.
 	RemoveInterface(interface_ DBusInterfaceSkeletonner)
+	// RemoveInterfaceByName removes the BusInterface with @interface_name from
+	// @object.
 	RemoveInterfaceByName(interfaceName string)
+	// SetObjectPath sets the object path for @object.
 	SetObjectPath(objectPath string)
 }
 
@@ -62,9 +67,12 @@ type DBusObjectSkeleton struct {
 	DBusObject
 }
 
-var _ DBusObjectSkeletonner = (*DBusObjectSkeleton)(nil)
+var (
+	_ DBusObjectSkeletonner = (*DBusObjectSkeleton)(nil)
+	_ gextras.Nativer       = (*DBusObjectSkeleton)(nil)
+)
 
-func wrapDBusObjectSkeletonner(obj *externglib.Object) DBusObjectSkeletonner {
+func wrapDBusObjectSkeleton(obj *externglib.Object) DBusObjectSkeletonner {
 	return &DBusObjectSkeleton{
 		Object: obj,
 		DBusObject: DBusObject{
@@ -76,7 +84,7 @@ func wrapDBusObjectSkeletonner(obj *externglib.Object) DBusObjectSkeletonner {
 func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectSkeletonner(obj), nil
+	return wrapDBusObjectSkeleton(obj), nil
 }
 
 // NewDBusObjectSkeleton creates a new BusObjectSkeleton.
@@ -108,7 +116,7 @@ func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonn
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((interface_).(gextras.Nativer).Native()))
 
 	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
 }
@@ -129,7 +137,7 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((interface_).(gextras.Nativer).Native()))
 
 	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
 }

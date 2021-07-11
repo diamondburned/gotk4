@@ -27,20 +27,19 @@ func init() {
 
 // StatusbarAccessibler describes StatusbarAccessible's methods.
 type StatusbarAccessibler interface {
-	gextras.Objector
-
 	privateStatusbarAccessible()
 }
 
 type StatusbarAccessible struct {
 	ContainerAccessible
-
-	atk.Component
 }
 
-var _ StatusbarAccessibler = (*StatusbarAccessible)(nil)
+var (
+	_ StatusbarAccessibler = (*StatusbarAccessible)(nil)
+	_ gextras.Nativer      = (*StatusbarAccessible)(nil)
+)
 
-func wrapStatusbarAccessibler(obj *externglib.Object) StatusbarAccessibler {
+func wrapStatusbarAccessible(obj *externglib.Object) StatusbarAccessibler {
 	return &StatusbarAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -53,12 +52,6 @@ func wrapStatusbarAccessibler(obj *externglib.Object) StatusbarAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -66,7 +59,7 @@ func wrapStatusbarAccessibler(obj *externglib.Object) StatusbarAccessibler {
 func marshalStatusbarAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStatusbarAccessibler(obj), nil
+	return wrapStatusbarAccessible(obj), nil
 }
 
 func (*StatusbarAccessible) privateStatusbarAccessible() {}

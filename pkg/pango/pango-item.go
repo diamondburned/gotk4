@@ -22,8 +22,8 @@ func init() {
 	})
 }
 
-// Analysis: the `PangoAnalysis` structure stores information about the
-// properties of a segment of text.
+// Analysis: `PangoAnalysis` structure stores information about the properties
+// of a segment of text.
 type Analysis struct {
 	native C.PangoAnalysis
 }
@@ -33,7 +33,7 @@ func (a *Analysis) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Item: the `PangoItem` structure stores information about a segment of text.
+// Item: `PangoItem` structure stores information about a segment of text.
 //
 // You typically obtain `PangoItems` by itemizing a piece of text with
 // [func@itemize].

@@ -38,34 +38,68 @@ func init() {
 
 // SocketClienter describes SocketClient's methods.
 type SocketClienter interface {
-	gextras.Objector
-
+	// AddApplicationProxy: enable proxy protocols to be handled by the
+	// application.
 	AddApplicationProxy(protocol string)
+	// ConnectSocketClienter tries to resolve the @connectable and make a
+	// network connection to it.
 	ConnectSocketClienter(connectable SocketConnectabler, cancellable Cancellabler) (*SocketConnection, error)
+	// ConnectAsync: this is the asynchronous version of
+	// g_socket_client_connect().
 	ConnectAsync(connectable SocketConnectabler, cancellable Cancellabler, callback AsyncReadyCallback)
+	// ConnectFinish finishes an async connect operation.
 	ConnectFinish(result AsyncResulter) (*SocketConnection, error)
+	// ConnectToHost: this is a helper function for g_socket_client_connect().
 	ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellabler) (*SocketConnection, error)
+	// ConnectToHostAsync: this is the asynchronous version of
+	// g_socket_client_connect_to_host().
 	ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellabler, callback AsyncReadyCallback)
+	// ConnectToHostFinish finishes an async connect operation.
 	ConnectToHostFinish(result AsyncResulter) (*SocketConnection, error)
+	// ConnectToService attempts to create a TCP connection to a service.
 	ConnectToService(domain string, service string, cancellable Cancellabler) (*SocketConnection, error)
+	// ConnectToServiceAsync: this is the asynchronous version of
+	// g_socket_client_connect_to_service().
 	ConnectToServiceAsync(domain string, service string, cancellable Cancellabler, callback AsyncReadyCallback)
+	// ConnectToServiceFinish finishes an async connect operation.
 	ConnectToServiceFinish(result AsyncResulter) (*SocketConnection, error)
+	// ConnectToURI: this is a helper function for g_socket_client_connect().
 	ConnectToURI(uri string, defaultPort uint16, cancellable Cancellabler) (*SocketConnection, error)
+	// ConnectToURIAsync: this is the asynchronous version of
+	// g_socket_client_connect_to_uri().
 	ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellabler, callback AsyncReadyCallback)
+	// ConnectToURIFinish finishes an async connect operation.
 	ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error)
+	// EnableProxy gets the proxy enable state; see
+	// g_socket_client_set_enable_proxy()
 	EnableProxy() bool
+	// Family gets the socket family of the socket client.
 	Family() SocketFamily
+	// LocalAddress gets the local address of the socket client.
 	LocalAddress() *SocketAddress
+	// Protocol gets the protocol name type of the socket client.
 	Protocol() SocketProtocol
+	// ProxyResolver gets the Resolver being used by @client.
 	ProxyResolver() *ProxyResolver
+	// SocketType gets the socket type of the socket client.
 	SocketType() SocketType
+	// Timeout gets the I/O timeout time for sockets created by @client.
 	Timeout() uint
+	// TLS gets whether @client creates TLS connections.
 	TLS() bool
+	// TLSValidationFlags gets the TLS validation flags used creating TLS
+	// connections via @client.
 	TLSValidationFlags() TLSCertificateFlags
+	// SetEnableProxy sets whether or not @client attempts to make connections
+	// via a proxy server.
 	SetEnableProxy(enable bool)
+	// SetLocalAddress sets the local address of the socket client.
 	SetLocalAddress(address SocketAddresser)
-	SetProxyResolver(proxyResolver ProxyResolverrer)
+	// SetProxyResolver overrides the Resolver used by @client.
+	SetProxyResolver(proxyResolver ProxyResolverer)
+	// SetTimeout sets the I/O timeout for sockets created by @client.
 	SetTimeout(timeout uint)
+	// SetTLS sets whether @client creates TLS (aka SSL) connections.
 	SetTLS(tls bool)
 }
 
@@ -85,9 +119,12 @@ type SocketClient struct {
 	*externglib.Object
 }
 
-var _ SocketClienter = (*SocketClient)(nil)
+var (
+	_ SocketClienter  = (*SocketClient)(nil)
+	_ gextras.Nativer = (*SocketClient)(nil)
+)
 
-func wrapSocketClienter(obj *externglib.Object) SocketClienter {
+func wrapSocketClient(obj *externglib.Object) SocketClienter {
 	return &SocketClient{
 		Object: obj,
 	}
@@ -96,7 +133,7 @@ func wrapSocketClienter(obj *externglib.Object) SocketClienter {
 func marshalSocketClienter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketClienter(obj), nil
+	return wrapSocketClient(obj), nil
 }
 
 // NewSocketClient creates a new Client with the default options.
@@ -167,8 +204,8 @@ func (client *SocketClient) ConnectSocketClienter(connectable SocketConnectabler
 	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_client_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -201,8 +238,8 @@ func (client *SocketClient) ConnectAsync(connectable SocketConnectabler, cancell
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -218,7 +255,7 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_client_connect_finish(_arg0, _arg1, &_cerr)
 
@@ -272,7 +309,7 @@ func (client *SocketClient) ConnectToHost(hostAndPort string, defaultPort uint16
 	_arg1 = (*C.gchar)(C.CString(hostAndPort))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_client_connect_to_host(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -302,7 +339,7 @@ func (client *SocketClient) ConnectToHostAsync(hostAndPort string, defaultPort u
 	_arg1 = (*C.gchar)(C.CString(hostAndPort))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -318,7 +355,7 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_client_connect_to_host_finish(_arg0, _arg1, &_cerr)
 
@@ -357,7 +394,7 @@ func (client *SocketClient) ConnectToService(domain string, service string, canc
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(service))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_client_connect_to_service(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -385,7 +422,7 @@ func (client *SocketClient) ConnectToServiceAsync(domain string, service string,
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(service))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -401,7 +438,7 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_client_connect_to_service_finish(_arg0, _arg1, &_cerr)
 
@@ -445,7 +482,7 @@ func (client *SocketClient) ConnectToURI(uri string, defaultPort uint16, cancell
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_client_connect_to_uri(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -475,7 +512,7 @@ func (client *SocketClient) ConnectToURIAsync(uri string, defaultPort uint16, ca
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -491,7 +528,7 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_client_connect_to_uri_finish(_arg0, _arg1, &_cerr)
 
@@ -696,7 +733,7 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 	var _arg1 *C.GSocketAddress // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 
 	C.g_socket_client_set_local_address(_arg0, _arg1)
 }
@@ -708,12 +745,12 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 // Note that whether or not the proxy resolver is actually used depends on the
 // setting of Client:enable-proxy, which is not changed by this function (but
 // which is true by default)
-func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverrer) {
+func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GProxyResolver)(unsafe.Pointer(proxyResolver.Native()))
+	_arg1 = (*C.GProxyResolver)(unsafe.Pointer((proxyResolver).(gextras.Nativer).Native()))
 
 	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
 }

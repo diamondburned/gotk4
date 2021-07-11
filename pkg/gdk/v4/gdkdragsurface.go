@@ -24,8 +24,7 @@ func init() {
 
 // DragSurfacer describes DragSurface's methods.
 type DragSurfacer interface {
-	gextras.Objector
-
+	// Present @drag_surface.
 	Present(width int, height int) bool
 }
 
@@ -34,9 +33,12 @@ type DragSurface struct {
 	Surface
 }
 
-var _ DragSurfacer = (*DragSurface)(nil)
+var (
+	_ DragSurfacer    = (*DragSurface)(nil)
+	_ gextras.Nativer = (*DragSurface)(nil)
+)
 
-func wrapDragSurfacer(obj *externglib.Object) DragSurfacer {
+func wrapDragSurface(obj *externglib.Object) DragSurfacer {
 	return &DragSurface{
 		Surface: Surface{
 			Object: obj,
@@ -47,7 +49,7 @@ func wrapDragSurfacer(obj *externglib.Object) DragSurfacer {
 func marshalDragSurfacer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragSurfacer(obj), nil
+	return wrapDragSurface(obj), nil
 }
 
 // Present @drag_surface.

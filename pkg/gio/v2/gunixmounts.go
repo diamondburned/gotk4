@@ -464,8 +464,7 @@ func UnixMountsChangedSince(time uint64) bool {
 
 // UnixMountMonitorrer describes UnixMountMonitor's methods.
 type UnixMountMonitorrer interface {
-	gextras.Objector
-
+	// SetRateLimit: this function does nothing.
 	SetRateLimit(limitMsec int)
 }
 
@@ -474,9 +473,12 @@ type UnixMountMonitor struct {
 	*externglib.Object
 }
 
-var _ UnixMountMonitorrer = (*UnixMountMonitor)(nil)
+var (
+	_ UnixMountMonitorrer = (*UnixMountMonitor)(nil)
+	_ gextras.Nativer     = (*UnixMountMonitor)(nil)
+)
 
-func wrapUnixMountMonitorrer(obj *externglib.Object) UnixMountMonitorrer {
+func wrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitorrer {
 	return &UnixMountMonitor{
 		Object: obj,
 	}
@@ -485,7 +487,7 @@ func wrapUnixMountMonitorrer(obj *externglib.Object) UnixMountMonitorrer {
 func marshalUnixMountMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixMountMonitorrer(obj), nil
+	return wrapUnixMountMonitor(obj), nil
 }
 
 // NewUnixMountMonitor: deprecated alias for g_unix_mount_monitor_get().

@@ -27,38 +27,30 @@ func init() {
 
 // HScrollbarrer describes HScrollbar's methods.
 type HScrollbarrer interface {
-	gextras.Objector
-
 	privateHScrollbar()
 }
 
-// HScrollbar: the HScrollbar widget is a widget arranged horizontally creating
-// a scrollbar. See Scrollbar for details on scrollbars. Adjustment pointers may
-// be added to handle the adjustment of the scrollbar or it may be left nil in
-// which case one will be created for you. See Scrollbar for a description of
-// what the fields in an adjustment represent for a scrollbar.
+// HScrollbar widget is a widget arranged horizontally creating a scrollbar. See
+// Scrollbar for details on scrollbars. Adjustment pointers may be added to
+// handle the adjustment of the scrollbar or it may be left nil in which case
+// one will be created for you. See Scrollbar for a description of what the
+// fields in an adjustment represent for a scrollbar.
 //
 // GtkHScrollbar has been deprecated, use Scrollbar instead.
 type HScrollbar struct {
-	*externglib.Object
-
 	Scrollbar
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ HScrollbarrer = (*HScrollbar)(nil)
+var (
+	_ HScrollbarrer   = (*HScrollbar)(nil)
+	_ gextras.Nativer = (*HScrollbar)(nil)
+)
 
-func wrapHScrollbarrer(obj *externglib.Object) HScrollbarrer {
+func wrapHScrollbar(obj *externglib.Object) HScrollbarrer {
 	return &HScrollbar{
-		Object: obj,
 		Scrollbar: Scrollbar{
-			Object: obj,
 			Range: Range{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -69,34 +61,10 @@ func wrapHScrollbarrer(obj *externglib.Object) HScrollbarrer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			Orientable: Orientable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -104,7 +72,7 @@ func wrapHScrollbarrer(obj *externglib.Object) HScrollbarrer {
 func marshalHScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHScrollbarrer(obj), nil
+	return wrapHScrollbar(obj), nil
 }
 
 // NewHScrollbar creates a new horizontal scrollbar.
@@ -114,7 +82,7 @@ func NewHScrollbar(adjustment Adjustmenter) *HScrollbar {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_hscrollbar_new(_arg1)
 

@@ -24,20 +24,28 @@ func init() {
 
 // FontButtonner describes FontButton's methods.
 type FontButtonner interface {
-	gextras.Objector
-
+	// Modal gets whether the dialog is modal.
 	Modal() bool
+	// Title retrieves the title of the font chooser dialog.
 	Title() string
+	// UseFont returns whether the selected font is used in the label.
 	UseFont() bool
+	// UseSize returns whether the selected size is used in the label.
 	UseSize() bool
+	// SetModal sets whether the dialog should be modal.
 	SetModal(modal bool)
+	// SetTitle sets the title for the font chooser dialog.
 	SetTitle(title string)
+	// SetUseFont: if @use_font is true, the font name will be written using the
+	// selected font.
 	SetUseFont(useFont bool)
+	// SetUseSize: if @use_size is true, the font name will be written using the
+	// selected size.
 	SetUseSize(useSize bool)
 }
 
-// FontButton: the `GtkFontButton` allows to open a font chooser dialog to
-// change the font.
+// FontButton: `GtkFontButton` allows to open a font chooser dialog to change
+// the font.
 //
 // !An example GtkFontButton (font-button.png)
 //
@@ -51,22 +59,19 @@ type FontButtonner interface {
 // `GtkFontButton` has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
 type FontButton struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	FontChooser
 }
 
-var _ FontButtonner = (*FontButton)(nil)
+var (
+	_ FontButtonner   = (*FontButton)(nil)
+	_ gextras.Nativer = (*FontButton)(nil)
+)
 
-func wrapFontButtonner(obj *externglib.Object) FontButtonner {
+func wrapFontButton(obj *externglib.Object) FontButtonner {
 	return &FontButton{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -80,15 +85,6 @@ func wrapFontButtonner(obj *externglib.Object) FontButtonner {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		FontChooser: FontChooser{
 			Object: obj,
 		},
@@ -98,7 +94,7 @@ func wrapFontButtonner(obj *externglib.Object) FontButtonner {
 func marshalFontButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontButtonner(obj), nil
+	return wrapFontButton(obj), nil
 }
 
 // NewFontButton creates a new font picker widget.
@@ -130,6 +126,12 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 	_fontButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontButton)
 
 	return _fontButton
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FontButton) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Modal gets whether the dialog is modal.

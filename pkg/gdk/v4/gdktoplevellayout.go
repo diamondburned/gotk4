@@ -23,7 +23,7 @@ func init() {
 	})
 }
 
-// ToplevelLayout: the `GdkToplevelLayout` struct contains information that is
+// ToplevelLayout: `GdkToplevelLayout` struct contains information that is
 // necessary to present a sovereign window on screen.
 //
 // The `GdkToplevelLayout` struct is necessary for using
@@ -219,7 +219,7 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitorrer)
 	if fullscreen {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
+	_arg2 = (*C.GdkMonitor)(unsafe.Pointer((monitor).(gextras.Nativer).Native()))
 
 	C.gdk_toplevel_layout_set_fullscreen(_arg0, _arg1, _arg2)
 }

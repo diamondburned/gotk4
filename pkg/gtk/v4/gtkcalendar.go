@@ -24,17 +24,26 @@ func init() {
 
 // Calendarrer describes Calendar's methods.
 type Calendarrer interface {
-	gextras.Objector
-
+	// ClearMarks: remove all visual markers.
 	ClearMarks()
+	// DayIsMarked returns if the @day of the @calendar is already marked.
 	DayIsMarked(day uint) bool
+	// ShowDayNames returns whether @self is currently showing the names of the
+	// week days.
 	ShowDayNames() bool
+	// ShowHeading returns whether @self is currently showing the heading.
 	ShowHeading() bool
+	// ShowWeekNumbers returns whether @self is showing week numbers right now.
 	ShowWeekNumbers() bool
+	// MarkDay places a visual marker on a particular day.
 	MarkDay(day uint)
+	// SetShowDayNames sets whether the calendar shows day names.
 	SetShowDayNames(value bool)
+	// SetShowHeading sets whether the calendar should show a heading.
 	SetShowHeading(value bool)
+	// SetShowWeekNumbers sets whether week numbers are shown in the calendar.
 	SetShowWeekNumbers(value bool)
+	// UnmarkDay removes the visual marker from a particular day.
 	UnmarkDay(day uint)
 }
 
@@ -79,21 +88,17 @@ type Calendarrer interface {
 //
 // Marked day labels get the :selected state assigned.
 type Calendar struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Calendarrer = (*Calendar)(nil)
+var (
+	_ Calendarrer     = (*Calendar)(nil)
+	_ gextras.Nativer = (*Calendar)(nil)
+)
 
-func wrapCalendarrer(obj *externglib.Object) Calendarrer {
+func wrapCalendar(obj *externglib.Object) Calendarrer {
 	return &Calendar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -107,22 +112,13 @@ func wrapCalendarrer(obj *externglib.Object) Calendarrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalCalendarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCalendarrer(obj), nil
+	return wrapCalendar(obj), nil
 }
 
 // NewCalendar creates a new calendar, with the current date being selected.

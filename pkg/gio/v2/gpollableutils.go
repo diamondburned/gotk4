@@ -63,7 +63,7 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 
 	_arg1 = (C.gpointer)(unsafe.Pointer(pollableStream.Native()))
 	_arg2 = (*C.GSource)(unsafe.Pointer(childSource))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_source_new_full(_arg1, _arg2, _arg3)
 
@@ -96,13 +96,13 @@ func PollableStreamRead(stream InputStreamer, buffer []byte, blocking bool, canc
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg3 = C.gsize(len(buffer))
 	_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	if blocking {
 		_arg4 = C.TRUE
 	}
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_stream_read(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
 
@@ -134,13 +134,13 @@ func PollableStreamWrite(stream OutputStreamer, buffer []byte, blocking bool, ca
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg3 = C.gsize(len(buffer))
 	_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	if blocking {
 		_arg4 = C.TRUE
 	}
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_stream_write(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
 
@@ -178,13 +178,13 @@ func PollableStreamWriteAll(stream OutputStreamer, buffer []byte, blocking bool,
 	var _arg6 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg3 = C.gsize(len(buffer))
 	_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	if blocking {
 		_arg4 = C.TRUE
 	}
-	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_pollable_stream_write_all(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, &_arg5, _arg6, &_cerr)
 

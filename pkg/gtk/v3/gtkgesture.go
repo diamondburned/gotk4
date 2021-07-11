@@ -27,21 +27,44 @@ func init() {
 
 // Gesturer describes Gesture's methods.
 type Gesturer interface {
-	gextras.Objector
-
+	// BoundingBox: if there are touch sequences being currently handled by
+	// @gesture, this function returns true and fills in @rect with the bounding
+	// box containing all active touches.
 	BoundingBox() (gdk.Rectangle, bool)
+	// BoundingBoxCenter: if there are touch sequences being currently handled
+	// by @gesture, this function returns true and fills in @x and @y with the
+	// center of the bounding box containing all active touches.
 	BoundingBoxCenter() (x float64, y float64, ok bool)
+	// Device returns the master Device that is currently operating on @gesture,
+	// or nil if the gesture is not being interacted.
 	Device() *gdk.Device
+	// LastUpdatedSequence returns the EventSequence that was last updated on
+	// @gesture.
 	LastUpdatedSequence() *gdk.EventSequence
+	// Point: if @sequence is currently being interpreted by @gesture, this
+	// function returns true and fills in @x and @y with the last coordinates
+	// stored for that event sequence.
 	Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
+	// SequenceState returns the @sequence state, as seen by @gesture.
 	SequenceState(sequence *gdk.EventSequence) EventSequenceState
+	// Window returns the user-defined window that receives the events handled
+	// by @gesture.
 	Window() *gdk.Window
+	// Group adds @gesture to the same group than @group_gesture.
 	Group(gesture Gesturer)
+	// HandlesSequence returns true if @gesture is currently handling events
+	// corresponding to @sequence.
 	HandlesSequence(sequence *gdk.EventSequence) bool
+	// IsActive returns true if the gesture is currently active.
 	IsActive() bool
+	// IsGroupedWith returns true if both gestures pertain to the same group.
 	IsGroupedWith(other Gesturer) bool
+	// IsRecognized returns true if the gesture is currently recognized.
 	IsRecognized() bool
+	// SetWindow sets a specific window to receive events about, so @gesture
+	// will effectively handle only events targeting @window, or a child of it.
 	SetWindow(window gdk.Windowwer)
+	// Ungroup separates @gesture into an isolated group.
 	Ungroup()
 }
 
@@ -137,9 +160,12 @@ type Gesture struct {
 	EventController
 }
 
-var _ Gesturer = (*Gesture)(nil)
+var (
+	_ Gesturer        = (*Gesture)(nil)
+	_ gextras.Nativer = (*Gesture)(nil)
+)
 
-func wrapGesturer(obj *externglib.Object) Gesturer {
+func wrapGesture(obj *externglib.Object) Gesturer {
 	return &Gesture{
 		EventController: EventController{
 			Object: obj,
@@ -150,7 +176,7 @@ func wrapGesturer(obj *externglib.Object) Gesturer {
 func marshalGesturer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGesturer(obj), nil
+	return wrapGesture(obj), nil
 }
 
 // BoundingBox: if there are touch sequences being currently handled by
@@ -321,7 +347,7 @@ func (groupGesture *Gesture) Group(gesture Gesturer) {
 	var _arg1 *C.GtkGesture // out
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(groupGesture.Native()))
-	_arg1 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
+	_arg1 = (*C.GtkGesture)(unsafe.Pointer((gesture).(gextras.Nativer).Native()))
 
 	C.gtk_gesture_group(_arg0, _arg1)
 }
@@ -373,7 +399,7 @@ func (gesture *Gesture) IsGroupedWith(other Gesturer) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GtkGesture)(unsafe.Pointer(other.Native()))
+	_arg1 = (*C.GtkGesture)(unsafe.Pointer((other).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_gesture_is_grouped_with(_arg0, _arg1)
 
@@ -415,7 +441,7 @@ func (gesture *Gesture) SetWindow(window gdk.Windowwer) {
 	var _arg1 *C.GdkWindow  // out
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_gesture_set_window(_arg0, _arg1)
 }

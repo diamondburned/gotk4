@@ -23,9 +23,8 @@ func init() {
 	})
 }
 
-// MappedFile: the File represents a file mapping created with
-// g_mapped_file_new(). It has only private members and should not be accessed
-// directly.
+// MappedFile represents a file mapping created with g_mapped_file_new(). It has
+// only private members and should not be accessed directly.
 type MappedFile struct {
 	native C.GMappedFile
 }

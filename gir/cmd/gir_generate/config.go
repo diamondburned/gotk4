@@ -38,6 +38,10 @@ var packages = []Package{
 var preprocessors = []Preprocessor{
 	// Collision due to case conversions.
 	TypeRenamer("GLib-2.file_test", "test_file"),
+	// CellRendererSpinner (generated interface) collides with an actual
+	// CellRendererSpinner class.
+	TypeRenamer("Gtk-3.CellRendererSpin", "CellRendererSpinButton"),
+
 	// Fix incorrect parameter direction.
 	// ModifyCallable("Gio-2.DBusInterfaceGetPropertyFunc",
 	// 	func(cattrs *gir.CallableAttrs) {
@@ -105,10 +109,10 @@ var filters = []FilterMatcher{
 	FileFilter("gskvulkanrenderer.h"),
 	// These are not found in GTK4 for some reason, but we're ignoring it for
 	// GTK3 as well.
-	FileFilter("gtkpagesetupunixdialog.c"),
-	FileFilter("gtkpagesetupunixdialog.h"),
-	FileFilter("gtkprinter.c"),
-	FileFilter("gtkprinter.h"),
+	FileFilter("gtkpagesetupunixdialog"),
+	FileFilter("gtkprintunixdialog"),
+	FileFilter("gtkprinter"),
+	FileFilter("gtkprintjob"),
 
 	// These are missing on build for some reason.
 	AbsoluteFilter("C.g_array_get_type"),

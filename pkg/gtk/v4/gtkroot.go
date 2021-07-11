@@ -25,10 +25,12 @@ func init() {
 
 // Rooter describes Root's methods.
 type Rooter interface {
-	gextras.Objector
-
+	// Display returns the display that this `GtkRoot` is on.
 	Display() *gdk.Display
+	// Focus retrieves the current focused widget within the root.
 	Focus() *Widget
+	// SetFocus: if @focus is not the current focus widget, and is focusable,
+	// sets it as the focus widget for the root.
 	SetFocus(focus Widgetter)
 }
 
@@ -47,21 +49,18 @@ type Rooter interface {
 // `GtkRoot` also maintains the location of keyboard focus inside its widget
 // hierarchy, with [method@Gtk.Root.set_focus] and [method@Gtk.Root.get_focus].
 type Root struct {
-	*externglib.Object
-
 	Native
-	Widget
 }
 
-var _ Rooter = (*Root)(nil)
+var (
+	_ Rooter          = (*Root)(nil)
+	_ gextras.Nativer = (*Root)(nil)
+)
 
-func wrapRooter(obj *externglib.Object) Rooter {
+func wrapRoot(obj *externglib.Object) Rooter {
 	return &Root{
-		Object: obj,
 		Native: Native{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -76,28 +75,13 @@ func wrapRooter(obj *externglib.Object) Rooter {
 				},
 			},
 		},
-		Widget: Widget{
-			Object: obj,
-			InitiallyUnowned: externglib.InitiallyUnowned{
-				Object: obj,
-			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-		},
 	}
 }
 
 func marshalRooter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRooter(obj), nil
+	return wrapRoot(obj), nil
 }
 
 // Display returns the display that this `GtkRoot` is on.
@@ -148,7 +132,7 @@ func (self *Root) SetFocus(focus Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((focus).(gextras.Nativer).Native()))
 
 	C.gtk_root_set_focus(_arg0, _arg1)
 }

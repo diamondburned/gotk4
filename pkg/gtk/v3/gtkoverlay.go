@@ -27,11 +27,16 @@ func init() {
 
 // Overlayyer describes Overlay's methods.
 type Overlayyer interface {
-	gextras.Objector
-
+	// AddOverlay adds @widget to @overlay.
 	AddOverlay(widget Widgetter)
+	// OverlayPassThrough: convenience function to get the value of the
+	// Overlay:pass-through child property for @widget.
 	OverlayPassThrough(widget Widgetter) bool
+	// ReorderOverlay moves @child to a new @index in the list of @overlay
+	// children.
 	ReorderOverlay(child Widgetter, index_ int)
+	// SetOverlayPassThrough: convenience function to set the value of the
+	// Overlay:pass-through child property for @widget.
 	SetOverlayPassThrough(widget Widgetter, passThrough bool)
 }
 
@@ -64,24 +69,19 @@ type Overlayyer interface {
 // whose alignments cause them to be positioned at an edge get the style classes
 // “.left”, “.right”, “.top”, and/or “.bottom” according to their position.
 type Overlay struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Overlayyer = (*Overlay)(nil)
+var (
+	_ Overlayyer      = (*Overlay)(nil)
+	_ gextras.Nativer = (*Overlay)(nil)
+)
 
-func wrapOverlayyer(obj *externglib.Object) Overlayyer {
+func wrapOverlay(obj *externglib.Object) Overlayyer {
 	return &Overlay{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -92,25 +92,7 @@ func wrapOverlayyer(obj *externglib.Object) Overlayyer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -118,7 +100,7 @@ func wrapOverlayyer(obj *externglib.Object) Overlayyer {
 func marshalOverlayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOverlayyer(obj), nil
+	return wrapOverlay(obj), nil
 }
 
 // NewOverlay creates a new Overlay.
@@ -146,7 +128,7 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
 }
@@ -159,7 +141,7 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
 
@@ -185,7 +167,7 @@ func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.int(index_)
 
 	C.gtk_overlay_reorder_overlay(_arg0, _arg1, _arg2)
@@ -199,7 +181,7 @@ func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool
 	var _arg2 C.gboolean    // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	if passThrough {
 		_arg2 = C.TRUE
 	}

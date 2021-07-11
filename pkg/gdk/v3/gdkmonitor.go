@@ -28,17 +28,17 @@ func init() {
 type SubpixelLayout int
 
 const (
-	// Unknown: the layout is not known
+	// Unknown: layout is not known
 	SubpixelLayoutUnknown SubpixelLayout = iota
 	// None: not organized in this way
 	SubpixelLayoutNone
-	// HorizontalRGB: the layout is horizontal, the order is RGB
+	// HorizontalRGB: layout is horizontal, the order is RGB
 	SubpixelLayoutHorizontalRGB
-	// HorizontalBGR: the layout is horizontal, the order is BGR
+	// HorizontalBGR: layout is horizontal, the order is BGR
 	SubpixelLayoutHorizontalBGR
-	// VerticalRGB: the layout is vertical, the order is RGB
+	// VerticalRGB: layout is vertical, the order is RGB
 	SubpixelLayoutVerticalRGB
-	// VerticalBGR: the layout is vertical, the order is BGR
+	// VerticalBGR: layout is vertical, the order is BGR
 	SubpixelLayoutVerticalBGR
 )
 
@@ -48,18 +48,33 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 
 // Monitorrer describes Monitor's methods.
 type Monitorrer interface {
-	gextras.Objector
-
+	// Display gets the display that this monitor belongs to.
 	Display() *Display
+	// Geometry retrieves the size and position of an individual monitor within
+	// the display coordinate space.
 	Geometry() Rectangle
+	// HeightMm gets the height in millimeters of the monitor.
 	HeightMm() int
+	// Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
+	// available.
 	Manufacturer() string
+	// Model gets the a string identifying the monitor model, if available.
 	Model() string
+	// RefreshRate gets the refresh rate of the monitor, if available.
 	RefreshRate() int
+	// ScaleFactor gets the internal scale factor that maps from monitor
+	// coordinates to the actual device pixels.
 	ScaleFactor() int
+	// SubpixelLayout gets information about the layout of red, green and blue
+	// primaries for each pixel in this monitor, if available.
 	SubpixelLayout() SubpixelLayout
+	// WidthMm gets the width in millimeters of the monitor.
 	WidthMm() int
+	// Workarea retrieves the size and position of the “work area” on a monitor
+	// within the display coordinate space.
 	Workarea() Rectangle
+	// IsPrimary gets whether this monitor should be considered primary (see
+	// gdk_display_get_primary_monitor()).
 	IsPrimary() bool
 }
 
@@ -75,9 +90,12 @@ type Monitor struct {
 	*externglib.Object
 }
 
-var _ Monitorrer = (*Monitor)(nil)
+var (
+	_ Monitorrer      = (*Monitor)(nil)
+	_ gextras.Nativer = (*Monitor)(nil)
+)
 
-func wrapMonitorrer(obj *externglib.Object) Monitorrer {
+func wrapMonitor(obj *externglib.Object) Monitorrer {
 	return &Monitor{
 		Object: obj,
 	}
@@ -86,7 +104,7 @@ func wrapMonitorrer(obj *externglib.Object) Monitorrer {
 func marshalMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMonitorrer(obj), nil
+	return wrapMonitor(obj), nil
 }
 
 // Display gets the display that this monitor belongs to.

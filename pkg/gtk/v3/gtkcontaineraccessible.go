@@ -27,20 +27,19 @@ func init() {
 
 // ContainerAccessibler describes ContainerAccessible's methods.
 type ContainerAccessibler interface {
-	gextras.Objector
-
 	privateContainerAccessible()
 }
 
 type ContainerAccessible struct {
 	WidgetAccessible
-
-	atk.Component
 }
 
-var _ ContainerAccessibler = (*ContainerAccessible)(nil)
+var (
+	_ ContainerAccessibler = (*ContainerAccessible)(nil)
+	_ gextras.Nativer      = (*ContainerAccessible)(nil)
+)
 
-func wrapContainerAccessibler(obj *externglib.Object) ContainerAccessibler {
+func wrapContainerAccessible(obj *externglib.Object) ContainerAccessibler {
 	return &ContainerAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
@@ -52,16 +51,13 @@ func wrapContainerAccessibler(obj *externglib.Object) ContainerAccessibler {
 				Object: obj,
 			},
 		},
-		Component: atk.Component{
-			Object: obj,
-		},
 	}
 }
 
 func marshalContainerAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContainerAccessibler(obj), nil
+	return wrapContainerAccessible(obj), nil
 }
 
 func (*ContainerAccessible) privateContainerAccessible() {}

@@ -5,6 +5,7 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
@@ -168,7 +169,7 @@ func KeyboardGrab(window Windowwer, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg3 C.guint32       // out
 	var _cret C.GdkGrabStatus // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}

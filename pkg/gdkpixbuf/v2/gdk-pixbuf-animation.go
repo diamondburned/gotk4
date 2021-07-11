@@ -22,15 +22,15 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_pixbuf_animation_get_type()), F: marshalPixbufAnimationer},
-		{T: externglib.Type(C.gdk_pixbuf_animation_iter_get_type()), F: marshalPixbufAnimationIterrer},
+		{T: externglib.Type(C.gdk_pixbuf_animation_iter_get_type()), F: marshalPixbufAnimationIterer},
 	})
 }
 
-// PixbufAnimationerOverrider contains methods that are overridable.
+// PixbufAnimationOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PixbufAnimationerOverrider interface {
+type PixbufAnimationOverrider interface {
 	// Iter: get an iterator for displaying an animation.
 	//
 	// The iterator provides the frames that should be displayed at a given
@@ -64,6 +64,7 @@ type PixbufAnimationerOverrider interface {
 	//
 	// A delay time of -1 is possible, indicating "infinite".
 	Iter(startTime *glib.TimeVal) *PixbufAnimationIter
+
 	Size(width *int, height *int)
 	// StaticImage retrieves a static image for the animation.
 	//
@@ -88,12 +89,15 @@ type PixbufAnimationerOverrider interface {
 
 // PixbufAnimationer describes PixbufAnimation's methods.
 type PixbufAnimationer interface {
-	gextras.Objector
-
+	// Height queries the height of the bounding box of a pixbuf animation.
 	Height() int
+	// Iter: get an iterator for displaying an animation.
 	Iter(startTime *glib.TimeVal) *PixbufAnimationIter
+	// StaticImage retrieves a static image for the animation.
 	StaticImage() *Pixbuf
+	// Width queries the width of the bounding box of a pixbuf animation.
 	Width() int
+	// IsStaticImage checks whether the animation is a static image.
 	IsStaticImage() bool
 }
 
@@ -114,9 +118,12 @@ type PixbufAnimation struct {
 	*externglib.Object
 }
 
-var _ PixbufAnimationer = (*PixbufAnimation)(nil)
+var (
+	_ PixbufAnimationer = (*PixbufAnimation)(nil)
+	_ gextras.Nativer   = (*PixbufAnimation)(nil)
+)
 
-func wrapPixbufAnimationer(obj *externglib.Object) PixbufAnimationer {
+func wrapPixbufAnimation(obj *externglib.Object) PixbufAnimationer {
 	return &PixbufAnimation{
 		Object: obj,
 	}
@@ -125,7 +132,7 @@ func wrapPixbufAnimationer(obj *externglib.Object) PixbufAnimationer {
 func marshalPixbufAnimationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufAnimationer(obj), nil
+	return wrapPixbufAnimation(obj), nil
 }
 
 // NewPixbufAnimationFromFile creates a new animation by loading it from a file.
@@ -198,8 +205,8 @@ func NewPixbufAnimationFromStream(stream gio.InputStreamer, cancellable gio.Canc
 	var _cret *C.GdkPixbufAnimation // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, &_cerr)
 
@@ -220,7 +227,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 	var _cret *C.GdkPixbufAnimation // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((asyncResult).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, &_cerr)
 
@@ -360,11 +367,11 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 	return _ok
 }
 
-// PixbufAnimationIterrerOverrider contains methods that are overridable.
+// PixbufAnimationIterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PixbufAnimationIterrerOverrider interface {
+type PixbufAnimationIterOverrider interface {
 	// Advance: possibly advances an animation to a new frame.
 	//
 	// Chooses the frame based on the start time passed to
@@ -421,13 +428,17 @@ type PixbufAnimationIterrerOverrider interface {
 	OnCurrentlyLoadingFrame() bool
 }
 
-// PixbufAnimationIterrer describes PixbufAnimationIter's methods.
-type PixbufAnimationIterrer interface {
-	gextras.Objector
-
+// PixbufAnimationIterer describes PixbufAnimationIter's methods.
+type PixbufAnimationIterer interface {
+	// Advance: possibly advances an animation to a new frame.
 	Advance(currentTime *glib.TimeVal) bool
+	// DelayTime gets the number of milliseconds the current pixbuf should be
+	// displayed, or -1 if the current pixbuf should be displayed forever.
 	DelayTime() int
+	// Pixbuf gets the current pixbuf which should be displayed.
 	Pixbuf() *Pixbuf
+	// OnCurrentlyLoadingFrame: used to determine how to respond to the
+	// area_updated signal on PixbufLoader when loading an animation.
 	OnCurrentlyLoadingFrame() bool
 }
 
@@ -437,18 +448,21 @@ type PixbufAnimationIter struct {
 	*externglib.Object
 }
 
-var _ PixbufAnimationIterrer = (*PixbufAnimationIter)(nil)
+var (
+	_ PixbufAnimationIterer = (*PixbufAnimationIter)(nil)
+	_ gextras.Nativer       = (*PixbufAnimationIter)(nil)
+)
 
-func wrapPixbufAnimationIterrer(obj *externglib.Object) PixbufAnimationIterrer {
+func wrapPixbufAnimationIter(obj *externglib.Object) PixbufAnimationIterer {
 	return &PixbufAnimationIter{
 		Object: obj,
 	}
 }
 
-func marshalPixbufAnimationIterrer(p uintptr) (interface{}, error) {
+func marshalPixbufAnimationIterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufAnimationIterrer(obj), nil
+	return wrapPixbufAnimationIter(obj), nil
 }
 
 // Advance: possibly advances an animation to a new frame.

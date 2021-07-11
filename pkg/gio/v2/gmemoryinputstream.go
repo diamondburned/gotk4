@@ -34,8 +34,6 @@ func init() {
 
 // MemoryInputStreamer describes MemoryInputStream's methods.
 type MemoryInputStreamer interface {
-	gextras.Objector
-
 	privateMemoryInputStream()
 }
 
@@ -44,18 +42,19 @@ type MemoryInputStreamer interface {
 //
 // As of GLib 2.34, InputStream implements InputStream.
 type MemoryInputStream struct {
-	*externglib.Object
-
 	InputStream
+
 	PollableInputStream
 	Seekable
 }
 
-var _ MemoryInputStreamer = (*MemoryInputStream)(nil)
+var (
+	_ MemoryInputStreamer = (*MemoryInputStream)(nil)
+	_ gextras.Nativer     = (*MemoryInputStream)(nil)
+)
 
-func wrapMemoryInputStreamer(obj *externglib.Object) MemoryInputStreamer {
+func wrapMemoryInputStream(obj *externglib.Object) MemoryInputStreamer {
 	return &MemoryInputStream{
-		Object: obj,
 		InputStream: InputStream{
 			Object: obj,
 		},
@@ -73,7 +72,7 @@ func wrapMemoryInputStreamer(obj *externglib.Object) MemoryInputStreamer {
 func marshalMemoryInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryInputStreamer(obj), nil
+	return wrapMemoryInputStream(obj), nil
 }
 
 // NewMemoryInputStream creates a new empty InputStream.
@@ -87,6 +86,12 @@ func NewMemoryInputStream() *MemoryInputStream {
 	_memoryInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryInputStream)
 
 	return _memoryInputStream
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *MemoryInputStream) Native() uintptr {
+	return v.InputStream.Object.Native()
 }
 
 func (*MemoryInputStream) privateMemoryInputStream() {}

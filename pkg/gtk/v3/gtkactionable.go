@@ -27,11 +27,11 @@ func init() {
 	})
 }
 
-// ActionablerOverrider contains methods that are overridable.
+// ActionableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionablerOverrider interface {
+type ActionableOverrider interface {
 	// ActionName gets the action name for @actionable.
 	//
 	// See gtk_actionable_set_action_name() for more information.
@@ -74,12 +74,17 @@ type ActionablerOverrider interface {
 
 // Actionabler describes Actionable's methods.
 type Actionabler interface {
-	gextras.Objector
-
+	// ActionName gets the action name for @actionable.
 	ActionName() string
+	// ActionTargetValue gets the current target value of @actionable.
 	ActionTargetValue() *glib.Variant
+	// SetActionName specifies the name of the action with which this widget
+	// should be associated.
 	SetActionName(actionName string)
+	// SetActionTargetValue sets the target value of an actionable widget.
 	SetActionTargetValue(targetValue *glib.Variant)
+	// SetDetailedActionName sets the action-name and associated string target
+	// value of an actionable widget.
 	SetDetailedActionName(detailedActionName string)
 }
 
@@ -96,18 +101,17 @@ type Actionabler interface {
 // Application, but other action groups that are added with
 // gtk_widget_insert_action_group() will be consulted as well.
 type Actionable struct {
-	*externglib.Object
-
 	Widget
 }
 
-var _ Actionabler = (*Actionable)(nil)
+var (
+	_ Actionabler     = (*Actionable)(nil)
+	_ gextras.Nativer = (*Actionable)(nil)
+)
 
-func wrapActionabler(obj *externglib.Object) Actionabler {
+func wrapActionable(obj *externglib.Object) Actionabler {
 	return &Actionable{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -124,7 +128,7 @@ func wrapActionabler(obj *externglib.Object) Actionabler {
 func marshalActionabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionabler(obj), nil
+	return wrapActionable(obj), nil
 }
 
 // ActionName gets the action name for @actionable.

@@ -48,15 +48,15 @@ type DragProtocol int
 const (
 	// None: no protocol.
 	DragProtocolNone DragProtocol = iota
-	// Motif: the Motif DND protocol. No longer supported
+	// Motif: motif DND protocol. No longer supported
 	DragProtocolMotif
-	// Xdnd: the Xdnd protocol.
+	// Xdnd: xdnd protocol.
 	DragProtocolXdnd
 	// Rootwin: extension to the Xdnd protocol for unclaimed root window drops.
 	DragProtocolRootwin
-	// Win32Dropfiles: the simple WM_DROPFILES protocol.
+	// Win32Dropfiles: simple WM_DROPFILES protocol.
 	DragProtocolWin32Dropfiles
-	// Ole2: the complex OLE2 DND protocol (not implemented).
+	// Ole2: complex OLE2 DND protocol (not implemented).
 	DragProtocolOle2
 	// Local: intra-application DND.
 	DragProtocolLocal
@@ -104,7 +104,7 @@ func DragAbort(context DragContexter, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_abort(_arg1, _arg2)
@@ -120,7 +120,7 @@ func DragDrop(context DragContexter, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_drop(_arg1, _arg2)
@@ -139,7 +139,7 @@ func DragDropDone(context DragContexter, success bool) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	if success {
 		_arg2 = C.TRUE
 	}
@@ -154,7 +154,7 @@ func DragDropSucceeded(context DragContexter) bool {
 	var _arg1 *C.GdkDragContext // out
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_drag_drop_succeeded(_arg1)
 
@@ -181,9 +181,9 @@ func DragFindWindowForScreen(context DragContexter, dragWindow Windowwer, screen
 	var _arg6 *C.GdkWindow      // in
 	var _arg7 C.GdkDragProtocol // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
-	_arg3 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer((dragWindow).(gextras.Nativer).Native()))
+	_arg3 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
 	_arg4 = C.gint(xRoot)
 	_arg5 = C.gint(yRoot)
 
@@ -206,7 +206,7 @@ func DropFinish(context DragContexter, success bool, time_ uint32) {
 	var _arg2 C.gboolean        // out
 	var _arg3 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	if success {
 		_arg2 = C.TRUE
 	}
@@ -224,7 +224,7 @@ func DropReply(context DragContexter, accepted bool, time_ uint32) {
 	var _arg2 C.gboolean        // out
 	var _arg3 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	if accepted {
 		_arg2 = C.TRUE
 	}

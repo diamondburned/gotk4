@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// EditablerOverrider contains methods that are overridable.
+// EditableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type EditablerOverrider interface {
+type EditableOverrider interface {
 	Changed()
 	// DeleteText deletes a sequence of characters.
 	//
@@ -76,29 +76,58 @@ type EditablerOverrider interface {
 
 // Editabler describes Editable's methods.
 type Editabler interface {
-	gextras.Objector
-
+	// DeleteSelection deletes the currently selected text of the editable.
 	DeleteSelection()
+	// DeleteText deletes a sequence of characters.
 	DeleteText(startPos int, endPos int)
+	// FinishDelegate undoes the setup done by
+	// [method@Gtk.Editable.init_delegate].
 	FinishDelegate()
+	// Alignment gets the alignment of the editable.
 	Alignment() float32
+	// Chars retrieves a sequence of characters.
 	Chars(startPos int, endPos int) string
+	// Delegate gets the `GtkEditable` that @editable is delegating its
+	// implementation to.
 	Delegate() *Editable
+	// Editable retrieves whether @editable is editable.
 	Editable() bool
+	// EnableUndo gets if undo/redo actions are enabled for @editable
 	EnableUndo() bool
+	// MaxWidthChars retrieves the desired maximum width of @editable, in
+	// characters.
 	MaxWidthChars() int
+	// Position retrieves the current position of the cursor relative to the
+	// start of the content of the editable.
 	Position() int
+	// SelectionBounds retrieves the selection bound of the editable.
 	SelectionBounds() (startPos int, endPos int, ok bool)
+	// Text retrieves the contents of @editable.
 	Text() string
+	// WidthChars gets the number of characters of space reserved for the
+	// contents of the editable.
 	WidthChars() int
+	// InitDelegate sets up a delegate for `GtkEditable`.
 	InitDelegate()
+	// SelectRegion selects a region of text.
 	SelectRegion(startPos int, endPos int)
+	// SetAlignment sets the alignment for the contents of the editable.
 	SetAlignment(xalign float32)
+	// SetEditable determines if the user can edit the text in the editable
+	// widget.
 	SetEditable(isEditable bool)
+	// SetEnableUndo: if enabled, changes to @editable will be saved for
+	// undo/redo actions.
 	SetEnableUndo(enableUndo bool)
+	// SetMaxWidthChars sets the desired maximum width in characters of
+	// @editable.
 	SetMaxWidthChars(nChars int)
+	// SetPosition sets the cursor position in the editable to the given value.
 	SetPosition(position int)
+	// SetText sets the text in the editable to the given value.
 	SetText(text string)
+	// SetWidthChars changes the size request of the editable to be about the
+	// right size for @n_chars characters.
 	SetWidthChars(nChars int)
 }
 
@@ -195,18 +224,17 @@ type Editabler interface {
 // and [signal@Gtk.Editable::delete-text] signals, you will need to connect to
 // them on the delegate obtained via [method@Gtk.Editable.get_delegate].
 type Editable struct {
-	*externglib.Object
-
 	Widget
 }
 
-var _ Editabler = (*Editable)(nil)
+var (
+	_ Editabler       = (*Editable)(nil)
+	_ gextras.Nativer = (*Editable)(nil)
+)
 
-func wrapEditabler(obj *externglib.Object) Editabler {
+func wrapEditable(obj *externglib.Object) Editabler {
 	return &Editable{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -226,7 +254,7 @@ func wrapEditabler(obj *externglib.Object) Editabler {
 func marshalEditabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEditabler(obj), nil
+	return wrapEditable(obj), nil
 }
 
 // DeleteSelection deletes the currently selected text of the editable.

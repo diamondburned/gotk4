@@ -34,8 +34,6 @@ func init() {
 
 // NativeVolumeMonitorrer describes NativeVolumeMonitor's methods.
 type NativeVolumeMonitorrer interface {
-	gextras.Objector
-
 	privateNativeVolumeMonitor()
 }
 
@@ -43,9 +41,12 @@ type NativeVolumeMonitor struct {
 	VolumeMonitor
 }
 
-var _ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
+var (
+	_ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
+	_ gextras.Nativer        = (*NativeVolumeMonitor)(nil)
+)
 
-func wrapNativeVolumeMonitorrer(obj *externglib.Object) NativeVolumeMonitorrer {
+func wrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitorrer {
 	return &NativeVolumeMonitor{
 		VolumeMonitor: VolumeMonitor{
 			Object: obj,
@@ -56,7 +57,7 @@ func wrapNativeVolumeMonitorrer(obj *externglib.Object) NativeVolumeMonitorrer {
 func marshalNativeVolumeMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNativeVolumeMonitorrer(obj), nil
+	return wrapNativeVolumeMonitor(obj), nil
 }
 
 func (*NativeVolumeMonitor) privateNativeVolumeMonitor() {}

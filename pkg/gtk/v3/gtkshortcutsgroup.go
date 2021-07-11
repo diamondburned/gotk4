@@ -27,8 +27,6 @@ func init() {
 
 // ShortcutsGrouper describes ShortcutsGroup's methods.
 type ShortcutsGrouper interface {
-	gextras.Objector
-
 	privateShortcutsGroup()
 }
 
@@ -39,25 +37,19 @@ type ShortcutsGrouper interface {
 //
 // This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsGroup struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ ShortcutsGrouper = (*ShortcutsGroup)(nil)
+var (
+	_ ShortcutsGrouper = (*ShortcutsGroup)(nil)
+	_ gextras.Nativer  = (*ShortcutsGroup)(nil)
+)
 
-func wrapShortcutsGrouper(obj *externglib.Object) ShortcutsGrouper {
+func wrapShortcutsGroup(obj *externglib.Object) ShortcutsGrouper {
 	return &ShortcutsGroup{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -68,31 +60,10 @@ func wrapShortcutsGrouper(obj *externglib.Object) ShortcutsGrouper {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -100,7 +71,7 @@ func wrapShortcutsGrouper(obj *externglib.Object) ShortcutsGrouper {
 func marshalShortcutsGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsGrouper(obj), nil
+	return wrapShortcutsGroup(obj), nil
 }
 
 func (*ShortcutsGroup) privateShortcutsGroup() {}

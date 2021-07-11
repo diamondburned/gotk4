@@ -49,34 +49,60 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 	return ApplicationInhibitFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ApplicationerOverrider contains methods that are overridable.
+// ApplicationOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ApplicationerOverrider interface {
+type ApplicationOverrider interface {
 	WindowAdded(window Windowwer)
+
 	WindowRemoved(window Windowwer)
 }
 
 // Applicationer describes Application's methods.
 type Applicationer interface {
-	gextras.Objector
-
+	// AddAccelerator installs an accelerator that will cause the named action
+	// to be activated when the key combination specificed by @accelerator is
+	// pressed.
 	AddAccelerator(accelerator string, actionName string, parameter *glib.Variant)
+	// AddWindow adds a window to @application.
 	AddWindow(window Windowwer)
+	// AccelsForAction gets the accelerators that are currently associated with
+	// the given action.
 	AccelsForAction(detailedActionName string) []string
+	// ActionsForAccel returns the list of actions (possibly empty) that @accel
+	// maps to.
 	ActionsForAccel(accel string) []string
+	// ActiveWindow gets the “active” window for the application.
 	ActiveWindow() *Window
+	// AppMenu returns the menu model that has been set with
+	// gtk_application_set_app_menu().
 	AppMenu() *gio.MenuModel
+	// Menubar returns the menu model that has been set with
+	// gtk_application_set_menubar().
 	Menubar() *gio.MenuModel
+	// WindowByID returns the ApplicationWindow with the given ID.
 	WindowByID(id uint) *Window
+	// ListActionDescriptions lists the detailed action names which have
+	// associated accelerators.
 	ListActionDescriptions() []string
+	// PrefersAppMenu determines if the desktop environment in which the
+	// application is running would prefer an application menu be shown.
 	PrefersAppMenu() bool
+	// RemoveAccelerator removes an accelerator that has been previously added
+	// with gtk_application_add_accelerator().
 	RemoveAccelerator(actionName string, parameter *glib.Variant)
+	// RemoveWindow: remove a window from @application.
 	RemoveWindow(window Windowwer)
+	// SetAccelsForAction sets zero or more keyboard accelerators that will
+	// trigger the given action.
 	SetAccelsForAction(detailedActionName string, accels []string)
+	// SetAppMenu sets or unsets the application menu for @application.
 	SetAppMenu(appMenu gio.MenuModeller)
+	// SetMenubar sets or unsets the menubar for windows of @application.
 	SetMenubar(menubar gio.MenuModeller)
+	// Uninhibit removes an inhibitor that has been established with
+	// gtk_application_inhibit().
 	Uninhibit(cookie uint)
 }
 
@@ -158,32 +184,24 @@ type Applicationer interface {
 // Getting Started with GTK+: Basics
 // (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
 type Application struct {
-	*externglib.Object
-
 	gio.Application
-	gio.ActionGroup
-	gio.ActionMap
 }
 
-var _ Applicationer = (*Application)(nil)
+var (
+	_ Applicationer   = (*Application)(nil)
+	_ gextras.Nativer = (*Application)(nil)
+)
 
-func wrapApplicationer(obj *externglib.Object) Applicationer {
+func wrapApplication(obj *externglib.Object) Applicationer {
 	return &Application{
-		Object: obj,
 		Application: gio.Application{
 			Object: obj,
-			ActionGroup: ActionGroup{
+			ActionGroup: gio.ActionGroup{
 				Object: obj,
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-		},
-		ActionGroup: gio.ActionGroup{
-			Object: obj,
-		},
-		ActionMap: gio.ActionMap{
-			Object: obj,
+			ActionMap: gio.ActionMap{
+				Object: obj,
+			},
 		},
 	}
 }
@@ -191,7 +209,7 @@ func wrapApplicationer(obj *externglib.Object) Applicationer {
 func marshalApplicationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationer(obj), nil
+	return wrapApplication(obj), nil
 }
 
 // AddAccelerator installs an accelerator that will cause the named action to be
@@ -245,7 +263,7 @@ func (application *Application) AddWindow(window Windowwer) {
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_application_add_window(_arg0, _arg1)
 }
@@ -509,7 +527,7 @@ func (application *Application) RemoveWindow(window Windowwer) {
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_application_remove_window(_arg0, _arg1)
 }
@@ -564,7 +582,7 @@ func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(appMenu.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((appMenu).(gextras.Nativer).Native()))
 
 	C.gtk_application_set_app_menu(_arg0, _arg1)
 }
@@ -591,7 +609,7 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((menubar).(gextras.Nativer).Native()))
 
 	C.gtk_application_set_menubar(_arg0, _arg1)
 }

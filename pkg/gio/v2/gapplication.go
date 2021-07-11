@@ -34,11 +34,11 @@ func init() {
 	})
 }
 
-// ApplicationerOverrider contains methods that are overridable.
+// ApplicationOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ApplicationerOverrider interface {
+type ApplicationOverrider interface {
 	// Activate activates the application.
 	//
 	// In essence, this results in the #GApplication::activate signal being
@@ -46,13 +46,21 @@ type ApplicationerOverrider interface {
 	//
 	// The application must be registered before calling this function.
 	Activate()
+
 	AddPlatformData(builder *glib.VariantBuilder)
+
 	AfterEmit(platformData *glib.Variant)
+
 	BeforeEmit(platformData *glib.Variant)
+
 	CommandLine(commandLine ApplicationCommandLiner) int
+
 	DBusRegister(connection DBusConnectioner, objectPath string) error
+
 	DBusUnregister(connection DBusConnectioner, objectPath string)
+
 	HandleLocalOptions(options *glib.VariantDict) int
+
 	NameLost() bool
 	// Open opens the given files.
 	//
@@ -69,47 +77,98 @@ type ApplicationerOverrider interface {
 	// The application must be registered before calling this function and it
 	// must have the G_APPLICATION_HANDLES_OPEN flag set.
 	Open(files []*File, hint string)
+
 	QuitMainloop()
+
 	RunMainloop()
+
 	Shutdown()
+
 	Startup()
 }
 
 // Applicationer describes Application's methods.
 type Applicationer interface {
-	gextras.Objector
-
+	// Activate activates the application.
 	Activate()
+	// AddMainOptionEntries adds main option entries to be handled by
+	// @application.
 	AddMainOptionEntries(entries []glib.OptionEntry)
+	// AddOptionGroup adds a Group to the commandline handling of @application.
 	AddOptionGroup(group *glib.OptionGroup)
+	// BindBusyProperty marks @application as busy (see
+	// g_application_mark_busy()) while @property on @object is true.
 	BindBusyProperty(object gextras.Objector, property string)
+	// ApplicationID gets the unique identifier for @application.
 	ApplicationID() string
+	// DBusConnection gets the BusConnection being used by the application, or
+	// nil.
 	DBusConnection() *DBusConnection
+	// DBusObjectPath gets the D-Bus object path being used by the application,
+	// or nil.
 	DBusObjectPath() string
+	// Flags gets the flags for @application.
 	Flags() ApplicationFlags
+	// InactivityTimeout gets the current inactivity timeout for the
+	// application.
 	InactivityTimeout() uint
+	// IsBusy gets the application's current busy state, as set through
+	// g_application_mark_busy() or g_application_bind_busy_property().
 	IsBusy() bool
+	// IsRegistered checks if @application is registered.
 	IsRegistered() bool
+	// IsRemote checks if @application is remote.
 	IsRemote() bool
+	// ResourceBasePath gets the resource base path of @application.
 	ResourceBasePath() string
+	// Hold increases the use count of @application.
 	Hold()
+	// MarkBusy increases the busy count of @application.
 	MarkBusy()
+	// Open opens the given files.
 	Open(files []*File, hint string)
+	// Quit: immediately quits the application.
 	Quit()
+	// Register attempts registration of the application.
 	Register(cancellable Cancellabler) error
+	// Release: decrease the use count of @application.
 	Release()
+	// Run runs the application.
 	Run(argv []string) int
+	// SendNotification sends a notification on behalf of @application to the
+	// desktop shell.
 	SendNotification(id string, notification Notificationer)
+	// SetActionGroup: this used to be how actions were associated with a
+	// #GApplication.
 	SetActionGroup(actionGroup ActionGrouper)
+	// SetApplicationID sets the unique identifier for @application.
 	SetApplicationID(applicationId string)
+	// SetDefault sets or unsets the default application for the process, as
+	// returned by g_application_get_default().
 	SetDefault()
+	// SetInactivityTimeout sets the current inactivity timeout for the
+	// application.
 	SetInactivityTimeout(inactivityTimeout uint)
+	// SetOptionContextDescription adds a description to the @application option
+	// context.
 	SetOptionContextDescription(description string)
+	// SetOptionContextParameterString sets the parameter string to be used by
+	// the commandline handling of @application.
 	SetOptionContextParameterString(parameterString string)
+	// SetOptionContextSummary adds a summary to the @application option
+	// context.
 	SetOptionContextSummary(summary string)
+	// SetResourceBasePath sets (or unsets) the base resource path of
+	// @application.
 	SetResourceBasePath(resourcePath string)
+	// UnbindBusyProperty destroys a binding between @property and the busy
+	// state of @application that was previously created with
+	// g_application_bind_busy_property().
 	UnbindBusyProperty(object gextras.Objector, property string)
+	// UnmarkBusy decreases the busy count of @application.
 	UnmarkBusy()
+	// WithdrawNotification withdraws a notification that was sent with
+	// g_application_send_notification().
 	WithdrawNotification(id string)
 }
 
@@ -228,9 +287,12 @@ type Application struct {
 	ActionMap
 }
 
-var _ Applicationer = (*Application)(nil)
+var (
+	_ Applicationer   = (*Application)(nil)
+	_ gextras.Nativer = (*Application)(nil)
+)
 
-func wrapApplicationer(obj *externglib.Object) Applicationer {
+func wrapApplication(obj *externglib.Object) Applicationer {
 	return &Application{
 		Object: obj,
 		ActionGroup: ActionGroup{
@@ -245,7 +307,7 @@ func wrapApplicationer(obj *externglib.Object) Applicationer {
 func marshalApplicationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationer(obj), nil
+	return wrapApplication(obj), nil
 }
 
 // Activate activates the application.
@@ -691,7 +753,7 @@ func (application *Application) Register(cancellable Cancellabler) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_application_register(_arg0, _arg1, &_cerr)
 
@@ -845,7 +907,7 @@ func (application *Application) SendNotification(id string, notification Notific
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
+	_arg2 = (*C.GNotification)(unsafe.Pointer((notification).(gextras.Nativer).Native()))
 
 	C.g_application_send_notification(_arg0, _arg1, _arg2)
 }
@@ -862,7 +924,7 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	var _arg1 *C.GActionGroup // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg1 = (*C.GActionGroup)(unsafe.Pointer((actionGroup).(gextras.Nativer).Native()))
 
 	C.g_application_set_action_group(_arg0, _arg1)
 }

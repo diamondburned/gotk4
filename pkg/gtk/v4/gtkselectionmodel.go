@@ -24,11 +24,11 @@ func init() {
 	})
 }
 
-// SelectionModellerOverrider contains methods that are overridable.
+// SelectionModelOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SelectionModellerOverrider interface {
+type SelectionModelOverrider interface {
 	// SelectionInRange gets the set of selected items in a range.
 	//
 	// This function is an optimization for
@@ -81,18 +81,29 @@ type SelectionModellerOverrider interface {
 
 // SelectionModeller describes SelectionModel's methods.
 type SelectionModeller interface {
-	gextras.Objector
-
+	// Selection gets the set containing all currently selected items in the
+	// model.
 	Selection() *Bitset
+	// SelectionInRange gets the set of selected items in a range.
 	SelectionInRange(position uint, nItems uint) *Bitset
+	// IsSelected checks if the given item is selected.
 	IsSelected(position uint) bool
+	// SelectAll requests to select all items in the model.
 	SelectAll() bool
+	// SelectItem requests to select an item in the model.
 	SelectItem(position uint, unselectRest bool) bool
+	// SelectRange requests to select a range of items in the model.
 	SelectRange(position uint, nItems uint, unselectRest bool) bool
+	// SelectionChanged: helper function for implementations of
+	// `GtkSelectionModel`.
 	SelectionChanged(position uint, nItems uint)
+	// SetSelection: make selection changes.
 	SetSelection(selected *Bitset, mask *Bitset) bool
+	// UnselectAll requests to unselect all items in the model.
 	UnselectAll() bool
+	// UnselectItem requests to unselect an item in the model.
 	UnselectItem(position uint) bool
+	// UnselectRange requests to unselect a range of items in the model.
 	UnselectRange(position uint, nItems uint) bool
 }
 
@@ -139,9 +150,12 @@ type SelectionModel struct {
 	gio.ListModel
 }
 
-var _ SelectionModeller = (*SelectionModel)(nil)
+var (
+	_ SelectionModeller = (*SelectionModel)(nil)
+	_ gextras.Nativer   = (*SelectionModel)(nil)
+)
 
-func wrapSelectionModeller(obj *externglib.Object) SelectionModeller {
+func wrapSelectionModel(obj *externglib.Object) SelectionModeller {
 	return &SelectionModel{
 		ListModel: gio.ListModel{
 			Object: obj,
@@ -152,7 +166,7 @@ func wrapSelectionModeller(obj *externglib.Object) SelectionModeller {
 func marshalSelectionModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSelectionModeller(obj), nil
+	return wrapSelectionModel(obj), nil
 }
 
 // Selection gets the set containing all currently selected items in the model.

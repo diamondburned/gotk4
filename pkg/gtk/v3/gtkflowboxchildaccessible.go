@@ -27,20 +27,19 @@ func init() {
 
 // FlowBoxChildAccessibler describes FlowBoxChildAccessible's methods.
 type FlowBoxChildAccessibler interface {
-	gextras.Objector
-
 	privateFlowBoxChildAccessible()
 }
 
 type FlowBoxChildAccessible struct {
 	ContainerAccessible
-
-	atk.Component
 }
 
-var _ FlowBoxChildAccessibler = (*FlowBoxChildAccessible)(nil)
+var (
+	_ FlowBoxChildAccessibler = (*FlowBoxChildAccessible)(nil)
+	_ gextras.Nativer         = (*FlowBoxChildAccessible)(nil)
+)
 
-func wrapFlowBoxChildAccessibler(obj *externglib.Object) FlowBoxChildAccessibler {
+func wrapFlowBoxChildAccessible(obj *externglib.Object) FlowBoxChildAccessibler {
 	return &FlowBoxChildAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -53,12 +52,6 @@ func wrapFlowBoxChildAccessibler(obj *externglib.Object) FlowBoxChildAccessibler
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -66,7 +59,7 @@ func wrapFlowBoxChildAccessibler(obj *externglib.Object) FlowBoxChildAccessibler
 func marshalFlowBoxChildAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlowBoxChildAccessibler(obj), nil
+	return wrapFlowBoxChildAccessible(obj), nil
 }
 
 func (*FlowBoxChildAccessible) privateFlowBoxChildAccessible() {}

@@ -27,24 +27,22 @@ func init() {
 
 // ListBoxAccessibler describes ListBoxAccessible's methods.
 type ListBoxAccessibler interface {
-	gextras.Objector
-
 	privateListBoxAccessible()
 }
 
 type ListBoxAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
-	atk.Component
+
 	atk.Selection
 }
 
-var _ ListBoxAccessibler = (*ListBoxAccessible)(nil)
+var (
+	_ ListBoxAccessibler = (*ListBoxAccessible)(nil)
+	_ gextras.Nativer    = (*ListBoxAccessible)(nil)
+)
 
-func wrapListBoxAccessibler(obj *externglib.Object) ListBoxAccessibler {
+func wrapListBoxAccessible(obj *externglib.Object) ListBoxAccessibler {
 	return &ListBoxAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -56,12 +54,6 @@ func wrapListBoxAccessibler(obj *externglib.Object) ListBoxAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 		Selection: atk.Selection{
 			Object: obj,
@@ -72,7 +64,7 @@ func wrapListBoxAccessibler(obj *externglib.Object) ListBoxAccessibler {
 func marshalListBoxAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBoxAccessibler(obj), nil
+	return wrapListBoxAccessible(obj), nil
 }
 
 func (*ListBoxAccessible) privateListBoxAccessible() {}

@@ -62,7 +62,7 @@ func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) *IconSet {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GtkIconSet // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_icon_set_new_from_pixbuf(_arg1)
 
@@ -199,7 +199,7 @@ func (iconSet *IconSet) RenderIconPixbuf(context StyleContexter, size int) *gdkp
 	var _cret *C.GdkPixbuf       // in
 
 	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_icon_set_render_icon_pixbuf(_arg0, _arg1, _arg2)
@@ -228,10 +228,10 @@ func (iconSet *IconSet) RenderIconSurface(context StyleContexter, size int, scal
 	var _cret *C.cairo_surface_t // in
 
 	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = C.GtkIconSize(size)
 	_arg3 = C.int(scale)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	_arg4 = (*C.GdkWindow)(unsafe.Pointer((forWindow).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_icon_set_render_icon_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 
@@ -561,7 +561,7 @@ func (source *IconSource) SetPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
 	var _arg1 *C.GdkPixbuf     // out
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(source))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	C.gtk_icon_source_set_pixbuf(_arg0, _arg1)
 }
@@ -795,7 +795,7 @@ func (selectionData *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbuffer) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_selection_data_set_pixbuf(_arg0, _arg1)
 
@@ -887,13 +887,13 @@ func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
 // TargetsIncludeRichText: given a SelectionData object holding a list of
 // targets, determines if any of the targets in @targets can be used to provide
 // rich text.
-func (selectionData *SelectionData) TargetsIncludeRichText(buffer TextBufferrer) bool {
+func (selectionData *SelectionData) TargetsIncludeRichText(buffer TextBufferer) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 *C.GtkTextBuffer    // out
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer((buffer).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_selection_data_targets_include_rich_text(_arg0, _arg1)
 
@@ -1015,7 +1015,7 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 	var _cret C.gint           // in
 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_widget_path_append_for_widget(_arg0, _arg1)
 

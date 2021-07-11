@@ -27,26 +27,24 @@ func init() {
 
 // EntryAccessibler describes EntryAccessible's methods.
 type EntryAccessibler interface {
-	gextras.Objector
-
 	privateEntryAccessible()
 }
 
 type EntryAccessible struct {
-	*externglib.Object
-
 	WidgetAccessible
+
 	atk.Action
-	atk.Component
 	atk.EditableText
 	atk.Text
 }
 
-var _ EntryAccessibler = (*EntryAccessible)(nil)
+var (
+	_ EntryAccessibler = (*EntryAccessible)(nil)
+	_ gextras.Nativer  = (*EntryAccessible)(nil)
+)
 
-func wrapEntryAccessibler(obj *externglib.Object) EntryAccessibler {
+func wrapEntryAccessible(obj *externglib.Object) EntryAccessibler {
 	return &EntryAccessible{
-		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
 				ObjectClass: atk.ObjectClass{
@@ -58,9 +56,6 @@ func wrapEntryAccessibler(obj *externglib.Object) EntryAccessibler {
 			},
 		},
 		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
 			Object: obj,
 		},
 		EditableText: atk.EditableText{
@@ -75,7 +70,13 @@ func wrapEntryAccessibler(obj *externglib.Object) EntryAccessibler {
 func marshalEntryAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryAccessibler(obj), nil
+	return wrapEntryAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *EntryAccessible) Native() uintptr {
+	return v.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*EntryAccessible) privateEntryAccessible() {}

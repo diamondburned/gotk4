@@ -23,36 +23,63 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_popover_get_type()), F: marshalPopoverrer},
+		{T: externglib.Type(C.gtk_popover_get_type()), F: marshalPopoverer},
 	})
 }
 
-// PopoverrerOverrider contains methods that are overridable.
+// PopoverOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PopoverrerOverrider interface {
+type PopoverOverrider interface {
 	Closed()
 }
 
-// Popoverrer describes Popover's methods.
-type Popoverrer interface {
-	gextras.Objector
-
+// Popoverer describes Popover's methods.
+type Popoverer interface {
+	// BindModel establishes a binding between a Popover and a Model.
 	BindModel(model gio.MenuModeller, actionNamespace string)
+	// ConstrainTo returns the constraint for placing this popover.
 	ConstrainTo() PopoverConstraint
+	// DefaultWidget gets the widget that should be set as the default while the
+	// popover is shown.
 	DefaultWidget() *Widget
+	// Modal returns whether the popover is modal, see gtk_popover_set_modal to
+	// see the implications of this.
 	Modal() bool
+	// PointingTo: if a rectangle to point to has been set, this function will
+	// return true and fill in @rect with such rectangle, otherwise it will
+	// return false and fill in @rect with the attached widget coordinates.
 	PointingTo() (gdk.Rectangle, bool)
+	// Position returns the preferred position of @popover.
 	Position() PositionType
+	// RelativeTo returns the widget @popover is currently attached to
 	RelativeTo() *Widget
+	// TransitionsEnabled returns whether show/hide transitions are enabled on
+	// this popover.
 	TransitionsEnabled() bool
+	// Popdown pops @popover down.This is different than a gtk_widget_hide()
+	// call in that it shows the popover with a transition.
 	Popdown()
+	// Popup pops @popover up.
 	Popup()
+	// SetDefaultWidget sets the widget that should be set as default widget
+	// while the popover is shown (see gtk_window_set_default()).
 	SetDefaultWidget(widget Widgetter)
+	// SetModal sets whether @popover is modal, a modal popover will grab all
+	// input within the toplevel and grab the keyboard focus on it when being
+	// displayed.
 	SetModal(modal bool)
+	// SetPointingTo sets the rectangle that @popover will point to, in the
+	// coordinate space of the widget @popover is attached to, see
+	// gtk_popover_set_relative_to().
 	SetPointingTo(rect *gdk.Rectangle)
+	// SetRelativeTo sets a new widget to be attached to @popover.
 	SetRelativeTo(relativeTo Widgetter)
+	// SetTransitionsEnabled sets whether show/hide transitions are enabled on
+	// this popover Deprecated: You can show or hide the popover without
+	// transitions using gtk_widget_show() and gtk_widget_hide() while
+	// gtk_popover_popup() and gtk_popover_popdown() will use transitions.
 	SetTransitionsEnabled(transitionsEnabled bool)
 }
 
@@ -115,24 +142,19 @@ type Popoverrer interface {
 // in Entry or TextView get style classes like .touch-selection or .magnifier to
 // differentiate from plain popovers.
 type Popover struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Popoverrer = (*Popover)(nil)
+var (
+	_ Popoverer       = (*Popover)(nil)
+	_ gextras.Nativer = (*Popover)(nil)
+)
 
-func wrapPopoverrer(obj *externglib.Object) Popoverrer {
+func wrapPopover(obj *externglib.Object) Popoverer {
 	return &Popover{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -143,33 +165,15 @@ func wrapPopoverrer(obj *externglib.Object) Popoverrer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
 
-func marshalPopoverrer(p uintptr) (interface{}, error) {
+func marshalPopoverer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopoverrer(obj), nil
+	return wrapPopover(obj), nil
 }
 
 // NewPopover creates a new popover to point to @relative_to
@@ -177,7 +181,7 @@ func NewPopover(relativeTo Widgetter) *Popover {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((relativeTo).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_popover_new(_arg1)
 
@@ -202,8 +206,8 @@ func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover 
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((relativeTo).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_popover_new_from_model(_arg1, _arg2)
 
@@ -240,7 +244,7 @@ func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string
 	var _arg2 *C.gchar      // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(actionNamespace))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -408,7 +412,7 @@ func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_popover_set_default_widget(_arg0, _arg1)
 }
@@ -454,7 +458,7 @@ func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((relativeTo).(gextras.Nativer).Native()))
 
 	C.gtk_popover_set_relative_to(_arg0, _arg1)
 }

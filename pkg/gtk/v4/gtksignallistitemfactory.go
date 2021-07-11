@@ -24,8 +24,6 @@ func init() {
 
 // SignalListItemFactorier describes SignalListItemFactory's methods.
 type SignalListItemFactorier interface {
-	gextras.Objector
-
 	privateSignalListItemFactory()
 }
 
@@ -74,9 +72,12 @@ type SignalListItemFactory struct {
 	ListItemFactory
 }
 
-var _ SignalListItemFactorier = (*SignalListItemFactory)(nil)
+var (
+	_ SignalListItemFactorier = (*SignalListItemFactory)(nil)
+	_ gextras.Nativer         = (*SignalListItemFactory)(nil)
+)
 
-func wrapSignalListItemFactorier(obj *externglib.Object) SignalListItemFactorier {
+func wrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactorier {
 	return &SignalListItemFactory{
 		ListItemFactory: ListItemFactory{
 			Object: obj,
@@ -87,7 +88,7 @@ func wrapSignalListItemFactorier(obj *externglib.Object) SignalListItemFactorier
 func marshalSignalListItemFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSignalListItemFactorier(obj), nil
+	return wrapSignalListItemFactory(obj), nil
 }
 
 // NewSignalListItemFactory creates a new `GtkSignalListItemFactory`.

@@ -35,32 +35,54 @@ func init() {
 	})
 }
 
-// DBusProxierOverrider contains methods that are overridable.
+// DBusProxyOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusProxierOverrider interface {
+type DBusProxyOverrider interface {
 	GSignal(senderName string, signalName string, parameters *glib.Variant)
 }
 
 // DBusProxier describes DBusProxy's methods.
 type DBusProxier interface {
-	gextras.Objector
-
+	// CallFinish finishes an operation started with g_dbus_proxy_call().
 	CallFinish(res AsyncResulter) (*glib.Variant, error)
+	// CallWithUnixFdListFinish finishes an operation started with
+	// g_dbus_proxy_call_with_unix_fd_list().
 	CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList, *glib.Variant, error)
+	// CachedProperty looks up the value for a property from the cache.
 	CachedProperty(propertyName string) *glib.Variant
+	// CachedPropertyNames gets the names of all cached properties on @proxy.
 	CachedPropertyNames() []string
+	// Connection gets the connection @proxy is for.
 	Connection() *DBusConnection
+	// DefaultTimeout gets the timeout to use if -1 (specifying default timeout)
+	// is passed as @timeout_msec in the g_dbus_proxy_call() and
+	// g_dbus_proxy_call_sync() functions.
 	DefaultTimeout() int
+	// Flags gets the flags that @proxy was constructed with.
 	Flags() DBusProxyFlags
+	// InterfaceInfo returns the BusInterfaceInfo, if any, specifying the
+	// interface that @proxy conforms to.
 	InterfaceInfo() *DBusInterfaceInfo
+	// InterfaceName gets the D-Bus interface name @proxy is for.
 	InterfaceName() string
+	// Name gets the name that @proxy was constructed for.
 	Name() string
+	// NameOwner: unique name that owns the name that @proxy is for or nil if
+	// no-one currently owns that name.
 	NameOwner() string
+	// ObjectPath gets the object path @proxy is for.
 	ObjectPath() string
+	// SetCachedProperty: if @value is not nil, sets the cached value for the
+	// property with name @property_name to the value in @value.
 	SetCachedProperty(propertyName string, value *glib.Variant)
+	// SetDefaultTimeout sets the timeout to use if -1 (specifying default
+	// timeout) is passed as @timeout_msec in the g_dbus_proxy_call() and
+	// g_dbus_proxy_call_sync() functions.
 	SetDefaultTimeout(timeoutMsec int)
+	// SetInterfaceInfo: ensure that interactions with @proxy conform to the
+	// given interface.
 	SetInterfaceInfo(info *DBusInterfaceInfo)
 }
 
@@ -108,9 +130,12 @@ type DBusProxy struct {
 	Initable
 }
 
-var _ DBusProxier = (*DBusProxy)(nil)
+var (
+	_ DBusProxier     = (*DBusProxy)(nil)
+	_ gextras.Nativer = (*DBusProxy)(nil)
+)
 
-func wrapDBusProxier(obj *externglib.Object) DBusProxier {
+func wrapDBusProxy(obj *externglib.Object) DBusProxier {
 	return &DBusProxy{
 		Object: obj,
 		AsyncInitable: AsyncInitable{
@@ -128,7 +153,7 @@ func wrapDBusProxier(obj *externglib.Object) DBusProxier {
 func marshalDBusProxier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusProxier(obj), nil
+	return wrapDBusProxy(obj), nil
 }
 
 // NewDBusProxyFinish finishes creating a BusProxy.
@@ -137,7 +162,7 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _cret *C.GDBusProxy   // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_proxy_new_finish(_arg1, &_cerr)
 
@@ -156,7 +181,7 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _cret *C.GDBusProxy   // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_proxy_new_for_bus_finish(_arg1, &_cerr)
 
@@ -177,7 +202,7 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_proxy_call_finish(_arg0, _arg1, &_cerr)
 
@@ -204,7 +229,7 @@ func (proxy *DBusProxy) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
-	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_proxy_call_with_unix_fd_list_finish(_arg0, &_arg1, _arg2, &_cerr)
 
@@ -386,9 +411,9 @@ func (proxy *DBusProxy) Name() string {
 	return _utf8
 }
 
-// NameOwner: the unique name that owns the name that @proxy is for or nil if
-// no-one currently owns that name. You may connect to the #GObject::notify
-// signal to track changes to the BusProxy:g-name-owner property.
+// NameOwner: unique name that owns the name that @proxy is for or nil if no-one
+// currently owns that name. You may connect to the #GObject::notify signal to
+// track changes to the BusProxy:g-name-owner property.
 func (proxy *DBusProxy) NameOwner() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in

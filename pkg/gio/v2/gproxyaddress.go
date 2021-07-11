@@ -34,44 +34,46 @@ func init() {
 
 // ProxyAddresser describes ProxyAddress's methods.
 type ProxyAddresser interface {
-	gextras.Objector
-
+	// DestinationHostname gets @proxy's destination hostname; that is, the name
+	// of the host that will be connected to via the proxy, not the name of the
+	// proxy itself.
 	DestinationHostname() string
+	// DestinationPort gets @proxy's destination port; that is, the port on the
+	// destination host that will be connected to via the proxy, not the port
+	// number of the proxy itself.
 	DestinationPort() uint16
+	// DestinationProtocol gets the protocol that is being spoken to the
+	// destination server; eg, "http" or "ftp".
 	DestinationProtocol() string
+	// Password gets @proxy's password.
 	Password() string
+	// Protocol gets @proxy's protocol.
 	Protocol() string
+	// URI gets the proxy URI that @proxy was constructed from.
 	URI() string
+	// Username gets @proxy's username.
 	Username() string
 }
 
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress struct {
-	*externglib.Object
-
 	InetSocketAddress
-	SocketConnectable
 }
 
-var _ ProxyAddresser = (*ProxyAddress)(nil)
+var (
+	_ ProxyAddresser  = (*ProxyAddress)(nil)
+	_ gextras.Nativer = (*ProxyAddress)(nil)
+)
 
-func wrapProxyAddresser(obj *externglib.Object) ProxyAddresser {
+func wrapProxyAddress(obj *externglib.Object) ProxyAddresser {
 	return &ProxyAddress{
-		Object: obj,
 		InetSocketAddress: InetSocketAddress{
-			Object: obj,
 			SocketAddress: SocketAddress{
 				Object: obj,
 				SocketConnectable: SocketConnectable{
 					Object: obj,
 				},
 			},
-			SocketConnectable: SocketConnectable{
-				Object: obj,
-			},
-		},
-		SocketConnectable: SocketConnectable{
-			Object: obj,
 		},
 	}
 }
@@ -79,7 +81,7 @@ func wrapProxyAddresser(obj *externglib.Object) ProxyAddresser {
 func marshalProxyAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProxyAddresser(obj), nil
+	return wrapProxyAddress(obj), nil
 }
 
 // NewProxyAddress creates a new Address for @inetaddr with @protocol that
@@ -98,7 +100,7 @@ func NewProxyAddress(inetaddr InetAddresser, port uint16, protocol string, destH
 	var _arg7 *C.gchar          // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(inetaddr.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((inetaddr).(gextras.Nativer).Native()))
 	_arg2 = C.guint16(port)
 	_arg3 = (*C.gchar)(C.CString(protocol))
 	defer C.free(unsafe.Pointer(_arg3))

@@ -53,11 +53,11 @@ const (
 	// This can mean that the device file was installed incorrectly, or that the
 	// physical device is missing or not correctly attached to the computer.
 	FileErrorNxio
-	// Nodev: the underlying file system of the specified file does not support
+	// Nodev: underlying file system of the specified file does not support
 	// memory mapping.
 	FileErrorNodev
-	// Rofs: the directory containing the new link can't be modified because
-	// it's on a read-only file system.
+	// Rofs: directory containing the new link can't be modified because it's on
+	// a read-only file system.
 	FileErrorRofs
 	// Txtbsy: text file busy.
 	FileErrorTxtbsy
@@ -73,8 +73,8 @@ const (
 	// NOMEM: no memory available. The system cannot allocate more virtual
 	// memory because its capacity is full.
 	FileErrorNOMEM
-	// Mfile: the current process has too many files open and can't open any
-	// more. Duplicate descriptors do count toward this limit.
+	// Mfile: current process has too many files open and can't open any more.
+	// Duplicate descriptors do count toward this limit.
 	FileErrorMfile
 	// Nfile: there are too many distinct file openings in the entire system.
 	FileErrorNfile

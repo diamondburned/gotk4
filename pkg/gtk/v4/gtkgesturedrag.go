@@ -24,9 +24,9 @@ func init() {
 
 // GestureDragger describes GestureDrag's methods.
 type GestureDragger interface {
-	gextras.Objector
-
+	// Offset gets the offset from the start point.
 	Offset() (x float64, y float64, ok bool)
+	// StartPoint gets the point where the drag started.
 	StartPoint() (x float64, y float64, ok bool)
 }
 
@@ -41,9 +41,12 @@ type GestureDrag struct {
 	GestureSingle
 }
 
-var _ GestureDragger = (*GestureDrag)(nil)
+var (
+	_ GestureDragger  = (*GestureDrag)(nil)
+	_ gextras.Nativer = (*GestureDrag)(nil)
+)
 
-func wrapGestureDragger(obj *externglib.Object) GestureDragger {
+func wrapGestureDrag(obj *externglib.Object) GestureDragger {
 	return &GestureDrag{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -58,7 +61,7 @@ func wrapGestureDragger(obj *externglib.Object) GestureDragger {
 func marshalGestureDragger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureDragger(obj), nil
+	return wrapGestureDrag(obj), nil
 }
 
 // NewGestureDrag returns a newly created `GtkGesture` that recognizes drags.

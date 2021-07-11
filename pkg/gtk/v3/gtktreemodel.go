@@ -43,7 +43,7 @@ const (
 	// TreeModelFlagsItersPersist iterators survive all signals emitted by the
 	// tree
 	TreeModelFlagsItersPersist TreeModelFlags = 0b1
-	// TreeModelFlagsListOnly: the model is a list only, and never has children
+	// TreeModelFlagsListOnly: model is a list only, and never has children
 	TreeModelFlagsListOnly TreeModelFlags = 0b10
 )
 
@@ -82,11 +82,11 @@ func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 
 	return cret
 }
 
-// TreeModellerOverrider contains methods that are overridable.
+// TreeModelOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TreeModellerOverrider interface {
+type TreeModelOverrider interface {
 	// ColumnType returns the type of the column.
 	ColumnType(index_ int) externglib.Type
 	// Flags returns a set of flags supported by this interface.
@@ -200,40 +200,70 @@ type TreeModellerOverrider interface {
 
 // TreeModeller describes TreeModel's methods.
 type TreeModeller interface {
-	gextras.Objector
-
+	// NewFilter creates a new TreeModel, with @child_model as the child_model
+	// and @root as the virtual root.
 	NewFilter(root *TreePath) *TreeModel
+	// Foreach calls func on each node in model in a depth-first fashion.
 	Foreach(fn TreeModelForeachFunc)
+	// ColumnType returns the type of the column.
 	ColumnType(index_ int) externglib.Type
+	// Flags returns a set of flags supported by this interface.
 	Flags() TreeModelFlags
+	// Iter sets @iter to a valid iterator pointing to @path.
 	Iter(path *TreePath) (TreeIter, bool)
+	// IterFirst initializes @iter with the first iterator in the tree (the one
+	// at the path "0") and returns true.
 	IterFirst() (TreeIter, bool)
+	// IterFromString sets @iter to a valid iterator pointing to @path_string,
+	// if it exists.
 	IterFromString(pathString string) (TreeIter, bool)
+	// NColumns returns the number of columns supported by @tree_model.
 	NColumns() int
+	// Path returns a newly-created TreePath-struct referenced by @iter.
 	Path(iter *TreeIter) *TreePath
+	// StringFromIter generates a string representation of the iter.
 	StringFromIter(iter *TreeIter) string
+	// Value initializes and sets @value to that at @column.
 	Value(iter *TreeIter, column int) externglib.Value
+	// IterChildren sets @iter to point to the first child of @parent.
 	IterChildren(parent *TreeIter) (TreeIter, bool)
+	// IterHasChild returns true if @iter has children, false otherwise.
 	IterHasChild(iter *TreeIter) bool
+	// IterNChildren returns the number of children that @iter has.
 	IterNChildren(iter *TreeIter) int
+	// IterNext sets @iter to point to the node following it at the current
+	// level.
 	IterNext(iter *TreeIter) bool
+	// IterNthChild sets @iter to be the child of @parent, using the given
+	// index.
 	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
+	// IterParent sets @iter to be the parent of @child.
 	IterParent(child *TreeIter) (TreeIter, bool)
+	// IterPrevious sets @iter to point to the previous node at the current
+	// level.
 	IterPrevious(iter *TreeIter) bool
+	// RefNode lets the tree ref the node.
 	RefNode(iter *TreeIter)
+	// RowChanged emits the TreeModel::row-changed signal on @tree_model.
 	RowChanged(path *TreePath, iter *TreeIter)
+	// RowDeleted emits the TreeModel::row-deleted signal on @tree_model.
 	RowDeleted(path *TreePath)
+	// RowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
+	// @tree_model.
 	RowHasChildToggled(path *TreePath, iter *TreeIter)
+	// RowInserted emits the TreeModel::row-inserted signal on @tree_model.
 	RowInserted(path *TreePath, iter *TreeIter)
+	// RowsReorderedWithLength emits the TreeModel::rows-reordered signal on
+	// @tree_model.
 	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int)
+	// UnrefNode lets the tree unref the node.
 	UnrefNode(iter *TreeIter)
 }
 
-// TreeModel: the TreeModel interface defines a generic tree interface for use
-// by the TreeView widget. It is an abstract interface, and is designed to be
-// usable with any appropriate data structure. The programmer just has to
-// implement this interface on their own data type for it to be viewable by a
-// TreeView widget.
+// TreeModel interface defines a generic tree interface for use by the TreeView
+// widget. It is an abstract interface, and is designed to be usable with any
+// appropriate data structure. The programmer just has to implement this
+// interface on their own data type for it to be viewable by a TreeView widget.
 //
 // The model is represented as a hierarchical tree of strongly-typed, columned
 // data. In other words, the model can be seen as a tree where every node has
@@ -380,9 +410,12 @@ type TreeModel struct {
 	*externglib.Object
 }
 
-var _ TreeModeller = (*TreeModel)(nil)
+var (
+	_ TreeModeller    = (*TreeModel)(nil)
+	_ gextras.Nativer = (*TreeModel)(nil)
+)
 
-func wrapTreeModeller(obj *externglib.Object) TreeModeller {
+func wrapTreeModel(obj *externglib.Object) TreeModeller {
 	return &TreeModel{
 		Object: obj,
 	}
@@ -391,7 +424,7 @@ func wrapTreeModeller(obj *externglib.Object) TreeModeller {
 func marshalTreeModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeModeller(obj), nil
+	return wrapTreeModel(obj), nil
 }
 
 // NewFilter creates a new TreeModel, with @child_model as the child_model and
@@ -917,9 +950,9 @@ func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 	C.gtk_tree_model_unref_node(_arg0, _arg1)
 }
 
-// TreeIter: the TreeIter is the primary structure for accessing a TreeModel.
-// Models are expected to put a unique integer in the @stamp member, and put
-// model-specific data in the three @user_data members.
+// TreeIter is the primary structure for accessing a TreeModel. Models are
+// expected to put a unique integer in the @stamp member, and put model-specific
+// data in the three @user_data members.
 type TreeIter struct {
 	native C.GtkTreeIter
 }
@@ -1279,7 +1312,7 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 	var _arg2 *C.GtkTreePath         // out
 	var _cret *C.GtkTreeRowReference // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_row_reference_new(_arg1, _arg2)
@@ -1302,7 +1335,7 @@ func NewTreeRowReferenceProxy(proxy gextras.Objector, model TreeModeller, path *
 	var _cret *C.GtkTreeRowReference // in
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(proxy.Native()))
-	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg3 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_row_reference_new_proxy(_arg1, _arg2, _arg3)

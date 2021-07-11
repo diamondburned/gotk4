@@ -92,28 +92,55 @@ func marshalStackTransitionType(p uintptr) (interface{}, error) {
 
 // Stacker describes Stack's methods.
 type Stacker interface {
-	gextras.Objector
-
+	// AddChild adds a child to @stack.
 	AddChild(child Widgetter) *StackPage
+	// AddNamed adds a child to @stack.
 	AddNamed(child Widgetter, name string) *StackPage
+	// AddTitled adds a child to @stack.
 	AddTitled(child Widgetter, name string, title string) *StackPage
+	// ChildByName finds the child with the name given as the argument.
 	ChildByName(name string) *Widget
+	// Hhomogeneous gets whether @stack is horizontally homogeneous.
 	Hhomogeneous() bool
+	// InterpolateSize returns whether the Stack is set up to interpolate
+	// between the sizes of children on page switch.
 	InterpolateSize() bool
+	// Page returns the `GtkStackPage` object for @child.
 	Page(child Widgetter) *StackPage
+	// Pages returns a `GListModel` that contains the pages of the stack.
 	Pages() *SelectionModel
+	// TransitionDuration returns the amount of time (in milliseconds) that
+	// transitions between pages in @stack will take.
 	TransitionDuration() uint
+	// TransitionRunning returns whether the @stack is currently in a transition
+	// from one page to another.
 	TransitionRunning() bool
+	// TransitionType gets the type of animation that will be used for
+	// transitions between pages in @stack.
 	TransitionType() StackTransitionType
+	// Vhomogeneous gets whether @stack is vertically homogeneous.
 	Vhomogeneous() bool
+	// VisibleChild gets the currently visible child of @stack.
 	VisibleChild() *Widget
+	// VisibleChildName returns the name of the currently visible child of
+	// @stack.
 	VisibleChildName() string
+	// Remove removes a child widget from @stack.
 	Remove(child Widgetter)
+	// SetHhomogeneous sets the `GtkStack` to be horizontally homogeneous or
+	// not.
 	SetHhomogeneous(hhomogeneous bool)
+	// SetInterpolateSize sets whether or not @stack will interpolate its size
+	// when changing the visible child.
 	SetInterpolateSize(interpolateSize bool)
+	// SetTransitionDuration sets the duration that transitions between pages in
+	// @stack will take.
 	SetTransitionDuration(duration uint)
+	// SetVhomogeneous sets the Stack to be vertically homogeneous or not.
 	SetVhomogeneous(vhomogeneous bool)
+	// SetVisibleChild makes @child the visible child of @stack.
 	SetVisibleChild(child Widgetter)
+	// SetVisibleChildName makes the child with the given name visible.
 	SetVisibleChildName(name string)
 }
 
@@ -158,21 +185,17 @@ type Stacker interface {
 // `GtkStack` uses the GTK_ACCESSIBLE_ROLE_TAB_PANEL for the stack pages, which
 // are the accessible parent objects of the child widgets.
 type Stack struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Stacker = (*Stack)(nil)
+var (
+	_ Stacker         = (*Stack)(nil)
+	_ gextras.Nativer = (*Stack)(nil)
+)
 
-func wrapStacker(obj *externglib.Object) Stacker {
+func wrapStack(obj *externglib.Object) Stacker {
 	return &Stack{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -186,22 +209,13 @@ func wrapStacker(obj *externglib.Object) Stacker {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalStacker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStacker(obj), nil
+	return wrapStack(obj), nil
 }
 
 // NewStack creates a new `GtkStack`.
@@ -224,7 +238,7 @@ func (stack *Stack) AddChild(child Widgetter) *StackPage {
 	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_stack_add_child(_arg0, _arg1)
 
@@ -245,7 +259,7 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -270,7 +284,7 @@ func (stack *Stack) AddTitled(child Widgetter, name string, title string) *Stack
 	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(C.CString(title))
@@ -350,7 +364,7 @@ func (stack *Stack) Page(child Widgetter) *StackPage {
 	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_stack_get_page(_arg0, _arg1)
 
@@ -494,7 +508,7 @@ func (stack *Stack) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_stack_remove(_arg0, _arg1)
 }
@@ -575,7 +589,7 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_stack_set_visible_child(_arg0, _arg1)
 }
@@ -600,20 +614,33 @@ func (stack *Stack) SetVisibleChildName(name string) {
 
 // StackPager describes StackPage's methods.
 type StackPager interface {
-	gextras.Objector
-
+	// Child returns the stack child to which @self belongs.
 	Child() *Widget
+	// IconName returns the icon name of the page.
 	IconName() string
+	// Name returns the name of the page.
 	Name() string
+	// NeedsAttention returns whether the page is marked as “needs attention”.
 	NeedsAttention() bool
+	// Title gets the page title.
 	Title() string
+	// UseUnderline gets whether underlines in the page title indicate
+	// mnemonics.
 	UseUnderline() bool
+	// Visible returns whether @page is visible in its `GtkStack`.
 	Visible() bool
+	// SetIconName sets the icon name of the page.
 	SetIconName(setting string)
+	// SetName sets the name of the page.
 	SetName(setting string)
+	// SetNeedsAttention sets whether the page is marked as “needs attention”.
 	SetNeedsAttention(setting bool)
+	// SetTitle sets the page title.
 	SetTitle(setting string)
+	// SetUseUnderline sets whether underlines in the page title indicate
+	// mnemonics.
 	SetUseUnderline(setting bool)
+	// SetVisible sets whether @page is visible in its `GtkStack`.
 	SetVisible(visible bool)
 }
 
@@ -624,9 +651,12 @@ type StackPage struct {
 	Accessible
 }
 
-var _ StackPager = (*StackPage)(nil)
+var (
+	_ StackPager      = (*StackPage)(nil)
+	_ gextras.Nativer = (*StackPage)(nil)
+)
 
-func wrapStackPager(obj *externglib.Object) StackPager {
+func wrapStackPage(obj *externglib.Object) StackPager {
 	return &StackPage{
 		Object: obj,
 		Accessible: Accessible{
@@ -638,7 +668,7 @@ func wrapStackPager(obj *externglib.Object) StackPager {
 func marshalStackPager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStackPager(obj), nil
+	return wrapStackPage(obj), nil
 }
 
 // Child returns the stack child to which @self belongs.

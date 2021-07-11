@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
@@ -22,7 +23,7 @@ func ShowURI(parent Windowwer, uri string, timestamp uint32) {
 	var _arg2 *C.char      // out
 	var _arg3 C.guint32    // out
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)
@@ -37,8 +38,8 @@ func ShowURIFullFinish(parent Windowwer, result gio.AsyncResulter) error {
 	var _arg2 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.gtk_show_uri_full_finish(_arg1, _arg2, &_cerr)
 

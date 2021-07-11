@@ -32,11 +32,11 @@ func init() {
 	})
 }
 
-// TLSClientConnectionerOverrider contains methods that are overridable.
+// TLSClientConnectionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSClientConnectionerOverrider interface {
+type TLSClientConnectionOverrider interface {
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption. This is not normally needed,
 	// but may be used when the same session needs to be used between different
@@ -69,13 +69,21 @@ type TLSClientConnectionerOverrider interface {
 
 // TLSClientConnectioner describes TLSClientConnection's methods.
 type TLSClientConnectioner interface {
-	gextras.Objector
-
+	// CopySessionState: possibly copies session state from one connection to
+	// another, for use in TLS session resumption.
 	CopySessionState(source TLSClientConnectioner)
+	// ServerIdentity gets @conn's expected server identity
 	ServerIdentity() *SocketConnectable
+	// UseSSL3: SSL 3.0 is no longer supported.
 	UseSSL3() bool
+	// ValidationFlags gets @conn's validation flags
 	ValidationFlags() TLSCertificateFlags
+	// SetServerIdentity sets @conn's expected server identity, which is used
+	// both to tell servers on virtual hosts which certificate to present, and
+	// also to let @conn know what name to look for in the certificate when
+	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 	SetServerIdentity(identity SocketConnectabler)
+	// SetUseSSL3: since GLib 2.42.1, SSL 3.0 is no longer supported.
 	SetUseSSL3(useSsl3 bool)
 }
 
@@ -85,9 +93,12 @@ type TLSClientConnection struct {
 	TLSConnection
 }
 
-var _ TLSClientConnectioner = (*TLSClientConnection)(nil)
+var (
+	_ TLSClientConnectioner = (*TLSClientConnection)(nil)
+	_ gextras.Nativer       = (*TLSClientConnection)(nil)
+)
 
-func wrapTLSClientConnectioner(obj *externglib.Object) TLSClientConnectioner {
+func wrapTLSClientConnection(obj *externglib.Object) TLSClientConnectioner {
 	return &TLSClientConnection{
 		TLSConnection: TLSConnection{
 			IOStream: IOStream{
@@ -100,7 +111,7 @@ func wrapTLSClientConnectioner(obj *externglib.Object) TLSClientConnectioner {
 func marshalTLSClientConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSClientConnectioner(obj), nil
+	return wrapTLSClientConnection(obj), nil
 }
 
 // CopySessionState: possibly copies session state from one connection to
@@ -135,7 +146,7 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 	var _arg1 *C.GTlsClientConnection // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsClientConnection)(unsafe.Pointer(source.Native()))
+	_arg1 = (*C.GTlsClientConnection)(unsafe.Pointer((source).(gextras.Nativer).Native()))
 
 	C.g_tls_client_connection_copy_session_state(_arg0, _arg1)
 }
@@ -202,7 +213,7 @@ func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) 
 	var _arg1 *C.GSocketConnectable   // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((identity).(gextras.Nativer).Native()))
 
 	C.g_tls_client_connection_set_server_identity(_arg0, _arg1)
 }

@@ -32,21 +32,23 @@ func init() {
 	})
 }
 
-// FileMonitorrerOverrider contains methods that are overridable.
+// FileMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileMonitorrerOverrider interface {
+type FileMonitorOverrider interface {
 	// Cancel cancels a file monitor.
 	Cancel() bool
 }
 
 // FileMonitorrer describes FileMonitor's methods.
 type FileMonitorrer interface {
-	gextras.Objector
-
+	// Cancel cancels a file monitor.
 	Cancel() bool
+	// IsCancelled returns whether the monitor is canceled.
 	IsCancelled() bool
+	// SetRateLimit sets the rate limit to which the @monitor will report
+	// consecutive change events to the same file.
 	SetRateLimit(limitMsecs int)
 }
 
@@ -65,9 +67,12 @@ type FileMonitor struct {
 	*externglib.Object
 }
 
-var _ FileMonitorrer = (*FileMonitor)(nil)
+var (
+	_ FileMonitorrer  = (*FileMonitor)(nil)
+	_ gextras.Nativer = (*FileMonitor)(nil)
+)
 
-func wrapFileMonitorrer(obj *externglib.Object) FileMonitorrer {
+func wrapFileMonitor(obj *externglib.Object) FileMonitorrer {
 	return &FileMonitor{
 		Object: obj,
 	}
@@ -76,7 +81,7 @@ func wrapFileMonitorrer(obj *externglib.Object) FileMonitorrer {
 func marshalFileMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileMonitorrer(obj), nil
+	return wrapFileMonitor(obj), nil
 }
 
 // Cancel cancels a file monitor.

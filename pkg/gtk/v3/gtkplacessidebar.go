@@ -70,30 +70,74 @@ func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 
 // PlacesSidebarrer describes PlacesSidebar's methods.
 type PlacesSidebarrer interface {
-	gextras.Objector
-
+	// AddShortcut applications may want to present some folders in the places
+	// sidebar if they could be immediately useful to users.
 	AddShortcut(location gio.Filer)
+	// LocalOnly returns the value previously set with
+	// gtk_places_sidebar_set_local_only().
 	LocalOnly() bool
+	// Location gets the currently selected location in the @sidebar.
 	Location() *gio.File
+	// NthBookmark: this function queries the bookmarks added by the user to the
+	// places sidebar, and returns one of them.
 	NthBookmark(n int) *gio.File
+	// OpenFlags gets the open flags.
 	OpenFlags() PlacesOpenFlags
+	// ShowConnectToServer returns the value previously set with
+	// gtk_places_sidebar_set_show_connect_to_server() Deprecated: It is
+	// recommended to group this functionality with the drives and network
+	// location under the new 'Other Location' item.
 	ShowConnectToServer() bool
+	// ShowDesktop returns the value previously set with
+	// gtk_places_sidebar_set_show_desktop()
 	ShowDesktop() bool
+	// ShowEnterLocation returns the value previously set with
+	// gtk_places_sidebar_set_show_enter_location()
 	ShowEnterLocation() bool
+	// ShowOtherLocations returns the value previously set with
+	// gtk_places_sidebar_set_show_other_locations()
 	ShowOtherLocations() bool
+	// ShowRecent returns the value previously set with
+	// gtk_places_sidebar_set_show_recent()
 	ShowRecent() bool
+	// ShowStarredLocation returns the value previously set with
+	// gtk_places_sidebar_set_show_starred_location()
 	ShowStarredLocation() bool
+	// ShowTrash returns the value previously set with
+	// gtk_places_sidebar_set_show_trash()
 	ShowTrash() bool
+	// RemoveShortcut removes an application-specific shortcut that has been
+	// previously been inserted with gtk_places_sidebar_add_shortcut().
 	RemoveShortcut(location gio.Filer)
+	// SetDropTargetsVisible: make the GtkPlacesSidebar show drop targets, so it
+	// can show the available drop targets and a "new bookmark" row.
 	SetDropTargetsVisible(visible bool, context gdk.DragContexter)
+	// SetLocalOnly sets whether the @sidebar should only show local files.
 	SetLocalOnly(localOnly bool)
+	// SetLocation sets the location that is being shown in the widgets
+	// surrounding the @sidebar, for example, in a folder view in a file
+	// manager.
 	SetLocation(location gio.Filer)
+	// SetShowConnectToServer sets whether the @sidebar should show an item for
+	// connecting to a network server; this is off by default.
 	SetShowConnectToServer(showConnectToServer bool)
+	// SetShowDesktop sets whether the @sidebar should show an item for the
+	// Desktop folder.
 	SetShowDesktop(showDesktop bool)
+	// SetShowEnterLocation sets whether the @sidebar should show an item for
+	// entering a location; this is off by default.
 	SetShowEnterLocation(showEnterLocation bool)
+	// SetShowOtherLocations sets whether the @sidebar should show an item for
+	// the application to show an Other Locations view; this is off by default.
 	SetShowOtherLocations(showOtherLocations bool)
+	// SetShowRecent sets whether the @sidebar should show an item for recent
+	// files.
 	SetShowRecent(showRecent bool)
+	// SetShowStarredLocation: if you enable this, you should connect to the
+	// PlacesSidebar::show-starred-location signal.
 	SetShowStarredLocation(showStarredLocation bool)
+	// SetShowTrash sets whether the @sidebar should show an item for the Trash
+	// location.
 	SetShowTrash(showTrash bool)
 }
 
@@ -132,26 +176,20 @@ type PlacesSidebarrer interface {
 // .sidebar-placeholder-row for a row that is a placeholder - .has-open-popup
 // when a popup is open for a row
 type PlacesSidebar struct {
-	*externglib.Object
-
 	ScrolledWindow
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ PlacesSidebarrer = (*PlacesSidebar)(nil)
+var (
+	_ PlacesSidebarrer = (*PlacesSidebar)(nil)
+	_ gextras.Nativer  = (*PlacesSidebar)(nil)
+)
 
-func wrapPlacesSidebarrer(obj *externglib.Object) PlacesSidebarrer {
+func wrapPlacesSidebar(obj *externglib.Object) PlacesSidebarrer {
 	return &PlacesSidebar{
-		Object: obj,
 		ScrolledWindow: ScrolledWindow{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -162,32 +200,8 @@ func wrapPlacesSidebarrer(obj *externglib.Object) PlacesSidebarrer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -195,7 +209,7 @@ func wrapPlacesSidebarrer(obj *externglib.Object) PlacesSidebarrer {
 func marshalPlacesSidebarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlacesSidebarrer(obj), nil
+	return wrapPlacesSidebar(obj), nil
 }
 
 // NewPlacesSidebar creates a new PlacesSidebar widget.
@@ -229,7 +243,7 @@ func (sidebar *PlacesSidebar) AddShortcut(location gio.Filer) {
 	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((location).(gextras.Nativer).Native()))
 
 	C.gtk_places_sidebar_add_shortcut(_arg0, _arg1)
 }
@@ -458,7 +472,7 @@ func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
 	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((location).(gextras.Nativer).Native()))
 
 	C.gtk_places_sidebar_remove_shortcut(_arg0, _arg1)
 }
@@ -481,7 +495,7 @@ func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context gdk.Dr
 	if visible {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 
 	C.gtk_places_sidebar_set_drop_targets_visible(_arg0, _arg1, _arg2)
 }
@@ -509,7 +523,7 @@ func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((location).(gextras.Nativer).Native()))
 
 	C.gtk_places_sidebar_set_location(_arg0, _arg1)
 }

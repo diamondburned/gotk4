@@ -24,10 +24,12 @@ func init() {
 
 // TextTagger describes TextTag's methods.
 type TextTagger interface {
-	gextras.Objector
-
+	// Changed emits the [signal@Gtk.TextTagTable::tag-changed] signal on the
+	// `GtkTextTagTable` where the tag is included.
 	Changed(sizeChanged bool)
+	// Priority: get the tag priority.
 	Priority() int
+	// SetPriority sets the priority of a `GtkTextTag`.
 	SetPriority(priority int)
 }
 
@@ -52,9 +54,12 @@ type TextTag struct {
 	*externglib.Object
 }
 
-var _ TextTagger = (*TextTag)(nil)
+var (
+	_ TextTagger      = (*TextTag)(nil)
+	_ gextras.Nativer = (*TextTag)(nil)
+)
 
-func wrapTextTagger(obj *externglib.Object) TextTagger {
+func wrapTextTag(obj *externglib.Object) TextTagger {
 	return &TextTag{
 		Object: obj,
 	}
@@ -63,7 +68,7 @@ func wrapTextTagger(obj *externglib.Object) TextTagger {
 func marshalTextTagger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextTagger(obj), nil
+	return wrapTextTag(obj), nil
 }
 
 // NewTextTag creates a `GtkTextTag`.

@@ -26,19 +26,19 @@ func init() {
 	})
 }
 
-// SocketterOverrider contains methods that are overridable.
+// SocketOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketterOverrider interface {
+type SocketOverrider interface {
 	PlugAdded()
+
 	PlugRemoved() bool
 }
 
 // Socketter describes Socket's methods.
 type Socketter interface {
-	gextras.Objector
-
+	// PlugWindow retrieves the window of the plug.
 	PlugWindow() *gdk.Window
 }
 
@@ -89,22 +89,18 @@ type Socketter interface {
 // X11Display. To use Plug and Socket, you need to include the `gtk/gtkx.h`
 // header.
 type Socket struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Socketter = (*Socket)(nil)
+var (
+	_ Socketter       = (*Socket)(nil)
+	_ gextras.Nativer = (*Socket)(nil)
+)
 
-func wrapSocketter(obj *externglib.Object) Socketter {
+func wrapSocket(obj *externglib.Object) Socketter {
 	return &Socket{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -115,18 +111,6 @@ func wrapSocketter(obj *externglib.Object) Socketter {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -134,7 +118,7 @@ func wrapSocketter(obj *externglib.Object) Socketter {
 func marshalSocketter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketter(obj), nil
+	return wrapSocket(obj), nil
 }
 
 // NewSocket: create a new empty Socket.

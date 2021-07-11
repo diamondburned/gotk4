@@ -29,24 +29,23 @@ const (
 	// Failed: generic error if no more specific error is available. See the
 	// error message for details.
 	URIErrorFailed URIError = iota
-	// BadScheme: the scheme of a URI could not be parsed.
+	// BadScheme: scheme of a URI could not be parsed.
 	URIErrorBadScheme
-	// BadUser: the user/userinfo of a URI could not be parsed.
+	// BadUser: user/userinfo of a URI could not be parsed.
 	URIErrorBadUser
-	// BadPassword: the password of a URI could not be parsed.
+	// BadPassword: password of a URI could not be parsed.
 	URIErrorBadPassword
-	// BadAuthParams: the authentication parameters of a URI could not be
-	// parsed.
+	// BadAuthParams: authentication parameters of a URI could not be parsed.
 	URIErrorBadAuthParams
-	// BadHost: the host of a URI could not be parsed.
+	// BadHost: host of a URI could not be parsed.
 	URIErrorBadHost
-	// BadPort: the port of a URI could not be parsed.
+	// BadPort: port of a URI could not be parsed.
 	URIErrorBadPort
-	// BadPath: the path of a URI could not be parsed.
+	// BadPath: path of a URI could not be parsed.
 	URIErrorBadPath
-	// BadQuery: the query of a URI could not be parsed.
+	// BadQuery: query of a URI could not be parsed.
 	URIErrorBadQuery
-	// BadFragment: the fragment of a URI could not be parsed.
+	// BadFragment: fragment of a URI could not be parsed.
 	URIErrorBadFragment
 )
 
@@ -66,10 +65,10 @@ const (
 	// also needed for some obscure URI schemes where `;` separates the host
 	// from the path. Don’t use this flag unless you need to.
 	URIFlagsParseRelaxed URIFlags = 0b1
-	// URIFlagsHasPassword: the userinfo field may contain a password, which
-	// will be separated from the username by `:`.
+	// URIFlagsHasPassword: userinfo field may contain a password, which will be
+	// separated from the username by `:`.
 	URIFlagsHasPassword URIFlags = 0b10
-	// URIFlagsHasAuthParams: the userinfo may contain additional
+	// URIFlagsHasAuthParams: userinfo may contain additional
 	// authentication-related parameters, which will be separated from the
 	// username and/or password by `;`.
 	URIFlagsHasAuthParams URIFlags = 0b100
@@ -79,9 +78,8 @@ const (
 	// set.) When building a URI, it indicates that you have already `%`-encoded
 	// the components, and so #GUri should not do any encoding itself.
 	URIFlagsEncoded URIFlags = 0b1000
-	// URIFlagsNonDns: the host component should not be assumed to be a DNS
-	// hostname or IP address (for example, for `smb` URIs with NetBIOS
-	// hostnames).
+	// URIFlagsNonDns: host component should not be assumed to be a DNS hostname
+	// or IP address (for example, for `smb` URIs with NetBIOS hostnames).
 	URIFlagsNonDns URIFlags = 0b10000
 	// URIFlagsEncodedQuery: same as G_URI_FLAGS_ENCODED, for the query field
 	// only.
@@ -136,8 +134,8 @@ const (
 	URIParamsFlagsParseRelaxed URIParamsFlags = 0b100
 )
 
-// URI: the #GUri type and related functions can be used to parse URIs into
-// their components, and build valid URIs from individual components.
+// URI type and related functions can be used to parse URIs into their
+// components, and build valid URIs from individual components.
 //
 // Note that #GUri scope is to help manipulate URIs in various applications,
 // following RFC 3986 (https://tools.ietf.org/html/rfc3986). In particular, it

@@ -36,15 +36,16 @@ func init() {
 	})
 }
 
-// MounterOverrider contains methods that are overridable.
+// MountOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type MounterOverrider interface {
+type MountOverrider interface {
 	// CanEject checks if @mount can be ejected.
 	CanEject() bool
 	// CanUnmount checks if @mount can be unmounted.
 	CanUnmount() bool
+
 	Changed()
 	// EjectFinish finishes ejecting a mount. If any errors occurred during the
 	// operation, @error will be set to contain the errors and false will be
@@ -108,6 +109,7 @@ type MounterOverrider interface {
 	// This is a synchronous operation and as such may block doing IO; see
 	// g_mount_guess_content_type() for the asynchronous version.
 	GuessContentTypeSync(forceRescan bool, cancellable Cancellabler) ([]string, error)
+
 	PreUnmount()
 	// RemountFinish finishes remounting a mount. If any errors occurred during
 	// the operation, @error will be set to contain the errors and false will be
@@ -123,39 +125,60 @@ type MounterOverrider interface {
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
 	UnmountWithOperationFinish(result AsyncResulter) error
+
 	Unmounted()
 }
 
 // Mounter describes Mount's methods.
 type Mounter interface {
-	gextras.Objector
-
+	// CanEject checks if @mount can be ejected.
 	CanEject() bool
+	// CanUnmount checks if @mount can be unmounted.
 	CanUnmount() bool
+	// EjectFinish finishes ejecting a mount.
 	EjectFinish(result AsyncResulter) error
+	// EjectWithOperationFinish finishes ejecting a mount.
 	EjectWithOperationFinish(result AsyncResulter) error
+	// DefaultLocation gets the default location of @mount.
 	DefaultLocation() *File
+	// Drive gets the drive for the @mount.
 	Drive() *Drive
+	// Icon gets the icon for @mount.
 	Icon() *Icon
+	// Name gets the name of @mount.
 	Name() string
+	// Root gets the root directory on @mount.
 	Root() *File
+	// SortKey gets the sort key for @mount, if any.
 	SortKey() string
+	// SymbolicIcon gets the symbolic icon for @mount.
 	SymbolicIcon() *Icon
+	// UUID gets the UUID for the @mount.
 	UUID() string
+	// Volume gets the volume for the @mount.
 	Volume() *Volume
+	// GuessContentType tries to guess the type of content stored on @mount.
 	GuessContentType(forceRescan bool, cancellable Cancellabler, callback AsyncReadyCallback)
+	// GuessContentTypeFinish finishes guessing content types of @mount.
 	GuessContentTypeFinish(result AsyncResulter) ([]string, error)
+	// GuessContentTypeSync tries to guess the type of content stored on @mount.
 	GuessContentTypeSync(forceRescan bool, cancellable Cancellabler) ([]string, error)
+	// IsShadowed determines if @mount is shadowed.
 	IsShadowed() bool
+	// RemountFinish finishes remounting a mount.
 	RemountFinish(result AsyncResulter) error
+	// Shadow increments the shadow count on @mount.
 	Shadow()
+	// UnmountFinish finishes unmounting a mount.
 	UnmountFinish(result AsyncResulter) error
+	// UnmountWithOperationFinish finishes unmounting a mount.
 	UnmountWithOperationFinish(result AsyncResulter) error
+	// Unshadow decrements the shadow count on @mount.
 	Unshadow()
 }
 
-// Mount: the #GMount interface represents user-visible mounts. Note, when
-// porting from GnomeVFS, #GMount is the moral equivalent of VFSVolume.
+// Mount interface represents user-visible mounts. Note, when porting from
+// GnomeVFS, #GMount is the moral equivalent of VFSVolume.
 //
 // #GMount is a "mounted" filesystem that you can access. Mounted is in quotes
 // because it's not the same as a unix mount, it might be a gvfs mount, but you
@@ -176,9 +199,12 @@ type Mount struct {
 	*externglib.Object
 }
 
-var _ Mounter = (*Mount)(nil)
+var (
+	_ Mounter         = (*Mount)(nil)
+	_ gextras.Nativer = (*Mount)(nil)
+)
 
-func wrapMounter(obj *externglib.Object) Mounter {
+func wrapMount(obj *externglib.Object) Mounter {
 	return &Mount{
 		Object: obj,
 	}
@@ -187,7 +213,7 @@ func wrapMounter(obj *externglib.Object) Mounter {
 func marshalMounter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMounter(obj), nil
+	return wrapMount(obj), nil
 }
 
 // CanEject checks if @mount can be ejected.
@@ -237,7 +263,7 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_mount_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -257,7 +283,7 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_mount_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -443,7 +469,7 @@ func (mount *Mount) GuessContentType(forceRescan bool, cancellable Cancellabler,
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -461,7 +487,7 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
 
@@ -507,7 +533,7 @@ func (mount *Mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellab
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_mount_guess_content_type_sync(_arg0, _arg1, _arg2, &_cerr)
 
@@ -579,7 +605,7 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_mount_remount_finish(_arg0, _arg1, &_cerr)
 
@@ -613,7 +639,7 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_mount_unmount_finish(_arg0, _arg1, &_cerr)
 
@@ -633,7 +659,7 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_mount_unmount_with_operation_finish(_arg0, _arg1, &_cerr)
 

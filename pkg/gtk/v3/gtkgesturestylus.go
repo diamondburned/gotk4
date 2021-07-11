@@ -27,8 +27,8 @@ func init() {
 
 // GestureStylusser describes GestureStylus's methods.
 type GestureStylusser interface {
-	gextras.Objector
-
+	// DeviceTool returns the DeviceTool currently driving input through this
+	// gesture.
 	DeviceTool() *gdk.DeviceTool
 }
 
@@ -38,9 +38,12 @@ type GestureStylus struct {
 	GestureSingle
 }
 
-var _ GestureStylusser = (*GestureStylus)(nil)
+var (
+	_ GestureStylusser = (*GestureStylus)(nil)
+	_ gextras.Nativer  = (*GestureStylus)(nil)
+)
 
-func wrapGestureStylusser(obj *externglib.Object) GestureStylusser {
+func wrapGestureStylus(obj *externglib.Object) GestureStylusser {
 	return &GestureStylus{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -55,7 +58,7 @@ func wrapGestureStylusser(obj *externglib.Object) GestureStylusser {
 func marshalGestureStylusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureStylusser(obj), nil
+	return wrapGestureStylus(obj), nil
 }
 
 // NewGestureStylus creates a new GestureStylus.
@@ -63,7 +66,7 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_gesture_stylus_new(_arg1)
 

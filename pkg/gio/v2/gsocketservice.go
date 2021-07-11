@@ -32,20 +32,21 @@ func init() {
 	})
 }
 
-// SocketServicerOverrider contains methods that are overridable.
+// SocketServiceOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketServicerOverrider interface {
+type SocketServiceOverrider interface {
 	Incoming(connection SocketConnectioner, sourceObject gextras.Objector) bool
 }
 
 // SocketServicer describes SocketService's methods.
 type SocketServicer interface {
-	gextras.Objector
-
+	// IsActive: check whether the service is active or not.
 	IsActive() bool
+	// Start restarts the service, i.e.
 	Start()
+	// Stop stops the service, i.e.
 	Stop()
 }
 
@@ -75,9 +76,12 @@ type SocketService struct {
 	SocketListener
 }
 
-var _ SocketServicer = (*SocketService)(nil)
+var (
+	_ SocketServicer  = (*SocketService)(nil)
+	_ gextras.Nativer = (*SocketService)(nil)
+)
 
-func wrapSocketServicer(obj *externglib.Object) SocketServicer {
+func wrapSocketService(obj *externglib.Object) SocketServicer {
 	return &SocketService{
 		SocketListener: SocketListener{
 			Object: obj,
@@ -88,7 +92,7 @@ func wrapSocketServicer(obj *externglib.Object) SocketServicer {
 func marshalSocketServicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketServicer(obj), nil
+	return wrapSocketService(obj), nil
 }
 
 // NewSocketService creates a new Service with no sockets to listen for. New

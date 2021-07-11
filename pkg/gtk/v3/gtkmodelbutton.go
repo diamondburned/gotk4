@@ -26,7 +26,7 @@ func init() {
 	})
 }
 
-// ButtonRole: the role specifies the desired appearance of a ModelButton.
+// ButtonRole: role specifies the desired appearance of a ModelButton.
 type ButtonRole int
 
 const (
@@ -44,8 +44,6 @@ func marshalButtonRole(p uintptr) (interface{}, error) {
 
 // ModelButtonner describes ModelButton's methods.
 type ModelButtonner interface {
-	gextras.Objector
-
 	privateModelButton()
 }
 
@@ -119,28 +117,20 @@ type ModelButtonner interface {
 // node to button and add a .model style class to it. The indicator subnode is
 // invisible in this case.
 type ModelButton struct {
-	*externglib.Object
-
 	Button
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ ModelButtonner = (*ModelButton)(nil)
+var (
+	_ ModelButtonner  = (*ModelButton)(nil)
+	_ gextras.Nativer = (*ModelButton)(nil)
+)
 
-func wrapModelButtonner(obj *externglib.Object) ModelButtonner {
+func wrapModelButton(obj *externglib.Object) ModelButtonner {
 	return &ModelButton{
-		Object: obj,
 		Button: Button{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -151,27 +141,10 @@ func wrapModelButtonner(obj *externglib.Object) ModelButtonner {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -186,33 +159,6 @@ func wrapModelButtonner(obj *externglib.Object) ModelButtonner {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -220,7 +166,7 @@ func wrapModelButtonner(obj *externglib.Object) ModelButtonner {
 func marshalModelButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapModelButtonner(obj), nil
+	return wrapModelButton(obj), nil
 }
 
 // NewModelButton creates a new GtkModelButton.

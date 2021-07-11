@@ -27,9 +27,9 @@ func init() {
 
 // StackSidebarrer describes StackSidebar's methods.
 type StackSidebarrer interface {
-	gextras.Objector
-
+	// Stack retrieves the stack.
 	Stack() *Stack
+	// SetStack: set the Stack associated with this StackSidebar.
 	SetStack(stack Stacker)
 }
 
@@ -49,24 +49,19 @@ type StackSidebarrer interface {
 // When circumstances require it, GtkStackSidebar adds the .needs-attention
 // style class to the widgets representing the stack pages.
 type StackSidebar struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ StackSidebarrer = (*StackSidebar)(nil)
+var (
+	_ StackSidebarrer = (*StackSidebar)(nil)
+	_ gextras.Nativer = (*StackSidebar)(nil)
+)
 
-func wrapStackSidebarrer(obj *externglib.Object) StackSidebarrer {
+func wrapStackSidebar(obj *externglib.Object) StackSidebarrer {
 	return &StackSidebar{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -77,25 +72,7 @@ func wrapStackSidebarrer(obj *externglib.Object) StackSidebarrer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -103,7 +80,7 @@ func wrapStackSidebarrer(obj *externglib.Object) StackSidebarrer {
 func marshalStackSidebarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStackSidebarrer(obj), nil
+	return wrapStackSidebar(obj), nil
 }
 
 // NewStackSidebar creates a new sidebar.
@@ -144,7 +121,7 @@ func (sidebar *StackSidebar) SetStack(stack Stacker) {
 	var _arg1 *C.GtkStack        // out
 
 	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer((stack).(gextras.Nativer).Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 }

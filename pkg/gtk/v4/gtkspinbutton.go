@@ -42,8 +42,8 @@ func marshalSpinButtonUpdatePolicy(p uintptr) (interface{}, error) {
 	return SpinButtonUpdatePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SpinType: the values of the GtkSpinType enumeration are used to specify the
-// change to make in gtk_spin_button_spin().
+// SpinType values of the GtkSpinType enumeration are used to specify the change
+// to make in gtk_spin_button_spin().
 type SpinType int
 
 const (
@@ -69,29 +69,58 @@ func marshalSpinType(p uintptr) (interface{}, error) {
 
 // SpinButtonner describes SpinButton's methods.
 type SpinButtonner interface {
-	gextras.Objector
-
+	// Configure changes the properties of an existing spin button.
 	Configure(adjustment Adjustmenter, climbRate float64, digits uint)
+	// Adjustment: get the adjustment associated with a `GtkSpinButton`.
 	Adjustment() *Adjustment
+	// ClimbRate returns the acceleration rate for repeated changes.
 	ClimbRate() float64
+	// Digits fetches the precision of @spin_button.
 	Digits() uint
+	// Increments gets the current step and page the increments used by
+	// @spin_button.
 	Increments() (step float64, page float64)
+	// Numeric returns whether non-numeric text can be typed into the spin
+	// button.
 	Numeric() bool
+	// Range gets the range allowed for @spin_button.
 	Range() (min float64, max float64)
+	// SnapToTicks returns whether the values are corrected to the nearest step.
 	SnapToTicks() bool
+	// UpdatePolicy gets the update behavior of a spin button.
 	UpdatePolicy() SpinButtonUpdatePolicy
+	// Value: get the value in the @spin_button.
 	Value() float64
+	// ValueAsInt: get the value @spin_button represented as an integer.
 	ValueAsInt() int
+	// Wrap returns whether the spin button’s value wraps around to the opposite
+	// limit when the upper or lower limit of the range is exceeded.
 	Wrap() bool
+	// SetAdjustment replaces the `GtkAdjustment` associated with @spin_button.
 	SetAdjustment(adjustment Adjustmenter)
+	// SetClimbRate sets the acceleration rate for repeated changes when you
+	// hold down a button or key.
 	SetClimbRate(climbRate float64)
+	// SetDigits: set the precision to be displayed by @spin_button.
 	SetDigits(digits uint)
+	// SetIncrements sets the step and page increments for spin_button.
 	SetIncrements(step float64, page float64)
+	// SetNumeric sets the flag that determines if non-numeric text can be typed
+	// into the spin button.
 	SetNumeric(numeric bool)
+	// SetRange sets the minimum and maximum allowable values for @spin_button.
 	SetRange(min float64, max float64)
+	// SetSnapToTicks sets the policy as to whether values are corrected to the
+	// nearest step increment when a spin button is activated after providing an
+	// invalid value.
 	SetSnapToTicks(snapToTicks bool)
+	// SetValue sets the value of @spin_button.
 	SetValue(value float64)
+	// SetWrap sets the flag that determines if a spin button value wraps around
+	// to the opposite limit when the upper or lower limit of the range is
+	// exceeded.
 	SetWrap(wrap bool)
+	// Update: manually force an update of the spin button.
 	Update()
 }
 
@@ -184,24 +213,21 @@ type SpinButtonner interface {
 //
 // `GtkSpinButton` uses the GTK_ACCESSIBLE_ROLE_SPIN_BUTTON role.
 type SpinButton struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
+
 	CellEditable
-	ConstraintTarget
 	Editable
 	Orientable
 }
 
-var _ SpinButtonner = (*SpinButton)(nil)
+var (
+	_ SpinButtonner   = (*SpinButton)(nil)
+	_ gextras.Nativer = (*SpinButton)(nil)
+)
 
-func wrapSpinButtonner(obj *externglib.Object) SpinButtonner {
+func wrapSpinButton(obj *externglib.Object) SpinButtonner {
 	return &SpinButton{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -215,16 +241,8 @@ func wrapSpinButtonner(obj *externglib.Object) SpinButtonner {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 		CellEditable: CellEditable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -239,13 +257,8 @@ func wrapSpinButtonner(obj *externglib.Object) SpinButtonner {
 				},
 			},
 		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Editable: Editable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -269,7 +282,7 @@ func wrapSpinButtonner(obj *externglib.Object) SpinButtonner {
 func marshalSpinButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinButtonner(obj), nil
+	return wrapSpinButton(obj), nil
 }
 
 // NewSpinButton creates a new `GtkSpinButton`.
@@ -279,7 +292,7 @@ func NewSpinButton(adjustment Adjustmenter, climbRate float64, digits uint) *Spi
 	var _arg3 C.guint          // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 	_arg2 = C.double(climbRate)
 	_arg3 = C.guint(digits)
 
@@ -323,6 +336,12 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButton 
 	return _spinButton
 }
 
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *SpinButton) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
+}
+
 // Configure changes the properties of an existing spin button.
 //
 // The adjustment, climb rate, and number of decimal places are updated
@@ -334,7 +353,7 @@ func (spinButton *SpinButton) Configure(adjustment Adjustmenter, climbRate float
 	var _arg3 C.guint          // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(spinButton.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 	_arg2 = C.double(climbRate)
 	_arg3 = C.guint(digits)
 
@@ -543,7 +562,7 @@ func (spinButton *SpinButton) SetAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(spinButton.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_spin_button_set_adjustment(_arg0, _arg1)
 }

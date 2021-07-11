@@ -27,7 +27,7 @@ func init() {
 	})
 }
 
-// License: the type of license for an application.
+// License: type of license for an application.
 //
 // This enumeration can be expanded at later date.
 type License int
@@ -37,41 +37,41 @@ const (
 	LicenseUnknown License = iota
 	// Custom: license text is going to be specified by the developer
 	LicenseCustom
-	// GPL20: the GNU General Public License, version 2.0 or later
+	// GPL20: GNU General Public License, version 2.0 or later
 	LicenseGPL20
-	// GPL30: the GNU General Public License, version 3.0 or later
+	// GPL30: GNU General Public License, version 3.0 or later
 	LicenseGPL30
-	// LGPL21: the GNU Lesser General Public License, version 2.1 or later
+	// LGPL21: GNU Lesser General Public License, version 2.1 or later
 	LicenseLGPL21
-	// LGPL30: the GNU Lesser General Public License, version 3.0 or later
+	// LGPL30: GNU Lesser General Public License, version 3.0 or later
 	LicenseLGPL30
-	// BSD: the BSD standard license
+	// BSD: BSD standard license
 	LicenseBSD
-	// MITX11: the MIT/X11 standard license
+	// MITX11: MIT/X11 standard license
 	LicenseMITX11
-	// Artistic: the Artistic License, version 2.0
+	// Artistic: artistic License, version 2.0
 	LicenseArtistic
-	// GPL20Only: the GNU General Public License, version 2.0 only. Since 3.12.
+	// GPL20Only: GNU General Public License, version 2.0 only. Since 3.12.
 	LicenseGPL20Only
-	// GPL30Only: the GNU General Public License, version 3.0 only. Since 3.12.
+	// GPL30Only: GNU General Public License, version 3.0 only. Since 3.12.
 	LicenseGPL30Only
-	// LGPL21Only: the GNU Lesser General Public License, version 2.1 only.
-	// Since 3.12.
+	// LGPL21Only: GNU Lesser General Public License, version 2.1 only. Since
+	// 3.12.
 	LicenseLGPL21Only
-	// LGPL30Only: the GNU Lesser General Public License, version 3.0 only.
-	// Since 3.12.
+	// LGPL30Only: GNU Lesser General Public License, version 3.0 only. Since
+	// 3.12.
 	LicenseLGPL30Only
-	// AGPL30: the GNU Affero General Public License, version 3.0 or later.
-	// Since: 3.22.
+	// AGPL30: GNU Affero General Public License, version 3.0 or later. Since:
+	// 3.22.
 	LicenseAGPL30
-	// AGPL30Only: the GNU Affero General Public License, version 3.0 only.
-	// Since: 3.22.27.
+	// AGPL30Only: GNU Affero General Public License, version 3.0 only. Since:
+	// 3.22.27.
 	LicenseAGPL30Only
-	// BSD3: the 3-clause BSD licence. Since: 3.24.20.
+	// BSD3: 3-clause BSD licence. Since: 3.24.20.
 	LicenseBSD3
-	// Apache20: the Apache License, version 2.0. Since: 3.24.20.
+	// Apache20: apache License, version 2.0. Since: 3.24.20.
 	LicenseApache20
-	// MPL20: the Mozilla Public License, version 2.0. Since: 3.24.20.
+	// MPL20: mozilla Public License, version 2.0. Since: 3.24.20.
 	LicenseMPL20
 )
 
@@ -79,56 +79,95 @@ func marshalLicense(p uintptr) (interface{}, error) {
 	return License(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AboutDialoggerOverrider contains methods that are overridable.
+// AboutDialogOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AboutDialoggerOverrider interface {
+type AboutDialogOverrider interface {
 	ActivateLink(uri string) bool
 }
 
 // AboutDialogger describes AboutDialog's methods.
 type AboutDialogger interface {
-	gextras.Objector
-
+	// AddCreditSection creates a new section in the Credits page.
 	AddCreditSection(sectionName string, people []string)
+	// Artists returns the string which are displayed in the artists tab of the
+	// secondary credits dialog.
 	Artists() []string
+
 	Authors() []string
+	// Comments returns the comments string.
 	Comments() string
+
 	Copyright() string
+	// Documenters returns the string which are displayed in the documenters tab
+	// of the secondary credits dialog.
 	Documenters() []string
+	// License returns the license information.
 	License() string
+	// LicenseType retrieves the license set using
+	// gtk_about_dialog_set_license_type()
 	LicenseType() License
+	// Logo returns the pixbuf displayed as logo in the about dialog.
 	Logo() *gdkpixbuf.Pixbuf
+	// LogoIconName returns the icon name displayed as logo in the about dialog.
 	LogoIconName() string
+	// ProgramName returns the program name displayed in the about dialog.
 	ProgramName() string
+	// TranslatorCredits returns the translator credits string which is
+	// displayed in the translators tab of the secondary credits dialog.
 	TranslatorCredits() string
+	// Version returns the version string.
 	Version() string
+	// Website returns the website URL.
 	Website() string
+	// WebsiteLabel returns the label used for the website link.
 	WebsiteLabel() string
+	// WrapLicense returns whether the license text in @about is automatically
+	// wrapped.
 	WrapLicense() bool
+	// SetArtists sets the strings which are displayed in the artists tab of the
+	// secondary credits dialog.
 	SetArtists(artists []string)
+	// SetAuthors sets the strings which are displayed in the authors tab of the
+	// secondary credits dialog.
 	SetAuthors(authors []string)
+	// SetComments sets the comments string to display in the about dialog.
 	SetComments(comments string)
+	// SetCopyright sets the copyright string to display in the about dialog.
 	SetCopyright(copyright string)
+	// SetDocumenters sets the strings which are displayed in the documenters
+	// tab of the secondary credits dialog.
 	SetDocumenters(documenters []string)
+	// SetLicense sets the license information to be displayed in the secondary
+	// license dialog.
 	SetLicense(license string)
+	// SetLogo sets the pixbuf to be displayed as logo in the about dialog.
 	SetLogo(logo gdkpixbuf.Pixbuffer)
+	// SetLogoIconName sets the pixbuf to be displayed as logo in the about
+	// dialog.
 	SetLogoIconName(iconName string)
+	// SetProgramName sets the name to display in the about dialog.
 	SetProgramName(name string)
+	// SetTranslatorCredits sets the translator credits string which is
+	// displayed in the translators tab of the secondary credits dialog.
 	SetTranslatorCredits(translatorCredits string)
+	// SetVersion sets the version string to display in the about dialog.
 	SetVersion(version string)
+	// SetWebsite sets the URL to use for the website link.
 	SetWebsite(website string)
+	// SetWebsiteLabel sets the label to be used for the website link.
 	SetWebsiteLabel(websiteLabel string)
+	// SetWrapLicense sets whether the license text in @about is automatically
+	// wrapped.
 	SetWrapLicense(wrapLicense bool)
 }
 
-// AboutDialog: the GtkAboutDialog offers a simple way to display information
-// about a program like its logo, name, copyright, website and license. It is
-// also possible to give credits to the authors, documenters, translators and
-// artists who have worked on the program. An about dialog is typically opened
-// when the user selects the `About` option from the `Help` menu. All parts of
-// the dialog are optional.
+// AboutDialog offers a simple way to display information about a program like
+// its logo, name, copyright, website and license. It is also possible to give
+// credits to the authors, documenters, translators and artists who have worked
+// on the program. An about dialog is typically opened when the user selects the
+// `About` option from the `Help` menu. All parts of the dialog are optional.
 //
 // About dialogs often contain links and email addresses. GtkAboutDialog
 // displays these as clickable links. By default, it calls
@@ -160,28 +199,21 @@ type AboutDialogger interface {
 // gtk_dialog_run(). In this case, you might need to know that the “Close”
 // button returns the K_RESPONSE_CANCEL response id.
 type AboutDialog struct {
-	*externglib.Object
-
 	Dialog
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ AboutDialogger = (*AboutDialog)(nil)
+var (
+	_ AboutDialogger  = (*AboutDialog)(nil)
+	_ gextras.Nativer = (*AboutDialog)(nil)
+)
 
-func wrapAboutDialogger(obj *externglib.Object) AboutDialogger {
+func wrapAboutDialog(obj *externglib.Object) AboutDialogger {
 	return &AboutDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -192,39 +224,9 @@ func wrapAboutDialogger(obj *externglib.Object) AboutDialogger {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -232,7 +234,7 @@ func wrapAboutDialogger(obj *externglib.Object) AboutDialogger {
 func marshalAboutDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAboutDialogger(obj), nil
+	return wrapAboutDialog(obj), nil
 }
 
 // NewAboutDialog creates a new AboutDialog.
@@ -661,7 +663,7 @@ func (about *AboutDialog) SetLogo(logo gdkpixbuf.Pixbuffer) {
 	var _arg1 *C.GdkPixbuf      // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(logo.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((logo).(gextras.Nativer).Native()))
 
 	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }

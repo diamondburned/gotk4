@@ -18,14 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_style_provider_get_type()), F: marshalStyleProviderrer},
+		{T: externglib.Type(C.gtk_style_provider_get_type()), F: marshalStyleProviderer},
 	})
 }
 
-// StyleProviderrer describes StyleProvider's methods.
-type StyleProviderrer interface {
-	gextras.Objector
-
+// StyleProviderer describes StyleProvider's methods.
+type StyleProviderer interface {
 	privateStyleProvider()
 }
 
@@ -42,18 +40,21 @@ type StyleProvider struct {
 	*externglib.Object
 }
 
-var _ StyleProviderrer = (*StyleProvider)(nil)
+var (
+	_ StyleProviderer = (*StyleProvider)(nil)
+	_ gextras.Nativer = (*StyleProvider)(nil)
+)
 
-func wrapStyleProviderrer(obj *externglib.Object) StyleProviderrer {
+func wrapStyleProvider(obj *externglib.Object) StyleProviderer {
 	return &StyleProvider{
 		Object: obj,
 	}
 }
 
-func marshalStyleProviderrer(p uintptr) (interface{}, error) {
+func marshalStyleProviderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleProviderrer(obj), nil
+	return wrapStyleProvider(obj), nil
 }
 
 func (*StyleProvider) privateStyleProvider() {}

@@ -26,8 +26,9 @@ func init() {
 
 // GestureSwiper describes GestureSwipe's methods.
 type GestureSwiper interface {
-	gextras.Objector
-
+	// Velocity: if the gesture is recognized, this function returns true and
+	// fill in @velocity_x and @velocity_y with the recorded velocity, as per
+	// the last event(s) processed.
 	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
@@ -45,9 +46,12 @@ type GestureSwipe struct {
 	GestureSingle
 }
 
-var _ GestureSwiper = (*GestureSwipe)(nil)
+var (
+	_ GestureSwiper   = (*GestureSwipe)(nil)
+	_ gextras.Nativer = (*GestureSwipe)(nil)
+)
 
-func wrapGestureSwiper(obj *externglib.Object) GestureSwiper {
+func wrapGestureSwipe(obj *externglib.Object) GestureSwiper {
 	return &GestureSwipe{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -62,7 +66,7 @@ func wrapGestureSwiper(obj *externglib.Object) GestureSwiper {
 func marshalGestureSwiper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureSwiper(obj), nil
+	return wrapGestureSwipe(obj), nil
 }
 
 // NewGestureSwipe returns a newly created Gesture that recognizes swipes.
@@ -70,7 +74,7 @@ func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_gesture_swipe_new(_arg1)
 

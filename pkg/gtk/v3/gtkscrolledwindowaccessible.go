@@ -27,20 +27,19 @@ func init() {
 
 // ScrolledWindowAccessibler describes ScrolledWindowAccessible's methods.
 type ScrolledWindowAccessibler interface {
-	gextras.Objector
-
 	privateScrolledWindowAccessible()
 }
 
 type ScrolledWindowAccessible struct {
 	ContainerAccessible
-
-	atk.Component
 }
 
-var _ ScrolledWindowAccessibler = (*ScrolledWindowAccessible)(nil)
+var (
+	_ ScrolledWindowAccessibler = (*ScrolledWindowAccessible)(nil)
+	_ gextras.Nativer           = (*ScrolledWindowAccessible)(nil)
+)
 
-func wrapScrolledWindowAccessibler(obj *externglib.Object) ScrolledWindowAccessibler {
+func wrapScrolledWindowAccessible(obj *externglib.Object) ScrolledWindowAccessibler {
 	return &ScrolledWindowAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -53,12 +52,6 @@ func wrapScrolledWindowAccessibler(obj *externglib.Object) ScrolledWindowAccessi
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -66,7 +59,7 @@ func wrapScrolledWindowAccessibler(obj *externglib.Object) ScrolledWindowAccessi
 func marshalScrolledWindowAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrolledWindowAccessibler(obj), nil
+	return wrapScrolledWindowAccessible(obj), nil
 }
 
 func (*ScrolledWindowAccessible) privateScrolledWindowAccessible() {}

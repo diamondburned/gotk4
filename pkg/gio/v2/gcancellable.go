@@ -35,28 +35,44 @@ func init() {
 	})
 }
 
-// CancellablerOverrider contains methods that are overridable.
+// CancellableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CancellablerOverrider interface {
+type CancellableOverrider interface {
 	Cancelled()
 }
 
 // Cancellabler describes Cancellable's methods.
 type Cancellabler interface {
-	gextras.Objector
-
+	// Cancel: will set @cancellable to cancelled, and will emit the
+	// #GCancellable::cancelled signal.
 	Cancel()
+	// Disconnect disconnects a handler from a cancellable instance similar to
+	// g_signal_handler_disconnect().
 	Disconnect(handlerId uint32)
+	// Fd gets the file descriptor for a cancellable job.
 	Fd() int
+	// IsCancelled checks if a cancellable job has been cancelled.
 	IsCancelled() bool
+	// MakePollfd creates a FD corresponding to @cancellable; this can be passed
+	// to g_poll() and used to poll for cancellation.
 	MakePollfd(pollfd *glib.PollFD) bool
+	// PopCurrent pops @cancellable off the cancellable stack (verifying that
+	// @cancellable is on the top of the stack).
 	PopCurrent()
+	// PushCurrent pushes @cancellable onto the cancellable stack.
 	PushCurrent()
+	// ReleaseFd releases a resources previously allocated by
+	// g_cancellable_get_fd() or g_cancellable_make_pollfd().
 	ReleaseFd()
+	// Reset resets @cancellable to its uncancelled state.
 	Reset()
+	// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
+	// notify that the operation was cancelled.
 	SetErrorIfCancelled() error
+	// NewSource creates a source that triggers if @cancellable is cancelled and
+	// calls its callback of type SourceFunc.
 	NewSource() *glib.Source
 }
 
@@ -66,9 +82,12 @@ type Cancellable struct {
 	*externglib.Object
 }
 
-var _ Cancellabler = (*Cancellable)(nil)
+var (
+	_ Cancellabler    = (*Cancellable)(nil)
+	_ gextras.Nativer = (*Cancellable)(nil)
+)
 
-func wrapCancellabler(obj *externglib.Object) Cancellabler {
+func wrapCancellable(obj *externglib.Object) Cancellabler {
 	return &Cancellable{
 		Object: obj,
 	}
@@ -77,7 +96,7 @@ func wrapCancellabler(obj *externglib.Object) Cancellabler {
 func marshalCancellabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCancellabler(obj), nil
+	return wrapCancellable(obj), nil
 }
 
 // NewCancellable creates a new #GCancellable object.

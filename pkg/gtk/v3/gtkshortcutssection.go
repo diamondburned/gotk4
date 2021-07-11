@@ -27,8 +27,6 @@ func init() {
 
 // ShortcutsSectioner describes ShortcutsSection's methods.
 type ShortcutsSectioner interface {
-	gextras.Objector
-
 	privateShortcutsSection()
 }
 
@@ -43,25 +41,19 @@ type ShortcutsSectioner interface {
 //
 // This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsSection struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ ShortcutsSectioner = (*ShortcutsSection)(nil)
+var (
+	_ ShortcutsSectioner = (*ShortcutsSection)(nil)
+	_ gextras.Nativer    = (*ShortcutsSection)(nil)
+)
 
-func wrapShortcutsSectioner(obj *externglib.Object) ShortcutsSectioner {
+func wrapShortcutsSection(obj *externglib.Object) ShortcutsSectioner {
 	return &ShortcutsSection{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -72,31 +64,10 @@ func wrapShortcutsSectioner(obj *externglib.Object) ShortcutsSectioner {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -104,7 +75,7 @@ func wrapShortcutsSectioner(obj *externglib.Object) ShortcutsSectioner {
 func marshalShortcutsSectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsSectioner(obj), nil
+	return wrapShortcutsSection(obj), nil
 }
 
 func (*ShortcutsSection) privateShortcutsSection() {}

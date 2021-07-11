@@ -34,10 +34,11 @@ func init() {
 
 // NetworkAddresser describes NetworkAddress's methods.
 type NetworkAddresser interface {
-	gextras.Objector
-
+	// Hostname gets @addr's hostname.
 	Hostname() string
+	// Port gets @addr's port number
 	Port() uint16
+	// Scheme gets @addr's scheme
 	Scheme() string
 }
 
@@ -55,9 +56,12 @@ type NetworkAddress struct {
 	SocketConnectable
 }
 
-var _ NetworkAddresser = (*NetworkAddress)(nil)
+var (
+	_ NetworkAddresser = (*NetworkAddress)(nil)
+	_ gextras.Nativer  = (*NetworkAddress)(nil)
+)
 
-func wrapNetworkAddresser(obj *externglib.Object) NetworkAddresser {
+func wrapNetworkAddress(obj *externglib.Object) NetworkAddresser {
 	return &NetworkAddress{
 		Object: obj,
 		SocketConnectable: SocketConnectable{
@@ -69,7 +73,7 @@ func wrapNetworkAddresser(obj *externglib.Object) NetworkAddresser {
 func marshalNetworkAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNetworkAddresser(obj), nil
+	return wrapNetworkAddress(obj), nil
 }
 
 // NewNetworkAddress creates a new Connectable for connecting to the given

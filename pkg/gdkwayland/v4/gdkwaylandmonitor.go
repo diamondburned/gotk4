@@ -25,12 +25,10 @@ func init() {
 
 // WaylandMonitorrer describes WaylandMonitor's methods.
 type WaylandMonitorrer interface {
-	gextras.Objector
-
 	privateWaylandMonitor()
 }
 
-// WaylandMonitor: the Wayland implementation of `GdkMonitor`.
+// WaylandMonitor: wayland implementation of `GdkMonitor`.
 //
 // Beyond the [class@Gdk.Monitor] API, the Wayland implementation offers access
 // to the Wayland `wl_output` object with
@@ -39,9 +37,12 @@ type WaylandMonitor struct {
 	gdk.Monitor
 }
 
-var _ WaylandMonitorrer = (*WaylandMonitor)(nil)
+var (
+	_ WaylandMonitorrer = (*WaylandMonitor)(nil)
+	_ gextras.Nativer   = (*WaylandMonitor)(nil)
+)
 
-func wrapWaylandMonitorrer(obj *externglib.Object) WaylandMonitorrer {
+func wrapWaylandMonitor(obj *externglib.Object) WaylandMonitorrer {
 	return &WaylandMonitor{
 		Monitor: gdk.Monitor{
 			Object: obj,
@@ -52,7 +53,7 @@ func wrapWaylandMonitorrer(obj *externglib.Object) WaylandMonitorrer {
 func marshalWaylandMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandMonitorrer(obj), nil
+	return wrapWaylandMonitor(obj), nil
 }
 
 func (*WaylandMonitor) privateWaylandMonitor() {}

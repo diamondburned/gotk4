@@ -24,21 +24,22 @@ func init() {
 
 // NoOpObjectFactorier describes NoOpObjectFactory's methods.
 type NoOpObjectFactorier interface {
-	gextras.Objector
-
 	privateNoOpObjectFactory()
 }
 
-// NoOpObjectFactory: the AtkObjectFactory which creates an AtkNoOpObject. An
+// NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject. An
 // instance of this is created by an AtkRegistry if no factory type has not been
 // specified to create an accessible object of a particular type.
 type NoOpObjectFactory struct {
 	ObjectFactory
 }
 
-var _ NoOpObjectFactorier = (*NoOpObjectFactory)(nil)
+var (
+	_ NoOpObjectFactorier = (*NoOpObjectFactory)(nil)
+	_ gextras.Nativer     = (*NoOpObjectFactory)(nil)
+)
 
-func wrapNoOpObjectFactorier(obj *externglib.Object) NoOpObjectFactorier {
+func wrapNoOpObjectFactory(obj *externglib.Object) NoOpObjectFactorier {
 	return &NoOpObjectFactory{
 		ObjectFactory: ObjectFactory{
 			Object: obj,
@@ -49,7 +50,7 @@ func wrapNoOpObjectFactorier(obj *externglib.Object) NoOpObjectFactorier {
 func marshalNoOpObjectFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoOpObjectFactorier(obj), nil
+	return wrapNoOpObjectFactory(obj), nil
 }
 
 // NewNoOpObjectFactory creates an instance of an ObjectFactory which generates

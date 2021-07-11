@@ -19,15 +19,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_multi_sorter_get_type()), F: marshalMultiSorterrer},
+		{T: externglib.Type(C.gtk_multi_sorter_get_type()), F: marshalMultiSorterer},
 	})
 }
 
-// MultiSorterrer describes MultiSorter's methods.
-type MultiSorterrer interface {
-	gextras.Objector
-
-	Append(sorter Sorterrer)
+// MultiSorterer describes MultiSorter's methods.
+type MultiSorterer interface {
+	// Append: add @sorter to @self to use for sorting at the end.
+	Append(sorter Sorterer)
+	// Remove removes the sorter at the given @position from the list of sorter
+	// used by @self.
 	Remove(position uint)
 }
 
@@ -37,18 +38,19 @@ type MultiSorterrer interface {
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
 type MultiSorter struct {
-	*externglib.Object
-
 	Sorter
+
 	gio.ListModel
 	Buildable
 }
 
-var _ MultiSorterrer = (*MultiSorter)(nil)
+var (
+	_ MultiSorterer   = (*MultiSorter)(nil)
+	_ gextras.Nativer = (*MultiSorter)(nil)
+)
 
-func wrapMultiSorterrer(obj *externglib.Object) MultiSorterrer {
+func wrapMultiSorter(obj *externglib.Object) MultiSorterer {
 	return &MultiSorter{
-		Object: obj,
 		Sorter: Sorter{
 			Object: obj,
 		},
@@ -61,10 +63,10 @@ func wrapMultiSorterrer(obj *externglib.Object) MultiSorterrer {
 	}
 }
 
-func marshalMultiSorterrer(p uintptr) (interface{}, error) {
+func marshalMultiSorterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMultiSorterrer(obj), nil
+	return wrapMultiSorter(obj), nil
 }
 
 // NewMultiSorter creates a new multi sorter.
@@ -84,16 +86,22 @@ func NewMultiSorter() *MultiSorter {
 	return _multiSorter
 }
 
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *MultiSorter) Native() uintptr {
+	return v.Sorter.Object.Native()
+}
+
 // Append: add @sorter to @self to use for sorting at the end.
 //
 // @self will consult all existing sorters before it will sort with the given
 // @sorter.
-func (self *MultiSorter) Append(sorter Sorterrer) {
+func (self *MultiSorter) Append(sorter Sorterer) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 *C.GtkSorter      // out
 
 	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer((sorter).(gextras.Nativer).Native()))
 
 	C.gtk_multi_sorter_append(_arg0, _arg1)
 }

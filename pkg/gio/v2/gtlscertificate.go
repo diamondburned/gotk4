@@ -33,11 +33,11 @@ func init() {
 	})
 }
 
-// TLSCertificaterOverrider contains methods that are overridable.
+// TLSCertificateOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSCertificaterOverrider interface {
+type TLSCertificateOverrider interface {
 	// Verify: this verifies @cert and returns a set of CertificateFlags
 	// indicating any problems found with it. This can be used to verify a
 	// certificate outside the context of making a connection, or to check a
@@ -60,10 +60,12 @@ type TLSCertificaterOverrider interface {
 
 // TLSCertificater describes TLSCertificate's methods.
 type TLSCertificater interface {
-	gextras.Objector
-
+	// Issuer gets the Certificate representing @cert's issuer, if known
 	Issuer() *TLSCertificate
+	// IsSame: check if two Certificate objects represent the same certificate.
 	IsSame(certTwo TLSCertificater) bool
+	// Verify: this verifies @cert and returns a set of CertificateFlags
+	// indicating any problems found with it.
 	Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 }
 
@@ -75,9 +77,12 @@ type TLSCertificate struct {
 	*externglib.Object
 }
 
-var _ TLSCertificater = (*TLSCertificate)(nil)
+var (
+	_ TLSCertificater = (*TLSCertificate)(nil)
+	_ gextras.Nativer = (*TLSCertificate)(nil)
+)
 
-func wrapTLSCertificater(obj *externglib.Object) TLSCertificater {
+func wrapTLSCertificate(obj *externglib.Object) TLSCertificater {
 	return &TLSCertificate{
 		Object: obj,
 	}
@@ -86,7 +91,7 @@ func wrapTLSCertificater(obj *externglib.Object) TLSCertificater {
 func marshalTLSCertificater(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSCertificater(obj), nil
+	return wrapTLSCertificate(obj), nil
 }
 
 // NewTLSCertificateFromFile creates a Certificate from the PEM-encoded data in
@@ -257,7 +262,7 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(certOne.Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certTwo.Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((certTwo).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_certificate_is_same(_arg0, _arg1)
 
@@ -293,8 +298,8 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 	var _cret C.GTlsCertificateFlags // in
 
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(cert.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
-	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(trustedCa.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((identity).(gextras.Nativer).Native()))
+	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer((trustedCa).(gextras.Nativer).Native()))
 
 	_cret = C.g_tls_certificate_verify(_arg0, _arg1, _arg2)
 

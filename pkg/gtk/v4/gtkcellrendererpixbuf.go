@@ -24,8 +24,6 @@ func init() {
 
 // CellRendererPixbuffer describes CellRendererPixbuf's methods.
 type CellRendererPixbuffer interface {
-	gextras.Objector
-
 	privateCellRendererPixbuf()
 }
 
@@ -46,9 +44,12 @@ type CellRendererPixbuf struct {
 	CellRenderer
 }
 
-var _ CellRendererPixbuffer = (*CellRendererPixbuf)(nil)
+var (
+	_ CellRendererPixbuffer = (*CellRendererPixbuf)(nil)
+	_ gextras.Nativer       = (*CellRendererPixbuf)(nil)
+)
 
-func wrapCellRendererPixbuffer(obj *externglib.Object) CellRendererPixbuffer {
+func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuffer {
 	return &CellRendererPixbuf{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -61,7 +62,7 @@ func wrapCellRendererPixbuffer(obj *externglib.Object) CellRendererPixbuffer {
 func marshalCellRendererPixbuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererPixbuffer(obj), nil
+	return wrapCellRendererPixbuf(obj), nil
 }
 
 // NewCellRendererPixbuf creates a new CellRendererPixbuf. Adjust rendering

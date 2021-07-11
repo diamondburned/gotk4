@@ -27,11 +27,17 @@ func init() {
 
 // IconFactorier describes IconFactory's methods.
 type IconFactorier interface {
-	gextras.Objector
-
+	// Add adds the given @icon_set to the icon factory, under the name
+	// @stock_id.
 	Add(stockId string, iconSet *IconSet)
+	// AddDefault adds an icon factory to the list of icon factories searched by
+	// gtk_style_lookup_icon_set().
 	AddDefault()
+	// Lookup looks up @stock_id in the icon factory, returning an icon set if
+	// found, otherwise nil.
 	Lookup(stockId string) *IconSet
+	// RemoveDefault removes an icon factory from the list of default icon
+	// factories.
 	RemoveDefault()
 }
 
@@ -109,9 +115,12 @@ type IconFactory struct {
 	Buildable
 }
 
-var _ IconFactorier = (*IconFactory)(nil)
+var (
+	_ IconFactorier   = (*IconFactory)(nil)
+	_ gextras.Nativer = (*IconFactory)(nil)
+)
 
-func wrapIconFactorier(obj *externglib.Object) IconFactorier {
+func wrapIconFactory(obj *externglib.Object) IconFactorier {
 	return &IconFactory{
 		Object: obj,
 		Buildable: Buildable{
@@ -123,7 +132,7 @@ func wrapIconFactorier(obj *externglib.Object) IconFactorier {
 func marshalIconFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconFactorier(obj), nil
+	return wrapIconFactory(obj), nil
 }
 
 // NewIconFactory creates a new IconFactory. An icon factory manages a

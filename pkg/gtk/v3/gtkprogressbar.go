@@ -28,26 +28,42 @@ func init() {
 
 // ProgressBarrer describes ProgressBar's methods.
 type ProgressBarrer interface {
-	gextras.Objector
-
+	// Ellipsize returns the ellipsizing position of the progress bar.
 	Ellipsize() pango.EllipsizeMode
+	// Fraction returns the current fraction of the task that’s been completed.
 	Fraction() float64
+	// Inverted gets the value set by gtk_progress_bar_set_inverted().
 	Inverted() bool
+	// PulseStep retrieves the pulse step set with
+	// gtk_progress_bar_set_pulse_step().
 	PulseStep() float64
+	// ShowText gets the value of the ProgressBar:show-text property.
 	ShowText() bool
+	// Text retrieves the text that is displayed with the progress bar, if any,
+	// otherwise nil.
 	Text() string
+	// Pulse indicates that some progress has been made, but you don’t know how
+	// much.
 	Pulse()
+	// SetFraction causes the progress bar to “fill in” the given fraction of
+	// the bar.
 	SetFraction(fraction float64)
+	// SetInverted progress bars normally grow from top to bottom or left to
+	// right.
 	SetInverted(inverted bool)
+	// SetPulseStep sets the fraction of total progress bar length to move the
+	// bouncing block for each call to gtk_progress_bar_pulse().
 	SetPulseStep(fraction float64)
+	// SetShowText sets whether the progress bar will show text next to the bar.
 	SetShowText(showText bool)
+	// SetText causes the given @text to appear next to the progress bar.
 	SetText(text string)
 }
 
-// ProgressBar: the ProgressBar is typically used to display the progress of a
-// long running operation. It provides a visual clue that processing is
-// underway. The GtkProgressBar can be used in two different modes: percentage
-// mode and activity mode.
+// ProgressBar is typically used to display the progress of a long running
+// operation. It provides a visual clue that processing is underway. The
+// GtkProgressBar can be used in two different modes: percentage mode and
+// activity mode.
 //
 // When an application can determine how much work needs to take place (e.g.
 // read a fixed number of bytes from a file) and can monitor its progress, it
@@ -82,21 +98,19 @@ type ProgressBarrer interface {
 // end of the GtkProgressBar. The .osd class on the progressbar node is for use
 // in overlays like the one Epiphany has for page loading progress.
 type ProgressBar struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
+
 	Orientable
 }
 
-var _ ProgressBarrer = (*ProgressBar)(nil)
+var (
+	_ ProgressBarrer  = (*ProgressBar)(nil)
+	_ gextras.Nativer = (*ProgressBar)(nil)
+)
 
-func wrapProgressBarrer(obj *externglib.Object) ProgressBarrer {
+func wrapProgressBar(obj *externglib.Object) ProgressBarrer {
 	return &ProgressBar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -107,12 +121,6 @@ func wrapProgressBarrer(obj *externglib.Object) ProgressBarrer {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -122,7 +130,7 @@ func wrapProgressBarrer(obj *externglib.Object) ProgressBarrer {
 func marshalProgressBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProgressBarrer(obj), nil
+	return wrapProgressBar(obj), nil
 }
 
 // NewProgressBar creates a new ProgressBar.
@@ -136,6 +144,12 @@ func NewProgressBar() *ProgressBar {
 	_progressBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ProgressBar)
 
 	return _progressBar
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ProgressBar) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Ellipsize returns the ellipsizing position of the progress bar. See

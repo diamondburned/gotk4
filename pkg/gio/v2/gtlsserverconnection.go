@@ -34,8 +34,6 @@ func init() {
 
 // TLSServerConnectioner describes TLSServerConnection's methods.
 type TLSServerConnectioner interface {
-	gextras.Objector
-
 	privateTLSServerConnection()
 }
 
@@ -45,9 +43,12 @@ type TLSServerConnection struct {
 	TLSConnection
 }
 
-var _ TLSServerConnectioner = (*TLSServerConnection)(nil)
+var (
+	_ TLSServerConnectioner = (*TLSServerConnection)(nil)
+	_ gextras.Nativer       = (*TLSServerConnection)(nil)
+)
 
-func wrapTLSServerConnectioner(obj *externglib.Object) TLSServerConnectioner {
+func wrapTLSServerConnection(obj *externglib.Object) TLSServerConnectioner {
 	return &TLSServerConnection{
 		TLSConnection: TLSConnection{
 			IOStream: IOStream{
@@ -60,7 +61,7 @@ func wrapTLSServerConnectioner(obj *externglib.Object) TLSServerConnectioner {
 func marshalTLSServerConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSServerConnectioner(obj), nil
+	return wrapTLSServerConnection(obj), nil
 }
 
 func (*TLSServerConnection) privateTLSServerConnection() {}

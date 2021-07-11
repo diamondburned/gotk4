@@ -24,15 +24,22 @@ func init() {
 
 // Framer describes Frame's methods.
 type Framer interface {
-	gextras.Objector
-
+	// Child gets the child widget of @frame.
 	Child() *Widget
+	// Label returns the frame labels text.
 	Label() string
+	// LabelAlign retrieves the X alignment of the frame’s label.
 	LabelAlign() float32
+	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() *Widget
+	// SetChild sets the child widget of @frame.
 	SetChild(child Widgetter)
+	// SetLabel creates a new `GtkLabel` with the @label and sets it as the
+	// frame's label widget.
 	SetLabel(label string)
+	// SetLabelAlign sets the X alignment of the frame widget’s label.
 	SetLabelAlign(xalign float32)
+	// SetLabelWidget sets the label widget for the frame.
 	SetLabelWidget(labelWidget Widgetter)
 }
 
@@ -70,21 +77,17 @@ type Framer interface {
 // visible border. You can set the appearance of the border using CSS properties
 // like “border-style” on this node.
 type Frame struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Framer = (*Frame)(nil)
+var (
+	_ Framer          = (*Frame)(nil)
+	_ gextras.Nativer = (*Frame)(nil)
+)
 
-func wrapFramer(obj *externglib.Object) Framer {
+func wrapFrame(obj *externglib.Object) Framer {
 	return &Frame{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -98,22 +101,13 @@ func wrapFramer(obj *externglib.Object) Framer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalFramer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFramer(obj), nil
+	return wrapFrame(obj), nil
 }
 
 // NewFrame creates a new `GtkFrame`, with optional label @label.
@@ -207,7 +201,7 @@ func (frame *Frame) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_frame_set_child(_arg0, _arg1)
 }
@@ -247,7 +241,7 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
 }

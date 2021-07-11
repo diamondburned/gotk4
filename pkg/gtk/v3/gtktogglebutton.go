@@ -25,11 +25,11 @@ func init() {
 	})
 }
 
-// ToggleButtonnerOverrider contains methods that are overridable.
+// ToggleButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToggleButtonnerOverrider interface {
+type ToggleButtonOverrider interface {
 	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 	// is no good reason for an application ever to call this function.
 	Toggled()
@@ -37,14 +37,24 @@ type ToggleButtonnerOverrider interface {
 
 // ToggleButtonner describes ToggleButton's methods.
 type ToggleButtonner interface {
-	gextras.Objector
-
+	// Active queries a ToggleButton and returns its current state.
 	Active() bool
+	// Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
 	Inconsistent() bool
+	// Mode retrieves whether the button is displayed as a separate indicator
+	// and label.
 	Mode() bool
+	// SetActive sets the status of the toggle button.
 	SetActive(isActive bool)
+	// SetInconsistent: if the user has selected a range of elements (such as
+	// some text or spreadsheet cells) that are affected by a toggle button, and
+	// the current values in that range are inconsistent, you may want to
+	// display the toggle in an “in between” state.
 	SetInconsistent(setting bool)
+	// SetMode sets whether the button is displayed as a separate indicator and
+	// label.
 	SetMode(drawIndicator bool)
+	// Toggled emits the ToggleButton::toggled signal on the ToggleButton.
 	Toggled()
 }
 
@@ -108,28 +118,20 @@ type ToggleButtonner interface {
 //      gtk_widget_show_all (window);
 //    }
 type ToggleButton struct {
-	*externglib.Object
-
 	Button
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ ToggleButtonner = (*ToggleButton)(nil)
+var (
+	_ ToggleButtonner = (*ToggleButton)(nil)
+	_ gextras.Nativer = (*ToggleButton)(nil)
+)
 
-func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
+func wrapToggleButton(obj *externglib.Object) ToggleButtonner {
 	return &ToggleButton{
-		Object: obj,
 		Button: Button{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -140,27 +142,10 @@ func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -175,33 +160,6 @@ func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -209,7 +167,7 @@ func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
 func marshalToggleButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleButtonner(obj), nil
+	return wrapToggleButton(obj), nil
 }
 
 // NewToggleButton creates a new toggle button. A widget should be packed into

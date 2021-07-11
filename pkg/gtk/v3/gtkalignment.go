@@ -27,15 +27,16 @@ func init() {
 
 // Alignmenter describes Alignment's methods.
 type Alignmenter interface {
-	gextras.Objector
-
+	// Padding gets the padding on the different sides of the widget.
 	Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
+	// Set sets the Alignment values.
 	Set(xalign float32, yalign float32, xscale float32, yscale float32)
+	// SetPadding sets the padding on the different sides of the widget.
 	SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
 }
 
-// Alignment: the Alignment widget controls the alignment and size of its child
-// widget. It has four settings: xscale, yscale, xalign, and yalign.
+// Alignment widget controls the alignment and size of its child widget. It has
+// four settings: xscale, yscale, xalign, and yalign.
 //
 // The scale settings are used to specify how much the child widget should
 // expand to fill the space allocated to the Alignment. The values can range
@@ -52,24 +53,19 @@ type Alignmenter interface {
 // Widget:halign, Widget:valign and Widget:margin properties on the child
 // widget.
 type Alignment struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Alignmenter = (*Alignment)(nil)
+var (
+	_ Alignmenter     = (*Alignment)(nil)
+	_ gextras.Nativer = (*Alignment)(nil)
+)
 
-func wrapAlignmenter(obj *externglib.Object) Alignmenter {
+func wrapAlignment(obj *externglib.Object) Alignmenter {
 	return &Alignment{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -80,25 +76,7 @@ func wrapAlignmenter(obj *externglib.Object) Alignmenter {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -106,7 +84,7 @@ func wrapAlignmenter(obj *externglib.Object) Alignmenter {
 func marshalAlignmenter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAlignmenter(obj), nil
+	return wrapAlignment(obj), nil
 }
 
 // NewAlignment creates a new Alignment.

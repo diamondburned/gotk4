@@ -27,24 +27,22 @@ func init() {
 
 // ArrowAccessibler describes ArrowAccessible's methods.
 type ArrowAccessibler interface {
-	gextras.Objector
-
 	privateArrowAccessible()
 }
 
 type ArrowAccessible struct {
-	*externglib.Object
-
 	WidgetAccessible
-	atk.Component
+
 	atk.Image
 }
 
-var _ ArrowAccessibler = (*ArrowAccessible)(nil)
+var (
+	_ ArrowAccessibler = (*ArrowAccessible)(nil)
+	_ gextras.Nativer  = (*ArrowAccessible)(nil)
+)
 
-func wrapArrowAccessibler(obj *externglib.Object) ArrowAccessibler {
+func wrapArrowAccessible(obj *externglib.Object) ArrowAccessibler {
 	return &ArrowAccessible{
-		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
 				ObjectClass: atk.ObjectClass{
@@ -55,9 +53,6 @@ func wrapArrowAccessibler(obj *externglib.Object) ArrowAccessibler {
 				Object: obj,
 			},
 		},
-		Component: atk.Component{
-			Object: obj,
-		},
 		Image: atk.Image{
 			Object: obj,
 		},
@@ -67,7 +62,7 @@ func wrapArrowAccessibler(obj *externglib.Object) ArrowAccessibler {
 func marshalArrowAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapArrowAccessibler(obj), nil
+	return wrapArrowAccessible(obj), nil
 }
 
 func (*ArrowAccessible) privateArrowAccessible() {}

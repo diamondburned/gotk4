@@ -27,9 +27,12 @@ func init() {
 
 // GestureMultiPresser describes GestureMultiPress's methods.
 type GestureMultiPresser interface {
-	gextras.Objector
-
+	// Area: if an area was set through gtk_gesture_multi_press_set_area(), this
+	// function will return true and fill in @rect with the press area.
 	Area() (gdk.Rectangle, bool)
+	// SetArea: if @rect is non-nil, the press area will be checked to be
+	// confined within the rectangle, otherwise the button count will be reset
+	// so the press is seen as being the first one.
 	SetArea(rect *gdk.Rectangle)
 }
 
@@ -46,9 +49,12 @@ type GestureMultiPress struct {
 	GestureSingle
 }
 
-var _ GestureMultiPresser = (*GestureMultiPress)(nil)
+var (
+	_ GestureMultiPresser = (*GestureMultiPress)(nil)
+	_ gextras.Nativer     = (*GestureMultiPress)(nil)
+)
 
-func wrapGestureMultiPresser(obj *externglib.Object) GestureMultiPresser {
+func wrapGestureMultiPress(obj *externglib.Object) GestureMultiPresser {
 	return &GestureMultiPress{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -63,7 +69,7 @@ func wrapGestureMultiPresser(obj *externglib.Object) GestureMultiPresser {
 func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureMultiPresser(obj), nil
+	return wrapGestureMultiPress(obj), nil
 }
 
 // NewGestureMultiPress returns a newly created Gesture that recognizes single
@@ -72,7 +78,7 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_gesture_multi_press_new(_arg1)
 

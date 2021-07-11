@@ -90,42 +90,59 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	return cret
 }
 
-// TreeSelectionerOverrider contains methods that are overridable.
+// TreeSelectionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TreeSelectionerOverrider interface {
+type TreeSelectionOverrider interface {
 	Changed()
 }
 
 // TreeSelectioner describes TreeSelection's methods.
 type TreeSelectioner interface {
-	gextras.Objector
-
+	// CountSelectedRows returns the number of rows that have been selected in
+	// @tree.
 	CountSelectedRows() int
+	// Mode gets the selection mode for @selection.
 	Mode() SelectionMode
+	// Selected sets @iter to the currently selected node if @selection is set
+	// to K_SELECTION_SINGLE or K_SELECTION_BROWSE.
 	Selected() (*TreeModel, TreeIter, bool)
+	// TreeView returns the tree view associated with @selection.
 	TreeView() *TreeView
+	// IterIsSelected returns true if the row at @iter is currently selected.
 	IterIsSelected(iter *TreeIter) bool
+	// PathIsSelected returns true if the row pointed to by @path is currently
+	// selected.
 	PathIsSelected(path *TreePath) bool
+	// SelectAll selects all the nodes.
 	SelectAll()
+	// SelectIter selects the specified iterator.
 	SelectIter(iter *TreeIter)
+	// SelectPath: select the row at @path.
 	SelectPath(path *TreePath)
+	// SelectRange selects a range of nodes, determined by @start_path and
+	// @end_path inclusive.
 	SelectRange(startPath *TreePath, endPath *TreePath)
+	// SelectedForeach calls a function for each selected node.
 	SelectedForeach(fn TreeSelectionForeachFunc)
+	// UnselectAll unselects all the nodes.
 	UnselectAll()
+	// UnselectIter unselects the specified iterator.
 	UnselectIter(iter *TreeIter)
+	// UnselectPath unselects the row at @path.
 	UnselectPath(path *TreePath)
+	// UnselectRange unselects a range of nodes, determined by @start_path and
+	// @end_path inclusive.
 	UnselectRange(startPath *TreePath, endPath *TreePath)
 }
 
-// TreeSelection: the TreeSelection object is a helper object to manage the
-// selection for a TreeView widget. The TreeSelection object is automatically
-// created when a new TreeView widget is created, and cannot exist independently
-// of this widget. The primary reason the TreeSelection objects exists is for
-// cleanliness of code and API. That is, there is no conceptual reason all these
-// functions could not be methods on the TreeView widget instead of a separate
-// function.
+// TreeSelection object is a helper object to manage the selection for a
+// TreeView widget. The TreeSelection object is automatically created when a new
+// TreeView widget is created, and cannot exist independently of this widget.
+// The primary reason the TreeSelection objects exists is for cleanliness of
+// code and API. That is, there is no conceptual reason all these functions
+// could not be methods on the TreeView widget instead of a separate function.
 //
 // The TreeSelection object is gotten from a TreeView by calling
 // gtk_tree_view_get_selection(). It can be manipulated to check the selection
@@ -145,9 +162,12 @@ type TreeSelection struct {
 	*externglib.Object
 }
 
-var _ TreeSelectioner = (*TreeSelection)(nil)
+var (
+	_ TreeSelectioner = (*TreeSelection)(nil)
+	_ gextras.Nativer = (*TreeSelection)(nil)
+)
 
-func wrapTreeSelectioner(obj *externglib.Object) TreeSelectioner {
+func wrapTreeSelection(obj *externglib.Object) TreeSelectioner {
 	return &TreeSelection{
 		Object: obj,
 	}
@@ -156,7 +176,7 @@ func wrapTreeSelectioner(obj *externglib.Object) TreeSelectioner {
 func marshalTreeSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeSelectioner(obj), nil
+	return wrapTreeSelection(obj), nil
 }
 
 // CountSelectedRows returns the number of rows that have been selected in

@@ -40,56 +40,112 @@ func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EntrierOverrider contains methods that are overridable.
+// EntryOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type EntrierOverrider interface {
+type EntryOverrider interface {
 	Activate()
 }
 
 // Entrier describes Entry's methods.
 type Entrier interface {
-	gextras.Objector
-
+	// ActivatesDefault retrieves the value set by
+	// gtk_entry_set_activates_default().
 	ActivatesDefault() bool
+	// Alignment gets the value set by gtk_entry_set_alignment().
 	Alignment() float32
+	// Attributes gets the attribute list of the `GtkEntry`.
 	Attributes() *pango.AttrList
+	// Buffer: get the `GtkEntryBuffer` object which holds the text for this
+	// widget.
 	Buffer() *EntryBuffer
+	// Completion returns the auxiliary completion object currently in use by
+	// @entry.
 	Completion() *EntryCompletion
+	// CurrentIconDragSource returns the index of the icon which is the source
+	// of the current DND operation, or -1.
 	CurrentIconDragSource() int
+	// ExtraMenu gets the menu model set with gtk_entry_set_extra_menu().
 	ExtraMenu() *gio.MenuModel
+	// HasFrame gets the value set by gtk_entry_set_has_frame().
 	HasFrame() bool
+	// IconAtPos finds the icon at the given position and return its index.
 	IconAtPos(x int, y int) int
+	// InputHints gets the input hints of this `GtkEntry`.
 	InputHints() InputHints
+	// InputPurpose gets the input purpose of the `GtkEntry`.
 	InputPurpose() InputPurpose
+	// InvisibleChar retrieves the character displayed in place of the actual
+	// text in “password mode”.
 	InvisibleChar() uint32
+	// MaxLength retrieves the maximum allowed length of the text in @entry.
 	MaxLength() int
+	// OverwriteMode gets whether the `GtkEntry` is in overwrite mode.
 	OverwriteMode() bool
+	// PlaceholderText retrieves the text that will be displayed when @entry is
+	// empty and unfocused
 	PlaceholderText() string
+	// ProgressFraction returns the current fraction of the task that’s been
+	// completed.
 	ProgressFraction() float64
+	// ProgressPulseStep retrieves the pulse step set with
+	// gtk_entry_set_progress_pulse_step().
 	ProgressPulseStep() float64
+	// Tabs gets the tabstops of the `GtkEntry.
 	Tabs() *pango.TabArray
+	// TextLength retrieves the current length of the text in @entry.
 	TextLength() uint16
+	// Visibility retrieves whether the text in @entry is visible.
 	Visibility() bool
+	// GrabFocusWithoutSelecting causes @entry to have keyboard focus.
 	GrabFocusWithoutSelecting() bool
+	// ProgressPulse indicates that some progress is made, but you don’t know
+	// how much.
 	ProgressPulse()
+	// ResetImContext: reset the input method context of the entry if needed.
 	ResetImContext()
+	// SetActivatesDefault sets whether pressing Enter in the @entry will
+	// activate the default widget for the window containing the entry.
 	SetActivatesDefault(setting bool)
+	// SetAlignment sets the alignment for the contents of the entry.
 	SetAlignment(xalign float32)
+	// SetAttributes sets a `PangoAttrList`.
 	SetAttributes(attrs *pango.AttrList)
-	SetBuffer(buffer EntryBufferrer)
+	// SetBuffer: set the `GtkEntryBuffer` object which holds the text for this
+	// widget.
+	SetBuffer(buffer EntryBufferer)
+	// SetCompletion sets @completion to be the auxiliary completion object to
+	// use with @entry.
 	SetCompletion(completion EntryCompletioner)
+	// SetExtraMenu sets a menu model to add when constructing the context menu
+	// for @entry.
 	SetExtraMenu(model gio.MenuModeller)
+	// SetHasFrame sets whether the entry has a beveled frame around it.
 	SetHasFrame(setting bool)
+	// SetInvisibleChar sets the character to use in place of the actual text in
+	// “password mode”.
 	SetInvisibleChar(ch uint32)
+	// SetMaxLength sets the maximum allowed length of the contents of the
+	// widget.
 	SetMaxLength(max int)
+	// SetOverwriteMode sets whether the text is overwritten when typing in the
+	// `GtkEntry`.
 	SetOverwriteMode(overwrite bool)
+	// SetPlaceholderText sets text to be displayed in @entry when it is empty.
 	SetPlaceholderText(text string)
+	// SetProgressFraction causes the entry’s progress indicator to “fill in”
+	// the given fraction of the bar.
 	SetProgressFraction(fraction float64)
+	// SetProgressPulseStep sets the fraction of total entry width to move the
+	// progress bouncing block for each pulse.
 	SetProgressPulseStep(fraction float64)
+	// SetTabs sets a `PangoTabArray`.
 	SetTabs(tabs *pango.TabArray)
+	// SetVisibility sets whether the contents of the entry are visible or not.
 	SetVisibility(visible bool)
+	// UnsetInvisibleChar unsets the invisible char, so that the default
+	// invisible char is used again.
 	UnsetInvisibleChar()
 }
 
@@ -171,23 +227,20 @@ type Entrier interface {
 //
 // `GtkEntry` uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type Entry struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
+
 	CellEditable
-	ConstraintTarget
 	Editable
 }
 
-var _ Entrier = (*Entry)(nil)
+var (
+	_ Entrier         = (*Entry)(nil)
+	_ gextras.Nativer = (*Entry)(nil)
+)
 
-func wrapEntrier(obj *externglib.Object) Entrier {
+func wrapEntry(obj *externglib.Object) Entrier {
 	return &Entry{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -201,16 +254,8 @@ func wrapEntrier(obj *externglib.Object) Entrier {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 		CellEditable: CellEditable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -225,13 +270,8 @@ func wrapEntrier(obj *externglib.Object) Entrier {
 				},
 			},
 		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Editable: Editable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -252,7 +292,7 @@ func wrapEntrier(obj *externglib.Object) Entrier {
 func marshalEntrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntrier(obj), nil
+	return wrapEntry(obj), nil
 }
 
 // NewEntry creates a new entry.
@@ -269,11 +309,11 @@ func NewEntry() *Entry {
 }
 
 // NewEntryWithBuffer creates a new entry with the specified text buffer.
-func NewEntryWithBuffer(buffer EntryBufferrer) *Entry {
+func NewEntryWithBuffer(buffer EntryBufferer) *Entry {
 	var _arg1 *C.GtkEntryBuffer // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer((buffer).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_entry_new_with_buffer(_arg1)
 
@@ -282,6 +322,12 @@ func NewEntryWithBuffer(buffer EntryBufferrer) *Entry {
 	_entry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Entry)
 
 	return _entry
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Entry) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // ActivatesDefault retrieves the value set by
@@ -747,12 +793,12 @@ func (entry *Entry) SetAttributes(attrs *pango.AttrList) {
 
 // SetBuffer: set the `GtkEntryBuffer` object which holds the text for this
 // widget.
-func (entry *Entry) SetBuffer(buffer EntryBufferrer) {
+func (entry *Entry) SetBuffer(buffer EntryBufferer) {
 	var _arg0 *C.GtkEntry       // out
 	var _arg1 *C.GtkEntryBuffer // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer((buffer).(gextras.Nativer).Native()))
 
 	C.gtk_entry_set_buffer(_arg0, _arg1)
 }
@@ -768,7 +814,7 @@ func (entry *Entry) SetCompletion(completion EntryCompletioner) {
 	var _arg1 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg1 = (*C.GtkEntryCompletion)(unsafe.Pointer((completion).(gextras.Nativer).Native()))
 
 	C.gtk_entry_set_completion(_arg0, _arg1)
 }
@@ -780,7 +826,7 @@ func (entry *Entry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_entry_set_extra_menu(_arg0, _arg1)
 }

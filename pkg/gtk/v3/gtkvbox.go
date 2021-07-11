@@ -27,8 +27,6 @@ func init() {
 
 // VBoxxer describes VBox's methods.
 type VBoxxer interface {
-	gextras.Objector
-
 	privateVBox()
 }
 
@@ -56,25 +54,19 @@ type VBoxxer interface {
 // For more information about migrating to Grid, see [Migrating from other
 // containers to GtkGrid][gtk-migrating-GtkGrid].
 type VBox struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ VBoxxer = (*VBox)(nil)
+var (
+	_ VBoxxer         = (*VBox)(nil)
+	_ gextras.Nativer = (*VBox)(nil)
+)
 
-func wrapVBoxxer(obj *externglib.Object) VBoxxer {
+func wrapVBox(obj *externglib.Object) VBoxxer {
 	return &VBox{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -85,31 +77,10 @@ func wrapVBoxxer(obj *externglib.Object) VBoxxer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -117,7 +88,7 @@ func wrapVBoxxer(obj *externglib.Object) VBoxxer {
 func marshalVBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVBoxxer(obj), nil
+	return wrapVBox(obj), nil
 }
 
 // NewVBox creates a new VBox.

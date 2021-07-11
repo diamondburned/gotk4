@@ -26,9 +26,11 @@ func init() {
 
 // RecentActioner describes RecentAction's methods.
 type RecentActioner interface {
-	gextras.Objector
-
+	// ShowNumbers returns the value set by
+	// gtk_recent_chooser_menu_set_show_numbers().
 	ShowNumbers() bool
+	// SetShowNumbers sets whether a number should be added to the items shown
+	// by the widgets representing @action.
 	SetShowNumbers(showNumbers bool)
 }
 
@@ -40,26 +42,23 @@ type RecentActioner interface {
 // used files in the popup menu, use a RecentAction as the action for a
 // <toolitem> element.
 type RecentAction struct {
-	*externglib.Object
-
 	Action
-	Buildable
+
 	RecentChooser
 }
 
-var _ RecentActioner = (*RecentAction)(nil)
+var (
+	_ RecentActioner  = (*RecentAction)(nil)
+	_ gextras.Nativer = (*RecentAction)(nil)
+)
 
-func wrapRecentActioner(obj *externglib.Object) RecentActioner {
+func wrapRecentAction(obj *externglib.Object) RecentActioner {
 	return &RecentAction{
-		Object: obj,
 		Action: Action{
 			Object: obj,
 			Buildable: Buildable{
 				Object: obj,
 			},
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		RecentChooser: RecentChooser{
 			Object: obj,
@@ -70,7 +69,7 @@ func wrapRecentActioner(obj *externglib.Object) RecentActioner {
 func marshalRecentActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentActioner(obj), nil
+	return wrapRecentAction(obj), nil
 }
 
 // NewRecentAction creates a new RecentAction object. To add the action to a
@@ -108,7 +107,7 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManagerrer) *RecentAction {
+func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManagerer) *RecentAction {
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.gchar            // out
 	var _arg3 *C.gchar            // out
@@ -124,7 +123,7 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer((manager).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -133,6 +132,12 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	_recentAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentAction)
 
 	return _recentAction
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *RecentAction) Native() uintptr {
+	return v.Action.Object.Native()
 }
 
 // ShowNumbers returns the value set by

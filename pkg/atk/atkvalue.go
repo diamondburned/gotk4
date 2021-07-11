@@ -31,20 +31,35 @@ type ValueType int
 
 const (
 	ValueTypeVeryWeak ValueType = iota
+
 	ValueTypeWeak
+
 	ValueTypeAcceptable
+
 	ValueTypeStrong
+
 	ValueTypeVeryStrong
+
 	ValueTypeVeryLow
+
 	ValueTypeLow
+
 	ValueTypeMedium
+
 	ValueTypeHigh
+
 	ValueTypeVeryHigh
+
 	ValueTypeVeryBad
+
 	ValueTypeBad
+
 	ValueTypeGood
+
 	ValueTypeVeryGood
+
 	ValueTypeBest
+
 	ValueTypeLastDefined
 )
 
@@ -52,11 +67,11 @@ func marshalValueType(p uintptr) (interface{}, error) {
 	return ValueType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ValueerOverrider contains methods that are overridable.
+// ValueOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ValueerOverrider interface {
+type ValueOverrider interface {
 	// CurrentValue gets the value of this object.
 	//
 	// Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
@@ -109,16 +124,26 @@ type ValueerOverrider interface {
 
 // Valueer describes Value's methods.
 type Valueer interface {
-	gextras.Objector
-
+	// CurrentValue gets the value of this object.
 	CurrentValue() externglib.Value
+	// Increment gets the minimum increment by which the value of this object
+	// may be changed.
 	Increment() float64
+	// MaximumValue gets the maximum value of this object.
 	MaximumValue() externglib.Value
+	// MinimumIncrement gets the minimum increment by which the value of this
+	// object may be changed.
 	MinimumIncrement() externglib.Value
+	// MinimumValue gets the minimum value of this object.
 	MinimumValue() externglib.Value
+	// Range gets the range of this object.
 	Range() *Range
+	// ValueAndText gets the current value and the human readable text
+	// alternative of @obj.
 	ValueAndText() (float64, string)
+	// SetCurrentValue sets the value of this object.
 	SetCurrentValue(value *externglib.Value) bool
+	// SetValue sets the value of this object.
 	SetValue(newValue float64)
 }
 
@@ -217,9 +242,12 @@ type Value struct {
 	*externglib.Object
 }
 
-var _ Valueer = (*Value)(nil)
+var (
+	_ Valueer         = (*Value)(nil)
+	_ gextras.Nativer = (*Value)(nil)
+)
 
-func wrapValueer(obj *externglib.Object) Valueer {
+func wrapValue(obj *externglib.Object) Valueer {
 	return &Value{
 		Object: obj,
 	}
@@ -228,7 +256,7 @@ func wrapValueer(obj *externglib.Object) Valueer {
 func marshalValueer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapValueer(obj), nil
+	return wrapValue(obj), nil
 }
 
 // CurrentValue gets the value of this object.

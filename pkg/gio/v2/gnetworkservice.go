@@ -34,12 +34,15 @@ func init() {
 
 // NetworkServicer describes NetworkService's methods.
 type NetworkServicer interface {
-	gextras.Objector
-
+	// Domain gets the domain that @srv serves.
 	Domain() string
+	// Protocol gets @srv's protocol name (eg, "tcp").
 	Protocol() string
+	// Scheme gets the URI scheme used to resolve proxies.
 	Scheme() string
+	// Service gets @srv's service name (eg, "ldap").
 	Service() string
+	// SetScheme set's the URI scheme used to resolve proxies.
 	SetScheme(scheme string)
 }
 
@@ -56,9 +59,12 @@ type NetworkService struct {
 	SocketConnectable
 }
 
-var _ NetworkServicer = (*NetworkService)(nil)
+var (
+	_ NetworkServicer = (*NetworkService)(nil)
+	_ gextras.Nativer = (*NetworkService)(nil)
+)
 
-func wrapNetworkServicer(obj *externglib.Object) NetworkServicer {
+func wrapNetworkService(obj *externglib.Object) NetworkServicer {
 	return &NetworkService{
 		Object: obj,
 		SocketConnectable: SocketConnectable{
@@ -70,7 +76,7 @@ func wrapNetworkServicer(obj *externglib.Object) NetworkServicer {
 func marshalNetworkServicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNetworkServicer(obj), nil
+	return wrapNetworkService(obj), nil
 }
 
 // NewNetworkService creates a new Service representing the given @service,

@@ -42,8 +42,8 @@ func (f *FrameTimings) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// Complete: the timing information in a FrameTimings is filled in incrementally
-// as the frame as drawn and passed off to the window system for processing and
+// Complete: timing information in a FrameTimings is filled in incrementally as
+// the frame as drawn and passed off to the window system for processing and
 // display to the user. The accessor functions for FrameTimings can return 0 to
 // indicate an unavailable value for two reasons: either because the information
 // is not yet available, or because it isn't available at all. Once

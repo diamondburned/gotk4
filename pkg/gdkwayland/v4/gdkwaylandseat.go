@@ -25,12 +25,10 @@ func init() {
 
 // WaylandSeater describes WaylandSeat's methods.
 type WaylandSeater interface {
-	gextras.Objector
-
 	privateWaylandSeat()
 }
 
-// WaylandSeat: the Wayland implementation of `GdkSeat`.
+// WaylandSeat: wayland implementation of `GdkSeat`.
 //
 // Beyond the regular [class@Gdk.Seat] API, the Wayland implementation provides
 // access to the Wayland `wl_seat` object with
@@ -39,9 +37,12 @@ type WaylandSeat struct {
 	gdk.Seat
 }
 
-var _ WaylandSeater = (*WaylandSeat)(nil)
+var (
+	_ WaylandSeater   = (*WaylandSeat)(nil)
+	_ gextras.Nativer = (*WaylandSeat)(nil)
+)
 
-func wrapWaylandSeater(obj *externglib.Object) WaylandSeater {
+func wrapWaylandSeat(obj *externglib.Object) WaylandSeater {
 	return &WaylandSeat{
 		Seat: gdk.Seat{
 			Object: obj,
@@ -52,7 +53,7 @@ func wrapWaylandSeater(obj *externglib.Object) WaylandSeater {
 func marshalWaylandSeater(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandSeater(obj), nil
+	return wrapWaylandSeat(obj), nil
 }
 
 func (*WaylandSeat) privateWaylandSeat() {}

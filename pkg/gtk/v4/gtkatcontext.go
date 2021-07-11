@@ -24,9 +24,9 @@ func init() {
 
 // ATContexter describes ATContext's methods.
 type ATContexter interface {
-	gextras.Objector
-
+	// Accessible retrieves the `GtkAccessible` using this context.
 	Accessible() *Accessible
+	// AccessibleRole retrieves the accessible role of this context.
 	AccessibleRole() AccessibleRole
 }
 
@@ -40,9 +40,12 @@ type ATContext struct {
 	*externglib.Object
 }
 
-var _ ATContexter = (*ATContext)(nil)
+var (
+	_ ATContexter     = (*ATContext)(nil)
+	_ gextras.Nativer = (*ATContext)(nil)
+)
 
-func wrapATContexter(obj *externglib.Object) ATContexter {
+func wrapATContext(obj *externglib.Object) ATContexter {
 	return &ATContext{
 		Object: obj,
 	}
@@ -51,7 +54,7 @@ func wrapATContexter(obj *externglib.Object) ATContexter {
 func marshalATContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapATContexter(obj), nil
+	return wrapATContext(obj), nil
 }
 
 // Accessible retrieves the `GtkAccessible` using this context.

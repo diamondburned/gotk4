@@ -16,8 +16,15 @@ import (
 	"github.com/gotk3/gotk3/glib"
 )
 
+// Nativer is an interface for an object that can return its native pointer.
+type Nativer interface {
+	Native() uintptr
+}
+
 // Objector is an interface that describes partially the glib.Object type.
 type Objector interface {
+	Nativer
+
 	Connect(string, interface{}) glib.SignalHandle
 	ConnectAfter(string, interface{}) glib.SignalHandle
 
@@ -27,8 +34,6 @@ type Objector interface {
 
 	GetProperty(string) (interface{}, error)
 	SetProperty(string, interface{}) error
-
-	Native() uintptr
 }
 
 var _ Objector = (*glib.Object)(nil)
@@ -106,10 +111,16 @@ func getInto(obj Objector, k string, ptr interface{}, must bool) error {
 
 // InternObject gets the internal Object type. This is used for calling methods
 // not in the Objector.
-func InternObject(obj Objector) *glib.Object {
-	return &glib.Object{
-		GObject: glib.ToGObject(unsafe.Pointer(obj.Native())),
+func InternObject(nativer Nativer) *glib.Object {
+	obj := glib.Object{
+		GObject: glib.ToGObject(unsafe.Pointer(nativer.Native())),
 	}
+
+	if typ := obj.TypeFromInstance(); typ != glib.TYPE_OBJECT {
+		log.Panicf("InternObject cast: expected type object, got %v", typ)
+	}
+
+	return &obj
 }
 
 // CastObject casts the given object pointer to the class name. The caller is

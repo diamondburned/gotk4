@@ -25,8 +25,6 @@ func init() {
 
 // VulkanContexter describes VulkanContext's methods.
 type VulkanContexter interface {
-	gextras.Objector
-
 	privateVulkanContext()
 }
 
@@ -40,17 +38,18 @@ type VulkanContexter interface {
 // Support for `GdkVulkanContext` is platform-specific and context creation can
 // fail, returning nil context.
 type VulkanContext struct {
-	*externglib.Object
-
 	DrawContext
+
 	gio.Initable
 }
 
-var _ VulkanContexter = (*VulkanContext)(nil)
+var (
+	_ VulkanContexter = (*VulkanContext)(nil)
+	_ gextras.Nativer = (*VulkanContext)(nil)
+)
 
-func wrapVulkanContexter(obj *externglib.Object) VulkanContexter {
+func wrapVulkanContext(obj *externglib.Object) VulkanContexter {
 	return &VulkanContext{
-		Object: obj,
 		DrawContext: DrawContext{
 			Object: obj,
 		},
@@ -63,7 +62,13 @@ func wrapVulkanContexter(obj *externglib.Object) VulkanContexter {
 func marshalVulkanContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVulkanContexter(obj), nil
+	return wrapVulkanContext(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *VulkanContext) Native() uintptr {
+	return v.DrawContext.Object.Native()
 }
 
 func (*VulkanContext) privateVulkanContext() {}

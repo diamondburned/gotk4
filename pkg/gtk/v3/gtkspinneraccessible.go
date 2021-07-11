@@ -27,24 +27,22 @@ func init() {
 
 // SpinnerAccessibler describes SpinnerAccessible's methods.
 type SpinnerAccessibler interface {
-	gextras.Objector
-
 	privateSpinnerAccessible()
 }
 
 type SpinnerAccessible struct {
-	*externglib.Object
-
 	WidgetAccessible
-	atk.Component
+
 	atk.Image
 }
 
-var _ SpinnerAccessibler = (*SpinnerAccessible)(nil)
+var (
+	_ SpinnerAccessibler = (*SpinnerAccessible)(nil)
+	_ gextras.Nativer    = (*SpinnerAccessible)(nil)
+)
 
-func wrapSpinnerAccessibler(obj *externglib.Object) SpinnerAccessibler {
+func wrapSpinnerAccessible(obj *externglib.Object) SpinnerAccessibler {
 	return &SpinnerAccessible{
-		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
 				ObjectClass: atk.ObjectClass{
@@ -55,9 +53,6 @@ func wrapSpinnerAccessibler(obj *externglib.Object) SpinnerAccessibler {
 				Object: obj,
 			},
 		},
-		Component: atk.Component{
-			Object: obj,
-		},
 		Image: atk.Image{
 			Object: obj,
 		},
@@ -67,7 +62,7 @@ func wrapSpinnerAccessibler(obj *externglib.Object) SpinnerAccessibler {
 func marshalSpinnerAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinnerAccessibler(obj), nil
+	return wrapSpinnerAccessible(obj), nil
 }
 
 func (*SpinnerAccessible) privateSpinnerAccessible() {}

@@ -24,8 +24,6 @@ func init() {
 
 // CustomLayouter describes CustomLayout's methods.
 type CustomLayouter interface {
-	gextras.Objector
-
 	privateCustomLayout()
 }
 
@@ -38,9 +36,12 @@ type CustomLayout struct {
 	LayoutManager
 }
 
-var _ CustomLayouter = (*CustomLayout)(nil)
+var (
+	_ CustomLayouter  = (*CustomLayout)(nil)
+	_ gextras.Nativer = (*CustomLayout)(nil)
+)
 
-func wrapCustomLayouter(obj *externglib.Object) CustomLayouter {
+func wrapCustomLayout(obj *externglib.Object) CustomLayouter {
 	return &CustomLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -51,7 +52,7 @@ func wrapCustomLayouter(obj *externglib.Object) CustomLayouter {
 func marshalCustomLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCustomLayouter(obj), nil
+	return wrapCustomLayout(obj), nil
 }
 
 func (*CustomLayout) privateCustomLayout() {}

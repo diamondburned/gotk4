@@ -61,11 +61,11 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 	return cret
 }
 
-// TreeSortablerOverrider contains methods that are overridable.
+// TreeSortableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TreeSortablerOverrider interface {
+type TreeSortableOverrider interface {
 	// SortColumnID fills in @sort_column_id and @order with the current sort
 	// column and the order. It returns true unless the @sort_column_id is
 	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
@@ -82,14 +82,17 @@ type TreeSortablerOverrider interface {
 
 // TreeSortabler describes TreeSortable's methods.
 type TreeSortabler interface {
-	gextras.Objector
-
+	// SortColumnID fills in @sort_column_id and @order with the current sort
+	// column and the order.
 	SortColumnID() (int, SortType, bool)
+	// HasDefaultSortFunc returns true if the model has a default sort function.
 	HasDefaultSortFunc() bool
+	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
+	// @sortable.
 	SortColumnChanged()
 }
 
-// TreeSortable: the interface for sortable models used by GtkTreeView
+// TreeSortable: interface for sortable models used by GtkTreeView
 //
 // TreeSortable is an interface to be implemented by tree models which support
 // sorting. The TreeView uses the methods provided by this interface to sort the
@@ -98,9 +101,12 @@ type TreeSortable struct {
 	TreeModel
 }
 
-var _ TreeSortabler = (*TreeSortable)(nil)
+var (
+	_ TreeSortabler   = (*TreeSortable)(nil)
+	_ gextras.Nativer = (*TreeSortable)(nil)
+)
 
-func wrapTreeSortabler(obj *externglib.Object) TreeSortabler {
+func wrapTreeSortable(obj *externglib.Object) TreeSortabler {
 	return &TreeSortable{
 		TreeModel: TreeModel{
 			Object: obj,
@@ -111,7 +117,7 @@ func wrapTreeSortabler(obj *externglib.Object) TreeSortabler {
 func marshalTreeSortabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeSortabler(obj), nil
+	return wrapTreeSortable(obj), nil
 }
 
 // SortColumnID fills in @sort_column_id and @order with the current sort column

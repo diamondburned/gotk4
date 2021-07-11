@@ -131,16 +131,19 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 	return cret
 }
 
-// FlowBoxxerOverrider contains methods that are overridable.
+// FlowBoxOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FlowBoxxerOverrider interface {
+type FlowBoxOverrider interface {
 	ActivateCursorChild()
+
 	ChildActivated(child FlowBoxChilder)
 	// SelectAll: select all children of @box, if the selection mode allows it.
 	SelectAll()
+
 	SelectedChildrenChanged()
+
 	ToggleCursorChild()
 	// UnselectAll: unselect all children of @box, if the selection mode allows
 	// it.
@@ -149,32 +152,63 @@ type FlowBoxxerOverrider interface {
 
 // FlowBoxxer describes FlowBox's methods.
 type FlowBoxxer interface {
-	gextras.Objector
-
+	// ActivateOnSingleClick returns whether children activate on single clicks.
 	ActivateOnSingleClick() bool
+	// ChildAtIndex gets the nth child in the @box.
 	ChildAtIndex(idx int) *FlowBoxChild
+	// ChildAtPos gets the child in the (@x, @y) position.
 	ChildAtPos(x int, y int) *FlowBoxChild
+	// ColumnSpacing gets the horizontal spacing.
 	ColumnSpacing() uint
+	// Homogeneous returns whether the box is homogeneous (all children are the
+	// same size).
 	Homogeneous() bool
+	// MaxChildrenPerLine gets the maximum number of children per line.
 	MaxChildrenPerLine() uint
+	// MinChildrenPerLine gets the minimum number of children per line.
 	MinChildrenPerLine() uint
+	// RowSpacing gets the vertical spacing.
 	RowSpacing() uint
+	// SelectionMode gets the selection mode of @box.
 	SelectionMode() SelectionMode
+	// Insert inserts the @widget into @box at @position.
 	Insert(widget Widgetter, position int)
+	// InvalidateFilter updates the filtering for all children.
 	InvalidateFilter()
+	// InvalidateSort updates the sorting for all children.
 	InvalidateSort()
+	// SelectAll: select all children of @box, if the selection mode allows it.
 	SelectAll()
+	// SelectChild selects a single child of @box, if the selection mode allows
+	// it.
 	SelectChild(child FlowBoxChilder)
+	// SelectedForeach calls a function for each selected child.
 	SelectedForeach(fn FlowBoxForeachFunc)
+	// SetActivateOnSingleClick: if @single is true, children will be activated
+	// when you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
+	// SetColumnSpacing sets the horizontal space to add between children.
 	SetColumnSpacing(spacing uint)
+	// SetHAdjustment hooks up an adjustment to focus handling in @box.
 	SetHAdjustment(adjustment Adjustmenter)
+	// SetHomogeneous sets the FlowBox:homogeneous property of @box, controlling
+	// whether or not all children of @box are given equal space in the box.
 	SetHomogeneous(homogeneous bool)
+	// SetMaxChildrenPerLine sets the maximum number of children to request and
+	// allocate space for in @box’s orientation.
 	SetMaxChildrenPerLine(nChildren uint)
+	// SetMinChildrenPerLine sets the minimum number of children to line up in
+	// @box’s orientation before flowing.
 	SetMinChildrenPerLine(nChildren uint)
+	// SetRowSpacing sets the vertical space to add between children.
 	SetRowSpacing(spacing uint)
+	// SetVAdjustment hooks up an adjustment to focus handling in @box.
 	SetVAdjustment(adjustment Adjustmenter)
+	// UnselectAll: unselect all children of @box, if the selection mode allows
+	// it.
 	UnselectAll()
+	// UnselectChild unselects a single child of @box, if the selection mode
+	// allows it.
 	UnselectChild(child FlowBoxChilder)
 }
 
@@ -217,23 +251,20 @@ type FlowBoxxer interface {
 // single CSS node with name flowboxchild. For rubberband selection, a subnode
 // with name rubberband is used.
 type FlowBox struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
+
 	Orientable
 }
 
-var _ FlowBoxxer = (*FlowBox)(nil)
+var (
+	_ FlowBoxxer      = (*FlowBox)(nil)
+	_ gextras.Nativer = (*FlowBox)(nil)
+)
 
-func wrapFlowBoxxer(obj *externglib.Object) FlowBoxxer {
+func wrapFlowBox(obj *externglib.Object) FlowBoxxer {
 	return &FlowBox{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -244,18 +275,6 @@ func wrapFlowBoxxer(obj *externglib.Object) FlowBoxxer {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
@@ -266,7 +285,7 @@ func wrapFlowBoxxer(obj *externglib.Object) FlowBoxxer {
 func marshalFlowBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlowBoxxer(obj), nil
+	return wrapFlowBox(obj), nil
 }
 
 // NewFlowBox creates a GtkFlowBox.
@@ -280,6 +299,12 @@ func NewFlowBox() *FlowBox {
 	_flowBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FlowBox)
 
 	return _flowBox
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FlowBox) Native() uintptr {
+	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // ActivateOnSingleClick returns whether children activate on single clicks.
@@ -451,7 +476,7 @@ func (box *FlowBox) Insert(widget Widgetter, position int) {
 	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_flow_box_insert(_arg0, _arg1, _arg2)
@@ -498,7 +523,7 @@ func (box *FlowBox) SelectChild(child FlowBoxChilder) {
 	var _arg1 *C.GtkFlowBoxChild // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_flow_box_select_child(_arg0, _arg1)
 }
@@ -557,7 +582,7 @@ func (box *FlowBox) SetHAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_flow_box_set_hadjustment(_arg0, _arg1)
 }
@@ -629,7 +654,7 @@ func (box *FlowBox) SetVAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_flow_box_set_vadjustment(_arg0, _arg1)
 }
@@ -650,47 +675,45 @@ func (box *FlowBox) UnselectChild(child FlowBoxChilder) {
 	var _arg1 *C.GtkFlowBoxChild // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_flow_box_unselect_child(_arg0, _arg1)
 }
 
-// FlowBoxChilderOverrider contains methods that are overridable.
+// FlowBoxChildOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FlowBoxChilderOverrider interface {
+type FlowBoxChildOverrider interface {
 	Activate()
 }
 
 // FlowBoxChilder describes FlowBoxChild's methods.
 type FlowBoxChilder interface {
-	gextras.Objector
-
+	// Changed marks @child as changed, causing any state that depends on this
+	// to be updated.
 	Changed()
+	// Index gets the current index of the @child in its FlowBox container.
 	Index() int
+	// IsSelected returns whether the @child is currently selected in its
+	// FlowBox container.
 	IsSelected() bool
 }
 
 type FlowBoxChild struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ FlowBoxChilder = (*FlowBoxChild)(nil)
+var (
+	_ FlowBoxChilder  = (*FlowBoxChild)(nil)
+	_ gextras.Nativer = (*FlowBoxChild)(nil)
+)
 
-func wrapFlowBoxChilder(obj *externglib.Object) FlowBoxChilder {
+func wrapFlowBoxChild(obj *externglib.Object) FlowBoxChilder {
 	return &FlowBoxChild{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -701,25 +724,7 @@ func wrapFlowBoxChilder(obj *externglib.Object) FlowBoxChilder {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -727,7 +732,7 @@ func wrapFlowBoxChilder(obj *externglib.Object) FlowBoxChilder {
 func marshalFlowBoxChilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlowBoxChilder(obj), nil
+	return wrapFlowBoxChild(obj), nil
 }
 
 // NewFlowBoxChild creates a new FlowBoxChild, to be used as a child of a

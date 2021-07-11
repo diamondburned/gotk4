@@ -24,19 +24,31 @@ func init() {
 
 // LevelBarrer describes LevelBar's methods.
 type LevelBarrer interface {
-	gextras.Objector
-
+	// AddOffsetValue adds a new offset marker on @self at the position
+	// specified by @value.
 	AddOffsetValue(name string, value float64)
+	// Inverted returns whether the levelbar is inverted.
 	Inverted() bool
+	// MaxValue returns the `max-value` of the `GtkLevelBar`.
 	MaxValue() float64
+	// MinValue returns the `min-value of the `GtkLevelBar`.
 	MinValue() float64
+	// Mode returns the `mode` of the `GtkLevelBar`.
 	Mode() LevelBarMode
+	// OffsetValue fetches the value specified for the offset marker @name in
+	// @self.
 	OffsetValue(name string) (float64, bool)
+	// Value returns the `value` of the `GtkLevelBar`.
 	Value() float64
+	// RemoveOffsetValue removes an offset marker from a `GtkLevelBar`.
 	RemoveOffsetValue(name string)
+	// SetInverted sets whether the `GtkLevelBar` is inverted.
 	SetInverted(inverted bool)
+	// SetMaxValue sets the `max-value` of the `GtkLevelBar`.
 	SetMaxValue(value float64)
+	// SetMinValue sets the `min-value` of the `GtkLevelBar`.
 	SetMinValue(value float64)
+	// SetValue sets the value of the `GtkLevelBar`.
 	SetValue(value float64)
 }
 
@@ -131,22 +143,19 @@ type LevelBarrer interface {
 //
 // `GtkLevelBar` uses the K_ACCESSIBLE_ROLE_METER role.
 type LevelBar struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 }
 
-var _ LevelBarrer = (*LevelBar)(nil)
+var (
+	_ LevelBarrer     = (*LevelBar)(nil)
+	_ gextras.Nativer = (*LevelBar)(nil)
+)
 
-func wrapLevelBarrer(obj *externglib.Object) LevelBarrer {
+func wrapLevelBar(obj *externglib.Object) LevelBarrer {
 	return &LevelBar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -160,15 +169,6 @@ func wrapLevelBarrer(obj *externglib.Object) LevelBarrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -178,7 +178,7 @@ func wrapLevelBarrer(obj *externglib.Object) LevelBarrer {
 func marshalLevelBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLevelBarrer(obj), nil
+	return wrapLevelBar(obj), nil
 }
 
 // NewLevelBar creates a new `GtkLevelBar`.
@@ -211,6 +211,12 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) *LevelBar {
 	_levelBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LevelBar)
 
 	return _levelBar
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *LevelBar) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // AddOffsetValue adds a new offset marker on @self at the position specified by

@@ -48,29 +48,44 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 	return ApplicationInhibitFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ApplicationerOverrider contains methods that are overridable.
+// ApplicationOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ApplicationerOverrider interface {
+type ApplicationOverrider interface {
 	WindowAdded(window Windowwer)
+
 	WindowRemoved(window Windowwer)
 }
 
 // Applicationer describes Application's methods.
 type Applicationer interface {
-	gextras.Objector
-
+	// AddWindow adds a window to `application`.
 	AddWindow(window Windowwer)
+	// AccelsForAction gets the accelerators that are currently associated with
+	// the given action.
 	AccelsForAction(detailedActionName string) []string
+	// ActionsForAccel returns the list of actions (possibly empty) that `accel`
+	// maps to.
 	ActionsForAccel(accel string) []string
+	// ActiveWindow gets the “active” window for the application.
 	ActiveWindow() *Window
+	// Menubar returns the menu model that has been set with
+	// [method@Gtk.Application.set_menubar].
 	Menubar() *gio.MenuModel
+	// WindowByID returns the [class@Gtk.ApplicationWindow] with the given ID.
 	WindowByID(id uint) *Window
+	// ListActionDescriptions lists the detailed action names which have
+	// associated accelerators.
 	ListActionDescriptions() []string
+	// RemoveWindow: remove a window from `application`.
 	RemoveWindow(window Windowwer)
+	// SetAccelsForAction sets zero or more keyboard accelerators that will
+	// trigger the given action.
 	SetAccelsForAction(detailedActionName string, accels []string)
+	// SetMenubar sets or unsets the menubar for windows of `application`.
 	SetMenubar(menubar gio.MenuModeller)
+	// Uninhibit removes an inhibitor that has been previously established.
 	Uninhibit(cookie uint)
 }
 
@@ -139,26 +154,24 @@ type Applicationer interface {
 // HowDoI: Using GtkApplication (https://wiki.gnome.org/HowDoI/GtkApplication),
 // Getting Started with GTK: Basics (getting_started.html#basics)
 type Application struct {
-	*externglib.Object
-
 	gio.Application
-	gio.ActionGroup
-	gio.ActionMap
 }
 
-var _ Applicationer = (*Application)(nil)
+var (
+	_ Applicationer   = (*Application)(nil)
+	_ gextras.Nativer = (*Application)(nil)
+)
 
-func wrapApplicationer(obj *externglib.Object) Applicationer {
+func wrapApplication(obj *externglib.Object) Applicationer {
 	return &Application{
-		Object: obj,
 		Application: gio.Application{
 			Object: obj,
-		},
-		ActionGroup: gio.ActionGroup{
-			Object: obj,
-		},
-		ActionMap: gio.ActionMap{
-			Object: obj,
+			ActionGroup: gio.ActionGroup{
+				Object: obj,
+			},
+			ActionMap: gio.ActionMap{
+				Object: obj,
+			},
 		},
 	}
 }
@@ -166,7 +179,7 @@ func wrapApplicationer(obj *externglib.Object) Applicationer {
 func marshalApplicationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationer(obj), nil
+	return wrapApplication(obj), nil
 }
 
 // AddWindow adds a window to `application`.
@@ -188,7 +201,7 @@ func (application *Application) AddWindow(window Windowwer) {
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_application_add_window(_arg0, _arg1)
 }
@@ -377,7 +390,7 @@ func (application *Application) RemoveWindow(window Windowwer) {
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_application_remove_window(_arg0, _arg1)
 }
@@ -436,7 +449,7 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((menubar).(gextras.Nativer).Native()))
 
 	C.gtk_application_set_menubar(_arg0, _arg1)
 }

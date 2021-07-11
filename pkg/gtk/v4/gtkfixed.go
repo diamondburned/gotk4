@@ -26,13 +26,20 @@ func init() {
 
 // Fixedder describes Fixed's methods.
 type Fixedder interface {
-	gextras.Objector
-
+	// ChildPosition retrieves the translation transformation of the given child
+	// `GtkWidget` in the `GtkFixed`.
 	ChildPosition(widget Widgetter) (x float64, y float64)
+	// ChildTransform retrieves the transformation for @widget set using
+	// gtk_fixed_set_child_transform().
 	ChildTransform(widget Widgetter) *gsk.Transform
+	// Move sets a translation transformation to the given @x and @y coordinates
+	// to the child @widget of the `GtkFixed`.
 	Move(widget Widgetter, x float64, y float64)
+	// Put adds a widget to a `GtkFixed` at the given position.
 	Put(widget Widgetter, x float64, y float64)
+	// Remove removes a child from @fixed.
 	Remove(widget Widgetter)
+	// SetChildTransform sets the transformation for @widget.
 	SetChildTransform(widget Widgetter, transform *gsk.Transform)
 }
 
@@ -73,21 +80,17 @@ type Fixedder interface {
 // prefer the simplicity of `GtkFixed`, by all means use the widget. But you
 // should be aware of the tradeoffs.
 type Fixed struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Fixedder = (*Fixed)(nil)
+var (
+	_ Fixedder        = (*Fixed)(nil)
+	_ gextras.Nativer = (*Fixed)(nil)
+)
 
-func wrapFixedder(obj *externglib.Object) Fixedder {
+func wrapFixed(obj *externglib.Object) Fixedder {
 	return &Fixed{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -101,22 +104,13 @@ func wrapFixedder(obj *externglib.Object) Fixedder {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalFixedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixedder(obj), nil
+	return wrapFixed(obj), nil
 }
 
 // NewFixed creates a new `GtkFixed`.
@@ -143,7 +137,7 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 	var _arg3 C.double     // in
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_fixed_get_child_position(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -164,7 +158,7 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	var _cret *C.GskTransform // in
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_fixed_get_child_transform(_arg0, _arg1)
 
@@ -188,7 +182,7 @@ func (fixed *Fixed) Move(widget Widgetter, x float64, y float64) {
 	var _arg3 C.double     // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = C.double(x)
 	_arg3 = C.double(y)
 
@@ -203,7 +197,7 @@ func (fixed *Fixed) Put(widget Widgetter, x float64, y float64) {
 	var _arg3 C.double     // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = C.double(x)
 	_arg3 = C.double(y)
 
@@ -216,7 +210,7 @@ func (fixed *Fixed) Remove(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_fixed_remove(_arg0, _arg1)
 }
@@ -232,7 +226,7 @@ func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform
 	var _arg2 *C.GskTransform // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = (*C.GskTransform)(unsafe.Pointer(transform))
 
 	C.gtk_fixed_set_child_transform(_arg0, _arg1, _arg2)

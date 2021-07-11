@@ -26,11 +26,13 @@ func init() {
 
 // DropTargetAsyncer describes DropTargetAsync's methods.
 type DropTargetAsyncer interface {
-	gextras.Objector
-
+	// Actions gets the actions that this drop target supports.
 	Actions() gdk.DragAction
+	// Formats gets the data formats that this drop target accepts.
 	Formats() *gdk.ContentFormats
+	// RejectDrop sets the @drop as not accepted on this drag site.
 	RejectDrop(drop gdk.Dropper)
+	// SetFormats sets the data formats that this drop target will accept.
 	SetFormats(formats *gdk.ContentFormats)
 }
 
@@ -71,9 +73,12 @@ type DropTargetAsync struct {
 	EventController
 }
 
-var _ DropTargetAsyncer = (*DropTargetAsync)(nil)
+var (
+	_ DropTargetAsyncer = (*DropTargetAsync)(nil)
+	_ gextras.Nativer   = (*DropTargetAsync)(nil)
+)
 
-func wrapDropTargetAsyncer(obj *externglib.Object) DropTargetAsyncer {
+func wrapDropTargetAsync(obj *externglib.Object) DropTargetAsyncer {
 	return &DropTargetAsync{
 		EventController: EventController{
 			Object: obj,
@@ -84,7 +89,7 @@ func wrapDropTargetAsyncer(obj *externglib.Object) DropTargetAsyncer {
 func marshalDropTargetAsyncer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropTargetAsyncer(obj), nil
+	return wrapDropTargetAsync(obj), nil
 }
 
 // Actions gets the actions that this drop target supports.
@@ -134,7 +139,7 @@ func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 	var _arg1 *C.GdkDrop            // out
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkDrop)(unsafe.Pointer(drop.Native()))
+	_arg1 = (*C.GdkDrop)(unsafe.Pointer((drop).(gextras.Nativer).Native()))
 
 	C.gtk_drop_target_async_reject_drop(_arg0, _arg1)
 }

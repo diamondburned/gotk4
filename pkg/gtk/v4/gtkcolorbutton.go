@@ -25,16 +25,18 @@ func init() {
 
 // ColorButtonner describes ColorButton's methods.
 type ColorButtonner interface {
-	gextras.Objector
-
+	// Modal gets whether the dialog is modal.
 	Modal() bool
+	// Title gets the title of the color chooser dialog.
 	Title() string
+	// SetModal sets whether the dialog should be modal.
 	SetModal(modal bool)
+	// SetTitle sets the title for the color chooser dialog.
 	SetTitle(title string)
 }
 
-// ColorButton: the `GtkColorButton` allows to open a color chooser dialog to
-// change the color.
+// ColorButton: `GtkColorButton` allows to open a color chooser dialog to change
+// the color.
 //
 // !An example GtkColorButton (color-button.png)
 //
@@ -49,22 +51,19 @@ type ColorButtonner interface {
 // button node. To differentiate it from a plain `GtkButton`, it gets the .color
 // style class.
 type ColorButton struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
+
 	ColorChooser
-	ConstraintTarget
 }
 
-var _ ColorButtonner = (*ColorButton)(nil)
+var (
+	_ ColorButtonner  = (*ColorButton)(nil)
+	_ gextras.Nativer = (*ColorButton)(nil)
+)
 
-func wrapColorButtonner(obj *externglib.Object) ColorButtonner {
+func wrapColorButton(obj *externglib.Object) ColorButtonner {
 	return &ColorButton{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -78,16 +77,7 @@ func wrapColorButtonner(obj *externglib.Object) ColorButtonner {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 		ColorChooser: ColorChooser{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
 	}
@@ -96,7 +86,7 @@ func wrapColorButtonner(obj *externglib.Object) ColorButtonner {
 func marshalColorButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorButtonner(obj), nil
+	return wrapColorButton(obj), nil
 }
 
 // NewColorButton creates a new color button.
@@ -131,6 +121,12 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
 
 	return _colorButton
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ColorButton) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Modal gets whether the dialog is modal.

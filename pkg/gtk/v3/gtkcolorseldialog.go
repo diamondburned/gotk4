@@ -27,34 +27,27 @@ func init() {
 
 // ColorSelectionDialogger describes ColorSelectionDialog's methods.
 type ColorSelectionDialogger interface {
-	gextras.Objector
-
+	// ColorSelection retrieves the ColorSelection widget embedded in the
+	// dialog.
 	ColorSelection() *Widget
 }
 
 type ColorSelectionDialog struct {
-	*externglib.Object
-
 	Dialog
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ ColorSelectionDialogger = (*ColorSelectionDialog)(nil)
+var (
+	_ ColorSelectionDialogger = (*ColorSelectionDialog)(nil)
+	_ gextras.Nativer         = (*ColorSelectionDialog)(nil)
+)
 
-func wrapColorSelectionDialogger(obj *externglib.Object) ColorSelectionDialogger {
+func wrapColorSelectionDialog(obj *externglib.Object) ColorSelectionDialogger {
 	return &ColorSelectionDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -65,39 +58,9 @@ func wrapColorSelectionDialogger(obj *externglib.Object) ColorSelectionDialogger
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -105,7 +68,7 @@ func wrapColorSelectionDialogger(obj *externglib.Object) ColorSelectionDialogger
 func marshalColorSelectionDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorSelectionDialogger(obj), nil
+	return wrapColorSelectionDialog(obj), nil
 }
 
 // NewColorSelectionDialog creates a new ColorSelectionDialog.

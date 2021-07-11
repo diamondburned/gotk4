@@ -33,11 +33,11 @@ type TextAttribute int
 const (
 	// Invalid: invalid attribute, like bad spelling or grammar.
 	TextAttributeInvalid TextAttribute = iota
-	// LeftMargin: the pixel width of the left margin
+	// LeftMargin: pixel width of the left margin
 	TextAttributeLeftMargin
-	// RightMargin: the pixel width of the right margin
+	// RightMargin: pixel width of the right margin
 	TextAttributeRightMargin
-	// Indent: the number of pixels that the text is indented
+	// Indent: number of pixels that the text is indented
 	TextAttributeIndent
 	// Invisible: either "true" or "false" indicating whether text is visible or
 	// not
@@ -65,50 +65,47 @@ const (
 	TextAttributeUnderline
 	// Strikethrough: "true" or "false" whether the text is strikethrough
 	TextAttributeStrikethrough
-	// Size: the size of the characters in points. eg: 10
+	// Size of the characters in points. eg: 10
 	TextAttributeSize
-	// Scale: the scale of the characters. The value is a string representation
-	// of a double
+	// Scale of the characters. The value is a string representation of a double
 	TextAttributeScale
-	// Weight: the weight of the characters.
+	// Weight of the characters.
 	TextAttributeWeight
-	// Language: the language used
+	// Language used
 	TextAttributeLanguage
-	// FamilyName: the font family name
+	// FamilyName: font family name
 	TextAttributeFamilyName
-	// BgColor: the background color. The value is an RGB value of the format
+	// BgColor: background color. The value is an RGB value of the format
 	// "u,u,u"
 	TextAttributeBgColor
-	// FgColor: the foreground color. The value is an RGB value of the format
+	// FgColor: foreground color. The value is an RGB value of the format
 	// "u,u,u"
 	TextAttributeFgColor
 	// BgStipple: "true" if a Bitmap is set for stippling the background color.
 	TextAttributeBgStipple
 	// FgStipple: "true" if a Bitmap is set for stippling the foreground color.
 	TextAttributeFgStipple
-	// WrapMode: the wrap mode of the text, if any. Values are "none", "char",
+	// WrapMode: wrap mode of the text, if any. Values are "none", "char",
 	// "word", or "word_char".
 	TextAttributeWrapMode
-	// Direction: the direction of the text, if set. Values are "none", "ltr" or
-	// "rtl"
+	// Direction of the text, if set. Values are "none", "ltr" or "rtl"
 	TextAttributeDirection
-	// Justification: the justification of the text, if set. Values are "left",
-	// "right", "center" or "fill"
+	// Justification of the text, if set. Values are "left", "right", "center"
+	// or "fill"
 	TextAttributeJustification
-	// Stretch: the stretch of the text, if set. Values are "ultra_condensed",
+	// Stretch of the text, if set. Values are "ultra_condensed",
 	// "extra_condensed", "condensed", "semi_condensed", "normal",
 	// "semi_expanded", "expanded", "extra_expanded" or "ultra_expanded"
 	TextAttributeStretch
-	// Variant: the capitalization variant of the text, if set. Values are
-	// "normal" or "small_caps"
+	// Variant: capitalization variant of the text, if set. Values are "normal"
+	// or "small_caps"
 	TextAttributeVariant
-	// Style: the slant style of the text, if set. Values are "normal",
-	// "oblique" or "italic"
+	// Style: slant style of the text, if set. Values are "normal", "oblique" or
+	// "italic"
 	TextAttributeStyle
-	// TextPosition: the vertical position with respect to the baseline. Values
-	// are "baseline", "super", or "sub". Note that a super or sub text
-	// attribute refers to position with respect to the baseline of the prior
-	// character.
+	// TextPosition: vertical position with respect to the baseline. Values are
+	// "baseline", "super", or "sub". Note that a super or sub text attribute
+	// refers to position with respect to the baseline of the prior character.
 	TextAttributeTextPosition
 	// LastDefined: not a valid text attribute, used for finding end of
 	// enumeration
@@ -197,11 +194,11 @@ func marshalTextGranularity(p uintptr) (interface{}, error) {
 	return TextGranularity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TexterOverrider contains methods that are overridable.
+// TextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TexterOverrider interface {
+type TextOverrider interface {
 	// AddSelection adds a selection bounded by the specified offsets.
 	AddSelection(startOffset int, endOffset int) bool
 	// CaretOffset gets the offset of the position of the caret (cursor).
@@ -239,25 +236,37 @@ type TexterOverrider interface {
 	SetCaretOffset(offset int) bool
 	// SetSelection changes the start and end offset of the specified selection.
 	SetSelection(selectionNum int, startOffset int, endOffset int) bool
+
 	TextAttributesChanged()
+
 	TextCaretMoved(location int)
+
 	TextChanged(position int, length int)
+
 	TextSelectionChanged()
 }
 
 // Texter describes Text's methods.
 type Texter interface {
-	gextras.Objector
-
+	// AddSelection adds a selection bounded by the specified offsets.
 	AddSelection(startOffset int, endOffset int) bool
+	// CaretOffset gets the offset of the position of the caret (cursor).
 	CaretOffset() int
+	// CharacterAtOffset gets the specified text.
 	CharacterAtOffset(offset int) uint32
+	// CharacterCount gets the character count.
 	CharacterCount() int
+	// NSelections gets the number of selected regions.
 	NSelections() int
+	// Selection gets the text from the specified selection.
 	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
+	// Text gets the specified text.
 	Text(startOffset int, endOffset int) string
+	// RemoveSelection removes the specified selection.
 	RemoveSelection(selectionNum int) bool
+	// SetCaretOffset sets the caret (cursor) position to the specified @offset.
 	SetCaretOffset(offset int) bool
+	// SetSelection changes the start and end offset of the specified selection.
 	SetSelection(selectionNum int, startOffset int, endOffset int) bool
 }
 
@@ -282,9 +291,12 @@ type Text struct {
 	*externglib.Object
 }
 
-var _ Texter = (*Text)(nil)
+var (
+	_ Texter          = (*Text)(nil)
+	_ gextras.Nativer = (*Text)(nil)
+)
 
-func wrapTexter(obj *externglib.Object) Texter {
+func wrapText(obj *externglib.Object) Texter {
 	return &Text{
 		Object: obj,
 	}
@@ -293,7 +305,7 @@ func wrapTexter(obj *externglib.Object) Texter {
 func marshalTexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTexter(obj), nil
+	return wrapText(obj), nil
 }
 
 // AddSelection adds a selection bounded by the specified offsets.

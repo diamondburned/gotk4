@@ -35,11 +35,11 @@ func init() {
 	})
 }
 
-// PollableInputStreamerOverrider contains methods that are overridable.
+// PollableInputStreamOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PollableInputStreamerOverrider interface {
+type PollableInputStreamOverrider interface {
 	// CanPoll checks if @stream is actually pollable. Some classes may
 	// implement InputStream but have only certain instances of that class be
 	// pollable. If this method returns false, then the behavior of other
@@ -81,11 +81,15 @@ type PollableInputStreamerOverrider interface {
 
 // PollableInputStreamer describes PollableInputStream's methods.
 type PollableInputStreamer interface {
-	gextras.Objector
-
+	// CanPoll checks if @stream is actually pollable.
 	CanPoll() bool
+	// CreateSource creates a #GSource that triggers when @stream can be read,
+	// or @cancellable is triggered or an error occurs.
 	CreateSource(cancellable Cancellabler) *glib.Source
+	// IsReadable checks if @stream can be read.
 	IsReadable() bool
+	// ReadNonblocking attempts to read up to @count bytes from @stream into
+	// @buffer, as with g_input_stream_read().
 	ReadNonblocking(buffer []byte, cancellable Cancellabler) (int, error)
 }
 
@@ -96,9 +100,12 @@ type PollableInputStream struct {
 	InputStream
 }
 
-var _ PollableInputStreamer = (*PollableInputStream)(nil)
+var (
+	_ PollableInputStreamer = (*PollableInputStream)(nil)
+	_ gextras.Nativer       = (*PollableInputStream)(nil)
+)
 
-func wrapPollableInputStreamer(obj *externglib.Object) PollableInputStreamer {
+func wrapPollableInputStream(obj *externglib.Object) PollableInputStreamer {
 	return &PollableInputStream{
 		InputStream: InputStream{
 			Object: obj,
@@ -109,7 +116,7 @@ func wrapPollableInputStreamer(obj *externglib.Object) PollableInputStreamer {
 func marshalPollableInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPollableInputStreamer(obj), nil
+	return wrapPollableInputStream(obj), nil
 }
 
 // CanPoll checks if @stream is actually pollable. Some classes may implement
@@ -150,7 +157,7 @@ func (stream *PollableInputStream) CreateSource(cancellable Cancellabler) *glib.
 	var _cret *C.GSource              // in
 
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_input_stream_create_source(_arg0, _arg1)
 
@@ -210,7 +217,7 @@ func (stream *PollableInputStream) ReadNonblocking(buffer []byte, cancellable Ca
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 

@@ -26,11 +26,11 @@ func init() {
 type PropMode int
 
 const (
-	// Replace: the new data replaces the existing data.
+	// Replace: new data replaces the existing data.
 	PropModeReplace PropMode = iota
-	// Prepend: the new data is prepended to the existing data.
+	// Prepend: new data is prepended to the existing data.
 	PropModePrepend
-	// Append: the new data is appended to the existing data.
+	// Append: new data is appended to the existing data.
 	PropModeAppend
 )
 

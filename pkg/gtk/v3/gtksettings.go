@@ -26,12 +26,16 @@ func init() {
 
 // Settingser describes Settings's methods.
 type Settingser interface {
-	gextras.Objector
-
+	// ResetProperty undoes the effect of calling g_object_set() to install an
+	// application-specific value for a setting.
 	ResetProperty(name string)
+	// SetDoubleProperty: deprecated: Use g_object_set() instead.
 	SetDoubleProperty(name string, vDouble float64, origin string)
+	// SetLongProperty: deprecated: Use g_object_set() instead.
 	SetLongProperty(name string, vLong int32, origin string)
+	// SetPropertyValue: deprecated: Use g_object_set() instead.
 	SetPropertyValue(name string, svalue *SettingsValue)
+	// SetStringProperty: deprecated: Use g_object_set() instead.
 	SetStringProperty(name string, vString string, origin string)
 }
 
@@ -71,9 +75,12 @@ type Settings struct {
 	StyleProvider
 }
 
-var _ Settingser = (*Settings)(nil)
+var (
+	_ Settingser      = (*Settings)(nil)
+	_ gextras.Nativer = (*Settings)(nil)
+)
 
-func wrapSettingser(obj *externglib.Object) Settingser {
+func wrapSettings(obj *externglib.Object) Settingser {
 	return &Settings{
 		Object: obj,
 		StyleProvider: StyleProvider{
@@ -85,7 +92,7 @@ func wrapSettingser(obj *externglib.Object) Settingser {
 func marshalSettingser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSettingser(obj), nil
+	return wrapSettings(obj), nil
 }
 
 // ResetProperty undoes the effect of calling g_object_set() to install an

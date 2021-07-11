@@ -24,8 +24,6 @@ func init() {
 
 // NoOpObjector describes NoOpObject's methods.
 type NoOpObjector interface {
-	gextras.Objector
-
 	privateNoOpObject()
 }
 
@@ -33,9 +31,8 @@ type NoOpObjector interface {
 // is the type of AtkObject which is created if an accessible object is
 // requested for an object type for which no factory type is specified.
 type NoOpObject struct {
-	*externglib.Object
-
 	ObjectClass
+
 	Action
 	Component
 	Document
@@ -50,11 +47,13 @@ type NoOpObject struct {
 	Window
 }
 
-var _ NoOpObjector = (*NoOpObject)(nil)
+var (
+	_ NoOpObjector    = (*NoOpObject)(nil)
+	_ gextras.Nativer = (*NoOpObject)(nil)
+)
 
-func wrapNoOpObjector(obj *externglib.Object) NoOpObjector {
+func wrapNoOpObject(obj *externglib.Object) NoOpObjector {
 	return &NoOpObject{
-		Object: obj,
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
@@ -104,7 +103,7 @@ func wrapNoOpObjector(obj *externglib.Object) NoOpObjector {
 func marshalNoOpObjector(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoOpObjector(obj), nil
+	return wrapNoOpObject(obj), nil
 }
 
 // NewNoOpObject provides a default (non-functioning stub) Object. Application
@@ -122,6 +121,12 @@ func NewNoOpObject(obj gextras.Objector) *NoOpObject {
 	_noOpObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoOpObject)
 
 	return _noOpObject
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *NoOpObject) Native() uintptr {
+	return v.ObjectClass.Object.Native()
 }
 
 func (*NoOpObject) privateNoOpObject() {}

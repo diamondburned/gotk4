@@ -17,13 +17,13 @@ type CSSParserError int
 const (
 	// Failed: unknown failure.
 	CSSParserErrorFailed CSSParserError = iota
-	// Syntax: the given text does not form valid syntax
+	// Syntax: given text does not form valid syntax
 	CSSParserErrorSyntax
 	// Import: failed to import a resource
 	CSSParserErrorImport
-	// Name: the given name has not been defined
+	// Name: given name has not been defined
 	CSSParserErrorName
-	// UnknownValue: the given value is not correct
+	// UnknownValue: given value is not correct
 	CSSParserErrorUnknownValue
 )
 
@@ -34,8 +34,8 @@ const (
 type CSSParserWarning int
 
 const (
-	// Deprecated: the given construct is deprecated and will be removed in a
-	// future version
+	// Deprecated: given construct is deprecated and will be removed in a future
+	// version
 	CSSParserWarningDeprecated CSSParserWarning = iota
 	// Syntax construct was used that should be avoided
 	CSSParserWarningSyntax

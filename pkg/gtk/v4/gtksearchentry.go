@@ -24,9 +24,11 @@ func init() {
 
 // SearchEntrier describes SearchEntry's methods.
 type SearchEntrier interface {
-	gextras.Objector
-
+	// KeyCaptureWidget gets the widget that @entry is capturing key events
+	// from.
 	KeyCaptureWidget() *Widget
+	// SetKeyCaptureWidget sets @widget as the widget that @entry will capture
+	// key events from.
 	SetKeyCaptureWidget(widget Widgetter)
 }
 
@@ -74,22 +76,19 @@ type SearchEntrier interface {
 //
 // `GtkSearchEntry` uses the GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
 type SearchEntry struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Editable
 }
 
-var _ SearchEntrier = (*SearchEntry)(nil)
+var (
+	_ SearchEntrier   = (*SearchEntry)(nil)
+	_ gextras.Nativer = (*SearchEntry)(nil)
+)
 
-func wrapSearchEntrier(obj *externglib.Object) SearchEntrier {
+func wrapSearchEntry(obj *externglib.Object) SearchEntrier {
 	return &SearchEntry{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -103,19 +102,8 @@ func wrapSearchEntrier(obj *externglib.Object) SearchEntrier {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Editable: Editable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -136,7 +124,7 @@ func wrapSearchEntrier(obj *externglib.Object) SearchEntrier {
 func marshalSearchEntrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSearchEntrier(obj), nil
+	return wrapSearchEntry(obj), nil
 }
 
 // NewSearchEntry creates a `GtkSearchEntry`.
@@ -150,6 +138,12 @@ func NewSearchEntry() *SearchEntry {
 	_searchEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchEntry)
 
 	return _searchEntry
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *SearchEntry) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // KeyCaptureWidget gets the widget that @entry is capturing key events from.
@@ -187,7 +181,7 @@ func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
 }

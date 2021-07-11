@@ -33,11 +33,11 @@ func init() {
 	})
 }
 
-// RemoteActionGrouperOverrider contains methods that are overridable.
+// RemoteActionGroupOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RemoteActionGrouperOverrider interface {
+type RemoteActionGroupOverrider interface {
 	// ActivateActionFull activates the remote action.
 	//
 	// This is the same as g_action_group_activate_action() except that it
@@ -62,15 +62,15 @@ type RemoteActionGrouperOverrider interface {
 
 // RemoteActionGrouper describes RemoteActionGroup's methods.
 type RemoteActionGrouper interface {
-	gextras.Objector
-
+	// ActivateActionFull activates the remote action.
 	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
+	// ChangeActionStateFull changes the state of a remote action.
 	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
 }
 
-// RemoteActionGroup: the GRemoteActionGroup interface is implemented by Group
-// instances that either transmit action invocations to other processes or
-// receive action invocations in the local process from other processes.
+// RemoteActionGroup interface is implemented by Group instances that either
+// transmit action invocations to other processes or receive action invocations
+// in the local process from other processes.
 //
 // The interface has `_full` variants of the two methods on Group used to
 // activate actions: g_action_group_activate_action() and
@@ -89,9 +89,12 @@ type RemoteActionGroup struct {
 	ActionGroup
 }
 
-var _ RemoteActionGrouper = (*RemoteActionGroup)(nil)
+var (
+	_ RemoteActionGrouper = (*RemoteActionGroup)(nil)
+	_ gextras.Nativer     = (*RemoteActionGroup)(nil)
+)
 
-func wrapRemoteActionGrouper(obj *externglib.Object) RemoteActionGrouper {
+func wrapRemoteActionGroup(obj *externglib.Object) RemoteActionGrouper {
 	return &RemoteActionGroup{
 		ActionGroup: ActionGroup{
 			Object: obj,
@@ -102,7 +105,7 @@ func wrapRemoteActionGrouper(obj *externglib.Object) RemoteActionGrouper {
 func marshalRemoteActionGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRemoteActionGrouper(obj), nil
+	return wrapRemoteActionGroup(obj), nil
 }
 
 // ActivateActionFull activates the remote action.

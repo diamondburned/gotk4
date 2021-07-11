@@ -57,13 +57,19 @@ func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret 
 
 // TreeListModeller describes TreeListModel's methods.
 type TreeListModeller interface {
-	gextras.Objector
-
+	// Autoexpand gets whether the model is set to automatically expand new rows
+	// that get added.
 	Autoexpand() bool
+	// ChildRow gets the row item corresponding to the child at index @position
+	// for @self's root model.
 	ChildRow(position uint) *TreeListRow
+	// Model gets the root model that @self was created with.
 	Model() *gio.ListModel
+	// Passthrough gets whether the model is passing through original row items.
 	Passthrough() bool
+	// Row gets the row object for the given row.
 	Row(position uint) *TreeListRow
+	// SetAutoexpand sets whether the model should autoexpand.
 	SetAutoexpand(autoexpand bool)
 }
 
@@ -75,9 +81,12 @@ type TreeListModel struct {
 	gio.ListModel
 }
 
-var _ TreeListModeller = (*TreeListModel)(nil)
+var (
+	_ TreeListModeller = (*TreeListModel)(nil)
+	_ gextras.Nativer  = (*TreeListModel)(nil)
+)
 
-func wrapTreeListModeller(obj *externglib.Object) TreeListModeller {
+func wrapTreeListModel(obj *externglib.Object) TreeListModeller {
 	return &TreeListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -89,7 +98,7 @@ func wrapTreeListModeller(obj *externglib.Object) TreeListModeller {
 func marshalTreeListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeListModeller(obj), nil
+	return wrapTreeListModel(obj), nil
 }
 
 // Autoexpand gets whether the model is set to automatically expand new rows
@@ -231,16 +240,27 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 
 // TreeListRowwer describes TreeListRow's methods.
 type TreeListRowwer interface {
-	gextras.Objector
-
+	// ChildRow: if @self is not expanded or @position is greater than the
+	// number of children, nil is returned.
 	ChildRow(position uint) *TreeListRow
+	// Children: if the row is expanded, gets the model holding the children of
+	// @self.
 	Children() *gio.ListModel
+	// Depth gets the depth of this row.
 	Depth() uint
+	// Expanded gets if a row is currently expanded.
 	Expanded() bool
+	// Item gets the item corresponding to this row, The value returned by this
+	// function never changes until the row is destroyed.
 	Item() *externglib.Object
+	// Parent gets the row representing the parent for @self.
 	Parent() *TreeListRow
+	// Position returns the position in the `GtkTreeListModel` that @self
+	// occupies at the moment.
 	Position() uint
+	// IsExpandable checks if a row can be expanded.
 	IsExpandable() bool
+	// SetExpanded expands or collapses a row.
 	SetExpanded(expanded bool)
 }
 
@@ -260,9 +280,12 @@ type TreeListRow struct {
 	*externglib.Object
 }
 
-var _ TreeListRowwer = (*TreeListRow)(nil)
+var (
+	_ TreeListRowwer  = (*TreeListRow)(nil)
+	_ gextras.Nativer = (*TreeListRow)(nil)
+)
 
-func wrapTreeListRowwer(obj *externglib.Object) TreeListRowwer {
+func wrapTreeListRow(obj *externglib.Object) TreeListRowwer {
 	return &TreeListRow{
 		Object: obj,
 	}
@@ -271,7 +294,7 @@ func wrapTreeListRowwer(obj *externglib.Object) TreeListRowwer {
 func marshalTreeListRowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeListRowwer(obj), nil
+	return wrapTreeListRow(obj), nil
 }
 
 // ChildRow: if @self is not expanded or @position is greater than the number of

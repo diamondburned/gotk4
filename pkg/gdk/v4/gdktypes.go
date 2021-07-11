@@ -38,29 +38,29 @@ func init() {
 type AxisUse int
 
 const (
-	// Ignore: the axis is ignored.
+	// Ignore axis is ignored.
 	AxisUseIgnore AxisUse = iota
-	// X: the axis is used as the x axis.
+	// X axis is used as the x axis.
 	AxisUseX
-	// Y: the axis is used as the y axis.
+	// Y axis is used as the y axis.
 	AxisUseY
-	// DeltaX: the axis is used as the scroll x delta
+	// DeltaX axis is used as the scroll x delta
 	AxisUseDeltaX
-	// DeltaY: the axis is used as the scroll y delta
+	// DeltaY axis is used as the scroll y delta
 	AxisUseDeltaY
-	// Pressure: the axis is used for pressure information.
+	// Pressure axis is used for pressure information.
 	AxisUsePressure
-	// Xtilt: the axis is used for x tilt information.
+	// Xtilt axis is used for x tilt information.
 	AxisUseXtilt
-	// Ytilt: the axis is used for y tilt information.
+	// Ytilt axis is used for y tilt information.
 	AxisUseYtilt
-	// Wheel: the axis is used for wheel information.
+	// Wheel axis is used for wheel information.
 	AxisUseWheel
-	// Distance: the axis is used for pen/tablet distance information
+	// Distance axis is used for pen/tablet distance information
 	AxisUseDistance
-	// Rotation: the axis is used for pen rotation information
+	// Rotation axis is used for pen rotation information
 	AxisUseRotation
-	// Slider: the axis is used for pen slider information
+	// Slider axis is used for pen slider information
 	AxisUseSlider
 	// Last: constant equal to the numerically highest axis value.
 	AxisUseLast
@@ -76,13 +76,13 @@ type GLError int
 const (
 	// NotAvailable: openGL support is not available
 	GLErrorNotAvailable GLError = iota
-	// UnsupportedFormat: the requested visual format is not supported
+	// UnsupportedFormat: requested visual format is not supported
 	GLErrorUnsupportedFormat
-	// UnsupportedProfile: the requested profile is not supported
+	// UnsupportedProfile: requested profile is not supported
 	GLErrorUnsupportedProfile
-	// CompilationFailed: the shader compilation failed
+	// CompilationFailed: shader compilation failed
 	GLErrorCompilationFailed
-	// LinkFailed: the shader linking failed
+	// LinkFailed: shader linking failed
 	GLErrorLinkFailed
 )
 
@@ -94,26 +94,26 @@ func marshalGLError(p uintptr) (interface{}, error) {
 type Gravity int
 
 const (
-	// NorthWest: the reference point is at the top left corner.
+	// NorthWest: reference point is at the top left corner.
 	GravityNorthWest Gravity = 1
-	// North: the reference point is in the middle of the top edge.
+	// North: reference point is in the middle of the top edge.
 	GravityNorth Gravity = 2
-	// NorthEast: the reference point is at the top right corner.
+	// NorthEast: reference point is at the top right corner.
 	GravityNorthEast Gravity = 3
-	// West: the reference point is at the middle of the left edge.
+	// West: reference point is at the middle of the left edge.
 	GravityWest Gravity = 4
-	// Center: the reference point is at the center of the surface.
+	// Center: reference point is at the center of the surface.
 	GravityCenter Gravity = 5
-	// East: the reference point is at the middle of the right edge.
+	// East: reference point is at the middle of the right edge.
 	GravityEast Gravity = 6
-	// SouthWest: the reference point is at the lower left corner.
+	// SouthWest: reference point is at the lower left corner.
 	GravitySouthWest Gravity = 7
-	// South: the reference point is at the middle of the lower edge.
+	// South: reference point is at the middle of the lower edge.
 	GravitySouth Gravity = 8
-	// SouthEast: the reference point is at the lower right corner.
+	// SouthEast: reference point is at the lower right corner.
 	GravitySouthEast Gravity = 9
-	// Static: the reference point is at the top left corner of the surface
-	// itself, ignoring window manager decorations.
+	// Static: reference point is at the top left corner of the surface itself,
+	// ignoring window manager decorations.
 	GravityStatic Gravity = 10
 )
 
@@ -202,32 +202,32 @@ func marshalDragAction(p uintptr) (interface{}, error) {
 type ModifierType int
 
 const (
-	// ModifierTypeShiftMask: the Shift key.
+	// ModifierTypeShiftMask: shift key.
 	ModifierTypeShiftMask ModifierType = 0b1
 	// ModifierTypeLockMask: lock key (depending on the modifier mapping of the
 	// X server this may either be CapsLock or ShiftLock).
 	ModifierTypeLockMask ModifierType = 0b10
-	// ModifierTypeControlMask: the Control key.
+	// ModifierTypeControlMask: control key.
 	ModifierTypeControlMask ModifierType = 0b100
-	// ModifierTypeAltMask: the fourth modifier key (it depends on the modifier
+	// ModifierTypeAltMask: fourth modifier key (it depends on the modifier
 	// mapping of the X server which key is interpreted as this modifier, but
 	// normally it is the Alt key).
 	ModifierTypeAltMask ModifierType = 0b1000
-	// ModifierTypeButton1Mask: the first mouse button.
+	// ModifierTypeButton1Mask: first mouse button.
 	ModifierTypeButton1Mask ModifierType = 0b100000000
-	// ModifierTypeButton2Mask: the second mouse button.
+	// ModifierTypeButton2Mask: second mouse button.
 	ModifierTypeButton2Mask ModifierType = 0b1000000000
-	// ModifierTypeButton3Mask: the third mouse button.
+	// ModifierTypeButton3Mask: third mouse button.
 	ModifierTypeButton3Mask ModifierType = 0b10000000000
-	// ModifierTypeButton4Mask: the fourth mouse button.
+	// ModifierTypeButton4Mask: fourth mouse button.
 	ModifierTypeButton4Mask ModifierType = 0b100000000000
-	// ModifierTypeButton5Mask: the fifth mouse button.
+	// ModifierTypeButton5Mask: fifth mouse button.
 	ModifierTypeButton5Mask ModifierType = 0b1000000000000
-	// ModifierTypeSuperMask: the Super modifier
+	// ModifierTypeSuperMask: super modifier
 	ModifierTypeSuperMask ModifierType = 0b100000000000000000000000000
-	// ModifierTypeHyperMask: the Hyper modifier
+	// ModifierTypeHyperMask: hyper modifier
 	ModifierTypeHyperMask ModifierType = 0b1000000000000000000000000000
-	// ModifierTypeMetaMask: the Meta modifier
+	// ModifierTypeMetaMask: meta modifier
 	ModifierTypeMetaMask ModifierType = 0b10000000000000000000000000000
 )
 
@@ -235,7 +235,7 @@ func marshalModifierType(p uintptr) (interface{}, error) {
 	return ModifierType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ContentFormats: the `GdkContentFormats` structure is used to advertise and
+// ContentFormats: `GdkContentFormats` structure is used to advertise and
 // negotiate the format of content.
 //
 // You will encounter `GdkContentFormats` when interacting with objects

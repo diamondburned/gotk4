@@ -25,24 +25,32 @@ func init() {
 	})
 }
 
-// StatusbarrerOverrider contains methods that are overridable.
+// StatusbarOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type StatusbarrerOverrider interface {
+type StatusbarOverrider interface {
 	TextPopped(contextId uint, text string)
+
 	TextPushed(contextId uint, text string)
 }
 
 // Statusbarrer describes Statusbar's methods.
 type Statusbarrer interface {
-	gextras.Objector
-
+	// ContextID returns a new context identifier, given a description of the
+	// actual context.
 	ContextID(contextDescription string) uint
+	// MessageArea retrieves the box containing the label widget.
 	MessageArea() *Box
+	// Pop removes the first message in the Statusbar’s stack with the given
+	// context id.
 	Pop(contextId uint)
+	// Push pushes a new message onto a statusbar’s stack.
 	Push(contextId uint, text string) uint
+	// Remove forces the removal of a message from a statusbar’s stack.
 	Remove(contextId uint, messageId uint)
+	// RemoveAll forces the removal of all messages from a statusbar's stack
+	// with the exact @context_id.
 	RemoveAll(contextId uint)
 }
 
@@ -79,25 +87,19 @@ type Statusbarrer interface {
 //
 // GtkStatusbar has a single CSS node with name statusbar.
 type Statusbar struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ Statusbarrer = (*Statusbar)(nil)
+var (
+	_ Statusbarrer    = (*Statusbar)(nil)
+	_ gextras.Nativer = (*Statusbar)(nil)
+)
 
-func wrapStatusbarrer(obj *externglib.Object) Statusbarrer {
+func wrapStatusbar(obj *externglib.Object) Statusbarrer {
 	return &Statusbar{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -108,31 +110,10 @@ func wrapStatusbarrer(obj *externglib.Object) Statusbarrer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -140,7 +121,7 @@ func wrapStatusbarrer(obj *externglib.Object) Statusbarrer {
 func marshalStatusbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStatusbarrer(obj), nil
+	return wrapStatusbar(obj), nil
 }
 
 // NewStatusbar creates a new Statusbar ready for messages.

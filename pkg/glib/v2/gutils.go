@@ -23,23 +23,23 @@ import "C"
 type UserDirectory int
 
 const (
-	// DirectoryDesktop: the user's Desktop directory
+	// DirectoryDesktop user's Desktop directory
 	UserDirectoryDirectoryDesktop UserDirectory = iota
-	// DirectoryDocuments: the user's Documents directory
+	// DirectoryDocuments user's Documents directory
 	UserDirectoryDirectoryDocuments
-	// DirectoryDownload: the user's Downloads directory
+	// DirectoryDownload user's Downloads directory
 	UserDirectoryDirectoryDownload
-	// DirectoryMusic: the user's Music directory
+	// DirectoryMusic user's Music directory
 	UserDirectoryDirectoryMusic
-	// DirectoryPictures: the user's Pictures directory
+	// DirectoryPictures user's Pictures directory
 	UserDirectoryDirectoryPictures
-	// DirectoryPublicShare: the user's shared directory
+	// DirectoryPublicShare user's shared directory
 	UserDirectoryDirectoryPublicShare
-	// DirectoryTemplates: the user's Templates directory
+	// DirectoryTemplates user's Templates directory
 	UserDirectoryDirectoryTemplates
-	// DirectoryVideos: the user's Movies directory
+	// DirectoryVideos user's Movies directory
 	UserDirectoryDirectoryVideos
-	// NDirectories: the number of enum values
+	// NDirectories: number of enum values
 	UserDirectoryNDirectories
 )
 

@@ -25,18 +25,18 @@ func init() {
 	})
 }
 
-// RadioMenuItemmerOverrider contains methods that are overridable.
+// RadioMenuItemOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RadioMenuItemmerOverrider interface {
+type RadioMenuItemOverrider interface {
 	GroupChanged()
 }
 
 // RadioMenuItemmer describes RadioMenuItem's methods.
 type RadioMenuItemmer interface {
-	gextras.Objector
-
+	// JoinGroup joins a RadioMenuItem object to the group of another
+	// RadioMenuItem object.
 	JoinGroup(groupSource RadioMenuItemmer)
 }
 
@@ -58,30 +58,21 @@ type RadioMenuItemmer interface {
 // GtkRadioMenuItem has a main CSS node with name menuitem, and a subnode with
 // name radio, which gets the .left or .right style class.
 type RadioMenuItem struct {
-	*externglib.Object
-
 	CheckMenuItem
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ RadioMenuItemmer = (*RadioMenuItem)(nil)
+var (
+	_ RadioMenuItemmer = (*RadioMenuItem)(nil)
+	_ gextras.Nativer  = (*RadioMenuItem)(nil)
+)
 
-func wrapRadioMenuItemmer(obj *externglib.Object) RadioMenuItemmer {
+func wrapRadioMenuItem(obj *externglib.Object) RadioMenuItemmer {
 	return &RadioMenuItem{
-		Object: obj,
 		CheckMenuItem: CheckMenuItem{
-			Object: obj,
 			MenuItem: MenuItem{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -92,27 +83,10 @@ func wrapRadioMenuItemmer(obj *externglib.Object) RadioMenuItemmer {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
 				},
 				Actionable: Actionable{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -127,58 +101,7 @@ func wrapRadioMenuItemmer(obj *externglib.Object) RadioMenuItemmer {
 				Activatable: Activatable{
 					Object: obj,
 				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Actionable: Actionable{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-			},
-			Activatable: Activatable{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -186,7 +109,7 @@ func wrapRadioMenuItemmer(obj *externglib.Object) RadioMenuItemmer {
 func marshalRadioMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioMenuItemmer(obj), nil
+	return wrapRadioMenuItem(obj), nil
 }
 
 // NewRadioMenuItemFromWidget creates a new RadioMenuItem adding it to the same
@@ -195,7 +118,7 @@ func NewRadioMenuItemFromWidget(group RadioMenuItemmer) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
 
@@ -214,7 +137,7 @@ func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItemmer, label string) *
 	var _arg2 *C.gchar            // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -238,7 +161,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItemmer, label string
 	var _arg2 *C.gchar            // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -276,7 +199,7 @@ func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource RadioMenuItemmer) {
 	var _arg1 *C.GtkRadioMenuItem // out
 
 	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(radioMenuItem.Native()))
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(groupSource.Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((groupSource).(gextras.Nativer).Native()))
 
 	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
 }

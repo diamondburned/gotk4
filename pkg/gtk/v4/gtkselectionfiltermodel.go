@@ -25,9 +25,9 @@ func init() {
 
 // SelectionFilterModeller describes SelectionFilterModel's methods.
 type SelectionFilterModeller interface {
-	gextras.Objector
-
+	// Model gets the model currently filtered or nil if none.
 	Model() *SelectionModel
+	// SetModel sets the model to be filtered.
 	SetModel(model SelectionModeller)
 }
 
@@ -39,9 +39,12 @@ type SelectionFilterModel struct {
 	gio.ListModel
 }
 
-var _ SelectionFilterModeller = (*SelectionFilterModel)(nil)
+var (
+	_ SelectionFilterModeller = (*SelectionFilterModel)(nil)
+	_ gextras.Nativer         = (*SelectionFilterModel)(nil)
+)
 
-func wrapSelectionFilterModeller(obj *externglib.Object) SelectionFilterModeller {
+func wrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModeller {
 	return &SelectionFilterModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -53,7 +56,7 @@ func wrapSelectionFilterModeller(obj *externglib.Object) SelectionFilterModeller
 func marshalSelectionFilterModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSelectionFilterModeller(obj), nil
+	return wrapSelectionFilterModel(obj), nil
 }
 
 // NewSelectionFilterModel creates a new `GtkSelectionFilterModel` that will
@@ -62,7 +65,7 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 	var _arg1 *C.GtkSelectionModel       // out
 	var _cret *C.GtkSelectionFilterModel // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_selection_filter_model_new(_arg1)
 
@@ -99,7 +102,7 @@ func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel       // out
 
 	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
 }

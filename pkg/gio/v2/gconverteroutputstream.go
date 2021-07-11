@@ -34,8 +34,7 @@ func init() {
 
 // ConverterOutputStreamer describes ConverterOutputStream's methods.
 type ConverterOutputStreamer interface {
-	gextras.Objector
-
+	// Converter gets the #GConverter that is used by @converter_stream.
 	Converter() *Converter
 }
 
@@ -44,17 +43,18 @@ type ConverterOutputStreamer interface {
 //
 // As of GLib 2.34, OutputStream implements OutputStream.
 type ConverterOutputStream struct {
-	*externglib.Object
-
 	FilterOutputStream
+
 	PollableOutputStream
 }
 
-var _ ConverterOutputStreamer = (*ConverterOutputStream)(nil)
+var (
+	_ ConverterOutputStreamer = (*ConverterOutputStream)(nil)
+	_ gextras.Nativer         = (*ConverterOutputStream)(nil)
+)
 
-func wrapConverterOutputStreamer(obj *externglib.Object) ConverterOutputStreamer {
+func wrapConverterOutputStream(obj *externglib.Object) ConverterOutputStreamer {
 	return &ConverterOutputStream{
-		Object: obj,
 		FilterOutputStream: FilterOutputStream{
 			OutputStream: OutputStream{
 				Object: obj,
@@ -71,18 +71,18 @@ func wrapConverterOutputStreamer(obj *externglib.Object) ConverterOutputStreamer
 func marshalConverterOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConverterOutputStreamer(obj), nil
+	return wrapConverterOutputStream(obj), nil
 }
 
 // NewConverterOutputStream creates a new converter output stream for the
 // @base_stream.
-func NewConverterOutputStream(baseStream OutputStreamer, converter Converterrer) *ConverterOutputStream {
+func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) *ConverterOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.GConverter    // out
 	var _cret *C.GOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
-	_arg2 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GConverter)(unsafe.Pointer((converter).(gextras.Nativer).Native()))
 
 	_cret = C.g_converter_output_stream_new(_arg1, _arg2)
 
@@ -91,6 +91,12 @@ func NewConverterOutputStream(baseStream OutputStreamer, converter Converterrer)
 	_converterOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ConverterOutputStream)
 
 	return _converterOutputStream
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ConverterOutputStream) Native() uintptr {
+	return v.FilterOutputStream.OutputStream.Object.Native()
 }
 
 // Converter gets the #GConverter that is used by @converter_stream.

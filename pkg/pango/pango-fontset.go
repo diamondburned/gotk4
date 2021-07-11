@@ -56,11 +56,11 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 	return cret
 }
 
-// FontsetterOverrider contains methods that are overridable.
+// FontsetOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FontsetterOverrider interface {
+type FontsetOverrider interface {
 	// Foreach iterates through all the fonts in a fontset, calling @func for
 	// each one.
 	//
@@ -69,6 +69,7 @@ type FontsetterOverrider interface {
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
 	Font(wc uint) *Font
+
 	Language() *Language
 	// Metrics: get overall metric information for the fonts in the fontset.
 	Metrics() *FontMetrics
@@ -76,10 +77,13 @@ type FontsetterOverrider interface {
 
 // Fontsetter describes Fontset's methods.
 type Fontsetter interface {
-	gextras.Objector
-
+	// Foreach iterates through all the fonts in a fontset, calling @func for
+	// each one.
 	Foreach(fn FontsetForeachFunc)
+	// Font returns the font in the fontset that contains the best glyph for a
+	// Unicode character.
 	Font(wc uint) *Font
+	// Metrics: get overall metric information for the fonts in the fontset.
 	Metrics() *FontMetrics
 }
 
@@ -94,9 +98,12 @@ type Fontset struct {
 	*externglib.Object
 }
 
-var _ Fontsetter = (*Fontset)(nil)
+var (
+	_ Fontsetter      = (*Fontset)(nil)
+	_ gextras.Nativer = (*Fontset)(nil)
+)
 
-func wrapFontsetter(obj *externglib.Object) Fontsetter {
+func wrapFontset(obj *externglib.Object) Fontsetter {
 	return &Fontset{
 		Object: obj,
 	}
@@ -105,7 +112,7 @@ func wrapFontsetter(obj *externglib.Object) Fontsetter {
 func marshalFontsetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontsetter(obj), nil
+	return wrapFontset(obj), nil
 }
 
 // Foreach iterates through all the fonts in a fontset, calling @func for each
@@ -165,9 +172,9 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 
 // FontsetSimpler describes FontsetSimple's methods.
 type FontsetSimpler interface {
-	gextras.Objector
-
+	// Append adds a font to the fontset.
 	Append(font Fonter)
+	// Size returns the number of fonts in the fontset.
 	Size() int
 }
 
@@ -180,9 +187,12 @@ type FontsetSimple struct {
 	Fontset
 }
 
-var _ FontsetSimpler = (*FontsetSimple)(nil)
+var (
+	_ FontsetSimpler  = (*FontsetSimple)(nil)
+	_ gextras.Nativer = (*FontsetSimple)(nil)
+)
 
-func wrapFontsetSimpler(obj *externglib.Object) FontsetSimpler {
+func wrapFontsetSimple(obj *externglib.Object) FontsetSimpler {
 	return &FontsetSimple{
 		Fontset: Fontset{
 			Object: obj,
@@ -193,7 +203,7 @@ func wrapFontsetSimpler(obj *externglib.Object) FontsetSimpler {
 func marshalFontsetSimpler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontsetSimpler(obj), nil
+	return wrapFontsetSimple(obj), nil
 }
 
 // NewFontsetSimple creates a new `PangoFontsetSimple` for the given language.
@@ -218,7 +228,7 @@ func (fontset *FontsetSimple) Append(font Fonter) {
 	var _arg1 *C.PangoFont          // out
 
 	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(fontset.Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
 
 	C.pango_fontset_simple_append(_arg0, _arg1)
 }

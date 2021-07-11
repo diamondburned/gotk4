@@ -24,8 +24,7 @@ func init() {
 
 // GestureSwiper describes GestureSwipe's methods.
 type GestureSwiper interface {
-	gextras.Objector
-
+	// Velocity gets the current velocity.
 	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
@@ -44,9 +43,12 @@ type GestureSwipe struct {
 	GestureSingle
 }
 
-var _ GestureSwiper = (*GestureSwipe)(nil)
+var (
+	_ GestureSwiper   = (*GestureSwipe)(nil)
+	_ gextras.Nativer = (*GestureSwipe)(nil)
+)
 
-func wrapGestureSwiper(obj *externglib.Object) GestureSwiper {
+func wrapGestureSwipe(obj *externglib.Object) GestureSwiper {
 	return &GestureSwipe{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -61,7 +63,7 @@ func wrapGestureSwiper(obj *externglib.Object) GestureSwiper {
 func marshalGestureSwiper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureSwiper(obj), nil
+	return wrapGestureSwipe(obj), nil
 }
 
 // NewGestureSwipe returns a newly created `GtkGesture` that recognizes swipes.

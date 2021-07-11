@@ -26,31 +26,45 @@ func init() {
 	})
 }
 
-// AppChooserButtonnerOverrider contains methods that are overridable.
+// AppChooserButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AppChooserButtonnerOverrider interface {
+type AppChooserButtonOverrider interface {
 	CustomItemActivated(itemName string)
 }
 
 // AppChooserButtonner describes AppChooserButton's methods.
 type AppChooserButtonner interface {
-	gextras.Objector
-
+	// AppendCustomItem appends a custom item to the list of applications that
+	// is shown in the popup; the item name must be unique per-widget.
 	AppendCustomItem(name string, label string, icon gio.Iconner)
+	// AppendSeparator appends a separator to the list of applications that is
+	// shown in the popup.
 	AppendSeparator()
+	// Heading returns the text to display at the top of the dialog.
 	Heading() string
+	// ShowDefaultItem returns the current value of the
+	// AppChooserButton:show-default-item property.
 	ShowDefaultItem() bool
+	// ShowDialogItem returns the current value of the
+	// AppChooserButton:show-dialog-item property.
 	ShowDialogItem() bool
+	// SetActiveCustomItem selects a custom item previously added with
+	// gtk_app_chooser_button_append_custom_item().
 	SetActiveCustomItem(name string)
+	// SetHeading sets the text to display at the top of the dialog.
 	SetHeading(heading string)
+	// SetShowDefaultItem sets whether the dropdown menu of this button should
+	// show the default application for the given content type at top.
 	SetShowDefaultItem(setting bool)
+	// SetShowDialogItem sets whether the dropdown menu of this button should
+	// show an entry to trigger a AppChooserDialog.
 	SetShowDialogItem(setting bool)
 }
 
-// AppChooserButton: the AppChooserButton is a widget that lets the user select
-// an application. It implements the AppChooser interface.
+// AppChooserButton is a widget that lets the user select an application. It
+// implements the AppChooser interface.
 //
 // Initially, a AppChooserButton selects the first application in its list,
 // which will either be the most-recently used application or, if
@@ -71,29 +85,22 @@ type AppChooserButtonner interface {
 // To track changes in the selected application, use the ComboBox::changed
 // signal.
 type AppChooserButton struct {
-	*externglib.Object
-
 	ComboBox
-	atk.ImplementorIface
+
 	AppChooser
-	Buildable
-	CellEditable
-	CellLayout
 }
 
-var _ AppChooserButtonner = (*AppChooserButton)(nil)
+var (
+	_ AppChooserButtonner = (*AppChooserButton)(nil)
+	_ gextras.Nativer     = (*AppChooserButton)(nil)
+)
 
-func wrapAppChooserButtonner(obj *externglib.Object) AppChooserButtonner {
+func wrapAppChooserButton(obj *externglib.Object) AppChooserButtonner {
 	return &AppChooserButton{
-		Object: obj,
 		ComboBox: ComboBox{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -104,30 +111,10 @@ func wrapAppChooserButtonner(obj *externglib.Object) AppChooserButtonner {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			CellEditable: CellEditable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -143,13 +130,8 @@ func wrapAppChooserButtonner(obj *externglib.Object) AppChooserButtonner {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
 		AppChooser: AppChooser{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -160,27 +142,6 @@ func wrapAppChooserButtonner(obj *externglib.Object) AppChooserButtonner {
 					Object: obj,
 				},
 			},
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		CellEditable: CellEditable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		CellLayout: CellLayout{
-			Object: obj,
 		},
 	}
 }
@@ -188,7 +149,7 @@ func wrapAppChooserButtonner(obj *externglib.Object) AppChooserButtonner {
 func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooserButtonner(obj), nil
+	return wrapAppChooserButton(obj), nil
 }
 
 // NewAppChooserButton creates a new AppChooserButton for applications that can
@@ -209,6 +170,12 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	return _appChooserButton
 }
 
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *AppChooserButton) Native() uintptr {
+	return v.ComboBox.Bin.Container.Widget.InitiallyUnowned.Object.Native()
+}
+
 // AppendCustomItem appends a custom item to the list of applications that is
 // shown in the popup; the item name must be unique per-widget. Clients can use
 // the provided name as a detail for the AppChooserButton::custom-item-activated
@@ -225,7 +192,7 @@ func (self *AppChooserButton) AppendCustomItem(name string, label string, icon g
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg3 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
 }

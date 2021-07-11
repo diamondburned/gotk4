@@ -25,23 +25,37 @@ func init() {
 
 // AppChooserButtonner describes AppChooserButton's methods.
 type AppChooserButtonner interface {
-	gextras.Objector
-
+	// AppendCustomItem appends a custom item to the list of applications that
+	// is shown in the popup.
 	AppendCustomItem(name string, label string, icon gio.Iconner)
+	// AppendSeparator appends a separator to the list of applications that is
+	// shown in the popup.
 	AppendSeparator()
+	// Heading returns the text to display at the top of the dialog.
 	Heading() string
+	// Modal gets whether the dialog is modal.
 	Modal() bool
+	// ShowDefaultItem returns whether the dropdown menu should show the default
+	// application at the top.
 	ShowDefaultItem() bool
+	// ShowDialogItem returns whether the dropdown menu shows an item for a
+	// `GtkAppChooserDialog`.
 	ShowDialogItem() bool
+	// SetActiveCustomItem selects a custom item.
 	SetActiveCustomItem(name string)
+	// SetHeading sets the text to display at the top of the dialog.
 	SetHeading(heading string)
+	// SetModal sets whether the dialog should be modal.
 	SetModal(modal bool)
+	// SetShowDefaultItem sets whether the dropdown menu of this button should
+	// show the default application for the given content type at top.
 	SetShowDefaultItem(setting bool)
+	// SetShowDialogItem sets whether the dropdown menu of this button should
+	// show an entry to trigger a `GtkAppChooserDialog`.
 	SetShowDialogItem(setting bool)
 }
 
-// AppChooserButton: the `GtkAppChooserButton` lets the user select an
-// application.
+// AppChooserButton: `GtkAppChooserButton` lets the user select an application.
 //
 // !An example GtkAppChooserButton (appchooserbutton.png)
 //
@@ -70,22 +84,19 @@ type AppChooserButtonner interface {
 //
 // `GtkAppChooserButton` has a single CSS node with the name “appchooserbutton”.
 type AppChooserButton struct {
-	*externglib.Object
-
 	Widget
-	Accessible
+
 	AppChooser
-	Buildable
-	ConstraintTarget
 }
 
-var _ AppChooserButtonner = (*AppChooserButton)(nil)
+var (
+	_ AppChooserButtonner = (*AppChooserButton)(nil)
+	_ gextras.Nativer     = (*AppChooserButton)(nil)
+)
 
-func wrapAppChooserButtonner(obj *externglib.Object) AppChooserButtonner {
+func wrapAppChooserButton(obj *externglib.Object) AppChooserButtonner {
 	return &AppChooserButton{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -99,13 +110,8 @@ func wrapAppChooserButtonner(obj *externglib.Object) AppChooserButtonner {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
 		AppChooser: AppChooser{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -120,19 +126,13 @@ func wrapAppChooserButtonner(obj *externglib.Object) AppChooserButtonner {
 				},
 			},
 		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooserButtonner(obj), nil
+	return wrapAppChooserButton(obj), nil
 }
 
 // NewAppChooserButton creates a new `GtkAppChooserButton` for applications that
@@ -151,6 +151,12 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	_appChooserButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserButton)
 
 	return _appChooserButton
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *AppChooserButton) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // AppendCustomItem appends a custom item to the list of applications that is
@@ -172,7 +178,7 @@ func (self *AppChooserButton) AppendCustomItem(name string, label string, icon g
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg3 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
 }

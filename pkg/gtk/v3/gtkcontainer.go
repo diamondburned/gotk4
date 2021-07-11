@@ -26,15 +26,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_container_get_type()), F: marshalContainerrer},
+		{T: externglib.Type(C.gtk_container_get_type()), F: marshalContainerer},
 	})
 }
 
-// ContainerrerOverrider contains methods that are overridable.
+// ContainerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ContainerrerOverrider interface {
+type ContainerOverrider interface {
 	// Add adds @widget to @container. Typically used for simple containers such
 	// as Window, Frame, or Button; for more complicated layout containers such
 	// as Box or Grid, this function will pick default packing parameters that
@@ -46,12 +46,14 @@ type ContainerrerOverrider interface {
 	// Note that some containers, such as ScrolledWindow or ListBox, may add
 	// intermediate children between the added widget and the container.
 	Add(widget Widgetter)
+
 	CheckResize()
 	// ChildType returns the type of the children supported by the container.
 	//
 	// Note that this may return G_TYPE_NONE to indicate that no more children
 	// can be added, e.g. for a Paned which already has two children.
 	ChildType() externglib.Type
+
 	CompositeName(child Widgetter) string
 	// Forall invokes @callback on each direct child of @container, including
 	// children that are considered “internal” (implementation details of the
@@ -87,32 +89,69 @@ type ContainerrerOverrider interface {
 	SetFocusChild(child Widgetter)
 }
 
-// Containerrer describes Container's methods.
-type Containerrer interface {
-	gextras.Objector
-
+// Containerer describes Container's methods.
+type Containerer interface {
+	// Add adds @widget to @container.
 	Add(widget Widgetter)
+
 	CheckResize()
+	// ChildGetProperty gets the value of a child property for @child and
+	// @container.
 	ChildGetProperty(child Widgetter, propertyName string, value *externglib.Value)
+	// ChildNotify emits a Widget::child-notify signal for the [child
+	// property][child-properties] @child_property on the child.
 	ChildNotify(child Widgetter, childProperty string)
+	// ChildSetProperty sets a child property for @child and @container.
 	ChildSetProperty(child Widgetter, propertyName string, value *externglib.Value)
+	// ChildType returns the type of the children supported by the container.
 	ChildType() externglib.Type
+	// Forall invokes @callback on each direct child of @container, including
+	// children that are considered “internal” (implementation details of the
+	// container).
 	Forall(callback Callback)
+	// Foreach invokes @callback on each non-internal child of @container.
 	Foreach(callback Callback)
+	// BorderWidth retrieves the border width of the container.
 	BorderWidth() uint
+	// FocusChild returns the current focus child widget inside @container.
 	FocusChild() *Widget
+	// FocusHAdjustment retrieves the horizontal focus adjustment for the
+	// container.
 	FocusHAdjustment() *Adjustment
+	// FocusVAdjustment retrieves the vertical focus adjustment for the
+	// container.
 	FocusVAdjustment() *Adjustment
+	// PathForChild returns a newly created widget path representing all the
+	// widget hierarchy from the toplevel down to and including @child.
 	PathForChild(child Widgetter) *WidgetPath
+	// ResizeMode returns the resize mode for the container.
 	ResizeMode() ResizeMode
+	// PropagateDraw: when a container receives a call to the draw function, it
+	// must send synthetic Widget::draw calls to all children that don’t have
+	// their own Windows.
 	PropagateDraw(child Widgetter, cr *cairo.Context)
+	// Remove removes @widget from @container.
 	Remove(widget Widgetter)
+	// ResizeChildren: deprecated: since version 3.10.
 	ResizeChildren()
+	// SetBorderWidth sets the border width of the container.
 	SetBorderWidth(borderWidth uint)
+	// SetFocusChild: sets, or unsets if @child is nil, the focused child of
+	// @container.
 	SetFocusChild(child Widgetter)
+	// SetFocusHAdjustment hooks up an adjustment to focus handling in a
+	// container, so when a child of the container is focused, the adjustment is
+	// scrolled to show that widget.
 	SetFocusHAdjustment(adjustment Adjustmenter)
+	// SetFocusVAdjustment hooks up an adjustment to focus handling in a
+	// container, so when a child of the container is focused, the adjustment is
+	// scrolled to show that widget.
 	SetFocusVAdjustment(adjustment Adjustmenter)
+	// SetReallocateRedraws sets the @reallocate_redraws flag of the container
+	// to the given value.
 	SetReallocateRedraws(needsRedraws bool)
+	// UnsetFocusChain removes a focus chain explicitly set with
+	// gtk_container_set_focus_chain().
 	UnsetFocusChain()
 }
 
@@ -289,20 +328,17 @@ type Containerrer interface {
 //      </focus-chain>
 //    </object>
 type Container struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Containerrer = (*Container)(nil)
+var (
+	_ Containerer     = (*Container)(nil)
+	_ gextras.Nativer = (*Container)(nil)
+)
 
-func wrapContainerrer(obj *externglib.Object) Containerrer {
+func wrapContainer(obj *externglib.Object) Containerer {
 	return &Container{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -313,19 +349,13 @@ func wrapContainerrer(obj *externglib.Object) Containerrer {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
-func marshalContainerrer(p uintptr) (interface{}, error) {
+func marshalContainerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContainerrer(obj), nil
+	return wrapContainer(obj), nil
 }
 
 // Add adds @widget to @container. Typically used for simple containers such as
@@ -343,7 +373,7 @@ func (container *Container) Add(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_container_add(_arg0, _arg1)
 }
@@ -365,7 +395,7 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 	var _arg3 *C.GValue       // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
@@ -385,7 +415,7 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(childProperty))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -400,7 +430,7 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 	var _arg3 *C.GValue       // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
@@ -545,7 +575,7 @@ func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 	var _cret *C.GtkWidgetPath // in
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_container_get_path_for_child(_arg0, _arg1)
 
@@ -601,7 +631,7 @@ func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 	var _arg2 *C.cairo_t      // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 
 	C.gtk_container_propagate_draw(_arg0, _arg1, _arg2)
@@ -620,7 +650,7 @@ func (container *Container) Remove(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_container_remove(_arg0, _arg1)
 }
@@ -666,7 +696,7 @@ func (container *Container) SetFocusChild(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_container_set_focus_child(_arg0, _arg1)
 }
@@ -685,7 +715,7 @@ func (container *Container) SetFocusHAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_container_set_focus_hadjustment(_arg0, _arg1)
 }
@@ -704,7 +734,7 @@ func (container *Container) SetFocusVAdjustment(adjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_container_set_focus_vadjustment(_arg0, _arg1)
 }

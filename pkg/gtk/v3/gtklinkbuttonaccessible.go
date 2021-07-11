@@ -27,28 +27,23 @@ func init() {
 
 // LinkButtonAccessibler describes LinkButtonAccessible's methods.
 type LinkButtonAccessibler interface {
-	gextras.Objector
-
 	privateLinkButtonAccessible()
 }
 
 type LinkButtonAccessible struct {
-	*externglib.Object
-
 	ButtonAccessible
-	atk.Action
-	atk.Component
+
 	atk.HyperlinkImpl
-	atk.Image
 }
 
-var _ LinkButtonAccessibler = (*LinkButtonAccessible)(nil)
+var (
+	_ LinkButtonAccessibler = (*LinkButtonAccessible)(nil)
+	_ gextras.Nativer       = (*LinkButtonAccessible)(nil)
+)
 
-func wrapLinkButtonAccessibler(obj *externglib.Object) LinkButtonAccessibler {
+func wrapLinkButtonAccessible(obj *externglib.Object) LinkButtonAccessibler {
 	return &LinkButtonAccessible{
-		Object: obj,
 		ButtonAccessible: ButtonAccessible{
-			Object: obj,
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
@@ -60,30 +55,15 @@ func wrapLinkButtonAccessibler(obj *externglib.Object) LinkButtonAccessibler {
 						Object: obj,
 					},
 				},
-				Component: atk.Component{
-					Object: obj,
-				},
 			},
 			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
 				Object: obj,
 			},
 			Image: atk.Image{
 				Object: obj,
 			},
 		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
 		HyperlinkImpl: atk.HyperlinkImpl{
-			Object: obj,
-		},
-		Image: atk.Image{
 			Object: obj,
 		},
 	}
@@ -92,7 +72,13 @@ func wrapLinkButtonAccessibler(obj *externglib.Object) LinkButtonAccessibler {
 func marshalLinkButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLinkButtonAccessibler(obj), nil
+	return wrapLinkButtonAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *LinkButtonAccessible) Native() uintptr {
+	return v.ButtonAccessible.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*LinkButtonAccessible) privateLinkButtonAccessible() {}

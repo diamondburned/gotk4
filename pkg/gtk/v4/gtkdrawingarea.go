@@ -54,21 +54,25 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	fn(drawingArea, cr, width, height, userData)
 }
 
-// DrawingAreaerOverrider contains methods that are overridable.
+// DrawingAreaOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DrawingAreaerOverrider interface {
+type DrawingAreaOverrider interface {
 	Resize(width int, height int)
 }
 
 // DrawingAreaer describes DrawingArea's methods.
 type DrawingAreaer interface {
-	gextras.Objector
-
+	// ContentHeight retrieves the content height of the `GtkDrawingArea`.
 	ContentHeight() int
+	// ContentWidth retrieves the content width of the `GtkDrawingArea`.
 	ContentWidth() int
+	// SetContentHeight sets the desired height of the contents of the drawing
+	// area.
 	SetContentHeight(height int)
+	// SetContentWidth sets the desired width of the contents of the drawing
+	// area.
 	SetContentWidth(width int)
 }
 
@@ -142,21 +146,17 @@ type DrawingAreaer interface {
 // If you need more complex control over your widget, you should consider
 // creating your own `GtkWidget` subclass.
 type DrawingArea struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ DrawingAreaer = (*DrawingArea)(nil)
+var (
+	_ DrawingAreaer   = (*DrawingArea)(nil)
+	_ gextras.Nativer = (*DrawingArea)(nil)
+)
 
-func wrapDrawingAreaer(obj *externglib.Object) DrawingAreaer {
+func wrapDrawingArea(obj *externglib.Object) DrawingAreaer {
 	return &DrawingArea{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -170,22 +170,13 @@ func wrapDrawingAreaer(obj *externglib.Object) DrawingAreaer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalDrawingAreaer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrawingAreaer(obj), nil
+	return wrapDrawingArea(obj), nil
 }
 
 // NewDrawingArea creates a new drawing area.

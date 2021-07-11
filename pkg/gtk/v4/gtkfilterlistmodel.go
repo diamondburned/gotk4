@@ -25,14 +25,19 @@ func init() {
 
 // FilterListModeller describes FilterListModel's methods.
 type FilterListModeller interface {
-	gextras.Objector
-
+	// Filter gets the `GtkFilter` currently set on @self.
 	Filter() *Filter
+	// Incremental returns whether incremental filtering is enabled.
 	Incremental() bool
+	// Model gets the model currently filtered or nil if none.
 	Model() *gio.ListModel
+	// Pending returns the number of items that have not been filtered yet.
 	Pending() uint
-	SetFilter(filter Filterrer)
+	// SetFilter sets the filter used to filter items.
+	SetFilter(filter Filterer)
+	// SetIncremental sets the filter model to do an incremental sort.
 	SetIncremental(incremental bool)
+	// SetModel sets the model to be filtered.
 	SetModel(model gio.ListModeller)
 }
 
@@ -51,9 +56,12 @@ type FilterListModel struct {
 	gio.ListModel
 }
 
-var _ FilterListModeller = (*FilterListModel)(nil)
+var (
+	_ FilterListModeller = (*FilterListModel)(nil)
+	_ gextras.Nativer    = (*FilterListModel)(nil)
+)
 
-func wrapFilterListModeller(obj *externglib.Object) FilterListModeller {
+func wrapFilterListModel(obj *externglib.Object) FilterListModeller {
 	return &FilterListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -65,18 +73,18 @@ func wrapFilterListModeller(obj *externglib.Object) FilterListModeller {
 func marshalFilterListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilterListModeller(obj), nil
+	return wrapFilterListModel(obj), nil
 }
 
 // NewFilterListModel creates a new `GtkFilterListModel` that will filter @model
 // using the given @filter.
-func NewFilterListModel(model gio.ListModeller, filter Filterrer) *FilterListModel {
+func NewFilterListModel(model gio.ListModeller, filter Filterer) *FilterListModel {
 	var _arg1 *C.GListModel         // out
 	var _arg2 *C.GtkFilter          // out
 	var _cret *C.GtkFilterListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkFilter)(unsafe.Pointer((filter).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_filter_list_model_new(_arg1, _arg2)
 
@@ -169,12 +177,12 @@ func (self *FilterListModel) Pending() uint {
 }
 
 // SetFilter sets the filter used to filter items.
-func (self *FilterListModel) SetFilter(filter Filterrer) {
+func (self *FilterListModel) SetFilter(filter Filterer) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GtkFilter          // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer((filter).(gextras.Nativer).Native()))
 
 	C.gtk_filter_list_model_set_filter(_arg0, _arg1)
 }
@@ -217,7 +225,7 @@ func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel         // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_filter_list_model_set_model(_arg0, _arg1)
 }

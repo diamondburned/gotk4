@@ -26,19 +26,19 @@ func init() {
 	})
 }
 
-// PluggerOverrider contains methods that are overridable.
+// PlugOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PluggerOverrider interface {
+type PlugOverrider interface {
 	Embedded()
 }
 
 // Plugger describes Plug's methods.
 type Plugger interface {
-	gextras.Objector
-
+	// Embedded determines whether the plug is embedded in a socket.
 	Embedded() bool
+	// SocketWindow retrieves the socket the plug is embedded in.
 	SocketWindow() *gdk.Window
 }
 
@@ -59,26 +59,20 @@ type Plugger interface {
 // X11Display. To use Plug and Socket, you need to include the `gtk/gtkx.h`
 // header.
 type Plug struct {
-	*externglib.Object
-
 	Window
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Plugger = (*Plug)(nil)
+var (
+	_ Plugger         = (*Plug)(nil)
+	_ gextras.Nativer = (*Plug)(nil)
+)
 
-func wrapPlugger(obj *externglib.Object) Plugger {
+func wrapPlug(obj *externglib.Object) Plugger {
 	return &Plug{
-		Object: obj,
 		Window: Window{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -89,32 +83,8 @@ func wrapPlugger(obj *externglib.Object) Plugger {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -122,7 +92,7 @@ func wrapPlugger(obj *externglib.Object) Plugger {
 func marshalPlugger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlugger(obj), nil
+	return wrapPlug(obj), nil
 }
 
 // Embedded determines whether the plug is embedded in a socket.

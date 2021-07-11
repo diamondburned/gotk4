@@ -25,32 +25,36 @@ func init() {
 	})
 }
 
-// AccessiblerOverrider contains methods that are overridable.
+// AccessibleOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AccessiblerOverrider interface {
+type AccessibleOverrider interface {
 	// ConnectWidgetDestroyed: this function specifies the callback function to
 	// be called when the widget corresponding to a GtkAccessible is destroyed.
 	//
 	// Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
 	ConnectWidgetDestroyed()
+
 	WidgetSet()
+
 	WidgetUnset()
 }
 
 // Accessibler describes Accessible's methods.
 type Accessibler interface {
-	gextras.Objector
-
+	// ConnectWidgetDestroyed: this function specifies the callback function to
+	// be called when the widget corresponding to a GtkAccessible is destroyed.
 	ConnectWidgetDestroyed()
+	// Widget gets the Widget corresponding to the Accessible.
 	Widget() *Widget
+	// SetWidget sets the Widget corresponding to the Accessible.
 	SetWidget(widget Widgetter)
 }
 
-// Accessible: the Accessible class is the base class for accessible
-// implementations for Widget subclasses. It is a thin wrapper around Object,
-// which adds facilities for associating a widget with its accessible object.
+// Accessible class is the base class for accessible implementations for Widget
+// subclasses. It is a thin wrapper around Object, which adds facilities for
+// associating a widget with its accessible object.
 //
 // An accessible implementation for a third-party widget should derive from
 // Accessible and implement the suitable interfaces from ATK, such as Text or
@@ -61,9 +65,12 @@ type Accessible struct {
 	atk.ObjectClass
 }
 
-var _ Accessibler = (*Accessible)(nil)
+var (
+	_ Accessibler     = (*Accessible)(nil)
+	_ gextras.Nativer = (*Accessible)(nil)
+)
 
-func wrapAccessibler(obj *externglib.Object) Accessibler {
+func wrapAccessible(obj *externglib.Object) Accessibler {
 	return &Accessible{
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
@@ -74,7 +81,7 @@ func wrapAccessibler(obj *externglib.Object) Accessibler {
 func marshalAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccessibler(obj), nil
+	return wrapAccessible(obj), nil
 }
 
 // ConnectWidgetDestroyed: this function specifies the callback function to be
@@ -116,7 +123,7 @@ func (accessible *Accessible) SetWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_accessible_set_widget(_arg0, _arg1)
 }

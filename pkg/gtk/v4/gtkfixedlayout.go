@@ -27,8 +27,6 @@ func init() {
 
 // FixedLayouter describes FixedLayout's methods.
 type FixedLayouter interface {
-	gextras.Objector
-
 	privateFixedLayout()
 }
 
@@ -65,9 +63,12 @@ type FixedLayout struct {
 	LayoutManager
 }
 
-var _ FixedLayouter = (*FixedLayout)(nil)
+var (
+	_ FixedLayouter   = (*FixedLayout)(nil)
+	_ gextras.Nativer = (*FixedLayout)(nil)
+)
 
-func wrapFixedLayouter(obj *externglib.Object) FixedLayouter {
+func wrapFixedLayout(obj *externglib.Object) FixedLayouter {
 	return &FixedLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -78,7 +79,7 @@ func wrapFixedLayouter(obj *externglib.Object) FixedLayouter {
 func marshalFixedLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixedLayouter(obj), nil
+	return wrapFixedLayout(obj), nil
 }
 
 // NewFixedLayout creates a new `GtkFixedLayout`.
@@ -98,9 +99,9 @@ func (*FixedLayout) privateFixedLayout() {}
 
 // FixedLayoutChilder describes FixedLayoutChild's methods.
 type FixedLayoutChilder interface {
-	gextras.Objector
-
+	// Transform retrieves the transformation of the child.
 	Transform() *gsk.Transform
+	// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
 	SetTransform(transform *gsk.Transform)
 }
 
@@ -110,9 +111,12 @@ type FixedLayoutChild struct {
 	LayoutChild
 }
 
-var _ FixedLayoutChilder = (*FixedLayoutChild)(nil)
+var (
+	_ FixedLayoutChilder = (*FixedLayoutChild)(nil)
+	_ gextras.Nativer    = (*FixedLayoutChild)(nil)
+)
 
-func wrapFixedLayoutChilder(obj *externglib.Object) FixedLayoutChilder {
+func wrapFixedLayoutChild(obj *externglib.Object) FixedLayoutChilder {
 	return &FixedLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,
@@ -123,7 +127,7 @@ func wrapFixedLayoutChilder(obj *externglib.Object) FixedLayoutChilder {
 func marshalFixedLayoutChilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixedLayoutChilder(obj), nil
+	return wrapFixedLayoutChild(obj), nil
 }
 
 // Transform retrieves the transformation of the child.

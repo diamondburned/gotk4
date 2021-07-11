@@ -24,13 +24,19 @@ func init() {
 
 // CellRendererToggler describes CellRendererToggle's methods.
 type CellRendererToggler interface {
-	gextras.Objector
-
+	// Activatable returns whether the cell renderer is activatable.
 	Activatable() bool
+	// Active returns whether the cell renderer is active.
 	Active() bool
+	// Radio returns whether we’re rendering radio toggles rather than
+	// checkboxes.
 	Radio() bool
+	// SetActivatable makes the cell renderer activatable.
 	SetActivatable(setting bool)
+	// SetActive activates or deactivates a cell renderer.
 	SetActive(setting bool)
+	// SetRadio: if @radio is true, the cell renderer renders a radio toggle
+	// (i.e.
 	SetRadio(radio bool)
 }
 
@@ -43,9 +49,12 @@ type CellRendererToggle struct {
 	CellRenderer
 }
 
-var _ CellRendererToggler = (*CellRendererToggle)(nil)
+var (
+	_ CellRendererToggler = (*CellRendererToggle)(nil)
+	_ gextras.Nativer     = (*CellRendererToggle)(nil)
+)
 
-func wrapCellRendererToggler(obj *externglib.Object) CellRendererToggler {
+func wrapCellRendererToggle(obj *externglib.Object) CellRendererToggler {
 	return &CellRendererToggle{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -58,7 +67,7 @@ func wrapCellRendererToggler(obj *externglib.Object) CellRendererToggler {
 func marshalCellRendererToggler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererToggler(obj), nil
+	return wrapCellRendererToggle(obj), nil
 }
 
 // NewCellRendererToggle creates a new CellRendererToggle. Adjust rendering

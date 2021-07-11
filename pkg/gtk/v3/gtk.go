@@ -63,6 +63,7 @@ type NotebookTab int
 
 const (
 	NotebookTabFirst NotebookTab = iota
+
 	NotebookTabLast
 )
 
@@ -109,28 +110,49 @@ func marshalScrollStep(p uintptr) (interface{}, error) {
 type DebugFlag int
 
 const (
-	DebugFlagMisc         DebugFlag = 0b1
-	DebugFlagPlugsocket   DebugFlag = 0b10
-	DebugFlagText         DebugFlag = 0b100
-	DebugFlagTree         DebugFlag = 0b1000
-	DebugFlagUpdates      DebugFlag = 0b10000
-	DebugFlagKeybindings  DebugFlag = 0b100000
-	DebugFlagMultihead    DebugFlag = 0b1000000
-	DebugFlagModules      DebugFlag = 0b10000000
-	DebugFlagGeometry     DebugFlag = 0b100000000
-	DebugFlagIcontheme    DebugFlag = 0b1000000000
-	DebugFlagPrinting     DebugFlag = 0b10000000000
-	DebugFlagBuilder      DebugFlag = 0b100000000000
-	DebugFlagSizeRequest  DebugFlag = 0b1000000000000
-	DebugFlagNoCSSCache   DebugFlag = 0b10000000000000
-	DebugFlagBaselines    DebugFlag = 0b100000000000000
-	DebugFlagPixelCache   DebugFlag = 0b1000000000000000
+	DebugFlagMisc DebugFlag = 0b1
+
+	DebugFlagPlugsocket DebugFlag = 0b10
+
+	DebugFlagText DebugFlag = 0b100
+
+	DebugFlagTree DebugFlag = 0b1000
+
+	DebugFlagUpdates DebugFlag = 0b10000
+
+	DebugFlagKeybindings DebugFlag = 0b100000
+
+	DebugFlagMultihead DebugFlag = 0b1000000
+
+	DebugFlagModules DebugFlag = 0b10000000
+
+	DebugFlagGeometry DebugFlag = 0b100000000
+
+	DebugFlagIcontheme DebugFlag = 0b1000000000
+
+	DebugFlagPrinting DebugFlag = 0b10000000000
+
+	DebugFlagBuilder DebugFlag = 0b100000000000
+
+	DebugFlagSizeRequest DebugFlag = 0b1000000000000
+
+	DebugFlagNoCSSCache DebugFlag = 0b10000000000000
+
+	DebugFlagBaselines DebugFlag = 0b100000000000000
+
+	DebugFlagPixelCache DebugFlag = 0b1000000000000000
+
 	DebugFlagNoPixelCache DebugFlag = 0b10000000000000000
-	DebugFlagInteractive  DebugFlag = 0b100000000000000000
-	DebugFlagTouchscreen  DebugFlag = 0b1000000000000000000
-	DebugFlagActions      DebugFlag = 0b10000000000000000000
-	DebugFlagResize       DebugFlag = 0b100000000000000000000
-	DebugFlagLayout       DebugFlag = 0b1000000000000000000000
+
+	DebugFlagInteractive DebugFlag = 0b100000000000000000
+
+	DebugFlagTouchscreen DebugFlag = 0b1000000000000000000
+
+	DebugFlagActions DebugFlag = 0b10000000000000000000
+
+	DebugFlagResize DebugFlag = 0b100000000000000000000
+
+	DebugFlagLayout DebugFlag = 0b1000000000000000000000
 )
 
 func marshalDebugFlag(p uintptr) (interface{}, error) {
@@ -139,24 +161,23 @@ func marshalDebugFlag(p uintptr) (interface{}, error) {
 
 // EntryIconAccessibler describes EntryIconAccessible's methods.
 type EntryIconAccessibler interface {
-	gextras.Objector
-
 	privateEntryIconAccessible()
 }
 
 type EntryIconAccessible struct {
-	*externglib.Object
-
 	atk.ObjectClass
+
 	atk.Action
 	atk.Component
 }
 
-var _ EntryIconAccessibler = (*EntryIconAccessible)(nil)
+var (
+	_ EntryIconAccessibler = (*EntryIconAccessible)(nil)
+	_ gextras.Nativer      = (*EntryIconAccessible)(nil)
+)
 
-func wrapEntryIconAccessibler(obj *externglib.Object) EntryIconAccessibler {
+func wrapEntryIconAccessible(obj *externglib.Object) EntryIconAccessibler {
 	return &EntryIconAccessible{
-		Object: obj,
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
@@ -172,7 +193,13 @@ func wrapEntryIconAccessibler(obj *externglib.Object) EntryIconAccessibler {
 func marshalEntryIconAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryIconAccessibler(obj), nil
+	return wrapEntryIconAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *EntryIconAccessible) Native() uintptr {
+	return v.ObjectClass.Object.Native()
 }
 
 func (*EntryIconAccessible) privateEntryIconAccessible() {}

@@ -24,8 +24,6 @@ func init() {
 
 // FileChooserWidgetter describes FileChooserWidget's methods.
 type FileChooserWidgetter interface {
-	gextras.Objector
-
 	privateFileChooserWidget()
 }
 
@@ -39,22 +37,19 @@ type FileChooserWidgetter interface {
 //
 // `GtkFileChooserWidget` has a single CSS node with name filechooser.
 type FileChooserWidget struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	FileChooser
 }
 
-var _ FileChooserWidgetter = (*FileChooserWidget)(nil)
+var (
+	_ FileChooserWidgetter = (*FileChooserWidget)(nil)
+	_ gextras.Nativer      = (*FileChooserWidget)(nil)
+)
 
-func wrapFileChooserWidgetter(obj *externglib.Object) FileChooserWidgetter {
+func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidgetter {
 	return &FileChooserWidget{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -68,15 +63,6 @@ func wrapFileChooserWidgetter(obj *externglib.Object) FileChooserWidgetter {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		FileChooser: FileChooser{
 			Object: obj,
 		},
@@ -86,7 +72,13 @@ func wrapFileChooserWidgetter(obj *externglib.Object) FileChooserWidgetter {
 func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserWidgetter(obj), nil
+	return wrapFileChooserWidget(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FileChooserWidget) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*FileChooserWidget) privateFileChooserWidget() {}

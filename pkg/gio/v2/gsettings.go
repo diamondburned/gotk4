@@ -71,9 +71,9 @@ func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
 	return SettingsBindFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SettingsBindGetMapping: the type for the function that is used to convert
-// from #GSettings to an object property. The @value is already initialized to
-// hold values of the appropriate type.
+// SettingsBindGetMapping: type for the function that is used to convert from
+// #GSettings to an object property. The @value is already initialized to hold
+// values of the appropriate type.
 type SettingsBindGetMapping func(value *externglib.Value, variant *glib.Variant, userData interface{}) (ok bool)
 
 //export gotk4_SettingsBindGetMapping
@@ -105,7 +105,7 @@ func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpoin
 	return cret
 }
 
-// SettingsBindSetMapping: the type for the function that is used to convert an
+// SettingsBindSetMapping: type for the function that is used to convert an
 // object property value to a #GVariant for storing it in #GSettings.
 type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.VariantType, userData interface{}) (variant *glib.Variant)
 
@@ -132,8 +132,8 @@ func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.g
 	return cret
 }
 
-// SettingsGetMapping: the type of the function that is used to convert from a
-// value stored in a #GSettings to a value that is useful to the application.
+// SettingsGetMapping: type of the function that is used to convert from a value
+// stored in a #GSettings to a value that is useful to the application.
 //
 // If the value is successfully mapped, the result should be stored at @result
 // and true returned. If mapping fails (for example, if @value is not in the
@@ -172,61 +172,108 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 	return cret
 }
 
-// SettingserOverrider contains methods that are overridable.
+// SettingsOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SettingserOverrider interface {
+type SettingsOverrider interface {
 	Changed(key string)
+
 	WritableChanged(key string)
 }
 
 // Settingser describes Settings's methods.
 type Settingser interface {
-	gextras.Objector
-
+	// Apply applies any changes that have been made to the settings.
 	Apply()
+	// BindWritable: create a binding between the writability of @key in the
+	// @settings object and the property @property of @object.
 	BindWritable(key string, object gextras.Objector, property string, inverted bool)
+	// CreateAction creates a #GAction corresponding to a given #GSettings key.
 	CreateAction(key string) *Action
+	// Delay changes the #GSettings object into 'delay-apply' mode.
 	Delay()
+	// Boolean gets the value that is stored at @key in @settings.
 	Boolean(key string) bool
+	// Child creates a child settings object which has a base path of
+	// `base-path/@name`, where `base-path` is the base path of @settings.
 	Child(name string) *Settings
+	// DefaultValue gets the "default value" of a key.
 	DefaultValue(key string) *glib.Variant
+	// Double gets the value that is stored at @key in @settings.
 	Double(key string) float64
+	// Enum gets the value that is stored in @settings for @key and converts it
+	// to the enum value that it represents.
 	Enum(key string) int
+	// Flags gets the value that is stored in @settings for @key and converts it
+	// to the flags value that it represents.
 	Flags(key string) uint
+	// HasUnapplied returns whether the #GSettings object has any unapplied
+	// changes.
 	HasUnapplied() bool
+	// Int gets the value that is stored at @key in @settings.
 	Int(key string) int
+	// Int64 gets the value that is stored at @key in @settings.
 	Int64(key string) int64
+	// Mapped gets the value that is stored at @key in @settings, subject to
+	// application-level validation/mapping.
 	Mapped(key string, mapping SettingsGetMapping) interface{}
+	// Range queries the range of a key.
 	Range(key string) *glib.Variant
+	// String gets the value that is stored at @key in @settings.
 	String(key string) string
+	// Strv: convenience variant of g_settings_get() for string arrays.
 	Strv(key string) []string
+	// Uint gets the value that is stored at @key in @settings.
 	Uint(key string) uint
+	// Uint64 gets the value that is stored at @key in @settings.
 	Uint64(key string) uint64
+	// UserValue checks the "user value" of a key, if there is one.
 	UserValue(key string) *glib.Variant
+	// Value gets the value that is stored in @settings for @key.
 	Value(key string) *glib.Variant
+	// IsWritable finds out if a key can be written or not
 	IsWritable(name string) bool
+	// ListChildren gets the list of children on @settings.
 	ListChildren() []string
+	// ListKeys introspects the list of keys on @settings.
 	ListKeys() []string
+	// RangeCheck checks if the given @value is of the correct type and within
+	// the permitted range for @key.
 	RangeCheck(key string, value *glib.Variant) bool
+	// Reset resets @key to its default value.
 	Reset(key string)
+	// Revert reverts all non-applied changes to the settings.
 	Revert()
+	// SetBoolean sets @key in @settings to @value.
 	SetBoolean(key string, value bool) bool
+	// SetDouble sets @key in @settings to @value.
 	SetDouble(key string, value float64) bool
+	// SetEnum looks up the enumerated type nick for @value and writes it to
+	// @key, within @settings.
 	SetEnum(key string, value int) bool
+	// SetFlags looks up the flags type nicks for the bits specified by @value,
+	// puts them in an array of strings and writes the array to @key, within
+	// @settings.
 	SetFlags(key string, value uint) bool
+	// SetInt sets @key in @settings to @value.
 	SetInt(key string, value int) bool
+	// SetInt64 sets @key in @settings to @value.
 	SetInt64(key string, value int64) bool
+	// SetString sets @key in @settings to @value.
 	SetString(key string, value string) bool
+	// SetStrv sets @key in @settings to @value.
 	SetStrv(key string, value []string) bool
+	// SetUint sets @key in @settings to @value.
 	SetUint(key string, value uint) bool
+	// SetUint64 sets @key in @settings to @value.
 	SetUint64(key string, value uint64) bool
+	// SetValue sets @key in @settings to @value.
 	SetValue(key string, value *glib.Variant) bool
 }
 
-// Settings: the #GSettings class provides a convenient API for storing and
-// retrieving application settings.
+// Settings class provides a convenient API for storing and retrieving
+// application settings.
 //
 // Reads and writes can be considered to be non-blocking. Reading settings with
 // #GSettings is typically extremely fast: on approximately the same order of
@@ -503,9 +550,12 @@ type Settings struct {
 	*externglib.Object
 }
 
-var _ Settingser = (*Settings)(nil)
+var (
+	_ Settingser      = (*Settings)(nil)
+	_ gextras.Nativer = (*Settings)(nil)
+)
 
-func wrapSettingser(obj *externglib.Object) Settingser {
+func wrapSettings(obj *externglib.Object) Settingser {
 	return &Settings{
 		Object: obj,
 	}
@@ -514,7 +564,7 @@ func wrapSettingser(obj *externglib.Object) Settingser {
 func marshalSettingser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSettingser(obj), nil
+	return wrapSettings(obj), nil
 }
 
 // NewSettings creates a new #GSettings object with the schema specified by

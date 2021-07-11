@@ -22,35 +22,38 @@ func init() {
 	})
 }
 
-// PluggerOverrider contains methods that are overridable.
+// PlugOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PluggerOverrider interface {
+type PlugOverrider interface {
 	ObjectID() string
 }
 
 // Plugger describes Plug's methods.
 type Plugger interface {
-	gextras.Objector
-
+	// ID gets the unique ID of an Plug object, which can be used to embed
+	// inside of an Socket using atk_socket_embed().
 	ID() string
+	// SetChild sets @child as accessible child of @plug and @plug as accessible
+	// parent of @child.
 	SetChild(child ObjectClasser)
 }
 
 // Plug: see Socket
 type Plug struct {
-	*externglib.Object
-
 	ObjectClass
+
 	Component
 }
 
-var _ Plugger = (*Plug)(nil)
+var (
+	_ Plugger         = (*Plug)(nil)
+	_ gextras.Nativer = (*Plug)(nil)
+)
 
-func wrapPlugger(obj *externglib.Object) Plugger {
+func wrapPlug(obj *externglib.Object) Plugger {
 	return &Plug{
-		Object: obj,
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
@@ -63,7 +66,7 @@ func wrapPlugger(obj *externglib.Object) Plugger {
 func marshalPlugger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlugger(obj), nil
+	return wrapPlug(obj), nil
 }
 
 // NewPlug creates a new Plug instance.
@@ -77,6 +80,12 @@ func NewPlug() *Plug {
 	_plug = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Plug)
 
 	return _plug
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Plug) Native() uintptr {
+	return v.ObjectClass.Object.Native()
 }
 
 // ID gets the unique ID of an Plug object, which can be used to embed inside of
@@ -116,7 +125,7 @@ func (plug *Plug) SetChild(child ObjectClasser) {
 	var _arg1 *C.AtkObject // out
 
 	_arg0 = (*C.AtkPlug)(unsafe.Pointer(plug.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.atk_plug_set_child(_arg0, _arg1)
 }

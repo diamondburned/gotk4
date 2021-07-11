@@ -26,11 +26,13 @@ func init() {
 
 // FileChooserNativer describes FileChooserNative's methods.
 type FileChooserNativer interface {
-	gextras.Objector
-
+	// AcceptLabel retrieves the custom label text for the accept button.
 	AcceptLabel() string
+	// CancelLabel retrieves the custom label text for the cancel button.
 	CancelLabel() string
+	// SetAcceptLabel sets the custom label text for the accept button.
 	SetAcceptLabel(acceptLabel string)
+	// SetCancelLabel sets the custom label text for the cancel button.
 	SetCancelLabel(cancelLabel string)
 }
 
@@ -191,17 +193,18 @@ type FileChooserNativer interface {
 //
 // * Shortcut folders.
 type FileChooserNative struct {
-	*externglib.Object
-
 	NativeDialog
+
 	FileChooser
 }
 
-var _ FileChooserNativer = (*FileChooserNative)(nil)
+var (
+	_ FileChooserNativer = (*FileChooserNative)(nil)
+	_ gextras.Nativer    = (*FileChooserNative)(nil)
+)
 
-func wrapFileChooserNativer(obj *externglib.Object) FileChooserNativer {
+func wrapFileChooserNative(obj *externglib.Object) FileChooserNativer {
 	return &FileChooserNative{
-		Object: obj,
 		NativeDialog: NativeDialog{
 			Object: obj,
 		},
@@ -214,7 +217,13 @@ func wrapFileChooserNativer(obj *externglib.Object) FileChooserNativer {
 func marshalFileChooserNativer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserNativer(obj), nil
+	return wrapFileChooserNative(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FileChooserNative) Native() uintptr {
+	return v.NativeDialog.Object.Native()
 }
 
 // AcceptLabel retrieves the custom label text for the accept button.

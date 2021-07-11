@@ -28,7 +28,7 @@ func X11GetServerTime(surface X11Surfacer) uint32 {
 	var _arg1 *C.GdkSurface // out
 	var _cret C.guint32     // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
@@ -41,19 +41,40 @@ func X11GetServerTime(surface X11Surfacer) uint32 {
 
 // X11Surfacer describes X11Surface's methods.
 type X11Surfacer interface {
-	gextras.Objector
-
+	// Desktop gets the number of the workspace @surface is on.
 	Desktop() uint32
+	// Group returns the group this surface belongs to.
 	Group() *gdk.Surface
+	// MoveToCurrentDesktop moves the surface to the correct workspace when
+	// running under a window manager that supports multiple workspaces, as
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	MoveToCurrentDesktop()
+	// MoveToDesktop moves the surface to the given workspace when running unde
+	// a window manager that supports multiple workspaces, as described in the
+	// Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	MoveToDesktop(desktop uint32)
+	// SetFrameSyncEnabled: this function can be used to disable frame
+	// synchronization for a surface.
 	SetFrameSyncEnabled(frameSyncEnabled bool)
+	// SetGroup sets the group leader of @surface to be @leader.
 	SetGroup(leader gdk.Surfacer)
+	// SetSkipPagerHint sets a hint on @surface that pagers should not display
+	// it.
 	SetSkipPagerHint(skipsPager bool)
+	// SetSkipTaskbarHint sets a hint on @surface that taskbars should not
+	// display it.
 	SetSkipTaskbarHint(skipsTaskbar bool)
+	// SetThemeVariant: GTK applications can request a dark theme variant.
 	SetThemeVariant(variant string)
+	// SetUrgencyHint sets a hint on @surface that it needs user attention.
 	SetUrgencyHint(urgent bool)
+	// SetUserTime: application can use this call to update the
+	// _NET_WM_USER_TIME property on a toplevel surface.
 	SetUserTime(timestamp uint32)
+	// SetUTF8Property: this function modifies or removes an arbitrary X11
+	// window property of type UTF8_STRING.
 	SetUTF8Property(name string, value string)
 }
 
@@ -61,9 +82,12 @@ type X11Surface struct {
 	gdk.Surface
 }
 
-var _ X11Surfacer = (*X11Surface)(nil)
+var (
+	_ X11Surfacer     = (*X11Surface)(nil)
+	_ gextras.Nativer = (*X11Surface)(nil)
+)
 
-func wrapX11Surfacer(obj *externglib.Object) X11Surfacer {
+func wrapX11Surface(obj *externglib.Object) X11Surfacer {
 	return &X11Surface{
 		Surface: gdk.Surface{
 			Object: obj,
@@ -74,7 +98,7 @@ func wrapX11Surfacer(obj *externglib.Object) X11Surfacer {
 func marshalX11Surfacer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Surfacer(obj), nil
+	return wrapX11Surface(obj), nil
 }
 
 // Desktop gets the number of the workspace @surface is on.
@@ -161,7 +185,7 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	var _arg1 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(leader.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((leader).(gextras.Nativer).Native()))
 
 	C.gdk_x11_surface_set_group(_arg0, _arg1)
 }
@@ -227,13 +251,13 @@ func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 	C.gdk_x11_surface_set_urgency_hint(_arg0, _arg1)
 }
 
-// SetUserTime: the application can use this call to update the
-// _NET_WM_USER_TIME property on a toplevel surface. This property stores an
-// Xserver time which represents the time of the last user input event received
-// for this surface. This property may be used by the window manager to alter
-// the focus, stacking, and/or placement behavior of surfaces when they are
-// mapped depending on whether the new surface was created by a user action or
-// is a "pop-up" surface activated by a timer or some other event.
+// SetUserTime: application can use this call to update the _NET_WM_USER_TIME
+// property on a toplevel surface. This property stores an Xserver time which
+// represents the time of the last user input event received for this surface.
+// This property may be used by the window manager to alter the focus, stacking,
+// and/or placement behavior of surfaces when they are mapped depending on
+// whether the new surface was created by a user action or is a "pop-up" surface
+// activated by a timer or some other event.
 //
 // Note that this property is automatically updated by GDK, so this function
 // should only be used by applications which handle input events bypassing GDK.

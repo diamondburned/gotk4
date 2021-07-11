@@ -25,10 +25,11 @@ func init() {
 
 // FlattenListModeller describes FlattenListModel's methods.
 type FlattenListModeller interface {
-	gextras.Objector
-
+	// Model gets the model set via gtk_flatten_list_model_set_model().
 	Model() *gio.ListModel
+	// ModelForItem returns the model containing the item at the given position.
 	ModelForItem(position uint) *gio.ListModel
+	// SetModel sets a new model to be flattened.
 	SetModel(model gio.ListModeller)
 }
 
@@ -43,9 +44,12 @@ type FlattenListModel struct {
 	gio.ListModel
 }
 
-var _ FlattenListModeller = (*FlattenListModel)(nil)
+var (
+	_ FlattenListModeller = (*FlattenListModel)(nil)
+	_ gextras.Nativer     = (*FlattenListModel)(nil)
+)
 
-func wrapFlattenListModeller(obj *externglib.Object) FlattenListModeller {
+func wrapFlattenListModel(obj *externglib.Object) FlattenListModeller {
 	return &FlattenListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -57,7 +61,7 @@ func wrapFlattenListModeller(obj *externglib.Object) FlattenListModeller {
 func marshalFlattenListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlattenListModeller(obj), nil
+	return wrapFlattenListModel(obj), nil
 }
 
 // NewFlattenListModel creates a new `GtkFlattenListModel` that flattens @list.
@@ -65,7 +69,7 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 	var _arg1 *C.GListModel          // out
 	var _cret *C.GtkFlattenListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_flatten_list_model_new(_arg1)
 
@@ -116,7 +120,7 @@ func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel          // out
 
 	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_flatten_list_model_set_model(_arg0, _arg1)
 }

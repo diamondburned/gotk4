@@ -49,13 +49,13 @@ func marshalDeviceType(p uintptr) (interface{}, error) {
 type InputMode int
 
 const (
-	// Disabled: the device is disabled and will not report any events.
+	// Disabled: device is disabled and will not report any events.
 	InputModeDisabled InputMode = iota
-	// Screen: the device is enabled. The device’s coordinate space maps to the
+	// Screen: device is enabled. The device’s coordinate space maps to the
 	// entire screen.
 	InputModeScreen
-	// Window: the device is enabled. The device’s coordinate space is mapped to
-	// a single window. The manner in which this window is chosen is undefined,
+	// Window: device is enabled. The device’s coordinate space is mapped to a
+	// single window. The manner in which this window is chosen is undefined,
 	// but it will typically be the same way in which the focus window for key
 	// events is determined.
 	InputModeWindow
@@ -70,29 +70,29 @@ func marshalInputMode(p uintptr) (interface{}, error) {
 type InputSource int
 
 const (
-	// Mouse: the device is a mouse. (This will be reported for the core
-	// pointer, even if it is something else, such as a trackball.)
+	// Mouse: device is a mouse. (This will be reported for the core pointer,
+	// even if it is something else, such as a trackball.)
 	InputSourceMouse InputSource = iota
-	// Pen: the device is a stylus of a graphics tablet or similar device.
+	// Pen: device is a stylus of a graphics tablet or similar device.
 	InputSourcePen
-	// Eraser: the device is an eraser. Typically, this would be the other end
-	// of a stylus on a graphics tablet.
+	// Eraser: device is an eraser. Typically, this would be the other end of a
+	// stylus on a graphics tablet.
 	InputSourceEraser
-	// Cursor: the device is a graphics tablet “puck” or similar device.
+	// Cursor: device is a graphics tablet “puck” or similar device.
 	InputSourceCursor
-	// Keyboard: the device is a keyboard.
+	// Keyboard: device is a keyboard.
 	InputSourceKeyboard
-	// Touchscreen: the device is a direct-input touch device, such as a
-	// touchscreen or tablet. This device type has been added in 3.4.
+	// Touchscreen: device is a direct-input touch device, such as a touchscreen
+	// or tablet. This device type has been added in 3.4.
 	InputSourceTouchscreen
-	// Touchpad: the device is an indirect touch device, such as a touchpad.
-	// This device type has been added in 3.4.
+	// Touchpad: device is an indirect touch device, such as a touchpad. This
+	// device type has been added in 3.4.
 	InputSourceTouchpad
-	// Trackpoint: the device is a trackpoint. This device type has been added
-	// in 3.22
+	// Trackpoint: device is a trackpoint. This device type has been added in
+	// 3.22
 	InputSourceTrackpoint
-	// TabletPad: the device is a "pad", a collection of buttons, rings and
-	// strips found in drawing tablets. This device type has been added in 3.22.
+	// TabletPad: device is a "pad", a collection of buttons, rings and strips
+	// found in drawing tablets. This device type has been added in 3.22.
 	InputSourceTabletPad
 )
 
@@ -102,34 +102,65 @@ func marshalInputSource(p uintptr) (interface{}, error) {
 
 // Devicer describes Device's methods.
 type Devicer interface {
-	gextras.Objector
-
+	// AssociatedDevice returns the associated device to @device, if @device is
+	// of type GDK_DEVICE_TYPE_MASTER, it will return the paired pointer or
+	// keyboard.
 	AssociatedDevice() *Device
+	// Axes returns the axes currently available on the device.
 	Axes() AxisFlags
+	// AxisUse returns the axis use for @index_.
 	AxisUse(index_ uint) AxisUse
+	// DeviceType returns the device type for @device.
 	DeviceType() DeviceType
+	// Display returns the Display to which @device pertains.
 	Display() *Display
+	// HasCursor determines whether the pointer follows device motion.
 	HasCursor() bool
+	// Key: if @index_ has a valid keyval, this function will return true and
+	// fill in @keyval and @modifiers with the keyval settings.
 	Key(index_ uint) (uint, ModifierType, bool)
+	// LastEventWindow gets information about which window the given pointer
+	// device is in, based on events that have been received so far from the
+	// display server.
 	LastEventWindow() *Window
+	// Mode determines the mode of the device.
 	Mode() InputMode
+	// NAxes returns the number of axes the device currently has.
 	NAxes() int
+	// NKeys returns the number of keys the device currently has.
 	NKeys() int
+	// Name determines the name of the device.
 	Name() string
+	// Position gets the current location of @device.
 	Position() (screen *Screen, x int, y int)
+	// PositionDouble gets the current location of @device in double precision.
 	PositionDouble() (screen *Screen, x float64, y float64)
+	// ProductID returns the product ID of this device, or nil if this
+	// information couldn't be obtained.
 	ProductID() string
+	// Seat returns the Seat the device belongs to.
 	Seat() *Seat
+	// Source determines the type of the device.
 	Source() InputSource
+	// VendorID returns the vendor ID of this device, or nil if this information
+	// couldn't be obtained.
 	VendorID() string
+	// WindowAtPosition obtains the window underneath @device, returning the
+	// location of the device in @win_x and @win_y.
 	WindowAtPosition() (winX int, winY int, window *Window)
+	// WindowAtPositionDouble obtains the window underneath @device, returning
+	// the location of the device in @win_x and @win_y in double precision.
 	WindowAtPositionDouble() (winX float64, winY float64, window *Window)
+	// Ungrab: release any grab on @device.
 	Ungrab(time_ uint32)
+	// Warp warps @device in @display to the point @x,@y on the screen @screen,
+	// unless the device is confined to a window by a grab, in which case it
+	// will be moved as far as allowed by the grab.
 	Warp(screen Screener, x int, y int)
 }
 
-// Device: the Device object represents a single input device, such as a
-// keyboard, a mouse, a touchpad, etc.
+// Device object represents a single input device, such as a keyboard, a mouse,
+// a touchpad, etc.
 //
 // See the DeviceManager documentation for more information about the various
 // kinds of master and slave devices, and their relationships.
@@ -137,9 +168,12 @@ type Device struct {
 	*externglib.Object
 }
 
-var _ Devicer = (*Device)(nil)
+var (
+	_ Devicer         = (*Device)(nil)
+	_ gextras.Nativer = (*Device)(nil)
+)
 
-func wrapDevicer(obj *externglib.Object) Devicer {
+func wrapDevice(obj *externglib.Object) Devicer {
 	return &Device{
 		Object: obj,
 	}
@@ -148,7 +182,7 @@ func wrapDevicer(obj *externglib.Object) Devicer {
 func marshalDevicer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDevicer(obj), nil
+	return wrapDevice(obj), nil
 }
 
 // AssociatedDevice returns the associated device to @device, if @device is of
@@ -595,7 +629,7 @@ func (device *Device) Warp(screen Screener, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 

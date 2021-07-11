@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// SocketAddressEnumeratorrerOverrider contains methods that are overridable.
+// SocketAddressEnumeratorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketAddressEnumeratorrerOverrider interface {
+type SocketAddressEnumeratorOverrider interface {
 	// Next retrieves the next Address from @enumerator. Note that this may
 	// block for some amount of time. (Eg, a Address may need to do a DNS lookup
 	// before it can return an address.) Use
@@ -69,10 +69,14 @@ type SocketAddressEnumeratorrerOverrider interface {
 
 // SocketAddressEnumeratorrer describes SocketAddressEnumerator's methods.
 type SocketAddressEnumeratorrer interface {
-	gextras.Objector
-
+	// Next retrieves the next Address from @enumerator.
 	Next(cancellable Cancellabler) (*SocketAddress, error)
+	// NextAsync: asynchronously retrieves the next Address from @enumerator and
+	// then calls @callback, which must call
+	// g_socket_address_enumerator_next_finish() to get the result.
 	NextAsync(cancellable Cancellabler, callback AsyncReadyCallback)
+	// NextFinish retrieves the result of a completed call to
+	// g_socket_address_enumerator_next_async().
 	NextFinish(result AsyncResulter) (*SocketAddress, error)
 }
 
@@ -92,9 +96,12 @@ type SocketAddressEnumerator struct {
 	*externglib.Object
 }
 
-var _ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
+var (
+	_ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
+	_ gextras.Nativer            = (*SocketAddressEnumerator)(nil)
+)
 
-func wrapSocketAddressEnumeratorrer(obj *externglib.Object) SocketAddressEnumeratorrer {
+func wrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumeratorrer {
 	return &SocketAddressEnumerator{
 		Object: obj,
 	}
@@ -103,7 +110,7 @@ func wrapSocketAddressEnumeratorrer(obj *externglib.Object) SocketAddressEnumera
 func marshalSocketAddressEnumeratorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketAddressEnumeratorrer(obj), nil
+	return wrapSocketAddressEnumerator(obj), nil
 }
 
 // Next retrieves the next Address from @enumerator. Note that this may block
@@ -124,7 +131,7 @@ func (enumerator *SocketAddressEnumerator) Next(cancellable Cancellabler) (*Sock
 	var _cerr *C.GError                   // in
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_address_enumerator_next(_arg0, _arg1, &_cerr)
 
@@ -150,7 +157,7 @@ func (enumerator *SocketAddressEnumerator) NextAsync(cancellable Cancellabler, c
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -167,7 +174,7 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (*So
 	var _cerr *C.GError                   // in
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_address_enumerator_next_finish(_arg0, _arg1, &_cerr)
 

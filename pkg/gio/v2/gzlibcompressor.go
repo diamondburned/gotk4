@@ -34,9 +34,9 @@ func init() {
 
 // ZlibCompressorrer describes ZlibCompressor's methods.
 type ZlibCompressorrer interface {
-	gextras.Objector
-
+	// FileInfo returns the Compressor:file-info property.
 	FileInfo() *FileInfo
+	// SetFileInfo sets @file_info in @compressor.
 	SetFileInfo(fileInfo FileInfor)
 }
 
@@ -47,9 +47,12 @@ type ZlibCompressor struct {
 	Converter
 }
 
-var _ ZlibCompressorrer = (*ZlibCompressor)(nil)
+var (
+	_ ZlibCompressorrer = (*ZlibCompressor)(nil)
+	_ gextras.Nativer   = (*ZlibCompressor)(nil)
+)
 
-func wrapZlibCompressorrer(obj *externglib.Object) ZlibCompressorrer {
+func wrapZlibCompressor(obj *externglib.Object) ZlibCompressorrer {
 	return &ZlibCompressor{
 		Object: obj,
 		Converter: Converter{
@@ -61,7 +64,7 @@ func wrapZlibCompressorrer(obj *externglib.Object) ZlibCompressorrer {
 func marshalZlibCompressorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapZlibCompressorrer(obj), nil
+	return wrapZlibCompressor(obj), nil
 }
 
 // FileInfo returns the Compressor:file-info property.
@@ -93,7 +96,7 @@ func (compressor *ZlibCompressor) SetFileInfo(fileInfo FileInfor) {
 	var _arg1 *C.GFileInfo       // out
 
 	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(compressor.Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer((fileInfo).(gextras.Nativer).Native()))
 
 	C.g_zlib_compressor_set_file_info(_arg0, _arg1)
 }

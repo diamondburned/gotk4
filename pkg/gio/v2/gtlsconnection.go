@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// TLSConnectionerOverrider contains methods that are overridable.
+// TLSConnectionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TLSConnectionerOverrider interface {
+type TLSConnectionOverrider interface {
 	// Handshake attempts a TLS handshake on @conn.
 	//
 	// On the client side, it is never necessary to call this method; although
@@ -80,25 +80,54 @@ type TLSConnectionerOverrider interface {
 
 // TLSConnectioner describes TLSConnection's methods.
 type TLSConnectioner interface {
-	gextras.Objector
-
+	// Certificate gets @conn's certificate, as set by
+	// g_tls_connection_set_certificate().
 	Certificate() *TLSCertificate
+	// Database gets the certificate database that @conn uses to verify peer
+	// certificates.
 	Database() *TLSDatabase
+	// Interaction: get the object that will be used to interact with the user.
 	Interaction() *TLSInteraction
+	// NegotiatedProtocol gets the name of the application-layer protocol
+	// negotiated during the handshake.
 	NegotiatedProtocol() string
+	// PeerCertificate gets @conn's peer's certificate after the handshake has
+	// completed or failed.
 	PeerCertificate() *TLSCertificate
+	// PeerCertificateErrors gets the errors associated with validating @conn's
+	// peer's certificate, after the handshake has completed or failed.
 	PeerCertificateErrors() TLSCertificateFlags
+	// RehandshakeMode gets @conn rehandshaking mode.
 	RehandshakeMode() TLSRehandshakeMode
+	// RequireCloseNotify tests whether or not @conn expects a proper TLS close
+	// notification when the connection is closed.
 	RequireCloseNotify() bool
+	// UseSystemCertDB gets whether @conn uses the system certificate database
+	// to verify peer certificates.
 	UseSystemCertDB() bool
+	// Handshake attempts a TLS handshake on @conn.
 	Handshake(cancellable Cancellabler) error
+	// HandshakeAsync: asynchronously performs a TLS handshake on @conn.
 	HandshakeAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// HandshakeFinish: finish an asynchronous TLS handshake operation.
 	HandshakeFinish(result AsyncResulter) error
+	// SetAdvertisedProtocols sets the list of application-layer protocols to
+	// advertise that the caller is willing to speak on this connection.
 	SetAdvertisedProtocols(protocols []string)
+	// SetCertificate: this sets the certificate that @conn will present to its
+	// peer during the TLS handshake.
 	SetCertificate(certificate TLSCertificater)
+	// SetDatabase sets the certificate database that is used to verify peer
+	// certificates.
 	SetDatabase(database TLSDatabaser)
+	// SetInteraction: set the object that will be used to interact with the
+	// user.
 	SetInteraction(interaction TLSInteractioner)
+	// SetRequireCloseNotify sets whether or not @conn expects a proper TLS
+	// close notification before the connection is closed.
 	SetRequireCloseNotify(requireCloseNotify bool)
+	// SetUseSystemCertDB sets whether @conn uses the system certificate
+	// database to verify peer certificates.
 	SetUseSystemCertDB(useSystemCertdb bool)
 }
 
@@ -112,9 +141,12 @@ type TLSConnection struct {
 	IOStream
 }
 
-var _ TLSConnectioner = (*TLSConnection)(nil)
+var (
+	_ TLSConnectioner = (*TLSConnection)(nil)
+	_ gextras.Nativer = (*TLSConnection)(nil)
+)
 
-func wrapTLSConnectioner(obj *externglib.Object) TLSConnectioner {
+func wrapTLSConnection(obj *externglib.Object) TLSConnectioner {
 	return &TLSConnection{
 		IOStream: IOStream{
 			Object: obj,
@@ -125,7 +157,7 @@ func wrapTLSConnectioner(obj *externglib.Object) TLSConnectioner {
 func marshalTLSConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSConnectioner(obj), nil
+	return wrapTLSConnection(obj), nil
 }
 
 // Certificate gets @conn's certificate, as set by
@@ -332,7 +364,7 @@ func (conn *TLSConnection) Handshake(cancellable Cancellabler) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_tls_connection_handshake(_arg0, _arg1, &_cerr)
 
@@ -354,7 +386,7 @@ func (conn *TLSConnection) HandshakeAsync(ioPriority int, cancellable Cancellabl
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -369,7 +401,7 @@ func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_tls_connection_handshake_finish(_arg0, _arg1, &_cerr)
 
@@ -429,7 +461,7 @@ func (conn *TLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _arg1 *C.GTlsCertificate // out
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((certificate).(gextras.Nativer).Native()))
 
 	C.g_tls_connection_set_certificate(_arg0, _arg1)
 }
@@ -446,7 +478,7 @@ func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 	var _arg1 *C.GTlsDatabase   // out
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
+	_arg1 = (*C.GTlsDatabase)(unsafe.Pointer((database).(gextras.Nativer).Native()))
 
 	C.g_tls_connection_set_database(_arg0, _arg1)
 }
@@ -462,7 +494,7 @@ func (conn *TLSConnection) SetInteraction(interaction TLSInteractioner) {
 	var _arg1 *C.GTlsInteraction // out
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg1 = (*C.GTlsInteraction)(unsafe.Pointer((interaction).(gextras.Nativer).Native()))
 
 	C.g_tls_connection_set_interaction(_arg0, _arg1)
 }

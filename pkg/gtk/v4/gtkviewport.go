@@ -24,11 +24,15 @@ func init() {
 
 // Viewporter describes Viewport's methods.
 type Viewporter interface {
-	gextras.Objector
-
+	// Child gets the child widget of @viewport.
 	Child() *Widget
+	// ScrollToFocus gets whether the viewport is scrolling to keep the focused
+	// child in view.
 	ScrollToFocus() bool
+	// SetChild sets the child widget of @viewport.
 	SetChild(child Widgetter)
+	// SetScrollToFocus sets whether the viewport should automatically scroll to
+	// keep the focused child in view.
 	SetScrollToFocus(scrollToFocus bool)
 }
 
@@ -51,22 +55,19 @@ type Viewporter interface {
 //
 // `GtkViewport` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Viewport struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Scrollable
 }
 
-var _ Viewporter = (*Viewport)(nil)
+var (
+	_ Viewporter      = (*Viewport)(nil)
+	_ gextras.Nativer = (*Viewport)(nil)
+)
 
-func wrapViewporter(obj *externglib.Object) Viewporter {
+func wrapViewport(obj *externglib.Object) Viewporter {
 	return &Viewport{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -80,15 +81,6 @@ func wrapViewporter(obj *externglib.Object) Viewporter {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
@@ -98,7 +90,7 @@ func wrapViewporter(obj *externglib.Object) Viewporter {
 func marshalViewporter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapViewporter(obj), nil
+	return wrapViewport(obj), nil
 }
 
 // NewViewport creates a new `GtkViewport`.
@@ -110,8 +102,8 @@ func NewViewport(hadjustment Adjustmenter, vadjustment Adjustmenter) *Viewport {
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((hadjustment).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((vadjustment).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
@@ -120,6 +112,12 @@ func NewViewport(hadjustment Adjustmenter, vadjustment Adjustmenter) *Viewport {
 	_viewport = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Viewport)
 
 	return _viewport
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Viewport) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Child gets the child widget of @viewport.
@@ -163,7 +161,7 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_viewport_set_child(_arg0, _arg1)
 }

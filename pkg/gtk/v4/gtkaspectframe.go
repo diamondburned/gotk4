@@ -24,17 +24,31 @@ func init() {
 
 // AspectFramer describes AspectFrame's methods.
 type AspectFramer interface {
-	gextras.Objector
-
+	// Child gets the child widget of @self.
 	Child() *Widget
+	// ObeyChild returns whether the child's size request should override the
+	// set aspect ratio of the `GtkAspectFrame`.
 	ObeyChild() bool
+	// Ratio returns the desired aspect ratio of the child.
 	Ratio() float32
+	// Xalign returns the horizontal alignment of the child within the
+	// allocation of the `GtkAspectFrame`.
 	Xalign() float32
+	// Yalign returns the vertical alignment of the child within the allocation
+	// of the `GtkAspectFrame`.
 	Yalign() float32
+	// SetChild sets the child widget of @self.
 	SetChild(child Widgetter)
+	// SetObeyChild sets whether the aspect ratio of the child's size request
+	// should override the set aspect ratio of the `GtkAspectFrame`.
 	SetObeyChild(obeyChild bool)
+	// SetRatio sets the desired aspect ratio of the child.
 	SetRatio(ratio float32)
+	// SetXalign sets the horizontal alignment of the child within the
+	// allocation of the `GtkAspectFrame`.
 	SetXalign(xalign float32)
+	// SetYalign sets the vertical alignment of the child within the allocation
+	// of the `GtkAspectFrame`.
 	SetYalign(yalign float32)
 }
 
@@ -48,21 +62,17 @@ type AspectFramer interface {
 //
 // `GtkAspectFrame` uses a CSS node with name `frame`.
 type AspectFrame struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ AspectFramer = (*AspectFrame)(nil)
+var (
+	_ AspectFramer    = (*AspectFrame)(nil)
+	_ gextras.Nativer = (*AspectFrame)(nil)
+)
 
-func wrapAspectFramer(obj *externglib.Object) AspectFramer {
+func wrapAspectFrame(obj *externglib.Object) AspectFramer {
 	return &AspectFrame{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -76,22 +86,13 @@ func wrapAspectFramer(obj *externglib.Object) AspectFramer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalAspectFramer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAspectFramer(obj), nil
+	return wrapAspectFrame(obj), nil
 }
 
 // NewAspectFrame: create a new `GtkAspectFrame`.
@@ -209,7 +210,7 @@ func (self *AspectFrame) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_aspect_frame_set_child(_arg0, _arg1)
 }

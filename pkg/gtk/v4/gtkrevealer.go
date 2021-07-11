@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_revealer_transition_type_get_type()), F: marshalRevealerTransitionType},
-		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealerrer},
+		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealerer},
 	})
 }
 
@@ -54,17 +54,25 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Revealerrer describes Revealer's methods.
-type Revealerrer interface {
-	gextras.Objector
-
+// Revealerer describes Revealer's methods.
+type Revealerer interface {
+	// Child gets the child widget of @revealer.
 	Child() *Widget
+	// ChildRevealed returns whether the child is fully revealed.
 	ChildRevealed() bool
+	// RevealChild returns whether the child is currently revealed.
 	RevealChild() bool
+	// TransitionDuration returns the amount of time (in milliseconds) that
+	// transitions will take.
 	TransitionDuration() uint
+	// TransitionType gets the type of animation that will be used for
+	// transitions in @revealer.
 	TransitionType() RevealerTransitionType
+	// SetChild sets the child widget of @revealer.
 	SetChild(child Widgetter)
+	// SetRevealChild tells the `GtkRevealer` to reveal or conceal its child.
 	SetRevealChild(revealChild bool)
+	// SetTransitionDuration sets the duration that transitions will take.
 	SetTransitionDuration(duration uint)
 }
 
@@ -93,21 +101,17 @@ type Revealerrer interface {
 // The child of `GtkRevealer`, if set, is always available in the accessibility
 // tree, regardless of the state of the revealer widget.
 type Revealer struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Revealerrer = (*Revealer)(nil)
+var (
+	_ Revealerer      = (*Revealer)(nil)
+	_ gextras.Nativer = (*Revealer)(nil)
+)
 
-func wrapRevealerrer(obj *externglib.Object) Revealerrer {
+func wrapRevealer(obj *externglib.Object) Revealerer {
 	return &Revealer{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -121,22 +125,13 @@ func wrapRevealerrer(obj *externglib.Object) Revealerrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
-func marshalRevealerrer(p uintptr) (interface{}, error) {
+func marshalRevealerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRevealerrer(obj), nil
+	return wrapRevealer(obj), nil
 }
 
 // NewRevealer creates a new `GtkRevealer`.
@@ -251,7 +246,7 @@ func (revealer *Revealer) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_revealer_set_child(_arg0, _arg1)
 }

@@ -26,8 +26,8 @@ func init() {
 
 // GestureRotater describes GestureRotate's methods.
 type GestureRotater interface {
-	gextras.Objector
-
+	// AngleDelta: if @gesture is active, this function returns the angle
+	// difference in radians since the gesture was first recognized.
 	AngleDelta() float64
 }
 
@@ -38,9 +38,12 @@ type GestureRotate struct {
 	Gesture
 }
 
-var _ GestureRotater = (*GestureRotate)(nil)
+var (
+	_ GestureRotater  = (*GestureRotate)(nil)
+	_ gextras.Nativer = (*GestureRotate)(nil)
+)
 
-func wrapGestureRotater(obj *externglib.Object) GestureRotater {
+func wrapGestureRotate(obj *externglib.Object) GestureRotater {
 	return &GestureRotate{
 		Gesture: Gesture{
 			EventController: EventController{
@@ -53,7 +56,7 @@ func wrapGestureRotater(obj *externglib.Object) GestureRotater {
 func marshalGestureRotater(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureRotater(obj), nil
+	return wrapGestureRotate(obj), nil
 }
 
 // NewGestureRotate returns a newly created Gesture that recognizes 2-touch
@@ -62,7 +65,7 @@ func NewGestureRotate(widget Widgetter) *GestureRotate {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_gesture_rotate_new(_arg1)
 

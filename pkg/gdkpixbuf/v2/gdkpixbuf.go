@@ -18,14 +18,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type()), F: marshalPixbufSimpleAnimIterrer},
+		{T: externglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type()), F: marshalPixbufSimpleAnimIterer},
 	})
 }
 
-// PixbufSimpleAnimIterrer describes PixbufSimpleAnimIter's methods.
-type PixbufSimpleAnimIterrer interface {
-	gextras.Objector
-
+// PixbufSimpleAnimIterer describes PixbufSimpleAnimIter's methods.
+type PixbufSimpleAnimIterer interface {
 	privatePixbufSimpleAnimIter()
 }
 
@@ -33,9 +31,12 @@ type PixbufSimpleAnimIter struct {
 	PixbufAnimationIter
 }
 
-var _ PixbufSimpleAnimIterrer = (*PixbufSimpleAnimIter)(nil)
+var (
+	_ PixbufSimpleAnimIterer = (*PixbufSimpleAnimIter)(nil)
+	_ gextras.Nativer        = (*PixbufSimpleAnimIter)(nil)
+)
 
-func wrapPixbufSimpleAnimIterrer(obj *externglib.Object) PixbufSimpleAnimIterrer {
+func wrapPixbufSimpleAnimIter(obj *externglib.Object) PixbufSimpleAnimIterer {
 	return &PixbufSimpleAnimIter{
 		PixbufAnimationIter: PixbufAnimationIter{
 			Object: obj,
@@ -43,10 +44,10 @@ func wrapPixbufSimpleAnimIterrer(obj *externglib.Object) PixbufSimpleAnimIterrer
 	}
 }
 
-func marshalPixbufSimpleAnimIterrer(p uintptr) (interface{}, error) {
+func marshalPixbufSimpleAnimIterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufSimpleAnimIterrer(obj), nil
+	return wrapPixbufSimpleAnimIter(obj), nil
 }
 
 func (*PixbufSimpleAnimIter) privatePixbufSimpleAnimIter() {}

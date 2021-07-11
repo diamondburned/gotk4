@@ -27,14 +27,12 @@ func init() {
 
 // DrawingAreaer describes DrawingArea's methods.
 type DrawingAreaer interface {
-	gextras.Objector
-
 	privateDrawingArea()
 }
 
-// DrawingArea: the DrawingArea widget is used for creating custom user
-// interface elements. It’s essentially a blank widget; you can draw on it.
-// After creating a drawing area, the application may want to connect to:
+// DrawingArea widget is used for creating custom user interface elements. It’s
+// essentially a blank widget; you can draw on it. After creating a drawing
+// area, the application may want to connect to:
 //
 // - Mouse and button press signals to respond to input from the user. (Use
 // gtk_widget_add_events() to enable events you wish to receive.)
@@ -109,20 +107,17 @@ type DrawingAreaer interface {
 // gtk_widget_has_focus() in your expose event handler to decide whether to draw
 // the focus indicator. See gtk_render_focus() for one way to draw focus.
 type DrawingArea struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ DrawingAreaer = (*DrawingArea)(nil)
+var (
+	_ DrawingAreaer   = (*DrawingArea)(nil)
+	_ gextras.Nativer = (*DrawingArea)(nil)
+)
 
-func wrapDrawingAreaer(obj *externglib.Object) DrawingAreaer {
+func wrapDrawingArea(obj *externglib.Object) DrawingAreaer {
 	return &DrawingArea{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -133,19 +128,13 @@ func wrapDrawingAreaer(obj *externglib.Object) DrawingAreaer {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalDrawingAreaer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrawingAreaer(obj), nil
+	return wrapDrawingArea(obj), nil
 }
 
 // NewDrawingArea creates a new drawing area.

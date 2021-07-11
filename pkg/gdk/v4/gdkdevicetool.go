@@ -52,11 +52,13 @@ func marshalDeviceToolType(p uintptr) (interface{}, error) {
 
 // DeviceTooler describes DeviceTool's methods.
 type DeviceTooler interface {
-	gextras.Objector
-
+	// Axes gets the axes of the tool.
 	Axes() AxisFlags
+	// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
 	HardwareID() uint64
+	// Serial gets the serial number of this tool.
 	Serial() uint64
+	// ToolType gets the `GdkDeviceToolType` of the tool.
 	ToolType() DeviceToolType
 }
 
@@ -65,9 +67,12 @@ type DeviceTool struct {
 	*externglib.Object
 }
 
-var _ DeviceTooler = (*DeviceTool)(nil)
+var (
+	_ DeviceTooler    = (*DeviceTool)(nil)
+	_ gextras.Nativer = (*DeviceTool)(nil)
+)
 
-func wrapDeviceTooler(obj *externglib.Object) DeviceTooler {
+func wrapDeviceTool(obj *externglib.Object) DeviceTooler {
 	return &DeviceTool{
 		Object: obj,
 	}
@@ -76,7 +81,7 @@ func wrapDeviceTooler(obj *externglib.Object) DeviceTooler {
 func marshalDeviceTooler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDeviceTooler(obj), nil
+	return wrapDeviceTool(obj), nil
 }
 
 // Axes gets the axes of the tool.

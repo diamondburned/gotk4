@@ -292,8 +292,8 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 	return _source
 }
 
-// MainContext: the `GMainContext` struct is an opaque data type representing a
-// set of sources to be handled in a main loop.
+// MainContext: `GMainContext` struct is an opaque data type representing a set
+// of sources to be handled in a main loop.
 type MainContext struct {
 	native C.GMainContext
 }
@@ -712,7 +712,7 @@ func (context *MainContext) Wakeup() {
 	C.g_main_context_wakeup(_arg0)
 }
 
-// MainLoop: the `GMainLoop` struct is an opaque data type representing the main
+// MainLoop: `GMainLoop` struct is an opaque data type representing the main
 // event loop of a GLib or GTK+ application.
 type MainLoop struct {
 	native C.GMainLoop
@@ -845,8 +845,7 @@ func (loop *MainLoop) unref() {
 	C.g_main_loop_unref(_arg0)
 }
 
-// Source: the `GSource` struct is an opaque data type representing an event
-// source.
+// Source: `GSource` struct is an opaque data type representing an event source.
 type Source struct {
 	native C.GSource
 }
@@ -1400,7 +1399,7 @@ func (source *Source) unref() {
 	C.g_source_unref(_arg0)
 }
 
-// SourceCallbackFuncs: the `GSourceCallbackFuncs` struct contains functions for
+// SourceCallbackFuncs: `GSourceCallbackFuncs` struct contains functions for
 // managing callback objects.
 type SourceCallbackFuncs struct {
 	native C.GSourceCallbackFuncs
@@ -1411,7 +1410,7 @@ func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// SourceFuncs: the `GSourceFuncs` struct contains a table of functions used to
+// SourceFuncs: `GSourceFuncs` struct contains a table of functions used to
 // handle event sources in a generic manner.
 //
 // For idle sources, the prepare and check functions always return true to

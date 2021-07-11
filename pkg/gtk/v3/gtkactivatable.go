@@ -24,11 +24,11 @@ func init() {
 	})
 }
 
-// ActivatablerOverrider contains methods that are overridable.
+// ActivatableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActivatablerOverrider interface {
+type ActivatableOverrider interface {
 	// SyncActionProperties: this is called to update the activatable
 	// completely, this is called internally when the Activatable:related-action
 	// property is set or unset and by the implementing class when
@@ -36,18 +36,34 @@ type ActivatablerOverrider interface {
 	//
 	// Deprecated: since version 3.10.
 	SyncActionProperties(action Actioner)
+
 	Update(action Actioner, propertyName string)
 }
 
 // Activatabler describes Activatable's methods.
 type Activatabler interface {
-	gextras.Objector
-
+	// DoSetRelatedAction: this is a utility function for Activatable
+	// implementors.
 	DoSetRelatedAction(action Actioner)
+	// RelatedAction gets the related Action for @activatable.
 	RelatedAction() *Action
+	// UseActionAppearance gets whether this activatable should reset its layout
+	// and appearance when setting the related action or when the action changes
+	// appearance.
 	UseActionAppearance() bool
+	// SetRelatedAction sets the related action on the @activatable object.
 	SetRelatedAction(action Actioner)
+	// SetUseActionAppearance sets whether this activatable should reset its
+	// layout and appearance when setting the related action or when the action
+	// changes appearance > Activatable implementors need to handle the >
+	// Activatable:use-action-appearance property and call >
+	// gtk_activatable_sync_action_properties() to update @activatable > if
+	// needed.
 	SetUseActionAppearance(useAppearance bool)
+	// SyncActionProperties: this is called to update the activatable
+	// completely, this is called internally when the Activatable:related-action
+	// property is set or unset and by the implementing class when
+	// Activatable:use-action-appearance changes.
 	SyncActionProperties(action Actioner)
 }
 
@@ -286,9 +302,12 @@ type Activatable struct {
 	*externglib.Object
 }
 
-var _ Activatabler = (*Activatable)(nil)
+var (
+	_ Activatabler    = (*Activatable)(nil)
+	_ gextras.Nativer = (*Activatable)(nil)
+)
 
-func wrapActivatabler(obj *externglib.Object) Activatabler {
+func wrapActivatable(obj *externglib.Object) Activatabler {
 	return &Activatable{
 		Object: obj,
 	}
@@ -297,7 +316,7 @@ func wrapActivatabler(obj *externglib.Object) Activatabler {
 func marshalActivatabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActivatabler(obj), nil
+	return wrapActivatable(obj), nil
 }
 
 // DoSetRelatedAction: this is a utility function for Activatable implementors.
@@ -320,7 +339,7 @@ func (activatable *Activatable) DoSetRelatedAction(action Actioner) {
 	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
 
 	C.gtk_activatable_do_set_related_action(_arg0, _arg1)
 }
@@ -376,7 +395,7 @@ func (activatable *Activatable) SetRelatedAction(action Actioner) {
 	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
 
 	C.gtk_activatable_set_related_action(_arg0, _arg1)
 }
@@ -413,7 +432,7 @@ func (activatable *Activatable) SyncActionProperties(action Actioner) {
 	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
 
 	C.gtk_activatable_sync_action_properties(_arg0, _arg1)
 }

@@ -24,8 +24,8 @@ func init() {
 
 // GesturePanner describes GesturePan's methods.
 type GesturePanner interface {
-	gextras.Objector
-
+	// Orientation returns the orientation of the pan gestures that this
+	// @gesture expects.
 	Orientation() Orientation
 }
 
@@ -46,9 +46,12 @@ type GesturePan struct {
 	GestureDrag
 }
 
-var _ GesturePanner = (*GesturePan)(nil)
+var (
+	_ GesturePanner   = (*GesturePan)(nil)
+	_ gextras.Nativer = (*GesturePan)(nil)
+)
 
-func wrapGesturePanner(obj *externglib.Object) GesturePanner {
+func wrapGesturePan(obj *externglib.Object) GesturePanner {
 	return &GesturePan{
 		GestureDrag: GestureDrag{
 			GestureSingle: GestureSingle{
@@ -65,7 +68,7 @@ func wrapGesturePanner(obj *externglib.Object) GesturePanner {
 func marshalGesturePanner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGesturePanner(obj), nil
+	return wrapGesturePan(obj), nil
 }
 
 // Orientation returns the orientation of the pan gestures that this @gesture

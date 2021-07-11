@@ -34,10 +34,11 @@ func init() {
 
 // ThemedIconner describes ThemedIcon's methods.
 type ThemedIconner interface {
-	gextras.Objector
-
+	// AppendName: append a name to the list of icons from within @icon.
 	AppendName(iconname string)
+	// Names gets the names of icons from within @icon.
 	Names() []string
+	// PrependName: prepend a name to the list of icons from within @icon.
 	PrependName(iconname string)
 }
 
@@ -53,9 +54,12 @@ type ThemedIcon struct {
 	Icon
 }
 
-var _ ThemedIconner = (*ThemedIcon)(nil)
+var (
+	_ ThemedIconner   = (*ThemedIcon)(nil)
+	_ gextras.Nativer = (*ThemedIcon)(nil)
+)
 
-func wrapThemedIconner(obj *externglib.Object) ThemedIconner {
+func wrapThemedIcon(obj *externglib.Object) ThemedIconner {
 	return &ThemedIcon{
 		Object: obj,
 		Icon: Icon{
@@ -67,7 +71,7 @@ func wrapThemedIconner(obj *externglib.Object) ThemedIconner {
 func marshalThemedIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapThemedIconner(obj), nil
+	return wrapThemedIcon(obj), nil
 }
 
 // NewThemedIcon creates a new themed icon for @iconname.

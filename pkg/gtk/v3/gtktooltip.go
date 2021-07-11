@@ -29,15 +29,31 @@ func init() {
 
 // Tooltipper describes Tooltip's methods.
 type Tooltipper interface {
-	gextras.Objector
-
+	// SetCustom replaces the widget packed into the tooltip with
+	// @custom_widget.
 	SetCustom(customWidget Widgetter)
+	// SetIcon sets the icon of the tooltip (which is in front of the text) to
+	// be @pixbuf.
 	SetIcon(pixbuf gdkpixbuf.Pixbuffer)
+	// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
+	// text) to be the icon indicated by @gicon with the size indicated by
+	// @size.
 	SetIconFromGIcon(gicon gio.Iconner, size int)
+	// SetIconFromIconName sets the icon of the tooltip (which is in front of
+	// the text) to be the icon indicated by @icon_name with the size indicated
+	// by @size.
 	SetIconFromIconName(iconName string, size int)
+	// SetIconFromStock sets the icon of the tooltip (which is in front of the
+	// text) to be the stock item indicated by @stock_id with the size indicated
+	// by @size.
 	SetIconFromStock(stockId string, size int)
+	// SetMarkup sets the text of the tooltip to be @markup, which is marked up
+	// with the [Pango text markup language][PangoMarkupFormat].
 	SetMarkup(markup string)
+	// SetText sets the text of the tooltip to be @text.
 	SetText(text string)
+	// SetTipArea sets the area of the widget, where the contents of this
+	// tooltip apply, to be @rect (in widget coordinates).
 	SetTipArea(rect *gdk.Rectangle)
 }
 
@@ -80,9 +96,12 @@ type Tooltip struct {
 	*externglib.Object
 }
 
-var _ Tooltipper = (*Tooltip)(nil)
+var (
+	_ Tooltipper      = (*Tooltip)(nil)
+	_ gextras.Nativer = (*Tooltip)(nil)
+)
 
-func wrapTooltipper(obj *externglib.Object) Tooltipper {
+func wrapTooltip(obj *externglib.Object) Tooltipper {
 	return &Tooltip{
 		Object: obj,
 	}
@@ -91,7 +110,7 @@ func wrapTooltipper(obj *externglib.Object) Tooltipper {
 func marshalTooltipper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTooltipper(obj), nil
+	return wrapTooltip(obj), nil
 }
 
 // SetCustom replaces the widget packed into the tooltip with @custom_widget.
@@ -103,7 +122,7 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(customWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((customWidget).(gextras.Nativer).Native()))
 
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
 }
@@ -115,7 +134,7 @@ func (tooltip *Tooltip) SetIcon(pixbuf gdkpixbuf.Pixbuffer) {
 	var _arg1 *C.GdkPixbuf  // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	C.gtk_tooltip_set_icon(_arg0, _arg1)
 }
@@ -129,7 +148,7 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
 	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((gicon).(gextras.Nativer).Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1, _arg2)

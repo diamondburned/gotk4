@@ -28,7 +28,7 @@ func init() {
 type TabAlign int
 
 const (
-	// Left: the tab stop appears to the left of the text.
+	// Left: tab stop appears to the left of the text.
 	TabAlignLeft TabAlign = iota
 )
 

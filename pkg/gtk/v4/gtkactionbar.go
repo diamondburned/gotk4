@@ -24,14 +24,21 @@ func init() {
 
 // ActionBarrer describes ActionBar's methods.
 type ActionBarrer interface {
-	gextras.Objector
-
+	// CenterWidget retrieves the center bar widget of the bar.
 	CenterWidget() *Widget
+	// Revealed gets whether the contents of the action bar are revealed.
 	Revealed() bool
+	// PackEnd adds @child to @action_bar, packed with reference to the end of
+	// the @action_bar.
 	PackEnd(child Widgetter)
+	// PackStart adds @child to @action_bar, packed with reference to the start
+	// of the @action_bar.
 	PackStart(child Widgetter)
+	// Remove removes a child from @action_bar.
 	Remove(child Widgetter)
+	// SetCenterWidget sets the center widget for the `GtkActionBar`.
 	SetCenterWidget(centerWidget Widgetter)
+	// SetRevealed reveals or conceals the content of the action bar.
 	SetRevealed(revealed bool)
 }
 
@@ -52,21 +59,17 @@ type ActionBarrer interface {
 //
 // `GtkActionBar` has a single CSS node with name actionbar.
 type ActionBar struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ ActionBarrer = (*ActionBar)(nil)
+var (
+	_ ActionBarrer    = (*ActionBar)(nil)
+	_ gextras.Nativer = (*ActionBar)(nil)
+)
 
-func wrapActionBarrer(obj *externglib.Object) ActionBarrer {
+func wrapActionBar(obj *externglib.Object) ActionBarrer {
 	return &ActionBar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -80,22 +83,13 @@ func wrapActionBarrer(obj *externglib.Object) ActionBarrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalActionBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionBarrer(obj), nil
+	return wrapActionBar(obj), nil
 }
 
 // NewActionBar creates a new `GtkActionBar` widget.
@@ -152,7 +146,7 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_action_bar_pack_end(_arg0, _arg1)
 }
@@ -164,7 +158,7 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_action_bar_pack_start(_arg0, _arg1)
 }
@@ -175,7 +169,7 @@ func (actionBar *ActionBar) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_action_bar_remove(_arg0, _arg1)
 }
@@ -186,7 +180,7 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((centerWidget).(gextras.Nativer).Native()))
 
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
 }

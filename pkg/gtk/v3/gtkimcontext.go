@@ -27,11 +27,11 @@ func init() {
 	})
 }
 
-// IMContexterOverrider contains methods that are overridable.
+// IMContextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type IMContexterOverrider interface {
+type IMContextOverrider interface {
 	Commit(str string)
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// to delete characters around the cursor position by emitting the
@@ -80,13 +80,17 @@ type IMContexterOverrider interface {
 	// widget to respond to the ::retrieve_surrounding signal, so input methods
 	// must be prepared to function without context.
 	Surrounding() (string, int, bool)
+
 	PreeditChanged()
+
 	PreeditEnd()
+
 	PreeditStart()
 	// Reset: notify the input method that a change such as a change in cursor
 	// position has been made. This will typically cause the input method to
 	// clear the preedit state.
 	Reset()
+
 	RetrieveSurrounding() bool
 	// SetClientWindow: set the client window for the input context; this is the
 	// Window in which the input appears. This window is used in order to
@@ -110,18 +114,38 @@ type IMContexterOverrider interface {
 
 // IMContexter describes IMContext's methods.
 type IMContexter interface {
-	gextras.Objector
-
+	// DeleteSurrounding asks the widget that the input context is attached to
+	// to delete characters around the cursor position by emitting the
+	// GtkIMContext::delete_surrounding signal.
 	DeleteSurrounding(offset int, nChars int) bool
+	// FilterKeypress: allow an input method to internally handle key press and
+	// release events.
 	FilterKeypress(event *gdk.EventKey) bool
+	// FocusIn: notify the input method that the widget to which this input
+	// context corresponds has gained focus.
 	FocusIn()
+	// FocusOut: notify the input method that the widget to which this input
+	// context corresponds has lost focus.
 	FocusOut()
+	// PreeditString: retrieve the current preedit string for the input context,
+	// and a list of attributes to apply to the string.
 	PreeditString() (string, *pango.AttrList, int)
+	// Surrounding retrieves context around the insertion point.
 	Surrounding() (string, int, bool)
+	// Reset: notify the input method that a change such as a change in cursor
+	// position has been made.
 	Reset()
+	// SetClientWindow: set the client window for the input context; this is the
+	// Window in which the input appears.
 	SetClientWindow(window gdk.Windowwer)
+	// SetCursorLocation: notify the input method that a change in cursor
+	// position has been made.
 	SetCursorLocation(area *gdk.Rectangle)
+	// SetSurrounding sets surrounding context around the insertion point and
+	// preedit string.
 	SetSurrounding(text string, len int, cursorIndex int)
+	// SetUsePreedit sets whether the IM context should use the preedit string
+	// to display feedback.
 	SetUsePreedit(usePreedit bool)
 }
 
@@ -168,9 +192,12 @@ type IMContext struct {
 	*externglib.Object
 }
 
-var _ IMContexter = (*IMContext)(nil)
+var (
+	_ IMContexter     = (*IMContext)(nil)
+	_ gextras.Nativer = (*IMContext)(nil)
+)
 
-func wrapIMContexter(obj *externglib.Object) IMContexter {
+func wrapIMContext(obj *externglib.Object) IMContexter {
 	return &IMContext{
 		Object: obj,
 	}
@@ -179,7 +206,7 @@ func wrapIMContexter(obj *externglib.Object) IMContexter {
 func marshalIMContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIMContexter(obj), nil
+	return wrapIMContext(obj), nil
 }
 
 // DeleteSurrounding asks the widget that the input context is attached to to
@@ -347,7 +374,7 @@ func (context *IMContext) SetClientWindow(window gdk.Windowwer) {
 	var _arg1 *C.GdkWindow    // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_im_context_set_client_window(_arg0, _arg1)
 }

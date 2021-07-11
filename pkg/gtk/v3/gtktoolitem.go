@@ -26,11 +26,11 @@ func init() {
 	})
 }
 
-// ToolItemmerOverrider contains methods that are overridable.
+// ToolItemOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToolItemmerOverrider interface {
+type ToolItemOverrider interface {
 	CreateMenuProxy() bool
 	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
 	// @tool_item. Toolbar and other ToolShell implementations use this function
@@ -40,34 +40,71 @@ type ToolItemmerOverrider interface {
 
 // ToolItemmer describes ToolItem's methods.
 type ToolItemmer interface {
-	gextras.Objector
-
+	// EllipsizeMode returns the ellipsize mode used for @tool_item.
 	EllipsizeMode() pango.EllipsizeMode
+	// Expand returns whether @tool_item is allocated extra space.
 	Expand() bool
+	// Homogeneous returns whether @tool_item is the same size as other
+	// homogeneous items.
 	Homogeneous() bool
+	// IconSize returns the icon size used for @tool_item.
 	IconSize() int
+	// IsImportant returns whether @tool_item is considered important.
 	IsImportant() bool
+	// Orientation returns the orientation used for @tool_item.
 	Orientation() Orientation
+	// ProxyMenuItem: if @menu_item_id matches the string passed to
+	// gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
 	ProxyMenuItem(menuItemId string) *Widget
+	// ReliefStyle returns the relief style of @tool_item.
 	ReliefStyle() ReliefStyle
+	// TextAlignment returns the text alignment used for @tool_item.
 	TextAlignment() float32
+	// TextOrientation returns the text orientation used for @tool_item.
 	TextOrientation() Orientation
+	// TextSizeGroup returns the size group used for labels in @tool_item.
 	TextSizeGroup() *SizeGroup
+	// ToolbarStyle returns the toolbar style used for @tool_item.
 	ToolbarStyle() ToolbarStyle
+	// UseDragWindow returns whether @tool_item has a drag window.
 	UseDragWindow() bool
+	// VisibleHorizontal returns whether the @tool_item is visible on toolbars
+	// that are docked horizontally.
 	VisibleHorizontal() bool
+	// VisibleVertical returns whether @tool_item is visible when the toolbar is
+	// docked vertically.
 	VisibleVertical() bool
+	// RebuildMenu: calling this function signals to the toolbar that the
+	// overflow menu item for @tool_item has changed.
 	RebuildMenu()
+	// RetrieveProxyMenuItem returns the MenuItem that was last set by
+	// gtk_tool_item_set_proxy_menu_item(), ie.
 	RetrieveProxyMenuItem() *Widget
+	// SetExpand sets whether @tool_item is allocated extra space when there is
+	// more room on the toolbar then needed for the items.
 	SetExpand(expand bool)
+	// SetHomogeneous sets whether @tool_item is to be allocated the same size
+	// as other homogeneous items.
 	SetHomogeneous(homogeneous bool)
+	// SetIsImportant sets whether @tool_item should be considered important.
 	SetIsImportant(isImportant bool)
+	// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu.
 	SetProxyMenuItem(menuItemId string, menuItem Widgetter)
+	// SetTooltipMarkup sets the markup text to be displayed as tooltip on the
+	// item.
 	SetTooltipMarkup(markup string)
+	// SetTooltipText sets the text to be displayed as tooltip on the item.
 	SetTooltipText(text string)
+	// SetUseDragWindow sets whether @tool_item has a drag window.
 	SetUseDragWindow(useDragWindow bool)
+	// SetVisibleHorizontal sets whether @tool_item is visible when the toolbar
+	// is docked horizontally.
 	SetVisibleHorizontal(visibleHorizontal bool)
+	// SetVisibleVertical sets whether @tool_item is visible when the toolbar is
+	// docked vertically.
 	SetVisibleVertical(visibleVertical bool)
+	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
+	// @tool_item.
 	ToolbarReconfigured()
 }
 
@@ -81,25 +118,21 @@ type ToolItemmer interface {
 // See the Toolbar class for a description of the toolbar widget, and ToolShell
 // for a description of the tool shell interface.
 type ToolItem struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
+
 	Activatable
-	Buildable
 }
 
-var _ ToolItemmer = (*ToolItem)(nil)
+var (
+	_ ToolItemmer     = (*ToolItem)(nil)
+	_ gextras.Nativer = (*ToolItem)(nil)
+)
 
-func wrapToolItemmer(obj *externglib.Object) ToolItemmer {
+func wrapToolItem(obj *externglib.Object) ToolItemmer {
 	return &ToolItem{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -110,27 +143,9 @@ func wrapToolItemmer(obj *externglib.Object) ToolItemmer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
 		},
 		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
 			Object: obj,
 		},
 	}
@@ -139,7 +154,7 @@ func wrapToolItemmer(obj *externglib.Object) ToolItemmer {
 func marshalToolItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolItemmer(obj), nil
+	return wrapToolItem(obj), nil
 }
 
 // NewToolItem creates a new ToolItem
@@ -153,6 +168,12 @@ func NewToolItem() *ToolItem {
 	_toolItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolItem)
 
 	return _toolItem
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ToolItem) Native() uintptr {
+	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // EllipsizeMode returns the ellipsize mode used for @tool_item. Custom
@@ -539,7 +560,7 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 	_arg1 = (*C.gchar)(C.CString(menuItemId))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((menuItem).(gextras.Nativer).Native()))
 
 	C.gtk_tool_item_set_proxy_menu_item(_arg0, _arg1, _arg2)
 }

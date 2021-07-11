@@ -18,19 +18,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_emoji_chooser_get_type()), F: marshalEmojiChooserrer},
+		{T: externglib.Type(C.gtk_emoji_chooser_get_type()), F: marshalEmojiChooserer},
 	})
 }
 
-// EmojiChooserrer describes EmojiChooser's methods.
-type EmojiChooserrer interface {
-	gextras.Objector
-
+// EmojiChooserer describes EmojiChooser's methods.
+type EmojiChooserer interface {
 	privateEmojiChooser()
 }
 
-// EmojiChooser: the `GtkEmojiChooser` is used by text widgets such as
-// `GtkEntry` or `GtkTextView` to let users insert Emoji characters.
+// EmojiChooser: `GtkEmojiChooser` is used by text widgets such as `GtkEntry` or
+// `GtkTextView` to let users insert Emoji characters.
 //
 // !An example GtkEmojiChooser (emojichooser.png)
 //
@@ -51,25 +49,18 @@ type EmojiChooserrer interface {
 // between different emoji categories consists of buttons with the
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
 type EmojiChooser struct {
-	*externglib.Object
-
 	Popover
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	ShortcutManager
 }
 
-var _ EmojiChooserrer = (*EmojiChooser)(nil)
+var (
+	_ EmojiChooserer  = (*EmojiChooser)(nil)
+	_ gextras.Nativer = (*EmojiChooser)(nil)
+)
 
-func wrapEmojiChooserrer(obj *externglib.Object) EmojiChooserrer {
+func wrapEmojiChooser(obj *externglib.Object) EmojiChooserer {
 	return &EmojiChooser{
-		Object: obj,
 		Popover: Popover{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -83,19 +74,8 @@ func wrapEmojiChooserrer(obj *externglib.Object) EmojiChooserrer {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
 			Native: Native{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -114,43 +94,13 @@ func wrapEmojiChooserrer(obj *externglib.Object) EmojiChooserrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		ShortcutManager: ShortcutManager{
-			Object: obj,
-		},
 	}
 }
 
-func marshalEmojiChooserrer(p uintptr) (interface{}, error) {
+func marshalEmojiChooserer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEmojiChooserrer(obj), nil
+	return wrapEmojiChooser(obj), nil
 }
 
 // NewEmojiChooser creates a new `GtkEmojiChooser`.

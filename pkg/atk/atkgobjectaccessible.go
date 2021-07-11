@@ -24,8 +24,7 @@ func init() {
 
 // GObjectAccessibler describes GObjectAccessible's methods.
 type GObjectAccessibler interface {
-	gextras.Objector
-
+	// Object gets the GObject for which @obj is the accessible object.
 	Object() *externglib.Object
 }
 
@@ -37,9 +36,12 @@ type GObjectAccessible struct {
 	ObjectClass
 }
 
-var _ GObjectAccessibler = (*GObjectAccessible)(nil)
+var (
+	_ GObjectAccessibler = (*GObjectAccessible)(nil)
+	_ gextras.Nativer    = (*GObjectAccessible)(nil)
+)
 
-func wrapGObjectAccessibler(obj *externglib.Object) GObjectAccessibler {
+func wrapGObjectAccessible(obj *externglib.Object) GObjectAccessibler {
 	return &GObjectAccessible{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -50,7 +52,7 @@ func wrapGObjectAccessibler(obj *externglib.Object) GObjectAccessibler {
 func marshalGObjectAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGObjectAccessibler(obj), nil
+	return wrapGObjectAccessible(obj), nil
 }
 
 // Object gets the GObject for which @obj is the accessible object.

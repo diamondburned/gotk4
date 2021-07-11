@@ -24,9 +24,9 @@ func init() {
 
 // GestureLongPresser describes GestureLongPress's methods.
 type GestureLongPresser interface {
-	gextras.Objector
-
+	// DelayFactor returns the delay factor.
 	DelayFactor() float64
+	// SetDelayFactor applies the given delay factor.
 	SetDelayFactor(delayFactor float64)
 }
 
@@ -48,9 +48,12 @@ type GestureLongPress struct {
 	GestureSingle
 }
 
-var _ GestureLongPresser = (*GestureLongPress)(nil)
+var (
+	_ GestureLongPresser = (*GestureLongPress)(nil)
+	_ gextras.Nativer    = (*GestureLongPress)(nil)
+)
 
-func wrapGestureLongPresser(obj *externglib.Object) GestureLongPresser {
+func wrapGestureLongPress(obj *externglib.Object) GestureLongPresser {
 	return &GestureLongPress{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -65,7 +68,7 @@ func wrapGestureLongPresser(obj *externglib.Object) GestureLongPresser {
 func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureLongPresser(obj), nil
+	return wrapGestureLongPress(obj), nil
 }
 
 // NewGestureLongPress returns a newly created `GtkGesture` that recognizes long

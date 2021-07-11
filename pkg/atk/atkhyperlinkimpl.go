@@ -22,19 +22,18 @@ func init() {
 	})
 }
 
-// HyperlinkImplerOverrider contains methods that are overridable.
+// HyperlinkImplOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type HyperlinkImplerOverrider interface {
+type HyperlinkImplOverrider interface {
 	// Hyperlink gets the hyperlink associated with this object.
 	Hyperlink() *Hyperlink
 }
 
 // HyperlinkImpler describes HyperlinkImpl's methods.
 type HyperlinkImpler interface {
-	gextras.Objector
-
+	// Hyperlink gets the hyperlink associated with this object.
 	Hyperlink() *Hyperlink
 }
 
@@ -66,9 +65,12 @@ type HyperlinkImpl struct {
 	*externglib.Object
 }
 
-var _ HyperlinkImpler = (*HyperlinkImpl)(nil)
+var (
+	_ HyperlinkImpler = (*HyperlinkImpl)(nil)
+	_ gextras.Nativer = (*HyperlinkImpl)(nil)
+)
 
-func wrapHyperlinkImpler(obj *externglib.Object) HyperlinkImpler {
+func wrapHyperlinkImpl(obj *externglib.Object) HyperlinkImpler {
 	return &HyperlinkImpl{
 		Object: obj,
 	}
@@ -77,7 +79,7 @@ func wrapHyperlinkImpler(obj *externglib.Object) HyperlinkImpler {
 func marshalHyperlinkImpler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHyperlinkImpler(obj), nil
+	return wrapHyperlinkImpl(obj), nil
 }
 
 // Hyperlink gets the hyperlink associated with this object.

@@ -34,11 +34,11 @@ func init() {
 	})
 }
 
-// SocketAddresserOverrider contains methods that are overridable.
+// SocketAddressOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketAddresserOverrider interface {
+type SocketAddressOverrider interface {
 	// Family gets the socket family type of @address.
 	Family() SocketFamily
 	// NativeSize gets the size of @address's native struct sockaddr. You can
@@ -55,10 +55,12 @@ type SocketAddresserOverrider interface {
 
 // SocketAddresser describes SocketAddress's methods.
 type SocketAddresser interface {
-	gextras.Objector
-
+	// Family gets the socket family type of @address.
 	Family() SocketFamily
+	// NativeSize gets the size of @address's native struct sockaddr.
 	NativeSize() int
+	// ToNative converts a Address to a native struct sockaddr, which can be
+	// passed to low-level functions like connect() or bind().
 	ToNative(dest interface{}, destlen uint) error
 }
 
@@ -71,9 +73,12 @@ type SocketAddress struct {
 	SocketConnectable
 }
 
-var _ SocketAddresser = (*SocketAddress)(nil)
+var (
+	_ SocketAddresser = (*SocketAddress)(nil)
+	_ gextras.Nativer = (*SocketAddress)(nil)
+)
 
-func wrapSocketAddresser(obj *externglib.Object) SocketAddresser {
+func wrapSocketAddress(obj *externglib.Object) SocketAddresser {
 	return &SocketAddress{
 		Object: obj,
 		SocketConnectable: SocketConnectable{
@@ -85,7 +90,7 @@ func wrapSocketAddresser(obj *externglib.Object) SocketAddresser {
 func marshalSocketAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketAddresser(obj), nil
+	return wrapSocketAddress(obj), nil
 }
 
 // NewSocketAddressFromNative creates a Address subclass corresponding to the

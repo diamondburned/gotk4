@@ -31,7 +31,7 @@ func init() {
 type IconThemeError int
 
 const (
-	// NotFound: the icon specified does not exist in the theme
+	// NotFound: icon specified does not exist in the theme
 	IconThemeErrorNotFound IconThemeError = iota
 	// Failed: unspecified error occurred.
 	IconThemeErrorFailed
@@ -62,10 +62,11 @@ func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 
 // IconPaintabler describes IconPaintable's methods.
 type IconPaintabler interface {
-	gextras.Objector
-
+	// File gets the `GFile` that was used to load the icon.
 	File() *gio.File
+	// IconName: get the icon name being used for this icon.
 	IconName() string
+	// IsSymbolic checks if the icon is symbolic or not.
 	IsSymbolic() bool
 }
 
@@ -79,9 +80,12 @@ type IconPaintable struct {
 	gdk.Paintable
 }
 
-var _ IconPaintabler = (*IconPaintable)(nil)
+var (
+	_ IconPaintabler  = (*IconPaintable)(nil)
+	_ gextras.Nativer = (*IconPaintable)(nil)
+)
 
-func wrapIconPaintabler(obj *externglib.Object) IconPaintabler {
+func wrapIconPaintable(obj *externglib.Object) IconPaintabler {
 	return &IconPaintable{
 		Object: obj,
 		Paintable: gdk.Paintable{
@@ -93,7 +97,7 @@ func wrapIconPaintabler(obj *externglib.Object) IconPaintabler {
 func marshalIconPaintabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconPaintabler(obj), nil
+	return wrapIconPaintable(obj), nil
 }
 
 // NewIconPaintableForFile creates a `GtkIconPaintable` for a file with a given
@@ -106,7 +110,7 @@ func NewIconPaintableForFile(file gio.Filer, size int, scale int) *IconPaintable
 	var _arg3 C.int               // out
 	var _cret *C.GtkIconPaintable // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 	_arg2 = C.int(size)
 	_arg3 = C.int(scale)
 
@@ -186,19 +190,35 @@ func (self *IconPaintable) IsSymbolic() bool {
 
 // IconThemer describes IconTheme's methods.
 type IconThemer interface {
-	gextras.Objector
-
+	// AddResourcePath adds a resource path that will be looked at when looking
+	// for icons, similar to search paths.
 	AddResourcePath(path string)
+	// AddSearchPath appends a directory to the search path.
 	AddSearchPath(path string)
+	// Display returns the display that the `GtkIconTheme` object was created
+	// for.
 	Display() *gdk.Display
+	// IconNames lists the names of icons in the current icon theme.
 	IconNames() []string
+	// IconSizes returns an array of integers describing the sizes at which the
+	// icon is available without scaling.
 	IconSizes(iconName string) []int
+	// ResourcePath gets the current resource path.
 	ResourcePath() []string
+	// SearchPath gets the current search path.
 	SearchPath() []string
+	// ThemeName gets the current icon theme name.
 	ThemeName() string
+	// HasGIcon checks whether an icon theme includes an icon for a particular
+	// `GIcon`.
 	HasGIcon(gicon gio.Iconner) bool
+	// HasIcon checks whether an icon theme includes an icon for a particular
+	// name.
 	HasIcon(iconName string) bool
+	// SetSearchPath sets the search path for the icon theme object.
 	SetSearchPath(path []string)
+	// SetThemeName sets the name of the icon theme that the `GtkIconTheme`
+	// object uses overriding system configuration.
 	SetThemeName(themeName string)
 }
 
@@ -231,9 +251,12 @@ type IconTheme struct {
 	*externglib.Object
 }
 
-var _ IconThemer = (*IconTheme)(nil)
+var (
+	_ IconThemer      = (*IconTheme)(nil)
+	_ gextras.Nativer = (*IconTheme)(nil)
+)
 
-func wrapIconThemer(obj *externglib.Object) IconThemer {
+func wrapIconTheme(obj *externglib.Object) IconThemer {
 	return &IconTheme{
 		Object: obj,
 	}
@@ -242,7 +265,7 @@ func wrapIconThemer(obj *externglib.Object) IconThemer {
 func marshalIconThemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconThemer(obj), nil
+	return wrapIconTheme(obj), nil
 }
 
 // NewIconTheme creates a new icon theme object.
@@ -463,7 +486,7 @@ func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((gicon).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
 

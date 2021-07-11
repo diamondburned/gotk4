@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_manager_get_type()), F: marshalDisplayManagerrer},
+		{T: externglib.Type(C.gdk_display_manager_get_type()), F: marshalDisplayManagerer},
 	})
 }
 
@@ -62,12 +62,13 @@ func SetAllowedBackends(backends string) {
 	C.gdk_set_allowed_backends(_arg1)
 }
 
-// DisplayManagerrer describes DisplayManager's methods.
-type DisplayManagerrer interface {
-	gextras.Objector
-
+// DisplayManagerer describes DisplayManager's methods.
+type DisplayManagerer interface {
+	// DefaultDisplay gets the default `GdkDisplay`.
 	DefaultDisplay() *Display
+	// OpenDisplay opens a display.
 	OpenDisplay(name string) *Display
+	// SetDefaultDisplay sets @display as the default display.
 	SetDefaultDisplay(display Displayyer)
 }
 
@@ -104,18 +105,21 @@ type DisplayManager struct {
 	*externglib.Object
 }
 
-var _ DisplayManagerrer = (*DisplayManager)(nil)
+var (
+	_ DisplayManagerer = (*DisplayManager)(nil)
+	_ gextras.Nativer  = (*DisplayManager)(nil)
+)
 
-func wrapDisplayManagerrer(obj *externglib.Object) DisplayManagerrer {
+func wrapDisplayManager(obj *externglib.Object) DisplayManagerer {
 	return &DisplayManager{
 		Object: obj,
 	}
 }
 
-func marshalDisplayManagerrer(p uintptr) (interface{}, error) {
+func marshalDisplayManagerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDisplayManagerrer(obj), nil
+	return wrapDisplayManager(obj), nil
 }
 
 // DefaultDisplay gets the default `GdkDisplay`.
@@ -159,7 +163,7 @@ func (manager *DisplayManager) SetDefaultDisplay(display Displayyer) {
 	var _arg1 *C.GdkDisplay        // out
 
 	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
 
 	C.gdk_display_manager_set_default_display(_arg0, _arg1)
 }

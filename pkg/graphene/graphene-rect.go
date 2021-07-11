@@ -21,7 +21,7 @@ func init() {
 	})
 }
 
-// Rect: the location and size of a rectangle region.
+// Rect: location and size of a rectangle region.
 //
 // The width and height of a #graphene_rect_t can be negative; for instance, a
 // #graphene_rect_t with an origin of [ 0, 0 ] and a size of [ 10, 10 ] is

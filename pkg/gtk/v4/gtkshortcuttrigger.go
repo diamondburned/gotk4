@@ -19,19 +19,21 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_alternative_trigger_get_type()), F: marshalAlternativeTriggerrer},
-		{T: externglib.Type(C.gtk_keyval_trigger_get_type()), F: marshalKeyvalTriggerrer},
-		{T: externglib.Type(C.gtk_mnemonic_trigger_get_type()), F: marshalMnemonicTriggerrer},
-		{T: externglib.Type(C.gtk_never_trigger_get_type()), F: marshalNeverTriggerrer},
-		{T: externglib.Type(C.gtk_shortcut_trigger_get_type()), F: marshalShortcutTriggerrer},
+		{T: externglib.Type(C.gtk_alternative_trigger_get_type()), F: marshalAlternativeTriggerer},
+		{T: externglib.Type(C.gtk_keyval_trigger_get_type()), F: marshalKeyvalTriggerer},
+		{T: externglib.Type(C.gtk_mnemonic_trigger_get_type()), F: marshalMnemonicTriggerer},
+		{T: externglib.Type(C.gtk_never_trigger_get_type()), F: marshalNeverTriggerer},
+		{T: externglib.Type(C.gtk_shortcut_trigger_get_type()), F: marshalShortcutTriggerer},
 	})
 }
 
-// AlternativeTriggerrer describes AlternativeTrigger's methods.
-type AlternativeTriggerrer interface {
-	gextras.Objector
-
+// AlternativeTriggerer describes AlternativeTrigger's methods.
+type AlternativeTriggerer interface {
+	// First gets the first of the two alternative triggers that may trigger
+	// @self.
 	First() *ShortcutTrigger
+	// Second gets the second of the two alternative triggers that may trigger
+	// @self.
 	Second() *ShortcutTrigger
 }
 
@@ -44,9 +46,12 @@ type AlternativeTrigger struct {
 	ShortcutTrigger
 }
 
-var _ AlternativeTriggerrer = (*AlternativeTrigger)(nil)
+var (
+	_ AlternativeTriggerer = (*AlternativeTrigger)(nil)
+	_ gextras.Nativer      = (*AlternativeTrigger)(nil)
+)
 
-func wrapAlternativeTriggerrer(obj *externglib.Object) AlternativeTriggerrer {
+func wrapAlternativeTrigger(obj *externglib.Object) AlternativeTriggerer {
 	return &AlternativeTrigger{
 		ShortcutTrigger: ShortcutTrigger{
 			Object: obj,
@@ -54,10 +59,10 @@ func wrapAlternativeTriggerrer(obj *externglib.Object) AlternativeTriggerrer {
 	}
 }
 
-func marshalAlternativeTriggerrer(p uintptr) (interface{}, error) {
+func marshalAlternativeTriggerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAlternativeTriggerrer(obj), nil
+	return wrapAlternativeTrigger(obj), nil
 }
 
 // NewAlternativeTrigger creates a `GtkShortcutTrigger` that will trigger
@@ -65,13 +70,13 @@ func marshalAlternativeTriggerrer(p uintptr) (interface{}, error) {
 //
 // Note that nesting is allowed, so if you want more than two alternative,
 // create a new alternative trigger for each option.
-func NewAlternativeTrigger(first ShortcutTriggerrer, second ShortcutTriggerrer) *AlternativeTrigger {
+func NewAlternativeTrigger(first ShortcutTriggerer, second ShortcutTriggerer) *AlternativeTrigger {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutTrigger // out
 	var _cret *C.GtkShortcutTrigger // in
 
-	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(first.Native()))
-	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer(second.Native()))
+	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((first).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer((second).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_alternative_trigger_new(_arg1, _arg2)
 
@@ -119,11 +124,12 @@ func (self *AlternativeTrigger) Second() *ShortcutTrigger {
 	return _shortcutTrigger
 }
 
-// KeyvalTriggerrer describes KeyvalTrigger's methods.
-type KeyvalTriggerrer interface {
-	gextras.Objector
-
+// KeyvalTriggerer describes KeyvalTrigger's methods.
+type KeyvalTriggerer interface {
+	// Keyval gets the keyval that must be pressed to succeed triggering @self.
 	Keyval() uint
+	// Modifiers gets the modifiers that must be present to succeed triggering
+	// @self.
 	Modifiers() gdk.ModifierType
 }
 
@@ -133,9 +139,12 @@ type KeyvalTrigger struct {
 	ShortcutTrigger
 }
 
-var _ KeyvalTriggerrer = (*KeyvalTrigger)(nil)
+var (
+	_ KeyvalTriggerer = (*KeyvalTrigger)(nil)
+	_ gextras.Nativer = (*KeyvalTrigger)(nil)
+)
 
-func wrapKeyvalTriggerrer(obj *externglib.Object) KeyvalTriggerrer {
+func wrapKeyvalTrigger(obj *externglib.Object) KeyvalTriggerer {
 	return &KeyvalTrigger{
 		ShortcutTrigger: ShortcutTrigger{
 			Object: obj,
@@ -143,10 +152,10 @@ func wrapKeyvalTriggerrer(obj *externglib.Object) KeyvalTriggerrer {
 	}
 }
 
-func marshalKeyvalTriggerrer(p uintptr) (interface{}, error) {
+func marshalKeyvalTriggerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapKeyvalTriggerrer(obj), nil
+	return wrapKeyvalTrigger(obj), nil
 }
 
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
@@ -182,10 +191,9 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 	return _modifierType
 }
 
-// MnemonicTriggerrer describes MnemonicTrigger's methods.
-type MnemonicTriggerrer interface {
-	gextras.Objector
-
+// MnemonicTriggerer describes MnemonicTrigger's methods.
+type MnemonicTriggerer interface {
+	// Keyval gets the keyval that must be pressed to succeed triggering @self.
 	Keyval() uint
 }
 
@@ -198,9 +206,12 @@ type MnemonicTrigger struct {
 	ShortcutTrigger
 }
 
-var _ MnemonicTriggerrer = (*MnemonicTrigger)(nil)
+var (
+	_ MnemonicTriggerer = (*MnemonicTrigger)(nil)
+	_ gextras.Nativer   = (*MnemonicTrigger)(nil)
+)
 
-func wrapMnemonicTriggerrer(obj *externglib.Object) MnemonicTriggerrer {
+func wrapMnemonicTrigger(obj *externglib.Object) MnemonicTriggerer {
 	return &MnemonicTrigger{
 		ShortcutTrigger: ShortcutTrigger{
 			Object: obj,
@@ -208,10 +219,10 @@ func wrapMnemonicTriggerrer(obj *externglib.Object) MnemonicTriggerrer {
 	}
 }
 
-func marshalMnemonicTriggerrer(p uintptr) (interface{}, error) {
+func marshalMnemonicTriggerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMnemonicTriggerrer(obj), nil
+	return wrapMnemonicTrigger(obj), nil
 }
 
 // NewMnemonicTrigger creates a `GtkShortcutTrigger` that will trigger whenever
@@ -250,10 +261,8 @@ func (self *MnemonicTrigger) Keyval() uint {
 	return _guint
 }
 
-// NeverTriggerrer describes NeverTrigger's methods.
-type NeverTriggerrer interface {
-	gextras.Objector
-
+// NeverTriggerer describes NeverTrigger's methods.
+type NeverTriggerer interface {
 	privateNeverTrigger()
 }
 
@@ -262,9 +271,12 @@ type NeverTrigger struct {
 	ShortcutTrigger
 }
 
-var _ NeverTriggerrer = (*NeverTrigger)(nil)
+var (
+	_ NeverTriggerer  = (*NeverTrigger)(nil)
+	_ gextras.Nativer = (*NeverTrigger)(nil)
+)
 
-func wrapNeverTriggerrer(obj *externglib.Object) NeverTriggerrer {
+func wrapNeverTrigger(obj *externglib.Object) NeverTriggerer {
 	return &NeverTrigger{
 		ShortcutTrigger: ShortcutTrigger{
 			Object: obj,
@@ -272,23 +284,29 @@ func wrapNeverTriggerrer(obj *externglib.Object) NeverTriggerrer {
 	}
 }
 
-func marshalNeverTriggerrer(p uintptr) (interface{}, error) {
+func marshalNeverTriggerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNeverTriggerrer(obj), nil
+	return wrapNeverTrigger(obj), nil
 }
 
 func (*NeverTrigger) privateNeverTrigger() {}
 
-// ShortcutTriggerrer describes ShortcutTrigger's methods.
-type ShortcutTriggerrer interface {
-	gextras.Objector
-
-	Compare(trigger2 ShortcutTriggerrer) int
-	Equal(trigger2 ShortcutTriggerrer) bool
+// ShortcutTriggerer describes ShortcutTrigger's methods.
+type ShortcutTriggerer interface {
+	// Compare types of @trigger1 and @trigger2 are #gconstpointer only to allow
+	// use of this function as a Func.
+	Compare(trigger2 ShortcutTriggerer) int
+	// Equal checks if @trigger1 and @trigger2 trigger under the same
+	// conditions.
+	Equal(trigger2 ShortcutTriggerer) bool
+	// Hash generates a hash value for a `GtkShortcutTrigger`.
 	Hash() uint
+	// ToLabel gets textual representation for the given trigger.
 	ToLabel(display gdk.Displayyer) string
+	// String prints the given trigger into a human-readable string.
 	String() string
+	// Trigger checks if the given @event triggers @self.
 	Trigger(event gdk.Eventer, enableMnemonics bool) gdk.KeyMatch
 }
 
@@ -308,18 +326,21 @@ type ShortcutTrigger struct {
 	*externglib.Object
 }
 
-var _ ShortcutTriggerrer = (*ShortcutTrigger)(nil)
+var (
+	_ ShortcutTriggerer = (*ShortcutTrigger)(nil)
+	_ gextras.Nativer   = (*ShortcutTrigger)(nil)
+)
 
-func wrapShortcutTriggerrer(obj *externglib.Object) ShortcutTriggerrer {
+func wrapShortcutTrigger(obj *externglib.Object) ShortcutTriggerer {
 	return &ShortcutTrigger{
 		Object: obj,
 	}
 }
 
-func marshalShortcutTriggerrer(p uintptr) (interface{}, error) {
+func marshalShortcutTriggerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutTriggerrer(obj), nil
+	return wrapShortcutTrigger(obj), nil
 }
 
 // NewShortcutTriggerParseString tries to parse the given string into a trigger.
@@ -354,17 +375,17 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 	return _shortcutTrigger
 }
 
-// Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
-// allow use of this function as a Func.
+// Compare types of @trigger1 and @trigger2 are #gconstpointer only to allow use
+// of this function as a Func.
 //
 // They must each be a `GtkShortcutTrigger`.
-func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerrer) int {
+func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.int           // in
 
 	_arg0 = (C.gconstpointer)(unsafe.Pointer(trigger1.Native()))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(trigger2.Native()))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer((trigger2).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_shortcut_trigger_compare(_arg0, _arg1)
 
@@ -379,13 +400,13 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerrer) int {
 //
 // The types of @one and @two are #gconstpointer only to allow use of this
 // function with Table. They must each be a `GtkShortcutTrigger`.
-func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerrer) bool {
+func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
 	_arg0 = (C.gconstpointer)(unsafe.Pointer(trigger1.Native()))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(trigger2.Native()))
+	_arg1 = (C.gconstpointer)(unsafe.Pointer((trigger2).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_shortcut_trigger_equal(_arg0, _arg1)
 
@@ -438,7 +459,7 @@ func (self *ShortcutTrigger) ToLabel(display gdk.Displayyer) string {
 	var _cret *C.char               // in
 
 	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_shortcut_trigger_to_label(_arg0, _arg1)
 
@@ -478,7 +499,7 @@ func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gd
 	var _cret C.GdkKeyMatch         // in
 
 	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
 	if enableMnemonics {
 		_arg2 = C.TRUE
 	}

@@ -38,7 +38,7 @@ func CairoCreate(window Windowwer) *cairo.Context {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.cairo_t   // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_cairo_create(_arg1)
 
@@ -80,7 +80,7 @@ func CairoDrawFromGL(cr *cairo.Context, window Windowwer, source int, sourceType
 	var _arg9 C.int        // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 	_arg3 = C.int(source)
 	_arg4 = C.int(sourceType)
 	_arg5 = C.int(bufferScale)
@@ -201,7 +201,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuffer, pixbufX
 	var _arg4 C.gdouble    // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 	_arg3 = C.gdouble(pixbufX)
 	_arg4 = C.gdouble(pixbufY)
 
@@ -234,7 +234,7 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windowwer, x float64, y floa
 	var _arg4 C.gdouble    // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 
@@ -249,9 +249,9 @@ func CairoSurfaceCreateFromPixbuf(pixbuf gdkpixbuf.Pixbuffer, scale int, forWind
 	var _arg3 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 	_arg2 = C.int(scale)
-	_arg3 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	_arg3 = (*C.GdkWindow)(unsafe.Pointer((forWindow).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_cairo_surface_create_from_pixbuf(_arg1, _arg2, _arg3)
 

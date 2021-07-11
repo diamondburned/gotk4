@@ -27,27 +27,21 @@ func init() {
 
 // LockButtonAccessibler describes LockButtonAccessible's methods.
 type LockButtonAccessibler interface {
-	gextras.Objector
-
 	privateLockButtonAccessible()
 }
 
 type LockButtonAccessible struct {
-	*externglib.Object
-
 	ButtonAccessible
-	atk.Action
-	atk.Component
-	atk.Image
 }
 
-var _ LockButtonAccessibler = (*LockButtonAccessible)(nil)
+var (
+	_ LockButtonAccessibler = (*LockButtonAccessible)(nil)
+	_ gextras.Nativer       = (*LockButtonAccessible)(nil)
+)
 
-func wrapLockButtonAccessibler(obj *externglib.Object) LockButtonAccessibler {
+func wrapLockButtonAccessible(obj *externglib.Object) LockButtonAccessibler {
 	return &LockButtonAccessible{
-		Object: obj,
 		ButtonAccessible: ButtonAccessible{
-			Object: obj,
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
@@ -59,28 +53,13 @@ func wrapLockButtonAccessibler(obj *externglib.Object) LockButtonAccessibler {
 						Object: obj,
 					},
 				},
-				Component: atk.Component{
-					Object: obj,
-				},
 			},
 			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
 				Object: obj,
 			},
 			Image: atk.Image{
 				Object: obj,
 			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
-		Image: atk.Image{
-			Object: obj,
 		},
 	}
 }
@@ -88,7 +67,7 @@ func wrapLockButtonAccessibler(obj *externglib.Object) LockButtonAccessibler {
 func marshalLockButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLockButtonAccessibler(obj), nil
+	return wrapLockButtonAccessible(obj), nil
 }
 
 func (*LockButtonAccessible) privateLockButtonAccessible() {}

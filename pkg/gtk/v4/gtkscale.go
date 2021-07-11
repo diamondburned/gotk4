@@ -49,11 +49,11 @@ func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer
 	return cret
 }
 
-// ScalerOverrider contains methods that are overridable.
+// ScaleOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ScalerOverrider interface {
+type ScaleOverrider interface {
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// `PangoLayout` representing the text in the scale.
 	//
@@ -67,17 +67,29 @@ type ScalerOverrider interface {
 
 // Scaler describes Scale's methods.
 type Scaler interface {
-	gextras.Objector
-
+	// ClearMarks removes any marks that have been added.
 	ClearMarks()
+	// Digits gets the number of decimal places that are displayed in the value.
 	Digits() int
+	// DrawValue returns whether the current value is displayed as a string next
+	// to the slider.
 	DrawValue() bool
+	// HasOrigin returns whether the scale has an origin.
 	HasOrigin() bool
+	// Layout gets the `PangoLayout` used to display the scale.
 	Layout() *pango.Layout
+	// LayoutOffsets obtains the coordinates where the scale will draw the
+	// `PangoLayout` representing the text in the scale.
 	LayoutOffsets() (x int, y int)
+	// ValuePos gets the position in which the current value is displayed.
 	ValuePos() PositionType
+	// SetDigits sets the number of decimal places that are displayed in the
+	// value.
 	SetDigits(digits int)
+	// SetDrawValue specifies whether the current value is displayed as a string
+	// next to the slider.
 	SetDrawValue(drawValue bool)
+	// SetHasOrigin sets whether the scale has an origin.
 	SetHasOrigin(hasOrigin bool)
 }
 
@@ -150,24 +162,18 @@ type Scaler interface {
 //
 // `GtkScale` uses the GTK_ACCESSIBLE_ROLE_SLIDER role.
 type Scale struct {
-	*externglib.Object
-
 	Range
-	Accessible
-	Buildable
-	ConstraintTarget
-	Orientable
 }
 
-var _ Scaler = (*Scale)(nil)
+var (
+	_ Scaler          = (*Scale)(nil)
+	_ gextras.Nativer = (*Scale)(nil)
+)
 
-func wrapScaler(obj *externglib.Object) Scaler {
+func wrapScale(obj *externglib.Object) Scaler {
 	return &Scale{
-		Object: obj,
 		Range: Range{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -181,30 +187,9 @@ func wrapScaler(obj *externglib.Object) Scaler {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -212,7 +197,7 @@ func wrapScaler(obj *externglib.Object) Scaler {
 func marshalScaler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScaler(obj), nil
+	return wrapScale(obj), nil
 }
 
 // ClearMarks removes any marks that have been added.

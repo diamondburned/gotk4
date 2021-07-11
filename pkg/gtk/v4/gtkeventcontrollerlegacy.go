@@ -24,8 +24,6 @@ func init() {
 
 // EventControllerLegacier describes EventControllerLegacy's methods.
 type EventControllerLegacier interface {
-	gextras.Objector
-
 	privateEventControllerLegacy()
 }
 
@@ -38,9 +36,12 @@ type EventControllerLegacy struct {
 	EventController
 }
 
-var _ EventControllerLegacier = (*EventControllerLegacy)(nil)
+var (
+	_ EventControllerLegacier = (*EventControllerLegacy)(nil)
+	_ gextras.Nativer         = (*EventControllerLegacy)(nil)
+)
 
-func wrapEventControllerLegacier(obj *externglib.Object) EventControllerLegacier {
+func wrapEventControllerLegacy(obj *externglib.Object) EventControllerLegacier {
 	return &EventControllerLegacy{
 		EventController: EventController{
 			Object: obj,
@@ -51,7 +52,7 @@ func wrapEventControllerLegacier(obj *externglib.Object) EventControllerLegacier
 func marshalEventControllerLegacier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerLegacier(obj), nil
+	return wrapEventControllerLegacy(obj), nil
 }
 
 // NewEventControllerLegacy creates a new legacy event controller.

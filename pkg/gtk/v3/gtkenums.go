@@ -233,18 +233,18 @@ func marshalDirectionType(p uintptr) (interface{}, error) {
 type DragResult int
 
 const (
-	// Success: the drag operation was successful.
+	// Success: drag operation was successful.
 	DragResultSuccess DragResult = iota
 	// NoTarget: no suitable drag target.
 	DragResultNoTarget
-	// UserCancelled: the user cancelled the drag operation.
+	// UserCancelled: user cancelled the drag operation.
 	DragResultUserCancelled
-	// TimeoutExpired: the drag operation timed out.
+	// TimeoutExpired: drag operation timed out.
 	DragResultTimeoutExpired
-	// GrabBroken: the pointer or keyboard grab used for the drag operation was
+	// GrabBroken: pointer or keyboard grab used for the drag operation was
 	// broken.
 	DragResultGrabBroken
-	// Error: the drag operation failed due to some unspecified error.
+	// Error: drag operation failed due to some unspecified error.
 	DragResultError
 )
 
@@ -256,11 +256,11 @@ func marshalDragResult(p uintptr) (interface{}, error) {
 type EventSequenceState int
 
 const (
-	// None: the sequence is handled, but not grabbed.
+	// None: sequence is handled, but not grabbed.
 	EventSequenceStateNone EventSequenceState = iota
-	// Claimed: the sequence is handled and grabbed.
+	// Claimed: sequence is handled and grabbed.
 	EventSequenceStateClaimed
-	// Denied: the sequence is denied.
+	// Denied: sequence is denied.
 	EventSequenceStateDenied
 )
 
@@ -383,13 +383,13 @@ func marshalInputPurpose(p uintptr) (interface{}, error) {
 type Justification int
 
 const (
-	// Left: the text is placed at the left edge of the label.
+	// Left: text is placed at the left edge of the label.
 	JustificationLeft Justification = iota
-	// Right: the text is placed at the right edge of the label.
+	// Right: text is placed at the right edge of the label.
 	JustificationRight
-	// Center: the text is placed in the center of the label.
+	// Center: text is placed in the center of the label.
 	JustificationCenter
-	// Fill: the text is placed is distributed across the label.
+	// Fill: text is placed is distributed across the label.
 	JustificationFill
 )
 
@@ -402,9 +402,9 @@ func marshalJustification(p uintptr) (interface{}, error) {
 type LevelBarMode int
 
 const (
-	// Continuous: the bar has a continuous mode
+	// Continuous: bar has a continuous mode
 	LevelBarModeContinuous LevelBarMode = iota
-	// Discrete: the bar has a discrete mode
+	// Discrete: bar has a discrete mode
 	LevelBarModeDiscrete
 )
 
@@ -431,7 +431,7 @@ func marshalMenuDirectionType(p uintptr) (interface{}, error) {
 	return MenuDirectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MessageType: the type of message being displayed in the dialog.
+// MessageType: type of message being displayed in the dialog.
 type MessageType int
 
 const (
@@ -484,9 +484,9 @@ func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 type Orientation int
 
 const (
-	// Horizontal: the element is in horizontal orientation.
+	// Horizontal: element is in horizontal orientation.
 	OrientationHorizontal Orientation = iota
-	// Vertical: the element is in vertical orientation.
+	// Vertical: element is in vertical orientation.
 	OrientationVertical
 )
 
@@ -518,9 +518,9 @@ func marshalPackDirection(p uintptr) (interface{}, error) {
 type PackType int
 
 const (
-	// Start: the child is packed into the start of the box
+	// Start: child is packed into the start of the box
 	PackTypeStart PackType = iota
-	// End: the child is packed into the end of the box
+	// End: child is packed into the end of the box
 	PackTypeEnd
 )
 
@@ -603,13 +603,13 @@ func marshalPopoverConstraint(p uintptr) (interface{}, error) {
 type PositionType int
 
 const (
-	// Left: the feature is at the left edge.
+	// Left: feature is at the left edge.
 	PositionTypeLeft PositionType = iota
-	// Right: the feature is at the right edge.
+	// Right: feature is at the right edge.
 	PositionTypeRight
-	// Top: the feature is at the top edge.
+	// Top: feature is at the top edge.
 	PositionTypeTop
-	// Bottom: the feature is at the bottom edge.
+	// Bottom: feature is at the bottom edge.
 	PositionTypeBottom
 )
 
@@ -801,11 +801,11 @@ func marshalSelectionMode(p uintptr) (interface{}, error) {
 type SensitivityType int
 
 const (
-	// Auto: the arrow is made insensitive if the thumb is at the end
+	// Auto: arrow is made insensitive if the thumb is at the end
 	SensitivityTypeAuto SensitivityType = iota
-	// On: the arrow is always sensitive
+	// On: arrow is always sensitive
 	SensitivityTypeOn
-	// Off: the arrow is always insensitive
+	// Off: arrow is always insensitive
 	SensitivityTypeOff
 )
 
@@ -824,13 +824,13 @@ type ShadowType int
 const (
 	// None: no outline.
 	ShadowTypeNone ShadowType = iota
-	// In: the outline is bevelled inwards.
+	// In: outline is bevelled inwards.
 	ShadowTypeIn
-	// Out: the outline is bevelled outwards like a button.
+	// Out: outline is bevelled outwards like a button.
 	ShadowTypeOut
-	// EtchedIn: the outline has a sunken 3d appearance.
+	// EtchedIn: outline has a sunken 3d appearance.
 	ShadowTypeEtchedIn
-	// EtchedOut: the outline has a raised 3d appearance.
+	// EtchedOut: outline has a raised 3d appearance.
 	ShadowTypeEtchedOut
 )
 
@@ -838,8 +838,8 @@ func marshalShadowType(p uintptr) (interface{}, error) {
 	return ShadowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SizeGroupMode: the mode of the size group determines the directions in which
-// the size group affects the requested sizes of its component widgets.
+// SizeGroupMode: mode of the size group determines the directions in which the
+// size group affects the requested sizes of its component widgets.
 type SizeGroupMode int
 
 const (
@@ -910,11 +910,11 @@ const (
 	// Insensitive: state indicating that the widget is unresponsive to user
 	// actions.
 	StateTypeInsensitive
-	// Inconsistent: the widget is inconsistent, such as checkbuttons or
+	// Inconsistent: widget is inconsistent, such as checkbuttons or
 	// radiobuttons that aren’t either set to true nor false, or buttons
 	// requiring the user attention.
 	StateTypeInconsistent
-	// Focused: the widget has the keyboard focus.
+	// Focused: widget has the keyboard focus.
 	StateTypeFocused
 )
 
@@ -1050,7 +1050,7 @@ const (
 	// InputHintsInhibitOsk: suggest to not show an onscreen keyboard (e.g for a
 	// calculator that already has all the keys).
 	InputHintsInhibitOsk InputHints = 0b10000000
-	// InputHintsVerticalWriting: the text is vertical. Since 3.18
+	// InputHintsVerticalWriting: text is vertical. Since 3.18
 	InputHintsVerticalWriting InputHints = 0b100000000
 	// InputHintsEmoji: suggest offering Emoji support. Since 3.22.20
 	InputHintsEmoji InputHints = 0b1000000000
@@ -1142,7 +1142,7 @@ const (
 	StateFlagsDirRTL StateFlags = 0b100000000
 	// StateFlagsLink: widget is a link. Since 3.12
 	StateFlagsLink StateFlags = 0b1000000000
-	// StateFlagsVisited: the location the widget points to has already been
+	// StateFlagsVisited: location the widget points to has already been
 	// visited. Since 3.12
 	StateFlagsVisited StateFlags = 0b10000000000
 	// StateFlagsChecked: widget is checked. Since 3.14

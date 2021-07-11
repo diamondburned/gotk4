@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// AsyncInitablerOverrider contains methods that are overridable.
+// AsyncInitableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AsyncInitablerOverrider interface {
+type AsyncInitableOverrider interface {
 	// InitAsync starts asynchronous initialization of the object implementing
 	// the interface. This must be done before any real use of the object after
 	// initial construction. If the object also implements #GInitable you can
@@ -85,10 +85,13 @@ type AsyncInitablerOverrider interface {
 
 // AsyncInitabler describes AsyncInitable's methods.
 type AsyncInitabler interface {
-	gextras.Objector
-
+	// InitAsync starts asynchronous initialization of the object implementing
+	// the interface.
 	InitAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// InitFinish finishes asynchronous initialization and returns the result.
 	InitFinish(res AsyncResulter) error
+	// NewFinish finishes the async construction for the various
+	// g_async_initable_new calls, returning the created object or nil on error.
 	NewFinish(res AsyncResulter) (*externglib.Object, error)
 }
 
@@ -193,9 +196,12 @@ type AsyncInitable struct {
 	*externglib.Object
 }
 
-var _ AsyncInitabler = (*AsyncInitable)(nil)
+var (
+	_ AsyncInitabler  = (*AsyncInitable)(nil)
+	_ gextras.Nativer = (*AsyncInitable)(nil)
+)
 
-func wrapAsyncInitabler(obj *externglib.Object) AsyncInitabler {
+func wrapAsyncInitable(obj *externglib.Object) AsyncInitabler {
 	return &AsyncInitable{
 		Object: obj,
 	}
@@ -204,7 +210,7 @@ func wrapAsyncInitabler(obj *externglib.Object) AsyncInitabler {
 func marshalAsyncInitabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAsyncInitabler(obj), nil
+	return wrapAsyncInitable(obj), nil
 }
 
 // InitAsync starts asynchronous initialization of the object implementing the
@@ -251,7 +257,7 @@ func (initable *AsyncInitable) InitAsync(ioPriority int, cancellable Cancellable
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -266,7 +272,7 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
 
@@ -286,7 +292,7 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object,
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
 

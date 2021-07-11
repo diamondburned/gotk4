@@ -27,33 +27,24 @@ func init() {
 
 // HButtonBoxxer describes HButtonBox's methods.
 type HButtonBoxxer interface {
-	gextras.Objector
-
 	privateHButtonBox()
 }
 
 type HButtonBox struct {
-	*externglib.Object
-
 	ButtonBox
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ HButtonBoxxer = (*HButtonBox)(nil)
+var (
+	_ HButtonBoxxer   = (*HButtonBox)(nil)
+	_ gextras.Nativer = (*HButtonBox)(nil)
+)
 
-func wrapHButtonBoxxer(obj *externglib.Object) HButtonBoxxer {
+func wrapHButtonBox(obj *externglib.Object) HButtonBoxxer {
 	return &HButtonBox{
-		Object: obj,
 		ButtonBox: ButtonBox{
-			Object: obj,
 			Box: Box{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -64,41 +55,11 @@ func wrapHButtonBoxxer(obj *externglib.Object) HButtonBoxxer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			Orientable: Orientable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -106,7 +67,7 @@ func wrapHButtonBoxxer(obj *externglib.Object) HButtonBoxxer {
 func marshalHButtonBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHButtonBoxxer(obj), nil
+	return wrapHButtonBox(obj), nil
 }
 
 // NewHButtonBox creates a new horizontal button box.

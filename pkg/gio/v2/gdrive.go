@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// DriverOverrider contains methods that are overridable.
+// DriveOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DriverOverrider interface {
+type DriveOverrider interface {
 	// CanEject checks if a drive can be ejected.
 	CanEject() bool
 	// CanPollForMedia checks if a drive can be polled for media changes.
@@ -51,8 +51,11 @@ type DriverOverrider interface {
 	CanStartDegraded() bool
 	// CanStop checks if a drive can be stopped.
 	CanStop() bool
+
 	Changed()
+
 	Disconnected()
+
 	EjectButton()
 	// EjectFinish finishes ejecting a drive.
 	//
@@ -104,6 +107,7 @@ type DriverOverrider interface {
 	PollForMediaFinish(result AsyncResulter) error
 	// StartFinish finishes starting a drive.
 	StartFinish(result AsyncResulter) error
+
 	StopButton()
 	// StopFinish finishes stopping a drive.
 	StopFinish(result AsyncResulter) error
@@ -111,30 +115,55 @@ type DriverOverrider interface {
 
 // Driver describes Drive's methods.
 type Driver interface {
-	gextras.Objector
-
+	// CanEject checks if a drive can be ejected.
 	CanEject() bool
+	// CanPollForMedia checks if a drive can be polled for media changes.
 	CanPollForMedia() bool
+	// CanStart checks if a drive can be started.
 	CanStart() bool
+	// CanStartDegraded checks if a drive can be started degraded.
 	CanStartDegraded() bool
+	// CanStop checks if a drive can be stopped.
 	CanStop() bool
+	// EjectFinish finishes ejecting a drive.
 	EjectFinish(result AsyncResulter) error
+	// EjectWithOperationFinish finishes ejecting a drive.
 	EjectWithOperationFinish(result AsyncResulter) error
+	// EnumerateIdentifiers gets the kinds of identifiers that @drive has.
 	EnumerateIdentifiers() []string
+	// Icon gets the icon for @drive.
 	Icon() *Icon
+	// Identifier gets the identifier of the given kind for @drive.
 	Identifier(kind string) string
+	// Name gets the name of @drive.
 	Name() string
+	// SortKey gets the sort key for @drive, if any.
 	SortKey() string
+	// StartStopType gets a hint about how a drive can be started/stopped.
 	StartStopType() DriveStartStopType
+	// SymbolicIcon gets the icon for @drive.
 	SymbolicIcon() *Icon
+	// HasMedia checks if the @drive has media.
 	HasMedia() bool
+	// HasVolumes: check if @drive has any mountable volumes.
 	HasVolumes() bool
+	// IsMediaCheckAutomatic checks if @drive is capable of automatically
+	// detecting media changes.
 	IsMediaCheckAutomatic() bool
+	// IsMediaRemovable checks if the @drive supports removable media.
 	IsMediaRemovable() bool
+	// IsRemovable checks if the #GDrive and/or its media is considered
+	// removable by the user.
 	IsRemovable() bool
+	// PollForMedia: asynchronously polls @drive to see if media has been
+	// inserted or removed.
 	PollForMedia(cancellable Cancellabler, callback AsyncReadyCallback)
+	// PollForMediaFinish finishes an operation started with
+	// g_drive_poll_for_media() on a drive.
 	PollForMediaFinish(result AsyncResulter) error
+	// StartFinish finishes starting a drive.
 	StartFinish(result AsyncResulter) error
+	// StopFinish finishes stopping a drive.
 	StopFinish(result AsyncResulter) error
 }
 
@@ -166,9 +195,12 @@ type Drive struct {
 	*externglib.Object
 }
 
-var _ Driver = (*Drive)(nil)
+var (
+	_ Driver          = (*Drive)(nil)
+	_ gextras.Nativer = (*Drive)(nil)
+)
 
-func wrapDriver(obj *externglib.Object) Driver {
+func wrapDrive(obj *externglib.Object) Driver {
 	return &Drive{
 		Object: obj,
 	}
@@ -177,7 +209,7 @@ func wrapDriver(obj *externglib.Object) Driver {
 func marshalDriver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDriver(obj), nil
+	return wrapDrive(obj), nil
 }
 
 // CanEject checks if a drive can be ejected.
@@ -279,7 +311,7 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_drive_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -299,7 +331,7 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_drive_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -548,7 +580,7 @@ func (drive *Drive) PollForMedia(cancellable Cancellabler, callback AsyncReadyCa
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -563,7 +595,7 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_drive_poll_for_media_finish(_arg0, _arg1, &_cerr)
 
@@ -581,7 +613,7 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_drive_start_finish(_arg0, _arg1, &_cerr)
 
@@ -599,7 +631,7 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_drive_stop_finish(_arg0, _arg1, &_cerr)
 

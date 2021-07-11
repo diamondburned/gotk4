@@ -97,60 +97,133 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 
 // Layouter describes Layout's methods.
 type Layouter interface {
-	gextras.Objector
-
+	// ContextChanged forces recomputation of any state in the `PangoLayout`
+	// that might depend on the layout's context.
 	ContextChanged()
+	// Copy creates a deep copy-by-value of the layout.
 	Copy() *Layout
+	// Alignment gets the alignment for the layout: how partial lines are
+	// positioned within the horizontal space available.
 	Alignment() Alignment
+	// Attributes gets the attribute list for the layout, if any.
 	Attributes() *AttrList
+	// AutoDir gets whether to calculate the base direction for the layout
+	// according to its contents.
 	AutoDir() bool
+	// Baseline gets the Y position of baseline of the first line in @layout.
 	Baseline() int
+	// CharacterCount returns the number of Unicode characters in the the text
+	// of @layout.
 	CharacterCount() int
+	// Context retrieves the `PangoContext` used for this layout.
 	Context() *Context
+	// CursorPos: given an index within a layout, determines the positions that
+	// of the strong and weak cursors if the insertion point is at that index.
 	CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle)
+	// Direction gets the text direction at the given character position in
+	// @layout.
 	Direction(index int) Direction
+	// Ellipsize gets the type of ellipsization being performed for @layout.
 	Ellipsize() EllipsizeMode
+	// Extents computes the logical and ink extents of @layout.
 	Extents() (inkRect Rectangle, logicalRect Rectangle)
+	// FontDescription gets the font description for the layout, if any.
 	FontDescription() *FontDescription
+	// Height gets the height of layout used for ellipsization.
 	Height() int
+	// Indent gets the paragraph indent width in Pango units.
 	Indent() int
+	// Iter returns an iterator to iterate over the visual extents of the
+	// layout.
 	Iter() *LayoutIter
+	// Justify gets whether each complete line should be stretched to fill the
+	// entire width of the layout.
 	Justify() bool
+	// Line retrieves a particular line from a `PangoLayout`.
 	Line(line int) *LayoutLine
+	// LineCount retrieves the count of lines for the @layout.
 	LineCount() int
+	// LineReadonly retrieves a particular line from a `PangoLayout`.
 	LineReadonly(line int) *LayoutLine
+	// LineSpacing gets the line spacing factor of @layout.
 	LineSpacing() float32
+	// LogAttrs retrieves an array of logical attributes for each character in
+	// the @layout.
 	LogAttrs() []LogAttr
+	// PixelExtents computes the logical and ink extents of @layout in device
+	// units.
 	PixelExtents() (inkRect Rectangle, logicalRect Rectangle)
+	// PixelSize determines the logical width and height of a `PangoLayout` in
+	// device units.
 	PixelSize() (width int, height int)
+	// Serial returns the current serial number of @layout.
 	Serial() uint
+	// SingleParagraphMode obtains whether @layout is in single paragraph mode.
 	SingleParagraphMode() bool
+	// Size determines the logical width and height of a `PangoLayout` in Pango
+	// units.
 	Size() (width int, height int)
+	// Spacing gets the amount of spacing between the lines of the layout.
 	Spacing() int
+	// Tabs gets the current `PangoTabArray` used by this layout.
 	Tabs() *TabArray
+	// Text gets the text in the layout.
 	Text() string
+	// UnknownGlyphsCount counts the number of unknown glyphs in @layout.
 	UnknownGlyphsCount() int
+	// Width gets the width to which the lines of the `PangoLayout` should wrap.
 	Width() int
+	// Wrap gets the wrap mode for the layout.
 	Wrap() WrapMode
+	// IndexToLineX converts from byte @index_ within the @layout to line and X
+	// position.
 	IndexToLineX(index_ int, trailing bool) (line int, xPos int)
+	// IndexToPos converts from an index within a `PangoLayout` to the onscreen
+	// position corresponding to the grapheme at that index.
 	IndexToPos(index_ int) Rectangle
+	// IsEllipsized queries whether the layout had to ellipsize any paragraphs.
 	IsEllipsized() bool
+	// IsWrapped queries whether the layout had to wrap any paragraphs.
 	IsWrapped() bool
+	// MoveCursorVisually computes a new cursor position from an old position
+	// and a count of positions to move visually.
 	MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int)
+	// SetAttributes sets the text attributes for a layout object.
 	SetAttributes(attrs *AttrList)
+	// SetAutoDir sets whether to calculate the base direction for the layout
+	// according to its contents.
 	SetAutoDir(autoDir bool)
+	// SetFontDescription sets the default font description for the layout.
 	SetFontDescription(desc *FontDescription)
+	// SetHeight sets the height to which the `PangoLayout` should be ellipsized
+	// at.
 	SetHeight(height int)
+	// SetIndent sets the width in Pango units to indent each paragraph.
 	SetIndent(indent int)
+	// SetJustify sets whether each complete line should be stretched to fill
+	// the entire width of the layout.
 	SetJustify(justify bool)
+	// SetLineSpacing sets a factor for line spacing.
 	SetLineSpacing(factor float32)
+	// SetMarkup sets the layout text and attribute list from marked-up text.
 	SetMarkup(markup string, length int)
+	// SetMarkupWithAccel sets the layout text and attribute list from marked-up
+	// text.
 	SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32
+	// SetSingleParagraphMode sets the single paragraph mode of @layout.
 	SetSingleParagraphMode(setting bool)
+	// SetSpacing sets the amount of spacing in Pango unit between the lines of
+	// the layout.
 	SetSpacing(spacing int)
+	// SetTabs sets the tabs to use for @layout, overriding the default tabs.
 	SetTabs(tabs *TabArray)
+	// SetText sets the text of the layout.
 	SetText(text string, length int)
+	// SetWidth sets the width to which the lines of the `PangoLayout` should
+	// wrap or ellipsized.
 	SetWidth(width int)
+	// XYToIndex converts from X and Y position within a layout to the byte
+	// index to the character at that logical position.
 	XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
 }
 
@@ -181,9 +254,12 @@ type Layout struct {
 	*externglib.Object
 }
 
-var _ Layouter = (*Layout)(nil)
+var (
+	_ Layouter        = (*Layout)(nil)
+	_ gextras.Nativer = (*Layout)(nil)
+)
 
-func wrapLayouter(obj *externglib.Object) Layouter {
+func wrapLayout(obj *externglib.Object) Layouter {
 	return &Layout{
 		Object: obj,
 	}
@@ -192,7 +268,7 @@ func wrapLayouter(obj *externglib.Object) Layouter {
 func marshalLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLayouter(obj), nil
+	return wrapLayout(obj), nil
 }
 
 // NewLayout: create a new `PangoLayout` object with attributes initialized to
@@ -201,7 +277,7 @@ func NewLayout(context Contexter) *Layout {
 	var _arg1 *C.PangoContext // out
 	var _cret *C.PangoLayout  // in
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 
 	_cret = C.pango_layout_new(_arg1)
 

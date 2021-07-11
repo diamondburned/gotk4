@@ -31,11 +31,14 @@ func init() {
 
 // StylePropertieser describes StyleProperties's methods.
 type StylePropertieser interface {
-	gextras.Objector
-
+	// Clear clears all style information from @props.
 	Clear()
+	// LookupColor returns the symbolic color that is mapped to @name.
 	LookupColor(name string) *SymbolicColor
+	// MapColor maps @color so it can be referenced by @name.
 	MapColor(name string, color *SymbolicColor)
+	// Merge merges into @props all the style information contained in
+	// @props_to_merge.
 	Merge(propsToMerge StylePropertieser, replace bool)
 }
 
@@ -59,9 +62,12 @@ type StyleProperties struct {
 	StyleProvider
 }
 
-var _ StylePropertieser = (*StyleProperties)(nil)
+var (
+	_ StylePropertieser = (*StyleProperties)(nil)
+	_ gextras.Nativer   = (*StyleProperties)(nil)
+)
 
-func wrapStylePropertieser(obj *externglib.Object) StylePropertieser {
+func wrapStyleProperties(obj *externglib.Object) StylePropertieser {
 	return &StyleProperties{
 		Object: obj,
 		StyleProvider: StyleProvider{
@@ -73,7 +79,7 @@ func wrapStylePropertieser(obj *externglib.Object) StylePropertieser {
 func marshalStylePropertieser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStylePropertieser(obj), nil
+	return wrapStyleProperties(obj), nil
 }
 
 // NewStyleProperties returns a newly created StyleProperties
@@ -155,7 +161,7 @@ func (props *StyleProperties) Merge(propsToMerge StylePropertieser, replace bool
 	var _arg2 C.gboolean            // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(propsToMerge.Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer((propsToMerge).(gextras.Nativer).Native()))
 	if replace {
 		_arg2 = C.TRUE
 	}
@@ -297,7 +303,7 @@ func (gradient *Gradient) Resolve(props StylePropertieser) (*cairo.Pattern, bool
 	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer((props).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_gradient_resolve(_arg0, _arg1, &_arg2)
 
@@ -321,7 +327,7 @@ func (gradient *Gradient) ResolveForContext(context StyleContexter) *cairo.Patte
 	var _cret *C.cairo_pattern_t // in
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_gradient_resolve_for_context(_arg0, _arg1)
 
@@ -563,7 +569,7 @@ func (color *SymbolicColor) Resolve(props StylePropertieser) (gdk.RGBA, bool) {
 	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer((props).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, &_arg2)
 

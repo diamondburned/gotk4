@@ -24,9 +24,11 @@ func init() {
 
 // EventControllerMotioner describes EventControllerMotion's methods.
 type EventControllerMotioner interface {
-	gextras.Objector
-
+	// ContainsPointer returns if a pointer is within @self or one of its
+	// children.
 	ContainsPointer() bool
+	// IsPointer returns if a pointer is within @self, but not one of its
+	// children.
 	IsPointer() bool
 }
 
@@ -43,9 +45,12 @@ type EventControllerMotion struct {
 	EventController
 }
 
-var _ EventControllerMotioner = (*EventControllerMotion)(nil)
+var (
+	_ EventControllerMotioner = (*EventControllerMotion)(nil)
+	_ gextras.Nativer         = (*EventControllerMotion)(nil)
+)
 
-func wrapEventControllerMotioner(obj *externglib.Object) EventControllerMotioner {
+func wrapEventControllerMotion(obj *externglib.Object) EventControllerMotioner {
 	return &EventControllerMotion{
 		EventController: EventController{
 			Object: obj,
@@ -56,7 +61,7 @@ func wrapEventControllerMotioner(obj *externglib.Object) EventControllerMotioner
 func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerMotioner(obj), nil
+	return wrapEventControllerMotion(obj), nil
 }
 
 // NewEventControllerMotion creates a new event controller that will handle

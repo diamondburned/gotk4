@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// ProxierOverrider contains methods that are overridable.
+// ProxyOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ProxierOverrider interface {
+type ProxyOverrider interface {
 	// ConnectProxier: given @connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
 	// necessary handshake to connect to @proxy_address, and if required, wraps
@@ -62,11 +62,17 @@ type ProxierOverrider interface {
 
 // Proxier describes Proxy's methods.
 type Proxier interface {
-	gextras.Objector
-
+	// ConnectProxier: given @connection to communicate with a proxy (eg, a
+	// Connection that is connected to the proxy server), this does the
+	// necessary handshake to connect to @proxy_address, and if required, wraps
+	// the OStream to handle proxy payload.
 	ConnectProxier(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler) (*IOStream, error)
+	// ConnectAsync asynchronous version of g_proxy_connect().
 	ConnectAsync(connection IOStreamer, proxyAddress ProxyAddresser, cancellable Cancellabler, callback AsyncReadyCallback)
+	// ConnectFinish: see g_proxy_connect().
 	ConnectFinish(result AsyncResulter) (*IOStream, error)
+	// SupportsHostname: some proxy protocols expect to be passed a hostname,
+	// which they will resolve to an IP address themselves.
 	SupportsHostname() bool
 }
 
@@ -79,9 +85,12 @@ type Proxy struct {
 	*externglib.Object
 }
 
-var _ Proxier = (*Proxy)(nil)
+var (
+	_ Proxier         = (*Proxy)(nil)
+	_ gextras.Nativer = (*Proxy)(nil)
+)
 
-func wrapProxier(obj *externglib.Object) Proxier {
+func wrapProxy(obj *externglib.Object) Proxier {
 	return &Proxy{
 		Object: obj,
 	}
@@ -90,7 +99,7 @@ func wrapProxier(obj *externglib.Object) Proxier {
 func marshalProxier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProxier(obj), nil
+	return wrapProxy(obj), nil
 }
 
 // ConnectProxier: given @connection to communicate with a proxy (eg, a
@@ -106,9 +115,9 @@ func (proxy *Proxy) ConnectProxier(connection IOStreamer, proxyAddress ProxyAddr
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
-	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer((proxyAddress).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_proxy_connect(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -131,9 +140,9 @@ func (proxy *Proxy) ConnectAsync(connection IOStreamer, proxyAddress ProxyAddres
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
-	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer((proxyAddress).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -148,7 +157,7 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (*IOStream, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_proxy_connect_finish(_arg0, _arg1, &_cerr)
 

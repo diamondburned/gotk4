@@ -24,8 +24,7 @@ func init() {
 
 // GestureZoomer describes GestureZoom's methods.
 type GestureZoomer interface {
-	gextras.Objector
-
+	// ScaleDelta gets the scale delta.
 	ScaleDelta() float64
 }
 
@@ -39,9 +38,12 @@ type GestureZoom struct {
 	Gesture
 }
 
-var _ GestureZoomer = (*GestureZoom)(nil)
+var (
+	_ GestureZoomer   = (*GestureZoom)(nil)
+	_ gextras.Nativer = (*GestureZoom)(nil)
+)
 
-func wrapGestureZoomer(obj *externglib.Object) GestureZoomer {
+func wrapGestureZoom(obj *externglib.Object) GestureZoomer {
 	return &GestureZoom{
 		Gesture: Gesture{
 			EventController: EventController{
@@ -54,7 +56,7 @@ func wrapGestureZoomer(obj *externglib.Object) GestureZoomer {
 func marshalGestureZoomer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureZoomer(obj), nil
+	return wrapGestureZoom(obj), nil
 }
 
 // NewGestureZoom returns a newly created `GtkGesture` that recognizes

@@ -30,18 +30,35 @@ func init() {
 
 // CellViewer describes CellView's methods.
 type CellViewer interface {
-	gextras.Objector
-
+	// DisplayedRow returns a TreePath referring to the currently displayed row.
 	DisplayedRow() *TreePath
+	// DrawSensitive gets whether @cell_view is configured to draw all of its
+	// cells in a sensitive state.
 	DrawSensitive() bool
+	// FitModel gets whether @cell_view is configured to request space to fit
+	// the entire TreeModel.
 	FitModel() bool
+	// Model returns the model for @cell_view.
 	Model() *TreeModel
+	// SizeOfRow sets @requisition to the size needed by @cell_view to display
+	// the model row pointed to by @path.
 	SizeOfRow(path *TreePath) (Requisition, bool)
+	// SetBackgroundColor sets the background color of @view.
 	SetBackgroundColor(color *gdk.Color)
+	// SetBackgroundRGBA sets the background color of @cell_view.
 	SetBackgroundRGBA(rgba *gdk.RGBA)
+	// SetDisplayedRow sets the row of the model that is currently displayed by
+	// the CellView.
 	SetDisplayedRow(path *TreePath)
+	// SetDrawSensitive sets whether @cell_view should draw all of its cells in
+	// a sensitive state, this is used by ComboBox menus to ensure that rows
+	// with insensitive cells that contain children appear sensitive in the
+	// parent menu item.
 	SetDrawSensitive(drawSensitive bool)
+	// SetFitModel sets whether @cell_view should request space to fit the
+	// entire TreeModel.
 	SetFitModel(fitModel bool)
+	// SetModel sets the model for @cell_view.
 	SetModel(model TreeModeller)
 }
 
@@ -63,22 +80,20 @@ type CellViewer interface {
 //
 // GtkCellView has a single CSS node with name cellview.
 type CellView struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
+
 	CellLayout
 	Orientable
 }
 
-var _ CellViewer = (*CellView)(nil)
+var (
+	_ CellViewer      = (*CellView)(nil)
+	_ gextras.Nativer = (*CellView)(nil)
+)
 
-func wrapCellViewer(obj *externglib.Object) CellViewer {
+func wrapCellView(obj *externglib.Object) CellViewer {
 	return &CellView{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -88,12 +103,6 @@ func wrapCellViewer(obj *externglib.Object) CellViewer {
 			Buildable: Buildable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		CellLayout: CellLayout{
 			Object: obj,
@@ -107,7 +116,7 @@ func wrapCellViewer(obj *externglib.Object) CellViewer {
 func marshalCellViewer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellViewer(obj), nil
+	return wrapCellView(obj), nil
 }
 
 // NewCellView creates a new CellView widget.
@@ -134,8 +143,8 @@ func NewCellViewWithContext(area CellAreaer, context CellAreaContexter) *CellVie
 	var _arg2 *C.GtkCellAreaContext // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((area).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_cell_view_new_with_context(_arg1, _arg2)
 
@@ -171,7 +180,7 @@ func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbuffer) *CellView {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_cell_view_new_with_pixbuf(_arg1)
 
@@ -198,6 +207,12 @@ func NewCellViewWithText(text string) *CellView {
 	_cellView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellView)
 
 	return _cellView
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *CellView) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // DisplayedRow returns a TreePath referring to the currently displayed row. If
@@ -384,7 +399,7 @@ func (cellView *CellView) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_cell_view_set_model(_arg0, _arg1)
 }

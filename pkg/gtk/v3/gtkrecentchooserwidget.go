@@ -27,8 +27,6 @@ func init() {
 
 // RecentChooserWidgetter describes RecentChooserWidget's methods.
 type RecentChooserWidgetter interface {
-	gextras.Objector
-
 	privateRecentChooserWidget()
 }
 
@@ -42,26 +40,21 @@ type RecentChooserWidgetter interface {
 //
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserWidget struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
+
 	RecentChooser
 }
 
-var _ RecentChooserWidgetter = (*RecentChooserWidget)(nil)
+var (
+	_ RecentChooserWidgetter = (*RecentChooserWidget)(nil)
+	_ gextras.Nativer        = (*RecentChooserWidget)(nil)
+)
 
-func wrapRecentChooserWidgetter(obj *externglib.Object) RecentChooserWidgetter {
+func wrapRecentChooserWidget(obj *externglib.Object) RecentChooserWidgetter {
 	return &RecentChooserWidget{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -72,31 +65,10 @@ func wrapRecentChooserWidgetter(obj *externglib.Object) RecentChooserWidgetter {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 		RecentChooser: RecentChooser{
 			Object: obj,
@@ -107,7 +79,7 @@ func wrapRecentChooserWidgetter(obj *externglib.Object) RecentChooserWidgetter {
 func marshalRecentChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooserWidgetter(obj), nil
+	return wrapRecentChooserWidget(obj), nil
 }
 
 // NewRecentChooserWidget creates a new RecentChooserWidget object. This is an
@@ -129,11 +101,11 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 //
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object.
-func NewRecentChooserWidgetForManager(manager RecentManagerrer) *RecentChooserWidget {
+func NewRecentChooserWidgetForManager(manager RecentManagerer) *RecentChooserWidget {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((manager).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
 
@@ -142,6 +114,12 @@ func NewRecentChooserWidgetForManager(manager RecentManagerrer) *RecentChooserWi
 	_recentChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserWidget)
 
 	return _recentChooserWidget
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *RecentChooserWidget) Native() uintptr {
+	return v.Box.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*RecentChooserWidget) privateRecentChooserWidget() {}

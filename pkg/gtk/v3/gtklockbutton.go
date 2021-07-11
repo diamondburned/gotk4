@@ -28,9 +28,9 @@ func init() {
 
 // LockButtonner describes LockButton's methods.
 type LockButtonner interface {
-	gextras.Objector
-
+	// Permission obtains the #GPermission object that controls @button.
 	Permission() *gio.Permission
+	// SetPermission sets the #GPermission object that controls @button.
 	SetPermission(permission gio.Permissioner)
 }
 
@@ -65,28 +65,20 @@ type LockButtonner interface {
 // LockButton:tooltip-lock, LockButton:tooltip-unlock and
 // LockButton:tooltip-not-authorized properties.
 type LockButton struct {
-	*externglib.Object
-
 	Button
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ LockButtonner = (*LockButton)(nil)
+var (
+	_ LockButtonner   = (*LockButton)(nil)
+	_ gextras.Nativer = (*LockButton)(nil)
+)
 
-func wrapLockButtonner(obj *externglib.Object) LockButtonner {
+func wrapLockButton(obj *externglib.Object) LockButtonner {
 	return &LockButton{
-		Object: obj,
 		Button: Button{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -97,27 +89,10 @@ func wrapLockButtonner(obj *externglib.Object) LockButtonner {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -132,33 +107,6 @@ func wrapLockButtonner(obj *externglib.Object) LockButtonner {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -166,7 +114,7 @@ func wrapLockButtonner(obj *externglib.Object) LockButtonner {
 func marshalLockButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLockButtonner(obj), nil
+	return wrapLockButton(obj), nil
 }
 
 // NewLockButton creates a new lock button which reflects the @permission.
@@ -174,7 +122,7 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in
 
-	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg1 = (*C.GPermission)(unsafe.Pointer((permission).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_lock_button_new(_arg1)
 
@@ -207,7 +155,7 @@ func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	var _arg1 *C.GPermission   // out
 
 	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg1 = (*C.GPermission)(unsafe.Pointer((permission).(gextras.Nativer).Native()))
 
 	C.gtk_lock_button_set_permission(_arg0, _arg1)
 }

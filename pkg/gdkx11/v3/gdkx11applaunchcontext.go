@@ -26,8 +26,6 @@ func init() {
 
 // X11AppLaunchContexter describes X11AppLaunchContext's methods.
 type X11AppLaunchContexter interface {
-	gextras.Objector
-
 	privateX11AppLaunchContext()
 }
 
@@ -35,9 +33,12 @@ type X11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }
 
-var _ X11AppLaunchContexter = (*X11AppLaunchContext)(nil)
+var (
+	_ X11AppLaunchContexter = (*X11AppLaunchContext)(nil)
+	_ gextras.Nativer       = (*X11AppLaunchContext)(nil)
+)
 
-func wrapX11AppLaunchContexter(obj *externglib.Object) X11AppLaunchContexter {
+func wrapX11AppLaunchContext(obj *externglib.Object) X11AppLaunchContexter {
 	return &X11AppLaunchContext{
 		AppLaunchContext: gdk.AppLaunchContext{
 			AppLaunchContext: gio.AppLaunchContext{
@@ -50,7 +51,7 @@ func wrapX11AppLaunchContexter(obj *externglib.Object) X11AppLaunchContexter {
 func marshalX11AppLaunchContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11AppLaunchContexter(obj), nil
+	return wrapX11AppLaunchContext(obj), nil
 }
 
 func (*X11AppLaunchContext) privateX11AppLaunchContext() {}

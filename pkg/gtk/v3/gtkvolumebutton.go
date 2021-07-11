@@ -27,39 +27,27 @@ func init() {
 
 // VolumeButtonner describes VolumeButton's methods.
 type VolumeButtonner interface {
-	gextras.Objector
-
 	privateVolumeButton()
 }
 
 // VolumeButton is a subclass of ScaleButton that has been tailored for use as a
 // volume control widget with suitable icons, tooltips and accessible labels.
 type VolumeButton struct {
-	*externglib.Object
-
 	ScaleButton
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
-	Orientable
 }
 
-var _ VolumeButtonner = (*VolumeButton)(nil)
+var (
+	_ VolumeButtonner = (*VolumeButton)(nil)
+	_ gextras.Nativer = (*VolumeButton)(nil)
+)
 
-func wrapVolumeButtonner(obj *externglib.Object) VolumeButtonner {
+func wrapVolumeButton(obj *externglib.Object) VolumeButtonner {
 	return &VolumeButton{
-		Object: obj,
 		ScaleButton: ScaleButton{
-			Object: obj,
 			Button: Button{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -70,27 +58,10 @@ func wrapVolumeButtonner(obj *externglib.Object) VolumeButtonner {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
 				},
 				Actionable: Actionable{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -105,64 +76,10 @@ func wrapVolumeButtonner(obj *externglib.Object) VolumeButtonner {
 				Activatable: Activatable{
 					Object: obj,
 				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Actionable: Actionable{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-			},
-			Activatable: Activatable{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -170,7 +87,7 @@ func wrapVolumeButtonner(obj *externglib.Object) VolumeButtonner {
 func marshalVolumeButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolumeButtonner(obj), nil
+	return wrapVolumeButton(obj), nil
 }
 
 // NewVolumeButton creates a VolumeButton, with a range between 0.0 and 1.0,

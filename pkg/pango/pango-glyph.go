@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,8 +24,7 @@ func init() {
 	})
 }
 
-// GlyphUnit: the `PangoGlyphUnit` type is used to store dimensions within
-// Pango.
+// GlyphUnit: `PangoGlyphUnit` type is used to store dimensions within Pango.
 //
 // Dimensions are stored in 1/PANGO_SCALE of a device unit. (A device unit might
 // be a pixel for screen display, or a point on a printer.) PANGO_SCALE is
@@ -115,8 +115,8 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 	C.pango_shape_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// GlyphGeometry: the `PangoGlyphGeometry` structure contains width and
-// positioning information for a single glyph.
+// GlyphGeometry: `PangoGlyphGeometry` structure contains width and positioning
+// information for a single glyph.
 type GlyphGeometry struct {
 	native C.PangoGlyphGeometry
 }
@@ -206,7 +206,7 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect Rectangle, logicalRect 
 	var _arg3 C.PangoRectangle    // in
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
 
 	C.pango_glyph_string_extents(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -235,7 +235,7 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRec
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg1 = C.int(start)
 	_arg2 = C.int(end)
-	_arg3 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg3 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
 
 	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 

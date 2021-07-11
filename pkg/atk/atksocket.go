@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// SocketterOverrider contains methods that are overridable.
+// SocketOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketterOverrider interface {
+type SocketOverrider interface {
 	// Embed embeds the children of an Plug as the children of the Socket. The
 	// plug may be in the same process or in a different process.
 	//
@@ -40,9 +40,9 @@ type SocketterOverrider interface {
 
 // Socketter describes Socket's methods.
 type Socketter interface {
-	gextras.Objector
-
+	// Embed embeds the children of an Plug as the children of the Socket.
 	Embed(plugId string)
+	// IsOccupied determines whether or not the socket has an embedded plug.
 	IsOccupied() bool
 }
 
@@ -67,17 +67,18 @@ type Socketter interface {
 // All the logic related to those functions will be implemented by the IPC
 // layer.
 type Socket struct {
-	*externglib.Object
-
 	ObjectClass
+
 	Component
 }
 
-var _ Socketter = (*Socket)(nil)
+var (
+	_ Socketter       = (*Socket)(nil)
+	_ gextras.Nativer = (*Socket)(nil)
+)
 
-func wrapSocketter(obj *externglib.Object) Socketter {
+func wrapSocket(obj *externglib.Object) Socketter {
 	return &Socket{
-		Object: obj,
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
@@ -90,7 +91,7 @@ func wrapSocketter(obj *externglib.Object) Socketter {
 func marshalSocketter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketter(obj), nil
+	return wrapSocket(obj), nil
 }
 
 // NewSocket creates a new Socket.
@@ -104,6 +105,12 @@ func NewSocket() *Socket {
 	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Socket)
 
 	return _socket
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Socket) Native() uintptr {
+	return v.ObjectClass.Object.Native()
 }
 
 // Embed embeds the children of an Plug as the children of the Socket. The plug

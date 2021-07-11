@@ -21,15 +21,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_spinner_get_type()), F: marshalSpinnerrer},
+		{T: externglib.Type(C.gtk_spinner_get_type()), F: marshalSpinnerer},
 	})
 }
 
-// Spinnerrer describes Spinner's methods.
-type Spinnerrer interface {
-	gextras.Objector
-
+// Spinnerer describes Spinner's methods.
+type Spinnerer interface {
+	// Start starts the animation of the spinner.
 	Start()
+	// Stop stops the animation of the spinner.
 	Stop()
 }
 
@@ -46,20 +46,17 @@ type Spinnerrer interface {
 // GtkSpinner has a single CSS node with the name spinner. When the animation is
 // active, the :checked pseudoclass is added to this node.
 type Spinner struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Spinnerrer = (*Spinner)(nil)
+var (
+	_ Spinnerer       = (*Spinner)(nil)
+	_ gextras.Nativer = (*Spinner)(nil)
+)
 
-func wrapSpinnerrer(obj *externglib.Object) Spinnerrer {
+func wrapSpinner(obj *externglib.Object) Spinnerer {
 	return &Spinner{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -70,19 +67,13 @@ func wrapSpinnerrer(obj *externglib.Object) Spinnerrer {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
-func marshalSpinnerrer(p uintptr) (interface{}, error) {
+func marshalSpinnerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinnerrer(obj), nil
+	return wrapSpinner(obj), nil
 }
 
 // NewSpinner returns a new spinner widget. Not yet started.

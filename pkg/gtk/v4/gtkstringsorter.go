@@ -18,17 +18,21 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_string_sorter_get_type()), F: marshalStringSorterrer},
+		{T: externglib.Type(C.gtk_string_sorter_get_type()), F: marshalStringSorterer},
 	})
 }
 
-// StringSorterrer describes StringSorter's methods.
-type StringSorterrer interface {
-	gextras.Objector
-
+// StringSorterer describes StringSorter's methods.
+type StringSorterer interface {
+	// Expression gets the expression that is evaluated to obtain strings from
+	// items.
 	Expression() *Expression
+	// IgnoreCase gets whether the sorter ignores case differences.
 	IgnoreCase() bool
+	// SetExpression sets the expression that is evaluated to obtain strings
+	// from items.
 	SetExpression(expression Expressioner)
+	// SetIgnoreCase sets whether the sorter will ignore case differences.
 	SetIgnoreCase(ignoreCase bool)
 }
 
@@ -44,9 +48,12 @@ type StringSorter struct {
 	Sorter
 }
 
-var _ StringSorterrer = (*StringSorter)(nil)
+var (
+	_ StringSorterer  = (*StringSorter)(nil)
+	_ gextras.Nativer = (*StringSorter)(nil)
+)
 
-func wrapStringSorterrer(obj *externglib.Object) StringSorterrer {
+func wrapStringSorter(obj *externglib.Object) StringSorterer {
 	return &StringSorter{
 		Sorter: Sorter{
 			Object: obj,
@@ -54,10 +61,10 @@ func wrapStringSorterrer(obj *externglib.Object) StringSorterrer {
 	}
 }
 
-func marshalStringSorterrer(p uintptr) (interface{}, error) {
+func marshalStringSorterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStringSorterrer(obj), nil
+	return wrapStringSorter(obj), nil
 }
 
 // NewStringSorter creates a new string sorter that compares items using the
@@ -69,7 +76,7 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringSorter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_string_sorter_new(_arg1)
 
@@ -124,7 +131,7 @@ func (self *StringSorter) SetExpression(expression Expressioner) {
 	var _arg1 *C.GtkExpression   // out
 
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	C.gtk_string_sorter_set_expression(_arg0, _arg1)
 }

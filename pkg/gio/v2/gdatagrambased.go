@@ -33,11 +33,11 @@ func init() {
 	})
 }
 
-// DatagramBasedderOverrider contains methods that are overridable.
+// DatagramBasedOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DatagramBasedderOverrider interface {
+type DatagramBasedOverrider interface {
 	// ReceiveMessages: receive one or more data messages from @datagram_based
 	// in one go.
 	//
@@ -138,9 +138,11 @@ type DatagramBasedderOverrider interface {
 
 // DatagramBasedder describes DatagramBased's methods.
 type DatagramBasedder interface {
-	gextras.Objector
-
+	// ReceiveMessages: receive one or more data messages from @datagram_based
+	// in one go.
 	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellabler) (int, error)
+	// SendMessages: send one or more data messages from @datagram_based in one
+	// go.
 	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellabler) (int, error)
 }
 
@@ -193,9 +195,12 @@ type DatagramBased struct {
 	*externglib.Object
 }
 
-var _ DatagramBasedder = (*DatagramBased)(nil)
+var (
+	_ DatagramBasedder = (*DatagramBased)(nil)
+	_ gextras.Nativer  = (*DatagramBased)(nil)
+)
 
-func wrapDatagramBasedder(obj *externglib.Object) DatagramBasedder {
+func wrapDatagramBased(obj *externglib.Object) DatagramBasedder {
 	return &DatagramBased{
 		Object: obj,
 	}
@@ -204,7 +209,7 @@ func wrapDatagramBasedder(obj *externglib.Object) DatagramBasedder {
 func marshalDatagramBasedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDatagramBasedder(obj), nil
+	return wrapDatagramBased(obj), nil
 }
 
 // ReceiveMessages: receive one or more data messages from @datagram_based in
@@ -269,7 +274,7 @@ func (datagramBased *DatagramBased) ReceiveMessages(messages []InputMessage, fla
 	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
 	_arg3 = C.gint(flags)
 	_arg4 = C.gint64(timeout)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -336,7 +341,7 @@ func (datagramBased *DatagramBased) SendMessages(messages []OutputMessage, flags
 	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
 	_arg3 = C.gint(flags)
 	_arg4 = C.gint64(timeout)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 

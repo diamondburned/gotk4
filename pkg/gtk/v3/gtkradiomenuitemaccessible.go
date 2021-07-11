@@ -27,29 +27,22 @@ func init() {
 
 // RadioMenuItemAccessibler describes RadioMenuItemAccessible's methods.
 type RadioMenuItemAccessibler interface {
-	gextras.Objector
-
 	privateRadioMenuItemAccessible()
 }
 
 type RadioMenuItemAccessible struct {
-	*externglib.Object
-
 	CheckMenuItemAccessible
-	atk.Action
-	atk.Component
-	atk.Selection
 }
 
-var _ RadioMenuItemAccessibler = (*RadioMenuItemAccessible)(nil)
+var (
+	_ RadioMenuItemAccessibler = (*RadioMenuItemAccessible)(nil)
+	_ gextras.Nativer          = (*RadioMenuItemAccessible)(nil)
+)
 
-func wrapRadioMenuItemAccessibler(obj *externglib.Object) RadioMenuItemAccessibler {
+func wrapRadioMenuItemAccessible(obj *externglib.Object) RadioMenuItemAccessibler {
 	return &RadioMenuItemAccessible{
-		Object: obj,
 		CheckMenuItemAccessible: CheckMenuItemAccessible{
-			Object: obj,
 			MenuItemAccessible: MenuItemAccessible{
-				Object: obj,
 				ContainerAccessible: ContainerAccessible{
 					WidgetAccessible: WidgetAccessible{
 						Accessible: Accessible{
@@ -61,38 +54,14 @@ func wrapRadioMenuItemAccessibler(obj *externglib.Object) RadioMenuItemAccessibl
 							Object: obj,
 						},
 					},
-					Component: atk.Component{
-						Object: obj,
-					},
 				},
 				Action: atk.Action{
-					Object: obj,
-				},
-				Component: atk.Component{
 					Object: obj,
 				},
 				Selection: atk.Selection{
 					Object: obj,
 				},
 			},
-			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
-				Object: obj,
-			},
-			Selection: atk.Selection{
-				Object: obj,
-			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
-		Selection: atk.Selection{
-			Object: obj,
 		},
 	}
 }
@@ -100,7 +69,7 @@ func wrapRadioMenuItemAccessibler(obj *externglib.Object) RadioMenuItemAccessibl
 func marshalRadioMenuItemAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioMenuItemAccessibler(obj), nil
+	return wrapRadioMenuItemAccessible(obj), nil
 }
 
 func (*RadioMenuItemAccessible) privateRadioMenuItemAccessible() {}

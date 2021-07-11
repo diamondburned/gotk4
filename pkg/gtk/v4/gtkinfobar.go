@@ -24,20 +24,35 @@ func init() {
 
 // InfoBarrer describes InfoBar's methods.
 type InfoBarrer interface {
-	gextras.Objector
-
+	// AddActionWidget: add an activatable widget to the action area of a
+	// `GtkInfoBar`.
 	AddActionWidget(child Widgetter, responseId int)
+	// AddButton adds a button with the given text.
 	AddButton(buttonText string, responseId int) *Button
+	// AddChild adds a widget to the content area of the info bar.
 	AddChild(widget Widgetter)
+	// MessageType returns the message type of the message area.
 	MessageType() MessageType
+	// Revealed returns whether the info bar is currently revealed.
 	Revealed() bool
+	// ShowCloseButton returns whether the widget will display a standard close
+	// button.
 	ShowCloseButton() bool
+	// RemoveActionWidget removes a widget from the action area of @info_bar.
 	RemoveActionWidget(widget Widgetter)
+	// RemoveChild removes a widget from the content area of the info bar.
 	RemoveChild(widget Widgetter)
+	// Response emits the “response” signal with the given @response_id.
 	Response(responseId int)
+	// SetDefaultResponse sets the last widget in the info bar’s action area
+	// with the given response_id as the default widget for the dialog.
 	SetDefaultResponse(responseId int)
+	// SetResponseSensitive sets the sensitivity of action widgets for
+	// @response_id.
 	SetResponseSensitive(responseId int, setting bool)
+	// SetRevealed sets whether the `GtkInfoBar` is revealed.
 	SetRevealed(revealed bool)
+	// SetShowCloseButton: if true, a standard close button is shown.
 	SetShowCloseButton(setting bool)
 }
 
@@ -99,21 +114,17 @@ type InfoBarrer interface {
 // message type. If the info bar shows a close button, that button will have the
 // .close style class applied.
 type InfoBar struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ InfoBarrer = (*InfoBar)(nil)
+var (
+	_ InfoBarrer      = (*InfoBar)(nil)
+	_ gextras.Nativer = (*InfoBar)(nil)
+)
 
-func wrapInfoBarrer(obj *externglib.Object) InfoBarrer {
+func wrapInfoBar(obj *externglib.Object) InfoBarrer {
 	return &InfoBar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -127,22 +138,13 @@ func wrapInfoBarrer(obj *externglib.Object) InfoBarrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalInfoBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInfoBarrer(obj), nil
+	return wrapInfoBar(obj), nil
 }
 
 // NewInfoBar creates a new `GtkInfoBar` object.
@@ -171,7 +173,7 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.int(responseId)
 
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
@@ -208,7 +210,7 @@ func (infoBar *InfoBar) AddChild(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_info_bar_add_child(_arg0, _arg1)
 }
@@ -275,7 +277,7 @@ func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_info_bar_remove_action_widget(_arg0, _arg1)
 }
@@ -286,7 +288,7 @@ func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_info_bar_remove_child(_arg0, _arg1)
 }

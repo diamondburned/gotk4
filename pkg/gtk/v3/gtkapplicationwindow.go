@@ -28,12 +28,19 @@ func init() {
 
 // ApplicationWindowwer describes ApplicationWindow's methods.
 type ApplicationWindowwer interface {
-	gextras.Objector
-
+	// HelpOverlay gets the ShortcutsWindow that has been set up with a prior
+	// call to gtk_application_window_set_help_overlay().
 	HelpOverlay() *ShortcutsWindow
+	// ID returns the unique ID of the window.
 	ID() uint
+	// ShowMenubar returns whether the window will display a menubar for the app
+	// menu and menubar as needed.
 	ShowMenubar() bool
+	// SetHelpOverlay associates a shortcuts window with the application window,
+	// and sets up an action with the name win.show-help-overlay to present it.
 	SetHelpOverlay(helpOverlay ShortcutsWindowwer)
+	// SetShowMenubar sets whether the window will display a menubar for the app
+	// menu and menubar as needed.
 	SetShowMenubar(showMenubar bool)
 }
 
@@ -131,28 +138,23 @@ type ApplicationWindowwer interface {
 // The following attributes are used when constructing submenus: - "label": a
 // user-visible string to display - "icon": icon name to display
 type ApplicationWindow struct {
-	*externglib.Object
-
 	Window
-	atk.ImplementorIface
+
 	gio.ActionGroup
 	gio.ActionMap
-	Buildable
 }
 
-var _ ApplicationWindowwer = (*ApplicationWindow)(nil)
+var (
+	_ ApplicationWindowwer = (*ApplicationWindow)(nil)
+	_ gextras.Nativer      = (*ApplicationWindow)(nil)
+)
 
-func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
+func wrapApplicationWindow(obj *externglib.Object) ApplicationWindowwer {
 	return &ApplicationWindow{
-		Object: obj,
 		Window: Window{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -163,37 +165,13 @@ func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
 		},
 		ActionGroup: gio.ActionGroup{
 			Object: obj,
 		},
 		ActionMap: gio.ActionMap{
-			Object: obj,
-		},
-		Buildable: Buildable{
 			Object: obj,
 		},
 	}
@@ -202,7 +180,7 @@ func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
 func marshalApplicationWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationWindowwer(obj), nil
+	return wrapApplicationWindow(obj), nil
 }
 
 // NewApplicationWindow creates a new ApplicationWindow.
@@ -210,7 +188,7 @@ func NewApplicationWindow(application Applicationer) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer((application).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_application_window_new(_arg1)
 
@@ -219,6 +197,12 @@ func NewApplicationWindow(application Applicationer) *ApplicationWindow {
 	_applicationWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ApplicationWindow)
 
 	return _applicationWindow
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ApplicationWindow) Native() uintptr {
+	return v.Window.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // HelpOverlay gets the ShortcutsWindow that has been set up with a prior call
@@ -283,7 +267,7 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindowwer) 
 	var _arg1 *C.GtkShortcutsWindow   // out
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(helpOverlay.Native()))
+	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer((helpOverlay).(gextras.Nativer).Native()))
 
 	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
 }

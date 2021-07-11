@@ -26,18 +26,16 @@ func init() {
 	})
 }
 
-// CheckButtonnerOverrider contains methods that are overridable.
+// CheckButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CheckButtonnerOverrider interface {
+type CheckButtonOverrider interface {
 	DrawIndicator(cr *cairo.Context)
 }
 
 // CheckButtonner describes CheckButton's methods.
 type CheckButtonner interface {
-	gextras.Objector
-
 	privateCheckButton()
 }
 
@@ -58,30 +56,21 @@ type CheckButtonner interface {
 // button and adds a .check style class to it. The subnode is invisible in this
 // case.
 type CheckButton struct {
-	*externglib.Object
-
 	ToggleButton
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ CheckButtonner = (*CheckButton)(nil)
+var (
+	_ CheckButtonner  = (*CheckButton)(nil)
+	_ gextras.Nativer = (*CheckButton)(nil)
+)
 
-func wrapCheckButtonner(obj *externglib.Object) CheckButtonner {
+func wrapCheckButton(obj *externglib.Object) CheckButtonner {
 	return &CheckButton{
-		Object: obj,
 		ToggleButton: ToggleButton{
-			Object: obj,
 			Button: Button{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -92,27 +81,10 @@ func wrapCheckButtonner(obj *externglib.Object) CheckButtonner {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
 				},
 				Actionable: Actionable{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -127,58 +99,7 @@ func wrapCheckButtonner(obj *externglib.Object) CheckButtonner {
 				Activatable: Activatable{
 					Object: obj,
 				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Actionable: Actionable{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-			},
-			Activatable: Activatable{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -186,7 +107,7 @@ func wrapCheckButtonner(obj *externglib.Object) CheckButtonner {
 func marshalCheckButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckButtonner(obj), nil
+	return wrapCheckButton(obj), nil
 }
 
 // NewCheckButton creates a new CheckButton.

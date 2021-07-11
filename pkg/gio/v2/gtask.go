@@ -40,32 +40,68 @@ func init() {
 
 // Tasker describes Task's methods.
 type Tasker interface {
-	gextras.Objector
-
+	// Cancellable gets @task's #GCancellable
 	Cancellable() *Cancellable
+	// CheckCancellable gets @task's check-cancellable flag.
 	CheckCancellable() bool
+	// Completed gets the value of #GTask:completed.
 	Completed() bool
+	// Context gets the Context that @task will return its result in (that is,
+	// the context that was the [thread-default main
+	// context][g-main-context-push-thread-default] at the point when @task was
+	// created).
 	Context() *glib.MainContext
+	// Name gets @task’s name.
 	Name() string
+	// Priority gets @task's priority
 	Priority() int
+	// ReturnOnCancel gets @task's return-on-cancel flag.
 	ReturnOnCancel() bool
+	// SourceObject gets the source object from @task.
 	SourceObject() *externglib.Object
+	// SourceTag gets @task's source tag.
 	SourceTag() interface{}
+	// TaskData gets @task's `task_data`.
 	TaskData() interface{}
+	// HadError tests if @task resulted in an error.
 	HadError() bool
+	// PropagateBoolean gets the result of @task as a #gboolean.
 	PropagateBoolean() error
+	// PropagateInt gets the result of @task as an integer (#gssize).
 	PropagateInt() (int, error)
+	// PropagatePointer gets the result of @task as a pointer, and transfers
+	// ownership of that value to the caller.
 	PropagatePointer() (interface{}, error)
+	// PropagateValue gets the result of @task as a #GValue, and transfers
+	// ownership of that value to the caller.
 	PropagateValue() (externglib.Value, error)
+	// ReturnBoolean sets @task's result to @result and completes the task (see
+	// g_task_return_pointer() for more discussion of exactly what this means).
 	ReturnBoolean(result bool)
+	// ReturnError sets @task's result to @error (which @task assumes ownership
+	// of) and completes the task (see g_task_return_pointer() for more
+	// discussion of exactly what this means).
 	ReturnError(err error)
+	// ReturnErrorIfCancelled checks if @task's #GCancellable has been
+	// cancelled, and if so, sets @task's error accordingly and completes the
+	// task (see g_task_return_pointer() for more discussion of exactly what
+	// this means).
 	ReturnErrorIfCancelled() bool
+	// ReturnInt sets @task's result to @result and completes the task (see
+	// g_task_return_pointer() for more discussion of exactly what this means).
 	ReturnInt(result int)
+	// ReturnValue sets @task's result to @result (by copying it) and completes
+	// the task.
 	ReturnValue(result *externglib.Value)
+	// SetCheckCancellable sets or clears @task's check-cancellable flag.
 	SetCheckCancellable(checkCancellable bool)
+	// SetName sets @task’s name, used in debugging and profiling.
 	SetName(name string)
+	// SetPriority sets @task's priority.
 	SetPriority(priority int)
+	// SetReturnOnCancel sets or clears @task's return-on-cancel flag.
 	SetReturnOnCancel(returnOnCancel bool) bool
+	// SetSourceTag sets @task's source tag.
 	SetSourceTag(sourceTag interface{})
 }
 
@@ -225,9 +261,12 @@ type Task struct {
 	AsyncResult
 }
 
-var _ Tasker = (*Task)(nil)
+var (
+	_ Tasker          = (*Task)(nil)
+	_ gextras.Nativer = (*Task)(nil)
+)
 
-func wrapTasker(obj *externglib.Object) Tasker {
+func wrapTask(obj *externglib.Object) Tasker {
 	return &Task{
 		Object: obj,
 		AsyncResult: AsyncResult{
@@ -239,7 +278,7 @@ func wrapTasker(obj *externglib.Object) Tasker {
 func marshalTasker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTasker(obj), nil
+	return wrapTask(obj), nil
 }
 
 // NewTask creates a #GTask acting on @source_object, which will eventually be
@@ -265,7 +304,7 @@ func NewTask(sourceObject gextras.Objector, cancellable Cancellabler, callback A
 	var _cret *C.GTask // in
 
 	_arg1 = (C.gpointer)(unsafe.Pointer(sourceObject.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 

@@ -43,21 +43,33 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 
 // Dragger describes Drag's methods.
 type Dragger interface {
-	gextras.Objector
-
+	// DropDone informs GDK that the drop ended.
 	DropDone(success bool)
+	// Actions determines the bitmask of possible actions proposed by the
+	// source.
 	Actions() DragAction
+	// Content returns the `GdkContentProvider` associated to the `GdkDrag`
+	// object.
 	Content() *ContentProvider
+	// Device returns the `GdkDevice` associated to the `GdkDrag` object.
 	Device() *Device
+	// Display gets the `GdkDisplay` that the drag object was created for.
 	Display() *Display
+	// DragSurface returns the surface on which the drag icon should be rendered
+	// during the drag operation.
 	DragSurface() *Surface
+	// Formats retrieves the formats supported by this `GdkDrag` object.
 	Formats() *ContentFormats
+	// SelectedAction determines the action chosen by the drag destination.
 	SelectedAction() DragAction
+	// Surface returns the `GdkSurface` where the drag originates.
 	Surface() *Surface
+	// SetHotspot sets the position of the drag surface that will be kept under
+	// the cursor hotspot.
 	SetHotspot(hotX int, hotY int)
 }
 
-// Drag: the `GdkDrag` object represents the source of an ongoing DND operation.
+// Drag: `GdkDrag` object represents the source of an ongoing DND operation.
 //
 // A `GdkDrag` is created when a drag is started, and stays alive for duration
 // of the DND operation. After a drag has been started with
@@ -71,9 +83,12 @@ type Drag struct {
 	*externglib.Object
 }
 
-var _ Dragger = (*Drag)(nil)
+var (
+	_ Dragger         = (*Drag)(nil)
+	_ gextras.Nativer = (*Drag)(nil)
+)
 
-func wrapDragger(obj *externglib.Object) Dragger {
+func wrapDrag(obj *externglib.Object) Dragger {
 	return &Drag{
 		Object: obj,
 	}
@@ -82,7 +97,7 @@ func wrapDragger(obj *externglib.Object) Dragger {
 func marshalDragger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragger(obj), nil
+	return wrapDrag(obj), nil
 }
 
 // DropDone informs GDK that the drop ended.

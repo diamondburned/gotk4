@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// ScrollablerOverrider contains methods that are overridable.
+// ScrollableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ScrollablerOverrider interface {
+type ScrollableOverrider interface {
 	// Border returns the size of a non-scrolling border around the outside of
 	// the scrollable.
 	//
@@ -38,14 +38,20 @@ type ScrollablerOverrider interface {
 
 // Scrollabler describes Scrollable's methods.
 type Scrollabler interface {
-	gextras.Objector
-
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable.
 	Border() (Border, bool)
+	// HAdjustment retrieves the `GtkAdjustment` used for horizontal scrolling.
 	HAdjustment() *Adjustment
+	// HscrollPolicy gets the horizontal `GtkScrollablePolicy`.
 	HscrollPolicy() ScrollablePolicy
+	// VAdjustment retrieves the `GtkAdjustment` used for vertical scrolling.
 	VAdjustment() *Adjustment
+	// VscrollPolicy gets the vertical `GtkScrollablePolicy`.
 	VscrollPolicy() ScrollablePolicy
+	// SetHAdjustment sets the horizontal adjustment of the `GtkScrollable`.
 	SetHAdjustment(hadjustment Adjustmenter)
+	// SetVAdjustment sets the vertical adjustment of the `GtkScrollable`.
 	SetVAdjustment(vadjustment Adjustmenter)
 }
 
@@ -83,9 +89,12 @@ type Scrollable struct {
 	*externglib.Object
 }
 
-var _ Scrollabler = (*Scrollable)(nil)
+var (
+	_ Scrollabler     = (*Scrollable)(nil)
+	_ gextras.Nativer = (*Scrollable)(nil)
+)
 
-func wrapScrollabler(obj *externglib.Object) Scrollabler {
+func wrapScrollable(obj *externglib.Object) Scrollabler {
 	return &Scrollable{
 		Object: obj,
 	}
@@ -94,7 +103,7 @@ func wrapScrollabler(obj *externglib.Object) Scrollabler {
 func marshalScrollabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrollabler(obj), nil
+	return wrapScrollable(obj), nil
 }
 
 // Border returns the size of a non-scrolling border around the outside of the
@@ -193,7 +202,7 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((hadjustment).(gextras.Nativer).Native()))
 
 	C.gtk_scrollable_set_hadjustment(_arg0, _arg1)
 }
@@ -204,7 +213,7 @@ func (scrollable *Scrollable) SetVAdjustment(vadjustment Adjustmenter) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((vadjustment).(gextras.Nativer).Native()))
 
 	C.gtk_scrollable_set_vadjustment(_arg0, _arg1)
 }

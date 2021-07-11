@@ -27,26 +27,24 @@ func init() {
 
 // TreeViewAccessibler describes TreeViewAccessible's methods.
 type TreeViewAccessibler interface {
-	gextras.Objector
-
 	privateTreeViewAccessible()
 }
 
 type TreeViewAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
-	atk.Component
+
 	atk.Selection
 	atk.Table
 	CellAccessibleParent
 }
 
-var _ TreeViewAccessibler = (*TreeViewAccessible)(nil)
+var (
+	_ TreeViewAccessibler = (*TreeViewAccessible)(nil)
+	_ gextras.Nativer     = (*TreeViewAccessible)(nil)
+)
 
-func wrapTreeViewAccessibler(obj *externglib.Object) TreeViewAccessibler {
+func wrapTreeViewAccessible(obj *externglib.Object) TreeViewAccessibler {
 	return &TreeViewAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -58,12 +56,6 @@ func wrapTreeViewAccessibler(obj *externglib.Object) TreeViewAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 		Selection: atk.Selection{
 			Object: obj,
@@ -80,7 +72,13 @@ func wrapTreeViewAccessibler(obj *externglib.Object) TreeViewAccessibler {
 func marshalTreeViewAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeViewAccessibler(obj), nil
+	return wrapTreeViewAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *TreeViewAccessible) Native() uintptr {
+	return v.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*TreeViewAccessible) privateTreeViewAccessible() {}

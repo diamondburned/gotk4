@@ -32,7 +32,7 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 	var _arg2 *C.GtkTreePath        // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((treeModel).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	_cret = C.gtk_tree_create_row_drag_content(_arg1, _arg2)
@@ -74,11 +74,11 @@ func TreeGetRowDragData(value *externglib.Value) (*TreeModel, *TreePath, bool) {
 	return _treeModel, _path, _ok
 }
 
-// TreeDragDesterOverrider contains methods that are overridable.
+// TreeDragDestOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TreeDragDesterOverrider interface {
+type TreeDragDestOverrider interface {
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// @dest, deriving the contents of the row from @value. If @dest is outside
 	// the tree so that inserting before it is impossible, false will be
@@ -96,9 +96,11 @@ type TreeDragDesterOverrider interface {
 
 // TreeDragDester describes TreeDragDest's methods.
 type TreeDragDester interface {
-	gextras.Objector
-
+	// DragDataReceived asks the TreeDragDest to insert a row before the path
+	// @dest, deriving the contents of the row from @value.
 	DragDataReceived(dest *TreePath, value *externglib.Value) bool
+	// RowDropPossible determines whether a drop is possible before the given
+	// @dest_path, at the same depth as @dest_path.
 	RowDropPossible(destPath *TreePath, value *externglib.Value) bool
 }
 
@@ -107,9 +109,12 @@ type TreeDragDest struct {
 	*externglib.Object
 }
 
-var _ TreeDragDester = (*TreeDragDest)(nil)
+var (
+	_ TreeDragDester  = (*TreeDragDest)(nil)
+	_ gextras.Nativer = (*TreeDragDest)(nil)
+)
 
-func wrapTreeDragDester(obj *externglib.Object) TreeDragDester {
+func wrapTreeDragDest(obj *externglib.Object) TreeDragDester {
 	return &TreeDragDest{
 		Object: obj,
 	}
@@ -118,7 +123,7 @@ func wrapTreeDragDester(obj *externglib.Object) TreeDragDester {
 func marshalTreeDragDester(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeDragDester(obj), nil
+	return wrapTreeDragDest(obj), nil
 }
 
 // DragDataReceived asks the TreeDragDest to insert a row before the path @dest,
@@ -173,11 +178,11 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *externg
 	return _ok
 }
 
-// TreeDragSourcerOverrider contains methods that are overridable.
+// TreeDragSourceOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TreeDragSourcerOverrider interface {
+type TreeDragSourceOverrider interface {
 	// DragDataDelete asks the TreeDragSource to delete the row at @path,
 	// because it was moved somewhere else via drag-and-drop. Returns false if
 	// the deletion fails because @path no longer exists, or for some
@@ -196,10 +201,14 @@ type TreeDragSourcerOverrider interface {
 
 // TreeDragSourcer describes TreeDragSource's methods.
 type TreeDragSourcer interface {
-	gextras.Objector
-
+	// DragDataDelete asks the TreeDragSource to delete the row at @path,
+	// because it was moved somewhere else via drag-and-drop.
 	DragDataDelete(path *TreePath) bool
+	// DragDataGet asks the TreeDragSource to return a ContentProvider
+	// representing the row at @path.
 	DragDataGet(path *TreePath) *gdk.ContentProvider
+	// RowDraggable asks the TreeDragSource whether a particular row can be used
+	// as the source of a DND operation.
 	RowDraggable(path *TreePath) bool
 }
 
@@ -208,9 +217,12 @@ type TreeDragSource struct {
 	*externglib.Object
 }
 
-var _ TreeDragSourcer = (*TreeDragSource)(nil)
+var (
+	_ TreeDragSourcer = (*TreeDragSource)(nil)
+	_ gextras.Nativer = (*TreeDragSource)(nil)
+)
 
-func wrapTreeDragSourcer(obj *externglib.Object) TreeDragSourcer {
+func wrapTreeDragSource(obj *externglib.Object) TreeDragSourcer {
 	return &TreeDragSource{
 		Object: obj,
 	}
@@ -219,7 +231,7 @@ func wrapTreeDragSourcer(obj *externglib.Object) TreeDragSourcer {
 func marshalTreeDragSourcer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeDragSourcer(obj), nil
+	return wrapTreeDragSource(obj), nil
 }
 
 // DragDataDelete asks the TreeDragSource to delete the row at @path, because it

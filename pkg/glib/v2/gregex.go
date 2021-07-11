@@ -34,7 +34,7 @@ const (
 	RegexErrorOptimize RegexError = 1
 	// Replace: replacement failed due to an ill-formed replacement string.
 	RegexErrorReplace RegexError = 2
-	// Match: the match process failed.
+	// Match process failed.
 	RegexErrorMatch RegexError = 3
 	// Internal: internal error of the regular expression engine. Since 2.16
 	RegexErrorInternal RegexError = 4
@@ -133,8 +133,8 @@ const (
 	// InvalidRelativeReference: relative reference must not be zero. Since:
 	// 2.34
 	RegexErrorInvalidRelativeReference RegexError = 158
-	// BacktrackingControlVerbArgumentForbidden: the backtracing control verb
-	// used does not allow an argument. Since: 2.34
+	// BacktrackingControlVerbArgumentForbidden: backtracing control verb used
+	// does not allow an argument. Since: 2.34
 	RegexErrorBacktrackingControlVerbArgumentForbidden RegexError = 159
 	// UnknownBacktrackingControlVerb: unknown backtracing control verb. Since:
 	// 2.34
@@ -151,7 +151,7 @@ const (
 	// ExtraSubpatternName: different names for subpatterns of the same number
 	// are not allowed. Since: 2.34
 	RegexErrorExtraSubpatternName RegexError = 165
-	// BacktrackingControlVerbArgumentRequired: the backtracing control verb
+	// BacktrackingControlVerbArgumentRequired: backtracing control verb
 	// requires an argument. Since: 2.34
 	RegexErrorBacktrackingControlVerbArgumentRequired RegexError = 166
 	// InvalidControlChar: "\\c" must be followed by an ASCII character. Since:
@@ -164,11 +164,11 @@ const (
 	RegexErrorNotSupportedInClass RegexError = 171
 	// TooManyForwardReferences: too many forward references. Since: 2.34
 	RegexErrorTooManyForwardReferences RegexError = 172
-	// NameTooLong: the name is too long in "(*MARK)", "(*PRUNE)", "(*SKIP)", or
+	// NameTooLong: name is too long in "(*MARK)", "(*PRUNE)", "(*SKIP)", or
 	// "(*THEN)". Since: 2.34
 	RegexErrorNameTooLong RegexError = 175
-	// CharacterValueTooLarge: the character value in the \\u sequence is too
-	// large. Since: 2.34
+	// CharacterValueTooLarge: character value in the \\u sequence is too large.
+	// Since: 2.34
 	RegexErrorCharacterValueTooLarge RegexError = 176
 )
 
@@ -202,11 +202,10 @@ const (
 	// next newline character, inclusive, are also ignored. This can be changed
 	// within a pattern by a "(?x)" option setting.
 	RegexCompileFlagsExtended RegexCompileFlags = 0b1000
-	// RegexCompileFlagsAnchored: the pattern is forced to be "anchored", that
-	// is, it is constrained to match only at the first matching point in the
-	// string that is being searched. This effect can also be achieved by
-	// appropriate constructs in the pattern itself such as the "^"
-	// metacharacter.
+	// RegexCompileFlagsAnchored: pattern is forced to be "anchored", that is,
+	// it is constrained to match only at the first matching point in the string
+	// that is being searched. This effect can also be achieved by appropriate
+	// constructs in the pattern itself such as the "^" metacharacter.
 	RegexCompileFlagsAnchored RegexCompileFlags = 0b10000
 	// RegexCompileFlagsDollarEndonly: dollar metacharacter ("$") in the pattern
 	// matches only at the end of the string. Without this option, a dollar also
@@ -268,8 +267,8 @@ const (
 type RegexMatchFlags int
 
 const (
-	// RegexMatchFlagsAnchored: the pattern is forced to be "anchored", that is,
-	// it is constrained to match only at the first matching point in the string
+	// RegexMatchFlagsAnchored: pattern is forced to be "anchored", that is, it
+	// is constrained to match only at the first matching point in the string
 	// that is being searched. This effect can also be achieved by appropriate
 	// constructs in the pattern itself such as the "^" metacharacter.
 	RegexMatchFlagsAnchored RegexMatchFlags = 0b10000
@@ -756,8 +755,8 @@ func (matchInfo *MatchInfo) unref() {
 	C.g_match_info_unref(_arg0)
 }
 
-// Regex: the g_regex_*() functions implement regular expression pattern
-// matching using syntax and semantics similar to Perl regular expression.
+// Regex: g_regex_*() functions implement regular expression pattern matching
+// using syntax and semantics similar to Perl regular expression.
 //
 // Some functions accept a @start_position argument, setting it differs from
 // just passing over a shortened string and setting REGEX_MATCH_NOTBOL in the

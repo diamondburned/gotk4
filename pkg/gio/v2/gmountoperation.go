@@ -32,37 +32,59 @@ func init() {
 	})
 }
 
-// MountOperationerOverrider contains methods that are overridable.
+// MountOperationOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type MountOperationerOverrider interface {
+type MountOperationOverrider interface {
 	Aborted()
 	// AskQuestion: virtual implementation of Operation::ask-question.
 	AskQuestion(message string, choices []string)
+
 	ShowUnmountProgress(message string, timeLeft int64, bytesLeft int64)
 }
 
 // MountOperationer describes MountOperation's methods.
 type MountOperationer interface {
-	gextras.Objector
-
+	// Anonymous: check to see whether the mount operation is being used for an
+	// anonymous user.
 	Anonymous() bool
+	// Choice gets a choice from the mount operation.
 	Choice() int
+	// Domain gets the domain of the mount operation.
 	Domain() string
+	// IsTcryptHiddenVolume: check to see whether the mount operation is being
+	// used for a TCRYPT hidden volume.
 	IsTcryptHiddenVolume() bool
+	// IsTcryptSystemVolume: check to see whether the mount operation is being
+	// used for a TCRYPT system volume.
 	IsTcryptSystemVolume() bool
+	// Password gets a password from the mount operation.
 	Password() string
+	// PasswordSave gets the state of saving passwords for the mount operation.
 	PasswordSave() PasswordSave
+	// Pim gets a PIM from the mount operation.
 	Pim() uint
+	// Username: get the user name from the mount operation.
 	Username() string
+	// SetAnonymous sets the mount operation to use an anonymous user if
+	// @anonymous is true.
 	SetAnonymous(anonymous bool)
+	// SetChoice sets a default choice for the mount operation.
 	SetChoice(choice int)
+	// SetDomain sets the mount operation's domain.
 	SetDomain(domain string)
+	// SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume
+	// if @hidden_volume is true.
 	SetIsTcryptHiddenVolume(hiddenVolume bool)
+	// SetIsTcryptSystemVolume sets the mount operation to use a system volume
+	// if @system_volume is true.
 	SetIsTcryptSystemVolume(systemVolume bool)
+	// SetPassword sets the mount operation's password to @password.
 	SetPassword(password string)
+	// SetPim sets the mount operation's PIM to @pim.
 	SetPim(pim uint)
+	// SetUsername sets the user name within @op to @username.
 	SetUsername(username string)
 }
 
@@ -90,9 +112,12 @@ type MountOperation struct {
 	*externglib.Object
 }
 
-var _ MountOperationer = (*MountOperation)(nil)
+var (
+	_ MountOperationer = (*MountOperation)(nil)
+	_ gextras.Nativer  = (*MountOperation)(nil)
+)
 
-func wrapMountOperationer(obj *externglib.Object) MountOperationer {
+func wrapMountOperation(obj *externglib.Object) MountOperationer {
 	return &MountOperation{
 		Object: obj,
 	}
@@ -101,7 +126,7 @@ func wrapMountOperationer(obj *externglib.Object) MountOperationer {
 func marshalMountOperationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMountOperationer(obj), nil
+	return wrapMountOperation(obj), nil
 }
 
 // NewMountOperation creates a new mount operation.

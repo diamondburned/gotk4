@@ -27,28 +27,23 @@ func init() {
 
 // ScaleButtonAccessibler describes ScaleButtonAccessible's methods.
 type ScaleButtonAccessibler interface {
-	gextras.Objector
-
 	privateScaleButtonAccessible()
 }
 
 type ScaleButtonAccessible struct {
-	*externglib.Object
-
 	ButtonAccessible
-	atk.Action
-	atk.Component
-	atk.Image
+
 	atk.Value
 }
 
-var _ ScaleButtonAccessibler = (*ScaleButtonAccessible)(nil)
+var (
+	_ ScaleButtonAccessibler = (*ScaleButtonAccessible)(nil)
+	_ gextras.Nativer        = (*ScaleButtonAccessible)(nil)
+)
 
-func wrapScaleButtonAccessibler(obj *externglib.Object) ScaleButtonAccessibler {
+func wrapScaleButtonAccessible(obj *externglib.Object) ScaleButtonAccessibler {
 	return &ScaleButtonAccessible{
-		Object: obj,
 		ButtonAccessible: ButtonAccessible{
-			Object: obj,
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
@@ -60,28 +55,13 @@ func wrapScaleButtonAccessibler(obj *externglib.Object) ScaleButtonAccessibler {
 						Object: obj,
 					},
 				},
-				Component: atk.Component{
-					Object: obj,
-				},
 			},
 			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
 				Object: obj,
 			},
 			Image: atk.Image{
 				Object: obj,
 			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
-		Image: atk.Image{
-			Object: obj,
 		},
 		Value: atk.Value{
 			Object: obj,
@@ -92,7 +72,13 @@ func wrapScaleButtonAccessibler(obj *externglib.Object) ScaleButtonAccessibler {
 func marshalScaleButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScaleButtonAccessibler(obj), nil
+	return wrapScaleButtonAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ScaleButtonAccessible) Native() uintptr {
+	return v.ButtonAccessible.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*ScaleButtonAccessible) privateScaleButtonAccessible() {}

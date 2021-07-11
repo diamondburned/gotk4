@@ -25,11 +25,17 @@ func init() {
 
 // PasswordEntrier describes PasswordEntry's methods.
 type PasswordEntrier interface {
-	gextras.Objector
-
+	// ExtraMenu gets the menu model set with
+	// gtk_password_entry_set_extra_menu().
 	ExtraMenu() *gio.MenuModel
+	// ShowPeekIcon returns whether the entry is showing an icon to reveal the
+	// contents.
 	ShowPeekIcon() bool
+	// SetExtraMenu sets a menu model to add when constructing the context menu
+	// for @entry.
 	SetExtraMenu(model gio.MenuModeller)
+	// SetShowPeekIcon sets whether the entry should have a clickable icon to
+	// reveal the contents.
 	SetShowPeekIcon(showPeekIcon bool)
 }
 
@@ -64,22 +70,19 @@ type PasswordEntrier interface {
 //
 // `GtkPasswordEntry` uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type PasswordEntry struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Editable
 }
 
-var _ PasswordEntrier = (*PasswordEntry)(nil)
+var (
+	_ PasswordEntrier = (*PasswordEntry)(nil)
+	_ gextras.Nativer = (*PasswordEntry)(nil)
+)
 
-func wrapPasswordEntrier(obj *externglib.Object) PasswordEntrier {
+func wrapPasswordEntry(obj *externglib.Object) PasswordEntrier {
 	return &PasswordEntry{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -93,19 +96,8 @@ func wrapPasswordEntrier(obj *externglib.Object) PasswordEntrier {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Editable: Editable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -126,7 +118,7 @@ func wrapPasswordEntrier(obj *externglib.Object) PasswordEntrier {
 func marshalPasswordEntrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPasswordEntrier(obj), nil
+	return wrapPasswordEntry(obj), nil
 }
 
 // NewPasswordEntry creates a `GtkPasswordEntry`.
@@ -140,6 +132,12 @@ func NewPasswordEntry() *PasswordEntry {
 	_passwordEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PasswordEntry)
 
 	return _passwordEntry
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *PasswordEntry) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // ExtraMenu gets the menu model set with gtk_password_entry_set_extra_menu().
@@ -184,7 +182,7 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel       // out
 
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
 }

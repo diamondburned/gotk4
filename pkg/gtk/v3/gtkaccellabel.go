@@ -28,18 +28,22 @@ func init() {
 
 // AccelLabeller describes AccelLabel's methods.
 type AccelLabeller interface {
-	gextras.Objector
-
+	// Accel gets the keyval and modifier mask set with
+	// gtk_accel_label_set_accel().
 	Accel() (uint, gdk.ModifierType)
+	// AccelWidget fetches the widget monitored by this accelerator label.
 	AccelWidget() *Widget
+	// AccelWidth returns the width needed to display the accelerator key(s).
 	AccelWidth() uint
+	// Refetch recreates the string representing the accelerator keys.
 	Refetch() bool
+	// SetAccelWidget sets the widget to be monitored by this accelerator label.
 	SetAccelWidget(accelWidget Widgetter)
 }
 
-// AccelLabel: the AccelLabel widget is a subclass of Label that also displays
-// an accelerator key on the right of the label text, e.g. “Ctrl+S”. It is
-// commonly used in menus to show the keyboard short-cuts for commands.
+// AccelLabel widget is a subclass of Label that also displays an accelerator
+// key on the right of the label text, e.g. “Ctrl+S”. It is commonly used in
+// menus to show the keyboard short-cuts for commands.
 //
 // The accelerator key to display is typically not set explicitly (although it
 // can be, with gtk_accel_label_set_accel()). Instead, the AccelLabel displays
@@ -70,24 +74,19 @@ type AccelLabeller interface {
 // Like Label, GtkAccelLabel has a main CSS node with the name label. It adds a
 // subnode with name accelerator.
 type AccelLabel struct {
-	*externglib.Object
-
 	Label
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ AccelLabeller = (*AccelLabel)(nil)
+var (
+	_ AccelLabeller   = (*AccelLabel)(nil)
+	_ gextras.Nativer = (*AccelLabel)(nil)
+)
 
-func wrapAccelLabeller(obj *externglib.Object) AccelLabeller {
+func wrapAccelLabel(obj *externglib.Object) AccelLabeller {
 	return &AccelLabel{
-		Object: obj,
 		Label: Label{
-			Object: obj,
 			Misc: Misc{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -98,25 +97,7 @@ func wrapAccelLabeller(obj *externglib.Object) AccelLabeller {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -124,7 +105,7 @@ func wrapAccelLabeller(obj *externglib.Object) AccelLabeller {
 func marshalAccelLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccelLabeller(obj), nil
+	return wrapAccelLabel(obj), nil
 }
 
 // NewAccelLabel creates a new AccelLabel.
@@ -226,7 +207,7 @@ func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(accelWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((accelWidget).(gextras.Nativer).Native()))
 
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)
 }

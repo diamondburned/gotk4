@@ -27,12 +27,16 @@ func init() {
 
 // SearchBarrer describes SearchBar's methods.
 type SearchBarrer interface {
-	gextras.Objector
-
+	// ConnectEntry connects the Entry widget passed as the one to be used in
+	// this search bar.
 	ConnectEntry(entry Entrier)
+	// SearchMode returns whether the search mode is on or off.
 	SearchMode() bool
+	// ShowCloseButton returns whether the close button is shown.
 	ShowCloseButton() bool
+	// SetSearchMode switches the search mode on or off.
 	SetSearchMode(searchMode bool)
+	// SetShowCloseButton shows or hides the close button.
 	SetShowCloseButton(visible bool)
 }
 
@@ -61,24 +65,19 @@ type SearchBarrer interface {
 // A simple example
 // (https://gitlab.gnome.org/GNOME/gtk/blob/gtk-3-24/examples/search-bar.c)
 type SearchBar struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ SearchBarrer = (*SearchBar)(nil)
+var (
+	_ SearchBarrer    = (*SearchBar)(nil)
+	_ gextras.Nativer = (*SearchBar)(nil)
+)
 
-func wrapSearchBarrer(obj *externglib.Object) SearchBarrer {
+func wrapSearchBar(obj *externglib.Object) SearchBarrer {
 	return &SearchBar{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -89,25 +88,7 @@ func wrapSearchBarrer(obj *externglib.Object) SearchBarrer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -115,7 +96,7 @@ func wrapSearchBarrer(obj *externglib.Object) SearchBarrer {
 func marshalSearchBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSearchBarrer(obj), nil
+	return wrapSearchBar(obj), nil
 }
 
 // NewSearchBar creates a SearchBar. You will need to tell it about which widget
@@ -141,7 +122,7 @@ func (bar *SearchBar) ConnectEntry(entry Entrier) {
 	var _arg1 *C.GtkEntry     // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = (*C.GtkEntry)(unsafe.Pointer((entry).(gextras.Nativer).Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 }

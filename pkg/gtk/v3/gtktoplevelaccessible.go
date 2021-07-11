@@ -27,8 +27,6 @@ func init() {
 
 // ToplevelAccessibler describes ToplevelAccessible's methods.
 type ToplevelAccessibler interface {
-	gextras.Objector
-
 	privateToplevelAccessible()
 }
 
@@ -36,9 +34,12 @@ type ToplevelAccessible struct {
 	atk.ObjectClass
 }
 
-var _ ToplevelAccessibler = (*ToplevelAccessible)(nil)
+var (
+	_ ToplevelAccessibler = (*ToplevelAccessible)(nil)
+	_ gextras.Nativer     = (*ToplevelAccessible)(nil)
+)
 
-func wrapToplevelAccessibler(obj *externglib.Object) ToplevelAccessibler {
+func wrapToplevelAccessible(obj *externglib.Object) ToplevelAccessibler {
 	return &ToplevelAccessible{
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
@@ -49,7 +50,7 @@ func wrapToplevelAccessibler(obj *externglib.Object) ToplevelAccessibler {
 func marshalToplevelAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToplevelAccessibler(obj), nil
+	return wrapToplevelAccessible(obj), nil
 }
 
 func (*ToplevelAccessible) privateToplevelAccessible() {}

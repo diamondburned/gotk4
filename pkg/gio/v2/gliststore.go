@@ -38,15 +38,24 @@ func init() {
 
 // ListStorer describes ListStore's methods.
 type ListStorer interface {
-	gextras.Objector
-
+	// Append appends @item to @store.
 	Append(item gextras.Objector)
+	// Find looks up the given @item in the list store by looping over the items
+	// until the first occurrence of @item.
 	Find(item gextras.Objector) (uint, bool)
+	// Insert inserts @item into @store at @position.
 	Insert(position uint, item gextras.Objector)
+	// InsertSorted inserts @item into @store at a position to be determined by
+	// the @compare_func.
 	InsertSorted(item gextras.Objector, compareFunc glib.CompareDataFunc) uint
+	// Remove removes the item from @store that is at @position.
 	Remove(position uint)
+	// RemoveAll removes all items from @store.
 	RemoveAll()
+	// Sort the items in @store according to @compare_func.
 	Sort(compareFunc glib.CompareDataFunc)
+	// Splice changes @store by removing @n_removals items and adding
+	// @n_additions items to it.
 	Splice(position uint, nRemovals uint, additions []*externglib.Object)
 }
 
@@ -61,9 +70,12 @@ type ListStore struct {
 	ListModel
 }
 
-var _ ListStorer = (*ListStore)(nil)
+var (
+	_ ListStorer      = (*ListStore)(nil)
+	_ gextras.Nativer = (*ListStore)(nil)
+)
 
-func wrapListStorer(obj *externglib.Object) ListStorer {
+func wrapListStore(obj *externglib.Object) ListStorer {
 	return &ListStore{
 		Object: obj,
 		ListModel: ListModel{
@@ -75,7 +87,7 @@ func wrapListStorer(obj *externglib.Object) ListStorer {
 func marshalListStorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListStorer(obj), nil
+	return wrapListStore(obj), nil
 }
 
 // NewListStore creates a new Store with items of type @item_type. @item_type

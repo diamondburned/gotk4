@@ -35,11 +35,11 @@ func marshalHyperlinkStateFlags(p uintptr) (interface{}, error) {
 	return HyperlinkStateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// HyperlinkerOverrider contains methods that are overridable.
+// HyperlinkOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type HyperlinkerOverrider interface {
+type HyperlinkOverrider interface {
 	// EndIndex gets the index with the hypertext document at which this link
 	// ends.
 	EndIndex() int
@@ -67,21 +67,36 @@ type HyperlinkerOverrider interface {
 	// changed this method returns true if the link is still valid (with respect
 	// to the document it references) and false otherwise.
 	IsValid() bool
+
 	LinkActivated()
+
 	LinkState() uint
 }
 
 // Hyperlinker describes Hyperlink's methods.
 type Hyperlinker interface {
-	gextras.Objector
-
+	// EndIndex gets the index with the hypertext document at which this link
+	// ends.
 	EndIndex() int
+	// NAnchors gets the number of anchors associated with this hyperlink.
 	NAnchors() int
+	// GetObject returns the item associated with this hyperlinks nth anchor.
 	GetObject(i int) *ObjectClass
+	// StartIndex gets the index with the hypertext document at which this link
+	// begins.
 	StartIndex() int
+	// URI: get a the URI associated with the anchor specified by @i of @link_.
 	URI(i int) string
+	// IsInline indicates whether the link currently displays some or all of its
+	// content inline.
 	IsInline() bool
+	// IsSelectedLink determines whether this AtkHyperlink is selected
+	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
+	// ATK_STATE_FOCUSED for focused links.
 	IsSelectedLink() bool
+	// IsValid: since the document that a link is associated with may have
+	// changed this method returns true if the link is still valid (with respect
+	// to the document it references) and false otherwise.
 	IsValid() bool
 }
 
@@ -96,9 +111,12 @@ type Hyperlink struct {
 	Action
 }
 
-var _ Hyperlinker = (*Hyperlink)(nil)
+var (
+	_ Hyperlinker     = (*Hyperlink)(nil)
+	_ gextras.Nativer = (*Hyperlink)(nil)
+)
 
-func wrapHyperlinker(obj *externglib.Object) Hyperlinker {
+func wrapHyperlink(obj *externglib.Object) Hyperlinker {
 	return &Hyperlink{
 		Object: obj,
 		Action: Action{
@@ -110,7 +128,7 @@ func wrapHyperlinker(obj *externglib.Object) Hyperlinker {
 func marshalHyperlinker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHyperlinker(obj), nil
+	return wrapHyperlink(obj), nil
 }
 
 // EndIndex gets the index with the hypertext document at which this link ends.

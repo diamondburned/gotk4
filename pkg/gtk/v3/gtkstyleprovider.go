@@ -20,15 +20,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_style_provider_get_type()), F: marshalStyleProviderrer},
+		{T: externglib.Type(C.gtk_style_provider_get_type()), F: marshalStyleProviderer},
 	})
 }
 
-// StyleProviderrerOverrider contains methods that are overridable.
+// StyleProviderOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type StyleProviderrerOverrider interface {
+type StyleProviderOverrider interface {
 	// IconFactory returns the IconFactory defined to be in use for @path, or
 	// nil if none is defined.
 	//
@@ -42,11 +42,13 @@ type StyleProviderrerOverrider interface {
 	Style(path *WidgetPath) *StyleProperties
 }
 
-// StyleProviderrer describes StyleProvider's methods.
-type StyleProviderrer interface {
-	gextras.Objector
-
+// StyleProviderer describes StyleProvider's methods.
+type StyleProviderer interface {
+	// IconFactory returns the IconFactory defined to be in use for @path, or
+	// nil if none is defined.
 	IconFactory(path *WidgetPath) *IconFactory
+	// Style returns the style settings affecting a widget defined by @path, or
+	// nil if @provider doesn’t contemplate styling @path.
 	Style(path *WidgetPath) *StyleProperties
 }
 
@@ -57,18 +59,21 @@ type StyleProvider struct {
 	*externglib.Object
 }
 
-var _ StyleProviderrer = (*StyleProvider)(nil)
+var (
+	_ StyleProviderer = (*StyleProvider)(nil)
+	_ gextras.Nativer = (*StyleProvider)(nil)
+)
 
-func wrapStyleProviderrer(obj *externglib.Object) StyleProviderrer {
+func wrapStyleProvider(obj *externglib.Object) StyleProviderer {
 	return &StyleProvider{
 		Object: obj,
 	}
 }
 
-func marshalStyleProviderrer(p uintptr) (interface{}, error) {
+func marshalStyleProviderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleProviderrer(obj), nil
+	return wrapStyleProvider(obj), nil
 }
 
 // IconFactory returns the IconFactory defined to be in use for @path, or nil if

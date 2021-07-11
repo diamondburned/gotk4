@@ -24,11 +24,11 @@ func init() {
 	})
 }
 
-// EditablerOverrider contains methods that are overridable.
+// EditableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type EditablerOverrider interface {
+type EditableOverrider interface {
 	Changed()
 	// DeleteText deletes a sequence of characters. The characters that are
 	// deleted are those characters at positions from @start_pos up to, but not
@@ -81,27 +81,42 @@ type EditablerOverrider interface {
 
 // Editabler describes Editable's methods.
 type Editabler interface {
-	gextras.Objector
-
+	// CopyClipboard copies the contents of the currently selected content in
+	// the editable and puts it on the clipboard.
 	CopyClipboard()
+	// CutClipboard removes the contents of the currently selected content in
+	// the editable and puts it on the clipboard.
 	CutClipboard()
+	// DeleteSelection deletes the currently selected text of the editable.
 	DeleteSelection()
+	// DeleteText deletes a sequence of characters.
 	DeleteText(startPos int, endPos int)
+	// Chars retrieves a sequence of characters.
 	Chars(startPos int, endPos int) string
+	// Editable retrieves whether @editable is editable.
 	Editable() bool
+	// Position retrieves the current position of the cursor relative to the
+	// start of the content of the editable.
 	Position() int
+	// SelectionBounds retrieves the selection bound of the editable.
 	SelectionBounds() (startPos int, endPos int, ok bool)
+	// PasteClipboard pastes the content of the clipboard to the current
+	// position of the cursor in the editable.
 	PasteClipboard()
+	// SelectRegion selects a region of text.
 	SelectRegion(startPos int, endPos int)
+	// SetEditable determines if the user can edit the text in the editable
+	// widget or not.
 	SetEditable(isEditable bool)
+	// SetPosition sets the cursor position in the editable to the given value.
 	SetPosition(position int)
 }
 
-// Editable: the Editable interface is an interface which should be implemented
-// by text editing widgets, such as Entry and SpinButton. It contains functions
-// for generically manipulating an editable widget, a large number of action
-// signals used for key bindings, and several signals that an application can
-// connect to to modify the behavior of a widget.
+// Editable interface is an interface which should be implemented by text
+// editing widgets, such as Entry and SpinButton. It contains functions for
+// generically manipulating an editable widget, a large number of action signals
+// used for key bindings, and several signals that an application can connect to
+// to modify the behavior of a widget.
 //
 // As an example of the latter usage, by connecting the following handler to
 // Editable::insert-text, an application can convert all entry into a widget
@@ -134,9 +149,12 @@ type Editable struct {
 	*externglib.Object
 }
 
-var _ Editabler = (*Editable)(nil)
+var (
+	_ Editabler       = (*Editable)(nil)
+	_ gextras.Nativer = (*Editable)(nil)
+)
 
-func wrapEditabler(obj *externglib.Object) Editabler {
+func wrapEditable(obj *externglib.Object) Editabler {
 	return &Editable{
 		Object: obj,
 	}
@@ -145,7 +163,7 @@ func wrapEditabler(obj *externglib.Object) Editabler {
 func marshalEditabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEditabler(obj), nil
+	return wrapEditable(obj), nil
 }
 
 // CopyClipboard copies the contents of the currently selected content in the

@@ -40,7 +40,7 @@ type AttributeSet = externglib.SList
 type Layer int
 
 const (
-	// Invalid: the object does not have a layer
+	// Invalid: object does not have a layer
 	LayerInvalid Layer = iota
 	// Background: this layer is reserved for the desktop background
 	LayerBackground
@@ -95,7 +95,7 @@ const (
 	RoleCheckMenuItem
 	// ColorChooser: specialized dialog that lets the user choose a color
 	RoleColorChooser
-	// ColumnHeader: the header for a column of data
+	// ColumnHeader: header for a column of data
 	RoleColumnHeader
 	// ComboBox: collapsible list of choices the user can select from
 	RoleComboBox
@@ -184,7 +184,7 @@ const (
 	// RootPane: specialized pane that has a glass pane and a layered pane as
 	// its children
 	RoleRootPane
-	// RowHeader: the header for a row of data
+	// RowHeader: header for a row of data
 	RoleRowHeader
 	// ScrollBar: object usually used to allow a user to incrementally view a
 	// large amount of data.
@@ -209,9 +209,9 @@ const (
 	RoleTable
 	// TableCell: cell in a table
 	RoleTableCell
-	// TableColumnHeader: the header for a column of a table
+	// TableColumnHeader: header for a column of a table
 	RoleTableColumnHeader
-	// TableRowHeader: the header for a row of a table
+	// TableRowHeader: header for a row of a table
 	RoleTableRowHeader
 	// TearOffMenuItem: menu item used to tear off and reattach its menu
 	RoleTearOffMenuItem
@@ -238,8 +238,8 @@ const (
 	// TreeTable: object capable of expanding and collapsing rows as well as
 	// showing multiple columns of data. (Since: 0.7)
 	RoleTreeTable
-	// Unknown: the object contains some Accessible information, but its role is
-	// not known
+	// Unknown: object contains some Accessible information, but its role is not
+	// known
 	RoleUnknown
 	// Viewport: object usually used in a scroll pane
 	RoleViewport
@@ -256,76 +256,76 @@ const (
 	// objects which it controls (should have CONTROLLER_FOR relation to such).
 	// (Since: 1.1.1)
 	RoleRuler
-	// Application: the object is an application object, which may contain
+	// Application: object is an application object, which may contain
 	// @ATK_ROLE_FRAME objects or other types of accessibles. The root
 	// accessible of any application's ATK hierarchy should have
 	// ATK_ROLE_APPLICATION. (Since: 1.1.4)
 	RoleApplication
-	// Autocomplete: the object is a dialog or list containing items for
-	// insertion into an entry widget, for instance a list of words for
-	// completion of a text entry. (Since: 1.3)
+	// Autocomplete: object is a dialog or list containing items for insertion
+	// into an entry widget, for instance a list of words for completion of a
+	// text entry. (Since: 1.3)
 	RoleAutocomplete
-	// EditBar: the object is an editable text object in a toolbar. (Since: 1.5)
+	// EditBar: object is an editable text object in a toolbar. (Since: 1.5)
 	RoleEditBar
-	// Embedded: the object is an embedded container within a document or panel.
+	// Embedded: object is an embedded container within a document or panel.
 	// This role is a grouping "hint" indicating that the contained objects
 	// share a context. (Since: 1.7.2)
 	RoleEmbedded
-	// Entry: the object is a component whose textual content may be entered or
+	// Entry: object is a component whose textual content may be entered or
 	// modified by the user, provided @ATK_STATE_EDITABLE is present. (Since:
 	// 1.11)
 	RoleEntry
-	// Chart: the object is a graphical depiction of quantitative data. It may
+	// Chart: object is a graphical depiction of quantitative data. It may
 	// contain multiple subelements whose attributes and/or description may be
 	// queried to obtain both the quantitative data and information about how
 	// the data is being presented. The LABELLED_BY relation is particularly
 	// important in interpreting objects of this type, as is the
 	// accessible-description property. (Since: 1.11)
 	RoleChart
-	// Caption: the object contains descriptive information, usually textual,
-	// about another user interface element such as a table, chart, or image.
-	// (Since: 1.11)
+	// Caption: object contains descriptive information, usually textual, about
+	// another user interface element such as a table, chart, or image. (Since:
+	// 1.11)
 	RoleCaption
-	// DocumentFrame: the object is a visual frame or container which contains a
+	// DocumentFrame: object is a visual frame or container which contains a
 	// view of document content. Document frames may occur within another
 	// Document instance, in which case the second document may be said to be
 	// embedded in the containing instance. HTML frames are often
 	// ROLE_DOCUMENT_FRAME. Either this object, or a singleton descendant,
 	// should implement the Document interface. (Since: 1.11)
 	RoleDocumentFrame
-	// Heading: the object serves as a heading for content which follows it in a
+	// Heading: object serves as a heading for content which follows it in a
 	// document. The 'heading level' of the heading, if availabe, may be
 	// obtained by querying the object's attributes.
 	RoleHeading
-	// Page: the object is a containing instance which encapsulates a page of
+	// Page: object is a containing instance which encapsulates a page of
 	// information. @ATK_ROLE_PAGE is used in documents and content which
 	// support a paginated navigation model. (Since: 1.11)
 	RolePage
-	// Section: the object is a containing instance of document content which
+	// Section: object is a containing instance of document content which
 	// constitutes a particular 'logical' section of the document. The type of
 	// content within a section, and the nature of the section division itself,
 	// may be obtained by querying the object's attributes. Sections may be
 	// nested. (Since: 1.11)
 	RoleSection
-	// RedundantObject: the object is redundant with another object in the
+	// RedundantObject: object is redundant with another object in the
 	// hierarchy, and is exposed for purely technical reasons. Objects of this
 	// role should normally be ignored by clients. (Since: 1.11)
 	RoleRedundantObject
-	// Form: the object is a container for form controls, for instance as part
-	// of a web form or user-input form within a document. This role is
-	// primarily a tag/convenience for clients when navigating complex
-	// documents, it is not expected that ordinary GUI containers will always
-	// have ATK_ROLE_FORM. (Since: 1.12.0)
+	// Form: object is a container for form controls, for instance as part of a
+	// web form or user-input form within a document. This role is primarily a
+	// tag/convenience for clients when navigating complex documents, it is not
+	// expected that ordinary GUI containers will always have ATK_ROLE_FORM.
+	// (Since: 1.12.0)
 	RoleForm
-	// Link: the object is a hypertext anchor, i.e. a "link" in a hypertext
+	// Link: object is a hypertext anchor, i.e. a "link" in a hypertext
 	// document. Such objects are distinct from 'inline' content which may also
 	// use the Hypertext/Hyperlink interfaces to indicate the range/location
 	// within a text object where an inline or embedded object lies. (Since:
 	// 1.12.1)
 	RoleLink
-	// InputMethodWindow: the object is a window or similar viewport which is
-	// used to allow composition or input of a 'complex character', in other
-	// words it is an "input method window." (Since: 1.12.1)
+	// InputMethodWindow: object is a window or similar viewport which is used
+	// to allow composition or input of a 'complex character', in other words it
+	// is an "input method window." (Since: 1.12.1)
 	RoleInputMethodWindow
 	// TableRow: row in a table. (Since: 2.1.0)
 	RoleTableRow
@@ -511,21 +511,22 @@ func gotk4_Function(arg0 C.gpointer) (cret C.gboolean) {
 
 // ImplementorIfacer describes ImplementorIface's methods.
 type ImplementorIfacer interface {
-	gextras.Objector
-
 	privateImplementorIface()
 }
 
-// ImplementorIface: the AtkImplementor interface is implemented by objects for
+// ImplementorIface: atkImplementor interface is implemented by objects for
 // which AtkObject peers may be obtained via calls to
 // iface->(ref_accessible)(implementor);
 type ImplementorIface struct {
 	*externglib.Object
 }
 
-var _ ImplementorIfacer = (*ImplementorIface)(nil)
+var (
+	_ ImplementorIfacer = (*ImplementorIface)(nil)
+	_ gextras.Nativer   = (*ImplementorIface)(nil)
+)
 
-func wrapImplementorIfacer(obj *externglib.Object) ImplementorIfacer {
+func wrapImplementorIface(obj *externglib.Object) ImplementorIfacer {
 	return &ImplementorIface{
 		Object: obj,
 	}
@@ -534,18 +535,20 @@ func wrapImplementorIfacer(obj *externglib.Object) ImplementorIfacer {
 func marshalImplementorIfacer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImplementorIfacer(obj), nil
+	return wrapImplementorIface(obj), nil
 }
 
 func (*ImplementorIface) privateImplementorIface() {}
 
-// ObjectClasserOverrider contains methods that are overridable.
+// ObjectClassOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ObjectClasserOverrider interface {
+type ObjectClassOverrider interface {
 	ActiveDescendantChanged(child interface{})
+
 	ChildrenChanged(changeIndex uint, changedChild interface{})
+
 	FocusEvent(focusIn bool)
 	// Description gets the accessible description of the accessible.
 	Description() string
@@ -561,6 +564,7 @@ type ObjectClasserOverrider interface {
 	//
 	// Deprecated: Use atk_component_get_mdi_zorder instead.
 	MDIZOrder() int
+
 	NChildren() int
 	// Name gets the accessible name of the accessible.
 	Name() string
@@ -583,6 +587,7 @@ type ObjectClasserOverrider interface {
 	// intended that this function should called only in the ..._new() functions
 	// used to create an instance of a subclass of Object
 	Initialize(data interface{})
+
 	PropertyChange(values *PropertyValues)
 	// RefRelationSet gets the RelationSet associated with the object.
 	RefRelationSet() *RelationSet
@@ -606,38 +611,65 @@ type ObjectClasserOverrider interface {
 	// SetParent sets the accessible parent of the accessible. @parent can be
 	// NULL.
 	SetParent(parent ObjectClasser)
+
 	StateChange(name string, stateSet bool)
+
 	VisibleDataChanged()
 }
 
 // ObjectClasser describes ObjectClass's methods.
 type ObjectClasser interface {
-	gextras.Objector
-
+	// AccessibleID gets the accessible id of the accessible.
 	AccessibleID() string
+	// Description gets the accessible description of the accessible.
 	Description() string
+	// IndexInParent gets the 0-based index of this accessible in its parent;
+	// returns -1 if the accessible does not have an accessible parent.
 	IndexInParent() int
+	// Layer gets the layer of the accessible.
 	Layer() Layer
+	// MDIZOrder gets the zorder of the accessible.
 	MDIZOrder() int
+	// NAccessibleChildren gets the number of accessible children of the
+	// accessible.
 	NAccessibleChildren() int
+	// Name gets the accessible name of the accessible.
 	Name() string
+	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
+	// locale of @accessible.
 	ObjectLocale() string
+	// Parent gets the accessible parent of the accessible.
 	Parent() *ObjectClass
+	// Role gets the role of the accessible.
 	Role() Role
+	// Initialize: this function is called when implementing subclasses of
+	// Object.
 	Initialize(data interface{})
+	// PeekParent gets the accessible parent of the accessible, if it has been
+	// manually assigned with atk_object_set_parent.
 	PeekParent() *ObjectClass
+	// RefAccessibleChild gets a reference to the specified accessible child of
+	// the object.
 	RefAccessibleChild(i int) *ObjectClass
+	// RefRelationSet gets the RelationSet associated with the object.
 	RefRelationSet() *RelationSet
+	// RefStateSet gets a reference to the state set of the accessible; the
+	// caller must unreference it when it is no longer needed.
 	RefStateSet() *StateSet
+	// RemovePropertyChangeHandler removes a property change handler.
 	RemovePropertyChangeHandler(handlerId uint)
+	// SetAccessibleID sets the accessible ID of the accessible.
 	SetAccessibleID(name string)
+	// SetDescription sets the accessible description of the accessible.
 	SetDescription(description string)
+	// SetName sets the accessible name of the accessible.
 	SetName(name string)
+	// SetParent sets the accessible parent of the accessible.
 	SetParent(parent ObjectClasser)
 }
 
-// Object: this class is the primary class for accessibility support via the
-// Accessibility ToolKit (ATK). Objects which are instances of Object (or
+// ObjectClass: this class is the primary class for accessibility support via
+// the Accessibility ToolKit (ATK). Objects which are instances of Object (or
 // instances of AtkObject-derived types) are queried for properties which relate
 // basic (and generic) properties of a UI component such as name and
 // description. Instances of Object may also be queried as to whether they
@@ -656,9 +688,12 @@ type ObjectClass struct {
 	*externglib.Object
 }
 
-var _ ObjectClasser = (*ObjectClass)(nil)
+var (
+	_ ObjectClasser   = (*ObjectClass)(nil)
+	_ gextras.Nativer = (*ObjectClass)(nil)
+)
 
-func wrapObjectClasser(obj *externglib.Object) ObjectClasser {
+func wrapObject(obj *externglib.Object) ObjectClasser {
 	return &ObjectClass{
 		Object: obj,
 	}
@@ -667,7 +702,7 @@ func wrapObjectClasser(obj *externglib.Object) ObjectClasser {
 func marshalObjectClasser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapObjectClasser(obj), nil
+	return wrapObject(obj), nil
 }
 
 // AccessibleID gets the accessible id of the accessible.
@@ -998,7 +1033,7 @@ func (accessible *ObjectClass) SetParent(parent ObjectClasser) {
 	var _arg1 *C.AtkObject // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(parent.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 
 	C.atk_object_set_parent(_arg0, _arg1)
 }

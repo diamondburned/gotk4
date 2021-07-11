@@ -24,13 +24,17 @@ func init() {
 
 // TextMarker describes TextMark's methods.
 type TextMarker interface {
-	gextras.Objector
-
+	// Buffer gets the buffer this mark is located inside.
 	Buffer() *TextBuffer
+	// Deleted returns true if the mark has been removed from its buffer.
 	Deleted() bool
+	// LeftGravity determines whether the mark has left gravity.
 	LeftGravity() bool
+	// Name returns the mark name.
 	Name() string
+	// Visible returns true if the mark is visible.
 	Visible() bool
+
 	SetVisible(setting bool)
 }
 
@@ -69,9 +73,12 @@ type TextMark struct {
 	*externglib.Object
 }
 
-var _ TextMarker = (*TextMark)(nil)
+var (
+	_ TextMarker      = (*TextMark)(nil)
+	_ gextras.Nativer = (*TextMark)(nil)
+)
 
-func wrapTextMarker(obj *externglib.Object) TextMarker {
+func wrapTextMark(obj *externglib.Object) TextMarker {
 	return &TextMark{
 		Object: obj,
 	}
@@ -80,7 +87,7 @@ func wrapTextMarker(obj *externglib.Object) TextMarker {
 func marshalTextMarker(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextMarker(obj), nil
+	return wrapTextMark(obj), nil
 }
 
 // NewTextMark creates a text mark.

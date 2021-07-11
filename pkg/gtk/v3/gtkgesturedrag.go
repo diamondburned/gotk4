@@ -26,9 +26,13 @@ func init() {
 
 // GestureDragger describes GestureDrag's methods.
 type GestureDragger interface {
-	gextras.Objector
-
+	// Offset: if the @gesture is active, this function returns true and fills
+	// in @x and @y with the coordinates of the current point, as an offset to
+	// the starting drag point.
 	Offset() (x float64, y float64, ok bool)
+	// StartPoint: if the @gesture is active, this function returns true and
+	// fills in @x and @y with the drag start coordinates, in window-relative
+	// coordinates.
 	StartPoint() (x float64, y float64, ok bool)
 }
 
@@ -41,9 +45,12 @@ type GestureDrag struct {
 	GestureSingle
 }
 
-var _ GestureDragger = (*GestureDrag)(nil)
+var (
+	_ GestureDragger  = (*GestureDrag)(nil)
+	_ gextras.Nativer = (*GestureDrag)(nil)
+)
 
-func wrapGestureDragger(obj *externglib.Object) GestureDragger {
+func wrapGestureDrag(obj *externglib.Object) GestureDragger {
 	return &GestureDrag{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -58,7 +65,7 @@ func wrapGestureDragger(obj *externglib.Object) GestureDragger {
 func marshalGestureDragger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureDragger(obj), nil
+	return wrapGestureDrag(obj), nil
 }
 
 // NewGestureDrag returns a newly created Gesture that recognizes drags.
@@ -66,7 +73,7 @@ func NewGestureDrag(widget Widgetter) *GestureDrag {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_gesture_drag_new(_arg1)
 

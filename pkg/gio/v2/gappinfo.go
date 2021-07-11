@@ -35,11 +35,11 @@ func init() {
 	})
 }
 
-// AppInforOverrider contains methods that are overridable.
+// AppInfoOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AppInforOverrider interface {
+type AppInfoOverrider interface {
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
 	// content type.
@@ -121,29 +121,61 @@ type AppInforOverrider interface {
 
 // AppInfor describes AppInfo's methods.
 type AppInfor interface {
-	gextras.Objector
-
+	// AddSupportsType adds a content type to the application information to
+	// indicate the application is capable of opening files with the given
+	// content type.
 	AddSupportsType(contentType string) error
+	// CanDelete obtains the information whether the Info can be deleted.
 	CanDelete() bool
+	// CanRemoveSupportsType checks if a supported content type can be removed
+	// from an application.
 	CanRemoveSupportsType() bool
+	// Delete tries to delete a Info.
 	Delete() bool
+	// Dup creates a duplicate of a Info.
 	Dup() *AppInfo
+	// Equal checks if two Infos are equal.
 	Equal(appinfo2 AppInfor) bool
+	// Commandline gets the commandline with which the application will be
+	// started.
 	Commandline() string
+	// Description gets a human-readable description of an installed
+	// application.
 	Description() string
+	// DisplayName gets the display name of the application.
 	DisplayName() string
+	// Executable gets the executable's name for the installed application.
 	Executable() string
+	// Icon gets the icon for the application.
 	Icon() *Icon
+	// ID gets the ID of an application.
 	ID() string
+	// Name gets the installed name of the application.
 	Name() string
+	// SupportedTypes retrieves the list of content types that @app_info claims
+	// to support.
 	SupportedTypes() []string
+	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
 	LaunchUrisFinish(result AsyncResulter) error
+	// RemoveSupportsType removes a supported type from an application, if
+	// possible.
 	RemoveSupportsType(contentType string) error
+	// SetAsDefaultForExtension sets the application as the default handler for
+	// the given file extension.
 	SetAsDefaultForExtension(extension string) error
+	// SetAsDefaultForType sets the application as the default handler for a
+	// given type.
 	SetAsDefaultForType(contentType string) error
+	// SetAsLastUsedForType sets the application as the last used application
+	// for a given type.
 	SetAsLastUsedForType(contentType string) error
+	// ShouldShow checks if the application info should be shown in menus that
+	// list available applications.
 	ShouldShow() bool
+	// SupportsFiles checks if the application accepts files as arguments.
 	SupportsFiles() bool
+	// SupportsUris checks if the application supports reading files and
+	// directories from URIs.
 	SupportsUris() bool
 }
 
@@ -193,9 +225,12 @@ type AppInfo struct {
 	*externglib.Object
 }
 
-var _ AppInfor = (*AppInfo)(nil)
+var (
+	_ AppInfor        = (*AppInfo)(nil)
+	_ gextras.Nativer = (*AppInfo)(nil)
+)
 
-func wrapAppInfor(obj *externglib.Object) AppInfor {
+func wrapAppInfo(obj *externglib.Object) AppInfor {
 	return &AppInfo{
 		Object: obj,
 	}
@@ -204,7 +239,7 @@ func wrapAppInfor(obj *externglib.Object) AppInfor {
 func marshalAppInfor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppInfor(obj), nil
+	return wrapAppInfo(obj), nil
 }
 
 // AddSupportsType adds a content type to the application information to
@@ -315,7 +350,7 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo1.Native()))
-	_arg1 = (*C.GAppInfo)(unsafe.Pointer(appinfo2.Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer((appinfo2).(gextras.Nativer).Native()))
 
 	_cret = C.g_app_info_equal(_arg0, _arg1)
 
@@ -485,7 +520,7 @@ func (appinfo *AppInfo) LaunchUrisFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_app_info_launch_uris_finish(_arg0, _arg1, &_cerr)
 
@@ -633,25 +668,33 @@ func (appinfo *AppInfo) SupportsUris() bool {
 	return _ok
 }
 
-// AppLaunchContexterOverrider contains methods that are overridable.
+// AppLaunchContextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type AppLaunchContexterOverrider interface {
+type AppLaunchContextOverrider interface {
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
 	LaunchFailed(startupNotifyId string)
+
 	Launched(info AppInfor, platformData *glib.Variant)
 }
 
 // AppLaunchContexter describes AppLaunchContext's methods.
 type AppLaunchContexter interface {
-	gextras.Objector
-
+	// Environment gets the complete environment variable list to be passed to
+	// the child process when @context is used to launch an application.
 	Environment() []string
+	// LaunchFailed: called when an application has failed to launch, so that it
+	// can cancel the application startup notification started in
+	// g_app_launch_context_get_startup_notify_id().
 	LaunchFailed(startupNotifyId string)
+	// Setenv arranges for @variable to be set to @value in the child's
+	// environment when @context is used to launch an application.
 	Setenv(variable string, value string)
+	// Unsetenv arranges for @variable to be unset in the child's environment
+	// when @context is used to launch an application.
 	Unsetenv(variable string)
 }
 
@@ -662,9 +705,12 @@ type AppLaunchContext struct {
 	*externglib.Object
 }
 
-var _ AppLaunchContexter = (*AppLaunchContext)(nil)
+var (
+	_ AppLaunchContexter = (*AppLaunchContext)(nil)
+	_ gextras.Nativer    = (*AppLaunchContext)(nil)
+)
 
-func wrapAppLaunchContexter(obj *externglib.Object) AppLaunchContexter {
+func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContexter {
 	return &AppLaunchContext{
 		Object: obj,
 	}
@@ -673,7 +719,7 @@ func wrapAppLaunchContexter(obj *externglib.Object) AppLaunchContexter {
 func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppLaunchContexter(obj), nil
+	return wrapAppLaunchContext(obj), nil
 }
 
 // NewAppLaunchContext creates a new application launch context. This is not

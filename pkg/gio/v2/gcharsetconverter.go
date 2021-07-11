@@ -29,16 +29,18 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_charset_converter_get_type()), F: marshalCharsetConverterrer},
+		{T: externglib.Type(C.g_charset_converter_get_type()), F: marshalCharsetConverterer},
 	})
 }
 
-// CharsetConverterrer describes CharsetConverter's methods.
-type CharsetConverterrer interface {
-	gextras.Objector
-
+// CharsetConverterer describes CharsetConverter's methods.
+type CharsetConverterer interface {
+	// NumFallbacks gets the number of fallbacks that @converter has applied so
+	// far.
 	NumFallbacks() uint
+	// UseFallback gets the Converter:use-fallback property.
 	UseFallback() bool
+	// SetUseFallback sets the Converter:use-fallback property.
 	SetUseFallback(useFallback bool)
 }
 
@@ -50,9 +52,12 @@ type CharsetConverter struct {
 	Initable
 }
 
-var _ CharsetConverterrer = (*CharsetConverter)(nil)
+var (
+	_ CharsetConverterer = (*CharsetConverter)(nil)
+	_ gextras.Nativer    = (*CharsetConverter)(nil)
+)
 
-func wrapCharsetConverterrer(obj *externglib.Object) CharsetConverterrer {
+func wrapCharsetConverter(obj *externglib.Object) CharsetConverterer {
 	return &CharsetConverter{
 		Object: obj,
 		Converter: Converter{
@@ -64,10 +69,10 @@ func wrapCharsetConverterrer(obj *externglib.Object) CharsetConverterrer {
 	}
 }
 
-func marshalCharsetConverterrer(p uintptr) (interface{}, error) {
+func marshalCharsetConverterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCharsetConverterrer(obj), nil
+	return wrapCharsetConverter(obj), nil
 }
 
 // NewCharsetConverter creates a new Converter.

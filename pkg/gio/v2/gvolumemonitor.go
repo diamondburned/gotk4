@@ -32,35 +32,47 @@ func init() {
 	})
 }
 
-// VolumeMonitorrerOverrider contains methods that are overridable.
+// VolumeMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type VolumeMonitorrerOverrider interface {
+type VolumeMonitorOverrider interface {
 	DriveChanged(drive Driver)
+
 	DriveConnected(drive Driver)
+
 	DriveDisconnected(drive Driver)
+
 	DriveEjectButton(drive Driver)
+
 	DriveStopButton(drive Driver)
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
 	MountForUUID(uuid string) *Mount
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid())
 	VolumeForUUID(uuid string) *Volume
+
 	MountAdded(mount Mounter)
+
 	MountChanged(mount Mounter)
+
 	MountPreUnmount(mount Mounter)
+
 	MountRemoved(mount Mounter)
+
 	VolumeAdded(volume Volumer)
+
 	VolumeChanged(volume Volumer)
+
 	VolumeRemoved(volume Volumer)
 }
 
 // VolumeMonitorrer describes VolumeMonitor's methods.
 type VolumeMonitorrer interface {
-	gextras.Objector
-
+	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
 	MountForUUID(uuid string) *Mount
+	// VolumeForUUID finds a #GVolume object by its UUID (see
+	// g_volume_get_uuid())
 	VolumeForUUID(uuid string) *Volume
 }
 
@@ -78,9 +90,12 @@ type VolumeMonitor struct {
 	*externglib.Object
 }
 
-var _ VolumeMonitorrer = (*VolumeMonitor)(nil)
+var (
+	_ VolumeMonitorrer = (*VolumeMonitor)(nil)
+	_ gextras.Nativer  = (*VolumeMonitor)(nil)
+)
 
-func wrapVolumeMonitorrer(obj *externglib.Object) VolumeMonitorrer {
+func wrapVolumeMonitor(obj *externglib.Object) VolumeMonitorrer {
 	return &VolumeMonitor{
 		Object: obj,
 	}
@@ -89,7 +104,7 @@ func wrapVolumeMonitorrer(obj *externglib.Object) VolumeMonitorrer {
 func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolumeMonitorrer(obj), nil
+	return wrapVolumeMonitor(obj), nil
 }
 
 // MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())

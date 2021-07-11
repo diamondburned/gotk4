@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// BufferedInputStreamerOverrider contains methods that are overridable.
+// BufferedInputStreamOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type BufferedInputStreamerOverrider interface {
+type BufferedInputStreamOverrider interface {
 	// Fill tries to read @count bytes from the stream into the buffer. Will
 	// block during this read.
 	//
@@ -79,15 +79,24 @@ type BufferedInputStreamerOverrider interface {
 
 // BufferedInputStreamer describes BufferedInputStream's methods.
 type BufferedInputStreamer interface {
-	gextras.Objector
-
+	// Fill tries to read @count bytes from the stream into the buffer.
 	Fill(count int, cancellable Cancellabler) (int, error)
+	// FillAsync reads data into @stream's buffer asynchronously, up to @count
+	// size.
 	FillAsync(count int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// FillFinish finishes an asynchronous read.
 	FillFinish(result AsyncResulter) (int, error)
+	// Available gets the size of the available data within the stream.
 	Available() uint
+	// BufferSize gets the size of the input buffer.
 	BufferSize() uint
+	// Peek peeks in the buffer, copying data of size @count into @buffer,
+	// offset @offset bytes.
 	Peek(buffer []byte, offset uint) uint
+	// ReadByte tries to read a single byte from the stream or the buffer.
 	ReadByte(cancellable Cancellabler) (int, error)
+	// SetBufferSize sets the size of the internal buffer of @stream to @size,
+	// or to the size of the contents of the buffer.
 	SetBufferSize(size uint)
 }
 
@@ -111,9 +120,12 @@ type BufferedInputStream struct {
 	Seekable
 }
 
-var _ BufferedInputStreamer = (*BufferedInputStream)(nil)
+var (
+	_ BufferedInputStreamer = (*BufferedInputStream)(nil)
+	_ gextras.Nativer       = (*BufferedInputStream)(nil)
+)
 
-func wrapBufferedInputStreamer(obj *externglib.Object) BufferedInputStreamer {
+func wrapBufferedInputStream(obj *externglib.Object) BufferedInputStreamer {
 	return &BufferedInputStream{
 		FilterInputStream: FilterInputStream{
 			InputStream: InputStream{
@@ -129,7 +141,7 @@ func wrapBufferedInputStreamer(obj *externglib.Object) BufferedInputStreamer {
 func marshalBufferedInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBufferedInputStreamer(obj), nil
+	return wrapBufferedInputStream(obj), nil
 }
 
 // NewBufferedInputStream creates a new Stream from the given @base_stream, with
@@ -138,7 +150,7 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _cret *C.GInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
 
 	_cret = C.g_buffered_input_stream_new(_arg1)
 
@@ -156,7 +168,7 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 	var _arg2 C.gsize         // out
 	var _cret *C.GInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
 	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_input_stream_new_sized(_arg1, _arg2)
@@ -201,7 +213,7 @@ func (stream *BufferedInputStream) Fill(count int, cancellable Cancellabler) (in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.gssize(count)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_buffered_input_stream_fill(_arg0, _arg1, _arg2, &_cerr)
 
@@ -231,7 +243,7 @@ func (stream *BufferedInputStream) FillAsync(count int, ioPriority int, cancella
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.gssize(count)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -246,7 +258,7 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_buffered_input_stream_fill_finish(_arg0, _arg1, &_cerr)
 
@@ -334,7 +346,7 @@ func (stream *BufferedInputStream) ReadByte(cancellable Cancellabler) (int, erro
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_buffered_input_stream_read_byte(_arg0, _arg1, &_cerr)
 

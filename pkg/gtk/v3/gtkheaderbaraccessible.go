@@ -18,20 +18,19 @@ import "C"
 
 // HeaderBarAccessibler describes HeaderBarAccessible's methods.
 type HeaderBarAccessibler interface {
-	gextras.Objector
-
 	privateHeaderBarAccessible()
 }
 
 type HeaderBarAccessible struct {
 	ContainerAccessible
-
-	atk.Component
 }
 
-var _ HeaderBarAccessibler = (*HeaderBarAccessible)(nil)
+var (
+	_ HeaderBarAccessibler = (*HeaderBarAccessible)(nil)
+	_ gextras.Nativer      = (*HeaderBarAccessible)(nil)
+)
 
-func wrapHeaderBarAccessibler(obj *externglib.Object) HeaderBarAccessibler {
+func wrapHeaderBarAccessible(obj *externglib.Object) HeaderBarAccessibler {
 	return &HeaderBarAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -44,12 +43,6 @@ func wrapHeaderBarAccessibler(obj *externglib.Object) HeaderBarAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -57,7 +50,7 @@ func wrapHeaderBarAccessibler(obj *externglib.Object) HeaderBarAccessibler {
 func marshalHeaderBarAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHeaderBarAccessibler(obj), nil
+	return wrapHeaderBarAccessible(obj), nil
 }
 
 func (*HeaderBarAccessible) privateHeaderBarAccessible() {}

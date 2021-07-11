@@ -29,9 +29,11 @@ func init() {
 
 // OffscreenWindowwer describes OffscreenWindow's methods.
 type OffscreenWindowwer interface {
-	gextras.Objector
-
+	// Pixbuf retrieves a snapshot of the contained widget in the form of a
+	// Pixbuf.
 	Pixbuf() *gdkpixbuf.Pixbuf
+	// Surface retrieves a snapshot of the contained widget in the form of a
+	// #cairo_surface_t.
 	Surface() *cairo.Surface
 }
 
@@ -51,26 +53,20 @@ type OffscreenWindowwer interface {
 // When contained offscreen widgets are redrawn, GtkOffscreenWindow will emit a
 // Widget::damage-event signal.
 type OffscreenWindow struct {
-	*externglib.Object
-
 	Window
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ OffscreenWindowwer = (*OffscreenWindow)(nil)
+var (
+	_ OffscreenWindowwer = (*OffscreenWindow)(nil)
+	_ gextras.Nativer    = (*OffscreenWindow)(nil)
+)
 
-func wrapOffscreenWindowwer(obj *externglib.Object) OffscreenWindowwer {
+func wrapOffscreenWindow(obj *externglib.Object) OffscreenWindowwer {
 	return &OffscreenWindow{
-		Object: obj,
 		Window: Window{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -81,32 +77,8 @@ func wrapOffscreenWindowwer(obj *externglib.Object) OffscreenWindowwer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -114,7 +86,7 @@ func wrapOffscreenWindowwer(obj *externglib.Object) OffscreenWindowwer {
 func marshalOffscreenWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOffscreenWindowwer(obj), nil
+	return wrapOffscreenWindow(obj), nil
 }
 
 // NewOffscreenWindow creates a toplevel container widget that is used to

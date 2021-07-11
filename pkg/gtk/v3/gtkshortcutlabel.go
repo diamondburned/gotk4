@@ -27,36 +27,34 @@ func init() {
 
 // ShortcutLabeller describes ShortcutLabel's methods.
 type ShortcutLabeller interface {
-	gextras.Objector
-
+	// Accelerator retrieves the current accelerator of @self.
 	Accelerator() string
+	// DisabledText retrieves the text that is displayed when no accelerator is
+	// set.
 	DisabledText() string
+	// SetAccelerator sets the accelerator to be displayed by @self.
 	SetAccelerator(accelerator string)
+	// SetDisabledText sets the text to be displayed by @self when no
+	// accelerator is set.
 	SetDisabledText(disabledText string)
 }
 
 // ShortcutLabel is a widget that represents a single keyboard shortcut or
 // gesture in the user interface.
 type ShortcutLabel struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ ShortcutLabeller = (*ShortcutLabel)(nil)
+var (
+	_ ShortcutLabeller = (*ShortcutLabel)(nil)
+	_ gextras.Nativer  = (*ShortcutLabel)(nil)
+)
 
-func wrapShortcutLabeller(obj *externglib.Object) ShortcutLabeller {
+func wrapShortcutLabel(obj *externglib.Object) ShortcutLabeller {
 	return &ShortcutLabel{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -67,31 +65,10 @@ func wrapShortcutLabeller(obj *externglib.Object) ShortcutLabeller {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -99,7 +76,7 @@ func wrapShortcutLabeller(obj *externglib.Object) ShortcutLabeller {
 func marshalShortcutLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutLabeller(obj), nil
+	return wrapShortcutLabel(obj), nil
 }
 
 // NewShortcutLabel creates a new ShortcutLabel with @accelerator set.

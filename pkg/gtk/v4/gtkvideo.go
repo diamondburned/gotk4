@@ -25,17 +25,26 @@ func init() {
 
 // Videoer describes Video's methods.
 type Videoer interface {
-	gextras.Objector
-
+	// Autoplay returns true if videos have been set to loop.
 	Autoplay() bool
+	// File gets the file played by @self or nil if not playing back a file.
 	File() *gio.File
+	// Loop returns true if videos have been set to loop.
 	Loop() bool
+	// MediaStream gets the media stream managed by @self or nil if none.
 	MediaStream() *MediaStream
+	// SetAutoplay sets whether @self automatically starts playback when it
+	// becomes visible or when a new file gets loaded.
 	SetAutoplay(autoplay bool)
+	// SetFile makes @self play the given @file.
 	SetFile(file gio.Filer)
+	// SetFilename makes @self play the given @filename.
 	SetFilename(filename string)
+	// SetLoop sets whether new files loaded by @self should be set to loop.
 	SetLoop(loop bool)
+	// SetMediaStream sets the media stream to be played back.
 	SetMediaStream(stream MediaStreamer)
+	// SetResource makes @self play the resource at the given @resource_path.
 	SetResource(resourcePath string)
 }
 
@@ -54,21 +63,17 @@ type Videoer interface {
 // the [class@Gdk.Paintable] API and a media framework such as Gstreamer
 // directly.
 type Video struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ Videoer = (*Video)(nil)
+var (
+	_ Videoer         = (*Video)(nil)
+	_ gextras.Nativer = (*Video)(nil)
+)
 
-func wrapVideoer(obj *externglib.Object) Videoer {
+func wrapVideo(obj *externglib.Object) Videoer {
 	return &Video{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -82,22 +87,13 @@ func wrapVideoer(obj *externglib.Object) Videoer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalVideoer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVideoer(obj), nil
+	return wrapVideo(obj), nil
 }
 
 // NewVideo creates a new empty `GtkVideo`.
@@ -118,7 +114,7 @@ func NewVideoForFile(file gio.Filer) *Video {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_video_new_for_file(_arg1)
 
@@ -154,7 +150,7 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_video_new_for_media_stream(_arg1)
 
@@ -273,7 +269,7 @@ func (self *Video) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile    // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	C.gtk_video_set_file(_arg0, _arg1)
 }
@@ -318,7 +314,7 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 	var _arg1 *C.GtkMediaStream // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 
 	C.gtk_video_set_media_stream(_arg0, _arg1)
 }

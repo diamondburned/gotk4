@@ -79,7 +79,7 @@ func UnitsToDouble(i int) float64 {
 	return _gdouble
 }
 
-// Rectangle: the `PangoRectangle` structure represents a rectangle.
+// Rectangle: `PangoRectangle` structure represents a rectangle.
 //
 // `PangoRectangle` is frequently used to represent the logical or ink extents
 // of a single glyph or section of text. (See, for instance,

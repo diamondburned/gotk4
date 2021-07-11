@@ -33,11 +33,11 @@ func init() {
 	})
 }
 
-// DBusInterfacerOverrider contains methods that are overridable.
+// DBusInterfaceOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusInterfacerOverrider interface {
+type DBusInterfaceOverrider interface {
 	// DupObject gets the BusObject that @interface_ belongs to, if any.
 	DupObject() *DBusObject
 	// Info gets D-Bus introspection information for the D-Bus interface
@@ -51,23 +51,27 @@ type DBusInterfacerOverrider interface {
 
 // DBusInterfacer describes DBusInterface's methods.
 type DBusInterfacer interface {
-	gextras.Objector
-
+	// DupObject gets the BusObject that @interface_ belongs to, if any.
 	DupObject() *DBusObject
+	// Info gets D-Bus introspection information for the D-Bus interface
+	// implemented by @interface_.
 	Info() *DBusInterfaceInfo
+	// SetObject sets the BusObject for @interface_ to @object.
 	SetObject(object DBusObjector)
 }
 
-// DBusInterface: the BusInterface type is the base type for D-Bus interfaces
-// both on the service side (see BusInterfaceSkeleton) and client side (see
-// BusProxy).
+// DBusInterface type is the base type for D-Bus interfaces both on the service
+// side (see BusInterfaceSkeleton) and client side (see BusProxy).
 type DBusInterface struct {
 	*externglib.Object
 }
 
-var _ DBusInterfacer = (*DBusInterface)(nil)
+var (
+	_ DBusInterfacer  = (*DBusInterface)(nil)
+	_ gextras.Nativer = (*DBusInterface)(nil)
+)
 
-func wrapDBusInterfacer(obj *externglib.Object) DBusInterfacer {
+func wrapDBusInterface(obj *externglib.Object) DBusInterfacer {
 	return &DBusInterface{
 		Object: obj,
 	}
@@ -76,7 +80,7 @@ func wrapDBusInterfacer(obj *externglib.Object) DBusInterfacer {
 func marshalDBusInterfacer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusInterfacer(obj), nil
+	return wrapDBusInterface(obj), nil
 }
 
 // DupObject gets the BusObject that @interface_ belongs to, if any.
@@ -124,7 +128,7 @@ func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _arg1 *C.GDBusObject    // out
 
 	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
-	_arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
+	_arg1 = (*C.GDBusObject)(unsafe.Pointer((object).(gextras.Nativer).Native()))
 
 	C.g_dbus_interface_set_object(_arg0, _arg1)
 }

@@ -53,13 +53,18 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 
 // RenderNoder describes RenderNode's methods.
 type RenderNoder interface {
-	gextras.Objector
-
+	// Draw the contents of @node to the given cairo context.
 	Draw(cr *cairo.Context)
+	// Bounds retrieves the boundaries of the @node.
 	Bounds() graphene.Rect
+	// NodeType returns the type of the @node.
 	NodeType() RenderNodeType
+	// Ref acquires a reference on the given `GskRenderNode`.
 	ref() *RenderNode
+	// Unref releases a reference on the given `GskRenderNode`.
 	unref()
+	// WriteToFile: this function is equivalent to calling
+	// gsk_render_node_serialize() followed by g_file_set_contents().
 	WriteToFile(filename string) error
 }
 
@@ -80,9 +85,12 @@ type RenderNode struct {
 	*externglib.Object
 }
 
-var _ RenderNoder = (*RenderNode)(nil)
+var (
+	_ RenderNoder     = (*RenderNode)(nil)
+	_ gextras.Nativer = (*RenderNode)(nil)
+)
 
-func wrapRenderNoder(obj *externglib.Object) RenderNoder {
+func wrapRenderNode(obj *externglib.Object) RenderNoder {
 	return &RenderNode{
 		Object: obj,
 	}
@@ -91,7 +99,7 @@ func wrapRenderNoder(obj *externglib.Object) RenderNoder {
 func marshalRenderNoder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRenderNoder(obj), nil
+	return wrapRenderNode(obj), nil
 }
 
 // Draw the contents of @node to the given cairo context.
@@ -219,7 +227,7 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Shadow: the shadow parameters in a shadow node.
+// Shadow: shadow parameters in a shadow node.
 type Shadow struct {
 	native C.GskShadow
 }

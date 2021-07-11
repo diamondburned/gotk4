@@ -23,35 +23,38 @@ func init() {
 	})
 }
 
-// BuildablerOverrider contains methods that are overridable.
+// BuildableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type BuildablerOverrider interface {
+type BuildableOverrider interface {
 	// AddChild adds a child to @buildable. @type is an optional string
 	// describing how the child should be added.
-	AddChild(builder Builderrer, child gextras.Objector, typ string)
+	AddChild(builder Builderer, child gextras.Objector, typ string)
 	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
 	// once for each custom tag handled by the @buildable.
-	CustomFinished(builder Builderrer, child gextras.Objector, tagname string, data interface{})
+	CustomFinished(builder Builderer, child gextras.Objector, tagname string, data interface{})
 	// CustomTagEnd: called at the end of each custom element handled by the
 	// buildable.
-	CustomTagEnd(builder Builderrer, child gextras.Objector, tagname string, data interface{})
+	CustomTagEnd(builder Builderer, child gextras.Objector, tagname string, data interface{})
 	// CustomTagStart: called for each unknown element under `<child>`.
-	CustomTagStart(builder Builderrer, child gextras.Objector, tagname string) (BuildableParser, interface{}, bool)
+	CustomTagStart(builder Builderer, child gextras.Objector, tagname string) (BuildableParser, interface{}, bool)
+
 	ID() string
 	// InternalChild retrieves the internal child called @childname of the
 	// @buildable object.
-	InternalChild(builder Builderrer, childname string) *externglib.Object
-	ParserFinished(builder Builderrer)
-	SetBuildableProperty(builder Builderrer, name string, value *externglib.Value)
+	InternalChild(builder Builderer, childname string) *externglib.Object
+
+	ParserFinished(builder Builderer)
+
+	SetBuildableProperty(builder Builderer, name string, value *externglib.Value)
+
 	SetID(id string)
 }
 
 // Buildabler describes Buildable's methods.
 type Buildabler interface {
-	gextras.Objector
-
+	// BuildableID gets the ID of the @buildable object.
 	BuildableID() string
 }
 
@@ -72,9 +75,12 @@ type Buildable struct {
 	*externglib.Object
 }
 
-var _ Buildabler = (*Buildable)(nil)
+var (
+	_ Buildabler      = (*Buildable)(nil)
+	_ gextras.Nativer = (*Buildable)(nil)
+)
 
-func wrapBuildabler(obj *externglib.Object) Buildabler {
+func wrapBuildable(obj *externglib.Object) Buildabler {
 	return &Buildable{
 		Object: obj,
 	}
@@ -83,7 +89,7 @@ func wrapBuildabler(obj *externglib.Object) Buildabler {
 func marshalBuildabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuildabler(obj), nil
+	return wrapBuildable(obj), nil
 }
 
 // BuildableID gets the ID of the @buildable object.

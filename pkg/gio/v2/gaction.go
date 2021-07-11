@@ -34,11 +34,11 @@ func init() {
 	})
 }
 
-// ActionerOverrider contains methods that are overridable.
+// ActionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionerOverrider interface {
+type ActionOverrider interface {
 	// Activate activates the action.
 	//
 	// @parameter must be the correct type of parameter for the action (ie: the
@@ -118,15 +118,23 @@ type ActionerOverrider interface {
 
 // Actioner describes Action's methods.
 type Actioner interface {
-	gextras.Objector
-
+	// Activate activates the action.
 	Activate(parameter *glib.Variant)
+	// ChangeState: request for the state of @action to be changed to @value.
 	ChangeState(value *glib.Variant)
+	// Enabled checks if @action is currently enabled.
 	Enabled() bool
+	// Name queries the name of @action.
 	Name() string
+	// ParameterType queries the type of the parameter that must be given when
+	// activating @action.
 	ParameterType() *glib.VariantType
+	// State queries the current state of @action.
 	State() *glib.Variant
+	// StateHint requests a hint about the valid range of values for the state
+	// of @action.
 	StateHint() *glib.Variant
+	// StateType queries the type of the state of @action.
 	StateType() *glib.VariantType
 }
 
@@ -160,9 +168,12 @@ type Action struct {
 	*externglib.Object
 }
 
-var _ Actioner = (*Action)(nil)
+var (
+	_ Actioner        = (*Action)(nil)
+	_ gextras.Nativer = (*Action)(nil)
+)
 
-func wrapActioner(obj *externglib.Object) Actioner {
+func wrapAction(obj *externglib.Object) Actioner {
 	return &Action{
 		Object: obj,
 	}
@@ -171,7 +182,7 @@ func wrapActioner(obj *externglib.Object) Actioner {
 func marshalActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActioner(obj), nil
+	return wrapAction(obj), nil
 }
 
 // Activate activates the action.

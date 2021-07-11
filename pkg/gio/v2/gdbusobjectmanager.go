@@ -28,15 +28,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_manager_get_type()), F: marshalDBusObjectManagerrer},
+		{T: externglib.Type(C.g_dbus_object_manager_get_type()), F: marshalDBusObjectManagerer},
 	})
 }
 
-// DBusObjectManagerrerOverrider contains methods that are overridable.
+// DBusObjectManagerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusObjectManagerrerOverrider interface {
+type DBusObjectManagerOverrider interface {
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
 	Interface(objectPath string, interfaceName string) *DBusInterface
@@ -44,24 +44,29 @@ type DBusObjectManagerrerOverrider interface {
 	GetObject(objectPath string) *DBusObject
 	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
+
 	InterfaceAdded(object DBusObjector, interface_ DBusInterfacer)
+
 	InterfaceRemoved(object DBusObjector, interface_ DBusInterfacer)
+
 	ObjectAdded(object DBusObjector)
+
 	ObjectRemoved(object DBusObjector)
 }
 
-// DBusObjectManagerrer describes DBusObjectManager's methods.
-type DBusObjectManagerrer interface {
-	gextras.Objector
-
+// DBusObjectManagerer describes DBusObjectManager's methods.
+type DBusObjectManagerer interface {
+	// Interface gets the interface proxy for @interface_name at @object_path,
+	// if any.
 	Interface(objectPath string, interfaceName string) *DBusInterface
+	// GetObject gets the BusObjectProxy at @object_path, if any.
 	GetObject(objectPath string) *DBusObject
+	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
 }
 
-// DBusObjectManager: the BusObjectManager type is the base type for service-
-// and client-side implementations of the standardized
-// org.freedesktop.DBus.ObjectManager
+// DBusObjectManager type is the base type for service- and client-side
+// implementations of the standardized org.freedesktop.DBus.ObjectManager
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
 // interface.
 //
@@ -71,18 +76,21 @@ type DBusObjectManager struct {
 	*externglib.Object
 }
 
-var _ DBusObjectManagerrer = (*DBusObjectManager)(nil)
+var (
+	_ DBusObjectManagerer = (*DBusObjectManager)(nil)
+	_ gextras.Nativer     = (*DBusObjectManager)(nil)
+)
 
-func wrapDBusObjectManagerrer(obj *externglib.Object) DBusObjectManagerrer {
+func wrapDBusObjectManager(obj *externglib.Object) DBusObjectManagerer {
 	return &DBusObjectManager{
 		Object: obj,
 	}
 }
 
-func marshalDBusObjectManagerrer(p uintptr) (interface{}, error) {
+func marshalDBusObjectManagerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectManagerrer(obj), nil
+	return wrapDBusObjectManager(obj), nil
 }
 
 // Interface gets the interface proxy for @interface_name at @object_path, if

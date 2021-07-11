@@ -27,24 +27,22 @@ func init() {
 
 // SwitchAccessibler describes SwitchAccessible's methods.
 type SwitchAccessibler interface {
-	gextras.Objector
-
 	privateSwitchAccessible()
 }
 
 type SwitchAccessible struct {
-	*externglib.Object
-
 	WidgetAccessible
+
 	atk.Action
-	atk.Component
 }
 
-var _ SwitchAccessibler = (*SwitchAccessible)(nil)
+var (
+	_ SwitchAccessibler = (*SwitchAccessible)(nil)
+	_ gextras.Nativer   = (*SwitchAccessible)(nil)
+)
 
-func wrapSwitchAccessibler(obj *externglib.Object) SwitchAccessibler {
+func wrapSwitchAccessible(obj *externglib.Object) SwitchAccessibler {
 	return &SwitchAccessible{
-		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
 				ObjectClass: atk.ObjectClass{
@@ -58,16 +56,13 @@ func wrapSwitchAccessibler(obj *externglib.Object) SwitchAccessibler {
 		Action: atk.Action{
 			Object: obj,
 		},
-		Component: atk.Component{
-			Object: obj,
-		},
 	}
 }
 
 func marshalSwitchAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSwitchAccessibler(obj), nil
+	return wrapSwitchAccessible(obj), nil
 }
 
 func (*SwitchAccessible) privateSwitchAccessible() {}

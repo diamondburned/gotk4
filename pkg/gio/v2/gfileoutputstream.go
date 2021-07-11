@@ -36,12 +36,13 @@ func init() {
 	})
 }
 
-// FileOutputStreamerOverrider contains methods that are overridable.
+// FileOutputStreamOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FileOutputStreamerOverrider interface {
+type FileOutputStreamOverrider interface {
 	CanSeek() bool
+
 	CanTruncate() bool
 	// Etag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
@@ -74,17 +75,22 @@ type FileOutputStreamerOverrider interface {
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_output_stream_query_info_async().
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
+
 	Tell() int64
+
 	TruncateFn(size int64, cancellable Cancellabler) error
 }
 
 // FileOutputStreamer describes FileOutputStream's methods.
 type FileOutputStreamer interface {
-	gextras.Objector
-
+	// Etag gets the entity tag for the file when it has been written.
 	Etag() string
+	// QueryInfo queries a file output stream for the given @attributes.
 	QueryInfo(attributes string, cancellable Cancellabler) (*FileInfo, error)
+	// QueryInfoAsync: asynchronously queries the @stream for a Info.
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// QueryInfoFinish finalizes the asynchronous query started by
+	// g_file_output_stream_query_info_async().
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 }
 
@@ -100,17 +106,18 @@ type FileOutputStreamer interface {
 // output stream supports truncating, use g_seekable_can_truncate(). To truncate
 // a file output stream, use g_seekable_truncate().
 type FileOutputStream struct {
-	*externglib.Object
-
 	OutputStream
+
 	Seekable
 }
 
-var _ FileOutputStreamer = (*FileOutputStream)(nil)
+var (
+	_ FileOutputStreamer = (*FileOutputStream)(nil)
+	_ gextras.Nativer    = (*FileOutputStream)(nil)
+)
 
-func wrapFileOutputStreamer(obj *externglib.Object) FileOutputStreamer {
+func wrapFileOutputStream(obj *externglib.Object) FileOutputStreamer {
 	return &FileOutputStream{
-		Object: obj,
 		OutputStream: OutputStream{
 			Object: obj,
 		},
@@ -123,7 +130,13 @@ func wrapFileOutputStreamer(obj *externglib.Object) FileOutputStreamer {
 func marshalFileOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileOutputStreamer(obj), nil
+	return wrapFileOutputStream(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FileOutputStream) Native() uintptr {
+	return v.OutputStream.Object.Native()
 }
 
 // Etag gets the entity tag for the file when it has been written. This must be
@@ -170,7 +183,7 @@ func (stream *FileOutputStream) QueryInfo(attributes string, cancellable Cancell
 	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_output_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
@@ -201,7 +214,7 @@ func (stream *FileOutputStream) QueryInfoAsync(attributes string, ioPriority int
 	_arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(box.Assign(callback))
 
@@ -217,7 +230,7 @@ func (stream *FileOutputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_output_stream_query_info_finish(_arg0, _arg1, &_cerr)
 

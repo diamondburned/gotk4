@@ -25,8 +25,6 @@ func init() {
 
 // X11DeviceXI2er describes X11DeviceXI2's methods.
 type X11DeviceXI2er interface {
-	gextras.Objector
-
 	privateX11DeviceXI2()
 }
 
@@ -34,9 +32,12 @@ type X11DeviceXI2 struct {
 	gdk.Device
 }
 
-var _ X11DeviceXI2er = (*X11DeviceXI2)(nil)
+var (
+	_ X11DeviceXI2er  = (*X11DeviceXI2)(nil)
+	_ gextras.Nativer = (*X11DeviceXI2)(nil)
+)
 
-func wrapX11DeviceXI2er(obj *externglib.Object) X11DeviceXI2er {
+func wrapX11DeviceXI2(obj *externglib.Object) X11DeviceXI2er {
 	return &X11DeviceXI2{
 		Device: gdk.Device{
 			Object: obj,
@@ -47,7 +48,7 @@ func wrapX11DeviceXI2er(obj *externglib.Object) X11DeviceXI2er {
 func marshalX11DeviceXI2er(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11DeviceXI2er(obj), nil
+	return wrapX11DeviceXI2(obj), nil
 }
 
 func (*X11DeviceXI2) privateX11DeviceXI2() {}

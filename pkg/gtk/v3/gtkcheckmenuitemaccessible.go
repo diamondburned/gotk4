@@ -27,27 +27,21 @@ func init() {
 
 // CheckMenuItemAccessibler describes CheckMenuItemAccessible's methods.
 type CheckMenuItemAccessibler interface {
-	gextras.Objector
-
 	privateCheckMenuItemAccessible()
 }
 
 type CheckMenuItemAccessible struct {
-	*externglib.Object
-
 	MenuItemAccessible
-	atk.Action
-	atk.Component
-	atk.Selection
 }
 
-var _ CheckMenuItemAccessibler = (*CheckMenuItemAccessible)(nil)
+var (
+	_ CheckMenuItemAccessibler = (*CheckMenuItemAccessible)(nil)
+	_ gextras.Nativer          = (*CheckMenuItemAccessible)(nil)
+)
 
-func wrapCheckMenuItemAccessibler(obj *externglib.Object) CheckMenuItemAccessibler {
+func wrapCheckMenuItemAccessible(obj *externglib.Object) CheckMenuItemAccessibler {
 	return &CheckMenuItemAccessible{
-		Object: obj,
 		MenuItemAccessible: MenuItemAccessible{
-			Object: obj,
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
@@ -59,28 +53,13 @@ func wrapCheckMenuItemAccessibler(obj *externglib.Object) CheckMenuItemAccessibl
 						Object: obj,
 					},
 				},
-				Component: atk.Component{
-					Object: obj,
-				},
 			},
 			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
 				Object: obj,
 			},
 			Selection: atk.Selection{
 				Object: obj,
 			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
-		Selection: atk.Selection{
-			Object: obj,
 		},
 	}
 }
@@ -88,7 +67,7 @@ func wrapCheckMenuItemAccessibler(obj *externglib.Object) CheckMenuItemAccessibl
 func marshalCheckMenuItemAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckMenuItemAccessibler(obj), nil
+	return wrapCheckMenuItemAccessible(obj), nil
 }
 
 func (*CheckMenuItemAccessible) privateCheckMenuItemAccessible() {}

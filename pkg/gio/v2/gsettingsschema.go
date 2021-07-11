@@ -36,9 +36,8 @@ func init() {
 	})
 }
 
-// SettingsSchema: the SchemaSource and Schema APIs provide a mechanism for
-// advanced control over the loading of schemas and a mechanism for
-// introspecting their content.
+// SettingsSchema and Schema APIs provide a mechanism for advanced control over
+// the loading of schemas and a mechanism for introspecting their content.
 //
 // Plugin loading systems that wish to provide plugins a way to access settings
 // face the problem of how to make the schemas for these settings visible to

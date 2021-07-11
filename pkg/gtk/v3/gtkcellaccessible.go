@@ -25,34 +25,33 @@ func init() {
 	})
 }
 
-// CellAccessiblerOverrider contains methods that are overridable.
+// CellAccessibleOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CellAccessiblerOverrider interface {
+type CellAccessibleOverrider interface {
 	UpdateCache(emitSignal bool)
 }
 
 // CellAccessibler describes CellAccessible's methods.
 type CellAccessibler interface {
-	gextras.Objector
-
 	privateCellAccessible()
 }
 
 type CellAccessible struct {
-	*externglib.Object
-
 	Accessible
+
 	atk.Action
 	atk.Component
 }
 
-var _ CellAccessibler = (*CellAccessible)(nil)
+var (
+	_ CellAccessibler = (*CellAccessible)(nil)
+	_ gextras.Nativer = (*CellAccessible)(nil)
+)
 
-func wrapCellAccessibler(obj *externglib.Object) CellAccessibler {
+func wrapCellAccessible(obj *externglib.Object) CellAccessibler {
 	return &CellAccessible{
-		Object: obj,
 		Accessible: Accessible{
 			ObjectClass: atk.ObjectClass{
 				Object: obj,
@@ -70,7 +69,13 @@ func wrapCellAccessibler(obj *externglib.Object) CellAccessibler {
 func marshalCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellAccessibler(obj), nil
+	return wrapCellAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *CellAccessible) Native() uintptr {
+	return v.Accessible.ObjectClass.Object.Native()
 }
 
 func (*CellAccessible) privateCellAccessible() {}

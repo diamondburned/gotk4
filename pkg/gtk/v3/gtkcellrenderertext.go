@@ -24,18 +24,18 @@ func init() {
 	})
 }
 
-// CellRendererTexterOverrider contains methods that are overridable.
+// CellRendererTextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CellRendererTexterOverrider interface {
+type CellRendererTextOverrider interface {
 	Edited(path string, newText string)
 }
 
 // CellRendererTexter describes CellRendererText's methods.
 type CellRendererTexter interface {
-	gextras.Objector
-
+	// SetFixedHeightFromFont sets the height of a renderer to explicitly be
+	// determined by the “font” and “y_pad” property set on it.
 	SetFixedHeightFromFont(numberOfRows int)
 }
 
@@ -49,9 +49,12 @@ type CellRendererText struct {
 	CellRenderer
 }
 
-var _ CellRendererTexter = (*CellRendererText)(nil)
+var (
+	_ CellRendererTexter = (*CellRendererText)(nil)
+	_ gextras.Nativer    = (*CellRendererText)(nil)
+)
 
-func wrapCellRendererTexter(obj *externglib.Object) CellRendererTexter {
+func wrapCellRendererText(obj *externglib.Object) CellRendererTexter {
 	return &CellRendererText{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -64,7 +67,7 @@ func wrapCellRendererTexter(obj *externglib.Object) CellRendererTexter {
 func marshalCellRendererTexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererTexter(obj), nil
+	return wrapCellRendererText(obj), nil
 }
 
 // NewCellRendererText creates a new CellRendererText. Adjust how text is drawn

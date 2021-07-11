@@ -141,8 +141,8 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 	C.pango_tailor_break(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// LogAttr: the `PangoLogAttr` structure stores information about the attributes
-// of a single character.
+// LogAttr: `PangoLogAttr` structure stores information about the attributes of
+// a single character.
 type LogAttr struct {
 	native C.PangoLogAttr
 }

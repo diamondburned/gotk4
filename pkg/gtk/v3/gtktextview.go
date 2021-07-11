@@ -57,10 +57,10 @@ const (
 	TextViewLayerBelow TextViewLayer = iota
 	// Above: old deprecated layer, use GTK_TEXT_VIEW_LAYER_ABOVE_TEXT instead
 	TextViewLayerAbove
-	// BelowText: the layer rendered below the text (but above the background).
+	// BelowText: layer rendered below the text (but above the background).
 	// Since: 3.20
 	TextViewLayerBelowText
-	// AboveText: the layer rendered above the text. Since: 3.20
+	// AboveText: layer rendered above the text. Since: 3.20
 	TextViewLayerAboveText
 )
 
@@ -92,86 +92,185 @@ func marshalTextWindowType(p uintptr) (interface{}, error) {
 	return TextWindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TextViewerOverrider contains methods that are overridable.
+// TextViewOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TextViewerOverrider interface {
+type TextViewOverrider interface {
 	Backspace()
+
 	CopyClipboard()
+
 	CutClipboard()
+
 	InsertAtCursor(str string)
+
 	InsertEmoji()
+
 	PasteClipboard()
+
 	PopulatePopup(popup Widgetter)
+
 	SetAnchor()
+
 	ToggleOverwrite()
 }
 
 // TextViewer describes TextView's methods.
 type TextViewer interface {
-	gextras.Objector
-
+	// AddChildAtAnchor adds a child widget in the text buffer, at the given
+	// @anchor.
 	AddChildAtAnchor(child Widgetter, anchor TextChildAnchorrer)
+	// BackwardDisplayLine moves the given @iter backward by one display
+	// (wrapped) line.
 	BackwardDisplayLine(iter *TextIter) bool
+	// BackwardDisplayLineStart moves the given @iter backward to the next
+	// display line start.
 	BackwardDisplayLineStart(iter *TextIter) bool
+	// ForwardDisplayLine moves the given @iter forward by one display (wrapped)
+	// line.
 	ForwardDisplayLine(iter *TextIter) bool
+	// ForwardDisplayLineEnd moves the given @iter forward to the next display
+	// line end.
 	ForwardDisplayLineEnd(iter *TextIter) bool
+	// AcceptsTab returns whether pressing the Tab key inserts a tab characters.
 	AcceptsTab() bool
+	// BottomMargin gets the bottom margin for text in the @text_view.
 	BottomMargin() int
+	// Buffer returns the TextBuffer being displayed by this text view.
 	Buffer() *TextBuffer
+	// CursorLocations: given an @iter within a text layout, determine the
+	// positions of the strong and weak cursors if the insertion point is at
+	// that iterator.
 	CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle)
+	// CursorVisible: find out whether the cursor should be displayed.
 	CursorVisible() bool
+	// DefaultAttributes obtains a copy of the default text attributes.
 	DefaultAttributes() *TextAttributes
+	// Editable returns the default editability of the TextView.
 	Editable() bool
+	// HAdjustment gets the horizontal-scrolling Adjustment.
 	HAdjustment() *Adjustment
+	// Indent gets the default indentation of paragraphs in @text_view.
 	Indent() int
+	// InputHints gets the value of the TextView:input-hints property.
 	InputHints() InputHints
+	// InputPurpose gets the value of the TextView:input-purpose property.
 	InputPurpose() InputPurpose
+	// IterAtLocation retrieves the iterator at buffer coordinates @x and @y.
 	IterAtLocation(x int, y int) (TextIter, bool)
+	// IterAtPosition retrieves the iterator pointing to the character at buffer
+	// coordinates @x and @y.
 	IterAtPosition(x int, y int) (TextIter, int, bool)
+	// IterLocation gets a rectangle which roughly contains the character at
+	// @iter.
 	IterLocation(iter *TextIter) gdk.Rectangle
+	// Justification gets the default justification of paragraphs in @text_view.
 	Justification() Justification
+	// LeftMargin gets the default left margin size of paragraphs in the
+	// @text_view.
 	LeftMargin() int
+	// LineAtY gets the TextIter at the start of the line containing the
+	// coordinate @y.
 	LineAtY(y int) (TextIter, int)
+	// LineYrange gets the y coordinate of the top of the line containing @iter,
+	// and the height of the line.
 	LineYrange(iter *TextIter) (y int, height int)
+	// Monospace gets the value of the TextView:monospace property.
 	Monospace() bool
+	// Overwrite returns whether the TextView is in overwrite mode or not.
 	Overwrite() bool
+	// PixelsAboveLines gets the default number of pixels to put above
+	// paragraphs.
 	PixelsAboveLines() int
+	// PixelsBelowLines gets the value set by
+	// gtk_text_view_set_pixels_below_lines().
 	PixelsBelowLines() int
+	// PixelsInsideWrap gets the value set by
+	// gtk_text_view_set_pixels_inside_wrap().
 	PixelsInsideWrap() int
+	// RightMargin gets the default right margin for text in @text_view.
 	RightMargin() int
+	// Tabs gets the default tabs for @text_view.
 	Tabs() *pango.TabArray
+	// TopMargin gets the top margin for text in the @text_view.
 	TopMargin() int
+	// VAdjustment gets the vertical-scrolling Adjustment.
 	VAdjustment() *Adjustment
+	// VisibleRect fills @visible_rect with the currently-visible region of the
+	// buffer, in buffer coordinates.
 	VisibleRect() gdk.Rectangle
+	// WindowType: usually used to find out which window an event corresponds
+	// to.
 	WindowType(window gdk.Windowwer) TextWindowType
+	// WrapMode gets the line wrapping for the view.
 	WrapMode() WrapMode
+	// ImContextFilterKeypress: allow the TextView input method to internally
+	// handle key press and release events.
 	ImContextFilterKeypress(event *gdk.EventKey) bool
+	// MoveChild updates the position of a child, as for
+	// gtk_text_view_add_child_in_window().
 	MoveChild(child Widgetter, xpos int, ypos int)
+	// MoveMarkOnscreen moves a mark within the buffer so that it's located
+	// within the currently-visible text area.
 	MoveMarkOnscreen(mark TextMarker) bool
+	// MoveVisually: move the iterator a given number of characters visually,
+	// treating it as the strong cursor position.
 	MoveVisually(iter *TextIter, count int) bool
+	// PlaceCursorOnscreen moves the cursor to the currently visible region of
+	// the buffer, it it isn’t there already.
 	PlaceCursorOnscreen() bool
+	// ResetCursorBlink ensures that the cursor is shown (i.e.
 	ResetCursorBlink()
+	// ResetImContext: reset the input method context of the text view if
+	// needed.
 	ResetImContext()
+	// ScrollMarkOnscreen scrolls @text_view the minimum distance such that
+	// @mark is contained within the visible area of the widget.
 	ScrollMarkOnscreen(mark TextMarker)
+	// ScrollToIter scrolls @text_view so that @iter is on the screen in the
+	// position indicated by @xalign and @yalign.
 	ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool
+	// ScrollToMark scrolls @text_view so that @mark is on the screen in the
+	// position indicated by @xalign and @yalign.
 	ScrollToMark(mark TextMarker, withinMargin float64, useAlign bool, xalign float64, yalign float64)
+	// SetAcceptsTab sets the behavior of the text widget when the Tab key is
+	// pressed.
 	SetAcceptsTab(acceptsTab bool)
+	// SetBottomMargin sets the bottom margin for text in @text_view.
 	SetBottomMargin(bottomMargin int)
-	SetBuffer(buffer TextBufferrer)
+	// SetBuffer sets @buffer as the buffer being displayed by @text_view.
+	SetBuffer(buffer TextBufferer)
+	// SetCursorVisible toggles whether the insertion point should be displayed.
 	SetCursorVisible(setting bool)
+	// SetEditable sets the default editability of the TextView.
 	SetEditable(setting bool)
+	// SetIndent sets the default indentation for paragraphs in @text_view.
 	SetIndent(indent int)
+	// SetLeftMargin sets the default left margin for text in @text_view.
 	SetLeftMargin(leftMargin int)
+	// SetMonospace sets the TextView:monospace property, which indicates that
+	// the text view should use monospace fonts.
 	SetMonospace(monospace bool)
+	// SetOverwrite changes the TextView overwrite mode.
 	SetOverwrite(overwrite bool)
+	// SetPixelsAboveLines sets the default number of blank pixels above
+	// paragraphs in @text_view.
 	SetPixelsAboveLines(pixelsAboveLines int)
+	// SetPixelsBelowLines sets the default number of pixels of blank space to
+	// put below paragraphs in @text_view.
 	SetPixelsBelowLines(pixelsBelowLines int)
+	// SetPixelsInsideWrap sets the default number of pixels of blank space to
+	// leave between display/wrapped lines within a paragraph.
 	SetPixelsInsideWrap(pixelsInsideWrap int)
+	// SetRightMargin sets the default right margin for text in the text view.
 	SetRightMargin(rightMargin int)
+	// SetTabs sets the default tab stops for paragraphs in @text_view.
 	SetTabs(tabs *pango.TabArray)
+	// SetTopMargin sets the top margin for text in @text_view.
 	SetTopMargin(topMargin int)
+	// StartsDisplayLine determines whether @iter is at the start of a display
+	// line.
 	StartsDisplayLine(iter *TextIter) bool
 }
 
@@ -200,23 +299,20 @@ type TextViewer interface {
 // If a context menu is opened, the window node will appear as a subnode of the
 // main node.
 type TextView struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
+
 	Scrollable
 }
 
-var _ TextViewer = (*TextView)(nil)
+var (
+	_ TextViewer      = (*TextView)(nil)
+	_ gextras.Nativer = (*TextView)(nil)
+)
 
-func wrapTextViewer(obj *externglib.Object) TextViewer {
+func wrapTextView(obj *externglib.Object) TextViewer {
 	return &TextView{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -227,18 +323,6 @@ func wrapTextViewer(obj *externglib.Object) TextViewer {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
@@ -249,7 +333,7 @@ func wrapTextViewer(obj *externglib.Object) TextViewer {
 func marshalTextViewer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextViewer(obj), nil
+	return wrapTextView(obj), nil
 }
 
 // NewTextView creates a new TextView. If you don’t call
@@ -274,11 +358,11 @@ func NewTextView() *TextView {
 // create a default buffer, in which case this function is equivalent to
 // gtk_text_view_new(). The text view adds its own reference count to the
 // buffer; it does not take over an existing reference.
-func NewTextViewWithBuffer(buffer TextBufferrer) *TextView {
+func NewTextViewWithBuffer(buffer TextBufferer) *TextView {
 	var _arg1 *C.GtkTextBuffer // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer((buffer).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_view_new_with_buffer(_arg1)
 
@@ -289,6 +373,12 @@ func NewTextViewWithBuffer(buffer TextBufferrer) *TextView {
 	return _textView
 }
 
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *TextView) Native() uintptr {
+	return v.Container.Widget.InitiallyUnowned.Object.Native()
+}
+
 // AddChildAtAnchor adds a child widget in the text buffer, at the given
 // @anchor.
 func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor TextChildAnchorrer) {
@@ -297,8 +387,8 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor TextChildAnch
 	var _arg2 *C.GtkTextChildAnchor // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer((anchor).(gextras.Nativer).Native()))
 
 	C.gtk_text_view_add_child_at_anchor(_arg0, _arg1, _arg2)
 }
@@ -985,7 +1075,7 @@ func (textView *TextView) WindowType(window gdk.Windowwer) TextWindowType {
 	var _cret C.GtkTextWindowType // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_view_get_window_type(_arg0, _arg1)
 
@@ -1068,7 +1158,7 @@ func (textView *TextView) MoveChild(child Widgetter, xpos int, ypos int) {
 	var _arg3 C.gint         // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.gint(xpos)
 	_arg3 = C.gint(ypos)
 
@@ -1083,7 +1173,7 @@ func (textView *TextView) MoveMarkOnscreen(mark TextMarker) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg1 = (*C.GtkTextMark)(unsafe.Pointer((mark).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_view_move_mark_onscreen(_arg0, _arg1)
 
@@ -1178,7 +1268,7 @@ func (textView *TextView) ScrollMarkOnscreen(mark TextMarker) {
 	var _arg1 *C.GtkTextMark // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg1 = (*C.GtkTextMark)(unsafe.Pointer((mark).(gextras.Nativer).Native()))
 
 	C.gtk_text_view_scroll_mark_onscreen(_arg0, _arg1)
 }
@@ -1239,7 +1329,7 @@ func (textView *TextView) ScrollToMark(mark TextMarker, withinMargin float64, us
 	var _arg5 C.gdouble      // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg1 = (*C.GtkTextMark)(unsafe.Pointer((mark).(gextras.Nativer).Native()))
 	_arg2 = C.gdouble(withinMargin)
 	if useAlign {
 		_arg3 = C.TRUE
@@ -1285,12 +1375,12 @@ func (textView *TextView) SetBottomMargin(bottomMargin int) {
 // is added to @buffer. If you owned a reference to @buffer before passing it to
 // this function, you must remove that reference yourself; TextView will not
 // “adopt” it.
-func (textView *TextView) SetBuffer(buffer TextBufferrer) {
+func (textView *TextView) SetBuffer(buffer TextBufferer) {
 	var _arg0 *C.GtkTextView   // out
 	var _arg1 *C.GtkTextBuffer // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer((buffer).(gextras.Nativer).Native()))
 
 	C.gtk_text_view_set_buffer(_arg0, _arg1)
 }

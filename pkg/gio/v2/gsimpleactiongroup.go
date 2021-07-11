@@ -35,11 +35,14 @@ func init() {
 
 // SimpleActionGrouper describes SimpleActionGroup's methods.
 type SimpleActionGrouper interface {
-	gextras.Objector
-
+	// AddEntries: convenience function for creating multiple Action instances
+	// and adding them to the action group.
 	AddEntries(entries []ActionEntry, userData interface{})
+	// Insert adds an action to the action group.
 	Insert(action Actioner)
+	// Lookup looks up the action with the name @action_name in the group.
 	Lookup(actionName string) *Action
+	// Remove removes the named action from the action group.
 	Remove(actionName string)
 }
 
@@ -52,9 +55,12 @@ type SimpleActionGroup struct {
 	ActionMap
 }
 
-var _ SimpleActionGrouper = (*SimpleActionGroup)(nil)
+var (
+	_ SimpleActionGrouper = (*SimpleActionGroup)(nil)
+	_ gextras.Nativer     = (*SimpleActionGroup)(nil)
+)
 
-func wrapSimpleActionGrouper(obj *externglib.Object) SimpleActionGrouper {
+func wrapSimpleActionGroup(obj *externglib.Object) SimpleActionGrouper {
 	return &SimpleActionGroup{
 		Object: obj,
 		ActionGroup: ActionGroup{
@@ -69,7 +75,7 @@ func wrapSimpleActionGrouper(obj *externglib.Object) SimpleActionGrouper {
 func marshalSimpleActionGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleActionGrouper(obj), nil
+	return wrapSimpleActionGroup(obj), nil
 }
 
 // NewSimpleActionGroup creates a new, empty, ActionGroup.
@@ -116,7 +122,7 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 	var _arg1 *C.GAction            // out
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
 
 	C.g_simple_action_group_insert(_arg0, _arg1)
 }

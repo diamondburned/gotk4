@@ -27,36 +27,36 @@ func init() {
 
 // EventBoxxer describes EventBox's methods.
 type EventBoxxer interface {
-	gextras.Objector
-
+	// AboveChild returns whether the event box window is above or below the
+	// windows of its child.
 	AboveChild() bool
+	// VisibleWindow returns whether the event box has a visible window.
 	VisibleWindow() bool
+	// SetAboveChild: set whether the event box window is positioned above the
+	// windows of its child, as opposed to below it.
 	SetAboveChild(aboveChild bool)
+	// SetVisibleWindow: set whether the event box uses a visible or invisible
+	// child window.
 	SetVisibleWindow(visibleWindow bool)
 }
 
-// EventBox: the EventBox widget is a subclass of Bin which also has its own
-// window. It is useful since it allows you to catch events for widgets which do
-// not have their own window.
+// EventBox widget is a subclass of Bin which also has its own window. It is
+// useful since it allows you to catch events for widgets which do not have
+// their own window.
 type EventBox struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ EventBoxxer = (*EventBox)(nil)
+var (
+	_ EventBoxxer     = (*EventBox)(nil)
+	_ gextras.Nativer = (*EventBox)(nil)
+)
 
-func wrapEventBoxxer(obj *externglib.Object) EventBoxxer {
+func wrapEventBox(obj *externglib.Object) EventBoxxer {
 	return &EventBox{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -67,25 +67,7 @@ func wrapEventBoxxer(obj *externglib.Object) EventBoxxer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -93,7 +75,7 @@ func wrapEventBoxxer(obj *externglib.Object) EventBoxxer {
 func marshalEventBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventBoxxer(obj), nil
+	return wrapEventBox(obj), nil
 }
 
 // NewEventBox creates a new EventBox.

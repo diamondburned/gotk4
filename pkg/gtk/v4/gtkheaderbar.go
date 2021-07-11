@@ -24,16 +24,27 @@ func init() {
 
 // HeaderBarrer describes HeaderBar's methods.
 type HeaderBarrer interface {
-	gextras.Objector
-
+	// DecorationLayout gets the decoration layout of the `GtkHeaderBar`.
 	DecorationLayout() string
+	// ShowTitleButtons returns whether this header bar shows the standard
+	// window title buttons.
 	ShowTitleButtons() bool
+	// TitleWidget retrieves the title widget of the header.
 	TitleWidget() *Widget
+	// PackEnd adds @child to @bar, packed with reference to the end of the
+	// @bar.
 	PackEnd(child Widgetter)
+	// PackStart adds @child to @bar, packed with reference to the start of the
+	// @bar.
 	PackStart(child Widgetter)
+	// Remove removes a child from the `GtkHeaderBar`.
 	Remove(child Widgetter)
+	// SetDecorationLayout sets the decoration layout for this header bar.
 	SetDecorationLayout(layout string)
+	// SetShowTitleButtons sets whether this header bar shows the standard
+	// window title buttons.
 	SetShowTitleButtons(setting bool)
+	// SetTitleWidget sets the title for the `GtkHeaderBar`.
 	SetTitleWidget(titleWidget Widgetter)
 }
 
@@ -93,21 +104,17 @@ type HeaderBarrer interface {
 //
 // `GtkHeaderBar` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type HeaderBar struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ HeaderBarrer = (*HeaderBar)(nil)
+var (
+	_ HeaderBarrer    = (*HeaderBar)(nil)
+	_ gextras.Nativer = (*HeaderBar)(nil)
+)
 
-func wrapHeaderBarrer(obj *externglib.Object) HeaderBarrer {
+func wrapHeaderBar(obj *externglib.Object) HeaderBarrer {
 	return &HeaderBar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -121,22 +128,13 @@ func wrapHeaderBarrer(obj *externglib.Object) HeaderBarrer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalHeaderBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHeaderBarrer(obj), nil
+	return wrapHeaderBar(obj), nil
 }
 
 // NewHeaderBar creates a new `GtkHeaderBar` widget.
@@ -211,7 +209,7 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_header_bar_pack_end(_arg0, _arg1)
 }
@@ -223,7 +221,7 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_header_bar_pack_start(_arg0, _arg1)
 }
@@ -237,7 +235,7 @@ func (bar *HeaderBar) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_header_bar_remove(_arg0, _arg1)
 }
@@ -299,7 +297,7 @@ func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((titleWidget).(gextras.Nativer).Native()))
 
 	C.gtk_header_bar_set_title_widget(_arg0, _arg1)
 }

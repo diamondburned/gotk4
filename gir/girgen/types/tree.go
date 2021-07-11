@@ -57,6 +57,11 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 	tree.Reset()
 	tree.Resolved = toplevel
 
+	if toplevel.Extern != nil {
+		// Ensure the origin namespace is set correctly.
+		tree.gen = OverrideNamespace(tree.gen, toplevel.Extern.NamespaceFindResult)
+	}
+
 	if tree.Level == 0 {
 		// No omit, since we added nothing.
 		return true
@@ -99,6 +104,8 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 			}
 		}
 
+		tree.omitRedundant(true)
+
 	case *gir.Interface:
 		for _, prereq := range v.Prerequisites {
 			// Like class parents, interface prerequisites are important.
@@ -118,23 +125,60 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 				return false
 			}
 		}
-	}
 
-	// In case of ambiguous selector, just prepend a GObject field.
-	if tree.hasAmbiguousSelector() && tree.resolveName("GObject.Object") {
-		// Move the GObject to the first.
-		gobject := tree.Requires[len(tree.Requires)-1]
-		copy(tree.Requires[1:], tree.Requires)
-		tree.Requires[0] = gobject
+		tree.omitRedundant(false)
 	}
 
 	return true
 }
 
-// hasAmbiguousSelector returns true if the GObject methods cannot be accessed
+// omitRedundant searches for each parent inherited field and omits the ones
+// that are already inside others.
+func (tree *Tree) omitRedundant(ignoreFirst bool) {
+	cleaned := make([]Tree, 0, cap(tree.Requires))
+	if ignoreFirst {
+		cleaned = append(cleaned, tree.Requires[0])
+	}
+
+	for i, req := range tree.Requires {
+		if i == 0 && ignoreFirst {
+			continue
+		}
+
+		if !findInTree(tree.Requires, req.FullGType(), i) {
+			cleaned = append(cleaned, req)
+		}
+	}
+
+	tree.Requires = cleaned
+}
+
+func findInTree(reqs []Tree, girType string, ignore int) bool {
+	for i, req := range reqs {
+		if ignore == i {
+			continue
+		}
+
+		if req.FullGType() == girType {
+			return true
+		}
+
+		if findInTree(req.Requires, girType, -1) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// HasAmbiguousSelector returns true if the GObject methods cannot be accessed
 // normally.
-func (tree *Tree) hasAmbiguousSelector() bool {
-	// If the fields already have a GObject field, then we're fine.
+func (tree *Tree) HasAmbiguousSelector() bool {
+	if len(tree.Requires) == 1 {
+		return false
+	}
+
+	// If the fields already have a GInitiallyUnowned field, then we're fine.
 	for _, req := range tree.Requires {
 		if req.IsExternGLib("Object") {
 			return false
@@ -149,13 +193,24 @@ func gobjectDepth(tree *Tree, depths map[int]struct{}, current int) bool {
 	field := current + 1
 
 	for _, req := range tree.Requires {
-		if req.IsExternGLib("Object") {
+		switch {
+		case req.IsExternGLib("Object"):
 			_, ok := depths[field]
 			if ok {
 				return true
 			}
-
 			depths[field] = struct{}{}
+			continue
+		case req.IsExternGLib("InitiallyUnowned"):
+			// Account for the current level and the children level as well,
+			// since InitiallyUnowned already contains an Object.
+			_, ok1 := depths[field]
+			_, ok2 := depths[field+1]
+			if ok1 || ok2 {
+				return true
+			}
+			depths[field] = struct{}{}
+			depths[field+1] = struct{}{}
 			continue
 		}
 
@@ -166,6 +221,36 @@ func gobjectDepth(tree *Tree, depths map[int]struct{}, current int) bool {
 
 	// No GObject found.
 	return false
+}
+
+// FirstGObjectSelector returns the selector path to the firts GObject field.
+// The returning selector should have the *Object type. The selectors will all
+// use the implementation type for the name.
+//
+// If the object does not contain the Object field somewhere, then "nil" is
+// returned.
+func (tree *Tree) FirstGObjectSelector(v string) string {
+	sel, ok := firstGObjectSelector(tree.Requires, v)
+	if !ok {
+		return ""
+	}
+	return sel
+}
+
+func firstGObjectSelector(nodes []Tree, sel string) (string, bool) {
+	for _, node := range nodes {
+		fieldSel := sel + "." + node.ImplName()
+
+		if node.IsExternGLib("Object") {
+			return fieldSel, true
+		}
+
+		if sel, ok := firstGObjectSelector(node.Requires, fieldSel); ok {
+			return sel, true
+		}
+	}
+
+	return sel, false
 }
 
 func (tree *Tree) parentLevel() int {
@@ -232,7 +317,7 @@ hasGObject:
 	return without
 }
 
-// ImplTypes returns the list of the toplevel type's children as Go
+// ImplTypes returns the sorted list of the toplevel type's children as Go
 // implementation type names. The namespaces are appropriately prepended if
 // needed.
 func (tree *Tree) ImplTypes() []string {
@@ -269,11 +354,11 @@ type ImplImporter interface {
 
 // Wrap generates the wrapper for the implementation struct.
 func (tree *Tree) Wrap(obj string, h ImplImporter) string {
-	return "&" + tree.wrap(obj, h)
+	return "&" + tree.wrap(obj, h, tree.gen)
 }
 
-func (tree *Tree) wrap(obj string, h ImplImporter) string {
-	needsNamespace := tree.Resolved.NeedsNamespace(tree.gen.Namespace())
+func (tree *Tree) wrap(obj string, h ImplImporter, gen FileGenerator) string {
+	needsNamespace := tree.Resolved.NeedsNamespace(gen.Namespace())
 	if needsNamespace {
 		h.ImportImpl(tree.Resolved)
 	}
@@ -285,7 +370,8 @@ func (tree *Tree) wrap(obj string, h ImplImporter) string {
 	for _, typ := range tree.Requires {
 		if typ.Resolved.Extern != nil {
 			// Recursively resolve the wrapper.
-			p.Linef("%s: %s,", typ.Resolved.Name(), typ.wrap(obj, h))
+			typ := typ
+			p.Linef("%s: %s,", typ.Resolved.Name(), typ.wrap(obj, h, gen))
 			continue
 		}
 

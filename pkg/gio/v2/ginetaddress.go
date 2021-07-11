@@ -32,32 +32,50 @@ func init() {
 	})
 }
 
-// InetAddresserOverrider contains methods that are overridable.
+// InetAddressOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type InetAddresserOverrider interface {
+type InetAddressOverrider interface {
 	// String converts @address to string form.
 	String() string
 }
 
 // InetAddresser describes InetAddress's methods.
 type InetAddresser interface {
-	gextras.Objector
-
+	// Equal checks if two Address instances are equal, e.g.
 	Equal(otherAddress InetAddresser) bool
+	// Family gets @address's family
 	Family() SocketFamily
+	// IsAny tests whether @address is the "any" address for its family.
 	IsAny() bool
+	// IsLinkLocal tests whether @address is a link-local address (that is, if
+	// it identifies a host on a local network that is not connected to the
+	// Internet).
 	IsLinkLocal() bool
+	// IsLoopback tests whether @address is the loopback address for its family.
 	IsLoopback() bool
+	// IsMcGlobal tests whether @address is a global multicast address.
 	IsMcGlobal() bool
+	// IsMcLinkLocal tests whether @address is a link-local multicast address.
 	IsMcLinkLocal() bool
+	// IsMcNodeLocal tests whether @address is a node-local multicast address.
 	IsMcNodeLocal() bool
+	// IsMcOrgLocal tests whether @address is an organization-local multicast
+	// address.
 	IsMcOrgLocal() bool
+	// IsMcSiteLocal tests whether @address is a site-local multicast address.
 	IsMcSiteLocal() bool
+	// IsMulticast tests whether @address is a multicast address.
 	IsMulticast() bool
+	// IsSiteLocal tests whether @address is a site-local address such as
+	// 10.0.0.1 (that is, the address identifies a host on a local network that
+	// can not be reached directly from the Internet, but which may have
+	// outgoing Internet connectivity via a NAT or firewall).
 	IsSiteLocal() bool
+	// NativeSize gets the size of the native raw binary address for @address.
 	NativeSize() uint
+	// String converts @address to string form.
 	String() string
 }
 
@@ -72,9 +90,12 @@ type InetAddress struct {
 	*externglib.Object
 }
 
-var _ InetAddresser = (*InetAddress)(nil)
+var (
+	_ InetAddresser   = (*InetAddress)(nil)
+	_ gextras.Nativer = (*InetAddress)(nil)
+)
 
-func wrapInetAddresser(obj *externglib.Object) InetAddresser {
+func wrapInetAddress(obj *externglib.Object) InetAddresser {
 	return &InetAddress{
 		Object: obj,
 	}
@@ -83,7 +104,7 @@ func wrapInetAddresser(obj *externglib.Object) InetAddresser {
 func marshalInetAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInetAddresser(obj), nil
+	return wrapInetAddress(obj), nil
 }
 
 // NewInetAddressFromString parses @string as an IP address and creates a new
@@ -111,7 +132,7 @@ func (address *InetAddress) Equal(otherAddress InetAddresser) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(otherAddress.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((otherAddress).(gextras.Nativer).Native()))
 
 	_cret = C.g_inet_address_equal(_arg0, _arg1)
 

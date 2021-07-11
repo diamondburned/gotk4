@@ -27,17 +27,32 @@ func init() {
 
 // NumerableIconner describes NumerableIcon's methods.
 type NumerableIconner interface {
-	gextras.Objector
-
+	// BackgroundGIcon returns the #GIcon that was set as the base background
+	// image, or nil if there’s none.
 	BackgroundGIcon() *gio.Icon
+	// BackgroundIconName returns the icon name used as the base background
+	// image, or nil if there’s none.
 	BackgroundIconName() string
+	// Count returns the value currently displayed by @self.
 	Count() int
+	// Label returns the currently displayed label of the icon, or nil.
 	Label() string
+	// StyleContext returns the StyleContext used by the icon for theming, or
+	// nil if there’s none.
 	StyleContext() *StyleContext
+	// SetBackgroundGIcon updates the icon to use @icon as the base background
+	// image.
 	SetBackgroundGIcon(icon gio.Iconner)
+	// SetBackgroundIconName updates the icon to use the icon named @icon_name
+	// from the current icon theme as the base background image.
 	SetBackgroundIconName(iconName string)
+	// SetCount sets the currently displayed value of @self to @count.
 	SetCount(count int)
+	// SetLabel sets the currently displayed value of @self to the string in
+	// @label.
 	SetLabel(label string)
+	// SetStyleContext updates the icon to fetch theme information from the
+	// given StyleContext.
 	SetStyleContext(style StyleContexter)
 }
 
@@ -49,22 +64,21 @@ type NumerableIconner interface {
 //
 // Typical numerable icons: ! (numerableicon.png) ! (numerableicon2.png)
 type NumerableIcon struct {
-	*externglib.Object
-
 	gio.EmblemedIcon
-	gio.Icon
 }
 
-var _ NumerableIconner = (*NumerableIcon)(nil)
+var (
+	_ NumerableIconner = (*NumerableIcon)(nil)
+	_ gextras.Nativer  = (*NumerableIcon)(nil)
+)
 
-func wrapNumerableIconner(obj *externglib.Object) NumerableIconner {
+func wrapNumerableIcon(obj *externglib.Object) NumerableIconner {
 	return &NumerableIcon{
-		Object: obj,
 		EmblemedIcon: gio.EmblemedIcon{
 			Object: obj,
-		},
-		Icon: gio.Icon{
-			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
 		},
 	}
 }
@@ -72,7 +86,7 @@ func wrapNumerableIconner(obj *externglib.Object) NumerableIconner {
 func marshalNumerableIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNumerableIconner(obj), nil
+	return wrapNumerableIcon(obj), nil
 }
 
 // BackgroundGIcon returns the #GIcon that was set as the base background image,
@@ -184,7 +198,7 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon            // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.gtk_numerable_icon_set_background_gicon(_arg0, _arg1)
 }
@@ -265,7 +279,7 @@ func (self *NumerableIcon) SetStyleContext(style StyleContexter) {
 	var _arg1 *C.GtkStyleContext  // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(style.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((style).(gextras.Nativer).Native()))
 
 	C.gtk_numerable_icon_set_style_context(_arg0, _arg1)
 }

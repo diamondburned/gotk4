@@ -59,8 +59,8 @@ const (
 	MemoryFormatR8G8B8
 	// B8G8R8: 3 bytes; for blue, green, red. The data is opaque.
 	MemoryFormatB8G8R8
-	// NFormats: the number of formats. This value will change as more formats
-	// get added, so do not rely on its concrete integer.
+	// NFormats: number of formats. This value will change as more formats get
+	// added, so do not rely on its concrete integer.
 	MemoryFormatNFormats
 )
 
@@ -70,32 +70,26 @@ func marshalMemoryFormat(p uintptr) (interface{}, error) {
 
 // MemoryTexturer describes MemoryTexture's methods.
 type MemoryTexturer interface {
-	gextras.Objector
-
 	privateMemoryTexture()
 }
 
 // MemoryTexture: `GdkTexture` representing image data in memory.
 type MemoryTexture struct {
-	*externglib.Object
-
 	Texture
-	Paintable
 }
 
-var _ MemoryTexturer = (*MemoryTexture)(nil)
+var (
+	_ MemoryTexturer  = (*MemoryTexture)(nil)
+	_ gextras.Nativer = (*MemoryTexture)(nil)
+)
 
-func wrapMemoryTexturer(obj *externglib.Object) MemoryTexturer {
+func wrapMemoryTexture(obj *externglib.Object) MemoryTexturer {
 	return &MemoryTexture{
-		Object: obj,
 		Texture: Texture{
 			Object: obj,
 			Paintable: Paintable{
 				Object: obj,
 			},
-		},
-		Paintable: Paintable{
-			Object: obj,
 		},
 	}
 }
@@ -103,7 +97,7 @@ func wrapMemoryTexturer(obj *externglib.Object) MemoryTexturer {
 func marshalMemoryTexturer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryTexturer(obj), nil
+	return wrapMemoryTexture(obj), nil
 }
 
 func (*MemoryTexture) privateMemoryTexture() {}

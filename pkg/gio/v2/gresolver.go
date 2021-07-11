@@ -33,7 +33,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_resolver_name_lookup_flags_get_type()), F: marshalResolverNameLookupFlags},
-		{T: externglib.Type(C.g_resolver_get_type()), F: marshalResolverrer},
+		{T: externglib.Type(C.g_resolver_get_type()), F: marshalResolverer},
 	})
 }
 
@@ -54,11 +54,11 @@ func marshalResolverNameLookupFlags(p uintptr) (interface{}, error) {
 	return ResolverNameLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ResolverrerOverrider contains methods that are overridable.
+// ResolverOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ResolverrerOverrider interface {
+type ResolverOverrider interface {
 	// LookupByAddress: synchronously reverse-resolves @address to determine its
 	// associated hostname.
 	//
@@ -84,19 +84,35 @@ type ResolverrerOverrider interface {
 	// call g_resolver_lookup_by_name_finish() to get the result. See
 	// g_resolver_lookup_by_name() for more details.
 	LookupByNameAsync(hostname string, cancellable Cancellabler, callback AsyncReadyCallback)
+
 	LookupServiceAsync(rrname string, cancellable Cancellabler, callback AsyncReadyCallback)
+
 	Reload()
 }
 
-// Resolverrer describes Resolver's methods.
-type Resolverrer interface {
-	gextras.Objector
-
+// Resolverer describes Resolver's methods.
+type Resolverer interface {
+	// LookupByAddress: synchronously reverse-resolves @address to determine its
+	// associated hostname.
 	LookupByAddress(address InetAddresser, cancellable Cancellabler) (string, error)
+	// LookupByAddressAsync begins asynchronously reverse-resolving @address to
+	// determine its associated hostname, and eventually calls @callback, which
+	// must call g_resolver_lookup_by_address_finish() to get the final result.
 	LookupByAddressAsync(address InetAddresser, cancellable Cancellabler, callback AsyncReadyCallback)
+	// LookupByAddressFinish retrieves the result of a previous call to
+	// g_resolver_lookup_by_address_async().
 	LookupByAddressFinish(result AsyncResulter) (string, error)
+	// LookupByNameAsync begins asynchronously resolving @hostname to determine
+	// its associated IP address(es), and eventually calls @callback, which must
+	// call g_resolver_lookup_by_name_finish() to get the result.
 	LookupByNameAsync(hostname string, cancellable Cancellabler, callback AsyncReadyCallback)
+	// LookupServiceAsync begins asynchronously performing a DNS SRV lookup for
+	// the given @service and @protocol in the given @domain, and eventually
+	// calls @callback, which must call g_resolver_lookup_service_finish() to
+	// get the final result.
 	LookupServiceAsync(service string, protocol string, domain string, cancellable Cancellabler, callback AsyncReadyCallback)
+	// SetDefault sets @resolver to be the application's default resolver
+	// (reffing @resolver, and unreffing the previous default resolver, if any).
 	SetDefault()
 }
 
@@ -112,18 +128,21 @@ type Resolver struct {
 	*externglib.Object
 }
 
-var _ Resolverrer = (*Resolver)(nil)
+var (
+	_ Resolverer      = (*Resolver)(nil)
+	_ gextras.Nativer = (*Resolver)(nil)
+)
 
-func wrapResolverrer(obj *externglib.Object) Resolverrer {
+func wrapResolver(obj *externglib.Object) Resolverer {
 	return &Resolver{
 		Object: obj,
 	}
 }
 
-func marshalResolverrer(p uintptr) (interface{}, error) {
+func marshalResolverer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapResolverrer(obj), nil
+	return wrapResolver(obj), nil
 }
 
 // LookupByAddress: synchronously reverse-resolves @address to determine its
@@ -142,8 +161,8 @@ func (resolver *Resolver) LookupByAddress(address InetAddresser, cancellable Can
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_resolver_lookup_by_address(_arg0, _arg1, _arg2, &_cerr)
 
@@ -168,8 +187,8 @@ func (resolver *Resolver) LookupByAddressAsync(address InetAddresser, cancellabl
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -189,7 +208,7 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, &_cerr)
 
@@ -217,7 +236,7 @@ func (resolver *Resolver) LookupByNameAsync(hostname string, cancellable Cancell
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -244,7 +263,7 @@ func (resolver *Resolver) LookupServiceAsync(service string, protocol string, do
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg6 = C.gpointer(box.Assign(callback))
 

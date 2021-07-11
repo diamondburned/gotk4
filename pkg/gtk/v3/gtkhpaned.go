@@ -27,36 +27,28 @@ func init() {
 
 // HPanedder describes HPaned's methods.
 type HPanedder interface {
-	gextras.Objector
-
 	privateHPaned()
 }
 
-// HPaned: the HPaned widget is a container widget with two children arranged
-// horizontally. The division between the two panes is adjustable by the user by
-// dragging a handle. See Paned for details.
+// HPaned widget is a container widget with two children arranged horizontally.
+// The division between the two panes is adjustable by the user by dragging a
+// handle. See Paned for details.
 //
 // GtkHPaned has been deprecated, use Paned instead.
 type HPaned struct {
-	*externglib.Object
-
 	Paned
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ HPanedder = (*HPaned)(nil)
+var (
+	_ HPanedder       = (*HPaned)(nil)
+	_ gextras.Nativer = (*HPaned)(nil)
+)
 
-func wrapHPanedder(obj *externglib.Object) HPanedder {
+func wrapHPaned(obj *externglib.Object) HPanedder {
 	return &HPaned{
-		Object: obj,
 		Paned: Paned{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -67,31 +59,10 @@ func wrapHPanedder(obj *externglib.Object) HPanedder {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -99,7 +70,7 @@ func wrapHPanedder(obj *externglib.Object) HPanedder {
 func marshalHPanedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHPanedder(obj), nil
+	return wrapHPaned(obj), nil
 }
 
 // NewHPaned: create a new HPaned

@@ -27,24 +27,22 @@ func init() {
 
 // RangeAccessibler describes RangeAccessible's methods.
 type RangeAccessibler interface {
-	gextras.Objector
-
 	privateRangeAccessible()
 }
 
 type RangeAccessible struct {
-	*externglib.Object
-
 	WidgetAccessible
-	atk.Component
+
 	atk.Value
 }
 
-var _ RangeAccessibler = (*RangeAccessible)(nil)
+var (
+	_ RangeAccessibler = (*RangeAccessible)(nil)
+	_ gextras.Nativer  = (*RangeAccessible)(nil)
+)
 
-func wrapRangeAccessibler(obj *externglib.Object) RangeAccessibler {
+func wrapRangeAccessible(obj *externglib.Object) RangeAccessibler {
 	return &RangeAccessible{
-		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
 				ObjectClass: atk.ObjectClass{
@@ -55,9 +53,6 @@ func wrapRangeAccessibler(obj *externglib.Object) RangeAccessibler {
 				Object: obj,
 			},
 		},
-		Component: atk.Component{
-			Object: obj,
-		},
 		Value: atk.Value{
 			Object: obj,
 		},
@@ -67,7 +62,7 @@ func wrapRangeAccessibler(obj *externglib.Object) RangeAccessibler {
 func marshalRangeAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRangeAccessibler(obj), nil
+	return wrapRangeAccessible(obj), nil
 }
 
 func (*RangeAccessible) privateRangeAccessible() {}

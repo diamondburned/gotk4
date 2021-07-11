@@ -27,17 +27,28 @@ func init() {
 
 // PageSetupper describes PageSetup's methods.
 type PageSetupper interface {
-	gextras.Objector
-
+	// Copy copies a `GtkPageSetup`.
 	Copy() *PageSetup
+	// Orientation gets the page orientation of the `GtkPageSetup`.
 	Orientation() PageOrientation
+	// PaperSize gets the paper size of the `GtkPageSetup`.
 	PaperSize() *PaperSize
+	// LoadFile reads the page setup from the file @file_name.
 	LoadFile(fileName string) error
+	// LoadKeyFile reads the page setup from the group @group_name in the key
+	// file @key_file.
 	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
+	// SetPaperSize sets the paper size of the `GtkPageSetup` without changing
+	// the margins.
 	SetPaperSize(size *PaperSize)
+	// SetPaperSizeAndDefaultMargins sets the paper size of the `GtkPageSetup`
+	// and modifies the margins according to the new paper size.
 	SetPaperSizeAndDefaultMargins(size *PaperSize)
+	// ToFile: this function saves the information from @setup to @file_name.
 	ToFile(fileName string) error
+	// ToGVariant: serialize page setup to an a{sv} variant.
 	ToGVariant() *glib.Variant
+	// ToKeyFile: this function adds the page setup from @setup to @key_file.
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 }
 
@@ -85,9 +96,12 @@ type PageSetup struct {
 	*externglib.Object
 }
 
-var _ PageSetupper = (*PageSetup)(nil)
+var (
+	_ PageSetupper    = (*PageSetup)(nil)
+	_ gextras.Nativer = (*PageSetup)(nil)
+)
 
-func wrapPageSetupper(obj *externglib.Object) PageSetupper {
+func wrapPageSetup(obj *externglib.Object) PageSetupper {
 	return &PageSetup{
 		Object: obj,
 	}
@@ -96,7 +110,7 @@ func wrapPageSetupper(obj *externglib.Object) PageSetupper {
 func marshalPageSetupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPageSetupper(obj), nil
+	return wrapPageSetup(obj), nil
 }
 
 // NewPageSetup creates a new `GtkPageSetup`.

@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// ActionerOverrider contains methods that are overridable.
+// ActionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionerOverrider interface {
+type ActionOverrider interface {
 	// DoAction: perform the specified action on the object.
 	DoAction(i int) bool
 	// Description returns a description of the specified action of the object.
@@ -80,14 +80,22 @@ type ActionerOverrider interface {
 
 // Actioner describes Action's methods.
 type Actioner interface {
-	gextras.Objector
-
+	// DoAction: perform the specified action on the object.
 	DoAction(i int) bool
+	// Description returns a description of the specified action of the object.
 	Description(i int) string
+	// Keybinding gets the keybinding which can be used to activate this action,
+	// if one exists.
 	Keybinding(i int) string
+	// LocalizedName returns the localized name of the specified action of the
+	// object.
 	LocalizedName(i int) string
+	// NActions gets the number of accessible actions available on the object.
 	NActions() int
+	// Name returns a non-localized string naming the specified action of the
+	// object.
 	Name(i int) string
+	// SetDescription sets a description of the specified action of the object.
 	SetDescription(i int, desc string) bool
 }
 
@@ -109,9 +117,12 @@ type Action struct {
 	*externglib.Object
 }
 
-var _ Actioner = (*Action)(nil)
+var (
+	_ Actioner        = (*Action)(nil)
+	_ gextras.Nativer = (*Action)(nil)
+)
 
-func wrapActioner(obj *externglib.Object) Actioner {
+func wrapAction(obj *externglib.Object) Actioner {
 	return &Action{
 		Object: obj,
 	}
@@ -120,7 +131,7 @@ func wrapActioner(obj *externglib.Object) Actioner {
 func marshalActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActioner(obj), nil
+	return wrapAction(obj), nil
 }
 
 // DoAction: perform the specified action on the object.

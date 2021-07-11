@@ -396,9 +396,15 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case *gir.Class, *gir.Interface:
 		value.header.Import("unsafe")
-		value.p.LineTmpl(value,
-			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtrPubl 1>.Native()))",
-		)
+
+		name := value.InNamePtrPubl(1)
+		if value.PreferPublic {
+			// Public interfaces don't have .Native, so we type-assert it.
+			value.header.ImportCore("gextras")
+			name = fmt.Sprintf("(%s).(gextras.Nativer)", name)
+		}
+
+		value.p.Linef("%s = %s(unsafe.Pointer(%s.Native()))", value.Out.Set, value.OutCast(1), name)
 		return true
 
 	case *gir.Record:

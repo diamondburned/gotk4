@@ -34,7 +34,7 @@ func init() {
 	})
 }
 
-// AttrType: the `PangoAttrType` distinguishes between different types of
+// AttrType: `PangoAttrType` distinguishes between different types of
 // attributes.
 //
 // Along with the predefined values, it is possible to allocate additional
@@ -119,8 +119,8 @@ func marshalAttrType(p uintptr) (interface{}, error) {
 	return AttrType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Overline: the `PangoOverline` enumeration is used to specify whether text
-// should be overlined, and if so, the type of line.
+// Overline: `PangoOverline` enumeration is used to specify whether text should
+// be overlined, and if so, the type of line.
 type Overline int
 
 const (
@@ -135,7 +135,7 @@ func marshalOverline(p uintptr) (interface{}, error) {
 	return Overline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Underline: the `PangoUnderline` enumeration is used to specify whether text
+// Underline: `PangoUnderline` enumeration is used to specify whether text
 // should be underlined, and if so, the type of underlining.
 type Underline int
 
@@ -703,8 +703,8 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	return _attrList, _text, _accelChar, _goerr
 }
 
-// AttrColor: the `PangoAttrColor` structure is used to represent attributes
-// that are colors.
+// AttrColor: `PangoAttrColor` structure is used to represent attributes that
+// are colors.
 type AttrColor struct {
 	native C.PangoAttrColor
 }
@@ -714,8 +714,8 @@ func (a *AttrColor) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// AttrFloat: the `PangoAttrFloat` structure is used to represent attributes
-// with a float or double value.
+// AttrFloat: `PangoAttrFloat` structure is used to represent attributes with a
+// float or double value.
 type AttrFloat struct {
 	native C.PangoAttrFloat
 }
@@ -725,7 +725,7 @@ func (a *AttrFloat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// AttrFontDesc: the `PangoAttrFontDesc` structure is used to store an attribute
+// AttrFontDesc: `PangoAttrFontDesc` structure is used to store an attribute
 // that sets all aspects of the font description at once.
 type AttrFontDesc struct {
 	native C.PangoAttrFontDesc
@@ -736,7 +736,7 @@ func (a *AttrFontDesc) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// AttrFontFeatures: the `PangoAttrFontFeatures` structure is used to represent
+// AttrFontFeatures: `PangoAttrFontFeatures` structure is used to represent
 // OpenType font features as an attribute.
 type AttrFontFeatures struct {
 	native C.PangoAttrFontFeatures
@@ -747,7 +747,7 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// AttrInt: the `PangoAttrInt` structure is used to represent attributes with an
+// AttrInt: `PangoAttrInt` structure is used to represent attributes with an
 // integer or enumeration value.
 type AttrInt struct {
 	native C.PangoAttrInt
@@ -848,8 +848,8 @@ func (iterator *AttrIterator) Range() (start int, end int) {
 	return _start, _end
 }
 
-// AttrLanguage: the `PangoAttrLanguage` structure is used to represent
-// attributes that are languages.
+// AttrLanguage: `PangoAttrLanguage` structure is used to represent attributes
+// that are languages.
 type AttrLanguage struct {
 	native C.PangoAttrLanguage
 }
@@ -1117,8 +1117,8 @@ func (list *AttrList) Update(pos int, remove int, add int) {
 	C.pango_attr_list_update(_arg0, _arg1, _arg2, _arg3)
 }
 
-// AttrShape: the `PangoAttrShape` structure is used to represent attributes
-// which impose shape restrictions.
+// AttrShape: `PangoAttrShape` structure is used to represent attributes which
+// impose shape restrictions.
 type AttrShape struct {
 	native C.PangoAttrShape
 }
@@ -1128,8 +1128,8 @@ func (a *AttrShape) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// AttrSize: the `PangoAttrSize` structure is used to represent attributes which
-// set font size.
+// AttrSize: `PangoAttrSize` structure is used to represent attributes which set
+// font size.
 type AttrSize struct {
 	native C.PangoAttrSize
 }
@@ -1139,8 +1139,8 @@ func (a *AttrSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// AttrString: the `PangoAttrString` structure is used to represent attributes
-// with a string value.
+// AttrString: `PangoAttrString` structure is used to represent attributes with
+// a string value.
 type AttrString struct {
 	native C.PangoAttrString
 }
@@ -1150,8 +1150,8 @@ func (a *AttrString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Attribute: the `PangoAttribute` structure represents the common portions of
-// all attributes.
+// Attribute: `PangoAttribute` structure represents the common portions of all
+// attributes.
 //
 // Particular types of attributes include this structure as their initial
 // portion. The common portion of the attribute holds the range to which the
@@ -1221,8 +1221,8 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 	return _ok
 }
 
-// Color: the `PangoColor` structure is used to represent a color in an
-// uncalibrated RGB color-space.
+// Color: `PangoColor` structure is used to represent a color in an uncalibrated
+// RGB color-space.
 type Color struct {
 	native C.PangoColor
 }

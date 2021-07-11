@@ -33,11 +33,11 @@ func init() {
 	})
 }
 
-// SeekablerOverrider contains methods that are overridable.
+// SeekableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SeekablerOverrider interface {
+type SeekableOverrider interface {
 	// CanSeek tests if the stream supports the Iface.
 	CanSeek() bool
 	// CanTruncate tests if the length of the stream can be adjusted with
@@ -60,11 +60,14 @@ type SeekablerOverrider interface {
 
 // Seekabler describes Seekable's methods.
 type Seekabler interface {
-	gextras.Objector
-
+	// CanSeek tests if the stream supports the Iface.
 	CanSeek() bool
+	// CanTruncate tests if the length of the stream can be adjusted with
+	// g_seekable_truncate().
 	CanTruncate() bool
+	// Tell tells the current position within the stream.
 	Tell() int64
+	// Truncate sets the length of the stream to @offset.
 	Truncate(offset int64, cancellable Cancellabler) error
 }
 
@@ -84,9 +87,12 @@ type Seekable struct {
 	*externglib.Object
 }
 
-var _ Seekabler = (*Seekable)(nil)
+var (
+	_ Seekabler       = (*Seekable)(nil)
+	_ gextras.Nativer = (*Seekable)(nil)
+)
 
-func wrapSeekabler(obj *externglib.Object) Seekabler {
+func wrapSeekable(obj *externglib.Object) Seekabler {
 	return &Seekable{
 		Object: obj,
 	}
@@ -95,7 +101,7 @@ func wrapSeekabler(obj *externglib.Object) Seekabler {
 func marshalSeekabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeekabler(obj), nil
+	return wrapSeekable(obj), nil
 }
 
 // CanSeek tests if the stream supports the Iface.
@@ -168,7 +174,7 @@ func (seekable *Seekable) Truncate(offset int64, cancellable Cancellabler) error
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 	_arg1 = C.goffset(offset)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_seekable_truncate(_arg0, _arg1, _arg2, &_cerr)
 

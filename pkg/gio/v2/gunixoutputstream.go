@@ -34,10 +34,13 @@ func init() {
 
 // UnixOutputStreamer describes UnixOutputStream's methods.
 type UnixOutputStreamer interface {
-	gextras.Objector
-
+	// CloseFd returns whether the file descriptor of @stream will be closed
+	// when the stream is closed.
 	CloseFd() bool
+	// Fd: return the UNIX file descriptor that the stream writes to.
 	Fd() int
+	// SetCloseFd sets whether the file descriptor of @stream shall be closed
+	// when the stream is closed.
 	SetCloseFd(closeFd bool)
 }
 
@@ -50,18 +53,19 @@ type UnixOutputStreamer interface {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type UnixOutputStream struct {
-	*externglib.Object
-
 	OutputStream
+
 	FileDescriptorBased
 	PollableOutputStream
 }
 
-var _ UnixOutputStreamer = (*UnixOutputStream)(nil)
+var (
+	_ UnixOutputStreamer = (*UnixOutputStream)(nil)
+	_ gextras.Nativer    = (*UnixOutputStream)(nil)
+)
 
-func wrapUnixOutputStreamer(obj *externglib.Object) UnixOutputStreamer {
+func wrapUnixOutputStream(obj *externglib.Object) UnixOutputStreamer {
 	return &UnixOutputStream{
-		Object: obj,
 		OutputStream: OutputStream{
 			Object: obj,
 		},
@@ -79,7 +83,7 @@ func wrapUnixOutputStreamer(obj *externglib.Object) UnixOutputStreamer {
 func marshalUnixOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixOutputStreamer(obj), nil
+	return wrapUnixOutputStream(obj), nil
 }
 
 // NewUnixOutputStream creates a new OutputStream for the given @fd.
@@ -103,6 +107,12 @@ func NewUnixOutputStream(fd int, closeFd bool) *UnixOutputStream {
 	_unixOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixOutputStream)
 
 	return _unixOutputStream
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *UnixOutputStream) Native() uintptr {
+	return v.OutputStream.Object.Native()
 }
 
 // CloseFd returns whether the file descriptor of @stream will be closed when

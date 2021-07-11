@@ -24,30 +24,25 @@ func init() {
 
 // ListBaser describes ListBase's methods.
 type ListBaser interface {
-	gextras.Objector
-
 	privateListBase()
 }
 
 // ListBase: `GtkListBase` is the abstract base class for GTK's list widgets.
 type ListBase struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 	Scrollable
 }
 
-var _ ListBaser = (*ListBase)(nil)
+var (
+	_ ListBaser       = (*ListBase)(nil)
+	_ gextras.Nativer = (*ListBase)(nil)
+)
 
-func wrapListBaser(obj *externglib.Object) ListBaser {
+func wrapListBase(obj *externglib.Object) ListBaser {
 	return &ListBase{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -61,15 +56,6 @@ func wrapListBaser(obj *externglib.Object) ListBaser {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -82,7 +68,13 @@ func wrapListBaser(obj *externglib.Object) ListBaser {
 func marshalListBaser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBaser(obj), nil
+	return wrapListBase(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ListBase) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*ListBase) privateListBase() {}

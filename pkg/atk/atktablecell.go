@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// TableCellerOverrider contains methods that are overridable.
+// TableCellOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type TableCellerOverrider interface {
+type TableCellOverrider interface {
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
 	ColumnSpan() int
@@ -47,12 +47,17 @@ type TableCellerOverrider interface {
 
 // TableCeller describes TableCell's methods.
 type TableCeller interface {
-	gextras.Objector
-
+	// ColumnSpan returns the number of columns occupied by this cell
+	// accessible.
 	ColumnSpan() int
+	// Position retrieves the tabular position of this cell.
 	Position() (row int, column int, ok bool)
+	// RowColumnSpan gets the row and column indexes and span of this cell
+	// accessible.
 	RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
+	// RowSpan returns the number of rows occupied by this cell accessible.
 	RowSpan() int
+	// Table returns a reference to the accessible of the containing table.
 	Table() *ObjectClass
 }
 
@@ -65,9 +70,12 @@ type TableCell struct {
 	ObjectClass
 }
 
-var _ TableCeller = (*TableCell)(nil)
+var (
+	_ TableCeller     = (*TableCell)(nil)
+	_ gextras.Nativer = (*TableCell)(nil)
+)
 
-func wrapTableCeller(obj *externglib.Object) TableCeller {
+func wrapTableCell(obj *externglib.Object) TableCeller {
 	return &TableCell{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -78,7 +86,7 @@ func wrapTableCeller(obj *externglib.Object) TableCeller {
 func marshalTableCeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTableCeller(obj), nil
+	return wrapTableCell(obj), nil
 }
 
 // ColumnSpan returns the number of columns occupied by this cell accessible.

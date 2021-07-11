@@ -33,15 +33,16 @@ func init() {
 	})
 }
 
-// VolumerOverrider contains methods that are overridable.
+// VolumeOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type VolumerOverrider interface {
+type VolumeOverrider interface {
 	// CanEject checks if a volume can be ejected.
 	CanEject() bool
 	// CanMount checks if a volume can be mounted.
 	CanMount() bool
+
 	Changed()
 	// EjectFinish finishes ejecting a volume. If any errors occurred during the
 	// operation, @error will be set to contain the errors and false will be
@@ -100,6 +101,7 @@ type VolumerOverrider interface {
 	// guaranteed to return the mount right after calling this function; there's
 	// no need to listen for the 'mount-added' signal on Monitor.
 	MountFinish(result AsyncResulter) error
+
 	Removed()
 	// ShouldAutomount returns whether the volume should be automatically
 	// mounted.
@@ -108,29 +110,45 @@ type VolumerOverrider interface {
 
 // Volumer describes Volume's methods.
 type Volumer interface {
-	gextras.Objector
-
+	// CanEject checks if a volume can be ejected.
 	CanEject() bool
+	// CanMount checks if a volume can be mounted.
 	CanMount() bool
+	// EjectFinish finishes ejecting a volume.
 	EjectFinish(result AsyncResulter) error
+	// EjectWithOperationFinish finishes ejecting a volume.
 	EjectWithOperationFinish(result AsyncResulter) error
+	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
+	// that @volume has.
 	EnumerateIdentifiers() []string
+	// ActivationRoot gets the activation root for a #GVolume if it is known
+	// ahead of mount time.
 	ActivationRoot() *File
+	// Drive gets the drive for the @volume.
 	Drive() *Drive
+	// Icon gets the icon for @volume.
 	Icon() *Icon
+	// Identifier gets the identifier of the given kind for @volume.
 	Identifier(kind string) string
+	// Mount gets the mount for the @volume.
 	Mount() *Mount
+	// Name gets the name of @volume.
 	Name() string
+	// SortKey gets the sort key for @volume, if any.
 	SortKey() string
+	// SymbolicIcon gets the symbolic icon for @volume.
 	SymbolicIcon() *Icon
+	// UUID gets the UUID for the @volume.
 	UUID() string
+	// MountFinish finishes mounting a volume.
 	MountFinish(result AsyncResulter) error
+	// ShouldAutomount returns whether the volume should be automatically
+	// mounted.
 	ShouldAutomount() bool
 }
 
-// Volume: the #GVolume interface represents user-visible objects that can be
-// mounted. Note, when porting from GnomeVFS, #GVolume is the moral equivalent
-// of VFSDrive.
+// Volume interface represents user-visible objects that can be mounted. Note,
+// when porting from GnomeVFS, #GVolume is the moral equivalent of VFSDrive.
 //
 // Mounting a #GVolume instance is an asynchronous operation. For more
 // information about asynchronous operations, see Result and #GTask. To mount a
@@ -165,9 +183,12 @@ type Volume struct {
 	*externglib.Object
 }
 
-var _ Volumer = (*Volume)(nil)
+var (
+	_ Volumer         = (*Volume)(nil)
+	_ gextras.Nativer = (*Volume)(nil)
+)
 
-func wrapVolumer(obj *externglib.Object) Volumer {
+func wrapVolume(obj *externglib.Object) Volumer {
 	return &Volume{
 		Object: obj,
 	}
@@ -176,7 +197,7 @@ func wrapVolumer(obj *externglib.Object) Volumer {
 func marshalVolumer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolumer(obj), nil
+	return wrapVolume(obj), nil
 }
 
 // CanEject checks if a volume can be ejected.
@@ -226,7 +247,7 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_volume_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -246,7 +267,7 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -467,7 +488,7 @@ func (volume *Volume) MountFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_volume_mount_finish(_arg0, _arg1, &_cerr)
 

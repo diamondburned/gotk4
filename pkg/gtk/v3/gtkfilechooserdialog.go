@@ -27,8 +27,6 @@ func init() {
 
 // FileChooserDialogger describes FileChooserDialog's methods.
 type FileChooserDialogger interface {
-	gextras.Objector
-
 	privateFileChooserDialog()
 }
 
@@ -175,29 +173,23 @@ type FileChooserDialogger interface {
 // code][gtkfilechooserdialog-responses] when you use FileChooserDialog to
 // ensure proper operation.
 type FileChooserDialog struct {
-	*externglib.Object
-
 	Dialog
-	atk.ImplementorIface
-	Buildable
+
 	FileChooser
 }
 
-var _ FileChooserDialogger = (*FileChooserDialog)(nil)
+var (
+	_ FileChooserDialogger = (*FileChooserDialog)(nil)
+	_ gextras.Nativer      = (*FileChooserDialog)(nil)
+)
 
-func wrapFileChooserDialogger(obj *externglib.Object) FileChooserDialogger {
+func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialogger {
 	return &FileChooserDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -208,39 +200,9 @@ func wrapFileChooserDialogger(obj *externglib.Object) FileChooserDialogger {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		FileChooser: FileChooser{
 			Object: obj,
@@ -251,7 +213,13 @@ func wrapFileChooserDialogger(obj *externglib.Object) FileChooserDialogger {
 func marshalFileChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserDialogger(obj), nil
+	return wrapFileChooserDialog(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FileChooserDialog) Native() uintptr {
+	return v.Dialog.Window.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*FileChooserDialog) privateFileChooserDialog() {}

@@ -21,23 +21,36 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_gl_shader_get_type()), F: marshalGLShaderrer},
+		{T: externglib.Type(C.gsk_gl_shader_get_type()), F: marshalGLShaderer},
 		{T: externglib.Type(C.gsk_shader_args_builder_get_type()), F: marshalShaderArgsBuilder},
 	})
 }
 
-// GLShaderrer describes GLShader's methods.
-type GLShaderrer interface {
-	gextras.Objector
-
-	Compile(renderer Rendererrer) error
+// GLShaderer describes GLShader's methods.
+type GLShaderer interface {
+	// Compile tries to compile the @shader for the given @renderer.
+	Compile(renderer Rendererer) error
+	// FindUniformByName looks for a uniform by the name @name, and returns the
+	// index of the uniform, or -1 if it was not found.
 	FindUniformByName(name string) int
+	// ArgsSize: get the size of the data block used to specify arguments for
+	// this shader.
 	ArgsSize() uint
+	// NTextures returns the number of textures that the shader requires.
 	NTextures() int
+	// NUniforms: get the number of declared uniforms for this shader.
 	NUniforms() int
+	// Resource gets the resource path for the GLSL sourcecode being used to
+	// render this shader.
 	Resource() string
+	// UniformName: get the name of the declared uniform for this shader at
+	// index @idx.
 	UniformName(idx int) string
+	// UniformOffset: get the offset into the data block where data for this
+	// uniforms is stored.
 	UniformOffset(idx int) int
+	// UniformType: get the type of the declared uniform for this shader at
+	// index @idx.
 	UniformType(idx int) GLUniformType
 }
 
@@ -138,18 +151,21 @@ type GLShader struct {
 	*externglib.Object
 }
 
-var _ GLShaderrer = (*GLShader)(nil)
+var (
+	_ GLShaderer      = (*GLShader)(nil)
+	_ gextras.Nativer = (*GLShader)(nil)
+)
 
-func wrapGLShaderrer(obj *externglib.Object) GLShaderrer {
+func wrapGLShader(obj *externglib.Object) GLShaderer {
 	return &GLShader{
 		Object: obj,
 	}
 }
 
-func marshalGLShaderrer(p uintptr) (interface{}, error) {
+func marshalGLShaderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLShaderrer(obj), nil
+	return wrapGLShader(obj), nil
 }
 
 // NewGLShaderFromResource creates a `GskGLShader` that will render pixels using
@@ -180,13 +196,13 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 // current GL context) and requires the renderer to be set up. This means that
 // the widget has to be realized. Commonly you want to call this from the
 // realize signal of a widget, or during widget snapshot.
-func (shader *GLShader) Compile(renderer Rendererrer) error {
+func (shader *GLShader) Compile(renderer Rendererer) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
 	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = (*C.GskRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
 
 	C.gsk_gl_shader_compile(_arg0, _arg1, &_cerr)
 

@@ -24,9 +24,11 @@ func init() {
 
 // LayoutChilder describes LayoutChild's methods.
 type LayoutChilder interface {
-	gextras.Objector
-
+	// ChildWidget retrieves the `GtkWidget` associated to the given
+	// @layout_child.
 	ChildWidget() *Widget
+	// LayoutManager retrieves the `GtkLayoutManager` instance that created the
+	// given @layout_child.
 	LayoutManager() *LayoutManager
 }
 
@@ -43,9 +45,12 @@ type LayoutChild struct {
 	*externglib.Object
 }
 
-var _ LayoutChilder = (*LayoutChild)(nil)
+var (
+	_ LayoutChilder   = (*LayoutChild)(nil)
+	_ gextras.Nativer = (*LayoutChild)(nil)
+)
 
-func wrapLayoutChilder(obj *externglib.Object) LayoutChilder {
+func wrapLayoutChild(obj *externglib.Object) LayoutChilder {
 	return &LayoutChild{
 		Object: obj,
 	}
@@ -54,7 +59,7 @@ func wrapLayoutChilder(obj *externglib.Object) LayoutChilder {
 func marshalLayoutChilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLayoutChilder(obj), nil
+	return wrapLayoutChild(obj), nil
 }
 
 // ChildWidget retrieves the `GtkWidget` associated to the given @layout_child.

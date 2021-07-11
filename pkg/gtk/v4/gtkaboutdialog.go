@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// License: the type of license for an application.
+// License: type of license for an application.
 //
 // This enumeration can be expanded at later date.
 type License int
@@ -34,37 +34,37 @@ const (
 	LicenseUnknown License = iota
 	// Custom: license text is going to be specified by the developer
 	LicenseCustom
-	// GPL20: the GNU General Public License, version 2.0 or later
+	// GPL20: GNU General Public License, version 2.0 or later
 	LicenseGPL20
-	// GPL30: the GNU General Public License, version 3.0 or later
+	// GPL30: GNU General Public License, version 3.0 or later
 	LicenseGPL30
-	// LGPL21: the GNU Lesser General Public License, version 2.1 or later
+	// LGPL21: GNU Lesser General Public License, version 2.1 or later
 	LicenseLGPL21
-	// LGPL30: the GNU Lesser General Public License, version 3.0 or later
+	// LGPL30: GNU Lesser General Public License, version 3.0 or later
 	LicenseLGPL30
-	// BSD: the BSD standard license
+	// BSD: BSD standard license
 	LicenseBSD
-	// MITX11: the MIT/X11 standard license
+	// MITX11: MIT/X11 standard license
 	LicenseMITX11
-	// Artistic: the Artistic License, version 2.0
+	// Artistic: artistic License, version 2.0
 	LicenseArtistic
-	// GPL20Only: the GNU General Public License, version 2.0 only
+	// GPL20Only: GNU General Public License, version 2.0 only
 	LicenseGPL20Only
-	// GPL30Only: the GNU General Public License, version 3.0 only
+	// GPL30Only: GNU General Public License, version 3.0 only
 	LicenseGPL30Only
-	// LGPL21Only: the GNU Lesser General Public License, version 2.1 only
+	// LGPL21Only: GNU Lesser General Public License, version 2.1 only
 	LicenseLGPL21Only
-	// LGPL30Only: the GNU Lesser General Public License, version 3.0 only
+	// LGPL30Only: GNU Lesser General Public License, version 3.0 only
 	LicenseLGPL30Only
-	// AGPL30: the GNU Affero General Public License, version 3.0 or later
+	// AGPL30: GNU Affero General Public License, version 3.0 or later
 	LicenseAGPL30
-	// AGPL30Only: the GNU Affero General Public License, version 3.0 only
+	// AGPL30Only: GNU Affero General Public License, version 3.0 only
 	LicenseAGPL30Only
-	// BSD3: the 3-clause BSD licence
+	// BSD3: 3-clause BSD licence
 	LicenseBSD3
-	// Apache20: the Apache License, version 2.0
+	// Apache20: apache License, version 2.0
 	LicenseApache20
-	// MPL20: the Mozilla Public License, version 2.0
+	// MPL20: mozilla Public License, version 2.0
 	LicenseMPL20
 )
 
@@ -74,43 +74,86 @@ func marshalLicense(p uintptr) (interface{}, error) {
 
 // AboutDialogger describes AboutDialog's methods.
 type AboutDialogger interface {
-	gextras.Objector
-
+	// AddCreditSection creates a new section in the "Credits" page.
 	AddCreditSection(sectionName string, people []string)
+	// Artists returns the string which are displayed in the "Artists" tab of
+	// the secondary credits dialog.
 	Artists() []string
+
 	Authors() []string
+	// Comments returns the comments string.
 	Comments() string
+
 	Copyright() string
+	// Documenters returns the string which are displayed in the "Documenters"
+	// tab of the secondary credits dialog.
 	Documenters() []string
+	// License returns the license information.
 	License() string
+	// LicenseType retrieves the license type.
 	LicenseType() License
+	// Logo returns the paintable displayed as logo in the about dialog.
 	Logo() *gdk.Paintable
+	// LogoIconName returns the icon name displayed as logo in the about dialog.
 	LogoIconName() string
+	// ProgramName returns the program name displayed in the about dialog.
 	ProgramName() string
+	// SystemInformation returns the system information that is shown in the
+	// about dialog.
 	SystemInformation() string
+	// TranslatorCredits returns the translator credits string which is
+	// displayed in the translators tab of the secondary credits dialog.
 	TranslatorCredits() string
+	// Version returns the version string.
 	Version() string
+	// Website returns the website URL.
 	Website() string
+	// WebsiteLabel returns the label used for the website link.
 	WebsiteLabel() string
+	// WrapLicense returns whether the license text in the about dialog is
+	// automatically wrapped.
 	WrapLicense() bool
+	// SetArtists sets the strings which are displayed in the "Artists" tab of
+	// the secondary credits dialog.
 	SetArtists(artists []string)
+	// SetAuthors sets the strings which are displayed in the "Authors" tab of
+	// the secondary credits dialog.
 	SetAuthors(authors []string)
+	// SetComments sets the comments string to display in the about dialog.
 	SetComments(comments string)
+	// SetCopyright sets the copyright string to display in the about dialog.
 	SetCopyright(copyright string)
+	// SetDocumenters sets the strings which are displayed in the "Documenters"
+	// tab of the credits dialog.
 	SetDocumenters(documenters []string)
+	// SetLicense sets the license information to be displayed in the secondary
+	// license dialog.
 	SetLicense(license string)
+	// SetLogo sets the logo in the about dialog.
 	SetLogo(logo gdk.Paintabler)
+	// SetLogoIconName sets the icon name to be displayed as logo in the about
+	// dialog.
 	SetLogoIconName(iconName string)
+	// SetProgramName sets the name to display in the about dialog.
 	SetProgramName(name string)
+	// SetSystemInformation sets the system information to be displayed in the
+	// about dialog.
 	SetSystemInformation(systemInformation string)
+	// SetTranslatorCredits sets the translator credits string which is
+	// displayed in the translators tab of the secondary credits dialog.
 	SetTranslatorCredits(translatorCredits string)
+	// SetVersion sets the version string to display in the about dialog.
 	SetVersion(version string)
+	// SetWebsite sets the URL to use for the website link.
 	SetWebsite(website string)
+	// SetWebsiteLabel sets the label to be used for the website link.
 	SetWebsiteLabel(websiteLabel string)
+	// SetWrapLicense sets whether the license text in the about dialog should
+	// be automatically wrapped.
 	SetWrapLicense(wrapLicense bool)
 }
 
-// AboutDialog: the `GtkAboutDialog` offers a simple way to display information
+// AboutDialog: `GtkAboutDialog` offers a simple way to display information
 // about a program.
 //
 // The shown information includes the programs' logo, name, copyright, website
@@ -154,26 +197,18 @@ type AboutDialogger interface {
 // `GtkAboutDialog` has a single CSS node with the name `window` and style class
 // `.aboutdialog`.
 type AboutDialog struct {
-	*externglib.Object
-
 	Window
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
 }
 
-var _ AboutDialogger = (*AboutDialog)(nil)
+var (
+	_ AboutDialogger  = (*AboutDialog)(nil)
+	_ gextras.Nativer = (*AboutDialog)(nil)
+)
 
-func wrapAboutDialogger(obj *externglib.Object) AboutDialogger {
+func wrapAboutDialog(obj *externglib.Object) AboutDialogger {
 	return &AboutDialog{
-		Object: obj,
 		Window: Window{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -187,39 +222,9 @@ func wrapAboutDialogger(obj *externglib.Object) AboutDialogger {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
 			Root: Root{
-				Object: obj,
 				Native: Native{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -234,91 +239,10 @@ func wrapAboutDialogger(obj *externglib.Object) AboutDialogger {
 						},
 					},
 				},
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		Root: Root{
-			Object: obj,
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		ShortcutManager: ShortcutManager{
-			Object: obj,
 		},
 	}
 }
@@ -326,7 +250,7 @@ func wrapAboutDialogger(obj *externglib.Object) AboutDialogger {
 func marshalAboutDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAboutDialogger(obj), nil
+	return wrapAboutDialog(obj), nil
 }
 
 // NewAboutDialog creates a new `GtkAboutDialog`.
@@ -773,7 +697,7 @@ func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 	var _arg1 *C.GdkPaintable   // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(logo.Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((logo).(gextras.Nativer).Native()))
 
 	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }

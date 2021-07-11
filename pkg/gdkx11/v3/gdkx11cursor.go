@@ -25,8 +25,6 @@ func init() {
 
 // X11Cursorrer describes X11Cursor's methods.
 type X11Cursorrer interface {
-	gextras.Objector
-
 	privateX11Cursor()
 }
 
@@ -34,9 +32,12 @@ type X11Cursor struct {
 	gdk.Cursor
 }
 
-var _ X11Cursorrer = (*X11Cursor)(nil)
+var (
+	_ X11Cursorrer    = (*X11Cursor)(nil)
+	_ gextras.Nativer = (*X11Cursor)(nil)
+)
 
-func wrapX11Cursorrer(obj *externglib.Object) X11Cursorrer {
+func wrapX11Cursor(obj *externglib.Object) X11Cursorrer {
 	return &X11Cursor{
 		Cursor: gdk.Cursor{
 			Object: obj,
@@ -47,7 +48,7 @@ func wrapX11Cursorrer(obj *externglib.Object) X11Cursorrer {
 func marshalX11Cursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Cursorrer(obj), nil
+	return wrapX11Cursor(obj), nil
 }
 
 func (*X11Cursor) privateX11Cursor() {}

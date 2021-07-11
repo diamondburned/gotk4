@@ -24,12 +24,17 @@ func init() {
 
 // StateSetter describes StateSet's methods.
 type StateSetter interface {
-	gextras.Objector
-
+	// AndSets constructs the intersection of the two sets, returning nil if the
+	// intersection is empty.
 	AndSets(compareSet StateSetter) *StateSet
+	// ClearStates removes all states from the state set.
 	ClearStates()
+	// IsEmpty checks whether the state set is empty, i.e.
 	IsEmpty() bool
+	// OrSets constructs the union of the two sets.
 	OrSets(compareSet StateSetter) *StateSet
+	// XorSets constructs the exclusive-or of the two sets, returning nil is
+	// empty.
 	XorSets(compareSet StateSetter) *StateSet
 }
 
@@ -40,9 +45,12 @@ type StateSet struct {
 	*externglib.Object
 }
 
-var _ StateSetter = (*StateSet)(nil)
+var (
+	_ StateSetter     = (*StateSet)(nil)
+	_ gextras.Nativer = (*StateSet)(nil)
+)
 
-func wrapStateSetter(obj *externglib.Object) StateSetter {
+func wrapStateSet(obj *externglib.Object) StateSetter {
 	return &StateSet{
 		Object: obj,
 	}
@@ -51,7 +59,7 @@ func wrapStateSetter(obj *externglib.Object) StateSetter {
 func marshalStateSetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStateSetter(obj), nil
+	return wrapStateSet(obj), nil
 }
 
 // NewStateSet creates a new empty state set.
@@ -75,7 +83,7 @@ func (set *StateSet) AndSets(compareSet StateSetter) *StateSet {
 	var _cret *C.AtkStateSet // in
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((compareSet).(gextras.Nativer).Native()))
 
 	_cret = C.atk_state_set_and_sets(_arg0, _arg1)
 
@@ -120,7 +128,7 @@ func (set *StateSet) OrSets(compareSet StateSetter) *StateSet {
 	var _cret *C.AtkStateSet // in
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((compareSet).(gextras.Nativer).Native()))
 
 	_cret = C.atk_state_set_or_sets(_arg0, _arg1)
 
@@ -140,7 +148,7 @@ func (set *StateSet) XorSets(compareSet StateSetter) *StateSet {
 	var _cret *C.AtkStateSet // in
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((compareSet).(gextras.Nativer).Native()))
 
 	_cret = C.atk_state_set_xor_sets(_arg0, _arg1)
 

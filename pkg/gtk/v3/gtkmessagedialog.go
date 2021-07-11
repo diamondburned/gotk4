@@ -56,11 +56,14 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 
 // MessageDialogger describes MessageDialog's methods.
 type MessageDialogger interface {
-	gextras.Objector
-
+	// Image gets the dialog’s image.
 	Image() *Widget
+	// MessageArea returns the message area of the dialog.
 	MessageArea() *Widget
+	// SetImage sets the dialog’s image to @image.
 	SetImage(image Widgetter)
+	// SetMarkup sets the text of the message dialog to be @str, which is marked
+	// up with the [Pango text markup language][PangoMarkupFormat].
 	SetMarkup(str string)
 }
 
@@ -101,28 +104,21 @@ type MessageDialogger interface {
 // The GtkMessageDialog implementation of the GtkBuildable interface exposes the
 // message area as an internal child with the name “message_area”.
 type MessageDialog struct {
-	*externglib.Object
-
 	Dialog
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ MessageDialogger = (*MessageDialog)(nil)
+var (
+	_ MessageDialogger = (*MessageDialog)(nil)
+	_ gextras.Nativer  = (*MessageDialog)(nil)
+)
 
-func wrapMessageDialogger(obj *externglib.Object) MessageDialogger {
+func wrapMessageDialog(obj *externglib.Object) MessageDialogger {
 	return &MessageDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -133,39 +129,9 @@ func wrapMessageDialogger(obj *externglib.Object) MessageDialogger {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -173,7 +139,7 @@ func wrapMessageDialogger(obj *externglib.Object) MessageDialogger {
 func marshalMessageDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMessageDialogger(obj), nil
+	return wrapMessageDialog(obj), nil
 }
 
 // Image gets the dialog’s image.
@@ -222,7 +188,7 @@ func (dialog *MessageDialog) SetImage(image Widgetter) {
 	var _arg1 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((image).(gextras.Nativer).Native()))
 
 	C.gtk_message_dialog_set_image(_arg0, _arg1)
 }

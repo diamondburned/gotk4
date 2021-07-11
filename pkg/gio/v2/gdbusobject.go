@@ -32,38 +32,44 @@ func init() {
 	})
 }
 
-// DBusObjectorOverrider contains methods that are overridable.
+// DBusObjectOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DBusObjectorOverrider interface {
+type DBusObjectOverrider interface {
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
 	Interface(interfaceName string) *DBusInterface
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string
+
 	InterfaceAdded(interface_ DBusInterfacer)
+
 	InterfaceRemoved(interface_ DBusInterfacer)
 }
 
 // DBusObjector describes DBusObject's methods.
 type DBusObjector interface {
-	gextras.Objector
-
+	// Interface gets the D-Bus interface with name @interface_name associated
+	// with @object, if any.
 	Interface(interfaceName string) *DBusInterface
+	// ObjectPath gets the object path for @object.
 	ObjectPath() string
 }
 
-// DBusObject: the BusObject type is the base type for D-Bus objects on both the
-// service side (see BusObjectSkeleton) and the client side (see
-// BusObjectProxy). It is essentially just a container of interfaces.
+// DBusObject type is the base type for D-Bus objects on both the service side
+// (see BusObjectSkeleton) and the client side (see BusObjectProxy). It is
+// essentially just a container of interfaces.
 type DBusObject struct {
 	*externglib.Object
 }
 
-var _ DBusObjector = (*DBusObject)(nil)
+var (
+	_ DBusObjector    = (*DBusObject)(nil)
+	_ gextras.Nativer = (*DBusObject)(nil)
+)
 
-func wrapDBusObjector(obj *externglib.Object) DBusObjector {
+func wrapDBusObject(obj *externglib.Object) DBusObjector {
 	return &DBusObject{
 		Object: obj,
 	}
@@ -72,7 +78,7 @@ func wrapDBusObjector(obj *externglib.Object) DBusObjector {
 func marshalDBusObjector(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjector(obj), nil
+	return wrapDBusObject(obj), nil
 }
 
 // Interface gets the D-Bus interface with name @interface_name associated with

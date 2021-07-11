@@ -24,51 +24,47 @@ func init() {
 	})
 }
 
-// RadioActionerOverrider contains methods that are overridable.
+// RadioActionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RadioActionerOverrider interface {
+type RadioActionOverrider interface {
 	Changed(current RadioActioner)
 }
 
 // RadioActioner describes RadioAction's methods.
 type RadioActioner interface {
-	gextras.Objector
-
+	// CurrentValue obtains the value property of the currently active member of
+	// the group to which @action belongs.
 	CurrentValue() int
+	// JoinGroup joins a radio action object to the group of another radio
+	// action object.
 	JoinGroup(groupSource RadioActioner)
+	// SetCurrentValue sets the currently active group member to the member with
+	// value property @current_value.
 	SetCurrentValue(currentValue int)
 }
 
 // RadioAction is similar to RadioMenuItem. A number of radio actions can be
 // linked together so that only one may be active at any one time.
 type RadioAction struct {
-	*externglib.Object
-
 	ToggleAction
-	Buildable
 }
 
-var _ RadioActioner = (*RadioAction)(nil)
+var (
+	_ RadioActioner   = (*RadioAction)(nil)
+	_ gextras.Nativer = (*RadioAction)(nil)
+)
 
-func wrapRadioActioner(obj *externglib.Object) RadioActioner {
+func wrapRadioAction(obj *externglib.Object) RadioActioner {
 	return &RadioAction{
-		Object: obj,
 		ToggleAction: ToggleAction{
-			Object: obj,
 			Action: Action{
 				Object: obj,
 				Buildable: Buildable{
 					Object: obj,
 				},
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -76,7 +72,7 @@ func wrapRadioActioner(obj *externglib.Object) RadioActioner {
 func marshalRadioActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioActioner(obj), nil
+	return wrapRadioAction(obj), nil
 }
 
 // NewRadioAction creates a new RadioAction object. To add the action to a
@@ -155,7 +151,7 @@ func (action *RadioAction) JoinGroup(groupSource RadioActioner) {
 	var _arg1 *C.GtkRadioAction // out
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(groupSource.Native()))
+	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer((groupSource).(gextras.Nativer).Native()))
 
 	C.gtk_radio_action_join_group(_arg0, _arg1)
 }

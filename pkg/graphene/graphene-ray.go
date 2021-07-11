@@ -22,15 +22,15 @@ func init() {
 	})
 }
 
-// RayIntersectionKind: the type of intersection.
+// RayIntersectionKind: type of intersection.
 type RayIntersectionKind int
 
 const (
 	// None: no intersection
 	RayIntersectionKindNone RayIntersectionKind = iota
-	// Enter: the ray is entering the intersected object
+	// Enter: ray is entering the intersected object
 	RayIntersectionKindEnter
-	// Leave: the ray is leaving the intersected object
+	// Leave: ray is leaving the intersected object
 	RayIntersectionKindLeave
 )
 

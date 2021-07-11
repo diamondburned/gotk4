@@ -86,35 +86,51 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 	return cret
 }
 
-// CalendarrerOverrider contains methods that are overridable.
+// CalendarOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type CalendarrerOverrider interface {
+type CalendarOverrider interface {
 	DaySelected()
+
 	DaySelectedDoubleClick()
+
 	MonthChanged()
+
 	NextMonth()
+
 	NextYear()
+
 	PrevMonth()
+
 	PrevYear()
 }
 
 // Calendarrer describes Calendar's methods.
 type Calendarrer interface {
-	gextras.Objector
-
+	// ClearMarks: remove all visual markers.
 	ClearMarks()
+	// Date obtains the selected date from a Calendar.
 	Date() (year uint, month uint, day uint)
+	// DayIsMarked returns if the @day of the @calendar is already marked.
 	DayIsMarked(day uint) bool
+	// DetailHeightRows queries the height of detail cells, in rows.
 	DetailHeightRows() int
+	// DetailWidthChars queries the width of detail cells, in characters.
 	DetailWidthChars() int
+	// DisplayOptions returns the current display options of @calendar.
 	DisplayOptions() CalendarDisplayOptions
+	// MarkDay places a visual marker on a particular day.
 	MarkDay(day uint)
+	// SelectDay selects a day from the current month.
 	SelectDay(day uint)
+	// SelectMonth shifts the calendar to a different month.
 	SelectMonth(month uint, year uint)
+	// SetDetailHeightRows updates the height of detail cells.
 	SetDetailHeightRows(rows int)
+	// SetDetailWidthChars updates the width of detail cells.
 	SetDetailWidthChars(chars int)
+	// UnmarkDay removes the visual marker from a particular day.
 	UnmarkDay(day uint)
 }
 
@@ -139,20 +155,17 @@ type Calendarrer interface {
 // calendar in most countries, it was adopted progressively between 1582 and
 // 1929. Display before these dates is likely to be historically incorrect.
 type Calendar struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Calendarrer = (*Calendar)(nil)
+var (
+	_ Calendarrer     = (*Calendar)(nil)
+	_ gextras.Nativer = (*Calendar)(nil)
+)
 
-func wrapCalendarrer(obj *externglib.Object) Calendarrer {
+func wrapCalendar(obj *externglib.Object) Calendarrer {
 	return &Calendar{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -163,19 +176,13 @@ func wrapCalendarrer(obj *externglib.Object) Calendarrer {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalCalendarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCalendarrer(obj), nil
+	return wrapCalendar(obj), nil
 }
 
 // NewCalendar creates a new calendar, with the current date being selected.

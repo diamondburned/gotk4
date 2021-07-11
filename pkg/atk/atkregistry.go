@@ -42,25 +42,31 @@ func GetDefaultRegistry() *Registry {
 
 // Registrier describes Registry's methods.
 type Registrier interface {
-	gextras.Objector
-
+	// Factory gets an ObjectFactory appropriate for creating Objects
+	// appropriate for @type.
 	Factory(typ externglib.Type) *ObjectFactory
+	// FactoryType provides a #GType indicating the ObjectFactory subclass
+	// associated with @type.
 	FactoryType(typ externglib.Type) externglib.Type
+	// SetFactoryType: associate an ObjectFactory subclass with a #GType.
 	SetFactoryType(typ externglib.Type, factoryType externglib.Type)
 }
 
-// Registry: the AtkRegistry is normally used to create appropriate ATK "peers"
-// for user interface components. Application developers usually need only
-// interact with the AtkRegistry by associating appropriate ATK implementation
-// classes with GObject classes via the atk_registry_set_factory_type call,
-// passing the appropriate GType for application custom widget classes.
+// Registry is normally used to create appropriate ATK "peers" for user
+// interface components. Application developers usually need only interact with
+// the AtkRegistry by associating appropriate ATK implementation classes with
+// GObject classes via the atk_registry_set_factory_type call, passing the
+// appropriate GType for application custom widget classes.
 type Registry struct {
 	*externglib.Object
 }
 
-var _ Registrier = (*Registry)(nil)
+var (
+	_ Registrier      = (*Registry)(nil)
+	_ gextras.Nativer = (*Registry)(nil)
+)
 
-func wrapRegistrier(obj *externglib.Object) Registrier {
+func wrapRegistry(obj *externglib.Object) Registrier {
 	return &Registry{
 		Object: obj,
 	}
@@ -69,7 +75,7 @@ func wrapRegistrier(obj *externglib.Object) Registrier {
 func marshalRegistrier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRegistrier(obj), nil
+	return wrapRegistry(obj), nil
 }
 
 // Factory gets an ObjectFactory appropriate for creating Objects appropriate

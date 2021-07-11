@@ -27,29 +27,22 @@ func init() {
 
 // RadioButtonAccessibler describes RadioButtonAccessible's methods.
 type RadioButtonAccessibler interface {
-	gextras.Objector
-
 	privateRadioButtonAccessible()
 }
 
 type RadioButtonAccessible struct {
-	*externglib.Object
-
 	ToggleButtonAccessible
-	atk.Action
-	atk.Component
-	atk.Image
 }
 
-var _ RadioButtonAccessibler = (*RadioButtonAccessible)(nil)
+var (
+	_ RadioButtonAccessibler = (*RadioButtonAccessible)(nil)
+	_ gextras.Nativer        = (*RadioButtonAccessible)(nil)
+)
 
-func wrapRadioButtonAccessibler(obj *externglib.Object) RadioButtonAccessibler {
+func wrapRadioButtonAccessible(obj *externglib.Object) RadioButtonAccessibler {
 	return &RadioButtonAccessible{
-		Object: obj,
 		ToggleButtonAccessible: ToggleButtonAccessible{
-			Object: obj,
 			ButtonAccessible: ButtonAccessible{
-				Object: obj,
 				ContainerAccessible: ContainerAccessible{
 					WidgetAccessible: WidgetAccessible{
 						Accessible: Accessible{
@@ -61,38 +54,14 @@ func wrapRadioButtonAccessibler(obj *externglib.Object) RadioButtonAccessibler {
 							Object: obj,
 						},
 					},
-					Component: atk.Component{
-						Object: obj,
-					},
 				},
 				Action: atk.Action{
-					Object: obj,
-				},
-				Component: atk.Component{
 					Object: obj,
 				},
 				Image: atk.Image{
 					Object: obj,
 				},
 			},
-			Action: atk.Action{
-				Object: obj,
-			},
-			Component: atk.Component{
-				Object: obj,
-			},
-			Image: atk.Image{
-				Object: obj,
-			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
-		Image: atk.Image{
-			Object: obj,
 		},
 	}
 }
@@ -100,7 +69,7 @@ func wrapRadioButtonAccessibler(obj *externglib.Object) RadioButtonAccessibler {
 func marshalRadioButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioButtonAccessibler(obj), nil
+	return wrapRadioButtonAccessible(obj), nil
 }
 
 func (*RadioButtonAccessible) privateRadioButtonAccessible() {}

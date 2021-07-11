@@ -24,9 +24,9 @@ func init() {
 
 // IMMulticontexter describes IMMulticontext's methods.
 type IMMulticontexter interface {
-	gextras.Objector
-
+	// ContextID gets the id of the currently active delegate of the @context.
 	ContextID() string
+	// SetContextID sets the context id for @context.
 	SetContextID(contextId string)
 }
 
@@ -40,9 +40,12 @@ type IMMulticontext struct {
 	IMContext
 }
 
-var _ IMMulticontexter = (*IMMulticontext)(nil)
+var (
+	_ IMMulticontexter = (*IMMulticontext)(nil)
+	_ gextras.Nativer  = (*IMMulticontext)(nil)
+)
 
-func wrapIMMulticontexter(obj *externglib.Object) IMMulticontexter {
+func wrapIMMulticontext(obj *externglib.Object) IMMulticontexter {
 	return &IMMulticontext{
 		IMContext: IMContext{
 			Object: obj,
@@ -53,7 +56,7 @@ func wrapIMMulticontexter(obj *externglib.Object) IMMulticontexter {
 func marshalIMMulticontexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIMMulticontexter(obj), nil
+	return wrapIMMulticontext(obj), nil
 }
 
 // NewIMMulticontext creates a new `GtkIMMulticontext`.

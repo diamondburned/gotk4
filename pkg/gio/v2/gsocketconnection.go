@@ -38,14 +38,22 @@ func init() {
 
 // SocketConnectioner describes SocketConnection's methods.
 type SocketConnectioner interface {
-	gextras.Objector
-
+	// ConnectSocketConnectioner: connect @connection to the specified remote
+	// address.
 	ConnectSocketConnectioner(address SocketAddresser, cancellable Cancellabler) error
+	// ConnectAsync: asynchronously connect @connection to the specified remote
+	// address.
 	ConnectAsync(address SocketAddresser, cancellable Cancellabler, callback AsyncReadyCallback)
+	// ConnectFinish gets the result of a g_socket_connection_connect_async()
+	// call.
 	ConnectFinish(result AsyncResulter) error
+	// LocalAddress: try to get the local address of a socket connection.
 	LocalAddress() (*SocketAddress, error)
+	// RemoteAddress: try to get the remote address of a socket connection.
 	RemoteAddress() (*SocketAddress, error)
+	// Socket gets the underlying #GSocket object of the connection.
 	Socket() *Socket
+	// IsConnected checks if @connection is connected.
 	IsConnected() bool
 }
 
@@ -68,9 +76,12 @@ type SocketConnection struct {
 	IOStream
 }
 
-var _ SocketConnectioner = (*SocketConnection)(nil)
+var (
+	_ SocketConnectioner = (*SocketConnection)(nil)
+	_ gextras.Nativer    = (*SocketConnection)(nil)
+)
 
-func wrapSocketConnectioner(obj *externglib.Object) SocketConnectioner {
+func wrapSocketConnection(obj *externglib.Object) SocketConnectioner {
 	return &SocketConnection{
 		IOStream: IOStream{
 			Object: obj,
@@ -81,7 +92,7 @@ func wrapSocketConnectioner(obj *externglib.Object) SocketConnectioner {
 func marshalSocketConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketConnectioner(obj), nil
+	return wrapSocketConnection(obj), nil
 }
 
 // ConnectSocketConnectioner: connect @connection to the specified remote
@@ -93,8 +104,8 @@ func (connection *SocketConnection) ConnectSocketConnectioner(address SocketAddr
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_socket_connection_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -120,8 +131,8 @@ func (connection *SocketConnection) ConnectAsync(address SocketAddresser, cancel
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -135,7 +146,7 @@ func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_socket_connection_connect_finish(_arg0, _arg1, &_cerr)
 

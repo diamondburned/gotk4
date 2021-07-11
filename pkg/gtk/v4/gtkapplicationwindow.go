@@ -25,12 +25,18 @@ func init() {
 
 // ApplicationWindowwer describes ApplicationWindow's methods.
 type ApplicationWindowwer interface {
-	gextras.Objector
-
+	// HelpOverlay gets the `GtkShortcutsWindow` that is associated with
+	// @window.
 	HelpOverlay() *ShortcutsWindow
+	// ID returns the unique ID of the window.
 	ID() uint
+	// ShowMenubar returns whether the window will display a menubar for the app
+	// menu and menubar as needed.
 	ShowMenubar() bool
+	// SetHelpOverlay associates a shortcuts window with the application window.
 	SetHelpOverlay(helpOverlay ShortcutsWindowwer)
+	// SetShowMenubar sets whether the window will display a menubar for the app
+	// menu and menubar as needed.
 	SetShowMenubar(showMenubar bool)
 }
 
@@ -93,28 +99,21 @@ type ApplicationWindowwer interface {
 //
 // GtkWidget *window = gtk_application_window_new (app); “`
 type ApplicationWindow struct {
-	*externglib.Object
-
 	Window
+
 	gio.ActionGroup
 	gio.ActionMap
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
 }
 
-var _ ApplicationWindowwer = (*ApplicationWindow)(nil)
+var (
+	_ ApplicationWindowwer = (*ApplicationWindow)(nil)
+	_ gextras.Nativer      = (*ApplicationWindow)(nil)
+)
 
-func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
+func wrapApplicationWindow(obj *externglib.Object) ApplicationWindowwer {
 	return &ApplicationWindow{
-		Object: obj,
 		Window: Window{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -128,39 +127,9 @@ func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
 			Root: Root{
-				Object: obj,
 				Native: Native{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -175,21 +144,6 @@ func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
 						},
 					},
 				},
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
@@ -201,79 +155,13 @@ func wrapApplicationWindowwer(obj *externglib.Object) ApplicationWindowwer {
 		ActionMap: gio.ActionMap{
 			Object: obj,
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		Root: Root{
-			Object: obj,
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		ShortcutManager: ShortcutManager{
-			Object: obj,
-		},
 	}
 }
 
 func marshalApplicationWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationWindowwer(obj), nil
+	return wrapApplicationWindow(obj), nil
 }
 
 // NewApplicationWindow creates a new `GtkApplicationWindow`.
@@ -281,7 +169,7 @@ func NewApplicationWindow(application Applicationer) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer((application).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_application_window_new(_arg1)
 
@@ -290,6 +178,12 @@ func NewApplicationWindow(application Applicationer) *ApplicationWindow {
 	_applicationWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ApplicationWindow)
 
 	return _applicationWindow
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ApplicationWindow) Native() uintptr {
+	return v.Window.Widget.InitiallyUnowned.Object.Native()
 }
 
 // HelpOverlay gets the `GtkShortcutsWindow` that is associated with @window.
@@ -358,7 +252,7 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindowwer) 
 	var _arg1 *C.GtkShortcutsWindow   // out
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(helpOverlay.Native()))
+	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer((helpOverlay).(gextras.Nativer).Native()))
 
 	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
 }

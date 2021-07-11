@@ -25,9 +25,9 @@ func init() {
 
 // NoSelectioner describes NoSelection's methods.
 type NoSelectioner interface {
-	gextras.Objector
-
+	// Model gets the model that @self is wrapping.
 	Model() *gio.ListModel
+	// SetModel sets the model that @self should wrap.
 	SetModel(model gio.ListModeller)
 }
 
@@ -39,18 +39,17 @@ type NoSelectioner interface {
 type NoSelection struct {
 	*externglib.Object
 
-	gio.ListModel
 	SelectionModel
 }
 
-var _ NoSelectioner = (*NoSelection)(nil)
+var (
+	_ NoSelectioner   = (*NoSelection)(nil)
+	_ gextras.Nativer = (*NoSelection)(nil)
+)
 
-func wrapNoSelectioner(obj *externglib.Object) NoSelectioner {
+func wrapNoSelection(obj *externglib.Object) NoSelectioner {
 	return &NoSelection{
 		Object: obj,
-		ListModel: gio.ListModel{
-			Object: obj,
-		},
 		SelectionModel: SelectionModel{
 			ListModel: gio.ListModel{
 				Object: obj,
@@ -62,7 +61,7 @@ func wrapNoSelectioner(obj *externglib.Object) NoSelectioner {
 func marshalNoSelectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoSelectioner(obj), nil
+	return wrapNoSelection(obj), nil
 }
 
 // NewNoSelection creates a new selection to handle @model.
@@ -70,7 +69,7 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 	var _arg1 *C.GListModel     // out
 	var _cret *C.GtkNoSelection // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_no_selection_new(_arg1)
 
@@ -105,7 +104,7 @@ func (self *NoSelection) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel     // out
 
 	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_no_selection_set_model(_arg0, _arg1)
 }

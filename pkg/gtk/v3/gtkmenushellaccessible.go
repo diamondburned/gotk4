@@ -27,24 +27,22 @@ func init() {
 
 // MenuShellAccessibler describes MenuShellAccessible's methods.
 type MenuShellAccessibler interface {
-	gextras.Objector
-
 	privateMenuShellAccessible()
 }
 
 type MenuShellAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
-	atk.Component
+
 	atk.Selection
 }
 
-var _ MenuShellAccessibler = (*MenuShellAccessible)(nil)
+var (
+	_ MenuShellAccessibler = (*MenuShellAccessible)(nil)
+	_ gextras.Nativer      = (*MenuShellAccessible)(nil)
+)
 
-func wrapMenuShellAccessibler(obj *externglib.Object) MenuShellAccessibler {
+func wrapMenuShellAccessible(obj *externglib.Object) MenuShellAccessibler {
 	return &MenuShellAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -56,12 +54,6 @@ func wrapMenuShellAccessibler(obj *externglib.Object) MenuShellAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 		Selection: atk.Selection{
 			Object: obj,
@@ -72,7 +64,7 @@ func wrapMenuShellAccessibler(obj *externglib.Object) MenuShellAccessibler {
 func marshalMenuShellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuShellAccessibler(obj), nil
+	return wrapMenuShellAccessible(obj), nil
 }
 
 func (*MenuShellAccessible) privateMenuShellAccessible() {}

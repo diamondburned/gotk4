@@ -29,7 +29,7 @@ import (
 // #include <gio/gunixsocketaddress.h>
 import "C"
 
-// DBusInterfaceGetPropertyFunc: the type of the @get_property function in
+// DBusInterfaceGetPropertyFunc: type of the @get_property function in
 // BusInterfaceVTable.
 type DBusInterfaceGetPropertyFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, userData interface{}) (err error, variant *glib.Variant)
 
@@ -63,7 +63,7 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	return cret
 }
 
-// DBusInterfaceMethodCallFunc: the type of the @method_call function in
+// DBusInterfaceMethodCallFunc: type of the @method_call function in
 // BusInterfaceVTable.
 type DBusInterfaceMethodCallFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, invocation *DBusMethodInvocation, userData interface{})
 
@@ -100,7 +100,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	fn(connection, sender, objectPath, interfaceName, methodName, parameters, invocation, userData)
 }
 
-// DBusInterfaceSetPropertyFunc: the type of the @set_property function in
+// DBusInterfaceSetPropertyFunc: type of the @set_property function in
 // BusInterfaceVTable.
 type DBusInterfaceSetPropertyFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, userData interface{}) (err error, ok bool)
 
@@ -265,8 +265,7 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 	fn(connection, senderName, objectPath, interfaceName, signalName, parameters, userData)
 }
 
-// DBusSubtreeDispatchFunc: the type of the @dispatch function in
-// BusSubtreeVTable.
+// DBusSubtreeDispatchFunc: type of the @dispatch function in BusSubtreeVTable.
 //
 // Subtrees are flat. @node, if non-nil, is always exactly one segment of the
 // object path (ie: it never contains a slash).
@@ -302,7 +301,7 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	return cret
 }
 
-// DBusSubtreeEnumerateFunc: the type of the @enumerate function in
+// DBusSubtreeEnumerateFunc: type of the @enumerate function in
 // BusSubtreeVTable.
 //
 // This function is called when generating introspection data and also when
@@ -347,7 +346,7 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	return cret
 }
 
-// DBusSubtreeIntrospectFunc: the type of the @introspect function in
+// DBusSubtreeIntrospectFunc: type of the @introspect function in
 // BusSubtreeVTable.
 //
 // Subtrees are flat. @node, if non-nil, is always exactly one segment of the
@@ -414,7 +413,7 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	_cret = C.g_bus_get_finish(_arg1, &_cerr)
 

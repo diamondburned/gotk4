@@ -26,12 +26,17 @@ func init() {
 
 // SizeGrouper describes SizeGroup's methods.
 type SizeGrouper interface {
-	gextras.Objector
-
+	// AddWidget adds a widget to a SizeGroup.
 	AddWidget(widget Widgetter)
+	// IgnoreHidden returns if invisible widgets are ignored when calculating
+	// the size.
 	IgnoreHidden() bool
+	// Mode gets the current mode of the size group.
 	Mode() SizeGroupMode
+	// RemoveWidget removes a widget from a SizeGroup.
 	RemoveWidget(widget Widgetter)
+	// SetIgnoreHidden sets whether unmapped widgets should be ignored when
+	// calculating the size.
 	SetIgnoreHidden(ignoreHidden bool)
 }
 
@@ -104,9 +109,12 @@ type SizeGroup struct {
 	Buildable
 }
 
-var _ SizeGrouper = (*SizeGroup)(nil)
+var (
+	_ SizeGrouper     = (*SizeGroup)(nil)
+	_ gextras.Nativer = (*SizeGroup)(nil)
+)
 
-func wrapSizeGrouper(obj *externglib.Object) SizeGrouper {
+func wrapSizeGroup(obj *externglib.Object) SizeGrouper {
 	return &SizeGroup{
 		Object: obj,
 		Buildable: Buildable{
@@ -118,7 +126,7 @@ func wrapSizeGrouper(obj *externglib.Object) SizeGrouper {
 func marshalSizeGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSizeGrouper(obj), nil
+	return wrapSizeGroup(obj), nil
 }
 
 // AddWidget adds a widget to a SizeGroup. In the future, the requisition of the
@@ -134,7 +142,7 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_size_group_add_widget(_arg0, _arg1)
 }
@@ -186,7 +194,7 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
 }

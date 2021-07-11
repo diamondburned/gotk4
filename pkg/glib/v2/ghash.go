@@ -286,7 +286,7 @@ func StrHash(v interface{}) uint {
 	return _guint
 }
 
-// HashTable: the Table struct is an opaque data structure to represent a [Hash
+// HashTable struct is an opaque data structure to represent a [Hash
 // Table][glib-Hash-Tables]. It should only be accessed via the following
 // functions.
 type HashTable struct {

@@ -24,17 +24,32 @@ func init() {
 
 // ListViewer describes ListView's methods.
 type ListViewer interface {
-	gextras.Objector
-
+	// EnableRubberband returns whether rows can be selected by dragging with
+	// the mouse.
 	EnableRubberband() bool
+	// Factory gets the factory that's currently used to populate list items.
 	Factory() *ListItemFactory
+	// Model gets the model that's currently used to read the items displayed.
 	Model() *SelectionModel
+	// ShowSeparators returns whether the list box should show separators
+	// between rows.
 	ShowSeparators() bool
+	// SingleClickActivate returns whether rows will be activated on single
+	// click and selected on hover.
 	SingleClickActivate() bool
+	// SetEnableRubberband sets whether selections can be changed by dragging
+	// with the mouse.
 	SetEnableRubberband(enableRubberband bool)
+	// SetFactory sets the `GtkListItemFactory` to use for populating list
+	// items.
 	SetFactory(factory ListItemFactorier)
+	// SetModel sets the model to use.
 	SetModel(model SelectionModeller)
+	// SetShowSeparators sets whether the list box should show separators
+	// between rows.
 	SetShowSeparators(showSeparators bool)
+	// SetSingleClickActivate sets whether rows should be activated on single
+	// click and selected on hover.
 	SetSingleClickActivate(singleClickActivate bool)
 }
 
@@ -120,25 +135,18 @@ type ListViewer interface {
 // `GtkListView` uses the GTK_ACCESSIBLE_ROLE_LIST role, and the list items use
 // the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListView struct {
-	*externglib.Object
-
 	ListBase
-	Accessible
-	Buildable
-	ConstraintTarget
-	Orientable
-	Scrollable
 }
 
-var _ ListViewer = (*ListView)(nil)
+var (
+	_ ListViewer      = (*ListView)(nil)
+	_ gextras.Nativer = (*ListView)(nil)
+)
 
-func wrapListViewer(obj *externglib.Object) ListViewer {
+func wrapListView(obj *externglib.Object) ListViewer {
 	return &ListView{
-		Object: obj,
 		ListBase: ListBase{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -152,15 +160,6 @@ func wrapListViewer(obj *externglib.Object) ListViewer {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
 			Orientable: Orientable{
 				Object: obj,
 			},
@@ -168,28 +167,13 @@ func wrapListViewer(obj *externglib.Object) ListViewer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
-		},
-		Scrollable: Scrollable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalListViewer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListViewer(obj), nil
+	return wrapListView(obj), nil
 }
 
 // NewListView creates a new `GtkListView` that uses the given @factory for
@@ -203,8 +187,8 @@ func NewListView(model SelectionModeller, factory ListItemFactorier) *ListView {
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer((factory).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_list_view_new(_arg1, _arg2)
 
@@ -324,7 +308,7 @@ func (self *ListView) SetFactory(factory ListItemFactorier) {
 	var _arg1 *C.GtkListItemFactory // out
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((factory).(gextras.Nativer).Native()))
 
 	C.gtk_list_view_set_factory(_arg0, _arg1)
 }
@@ -337,7 +321,7 @@ func (self *ListView) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel // out
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_list_view_set_model(_arg0, _arg1)
 }

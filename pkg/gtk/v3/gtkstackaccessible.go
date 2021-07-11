@@ -27,20 +27,19 @@ func init() {
 
 // StackAccessibler describes StackAccessible's methods.
 type StackAccessibler interface {
-	gextras.Objector
-
 	privateStackAccessible()
 }
 
 type StackAccessible struct {
 	ContainerAccessible
-
-	atk.Component
 }
 
-var _ StackAccessibler = (*StackAccessible)(nil)
+var (
+	_ StackAccessibler = (*StackAccessible)(nil)
+	_ gextras.Nativer  = (*StackAccessible)(nil)
+)
 
-func wrapStackAccessibler(obj *externglib.Object) StackAccessibler {
+func wrapStackAccessible(obj *externglib.Object) StackAccessibler {
 	return &StackAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -53,12 +52,6 @@ func wrapStackAccessibler(obj *externglib.Object) StackAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -66,7 +59,7 @@ func wrapStackAccessibler(obj *externglib.Object) StackAccessibler {
 func marshalStackAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStackAccessibler(obj), nil
+	return wrapStackAccessible(obj), nil
 }
 
 func (*StackAccessible) privateStackAccessible() {}

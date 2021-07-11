@@ -54,9 +54,9 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 
 // MessageDialogger describes MessageDialog's methods.
 type MessageDialogger interface {
-	gextras.Objector
-
+	// MessageArea returns the message area of the dialog.
 	MessageArea() *Widget
+	// SetMarkup sets the text of the message dialog.
 	SetMarkup(str string)
 }
 
@@ -100,28 +100,19 @@ type MessageDialogger interface {
 // The `GtkMessageDialog` implementation of the `GtkBuildable` interface exposes
 // the message area as an internal child with the name “message_area”.
 type MessageDialog struct {
-	*externglib.Object
-
 	Dialog
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
 }
 
-var _ MessageDialogger = (*MessageDialog)(nil)
+var (
+	_ MessageDialogger = (*MessageDialog)(nil)
+	_ gextras.Nativer  = (*MessageDialog)(nil)
+)
 
-func wrapMessageDialogger(obj *externglib.Object) MessageDialogger {
+func wrapMessageDialog(obj *externglib.Object) MessageDialogger {
 	return &MessageDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -135,39 +126,9 @@ func wrapMessageDialogger(obj *externglib.Object) MessageDialogger {
 						Object: obj,
 					},
 				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-				Native: Native{
-					Object: obj,
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						Accessible: Accessible{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-						ConstraintTarget: ConstraintTarget{
-							Object: obj,
-						},
-					},
-				},
 				Root: Root{
-					Object: obj,
 					Native: Native{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -182,158 +143,11 @@ func wrapMessageDialogger(obj *externglib.Object) MessageDialogger {
 							},
 						},
 					},
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						Accessible: Accessible{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-						ConstraintTarget: ConstraintTarget{
-							Object: obj,
-						},
-					},
 				},
 				ShortcutManager: ShortcutManager{
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Root: Root{
-				Object: obj,
-				Native: Native{
-					Object: obj,
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						Accessible: Accessible{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-						ConstraintTarget: ConstraintTarget{
-							Object: obj,
-						},
-					},
-				},
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			ShortcutManager: ShortcutManager{
-				Object: obj,
-			},
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		Root: Root{
-			Object: obj,
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		ShortcutManager: ShortcutManager{
-			Object: obj,
 		},
 	}
 }
@@ -341,7 +155,7 @@ func wrapMessageDialogger(obj *externglib.Object) MessageDialogger {
 func marshalMessageDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMessageDialogger(obj), nil
+	return wrapMessageDialog(obj), nil
 }
 
 // MessageArea returns the message area of the dialog.

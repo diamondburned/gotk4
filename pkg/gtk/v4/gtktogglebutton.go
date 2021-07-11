@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// ToggleButtonnerOverrider contains methods that are overridable.
+// ToggleButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToggleButtonnerOverrider interface {
+type ToggleButtonOverrider interface {
 	// Toggled emits the ::toggled signal on the `GtkToggleButton`.
 	//
 	// There is no good reason for an application ever to call this function.
@@ -35,11 +35,13 @@ type ToggleButtonnerOverrider interface {
 
 // ToggleButtonner describes ToggleButton's methods.
 type ToggleButtonner interface {
-	gextras.Objector
-
+	// Active queries a `GtkToggleButton` and returns its current state.
 	Active() bool
+	// SetActive sets the status of the toggle button.
 	SetActive(isActive bool)
+	// SetGroup adds @self to the group of @group.
 	SetGroup(group ToggleButtonner)
+	// Toggled emits the ::toggled signal on the `GtkToggleButton`.
 	Toggled()
 }
 
@@ -107,24 +109,18 @@ type ToggleButtonner interface {
 //
 // } “`
 type ToggleButton struct {
-	*externglib.Object
-
 	Button
-	Accessible
-	Actionable
-	Buildable
-	ConstraintTarget
 }
 
-var _ ToggleButtonner = (*ToggleButton)(nil)
+var (
+	_ ToggleButtonner = (*ToggleButton)(nil)
+	_ gextras.Nativer = (*ToggleButton)(nil)
+)
 
-func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
+func wrapToggleButton(obj *externglib.Object) ToggleButtonner {
 	return &ToggleButton{
-		Object: obj,
 		Button: Button{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -138,13 +134,8 @@ func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -159,39 +150,6 @@ func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
 					},
 				},
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
 		},
 	}
 }
@@ -199,7 +157,7 @@ func wrapToggleButtonner(obj *externglib.Object) ToggleButtonner {
 func marshalToggleButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleButtonner(obj), nil
+	return wrapToggleButton(obj), nil
 }
 
 // NewToggleButton creates a new toggle button.
@@ -309,7 +267,7 @@ func (toggleButton *ToggleButton) SetGroup(group ToggleButtonner) {
 	var _arg1 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
-	_arg1 = (*C.GtkToggleButton)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkToggleButton)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 
 	C.gtk_toggle_button_set_group(_arg0, _arg1)
 }

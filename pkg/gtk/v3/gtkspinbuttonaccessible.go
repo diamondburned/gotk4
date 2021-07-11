@@ -27,29 +27,23 @@ func init() {
 
 // SpinButtonAccessibler describes SpinButtonAccessible's methods.
 type SpinButtonAccessibler interface {
-	gextras.Objector
-
 	privateSpinButtonAccessible()
 }
 
 type SpinButtonAccessible struct {
-	*externglib.Object
-
 	EntryAccessible
-	atk.Action
-	atk.Component
-	atk.EditableText
-	atk.Text
+
 	atk.Value
 }
 
-var _ SpinButtonAccessibler = (*SpinButtonAccessible)(nil)
+var (
+	_ SpinButtonAccessibler = (*SpinButtonAccessible)(nil)
+	_ gextras.Nativer       = (*SpinButtonAccessible)(nil)
+)
 
-func wrapSpinButtonAccessibler(obj *externglib.Object) SpinButtonAccessibler {
+func wrapSpinButtonAccessible(obj *externglib.Object) SpinButtonAccessibler {
 	return &SpinButtonAccessible{
-		Object: obj,
 		EntryAccessible: EntryAccessible{
-			Object: obj,
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
 					ObjectClass: atk.ObjectClass{
@@ -63,27 +57,12 @@ func wrapSpinButtonAccessibler(obj *externglib.Object) SpinButtonAccessibler {
 			Action: atk.Action{
 				Object: obj,
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
 			EditableText: atk.EditableText{
 				Object: obj,
 			},
 			Text: atk.Text{
 				Object: obj,
 			},
-		},
-		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
-		EditableText: atk.EditableText{
-			Object: obj,
-		},
-		Text: atk.Text{
-			Object: obj,
 		},
 		Value: atk.Value{
 			Object: obj,
@@ -94,7 +73,13 @@ func wrapSpinButtonAccessibler(obj *externglib.Object) SpinButtonAccessibler {
 func marshalSpinButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinButtonAccessibler(obj), nil
+	return wrapSpinButtonAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *SpinButtonAccessible) Native() uintptr {
+	return v.EntryAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*SpinButtonAccessible) privateSpinButtonAccessible() {}

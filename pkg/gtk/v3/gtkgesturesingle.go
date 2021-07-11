@@ -28,15 +28,25 @@ func init() {
 
 // GestureSingler describes GestureSingle's methods.
 type GestureSingler interface {
-	gextras.Objector
-
+	// Button returns the button number @gesture listens for, or 0 if @gesture
+	// reacts to any button press.
 	Button() uint
+	// CurrentButton returns the button number currently interacting with
+	// @gesture, or 0 if there is none.
 	CurrentButton() uint
+	// CurrentSequence returns the event sequence currently interacting with
+	// @gesture.
 	CurrentSequence() *gdk.EventSequence
+	// Exclusive gets whether a gesture is exclusive.
 	Exclusive() bool
+	// TouchOnly returns true if the gesture is only triggered by touch events.
 	TouchOnly() bool
+	// SetButton sets the button number @gesture listens to.
 	SetButton(button uint)
+	// SetExclusive sets whether @gesture is exclusive.
 	SetExclusive(exclusive bool)
+	// SetTouchOnly: if @touch_only is true, @gesture will only handle events of
+	// type K_TOUCH_BEGIN, K_TOUCH_UPDATE or K_TOUCH_END.
 	SetTouchOnly(touchOnly bool)
 }
 
@@ -56,9 +66,12 @@ type GestureSingle struct {
 	Gesture
 }
 
-var _ GestureSingler = (*GestureSingle)(nil)
+var (
+	_ GestureSingler  = (*GestureSingle)(nil)
+	_ gextras.Nativer = (*GestureSingle)(nil)
+)
 
-func wrapGestureSingler(obj *externglib.Object) GestureSingler {
+func wrapGestureSingle(obj *externglib.Object) GestureSingler {
 	return &GestureSingle{
 		Gesture: Gesture{
 			EventController: EventController{
@@ -71,7 +84,7 @@ func wrapGestureSingler(obj *externglib.Object) GestureSingler {
 func marshalGestureSingler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureSingler(obj), nil
+	return wrapGestureSingle(obj), nil
 }
 
 // Button returns the button number @gesture listens for, or 0 if @gesture

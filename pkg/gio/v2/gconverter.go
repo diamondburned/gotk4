@@ -28,25 +28,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_converter_get_type()), F: marshalConverterrer},
+		{T: externglib.Type(C.g_converter_get_type()), F: marshalConverterer},
 	})
 }
 
-// ConverterrerOverrider contains methods that are overridable.
+// ConverterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ConverterrerOverrider interface {
+type ConverterOverrider interface {
 	// Reset resets all internal state in the converter, making it behave as if
 	// it was just created. If the converter has any internal state that would
 	// produce output then that output is lost.
 	Reset()
 }
 
-// Converterrer describes Converter's methods.
-type Converterrer interface {
-	gextras.Objector
-
+// Converterer describes Converter's methods.
+type Converterer interface {
+	// Reset resets all internal state in the converter, making it behave as if
+	// it was just created.
 	Reset()
 }
 
@@ -59,18 +59,21 @@ type Converter struct {
 	*externglib.Object
 }
 
-var _ Converterrer = (*Converter)(nil)
+var (
+	_ Converterer     = (*Converter)(nil)
+	_ gextras.Nativer = (*Converter)(nil)
+)
 
-func wrapConverterrer(obj *externglib.Object) Converterrer {
+func wrapConverter(obj *externglib.Object) Converterer {
 	return &Converter{
 		Object: obj,
 	}
 }
 
-func marshalConverterrer(p uintptr) (interface{}, error) {
+func marshalConverterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConverterrer(obj), nil
+	return wrapConverter(obj), nil
 }
 
 // Reset resets all internal state in the converter, making it behave as if it

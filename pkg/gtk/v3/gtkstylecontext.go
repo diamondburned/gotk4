@@ -46,49 +46,100 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 	return StyleContextPrintFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// StyleContexterOverrider contains methods that are overridable.
+// StyleContextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type StyleContexterOverrider interface {
+type StyleContextOverrider interface {
 	Changed()
 }
 
 // StyleContexter describes StyleContext's methods.
 type StyleContexter interface {
-	gextras.Objector
-
+	// AddClass adds a style class to @context, so posterior calls to
+	// gtk_style_context_get() or any of the gtk_render_*() functions will make
+	// use of this new class for styling.
 	AddClass(className string)
-	AddProvider(provider StyleProviderrer, priority uint)
+	// AddProvider adds a style provider to @context, to be used in style
+	// construction.
+	AddProvider(provider StyleProviderer, priority uint)
+	// CancelAnimations stops all running animations for @region_id and all
+	// animatable regions underneath.
 	CancelAnimations(regionId interface{})
+	// Direction returns the widget direction used for rendering.
 	Direction() TextDirection
+	// FrameClock returns the FrameClock to which @context is attached.
 	FrameClock() *gdk.FrameClock
+	// JunctionSides returns the sides where rendered elements connect visually
+	// with others.
 	JunctionSides() JunctionSides
+	// Parent gets the parent context set via gtk_style_context_set_parent().
 	Parent() *StyleContext
+	// Path returns the widget path used for style matching.
 	Path() *WidgetPath
+	// Scale returns the scale used for assets.
 	Scale() int
+	// Screen returns the Screen to which @context is attached.
 	Screen() *gdk.Screen
+	// Section queries the location in the CSS where @property was defined for
+	// the current @context.
 	Section(property string) *CSSSection
+	// State returns the state used for style matching.
 	State() StateFlags
+	// StyleProperty gets the value for a widget style property.
 	StyleProperty(propertyName string, value *externglib.Value)
+	// HasClass returns true if @context currently has defined the given class
+	// name.
 	HasClass(className string) bool
+	// HasRegion returns true if @context has the region defined.
 	HasRegion(regionName string) (RegionFlags, bool)
+	// Invalidate invalidates @context style information, so it will be
+	// reconstructed again.
 	Invalidate()
+	// LookupColor looks up and resolves a color name in the @context color map.
 	LookupColor(colorName string) (gdk.RGBA, bool)
+	// LookupIconSet looks up @stock_id in the icon factories associated to
+	// @context and the default icon factory, returning an icon set if found,
+	// otherwise nil.
 	LookupIconSet(stockId string) *IconSet
+	// PopAnimatableRegion pops an animatable region from @context.
 	PopAnimatableRegion()
+	// PushAnimatableRegion pushes an animatable region, so all further
+	// gtk_render_*() calls between this call and the following
+	// gtk_style_context_pop_animatable_region() will potentially show
+	// transition animations for this region if
+	// gtk_style_context_notify_state_change() is called for a given state, and
+	// the current theme/style defines transition animations for state changes.
 	PushAnimatableRegion(regionId interface{})
+	// RemoveClass removes @class_name from @context.
 	RemoveClass(className string)
-	RemoveProvider(provider StyleProviderrer)
+	// RemoveProvider removes @provider from the style providers list in
+	// @context.
+	RemoveProvider(provider StyleProviderer)
+	// RemoveRegion removes a region from @context.
 	RemoveRegion(regionName string)
+	// Restore restores @context state to a previous stage.
 	Restore()
+	// Save saves the @context state, so temporary modifications done through
+	// gtk_style_context_add_class(), gtk_style_context_remove_class(),
+	// gtk_style_context_set_state(), etc.
 	Save()
+	// ScrollAnimations: this function is analogous to gdk_window_scroll(), and
+	// should be called together with it so the invalidation areas for any
+	// ongoing animation are scrolled together with it.
 	ScrollAnimations(window gdk.Windowwer, dx int, dy int)
+	// SetBackground sets the background of @window to the background pattern or
+	// color specified in @context for its current state.
 	SetBackground(window gdk.Windowwer)
+	// SetFrameClock attaches @context to the given frame clock.
 	SetFrameClock(frameClock gdk.FrameClocker)
+	// SetParent sets the parent style context for @context.
 	SetParent(parent StyleContexter)
+	// SetPath sets the WidgetPath used for style matching.
 	SetPath(path *WidgetPath)
+	// SetScale sets the scale to use when getting image assets for the style.
 	SetScale(scale int)
+	// SetScreen attaches @context to the given screen.
 	SetScreen(screen gdk.Screener)
 }
 
@@ -150,9 +201,12 @@ type StyleContext struct {
 	*externglib.Object
 }
 
-var _ StyleContexter = (*StyleContext)(nil)
+var (
+	_ StyleContexter  = (*StyleContext)(nil)
+	_ gextras.Nativer = (*StyleContext)(nil)
+)
 
-func wrapStyleContexter(obj *externglib.Object) StyleContexter {
+func wrapStyleContext(obj *externglib.Object) StyleContexter {
 	return &StyleContext{
 		Object: obj,
 	}
@@ -161,7 +215,7 @@ func wrapStyleContexter(obj *externglib.Object) StyleContexter {
 func marshalStyleContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleContexter(obj), nil
+	return wrapStyleContext(obj), nil
 }
 
 // NewStyleContext creates a standalone StyleContext, this style context won’t
@@ -214,13 +268,13 @@ func (context *StyleContext) AddClass(className string) {
 // Note: If both priorities are the same, a StyleProvider added through this
 // function takes precedence over another added through
 // gtk_style_context_add_provider_for_screen().
-func (context *StyleContext) AddProvider(provider StyleProviderrer, priority uint) {
+func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
 	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
@@ -594,12 +648,12 @@ func (context *StyleContext) RemoveClass(className string) {
 }
 
 // RemoveProvider removes @provider from the style providers list in @context.
-func (context *StyleContext) RemoveProvider(provider StyleProviderrer) {
+func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
 
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
@@ -655,7 +709,7 @@ func (context *StyleContext) ScrollAnimations(window gdk.Windowwer, dx int, dy i
 	var _arg3 C.gint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 	_arg2 = C.gint(dx)
 	_arg3 = C.gint(dy)
 
@@ -673,7 +727,7 @@ func (context *StyleContext) SetBackground(window gdk.Windowwer) {
 	var _arg1 *C.GdkWindow       // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_style_context_set_background(_arg0, _arg1)
 }
@@ -689,7 +743,7 @@ func (context *StyleContext) SetFrameClock(frameClock gdk.FrameClocker) {
 	var _arg1 *C.GdkFrameClock   // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg1 = (*C.GdkFrameClock)(unsafe.Pointer((frameClock).(gextras.Nativer).Native()))
 
 	C.gtk_style_context_set_frame_clock(_arg0, _arg1)
 }
@@ -705,7 +759,7 @@ func (context *StyleContext) SetParent(parent StyleContexter) {
 	var _arg1 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(parent.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 
 	C.gtk_style_context_set_parent(_arg0, _arg1)
 }
@@ -748,7 +802,7 @@ func (context *StyleContext) SetScreen(screen gdk.Screener) {
 	var _arg1 *C.GdkScreen       // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
 
 	C.gtk_style_context_set_screen(_arg0, _arg1)
 }

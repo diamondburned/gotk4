@@ -32,15 +32,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_resolver_get_type()), F: marshalProxyResolverrer},
+		{T: externglib.Type(C.g_proxy_resolver_get_type()), F: marshalProxyResolverer},
 	})
 }
 
-// ProxyResolverrerOverrider contains methods that are overridable.
+// ProxyResolverOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ProxyResolverrerOverrider interface {
+type ProxyResolverOverrider interface {
 	// IsSupported checks if @resolver can be used on this system. (This is used
 	// internally; g_proxy_resolver_get_default() will only return a proxy
 	// resolver that returns true for this method.)
@@ -67,13 +67,17 @@ type ProxyResolverrerOverrider interface {
 	LookupFinish(result AsyncResulter) ([]string, error)
 }
 
-// ProxyResolverrer describes ProxyResolver's methods.
-type ProxyResolverrer interface {
-	gextras.Objector
-
+// ProxyResolverer describes ProxyResolver's methods.
+type ProxyResolverer interface {
+	// IsSupported checks if @resolver can be used on this system.
 	IsSupported() bool
+	// Lookup looks into the system proxy configuration to determine what proxy,
+	// if any, to use to connect to @uri.
 	Lookup(uri string, cancellable Cancellabler) ([]string, error)
+	// LookupAsync asynchronous lookup of proxy.
 	LookupAsync(uri string, cancellable Cancellabler, callback AsyncReadyCallback)
+	// LookupFinish: call this function to obtain the array of proxy URIs when
+	// g_proxy_resolver_lookup_async() is complete.
 	LookupFinish(result AsyncResulter) ([]string, error)
 }
 
@@ -88,18 +92,21 @@ type ProxyResolver struct {
 	*externglib.Object
 }
 
-var _ ProxyResolverrer = (*ProxyResolver)(nil)
+var (
+	_ ProxyResolverer = (*ProxyResolver)(nil)
+	_ gextras.Nativer = (*ProxyResolver)(nil)
+)
 
-func wrapProxyResolverrer(obj *externglib.Object) ProxyResolverrer {
+func wrapProxyResolver(obj *externglib.Object) ProxyResolverer {
 	return &ProxyResolver{
 		Object: obj,
 	}
 }
 
-func marshalProxyResolverrer(p uintptr) (interface{}, error) {
+func marshalProxyResolverer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProxyResolverrer(obj), nil
+	return wrapProxyResolver(obj), nil
 }
 
 // IsSupported checks if @resolver can be used on this system. (This is used
@@ -144,7 +151,7 @@ func (resolver *ProxyResolver) Lookup(uri string, cancellable Cancellabler) ([]s
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
 
@@ -182,7 +189,7 @@ func (resolver *ProxyResolver) LookupAsync(uri string, cancellable Cancellabler,
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -199,7 +206,7 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
 

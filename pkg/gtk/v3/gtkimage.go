@@ -41,22 +41,21 @@ type ImageType int
 const (
 	// Empty: there is no image displayed by the widget
 	ImageTypeEmpty ImageType = iota
-	// Pixbuf: the widget contains a Pixbuf
+	// Pixbuf: widget contains a Pixbuf
 	ImageTypePixbuf
-	// Stock: the widget contains a [stock item name][gtkstock]
+	// Stock: widget contains a [stock item name][gtkstock]
 	ImageTypeStock
-	// IconSet: the widget contains a IconSet
+	// IconSet: widget contains a IconSet
 	ImageTypeIconSet
-	// Animation: the widget contains a PixbufAnimation
+	// Animation: widget contains a PixbufAnimation
 	ImageTypeAnimation
-	// IconName: the widget contains a named icon. This image type was added in
-	// GTK+ 2.6
+	// IconName: widget contains a named icon. This image type was added in GTK+
+	// 2.6
 	ImageTypeIconName
-	// GIcon: the widget contains a #GIcon. This image type was added in GTK+
-	// 2.14
+	// GIcon: widget contains a #GIcon. This image type was added in GTK+ 2.14
 	ImageTypeGIcon
-	// Surface: the widget contains a #cairo_surface_t. This image type was
-	// added in GTK+ 3.10
+	// Surface: widget contains a #cairo_surface_t. This image type was added in
+	// GTK+ 3.10
 	ImageTypeSurface
 )
 
@@ -66,33 +65,52 @@ func marshalImageType(p uintptr) (interface{}, error) {
 
 // Imager describes Image's methods.
 type Imager interface {
-	gextras.Objector
-
+	// Clear resets the image to be empty.
 	Clear()
+	// Animation gets the PixbufAnimation being displayed by the Image.
 	Animation() *gdkpixbuf.PixbufAnimation
+	// GIcon gets the #GIcon and size being displayed by the Image.
 	GIcon() (*gio.Icon, int)
+	// IconName gets the icon name and size being displayed by the Image.
 	IconName() (string, int)
+	// IconSet gets the icon set and size being displayed by the Image.
 	IconSet() (*IconSet, int)
+	// Pixbuf gets the Pixbuf being displayed by the Image.
 	Pixbuf() *gdkpixbuf.Pixbuf
+	// PixelSize gets the pixel size used for named icons.
 	PixelSize() int
+	// Stock gets the stock icon name and size being displayed by the Image.
 	Stock() (string, int)
+	// StorageType gets the type of representation being used by the Image to
+	// store image data.
 	StorageType() ImageType
+	// SetFromAnimation causes the Image to display the given animation (or
+	// display nothing, if you set the animation to nil).
 	SetFromAnimation(animation gdkpixbuf.PixbufAnimationer)
+	// SetFromFile: see gtk_image_new_from_file() for details.
 	SetFromFile(filename string)
+	// SetFromGIcon: see gtk_image_new_from_gicon() for details.
 	SetFromGIcon(icon gio.Iconner, size int)
+	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
 	SetFromIconName(iconName string, size int)
+	// SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 	SetFromIconSet(iconSet *IconSet, size int)
+	// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
 	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer)
+	// SetFromResource: see gtk_image_new_from_resource() for details.
 	SetFromResource(resourcePath string)
+	// SetFromStock: see gtk_image_new_from_stock() for details.
 	SetFromStock(stockId string, size int)
+	// SetFromSurface: see gtk_image_new_from_surface() for details.
 	SetFromSurface(surface *cairo.Surface)
+	// SetPixelSize sets the pixel size to use for named icons.
 	SetPixelSize(pixelSize int)
 }
 
-// Image: the Image widget displays an image. Various kinds of object can be
-// displayed as an image; most typically, you would load a Pixbuf ("pixel
-// buffer") from a file, and then display that. There’s a convenience function
-// to do this, gtk_image_new_from_file(), used as follows:
+// Image widget displays an image. Various kinds of object can be displayed as
+// an image; most typically, you would load a Pixbuf ("pixel buffer") from a
+// file, and then display that. There’s a convenience function to do this,
+// gtk_image_new_from_file(), used as follows:
 //
 //      static gboolean
 //      button_press_callback (GtkWidget      *event_box,
@@ -146,22 +164,18 @@ type Imager interface {
 // GtkImage has a single CSS node with the name image. The style classes may
 // appear on image CSS nodes: .icon-dropshadow, .lowres-icon.
 type Image struct {
-	*externglib.Object
-
 	Misc
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Imager = (*Image)(nil)
+var (
+	_ Imager          = (*Image)(nil)
+	_ gextras.Nativer = (*Image)(nil)
+)
 
-func wrapImager(obj *externglib.Object) Imager {
+func wrapImage(obj *externglib.Object) Imager {
 	return &Image{
-		Object: obj,
 		Misc: Misc{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -172,18 +186,6 @@ func wrapImager(obj *externglib.Object) Imager {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -191,7 +193,7 @@ func wrapImager(obj *externglib.Object) Imager {
 func marshalImager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImager(obj), nil
+	return wrapImage(obj), nil
 }
 
 // NewImage creates a new empty Image widget.
@@ -220,7 +222,7 @@ func NewImageFromAnimation(animation gdkpixbuf.PixbufAnimationer) *Image {
 	var _arg1 *C.GdkPixbufAnimation // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
+	_arg1 = (*C.GdkPixbufAnimation)(unsafe.Pointer((animation).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_image_new_from_animation(_arg1)
 
@@ -270,7 +272,7 @@ func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_image_new_from_gicon(_arg1, _arg2)
@@ -344,7 +346,7 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 
@@ -611,7 +613,7 @@ func (image *Image) SetFromAnimation(animation gdkpixbuf.PixbufAnimationer) {
 	var _arg1 *C.GdkPixbufAnimation // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
+	_arg1 = (*C.GdkPixbufAnimation)(unsafe.Pointer((animation).(gextras.Nativer).Native()))
 
 	C.gtk_image_set_from_animation(_arg0, _arg1)
 }
@@ -635,7 +637,7 @@ func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
 	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_image_set_from_gicon(_arg0, _arg1, _arg2)
@@ -676,7 +678,7 @@ func (image *Image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
 	var _arg1 *C.GdkPixbuf // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
 
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }

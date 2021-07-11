@@ -24,8 +24,8 @@ func init() {
 
 // Accessibler describes Accessible's methods.
 type Accessibler interface {
-	gextras.Objector
-
+	// AccessibleRole retrieves the `GtkAccessibleRole` for the given
+	// `GtkAccessible`.
 	AccessibleRole() AccessibleRole
 }
 
@@ -50,9 +50,12 @@ type Accessible struct {
 	*externglib.Object
 }
 
-var _ Accessibler = (*Accessible)(nil)
+var (
+	_ Accessibler     = (*Accessible)(nil)
+	_ gextras.Nativer = (*Accessible)(nil)
+)
 
-func wrapAccessibler(obj *externglib.Object) Accessibler {
+func wrapAccessible(obj *externglib.Object) Accessibler {
 	return &Accessible{
 		Object: obj,
 	}
@@ -61,7 +64,7 @@ func wrapAccessibler(obj *externglib.Object) Accessibler {
 func marshalAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccessibler(obj), nil
+	return wrapAccessible(obj), nil
 }
 
 // AccessibleRole retrieves the `GtkAccessibleRole` for the given

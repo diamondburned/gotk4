@@ -25,24 +25,49 @@ func init() {
 
 // ColumnViewer describes ColumnView's methods.
 type ColumnViewer interface {
-	gextras.Objector
-
+	// AppendColumn appends the @column to the end of the columns in @self.
 	AppendColumn(column ColumnViewColumner)
+	// Columns gets the list of columns in this column view.
 	Columns() *gio.ListModel
+	// EnableRubberband returns whether rows can be selected by dragging with
+	// the mouse.
 	EnableRubberband() bool
+	// Model gets the model that's currently used to read the items displayed.
 	Model() *SelectionModel
+	// Reorderable returns whether columns are reorderable.
 	Reorderable() bool
+	// ShowColumnSeparators returns whether the list should show separators
+	// between columns.
 	ShowColumnSeparators() bool
+	// ShowRowSeparators returns whether the list should show separators between
+	// rows.
 	ShowRowSeparators() bool
+	// SingleClickActivate returns whether rows will be activated on single
+	// click and selected on hover.
 	SingleClickActivate() bool
+	// Sorter returns a special sorter that reflects the users sorting choices
+	// in the column view.
 	Sorter() *Sorter
+	// InsertColumn inserts a column at the given position in the columns of
+	// @self.
 	InsertColumn(position uint, column ColumnViewColumner)
+	// RemoveColumn removes the @column from the list of columns of @self.
 	RemoveColumn(column ColumnViewColumner)
+	// SetEnableRubberband sets whether selections can be changed by dragging
+	// with the mouse.
 	SetEnableRubberband(enableRubberband bool)
+	// SetModel sets the model to use.
 	SetModel(model SelectionModeller)
+	// SetReorderable sets whether columns should be reorderable by dragging.
 	SetReorderable(reorderable bool)
+	// SetShowColumnSeparators sets whether the list should show separators
+	// between columns.
 	SetShowColumnSeparators(showColumnSeparators bool)
+	// SetShowRowSeparators sets whether the list should show separators between
+	// rows.
 	SetShowRowSeparators(showRowSeparators bool)
+	// SetSingleClickActivate sets whether rows should be activated on single
+	// click and selected on hover.
 	SetSingleClickActivate(singleClickActivate bool)
 }
 
@@ -107,22 +132,19 @@ type ColumnViewer interface {
 // are using the GTK_ACCESSIBLE_ROLE_ROW role, and individual cells are using
 // the GTK_ACCESSIBLE_ROLE_GRID_CELL role
 type ColumnView struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Scrollable
 }
 
-var _ ColumnViewer = (*ColumnView)(nil)
+var (
+	_ ColumnViewer    = (*ColumnView)(nil)
+	_ gextras.Nativer = (*ColumnView)(nil)
+)
 
-func wrapColumnViewer(obj *externglib.Object) ColumnViewer {
+func wrapColumnView(obj *externglib.Object) ColumnViewer {
 	return &ColumnView{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -136,15 +158,6 @@ func wrapColumnViewer(obj *externglib.Object) ColumnViewer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
@@ -154,7 +167,7 @@ func wrapColumnViewer(obj *externglib.Object) ColumnViewer {
 func marshalColumnViewer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColumnViewer(obj), nil
+	return wrapColumnView(obj), nil
 }
 
 // NewColumnView creates a new `GtkColumnView`.
@@ -165,7 +178,7 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 	var _arg1 *C.GtkSelectionModel // out
 	var _cret *C.GtkWidget         // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_column_view_new(_arg1)
 
@@ -176,13 +189,19 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 	return _columnView
 }
 
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ColumnView) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
+}
+
 // AppendColumn appends the @column to the end of the columns in @self.
 func (self *ColumnView) AppendColumn(column ColumnViewColumner) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
+	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer((column).(gextras.Nativer).Native()))
 
 	C.gtk_column_view_append_column(_arg0, _arg1)
 }
@@ -356,7 +375,7 @@ func (self *ColumnView) InsertColumn(position uint, column ColumnViewColumner) {
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 	_arg1 = C.guint(position)
-	_arg2 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
+	_arg2 = (*C.GtkColumnViewColumn)(unsafe.Pointer((column).(gextras.Nativer).Native()))
 
 	C.gtk_column_view_insert_column(_arg0, _arg1, _arg2)
 }
@@ -367,7 +386,7 @@ func (self *ColumnView) RemoveColumn(column ColumnViewColumner) {
 	var _arg1 *C.GtkColumnViewColumn // out
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
+	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer((column).(gextras.Nativer).Native()))
 
 	C.gtk_column_view_remove_column(_arg0, _arg1)
 }
@@ -394,7 +413,7 @@ func (self *ColumnView) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel // out
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_column_view_set_model(_arg0, _arg1)
 }

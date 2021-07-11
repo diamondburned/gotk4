@@ -27,26 +27,43 @@ func init() {
 
 // Boxxer describes Box's methods.
 type Boxxer interface {
-	gextras.Objector
-
+	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
 	BaselinePosition() BaselinePosition
+	// CenterWidget retrieves the center widget of the box.
 	CenterWidget() *Widget
+	// Homogeneous returns whether the box is homogeneous (all children are the
+	// same size).
 	Homogeneous() bool
+	// Spacing gets the value set by gtk_box_set_spacing().
 	Spacing() int
+	// PackEnd adds @child to @box, packed with reference to the end of @box.
 	PackEnd(child Widgetter, expand bool, fill bool, padding uint)
+	// PackStart adds @child to @box, packed with reference to the start of
+	// @box.
 	PackStart(child Widgetter, expand bool, fill bool, padding uint)
+	// QueryChildPacking obtains information about how @child is packed into
+	// @box.
 	QueryChildPacking(child Widgetter) (expand bool, fill bool, padding uint, packType PackType)
+	// ReorderChild moves @child to a new @position in the list of @box
+	// children.
 	ReorderChild(child Widgetter, position int)
+	// SetCenterWidget sets a center widget; that is a child widget that will be
+	// centered with respect to the full width of the box, even if the children
+	// at either side take up different amounts of space.
 	SetCenterWidget(widget Widgetter)
+	// SetHomogeneous sets the Box:homogeneous property of @box, controlling
+	// whether or not all children of @box are given equal space in the box.
 	SetHomogeneous(homogeneous bool)
+	// SetSpacing sets the Box:spacing property of @box, which is the number of
+	// pixels to place between children of @box.
 	SetSpacing(spacing int)
 }
 
-// Box: the GtkBox widget arranges child widgets into a single row or column,
-// depending upon the value of its Orientable:orientation property. Within the
-// other dimension, all children are allocated the same size. Of course, the
-// Widget:halign and Widget:valign properties can be used on the children to
-// influence their allocation.
+// Box widget arranges child widgets into a single row or column, depending upon
+// the value of its Orientable:orientation property. Within the other dimension,
+// all children are allocated the same size. Of course, the Widget:halign and
+// Widget:valign properties can be used on the children to influence their
+// allocation.
 //
 // GtkBox uses a notion of packing. Packing refers to adding widgets with
 // reference to a particular position in a Container. For a GtkBox, there are
@@ -88,23 +105,20 @@ type Boxxer interface {
 // left to right. So :first-child will always select the leftmost child,
 // regardless of text direction.
 type Box struct {
-	*externglib.Object
-
 	Container
-	atk.ImplementorIface
-	Buildable
+
 	Orientable
 }
 
-var _ Boxxer = (*Box)(nil)
+var (
+	_ Boxxer          = (*Box)(nil)
+	_ gextras.Nativer = (*Box)(nil)
+)
 
-func wrapBoxxer(obj *externglib.Object) Boxxer {
+func wrapBox(obj *externglib.Object) Boxxer {
 	return &Box{
-		Object: obj,
 		Container: Container{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -115,18 +129,6 @@ func wrapBoxxer(obj *externglib.Object) Boxxer {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
@@ -137,7 +139,13 @@ func wrapBoxxer(obj *externglib.Object) Boxxer {
 func marshalBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBoxxer(obj), nil
+	return wrapBox(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Box) Native() uintptr {
+	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
@@ -218,7 +226,7 @@ func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint) {
 	var _arg4 C.guint      // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -241,7 +249,7 @@ func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint)
 	var _arg4 C.guint      // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -263,7 +271,7 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 	var _arg5 C.GtkPackType // in
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_box_query_child_packing(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -298,7 +306,7 @@ func (box *Box) ReorderChild(child Widgetter, position int) {
 	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_box_reorder_child(_arg0, _arg1, _arg2)
@@ -312,7 +320,7 @@ func (box *Box) SetCenterWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_box_set_center_widget(_arg0, _arg1)
 }

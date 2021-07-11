@@ -25,13 +25,17 @@ func init() {
 
 // SliceListModeller describes SliceListModel's methods.
 type SliceListModeller interface {
-	gextras.Objector
-
+	// Model gets the model that is currently being used or nil if none.
 	Model() *gio.ListModel
+	// Offset gets the offset set via gtk_slice_list_model_set_offset().
 	Offset() uint
+	// Size gets the size set via gtk_slice_list_model_set_size().
 	Size() uint
+	// SetModel sets the model to show a slice of.
 	SetModel(model gio.ListModeller)
+	// SetOffset sets the offset into the original model for this slice.
 	SetOffset(offset uint)
+	// SetSize sets the maximum size.
 	SetSize(size uint)
 }
 
@@ -47,9 +51,12 @@ type SliceListModel struct {
 	gio.ListModel
 }
 
-var _ SliceListModeller = (*SliceListModel)(nil)
+var (
+	_ SliceListModeller = (*SliceListModel)(nil)
+	_ gextras.Nativer   = (*SliceListModel)(nil)
+)
 
-func wrapSliceListModeller(obj *externglib.Object) SliceListModeller {
+func wrapSliceListModel(obj *externglib.Object) SliceListModeller {
 	return &SliceListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -61,7 +68,7 @@ func wrapSliceListModeller(obj *externglib.Object) SliceListModeller {
 func marshalSliceListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSliceListModeller(obj), nil
+	return wrapSliceListModel(obj), nil
 }
 
 // NewSliceListModel creates a new slice model.
@@ -73,7 +80,7 @@ func NewSliceListModel(model gio.ListModeller, offset uint, size uint) *SliceLis
 	var _arg3 C.guint              // out
 	var _cret *C.GtkSliceListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg2 = C.guint(offset)
 	_arg3 = C.guint(size)
 
@@ -142,7 +149,7 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel        // out
 
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_slice_list_model_set_model(_arg0, _arg1)
 }

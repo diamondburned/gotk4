@@ -27,25 +27,23 @@ func init() {
 
 // MenuItemAccessibler describes MenuItemAccessible's methods.
 type MenuItemAccessibler interface {
-	gextras.Objector
-
 	privateMenuItemAccessible()
 }
 
 type MenuItemAccessible struct {
-	*externglib.Object
-
 	ContainerAccessible
+
 	atk.Action
-	atk.Component
 	atk.Selection
 }
 
-var _ MenuItemAccessibler = (*MenuItemAccessible)(nil)
+var (
+	_ MenuItemAccessibler = (*MenuItemAccessible)(nil)
+	_ gextras.Nativer     = (*MenuItemAccessible)(nil)
+)
 
-func wrapMenuItemAccessibler(obj *externglib.Object) MenuItemAccessibler {
+func wrapMenuItemAccessible(obj *externglib.Object) MenuItemAccessibler {
 	return &MenuItemAccessible{
-		Object: obj,
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
@@ -57,14 +55,8 @@ func wrapMenuItemAccessibler(obj *externglib.Object) MenuItemAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
 		},
 		Action: atk.Action{
-			Object: obj,
-		},
-		Component: atk.Component{
 			Object: obj,
 		},
 		Selection: atk.Selection{
@@ -76,7 +68,13 @@ func wrapMenuItemAccessibler(obj *externglib.Object) MenuItemAccessibler {
 func marshalMenuItemAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuItemAccessibler(obj), nil
+	return wrapMenuItemAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *MenuItemAccessible) Native() uintptr {
+	return v.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*MenuItemAccessible) privateMenuItemAccessible() {}

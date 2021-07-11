@@ -33,17 +33,18 @@ func init() {
 	})
 }
 
-// SocketControlMessagerOverrider contains methods that are overridable.
+// SocketControlMessageOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type SocketControlMessagerOverrider interface {
+type SocketControlMessageOverrider interface {
 	// Level returns the "level" (i.e. the originating protocol) of the control
 	// message. This is often SOL_SOCKET.
 	Level() int
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
 	Size() uint
+
 	Type() int
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
@@ -55,11 +56,15 @@ type SocketControlMessagerOverrider interface {
 
 // SocketControlMessager describes SocketControlMessage's methods.
 type SocketControlMessager interface {
-	gextras.Objector
-
+	// Level returns the "level" (i.e.
 	Level() int
+	// MsgType returns the protocol specific type of the control message.
 	MsgType() int
+	// Size returns the space required for the control message, not including
+	// headers or alignment.
 	Size() uint
+	// Serialize converts the data in the message to bytes placed in the
+	// message.
 	Serialize(data interface{})
 }
 
@@ -85,9 +90,12 @@ type SocketControlMessage struct {
 	*externglib.Object
 }
 
-var _ SocketControlMessager = (*SocketControlMessage)(nil)
+var (
+	_ SocketControlMessager = (*SocketControlMessage)(nil)
+	_ gextras.Nativer       = (*SocketControlMessage)(nil)
+)
 
-func wrapSocketControlMessager(obj *externglib.Object) SocketControlMessager {
+func wrapSocketControlMessage(obj *externglib.Object) SocketControlMessager {
 	return &SocketControlMessage{
 		Object: obj,
 	}
@@ -96,7 +104,7 @@ func wrapSocketControlMessager(obj *externglib.Object) SocketControlMessager {
 func marshalSocketControlMessager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketControlMessager(obj), nil
+	return wrapSocketControlMessage(obj), nil
 }
 
 // Level returns the "level" (i.e. the originating protocol) of the control

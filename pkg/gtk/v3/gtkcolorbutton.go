@@ -26,31 +26,39 @@ func init() {
 	})
 }
 
-// ColorButtonnerOverrider contains methods that are overridable.
+// ColorButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ColorButtonnerOverrider interface {
+type ColorButtonOverrider interface {
 	ColorSet()
 }
 
 // ColorButtonner describes ColorButton's methods.
 type ColorButtonner interface {
-	gextras.Objector
-
+	// Alpha returns the current alpha value.
 	Alpha() uint16
+	// Color sets @color to be the current color in the ColorButton widget.
 	Color() gdk.Color
+	// Title gets the title of the color selection dialog.
 	Title() string
+	// UseAlpha does the color selection dialog use the alpha channel ?
+	// Deprecated: Use gtk_color_chooser_get_use_alpha() instead.
 	UseAlpha() bool
+	// SetAlpha sets the current opacity to be @alpha.
 	SetAlpha(alpha uint16)
+	// SetColor sets the current color to be @color.
 	SetColor(color *gdk.Color)
+	// SetTitle sets the title for the color selection dialog.
 	SetTitle(title string)
+	// SetUseAlpha sets whether or not the color button should use the alpha
+	// channel.
 	SetUseAlpha(useAlpha bool)
 }
 
-// ColorButton: the ColorButton is a button which displays the currently
-// selected color and allows to open a color selection dialog to change the
-// color. It is suitable widget for selecting a color in a preference dialog.
+// ColorButton is a button which displays the currently selected color and
+// allows to open a color selection dialog to change the color. It is suitable
+// widget for selecting a color in a preference dialog.
 //
 //
 // CSS nodes
@@ -58,29 +66,22 @@ type ColorButtonner interface {
 // GtkColorButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .color style class.
 type ColorButton struct {
-	*externglib.Object
-
 	Button
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
+
 	ColorChooser
 }
 
-var _ ColorButtonner = (*ColorButton)(nil)
+var (
+	_ ColorButtonner  = (*ColorButton)(nil)
+	_ gextras.Nativer = (*ColorButton)(nil)
+)
 
-func wrapColorButtonner(obj *externglib.Object) ColorButtonner {
+func wrapColorButton(obj *externglib.Object) ColorButtonner {
 	return &ColorButton{
-		Object: obj,
 		Button: Button{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -91,27 +92,10 @@ func wrapColorButtonner(obj *externglib.Object) ColorButtonner {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -126,33 +110,6 @@ func wrapColorButtonner(obj *externglib.Object) ColorButtonner {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		ColorChooser: ColorChooser{
 			Object: obj,
@@ -163,7 +120,7 @@ func wrapColorButtonner(obj *externglib.Object) ColorButtonner {
 func marshalColorButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorButtonner(obj), nil
+	return wrapColorButton(obj), nil
 }
 
 // NewColorButton creates a new color button.
@@ -216,6 +173,12 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
 
 	return _colorButton
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ColorButton) Native() uintptr {
+	return v.Button.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Alpha returns the current alpha value.

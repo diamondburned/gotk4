@@ -24,8 +24,6 @@ func init() {
 
 // VolumeButtonner describes VolumeButton's methods.
 type VolumeButtonner interface {
-	gextras.Objector
-
 	privateVolumeButton()
 }
 
@@ -34,24 +32,18 @@ type VolumeButtonner interface {
 //
 // !An example GtkVolumeButton (volumebutton.png)
 type VolumeButton struct {
-	*externglib.Object
-
 	ScaleButton
-	Accessible
-	Buildable
-	ConstraintTarget
-	Orientable
 }
 
-var _ VolumeButtonner = (*VolumeButton)(nil)
+var (
+	_ VolumeButtonner = (*VolumeButton)(nil)
+	_ gextras.Nativer = (*VolumeButton)(nil)
+)
 
-func wrapVolumeButtonner(obj *externglib.Object) VolumeButtonner {
+func wrapVolumeButton(obj *externglib.Object) VolumeButtonner {
 	return &VolumeButton{
-		Object: obj,
 		ScaleButton: ScaleButton{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -65,30 +57,9 @@ func wrapVolumeButtonner(obj *externglib.Object) VolumeButtonner {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -96,7 +67,7 @@ func wrapVolumeButtonner(obj *externglib.Object) VolumeButtonner {
 func marshalVolumeButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolumeButtonner(obj), nil
+	return wrapVolumeButton(obj), nil
 }
 
 // NewVolumeButton creates a `GtkVolumeButton`.

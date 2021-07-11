@@ -24,9 +24,9 @@ func init() {
 
 // WindowGrouper describes WindowGroup's methods.
 type WindowGrouper interface {
-	gextras.Objector
-
+	// AddWindow adds a window to a `GtkWindowGroup`.
 	AddWindow(window Windowwer)
+	// RemoveWindow removes a window from a `GtkWindowGroup`.
 	RemoveWindow(window Windowwer)
 }
 
@@ -50,9 +50,12 @@ type WindowGroup struct {
 	*externglib.Object
 }
 
-var _ WindowGrouper = (*WindowGroup)(nil)
+var (
+	_ WindowGrouper   = (*WindowGroup)(nil)
+	_ gextras.Nativer = (*WindowGroup)(nil)
+)
 
-func wrapWindowGrouper(obj *externglib.Object) WindowGrouper {
+func wrapWindowGroup(obj *externglib.Object) WindowGrouper {
 	return &WindowGroup{
 		Object: obj,
 	}
@@ -61,7 +64,7 @@ func wrapWindowGrouper(obj *externglib.Object) WindowGrouper {
 func marshalWindowGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowGrouper(obj), nil
+	return wrapWindowGroup(obj), nil
 }
 
 // NewWindowGroup creates a new `GtkWindowGroup` object.
@@ -85,7 +88,7 @@ func (windowGroup *WindowGroup) AddWindow(window Windowwer) {
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_window_group_add_window(_arg0, _arg1)
 }
@@ -96,7 +99,7 @@ func (windowGroup *WindowGroup) RemoveWindow(window Windowwer) {
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_window_group_remove_window(_arg0, _arg1)
 }

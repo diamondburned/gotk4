@@ -50,8 +50,7 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 
 // EventControllerScroller describes EventControllerScroll's methods.
 type EventControllerScroller interface {
-	gextras.Objector
-
+	// Flags gets the flags conditioning the scroll controller behavior.
 	Flags() EventControllerScrollFlags
 }
 
@@ -94,9 +93,12 @@ type EventControllerScroll struct {
 	EventController
 }
 
-var _ EventControllerScroller = (*EventControllerScroll)(nil)
+var (
+	_ EventControllerScroller = (*EventControllerScroll)(nil)
+	_ gextras.Nativer         = (*EventControllerScroll)(nil)
+)
 
-func wrapEventControllerScroller(obj *externglib.Object) EventControllerScroller {
+func wrapEventControllerScroll(obj *externglib.Object) EventControllerScroller {
 	return &EventControllerScroll{
 		EventController: EventController{
 			Object: obj,
@@ -107,7 +109,7 @@ func wrapEventControllerScroller(obj *externglib.Object) EventControllerScroller
 func marshalEventControllerScroller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerScroller(obj), nil
+	return wrapEventControllerScroll(obj), nil
 }
 
 // Flags gets the flags conditioning the scroll controller behavior.

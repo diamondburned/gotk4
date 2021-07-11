@@ -27,8 +27,6 @@ func init() {
 
 // WidgetAccessibler describes WidgetAccessible's methods.
 type WidgetAccessibler interface {
-	gextras.Objector
-
 	privateWidgetAccessible()
 }
 
@@ -38,9 +36,12 @@ type WidgetAccessible struct {
 	atk.Component
 }
 
-var _ WidgetAccessibler = (*WidgetAccessible)(nil)
+var (
+	_ WidgetAccessibler = (*WidgetAccessible)(nil)
+	_ gextras.Nativer   = (*WidgetAccessible)(nil)
+)
 
-func wrapWidgetAccessibler(obj *externglib.Object) WidgetAccessibler {
+func wrapWidgetAccessible(obj *externglib.Object) WidgetAccessibler {
 	return &WidgetAccessible{
 		Accessible: Accessible{
 			ObjectClass: atk.ObjectClass{
@@ -56,7 +57,7 @@ func wrapWidgetAccessibler(obj *externglib.Object) WidgetAccessibler {
 func marshalWidgetAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidgetAccessibler(obj), nil
+	return wrapWidgetAccessible(obj), nil
 }
 
 func (*WidgetAccessible) privateWidgetAccessible() {}

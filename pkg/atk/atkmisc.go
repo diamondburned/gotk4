@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// MiscerOverrider contains methods that are overridable.
+// MiscOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type MiscerOverrider interface {
+type MiscOverrider interface {
 	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
 	// (This method is implemented by the toolkit ATK implementation layer; for
 	// instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).
@@ -49,9 +49,10 @@ type MiscerOverrider interface {
 
 // Miscer describes Misc's methods.
 type Miscer interface {
-	gextras.Objector
-
+	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
 	ThreadsEnter()
+	// ThreadsLeave: release the thread mutex for the GUI toolkit, if one
+	// exists.
 	ThreadsLeave()
 }
 
@@ -61,9 +62,12 @@ type Misc struct {
 	*externglib.Object
 }
 
-var _ Miscer = (*Misc)(nil)
+var (
+	_ Miscer          = (*Misc)(nil)
+	_ gextras.Nativer = (*Misc)(nil)
+)
 
-func wrapMiscer(obj *externglib.Object) Miscer {
+func wrapMisc(obj *externglib.Object) Miscer {
 	return &Misc{
 		Object: obj,
 	}
@@ -72,7 +76,7 @@ func wrapMiscer(obj *externglib.Object) Miscer {
 func marshalMiscer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMiscer(obj), nil
+	return wrapMisc(obj), nil
 }
 
 // ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists. (This

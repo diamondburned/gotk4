@@ -34,11 +34,11 @@ func init() {
 	})
 }
 
-// ActionGrouperOverrider contains methods that are overridable.
+// ActionGroupOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionGrouperOverrider interface {
+type ActionGroupOverrider interface {
 	// ActionAdded emits the Group::action-added signal on @action_group.
 	//
 	// This function should only be called by Group implementations.
@@ -204,21 +204,42 @@ type ActionGrouperOverrider interface {
 
 // ActionGrouper describes ActionGroup's methods.
 type ActionGrouper interface {
-	gextras.Objector
-
+	// ActionAdded emits the Group::action-added signal on @action_group.
 	ActionAdded(actionName string)
+	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
+	// @action_group.
 	ActionEnabledChanged(actionName string, enabled bool)
+	// ActionRemoved emits the Group::action-removed signal on @action_group.
 	ActionRemoved(actionName string)
+	// ActionStateChanged emits the Group::action-state-changed signal on
+	// @action_group.
 	ActionStateChanged(actionName string, state *glib.Variant)
+	// ActivateAction: activate the named action within @action_group.
 	ActivateAction(actionName string, parameter *glib.Variant)
+	// ChangeActionState: request for the state of the named action within
+	// @action_group to be changed to @value.
 	ChangeActionState(actionName string, value *glib.Variant)
+	// ActionEnabled checks if the named action within @action_group is
+	// currently enabled.
 	ActionEnabled(actionName string) bool
+	// ActionParameterType queries the type of the parameter that must be given
+	// when activating the named action within @action_group.
 	ActionParameterType(actionName string) *glib.VariantType
+	// ActionState queries the current state of the named action within
+	// @action_group.
 	ActionState(actionName string) *glib.Variant
+	// ActionStateHint requests a hint about the valid range of values for the
+	// state of the named action within @action_group.
 	ActionStateHint(actionName string) *glib.Variant
+	// ActionStateType queries the type of the state of the named action within
+	// @action_group.
 	ActionStateType(actionName string) *glib.VariantType
+	// HasAction checks if the named action exists within @action_group.
 	HasAction(actionName string) bool
+	// ListActions lists the actions contained within @action_group.
 	ListActions() []string
+	// QueryAction queries all aspects of the named action within an
+	// @action_group.
 	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
@@ -267,9 +288,12 @@ type ActionGroup struct {
 	*externglib.Object
 }
 
-var _ ActionGrouper = (*ActionGroup)(nil)
+var (
+	_ ActionGrouper   = (*ActionGroup)(nil)
+	_ gextras.Nativer = (*ActionGroup)(nil)
+)
 
-func wrapActionGrouper(obj *externglib.Object) ActionGrouper {
+func wrapActionGroup(obj *externglib.Object) ActionGrouper {
 	return &ActionGroup{
 		Object: obj,
 	}
@@ -278,7 +302,7 @@ func wrapActionGrouper(obj *externglib.Object) ActionGrouper {
 func marshalActionGrouper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionGrouper(obj), nil
+	return wrapActionGroup(obj), nil
 }
 
 // ActionAdded emits the Group::action-added signal on @action_group.

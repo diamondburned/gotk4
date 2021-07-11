@@ -27,38 +27,30 @@ func init() {
 
 // HScaler describes HScale's methods.
 type HScaler interface {
-	gextras.Objector
-
 	privateHScale()
 }
 
-// HScale: the HScale widget is used to allow the user to select a value using a
-// horizontal slider. To create one, use gtk_hscale_new_with_range().
+// HScale widget is used to allow the user to select a value using a horizontal
+// slider. To create one, use gtk_hscale_new_with_range().
 //
 // The position to show the current value, and the number of decimal places
 // shown can be set using the parent Scale class’s functions.
 //
 // GtkHScale has been deprecated, use Scale instead.
 type HScale struct {
-	*externglib.Object
-
 	Scale
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ HScaler = (*HScale)(nil)
+var (
+	_ HScaler         = (*HScale)(nil)
+	_ gextras.Nativer = (*HScale)(nil)
+)
 
-func wrapHScaler(obj *externglib.Object) HScaler {
+func wrapHScale(obj *externglib.Object) HScaler {
 	return &HScale{
-		Object: obj,
 		Scale: Scale{
-			Object: obj,
 			Range: Range{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -69,34 +61,10 @@ func wrapHScaler(obj *externglib.Object) HScaler {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 				Orientable: Orientable{
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			Orientable: Orientable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -104,7 +72,7 @@ func wrapHScaler(obj *externglib.Object) HScaler {
 func marshalHScaler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHScaler(obj), nil
+	return wrapHScale(obj), nil
 }
 
 // NewHScale creates a new HScale.
@@ -114,7 +82,7 @@ func NewHScale(adjustment Adjustmenter) *HScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_hscale_new(_arg1)
 

@@ -26,11 +26,11 @@ func init() {
 	})
 }
 
-// ButtonnerOverrider contains methods that are overridable.
+// ButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ButtonnerOverrider interface {
+type ButtonOverrider interface {
 	Activate()
 	// Clicked emits a Button::clicked signal to the given Button.
 	Clicked()
@@ -54,35 +54,68 @@ type ButtonnerOverrider interface {
 
 // Buttonner describes Button's methods.
 type Buttonner interface {
-	gextras.Objector
-
+	// Clicked emits a Button::clicked signal to the given Button.
 	Clicked()
+	// Enter emits a Button::enter signal to the given Button.
 	Enter()
+	// Alignment gets the alignment of the child in the button.
 	Alignment() (xalign float32, yalign float32)
+	// AlwaysShowImage returns whether the button will ignore the
+	// Settings:gtk-button-images setting and always show the image, if
+	// available.
 	AlwaysShowImage() bool
+	// EventWindow returns the button’s event window if it is realized, nil
+	// otherwise.
 	EventWindow() *gdk.Window
+	// FocusOnClick returns whether the button grabs focus when it is clicked
+	// with the mouse.
 	FocusOnClick() bool
+	// Image gets the widget that is currenty set as the image of @button.
 	Image() *Widget
+	// ImagePosition gets the position of the image relative to the text inside
+	// the button.
 	ImagePosition() PositionType
+	// Label fetches the text from the label of the button, as set by
+	// gtk_button_set_label().
 	Label() string
+	// Relief returns the current relief style of the given Button.
 	Relief() ReliefStyle
+	// UseStock returns whether the button label is a stock item.
 	UseStock() bool
+	// UseUnderline returns whether an embedded underline in the button label
+	// indicates a mnemonic.
 	UseUnderline() bool
+	// Leave emits a Button::leave signal to the given Button.
 	Leave()
+	// Pressed emits a Button::pressed signal to the given Button.
 	Pressed()
+	// Released emits a Button::released signal to the given Button.
 	Released()
+	// SetAlignment sets the alignment of the child.
 	SetAlignment(xalign float32, yalign float32)
+	// SetAlwaysShowImage: if true, the button will ignore the
+	// Settings:gtk-button-images setting and always show the image, if
+	// available.
 	SetAlwaysShowImage(alwaysShow bool)
+	// SetFocusOnClick sets whether the button will grab focus when it is
+	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
+	// SetImage: set the image of @button to the given widget.
 	SetImage(image Widgetter)
+	// SetLabel sets the text of the label of the button to @str.
 	SetLabel(label string)
+	// SetUseStock: if true, the label set on the button is used as a stock id
+	// to select the stock item for the button.
 	SetUseStock(useStock bool)
+	// SetUseUnderline: if true, an underline in the text of the button label
+	// indicates the next character should be used for the mnemonic accelerator
+	// key.
 	SetUseUnderline(useUnderline bool)
 }
 
-// Button: the Button widget is generally used to trigger a callback function
-// that is called when the button is pressed. The various signals and how to use
-// them are outlined below.
+// Button widget is generally used to trigger a callback function that is called
+// when the button is pressed. The various signals and how to use them are
+// outlined below.
 //
 // The Button widget can hold any valid child widget. That is, it can hold
 // almost any other standard Widget. The most commonly used child is the Label.
@@ -103,26 +136,22 @@ type Buttonner interface {
 // .toggle, .popup, .scale, .lock, .color, .font, .file to differentiate
 // themselves from a plain GtkButton.
 type Button struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
+
 	Actionable
 	Activatable
-	Buildable
 }
 
-var _ Buttonner = (*Button)(nil)
+var (
+	_ Buttonner       = (*Button)(nil)
+	_ gextras.Nativer = (*Button)(nil)
+)
 
-func wrapButtonner(obj *externglib.Object) Buttonner {
+func wrapButton(obj *externglib.Object) Buttonner {
 	return &Button{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -133,27 +162,10 @@ func wrapButtonner(obj *externglib.Object) Buttonner {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
 		},
 		Actionable: Actionable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -168,16 +180,13 @@ func wrapButtonner(obj *externglib.Object) Buttonner {
 		Activatable: Activatable{
 			Object: obj,
 		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButtonner(obj), nil
+	return wrapButton(obj), nil
 }
 
 // NewButton creates a new Button widget. To add a child widget to the button,
@@ -283,6 +292,12 @@ func NewButtonWithMnemonic(label string) *Button {
 	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
 
 	return _button
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Button) Native() uintptr {
+	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Clicked emits a Button::clicked signal to the given Button.
@@ -586,7 +601,7 @@ func (button *Button) SetImage(image Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((image).(gextras.Nativer).Native()))
 
 	C.gtk_button_set_image(_arg0, _arg1)
 }

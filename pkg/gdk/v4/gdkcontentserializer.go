@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_content_serializer_get_type()), F: marshalContentSerializerrer},
+		{T: externglib.Type(C.gdk_content_serializer_get_type()), F: marshalContentSerializerer},
 	})
 }
 
@@ -30,7 +30,7 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.gdk_content_serialize_finish(_arg1, &_cerr)
 
@@ -41,19 +41,29 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 	return _goerr
 }
 
-// ContentSerializerrer describes ContentSerializer's methods.
-type ContentSerializerrer interface {
-	gextras.Objector
-
+// ContentSerializerer describes ContentSerializer's methods.
+type ContentSerializerer interface {
+	// Cancellable gets the cancellable for the current operation.
 	Cancellable() *gio.Cancellable
+	// GType gets the `GType` to of the object to serialize.
 	GType() externglib.Type
+	// MIMEType gets the mime type to serialize to.
 	MIMEType() string
+	// OutputStream gets the output stream for the current operation.
 	OutputStream() *gio.OutputStream
+	// Priority gets the I/O priority for the current operation.
 	Priority() int
+	// TaskData gets the data that was associated with the current operation.
 	TaskData() interface{}
+	// UserData gets the user data that was passed when the serializer was
+	// registered.
 	UserData() interface{}
+	// Value gets the `GValue` to read the object to serialize from.
 	Value() *externglib.Value
+	// ReturnError: indicate that the serialization has ended with an error.
 	ReturnError(err error)
+	// ReturnSuccess: indicate that the serialization has been successfully
+	// completed.
 	ReturnSuccess()
 }
 
@@ -75,9 +85,12 @@ type ContentSerializer struct {
 	gio.AsyncResult
 }
 
-var _ ContentSerializerrer = (*ContentSerializer)(nil)
+var (
+	_ ContentSerializerer = (*ContentSerializer)(nil)
+	_ gextras.Nativer     = (*ContentSerializer)(nil)
+)
 
-func wrapContentSerializerrer(obj *externglib.Object) ContentSerializerrer {
+func wrapContentSerializer(obj *externglib.Object) ContentSerializerer {
 	return &ContentSerializer{
 		Object: obj,
 		AsyncResult: gio.AsyncResult{
@@ -86,10 +99,10 @@ func wrapContentSerializerrer(obj *externglib.Object) ContentSerializerrer {
 	}
 }
 
-func marshalContentSerializerrer(p uintptr) (interface{}, error) {
+func marshalContentSerializerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContentSerializerrer(obj), nil
+	return wrapContentSerializer(obj), nil
 }
 
 // Cancellable gets the cancellable for the current operation.

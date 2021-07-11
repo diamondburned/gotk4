@@ -23,11 +23,11 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_pad_action_type_get_type()), F: marshalPadActionType},
-		{T: externglib.Type(C.gtk_pad_controller_get_type()), F: marshalPadControllerrer},
+		{T: externglib.Type(C.gtk_pad_controller_get_type()), F: marshalPadControllerer},
 	})
 }
 
-// PadActionType: the type of a pad action.
+// PadActionType: type of a pad action.
 type PadActionType int
 
 const (
@@ -43,10 +43,10 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 	return PadActionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PadControllerrer describes PadController's methods.
-type PadControllerrer interface {
-	gextras.Objector
-
+// PadControllerer describes PadController's methods.
+type PadControllerer interface {
+	// SetActionEntries: this is a convenience function to add a group of action
+	// entries on @controller.
 	SetActionEntries(entries []PadActionEntry)
 }
 
@@ -94,9 +94,12 @@ type PadController struct {
 	EventController
 }
 
-var _ PadControllerrer = (*PadController)(nil)
+var (
+	_ PadControllerer = (*PadController)(nil)
+	_ gextras.Nativer = (*PadController)(nil)
+)
 
-func wrapPadControllerrer(obj *externglib.Object) PadControllerrer {
+func wrapPadController(obj *externglib.Object) PadControllerer {
 	return &PadController{
 		EventController: EventController{
 			Object: obj,
@@ -104,10 +107,10 @@ func wrapPadControllerrer(obj *externglib.Object) PadControllerrer {
 	}
 }
 
-func marshalPadControllerrer(p uintptr) (interface{}, error) {
+func marshalPadControllerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPadControllerrer(obj), nil
+	return wrapPadController(obj), nil
 }
 
 // NewPadController creates a new PadController that will associate events from
@@ -125,9 +128,9 @@ func NewPadController(window Windowwer, group gio.ActionGrouper, pad gdk.Devicer
 	var _arg3 *C.GdkDevice        // out
 	var _cret *C.GtkPadController // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
-	_arg3 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg3 = (*C.GdkDevice)(unsafe.Pointer((pad).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_pad_controller_new(_arg1, _arg2, _arg3)
 

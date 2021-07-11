@@ -36,65 +36,147 @@ func init() {
 
 // FileInfor describes FileInfo's methods.
 type FileInfor interface {
-	gextras.Objector
-
+	// ClearStatus clears the status information from @info.
 	ClearStatus()
+	// CopyInto: first clears all of the [GFileAttribute][gio-GFileAttribute] of
+	// @dest_info, and then copies all of the file attributes from @src_info to
+	// @dest_info.
 	CopyInto(destInfo FileInfor)
+	// Dup duplicates a file info structure.
 	Dup() *FileInfo
+	// AttributeAsString gets the value of a attribute, formatted as a string.
 	AttributeAsString(attribute string) string
+	// AttributeBoolean gets the value of a boolean attribute.
 	AttributeBoolean(attribute string) bool
+	// AttributeByteString gets the value of a byte string attribute.
 	AttributeByteString(attribute string) string
+	// AttributeData gets the attribute type, value and status for an attribute
+	// key.
 	AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool)
+	// AttributeInt32 gets a signed 32-bit integer contained within the
+	// attribute.
 	AttributeInt32(attribute string) int32
+	// AttributeInt64 gets a signed 64-bit integer contained within the
+	// attribute.
 	AttributeInt64(attribute string) int64
+	// AttributeObject gets the value of a #GObject attribute.
 	AttributeObject(attribute string) *externglib.Object
+	// AttributeStatus gets the attribute status for an attribute key.
 	AttributeStatus(attribute string) FileAttributeStatus
+	// AttributeString gets the value of a string attribute.
 	AttributeString(attribute string) string
+	// AttributeStringv gets the value of a stringv attribute.
 	AttributeStringv(attribute string) []string
+	// AttributeType gets the attribute type for an attribute key.
 	AttributeType(attribute string) FileAttributeType
+	// AttributeUint32 gets an unsigned 32-bit integer contained within the
+	// attribute.
 	AttributeUint32(attribute string) uint32
+	// AttributeUint64 gets a unsigned 64-bit integer contained within the
+	// attribute.
 	AttributeUint64(attribute string) uint64
+	// ContentType gets the file's content type.
 	ContentType() string
+	// DisplayName gets a display name for a file.
 	DisplayName() string
+	// EditName gets the edit name for a file.
 	EditName() string
+	// Etag gets the [entity tag][gfile-etag] for a given Info.
 	Etag() string
+	// FileType gets a file's type (whether it is a regular file, symlink, etc).
 	FileType() FileType
+	// Icon gets the icon for a file.
 	Icon() *Icon
+	// IsBackup checks if a file is a backup file.
 	IsBackup() bool
+	// IsHidden checks if a file is hidden.
 	IsHidden() bool
+	// IsSymlink checks if a file is a symlink.
 	IsSymlink() bool
+	// ModificationTime gets the modification time of the current @info and sets
+	// it in @result.
 	ModificationTime() glib.TimeVal
+	// Name gets the name for a file.
 	Name() string
+	// Size gets the file's size (in bytes).
 	Size() int64
+	// SortOrder gets the value of the sort_order attribute from the Info.
 	SortOrder() int32
+	// SymbolicIcon gets the symbolic icon for a file.
 	SymbolicIcon() *Icon
+	// SymlinkTarget gets the symlink target for a given Info.
 	SymlinkTarget() string
+	// HasAttribute checks if a file info structure has an attribute named
+	// @attribute.
 	HasAttribute(attribute string) bool
+	// HasNamespace checks if a file info structure has an attribute in the
+	// specified @name_space.
 	HasNamespace(nameSpace string) bool
+	// ListAttributes lists the file info structure's attributes.
 	ListAttributes(nameSpace string) []string
+	// RemoveAttribute removes all cases of @attribute from @info if it exists.
 	RemoveAttribute(attribute string)
+	// SetAttributeBoolean sets the @attribute to contain the given @attr_value,
+	// if possible.
 	SetAttributeBoolean(attribute string, attrValue bool)
+	// SetAttributeByteString sets the @attribute to contain the given
+	// @attr_value, if possible.
 	SetAttributeByteString(attribute string, attrValue string)
+	// SetAttributeInt32 sets the @attribute to contain the given @attr_value,
+	// if possible.
 	SetAttributeInt32(attribute string, attrValue int32)
+	// SetAttributeInt64 sets the @attribute to contain the given @attr_value,
+	// if possible.
 	SetAttributeInt64(attribute string, attrValue int64)
+	// SetAttributeMask sets @mask on @info to match specific attribute types.
 	SetAttributeMask(mask *FileAttributeMatcher)
+	// SetAttributeObject sets the @attribute to contain the given @attr_value,
+	// if possible.
 	SetAttributeObject(attribute string, attrValue gextras.Objector)
+	// SetAttributeString sets the @attribute to contain the given @attr_value,
+	// if possible.
 	SetAttributeString(attribute string, attrValue string)
+	// SetAttributeStringv sets the @attribute to contain the given @attr_value,
+	// if possible.
 	SetAttributeStringv(attribute string, attrValue []string)
+	// SetAttributeUint32 sets the @attribute to contain the given @attr_value,
+	// if possible.
 	SetAttributeUint32(attribute string, attrValue uint32)
+	// SetAttributeUint64 sets the @attribute to contain the given @attr_value,
+	// if possible.
 	SetAttributeUint64(attribute string, attrValue uint64)
+	// SetContentType sets the content type attribute for a given Info.
 	SetContentType(contentType string)
+	// SetDisplayName sets the display name for the current Info.
 	SetDisplayName(displayName string)
+	// SetEditName sets the edit name for the current file.
 	SetEditName(editName string)
+	// SetIcon sets the icon for a given Info.
 	SetIcon(icon Iconner)
+	// SetIsHidden sets the "is_hidden" attribute in a Info according to
+	// @is_hidden.
 	SetIsHidden(isHidden bool)
+	// SetIsSymlink sets the "is_symlink" attribute in a Info according to
+	// @is_symlink.
 	SetIsSymlink(isSymlink bool)
+	// SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
+	// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the
+	// given time value.
 	SetModificationTime(mtime *glib.TimeVal)
+	// SetName sets the name attribute for the current Info.
 	SetName(name string)
+	// SetSize sets the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file
+	// info to the given size.
 	SetSize(size int64)
+	// SetSortOrder sets the sort order attribute in the file info structure.
 	SetSortOrder(sortOrder int32)
+	// SetSymbolicIcon sets the symbolic icon for a given Info.
 	SetSymbolicIcon(icon Iconner)
+	// SetSymlinkTarget sets the G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET
+	// attribute in the file info to the given symlink target.
 	SetSymlinkTarget(symlinkTarget string)
+	// UnsetAttributeMask unsets a mask set by g_file_info_set_attribute_mask(),
+	// if one is set.
 	UnsetAttributeMask()
 }
 
@@ -125,9 +207,12 @@ type FileInfo struct {
 	*externglib.Object
 }
 
-var _ FileInfor = (*FileInfo)(nil)
+var (
+	_ FileInfor       = (*FileInfo)(nil)
+	_ gextras.Nativer = (*FileInfo)(nil)
+)
 
-func wrapFileInfor(obj *externglib.Object) FileInfor {
+func wrapFileInfo(obj *externglib.Object) FileInfor {
 	return &FileInfo{
 		Object: obj,
 	}
@@ -136,7 +221,7 @@ func wrapFileInfor(obj *externglib.Object) FileInfor {
 func marshalFileInfor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileInfor(obj), nil
+	return wrapFileInfo(obj), nil
 }
 
 // NewFileInfo creates a new file info structure.
@@ -169,7 +254,7 @@ func (srcInfo *FileInfo) CopyInto(destInfo FileInfor) {
 	var _arg1 *C.GFileInfo // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(srcInfo.Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer(destInfo.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer((destInfo).(gextras.Nativer).Native()))
 
 	C.g_file_info_copy_into(_arg0, _arg1)
 }
@@ -1027,7 +1112,7 @@ func (info *FileInfo) SetIcon(icon Iconner) {
 	var _arg1 *C.GIcon     // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.g_file_info_set_icon(_arg0, _arg1)
 }
@@ -1120,7 +1205,7 @@ func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
 	var _arg1 *C.GIcon     // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.g_file_info_set_symbolic_icon(_arg0, _arg1)
 }

@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.pango_render_part_get_type()), F: marshalRenderPart},
-		{T: externglib.Type(C.pango_renderer_get_type()), F: marshalRendererrer},
+		{T: externglib.Type(C.pango_renderer_get_type()), F: marshalRendererer},
 	})
 }
 
@@ -29,9 +29,9 @@ func init() {
 type RenderPart int
 
 const (
-	// Foreground: the text itself
+	// Foreground: text itself
 	RenderPartForeground RenderPart = iota
-	// Background: the area behind the text
+	// Background: area behind the text
 	RenderPartBackground
 	// Underline: underlines
 	RenderPartUnderline
@@ -45,11 +45,11 @@ func marshalRenderPart(p uintptr) (interface{}, error) {
 	return RenderPart(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RendererrerOverrider contains methods that are overridable.
+// RendererOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RendererrerOverrider interface {
+type RendererOverrider interface {
 	Begin()
 	// DrawErrorUnderline: draw a squiggly line that approximately covers the
 	// given rectangle in the style of an underline used to indicate a spelling
@@ -79,24 +79,42 @@ type RendererrerOverrider interface {
 	// DrawGlyphs draws the glyphs in @glyphs with the specified
 	// `PangoRenderer`.
 	DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int)
+
 	DrawShape(attr *AttrShape, x int, y int)
+
 	End()
 }
 
-// Rendererrer describes Renderer's methods.
-type Rendererrer interface {
-	gextras.Objector
-
+// Rendererer describes Renderer's methods.
+type Rendererer interface {
+	// Activate does initial setup before rendering operations on @renderer.
 	Activate()
+	// Deactivate cleans up after rendering operations on @renderer.
 	Deactivate()
+	// DrawErrorUnderline: draw a squiggly line that approximately covers the
+	// given rectangle in the style of an underline used to indicate a spelling
+	// error.
 	DrawErrorUnderline(x int, y int, width int, height int)
+	// DrawGlyphItem draws the glyphs in @glyph_item with the specified
+	// `PangoRenderer`, embedding the text associated with the glyphs in the
+	// output if the output format supports it.
 	DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
+	// DrawGlyphs draws the glyphs in @glyphs with the specified
+	// `PangoRenderer`.
 	DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int)
+	// DrawLayout draws @layout with the specified `PangoRenderer`.
 	DrawLayout(layout Layouter, x int, y int)
+	// DrawLayoutLine draws @line with the specified `PangoRenderer`.
 	DrawLayoutLine(line *LayoutLine, x int, y int)
+	// Layout gets the layout currently being rendered using @renderer.
 	Layout() *Layout
+	// LayoutLine gets the layout line currently being rendered using @renderer.
 	LayoutLine() *LayoutLine
+	// Matrix gets the transformation matrix that will be applied when
+	// rendering.
 	Matrix() *Matrix
+	// SetMatrix sets the transformation matrix that will be applied when
+	// rendering.
 	SetMatrix(matrix *Matrix)
 }
 
@@ -110,18 +128,21 @@ type Renderer struct {
 	*externglib.Object
 }
 
-var _ Rendererrer = (*Renderer)(nil)
+var (
+	_ Rendererer      = (*Renderer)(nil)
+	_ gextras.Nativer = (*Renderer)(nil)
+)
 
-func wrapRendererrer(obj *externglib.Object) Rendererrer {
+func wrapRenderer(obj *externglib.Object) Rendererer {
 	return &Renderer{
 		Object: obj,
 	}
 }
 
-func marshalRendererrer(p uintptr) (interface{}, error) {
+func marshalRendererer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRendererrer(obj), nil
+	return wrapRenderer(obj), nil
 }
 
 // Activate does initial setup before rendering operations on @renderer.
@@ -213,7 +234,7 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y 
 	var _arg4 C.int               // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
 	_arg2 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg3 = C.int(x)
 	_arg4 = C.int(y)
@@ -229,7 +250,7 @@ func (renderer *Renderer) DrawLayout(layout Layouter, x int, y int) {
 	var _arg3 C.int            // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg1 = (*C.PangoLayout)(unsafe.Pointer((layout).(gextras.Nativer).Native()))
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
 

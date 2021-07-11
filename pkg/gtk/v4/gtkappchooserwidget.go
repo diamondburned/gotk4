@@ -24,19 +24,41 @@ func init() {
 
 // AppChooserWidgetter describes AppChooserWidget's methods.
 type AppChooserWidgetter interface {
-	gextras.Objector
-
+	// DefaultText returns the text that is shown if there are not applications
+	// that can handle the content type.
 	DefaultText() string
+	// ShowAll gets whether the app chooser should show all applications in a
+	// flat list.
 	ShowAll() bool
+	// ShowDefault gets whether the app chooser should show the default handler
+	// for the content type in a separate section.
 	ShowDefault() bool
+	// ShowFallback gets whether the app chooser should show related
+	// applications for the content type in a separate section.
 	ShowFallback() bool
+	// ShowOther gets whether the app chooser should show applications which are
+	// unrelated to the content type.
 	ShowOther() bool
+	// ShowRecommended gets whether the app chooser should show recommended
+	// applications for the content type in a separate section.
 	ShowRecommended() bool
+	// SetDefaultText sets the text that is shown if there are not applications
+	// that can handle the content type.
 	SetDefaultText(text string)
+	// SetShowAll sets whether the app chooser should show all applications in a
+	// flat list.
 	SetShowAll(setting bool)
+	// SetShowDefault sets whether the app chooser should show the default
+	// handler for the content type in a separate section.
 	SetShowDefault(setting bool)
+	// SetShowFallback sets whether the app chooser should show related
+	// applications for the content type in a separate section.
 	SetShowFallback(setting bool)
+	// SetShowOther sets whether the app chooser should show applications which
+	// are unrelated to the content type.
 	SetShowOther(setting bool)
+	// SetShowRecommended sets whether the app chooser should show recommended
+	// applications for the content type in a separate section.
 	SetShowRecommended(setting bool)
 }
 
@@ -65,22 +87,19 @@ type AppChooserWidgetter interface {
 //
 // `GtkAppChooserWidget` has a single CSS node with name appchooser.
 type AppChooserWidget struct {
-	*externglib.Object
-
 	Widget
-	Accessible
+
 	AppChooser
-	Buildable
-	ConstraintTarget
 }
 
-var _ AppChooserWidgetter = (*AppChooserWidget)(nil)
+var (
+	_ AppChooserWidgetter = (*AppChooserWidget)(nil)
+	_ gextras.Nativer     = (*AppChooserWidget)(nil)
+)
 
-func wrapAppChooserWidgetter(obj *externglib.Object) AppChooserWidgetter {
+func wrapAppChooserWidget(obj *externglib.Object) AppChooserWidgetter {
 	return &AppChooserWidget{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -94,13 +113,8 @@ func wrapAppChooserWidgetter(obj *externglib.Object) AppChooserWidgetter {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
 		AppChooser: AppChooser{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -115,19 +129,13 @@ func wrapAppChooserWidgetter(obj *externglib.Object) AppChooserWidgetter {
 				},
 			},
 		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooserWidgetter(obj), nil
+	return wrapAppChooserWidget(obj), nil
 }
 
 // NewAppChooserWidget creates a new `GtkAppChooserWidget` for applications that
@@ -146,6 +154,12 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	_appChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserWidget)
 
 	return _appChooserWidget
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *AppChooserWidget) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // DefaultText returns the text that is shown if there are not applications that

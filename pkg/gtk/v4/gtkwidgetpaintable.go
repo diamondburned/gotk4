@@ -25,9 +25,9 @@ func init() {
 
 // WidgetPaintabler describes WidgetPaintable's methods.
 type WidgetPaintabler interface {
-	gextras.Objector
-
+	// Widget returns the widget that is observed or nil if none.
 	Widget() *Widget
+	// SetWidget sets the widget that should be observed.
 	SetWidget(widget Widgetter)
 }
 
@@ -57,9 +57,12 @@ type WidgetPaintable struct {
 	gdk.Paintable
 }
 
-var _ WidgetPaintabler = (*WidgetPaintable)(nil)
+var (
+	_ WidgetPaintabler = (*WidgetPaintable)(nil)
+	_ gextras.Nativer  = (*WidgetPaintable)(nil)
+)
 
-func wrapWidgetPaintabler(obj *externglib.Object) WidgetPaintabler {
+func wrapWidgetPaintable(obj *externglib.Object) WidgetPaintabler {
 	return &WidgetPaintable{
 		Object: obj,
 		Paintable: gdk.Paintable{
@@ -71,7 +74,7 @@ func wrapWidgetPaintabler(obj *externglib.Object) WidgetPaintabler {
 func marshalWidgetPaintabler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidgetPaintabler(obj), nil
+	return wrapWidgetPaintable(obj), nil
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.
@@ -79,7 +82,7 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_widget_paintable_new(_arg1)
 
@@ -112,7 +115,7 @@ func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget          // out
 
 	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
 }

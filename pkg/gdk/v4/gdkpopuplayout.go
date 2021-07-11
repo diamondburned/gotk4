@@ -66,8 +66,8 @@ func marshalAnchorHints(p uintptr) (interface{}, error) {
 	return AnchorHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PopupLayout: the `GdkPopupLayout` struct contains information that is
-// necessary position a [interface@Gdk.Popup] relative to its parent.
+// PopupLayout: `GdkPopupLayout` struct contains information that is necessary
+// position a [interface@Gdk.Popup] relative to its parent.
 //
 // The positioning requires a negotiation with the windowing system, since it
 // depends on external constraints, such as the position of the parent surface,

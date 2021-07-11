@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// NetworkMonitorrerOverrider contains methods that are overridable.
+// NetworkMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type NetworkMonitorrerOverrider interface {
+type NetworkMonitorOverrider interface {
 	// CanReach attempts to determine whether or not the host pointed to by
 	// @connectable can be reached, without actually trying to connect to it.
 	//
@@ -70,18 +70,27 @@ type NetworkMonitorrerOverrider interface {
 	// CanReachFinish finishes an async network connectivity test. See
 	// g_network_monitor_can_reach_async().
 	CanReachFinish(result AsyncResulter) error
+
 	NetworkChanged(networkAvailable bool)
 }
 
 // NetworkMonitorrer describes NetworkMonitor's methods.
 type NetworkMonitorrer interface {
-	gextras.Objector
-
+	// CanReach attempts to determine whether or not the host pointed to by
+	// @connectable can be reached, without actually trying to connect to it.
 	CanReach(connectable SocketConnectabler, cancellable Cancellabler) error
+	// CanReachAsync: asynchronously attempts to determine whether or not the
+	// host pointed to by @connectable can be reached, without actually trying
+	// to connect to it.
 	CanReachAsync(connectable SocketConnectabler, cancellable Cancellabler, callback AsyncReadyCallback)
+	// CanReachFinish finishes an async network connectivity test.
 	CanReachFinish(result AsyncResulter) error
+	// Connectivity gets a more detailed networking state than
+	// g_network_monitor_get_network_available().
 	Connectivity() NetworkConnectivity
+	// NetworkAvailable checks if the network is available.
 	NetworkAvailable() bool
+	// NetworkMetered checks if the network is metered.
 	NetworkMetered() bool
 }
 
@@ -94,9 +103,12 @@ type NetworkMonitor struct {
 	Initable
 }
 
-var _ NetworkMonitorrer = (*NetworkMonitor)(nil)
+var (
+	_ NetworkMonitorrer = (*NetworkMonitor)(nil)
+	_ gextras.Nativer   = (*NetworkMonitor)(nil)
+)
 
-func wrapNetworkMonitorrer(obj *externglib.Object) NetworkMonitorrer {
+func wrapNetworkMonitor(obj *externglib.Object) NetworkMonitorrer {
 	return &NetworkMonitor{
 		Initable: Initable{
 			Object: obj,
@@ -107,7 +119,7 @@ func wrapNetworkMonitorrer(obj *externglib.Object) NetworkMonitorrer {
 func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNetworkMonitorrer(obj), nil
+	return wrapNetworkMonitor(obj), nil
 }
 
 // CanReach attempts to determine whether or not the host pointed to by
@@ -132,8 +144,8 @@ func (monitor *NetworkMonitor) CanReach(connectable SocketConnectabler, cancella
 	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(monitor.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_network_monitor_can_reach(_arg0, _arg1, _arg2, &_cerr)
 
@@ -160,8 +172,8 @@ func (monitor *NetworkMonitor) CanReachAsync(connectable SocketConnectabler, can
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(monitor.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(box.Assign(callback))
 
@@ -176,7 +188,7 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(monitor.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_network_monitor_can_reach_finish(_arg0, _arg1, &_cerr)
 

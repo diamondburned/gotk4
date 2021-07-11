@@ -24,13 +24,10 @@ func init() {
 
 // FontChooserWidgetter describes FontChooserWidget's methods.
 type FontChooserWidgetter interface {
-	gextras.Objector
-
 	privateFontChooserWidget()
 }
 
-// FontChooserWidget: the `GtkFontChooserWidget` widget lets the user select a
-// font.
+// FontChooserWidget: `GtkFontChooserWidget` widget lets the user select a font.
 //
 // It is used in the `GtkFontChooserDialog` widget to provide a dialog for
 // selecting fonts.
@@ -49,22 +46,19 @@ type FontChooserWidgetter interface {
 //
 // `GtkFontChooserWidget` has a single CSS node with name fontchooser.
 type FontChooserWidget struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	FontChooser
 }
 
-var _ FontChooserWidgetter = (*FontChooserWidget)(nil)
+var (
+	_ FontChooserWidgetter = (*FontChooserWidget)(nil)
+	_ gextras.Nativer      = (*FontChooserWidget)(nil)
+)
 
-func wrapFontChooserWidgetter(obj *externglib.Object) FontChooserWidgetter {
+func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidgetter {
 	return &FontChooserWidget{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -78,15 +72,6 @@ func wrapFontChooserWidgetter(obj *externglib.Object) FontChooserWidgetter {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		FontChooser: FontChooser{
 			Object: obj,
 		},
@@ -96,7 +81,7 @@ func wrapFontChooserWidgetter(obj *externglib.Object) FontChooserWidgetter {
 func marshalFontChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontChooserWidgetter(obj), nil
+	return wrapFontChooserWidget(obj), nil
 }
 
 // NewFontChooserWidget creates a new `GtkFontChooserWidget`.
@@ -110,6 +95,12 @@ func NewFontChooserWidget() *FontChooserWidget {
 	_fontChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontChooserWidget)
 
 	return _fontChooserWidget
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *FontChooserWidget) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*FontChooserWidget) privateFontChooserWidget() {}

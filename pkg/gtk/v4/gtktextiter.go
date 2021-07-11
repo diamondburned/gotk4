@@ -43,8 +43,8 @@ const (
 	// TextSearchFlagsTextOnly: search only text. A match may have paintables or
 	// child widgets mixed inside the matched range.
 	TextSearchFlagsTextOnly TextSearchFlags = 0b10
-	// TextSearchFlagsCaseInsensitive: the text will be matched regardless of
-	// what case it is in.
+	// TextSearchFlagsCaseInsensitive: text will be matched regardless of what
+	// case it is in.
 	TextSearchFlagsCaseInsensitive TextSearchFlags = 0b100
 )
 
@@ -52,7 +52,7 @@ func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 	return TextSearchFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TextCharPredicate: the predicate function used by
+// TextCharPredicate: predicate function used by
 // gtk_text_iter_forward_find_char() and gtk_text_iter_backward_find_char().
 type TextCharPredicate func(ch uint32, userData interface{}) (ok bool)
 
@@ -342,7 +342,7 @@ func (iter *TextIter) BackwardToTagToggle(tag TextTagger) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_iter_backward_to_tag_toggle(_arg0, _arg1)
 
@@ -711,7 +711,7 @@ func (iter *TextIter) EndsTag(tag TextTagger) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_iter_ends_tag(_arg0, _arg1)
 
@@ -1050,7 +1050,7 @@ func (iter *TextIter) ForwardToTagToggle(tag TextTagger) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_iter_forward_to_tag_toggle(_arg0, _arg1)
 
@@ -1291,7 +1291,7 @@ func (iter *TextIter) BytesInLine() int {
 	return _gint
 }
 
-// Char: the Unicode character at this iterator is returned.
+// Char: unicode character at this iterator is returned.
 //
 // Equivalent to operator* on a C++ iterator. If the element at this iterator is
 // a non-character element, such as an image embedded in the buffer, the Unicode
@@ -1610,7 +1610,7 @@ func (iter *TextIter) HasTag(tag TextTagger) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_iter_has_tag(_arg0, _arg1)
 
@@ -1918,7 +1918,7 @@ func (iter *TextIter) StartsTag(tag TextTagger) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_iter_starts_tag(_arg0, _arg1)
 
@@ -1963,7 +1963,7 @@ func (iter *TextIter) TogglesTag(tag TextTagger) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_text_iter_toggles_tag(_arg0, _arg1)
 

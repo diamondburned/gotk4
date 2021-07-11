@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_revealer_transition_type_get_type()), F: marshalRevealerTransitionType},
-		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealerrer},
+		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealerer},
 	})
 }
 
@@ -49,20 +49,27 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Revealerrer describes Revealer's methods.
-type Revealerrer interface {
-	gextras.Objector
-
+// Revealerer describes Revealer's methods.
+type Revealerer interface {
+	// ChildRevealed returns whether the child is fully revealed, in other words
+	// whether the transition to the revealed state is completed.
 	ChildRevealed() bool
+	// RevealChild returns whether the child is currently revealed.
 	RevealChild() bool
+	// TransitionDuration returns the amount of time (in milliseconds) that
+	// transitions will take.
 	TransitionDuration() uint
+	// TransitionType gets the type of animation that will be used for
+	// transitions in @revealer.
 	TransitionType() RevealerTransitionType
+	// SetRevealChild tells the Revealer to reveal or conceal its child.
 	SetRevealChild(revealChild bool)
+	// SetTransitionDuration sets the duration that transitions will take.
 	SetTransitionDuration(duration uint)
 }
 
-// Revealer: the GtkRevealer widget is a container which animates the transition
-// of its child from invisible to visible.
+// Revealer widget is a container which animates the transition of its child
+// from invisible to visible.
 //
 // The style of transition can be controlled with
 // gtk_revealer_set_transition_type().
@@ -76,24 +83,19 @@ type Revealerrer interface {
 //
 // The GtkRevealer widget was added in GTK+ 3.10.
 type Revealer struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Revealerrer = (*Revealer)(nil)
+var (
+	_ Revealerer      = (*Revealer)(nil)
+	_ gextras.Nativer = (*Revealer)(nil)
+)
 
-func wrapRevealerrer(obj *externglib.Object) Revealerrer {
+func wrapRevealer(obj *externglib.Object) Revealerer {
 	return &Revealer{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -104,33 +106,15 @@ func wrapRevealerrer(obj *externglib.Object) Revealerrer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
 
-func marshalRevealerrer(p uintptr) (interface{}, error) {
+func marshalRevealerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRevealerrer(obj), nil
+	return wrapRevealer(obj), nil
 }
 
 // NewRevealer creates a new Revealer.

@@ -27,20 +27,26 @@ func init() {
 
 // Framer describes Frame's methods.
 type Framer interface {
-	gextras.Objector
-
+	// Label: if the frame’s label widget is a Label, returns the text in the
+	// label widget.
 	Label() string
+	// LabelAlign retrieves the X and Y alignment of the frame’s label.
 	LabelAlign() (xalign float32, yalign float32)
+	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() *Widget
+	// ShadowType retrieves the shadow type of the frame.
 	ShadowType() ShadowType
+	// SetLabel removes the current Frame:label-widget.
 	SetLabel(label string)
+	// SetLabelAlign sets the alignment of the frame widget’s label.
 	SetLabelAlign(xalign float32, yalign float32)
+	// SetLabelWidget sets the Frame:label-widget for the frame.
 	SetLabelWidget(labelWidget Widgetter)
 }
 
-// Frame: the frame widget is a bin that surrounds its child with a decorative
-// frame and an optional label. If present, the label is drawn in a gap in the
-// top side of the frame. The position of the label can be controlled with
+// Frame: frame widget is a bin that surrounds its child with a decorative frame
+// and an optional label. If present, the label is drawn in a gap in the top
+// side of the frame. The position of the label can be controlled with
 // gtk_frame_set_label_align().
 //
 //
@@ -78,24 +84,19 @@ type Framer interface {
 // gtk_frame_set_shadow_type() with GTK_SHADOW_NONE to add the “.flat” class or
 // any other shadow type to remove it.
 type Frame struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ Framer = (*Frame)(nil)
+var (
+	_ Framer          = (*Frame)(nil)
+	_ gextras.Nativer = (*Frame)(nil)
+)
 
-func wrapFramer(obj *externglib.Object) Framer {
+func wrapFrame(obj *externglib.Object) Framer {
 	return &Frame{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -106,25 +107,7 @@ func wrapFramer(obj *externglib.Object) Framer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -132,7 +115,7 @@ func wrapFramer(obj *externglib.Object) Framer {
 func marshalFramer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFramer(obj), nil
+	return wrapFrame(obj), nil
 }
 
 // NewFrame creates a new Frame, with optional label @label. If @label is nil,
@@ -259,7 +242,7 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
 }

@@ -23,75 +23,144 @@ func init() {
 	})
 }
 
-// WindowwerOverrider contains methods that are overridable.
+// WindowOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type WindowwerOverrider interface {
+type WindowOverrider interface {
 	ActivateDefault()
+
 	ActivateFocus()
+
 	CloseRequest() bool
+
 	EnableDebugging(toggle bool) bool
+
 	KeysChanged()
 }
 
 // Windowwer describes Window's methods.
 type Windowwer interface {
-	gextras.Objector
-
+	// Close requests that the window is closed.
 	Close()
+	// Destroy: drop the internal reference GTK holds on toplevel windows.
 	Destroy()
+	// Fullscreen asks to place @window in the fullscreen state.
 	Fullscreen()
+	// FullscreenOnMonitor asks to place @window in the fullscreen state on the
+	// given @monitor.
 	FullscreenOnMonitor(monitor gdk.Monitorrer)
+	// Application gets the `GtkApplication` associated with the window.
 	Application() *Application
+	// Child gets the child widget of @window.
 	Child() *Widget
+	// Decorated returns whether the window has been set to have decorations.
 	Decorated() bool
+	// DefaultSize gets the default size of the window.
 	DefaultSize() (width int, height int)
+	// DefaultWidget returns the default widget for @window.
 	DefaultWidget() *Widget
+	// Deletable returns whether the window has been set to have a close button.
 	Deletable() bool
+	// DestroyWithParent returns whether the window will be destroyed with its
+	// transient parent.
 	DestroyWithParent() bool
+	// Focus retrieves the current focused widget within the window.
 	Focus() *Widget
+	// FocusVisible gets whether “focus rectangles” are supposed to be visible.
 	FocusVisible() bool
+	// Group returns the group for @window.
 	Group() *WindowGroup
+	// HandleMenubarAccel returns whether this window reacts to F10 key presses
+	// by activating a menubar it contains.
 	HandleMenubarAccel() bool
+	// HideOnClose returns whether the window will be hidden when the close
+	// button is clicked.
 	HideOnClose() bool
+	// IconName returns the name of the themed icon for the window.
 	IconName() string
+	// MnemonicsVisible gets whether mnemonics are supposed to be visible.
 	MnemonicsVisible() bool
+	// Modal returns whether the window is modal.
 	Modal() bool
+	// Resizable gets the value set by gtk_window_set_resizable().
 	Resizable() bool
+	// Title retrieves the title of the window.
 	Title() string
+	// Titlebar returns the custom titlebar that has been set with
+	// gtk_window_set_titlebar().
 	Titlebar() *Widget
+	// TransientFor fetches the transient parent for this window.
 	TransientFor() *Window
+	// HasGroup returns whether @window has an explicit window group.
 	HasGroup() bool
+	// IsActive returns whether the window is part of the current active
+	// toplevel.
 	IsActive() bool
+	// IsFullscreen retrieves the current fullscreen state of @window.
 	IsFullscreen() bool
+	// IsMaximized retrieves the current maximized state of @window.
 	IsMaximized() bool
+	// Maximize asks to maximize @window, so that it fills the screen.
 	Maximize()
+	// Minimize asks to minimize the specified @window.
 	Minimize()
+	// Present presents a window to the user.
 	Present()
+	// PresentWithTime presents a window to the user.
 	PresentWithTime(timestamp uint32)
+	// SetApplication sets or unsets the `GtkApplication` associated with the
+	// window.
 	SetApplication(application Applicationer)
+	// SetChild sets the child widget of @window.
 	SetChild(child Widgetter)
+	// SetDecorated sets whether the window should be decorated.
 	SetDecorated(setting bool)
+	// SetDefaultSize sets the default size of a window.
 	SetDefaultSize(width int, height int)
+	// SetDefaultWidget sets the default widget.
 	SetDefaultWidget(defaultWidget Widgetter)
+	// SetDeletable sets whether the window should be deletable.
 	SetDeletable(setting bool)
+	// SetDestroyWithParent: if @setting is true, then destroying the transient
+	// parent of @window will also destroy @window itself.
 	SetDestroyWithParent(setting bool)
+	// SetDisplay sets the `GdkDisplay` where the @window is displayed.
 	SetDisplay(display gdk.Displayyer)
+	// SetFocus sets the focus widget.
 	SetFocus(focus Widgetter)
+	// SetFocusVisible sets whether “focus rectangles” are supposed to be
+	// visible.
 	SetFocusVisible(setting bool)
+	// SetHandleMenubarAccel sets whether this window should react to F10 key
+	// presses by activating a menubar it contains.
 	SetHandleMenubarAccel(handleMenubarAccel bool)
+	// SetHideOnClose: if @setting is true, then clicking the close button on
+	// the window will not destroy it, but only hide it.
 	SetHideOnClose(setting bool)
+	// SetIconName sets the icon for the window from a named themed icon.
 	SetIconName(name string)
+	// SetMnemonicsVisible sets whether mnemonics are supposed to be visible.
 	SetMnemonicsVisible(setting bool)
+	// SetModal sets a window modal or non-modal.
 	SetModal(modal bool)
+	// SetResizable sets whether the user can resize a window.
 	SetResizable(resizable bool)
+	// SetStartupID sets the startup notification ID.
 	SetStartupID(startupId string)
+	// SetTitle sets the title of the `GtkWindow`.
 	SetTitle(title string)
+	// SetTitlebar sets a custom titlebar for @window.
 	SetTitlebar(titlebar Widgetter)
+	// SetTransientFor: dialog windows should be set transient for the main
+	// application window they were spawned from.
 	SetTransientFor(parent Windowwer)
+	// Unfullscreen asks to remove the fullscreen state for @window, and return
+	// to its previous state.
 	Unfullscreen()
+	// Unmaximize asks to unmaximize @window.
 	Unmaximize()
+	// Unminimize asks to unminimize the specified @window.
 	Unminimize()
 }
 
@@ -143,24 +212,20 @@ type Windowwer interface {
 //
 // `GtkWindow` uses the GTK_ACCESSIBLE_ROLE_WINDOW role.
 type Window struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
+
 	Root
 	ShortcutManager
 }
 
-var _ Windowwer = (*Window)(nil)
+var (
+	_ Windowwer       = (*Window)(nil)
+	_ gextras.Nativer = (*Window)(nil)
+)
 
-func wrapWindowwer(obj *externglib.Object) Windowwer {
+func wrapWindow(obj *externglib.Object) Windowwer {
 	return &Window{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -174,39 +239,9 @@ func wrapWindowwer(obj *externglib.Object) Windowwer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
 		Root: Root{
-			Object: obj,
 			Native: Native{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -221,21 +256,6 @@ func wrapWindowwer(obj *externglib.Object) Windowwer {
 					},
 				},
 			},
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
 		},
 		ShortcutManager: ShortcutManager{
 			Object: obj,
@@ -246,7 +266,7 @@ func wrapWindowwer(obj *externglib.Object) Windowwer {
 func marshalWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowwer(obj), nil
+	return wrapWindow(obj), nil
 }
 
 // NewWindow creates a new `GtkWindow`.
@@ -271,6 +291,12 @@ func NewWindow() *Window {
 	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
 
 	return _window
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Window) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Close requests that the window is closed.
@@ -327,7 +353,7 @@ func (window *Window) FullscreenOnMonitor(monitor gdk.Monitorrer) {
 	var _arg1 *C.GdkMonitor // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
+	_arg1 = (*C.GdkMonitor)(unsafe.Pointer((monitor).(gextras.Nativer).Native()))
 
 	C.gtk_window_fullscreen_on_monitor(_arg0, _arg1)
 }
@@ -866,7 +892,7 @@ func (window *Window) SetApplication(application Applicationer) {
 	var _arg1 *C.GtkApplication // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer((application).(gextras.Nativer).Native()))
 
 	C.gtk_window_set_application(_arg0, _arg1)
 }
@@ -877,7 +903,7 @@ func (window *Window) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_window_set_child(_arg0, _arg1)
 }
@@ -951,7 +977,7 @@ func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(defaultWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((defaultWidget).(gextras.Nativer).Native()))
 
 	C.gtk_window_set_default_widget(_arg0, _arg1)
 }
@@ -1005,7 +1031,7 @@ func (window *Window) SetDisplay(display gdk.Displayyer) {
 	var _arg1 *C.GdkDisplay // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
 
 	C.gtk_window_set_display(_arg0, _arg1)
 }
@@ -1022,7 +1048,7 @@ func (window *Window) SetFocus(focus Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((focus).(gextras.Nativer).Native()))
 
 	C.gtk_window_set_focus(_arg0, _arg1)
 }
@@ -1192,7 +1218,7 @@ func (window *Window) SetTitlebar(titlebar Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titlebar.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((titlebar).(gextras.Nativer).Native()))
 
 	C.gtk_window_set_titlebar(_arg0, _arg1)
 }
@@ -1213,7 +1239,7 @@ func (window *Window) SetTransientFor(parent Windowwer) {
 	var _arg1 *C.GtkWindow // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 
 	C.gtk_window_set_transient_for(_arg0, _arg1)
 }

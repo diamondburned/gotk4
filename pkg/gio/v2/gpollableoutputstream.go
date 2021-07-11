@@ -35,11 +35,11 @@ func init() {
 	})
 }
 
-// PollableOutputStreamerOverrider contains methods that are overridable.
+// PollableOutputStreamOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PollableOutputStreamerOverrider interface {
+type PollableOutputStreamOverrider interface {
 	// CanPoll checks if @stream is actually pollable. Some classes may
 	// implement OutputStream but have only certain instances of that class be
 	// pollable. If this method returns false, then the behavior of other
@@ -103,12 +103,18 @@ type PollableOutputStreamerOverrider interface {
 
 // PollableOutputStreamer describes PollableOutputStream's methods.
 type PollableOutputStreamer interface {
-	gextras.Objector
-
+	// CanPoll checks if @stream is actually pollable.
 	CanPoll() bool
+	// CreateSource creates a #GSource that triggers when @stream can be
+	// written, or @cancellable is triggered or an error occurs.
 	CreateSource(cancellable Cancellabler) *glib.Source
+	// IsWritable checks if @stream can be written.
 	IsWritable() bool
+	// WriteNonblocking attempts to write up to @count bytes from @buffer to
+	// @stream, as with g_output_stream_write().
 	WriteNonblocking(buffer []byte, cancellable Cancellabler) (int, error)
+	// WritevNonblocking attempts to write the bytes contained in the @n_vectors
+	// @vectors to @stream, as with g_output_stream_writev().
 	WritevNonblocking(vectors []OutputVector, cancellable Cancellabler) (uint, PollableReturn, error)
 }
 
@@ -119,9 +125,12 @@ type PollableOutputStream struct {
 	OutputStream
 }
 
-var _ PollableOutputStreamer = (*PollableOutputStream)(nil)
+var (
+	_ PollableOutputStreamer = (*PollableOutputStream)(nil)
+	_ gextras.Nativer        = (*PollableOutputStream)(nil)
+)
 
-func wrapPollableOutputStreamer(obj *externglib.Object) PollableOutputStreamer {
+func wrapPollableOutputStream(obj *externglib.Object) PollableOutputStreamer {
 	return &PollableOutputStream{
 		OutputStream: OutputStream{
 			Object: obj,
@@ -132,7 +141,7 @@ func wrapPollableOutputStreamer(obj *externglib.Object) PollableOutputStreamer {
 func marshalPollableOutputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPollableOutputStreamer(obj), nil
+	return wrapPollableOutputStream(obj), nil
 }
 
 // CanPoll checks if @stream is actually pollable. Some classes may implement
@@ -173,7 +182,7 @@ func (stream *PollableOutputStream) CreateSource(cancellable Cancellabler) *glib
 	var _cret *C.GSource               // in
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_output_stream_create_source(_arg0, _arg1)
 
@@ -237,7 +246,7 @@ func (stream *PollableOutputStream) WriteNonblocking(buffer []byte, cancellable 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 
@@ -277,7 +286,7 @@ func (stream *PollableOutputStream) WritevNonblocking(vectors []OutputVector, ca
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
 	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_output_stream_writev_nonblocking(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
 

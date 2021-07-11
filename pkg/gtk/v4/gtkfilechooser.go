@@ -22,7 +22,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_file_chooser_action_get_type()), F: marshalFileChooserAction},
 		{T: externglib.Type(C.gtk_file_chooser_error_get_type()), F: marshalFileChooserError},
-		{T: externglib.Type(C.gtk_file_chooser_get_type()), F: marshalFileChooserrer},
+		{T: externglib.Type(C.gtk_file_chooser_get_type()), F: marshalFileChooserer},
 	})
 }
 
@@ -66,33 +66,69 @@ func marshalFileChooserError(p uintptr) (interface{}, error) {
 	return FileChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FileChooserrer describes FileChooser's methods.
-type FileChooserrer interface {
-	gextras.Objector
-
+// FileChooserer describes FileChooser's methods.
+type FileChooserer interface {
+	// AddChoice adds a 'choice' to the file chooser.
 	AddChoice(id string, label string, options []string, optionLabels []string)
-	AddFilter(filter FileFilterrer)
+	// AddFilter adds @filter to the list of filters that the user can select
+	// between.
+	AddFilter(filter FileFilterer)
+	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
+	// in a file chooser.
 	AddShortcutFolder(folder gio.Filer) error
+	// Action gets the type of operation that the file chooser is performing.
 	Action() FileChooserAction
+	// Choice gets the currently selected option in the 'choice' with the given
+	// ID.
 	Choice(id string) string
+	// CreateFolders gets whether file chooser will offer to create new folders.
 	CreateFolders() bool
+	// CurrentFolder gets the current folder of @chooser as #GFile.
 	CurrentFolder() *gio.File
+	// CurrentName gets the current name in the file selector, as entered by the
+	// user.
 	CurrentName() string
+	// File gets the `GFile` for the currently selected file in the file
+	// selector.
 	File() *gio.File
+	// Files lists all the selected files and subfolders in the current folder
+	// of @chooser as #GFile.
 	Files() *gio.ListModel
+	// Filter gets the current filter.
 	Filter() *FileFilter
+	// Filters gets the current set of user-selectable filters, as a list model.
 	Filters() *gio.ListModel
+	// SelectMultiple gets whether multiple files can be selected in the file
+	// chooser.
 	SelectMultiple() bool
+	// ShortcutFolders queries the list of shortcut folders in the file chooser.
 	ShortcutFolders() *gio.ListModel
+	// RemoveChoice removes a 'choice' that has been added with
+	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
-	RemoveFilter(filter FileFilterrer)
+	// RemoveFilter removes @filter from the list of filters that the user can
+	// select between.
+	RemoveFilter(filter FileFilterer)
+	// RemoveShortcutFolder removes a folder from the shortcut folders in a file
+	// chooser.
 	RemoveShortcutFolder(folder gio.Filer) error
+	// SetChoice selects an option in a 'choice' that has been added with
+	// gtk_file_chooser_add_choice().
 	SetChoice(id string, option string)
+	// SetCreateFolders sets whether file chooser will offer to create new
+	// folders.
 	SetCreateFolders(createFolders bool)
+	// SetCurrentFolder sets the current folder for @chooser from a #GFile.
 	SetCurrentFolder(file gio.Filer) error
+	// SetCurrentName sets the current name in the file selector, as if entered
+	// by the user.
 	SetCurrentName(name string)
+	// SetFile sets @file as the current filename for the file chooser.
 	SetFile(file gio.Filer) error
-	SetFilter(filter FileFilterrer)
+	// SetFilter sets the current filter.
+	SetFilter(filter FileFilterer)
+	// SetSelectMultiple sets whether multiple files can be selected in the file
+	// chooser.
 	SetSelectMultiple(selectMultiple bool)
 }
 
@@ -141,18 +177,21 @@ type FileChooser struct {
 	*externglib.Object
 }
 
-var _ FileChooserrer = (*FileChooser)(nil)
+var (
+	_ FileChooserer   = (*FileChooser)(nil)
+	_ gextras.Nativer = (*FileChooser)(nil)
+)
 
-func wrapFileChooserrer(obj *externglib.Object) FileChooserrer {
+func wrapFileChooser(obj *externglib.Object) FileChooserer {
 	return &FileChooser{
 		Object: obj,
 	}
 }
 
-func marshalFileChooserrer(p uintptr) (interface{}, error) {
+func marshalFileChooserer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserrer(obj), nil
+	return wrapFileChooser(obj), nil
 }
 
 // AddChoice adds a 'choice' to the file chooser.
@@ -204,12 +243,12 @@ func (chooser *FileChooser) AddChoice(id string, label string, options []string,
 //
 // Note that the @chooser takes ownership of the filter if it is floating, so
 // you have to ref and sink it if you want to keep a reference.
-func (chooser *FileChooser) AddFilter(filter FileFilterrer) {
+func (chooser *FileChooser) AddFilter(filter FileFilterer) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer((filter).(gextras.Nativer).Native()))
 
 	C.gtk_file_chooser_add_filter(_arg0, _arg1)
 }
@@ -222,7 +261,7 @@ func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((folder).(gextras.Nativer).Native()))
 
 	C.gtk_file_chooser_add_shortcut_folder(_arg0, _arg1, &_cerr)
 
@@ -452,12 +491,12 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 
 // RemoveFilter removes @filter from the list of filters that the user can
 // select between.
-func (chooser *FileChooser) RemoveFilter(filter FileFilterrer) {
+func (chooser *FileChooser) RemoveFilter(filter FileFilterer) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer((filter).(gextras.Nativer).Native()))
 
 	C.gtk_file_chooser_remove_filter(_arg0, _arg1)
 }
@@ -470,7 +509,7 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((folder).(gextras.Nativer).Native()))
 
 	C.gtk_file_chooser_remove_shortcut_folder(_arg0, _arg1, &_cerr)
 
@@ -522,7 +561,7 @@ func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	C.gtk_file_chooser_set_current_folder(_arg0, _arg1, &_cerr)
 
@@ -601,7 +640,7 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	C.gtk_file_chooser_set_file(_arg0, _arg1, &_cerr)
 
@@ -621,12 +660,12 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 // Setting the current filter when the list of filters is empty is useful if you
 // want to restrict the displayed set of files without letting the user change
 // it.
-func (chooser *FileChooser) SetFilter(filter FileFilterrer) {
+func (chooser *FileChooser) SetFilter(filter FileFilterer) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer((filter).(gextras.Nativer).Native()))
 
 	C.gtk_file_chooser_set_filter(_arg0, _arg1)
 }

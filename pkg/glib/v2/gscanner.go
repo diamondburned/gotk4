@@ -14,7 +14,7 @@ import (
 // #include <glib.h>
 import "C"
 
-// ErrorType: the possible errors, used in the @v_error field of Value, when the
+// ErrorType: possible errors, used in the @v_error field of Value, when the
 // token is a G_TOKEN_ERROR.
 type ErrorType int
 
@@ -37,12 +37,12 @@ const (
 	ErrorTypeFloatMalformed
 )
 
-// TokenType: the possible types of token returned from each
+// TokenType: possible types of token returned from each
 // g_scanner_get_next_token() call.
 type TokenType int
 
 const (
-	// EOF: the end of the file
+	// EOF: end of the file
 	TokenTypeEOF TokenType = 0
 	// LeftParen: '(' character
 	TokenTypeLeftParen TokenType = 40
@@ -90,7 +90,7 @@ const (
 	TokenTypeCommentMulti TokenType = 269
 )
 
-// Scanner: the data structure representing a lexical scanner.
+// Scanner: data structure representing a lexical scanner.
 //
 // You should set @input_name after creating the scanner, since it is used by
 // the default message handler when displaying warnings and errors. If you are

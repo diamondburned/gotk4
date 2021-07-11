@@ -51,66 +51,137 @@ func gotk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
 
 // PrintSettingser describes PrintSettings's methods.
 type PrintSettingser interface {
-	gextras.Objector
-
+	// Copy copies a `GtkPrintSettings` object.
 	Copy() *PrintSettings
+	// Foreach calls @func for each key-value pair of @settings.
 	Foreach(fn PrintSettingsFunc)
+	// Get looks up the string value associated with @key.
 	Get(key string) string
+	// Bool returns the boolean represented by the value that is associated with
+	// @key.
 	Bool(key string) bool
+	// Collate gets the value of GTK_PRINT_SETTINGS_COLLATE.
 	Collate() bool
+	// DefaultSource gets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
 	DefaultSource() string
+	// Dither gets the value of GTK_PRINT_SETTINGS_DITHER.
 	Dither() string
+	// Double returns the double value associated with @key, or 0.
 	Double(key string) float64
+	// DoubleWithDefault returns the floating point number represented by the
+	// value that is associated with @key, or @default_val if the value does not
+	// represent a floating point number.
 	DoubleWithDefault(key string, def float64) float64
+	// Duplex gets the value of GTK_PRINT_SETTINGS_DUPLEX.
 	Duplex() PrintDuplex
+	// Finishings gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
 	Finishings() string
+	// Int returns the integer value of @key, or 0.
 	Int(key string) int
+	// IntWithDefault returns the value of @key, interpreted as an integer, or
+	// the default value.
 	IntWithDefault(key string, def int) int
+	// MediaType gets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 	MediaType() string
+	// NCopies gets the value of GTK_PRINT_SETTINGS_N_COPIES.
 	NCopies() int
+	// NumberUp gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
 	NumberUp() int
+	// NumberUpLayout gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
 	NumberUpLayout() NumberUpLayout
+	// Orientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION, converted
+	// to a `GtkPageOrientation`.
 	Orientation() PageOrientation
+	// OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 	OutputBin() string
+	// PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
 	PageSet() PageSet
+	// PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
+	// a `GtkPaperSize`.
 	PaperSize() *PaperSize
+	// PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
 	PrintPages() PrintPages
+	// Printer: convenience function to obtain the value of
+	// GTK_PRINT_SETTINGS_PRINTER.
 	Printer() string
+	// PrinterLpi gets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
 	PrinterLpi() float64
+	// Quality gets the value of GTK_PRINT_SETTINGS_QUALITY.
 	Quality() PrintQuality
+	// Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
 	Resolution() int
+	// ResolutionX gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
 	ResolutionX() int
+	// ResolutionY gets the value of GTK_PRINT_SETTINGS_RESOLUTION_Y.
 	ResolutionY() int
+	// Reverse gets the value of GTK_PRINT_SETTINGS_REVERSE.
 	Reverse() bool
+	// Scale gets the value of GTK_PRINT_SETTINGS_SCALE.
 	Scale() float64
+	// UseColor gets the value of GTK_PRINT_SETTINGS_USE_COLOR.
 	UseColor() bool
+	// HasKey returns true, if a value is associated with @key.
 	HasKey(key string) bool
+	// LoadFile reads the print settings from @file_name.
 	LoadFile(fileName string) error
+	// LoadKeyFile reads the print settings from the group @group_name in
+	// @key_file.
 	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
+	// Set associates @value with @key.
 	Set(key string, value string)
+	// SetBool sets @key to a boolean value.
 	SetBool(key string, value bool)
+	// SetCollate sets the value of GTK_PRINT_SETTINGS_COLLATE.
 	SetCollate(collate bool)
+	// SetDefaultSource sets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
 	SetDefaultSource(defaultSource string)
+	// SetDither sets the value of GTK_PRINT_SETTINGS_DITHER.
 	SetDither(dither string)
+	// SetDouble sets @key to a double value.
 	SetDouble(key string, value float64)
+	// SetFinishings sets the value of GTK_PRINT_SETTINGS_FINISHINGS.
 	SetFinishings(finishings string)
+	// SetInt sets @key to an integer value.
 	SetInt(key string, value int)
+	// SetMediaType sets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 	SetMediaType(mediaType string)
+	// SetNCopies sets the value of GTK_PRINT_SETTINGS_N_COPIES.
 	SetNCopies(numCopies int)
+	// SetNumberUp sets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
 	SetNumberUp(numberUp int)
+	// SetOutputBin sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 	SetOutputBin(outputBin string)
+	// SetPageRanges sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
 	SetPageRanges(pageRanges []PageRange)
+	// SetPaperSize sets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT,
+	// GTK_PRINT_SETTINGS_PAPER_WIDTH and GTK_PRINT_SETTINGS_PAPER_HEIGHT.
 	SetPaperSize(paperSize *PaperSize)
+	// SetPrinter: convenience function to set GTK_PRINT_SETTINGS_PRINTER to
+	// @printer.
 	SetPrinter(printer string)
+	// SetPrinterLpi sets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
 	SetPrinterLpi(lpi float64)
+	// SetResolution sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
+	// GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
 	SetResolution(resolution int)
+	// SetResolutionXY sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
+	// GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
 	SetResolutionXY(resolutionX int, resolutionY int)
+	// SetReverse sets the value of GTK_PRINT_SETTINGS_REVERSE.
 	SetReverse(reverse bool)
+	// SetScale sets the value of GTK_PRINT_SETTINGS_SCALE.
 	SetScale(scale float64)
+	// SetUseColor sets the value of GTK_PRINT_SETTINGS_USE_COLOR.
 	SetUseColor(useColor bool)
+	// ToFile: this function saves the print settings from @settings to
+	// @file_name.
 	ToFile(fileName string) error
+	// ToGVariant: serialize print settings to an a{sv} variant.
 	ToGVariant() *glib.Variant
+	// ToKeyFile: this function adds the print settings from @settings to
+	// @key_file.
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
+	// Unset removes any value associated with @key.
 	Unset(key string)
 }
 
@@ -130,9 +201,12 @@ type PrintSettings struct {
 	*externglib.Object
 }
 
-var _ PrintSettingser = (*PrintSettings)(nil)
+var (
+	_ PrintSettingser = (*PrintSettings)(nil)
+	_ gextras.Nativer = (*PrintSettings)(nil)
+)
 
-func wrapPrintSettingser(obj *externglib.Object) PrintSettingser {
+func wrapPrintSettings(obj *externglib.Object) PrintSettingser {
 	return &PrintSettings{
 		Object: obj,
 	}
@@ -141,7 +215,7 @@ func wrapPrintSettingser(obj *externglib.Object) PrintSettingser {
 func marshalPrintSettingser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPrintSettingser(obj), nil
+	return wrapPrintSettings(obj), nil
 }
 
 // NewPrintSettings creates a new `GtkPrintSettings` object.

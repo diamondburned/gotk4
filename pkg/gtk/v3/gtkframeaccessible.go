@@ -27,20 +27,19 @@ func init() {
 
 // FrameAccessibler describes FrameAccessible's methods.
 type FrameAccessibler interface {
-	gextras.Objector
-
 	privateFrameAccessible()
 }
 
 type FrameAccessible struct {
 	ContainerAccessible
-
-	atk.Component
 }
 
-var _ FrameAccessibler = (*FrameAccessible)(nil)
+var (
+	_ FrameAccessibler = (*FrameAccessible)(nil)
+	_ gextras.Nativer  = (*FrameAccessible)(nil)
+)
 
-func wrapFrameAccessibler(obj *externglib.Object) FrameAccessibler {
+func wrapFrameAccessible(obj *externglib.Object) FrameAccessibler {
 	return &FrameAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -53,12 +52,6 @@ func wrapFrameAccessibler(obj *externglib.Object) FrameAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -66,7 +59,7 @@ func wrapFrameAccessibler(obj *externglib.Object) FrameAccessibler {
 func marshalFrameAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFrameAccessibler(obj), nil
+	return wrapFrameAccessible(obj), nil
 }
 
 func (*FrameAccessible) privateFrameAccessible() {}

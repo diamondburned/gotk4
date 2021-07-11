@@ -25,22 +25,41 @@ func init() {
 
 // GLContexter describes GLContext's methods.
 type GLContexter interface {
-	gextras.Objector
-
+	// DebugEnabled retrieves whether the context is doing extra validations and
+	// runtime checking.
 	DebugEnabled() bool
+	// Display retrieves the display the @context is created for
 	Display() *Display
+	// ForwardCompatible retrieves whether the context is forward-compatible.
 	ForwardCompatible() bool
+	// RequiredVersion retrieves required OpenGL version.
 	RequiredVersion() (major int, minor int)
+	// SharedContext retrieves the `GdkGLContext` that this @context share data
+	// with.
 	SharedContext() *GLContext
+	// Surface retrieves the surface used by the @context.
 	Surface() *Surface
+	// UseES checks whether the @context is using an OpenGL or OpenGL ES
+	// profile.
 	UseES() bool
+	// Version retrieves the OpenGL version of the @context.
 	Version() (major int, minor int)
+	// IsLegacy: whether the `GdkGLContext` is in legacy mode or not.
 	IsLegacy() bool
+	// MakeCurrent makes the @context the current one.
 	MakeCurrent()
+	// Realize realizes the given `GdkGLContext`.
 	Realize() error
+	// SetDebugEnabled sets whether the `GdkGLContext` should perform extra
+	// validations and runtime checking.
 	SetDebugEnabled(enabled bool)
+	// SetForwardCompatible sets whether the `GdkGLContext` should be
+	// forward-compatible.
 	SetForwardCompatible(compatible bool)
+	// SetRequiredVersion sets the major and minor version of OpenGL to request.
 	SetRequiredVersion(major int, minor int)
+	// SetUseES requests that GDK create an OpenGL ES context instead of an
+	// OpenGL one.
 	SetUseES(useEs int)
 }
 
@@ -98,9 +117,12 @@ type GLContext struct {
 	DrawContext
 }
 
-var _ GLContexter = (*GLContext)(nil)
+var (
+	_ GLContexter     = (*GLContext)(nil)
+	_ gextras.Nativer = (*GLContext)(nil)
+)
 
-func wrapGLContexter(obj *externglib.Object) GLContexter {
+func wrapGLContext(obj *externglib.Object) GLContexter {
 	return &GLContext{
 		DrawContext: DrawContext{
 			Object: obj,
@@ -111,7 +133,7 @@ func wrapGLContexter(obj *externglib.Object) GLContexter {
 func marshalGLContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLContexter(obj), nil
+	return wrapGLContext(obj), nil
 }
 
 // DebugEnabled retrieves whether the context is doing extra validations and

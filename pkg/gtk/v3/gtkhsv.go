@@ -25,22 +25,27 @@ func init() {
 	})
 }
 
-// HSVerOverrider contains methods that are overridable.
+// HSVOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type HSVerOverrider interface {
+type HSVOverrider interface {
 	Changed()
 }
 
 // HSVer describes HSV's methods.
 type HSVer interface {
-	gextras.Objector
-
+	// Color queries the current color in an HSV color selector.
 	Color() (h float64, s float64, v float64)
+	// Metrics queries the size and ring width of an HSV color selector.
 	Metrics() (size int, ringWidth int)
+	// IsAdjusting: HSV color selector can be said to be adjusting if multiple
+	// rapid changes are being made to its value, for example, when the user is
+	// adjusting the value with the mouse.
 	IsAdjusting() bool
+	// SetColor sets the current color in an HSV color selector.
 	SetColor(h float64, s float64, v float64)
+	// SetMetrics sets the size and ring width of an HSV color selector.
 	SetMetrics(size int, ringWidth int)
 }
 
@@ -51,20 +56,17 @@ type HSVer interface {
 //
 // HSV has been deprecated together with ColorSelection, where it was used.
 type HSV struct {
-	*externglib.Object
-
 	Widget
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ HSVer = (*HSV)(nil)
+var (
+	_ HSVer           = (*HSV)(nil)
+	_ gextras.Nativer = (*HSV)(nil)
+)
 
-func wrapHSVer(obj *externglib.Object) HSVer {
+func wrapHSV(obj *externglib.Object) HSVer {
 	return &HSV{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -75,19 +77,13 @@ func wrapHSVer(obj *externglib.Object) HSVer {
 				Object: obj,
 			},
 		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalHSVer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHSVer(obj), nil
+	return wrapHSV(obj), nil
 }
 
 // NewHSV creates a new HSV color selector.

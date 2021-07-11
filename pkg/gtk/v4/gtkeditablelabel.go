@@ -24,10 +24,11 @@ func init() {
 
 // EditableLabeller describes EditableLabel's methods.
 type EditableLabeller interface {
-	gextras.Objector
-
+	// Editing returns whether the label is currently in “editing mode”.
 	Editing() bool
+	// StartEditing switches the label into “editing mode”.
 	StartEditing()
+	// StopEditing switches the label out of “editing mode”.
 	StopEditing(commit bool)
 }
 
@@ -54,22 +55,19 @@ type EditableLabeller interface {
 // For all the subnodes added to the text node in various situations, see
 // [class@Gtk.Text].
 type EditableLabel struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Editable
 }
 
-var _ EditableLabeller = (*EditableLabel)(nil)
+var (
+	_ EditableLabeller = (*EditableLabel)(nil)
+	_ gextras.Nativer  = (*EditableLabel)(nil)
+)
 
-func wrapEditableLabeller(obj *externglib.Object) EditableLabeller {
+func wrapEditableLabel(obj *externglib.Object) EditableLabeller {
 	return &EditableLabel{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -83,19 +81,8 @@ func wrapEditableLabeller(obj *externglib.Object) EditableLabeller {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Editable: Editable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -116,7 +103,7 @@ func wrapEditableLabeller(obj *externglib.Object) EditableLabeller {
 func marshalEditableLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEditableLabeller(obj), nil
+	return wrapEditableLabel(obj), nil
 }
 
 // NewEditableLabel creates a new `GtkEditableLabel` widget.
@@ -134,6 +121,12 @@ func NewEditableLabel(str string) *EditableLabel {
 	_editableLabel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EditableLabel)
 
 	return _editableLabel
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *EditableLabel) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Editing returns whether the label is currently in “editing mode”.

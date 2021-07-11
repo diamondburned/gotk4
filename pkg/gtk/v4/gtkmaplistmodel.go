@@ -54,10 +54,11 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointe
 
 // MapListModeller describes MapListModel's methods.
 type MapListModeller interface {
-	gextras.Objector
-
+	// Model gets the model that is currently being mapped or nil if none.
 	Model() *gio.ListModel
+	// HasMap checks if a map function is currently set on @self.
 	HasMap() bool
+	// SetModel sets the model to be mapped.
 	SetModel(model gio.ListModeller)
 }
 
@@ -87,9 +88,12 @@ type MapListModel struct {
 	gio.ListModel
 }
 
-var _ MapListModeller = (*MapListModel)(nil)
+var (
+	_ MapListModeller = (*MapListModel)(nil)
+	_ gextras.Nativer = (*MapListModel)(nil)
+)
 
-func wrapMapListModeller(obj *externglib.Object) MapListModeller {
+func wrapMapListModel(obj *externglib.Object) MapListModeller {
 	return &MapListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -101,7 +105,7 @@ func wrapMapListModeller(obj *externglib.Object) MapListModeller {
 func marshalMapListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMapListModeller(obj), nil
+	return wrapMapListModel(obj), nil
 }
 
 // Model gets the model that is currently being mapped or nil if none.
@@ -148,7 +152,7 @@ func (self *MapListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel      // out
 
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_map_list_model_set_model(_arg0, _arg1)
 }

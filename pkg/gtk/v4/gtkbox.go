@@ -24,21 +24,33 @@ func init() {
 
 // Boxxer describes Box's methods.
 type Boxxer interface {
-	gextras.Objector
-
+	// Append adds @child as the last child to @box.
 	Append(child Widgetter)
+	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
 	BaselinePosition() BaselinePosition
+	// Homogeneous returns whether the box is homogeneous (all children are the
+	// same size).
 	Homogeneous() bool
+	// Spacing gets the value set by gtk_box_set_spacing().
 	Spacing() int
+	// InsertChildAfter inserts @child in the position after @sibling in the
+	// list of @box children.
 	InsertChildAfter(child Widgetter, sibling Widgetter)
+	// Prepend adds @child as the first child to @box.
 	Prepend(child Widgetter)
+	// Remove removes a child widget from @box.
 	Remove(child Widgetter)
+	// ReorderChildAfter moves @child to the position after @sibling in the list
+	// of @box children.
 	ReorderChildAfter(child Widgetter, sibling Widgetter)
+	// SetHomogeneous sets whether or not all children of @box are given equal
+	// space in the box.
 	SetHomogeneous(homogeneous bool)
+	// SetSpacing sets the number of pixels to place between children of @box.
 	SetSpacing(spacing int)
 }
 
-// Box: the `GtkBox` widget arranges child widgets into a single row or column.
+// Box: `GtkBox` widget arranges child widgets into a single row or column.
 //
 // !An example GtkBox (box.png)
 //
@@ -73,22 +85,19 @@ type Boxxer interface {
 //
 // `GtkBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Box struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 }
 
-var _ Boxxer = (*Box)(nil)
+var (
+	_ Boxxer          = (*Box)(nil)
+	_ gextras.Nativer = (*Box)(nil)
+)
 
-func wrapBoxxer(obj *externglib.Object) Boxxer {
+func wrapBox(obj *externglib.Object) Boxxer {
 	return &Box{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -102,15 +111,6 @@ func wrapBoxxer(obj *externglib.Object) Boxxer {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -120,7 +120,13 @@ func wrapBoxxer(obj *externglib.Object) Boxxer {
 func marshalBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBoxxer(obj), nil
+	return wrapBox(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Box) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Append adds @child as the last child to @box.
@@ -129,7 +135,7 @@ func (box *Box) Append(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_box_append(_arg0, _arg1)
 }
@@ -195,8 +201,8 @@ func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
 	var _arg2 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
 
 	C.gtk_box_insert_child_after(_arg0, _arg1, _arg2)
 }
@@ -207,7 +213,7 @@ func (box *Box) Prepend(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_box_prepend(_arg0, _arg1)
 }
@@ -221,7 +227,7 @@ func (box *Box) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_box_remove(_arg0, _arg1)
 }
@@ -236,8 +242,8 @@ func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
 	var _arg2 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
 
 	C.gtk_box_reorder_child_after(_arg0, _arg1, _arg2)
 }

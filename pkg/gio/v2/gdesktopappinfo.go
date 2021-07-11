@@ -34,11 +34,11 @@ func init() {
 	})
 }
 
-// DesktopAppInfoLookupperOverrider contains methods that are overridable.
+// DesktopAppInfoLookupOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type DesktopAppInfoLookupperOverrider interface {
+type DesktopAppInfoLookupOverrider interface {
 	// DefaultForURIScheme gets the default application for launching
 	// applications using this URI scheme for a particular AppInfoLookup
 	// implementation.
@@ -54,8 +54,9 @@ type DesktopAppInfoLookupperOverrider interface {
 
 // DesktopAppInfoLookupper describes DesktopAppInfoLookup's methods.
 type DesktopAppInfoLookupper interface {
-	gextras.Objector
-
+	// DefaultForURIScheme gets the default application for launching
+	// applications using this URI scheme for a particular AppInfoLookup
+	// implementation.
 	DefaultForURIScheme(uriScheme string) *AppInfo
 }
 
@@ -67,9 +68,12 @@ type DesktopAppInfoLookup struct {
 	*externglib.Object
 }
 
-var _ DesktopAppInfoLookupper = (*DesktopAppInfoLookup)(nil)
+var (
+	_ DesktopAppInfoLookupper = (*DesktopAppInfoLookup)(nil)
+	_ gextras.Nativer         = (*DesktopAppInfoLookup)(nil)
+)
 
-func wrapDesktopAppInfoLookupper(obj *externglib.Object) DesktopAppInfoLookupper {
+func wrapDesktopAppInfoLookup(obj *externglib.Object) DesktopAppInfoLookupper {
 	return &DesktopAppInfoLookup{
 		Object: obj,
 	}
@@ -78,7 +82,7 @@ func wrapDesktopAppInfoLookupper(obj *externglib.Object) DesktopAppInfoLookupper
 func marshalDesktopAppInfoLookupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDesktopAppInfoLookupper(obj), nil
+	return wrapDesktopAppInfoLookup(obj), nil
 }
 
 // DefaultForURIScheme gets the default application for launching applications
@@ -110,22 +114,42 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) *AppIn
 
 // DesktopAppInfor describes DesktopAppInfo's methods.
 type DesktopAppInfor interface {
-	gextras.Objector
-
+	// ActionName gets the user-visible display name of the "additional
+	// application action" specified by @action_name.
 	ActionName(actionName string) string
+	// Boolean looks up a boolean value in the keyfile backing @info.
 	Boolean(key string) bool
+	// Categories gets the categories from the desktop file.
 	Categories() string
+	// Filename: when @info was created from a known filename, return it.
 	Filename() string
+	// GenericName gets the generic name from the desktop file.
 	GenericName() string
+	// IsHidden: desktop file is hidden if the Hidden key in it is set to True.
 	IsHidden() bool
+	// Keywords gets the keywords from the desktop file.
 	Keywords() []string
+	// LocaleString looks up a localized string value in the keyfile backing
+	// @info translated to the current locale.
 	LocaleString(key string) string
+	// Nodisplay gets the value of the NoDisplay key, which helps determine if
+	// the application info should be shown in menus.
 	Nodisplay() bool
+	// ShowIn checks if the application info should be shown in menus that list
+	// available applications for a specific name of the desktop, based on the
+	// `OnlyShowIn` and `NotShowIn` keys.
 	ShowIn(desktopEnv string) bool
+	// StartupWmClass retrieves the StartupWMClass field from @info.
 	StartupWmClass() string
+	// String looks up a string value in the keyfile backing @info.
 	String(key string) string
+	// HasKey returns whether @key exists in the "Desktop Entry" group of the
+	// keyfile backing @info.
 	HasKey(key string) bool
+	// LaunchAction activates the named application action.
 	LaunchAction(actionName string, launchContext AppLaunchContexter)
+	// ListActions returns the list of "additional application actions"
+	// supported on the desktop file, as per the desktop file specification.
 	ListActions() []string
 }
 
@@ -140,9 +164,12 @@ type DesktopAppInfo struct {
 	AppInfo
 }
 
-var _ DesktopAppInfor = (*DesktopAppInfo)(nil)
+var (
+	_ DesktopAppInfor = (*DesktopAppInfo)(nil)
+	_ gextras.Nativer = (*DesktopAppInfo)(nil)
+)
 
-func wrapDesktopAppInfor(obj *externglib.Object) DesktopAppInfor {
+func wrapDesktopAppInfo(obj *externglib.Object) DesktopAppInfor {
 	return &DesktopAppInfo{
 		Object: obj,
 		AppInfo: AppInfo{
@@ -154,7 +181,7 @@ func wrapDesktopAppInfor(obj *externglib.Object) DesktopAppInfor {
 func marshalDesktopAppInfor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDesktopAppInfor(obj), nil
+	return wrapDesktopAppInfo(obj), nil
 }
 
 // NewDesktopAppInfo creates a new AppInfo based on a desktop file id.
@@ -517,7 +544,7 @@ func (info *DesktopAppInfo) LaunchAction(actionName string, launchContext AppLau
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer((launchContext).(gextras.Nativer).Native()))
 
 	C.g_desktop_app_info_launch_action(_arg0, _arg1, _arg2)
 }

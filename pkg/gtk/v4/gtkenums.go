@@ -76,7 +76,7 @@ func init() {
 	})
 }
 
-// AccessibleAutocomplete: the possible values for the
+// AccessibleAutocomplete: possible values for the
 // GTK_ACCESSIBLE_PROPERTY_AUTOCOMPLETE accessible property.
 type AccessibleAutocomplete int
 
@@ -101,8 +101,8 @@ func marshalAccessibleAutocomplete(p uintptr) (interface{}, error) {
 	return AccessibleAutocomplete(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleInvalidState: the possible values for the
-// GTK_ACCESSIBLE_STATE_INVALID accessible state.
+// AccessibleInvalidState: possible values for the GTK_ACCESSIBLE_STATE_INVALID
+// accessible state.
 //
 // Note that the GTK_ACCESSIBLE_INVALID_FALSE and GTK_ACCESSIBLE_INVALID_TRUE
 // have the same values as false and true.
@@ -111,7 +111,7 @@ type AccessibleInvalidState int
 const (
 	// False: there are no detected errors in the value
 	AccessibleInvalidStateFalse AccessibleInvalidState = iota
-	// True: the value entered by the user has failed validation
+	// True: value entered by the user has failed validation
 	AccessibleInvalidStateTrue
 	// Grammar: grammatical error was detected
 	AccessibleInvalidStateGrammar
@@ -123,7 +123,7 @@ func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
 	return AccessibleInvalidState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleProperty: the possible accessible properties of a `GtkAccessible`.
+// AccessibleProperty: possible accessible properties of a `GtkAccessible`.
 type AccessibleProperty int
 
 const (
@@ -194,7 +194,7 @@ func marshalAccessibleProperty(p uintptr) (interface{}, error) {
 	return AccessibleProperty(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleRelation: the possible accessible relations of a `GtkAccessible`.
+// AccessibleRelation: possible accessible relations of a `GtkAccessible`.
 //
 // Accessible relations can be references to other widgets, integers or strings.
 type AccessibleRelation int
@@ -267,7 +267,7 @@ func marshalAccessibleRelation(p uintptr) (interface{}, error) {
 	return AccessibleRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleRole: the accessible role for a `GtkAccessible` implementation.
+// AccessibleRole: accessible role for a `GtkAccessible` implementation.
 //
 // Abstract roles are only used as part of the ontology; application developers
 // must not use abstract roles in their code.
@@ -452,7 +452,7 @@ func marshalAccessibleRole(p uintptr) (interface{}, error) {
 	return AccessibleRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleSort: the possible values for the GTK_ACCESSIBLE_PROPERTY_SORT
+// AccessibleSort: possible values for the GTK_ACCESSIBLE_PROPERTY_SORT
 // accessible property.
 type AccessibleSort int
 
@@ -472,7 +472,7 @@ func marshalAccessibleSort(p uintptr) (interface{}, error) {
 	return AccessibleSort(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleState: the possible accessible states of a `GtkAccessible`.
+// AccessibleState: possible accessible states of a `GtkAccessible`.
 type AccessibleState int
 
 const (
@@ -508,7 +508,7 @@ func marshalAccessibleState(p uintptr) (interface{}, error) {
 	return AccessibleState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleTristate: the possible values for the GTK_ACCESSIBLE_STATE_PRESSED
+// AccessibleTristate: possible values for the GTK_ACCESSIBLE_STATE_PRESSED
 // accessible state.
 //
 // Note that the GTK_ACCESSIBLE_TRISTATE_FALSE and GTK_ACCESSIBLE_TRISTATE_TRUE
@@ -516,11 +516,11 @@ func marshalAccessibleState(p uintptr) (interface{}, error) {
 type AccessibleTristate int
 
 const (
-	// False: the state is `false`
+	// False: state is `false`
 	AccessibleTristateFalse AccessibleTristate = iota
-	// True: the state is `true`
+	// True: state is `true`
 	AccessibleTristateTrue
-	// Mixed: the state is `mixed`
+	// Mixed: state is `mixed`
 	AccessibleTristateMixed
 )
 
@@ -635,38 +635,38 @@ func marshalBorderStyle(p uintptr) (interface{}, error) {
 	return BorderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ConstraintAttribute: the widget attributes that can be used when creating a
+// ConstraintAttribute: widget attributes that can be used when creating a
 // `GtkConstraint`.
 type ConstraintAttribute int
 
 const (
 	// None: no attribute, used for constant relations
 	ConstraintAttributeNone ConstraintAttribute = iota
-	// Left: the left edge of a widget, regardless of text direction
+	// Left edge of a widget, regardless of text direction
 	ConstraintAttributeLeft
-	// Right: the right edge of a widget, regardless of text direction
+	// Right edge of a widget, regardless of text direction
 	ConstraintAttributeRight
-	// Top: the top edge of a widget
+	// Top edge of a widget
 	ConstraintAttributeTop
-	// Bottom: the bottom edge of a widget
+	// Bottom edge of a widget
 	ConstraintAttributeBottom
-	// Start: the leading edge of a widget, depending on text direction;
-	// equivalent to GTK_CONSTRAINT_ATTRIBUTE_LEFT for LTR languages, and
+	// Start: leading edge of a widget, depending on text direction; equivalent
+	// to GTK_CONSTRAINT_ATTRIBUTE_LEFT for LTR languages, and
 	// GTK_CONSTRAINT_ATTRIBUTE_RIGHT for RTL ones
 	ConstraintAttributeStart
-	// End: the trailing edge of a widget, depending on text direction;
-	// equivalent to GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR languages, and
+	// End: trailing edge of a widget, depending on text direction; equivalent
+	// to GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR languages, and
 	// GTK_CONSTRAINT_ATTRIBUTE_LEFT for RTL ones
 	ConstraintAttributeEnd
-	// Width: the width of a widget
+	// Width of a widget
 	ConstraintAttributeWidth
-	// Height: the height of a widget
+	// Height of a widget
 	ConstraintAttributeHeight
-	// CenterX: the center of a widget, on the horizontal axis
+	// CenterX: center of a widget, on the horizontal axis
 	ConstraintAttributeCenterX
-	// CenterY: the center of a widget, on the vertical axis
+	// CenterY: center of a widget, on the vertical axis
 	ConstraintAttributeCenterY
-	// Baseline: the baseline of a widget
+	// Baseline of a widget
 	ConstraintAttributeBaseline
 )
 
@@ -674,7 +674,7 @@ func marshalConstraintAttribute(p uintptr) (interface{}, error) {
 	return ConstraintAttribute(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ConstraintRelation: the relation between two terms of a constraint.
+// ConstraintRelation: relation between two terms of a constraint.
 type ConstraintRelation int
 
 const (
@@ -690,7 +690,7 @@ func marshalConstraintRelation(p uintptr) (interface{}, error) {
 	return ConstraintRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ConstraintStrength: the strength of a constraint, expressed as a symbolic
+// ConstraintStrength: strength of a constraint, expressed as a symbolic
 // constant.
 //
 // The strength of a Constraint can be expressed with any positive integer; the
@@ -698,7 +698,7 @@ func marshalConstraintRelation(p uintptr) (interface{}, error) {
 type ConstraintStrength int
 
 const (
-	// Required: the constraint is required towards solving the layout
+	// Required: constraint is required towards solving the layout
 	ConstraintStrengthRequired ConstraintStrength = 1001001000
 	// Strong constraint
 	ConstraintStrengthStrong ConstraintStrength = 1000000000
@@ -792,11 +792,11 @@ func marshalDirectionType(p uintptr) (interface{}, error) {
 type EventSequenceState int
 
 const (
-	// None: the sequence is handled, but not grabbed.
+	// None: sequence is handled, but not grabbed.
 	EventSequenceStateNone EventSequenceState = iota
-	// Claimed: the sequence is handled and grabbed.
+	// Claimed: sequence is handled and grabbed.
 	EventSequenceStateClaimed
-	// Denied: the sequence is denied.
+	// Denied: sequence is denied.
 	EventSequenceStateDenied
 )
 
@@ -879,13 +879,13 @@ func marshalInputPurpose(p uintptr) (interface{}, error) {
 type Justification int
 
 const (
-	// Left: the text is placed at the left edge of the label.
+	// Left: text is placed at the left edge of the label.
 	JustificationLeft Justification = iota
-	// Right: the text is placed at the right edge of the label.
+	// Right: text is placed at the right edge of the label.
 	JustificationRight
-	// Center: the text is placed in the center of the label.
+	// Center: text is placed in the center of the label.
 	JustificationCenter
-	// Fill: the text is placed is distributed across the label.
+	// Fill: text is placed is distributed across the label.
 	JustificationFill
 )
 
@@ -900,9 +900,9 @@ func marshalJustification(p uintptr) (interface{}, error) {
 type LevelBarMode int
 
 const (
-	// Continuous: the bar has a continuous mode
+	// Continuous: bar has a continuous mode
 	LevelBarModeContinuous LevelBarMode = iota
-	// Discrete: the bar has a discrete mode
+	// Discrete: bar has a discrete mode
 	LevelBarModeDiscrete
 )
 
@@ -910,7 +910,7 @@ func marshalLevelBarMode(p uintptr) (interface{}, error) {
 	return LevelBarMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MessageType: the type of message being displayed in a `GtkMessageDialog`.
+// MessageType: type of message being displayed in a `GtkMessageDialog`.
 type MessageType int
 
 const (
@@ -996,11 +996,11 @@ func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 type Ordering int
 
 const (
-	// Smaller: the first value is smaller than the second
+	// Smaller: first value is smaller than the second
 	OrderingSmaller Ordering = -1
-	// Equal: the two values are equal
+	// Equal: two values are equal
 	OrderingEqual Ordering = 0
-	// Larger: the first value is larger than the second
+	// Larger: first value is larger than the second
 	OrderingLarger Ordering = 1
 )
 
@@ -1014,9 +1014,9 @@ func marshalOrdering(p uintptr) (interface{}, error) {
 type Orientation int
 
 const (
-	// Horizontal: the element is in horizontal orientation.
+	// Horizontal: element is in horizontal orientation.
 	OrientationHorizontal Orientation = iota
-	// Vertical: the element is in vertical orientation.
+	// Vertical: element is in vertical orientation.
 	OrientationVertical
 )
 
@@ -1050,9 +1050,9 @@ func marshalOverflow(p uintptr) (interface{}, error) {
 type PackType int
 
 const (
-	// Start: the child is packed into the start of the widget
+	// Start: child is packed into the start of the widget
 	PackTypeStart PackType = iota
-	// End: the child is packed into the end of the widget
+	// End: child is packed into the end of the widget
 	PackTypeEnd
 )
 
@@ -1119,13 +1119,13 @@ func marshalPanDirection(p uintptr) (interface{}, error) {
 type PositionType int
 
 const (
-	// Left: the feature is at the left edge.
+	// Left: feature is at the left edge.
 	PositionTypeLeft PositionType = iota
-	// Right: the feature is at the right edge.
+	// Right: feature is at the right edge.
 	PositionTypeRight
-	// Top: the feature is at the top edge.
+	// Top: feature is at the top edge.
 	PositionTypeTop
-	// Bottom: the feature is at the bottom edge.
+	// Bottom: feature is at the bottom edge.
 	PositionTypeBottom
 )
 
@@ -1337,11 +1337,11 @@ func marshalSelectionMode(p uintptr) (interface{}, error) {
 type SensitivityType int
 
 const (
-	// Auto: the control is made insensitive if no action can be triggered
+	// Auto: control is made insensitive if no action can be triggered
 	SensitivityTypeAuto SensitivityType = iota
-	// On: the control is always sensitive
+	// On: control is always sensitive
 	SensitivityTypeOn
-	// Off: the control is always insensitive
+	// Off: control is always insensitive
 	SensitivityTypeOff
 )
 
@@ -1367,8 +1367,8 @@ func marshalShortcutScope(p uintptr) (interface{}, error) {
 	return ShortcutScope(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SizeGroupMode: the mode of the size group determines the directions in which
-// the size group affects the requested sizes of its component widgets.
+// SizeGroupMode: mode of the size group determines the directions in which the
+// size group affects the requested sizes of its component widgets.
 type SizeGroupMode int
 
 const (
@@ -1429,18 +1429,18 @@ func marshalSortType(p uintptr) (interface{}, error) {
 type SystemSetting int
 
 const (
-	// DPI: the Settings:gtk-xft-dpi setting has changed
+	// DPI setting has changed
 	SystemSettingDPI SystemSetting = iota
-	// FontName: the Settings:gtk-font-name setting has changed
+	// FontName setting has changed
 	SystemSettingFontName
-	// FontConfig: the font configuration has changed in a way that requires
-	// text to be redrawn. This can be any of the Settings:gtk-xft-antialias,
+	// FontConfig: font configuration has changed in a way that requires text to
+	// be redrawn. This can be any of the Settings:gtk-xft-antialias,
 	// Settings:gtk-xft-hinting, Settings:gtk-xft-hintstyle,
 	// Settings:gtk-xft-rgba or Settings:gtk-fontconfig-timestamp settings
 	SystemSettingFontConfig
-	// Display: the display has changed
+	// Display has changed
 	SystemSettingDisplay
-	// IconTheme: the icon theme has changed in a way that requires icons to be
+	// IconTheme: icon theme has changed in a way that requires icons to be
 	// looked up again
 	SystemSettingIconTheme
 )
@@ -1557,7 +1557,7 @@ const (
 	// InputHintsInhibitOsk: suggest to not show an onscreen keyboard (e.g for a
 	// calculator that already has all the keys).
 	InputHintsInhibitOsk InputHints = 0b10000000
-	// InputHintsVerticalWriting: the text is vertical
+	// InputHintsVerticalWriting: text is vertical
 	InputHintsVerticalWriting InputHints = 0b100000000
 	// InputHintsEmoji: suggest offering Emoji support
 	InputHintsEmoji InputHints = 0b1000000000
@@ -1576,8 +1576,7 @@ func marshalInputHints(p uintptr) (interface{}, error) {
 type PickFlags int
 
 const (
-	// PickFlagsDefault: the default behavior, include widgets that are
-	// receiving events
+	// PickFlagsDefault behavior, include widgets that are receiving events
 	PickFlagsDefault PickFlags = 0b0
 	// PickFlagsInsensitive: include widgets that are insensitive
 	PickFlagsInsensitive PickFlags = 0b1
@@ -1619,8 +1618,7 @@ const (
 	StateFlagsDirRTL StateFlags = 0b100000000
 	// StateFlagsLink: widget is a link
 	StateFlagsLink StateFlags = 0b1000000000
-	// StateFlagsVisited: the location the widget points to has already been
-	// visited
+	// StateFlagsVisited: location the widget points to has already been visited
 	StateFlagsVisited StateFlags = 0b10000000000
 	// StateFlagsChecked: widget is checked
 	StateFlagsChecked StateFlags = 0b100000000000

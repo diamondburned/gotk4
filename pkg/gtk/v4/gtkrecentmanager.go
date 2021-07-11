@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_recent_manager_error_get_type()), F: marshalRecentManagerError},
-		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManagerrer},
+		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManagerer},
 		{T: externglib.Type(C.gtk_recent_info_get_type()), F: marshalRecentInfo},
 	})
 }
@@ -31,12 +31,12 @@ func init() {
 type RecentManagerError int
 
 const (
-	// NotFound: the URI specified does not exists in the recently used
-	// resources list.
+	// NotFound: URI specified does not exists in the recently used resources
+	// list.
 	RecentManagerErrorNotFound RecentManagerError = iota
-	// InvalidURI: the URI specified is not valid.
+	// InvalidURI: URI specified is not valid.
 	RecentManagerErrorInvalidURI
-	// InvalidEncoding: the supplied string is not UTF-8 encoded.
+	// InvalidEncoding: supplied string is not UTF-8 encoded.
 	RecentManagerErrorInvalidEncoding
 	// NotRegistered: no application has registered the specified item.
 	RecentManagerErrorNotRegistered
@@ -52,24 +52,37 @@ func marshalRecentManagerError(p uintptr) (interface{}, error) {
 	return RecentManagerError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RecentManagerrerOverrider contains methods that are overridable.
+// RecentManagerOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RecentManagerrerOverrider interface {
+type RecentManagerOverrider interface {
 	Changed()
 }
 
-// RecentManagerrer describes RecentManager's methods.
-type RecentManagerrer interface {
-	gextras.Objector
-
+// RecentManagerer describes RecentManager's methods.
+type RecentManagerer interface {
+	// AddFull adds a new resource, pointed by @uri, into the recently used
+	// resources list, using the metadata specified inside the `GtkRecentData`
+	// passed in @recent_data.
 	AddFull(uri string, recentData *RecentData) bool
+	// AddItem adds a new resource, pointed by @uri, into the recently used
+	// resources list.
 	AddItem(uri string) bool
+	// HasItem checks whether there is a recently used resource registered with
+	// @uri inside the recent manager.
 	HasItem(uri string) bool
+	// LookupItem searches for a URI inside the recently used resources list,
+	// and returns a `GtkRecentInfo` containing information about the resource
+	// like its MIME type, or its display name.
 	LookupItem(uri string) (*RecentInfo, error)
+	// MoveItem changes the location of a recently used resource from @uri to
+	// @new_uri.
 	MoveItem(uri string, newUri string) error
+	// PurgeItems purges every item from the recently used resources list.
 	PurgeItems() (int, error)
+	// RemoveItem removes a resource pointed by @uri from the recently used
+	// resources list handled by a recent manager.
 	RemoveItem(uri string) error
 }
 
@@ -117,18 +130,21 @@ type RecentManager struct {
 	*externglib.Object
 }
 
-var _ RecentManagerrer = (*RecentManager)(nil)
+var (
+	_ RecentManagerer = (*RecentManager)(nil)
+	_ gextras.Nativer = (*RecentManager)(nil)
+)
 
-func wrapRecentManagerrer(obj *externglib.Object) RecentManagerrer {
+func wrapRecentManager(obj *externglib.Object) RecentManagerer {
 	return &RecentManager{
 		Object: obj,
 	}
 }
 
-func marshalRecentManagerrer(p uintptr) (interface{}, error) {
+func marshalRecentManagerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentManagerrer(obj), nil
+	return wrapRecentManager(obj), nil
 }
 
 // NewRecentManager creates a new recent manager object.

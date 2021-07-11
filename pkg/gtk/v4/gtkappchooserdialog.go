@@ -24,10 +24,11 @@ func init() {
 
 // AppChooserDialogger describes AppChooserDialog's methods.
 type AppChooserDialogger interface {
-	gextras.Objector
-
+	// Heading returns the text to display at the top of the dialog.
 	Heading() string
+	// Widget returns the `GtkAppChooserWidget` of this dialog.
 	Widget() *Widget
+	// SetHeading sets the text to display at the top of the dialog.
 	SetHeading(heading string)
 }
 
@@ -44,29 +45,21 @@ type AppChooserDialogger interface {
 // To set the heading that is shown above the `GtkAppChooserWidget`, use
 // [method@Gtk.AppChooserDialog.set_heading].
 type AppChooserDialog struct {
-	*externglib.Object
-
 	Dialog
-	Accessible
+
 	AppChooser
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
 }
 
-var _ AppChooserDialogger = (*AppChooserDialog)(nil)
+var (
+	_ AppChooserDialogger = (*AppChooserDialog)(nil)
+	_ gextras.Nativer     = (*AppChooserDialog)(nil)
+)
 
-func wrapAppChooserDialogger(obj *externglib.Object) AppChooserDialogger {
+func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialogger {
 	return &AppChooserDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -80,39 +73,9 @@ func wrapAppChooserDialogger(obj *externglib.Object) AppChooserDialogger {
 						Object: obj,
 					},
 				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-				Native: Native{
-					Object: obj,
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						Accessible: Accessible{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-						ConstraintTarget: ConstraintTarget{
-							Object: obj,
-						},
-					},
-				},
 				Root: Root{
-					Object: obj,
 					Native: Native{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -127,100 +90,14 @@ func wrapAppChooserDialogger(obj *externglib.Object) AppChooserDialogger {
 							},
 						},
 					},
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						Accessible: Accessible{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-						ConstraintTarget: ConstraintTarget{
-							Object: obj,
-						},
-					},
 				},
 				ShortcutManager: ShortcutManager{
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Root: Root{
-				Object: obj,
-				Native: Native{
-					Object: obj,
-					Widget: Widget{
-						Object: obj,
-						InitiallyUnowned: externglib.InitiallyUnowned{
-							Object: obj,
-						},
-						Accessible: Accessible{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-						ConstraintTarget: ConstraintTarget{
-							Object: obj,
-						},
-					},
-				},
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			ShortcutManager: ShortcutManager{
-				Object: obj,
-			},
-		},
-		Accessible: Accessible{
-			Object: obj,
 		},
 		AppChooser: AppChooser{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -234,69 +111,6 @@ func wrapAppChooserDialogger(obj *externglib.Object) AppChooserDialogger {
 					Object: obj,
 				},
 			},
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		Root: Root{
-			Object: obj,
-			Native: Native{
-				Object: obj,
-				Widget: Widget{
-					Object: obj,
-					InitiallyUnowned: externglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Accessible: Accessible{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-					ConstraintTarget: ConstraintTarget{
-						Object: obj,
-					},
-				},
-			},
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		ShortcutManager: ShortcutManager{
-			Object: obj,
 		},
 	}
 }
@@ -304,7 +118,13 @@ func wrapAppChooserDialogger(obj *externglib.Object) AppChooserDialogger {
 func marshalAppChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooserDialogger(obj), nil
+	return wrapAppChooserDialog(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *AppChooserDialog) Native() uintptr {
+	return v.Dialog.Window.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Heading returns the text to display at the top of the dialog.

@@ -34,8 +34,6 @@ func init() {
 
 // MemoryMonitorrer describes MemoryMonitor's methods.
 type MemoryMonitorrer interface {
-	gextras.Objector
-
 	privateMemoryMonitor()
 }
 
@@ -85,9 +83,12 @@ type MemoryMonitor struct {
 	Initable
 }
 
-var _ MemoryMonitorrer = (*MemoryMonitor)(nil)
+var (
+	_ MemoryMonitorrer = (*MemoryMonitor)(nil)
+	_ gextras.Nativer  = (*MemoryMonitor)(nil)
+)
 
-func wrapMemoryMonitorrer(obj *externglib.Object) MemoryMonitorrer {
+func wrapMemoryMonitor(obj *externglib.Object) MemoryMonitorrer {
 	return &MemoryMonitor{
 		Initable: Initable{
 			Object: obj,
@@ -98,7 +99,7 @@ func wrapMemoryMonitorrer(obj *externglib.Object) MemoryMonitorrer {
 func marshalMemoryMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryMonitorrer(obj), nil
+	return wrapMemoryMonitor(obj), nil
 }
 
 func (*MemoryMonitor) privateMemoryMonitor() {}

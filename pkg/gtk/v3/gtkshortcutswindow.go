@@ -25,19 +25,18 @@ func init() {
 	})
 }
 
-// ShortcutsWindowwerOverrider contains methods that are overridable.
+// ShortcutsWindowOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ShortcutsWindowwerOverrider interface {
+type ShortcutsWindowOverrider interface {
 	Close()
+
 	Search()
 }
 
 // ShortcutsWindowwer describes ShortcutsWindow's methods.
 type ShortcutsWindowwer interface {
-	gextras.Objector
-
 	privateShortcutsWindow()
 }
 
@@ -85,26 +84,20 @@ type ShortcutsWindowwer interface {
 // The .ui file for this example can be found here
 // (https://git.gnome.org/browse/gtk+/tree/demos/gtk-demo/shortcuts-builder.ui).
 type ShortcutsWindow struct {
-	*externglib.Object
-
 	Window
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ ShortcutsWindowwer = (*ShortcutsWindow)(nil)
+var (
+	_ ShortcutsWindowwer = (*ShortcutsWindow)(nil)
+	_ gextras.Nativer    = (*ShortcutsWindow)(nil)
+)
 
-func wrapShortcutsWindowwer(obj *externglib.Object) ShortcutsWindowwer {
+func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindowwer {
 	return &ShortcutsWindow{
-		Object: obj,
 		Window: Window{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -115,32 +108,8 @@ func wrapShortcutsWindowwer(obj *externglib.Object) ShortcutsWindowwer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -148,7 +117,7 @@ func wrapShortcutsWindowwer(obj *externglib.Object) ShortcutsWindowwer {
 func marshalShortcutsWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsWindowwer(obj), nil
+	return wrapShortcutsWindow(obj), nil
 }
 
 func (*ShortcutsWindow) privateShortcutsWindow() {}

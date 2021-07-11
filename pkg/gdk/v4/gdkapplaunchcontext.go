@@ -25,12 +25,17 @@ func init() {
 
 // AppLaunchContexter describes AppLaunchContext's methods.
 type AppLaunchContexter interface {
-	gextras.Objector
-
+	// Display gets the `GdkDisplay` that @context is for.
 	Display() *Display
+	// SetDesktop sets the workspace on which applications will be launched.
 	SetDesktop(desktop int)
+	// SetIcon sets the icon for applications that are launched with this
+	// context.
 	SetIcon(icon gio.Iconner)
+	// SetIconName sets the icon for applications that are launched with this
+	// context.
 	SetIconName(iconName string)
+	// SetTimestamp sets the timestamp of @context.
 	SetTimestamp(timestamp uint32)
 }
 
@@ -59,9 +64,12 @@ type AppLaunchContext struct {
 	gio.AppLaunchContext
 }
 
-var _ AppLaunchContexter = (*AppLaunchContext)(nil)
+var (
+	_ AppLaunchContexter = (*AppLaunchContext)(nil)
+	_ gextras.Nativer    = (*AppLaunchContext)(nil)
+)
 
-func wrapAppLaunchContexter(obj *externglib.Object) AppLaunchContexter {
+func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContexter {
 	return &AppLaunchContext{
 		AppLaunchContext: gio.AppLaunchContext{
 			Object: obj,
@@ -72,7 +80,7 @@ func wrapAppLaunchContexter(obj *externglib.Object) AppLaunchContexter {
 func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppLaunchContexter(obj), nil
+	return wrapAppLaunchContext(obj), nil
 }
 
 // Display gets the `GdkDisplay` that @context is for.
@@ -120,7 +128,7 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon               // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
 }

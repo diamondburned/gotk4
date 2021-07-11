@@ -20,14 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_spinner_get_type()), F: marshalCellRendererSpinnerrer},
+		{T: externglib.Type(C.gtk_cell_renderer_spinner_get_type()), F: marshalCellRendererSpinnerer},
 	})
 }
 
-// CellRendererSpinnerrer describes CellRendererSpinner's methods.
-type CellRendererSpinnerrer interface {
-	gextras.Objector
-
+// CellRendererSpinnerer describes CellRendererSpinner's methods.
+type CellRendererSpinnerer interface {
 	privateCellRendererSpinner()
 }
 
@@ -44,9 +42,12 @@ type CellRendererSpinner struct {
 	CellRenderer
 }
 
-var _ CellRendererSpinnerrer = (*CellRendererSpinner)(nil)
+var (
+	_ CellRendererSpinnerer = (*CellRendererSpinner)(nil)
+	_ gextras.Nativer       = (*CellRendererSpinner)(nil)
+)
 
-func wrapCellRendererSpinnerrer(obj *externglib.Object) CellRendererSpinnerrer {
+func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinnerer {
 	return &CellRendererSpinner{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -56,10 +57,10 @@ func wrapCellRendererSpinnerrer(obj *externglib.Object) CellRendererSpinnerrer {
 	}
 }
 
-func marshalCellRendererSpinnerrer(p uintptr) (interface{}, error) {
+func marshalCellRendererSpinnerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererSpinnerrer(obj), nil
+	return wrapCellRendererSpinner(obj), nil
 }
 
 // NewCellRendererSpinner returns a new cell renderer which will show a spinner

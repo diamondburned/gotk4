@@ -27,8 +27,7 @@ func init() {
 
 // PopoverMenuer describes PopoverMenu's methods.
 type PopoverMenuer interface {
-	gextras.Objector
-
+	// OpenSubmenu opens a submenu of the @popover.
 	OpenSubmenu(name string)
 }
 
@@ -101,26 +100,20 @@ type PopoverMenuer interface {
 // PopoverMenu instances have a single css node called "popover" and get the
 // .menu style class.
 type PopoverMenu struct {
-	*externglib.Object
-
 	Popover
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ PopoverMenuer = (*PopoverMenu)(nil)
+var (
+	_ PopoverMenuer   = (*PopoverMenu)(nil)
+	_ gextras.Nativer = (*PopoverMenu)(nil)
+)
 
-func wrapPopoverMenuer(obj *externglib.Object) PopoverMenuer {
+func wrapPopoverMenu(obj *externglib.Object) PopoverMenuer {
 	return &PopoverMenu{
-		Object: obj,
 		Popover: Popover{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -131,32 +124,8 @@ func wrapPopoverMenuer(obj *externglib.Object) PopoverMenuer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -164,7 +133,7 @@ func wrapPopoverMenuer(obj *externglib.Object) PopoverMenuer {
 func marshalPopoverMenuer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopoverMenuer(obj), nil
+	return wrapPopoverMenu(obj), nil
 }
 
 // NewPopoverMenu creates a new popover menu.

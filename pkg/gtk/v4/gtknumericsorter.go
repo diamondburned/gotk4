@@ -18,16 +18,19 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_numeric_sorter_get_type()), F: marshalNumericSorterrer},
+		{T: externglib.Type(C.gtk_numeric_sorter_get_type()), F: marshalNumericSorterer},
 	})
 }
 
-// NumericSorterrer describes NumericSorter's methods.
-type NumericSorterrer interface {
-	gextras.Objector
-
+// NumericSorterer describes NumericSorter's methods.
+type NumericSorterer interface {
+	// Expression gets the expression that is evaluated to obtain numbers from
+	// items.
 	Expression() *Expression
+	// SortOrder gets whether this sorter will sort smaller numbers first.
 	SortOrder() SortType
+	// SetExpression sets the expression that is evaluated to obtain numbers
+	// from items.
 	SetExpression(expression Expressioner)
 }
 
@@ -39,9 +42,12 @@ type NumericSorter struct {
 	Sorter
 }
 
-var _ NumericSorterrer = (*NumericSorter)(nil)
+var (
+	_ NumericSorterer = (*NumericSorter)(nil)
+	_ gextras.Nativer = (*NumericSorter)(nil)
+)
 
-func wrapNumericSorterrer(obj *externglib.Object) NumericSorterrer {
+func wrapNumericSorter(obj *externglib.Object) NumericSorterer {
 	return &NumericSorter{
 		Sorter: Sorter{
 			Object: obj,
@@ -49,10 +55,10 @@ func wrapNumericSorterrer(obj *externglib.Object) NumericSorterrer {
 	}
 }
 
-func marshalNumericSorterrer(p uintptr) (interface{}, error) {
+func marshalNumericSorterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNumericSorterrer(obj), nil
+	return wrapNumericSorter(obj), nil
 }
 
 // NewNumericSorter creates a new numeric sorter using the given @expression.
@@ -63,7 +69,7 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 	var _arg1 *C.GtkExpression    // out
 	var _cret *C.GtkNumericSorter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_numeric_sorter_new(_arg1)
 
@@ -120,7 +126,7 @@ func (self *NumericSorter) SetExpression(expression Expressioner) {
 	var _arg1 *C.GtkExpression    // out
 
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	C.gtk_numeric_sorter_set_expression(_arg0, _arg1)
 }

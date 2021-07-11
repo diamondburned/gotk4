@@ -29,11 +29,11 @@ func init() {
 type PixbufFormatFlags int
 
 const (
-	// PixbufFormatFlagsWritable: the module can write out images in the format.
+	// PixbufFormatFlagsWritable: module can write out images in the format.
 	PixbufFormatFlagsWritable PixbufFormatFlags = 0b1
-	// PixbufFormatFlagsScalable: the image format is scalable
+	// PixbufFormatFlagsScalable: image format is scalable
 	PixbufFormatFlagsScalable PixbufFormatFlags = 0b10
-	// PixbufFormatFlagsThreadsafe: the module is threadsafe. gdk-pixbuf ignores
+	// PixbufFormatFlagsThreadsafe: module is threadsafe. gdk-pixbuf ignores
 	// modules that are not marked as threadsafe. (Since 2.28).
 	PixbufFormatFlagsThreadsafe PixbufFormatFlags = 0b100
 )

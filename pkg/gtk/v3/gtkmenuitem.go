@@ -25,13 +25,14 @@ func init() {
 	})
 }
 
-// MenuItemmerOverrider contains methods that are overridable.
+// MenuItemOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type MenuItemmerOverrider interface {
+type MenuItemOverrider interface {
 	// Activate emits the MenuItem::activate signal on the given item
 	Activate()
+
 	ActivateItem()
 	// Deselect emits the MenuItem::deselect signal on the given item.
 	Deselect()
@@ -48,29 +49,55 @@ type MenuItemmerOverrider interface {
 
 // MenuItemmer describes MenuItem's methods.
 type MenuItemmer interface {
-	gextras.Objector
-
+	// Activate emits the MenuItem::activate signal on the given item
 	Activate()
+	// Deselect emits the MenuItem::deselect signal on the given item.
 	Deselect()
+	// AccelPath: retrieve the accelerator path that was previously set on
+	// @menu_item.
 	AccelPath() string
+	// Label sets @text on the @menu_item label
 	Label() string
+	// ReserveIndicator returns whether the @menu_item reserves space for the
+	// submenu indicator, regardless if it has a submenu or not.
 	ReserveIndicator() bool
+	// RightJustified gets whether the menu item appears justified at the right
+	// side of the menu bar.
 	RightJustified() bool
+	// Submenu gets the submenu underneath this menu item, if any.
 	Submenu() *Widget
+	// UseUnderline checks if an underline in the text indicates the next
+	// character should be used for the mnemonic accelerator key.
 	UseUnderline() bool
+	// Select emits the MenuItem::select signal on the given item.
 	Select()
+	// SetAccelPath: set the accelerator path on @menu_item, through which
+	// runtime changes of the menu item’s accelerator caused by the user can be
+	// identified and saved to persistent storage (see gtk_accel_map_save() on
+	// this).
 	SetAccelPath(accelPath string)
+	// SetLabel sets @text on the @menu_item label
 	SetLabel(label string)
+	// SetReserveIndicator sets whether the @menu_item should reserve space for
+	// the submenu indicator, regardless if it actually has a submenu or not.
 	SetReserveIndicator(reserve bool)
+	// SetRightJustified sets whether the menu item appears justified at the
+	// right side of a menu bar.
 	SetRightJustified(rightJustified bool)
+	// SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
+	// nil submenu is passed.
 	SetSubmenu(submenu Menuer)
+	// SetUseUnderline: if true, an underline in the text indicates the next
+	// character should be used for the mnemonic accelerator key.
 	SetUseUnderline(setting bool)
+	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
+	// given item.
 	ToggleSizeAllocate(allocation int)
 }
 
-// MenuItem: the MenuItem widget and the derived widgets are the only valid
-// children for menus. Their function is to correctly handle highlighting,
-// alignment, events and submenus.
+// MenuItem widget and the derived widgets are the only valid children for
+// menus. Their function is to correctly handle highlighting, alignment, events
+// and submenus.
 //
 // As a GtkMenuItem derives from Bin it can hold any valid child widget,
 // although only a few are really useful.
@@ -89,26 +116,22 @@ type MenuItemmer interface {
 // submenu, it gets another CSS node with name arrow, which has the .left or
 // .right style class.
 type MenuItem struct {
-	*externglib.Object
-
 	Bin
-	atk.ImplementorIface
+
 	Actionable
 	Activatable
-	Buildable
 }
 
-var _ MenuItemmer = (*MenuItem)(nil)
+var (
+	_ MenuItemmer     = (*MenuItem)(nil)
+	_ gextras.Nativer = (*MenuItem)(nil)
+)
 
-func wrapMenuItemmer(obj *externglib.Object) MenuItemmer {
+func wrapMenuItem(obj *externglib.Object) MenuItemmer {
 	return &MenuItem{
-		Object: obj,
 		Bin: Bin{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -119,27 +142,10 @@ func wrapMenuItemmer(obj *externglib.Object) MenuItemmer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
 		},
 		Actionable: Actionable{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -154,16 +160,13 @@ func wrapMenuItemmer(obj *externglib.Object) MenuItemmer {
 		Activatable: Activatable{
 			Object: obj,
 		},
-		Buildable: Buildable{
-			Object: obj,
-		},
 	}
 }
 
 func marshalMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuItemmer(obj), nil
+	return wrapMenuItem(obj), nil
 }
 
 // NewMenuItem creates a new MenuItem.
@@ -214,6 +217,12 @@ func NewMenuItemWithMnemonic(label string) *MenuItem {
 	_menuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuItem)
 
 	return _menuItem
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *MenuItem) Native() uintptr {
+	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Activate emits the MenuItem::activate signal on the given item
@@ -438,7 +447,7 @@ func (menuItem *MenuItem) SetSubmenu(submenu Menuer) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(submenu.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
 
 	C.gtk_menu_item_set_submenu(_arg0, _arg1)
 }

@@ -34,28 +34,30 @@ func init() {
 
 // DTLSClientConnectioner describes DTLSClientConnection's methods.
 type DTLSClientConnectioner interface {
-	gextras.Objector
-
+	// ServerIdentity gets @conn's expected server identity
 	ServerIdentity() *SocketConnectable
+	// ValidationFlags gets @conn's validation flags
 	ValidationFlags() TLSCertificateFlags
+	// SetServerIdentity sets @conn's expected server identity, which is used
+	// both to tell servers on virtual hosts which certificate to present, and
+	// also to let @conn know what name to look for in the certificate when
+	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 	SetServerIdentity(identity SocketConnectabler)
 }
 
 // DTLSClientConnection is the client-side subclass of Connection, representing
 // a client-side DTLS connection.
 type DTLSClientConnection struct {
-	DatagramBased
-
 	DTLSConnection
 }
 
-var _ DTLSClientConnectioner = (*DTLSClientConnection)(nil)
+var (
+	_ DTLSClientConnectioner = (*DTLSClientConnection)(nil)
+	_ gextras.Nativer        = (*DTLSClientConnection)(nil)
+)
 
-func wrapDTLSClientConnectioner(obj *externglib.Object) DTLSClientConnectioner {
+func wrapDTLSClientConnection(obj *externglib.Object) DTLSClientConnectioner {
 	return &DTLSClientConnection{
-		DatagramBased: DatagramBased{
-			Object: obj,
-		},
 		DTLSConnection: DTLSConnection{
 			DatagramBased: DatagramBased{
 				Object: obj,
@@ -67,7 +69,7 @@ func wrapDTLSClientConnectioner(obj *externglib.Object) DTLSClientConnectioner {
 func marshalDTLSClientConnectioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDTLSClientConnectioner(obj), nil
+	return wrapDTLSClientConnection(obj), nil
 }
 
 // ServerIdentity gets @conn's expected server identity
@@ -111,7 +113,7 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 	var _arg1 *C.GSocketConnectable    // out
 
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((identity).(gextras.Nativer).Native()))
 
 	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
 }

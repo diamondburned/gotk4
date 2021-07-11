@@ -35,32 +35,26 @@ func init() {
 
 // NativeSocketAddresser describes NativeSocketAddress's methods.
 type NativeSocketAddresser interface {
-	gextras.Objector
-
 	privateNativeSocketAddress()
 }
 
 // NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress struct {
-	*externglib.Object
-
 	SocketAddress
-	SocketConnectable
 }
 
-var _ NativeSocketAddresser = (*NativeSocketAddress)(nil)
+var (
+	_ NativeSocketAddresser = (*NativeSocketAddress)(nil)
+	_ gextras.Nativer       = (*NativeSocketAddress)(nil)
+)
 
-func wrapNativeSocketAddresser(obj *externglib.Object) NativeSocketAddresser {
+func wrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddresser {
 	return &NativeSocketAddress{
-		Object: obj,
 		SocketAddress: SocketAddress{
 			Object: obj,
 			SocketConnectable: SocketConnectable{
 				Object: obj,
 			},
-		},
-		SocketConnectable: SocketConnectable{
-			Object: obj,
 		},
 	}
 }
@@ -68,7 +62,7 @@ func wrapNativeSocketAddresser(obj *externglib.Object) NativeSocketAddresser {
 func marshalNativeSocketAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNativeSocketAddresser(obj), nil
+	return wrapNativeSocketAddress(obj), nil
 }
 
 // NewNativeSocketAddress creates a new SocketAddress for @native and @len.

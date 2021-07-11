@@ -24,9 +24,9 @@ func init() {
 
 // DragIconner describes DragIcon's methods.
 type DragIconner interface {
-	gextras.Objector
-
+	// Child gets the widget currently used as drag icon.
 	Child() *Widget
+	// SetChild sets the widget to display as the drag icon.
 	SetChild(child Widgetter)
 }
 
@@ -42,23 +42,19 @@ type DragIconner interface {
 //
 // Keep in mind that drag icons do not allow user input.
 type DragIcon struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
+
 	Root
 }
 
-var _ DragIconner = (*DragIcon)(nil)
+var (
+	_ DragIconner     = (*DragIcon)(nil)
+	_ gextras.Nativer = (*DragIcon)(nil)
+)
 
-func wrapDragIconner(obj *externglib.Object) DragIconner {
+func wrapDragIcon(obj *externglib.Object) DragIconner {
 	return &DragIcon{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -72,39 +68,9 @@ func wrapDragIconner(obj *externglib.Object) DragIconner {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Native: Native{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
 		Root: Root{
-			Object: obj,
 			Native: Native{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -119,21 +85,6 @@ func wrapDragIconner(obj *externglib.Object) DragIconner {
 					},
 				},
 			},
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
 		},
 	}
 }
@@ -141,7 +92,13 @@ func wrapDragIconner(obj *externglib.Object) DragIconner {
 func marshalDragIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragIconner(obj), nil
+	return wrapDragIcon(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *DragIcon) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Child gets the widget currently used as drag icon.
@@ -166,7 +123,7 @@ func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
 }

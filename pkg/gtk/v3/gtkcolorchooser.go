@@ -21,15 +21,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_get_type()), F: marshalColorChooserrer},
+		{T: externglib.Type(C.gtk_color_chooser_get_type()), F: marshalColorChooserer},
 	})
 }
 
-// ColorChooserrerOverrider contains methods that are overridable.
+// ColorChooserOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ColorChooserrerOverrider interface {
+type ColorChooserOverrider interface {
 	ColorActivated(color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
 	RGBA() gdk.RGBA
@@ -37,13 +37,16 @@ type ColorChooserrerOverrider interface {
 	SetRGBA(color *gdk.RGBA)
 }
 
-// ColorChooserrer describes ColorChooser's methods.
-type ColorChooserrer interface {
-	gextras.Objector
-
+// ColorChooserer describes ColorChooser's methods.
+type ColorChooserer interface {
+	// RGBA gets the currently-selected color.
 	RGBA() gdk.RGBA
+	// UseAlpha returns whether the color chooser shows the alpha channel.
 	UseAlpha() bool
+	// SetRGBA sets the color.
 	SetRGBA(color *gdk.RGBA)
+	// SetUseAlpha sets whether or not the color chooser should use the alpha
+	// channel.
 	SetUseAlpha(useAlpha bool)
 }
 
@@ -57,18 +60,21 @@ type ColorChooser struct {
 	*externglib.Object
 }
 
-var _ ColorChooserrer = (*ColorChooser)(nil)
+var (
+	_ ColorChooserer  = (*ColorChooser)(nil)
+	_ gextras.Nativer = (*ColorChooser)(nil)
+)
 
-func wrapColorChooserrer(obj *externglib.Object) ColorChooserrer {
+func wrapColorChooser(obj *externglib.Object) ColorChooserer {
 	return &ColorChooser{
 		Object: obj,
 	}
 }
 
-func marshalColorChooserrer(p uintptr) (interface{}, error) {
+func marshalColorChooserer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorChooserrer(obj), nil
+	return wrapColorChooser(obj), nil
 }
 
 // RGBA gets the currently-selected color.

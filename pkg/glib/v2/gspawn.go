@@ -72,27 +72,27 @@ type SpawnFlags int
 const (
 	// SpawnFlagsDefault: no flags, default behaviour
 	SpawnFlagsDefault SpawnFlags = 0b0
-	// SpawnFlagsLeaveDescriptorsOpen: the parent's open file descriptors will
-	// be inherited by the child; otherwise all descriptors except stdin, stdout
+	// SpawnFlagsLeaveDescriptorsOpen parent's open file descriptors will be
+	// inherited by the child; otherwise all descriptors except stdin, stdout
 	// and stderr will be closed before calling exec() in the child.
 	SpawnFlagsLeaveDescriptorsOpen SpawnFlags = 0b1
-	// SpawnFlagsDoNotReapChild: the child will not be automatically reaped; you
+	// SpawnFlagsDoNotReapChild: child will not be automatically reaped; you
 	// must use g_child_watch_add() yourself (or call waitpid() or handle
 	// `SIGCHLD` yourself), or the child will become a zombie.
 	SpawnFlagsDoNotReapChild SpawnFlags = 0b10
 	// SpawnFlagsSearchPath: `argv[0]` need not be an absolute path, it will be
 	// looked for in the user's `PATH`.
 	SpawnFlagsSearchPath SpawnFlags = 0b100
-	// SpawnFlagsStdoutToDevNull: the child's standard output will be discarded,
+	// SpawnFlagsStdoutToDevNull child's standard output will be discarded,
 	// instead of going to the same location as the parent's standard output.
 	SpawnFlagsStdoutToDevNull SpawnFlags = 0b1000
-	// SpawnFlagsStderrToDevNull: the child's standard error will be discarded.
+	// SpawnFlagsStderrToDevNull child's standard error will be discarded.
 	SpawnFlagsStderrToDevNull SpawnFlags = 0b10000
-	// SpawnFlagsChildInheritsStdin: the child will inherit the parent's
-	// standard input (by default, the child's standard input is attached to
+	// SpawnFlagsChildInheritsStdin: child will inherit the parent's standard
+	// input (by default, the child's standard input is attached to
 	// `/dev/null`).
 	SpawnFlagsChildInheritsStdin SpawnFlags = 0b100000
-	// SpawnFlagsFileAndArgvZero: the first element of `argv` is the file to
+	// SpawnFlagsFileAndArgvZero: first element of `argv` is the file to
 	// execute, while the remaining elements are the actual argument vector to
 	// pass to the file. Normally g_spawn_async_with_pipes() uses `argv[0]` as
 	// the file to execute, and passes all of `argv` to the child.

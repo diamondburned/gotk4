@@ -62,7 +62,7 @@ func marshalInterpType(p uintptr) (interface{}, error) {
 	return InterpType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PixbufRotation: the possible rotations which can be passed to
+// PixbufRotation: possible rotations which can be passed to
 // gdk_pixbuf_rotate_simple().
 //
 // To make them easier to use, their numerical values are the actual degrees.

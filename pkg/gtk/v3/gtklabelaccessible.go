@@ -27,25 +27,23 @@ func init() {
 
 // LabelAccessibler describes LabelAccessible's methods.
 type LabelAccessibler interface {
-	gextras.Objector
-
 	privateLabelAccessible()
 }
 
 type LabelAccessible struct {
-	*externglib.Object
-
 	WidgetAccessible
-	atk.Component
+
 	atk.Hypertext
 	atk.Text
 }
 
-var _ LabelAccessibler = (*LabelAccessible)(nil)
+var (
+	_ LabelAccessibler = (*LabelAccessible)(nil)
+	_ gextras.Nativer  = (*LabelAccessible)(nil)
+)
 
-func wrapLabelAccessibler(obj *externglib.Object) LabelAccessibler {
+func wrapLabelAccessible(obj *externglib.Object) LabelAccessibler {
 	return &LabelAccessible{
-		Object: obj,
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
 				ObjectClass: atk.ObjectClass{
@@ -55,9 +53,6 @@ func wrapLabelAccessibler(obj *externglib.Object) LabelAccessibler {
 			Component: atk.Component{
 				Object: obj,
 			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 		Hypertext: atk.Hypertext{
 			Object: obj,
@@ -71,7 +66,13 @@ func wrapLabelAccessibler(obj *externglib.Object) LabelAccessibler {
 func marshalLabelAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLabelAccessibler(obj), nil
+	return wrapLabelAccessible(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *LabelAccessible) Native() uintptr {
+	return v.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*LabelAccessible) privateLabelAccessible() {}

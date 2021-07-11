@@ -27,19 +27,27 @@ func init() {
 
 // Dropper describes Drop's methods.
 type Dropper interface {
-	gextras.Objector
-
+	// Actions returns the possible actions for this `GdkDrop`.
 	Actions() DragAction
+	// Device returns the `GdkDevice` performing the drop.
 	Device() *Device
+	// Display gets the `GdkDisplay` that @self was created for.
 	Display() *Display
+	// Drag: if this is an in-app drag-and-drop operation, returns the `GdkDrag`
+	// that corresponds to this drop.
 	Drag() *Drag
+	// Formats returns the `GdkContentFormats` that the drop offers the data to
+	// be read in.
 	Formats() *ContentFormats
+	// Surface returns the `GdkSurface` performing the drop.
 	Surface() *Surface
+	// ReadFinish finishes an async drop read operation.
 	ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error)
+	// ReadValueFinish finishes an async drop read.
 	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
 }
 
-// Drop: the `GdkDrop` object represents the target of an ongoing DND operation.
+// Drop: `GdkDrop` object represents the target of an ongoing DND operation.
 //
 // Possible drop sites get informed about the status of the ongoing drag
 // operation with events of type GDK_DRAG_ENTER, GDK_DRAG_LEAVE, GDK_DRAG_MOTION
@@ -57,9 +65,12 @@ type Drop struct {
 	*externglib.Object
 }
 
-var _ Dropper = (*Drop)(nil)
+var (
+	_ Dropper         = (*Drop)(nil)
+	_ gextras.Nativer = (*Drop)(nil)
+)
 
-func wrapDropper(obj *externglib.Object) Dropper {
+func wrapDrop(obj *externglib.Object) Dropper {
 	return &Drop{
 		Object: obj,
 	}
@@ -68,7 +79,7 @@ func wrapDropper(obj *externglib.Object) Dropper {
 func marshalDropper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropper(obj), nil
+	return wrapDrop(obj), nil
 }
 
 // Actions returns the possible actions for this `GdkDrop`.
@@ -203,7 +214,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_drop_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -229,7 +240,7 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, 
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_drop_read_value_finish(_arg0, _arg1, &_cerr)
 

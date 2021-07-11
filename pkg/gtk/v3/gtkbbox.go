@@ -56,35 +56,37 @@ func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
 
 // ButtonBoxxer describes ButtonBox's methods.
 type ButtonBoxxer interface {
-	gextras.Objector
-
+	// ChildNonHomogeneous returns whether the child is exempted from homogenous
+	// sizing.
 	ChildNonHomogeneous(child Widgetter) bool
+	// ChildSecondary returns whether @child should appear in a secondary group
+	// of children.
 	ChildSecondary(child Widgetter) bool
+	// Layout retrieves the method being used to arrange the buttons in a button
+	// box.
 	Layout() ButtonBoxStyle
+	// SetChildNonHomogeneous sets whether the child is exempted from homogeous
+	// sizing.
 	SetChildNonHomogeneous(child Widgetter, nonHomogeneous bool)
+	// SetChildSecondary sets whether @child should appear in a secondary group
+	// of children.
 	SetChildSecondary(child Widgetter, isSecondary bool)
 }
 
 type ButtonBox struct {
-	*externglib.Object
-
 	Box
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ ButtonBoxxer = (*ButtonBox)(nil)
+var (
+	_ ButtonBoxxer    = (*ButtonBox)(nil)
+	_ gextras.Nativer = (*ButtonBox)(nil)
+)
 
-func wrapButtonBoxxer(obj *externglib.Object) ButtonBoxxer {
+func wrapButtonBox(obj *externglib.Object) ButtonBoxxer {
 	return &ButtonBox{
-		Object: obj,
 		Box: Box{
-			Object: obj,
 			Container: Container{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -95,31 +97,10 @@ func wrapButtonBoxxer(obj *externglib.Object) ButtonBoxxer {
 						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -127,7 +108,7 @@ func wrapButtonBoxxer(obj *externglib.Object) ButtonBoxxer {
 func marshalButtonBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButtonBoxxer(obj), nil
+	return wrapButtonBox(obj), nil
 }
 
 // ChildNonHomogeneous returns whether the child is exempted from homogenous
@@ -138,7 +119,7 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
 
@@ -159,7 +140,7 @@ func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
 
@@ -197,7 +178,7 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 	var _arg2 C.gboolean      // out
 
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	if nonHomogeneous {
 		_arg2 = C.TRUE
 	}
@@ -222,7 +203,7 @@ func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
 	var _arg2 C.gboolean      // out
 
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	if isSecondary {
 		_arg2 = C.TRUE
 	}

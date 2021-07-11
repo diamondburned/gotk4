@@ -32,11 +32,11 @@ func init() {
 	})
 }
 
-// ListModellerOverrider contains methods that are overridable.
+// ListModelOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ListModellerOverrider interface {
+type ListModelOverrider interface {
 	// Item: get the item at @position. If @position is greater than the number
 	// of items in @list, nil is returned.
 	//
@@ -59,11 +59,13 @@ type ListModellerOverrider interface {
 
 // ListModeller describes ListModel's methods.
 type ListModeller interface {
-	gextras.Objector
-
+	// ItemType gets the type of the items in @list.
 	ItemType() externglib.Type
+	// NItems gets the number of items in @list.
 	NItems() uint
+	// GetObject: get the item at @position.
 	GetObject(position uint) *externglib.Object
+	// ItemsChanged emits the Model::items-changed signal on @list.
 	ItemsChanged(position uint, removed uint, added uint)
 }
 
@@ -113,9 +115,12 @@ type ListModel struct {
 	*externglib.Object
 }
 
-var _ ListModeller = (*ListModel)(nil)
+var (
+	_ ListModeller    = (*ListModel)(nil)
+	_ gextras.Nativer = (*ListModel)(nil)
+)
 
-func wrapListModeller(obj *externglib.Object) ListModeller {
+func wrapListModel(obj *externglib.Object) ListModeller {
 	return &ListModel{
 		Object: obj,
 	}
@@ -124,7 +129,7 @@ func wrapListModeller(obj *externglib.Object) ListModeller {
 func marshalListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListModeller(obj), nil
+	return wrapListModel(obj), nil
 }
 
 // ItemType gets the type of the items in @list. All items returned from

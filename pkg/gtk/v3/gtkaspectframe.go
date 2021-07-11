@@ -27,42 +27,35 @@ func init() {
 
 // AspectFramer describes AspectFrame's methods.
 type AspectFramer interface {
-	gextras.Objector
-
+	// Set parameters for an existing AspectFrame.
 	Set(xalign float32, yalign float32, ratio float32, obeyChild bool)
 }
 
-// AspectFrame: the AspectFrame is useful when you want pack a widget so that it
-// can resize but always retains the same aspect ratio. For instance, one might
-// be drawing a small preview of a larger image. AspectFrame derives from Frame,
-// so it can draw a label and a frame around the child. The frame will be
-// “shrink-wrapped” to the size of the child.
+// AspectFrame is useful when you want pack a widget so that it can resize but
+// always retains the same aspect ratio. For instance, one might be drawing a
+// small preview of a larger image. AspectFrame derives from Frame, so it can
+// draw a label and a frame around the child. The frame will be “shrink-wrapped”
+// to the size of the child.
 //
 //
 // CSS nodes
 //
 // GtkAspectFrame uses a CSS node with name frame.
 type AspectFrame struct {
-	*externglib.Object
-
 	Frame
-	atk.ImplementorIface
-	Buildable
 }
 
-var _ AspectFramer = (*AspectFrame)(nil)
+var (
+	_ AspectFramer    = (*AspectFrame)(nil)
+	_ gextras.Nativer = (*AspectFrame)(nil)
+)
 
-func wrapAspectFramer(obj *externglib.Object) AspectFramer {
+func wrapAspectFrame(obj *externglib.Object) AspectFramer {
 	return &AspectFrame{
-		Object: obj,
 		Frame: Frame{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -73,32 +66,8 @@ func wrapAspectFramer(obj *externglib.Object) AspectFramer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -106,7 +75,7 @@ func wrapAspectFramer(obj *externglib.Object) AspectFramer {
 func marshalAspectFramer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAspectFramer(obj), nil
+	return wrapAspectFrame(obj), nil
 }
 
 // NewAspectFrame: create a new AspectFrame.

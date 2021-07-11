@@ -32,13 +32,13 @@ func init() {
 type ExpanderStyle int
 
 const (
-	// Collapsed: the style used for a collapsed subtree.
+	// Collapsed: style used for a collapsed subtree.
 	ExpanderStyleCollapsed ExpanderStyle = iota
 	// SemiCollapsed: intermediate style used during animation.
 	ExpanderStyleSemiCollapsed
 	// SemiExpanded: intermediate style used during animation.
 	ExpanderStyleSemiExpanded
-	// Expanded: the style used for an expanded subtree.
+	// Expanded: style used for an expanded subtree.
 	ExpanderStyleExpanded
 )
 
@@ -46,26 +46,37 @@ func marshalExpanderStyle(p uintptr) (interface{}, error) {
 	return ExpanderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// StylerOverrider contains methods that are overridable.
+// StyleOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type StylerOverrider interface {
+type StyleOverrider interface {
 	Copy(src Styler)
+
 	InitFromRC(rcStyle RCStyler)
+
 	Realize()
+
 	Unrealize()
 }
 
 // Styler describes Style's methods.
 type Styler interface {
-	gextras.Objector
-
+	// Copy creates a copy of the passed in Style object.
 	Copy() *Style
+	// Detach detaches a style from a window.
 	Detach()
+	// StyleProperty queries the value of a style property corresponding to a
+	// widget class is in the given style.
 	StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value
+	// HasContext returns whether @style has an associated StyleContext.
 	HasContext() bool
+	// LookupColor looks up @color_name in the style’s logical color mappings,
+	// filling in @color and returning true if found, otherwise returning false.
 	LookupColor(colorName string) (gdk.Color, bool)
+	// LookupIconSet looks up @stock_id in the icon factories associated with
+	// @style and the default icon factory, returning an icon set if found,
+	// otherwise nil.
 	LookupIconSet(stockId string) *IconSet
 }
 
@@ -87,9 +98,12 @@ type Style struct {
 	*externglib.Object
 }
 
-var _ Styler = (*Style)(nil)
+var (
+	_ Styler          = (*Style)(nil)
+	_ gextras.Nativer = (*Style)(nil)
+)
 
-func wrapStyler(obj *externglib.Object) Styler {
+func wrapStyle(obj *externglib.Object) Styler {
 	return &Style{
 		Object: obj,
 	}
@@ -98,7 +112,7 @@ func wrapStyler(obj *externglib.Object) Styler {
 func marshalStyler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyler(obj), nil
+	return wrapStyle(obj), nil
 }
 
 // NewStyle creates a new Style.

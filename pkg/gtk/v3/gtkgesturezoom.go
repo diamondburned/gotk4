@@ -26,8 +26,9 @@ func init() {
 
 // GestureZoomer describes GestureZoom's methods.
 type GestureZoomer interface {
-	gextras.Objector
-
+	// ScaleDelta: if @gesture is active, this function returns the zooming
+	// difference since the gesture was recognized (hence the starting point is
+	// considered 1:1).
 	ScaleDelta() float64
 }
 
@@ -38,9 +39,12 @@ type GestureZoom struct {
 	Gesture
 }
 
-var _ GestureZoomer = (*GestureZoom)(nil)
+var (
+	_ GestureZoomer   = (*GestureZoom)(nil)
+	_ gextras.Nativer = (*GestureZoom)(nil)
+)
 
-func wrapGestureZoomer(obj *externglib.Object) GestureZoomer {
+func wrapGestureZoom(obj *externglib.Object) GestureZoomer {
 	return &GestureZoom{
 		Gesture: Gesture{
 			EventController: EventController{
@@ -53,7 +57,7 @@ func wrapGestureZoomer(obj *externglib.Object) GestureZoomer {
 func marshalGestureZoomer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureZoomer(obj), nil
+	return wrapGestureZoom(obj), nil
 }
 
 // NewGestureZoom returns a newly created Gesture that recognizes zoom in/out
@@ -62,7 +66,7 @@ func NewGestureZoom(widget Widgetter) *GestureZoom {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_gesture_zoom_new(_arg1)
 

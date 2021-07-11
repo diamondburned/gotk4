@@ -26,9 +26,10 @@ func init() {
 
 // GestureStylusser describes GestureStylus's methods.
 type GestureStylusser interface {
-	gextras.Objector
-
+	// Backlog returns the accumulated backlog of tracking information.
 	Backlog() ([]gdk.TimeCoord, bool)
+	// DeviceTool returns the `GdkDeviceTool` currently driving input through
+	// this gesture.
 	DeviceTool() *gdk.DeviceTool
 }
 
@@ -39,9 +40,12 @@ type GestureStylus struct {
 	GestureSingle
 }
 
-var _ GestureStylusser = (*GestureStylus)(nil)
+var (
+	_ GestureStylusser = (*GestureStylus)(nil)
+	_ gextras.Nativer  = (*GestureStylus)(nil)
+)
 
-func wrapGestureStylusser(obj *externglib.Object) GestureStylusser {
+func wrapGestureStylus(obj *externglib.Object) GestureStylusser {
 	return &GestureStylus{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -56,7 +60,7 @@ func wrapGestureStylusser(obj *externglib.Object) GestureStylusser {
 func marshalGestureStylusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureStylusser(obj), nil
+	return wrapGestureStylus(obj), nil
 }
 
 // NewGestureStylus creates a new `GtkGestureStylus`.

@@ -26,11 +26,14 @@ func init() {
 
 // DrawingContexter describes DrawingContext's methods.
 type DrawingContexter interface {
-	gextras.Objector
-
+	// CairoContext retrieves a Cairo context to be used to draw on the Window
+	// that created the DrawingContext.
 	CairoContext() *cairo.Context
+	// Clip retrieves a copy of the clip region used when creating the @context.
 	Clip() *cairo.Region
+	// Window retrieves the window that created the drawing @context.
 	Window() *Window
+	// IsValid checks whether the given DrawingContext is valid.
 	IsValid() bool
 }
 
@@ -48,9 +51,12 @@ type DrawingContext struct {
 	*externglib.Object
 }
 
-var _ DrawingContexter = (*DrawingContext)(nil)
+var (
+	_ DrawingContexter = (*DrawingContext)(nil)
+	_ gextras.Nativer  = (*DrawingContext)(nil)
+)
 
-func wrapDrawingContexter(obj *externglib.Object) DrawingContexter {
+func wrapDrawingContext(obj *externglib.Object) DrawingContexter {
 	return &DrawingContext{
 		Object: obj,
 	}
@@ -59,7 +65,7 @@ func wrapDrawingContexter(obj *externglib.Object) DrawingContexter {
 func marshalDrawingContexter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrawingContexter(obj), nil
+	return wrapDrawingContext(obj), nil
 }
 
 // CairoContext retrieves a Cairo context to be used to draw on the Window that

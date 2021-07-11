@@ -36,11 +36,11 @@ func init() {
 	})
 }
 
-// PermissionerOverrider contains methods that are overridable.
+// PermissionOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type PermissionerOverrider interface {
+type PermissionOverrider interface {
 	// Acquire attempts to acquire the permission represented by @permission.
 	//
 	// The precise method by which this happens depends on the permission and
@@ -101,17 +101,30 @@ type PermissionerOverrider interface {
 
 // Permissioner describes Permission's methods.
 type Permissioner interface {
-	gextras.Objector
-
+	// Acquire attempts to acquire the permission represented by @permission.
 	Acquire(cancellable Cancellabler) error
+	// AcquireAsync attempts to acquire the permission represented by
+	// @permission.
 	AcquireAsync(cancellable Cancellabler, callback AsyncReadyCallback)
+	// AcquireFinish collects the result of attempting to acquire the permission
+	// represented by @permission.
 	AcquireFinish(result AsyncResulter) error
+	// Allowed gets the value of the 'allowed' property.
 	Allowed() bool
+	// CanAcquire gets the value of the 'can-acquire' property.
 	CanAcquire() bool
+	// CanRelease gets the value of the 'can-release' property.
 	CanRelease() bool
+	// ImplUpdate: this function is called by the #GPermission implementation to
+	// update the properties of the permission.
 	ImplUpdate(allowed bool, canAcquire bool, canRelease bool)
+	// Release attempts to release the permission represented by @permission.
 	Release(cancellable Cancellabler) error
+	// ReleaseAsync attempts to release the permission represented by
+	// @permission.
 	ReleaseAsync(cancellable Cancellabler, callback AsyncReadyCallback)
+	// ReleaseFinish collects the result of attempting to release the permission
+	// represented by @permission.
 	ReleaseFinish(result AsyncResulter) error
 }
 
@@ -132,9 +145,12 @@ type Permission struct {
 	*externglib.Object
 }
 
-var _ Permissioner = (*Permission)(nil)
+var (
+	_ Permissioner    = (*Permission)(nil)
+	_ gextras.Nativer = (*Permission)(nil)
+)
 
-func wrapPermissioner(obj *externglib.Object) Permissioner {
+func wrapPermission(obj *externglib.Object) Permissioner {
 	return &Permission{
 		Object: obj,
 	}
@@ -143,7 +159,7 @@ func wrapPermissioner(obj *externglib.Object) Permissioner {
 func marshalPermissioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPermissioner(obj), nil
+	return wrapPermission(obj), nil
 }
 
 // Acquire attempts to acquire the permission represented by @permission.
@@ -167,7 +183,7 @@ func (permission *Permission) Acquire(cancellable Cancellabler) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_permission_acquire(_arg0, _arg1, &_cerr)
 
@@ -188,7 +204,7 @@ func (permission *Permission) AcquireAsync(cancellable Cancellabler, callback As
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -206,7 +222,7 @@ func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
 
@@ -323,7 +339,7 @@ func (permission *Permission) Release(cancellable Cancellabler) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_permission_release(_arg0, _arg1, &_cerr)
 
@@ -344,7 +360,7 @@ func (permission *Permission) ReleaseAsync(cancellable Cancellabler, callback As
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(box.Assign(callback))
 
@@ -362,7 +378,7 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	C.g_permission_release_finish(_arg0, _arg1, &_cerr)
 

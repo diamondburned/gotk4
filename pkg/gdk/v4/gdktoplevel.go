@@ -44,21 +44,21 @@ func marshalFullscreenMode(p uintptr) (interface{}, error) {
 type SurfaceEdge int
 
 const (
-	// NorthWest: the top left corner.
+	// NorthWest: top left corner.
 	SurfaceEdgeNorthWest SurfaceEdge = iota
-	// North: the top edge.
+	// North: top edge.
 	SurfaceEdgeNorth
-	// NorthEast: the top right corner.
+	// NorthEast: top right corner.
 	SurfaceEdgeNorthEast
-	// West: the left edge.
+	// West: left edge.
 	SurfaceEdgeWest
-	// East: the right edge.
+	// East: right edge.
 	SurfaceEdgeEast
-	// SouthWest: the lower left corner.
+	// SouthWest: lower left corner.
 	SurfaceEdgeSouthWest
-	// South: the lower edge.
+	// South: lower edge.
 	SurfaceEdgeSouth
-	// SouthEast: the lower right corner.
+	// SouthEast: lower right corner.
 	SurfaceEdgeSouthEast
 )
 
@@ -76,22 +76,22 @@ func marshalSurfaceEdge(p uintptr) (interface{}, error) {
 type ToplevelState int
 
 const (
-	// ToplevelStateMinimized: the surface is minimized
+	// ToplevelStateMinimized: surface is minimized
 	ToplevelStateMinimized ToplevelState = 0b1
-	// ToplevelStateMaximized: the surface is maximized
+	// ToplevelStateMaximized: surface is maximized
 	ToplevelStateMaximized ToplevelState = 0b10
-	// ToplevelStateSticky: the surface is sticky
+	// ToplevelStateSticky: surface is sticky
 	ToplevelStateSticky ToplevelState = 0b100
-	// ToplevelStateFullscreen: the surface is maximized without decorations
+	// ToplevelStateFullscreen: surface is maximized without decorations
 	ToplevelStateFullscreen ToplevelState = 0b1000
-	// ToplevelStateAbove: the surface is kept above other surfaces
+	// ToplevelStateAbove: surface is kept above other surfaces
 	ToplevelStateAbove ToplevelState = 0b10000
-	// ToplevelStateBelow: the surface is kept below other surfaces
+	// ToplevelStateBelow: surface is kept below other surfaces
 	ToplevelStateBelow ToplevelState = 0b100000
-	// ToplevelStateFocused: the surface is presented as focused (with active
+	// ToplevelStateFocused: surface is presented as focused (with active
 	// decorations)
 	ToplevelStateFocused ToplevelState = 0b1000000
-	// ToplevelStateTiled: the surface is in a tiled state
+	// ToplevelStateTiled: surface is in a tiled state
 	ToplevelStateTiled ToplevelState = 0b10000000
 	// ToplevelStateTopTiled: whether the top edge is tiled
 	ToplevelStateTopTiled ToplevelState = 0b100000000
@@ -117,23 +117,41 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 
 // Topleveller describes Toplevel's methods.
 type Topleveller interface {
-	gextras.Objector
-
+	// BeginMove begins an interactive move operation.
 	BeginMove(device Devicer, button int, x float64, y float64, timestamp uint32)
+	// Focus sets keyboard focus to @surface.
 	Focus(timestamp uint32)
+	// State gets the bitwise or of the currently active surface state flags,
+	// from the `GdkToplevelState` enumeration.
 	State() ToplevelState
+	// InhibitSystemShortcuts requests that the @toplevel inhibit the system
+	// shortcuts.
 	InhibitSystemShortcuts(event Eventer)
+	// Lower asks to lower the @toplevel below other windows.
 	Lower() bool
+	// Minimize asks to minimize the @toplevel.
 	Minimize() bool
+	// Present @toplevel after having processed the `GdkToplevelLayout` rules.
 	Present(layout *ToplevelLayout)
+	// RestoreSystemShortcuts: restore default system keyboard shortcuts which
+	// were previously inhibited.
 	RestoreSystemShortcuts()
+	// SetDecorated sets the toplevel to be decorated.
 	SetDecorated(decorated bool)
+	// SetDeletable sets the toplevel to be deletable.
 	SetDeletable(deletable bool)
+	// SetModal sets the toplevel to be modal.
 	SetModal(modal bool)
+	// SetStartupID sets the startup notification ID.
 	SetStartupID(startupId string)
+	// SetTitle sets the title of a toplevel surface.
 	SetTitle(title string)
+	// SetTransientFor sets a transient-for parent.
 	SetTransientFor(parent Surfacer)
+	// ShowWindowMenu asks the windowing system to show the window menu.
 	ShowWindowMenu(event Eventer) bool
+	// SupportsEdgeConstraints returns whether the desktop environment supports
+	// tiled window states.
 	SupportsEdgeConstraints() bool
 }
 
@@ -146,9 +164,12 @@ type Toplevel struct {
 	Surface
 }
 
-var _ Topleveller = (*Toplevel)(nil)
+var (
+	_ Topleveller     = (*Toplevel)(nil)
+	_ gextras.Nativer = (*Toplevel)(nil)
+)
 
-func wrapTopleveller(obj *externglib.Object) Topleveller {
+func wrapToplevel(obj *externglib.Object) Topleveller {
 	return &Toplevel{
 		Surface: Surface{
 			Object: obj,
@@ -159,7 +180,7 @@ func wrapTopleveller(obj *externglib.Object) Topleveller {
 func marshalTopleveller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTopleveller(obj), nil
+	return wrapToplevel(obj), nil
 }
 
 // BeginMove begins an interactive move operation.
@@ -174,7 +195,7 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int, x float64, y flo
 	var _arg5 C.guint32      // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
 	_arg2 = C.int(button)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -240,7 +261,7 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	var _arg1 *C.GdkEvent    // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
 
 	C.gdk_toplevel_inhibit_system_shortcuts(_arg0, _arg1)
 }
@@ -413,7 +434,7 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 	var _arg1 *C.GdkSurface  // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(parent.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 
 	C.gdk_toplevel_set_transient_for(_arg0, _arg1)
 }
@@ -430,7 +451,7 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_toplevel_show_window_menu(_arg0, _arg1)
 

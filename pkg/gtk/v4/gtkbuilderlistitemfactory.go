@@ -24,9 +24,10 @@ func init() {
 
 // BuilderListItemFactorier describes BuilderListItemFactory's methods.
 type BuilderListItemFactorier interface {
-	gextras.Objector
-
+	// Resource: if the data references a resource, gets the path of that
+	// resource.
 	Resource() string
+	// Scope gets the scope used when constructing listitems.
 	Scope() *BuilderScope
 }
 
@@ -45,9 +46,12 @@ type BuilderListItemFactory struct {
 	ListItemFactory
 }
 
-var _ BuilderListItemFactorier = (*BuilderListItemFactory)(nil)
+var (
+	_ BuilderListItemFactorier = (*BuilderListItemFactory)(nil)
+	_ gextras.Nativer          = (*BuilderListItemFactory)(nil)
+)
 
-func wrapBuilderListItemFactorier(obj *externglib.Object) BuilderListItemFactorier {
+func wrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactorier {
 	return &BuilderListItemFactory{
 		ListItemFactory: ListItemFactory{
 			Object: obj,
@@ -58,7 +62,7 @@ func wrapBuilderListItemFactorier(obj *externglib.Object) BuilderListItemFactori
 func marshalBuilderListItemFactorier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderListItemFactorier(obj), nil
+	return wrapBuilderListItemFactory(obj), nil
 }
 
 // NewBuilderListItemFactoryFromResource creates a new
@@ -69,7 +73,7 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 	var _arg2 *C.char               // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer((scope).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(_arg2))
 

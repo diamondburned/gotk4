@@ -24,8 +24,6 @@ func init() {
 
 // Windowwer describes Window's methods.
 type Windowwer interface {
-	gextras.Objector
-
 	privateWindow()
 }
 
@@ -35,9 +33,12 @@ type Window struct {
 	ObjectClass
 }
 
-var _ Windowwer = (*Window)(nil)
+var (
+	_ Windowwer       = (*Window)(nil)
+	_ gextras.Nativer = (*Window)(nil)
+)
 
-func wrapWindowwer(obj *externglib.Object) Windowwer {
+func wrapWindow(obj *externglib.Object) Windowwer {
 	return &Window{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -48,7 +49,7 @@ func wrapWindowwer(obj *externglib.Object) Windowwer {
 func marshalWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowwer(obj), nil
+	return wrapWindow(obj), nil
 }
 
 func (*Window) privateWindow() {}

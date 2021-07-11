@@ -25,19 +25,19 @@ func init() {
 	})
 }
 
-// ToggleToolButtonnerOverrider contains methods that are overridable.
+// ToggleToolButtonOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ToggleToolButtonnerOverrider interface {
+type ToggleToolButtonOverrider interface {
 	Toggled()
 }
 
 // ToggleToolButtonner describes ToggleToolButton's methods.
 type ToggleToolButtonner interface {
-	gextras.Objector
-
+	// Active queries a ToggleToolButton and returns its current state.
 	Active() bool
+	// SetActive sets the status of the toggle tool button.
 	SetActive(isActive bool)
 }
 
@@ -50,30 +50,21 @@ type ToggleToolButtonner interface {
 //
 // GtkToggleToolButton has a single CSS node with name togglebutton.
 type ToggleToolButton struct {
-	*externglib.Object
-
 	ToolButton
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ ToggleToolButtonner = (*ToggleToolButton)(nil)
+var (
+	_ ToggleToolButtonner = (*ToggleToolButton)(nil)
+	_ gextras.Nativer     = (*ToggleToolButton)(nil)
+)
 
-func wrapToggleToolButtonner(obj *externglib.Object) ToggleToolButtonner {
+func wrapToggleToolButton(obj *externglib.Object) ToggleToolButtonner {
 	return &ToggleToolButton{
-		Object: obj,
 		ToolButton: ToolButton{
-			Object: obj,
 			ToolItem: ToolItem{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -84,37 +75,14 @@ func wrapToggleToolButtonner(obj *externglib.Object) ToggleToolButtonner {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
 				},
 				Activatable: Activatable{
 					Object: obj,
 				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -126,36 +94,6 @@ func wrapToggleToolButtonner(obj *externglib.Object) ToggleToolButtonner {
 					},
 				},
 			},
-			Activatable: Activatable{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -163,7 +101,7 @@ func wrapToggleToolButtonner(obj *externglib.Object) ToggleToolButtonner {
 func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleToolButtonner(obj), nil
+	return wrapToggleToolButton(obj), nil
 }
 
 // NewToggleToolButton returns a new ToggleToolButton

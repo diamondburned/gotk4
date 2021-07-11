@@ -24,11 +24,13 @@ func init() {
 
 // WindowControlser describes WindowControls's methods.
 type WindowControlser interface {
-	gextras.Objector
-
+	// DecorationLayout gets the decoration layout of this `GtkWindowControls`.
 	DecorationLayout() string
+	// Empty gets whether the widget has any window buttons.
 	Empty() bool
+	// Side gets the side to which this `GtkWindowControls` instance belongs.
 	Side() PackType
+	// SetDecorationLayout sets the decoration layout for the title buttons.
 	SetDecorationLayout(layout string)
 }
 
@@ -75,21 +77,17 @@ type WindowControlser interface {
 //
 // `GtkWindowControls` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowControls struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
 }
 
-var _ WindowControlser = (*WindowControls)(nil)
+var (
+	_ WindowControlser = (*WindowControls)(nil)
+	_ gextras.Nativer  = (*WindowControls)(nil)
+)
 
-func wrapWindowControlser(obj *externglib.Object) WindowControlser {
+func wrapWindowControls(obj *externglib.Object) WindowControlser {
 	return &WindowControls{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -103,22 +101,13 @@ func wrapWindowControlser(obj *externglib.Object) WindowControlser {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 	}
 }
 
 func marshalWindowControlser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowControlser(obj), nil
+	return wrapWindowControls(obj), nil
 }
 
 // DecorationLayout gets the decoration layout of this `GtkWindowControls`.

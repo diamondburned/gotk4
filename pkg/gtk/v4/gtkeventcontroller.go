@@ -19,23 +19,36 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_get_type()), F: marshalEventControllerrer},
+		{T: externglib.Type(C.gtk_event_controller_get_type()), F: marshalEventControllerer},
 	})
 }
 
-// EventControllerrer describes EventController's methods.
-type EventControllerrer interface {
-	gextras.Objector
-
+// EventControllerer describes EventController's methods.
+type EventControllerer interface {
+	// CurrentEvent returns the event that is currently being handled by the
+	// controller, and nil at other times.
 	CurrentEvent() *gdk.Event
+	// CurrentEventDevice returns the device of the event that is currently
+	// being handled by the controller, and nil otherwise.
 	CurrentEventDevice() *gdk.Device
+	// CurrentEventState returns the modifier state of the event that is
+	// currently being handled by the controller, and 0 otherwise.
 	CurrentEventState() gdk.ModifierType
+	// CurrentEventTime returns the timestamp of the event that is currently
+	// being handled by the controller, and 0 otherwise.
 	CurrentEventTime() uint32
+	// Name gets the name of @controller.
 	Name() string
+	// PropagationLimit gets the propagation limit of the event controller.
 	PropagationLimit() PropagationLimit
+	// PropagationPhase gets the propagation phase at which @controller handles
+	// events.
 	PropagationPhase() PropagationPhase
+	// Widget returns the Widget this controller relates to.
 	Widget() *Widget
+	// Reset resets the @controller to a clean state.
 	Reset()
+	// SetName sets a name on the controller that can be used for debugging.
 	SetName(name string)
 }
 
@@ -56,18 +69,21 @@ type EventController struct {
 	*externglib.Object
 }
 
-var _ EventControllerrer = (*EventController)(nil)
+var (
+	_ EventControllerer = (*EventController)(nil)
+	_ gextras.Nativer   = (*EventController)(nil)
+)
 
-func wrapEventControllerrer(obj *externglib.Object) EventControllerrer {
+func wrapEventController(obj *externglib.Object) EventControllerer {
 	return &EventController{
 		Object: obj,
 	}
 }
 
-func marshalEventControllerrer(p uintptr) (interface{}, error) {
+func marshalEventControllerer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerrer(obj), nil
+	return wrapEventController(obj), nil
 }
 
 // CurrentEvent returns the event that is currently being handled by the

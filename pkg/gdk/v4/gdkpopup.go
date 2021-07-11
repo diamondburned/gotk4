@@ -24,14 +24,19 @@ func init() {
 
 // Popupper describes Popup's methods.
 type Popupper interface {
-	gextras.Objector
-
+	// Autohide returns whether this popup is set to hide on outside clicks.
 	Autohide() bool
+	// Parent returns the parent surface of a popup.
 	Parent() *Surface
+	// PositionX obtains the position of the popup relative to its parent.
 	PositionX() int
+	// PositionY obtains the position of the popup relative to its parent.
 	PositionY() int
+	// RectAnchor gets the current popup rectangle anchor.
 	RectAnchor() Gravity
+	// SurfaceAnchor gets the current popup surface anchor.
 	SurfaceAnchor() Gravity
+	// Present @popup after having processed the PopupLayout rules.
 	Present(width int, height int, layout *PopupLayout) bool
 }
 
@@ -46,9 +51,12 @@ type Popup struct {
 	Surface
 }
 
-var _ Popupper = (*Popup)(nil)
+var (
+	_ Popupper        = (*Popup)(nil)
+	_ gextras.Nativer = (*Popup)(nil)
+)
 
-func wrapPopupper(obj *externglib.Object) Popupper {
+func wrapPopup(obj *externglib.Object) Popupper {
 	return &Popup{
 		Surface: Surface{
 			Object: obj,
@@ -59,7 +67,7 @@ func wrapPopupper(obj *externglib.Object) Popupper {
 func marshalPopupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopupper(obj), nil
+	return wrapPopup(obj), nil
 }
 
 // Autohide returns whether this popup is set to hide on outside clicks.

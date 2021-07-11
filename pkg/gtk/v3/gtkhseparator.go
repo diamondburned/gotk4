@@ -27,14 +27,12 @@ func init() {
 
 // HSeparatorrer describes HSeparator's methods.
 type HSeparatorrer interface {
-	gextras.Objector
-
 	privateHSeparator()
 }
 
-// HSeparator: the HSeparator widget is a horizontal separator, used to group
-// the widgets within a window. It displays a horizontal line with a shadow to
-// make it appear sunken into the interface.
+// HSeparator widget is a horizontal separator, used to group the widgets within
+// a window. It displays a horizontal line with a shadow to make it appear
+// sunken into the interface.
 //
 // > The HSeparator widget is not used as a separator within menus. > To create
 // a separator in a menu create an empty SeparatorMenuItem > widget using
@@ -43,23 +41,18 @@ type HSeparatorrer interface {
 //
 // GtkHSeparator has been deprecated, use Separator instead.
 type HSeparator struct {
-	*externglib.Object
-
 	Separator
-	atk.ImplementorIface
-	Buildable
-	Orientable
 }
 
-var _ HSeparatorrer = (*HSeparator)(nil)
+var (
+	_ HSeparatorrer   = (*HSeparator)(nil)
+	_ gextras.Nativer = (*HSeparator)(nil)
+)
 
-func wrapHSeparatorrer(obj *externglib.Object) HSeparatorrer {
+func wrapHSeparator(obj *externglib.Object) HSeparatorrer {
 	return &HSeparator{
-		Object: obj,
 		Separator: Separator{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -70,24 +63,9 @@ func wrapHSeparatorrer(obj *externglib.Object) HSeparatorrer {
 					Object: obj,
 				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
 			Orientable: Orientable{
 				Object: obj,
 			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		Orientable: Orientable{
-			Object: obj,
 		},
 	}
 }
@@ -95,7 +73,7 @@ func wrapHSeparatorrer(obj *externglib.Object) HSeparatorrer {
 func marshalHSeparatorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHSeparatorrer(obj), nil
+	return wrapHSeparator(obj), nil
 }
 
 // NewHSeparator creates a new HSeparator.

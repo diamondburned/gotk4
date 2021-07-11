@@ -24,26 +24,49 @@ func init() {
 
 // Gridder describes Grid's methods.
 type Gridder interface {
-	gextras.Objector
-
+	// Attach adds a widget to the grid.
 	Attach(child Widgetter, column int, row int, width int, height int)
+	// BaselineRow returns which row defines the global baseline of @grid.
 	BaselineRow() int
+	// ChildAt gets the child of @grid whose area covers the grid cell at
+	// @column, @row.
 	ChildAt(column int, row int) *Widget
+	// ColumnHomogeneous returns whether all columns of @grid have the same
+	// width.
 	ColumnHomogeneous() bool
+	// ColumnSpacing returns the amount of space between the columns of @grid.
 	ColumnSpacing() uint
+	// RowBaselinePosition returns the baseline position of @row.
 	RowBaselinePosition(row int) BaselinePosition
+	// RowHomogeneous returns whether all rows of @grid have the same height.
 	RowHomogeneous() bool
+	// RowSpacing returns the amount of space between the rows of @grid.
 	RowSpacing() uint
+	// InsertColumn inserts a column at the specified position.
 	InsertColumn(position int)
+	// InsertRow inserts a row at the specified position.
 	InsertRow(position int)
+	// QueryChild queries the attach points and spans of @child inside the given
+	// `GtkGrid`.
 	QueryChild(child Widgetter) (column int, row int, width int, height int)
+	// Remove removes a child from @grid.
 	Remove(child Widgetter)
+	// RemoveColumn removes a column from the grid.
 	RemoveColumn(position int)
+	// RemoveRow removes a row from the grid.
 	RemoveRow(position int)
+	// SetBaselineRow sets which row defines the global baseline for the entire
+	// grid.
 	SetBaselineRow(row int)
+	// SetColumnHomogeneous sets whether all columns of @grid will have the same
+	// width.
 	SetColumnHomogeneous(homogeneous bool)
+	// SetColumnSpacing sets the amount of space between columns of @grid.
 	SetColumnSpacing(spacing uint)
+	// SetRowHomogeneous sets whether all rows of @grid will have the same
+	// height.
 	SetRowHomogeneous(homogeneous bool)
+	// SetRowSpacing sets the amount of space between rows of @grid.
 	SetRowSpacing(spacing uint)
 }
 
@@ -104,22 +127,19 @@ type Gridder interface {
 //
 // `GtkGrid` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Grid struct {
-	*externglib.Object
-
 	Widget
-	Accessible
-	Buildable
-	ConstraintTarget
+
 	Orientable
 }
 
-var _ Gridder = (*Grid)(nil)
+var (
+	_ Gridder         = (*Grid)(nil)
+	_ gextras.Nativer = (*Grid)(nil)
+)
 
-func wrapGridder(obj *externglib.Object) Gridder {
+func wrapGrid(obj *externglib.Object) Gridder {
 	return &Grid{
-		Object: obj,
 		Widget: Widget{
-			Object: obj,
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
@@ -133,15 +153,6 @@ func wrapGridder(obj *externglib.Object) Gridder {
 				Object: obj,
 			},
 		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
 		Orientable: Orientable{
 			Object: obj,
 		},
@@ -151,7 +162,7 @@ func wrapGridder(obj *externglib.Object) Gridder {
 func marshalGridder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGridder(obj), nil
+	return wrapGrid(obj), nil
 }
 
 // NewGrid creates a new grid widget.
@@ -167,6 +178,12 @@ func NewGrid() *Grid {
 	return _grid
 }
 
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *Grid) Native() uintptr {
+	return v.Widget.InitiallyUnowned.Object.Native()
+}
+
 // Attach adds a widget to the grid.
 //
 // The position of @child is determined by @column and @row. The number of
@@ -180,7 +197,7 @@ func (grid *Grid) Attach(child Widgetter, column int, row int, width int, height
 	var _arg5 C.int        // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = C.int(column)
 	_arg3 = C.int(row)
 	_arg4 = C.int(width)
@@ -354,7 +371,7 @@ func (grid *Grid) QueryChild(child Widgetter) (column int, row int, width int, h
 	var _arg5 C.int        // in
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_grid_query_child(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -380,7 +397,7 @@ func (grid *Grid) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_grid_remove(_arg0, _arg1)
 }

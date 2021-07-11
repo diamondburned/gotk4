@@ -33,11 +33,11 @@ func init() {
 	})
 }
 
-// ActionMapperOverrider contains methods that are overridable.
+// ActionMapOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ActionMapperOverrider interface {
+type ActionMapOverrider interface {
 	// AddAction adds an action to the @action_map.
 	//
 	// If the action map already contains an action with the same name as
@@ -58,17 +58,20 @@ type ActionMapperOverrider interface {
 
 // ActionMapper describes ActionMap's methods.
 type ActionMapper interface {
-	gextras.Objector
-
+	// AddAction adds an action to the @action_map.
 	AddAction(action Actioner)
+	// AddActionEntries: convenience function for creating multiple Action
+	// instances and adding them to a Map.
 	AddActionEntries(entries []ActionEntry, userData interface{})
+	// LookupAction looks up the action with the name @action_name in
+	// @action_map.
 	LookupAction(actionName string) *Action
+	// RemoveAction removes the named action from the action map.
 	RemoveAction(actionName string)
 }
 
-// ActionMap: the GActionMap interface is implemented by Group implementations
-// that operate by containing a number of named #GAction instances, such as
-// ActionGroup.
+// ActionMap interface is implemented by Group implementations that operate by
+// containing a number of named #GAction instances, such as ActionGroup.
 //
 // One useful application of this interface is to map the names of actions from
 // various action groups to unique, prefixed names (e.g. by prepending "app." or
@@ -77,9 +80,12 @@ type ActionMap struct {
 	*externglib.Object
 }
 
-var _ ActionMapper = (*ActionMap)(nil)
+var (
+	_ ActionMapper    = (*ActionMap)(nil)
+	_ gextras.Nativer = (*ActionMap)(nil)
+)
 
-func wrapActionMapper(obj *externglib.Object) ActionMapper {
+func wrapActionMap(obj *externglib.Object) ActionMapper {
 	return &ActionMap{
 		Object: obj,
 	}
@@ -88,7 +94,7 @@ func wrapActionMapper(obj *externglib.Object) ActionMapper {
 func marshalActionMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionMapper(obj), nil
+	return wrapActionMap(obj), nil
 }
 
 // AddAction adds an action to the @action_map.
@@ -102,7 +108,7 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 	var _arg1 *C.GAction    // out
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
 
 	C.g_action_map_add_action(_arg0, _arg1)
 }

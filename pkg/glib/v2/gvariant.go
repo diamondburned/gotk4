@@ -24,45 +24,45 @@ func init() {
 	})
 }
 
-// VariantClass: the range of possible top-level types of #GVariant instances.
+// VariantClass: range of possible top-level types of #GVariant instances.
 type VariantClass int
 
 const (
-	// Boolean: the #GVariant is a boolean.
+	// Boolean is a boolean.
 	VariantClassBoolean VariantClass = 98
-	// Byte: the #GVariant is a byte.
+	// Byte is a byte.
 	VariantClassByte VariantClass = 121
-	// Int16: the #GVariant is a signed 16 bit integer.
+	// Int16 is a signed 16 bit integer.
 	VariantClassInt16 VariantClass = 110
-	// Uint16: the #GVariant is an unsigned 16 bit integer.
+	// Uint16 is an unsigned 16 bit integer.
 	VariantClassUint16 VariantClass = 113
-	// Int32: the #GVariant is a signed 32 bit integer.
+	// Int32 is a signed 32 bit integer.
 	VariantClassInt32 VariantClass = 105
-	// Uint32: the #GVariant is an unsigned 32 bit integer.
+	// Uint32 is an unsigned 32 bit integer.
 	VariantClassUint32 VariantClass = 117
-	// Int64: the #GVariant is a signed 64 bit integer.
+	// Int64 is a signed 64 bit integer.
 	VariantClassInt64 VariantClass = 120
-	// Uint64: the #GVariant is an unsigned 64 bit integer.
+	// Uint64 is an unsigned 64 bit integer.
 	VariantClassUint64 VariantClass = 116
-	// Handle: the #GVariant is a file handle index.
+	// Handle is a file handle index.
 	VariantClassHandle VariantClass = 104
-	// Double: the #GVariant is a double precision floating point value.
+	// Double is a double precision floating point value.
 	VariantClassDouble VariantClass = 100
-	// String: the #GVariant is a normal string.
+	// String is a normal string.
 	VariantClassString VariantClass = 115
-	// ObjectPath: the #GVariant is a D-Bus object path string.
+	// ObjectPath is a D-Bus object path string.
 	VariantClassObjectPath VariantClass = 111
-	// Signature: the #GVariant is a D-Bus signature string.
+	// Signature is a D-Bus signature string.
 	VariantClassSignature VariantClass = 103
-	// Variant: the #GVariant is a variant.
+	// Variant is a variant.
 	VariantClassVariant VariantClass = 118
-	// Maybe: the #GVariant is a maybe-typed value.
+	// Maybe is a maybe-typed value.
 	VariantClassMaybe VariantClass = 109
-	// Array: the #GVariant is an array.
+	// Array is an array.
 	VariantClassArray VariantClass = 97
-	// Tuple: the #GVariant is a tuple.
+	// Tuple is a tuple.
 	VariantClassTuple VariantClass = 40
-	// DictEntry: the #GVariant is a dictionary entry.
+	// DictEntry is a dictionary entry.
 	VariantClassDictEntry VariantClass = 123
 )
 
@@ -94,9 +94,9 @@ const (
 	VariantParseErrorInvalidTypeString
 	// NoCommonType: could not find a common type for array entries
 	VariantParseErrorNoCommonType
-	// NumberOutOfRange: the numerical value is out of range of the given type
+	// NumberOutOfRange: numerical value is out of range of the given type
 	VariantParseErrorNumberOutOfRange
-	// NumberTooBig: the numerical value is out of range for any type
+	// NumberTooBig: numerical value is out of range for any type
 	VariantParseErrorNumberTooBig
 	// TypeError: cannot parse as variant of the specified type
 	VariantParseErrorTypeError

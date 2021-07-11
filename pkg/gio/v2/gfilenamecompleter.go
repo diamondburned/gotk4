@@ -28,24 +28,26 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_filename_completer_get_type()), F: marshalFilenameCompleterrer},
+		{T: externglib.Type(C.g_filename_completer_get_type()), F: marshalFilenameCompleterer},
 	})
 }
 
-// FilenameCompleterrerOverrider contains methods that are overridable.
+// FilenameCompleterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type FilenameCompleterrerOverrider interface {
+type FilenameCompleterOverrider interface {
 	GotCompletionData()
 }
 
-// FilenameCompleterrer describes FilenameCompleter's methods.
-type FilenameCompleterrer interface {
-	gextras.Objector
-
+// FilenameCompleterer describes FilenameCompleter's methods.
+type FilenameCompleterer interface {
+	// CompletionSuffix obtains a completion for @initial_text from @completer.
 	CompletionSuffix(initialText string) string
+	// Completions gets an array of completion strings for a given initial text.
 	Completions(initialText string) []string
+	// SetDirsOnly: if @dirs_only is true, @completer will only complete
+	// directory names, and not file names.
 	SetDirsOnly(dirsOnly bool)
 }
 
@@ -56,18 +58,21 @@ type FilenameCompleter struct {
 	*externglib.Object
 }
 
-var _ FilenameCompleterrer = (*FilenameCompleter)(nil)
+var (
+	_ FilenameCompleterer = (*FilenameCompleter)(nil)
+	_ gextras.Nativer     = (*FilenameCompleter)(nil)
+)
 
-func wrapFilenameCompleterrer(obj *externglib.Object) FilenameCompleterrer {
+func wrapFilenameCompleter(obj *externglib.Object) FilenameCompleterer {
 	return &FilenameCompleter{
 		Object: obj,
 	}
 }
 
-func marshalFilenameCompleterrer(p uintptr) (interface{}, error) {
+func marshalFilenameCompleterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilenameCompleterrer(obj), nil
+	return wrapFilenameCompleter(obj), nil
 }
 
 // NewFilenameCompleter creates a new filename completer.

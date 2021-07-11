@@ -24,16 +24,24 @@ func init() {
 
 // ConstraintGuider describes ConstraintGuide's methods.
 type ConstraintGuider interface {
-	gextras.Objector
-
+	// MaxSize gets the maximum size of @guide.
 	MaxSize(width *int, height *int)
+	// MinSize gets the minimum size of @guide.
 	MinSize(width *int, height *int)
+	// Name retrieves the name set using gtk_constraint_guide_set_name().
 	Name() string
+	// NatSize gets the natural size of @guide.
 	NatSize(width *int, height *int)
+	// Strength retrieves the strength set using
+	// gtk_constraint_guide_set_strength().
 	Strength() ConstraintStrength
+	// SetMaxSize sets the maximum size of @guide.
 	SetMaxSize(width int, height int)
+	// SetMinSize sets the minimum size of @guide.
 	SetMinSize(width int, height int)
+	// SetName sets a name for the given `GtkConstraintGuide`.
 	SetName(name string)
+	// SetNatSize sets the natural size of @guide.
 	SetNatSize(width int, height int)
 }
 
@@ -54,9 +62,12 @@ type ConstraintGuide struct {
 	ConstraintTarget
 }
 
-var _ ConstraintGuider = (*ConstraintGuide)(nil)
+var (
+	_ ConstraintGuider = (*ConstraintGuide)(nil)
+	_ gextras.Nativer  = (*ConstraintGuide)(nil)
+)
 
-func wrapConstraintGuider(obj *externglib.Object) ConstraintGuider {
+func wrapConstraintGuide(obj *externglib.Object) ConstraintGuider {
 	return &ConstraintGuide{
 		Object: obj,
 		ConstraintTarget: ConstraintTarget{
@@ -68,7 +79,7 @@ func wrapConstraintGuider(obj *externglib.Object) ConstraintGuider {
 func marshalConstraintGuider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstraintGuider(obj), nil
+	return wrapConstraintGuide(obj), nil
 }
 
 // NewConstraintGuide creates a new `GtkConstraintGuide` object.

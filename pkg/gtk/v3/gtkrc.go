@@ -73,9 +73,9 @@ func marshalPathType(p uintptr) (interface{}, error) {
 	return PathType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RCTokenType: the RcTokenType enumeration represents the tokens in the RC
-// file. It is exposed so that theme engines can reuse these tokens when parsing
-// the theme-engine specific portions of a RC file.
+// RCTokenType enumeration represents the tokens in the RC file. It is exposed
+// so that theme engines can reuse these tokens when parsing the theme-engine
+// specific portions of a RC file.
 //
 // Deprecated: Use CssProvider instead.
 type RCTokenType int
@@ -230,7 +230,7 @@ func RCFindPixmapInPath(settings Settingser, scanner *glib.Scanner, pixmapFile s
 	var _arg3 *C.gchar       // out
 	var _cret *C.gchar       // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
 	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg3 = (*C.gchar)(C.CString(pixmapFile))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -338,7 +338,7 @@ func RCGetStyle(widget Widgetter) *Style {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_rc_get_style(_arg1)
 
@@ -371,7 +371,7 @@ func RCGetStyleByPaths(settings Settingser, widgetPath string, classPath string,
 	var _arg4 C.GType        // out
 	var _cret *C.GtkStyle    // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(C.CString(widgetPath))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(C.CString(classPath))
@@ -452,7 +452,7 @@ func RCParseColorFull(scanner *glib.Scanner, style RCStyler) (gdk.Color, uint) {
 	var _cret C.guint       // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
-	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
+	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
 
@@ -528,7 +528,7 @@ func RCReparseAllForSettings(settings Settingser, forceLoad bool) bool {
 	var _arg2 C.gboolean     // out
 	var _cret C.gboolean     // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
 	if forceLoad {
 		_arg2 = C.TRUE
 	}
@@ -557,7 +557,7 @@ func RCReparseAllForSettings(settings Settingser, forceLoad bool) bool {
 func RCResetStyles(settings Settingser) {
 	var _arg1 *C.GtkSettings // out
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
 
 	C.gtk_rc_reset_styles(_arg1)
 }
@@ -582,32 +582,35 @@ func RCSetDefaultFiles(filenames []string) {
 	C.gtk_rc_set_default_files(_arg1)
 }
 
-// RCStylerOverrider contains methods that are overridable.
+// RCStyleOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type RCStylerOverrider interface {
+type RCStyleOverrider interface {
 	Merge(src RCStyler)
+
 	Parse(settings Settingser, scanner *glib.Scanner) uint
 }
 
 // RCStyler describes RCStyle's methods.
 type RCStyler interface {
-	gextras.Objector
-
+	// Copy makes a copy of the specified RcStyle.
 	Copy() *RCStyle
 }
 
-// RCStyle: the RcStyle-struct is used to represent a set of information about
-// the appearance of a widget. This can later be composited together with other
-// RcStyle-struct<!-- -->s to form a Style.
+// RCStyle is used to represent a set of information about the appearance of a
+// widget. This can later be composited together with other RcStyle-struct<!--
+// -->s to form a Style.
 type RCStyle struct {
 	*externglib.Object
 }
 
-var _ RCStyler = (*RCStyle)(nil)
+var (
+	_ RCStyler        = (*RCStyle)(nil)
+	_ gextras.Nativer = (*RCStyle)(nil)
+)
 
-func wrapRCStyler(obj *externglib.Object) RCStyler {
+func wrapRCStyle(obj *externglib.Object) RCStyler {
 	return &RCStyle{
 		Object: obj,
 	}
@@ -616,7 +619,7 @@ func wrapRCStyler(obj *externglib.Object) RCStyler {
 func marshalRCStyler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRCStyler(obj), nil
+	return wrapRCStyle(obj), nil
 }
 
 // NewRCStyle creates a new RcStyle with no fields set and a reference count of

@@ -27,20 +27,19 @@ func init() {
 
 // SocketAccessibler describes SocketAccessible's methods.
 type SocketAccessibler interface {
-	gextras.Objector
-
 	Embed(path string)
 }
 
 type SocketAccessible struct {
 	ContainerAccessible
-
-	atk.Component
 }
 
-var _ SocketAccessibler = (*SocketAccessible)(nil)
+var (
+	_ SocketAccessibler = (*SocketAccessible)(nil)
+	_ gextras.Nativer   = (*SocketAccessible)(nil)
+)
 
-func wrapSocketAccessibler(obj *externglib.Object) SocketAccessibler {
+func wrapSocketAccessible(obj *externglib.Object) SocketAccessibler {
 	return &SocketAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -53,12 +52,6 @@ func wrapSocketAccessibler(obj *externglib.Object) SocketAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
-		},
-		Component: atk.Component{
-			Object: obj,
 		},
 	}
 }
@@ -66,7 +59,7 @@ func wrapSocketAccessibler(obj *externglib.Object) SocketAccessibler {
 func marshalSocketAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketAccessibler(obj), nil
+	return wrapSocketAccessible(obj), nil
 }
 
 func (socket *SocketAccessible) Embed(path string) {

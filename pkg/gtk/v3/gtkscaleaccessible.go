@@ -27,26 +27,21 @@ func init() {
 
 // ScaleAccessibler describes ScaleAccessible's methods.
 type ScaleAccessibler interface {
-	gextras.Objector
-
 	privateScaleAccessible()
 }
 
 type ScaleAccessible struct {
-	*externglib.Object
-
 	RangeAccessible
-	atk.Component
-	atk.Value
 }
 
-var _ ScaleAccessibler = (*ScaleAccessible)(nil)
+var (
+	_ ScaleAccessibler = (*ScaleAccessible)(nil)
+	_ gextras.Nativer  = (*ScaleAccessible)(nil)
+)
 
-func wrapScaleAccessibler(obj *externglib.Object) ScaleAccessibler {
+func wrapScaleAccessible(obj *externglib.Object) ScaleAccessibler {
 	return &ScaleAccessible{
-		Object: obj,
 		RangeAccessible: RangeAccessible{
-			Object: obj,
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
 					ObjectClass: atk.ObjectClass{
@@ -57,18 +52,9 @@ func wrapScaleAccessibler(obj *externglib.Object) ScaleAccessibler {
 					Object: obj,
 				},
 			},
-			Component: atk.Component{
-				Object: obj,
-			},
 			Value: atk.Value{
 				Object: obj,
 			},
-		},
-		Component: atk.Component{
-			Object: obj,
-		},
-		Value: atk.Value{
-			Object: obj,
 		},
 	}
 }
@@ -76,7 +62,7 @@ func wrapScaleAccessibler(obj *externglib.Object) ScaleAccessibler {
 func marshalScaleAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScaleAccessibler(obj), nil
+	return wrapScaleAccessible(obj), nil
 }
 
 func (*ScaleAccessible) privateScaleAccessible() {}

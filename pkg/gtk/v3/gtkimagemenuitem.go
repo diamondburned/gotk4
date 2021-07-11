@@ -27,14 +27,27 @@ func init() {
 
 // ImageMenuItemmer describes ImageMenuItem's methods.
 type ImageMenuItemmer interface {
-	gextras.Objector
-
+	// AlwaysShowImage returns whether the menu item will ignore the
+	// Settings:gtk-menu-images setting and always show the image, if available.
 	AlwaysShowImage() bool
+	// Image gets the widget that is currently set as the image of
+	// @image_menu_item.
 	Image() *Widget
+	// UseStock checks whether the label set in the menuitem is used as a stock
+	// id to select the stock item for the item.
 	UseStock() bool
+	// SetAccelGroup specifies an @accel_group to add the menu items accelerator
+	// to (this only applies to stock items so a stock item must already be set,
+	// make sure to call gtk_image_menu_item_set_use_stock() and
+	// gtk_menu_item_set_label() with a valid stock item first).
 	SetAccelGroup(accelGroup AccelGrouper)
+	// SetAlwaysShowImage: if true, the menu item will ignore the
+	// Settings:gtk-menu-images setting and always show the image, if available.
 	SetAlwaysShowImage(alwaysShow bool)
+	// SetImage sets the image of @image_menu_item to the given widget.
 	SetImage(image Widgetter)
+	// SetUseStock: if true, the label set in the menuitem is used as a stock id
+	// to select the stock item for the item.
 	SetUseStock(useStock bool)
 }
 
@@ -63,28 +76,20 @@ type ImageMenuItemmer interface {
 //
 //      gtk_widget_show_all (menu_item);
 type ImageMenuItem struct {
-	*externglib.Object
-
 	MenuItem
-	atk.ImplementorIface
-	Actionable
-	Activatable
-	Buildable
 }
 
-var _ ImageMenuItemmer = (*ImageMenuItem)(nil)
+var (
+	_ ImageMenuItemmer = (*ImageMenuItem)(nil)
+	_ gextras.Nativer  = (*ImageMenuItem)(nil)
+)
 
-func wrapImageMenuItemmer(obj *externglib.Object) ImageMenuItemmer {
+func wrapImageMenuItem(obj *externglib.Object) ImageMenuItemmer {
 	return &ImageMenuItem{
-		Object: obj,
 		MenuItem: MenuItem{
-			Object: obj,
 			Bin: Bin{
-				Object: obj,
 				Container: Container{
-					Object: obj,
 					Widget: Widget{
-						Object: obj,
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
@@ -95,27 +100,10 @@ func wrapImageMenuItemmer(obj *externglib.Object) ImageMenuItemmer {
 							Object: obj,
 						},
 					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
 			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -130,33 +118,6 @@ func wrapImageMenuItemmer(obj *externglib.Object) ImageMenuItemmer {
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-			},
-		},
-		Activatable: Activatable{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }
@@ -164,7 +125,7 @@ func wrapImageMenuItemmer(obj *externglib.Object) ImageMenuItemmer {
 func marshalImageMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImageMenuItemmer(obj), nil
+	return wrapImageMenuItem(obj), nil
 }
 
 // NewImageMenuItem creates a new ImageMenuItem with an empty label.
@@ -200,7 +161,7 @@ func NewImageMenuItemFromStock(stockId string, accelGroup AccelGrouper) *ImageMe
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
 
@@ -326,7 +287,7 @@ func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup AccelGrouper) {
 	var _arg1 *C.GtkAccelGroup    // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
 
 	C.gtk_image_menu_item_set_accel_group(_arg0, _arg1)
 }
@@ -360,7 +321,7 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 	var _arg1 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((image).(gextras.Nativer).Native()))
 
 	C.gtk_image_menu_item_set_image(_arg0, _arg1)
 }

@@ -24,11 +24,13 @@ func init() {
 
 // LinkButtonner describes LinkButton's methods.
 type LinkButtonner interface {
-	gextras.Objector
-
+	// URI retrieves the URI of the `GtkLinkButton`.
 	URI() string
+	// Visited retrieves the “visited” state of the `GtkLinkButton`.
 	Visited() bool
+	// SetURI sets @uri as the URI where the `GtkLinkButton` points.
 	SetURI(uri string)
+	// SetVisited sets the “visited” state of the `GtkLinkButton`.
 	SetVisited(visited bool)
 }
 
@@ -61,24 +63,18 @@ type LinkButtonner interface {
 //
 // `GtkLinkButton` uses the K_ACCESSIBLE_ROLE_LINK role.
 type LinkButton struct {
-	*externglib.Object
-
 	Button
-	Accessible
-	Actionable
-	Buildable
-	ConstraintTarget
 }
 
-var _ LinkButtonner = (*LinkButton)(nil)
+var (
+	_ LinkButtonner   = (*LinkButton)(nil)
+	_ gextras.Nativer = (*LinkButton)(nil)
+)
 
-func wrapLinkButtonner(obj *externglib.Object) LinkButtonner {
+func wrapLinkButton(obj *externglib.Object) LinkButtonner {
 	return &LinkButton{
-		Object: obj,
 		Button: Button{
-			Object: obj,
 			Widget: Widget{
-				Object: obj,
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
@@ -92,13 +88,8 @@ func wrapLinkButtonner(obj *externglib.Object) LinkButtonner {
 					Object: obj,
 				},
 			},
-			Accessible: Accessible{
-				Object: obj,
-			},
 			Actionable: Actionable{
-				Object: obj,
 				Widget: Widget{
-					Object: obj,
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
@@ -113,39 +104,6 @@ func wrapLinkButtonner(obj *externglib.Object) LinkButtonner {
 					},
 				},
 			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-			ConstraintTarget: ConstraintTarget{
-				Object: obj,
-			},
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Actionable: Actionable{
-			Object: obj,
-			Widget: Widget{
-				Object: obj,
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				Accessible: Accessible{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				ConstraintTarget: ConstraintTarget{
-					Object: obj,
-				},
-			},
-		},
-		Buildable: Buildable{
-			Object: obj,
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
 		},
 	}
 }
@@ -153,7 +111,7 @@ func wrapLinkButtonner(obj *externglib.Object) LinkButtonner {
 func marshalLinkButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLinkButtonner(obj), nil
+	return wrapLinkButton(obj), nil
 }
 
 // NewLinkButton creates a new `GtkLinkButton` with the URI as its text.

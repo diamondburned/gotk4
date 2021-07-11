@@ -26,15 +26,21 @@ func init() {
 
 // DropTargetter describes DropTarget's methods.
 type DropTargetter interface {
-	gextras.Objector
-
+	// Actions gets the actions that this drop target supports.
 	Actions() gdk.DragAction
+	// Drop gets the currently handled drop operation.
 	Drop() *gdk.Drop
+	// Formats gets the data formats that this drop target accepts.
 	Formats() *gdk.ContentFormats
+	// Preload gets whether data should be preloaded on hover.
 	Preload() bool
+	// Value gets the current drop data, as a `GValue`.
 	Value() *externglib.Value
+	// Reject rejects the ongoing drop operation.
 	Reject()
+	// SetGTypes sets the supported `GTypes` for this drop target.
 	SetGTypes(types []externglib.Type)
+	// SetPreload sets whether data should be preloaded on hover.
 	SetPreload(preload bool)
 }
 
@@ -103,9 +109,12 @@ type DropTarget struct {
 	EventController
 }
 
-var _ DropTargetter = (*DropTarget)(nil)
+var (
+	_ DropTargetter   = (*DropTarget)(nil)
+	_ gextras.Nativer = (*DropTarget)(nil)
+)
 
-func wrapDropTargetter(obj *externglib.Object) DropTargetter {
+func wrapDropTarget(obj *externglib.Object) DropTargetter {
 	return &DropTarget{
 		EventController: EventController{
 			Object: obj,
@@ -116,7 +125,7 @@ func wrapDropTargetter(obj *externglib.Object) DropTargetter {
 func marshalDropTargetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropTargetter(obj), nil
+	return wrapDropTarget(obj), nil
 }
 
 // Actions gets the actions that this drop target supports.

@@ -27,23 +27,22 @@ func init() {
 
 // NotebookPageAccessibler describes NotebookPageAccessible's methods.
 type NotebookPageAccessibler interface {
-	gextras.Objector
-
 	Invalidate()
 }
 
 type NotebookPageAccessible struct {
-	*externglib.Object
-
 	atk.ObjectClass
+
 	atk.Component
 }
 
-var _ NotebookPageAccessibler = (*NotebookPageAccessible)(nil)
+var (
+	_ NotebookPageAccessibler = (*NotebookPageAccessible)(nil)
+	_ gextras.Nativer         = (*NotebookPageAccessible)(nil)
+)
 
-func wrapNotebookPageAccessibler(obj *externglib.Object) NotebookPageAccessibler {
+func wrapNotebookPageAccessible(obj *externglib.Object) NotebookPageAccessibler {
 	return &NotebookPageAccessible{
-		Object: obj,
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
@@ -56,7 +55,7 @@ func wrapNotebookPageAccessibler(obj *externglib.Object) NotebookPageAccessibler
 func marshalNotebookPageAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotebookPageAccessibler(obj), nil
+	return wrapNotebookPageAccessible(obj), nil
 }
 
 func NewNotebookPageAccessible(notebook NotebookAccessibler, child Widgetter) *NotebookPageAccessible {
@@ -64,8 +63,8 @@ func NewNotebookPageAccessible(notebook NotebookAccessibler, child Widgetter) *N
 	var _arg2 *C.GtkWidget             // out
 	var _cret *C.AtkObject             // in
 
-	_arg1 = (*C.GtkNotebookAccessible)(unsafe.Pointer(notebook.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkNotebookAccessible)(unsafe.Pointer((notebook).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_notebook_page_accessible_new(_arg1, _arg2)
 
@@ -74,6 +73,12 @@ func NewNotebookPageAccessible(notebook NotebookAccessibler, child Widgetter) *N
 	_notebookPageAccessible = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NotebookPageAccessible)
 
 	return _notebookPageAccessible
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *NotebookPageAccessible) Native() uintptr {
+	return v.ObjectClass.Object.Native()
 }
 
 func (page *NotebookPageAccessible) Invalidate() {

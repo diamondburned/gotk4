@@ -27,37 +27,29 @@ func init() {
 
 // ColorChooserDialogger describes ColorChooserDialog's methods.
 type ColorChooserDialogger interface {
-	gextras.Objector
-
 	privateColorChooserDialog()
 }
 
-// ColorChooserDialog: the ColorChooserDialog widget is a dialog for choosing a
-// color. It implements the ColorChooser interface.
+// ColorChooserDialog widget is a dialog for choosing a color. It implements the
+// ColorChooser interface.
 type ColorChooserDialog struct {
-	*externglib.Object
-
 	Dialog
-	atk.ImplementorIface
-	Buildable
+
 	ColorChooser
 }
 
-var _ ColorChooserDialogger = (*ColorChooserDialog)(nil)
+var (
+	_ ColorChooserDialogger = (*ColorChooserDialog)(nil)
+	_ gextras.Nativer       = (*ColorChooserDialog)(nil)
+)
 
-func wrapColorChooserDialogger(obj *externglib.Object) ColorChooserDialogger {
+func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialogger {
 	return &ColorChooserDialog{
-		Object: obj,
 		Dialog: Dialog{
-			Object: obj,
 			Window: Window{
-				Object: obj,
 				Bin: Bin{
-					Object: obj,
 					Container: Container{
-						Object: obj,
 						Widget: Widget{
-							Object: obj,
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
@@ -68,39 +60,9 @@ func wrapColorChooserDialogger(obj *externglib.Object) ColorChooserDialogger {
 								Object: obj,
 							},
 						},
-						ImplementorIface: atk.ImplementorIface{
-							Object: obj,
-						},
-						Buildable: Buildable{
-							Object: obj,
-						},
-					},
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
 					},
 				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
 			},
-			ImplementorIface: atk.ImplementorIface{
-				Object: obj,
-			},
-			Buildable: Buildable{
-				Object: obj,
-			},
-		},
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		ColorChooser: ColorChooser{
 			Object: obj,
@@ -111,7 +73,7 @@ func wrapColorChooserDialogger(obj *externglib.Object) ColorChooserDialogger {
 func marshalColorChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorChooserDialogger(obj), nil
+	return wrapColorChooserDialog(obj), nil
 }
 
 // NewColorChooserDialog creates a new ColorChooserDialog.
@@ -122,7 +84,7 @@ func NewColorChooserDialog(title string, parent Windowwer) *ColorChooserDialog {
 
 	_arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
 
@@ -131,6 +93,12 @@ func NewColorChooserDialog(title string, parent Windowwer) *ColorChooserDialog {
 	_colorChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserDialog)
 
 	return _colorChooserDialog
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *ColorChooserDialog) Native() uintptr {
+	return v.Dialog.Window.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*ColorChooserDialog) privateColorChooserDialog() {}

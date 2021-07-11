@@ -24,8 +24,6 @@ func init() {
 
 // BinLayouter describes BinLayout's methods.
 type BinLayouter interface {
-	gextras.Objector
-
 	privateBinLayout()
 }
 
@@ -40,9 +38,12 @@ type BinLayout struct {
 	LayoutManager
 }
 
-var _ BinLayouter = (*BinLayout)(nil)
+var (
+	_ BinLayouter     = (*BinLayout)(nil)
+	_ gextras.Nativer = (*BinLayout)(nil)
+)
 
-func wrapBinLayouter(obj *externglib.Object) BinLayouter {
+func wrapBinLayout(obj *externglib.Object) BinLayouter {
 	return &BinLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -53,7 +54,7 @@ func wrapBinLayouter(obj *externglib.Object) BinLayouter {
 func marshalBinLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBinLayouter(obj), nil
+	return wrapBinLayout(obj), nil
 }
 
 // NewBinLayout creates a new `GtkBinLayout` instance.

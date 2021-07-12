@@ -238,7 +238,7 @@ func (provider *CSSProvider) String() string {
 // as a fallback for all widgets.
 //
 // Deprecated: Use gtk_css_provider_new() instead.
-func CSSProviderGetDefault() *CSSProvider {
+func CssProviderGetDefault() *CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
 	_cret = C.gtk_css_provider_get_default()
@@ -251,7 +251,7 @@ func CSSProviderGetDefault() *CSSProvider {
 }
 
 // CSSProviderGetNamed loads a theme from the usual theme paths
-func CSSProviderGetNamed(name string, variant string) *CSSProvider {
+func CssProviderGetNamed(name string, variant string) *CSSProvider {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkCssProvider // in

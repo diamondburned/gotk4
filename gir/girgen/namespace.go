@@ -183,17 +183,8 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 
 	generateFunctions := func(parent string, fns []gir.Function) {
 		for _, f := range fns {
-			if parent != "" {
-				f.Name = parent + "_" + f.Name
-			}
-
-			if !generators.GenerateFunction(n, &f) {
-				prefix := "function " + f.Name
-				if parent != "" {
-					prefix = "parent " + parent + " " + prefix
-				}
-
-				n.logIfSkipped(false, prefix)
+			if !generators.GeneratePrefixedFunction(n, &f, parent) {
+				n.logIfSkipped(false, "parent "+parent+" function "+f.Name)
 			}
 		}
 	}
@@ -202,11 +193,17 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		n.logIfSkipped(generators.GenerateAlias(n, &v), "alias"+v.Name)
 	}
 	for _, v := range n.current.Namespace.Enums {
-		n.logIfSkipped(generators.GenerateEnum(n, &v), "enum "+v.Name)
+		if !generators.GenerateEnum(n, &v) {
+			n.logIfSkipped(false, "enum "+v.Name)
+			continue
+		}
 		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Bitfields {
-		n.logIfSkipped(generators.GenerateBitfield(n, &v), "bitfield "+v.Name)
+		if !generators.GenerateBitfield(n, &v) {
+			n.logIfSkipped(false, "bitfield "+v.Name)
+			continue
+		}
 		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Callbacks {
@@ -216,15 +213,24 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		n.logIfSkipped(generators.GenerateFunction(n, &v), "function "+v.Name)
 	}
 	for _, v := range n.current.Namespace.Interfaces {
-		n.logIfSkipped(generators.GenerateInterface(n, &v), "interface "+v.Name)
+		if !generators.GenerateInterface(n, &v) {
+			n.logIfSkipped(false, "interface "+v.Name)
+			continue
+		}
 		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Classes {
-		n.logIfSkipped(generators.GenerateClass(n, &v), "class "+v.Name)
+		if !generators.GenerateClass(n, &v) {
+			n.logIfSkipped(false, "class "+v.Name)
+			continue
+		}
 		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Records {
-		n.logIfSkipped(generators.GenerateRecord(n, &v), "record "+v.Name)
+		if !generators.GenerateRecord(n, &v) {
+			n.logIfSkipped(false, "record "+v.Name)
+			continue
+		}
 		generateFunctions(v.Name, v.Functions)
 	}
 

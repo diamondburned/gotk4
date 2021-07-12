@@ -162,6 +162,9 @@ type FilterMatcher interface {
 	// Filter matches for the girType within the given namespace from the
 	// namespace generator. The GIR type will never have a namespace prefix.
 	Filter(gen FileGenerator, gir, c string) (omit bool)
+
+	// TODO: use this API.
+	// Filter(gen FileGenerator, res *gir.TypeFindResult) (omit bool)
 }
 
 // Filter returns true if the given GIR and/or C type should be omitted from the

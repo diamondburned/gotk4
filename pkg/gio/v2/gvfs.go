@@ -263,7 +263,7 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 }
 
 // VFSGetDefault gets the default #GVfs for the system.
-func VFSGetDefault() *VFS {
+func VfsGetDefault() *VFS {
 	var _cret *C.GVfs // in
 
 	_cret = C.g_vfs_get_default()
@@ -276,7 +276,7 @@ func VFSGetDefault() *VFS {
 }
 
 // VFSGetLocal gets the local #GVfs for the system.
-func VFSGetLocal() *VFS {
+func VfsGetLocal() *VFS {
 	var _cret *C.GVfs // in
 
 	_cret = C.g_vfs_get_local()

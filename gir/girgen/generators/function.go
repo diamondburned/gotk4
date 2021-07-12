@@ -15,13 +15,23 @@ var functionTmpl = gotmpl.NewGoTemplate(`
 
 // GenerateFunction generates the function call for the given GIR function.
 func GenerateFunction(gen FileGeneratorWriter, fn *gir.Function) bool {
-	if !fn.IsIntrospectable() || types.Filter(gen, fn.Name, fn.CIdentifier) {
+	return GeneratePrefixedFunction(gen, fn, "")
+}
+
+// GeneratePrefixedFunction generates the given GIR function with the prefix
+// prepended into the name.
+func GeneratePrefixedFunction(gen FileGeneratorWriter, fn *gir.Function, prefix string) bool {
+	if fn.CIdentifier == "" || types.Filter(gen, fn.Name, fn.CIdentifier) {
 		return false
 	}
 
 	callableGen := callable.NewGenerator(gen)
 	if !callableGen.Use(&fn.CallableAttrs) {
 		return false
+	}
+
+	if prefix != "" {
+		callableGen.Name = prefix + callableGen.Name
 	}
 
 	writer := FileWriterFromType(gen, fn)

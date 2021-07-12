@@ -560,7 +560,7 @@ func FontMapGetDefault() *pango.FontMap {
 // (fontconfig), win32, and coretext. If requested type is not available, NULL
 // is returned. Ie. this is only useful for testing, when at least two backends
 // are compiled in.
-func NewFontMap() *pango.FontMap {
+func FontMapNew() *pango.FontMap {
 	var _cret *C.PangoFontMap // in
 
 	_cret = C.pango_cairo_font_map_new()

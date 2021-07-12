@@ -323,7 +323,7 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 // URIListExtractUris splits an URI list conforming to the text/uri-list mime
 // type defined in RFC 2483 into individual URIs, discarding any comments. The
 // URIs are not validated.
-func URIListExtractUris(uriList string) []string {
+func UriListExtractUris(uriList string) []string {
 	var _arg1 *C.gchar // out
 	var _cret **C.gchar
 

@@ -500,7 +500,7 @@ func BusGetSync(busType BusType, cancellable Cancellabler) (*DBusConnection, err
 //
 // This is an asynchronous failable constructor. See
 // g_dbus_connection_new_sync() for the synchronous version.
-func NewDBusConnection(stream IOStreamer, guid string, flags DBusConnectionFlags, observer DBusAuthObserverer, cancellable Cancellabler, callback AsyncReadyCallback) {
+func DBusConnectionNew(stream IOStreamer, guid string, flags DBusConnectionFlags, observer DBusAuthObserverer, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg1 *C.GIOStream           // out
 	var _arg2 *C.gchar               // out
 	var _arg3 C.GDBusConnectionFlags // out

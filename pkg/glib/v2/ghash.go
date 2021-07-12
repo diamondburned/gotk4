@@ -601,11 +601,11 @@ func HashTableStealExtended(hashTable *HashTable, lookupKey cgo.Handle) (stolenK
 	return _stolenKey, _stolenValue, _ok
 }
 
-// HashTableUnref: atomically decrements the reference count of @hash_table by
+// HashTableunref: atomically decrements the reference count of @hash_table by
 // one. If the reference count drops to 0, all keys and values will be
 // destroyed, and all memory allocated by the hash table is released. This
 // function is MT-safe and may be called from any thread.
-func HashTableUnref(hashTable *HashTable) {
+func HashTableunref(hashTable *HashTable) {
 	var _arg1 *C.GHashTable // out
 
 	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))

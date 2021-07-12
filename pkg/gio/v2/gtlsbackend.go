@@ -273,7 +273,7 @@ func (backend *TLSBackend) SupportsTLS() bool {
 }
 
 // TLSBackendGetDefault gets the default Backend for the system.
-func TLSBackendGetDefault() *TLSBackend {
+func TlsBackendGetDefault() *TLSBackend {
 	var _cret *C.GTlsBackend // in
 
 	_cret = C.g_tls_backend_get_default()

@@ -699,33 +699,3 @@ func PathSkipRoot(fileName string) string {
 
 	return _filename
 }
-
-// DirMakeTmp creates a subdirectory in the preferred directory for temporary
-// files (as returned by g_get_tmp_dir()).
-//
-// @tmpl should be a string in the GLib file name encoding containing a sequence
-// of six 'X' characters, as the parameter to g_mkstemp(). However, unlike these
-// functions, the template should only be a basename, no directory components
-// are allowed. If template is nil, a default template is used.
-//
-// Note that in contrast to g_mkdtemp() (and mkdtemp()) @tmpl is not modified,
-// and might thus be a read-only literal string.
-func DirMakeTmp(tmpl string) (string, error) {
-	var _arg1 *C.gchar  // out
-	var _cret *C.gchar  // in
-	var _cerr *C.GError // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tmpl)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_dir_make_tmp(_arg1, &_cerr)
-
-	var _filename string // out
-	var _goerr error     // out
-
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _filename, _goerr
-}

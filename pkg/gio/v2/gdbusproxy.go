@@ -842,7 +842,7 @@ func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 // constructor.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
-func NewDBusProxy(connection DBusConnectioner, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellabler, callback AsyncReadyCallback) {
+func DBusProxyNew(connection DBusConnectioner, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellabler, callback AsyncReadyCallback) {
 	var _arg1 *C.GDBusConnection    // out
 	var _arg2 C.GDBusProxyFlags     // out
 	var _arg3 *C.GDBusInterfaceInfo // out

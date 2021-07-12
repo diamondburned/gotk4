@@ -286,7 +286,7 @@ func (self *NumerableIcon) SetStyleContext(style StyleContexter) {
 // NewNumerableIcon creates a new unthemed NumerableIcon.
 //
 // Deprecated: since version 3.14.
-func NewNumerableIcon(baseIcon gio.Iconer) *gio.Icon {
+func NumerableIconNew(baseIcon gio.Iconer) *gio.Icon {
 	var _arg1 *C.GIcon // out
 	var _cret *C.GIcon // in
 

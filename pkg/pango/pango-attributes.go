@@ -941,7 +941,7 @@ func (a *AttrFontDesc) Native() unsafe.Pointer {
 //
 // This attribute allows setting family, style, weight, variant, stretch, and
 // size simultaneously.
-func NewAttrFontDesc(desc *FontDescription) *Attribute {
+func AttrFontDescNew(desc *FontDescription) *Attribute {
 	var _arg1 *C.PangoFontDescription // out
 	var _cret *C.PangoAttribute       // in
 
@@ -971,7 +971,7 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 }
 
 // NewAttrFontFeatures: create a new font features tag attribute.
-func NewAttrFontFeatures(features string) *Attribute {
+func AttrFontFeaturesNew(features string) *Attribute {
 	var _arg1 *C.gchar          // out
 	var _cret *C.PangoAttribute // in
 
@@ -1123,7 +1123,7 @@ func (a *AttrLanguage) Native() unsafe.Pointer {
 }
 
 // NewAttrLanguage: create a new language tag attribute.
-func NewAttrLanguage(language *Language) *Attribute {
+func AttrLanguageNew(language *Language) *Attribute {
 	var _arg1 *C.PangoLanguage  // out
 	var _cret *C.PangoAttribute // in
 
@@ -1415,7 +1415,7 @@ func (a *AttrShape) Native() unsafe.Pointer {
 // A shape is used to impose a particular ink and logical rectangle on the
 // result of shaping a particular glyph. This might be used, for instance, for
 // embedding a picture or a widget inside a `PangoLayout`.
-func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
+func AttrShapeNew(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
 	var _cret *C.PangoAttribute // in
@@ -1447,7 +1447,7 @@ func (a *AttrSize) Native() unsafe.Pointer {
 }
 
 // NewAttrSize: create a new font-size attribute in fractional points.
-func NewAttrSize(size int) *Attribute {
+func AttrSizeNew(size int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 

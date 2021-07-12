@@ -125,7 +125,7 @@ func (set *StateSet) AddStates(types []StateType) {
 	var _arg2 C.gint
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg2 = C.gint(len(types))
+	_arg2 = (C.gint)(len(types))
 	_arg1 = (*C.AtkStateType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_AtkStateType)))
 	{
 		out := unsafe.Slice((*C.AtkStateType)(_arg1), len(types))
@@ -195,7 +195,7 @@ func (set *StateSet) ContainsStates(types []StateType) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg2 = C.gint(len(types))
+	_arg2 = (C.gint)(len(types))
 	_arg1 = (*C.AtkStateType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_AtkStateType)))
 	{
 		out := unsafe.Slice((*C.AtkStateType)(_arg1), len(types))

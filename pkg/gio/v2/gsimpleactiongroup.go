@@ -101,7 +101,7 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.
 	var _arg3 C.gpointer // out
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
-	_arg2 = C.gint(len(entries))
+	_arg2 = (C.gint)(len(entries))
 	if len(entries) > 0 {
 		_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
 	}

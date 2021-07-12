@@ -324,7 +324,7 @@ func (loader *PixbufLoader) Write(buf []byte) error {
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
-	_arg2 = C.gsize(len(buf))
+	_arg2 = (C.gsize)(len(buf))
 	if len(buf) > 0 {
 		_arg1 = (*C.guchar)(unsafe.Pointer(&buf[0]))
 	}

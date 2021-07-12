@@ -214,7 +214,7 @@ func (stream *PollableInputStream) ReadNonblocking(buffer []byte, cancellable Ca
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(buffer))
+	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}

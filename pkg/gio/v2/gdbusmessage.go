@@ -31,7 +31,7 @@ func DBusMessageBytesNeeded(blob []byte) (int, error) {
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg2 = C.gsize(len(blob))
+	_arg2 = (C.gsize)(len(blob))
 	if len(blob) > 0 {
 		_arg1 = (*C.guchar)(unsafe.Pointer(&blob[0]))
 	}

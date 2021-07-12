@@ -265,7 +265,7 @@ func (snapshot *Snapshot) AppendConicGradient(bounds *graphene.Rect, center *gra
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
 	_arg3 = C.float(rotation)
-	_arg5 = C.gsize(len(stops))
+	_arg5 = (C.gsize)(len(stops))
 	if len(stops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 	}
@@ -320,7 +320,7 @@ func (snapshot *Snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(startPoint))
 	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(endPoint))
-	_arg5 = C.gsize(len(stops))
+	_arg5 = (C.gsize)(len(stops))
 	if len(stops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 	}
@@ -385,7 +385,7 @@ func (snapshot *Snapshot) AppendRadialGradient(bounds *graphene.Rect, center *gr
 	_arg4 = C.float(vradius)
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
-	_arg8 = C.gsize(len(stops))
+	_arg8 = (C.gsize)(len(stops))
 	if len(stops) > 0 {
 		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 	}
@@ -407,7 +407,7 @@ func (snapshot *Snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, s
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(startPoint))
 	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(endPoint))
-	_arg5 = C.gsize(len(stops))
+	_arg5 = (C.gsize)(len(stops))
 	if len(stops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 	}
@@ -435,7 +435,7 @@ func (snapshot *Snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, c
 	_arg4 = C.float(vradius)
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
-	_arg8 = C.gsize(len(stops))
+	_arg8 = (C.gsize)(len(stops))
 	if len(stops) > 0 {
 		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 	}

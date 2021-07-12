@@ -3798,7 +3798,7 @@ func (file *File) ReplaceContents(contents []byte, etag string, makeBackup bool,
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg2 = C.gsize(len(contents))
+	_arg2 = (C.gsize)(len(contents))
 	if len(contents) > 0 {
 		_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
 	}
@@ -3852,7 +3852,7 @@ func (file *File) ReplaceContentsAsync(contents []byte, etag string, makeBackup 
 	var _arg8 C.gpointer
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg2 = C.gsize(len(contents))
+	_arg2 = (C.gsize)(len(contents))
 	if len(contents) > 0 {
 		_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
 	}

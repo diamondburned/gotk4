@@ -165,7 +165,7 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(pixdata))
-	_arg1 = C.guint(len(stream))
+	_arg1 = (C.guint)(len(stream))
 	if len(stream) > 0 {
 		_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
 	}

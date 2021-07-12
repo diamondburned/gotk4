@@ -24,7 +24,7 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 	var _cret C.int // in
 
 	_arg1 = C.int(extraSpace)
-	_arg2 = C.guint(len(sizes))
+	_arg2 = (C.guint)(len(sizes))
 	if len(sizes) > 0 {
 		_arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(&sizes[0]))
 	}

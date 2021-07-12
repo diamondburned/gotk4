@@ -311,7 +311,7 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	var _cret C.gsize // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
-	_arg3 = C.gsize(len(buffer))
+	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}

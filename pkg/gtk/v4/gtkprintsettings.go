@@ -1189,7 +1189,7 @@ func (settings *PrintSettings) SetPageRanges(pageRanges []PageRange) {
 	var _arg2 C.int
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg2 = C.int(len(pageRanges))
+	_arg2 = (C.int)(len(pageRanges))
 	if len(pageRanges) > 0 {
 		_arg1 = (*C.GtkPageRange)(unsafe.Pointer(&pageRanges[0]))
 	}

@@ -119,7 +119,7 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = C.GtkOrientation(orientation)
 	_arg2 = C.gint(colorsPerLine)
-	_arg3 = C.gint(len(colors))
+	_arg3 = (C.gint)(len(colors))
 	if len(colors) > 0 {
 		_arg4 = (*C.GdkRGBA)(unsafe.Pointer(&colors[0]))
 	}

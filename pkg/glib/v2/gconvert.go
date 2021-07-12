@@ -294,7 +294,7 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 	var _cret *C.gchar  // in
 	var _cerr *C.GError // in
 
-	_arg2 = C.gssize(len(opsysstring))
+	_arg2 = (C.gssize)(len(opsysstring))
 	if len(opsysstring) > 0 {
 		_arg1 = (*C.gchar)(unsafe.Pointer(&opsysstring[0]))
 	}

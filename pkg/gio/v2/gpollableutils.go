@@ -96,7 +96,7 @@ func PollableStreamRead(stream InputStreamer, buffer []byte, blocking bool, canc
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
-	_arg3 = C.gsize(len(buffer))
+	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
@@ -136,7 +136,7 @@ func PollableStreamWrite(stream OutputStreamer, buffer []byte, blocking bool, ca
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
-	_arg3 = C.gsize(len(buffer))
+	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
@@ -182,7 +182,7 @@ func PollableStreamWriteAll(stream OutputStreamer, buffer []byte, blocking bool,
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
-	_arg3 = C.gsize(len(buffer))
+	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}

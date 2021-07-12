@@ -1678,7 +1678,7 @@ func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, act
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkDestDefaults(flags)
-	_arg3 = C.gint(len(targets))
+	_arg3 = (C.gint)(len(targets))
 	if len(targets) > 0 {
 		_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
 	}
@@ -1826,7 +1826,7 @@ func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
-	_arg3 = C.gint(len(targets))
+	_arg3 = (C.gint)(len(targets))
 	if len(targets) > 0 {
 		_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
 	}

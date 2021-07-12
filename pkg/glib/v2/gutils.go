@@ -655,7 +655,7 @@ func ParseDebugString(_string string, keys []DebugKey) uint {
 	var _cret C.guint // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	_arg3 = C.guint(len(keys))
+	_arg3 = (C.guint)(len(keys))
 	if len(keys) > 0 {
 		_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
 	}

@@ -146,7 +146,7 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
-	_arg2 = C.gssize(len(data))
+	_arg2 = (C.gssize)(len(data))
 	if len(data) > 0 {
 		_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
 	}

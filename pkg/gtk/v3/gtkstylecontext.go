@@ -157,7 +157,7 @@ type StyleContexter interface {
 	// State returns the state used for style matching.
 	State() StateFlags
 	// StyleProperty gets the value for a widget style property.
-	StyleProperty(propertyName string, value *externglib.Value)
+	StyleProperty(propertyName string) externglib.Value
 	// HasClass returns true if @context currently has defined the given class
 	// name.
 	HasClass(className string) bool
@@ -763,16 +763,21 @@ func (context *StyleContext) State() StateFlags {
 //
 // When @value is no longer needed, g_value_unset() must be called to free any
 // allocated memory.
-func (context *StyleContext) StyleProperty(propertyName string, value *externglib.Value) {
+func (context *StyleContext) StyleProperty(propertyName string) externglib.Value {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
-	var _arg2 *C.GValue          // out
+	var _arg2 C.GValue           // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
-	C.gtk_style_context_get_style_property(_arg0, _arg1, _arg2)
+	C.gtk_style_context_get_style_property(_arg0, _arg1, &_arg2)
+
+	var _value externglib.Value // out
+
+	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg2)))
+
+	return _value
 }
 
 // HasClass returns true if @context currently has defined the given class name.

@@ -718,7 +718,7 @@ func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg4 = C.gsize(len(list))
+	_arg4 = (C.gsize)(len(list))
 	if len(list) > 0 {
 		_arg3 = (*C.gboolean)(unsafe.Pointer(&list[0]))
 	}
@@ -783,7 +783,7 @@ func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg4 = C.gsize(len(list))
+	_arg4 = (C.gsize)(len(list))
 	if len(list) > 0 {
 		_arg3 = (*C.gdouble)(unsafe.Pointer(&list[0]))
 	}
@@ -835,7 +835,7 @@ func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int)
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg4 = C.gsize(len(list))
+	_arg4 = (C.gsize)(len(list))
 	if len(list) > 0 {
 		_arg3 = (*C.gint)(unsafe.Pointer(&list[0]))
 	}
@@ -889,7 +889,7 @@ func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
-	_arg5 = C.gsize(len(list))
+	_arg5 = (C.gsize)(len(list))
 	_arg4 = (**C.gchar)(C.malloc(C.ulong(len(list)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg4), len(list))
@@ -932,7 +932,7 @@ func (keyFile *KeyFile) SetStringList(groupName string, key string, list []strin
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg4 = C.gsize(len(list))
+	_arg4 = (C.gsize)(len(list))
 	_arg3 = (**C.gchar)(C.malloc(C.ulong(len(list)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg3), len(list))

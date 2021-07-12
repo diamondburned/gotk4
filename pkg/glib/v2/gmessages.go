@@ -3,7 +3,6 @@
 package glib
 
 import (
-	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -285,7 +284,7 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 	var _arg3 C.gsize
 
 	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
+	_arg3 = (C.gsize)(len(fields))
 	if len(fields) > 0 {
 		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
 	}
@@ -349,7 +348,7 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Ha
 	var _cret C.GLogWriterOutput // in
 
 	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
+	_arg3 = (C.gsize)(len(fields))
 	if len(fields) > 0 {
 		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
 	}
@@ -441,7 +440,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 	var _cret *C.gchar   // in
 
 	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
+	_arg3 = (C.gsize)(len(fields))
 	if len(fields) > 0 {
 		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
 	}
@@ -501,7 +500,7 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.H
 	var _cret C.GLogWriterOutput // in
 
 	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
+	_arg3 = (C.gsize)(len(fields))
 	if len(fields) > 0 {
 		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
 	}
@@ -537,7 +536,7 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 	var _cret C.GLogWriterOutput // in
 
 	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = C.gsize(len(fields))
+	_arg3 = (C.gsize)(len(fields))
 	if len(fields) > 0 {
 		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
 	}

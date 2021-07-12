@@ -636,7 +636,7 @@ func (stream *OutputStream) Write(buffer []byte, cancellable Cancellabler) (int,
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(buffer))
+	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
@@ -680,7 +680,7 @@ func (stream *OutputStream) WriteAll(buffer []byte, cancellable Cancellabler) (u
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(buffer))
+	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
@@ -722,7 +722,7 @@ func (stream *OutputStream) WriteAllAsync(buffer []byte, ioPriority int, cancell
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(buffer))
+	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
@@ -807,7 +807,7 @@ func (stream *OutputStream) WriteAsync(buffer []byte, ioPriority int, cancellabl
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(buffer))
+	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
@@ -893,7 +893,7 @@ func (stream *OutputStream) Writev(vectors []OutputVector, cancellable Cancellab
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(vectors))
+	_arg2 = (C.gsize)(len(vectors))
 	if len(vectors) > 0 {
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}
@@ -940,7 +940,7 @@ func (stream *OutputStream) WritevAll(vectors []OutputVector, cancellable Cancel
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(vectors))
+	_arg2 = (C.gsize)(len(vectors))
 	if len(vectors) > 0 {
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}
@@ -983,7 +983,7 @@ func (stream *OutputStream) WritevAllAsync(vectors []OutputVector, ioPriority in
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(vectors))
+	_arg2 = (C.gsize)(len(vectors))
 	if len(vectors) > 0 {
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}
@@ -1064,7 +1064,7 @@ func (stream *OutputStream) WritevAsync(vectors []OutputVector, ioPriority int, 
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(vectors))
+	_arg2 = (C.gsize)(len(vectors))
 	if len(vectors) > 0 {
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}

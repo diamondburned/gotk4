@@ -115,7 +115,7 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) {
 	var _arg2 C.gssize
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
-	_arg2 = C.gssize(len(data))
+	_arg2 = (C.gssize)(len(data))
 	if len(data) > 0 {
 		_arg1 = (*C.char)(unsafe.Pointer(&data[0]))
 	}

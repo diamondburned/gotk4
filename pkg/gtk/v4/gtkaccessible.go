@@ -171,7 +171,7 @@ func (self *Accessible) UpdatePropertyValue(properties []AccessibleProperty, val
 	var _arg3 *C.GValue
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
-	_arg1 = C.int(len(properties))
+	_arg1 = (C.int)(len(properties))
 	_arg2 = (*C.GtkAccessibleProperty)(C.malloc(C.ulong(len(properties)) * C.ulong(C.sizeof_GtkAccessibleProperty)))
 	{
 		out := unsafe.Slice((*C.GtkAccessibleProperty)(_arg2), len(properties))
@@ -179,7 +179,7 @@ func (self *Accessible) UpdatePropertyValue(properties []AccessibleProperty, val
 			out[i] = C.GtkAccessibleProperty(properties[i])
 		}
 	}
-	_arg1 = C.int(len(values))
+	_arg1 = (C.int)(len(values))
 	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
@@ -204,7 +204,7 @@ func (self *Accessible) UpdateRelationValue(relations []AccessibleRelation, valu
 	var _arg3 *C.GValue
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
-	_arg1 = C.int(len(relations))
+	_arg1 = (C.int)(len(relations))
 	_arg2 = (*C.GtkAccessibleRelation)(C.malloc(C.ulong(len(relations)) * C.ulong(C.sizeof_GtkAccessibleRelation)))
 	{
 		out := unsafe.Slice((*C.GtkAccessibleRelation)(_arg2), len(relations))
@@ -212,7 +212,7 @@ func (self *Accessible) UpdateRelationValue(relations []AccessibleRelation, valu
 			out[i] = C.GtkAccessibleRelation(relations[i])
 		}
 	}
-	_arg1 = C.int(len(values))
+	_arg1 = (C.int)(len(values))
 	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
@@ -237,7 +237,7 @@ func (self *Accessible) UpdateStateValue(states []AccessibleState, values []exte
 	var _arg3 *C.GValue
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
-	_arg1 = C.int(len(states))
+	_arg1 = (C.int)(len(states))
 	_arg2 = (*C.GtkAccessibleState)(C.malloc(C.ulong(len(states)) * C.ulong(C.sizeof_GtkAccessibleState)))
 	{
 		out := unsafe.Slice((*C.GtkAccessibleState)(_arg2), len(states))
@@ -245,7 +245,7 @@ func (self *Accessible) UpdateStateValue(states []AccessibleState, values []exte
 			out[i] = C.GtkAccessibleState(states[i])
 		}
 	}
-	_arg1 = C.int(len(values))
+	_arg1 = (C.int)(len(values))
 	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))

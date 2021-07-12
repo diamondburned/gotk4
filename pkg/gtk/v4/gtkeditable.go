@@ -45,6 +45,12 @@ type EditableOverrider interface {
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DoDeleteText(startPos int, endPos int)
+	// DoInsertText inserts @length bytes of @text into the contents of the
+	// widget, at position @position.
+	//
+	// Note that the position is in characters, not in bytes. The function
+	// updates @position to point after the newly inserted text.
+	DoInsertText(text string, length int, position *int)
 	// Delegate gets the `GtkEditable` that @editable is delegating its
 	// implementation to.
 	//
@@ -62,6 +68,12 @@ type EditableOverrider interface {
 	//
 	// The returned string is owned by GTK and must not be modified or freed.
 	Text() string
+	// InsertText inserts @length bytes of @text into the contents of the
+	// widget, at position @position.
+	//
+	// Note that the position is in characters, not in bytes. The function
+	// updates @position to point after the newly inserted text.
+	InsertText(text string, length int, position *int)
 	// SetSelectionBounds selects a region of text.
 	//
 	// The characters that are selected are those characters at positions from
@@ -108,6 +120,9 @@ type Editabler interface {
 	WidthChars() int
 	// InitDelegate sets up a delegate for `GtkEditable`.
 	InitDelegate()
+	// InsertText inserts @length bytes of @text into the contents of the
+	// widget, at position @position.
+	InsertText(text string, length int, position *int)
 	// SelectRegion selects a region of text.
 	SelectRegion(startPos int, endPos int)
 	// SetAlignment sets the alignment for the contents of the editable.
@@ -511,6 +526,25 @@ func (editable *Editable) InitDelegate() {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	C.gtk_editable_init_delegate(_arg0)
+}
+
+// InsertText inserts @length bytes of @text into the contents of the widget, at
+// position @position.
+//
+// Note that the position is in characters, not in bytes. The function updates
+// @position to point after the newly inserted text.
+func (editable *Editable) InsertText(text string, length int, position *int) {
+	var _arg0 *C.GtkEditable // out
+	var _arg1 *C.char        // out
+	var _arg2 C.int          // out
+	var _arg3 *C.int         // out
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	_arg2 = C.int(length)
+	_arg3 = (*C.int)(unsafe.Pointer(position))
+
+	C.gtk_editable_insert_text(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SelectRegion selects a region of text.

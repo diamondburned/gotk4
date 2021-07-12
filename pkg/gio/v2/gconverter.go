@@ -250,11 +250,11 @@ func (converter *Converter) Convert(inbuf []byte, outbuf []byte, flags Converter
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
-	_arg2 = C.gsize(len(inbuf))
+	_arg2 = (C.gsize)(len(inbuf))
 	if len(inbuf) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&inbuf[0]))
 	}
-	_arg4 = C.gsize(len(outbuf))
+	_arg4 = (C.gsize)(len(outbuf))
 	if len(outbuf) > 0 {
 		_arg3 = (*C.void)(unsafe.Pointer(&outbuf[0]))
 	}

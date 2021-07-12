@@ -76,7 +76,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		}
 
 		// Length has no input, as it's from the slice.
-		value.p.Linef("%s = %s(len(%s))", length.Out.Set, length.Out.Type, value.InName)
+		value.p.Linef("%s = (%s)(len(%s))", length.Out.Set, length.Out.Type, value.InName)
 	}
 
 	inner := conv.convertInner(value, value.InName+"[i]", "out[i]")
@@ -149,6 +149,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 		// Target fixed array, so we can directly set the data over. The memory
 		// is ours, and allocation is handled by Go.
+		value.header.ApplyHeader(inner.Header())
 		value.p.Descend()
 
 		if !value.MustRealloc() {
@@ -205,6 +206,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			return true
 		}
 
+		value.header.ApplyHeader(inner.Header())
 		value.p.Descend()
 
 		value.p.Linef(
@@ -237,6 +239,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			value.p.Linef("defer C.g_array_unref(%s)", value.OutName)
 		}
 
+		value.header.ApplyHeader(inner.Header())
 		value.p.Descend()
 
 		value.p.Linef("out := unsafe.Slice(%s.data, len(%s))", value.OutName, value.InName)
@@ -270,17 +273,18 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 	case array.IsZeroTerminated():
 		value.header.Import("unsafe")
 
+		value.p.Descend()
+		defer value.p.Ascend()
+
+		value.p.Linef("var zero %s", inner.In.Type)
+
 		// See if we can possibly reuse the Go slice in a shorter way.
 		if !value.MustRealloc() && inner.Resolved.CanCast() {
-			value.p.Descend()
-			value.p.Linef("var zero %s", inner.In.Type)
 			value.p.Linef("%s = append(%[1]s, zero)", value.InName)
-			value.p.Ascend()
-
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
-				value.Out.Set, value.Out.Type, value.InName)
-
+				value.Out.Set, value.Out.Type, value.InName,
+			)
 			return true
 		}
 
@@ -291,9 +295,13 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 		}
 
+		value.header.ApplyHeader(inner.Header())
 		value.p.Descend()
 
-		value.p.Linef("out := unsafe.Slice(%s, len(%s))", value.OutName, value.InName)
+		value.p.Linef("out := unsafe.Slice(%s, len(%s)+1)", value.OutName, value.InName)
+		// malloc does not zero out the memory, so we have to zero it out
+		// ourselves.
+		value.p.Linef("out[len(%s)] = zero", value.InName)
 		value.p.Linef("for i := range %s {", value.InName)
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
@@ -475,6 +483,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			return false
 		}
 
+		value.header.ApplyHeader(closure.Header())
 		value.header.ImportCore("gbox")
 		value.header.AddCallback(v)
 
@@ -490,6 +499,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		if value.Destroy != nil {
 			if destroy := conv.convertParam(*value.Destroy); destroy != nil {
+				value.header.ApplyHeader(destroy.Header())
 				value.header.CallbackDelete = true
 				value.outDecl.Linef("var %s %s", destroy.OutName, destroy.Out.Type)
 				value.p.Linef(

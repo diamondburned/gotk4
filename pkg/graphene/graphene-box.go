@@ -347,7 +347,7 @@ func (box *Box) InitFromPoints(points []Point3D) *Box {
 	var _cret *C.graphene_box_t // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(box))
-	_arg1 = C.uint(len(points))
+	_arg1 = (C.uint)(len(points))
 	if len(points) > 0 {
 		_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
 	}
@@ -394,7 +394,7 @@ func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 	var _cret *C.graphene_box_t // in
 
 	_arg0 = (*C.graphene_box_t)(unsafe.Pointer(box))
-	_arg1 = C.uint(len(vectors))
+	_arg1 = (C.uint)(len(vectors))
 	if len(vectors) > 0 {
 		_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
 	}

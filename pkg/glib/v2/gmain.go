@@ -382,7 +382,7 @@ func (context *MainContext) Check(maxPriority int, fds []PollFD) bool {
 
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
 	_arg1 = C.gint(maxPriority)
-	_arg3 = C.gint(len(fds))
+	_arg3 = (C.gint)(len(fds))
 	if len(fds) > 0 {
 		_arg2 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
 	}

@@ -367,9 +367,9 @@ func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byt
 	var _goerr error // out
 
 	{
-		var len uintptr
-		p := C.g_byte_array_steal(&_arg2, (*C.gsize)(&len))
-		_data = unsafe.Slice((*byte)(p), len)
+		var len C.gsize
+		p := C.g_byte_array_steal(&_arg2, &len)
+		_data = unsafe.Slice((*byte)(p), uint(len))
 		runtime.SetFinalizer(&_data, func(v *[]byte) {
 			C.free(unsafe.Pointer(&(*v)[0]))
 		})

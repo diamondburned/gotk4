@@ -139,7 +139,7 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	var _arg2 C.gsize
 	var _cret *C.GdkContentProvider // in
 
-	_arg2 = C.gsize(len(providers))
+	_arg2 = (C.gsize)(len(providers))
 	_arg1 = (**C.GdkContentProvider)(C.malloc(C.ulong(len(providers)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{

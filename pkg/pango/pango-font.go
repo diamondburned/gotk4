@@ -391,7 +391,7 @@ func FontDescriptionsFree(descs []*FontDescription) {
 	var _arg1 **C.PangoFontDescription
 	var _arg2 C.int
 
-	_arg2 = C.int(len(descs))
+	_arg2 = (C.int)(len(descs))
 	_arg1 = (**C.PangoFontDescription)(C.malloc(C.ulong(len(descs)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{

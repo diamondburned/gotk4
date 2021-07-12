@@ -57,7 +57,7 @@ func StockAdd(items []StockItem) {
 	var _arg1 *C.GtkStockItem
 	var _arg2 C.guint
 
-	_arg2 = C.guint(len(items))
+	_arg2 = (C.guint)(len(items))
 	if len(items) > 0 {
 		_arg1 = (*C.GtkStockItem)(unsafe.Pointer(&items[0]))
 	}
@@ -73,7 +73,7 @@ func StockAddStatic(items []StockItem) {
 	var _arg1 *C.GtkStockItem
 	var _arg2 C.guint
 
-	_arg2 = C.guint(len(items))
+	_arg2 = (C.guint)(len(items))
 	if len(items) > 0 {
 		_arg1 = (*C.GtkStockItem)(unsafe.Pointer(&items[0]))
 	}

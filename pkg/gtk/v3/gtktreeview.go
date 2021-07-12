@@ -377,6 +377,9 @@ type TreeViewer interface {
 	// TooltipColumn returns the column of @tree_view’s model which is being
 	// used for displaying tooltips on @tree_view’s rows.
 	TooltipColumn() int
+	// TooltipContext: this function is supposed to be used in a
+	// Widget::query-tooltip signal handler for TreeView.
+	TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
 	// VAdjustment gets the Adjustment currently being used for the vertical
 	// aspect.
 	VAdjustment() *Adjustment
@@ -873,7 +876,7 @@ func (treeView *TreeView) EnableModelDragDest(targets []TargetEntry, actions gdk
 	var _arg3 C.GdkDragAction // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
-	_arg2 = C.gint(len(targets))
+	_arg2 = (C.gint)(len(targets))
 	if len(targets) > 0 {
 		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
 	}
@@ -893,7 +896,7 @@ func (treeView *TreeView) EnableModelDragSource(startButtonMask gdk.ModifierType
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
-	_arg3 = C.gint(len(targets))
+	_arg3 = (C.gint)(len(targets))
 	if len(targets) > 0 {
 		_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
 	}
@@ -1543,6 +1546,49 @@ func (treeView *TreeView) TooltipColumn() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// TooltipContext: this function is supposed to be used in a
+// Widget::query-tooltip signal handler for TreeView. The @x, @y and
+// @keyboard_tip values which are received in the signal handler, should be
+// passed to this function without modification.
+//
+// The return value indicates whether there is a tree view row at the given
+// coordinates (true) or not (false) for mouse tooltips. For keyboard tooltips
+// the row returned will be the cursor row. When true, then any of @model, @path
+// and @iter which have been provided will be set to point to that row and the
+// corresponding model. @x and @y will always be converted to be relative to
+// @tree_view’s bin_window if @keyboard_tooltip is false.
+func (treeView *TreeView) TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool) {
+	var _arg0 *C.GtkTreeView  // out
+	var _arg1 *C.gint         // out
+	var _arg2 *C.gint         // out
+	var _arg3 C.gboolean      // out
+	var _arg4 *C.GtkTreeModel // in
+	var _path *TreePath
+	var _iter TreeIter
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = (*C.gint)(unsafe.Pointer(x))
+	_arg2 = (*C.gint)(unsafe.Pointer(y))
+	if keyboardTip {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C.gtk_tree_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, (**C.GtkTreePath)(unsafe.Pointer(&_path)), (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+
+	var _model *TreeModel // out
+
+	var _ok bool // out
+
+	_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg4)))
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _model, _path, _iter, _ok
 }
 
 // VAdjustment gets the Adjustment currently being used for the vertical aspect.

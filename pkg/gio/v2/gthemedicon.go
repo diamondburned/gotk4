@@ -95,7 +95,7 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	var _arg2 C.int
 	var _cret *C.GIcon // in
 
-	_arg2 = C.int(len(iconnames))
+	_arg2 = (C.int)(len(iconnames))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(iconnames)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.char)(_arg1), len(iconnames))

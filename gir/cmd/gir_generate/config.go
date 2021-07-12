@@ -77,6 +77,7 @@ var filters = []FilterMatcher{
 	FileFilter("gasyncqueue."),
 	FileFilter("gatomic."),
 	FileFilter("gbacktrace."),
+	FileFilter("gbase64."),
 	FileFilter("gbitlock."),
 	FileFilter("gbytes."),
 	FileFilter("gdataset."),

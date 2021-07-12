@@ -243,7 +243,7 @@ func (stream *PollableOutputStream) WriteNonblocking(buffer []byte, cancellable 
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(buffer))
+	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
@@ -285,7 +285,7 @@ func (stream *PollableOutputStream) WritevNonblocking(vectors []OutputVector, ca
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = C.gsize(len(vectors))
+	_arg2 = (C.gsize)(len(vectors))
 	if len(vectors) > 0 {
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}

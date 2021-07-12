@@ -98,7 +98,7 @@ func NewUnixFDListFromArray(fds []int) *UnixFDList {
 	var _arg2 C.gint
 	var _cret *C.GUnixFDList // in
 
-	_arg2 = C.gint(len(fds))
+	_arg2 = (C.gint)(len(fds))
 	if len(fds) > 0 {
 		_arg1 = (*C.gint)(unsafe.Pointer(&fds[0]))
 	}

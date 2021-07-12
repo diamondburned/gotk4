@@ -147,7 +147,7 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *ui
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(errorDomainQuarkName)))
 	_arg2 = (*C.gsize)(unsafe.Pointer(quarkVolatile))
-	_arg4 = C.guint(len(entries))
+	_arg4 = (C.guint)(len(entries))
 	if len(entries) > 0 {
 		_arg3 = (*C.GDBusErrorEntry)(unsafe.Pointer(&entries[0]))
 	}

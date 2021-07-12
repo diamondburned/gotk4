@@ -540,7 +540,7 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	var _arg1 C.gint
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = C.gint(len(newOrder))
+	_arg1 = (C.gint)(len(newOrder))
 	if len(newOrder) > 0 {
 		_arg2 = (*C.gint)(unsafe.Pointer(&newOrder[0]))
 	}

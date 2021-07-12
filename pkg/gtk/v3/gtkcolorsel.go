@@ -416,7 +416,7 @@ func ColorSelectionPaletteToString(colors []gdk.Color) string {
 	var _arg2 C.gint
 	var _cret *C.gchar // in
 
-	_arg2 = C.gint(len(colors))
+	_arg2 = (C.gint)(len(colors))
 	if len(colors) > 0 {
 		_arg1 = (*C.GdkColor)(unsafe.Pointer(&colors[0]))
 	}

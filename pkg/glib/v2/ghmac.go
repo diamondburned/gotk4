@@ -24,11 +24,11 @@ func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string
 	var _cret *C.gchar // in
 
 	_arg1 = C.GChecksumType(digestType)
-	_arg3 = C.gsize(len(key))
+	_arg3 = (C.gsize)(len(key))
 	if len(key) > 0 {
 		_arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
 	}
-	_arg5 = C.gsize(len(data))
+	_arg5 = (C.gsize)(len(data))
 	if len(data) > 0 {
 		_arg4 = (*C.guchar)(unsafe.Pointer(&data[0]))
 	}
@@ -55,7 +55,7 @@ func ComputeHMACForString(digestType ChecksumType, key []byte, str string, lengt
 	var _cret *C.gchar // in
 
 	_arg1 = C.GChecksumType(digestType)
-	_arg3 = C.gsize(len(key))
+	_arg3 = (C.gsize)(len(key))
 	if len(key) > 0 {
 		_arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
 	}

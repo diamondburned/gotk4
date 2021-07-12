@@ -214,7 +214,7 @@ func (password *TLSPassword) SetValue(value []byte) {
 	var _arg2 C.gssize
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
-	_arg2 = C.gssize(len(value))
+	_arg2 = (C.gssize)(len(value))
 	if len(value) > 0 {
 		_arg1 = (*C.guchar)(unsafe.Pointer(&value[0]))
 	}

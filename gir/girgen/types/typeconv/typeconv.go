@@ -292,9 +292,6 @@ func (conv *Converter) convertType(
 		return nil
 	}
 
-	// Inherit the headers.
-	file.ApplyHeader(of, &result)
-
 	return &result
 }
 

@@ -746,7 +746,7 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
 	_arg3 = C.float(rotation)
-	_arg5 = C.gsize(len(colorStops))
+	_arg5 = (C.gsize)(len(colorStops))
 	if len(colorStops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
 	}
@@ -871,7 +871,7 @@ func NewContainerNode(children []*RenderNode) *ContainerNode {
 	var _arg2 C.guint
 	var _cret *C.GskRenderNode // in
 
-	_arg2 = C.guint(len(children))
+	_arg2 = (C.guint)(len(children))
 	_arg1 = (**C.GskRenderNode)(C.malloc(C.ulong(len(children)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.GskRenderNode)(_arg1), len(children))
@@ -1411,7 +1411,7 @@ func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *gr
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(start))
 	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(end))
-	_arg5 = C.gsize(len(colorStops))
+	_arg5 = (C.gsize)(len(colorStops))
 	if len(colorStops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
 	}
@@ -1781,7 +1781,7 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 	_arg4 = C.float(vradius)
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
-	_arg8 = C.gsize(len(colorStops))
+	_arg8 = (C.gsize)(len(colorStops))
 	if len(colorStops) > 0 {
 		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
 	}
@@ -2019,7 +2019,7 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(start))
 	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(end))
-	_arg5 = C.gsize(len(colorStops))
+	_arg5 = (C.gsize)(len(colorStops))
 	if len(colorStops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
 	}
@@ -2087,7 +2087,7 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 	_arg4 = C.float(vradius)
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
-	_arg8 = C.gsize(len(colorStops))
+	_arg8 = (C.gsize)(len(colorStops))
 	if len(colorStops) > 0 {
 		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
 	}
@@ -2232,7 +2232,7 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 	var _cret *C.GskRenderNode // in
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg3 = C.gsize(len(shadows))
+	_arg3 = (C.gsize)(len(shadows))
 	if len(shadows) > 0 {
 		_arg2 = (*C.GskShadow)(unsafe.Pointer(&shadows[0]))
 	}

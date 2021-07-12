@@ -94,6 +94,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			return true
 		}
 
+		value.header.ApplyHeader(inner.Header())
 		value.p.Descend()
 
 		// Direct cast is not possible; make a temporary array with the CGo type
@@ -116,6 +117,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 		// Multiple arrays may use the same length value.
 		if length.finalize() {
+			value.header.ApplyHeader(length.Header())
 			value.inDecl.Linef("var %s %s // in", length.InName, length.In.Type)
 			// Length has no outDecl.
 		}
@@ -157,6 +159,8 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			return true
 		}
 
+		value.header.ApplyHeader(inner.Header())
+
 		value.p.Descend()
 		value.p.Linef("src := unsafe.Slice(%s, %s)", value.InName, length.InName)
 		value.p.Linef("%s = make(%s, %s)", value.Out.Set, value.Out.Type, length.InName)
@@ -168,6 +172,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 	case array.Name == "GLib.Array": // treat as Go array
 		value.header.Import("unsafe")
+		value.header.ApplyHeader(inner.Header())
 
 		value.p.Descend()
 
@@ -189,11 +194,11 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			value.header.Import("runtime")
 
 			value.p.Descend()
-			value.p.Linef("var len uintptr")
+			value.p.Linef("var len C.gsize")
 			// If we're fully getting the backing array, then we can just steal
 			// it (since we own it now), which is less copying.
-			value.p.Linef("p := C.g_byte_array_steal(&%s, (*C.gsize)(&len))", value.InName)
-			value.p.Linef("%s = unsafe.Slice((*byte)(p), len)", value.Out.Set)
+			value.p.Linef("p := C.g_byte_array_steal(&%s, &len)", value.InName)
+			value.p.Linef("%s = unsafe.Slice((*byte)(p), uint(len))", value.Out.Set)
 			value.p.Linef("runtime.SetFinalizer(&%s, func(v *[]byte) {", value.OutName)
 			value.p.Linef("  C.free(unsafe.Pointer(&(*v)[0]))")
 			value.p.Linef("})")
@@ -210,6 +215,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 	case array.IsZeroTerminated():
 		value.header.Import("unsafe")
+		value.header.ApplyHeader(inner.Header())
 
 		value.p.Descend()
 
@@ -438,7 +444,11 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			v.Type.AnyType,
 			value.TransferOwnership.TransferOwnership,
 		)
-		return result != nil
+		if result != nil {
+			value.header.ApplyHeader(result.Header())
+			return true
+		}
+		return false
 	}
 
 	if value.Optional {

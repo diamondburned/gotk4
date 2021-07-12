@@ -458,7 +458,7 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 	var _cret *C.GdkPixbuf // in
 	var _cerr *C.GError    // in
 
-	_arg1 = C.gint(len(data))
+	_arg1 = (C.gint)(len(data))
 	if len(data) > 0 {
 		_arg2 = (*C.guint8)(unsafe.Pointer(&data[0]))
 	}

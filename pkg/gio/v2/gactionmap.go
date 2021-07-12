@@ -154,7 +154,7 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 	var _arg3 C.gpointer // out
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
-	_arg2 = C.gint(len(entries))
+	_arg2 = (C.gint)(len(entries))
 	if len(entries) > 0 {
 		_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
 	}

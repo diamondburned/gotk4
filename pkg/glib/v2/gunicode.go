@@ -2036,7 +2036,7 @@ func UTF8Validate(str []byte) (string, bool) {
 	var _arg3 *C.gchar   // in
 	var _cret C.gboolean // in
 
-	_arg2 = C.gssize(len(str))
+	_arg2 = (C.gssize)(len(str))
 	if len(str) > 0 {
 		_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
 	}
@@ -2064,7 +2064,7 @@ func UTF8ValidateLen(str []byte) (string, bool) {
 	var _arg3 *C.gchar   // in
 	var _cret C.gboolean // in
 
-	_arg2 = C.gsize(len(str))
+	_arg2 = (C.gsize)(len(str))
 	if len(str) > 0 {
 		_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
 	}

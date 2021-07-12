@@ -458,7 +458,7 @@ func (datagramBased *DatagramBased) ReceiveMessages(messages []InputMessage, fla
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
-	_arg2 = C.guint(len(messages))
+	_arg2 = (C.guint)(len(messages))
 	if len(messages) > 0 {
 		_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
 	}
@@ -527,7 +527,7 @@ func (datagramBased *DatagramBased) SendMessages(messages []OutputMessage, flags
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
-	_arg2 = C.guint(len(messages))
+	_arg2 = (C.guint)(len(messages))
 	if len(messages) > 0 {
 		_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
 	}

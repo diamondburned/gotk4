@@ -1382,7 +1382,7 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 	var _arg2 C.gint
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg2 = C.gint(len(path))
+	_arg2 = (C.gint)(len(path))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(path)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(path))

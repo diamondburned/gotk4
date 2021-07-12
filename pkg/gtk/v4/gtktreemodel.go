@@ -932,7 +932,7 @@ func (treeModel *TreeModel) RowsReorderedWithLength(path *TreePath, iter *TreeIt
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
-	_arg4 = C.int(len(newOrder))
+	_arg4 = (C.int)(len(newOrder))
 	if len(newOrder) > 0 {
 		_arg3 = (*C.int)(unsafe.Pointer(&newOrder[0]))
 	}
@@ -1056,7 +1056,7 @@ func NewTreePathFromIndicesv(indices []int) *TreePath {
 	var _arg2 C.gsize
 	var _cret *C.GtkTreePath // in
 
-	_arg2 = C.gsize(len(indices))
+	_arg2 = (C.gsize)(len(indices))
 	if len(indices) > 0 {
 		_arg1 = (*C.int)(unsafe.Pointer(&indices[0]))
 	}

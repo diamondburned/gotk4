@@ -115,7 +115,7 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 	var _arg3 C.AtkRelationType // out
 	var _cret *C.AtkRelation    // in
 
-	_arg2 = C.gint(len(targets))
+	_arg2 = (C.gint)(len(targets))
 	_arg1 = (**C.AtkObject)(C.malloc(C.ulong(len(targets)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.AtkObject)(_arg1), len(targets))

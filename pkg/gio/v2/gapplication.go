@@ -730,7 +730,7 @@ func (application *Application) Open(files []*File, hint string) {
 	var _arg3 *C.gchar // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg2 = C.gint(len(files))
+	_arg2 = (C.gint)(len(files))
 	_arg1 = (**C.GFile)(C.malloc(C.ulong(len(files)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.GFile)(_arg1), len(files))
@@ -899,7 +899,7 @@ func (application *Application) Run(argv []string) int {
 	var _cret C.int // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = C.int(len(argv))
+	_arg1 = (C.int)(len(argv))
 	_arg2 = (**C.char)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.char)(_arg2), len(argv))

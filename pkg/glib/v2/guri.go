@@ -628,7 +628,7 @@ func UriEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 	var _arg3 *C.char // out
 	var _cret *C.char // in
 
-	_arg2 = C.gsize(len(unescaped))
+	_arg2 = (C.gsize)(len(unescaped))
 	if len(unescaped) > 0 {
 		_arg1 = (*C.guint8)(unsafe.Pointer(&unescaped[0]))
 	}

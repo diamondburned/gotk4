@@ -388,7 +388,7 @@ func FileSetContents(filename string, contents []byte) error {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	_arg3 = C.gssize(len(contents))
+	_arg3 = (C.gssize)(len(contents))
 	if len(contents) > 0 {
 		_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
 	}
@@ -466,7 +466,7 @@ func FileSetContentsFull(filename string, contents []byte, flags FileSetContents
 	var _cerr *C.GError               // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	_arg3 = C.gssize(len(contents))
+	_arg3 = (C.gssize)(len(contents))
 	if len(contents) > 0 {
 		_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
 	}

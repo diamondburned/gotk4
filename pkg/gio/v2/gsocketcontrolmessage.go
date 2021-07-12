@@ -186,7 +186,7 @@ func SocketControlMessageDeserialize(level int, typ int, data []byte) *SocketCon
 
 	_arg1 = C.int(level)
 	_arg2 = C.int(typ)
-	_arg3 = C.gsize(len(data))
+	_arg3 = (C.gsize)(len(data))
 	if len(data) > 0 {
 		_arg4 = (C.gpointer)(unsafe.Pointer(&data[0]))
 	}

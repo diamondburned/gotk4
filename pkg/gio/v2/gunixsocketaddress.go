@@ -110,7 +110,7 @@ func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
 	var _arg2 C.gint
 	var _cret *C.GSocketAddress // in
 
-	_arg2 = C.gint(len(path))
+	_arg2 = (C.gint)(len(path))
 	if len(path) > 0 {
 		_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
 	}
@@ -161,7 +161,7 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) *UnixS
 	var _arg3 C.GUnixSocketAddressType // out
 	var _cret *C.GSocketAddress        // in
 
-	_arg2 = C.gint(len(path))
+	_arg2 = (C.gint)(len(path))
 	if len(path) > 0 {
 		_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
 	}

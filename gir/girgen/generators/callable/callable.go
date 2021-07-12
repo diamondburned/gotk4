@@ -174,15 +174,11 @@ func (g *Generator) renderBlock() bool {
 		}
 
 		for i, param := range g.Parameters.Parameters {
-			if param.Direction == "" {
-				param.Direction = "in"
-			}
-
 			var in string
 			var out string
 			var dir typeconv.ConversionDirection
 
-			switch param.Direction {
+			switch types.GuessParameterOutput(&param) {
 			case "in":
 				in = strcases.SnakeToGo(false, param.Name)
 				out = fmt.Sprintf("_arg%d", i+1)

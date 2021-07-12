@@ -396,7 +396,7 @@ func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
 	var _arg2 C.gint
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg2 = C.gint(len(targets))
+	_arg2 = (C.gint)(len(targets))
 	if len(targets) > 0 {
 		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
 	}

@@ -227,7 +227,7 @@ func CoverageFromBytes(bytes []byte) *Coverage {
 	var _arg2 C.int
 	var _cret *C.PangoCoverage // in
 
-	_arg2 = C.int(len(bytes))
+	_arg2 = (C.int)(len(bytes))
 	if len(bytes) > 0 {
 		_arg1 = (*C.guchar)(unsafe.Pointer(&bytes[0]))
 	}

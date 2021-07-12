@@ -177,7 +177,7 @@ func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 	var _arg2 C.gint
 
 	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))
-	_arg2 = C.gint(len(entries))
+	_arg2 = (C.gint)(len(entries))
 	if len(entries) > 0 {
 		_arg1 = (*C.GtkPadActionEntry)(unsafe.Pointer(&entries[0]))
 	}

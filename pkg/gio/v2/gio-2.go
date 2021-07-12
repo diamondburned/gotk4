@@ -1824,7 +1824,7 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBu
 	var _cret *C.GDBusMessage        // in
 	var _cerr *C.GError              // in
 
-	_arg2 = C.gsize(len(blob))
+	_arg2 = (C.gsize)(len(blob))
 	if len(blob) > 0 {
 		_arg1 = (*C.guchar)(unsafe.Pointer(&blob[0]))
 	}

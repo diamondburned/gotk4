@@ -171,7 +171,9 @@ type Field struct {
 }
 
 // IsReadable returns true if the field is readable.
-func (f Field) IsReadable() bool { return f.Readable == nil || *f.Readable }
+func (f Field) IsReadable() bool {
+	return f.Readable == nil || *f.Readable
+}
 
 type Function struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 function"`

@@ -355,7 +355,7 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg1 = (*C.GVariantType)(unsafe.Pointer(childType))
-	_arg3 = C.gsize(len(children))
+	_arg3 = (C.gsize)(len(children))
 	if len(children) > 0 {
 		_arg2 = (**C.GVariant)(unsafe.Pointer(&children[0]))
 	}
@@ -444,7 +444,7 @@ func NewVariantBytestringArray(strv []string) *Variant {
 	var _arg2 C.gssize
 	var _cret *C.GVariant // in
 
-	_arg2 = C.gssize(len(strv))
+	_arg2 = (C.gssize)(len(strv))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(strv))
@@ -662,7 +662,7 @@ func NewVariantObjv(strv []string) *Variant {
 	var _arg2 C.gssize
 	var _cret *C.GVariant // in
 
-	_arg2 = C.gssize(len(strv))
+	_arg2 = (C.gssize)(len(strv))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(strv))
@@ -730,7 +730,7 @@ func NewVariantStrv(strv []string) *Variant {
 	var _arg2 C.gssize
 	var _cret *C.GVariant // in
 
-	_arg2 = C.gssize(len(strv))
+	_arg2 = (C.gssize)(len(strv))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(strv))
@@ -758,7 +758,7 @@ func NewVariantTuple(children []*Variant) *Variant {
 	var _arg2 C.gsize
 	var _cret *C.GVariant // in
 
-	_arg2 = C.gsize(len(children))
+	_arg2 = (C.gsize)(len(children))
 	if len(children) > 0 {
 		_arg1 = (**C.GVariant)(unsafe.Pointer(&children[0]))
 	}

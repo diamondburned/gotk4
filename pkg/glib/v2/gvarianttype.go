@@ -247,7 +247,7 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 	var _arg2 C.gint
 	var _cret *C.GVariantType // in
 
-	_arg2 = C.gint(len(items))
+	_arg2 = (C.gint)(len(items))
 	if len(items) > 0 {
 		_arg1 = (**C.GVariantType)(unsafe.Pointer(&items[0]))
 	}
